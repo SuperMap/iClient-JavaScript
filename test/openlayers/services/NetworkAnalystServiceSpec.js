@@ -1,18 +1,18 @@
 import ol from 'openlayers';
-import {NetworkAnalystService} from '../../../src/openlayers/services/NetworkAnalystService';
-import {BurstPipelineAnalystParameters} from '../../../src/common/iServer/BurstPipelineAnalystParameters';
-import {ComputeWeightMatrixParameters} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
-import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
-import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
-import {FindClosestFacilitiesParameters} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
-import {FindLocationParameters} from '../../../src/common/iServer/FindLocationParameters';
-import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
-import {FindTSPPathsParameters} from '../../../src/common/iServer/FindTSPPathsParameters';
-import {FindMTSPPathsParameters} from '../../../src/common/iServer/FindMTSPPathsParameters';
-import {FindServiceAreasParameters} from '../../../src/common/iServer/FindServiceAreasParameters';
-import {UpdateEdgeWeightParameters} from '../../../src/common/iServer/UpdateEdgeWeightParameters';
-import {UpdateTurnNodeWeightParameters} from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
-import {FacilityAnalystStreamParameters} from '../../../src/common/iServer/FacilityAnalystStreamParameters';
+import { NetworkAnalystService } from '../../../src/openlayers/services/NetworkAnalystService';
+import { BurstPipelineAnalystParameters } from '../../../src/common/iServer/BurstPipelineAnalystParameters';
+import { ComputeWeightMatrixParameters } from '../../../src/common/iServer/ComputeWeightMatrixParameters';
+import { TransportationAnalystResultSetting } from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import { TransportationAnalystParameter } from '../../../src/common/iServer/TransportationAnalystParameter';
+import { FindClosestFacilitiesParameters } from '../../../src/common/iServer/FindClosestFacilitiesParameters';
+import { FindLocationParameters } from '../../../src/common/iServer/FindLocationParameters';
+import { FindPathParameters } from '../../../src/common/iServer/FindPathParameters';
+import { FindTSPPathsParameters } from '../../../src/common/iServer/FindTSPPathsParameters';
+import { FindMTSPPathsParameters } from '../../../src/common/iServer/FindMTSPPathsParameters';
+import { FindServiceAreasParameters } from '../../../src/common/iServer/FindServiceAreasParameters';
+import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
+import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
+import { FacilityAnalystStreamParameters } from '../../../src/common/iServer/FacilityAnalystStreamParameters';
 
 var url = GlobeParameter.networkAnalystURL;
 var options = {
@@ -193,33 +193,34 @@ describe('openlayers_NetworkAnalystService', () => {
     });
 
     // 上游/下游 关键设施查找资源服务
-    // common里被注释掉了
-    /*it('streamFacilityAnalyst_test', (done)=> {
-     var FacilityAnalystStreamParameters =new FacilityAnalystStreamParameters({
-     edgeID:84,
-     //nodeID:85,
-     isUncertainDirectionValid:true,
-     sourceNodeIDs:[],
-     // 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）
-     type:1
-     });
-     var service = new NetworkAnalystService(url, options);
-     service.streamFacilityAnalyst(FacilityAnalystStreamParameters, (result)=> {
-     serviceResult=result;
-     });
-     setTimeout( ()=> {
-     try{
-     expect(service).not.toBeNull();
-     expect(serviceResult).not.toBeNull();
-     done();
-     } catch(e) {
-     console.log("'streamFacilityAnalyst_test'案例失败" + e.name + ":" + e.message);
-     expect(false).toBeTruthy();
-     done();
-     }
-     },45000)
+    it('streamFacilityAnalyst', (done) => {
+        var facilityAnalystStreamParameters = new FacilityAnalystStreamParameters({
+            edgeID: 84,
+            //nodeID:85,
+            isUncertainDirectionValid: true,
+            sourceNodeIDs: [],
+            // 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）
+            queryType: 1
+        });
+        var service = new NetworkAnalystService(url, options);
+        service.streamFacilityAnalyst(facilityAnalystStreamParameters, (result) => {
+            serviceResult = result;
+        });
+        setTimeout(() => {
+            try {
+                expect(service).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.result).not.toBeNull();
+                expect(serviceResult.type).toEqual("processCompleted");
+                done();
+            } catch (e) {
+                console.log("'streamFacilityAnalyst_test'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        }, 5000)
 
-     });*/
+    });
 
     //选址分区分析服务
     it('findLocation', (done) => {

@@ -1,18 +1,19 @@
-import {NetworkAnalystService} from '../../../src/mapboxgl/services/NetworkAnalystService';
-import {BurstPipelineAnalystParameters} from '../../../src/common/iServer/BurstPipelineAnalystParameters';
-import {ComputeWeightMatrixParameters} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
-import {FindClosestFacilitiesParameters} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
-import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
-import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
-import {FindLocationParameters} from '../../../src/common/iServer/FindLocationParameters';
-import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
-import {FindTSPPathsParameters} from '../../../src/common/iServer/FindTSPPathsParameters';
-import {FindMTSPPathsParameters} from '../../../src/common/iServer/FindMTSPPathsParameters';
-import {FindServiceAreasParameters} from '../../../src/common/iServer/FindServiceAreasParameters';
-import {UpdateEdgeWeightParameters} from '../../../src/common/iServer/UpdateEdgeWeightParameters';
-import {UpdateTurnNodeWeightParameters} from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
-import {SupplyCenter} from '../../../src/common/iServer/SupplyCenter'
-import {SupplyCenterType} from '../../../src/common/REST';
+import { NetworkAnalystService } from '../../../src/mapboxgl/services/NetworkAnalystService';
+import { BurstPipelineAnalystParameters } from '../../../src/common/iServer/BurstPipelineAnalystParameters';
+import { ComputeWeightMatrixParameters } from '../../../src/common/iServer/ComputeWeightMatrixParameters';
+import { FindClosestFacilitiesParameters } from '../../../src/common/iServer/FindClosestFacilitiesParameters';
+import { TransportationAnalystResultSetting } from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import { TransportationAnalystParameter } from '../../../src/common/iServer/TransportationAnalystParameter';
+import { FindLocationParameters } from '../../../src/common/iServer/FindLocationParameters';
+import { FindPathParameters } from '../../../src/common/iServer/FindPathParameters';
+import { FindTSPPathsParameters } from '../../../src/common/iServer/FindTSPPathsParameters';
+import { FindMTSPPathsParameters } from '../../../src/common/iServer/FindMTSPPathsParameters';
+import { FindServiceAreasParameters } from '../../../src/common/iServer/FindServiceAreasParameters';
+import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
+import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
+import { FacilityAnalystStreamParameters } from '../../../src/common/iServer/FacilityAnalystStreamParameters';
+import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
+import { SupplyCenterType } from '../../../src/common/REST';
 import mapboxgl from 'mapbox-gl';
 
 var url = GlobeParameter.networkAnalystURL;
@@ -452,6 +453,131 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 done();
             }
         }, 5000)
+    });
+
+    //最近设施分析服务
+    it('findClosestFacilities', (done) => {
+        //创建最近设施分析参数实例
+        var resultSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeGeometry: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeGeometry: true,
+            returnNodeIDs: true,
+            returnPathGuides: true,
+            returnRoutes: true
+        });
+        var analystParameter = new TransportationAnalystParameter({
+            resultSetting: resultSetting,
+            turnWeightField: "TurnCost",
+            weightFieldName: "length"  //length,time
+        });
+        var findClosetFacilitiesParameter = new FindClosestFacilitiesParameters({
+            //事件点,必设参数
+            event: new mapboxgl.Point(5000, -3700),
+            //要查找的设施点数量。默认值为1
+            expectFacilityCount: 1,
+            //设施点集合,必设
+            facilities: [new mapboxgl.Point(2500, -3500), new mapboxgl.Point(5500, -2500), new mapboxgl.Point(7000, -4000)],
+            isAnalyzeById: false,
+            parameter: analystParameter
+        });
+        var service = new NetworkAnalystService(url, options);
+        service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
+            serviceResult = result;
+        });
+        setTimeout(() => {
+            try {
+                expect(service).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toEqual("processCompleted");
+                expect(serviceResult.result.succeed).toBe(true);
+                var facilityPath = serviceResult.result.facilityPathList[0];
+                expect(facilityPath.edgeFeatures.type).toEqual("FeatureCollection");
+                var features = facilityPath.edgeFeatures.features;
+                expect(features.length).toEqual(facilityPath.edgeIDs.length);
+                for (var i = 0; i < features.length; i++) {
+                    expect(features[i].id).not.toBeNull();
+                    expect(features[i].type).toEqual("Feature");
+                    expect(features[i].geometry.type).toEqual("LineString");
+                    expect(features[i].geometry.coordinates.length).toBeGreaterThan(0);
+                    for (var j = 0; j < features[i].geometry.coordinates.length; j++) {
+                        expect(features[i].geometry.coordinates[j].length).toEqual(2);
+                    }
+                    expect(features[i].properties).not.toBeNull();
+                }
+                expect(facilityPath.edgeIDs.length).toBeGreaterThan(0);
+                expect(facilityPath.facility.x).not.toBeNull();
+                expect(facilityPath.facility.y).not.toBeNull();
+                expect(facilityPath.facilityIndex).toEqual(1);
+                expect(facilityPath.nodeFeatures.type).toEqual("FeatureCollection");
+                var node_features = facilityPath.nodeFeatures.features;
+                expect(node_features.length).toBeGreaterThan(0);
+                for (var i = 0; i < node_features.length; i++) {
+                    expect(node_features[i].id).not.toBeNull();
+                    expect(node_features[i].type).toEqual("Feature");
+                    expect(node_features[i].geometry.type).toEqual("Point");
+                    expect(node_features[i].geometry.coordinates.length).toEqual(2);
+                    expect(node_features[i].properties).not.toBeNull();
+                }
+                expect(facilityPath.nodeIDs.length).toEqual(node_features.length);
+                expect(facilityPath.pathGuideItems.type).toEqual("FeatureCollection");
+                for (var i = 0; i < facilityPath.pathGuideItems.features.length; i++) {
+                    expect(facilityPath.pathGuideItems.features[i].type).toEqual("Feature");
+                    expect(facilityPath.pathGuideItems.features[i].geometry.type).not.toBeNull();
+                    expect(facilityPath.pathGuideItems.features[i].geometry.coordinates.length).toBeGreaterThan(0);
+                    if (facilityPath.pathGuideItems.features[i].geometry.coordinates.length > 2) {
+                        for (var j = 0; j < facilityPath.pathGuideItems.features[i].geometry.coordinates.length; j++) {
+                            expect(facilityPath.pathGuideItems.features[i].geometry.coordinates[j].length).toEqual(2);
+                        }
+                    }
+                    expect(facilityPath.pathGuideItems.features[i].properties).not.toBeNull();
+                }
+                expect(facilityPath.route.type).toEqual("Feature");
+                expect(facilityPath.route.geometry.type).toEqual("MultiLineString");
+                expect(facilityPath.route.geometry.coordinates[0].length).toBeGreaterThan(0);
+                for (var i = 0; i < facilityPath.route.geometry.coordinates[0].length; i++) {
+                    expect(facilityPath.route.geometry.coordinates[0][i].length).toEqual(3);
+                }
+                expect(facilityPath.stopWeights).not.toBeNull();
+                expect(facilityPath.weight).not.toBeNull();
+                done();
+            } catch (e) {
+                console.log("'findClosestFacilities'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        }, 5000);
+    });
+    // 上游/下游 关键设施查找资源服务
+    it('streamFacilityAnalyst', (done) => {
+        var facilityAnalystStreamParameters = new FacilityAnalystStreamParameters({
+            edgeID: 84,
+            //nodeID:85,
+            isUncertainDirectionValid: true,
+            sourceNodeIDs: [],
+            // 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）
+            queryType: 1
+        });
+        var service = new NetworkAnalystService(url, options);
+        service.streamFacilityAnalyst(facilityAnalystStreamParameters, (result) => {
+            serviceResult = result;
+        });
+        setTimeout(() => {
+            try {
+                expect(service).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.result).not.toBeNull();
+                expect(serviceResult.type).toEqual("processCompleted");
+                done();
+            } catch (e) {
+                console.log("'streamFacilityAnalyst_test'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        }, 5000)
+
     });
 });
 
