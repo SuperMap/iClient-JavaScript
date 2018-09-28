@@ -38,47 +38,32 @@ module.exports = function (config) {
             {pattern: '../src/classic/libs/Lang/*.js', include: false},
             {pattern: '../src/classic/theme/default/*.css', include: false},
             /**测试文件**/
-            // './test-main-classic.js',
+            './test-main-classic.js',
 
             /***common的源码***/
             '../src/common/**/*.js',
             /**测试文件**/
-            // './test-main-common.js',
+            './test-main-common.js',
 
             /***leaflet的源码***/
             {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
             {pattern: '../src/leaflet/**/**/*.css', include: false},
             '../src/leaflet/**/!(ClientComputationView|index).js',
             /**测试文件**/
-            // './test-main-leaflet.js',
+            './test-main-leaflet.js',
 
             /***openlayers的源码***/
             {pattern: '../node_modules/openlayers/dist/ol-debug.css', include: false},
             {pattern: '../src/openlayers/**/**/*.css', include: false},
             '../src/openlayers/**/!(index).js',
             /**测试文件**/
-            // './test-main-openlayers.js',
+            './test-main-openlayers.js',
 
             /***mapboxgl***/
             {pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false},
             '../src/mapboxgl/**/!(index).js',
             /**测试文件**/
-            // './test-main-mapboxgl.js'
-
-
-            './mapboxgl/overlay/GraphicLayerSpec.js',
-            './mapboxgl/overlay/graphic/GraphicSpec.js',
-
-            './leaflet/overlay/GraphicLayerSpec.js',
-            './leaflet/overlay/graphic/GraphicSpec.js',
-
-            './openlayers/overlay/graphic/GraphicSpec.js',
-
-            './mapboxgl/overlay/GraphicLayerSpec.js',
-            './mapboxgl/overlay/GraphThemeLayerSpec.js',
-            './openlayers/overlay/GraphicSpec.js',
-
-            './leaflet/core/Proj4LeafletSpec.js',
+            './test-main-mapboxgl.js'
         ],
 
         // list of files to exclude 测试时排除的文件
