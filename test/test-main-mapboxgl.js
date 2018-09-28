@@ -21,6 +21,7 @@ import './mapboxgl/overlay/GraphicLayerSpec.js';
 /*mapboxgl -- services*/
 import './mapboxgl/services/AddressMatchServiceSpec.js';
 import './mapboxgl/services/BufferAnalysisSpec.js';
+import './mapboxgl/services/DataFlowServiceSpec.js';
 import './mapboxgl/services/DensityAnalysisSpec.js';
 import './mapboxgl/services/EditFeaturesSpec.js';
 import './mapboxgl/services/FieldServiceSpec.js';

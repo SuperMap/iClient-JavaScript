@@ -28,6 +28,10 @@ import {
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
  * @extends {mapboxgl.Evented}
+ * @fires mapboxgl.supermap.HeatMapLayer#featuresadded
+ * @fires mapboxgl.supermap.HeatMapLayer#changelayer
+ * @fires mapboxgl.supermap.HeatMapLayer#featuresremoved
+ * 
  */
 export class HeatMapLayer extends mapboxgl.Evented {
 
@@ -257,6 +261,12 @@ export class HeatMapLayer extends mapboxgl.Evented {
      */
     addFeatures(features) {
         this.features = this.toiClientFeature(features);
+        /**
+         * @event mapboxgl.supermap.HeatMapLayer#featuresadded
+         * @description 要素添加完成之后触发。
+         * @property {GeoJSONObject} features - 被添加的要素。
+         * @property {boolean} succeed - 要素是否成功添加。 
+         */
         this.fire(this.EVENT_TYPES[0], {features: features, succeed: true});
         //支持更新features，刷新底图
         this.refresh();
@@ -288,6 +298,12 @@ export class HeatMapLayer extends mapboxgl.Evented {
                 null, null, null, opacity);
 
             if (this.map !== null) {
+                /**
+                 * @event mapboxgl.supermap.HeatMapLayer#changelayer
+                 * @description 图层属性改变之后触发。
+                 * @property {Object} layer - 图层。
+                 * @property {string} property - 被改变的图层属性。 
+                 */
                 this.fire('changelayer', {layer: this, property: "opacity"});
             }
         }
@@ -542,6 +558,12 @@ export class HeatMapLayer extends mapboxgl.Evented {
         }
         var succeed = heatPointsFailedRemoved.length == 0 ? true : false;
         //派发删除features成功的事件
+        /**
+         * @event mapboxgl.supermap.HeatMapLayer#featuresremoved
+         * @description 要素删除之后触发。
+         * @property {Array.<SuperMap.Feature.Vector>} features - 需要被删除的要素。
+         * @property {boolean} succeed - 要素删除成功与否。
+         */
         this.fire(this.EVENT_TYPES[1], {features: heatPointsFailedRemoved, succeed: succeed});
         this.refresh();
     }

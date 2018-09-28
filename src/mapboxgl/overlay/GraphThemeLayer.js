@@ -37,6 +37,7 @@ import {
  * @param {boolean} [opt_options.chartsSetting.circleHoverAble=true] - 是否允许圆形使用 hover 状态。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @param {boolean} [opt_options.chartsSetting.circleClickAble=true] - 是否允许圆形被点击。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends {mapboxgl.supermap.ThemeLayer}
+ * @fires mapboxgl.supermap.GraphThemeLayer#beforefeaturesadded
  */
 export class Graph extends Theme {
 
@@ -67,6 +68,11 @@ export class Graph extends Theme {
      * @param {SuperMap.ServerFeature} features - 待添加的要素。
      */
     addFeatures(features) {
+        /**
+         * @event mapboxgl.supermap.GraphThemeLayer#beforefeaturesadded
+         * @description 要素添加之前触发。
+         * @property {SuperMap.ServerFeature} features - 要被添加的要素。
+         */
         var ret = mapboxgl.Evented.prototype.fire('beforefeaturesadded', {
             features: features
         });

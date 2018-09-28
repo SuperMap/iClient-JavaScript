@@ -315,7 +315,7 @@ export class NetworkAnalystService extends ServiceBase {
         }
 
         if (params.event) {
-            return params.event = me._toPointObject(params.event);
+            params.event = me._toPointObject(params.event);
         }
 
         if (params.facilities && Util.isArray(params.facilities)) {

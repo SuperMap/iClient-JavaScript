@@ -13,8 +13,8 @@ import {SecurityManager} from '../security/SecurityManager';
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 数据流服务地址
  * @param {Object} options - 参数。
- * @function {function} options.style - 设置数据加载样式。
- * @function {function} options.onEachFeature - 设置每个数据加载popup等。
+ * @param {function} options.style - 设置数据加载样式。
+ * @param {function} options.onEachFeature - 设置每个数据加载popup等。
  * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
  * @param {Object} options.excludeField - -排除字段。
  */
