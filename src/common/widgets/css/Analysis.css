@@ -100,14 +100,13 @@
     color: #FFFFFF;
     padding-right: 0px;
     line-height: 2em;
+    text-transform: none;
+
 }
 
 .run-btn button.disabled {
     cursor: not-allowed;
     background-color: #80B5CF;
-}
-button{
-    text-transform: none;
 }
 
 .run-btn .analysis-btn,
@@ -165,9 +164,6 @@ button{
     display: inline-block;
     margin-left: 10px;
     color: #FFFFFF;
-}
-span {
-    color: #595959;
 }
 
 .svg-container{

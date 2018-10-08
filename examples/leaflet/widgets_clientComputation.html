@@ -82,19 +82,14 @@
 
         openFile.viewModel.on('openfilesuccess', function (e) {
             var layer = L.geoJSON(e.result, {
-                style: { fillColor: '#ff7373', color: '#ff7373', opacity: 1, fillOpacity: 0.8 },
-                pointToLayer: function (geoJsonPoint, latLng) {
-                    return L.circleMarker(latLng, { radius: 6, color: '#ff7373', fillColor: '#ff7373' })
-                }
+                style: { fillColor: '#ff7373', color: '#ff7373', opacity: 1, fillOpacity: 0.8 }
             }).addTo(map);
-
             var setLayer = {
                 'layerName': e.layerName,
                 'layer': layer
             };
             map.flyToBounds(layer.getBounds());
             control.addOverlay(layer, e.layerName);
-
             var clientComputationLayer = L.supermap.widgets.clientComputationLayer(setLayer);
             clientComputation.addLayer(clientComputationLayer);
         })

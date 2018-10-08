@@ -58,7 +58,8 @@ import {
     TopologyValidatorRule,
     OutputType,
     AggregationQueryBuilderType,
-    AggregationType
+    AggregationType,
+    GetFeatureMode
 } from './REST';
 import {
     Collection,
@@ -523,7 +524,8 @@ export {
     TopologyValidatorRule,
     OutputType,
     AggregationQueryBuilderType,
-    AggregationType
+    AggregationType,
+    GetFeatureMode
 };
 export {
     Collection,

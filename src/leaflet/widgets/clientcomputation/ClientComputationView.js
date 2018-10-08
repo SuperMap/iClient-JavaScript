@@ -61,9 +61,20 @@ export var ClientComputationView = L.Control.extend({
         }
         this.fillData = fillData;
 
+        let analysisMethod = document.getElementById('dropDownTop').getAttribute('data-value');
+        let currentFillData;
+        switch (analysisMethod) {
+            case 'isolines': currentFillData = fillData['point'];
+                break;
+            case 'buffer': currentFillData = fillData['point'];
+                break;
+        }
+        if(JSON.stringify(currentFillData) == '{}'){
+            return;
+        }
         // 填充分析图层下拉框
         let layserArr = [];
-        for (let layerName in fillData) {
+        for (let layerName in currentFillData) {
             layserArr.push(layerName);
         }
         let layersSelect = document.getElementById('layersSelect');
@@ -77,12 +88,12 @@ export var ClientComputationView = L.Control.extend({
         this.layerSelectObj.optionClickEvent(layersSelect, layerSelectName, this.layersSelectOnchange);
 
         // 当前选中图层数据
-        let currentData = fillData[layerSelectName.title];
+        let currentData = currentFillData[layerSelectName.title];
         let fieldsArr = currentData.fields;
         let textAreaData = currentData.fieldsValue;
         // 设置当前数据
         this.currentData = currentData;
-
+        this.currentFillData = currentFillData;
         // 填充字段下拉框
         let fieldsSelect = document.getElementById('fieldsSelect');
         // 清空 fieldsSelect
@@ -108,6 +119,7 @@ export var ClientComputationView = L.Control.extend({
                 break;
             case 'buffer': resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                 break;
+            
         }
     },
 
@@ -296,31 +308,71 @@ export var ClientComputationView = L.Control.extend({
         let me = this;
 
         for (let i = 0; i < dropDownItems.children.length; i++) {
+            // 点击何种分析类型 判断使用图层数据
             dropDownItems.children[i].onclick = () => {
                 dropDownTopContainer.innerHTML = dropDownItems.children[i].outerHTML;
                 dropDownTopContainer.children[0].id = 'dropDownTop';
+                let layersSelect = document.getElementById('layersSelect');
+                let layerSelectName = document.getElementById('layerSelectName');
                 let analysisMethod = dropDownItems.children[i].getAttribute('data-value');
+                let currentFillData;
                 switch (analysisMethod) {
                     case 'buffer':
                         isolineDiv.classList.add('hidden');
                         bufferDiv.classList.remove('hidden');
                         widgetContentContainer.style.height = '422px'
                         resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
+                        currentFillData = this.fillData['point'];
                         break;
                     case 'isolines':
                         isolineDiv.classList.remove('hidden');
                         bufferDiv.classList.add('hidden');
                         widgetContentContainer.style.height = '712px'
                         resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
+                        currentFillData = this.fillData['point'];
                         break;
                 }
+                // 清空 layersSelect；
+                // 清空 layersSelect；
+                if(this.currentFillData === currentFillData){
+                    return;
+                }
+                layersSelect.innerHTML = '';
+                if(JSON.stringify(currentFillData) == '{}'){
+                    resultLayersName.value = '';
+                    layerSelectName.title = '';
+                    layerSelectName.innerHTML = '';
+                    return;
+                }
+                
+                let layserArr = [];
+                for (let layerName in currentFillData) {
+                    layserArr.push(layerName);
+                }
+                
+                layerSelectName.title = layserArr[0];
+                layerSelectName.innerHTML = layserArr[0];
+                this._createOptions(layersSelect, layserArr);
+                // 设置 layer select option 点击事件
+                this.layerSelectObj.optionClickEvent(layersSelect, layerSelectName, this.layersSelectOnchange);
+
+                if(analysisMethod === 'buffer'){
+                    resultLayersName.value = Lang.i18n('text_label_buffer') + layserArr[0];
+                }else if(analysisMethod === 'isolines'){
+                    resultLayersName.value = Lang.i18n('text_label_isolines') + layserArr[0];
+                }
+
+                // 当前选中图层数据
+                let currentData = currentFillData[layerSelectName.title];
+                this.currentData = currentData;
+                this.currentFillData = currentFillData;
             }
         }
 
         // 字段下拉框 onchange 事件
         this.fieldsSelectOnchange = fieldsSelectOnchange.bind(this);
         function fieldsSelectOnchange(option) {
-            if (this.fillData) {
+            if (this.currentData) {
                 let displayData = this.currentData;
                 let fieldsSelectName = option.title;
                 getValueTextArea.value = displayData.fieldsValue[fieldsSelectName].toString().replace(/,/g, ",\r\n");
@@ -332,9 +384,9 @@ export var ClientComputationView = L.Control.extend({
         // 选中图层实时改变事件
         this.layersSelectOnchange = layersSelectOnchange.bind(this);
         function layersSelectOnchange(option) {
-            if (this.fillData) {
+            if (this.currentData) {
                 let layerSelectName = option.title;
-                let displayData = this.fillData[layerSelectName];
+                let displayData = this.currentFillData[layerSelectName];
                 this.currentData = displayData;
                 fieldsSelect.innerHTML = '';
                 this._createOptions(fieldsSelect, displayData.fields);
@@ -346,7 +398,15 @@ export var ClientComputationView = L.Control.extend({
                 this.fieldsSelectObj.optionClickEvent(fieldsSelect, fieldsSelectNameDiv, this.fieldsSelectOnchange);
                 getValueTextArea.value = displayData.fieldsValue[fieldsSelectName].toString().replace(/,/g, ",\r\n");
                 getValueTextArea.setAttribute('data-value', displayData.fieldsValue[fieldsSelectName]);
-
+                let analysisMethod = document.getElementById('dropDownTop').getAttribute('data-value');
+                switch (analysisMethod) {
+                    case 'buffer':
+                        resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName;
+                        break;
+                    case 'isolines':
+                        resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName;
+                        break;
+                }
             }
         }
 

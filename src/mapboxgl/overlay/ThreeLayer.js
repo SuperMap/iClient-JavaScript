@@ -33,6 +33,8 @@ const {
  *          [CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
  *
  * @extends {mapboxgl.Evented}
+ * @fires mapboxgl.supermap.ThreeLayer#render
+ * @fires mapboxgl.supermap.ThreeLayer#renderscene
  * @example
  * var threeLayer = new mapboxgl.supermap.ThreeLayer('three');
  * //模型绘制
@@ -378,8 +380,6 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @param {THREE.Scene} scene - threejs 场景对象。详情请参考：[THREE.Scene]{@link https://threejs.org/docs/index.html#api/scenes/Scene}
      * @param {THREE.Camera} camera - threejs 相机对象。详情请参考：[THREE.Camera]{@link https://threejs.org/docs/index.html#api/cameras/Camera}
      * @returns {this} this对象。
-     * @fires mapboxgl.supermap.ThreeLayer#render
-     * @fires mapboxgl.supermap.ThreeLayer#renderscene
      * @example
      * var threeLayer = new mapboxgl.supermap.ThreeLayer('three');
      * //可以通过重写 draw 实现模型绘制

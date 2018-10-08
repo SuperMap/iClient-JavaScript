@@ -3,7 +3,6 @@
     display: none;
 }
 
-
 /* widget container */
 .widget-analysis-container.widget-container{
     position: absolute;
@@ -99,15 +98,14 @@
     color: #FFFFFF;
     padding-right: 0px;
     line-height: 2em;
+    text-transform: none;
 }
 
 .run-btn button.disabled {
     cursor: not-allowed;
     background-color: #80B5CF;
 }
-button{
-    text-transform: none;
-}
+
 
 .run-btn .analysis-btn,
 .run-btn .analysising-container {
@@ -164,9 +162,6 @@ button{
     display: inline-block;
     margin-left: 10px;
     color: #FFFFFF;
-}
-span {
-    color: #595959;
 }
 
 .svg-container{
