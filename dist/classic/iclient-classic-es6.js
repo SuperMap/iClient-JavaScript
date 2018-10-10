@@ -5683,6 +5683,32 @@ var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
     GEO_BOUNDING_BOX: "geo_bounding_box"
 }
 
+
+/**
+ * @enum GetFeatureMode
+ * @memberOf SuperMap
+ * @description feature 查询方式。
+ * @type {string}
+ */
+var GetFeatureMode = SuperMap.GetFeatureMode = {
+    /** 通过范围查询来获取要素。 */
+    BOUNDS: "BOUNDS",
+    /** 通过范围查询加属性过滤器的模式来获取要素。 */
+    BOUNDS_ATTRIBUTEFILTER: "BOUNDS_ATTRIBUTEFILTER",
+    /** 通过几何对象的缓冲区来获取要素。 */
+    BUFFER: "BUFFER",
+    /** 通过缓冲区加属性过滤器的模式来获取要素。 */
+    BUFFER_ATTRIBUTEFILTER: "BUFFER_ATTRIBUTEFILTER",
+    /** 通过 ID 来获取要素。 */
+    ID: "ID",
+    /** 通过空间查询模式来获取要素。 */
+    SPATIAL: "SPATIAL",
+    /** 通过空间查询加属性过滤器的模式来获取要素。 */
+    SPATIAL_ATTRIBUTEFILTER: 'SPATIAL_ATTRIBUTEFILTER',
+    /** 通过 SQL 查询来获取要素。 */
+    SQL: 'SQL'
+}
+
 // CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0

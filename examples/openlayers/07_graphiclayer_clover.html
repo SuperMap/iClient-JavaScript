@@ -148,11 +148,11 @@
                         graphics: graphics,
                         render:"canvas",
                         map: map,
-                        onClick: function (graphic) {
+                        onClick: function (graphic,e) {
                             if (graphic) {
-                                var coords = graphic.getGeometry().getCoordinates();
+                                var coords = e.coordinate;
                                 content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," + coords[1] + "]";
-                                overlay.setPosition(graphic.getGeometry().getCoordinates());
+                                overlay.setPosition(coords);
                                 return;
                             }
                             overlay.setPosition(undefined);

@@ -403,6 +403,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.addTFEvents
      * @description 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
+     * @private
      */
     addTFEvents: function () {
         var me = this;

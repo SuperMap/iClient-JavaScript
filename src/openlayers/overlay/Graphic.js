@@ -87,10 +87,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
         if (options.onClick) {
             me.map.on('click', function (e) {
-                let coordinate = e.coordinate;
-                let resolution = e.frameState.viewState.resolution;
-                let pixel = e.pixel;
-                me.map.forEachFeatureAtPixel(coordinate, resolution, options.onClick, pixel, e);
+                me.map.forEachFeatureAtPixel(e.pixel, options.onClick,{},e);
             });
         }
 

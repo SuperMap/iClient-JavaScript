@@ -1185,7 +1185,7 @@ _SuperMap.SuperMap.Util.getTextBounds = function (style, text, element) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.AggregationQueryBuilderType = exports.AggregationType = exports.TopologyValidatorRule = exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OutputType = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
+exports.GetFeatureMode = exports.AggregationQueryBuilderType = exports.AggregationType = exports.TopologyValidatorRule = exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OutputType = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -2400,6 +2400,33 @@ var AggregationQueryBuilderType = _SuperMap.SuperMap.AggregationQueryBuilderType
     GEO_BOUNDING_BOX: "geo_bounding_box"
 };
 exports.AggregationQueryBuilderType = AggregationQueryBuilderType;
+
+/**
+ * @enum GetFeatureMode
+ * @memberOf SuperMap
+ * @description feature 查询方式。
+ * @type {string}
+ */
+
+var GetFeatureMode = _SuperMap.SuperMap.GetFeatureMode = {
+    /** 通过范围查询来获取要素。 */
+    BOUNDS: "BOUNDS",
+    /** 通过范围查询加属性过滤器的模式来获取要素。 */
+    BOUNDS_ATTRIBUTEFILTER: "BOUNDS_ATTRIBUTEFILTER",
+    /** 通过几何对象的缓冲区来获取要素。 */
+    BUFFER: "BUFFER",
+    /** 通过缓冲区加属性过滤器的模式来获取要素。 */
+    BUFFER_ATTRIBUTEFILTER: "BUFFER_ATTRIBUTEFILTER",
+    /** 通过 ID 来获取要素。 */
+    ID: "ID",
+    /** 通过空间查询模式来获取要素。 */
+    SPATIAL: "SPATIAL",
+    /** 通过空间查询加属性过滤器的模式来获取要素。 */
+    SPATIAL_ATTRIBUTEFILTER: 'SPATIAL_ATTRIBUTEFILTER',
+    /** 通过 SQL 查询来获取要素。 */
+    SQL: 'SQL'
+};
+exports.GetFeatureMode = GetFeatureMode;
 
 /***/ }),
 /* 3 */

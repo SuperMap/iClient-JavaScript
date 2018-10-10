@@ -4451,6 +4451,32 @@ var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
     GEO_BOUNDING_BOX: "geo_bounding_box"
 }
 
+
+/**
+ * @enum GetFeatureMode
+ * @memberOf SuperMap
+ * @description feature 查询方式。
+ * @type {string}
+ */
+var GetFeatureMode = SuperMap.GetFeatureMode = {
+    /** 通过范围查询来获取要素。 */
+    BOUNDS: "BOUNDS",
+    /** 通过范围查询加属性过滤器的模式来获取要素。 */
+    BOUNDS_ATTRIBUTEFILTER: "BOUNDS_ATTRIBUTEFILTER",
+    /** 通过几何对象的缓冲区来获取要素。 */
+    BUFFER: "BUFFER",
+    /** 通过缓冲区加属性过滤器的模式来获取要素。 */
+    BUFFER_ATTRIBUTEFILTER: "BUFFER_ATTRIBUTEFILTER",
+    /** 通过 ID 来获取要素。 */
+    ID: "ID",
+    /** 通过空间查询模式来获取要素。 */
+    SPATIAL: "SPATIAL",
+    /** 通过空间查询加属性过滤器的模式来获取要素。 */
+    SPATIAL_ATTRIBUTEFILTER: 'SPATIAL_ATTRIBUTEFILTER',
+    /** 通过 SQL 查询来获取要素。 */
+    SQL: 'SQL'
+}
+
 // CONCATENATED MODULE: ./src/common/commontypes/Size.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -19481,8 +19507,8 @@ SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService_ComputeWeightMa
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 数据流服务地址
  * @param {Object} options - 参数。
- * @function {function} options.style - 设置数据加载样式。
- * @function {function} options.onEachFeature - 设置每个数据加载popup等。
+ * @param {function} options.style - 设置数据加载样式。
+ * @param {function} options.onEachFeature - 设置每个数据加载popup等。
  * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
  * @param {Object} options.excludeField - -排除字段。
  */
@@ -67143,7 +67169,7 @@ external_ol_default.a.supermap.Util = core_Util_Util;
 var MapExtend = function () {
     external_ol_default.a.Map.prototype.forEachFeatureAtPixelDefault = external_ol_default.a.Map.prototype.forEachFeatureAtPixel;
 
-    external_ol_default.a.Map.prototype.forEachFeatureAtPixel = function (pixel, callback, opt_options) {
+    external_ol_default.a.Map.prototype.forEachFeatureAtPixel = function (pixel, callback, opt_options,e) {
 
         //如果满足高效率图层选取要求优先返回高效率图层选中结果
         const layerFilter = (opt_options && opt_options.layerFilter) ? opt_options.layerFilter : () => {
@@ -67156,7 +67182,7 @@ var MapExtend = function () {
         for (let i = 0; i < layers.length; i++) {
             //当前高效率点图层满足筛选条件/并且可视时，可被选中：
             if (layers[i].getVisible() && layerFilter.call(null, layers[i]) && layers[i].getSource()._forEachFeatureAtCoordinate) {
-                layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
+                layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel,e);
             }
         }
         return this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
@@ -69027,6 +69053,7 @@ class theme_Theme_Theme extends external_ol_default.a.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.addTFEvents
      * @description 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
+     * @private
      */
     addTFEvents() {
         var tfEs = this.TFEvents;
@@ -73459,10 +73486,7 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
 
         if (options.onClick) {
             me.map.on('click', function (e) {
-                let coordinate = e.coordinate;
-                let resolution = e.frameState.viewState.resolution;
-                let pixel = e.pixel;
-                me.map.forEachFeatureAtPixel(coordinate, resolution, options.onClick, pixel, e);
+                me.map.forEachFeatureAtPixel(e.pixel, options.onClick,{},e);
             });
         }
 
