@@ -38,7 +38,7 @@ export class MapVRenderer extends BaseLayer {
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
         this._moveStartEvent = this.moveStartEvent.bind(this);
         this._moveEndEvent = this.moveEndEvent.bind(this);
-        this._zoomstart = this.zoomStartEvent.bind(this);
+        this._zoomStartEvent = this.zoomStartEvent.bind(this);
         this.bindEvent();
     }
 
@@ -82,9 +82,19 @@ export class MapVRenderer extends BaseLayer {
         }
         this.map.on('movestart', this._moveStartEvent);
         this.map.on('moveend', this._moveEndEvent);
-        this.map.on('zoomstart', this._zoomstart);
+        this.map.on('zoomstart', this._zoomStartEvent);
     }
-
+    /**
+     * @function L.supermap.MapVRenderer.prototype.destroy
+     * @description 释放资源。
+     */
+    destroy() {
+        this.unbindEvent();
+        this.clearData();
+        this.animator && this.animator.stop();
+        this.animator = null;
+        this.canvasLayer = null;
+    }
     /**
      * @function L.supermap.MapVRenderer.prototype.unbindEvent
      * @description 解绑鼠标移动和鼠标滑动触发的事件。

@@ -77,7 +77,7 @@ export var MapVLayer = L.Layer.extend({
      */
     onRemove: function () {
         L.DomUtil.remove(this.container);
-        this.renderer.unbindEvent();
+        this.renderer.destroy();
     },
 
     /**
