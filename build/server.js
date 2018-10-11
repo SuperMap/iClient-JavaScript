@@ -10,13 +10,16 @@ const product = process.argv[2];
 const app = module.exports = express();
 if (product) {
   const config = require(`./webpack.config.${product}.js`);
+  const configBase = require(`./webpack.config.base.js`);
   const entry = [`./src/${product}/index.js`];
+  const filename= product === 'classic' ? `iclient-classic` : `iclient9-${product}`;
+  config.output.filename = `${filename}-es6.min.js`
   if (['leaflet', 'openlayers'].includes(product)) {
     entry.push(`./src/${product}/css/index.js`);
+    config.plugins = configBase.plugins(product, `${filename}.min`);
   }
   config.mode = 'development';
   config.entry = entry;
-  config.output.filename = product === 'classic' ? `iclient-classic-es6.js` : `iclient9-${product}-es6.js`
   config.devtool = 'cheap-module-eval-source-map';
 
 
@@ -55,5 +58,5 @@ app.use("/en/dist", express.static('dist'), serveIndex('dist'));
 app.use("/en/build", express.static('build'), serveIndex('build'));
 app.use("/en", express.static('web/en'), serveIndex('web/en'));
 if (!product) {
-  open(`http://localhost:9999/examples/leaflet`);
+  open(`http://localhost:9999`);
 }
