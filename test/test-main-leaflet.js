@@ -30,7 +30,7 @@ import './leaflet/overlay/UniqueThemeLayerSpec.js';
 import './leaflet/overlay/vectortile/PointSymbolizerSpec.js';
 import './leaflet/overlay/vectortile/TextSymbolizerSpec.js';
 import './leaflet/overlay/TurfLayerSpec.js';
-
+import './leaflet/overlay/mapv/MapVRendererSpec.js';
 /**leaflet -- services**/
 import './leaflet/services/AddressMatchServiceSpec.js';
 import './leaflet/services/BufferAnalysisSpec.js';

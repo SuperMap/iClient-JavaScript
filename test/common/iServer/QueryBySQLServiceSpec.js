@@ -1,8 +1,9 @@
-﻿import {QueryBySQLService} from '../../../src/common/iServer/QueryBySQLService';
-import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
-import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
-import {GeometryType} from '../../../src/common/REST';
-import {QueryOption} from '../../../src/common/REST';
+﻿import { QueryBySQLService } from '../../../src/common/iServer/QueryBySQLService';
+import { QueryBySQLParameters } from '../../../src/common/iServer/QueryBySQLParameters';
+import { FilterParameter } from '../../../src/common/iServer/FilterParameter';
+import { GeometryType } from '../../../src/common/REST';
+import { QueryOption } from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 describe('testQueryBySQLService_processAsync', () => {
@@ -298,5 +299,75 @@ describe('testQueryBySQLService_processAsync', () => {
                 done();
             }
         }, 2000);
-    })
+    });
+
+    //测试字段别名 #20
+    it('processAsync_returnFeatureWithFieldCaption:true_#20', (done) => {
+        var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
+        var QueryBySQLFailed = (serviceFailedEventArgs) => {
+            queryFailedEventArgs = serviceFailedEventArgs;
+        };
+        var QueryBySQLCompleted = (queryEventArgs) => {
+            serviceSuccessEventArgs = queryEventArgs;
+        };
+        var options = {
+            eventListeners: {
+                'processFailed': QueryBySQLFailed,
+                'processCompleted': QueryBySQLCompleted
+            }
+        };
+        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
+        var queryBySQLParameters = new QueryBySQLParameters({
+            customParams: null,
+            expectCount: 2,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
+            queryParams: new Array(new FilterParameter({
+                attributeFilter: "SmID>0",
+                name: "Countries@World"
+            })),
+            returnFeatureWithFieldCaption:true,
+            //returnFeatureWithFieldCaption
+            returnContent: true
+        });
+        queryBySQLParameters.startRecord = 0;
+        queryBySQLParameters.holdTime = 10;
+        queryBySQLParameters.returnCustomResult = false;
+
+        spyOn(FetchRequest, 'post').and.callFake((url, params, options) => {
+            // http://54.223.164.155:8090/iserver/services/map-world/rest/maps/World%20Map/queryResults.json?returnContent=true
+            expect(url).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(queryEscapedJson)));
+        }); 
+
+        queryBySQLService.processAsync(queryBySQLParameters);
+        setTimeout(() => {
+            try {
+                var queryResult = serviceSuccessEventArgs.result.recordsets[0].features;
+                expect(queryResult).not.toBeNull();
+                expect(queryResult.type).toBe("FeatureCollection");
+                expect(queryResult.features.length).toBe(2);
+                expect(queryResult.features[0].properties).not.toBeNull();
+                // queryResult.features[0].properties["COLOR_MAP"]
+                //  console.log("QueryBySQLService_" + queryResult.features[1].properties["COLOR_MAP"]);   
+                expect(queryResult.features[1].properties["ColorIDtest"]).toEqual('1');   
+                queryBySQLService.destroy();
+                queryBySQLParameters.destroy();
+
+                queryFailedEventArgs = null;
+                serviceSuccessEventArgs = null;
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("QueryBySQLService_" + exception.name + ":" + exception.message);
+                queryBySQLService.destroy();
+                queryBySQLParameters.destroy();
+                queryFailedEventArgs = null;
+                serviceSuccessEventArgs = null;
+                done();
+            }
+        }, 4000)
+    });
 });
