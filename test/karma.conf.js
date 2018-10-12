@@ -38,7 +38,7 @@ module.exports = function (config) {
             {pattern: '../src/classic/libs/Lang/*.js', include: false},
             {pattern: '../src/classic/theme/default/*.css', include: false},
             /**测试文件**/
-            // './test-main-classic.js',
+             './test-main-classic.js',
 
             /***common的源码***/
             '../src/common/**/*.js',
