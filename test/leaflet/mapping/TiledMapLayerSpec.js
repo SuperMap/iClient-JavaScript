@@ -1,4 +1,5 @@
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {tiledVectorLayer} from "../../../src/leaflet/overlay";
 
 var url = GlobeParameter.ChinaURL;
 describe('leaflet_TiledMapLayer', () => {
@@ -102,4 +103,10 @@ describe('leaflet_TiledMapLayer', () => {
         format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
         expect(format).toBe("gif");
     });
+    it('getAllRequestParams_ICL_1041',()=>{
+        var options={};
+        var tiledMapLayerObject = tiledMapLayer(options);
+        expect(tiledMapLayerObject.options.cacheEnabled).toBe(true);
+    });
+
 });

@@ -3,6 +3,9 @@ import {graphicLayer} from '../../../src/leaflet/overlay/GraphicLayer';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {circleStyle} from '../../../src/leaflet/overlay/graphic/CircleStyle';
 import {graphic} from '../../../src/leaflet/overlay/graphic/Graphic';
+import {GraphicWebGLRenderer} from "../../../src/leaflet/overlay/graphic";
+import {FetchRequest} from "@supermap/iclient-common";
+import {Detector} from "../../../src/leaflet/core/Detector";
 
 var url = "http://supermapiserver:8090/iserver/services/map-world/rest/maps/World";
 describe('leaflet_GraphicLayer', () => {
@@ -200,7 +203,18 @@ describe('leaflet_GraphicLayer', () => {
                 done();
             }, 4000);
         });
-    });
 
+        //特定条件下，期望的函数被调用、
+        it("_moveEnd_expect_ICL_1042",()=>{
+            spyOn(Detector, 'supportWebGL2').and.callFake(() => {
+            return true;
+            });
+            layer = graphicLayer(graphics,{render:"webgl"}).addTo(map);
+            spyOn(layer, '_update');
+            layer._moveEnd();
+            expect(layer._update).toHaveBeenCalled();
+        });
+
+    });
 });
 
