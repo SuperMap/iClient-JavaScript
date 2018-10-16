@@ -496,7 +496,7 @@ describe('leaflet_WebMap', () => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_HeatThemeLayer;
-                return Promise.resolve(new Response(escapedJson));
+                return Promise.resolve(new Response(JSON.stringify(escapedJson)));
             }
             return Promise.resolve();
         });
@@ -513,24 +513,24 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.extent.left).toEqual(12771920.289073);
             expect(mapInfo.extent.right).toEqual(13157774.407857);
             expect(mapInfo.extent.top).toEqual(5011871.6747059);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("北京市高等院校");
-            expect(mapInfo.layers[0].id).toEqual(14248);
-            expect(mapInfo.layers[0].type).toBeNull();
-            expect(mapInfo.layers[0].identifier).toBe("THEME");
-            expect(mapInfo.layers[0].layerType).toBe("FEATURE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://supermapol/iserver/services/map_ShiLiShuJu/rest/maps/北京市高等院校@公众数据");
-            expect(mapInfo.layers[0].themeSettings).not.toBeNull();
+            expect(mapInfo.layers.length).toEqual(2);
+            expect(mapInfo.layers[1].title).toBe("北京_县级行政区划图");
+            expect(mapInfo.layers[1].id).toEqual(14248);
+            expect(mapInfo.layers[1].type).toBeNull();
+            expect(mapInfo.layers[1].identifier).toBe("THEME");
+            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
+            expect(mapInfo.layers[1].url).toContain("北京市高等院校@公众数据");
+            expect(mapInfo.layers[1].themeSettings).not.toBeNull();
             expect(mapInfo.level).toEqual(6);
             expect(mapInfo.sourceType).toBe("MAPVIEWER");
             expect(mapInfo.resolution).toEqual(0);
             expect(mapInfo.tags.length).toEqual(1);
-            expect(mapInfo.thumbnail).toBe("https://supermapol/services/../resources/thumbnail/map1765.png");
             expect(mapInfo.title).toBe("北京高校分布热点图");
             expect(mapInfo.userName).toBe("48372");
             expect(map.options.server).toBe(server);
+            map = null;
             done();
-        }, 1000)
+        }, 5000)
     });
 
     it('createThemeLayer_UniqueLayer', (done) => {
@@ -538,7 +538,7 @@ describe('leaflet_WebMap', () => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_UniqueThemeLayer;
-                return Promise.resolve(new Response(escapedJson));
+                return Promise.resolve(new Response(JSON.stringify(escapedJson)));
             }
             return Promise.resolve();
         });
@@ -555,24 +555,24 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.extent.left).toEqual(12771920.289073);
             expect(mapInfo.extent.right).toEqual(13157774.407857);
             expect(mapInfo.extent.top).toEqual(5011871.6747059);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("北京_县级行政区划图");
-            expect(mapInfo.layers[0].id).toEqual(14247);
-            expect(mapInfo.layers[0].type).toBeNull();
-            expect(mapInfo.layers[0].identifier).toBe("THEME");
-            expect(mapInfo.layers[0].layerType).toBe("FEATURE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://supermapol/iserver/services/map_ShiLiShuJu/rest/maps/北京_县级行政区划图@公众数据")
-            expect(mapInfo.layers[0].themeSettings).not.toBeNull();
+            expect(mapInfo.layers.length).toEqual(2);
+            expect(mapInfo.layers[1].title).toBe("北京_县级行政区划图");
+            expect(mapInfo.layers[1].id).toEqual(14247);
+            expect(mapInfo.layers[1].type).toBeNull();
+            expect(mapInfo.layers[1].identifier).toBe("THEME");
+            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
+            expect(mapInfo.layers[1].url).toContain("北京_县级行政区划图@公众数据")
+            expect(mapInfo.layers[1].themeSettings).not.toBeNull();
             expect(mapInfo.level).toEqual(6);
             expect(mapInfo.sourceType).toBe("MAPVIEWER");
             expect(mapInfo.resolution).toEqual(0);
             expect(mapInfo.tags.length).toEqual(1);
-            expect(mapInfo.thumbnail).toBe("https://supermapol/services/../resources/thumbnail/map1765.png");
             expect(mapInfo.title).toBe("北京高校分布热点图");
             expect(mapInfo.userName).toBe("48372");
             expect(map.options.server).toBe(server);
+            map = null;
             done();
-        }, 1000)
+        }, 5000)
     });
 
     it('createThemeLayer_RangeLayer', (done) => {
@@ -580,7 +580,7 @@ describe('leaflet_WebMap', () => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_RangeThemeLayer;
-                return Promise.resolve(new Response(escapedJson));
+                return Promise.resolve(new Response(JSON.stringify(escapedJson)));
             }
             return Promise.resolve();
         });
@@ -597,21 +597,21 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.extent.left).toEqual(12918590.740275);
             expect(mapInfo.extent.right).toEqual(12991970.287429);
             expect(mapInfo.extent.top).toEqual(4870108.5272901);
-            expect(mapInfo.layers.length).toEqual(1);
-            expect(mapInfo.layers[0].title).toBe("北京市三级综合医院");
-            expect(mapInfo.layers[0].type).toBeNull();
-            expect(mapInfo.layers[0].identifier).toBe("THEME");
-            expect(mapInfo.layers[0].layerType).toBe("FEATURE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://supermapol/iserver/services/map_ShiLiShuJu/rest/maps/北京市三级综合医院@公众数据")
-            expect(mapInfo.layers[0].themeSettings).not.toBeNull();
+            expect(mapInfo.layers.length).toEqual(2);
+            expect(mapInfo.layers[1].title).toBe("北京市三级综合医院");
+            expect(mapInfo.layers[1].type).toBeNull();
+            expect(mapInfo.layers[1].identifier).toBe("THEME");
+            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
+            expect(mapInfo.layers[1].url).toContain("北京市三级综合医院@公众数")
+            expect(mapInfo.layers[1].themeSettings).not.toBeNull();
             expect(mapInfo.level).toEqual(12);
             expect(mapInfo.sourceType).toBe("MAPVIEWER");
             expect(mapInfo.resolution).toEqual(0);
             expect(mapInfo.tags.length).toEqual(1);
-            expect(mapInfo.thumbnail).toBe("https://supermapol/services/../resources/thumbnail/map1959.png");
             expect(mapInfo.title).toBe("北京三级甲等医院");
             expect(mapInfo.userName).toBe("10047");
             expect(map.options.server).toBe(server);
+            map = null;
             done();
         }, 1000)
     });
