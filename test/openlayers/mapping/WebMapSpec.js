@@ -543,9 +543,8 @@ describe('openlayers_WebMap', () => {
             done();
         }, 2000)
     });
-
-    //有缺陷，待修改
-    xit('getResolutionsFromScales', () => {
+    
+    it('getResolutionsFromScales', () => {
         webMap = new WebMap();
         var scales = [2.9582935545E8, 1.47914677725E8, 7.39573388625E7, 3.697866943125E7, 1.8489334715625E7],
             units = "meter";
@@ -557,7 +556,8 @@ describe('openlayers_WebMap', () => {
         expect(resolutions[3]).toEqual(9783.939620351563);
         expect(resolutions[4]).toEqual(4891.969810175781);
     });
-    //没有走入分支
+
+    //songym在看 PS  验证语句要验证 wmts layer的 source里面的一些东西是正确的
     xit('initialize_WMTS', (done) => {
         var id = 612;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -607,53 +607,74 @@ describe('openlayers_WebMap', () => {
             done();
         }, 2000)
     });
-    //没有走入分支
-    xit('createThemeLayer_HeatLayer', (done) => {
+  
+    it('createThemeLayer_HeatLayer', (done) => {
         var id = 1765;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_HeatThemeLayer;
-                return Promise.resolve(new Response(escapedJson));
+                return Promise.resolve(new Response(JSON.stringify(escapedJson)));
             }
             return Promise.resolve();
         });
         webMap = new WebMap(id, {server: server});
         setTimeout(() => {
             expect(webMap).not.toBeNull();
+            var mapInfo = webMap.mapInfo;
+            expect(mapInfo.layers.length).toEqual(2);
+            expect(mapInfo.layers[1].id).toEqual(14248);
+            expect(mapInfo.layers[1].themeSettings['type']).toBe("HEAT");
+            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
+            expect(mapInfo.layers[1].url).toContain("北京市高等院校@公众数据");
             webMap = null;
             done();
-        }, 1000)
+        }, 5000)
     });
-    //没有走入分支
-    xit('createThemeLayer_UniqueLayer', (done) => {
+ 
+    it('createThemeLayer_UniqueLayer', (done) => {
         var id = 1765;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            console.log(url);
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_UniqueThemeLayer;
-                return Promise.resolve(new Response(escapedJson));
+                return Promise.resolve(new Response(JSON.stringify(escapedJson)));
             }
             return Promise.resolve();
         });
         webMap = new WebMap(id, {server: server});
         setTimeout(() => {
             expect(webMap).not.toBeNull();
+            var mapInfo = webMap.mapInfo;
+            expect(mapInfo.layers.length).toEqual(2);
+            expect(mapInfo.layers[1].id).toEqual(14247);
+            expect(mapInfo.layers[1].themeSettings['type']).toBe("UNIQUE");
+            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
+            expect(mapInfo.layers[1].url).toContain("北京_县级行政区划图@公众数据");
             webMap = null;
             done();
-        }, 1000)
+        }, 5000)
     });
-    //没有走入分支
-    xit('createThemeLayer_RangeLayer', (done) => {
+
+    it('createThemeLayer_RangeLayer', (done) => {
         var id = 1959;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_RangeThemeLayer;
-                return Promise.resolve(new Response(escapedJson));
+                return Promise.resolve(new Response(JSON.stringify(escapedJson)));
             }
             return Promise.resolve();
         });
         webMap = new WebMap(id, {server: server});
         setTimeout(() => {
             expect(webMap).not.toBeNull();
+            var mapInfo = webMap.mapInfo;
+            expect(mapInfo.layers.length).toEqual(2);
+            expect(mapInfo.layers[1].id).toEqual(8179);
+            expect(mapInfo.layers[1].themeSettings['type']).toBe("RANGE");
+            expect(mapInfo.layers[1].layerType).toBe("FEATURE_LAYER");
+            expect(mapInfo.layers[1].url).toContain("北京市三级综合医院@公众数据");
+            webMap = null;
+            done();
             webMap = null;
             done();
         }, 1000)

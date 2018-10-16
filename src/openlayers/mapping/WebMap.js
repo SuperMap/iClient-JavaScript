@@ -224,7 +224,7 @@ export class WebMap extends ol.Observable {
             return resolutions;
         }
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(CommonUtil.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+            resolutions.push(CommonUtil.getResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
     }

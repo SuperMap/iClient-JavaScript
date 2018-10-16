@@ -76,8 +76,8 @@ describe('SmicIsogon', () => {
         polygon.destroy();
     });
 
-    //此处待开发完善修改
-    xit('buildPath_n < 3', () => {
+    
+    it('buildPath_n < 3', () => {
         var polygon = new SmicIsogon({
             style: {
                 n: 2,
