@@ -4,6 +4,7 @@ import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
 import {Bounds} from '../../../src/common/commonTypes/Bounds';
 import '../../resources/themeLabelData';
+import {LevelRenderer} from "@supermap/iclient-common";
 
 var url = GlobeParameter.China4326URL;
 var themeLayer;
@@ -17,6 +18,7 @@ var addThemeFeatures = () => {
         var text = themeData[i].aqi;
         feat = themeFeature([lat, lng, text], themeData[i]);
         labelFeatures.push(feat);
+
     }
     themeLayer.addFeatures(labelFeatures);
 }
@@ -139,6 +141,39 @@ describe('leaflet_LabelThemeLayer', () => {
         expect(style.fontWeight).toEqual("bolder");
         expect(style.strokeColor).toEqual("#8B7B8B");
         expect(themeLayer.styleGroups.length).toEqual(6);
+    });
+
+    //清除当前图层的所有矢量要素
+    it('removeAllFeatures',()=>{
+        themeLayer.removeAllFeatures();
+        expect(themeLayer.labelFeatures.length).toEqual(0);
+        themeLayer.clearCache();
+        expect(themeLayer.cache).toEqual({});
+        expect(themeLayer.cacheFields.length).toEqual(0);
+        //renderer.clear(); not write
+        themeLayer.on("featuresremoved",function(e){
+            expect(e.features.length).toEqual(0);
+            expect(e.success).toBeTruthy();
+        });
+        map.zoomIn(6);
+        //模拟地图缩放场景
+        map.on("zoomend",function(){
+            expect(themeLayer.labelFeatures.length).toEqual(0);
+            themeLayer.clearCache();
+            expect(themeLayer.cache).toEqual({});
+            expect(themeLayer.cacheFields.length).toEqual(0);
+        });
+    });
+
+    it('setOpacity',()=>{
+        themeLayer.setOpacity(0);
+        expect(themeLayer.options.opacity).toEqual(0);
+        themeLayer._updateOpacity();
+
+        map.on("changelayer",function(e){
+            expect(e.layer).toBe(themeLayer);
+            expect(e.property).toEqual(0);
+        });
     });
 
     //获取经（压盖）处理后将要绘制在图层上的标签要素,原参数数据往右上方避让

@@ -5,7 +5,7 @@ import {InterpolationIDWAnalystParameters} from '../../../src/common/iServer/Int
 import {InterpolationKrigingAnalystParameters} from '../../../src/common/iServer/InterpolationKrigingAnalystParameters';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
 import request from 'request';
-
+import {InterpolationAnalystParameters} from '../../../src/common/iServer/InterpolationAnalystParameters';
 var url = GlobeParameter.spatialAnalystURL;
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
@@ -467,5 +467,11 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         }, 5000);
+    });
+
+    //插值分析参数类
+    it('InterpolationAnalystParameters_ICL1036', (done) => {
+        var interpolationAnalystParameters = new InterpolationAnalystParameters({});
+        expect(interpolationAnalystParameters.pixelFormat).toBeNull();
     });
 });
