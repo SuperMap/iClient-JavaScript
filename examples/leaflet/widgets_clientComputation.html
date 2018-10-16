@@ -94,10 +94,10 @@
             clientComputation.addLayer(clientComputationLayer);
         })
 
-        clientComputation.viewModel.on("layerloaded", function (e) {
+        clientComputation.on("analysissuccessed", function (e) {
             control.addOverlay(e.layer, e.name);
         })
-        clientComputation.viewModel.on("layersremoved", function (e) {
+        clientComputation.on("layersremoved", function (e) {
             for (var i in e.layers) {
                 control.removeLayer(e.layers[i]);
             }

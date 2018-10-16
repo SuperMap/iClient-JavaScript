@@ -1206,6 +1206,12 @@ var exampleConfig = {
                     version: "9.1.0",
                     thumbnail: "widgets_distributedAnalysis.png",
                     fileName: "widgets_distributedAnalysis"
+                },{
+                    name: "数据服务查询",
+                    name_en: "data service query",
+                    version: "9.1.0",
+                    thumbnail: "widgets_dataServiceQuery.png",
+                    fileName: "widgets_dataServiceQuery"
                 }]
             },
             "widgetsAdvanced": {

@@ -354,6 +354,10 @@
             "Search": {
                 "name": "图层查询微件",
                 "name_en": "Search"
+            },
+            "DataServiceQuery": {
+                "name": "数据服务查询微件",
+                "name_en": "DataServiceQuery"
             }
         }
     },

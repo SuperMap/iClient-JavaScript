@@ -473,5 +473,6 @@ describe('InterpolationAnalystService', () => {
     it('InterpolationAnalystParameters_ICL1036', (done) => {
         var interpolationAnalystParameters = new InterpolationAnalystParameters({});
         expect(interpolationAnalystParameters.pixelFormat).toBeNull();
+        done();
     });
 });

@@ -436,6 +436,7 @@ window.examplesResources = {
         "title_dataFlow": "数据流服务",
         "title_spatialAnalysis": '客户端计算',
         "title_distributeAnalysis": '分布式分析',
+        "title_dataServiceQuery": '数据服务查询',
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",

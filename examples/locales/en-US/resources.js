@@ -491,6 +491,7 @@ window.examplesResources = {
         "title_dataFlow": "Data Flow",
         "title_spatialAnalysis": 'Client Computation',
         "title_distributeAnalysis": 'Distribute Analysis',
+        "title_dataServiceQuery": 'Data service query',
 
 
         "text_code": "Forward Match",

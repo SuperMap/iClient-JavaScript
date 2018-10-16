@@ -346,7 +346,11 @@ import {
     GeoJsonLayerDataModel,
     DistributedAnalysisView,
     distributedAnalysisView,
-    DistributedAnalysisViewModel
+    DistributedAnalysisViewModel,
+    DataServiceQueryView, 
+    dataServiceQueryView,
+    DataServiceQueryViewModel, 
+    dataServiceQueryViewModel
 } from './widgets';
 
 export {
@@ -369,7 +373,11 @@ export {
     GeoJsonLayerDataModel,
     DistributedAnalysisView,
     distributedAnalysisView,
-    DistributedAnalysisViewModel
+    DistributedAnalysisViewModel,
+    DataServiceQueryView, 
+    dataServiceQueryView,
+    DataServiceQueryViewModel, 
+    dataServiceQueryViewModel
 }
 
 export {

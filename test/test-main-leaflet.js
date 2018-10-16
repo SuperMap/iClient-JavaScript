@@ -67,3 +67,6 @@ import './leaflet/services/TerrainCurvatureCalculateSpec.js';
 import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
 import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
+
+/* widget */
+import './leaflet/widgets/dataservicequery/DataServiceQueryViewSpec.js';

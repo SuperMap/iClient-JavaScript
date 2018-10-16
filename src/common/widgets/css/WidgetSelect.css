@@ -16,7 +16,6 @@
 }
 
 .lable_describe {
-    width: 192px;
     height: 16px;
     font-size: 12px;
     color: #595959;
@@ -68,7 +67,6 @@
 }
 .chart_select {
     height: 28px;
-    width: 192px;
     background: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-radius: 2px;
@@ -82,7 +80,6 @@
 }
 
 .select-name {
-    width: 170px;
     height: 26px;
     line-height: 26px;
     overflow: hidden;
@@ -95,7 +92,7 @@
 .chart-triangle-btn {
     position: relative;
     bottom: 18px;
-    left: 173px;
+    left: 90%;
     width: 13px;
     height: 10px;
     cursor: pointer;
@@ -109,24 +106,14 @@
     position: absolute;
     left: 0;
     top: 30px;
-    width: 200px;
-    /* min-height: 34px; */
-    /* max-height: 152px; */
     padding: 5px 0 0;
     background: #fff;
     box-shadow: 0 1px 4px 0 rgba(0,0,0,.15);
     border-radius: 2px;
     z-index: 10000;
-    /* height: 34px; */
     display: none;
     overflow: hidden scroll;
-    max-height: 200px;
-}
-
-.chart-select-content {
-    width: 186px;
-    /* min-height: 28px;
-    max-height: 140px; */
+    max-height: 210px;
 }
 
 ::-webkit-scrollbar {

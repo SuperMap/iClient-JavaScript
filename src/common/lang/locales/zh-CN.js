@@ -14,6 +14,7 @@ let zh = {
     'title_dataFlowService': '数据流服务',
     'title_distributedAnalysis': '分布式分析',
     'title_clientComputing': '客户端计算',
+    'title_dataServiceQuery': '数据服务查询',
     
     'text_input_value_inputDataFlowUrl': '请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': '显示要素信息',
@@ -69,11 +70,22 @@ let zh = {
     'text_label_buffer': '[缓冲区]',
     'text_label_isolines': '[等值线]',
     'text_label_queryRangeTips': '默认为输入数据的全幅范围。范例：-74.050,40.650,-73.850,40.850',
+    'text_label_IDArrayOfFeatures': '要素 ID 数组',
+    'text_label_maxFeatures': '最多可返回的要素数量',
+    'text_label_bufferDistance': '缓冲区距离',
+    'text_label_queryRange1': '查询范围',
+    'text_label_spatialQueryMode': '空间查询模式',
+    'text_label_featureFilter': '要素过滤器',
+    'text_label_geometricObject': '几何对象',
+    'text_label_queryMode': '查询模式',
 
     "btn_analyze": "分析",
     "btn_analyzing": "分析中",
     "btn_emptyTheAnalysisLayer": "清空分析图层",
     "btn_cancelAnalysis": "取消",
+    "btn_query": "查询",
+    "btn_querying": "查询中",
+    "btn_emptyTheRresultLayer": "清除所有结果图层",
 
 
     'msg_dataFlowServiceHasBeenSubscribed': '已订阅该数据流服务。',
@@ -82,7 +94,8 @@ let zh = {
     'msg_selectDataset': '请选择数据集！',
     'msg_setTheWeightField': '请设置权重字段！',
     'msg_theFieldNotSupportAnalysis': '您当前选择的字段不支持分析！',
-    'msg_resultIsEmpty': '分析的结果为空！'
+    'msg_resultIsEmpty': '分析的结果为空！',
+    'msg_dataReturnedIsEmpty': '请求成功，查询返回的数据为空。'
     
 };
 export { zh };

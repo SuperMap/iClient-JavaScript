@@ -25,7 +25,7 @@
     color: rgb(89, 89, 89);
     letter-spacing: 0.14px;
     border: 0px;
-    width: 99%;
+    width: 96%;
     font-size: 12px;
 }
 
@@ -43,7 +43,7 @@ div.buffer-radius>div {
     margin-bottom: 16px;
 }
 div.buffer-radius>div>input {
-    width: 112px;
+    width: 53%;
     height: 24px;
     margin-right: 5px;
     margin-top: 0px;
@@ -51,7 +51,6 @@ div.buffer-radius>div>input {
 }
 div.buffer-radius .buffer-unit {
     position: relative;
-    width: 62px;
     height: 28px;
     display: inline-block;
     vertical-align: bottom;

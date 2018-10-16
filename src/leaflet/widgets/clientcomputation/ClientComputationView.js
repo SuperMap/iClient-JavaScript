@@ -10,6 +10,9 @@ import { CommonContainer, DropDownBox, Select, MessageBox, Lang } from '@superma
  * @class L.supermap.widgets.clientComputation
  * @classdesc 客户端计算微件，用于进行叠加图层的客户端计算。
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
+ * @fires L.supermap.widgets.clientComputation#analysissuccessed
+ * @fires L.supermap.widgets.clientComputation#analysisfailed
+ * @fires L.supermap.widgets.clientComputation#layersremoved
  * @category Widgets ClientComputation
  */
 export var ClientComputationView = L.Control.extend({
@@ -24,6 +27,9 @@ export var ClientComputationView = L.Control.extend({
             throw new Error('workerUrl is required');
         }
         this.workerUrl = workerUrl;
+
+        //事件监听对象
+        this.event = new L.Evented();
         L.Util.setOptions(this, options);
     },
     /**
@@ -38,6 +44,16 @@ export var ClientComputationView = L.Control.extend({
         }
         return this._initSpatialAnalysisView();
     },
+
+    /**
+     * @function L.supermap.widgets.clientComputation.prototype.on
+     * @param {string} eventType - 监听的事件名
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    on(eventType, callback) {
+        this.event.on(eventType, callback);
+    },
+
     /**
      * @function L.supermap.widgets.clientComputation.prototype.addLayer
      * @description 添加叠加图层。
@@ -69,7 +85,7 @@ export var ClientComputationView = L.Control.extend({
             case 'buffer': currentFillData = fillData['point'];
                 break;
         }
-        if(JSON.stringify(currentFillData) == '{}'){
+        if (JSON.stringify(currentFillData) == '{}') {
             return;
         }
         // 填充分析图层下拉框
@@ -119,7 +135,7 @@ export var ClientComputationView = L.Control.extend({
                 break;
             case 'buffer': resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                 break;
-            
+
         }
     },
 
@@ -334,31 +350,31 @@ export var ClientComputationView = L.Control.extend({
                 }
                 // 清空 layersSelect；
                 // 清空 layersSelect；
-                if(this.currentFillData === currentFillData){
+                if (this.currentFillData === currentFillData) {
                     return;
                 }
                 layersSelect.innerHTML = '';
-                if(JSON.stringify(currentFillData) == '{}'){
+                if (JSON.stringify(currentFillData) == '{}') {
                     resultLayersName.value = '';
                     layerSelectName.title = '';
                     layerSelectName.innerHTML = '';
                     return;
                 }
-                
+
                 let layserArr = [];
                 for (let layerName in currentFillData) {
                     layserArr.push(layerName);
                 }
-                
+
                 layerSelectName.title = layserArr[0];
                 layerSelectName.innerHTML = layserArr[0];
                 this._createOptions(layersSelect, layserArr);
                 // 设置 layer select option 点击事件
                 this.layerSelectObj.optionClickEvent(layersSelect, layerSelectName, this.layersSelectOnchange);
 
-                if(analysisMethod === 'buffer'){
+                if (analysisMethod === 'buffer') {
                     resultLayersName.value = Lang.i18n('text_label_buffer') + layserArr[0];
-                }else if(analysisMethod === 'isolines'){
+                } else if (analysisMethod === 'isolines') {
                     resultLayersName.value = Lang.i18n('text_label_isolines') + layserArr[0];
                 }
 
@@ -479,16 +495,28 @@ export var ClientComputationView = L.Control.extend({
                 case 'buffer': params = getBufferAnalysisParams();
                     break;
             }
-            me.viewModel.analysis(params, me.map);
-            me.viewModel.on('layerloaded', function () {
+            this.viewModel.analysis(params, me.map);
+            this.viewModel.on('layerloaded', (e) => {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
+                /**
+                 * @event L.supermap.widgets.clientComputation#analysissuccessed
+                 * @description 分析完成之后触发。
+                 * @property {L.GeoJSON} layer - 加载完成后的结果图层。
+                 * @property {string} name - 加载完成后的结果图层名称。
+                 */
+                this.event.fire('analysissuccessed', { "layer": e.layer, "name": e.name })
             });
             // 若分析的结果为空
             me.viewModel.on('analysisfailed', function () {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 me.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
+                /**
+                 * @event L.supermap.widgets.clientComputation#analysisfailed
+                 * @description 分析失败之后触发。
+                 */
+                this.event.fire('analysissuccessed')
             })
         }
         // 取消按钮点击事件
@@ -499,6 +527,14 @@ export var ClientComputationView = L.Control.extend({
         }
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
+            /**
+             * @event L.supermap.widgets.clientComputation#layersremoved
+             * @description 结果图层删除后触发。
+             * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
+             */
+            this.viewModel.on('layersremoved', (e) => {
+                this.event.fire('layersremoved', { 'layers': e.layers });
+            })
             me.viewModel.clearLayers();
         }
         // 获取分析数据

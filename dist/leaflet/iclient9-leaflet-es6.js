@@ -4138,55 +4138,58 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(133);
+var supermapol_icons = __webpack_require__(134);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/widgets-icon.css
-var widgets_icon = __webpack_require__(126);
+var widgets_icon = __webpack_require__(127);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Icon.css
-var Icon = __webpack_require__(121);
+var Icon = __webpack_require__(122);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/OpenFile.css
-var OpenFile = __webpack_require__(109);
+var OpenFile = __webpack_require__(110);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/MessageBox.css
-var MessageBox = __webpack_require__(108);
+var MessageBox = __webpack_require__(109);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
-var DataFlow = __webpack_require__(107);
+var DataFlow = __webpack_require__(108);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/POISearch.css
-var POISearch = __webpack_require__(106);
+var POISearch = __webpack_require__(107);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetContainer.css
-var WidgetContainer = __webpack_require__(105);
+var WidgetContainer = __webpack_require__(106);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetDropDownBox.css
-var WidgetDropDownBox = __webpack_require__(104);
+var WidgetDropDownBox = __webpack_require__(105);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetSelect.css
-var WidgetSelect = __webpack_require__(103);
+var WidgetSelect = __webpack_require__(104);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(102);
+var CityTabsPage = __webpack_require__(103);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(101);
+var NavTabsPage = __webpack_require__(102);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(100);
+var PaginationContainer = __webpack_require__(101);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PopContainer.css
-var PopContainer = __webpack_require__(99);
+var PopContainer = __webpack_require__(100);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Analysis.css
-var Analysis = __webpack_require__(98);
+var Analysis = __webpack_require__(99);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DistributedAnalysis.css
-var DistributedAnalysis = __webpack_require__(97);
+var DistributedAnalysis = __webpack_require__(98);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/ClientComputation.css
-var ClientComputation = __webpack_require__(96);
+var ClientComputation = __webpack_require__(97);
+
+// EXTERNAL MODULE: ./src/common/widgets/css/DataServiceQuery.css
+var DataServiceQuery = __webpack_require__(96);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -4195,6 +4198,7 @@ var ClientComputation = __webpack_require__(96);
 
 
 //微件样式
+
 
 
 
@@ -66002,6 +66006,7 @@ let en = {
     'title_dataFlowService': 'Data Flow Service',
     'title_distributedAnalysis': 'Distributed Analysis',
     'title_clientComputing': 'Client Computing',
+    'title_dataServiceQuery': 'Data Service Query',
 
     'text_input_value_inputDataFlowUrl': 'Please enter the data stream service address such as: ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': 'Display feature information',
@@ -66057,12 +66062,25 @@ let en = {
     'text_label_buffer': '[Buffer]',
     'text_label_isolines': '[Isolines]',
     'text_label_queryRangeTips': 'The default is the full range of input data. Example: -74.050, 40.650, -73.850, 40.850',
-    
+    'text_label_queryModel': 'Query mode',
+    'text_label_IDArrayOfFeatures': 'ID array of features',
+    'text_label_maxFeatures': 'The maximum number of features that can be returned',
+    'text_label_bufferDistance': 'Buffer distance',
+    'text_label_queryRange1': 'Query range',
+    'text_label_spatialQueryMode': 'Spatial query mode',
+    'text_label_featureFilter': 'Feature filter',
+    'text_label_geometricObject': 'Geometric object',
+    'text_label_queryMode': 'Query mode',
+
     "btn_analyze": "Analyze",
     "btn_analyzing": "Analyzing",
     "btn_emptyTheAnalysisLayer": "Empty the analysis layer",
     "btn_cancelAnalysis": "Cancel",
+    "btn_query": "Query",
+    "btn_querying": "Querying",
+    "btn_emptyTheRresultLayer": "Clear all result layers",
 
+    'msg_dataReturnedIsEmpty.': 'The request is successful and the data returned by the query is empty.',
     'msg_dataFlowServiceHasBeenSubscribed': 'The data stream service has been subscribed to.',
     'msg_inputDataFlowUrlFirst': 'Please enter the data stream service address first.',
     'msg_datasetOrMethodUnsupport': 'This dataset does not support this analysis type. Please reselect the dataset.',
@@ -66093,6 +66111,7 @@ let zh = {
     'title_dataFlowService': '数据流服务',
     'title_distributedAnalysis': '分布式分析',
     'title_clientComputing': '客户端计算',
+    'title_dataServiceQuery': '数据服务查询',
     
     'text_input_value_inputDataFlowUrl': '请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': '显示要素信息',
@@ -66148,11 +66167,22 @@ let zh = {
     'text_label_buffer': '[缓冲区]',
     'text_label_isolines': '[等值线]',
     'text_label_queryRangeTips': '默认为输入数据的全幅范围。范例：-74.050,40.650,-73.850,40.850',
+    'text_label_IDArrayOfFeatures': '要素 ID 数组',
+    'text_label_maxFeatures': '最多可返回的要素数量',
+    'text_label_bufferDistance': '缓冲区距离',
+    'text_label_queryRange1': '查询范围',
+    'text_label_spatialQueryMode': '空间查询模式',
+    'text_label_featureFilter': '要素过滤器',
+    'text_label_geometricObject': '几何对象',
+    'text_label_queryMode': '查询模式',
 
     "btn_analyze": "分析",
     "btn_analyzing": "分析中",
     "btn_emptyTheAnalysisLayer": "清空分析图层",
     "btn_cancelAnalysis": "取消",
+    "btn_query": "查询",
+    "btn_querying": "查询中",
+    "btn_emptyTheRresultLayer": "清除所有结果图层",
 
 
     'msg_dataFlowServiceHasBeenSubscribed': '已订阅该数据流服务。',
@@ -66161,7 +66191,8 @@ let zh = {
     'msg_selectDataset': '请选择数据集！',
     'msg_setTheWeightField': '请设置权重字段！',
     'msg_theFieldNotSupportAnalysis': '您当前选择的字段不支持分析！',
-    'msg_resultIsEmpty': '分析的结果为空！'
+    'msg_resultIsEmpty': '分析的结果为空！',
+    'msg_dataReturnedIsEmpty': '请求成功，查询返回的数据为空。'
     
 };
 
@@ -72165,11 +72196,11 @@ var FeatureService = ServiceBase.extend({
     }
 });
 
-var featureService = function (url, options) {
+var FeatureService_featureService = function (url, options) {
     return new FeatureService(url, options);
 };
 
-external_L_default.a.supermap.featureService = featureService;
+external_L_default.a.supermap.featureService = FeatureService_featureService;
 // CONCATENATED MODULE: ./src/leaflet/overlay/UnicodeMarker.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -72863,7 +72894,7 @@ var WebMap = external_L_default.a.LayerGroup.extend({
             fromIndex: 0,
             toIndex: 100000
         });
-        featureService(url).getFeaturesBySQL(sqlParam, callback, format);
+        FeatureService_featureService(url).getFeaturesBySQL(sqlParam, callback, format);
     },
     /**
      * @private
@@ -82085,11 +82116,11 @@ var ProcessingService = ServiceBase.extend({
         return params;
     }
 });
-var processingService = function (url, options) {
+var ProcessingService_processingService = function (url, options) {
     return new ProcessingService(url, options);
 };
 
-external_L_default.a.supermap.processingService = processingService;
+external_L_default.a.supermap.processingService = ProcessingService_processingService;
 // CONCATENATED MODULE: ./src/leaflet/services/QueryService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -85113,6 +85144,9 @@ var ClientComputationView = external_L_default.a.Control.extend({
             throw new Error('workerUrl is required');
         }
         this.workerUrl = workerUrl;
+
+        //事件监听对象
+        this.event = new external_L_default.a.Evented();
         external_L_default.a.Util.setOptions(this, options);
     },
     /**
@@ -85127,6 +85161,16 @@ var ClientComputationView = external_L_default.a.Control.extend({
         }
         return this._initSpatialAnalysisView();
     },
+
+    /**
+     * @function L.supermap.widgets.clientComputation.prototype.on
+     * @param {string} eventType - 监听的事件名
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    on(eventType, callback) {
+        this.event.on(eventType, callback);
+    },
+
     /**
      * @function L.supermap.widgets.clientComputation.prototype.addLayer
      * @description 添加叠加图层。
@@ -85158,7 +85202,7 @@ var ClientComputationView = external_L_default.a.Control.extend({
             case 'buffer': currentFillData = fillData['point'];
                 break;
         }
-        if(JSON.stringify(currentFillData) == '{}'){
+        if (JSON.stringify(currentFillData) == '{}') {
             return;
         }
         // 填充分析图层下拉框
@@ -85208,7 +85252,7 @@ var ClientComputationView = external_L_default.a.Control.extend({
                 break;
             case 'buffer': resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                 break;
-            
+
         }
     },
 
@@ -85423,31 +85467,31 @@ var ClientComputationView = external_L_default.a.Control.extend({
                 }
                 // 清空 layersSelect；
                 // 清空 layersSelect；
-                if(this.currentFillData === currentFillData){
+                if (this.currentFillData === currentFillData) {
                     return;
                 }
                 layersSelect.innerHTML = '';
-                if(JSON.stringify(currentFillData) == '{}'){
+                if (JSON.stringify(currentFillData) == '{}') {
                     resultLayersName.value = '';
                     layerSelectName.title = '';
                     layerSelectName.innerHTML = '';
                     return;
                 }
-                
+
                 let layserArr = [];
                 for (let layerName in currentFillData) {
                     layserArr.push(layerName);
                 }
-                
+
                 layerSelectName.title = layserArr[0];
                 layerSelectName.innerHTML = layserArr[0];
                 this._createOptions(layersSelect, layserArr);
                 // 设置 layer select option 点击事件
                 this.layerSelectObj.optionClickEvent(layersSelect, layerSelectName, this.layersSelectOnchange);
 
-                if(analysisMethod === 'buffer'){
+                if (analysisMethod === 'buffer') {
                     resultLayersName.value = Lang.i18n('text_label_buffer') + layserArr[0];
-                }else if(analysisMethod === 'isolines'){
+                } else if (analysisMethod === 'isolines') {
                     resultLayersName.value = Lang.i18n('text_label_isolines') + layserArr[0];
                 }
 
@@ -85568,16 +85612,28 @@ var ClientComputationView = external_L_default.a.Control.extend({
                 case 'buffer': params = getBufferAnalysisParams();
                     break;
             }
-            me.viewModel.analysis(params, me.map);
-            me.viewModel.on('layerloaded', function () {
+            this.viewModel.analysis(params, me.map);
+            this.viewModel.on('layerloaded', (e) => {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
+                /**
+                 * @event L.supermap.widgets.clientComputation#analysissuccessed
+                 * @description 分析完成之后触发。
+                 * @property {L.GeoJSON} layer - 加载完成后的结果图层。
+                 * @property {string} name - 加载完成后的结果图层名称。
+                 */
+                this.event.fire('analysissuccessed', { "layer": e.layer, "name": e.name })
             });
             // 若分析的结果为空
             me.viewModel.on('analysisfailed', function () {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 me.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
+                /**
+                 * @event L.supermap.widgets.clientComputation#analysisfailed
+                 * @description 分析失败之后触发。
+                 */
+                this.event.fire('analysissuccessed')
             })
         }
         // 取消按钮点击事件
@@ -85588,6 +85644,14 @@ var ClientComputationView = external_L_default.a.Control.extend({
         }
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
+            /**
+             * @event L.supermap.widgets.clientComputation#layersremoved
+             * @description 结果图层删除后触发。
+             * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
+             */
+            this.viewModel.on('layersremoved', (e) => {
+                this.event.fire('layersremoved', { 'layers': e.layers });
+            })
             me.viewModel.clearLayers();
         }
         // 获取分析数据
@@ -85857,7 +85921,6 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
     getDatasetsName() {
         let processingUrl = this.processingUrl;
         this.resultLayers = [];
-        this.processingService = new ProcessingService(processingUrl);
         this.datasetNames = [];
         this.distributedAnalysisModel = new DistributedAnalysisModel_DistributedAnalysisModel(processingUrl);
         this.distributedAnalysisModel.getDatasetsName();
@@ -85898,37 +85961,23 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
     /**
      * @function L.supermap.widgets.distributedAnalysisViewModel.prototype.analysis
      * @description 进行分布式分析。
-     * @param {Object} params - 分布式分析参数。
+     * @param {Object.<SuperMap.KernelDensityJobParameter|string>} params - 参数。
+     * @param {SuperMap.KernelDensityJobParameter} params.analysisParam - 分布式分析参数。
+     * @param {string} [params.resultLayerName] - 结果图层名称。
      * @param {L.Map} map - leaflet Map 对象。
      */
     analysis(params, map){
-        if(params.analysisType === 'density'){
-            let kernelDensityJobParameter = new KernelDensityJobParameter_KernelDensityJobParameter({
-                'datasetName': params.datasetName,
-                'method': params.method,
-                'meshType': params.meshType,
-                'resolution': params.resolution,
-                'fields': params.fields,
-                'radius': params.radius,
-                'meshSizeUnit': params.gridSizeUnit,
-                'radiusUnit': params.searchRadiusUnit,
-                'areaUnit': params.areaUnit,
-                'query':params.queryRange,
-                'mappingParameters': new MappingParameters_MappingParameters({
-                    'rangeMode': params.mappingParameter.rangeMode,
-                    'rangeCount': params.mappingParameter.rangeCount,
-                    'colorGradientType': params.mappingParameter.colorGradientType
-                })
-            })
+        let processingService = new ProcessingService(this.processingUrl);
+        if(params.analysisParam instanceof KernelDensityJobParameter_KernelDensityJobParameter){
+            let kernelDensityJobParameter = params.analysisParam
             let me = this;
-            this.processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult){
+            processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult){
                 if (serviceResult.error) {
-                    
                     /**
                      * @event L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
                      * @description 分析失败后触发。
                      */
-                    me.fire('analysisfailed');
+                    me.fire('analysisfailed', { 'error': serviceResult.error });
                     return;
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -85946,7 +85995,9 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
                              * @property {L.GeoJSON} layer - 结果图层。
                              * @property {string} name - 结果图层名称。
                              */
-                            me.fire('layerloaded', {'layer': layer, 'name': params.resultLayer})
+                            let date = new Date();
+                            let resultLayerName = params.resultLayerName || date.getTime();
+                            me.fire('layerloaded', {'layer': layer, 'name': resultLayerName})
                         });
                     }
                     return info;
@@ -85968,7 +86019,7 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
          * @description 图层删除后触发。
          * @property {Array.<L.GeoJSON>} layers - 结果图层数组。
          */
-        this.fire('layersremoved', { layers: this.resultLayers });
+        this.fire('layersremoved', { 'layers': this.resultLayers });
     }
     
 }
@@ -85990,6 +86041,9 @@ external_L_default.a.supermap.widgets.distributedAnalysisViewModel = distributed
  * @class L.supermap.widgets.distributedAnalysis
  * @classdesc 分布式分析微件。
  * @param {string} processingUrl - 分布式分析服务地址。
+ * @fires L.supermap.widgets.distributedAnalysis#analysissuccessed
+ * @fires L.supermap.widgets.distributedAnalysis#analysisfailed
+ * @fires L.supermap.widgets.distributedAnalysis#layersremoved
  * @category Widgets DistributedAnalysis
  */
 var DistributedAnalysisView = external_L_default.a.Control.extend({
@@ -86001,6 +86055,9 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
 
     initialize: function (processingUrl, options) {
         this.processingUrl = processingUrl;
+        //事件监听对象
+        this.event = new external_L_default.a.Evented();
+
         external_L_default.a.Util.setOptions(this, options);
     },
     /**
@@ -86017,23 +86074,31 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         this._fillDataToView();
         return container;
     },
+
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype.on
+     * @param {string} eventType - 监听的事件名
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    on(eventType, callback) {
+        this.event.on(eventType, callback);
+    },
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._fillDataToView
      * @description 填充数据到 view。
      * @private
      */
     _fillDataToView: function () {
-        this.viewModel.getDatasetsName();
-        // 提示框
-        let me = this;
+        
         // 获取数据集
-        this.viewModel.on('datasetsloaded', function (e) {
+        this.viewModel.on('datasetsloaded', (e) => {
             let datasetOptionsArr = e.result.dataset.datasetNames;
-            me.datasetSelect.innerHTML = '';
-            me._createOptions(me.datasetSelect, datasetOptionsArr);
-            me.datasetSelectObj.optionClickEvent(me.datasetSelect, me.datasetSelectName, me.datasetSelectOnchange);
-            me.dataHash = e.result.datasetHash;
+            this.datasetSelect.innerHTML = '';
+            this._createOptions(this.datasetSelect, datasetOptionsArr);
+            this.datasetSelectObj.optionClickEvent(this.datasetSelect, this.datasetSelectName, this.datasetSelectOnchange);
+            this.dataHash = e.result.datasetHash;
         })
+        this.viewModel.getDatasetsName();
     },
 
     /**
@@ -86066,7 +86131,6 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
     _initDistributedAnalystView: function () {
         //初始化 ViewModel:
         this.viewModel = new DistributedAnalysisViewModel_DistributedAnalysisViewModel(this.processingUrl);
-        let me = this;
 
         // 微件 container
         let container = (new CommonContainer(Lang.i18n('title_distributedAnalysis'))).getElement();
@@ -86171,14 +86235,14 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         let queryRangeInput = analysisSelectControl.children[3].children[1];
         queryRangeInput.setAttribute('placeholder', Lang.i18n('text_label_queryRangeTips'))
         queryRangeInput.title = Lang.i18n('text_label_queryRangeTips');
-        
+
         // 网格大小
         let gridSizeUnitSelectOptions = {
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         }
         let gridSizeOptions = {
             'labelName': Lang.i18n('text_label_gridSizeInMeters'),
-            'selectOptions':gridSizeUnitSelectOptions
+            'selectOptions': gridSizeUnitSelectOptions
         }
         let gridSizeContainer = this._creatUnitSelectBox(gridSizeOptions, analysisSelectControl);
         let gridSizeInput = gridSizeContainer.children[1].children[0];
@@ -86191,7 +86255,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         }
         let searchRadiusOptions = {
             'labelName': Lang.i18n('text_label_searchRadius'),
-            'selectOptions':searchRadiusUnitSelectOptions
+            'selectOptions': searchRadiusUnitSelectOptions
         }
         let searchRadiusContainer = this._creatUnitSelectBox(searchRadiusOptions, analysisSelectControl);
         let searchRadiusInput = searchRadiusContainer.children[1].children[0];
@@ -86202,7 +86266,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             'labelName': Lang.i18n('text_label_areaUnit'),
             'optionsArr': ['SquareMile', 'SquareMeter', 'Hectare', 'Acre', 'SquareFoot', 'SquareYard']
         }
-        let areaUnitSelectTool= (new Select(areaUnitSelectOptions)).getElement();
+        let areaUnitSelectTool = (new Select(areaUnitSelectOptions)).getElement();
         analysisSelectControl.appendChild(areaUnitSelectTool);
         let areaUnitSelectName = areaUnitSelectTool.children[1].children[0];
         // 专题图分段
@@ -86296,7 +86360,6 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
                 weightFieldsSelect.innerHTML = '';
                 // 获取当前选中数据集类型
                 let datasetUrl = this.dataHash[option.title];
-                this.viewModel.getDatasetInfo(datasetUrl);
                 // 判断当前选中数据集是否支持该选中分析类，并填充分析权重字段
                 let _me = this;
                 this.viewModel.on('datasetinfoloaded', function (e) {
@@ -86316,38 +86379,62 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
                         }
                     }
                 })
+                this.viewModel.getDatasetInfo(datasetUrl);
             }
         }
 
         // 分析按钮点击事件
         analysisBtn.onclick = () => {
-            me.messageBox.closeView();
+            this.messageBox.closeView();
             let params = getAnalysisParam();
-            if (params.datasetName === Lang.i18n('text_option_selectDataset')) {
-                me.messageBox.showView(Lang.i18n('msg_selectDataset'), "failure");
-            } else if (params.fields === Lang.i18n('text_option_notSet')) {
-                me.messageBox.showView(Lang.i18n('msg_setTheWeightField'), "failure");
+            if (datasetSelectName.title === Lang.i18n('text_option_selectDataset')) {
+                this.messageBox.showView(Lang.i18n('msg_selectDataset'), "failure");
+            } else if ( weightFieldsSelectName.title === Lang.i18n('text_option_notSet')) {
+                this.messageBox.showView(Lang.i18n('msg_setTheWeightField'), "failure");
             } else {
-                me.messageBox.closeView();
+                this.messageBox.closeView();
                 analysingContainer.style.display = 'block';
                 analysisBtn.style.display = 'none';
-                me.viewModel.analysis(params, me.map);
-                let _me = me;
-                me.viewModel.on('layerloaded', function () {
+
+                this.viewModel.on('layerloaded', (e) => {
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
+                    /**
+                     * @event L.supermap.widgets.distributedAnalysis#analysissuccessed
+                     * @description 分析完成后触发。
+                     * @property {L.GeoJSON} layer - 结果图层。
+                     * @property {string} name - 结果图层名称。
+                     */
+                    this.event.fire('analysissuccessed', {'layer': e.layer, 'name': e.name})
                 })
-                me.viewModel.on('analysisfailed', function () {
-                    _me.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
+                
+                this.viewModel.on('analysisfailed', (e) => {
+                    this.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
+                    /**
+                     * @event L.supermap.widgets.distributedAnalysis#analysisfailed
+                     * @description 分析失败后触发。
+                     * @property {string} error - 服务器返回错误。
+                     */
+                    this.event.fire('analysisfailed', {'error': e.error})
                 })
+
+                this.viewModel.analysis(params, this.map);
             }
         }
 
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
-            me.viewModel.clearLayers();
+            /**
+             * @event L.supermap.widgets.distributedAnalysis#layersremoved
+             * @description 结果图层删除后触发。
+             * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
+             */
+            this.viewModel.on('layersremoved', (e) => {
+                this.event.fire('layersremoved', { 'layers': e.layers });
+            })
+            this.viewModel.clearLayers();
         }
 
         // 获取分析参数
@@ -86362,7 +86449,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             let colorGradientType = rangeContentModelSelectName.getAttribute('data-value');
             let themeModel = themeModelSelectName.getAttribute('data-value');
             let date = new Date();
-            let resultLayer = resultLayerInput.value || date.getTime();
+            let resultLayerName = resultLayerInput.value || date.getTime();
             let mappingParameter;
             if (themeModel === 'NOTSET') {
                 mappingParameter = '';
@@ -86373,22 +86460,32 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
                     'colorGradientType': colorGradientType
                 }
             }
-            let analysisParam = {
-                'datasetName': datasetSelectName.title,
-                'analysisType': analysisType,
-                'method': analysisMethod,
-                'meshType': gridType,
-                'resolution': gridSizeInput.value,
-                'gridSizeUnit': gridSizeUnit,
-                'queryRange': queryRange,
-                'fields': weightFieldsSelectName.title,
-                'radius': searchRadiusInput.value,
-                'searchRadiusUnit':searchRadiusUnit,
-                'areaUnit': areaUnit,
-                'mappingParameter': mappingParameter,
-                'resultLayer': resultLayer
+            let analysisParam;
+            if (analysisType === 'density') {
+                analysisParam = new KernelDensityJobParameter_KernelDensityJobParameter({
+                    'datasetName': datasetSelectName.title,
+                    'method': analysisMethod,
+                    'meshType': gridType,
+                    'resolution': gridSizeInput.value,
+                    'fields': weightFieldsSelectName.title,
+                    'radius': searchRadiusInput.value,
+                    'meshSizeUnit': gridSizeUnit,
+                    'radiusUnit': searchRadiusUnit,
+                    'areaUnit': areaUnit,
+                    'query': queryRange,
+                    'mappingParameters': new MappingParameters_MappingParameters({
+                        'rangeMode': mappingParameter.rangeMode,
+                        'rangeCount': mappingParameter.rangeCount,
+                        'colorGradientType': mappingParameter.colorGradientType
+                    })
+                })
             }
-            return analysisParam;
+
+            let params = {
+                'analysisParam': analysisParam,
+                'resultLayerName': resultLayerName
+            }
+            return params;
         }
 
         this._container = container;
@@ -86430,13 +86527,13 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
      * @private
      */
     _creatUnitSelectBox(options, parentEle) {
-        let unitSelectBoxContainer = external_L_default.a.DomUtil.create('div','buffer-radius', parentEle);
-        let unitSelectSpan = external_L_default.a.DomUtil.create('span','', unitSelectBoxContainer);
+        let unitSelectBoxContainer = external_L_default.a.DomUtil.create('div', 'buffer-radius', parentEle);
+        let unitSelectSpan = external_L_default.a.DomUtil.create('span', '', unitSelectBoxContainer);
         unitSelectSpan.innerHTML = options.labelName;
-        let unitSelectInputContainer = external_L_default.a.DomUtil.create('div','', unitSelectBoxContainer);
-        external_L_default.a.DomUtil.create('input','buffer-radius-input', unitSelectInputContainer);
+        let unitSelectInputContainer = external_L_default.a.DomUtil.create('div', '', unitSelectBoxContainer);
+        external_L_default.a.DomUtil.create('input', 'buffer-radius-input', unitSelectInputContainer);
 
-        let unitSelectUnitContainer = external_L_default.a.DomUtil.create('div','buffer-unit', unitSelectInputContainer);
+        let unitSelectUnitContainer = external_L_default.a.DomUtil.create('div', 'buffer-unit', unitSelectInputContainer);
         let unitSelectOptions = options.selectOptions;
         let unitSelectTool = (new Select(unitSelectOptions)).getElement();
         unitSelectUnitContainer.appendChild(unitSelectTool)
@@ -86453,17 +86550,681 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             eleArr[i].setAttribute(attributeName, daraValueArr[i])
         }
     }
-    
+
 });
 var distributedAnalysisView = function (options) {
     return new DistributedAnalysisView(options);
 };
 
 external_L_default.a.supermap.widgets.distributedAnalysis = distributedAnalysisView;
+// CONCATENATED MODULE: ./src/leaflet/widgets/dataservicequery/DataServiceQueryViewModel.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class L.supermap.widgets.dataServiceQueryViewModel
+ * @classdesc 数据服务查询微件功能类。
+ * @category Widgets DataServiceQuery
+ * @param {string} dataserviceUrl - 数据服务地址。
+ * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfaild
+ * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessuccessed
+ */
+
+class DataServiceQueryViewModel_DataServiceQueryViewModel extends external_L_default.a.Evented {
+
+    initialize(dataserviceUrl) {
+        this.dataserviceUrl = dataserviceUrl;
+        this.resultLayers = [];
+    }
+
+    /**
+     * @function L.supermap.widgets.dataServiceQueryViewModel.prototype.getFeatures
+     * @description 获取 features。
+     * @param {(SuperMap.GetFeaturesByIDsParameters|SuperMap.GetFeaturesByBufferParameters|SuperMap.GetFeaturesByBoundsParameters|SuperMap.GetFeaturesBySQLParameters|SuperMap.GetFeaturesByGeometryParameters)} queryParam - 查询参数。
+     * @param {L.Map} map - Leaflet Map 对象。
+     */
+    getFeatures(queryParam, map) {
+        let dataserviceUrl = this.dataserviceUrl;
+        let me = this;
+        let featureService = external_L_default.a.supermap.featureService(dataserviceUrl);
+        if (queryParam instanceof GetFeaturesByIDsParameters_GetFeaturesByIDsParameters) {
+            featureService.getFeaturesByIDs(queryParam, function (serviceResult) {
+                me._getQureyResult(serviceResult, map);
+            });
+        } else if (queryParam instanceof GetFeaturesBySQLParameters_GetFeaturesBySQLParameters) {
+            featureService.getFeaturesBySQL(queryParam, function (serviceResult) {
+                me._getQureyResult(serviceResult, map);
+            });
+        } else if (queryParam instanceof GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters) {
+            featureService.getFeaturesByBounds(queryParam, function (serviceResult) {
+                me._getQureyResult(serviceResult, map);
+            });
+        } else if (queryParam instanceof GetFeaturesByBufferParameters_GetFeaturesByBufferParameters) {
+            featureService.getFeaturesByBuffer(queryParam, function (serviceResult) {
+                me._getQureyResult(serviceResult, map);
+            });
+        } else if (queryParam instanceof GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters) {
+            featureService.getFeaturesByGeometry(queryParam, function (serviceResult) {
+                me._getQureyResult(serviceResult, map);
+            });
+        }
+    }
+
+    /**
+     * @function L.supermap.widgets.dataServiceQueryViewModel.prototype._getQureyResult
+     * @description 获取 features。
+     * @private
+     * @param {Object} serviceResult - 服务器返回结果。
+     * @param {L.Map} map - Leaflet Map 对象。
+     */
+    _getQureyResult(serviceResult, map) {
+        if (serviceResult.error) {
+            /**
+            * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfaild
+            * @description features 获取失败时触发。
+            * @property {string} error - 服务器返回的错误。
+            */
+            this.fire('getfeaturesfaild', { 'error': serviceResult.error });
+            return;
+        }
+        let resultLayer = external_L_default.a.geoJSON(serviceResult.result.features, {
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup("ID: " + feature.properties.SMID);
+            }
+        }).addTo(map);
+        this.resultLayers.push(resultLayer);
+        /**
+         * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturessuccessed
+         * @description features 获取成功时触发。
+         * @property {Object} result - 服务器返回的结果。
+         */
+        this.fire('getfeaturessuccessed', { 'result': serviceResult.result.features })
+    }
+
+    /**
+     * @function L.supermap.widgets.dataServiceQueryViewModel.prototype.clearLayers
+     * @description 清除所有结果图层。
+     */
+    clearLayers() {
+        for (let i in this.resultLayers) {
+            this.resultLayers[i].remove();
+        }
+        this.resultLayers = [];
+    }
+}
+var dataServiceQueryViewModel = function (dataserviceUrl) {
+    return new dataServiceQueryViewModel(dataserviceUrl);
+};
+external_L_default.a.supermap.widgets.dataServiceQueryViewModel = dataServiceQueryViewModel;
+
+// CONCATENATED MODULE: ./src/leaflet/widgets/dataservicequery/DataServiceQueryView.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+/**
+ * @class L.supermap.widgets.dataServiceQuery
+ * @classdesc 数据服务查询微件。
+ * @param {string} dataServiceUrl - 数据服务地址。
+ * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries"。
+ * @param {Object.<Array>} options - 可选参数。
+ * @param {(Array.<SuperMap.GetFeatureMode>|SuperMap.GetFeatureMode)} [options.getFeatureMode] - 查询方式。
+ * @fires L.supermap.widgets.dataServiceQuery#getfeaturessuccessed
+ * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfaild
+ * @category Widgets DataServiceQuery
+ */
+var DataServiceQueryView = external_L_default.a.Control.extend({
+
+    options: {
+        //控件位置 继承自 leaflet control
+        position: 'topright'
+    },
+
+    initialize: function (dataServiceUrl, dataSetNames, options) {
+        this.dataServiceUrl = dataServiceUrl;
+        if (!dataSetNames || dataSetNames.length === 0) {
+            throw new Error('Please configure the dataset of the query！')
+        }
+        if (dataSetNames instanceof Array) {
+            this.dataSetNames = dataSetNames;
+        } else {
+            this.dataSetNames = dataSetNames.split(" ");
+        }
+        //事件监听对象
+        this.event = new external_L_default.a.Evented();
+
+        external_L_default.a.Util.setOptions(this, options);
+    },
+
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype.onAdd
+     * @description 添加控件。
+     * @private
+     */
+    onAdd: function (map) {
+        this.map = map;
+        if (this.options.orientation !== 'vertical') {
+            this.options.orientation = 'horizontal';
+        }
+        let container = this._initDataServiceQueryView();
+        return container;
+    },
+    
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype.onRemove
+     * @description 移除控件。
+     * @private
+     */
+    onRemove: function () {
+        this.map.off('pm:create');
+    },
+
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype.on
+     * @description 事件监听。
+     * @param {string} eventType - 监听的事件名
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    on(eventType, callback) {
+        this.event.on(eventType, callback);
+    },
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype.off
+     * @description 事件关闭。
+     * @param {string} eventType - 监听的事件名
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    off(eventType, callback) {
+        this.event.off(eventType, callback);
+    },
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype.setDataSetNames
+     * @description 设置查询的数据集名。
+     * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries";
+     */
+    setDataSetNames(dataSetNames) {
+        if (dataSetNames instanceof Array) {
+            this.dataSetNames = dataSetNames;
+        } else {
+            this.dataSetNames = dataSetNames.split(" ");
+        }
+    },
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype.setGetFeatureMode
+     * @description 设置查询的查询方式。
+     * @param {(Array.<SuperMap.GetFeatureMode>|SuperMap.GetFeatureMode)} getFeatureMode - 查询方式。
+     */
+    setGetFeatureMode(getFeatureMode) {
+        this.getFeatureMode = getFeatureMode;
+        this._getFeatureModeOnchange(this.getFeatureMode);
+    },
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype.setDataServiceUrl
+     * @description 设置查询的数据服务地址。
+     * @param {string} dataServiceUrl - 数据服务地址。
+     */
+    setDataServiceUrl(dataServiceUrl) {
+        this.dataServiceUrl = dataServiceUrl;
+        this.viewModel = new DataServiceQueryViewModel_DataServiceQueryViewModel(this.dataServiceUrl);
+
+    },
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype._getFeatureModeOnchange
+     * @private
+     * @description 查询方式改变时改变 UI。
+     * @param {string} getFeatureMode - 查询方式。
+     */
+    _getFeatureModeOnchange(getFeatureMode) {
+        let queryModelOptionsArr;
+        if (!getFeatureMode || JSON.stringify(getFeatureMode) == '{}') {
+            queryModelOptionsArr = ['ID', 'SQL', 'BOUNDS', 'BUFFER', 'SPATIAL'];
+        } else {
+            queryModelOptionsArr = getFeatureMode;
+        }
+        let queryModelControl = document.getElementById('queryModelControl');
+        queryModelControl.innerHTML = '';
+        this.creatQueryModeSelect(queryModelOptionsArr, queryModelControl)
+    },
+
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype._initDataServiceQueryView
+     * @description 创建数据服务查询微件。
+     * @returns {HTMLElement}
+     * @private
+     */
+    _initDataServiceQueryView: function () {
+        // 初始化 ViewModel:
+        this.viewModel = new DataServiceQueryViewModel_DataServiceQueryViewModel(this.dataServiceUrl);
+        this.messageBox = new MessageBox();
+
+        // 微件 container
+        let container = (new CommonContainer(Lang.i18n('title_dataServiceQuery'))).getElement();
+        container.classList.add('widget-dataservice-container');
+        container.children[0].classList.add('widget-dataservice-title')
+        let widgetContentContainer = container.children[1];
+        widgetContentContainer.classList.add('widget-scroll-content');
+        widgetContentContainer.classList.add('data-services');
+        // 微件内容 container
+        let analyusisTypeContainer = external_L_default.a.DomUtil.create('div', 'analyusistype-container di-font-content-md', widgetContentContainer);
+        let analysisType = external_L_default.a.DomUtil.create('div', 'analysistype dataservice-analysistype', analyusisTypeContainer);
+        let analysisLayer = external_L_default.a.DomUtil.create('div', 'analysisLayer', analysisType);
+
+        let queryModelOptionsArr, getFeatureModeArr = this.options.getFeatureMode;
+        // 获取查询模式
+        if (!getFeatureModeArr || JSON.stringify(getFeatureModeArr) == '{}') {
+            queryModelOptionsArr = ['ID', 'SQL', 'BOUNDS', 'BUFFER', 'SPATIAL'];
+        } else {
+            queryModelOptionsArr = getFeatureModeArr;
+        }
+        // 查询模式
+        let queryModelContainer = external_L_default.a.DomUtil.create('div', '', analysisLayer);
+        queryModelContainer.id = 'queryModelContainer';
+        let queryModelControl = external_L_default.a.DomUtil.create('div', 'select-control', queryModelContainer);
+        queryModelControl.id = 'queryModelControl';
+        this.creatQueryModeSelect = creatQueryModeSelect.bind(this);
+        this.queryModeltOnchange = queryModeltOnchange.bind(this);
+        this.creatQueryModeSelect(queryModelOptionsArr, queryModelControl)
+
+        // 要素 ID 数组
+        let featuresIdArrContainer = external_L_default.a.DomUtil.create('div', 'textarea-container dataservice-textarea-container', analysisLayer);
+        let textareaSpan = external_L_default.a.DomUtil.create('span', 'textarea-name', featuresIdArrContainer);
+        textareaSpan.innerHTML = Lang.i18n('text_label_IDArrayOfFeatures');
+        let textareaControl = external_L_default.a.DomUtil.create('div', 'textarea-control dataservice-textarea-control', featuresIdArrContainer);
+        textareaControl.id = 'getfeaturesIdArr';
+        let scrollarea = external_L_default.a.DomUtil.create('div', 'scrollarea', textareaControl);
+        let scrollareaContent = external_L_default.a.DomUtil.create('div', 'scrollarea-content', scrollarea);
+        scrollareaContent.setAttribute('tabindex', '1');
+        let getValueTextArea = external_L_default.a.DomUtil.create('textarea', 'textarea', scrollareaContent);
+        getValueTextArea.value = '[1,2,3]';
+        getValueTextArea.id = 'getValueTextArea'
+
+        // SQL 最多可返回的要素数量
+        let maxFeaturesContainer = external_L_default.a.DomUtil.create('div', 'dataservice-maxfeatures-container hidden', analysisLayer);
+        let maxFeaturesOtions = {
+            'spanName': Lang.i18n('text_label_maxFeatures'),
+            'value': '1000'
+        };
+        let maxFeaturesInputBox = this._creatInputBox(maxFeaturesOtions, maxFeaturesContainer)
+        let maxFeaturesInput = maxFeaturesInputBox.children[1];
+        maxFeaturesInput.classList.add('max-features-input');
+        // Buffer 缓冲区距离
+        let bufferDistanceContainer = external_L_default.a.DomUtil.create('div', 'dataservice-distance-container hidden', analysisLayer);
+        let bufferDistanceOtions = {
+            'spanName': Lang.i18n('text_label_bufferDistance'),
+            'value': '10'
+        };
+        let bufferDistanceInputBox = this._creatInputBox(bufferDistanceOtions, bufferDistanceContainer)
+        let bufferDistanceInput = bufferDistanceInputBox.children[1];
+
+
+        // Bounds 查询范围；
+        let queryRangeContainer = external_L_default.a.DomUtil.create('div', 'textarea-container dataservice-textarea-container hidden', analysisLayer);
+        let queryRangetextareaSpan = external_L_default.a.DomUtil.create('span', 'textarea-name', queryRangeContainer);
+        let queryRangeMainContent = external_L_default.a.DomUtil.create('div', '', queryRangeContainer);
+        let queryRangeIconContainer = external_L_default.a.DomUtil.create('div', 'query-range-icon-container', queryRangeMainContent);
+        queryRangetextareaSpan.innerHTML = Lang.i18n('text_label_queryRange1');
+        let queryRangeRecIcon = external_L_default.a.DomUtil.create('div', 'query-range-icon supermapol-icons-polygon-layer bounds', queryRangeIconContainer);
+        let queryRangeLineIcon = external_L_default.a.DomUtil.create('div', 'query-range-icon supermapol-icons-line-layer hidden', queryRangeIconContainer);
+        let queryRangePointIcon = external_L_default.a.DomUtil.create('div', 'query-range-icon supermapol-icons-point-layer hidden', queryRangeIconContainer);
+        let queryRangetextareaControl = external_L_default.a.DomUtil.create('div', 'textarea-control query-range-textarea-control', queryRangeMainContent);
+        queryRangetextareaControl.id = 'getfeaturesIdArr';
+        let queryRangescrollarea = external_L_default.a.DomUtil.create('div', 'scrollarea', queryRangetextareaControl);
+        let queryRangescrollareaContent = external_L_default.a.DomUtil.create('div', 'scrollarea-content', queryRangescrollarea);
+        queryRangescrollareaContent.setAttribute('tabindex', '1');
+        let queryRangeTextArea = external_L_default.a.DomUtil.create('textarea', 'textarea query-range-textarea', queryRangescrollareaContent);
+        queryRangeTextArea.value = '{"leftBottom":{"x":-5,"y":-5},"rightTop":{"x":5,"y":5}}';
+
+        // geometry 空间查询模式
+        let spatialQueryModeContainer = external_L_default.a.DomUtil.create('div', 'spatial-querymode-container hidden', analysisLayer);
+        let spatialQueryModeOptions = {
+            'optionsArr': ['CONTAIN', 'CROSS', 'DISJOINT', 'IDENTITY', 'INTERSECT', 'NONE', 'OVERLAP', 'TOUCH', 'WITHIN'],
+            'labelName': Lang.i18n('text_label_spatialQueryMode')
+        }
+        let spatialQueryModeControl = external_L_default.a.DomUtil.create('div', 'select-control', spatialQueryModeContainer);
+        let spatialQueryModeSelectTool = (new Select(spatialQueryModeOptions)).getElement();
+        spatialQueryModeSelectTool.children[1].classList.add('dataservice-select');
+        spatialQueryModeControl.appendChild(spatialQueryModeSelectTool);
+        let spatialQueryModeSelectName = spatialQueryModeSelectTool.children[1].children[0];
+        spatialQueryModeSelectName.id = 'spatialQueryModeSelectName';
+        let spatialQueryModeSelectContent = spatialQueryModeSelectTool.children[1].children[2];
+        spatialQueryModeSelectContent.classList.add('spatial-querymode-select-content')
+
+
+        // 分析按钮
+        let runBtnContainer = external_L_default.a.DomUtil.create('div', 'run-btn-container di-font-content-md', analysisLayer);
+        let runBtn = external_L_default.a.DomUtil.create('div', 'run-btn', runBtnContainer);
+        let analysisBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn', runBtn);
+        analysisBtn.innerHTML = Lang.i18n('btn_query');
+        let analysingContainer = external_L_default.a.DomUtil.create('div', 'analysing-container hidden', runBtn);
+        let analysisingBtn = external_L_default.a.DomUtil.create('div', 'analysising-btn dataservice-querying-btn', analysingContainer);
+        let svgContainer = external_L_default.a.DomUtil.create('div', 'svg-container', analysisingBtn);
+        svgContainer.innerHTML = `<svg class="svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+             <path id="ring" fill="#FFF" transform="translate(8,8)" d="M 0 0 v -8 A 8 8 0 1 1 -8.00 0 z"></path>
+             <circle cx="8" cy="8" r="6" fill="#38ADF5"></circle>
+             <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
+             <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
+         </svg>`
+        external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_querying');
+
+        // 删除按钮
+        let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn delete-layers', runBtn);
+        deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheRresultLayer');
+
+        // 设置当前显示参数
+        queryModeltOnchange(queryModelOptionsArr[0])
+
+        // 分析按钮点击事件
+        let me = this;
+        analysisBtn.onclick = () => {
+            this.messageBox.closeView();
+            analysingContainer.style.display = 'block';
+            analysisBtn.style.display = 'none';
+            let queryParams = getQueryParams();
+
+            this.viewModel.on('getfeaturessuccessed', (e) => {
+                analysingContainer.style.display = 'none';
+                analysisBtn.style.display = 'block';
+                if (e.result.features.length === 0) {
+                    this.messageBox.showView(Lang.i18n('msg_dataReturnedIsEmpty'), "success");
+                }
+                /**
+                 * @event L.supermap.widgets.dataServiceQuery#getfeaturessuccessed
+                 * @description features 获取成功时触发。
+                 * @property {Object} result - 服务器返回的结果。
+                 */
+                this.event.fire('getfeaturessuccessed', { 'result': e.result })
+            })
+            this.viewModel.on('getfeaturesfaild', (e) => {
+                analysingContainer.style.display = 'none';
+                analysisBtn.style.display = 'block';
+                this.messageBox.showView(e.error.errorMsg, "failure");
+                /**
+                * @event L.supermap.widgets.dataServiceQuery#getfeaturesfaild
+                * @description features 获取失败时触发。
+                * @property {string} error - 服务器返回的错误。
+                */
+                this.event.fire('getfeaturesfaild', { 'error': e.error })
+            })
+            this.viewModel.getFeatures(queryParams, this.map);
+        }
+
+        let bounds, resultLayer;
+        // 矩形 & 多边形绘制
+        queryRangeRecIcon.onclick = (e) => {
+            let queryModelSelectName = document.getElementById('queryModelSelectName');
+            let getFeatureMode = queryModelSelectName.title;
+            if (resultLayer) {
+                resultLayer.remove();
+            }
+            // 矩形
+            if (getFeatureMode === 'BOUNDS') {
+                this.map.pm.enableDraw('Rectangle');
+                // 多边形
+            } else {
+                this.map.pm.enableDraw('Poly');
+            }
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+        // 线绘制
+        queryRangeLineIcon.onclick = (e) => {
+            if (resultLayer) {
+                resultLayer.remove();
+            }
+            this.map.pm.enableDraw('Line');
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+        // 点绘制
+        queryRangePointIcon.onclick = (e) => {
+            if (resultLayer) {
+                resultLayer.remove();
+            }
+            this.map.pm.enableDraw('Marker');
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+        this.map.on('pm:create', (e) => {
+            if (e.shape === 'Rectangle') {
+                resultLayer = e.layer;
+                let boundsT = resultLayer.getBounds()
+                bounds = external_L_default.a.bounds([boundsT._southWest.lng, boundsT._southWest.lat], [boundsT._northEast.lng, boundsT._northEast.lat]);
+                let geo = {
+                    'leftBottom': { 'x': boundsT._southWest.lng, 'y': boundsT._southWest.lat },
+                    'rightTop': { 'x': boundsT._northEast.lng, 'y': boundsT._northEast.lat }
+                }
+                queryRangeTextArea.value = JSON.stringify(geo);
+            }
+            if (e.shape === 'Marker') {
+                resultLayer = e.layer;
+                queryRangeTextArea.value = JSON.stringify(e.layer.toGeoJSON());
+                this.map.pm.disableDraw("Marker");
+            }
+            if (e.shape === 'Line') {
+                resultLayer = e.layer;
+                queryRangeTextArea.value = JSON.stringify(e.layer.toGeoJSON());
+            }
+            if (e.shape === 'Poly') {
+                resultLayer = e.layer;
+                queryRangeTextArea.value = JSON.stringify(e.layer.toGeoJSON());
+            }
+        });
+        // 删除按钮点击事件
+        deleteLayersBtn.onclick = () => {
+            this.viewModel.clearLayers();
+        }
+
+        function creatQueryModeSelect(queryModelOptionsArr, queryModelControl) {
+            // 查询模式
+            let queryModelSelectName;
+
+            if (queryModelOptionsArr instanceof Array && queryModelOptionsArr.length > 1) {
+                let queryModelOptions = {
+                    'optionsArr': queryModelOptionsArr,
+                    'labelName': Lang.i18n('text_label_queryMode'),
+                    'optionsClickCb': this.queryModeltOnchange
+                }
+                let queryModelSelectTool = (new Select(queryModelOptions)).getElement();
+                queryModelControl.appendChild(queryModelSelectTool);
+                queryModelSelectName = queryModelSelectTool.children[1].children[0];
+                queryModelSelectTool.children[1].classList.add('dataservice-select');
+                let queryModelSelect = queryModelSelectTool.children[1];
+                queryModelSelect.classList.add('dataservice-select');
+                queryModelSelect.classList.add('querymodel-select');
+            } else {
+                let span = external_L_default.a.DomUtil.create('span', '', queryModelContainer);
+                span.innerHTML = Lang.i18n('text_label_queryMode');
+                queryModelSelectName = external_L_default.a.DomUtil.create('div', 'querymode-selectname', queryModelContainer);
+                let text = external_L_default.a.DomUtil.create('span', '', queryModelSelectName);
+                if (queryModelOptionsArr instanceof Array) {
+                    text.innerHTML = queryModelOptionsArr[0];
+                } else {
+                    text.innerHTML = queryModelOptionsArr;
+                }
+                queryModelSelectName.title = text.innerHTML;
+                this.queryModeltOnchange(queryModelSelectName);
+            }
+            queryModelSelectName.id = 'queryModelSelectName';
+            return queryModelSelectName;
+        }
+        // 查询模式下拉框 onchange 事件
+        function queryModeltOnchange(option) {
+            // 获取当前选中查询模式
+            let queryModelSelectName;
+            if (option.title) {
+                queryModelSelectName = option.title;
+            } else {
+                queryModelSelectName = option;
+            }
+
+            // 控制部分查询参数元素隐藏和显示
+            maxFeaturesContainer.classList.add('hidden');
+            queryRangeContainer.classList.add('hidden');
+            bufferDistanceContainer.classList.add('hidden');
+            queryRangeLineIcon.classList.add('hidden');
+            queryRangePointIcon.classList.add('hidden');
+            queryRangeRecIcon.classList.remove('bounds');
+            spatialQueryModeContainer.classList.add('hidden');
+            textareaSpan.innerHTML = Lang.i18n('text_label_featureFilter');
+            getValueTextArea.value = 'SMID<10';
+            if (queryModelSelectName === 'BUFFER' || queryModelSelectName === 'SPATIAL') {
+                queryRangeContainer.classList.remove('hidden');
+                queryRangetextareaSpan.innerHTML = Lang.i18n('text_label_geometricObject');
+                queryRangeTextArea.value = '{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[84.90234375,40.25390625]}}';
+                queryRangeLineIcon.classList.remove('hidden');
+                queryRangePointIcon.classList.remove('hidden');
+            }
+            switch (queryModelSelectName) {
+                case 'ID':
+                    textareaSpan.innerHTML = Lang.i18n('text_label_IDArrayOfFeatures');
+                    getValueTextArea.value = '[1,2,3]';
+                    break;
+                case 'SQL':
+                    maxFeaturesContainer.classList.remove('hidden');
+                    break;
+                case 'BOUNDS':
+                    queryRangeContainer.classList.remove('hidden');
+                    queryRangetextareaSpan.innerHTML = Lang.i18n('text_label_queryRange');
+                    queryRangeTextArea.value = '{"leftBottom":{"x":-5,"y":-5},"rightTop":{"x":5,"y":5}}';
+                    queryRangeRecIcon.classList.add('bounds');
+                    break;
+                case 'BUFFER':
+                    bufferDistanceContainer.classList.remove('hidden');
+                    break;
+                case 'SPATIAL':
+                    spatialQueryModeContainer.classList.remove('hidden');
+                    break;
+            }
+        }
+
+
+        // 获取查询参数
+        function getQueryParams() {
+            // 数据集数组
+            let datasetArr = me.dataSetNames;
+            let queryModelSelectName = document.getElementById('queryModelSelectName');
+            let getFeatureMode = queryModelSelectName.title;
+            // 过滤条件
+            let attributeFilter = getValueTextArea.value;
+
+            let queryParam;
+            if (getFeatureMode === 'ID') {
+                let value = getValueTextArea.value;
+                let ids = value.substring(1, value.length - 1).split(',');
+                queryParam = new GetFeaturesByIDsParameters_GetFeaturesByIDsParameters({
+                    IDs: ids,
+                    datasetNames: datasetArr
+                });
+            } else if (getFeatureMode === 'SQL') {
+                let maxFeatures = maxFeaturesInput.value;
+                queryParam = new GetFeaturesBySQLParameters_GetFeaturesBySQLParameters({
+                    queryParameter: {
+                        attributeFilter: attributeFilter
+                    },
+                    datasetNames: datasetArr,
+                    maxFeatures: maxFeatures
+                });
+            } else if (getFeatureMode === 'BOUNDS') {
+                if (!bounds) {
+                    let value = JSON.parse(queryRangeTextArea.value);
+                    bounds = external_L_default.a.bounds([value.leftBottom.x, value.leftBottom.y], [value.rightTop.x, value.rightTop.y])
+                }
+                queryParam = new GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters({
+                    attributeFilter: attributeFilter,
+                    datasetNames: datasetArr,
+                    bounds: bounds
+                });
+            } else if (getFeatureMode === 'BUFFER') {
+                let bufferDistance = bufferDistanceInput.value;
+                let defaultGeometryValue = JSON.parse(queryRangeTextArea.value);
+                let geometryLayer = resultLayer || defaultGeometryValue;
+                queryParam = new GetFeaturesByBufferParameters_GetFeaturesByBufferParameters({
+                    attributeFilter: attributeFilter,
+                    datasetNames: datasetArr,
+                    bufferDistance: bufferDistance,
+                    geometry: geometryLayer
+                });
+            } else if (getFeatureMode === 'SPATIAL') {
+                let spatialQueryMode = spatialQueryModeSelectName.title;
+                let defaultGeometryValue = JSON.parse(queryRangeTextArea.value);
+                let geometryLayer = resultLayer || defaultGeometryValue;
+                queryParam = new GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters({
+                    attributeFilter: attributeFilter,
+                    datasetNames: datasetArr,
+                    spatialQueryMode: spatialQueryMode,
+                    geometry: geometryLayer
+                });
+            }
+            return queryParam;
+        }
+
+
+        this.container = container;
+        this._preventMapEvent(this.container, this.map)
+        return container;
+    },
+
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype._creatInputBox
+     * @description 创建含有 span 的 input 框。
+     * @private
+     */
+    _creatInputBox(inputOptions, parentEle) {
+        let div = external_L_default.a.DomUtil.create('div', '', parentEle);
+        let span = external_L_default.a.DomUtil.create('span', '', div);
+        span.innerHTML = inputOptions.spanName;
+        let input = external_L_default.a.DomUtil.create('input', '', div);
+        input.value = inputOptions.value;
+        // input.className = 'distributeInput'
+        return div;
+    },
+
+    /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype._preventMapEvent
+     * @description 阻止 map 默认事件。
+     * @private
+     */
+    _preventMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
+});
+var dataServiceQueryView = function (dataServiceUrl, dataSetNames, options) {
+    return new DataServiceQueryView(dataServiceUrl, dataSetNames, options);
+};
+
+external_L_default.a.supermap.widgets.dataServiceQuery = dataServiceQueryView;
 // CONCATENATED MODULE: ./src/leaflet/widgets/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
 
 
 
@@ -86515,6 +87276,10 @@ external_L_default.a.supermap.widgets.distributedAnalysis = distributedAnalysisV
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DistributedAnalysisView", function() { return DistributedAnalysisView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "distributedAnalysisView", function() { return distributedAnalysisView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DistributedAnalysisViewModel", function() { return DistributedAnalysisViewModel_DistributedAnalysisViewModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataServiceQueryView", function() { return DataServiceQueryView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataServiceQueryView", function() { return dataServiceQueryView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataServiceQueryViewModel", function() { return DataServiceQueryViewModel_DataServiceQueryViewModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataServiceQueryViewModel", function() { return dataServiceQueryViewModel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return DataFormat; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return ServerType; });
@@ -86840,7 +87605,7 @@ external_L_default.a.supermap.widgets.distributedAnalysis = distributedAnalysisV
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataFlowService", function() { return dataFlowService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FeatureService", function() { return FeatureService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "featureService", function() { return featureService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "featureService", function() { return FeatureService_featureService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldService", function() { return FieldService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "fieldService", function() { return fieldService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GridCellInfosService", function() { return GridCellInfosService; });
@@ -86856,7 +87621,7 @@ external_L_default.a.supermap.widgets.distributedAnalysis = distributedAnalysisV
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NetworkAnalystService", function() { return NetworkAnalystService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "networkAnalystService", function() { return networkAnalystService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "processingService", function() { return processingService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "processingService", function() { return ProcessingService_processingService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryService", function() { return services_QueryService_QueryService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "queryService", function() { return QueryService_queryService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServiceBase", function() { return ServiceBase; });
@@ -90102,7 +90867,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */
@@ -92370,7 +93135,12 @@ module.exports = __webpack_require__(41);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 110 */,
+/* 110 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 111 */,
 /* 112 */,
 /* 113 */,
@@ -92381,29 +93151,30 @@ module.exports = __webpack_require__(41);
 /* 118 */,
 /* 119 */,
 /* 120 */,
-/* 121 */
+/* 121 */,
+/* 122 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 122 */,
 /* 123 */,
 /* 124 */,
 /* 125 */,
-/* 126 */
+/* 126 */,
+/* 127 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 127 */,
 /* 128 */,
 /* 129 */,
 /* 130 */,
 /* 131 */,
 /* 132 */,
-/* 133 */
+/* 133 */,
+/* 134 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

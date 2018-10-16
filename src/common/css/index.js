@@ -20,5 +20,6 @@ import '../widgets/css/NavTabsPage.css';
 import '../widgets/css/PaginationContainer.css';
 import '../widgets/css/PopContainer.css';
 import '../widgets/css/Analysis.css';
-import '../widgets/css/DistributedAnalysis.css'
-import '../widgets/css/ClientComputation.css'
+import '../widgets/css/DistributedAnalysis.css';
+import '../widgets/css/ClientComputation.css';
+import '../widgets/css/DataServiceQuery.css';

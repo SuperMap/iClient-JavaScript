@@ -4,7 +4,7 @@
 import L from "leaflet";
 import '../../core/Base';
 import { DistributedAnalysisModel } from "./DistributedAnalysisModel";
-import { KernelDensityJobParameter, MappingParameters, FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest, KernelDensityJobParameter } from "@supermap/iclient-common";
 import { ProcessingService } from '../../services/ProcessingService'
 /**
  * @class L.supermap.widgets.distributedAnalysisViewModel
@@ -29,7 +29,6 @@ export class DistributedAnalysisViewModel extends L.Evented {
     getDatasetsName() {
         let processingUrl = this.processingUrl;
         this.resultLayers = [];
-        this.processingService = new ProcessingService(processingUrl);
         this.datasetNames = [];
         this.distributedAnalysisModel = new DistributedAnalysisModel(processingUrl);
         this.distributedAnalysisModel.getDatasetsName();
@@ -70,37 +69,23 @@ export class DistributedAnalysisViewModel extends L.Evented {
     /**
      * @function L.supermap.widgets.distributedAnalysisViewModel.prototype.analysis
      * @description 进行分布式分析。
-     * @param {Object} params - 分布式分析参数。
+     * @param {Object.<SuperMap.KernelDensityJobParameter|string>} params - 参数。
+     * @param {SuperMap.KernelDensityJobParameter} params.analysisParam - 分布式分析参数。
+     * @param {string} [params.resultLayerName] - 结果图层名称。
      * @param {L.Map} map - leaflet Map 对象。
      */
     analysis(params, map){
-        if(params.analysisType === 'density'){
-            let kernelDensityJobParameter = new KernelDensityJobParameter({
-                'datasetName': params.datasetName,
-                'method': params.method,
-                'meshType': params.meshType,
-                'resolution': params.resolution,
-                'fields': params.fields,
-                'radius': params.radius,
-                'meshSizeUnit': params.gridSizeUnit,
-                'radiusUnit': params.searchRadiusUnit,
-                'areaUnit': params.areaUnit,
-                'query':params.queryRange,
-                'mappingParameters': new MappingParameters({
-                    'rangeMode': params.mappingParameter.rangeMode,
-                    'rangeCount': params.mappingParameter.rangeCount,
-                    'colorGradientType': params.mappingParameter.colorGradientType
-                })
-            })
+        let processingService = new ProcessingService(this.processingUrl);
+        if(params.analysisParam instanceof KernelDensityJobParameter){
+            let kernelDensityJobParameter = params.analysisParam
             let me = this;
-            this.processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult){
+            processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult){
                 if (serviceResult.error) {
-                    
                     /**
                      * @event L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
                      * @description 分析失败后触发。
                      */
-                    me.fire('analysisfailed');
+                    me.fire('analysisfailed', { 'error': serviceResult.error });
                     return;
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -118,7 +103,9 @@ export class DistributedAnalysisViewModel extends L.Evented {
                              * @property {L.GeoJSON} layer - 结果图层。
                              * @property {string} name - 结果图层名称。
                              */
-                            me.fire('layerloaded', {'layer': layer, 'name': params.resultLayer})
+                            let date = new Date();
+                            let resultLayerName = params.resultLayerName || date.getTime();
+                            me.fire('layerloaded', {'layer': layer, 'name': resultLayerName})
                         });
                     }
                     return info;
@@ -140,7 +127,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
          * @description 图层删除后触发。
          * @property {Array.<L.GeoJSON>} layers - 结果图层数组。
          */
-        this.fire('layersremoved', { layers: this.resultLayers });
+        this.fire('layersremoved', { 'layers': this.resultLayers });
     }
     
 }

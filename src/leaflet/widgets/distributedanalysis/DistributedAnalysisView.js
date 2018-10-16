@@ -3,13 +3,16 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import {DistributedAnalysisViewModel} from "./DistributedAnalysisViewModel";
-import {CommonContainer, DropDownBox, Select, MessageBox, Lang} from '@supermap/iclient-common';
+import { DistributedAnalysisViewModel } from "./DistributedAnalysisViewModel";
+import { CommonContainer, DropDownBox, Select, MessageBox, Lang, KernelDensityJobParameter, MappingParameters } from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.distributedAnalysis
  * @classdesc 分布式分析微件。
  * @param {string} processingUrl - 分布式分析服务地址。
+ * @fires L.supermap.widgets.distributedAnalysis#analysissuccessed
+ * @fires L.supermap.widgets.distributedAnalysis#analysisfailed
+ * @fires L.supermap.widgets.distributedAnalysis#layersremoved
  * @category Widgets DistributedAnalysis
  */
 export var DistributedAnalysisView = L.Control.extend({
@@ -21,6 +24,9 @@ export var DistributedAnalysisView = L.Control.extend({
 
     initialize: function (processingUrl, options) {
         this.processingUrl = processingUrl;
+        //事件监听对象
+        this.event = new L.Evented();
+
         L.Util.setOptions(this, options);
     },
     /**
@@ -37,23 +43,31 @@ export var DistributedAnalysisView = L.Control.extend({
         this._fillDataToView();
         return container;
     },
+
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype.on
+     * @param {string} eventType - 监听的事件名
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    on(eventType, callback) {
+        this.event.on(eventType, callback);
+    },
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._fillDataToView
      * @description 填充数据到 view。
      * @private
      */
     _fillDataToView: function () {
-        this.viewModel.getDatasetsName();
-        // 提示框
-        let me = this;
+        
         // 获取数据集
-        this.viewModel.on('datasetsloaded', function (e) {
+        this.viewModel.on('datasetsloaded', (e) => {
             let datasetOptionsArr = e.result.dataset.datasetNames;
-            me.datasetSelect.innerHTML = '';
-            me._createOptions(me.datasetSelect, datasetOptionsArr);
-            me.datasetSelectObj.optionClickEvent(me.datasetSelect, me.datasetSelectName, me.datasetSelectOnchange);
-            me.dataHash = e.result.datasetHash;
+            this.datasetSelect.innerHTML = '';
+            this._createOptions(this.datasetSelect, datasetOptionsArr);
+            this.datasetSelectObj.optionClickEvent(this.datasetSelect, this.datasetSelectName, this.datasetSelectOnchange);
+            this.dataHash = e.result.datasetHash;
         })
+        this.viewModel.getDatasetsName();
     },
 
     /**
@@ -86,7 +100,6 @@ export var DistributedAnalysisView = L.Control.extend({
     _initDistributedAnalystView: function () {
         //初始化 ViewModel:
         this.viewModel = new DistributedAnalysisViewModel(this.processingUrl);
-        let me = this;
 
         // 微件 container
         let container = (new CommonContainer(Lang.i18n('title_distributedAnalysis'))).getElement();
@@ -191,14 +204,14 @@ export var DistributedAnalysisView = L.Control.extend({
         let queryRangeInput = analysisSelectControl.children[3].children[1];
         queryRangeInput.setAttribute('placeholder', Lang.i18n('text_label_queryRangeTips'))
         queryRangeInput.title = Lang.i18n('text_label_queryRangeTips');
-        
+
         // 网格大小
         let gridSizeUnitSelectOptions = {
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         }
         let gridSizeOptions = {
             'labelName': Lang.i18n('text_label_gridSizeInMeters'),
-            'selectOptions':gridSizeUnitSelectOptions
+            'selectOptions': gridSizeUnitSelectOptions
         }
         let gridSizeContainer = this._creatUnitSelectBox(gridSizeOptions, analysisSelectControl);
         let gridSizeInput = gridSizeContainer.children[1].children[0];
@@ -211,7 +224,7 @@ export var DistributedAnalysisView = L.Control.extend({
         }
         let searchRadiusOptions = {
             'labelName': Lang.i18n('text_label_searchRadius'),
-            'selectOptions':searchRadiusUnitSelectOptions
+            'selectOptions': searchRadiusUnitSelectOptions
         }
         let searchRadiusContainer = this._creatUnitSelectBox(searchRadiusOptions, analysisSelectControl);
         let searchRadiusInput = searchRadiusContainer.children[1].children[0];
@@ -222,7 +235,7 @@ export var DistributedAnalysisView = L.Control.extend({
             'labelName': Lang.i18n('text_label_areaUnit'),
             'optionsArr': ['SquareMile', 'SquareMeter', 'Hectare', 'Acre', 'SquareFoot', 'SquareYard']
         }
-        let areaUnitSelectTool= (new Select(areaUnitSelectOptions)).getElement();
+        let areaUnitSelectTool = (new Select(areaUnitSelectOptions)).getElement();
         analysisSelectControl.appendChild(areaUnitSelectTool);
         let areaUnitSelectName = areaUnitSelectTool.children[1].children[0];
         // 专题图分段
@@ -316,7 +329,6 @@ export var DistributedAnalysisView = L.Control.extend({
                 weightFieldsSelect.innerHTML = '';
                 // 获取当前选中数据集类型
                 let datasetUrl = this.dataHash[option.title];
-                this.viewModel.getDatasetInfo(datasetUrl);
                 // 判断当前选中数据集是否支持该选中分析类，并填充分析权重字段
                 let _me = this;
                 this.viewModel.on('datasetinfoloaded', function (e) {
@@ -336,38 +348,62 @@ export var DistributedAnalysisView = L.Control.extend({
                         }
                     }
                 })
+                this.viewModel.getDatasetInfo(datasetUrl);
             }
         }
 
         // 分析按钮点击事件
         analysisBtn.onclick = () => {
-            me.messageBox.closeView();
+            this.messageBox.closeView();
             let params = getAnalysisParam();
-            if (params.datasetName === Lang.i18n('text_option_selectDataset')) {
-                me.messageBox.showView(Lang.i18n('msg_selectDataset'), "failure");
-            } else if (params.fields === Lang.i18n('text_option_notSet')) {
-                me.messageBox.showView(Lang.i18n('msg_setTheWeightField'), "failure");
+            if (datasetSelectName.title === Lang.i18n('text_option_selectDataset')) {
+                this.messageBox.showView(Lang.i18n('msg_selectDataset'), "failure");
+            } else if ( weightFieldsSelectName.title === Lang.i18n('text_option_notSet')) {
+                this.messageBox.showView(Lang.i18n('msg_setTheWeightField'), "failure");
             } else {
-                me.messageBox.closeView();
+                this.messageBox.closeView();
                 analysingContainer.style.display = 'block';
                 analysisBtn.style.display = 'none';
-                me.viewModel.analysis(params, me.map);
-                let _me = me;
-                me.viewModel.on('layerloaded', function () {
+
+                this.viewModel.on('layerloaded', (e) => {
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
+                    /**
+                     * @event L.supermap.widgets.distributedAnalysis#analysissuccessed
+                     * @description 分析完成后触发。
+                     * @property {L.GeoJSON} layer - 结果图层。
+                     * @property {string} name - 结果图层名称。
+                     */
+                    this.event.fire('analysissuccessed', {'layer': e.layer, 'name': e.name})
                 })
-                me.viewModel.on('analysisfailed', function () {
-                    _me.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
+                
+                this.viewModel.on('analysisfailed', (e) => {
+                    this.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
+                    /**
+                     * @event L.supermap.widgets.distributedAnalysis#analysisfailed
+                     * @description 分析失败后触发。
+                     * @property {string} error - 服务器返回错误。
+                     */
+                    this.event.fire('analysisfailed', {'error': e.error})
                 })
+
+                this.viewModel.analysis(params, this.map);
             }
         }
 
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
-            me.viewModel.clearLayers();
+            /**
+             * @event L.supermap.widgets.distributedAnalysis#layersremoved
+             * @description 结果图层删除后触发。
+             * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
+             */
+            this.viewModel.on('layersremoved', (e) => {
+                this.event.fire('layersremoved', { 'layers': e.layers });
+            })
+            this.viewModel.clearLayers();
         }
 
         // 获取分析参数
@@ -382,7 +418,7 @@ export var DistributedAnalysisView = L.Control.extend({
             let colorGradientType = rangeContentModelSelectName.getAttribute('data-value');
             let themeModel = themeModelSelectName.getAttribute('data-value');
             let date = new Date();
-            let resultLayer = resultLayerInput.value || date.getTime();
+            let resultLayerName = resultLayerInput.value || date.getTime();
             let mappingParameter;
             if (themeModel === 'NOTSET') {
                 mappingParameter = '';
@@ -393,22 +429,32 @@ export var DistributedAnalysisView = L.Control.extend({
                     'colorGradientType': colorGradientType
                 }
             }
-            let analysisParam = {
-                'datasetName': datasetSelectName.title,
-                'analysisType': analysisType,
-                'method': analysisMethod,
-                'meshType': gridType,
-                'resolution': gridSizeInput.value,
-                'gridSizeUnit': gridSizeUnit,
-                'queryRange': queryRange,
-                'fields': weightFieldsSelectName.title,
-                'radius': searchRadiusInput.value,
-                'searchRadiusUnit':searchRadiusUnit,
-                'areaUnit': areaUnit,
-                'mappingParameter': mappingParameter,
-                'resultLayer': resultLayer
+            let analysisParam;
+            if (analysisType === 'density') {
+                analysisParam = new KernelDensityJobParameter({
+                    'datasetName': datasetSelectName.title,
+                    'method': analysisMethod,
+                    'meshType': gridType,
+                    'resolution': gridSizeInput.value,
+                    'fields': weightFieldsSelectName.title,
+                    'radius': searchRadiusInput.value,
+                    'meshSizeUnit': gridSizeUnit,
+                    'radiusUnit': searchRadiusUnit,
+                    'areaUnit': areaUnit,
+                    'query': queryRange,
+                    'mappingParameters': new MappingParameters({
+                        'rangeMode': mappingParameter.rangeMode,
+                        'rangeCount': mappingParameter.rangeCount,
+                        'colorGradientType': mappingParameter.colorGradientType
+                    })
+                })
             }
-            return analysisParam;
+
+            let params = {
+                'analysisParam': analysisParam,
+                'resultLayerName': resultLayerName
+            }
+            return params;
         }
 
         this._container = container;
@@ -450,13 +496,13 @@ export var DistributedAnalysisView = L.Control.extend({
      * @private
      */
     _creatUnitSelectBox(options, parentEle) {
-        let unitSelectBoxContainer = L.DomUtil.create('div','buffer-radius', parentEle);
-        let unitSelectSpan = L.DomUtil.create('span','', unitSelectBoxContainer);
+        let unitSelectBoxContainer = L.DomUtil.create('div', 'buffer-radius', parentEle);
+        let unitSelectSpan = L.DomUtil.create('span', '', unitSelectBoxContainer);
         unitSelectSpan.innerHTML = options.labelName;
-        let unitSelectInputContainer = L.DomUtil.create('div','', unitSelectBoxContainer);
-        L.DomUtil.create('input','buffer-radius-input', unitSelectInputContainer);
+        let unitSelectInputContainer = L.DomUtil.create('div', '', unitSelectBoxContainer);
+        L.DomUtil.create('input', 'buffer-radius-input', unitSelectInputContainer);
 
-        let unitSelectUnitContainer = L.DomUtil.create('div','buffer-unit', unitSelectInputContainer);
+        let unitSelectUnitContainer = L.DomUtil.create('div', 'buffer-unit', unitSelectInputContainer);
         let unitSelectOptions = options.selectOptions;
         let unitSelectTool = (new Select(unitSelectOptions)).getElement();
         unitSelectUnitContainer.appendChild(unitSelectTool)
@@ -473,7 +519,7 @@ export var DistributedAnalysisView = L.Control.extend({
             eleArr[i].setAttribute(attributeName, daraValueArr[i])
         }
     }
-    
+
 });
 export var distributedAnalysisView = function (options) {
     return new DistributedAnalysisView(options);

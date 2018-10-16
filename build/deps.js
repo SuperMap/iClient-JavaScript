@@ -548,7 +548,7 @@ deps = {
             "OpenFile": {
                 "name": "打开文件微件",
                 "src": [
-                    "./src/leaflet/widgets/OpenFileView.js"
+                    "./src/leaflet/widgets/openfile/OpenFileView.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.widgets.openFile",
@@ -559,7 +559,7 @@ deps = {
             "ClientComputation ": {
                 "name": "客户端计算微件",
                 "src": [
-                    "./src/leaflet/widgets/ClientComputationView.js"
+                    "./src/leaflet/widgets/clientcomputation/ClientComputationView.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.widgets.clientComputation",
@@ -570,12 +570,45 @@ deps = {
             "DistributedAnalysis": {
                 "name": "分布式分析微件",
                 "src": [
-                    "./src/leaflet/widgets/DistributedAnalysisView.js"
+                    "./src/leaflet/widgets/distributedanalysis/DistributedAnalysisView.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.widgets.distributedAnalysis",
                     "des": "分布式分析微件",
                     "des_en": "Distributed analysis widget"
+                }]
+            },
+            "Search": {
+                "name": "图层查询微件",
+                "src": [
+                    "./src/leaflet/widgets/search/SearchView.js"
+                ],
+                "modules": [{
+                    "name": "L.supermap.widgets.search",
+                    "des": "图层查询微件",
+                    "des_en": "Search"
+                }]
+            },
+            "DataFlow": {
+                "name": "数据流微件",
+                "src": [
+                    "./src/leaflet/widgets/dataflow/DataFlowView.js"
+                ],
+                "modules": [{
+                    "name": "L.supermap.widgets.dataFlow",
+                    "des": "数据流微件",
+                    "des_en": "Data flow"
+                }]
+            },
+            "DataServiceQuery": {
+                "name": "数据服务查询微件",
+                "src": [
+                    "./src/leaflet/widgets/dataservicequery/DataServiceQueryView.js"
+                ],
+                "modules": [{
+                    "name": "L.supermap.widgets.dataServiceQuery",
+                    "des": "数据服务查询微件",
+                    "des_en": "Data service query"
                 }]
             },
         }

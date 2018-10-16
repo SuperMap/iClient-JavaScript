@@ -38,14 +38,15 @@
         distributedAnalysis.addTo(map);
         
 
-        distributedAnalysis.viewModel.on("layerloaded", function (e) {
+        distributedAnalysis.on("analysissuccessed", function (e) {
             control.addOverlay(e.layer, e.name);
         })
-        distributedAnalysis.viewModel.on("layersremoved", function (e) {
+        distributedAnalysis.on("layersremoved", function (e) {
             for (var i in e.layers) {
                 control.removeLayer(e.layers[i]);
             }
         })
+
     </script>
 </body>
 

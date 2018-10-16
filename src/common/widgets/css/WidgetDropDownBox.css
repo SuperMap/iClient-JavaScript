@@ -1,12 +1,11 @@
 .drop-down-container {
     position: relative;
-    width: 200px;
+    width: 100%;
     height: 58px;
     /* margin-top: 6px; */
 }
 
 .drop-down-box {
-    width: 192px;
     height: 50px;
     background: #FFFFFF;
     margin: 0 auto;
@@ -23,7 +22,7 @@
 .triangle-btn {
     position: relative;
     bottom: 46px;
-    left: 173px;
+    left: 90%;
     width: 10px;
     height: 10px;
     cursor: pointer;
@@ -37,7 +36,7 @@
     position: absolute !important;
     top: 61px;
     left: 0;
-    width: 184px;
+    width: 91%;
     /* height: 92px; */
     background: #FFFFFF;
     padding: 8px;
@@ -49,7 +48,6 @@
 
 
 .drop-down-item {
-    width: 177px;
     height: 42px;
     margin-bottom: 8px;
     cursor: pointer;
@@ -65,7 +63,6 @@
 }
 
 .drop-down-img div {
-    width: 48px;
     height: 42px;
 }
 
@@ -73,12 +70,12 @@
     position: relative;
     bottom: 40px;
     left: 57px;
-    width: 120px;
     height: 16px;
     font-size: 12px;
     font-weight: bold;
     color: #595959;
     overflow: hidden;
+    width: 50%
 }
 
 .drop-down-remark {
@@ -92,6 +89,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: 65%;
 }
 
 .drop-down-content.chart-content{

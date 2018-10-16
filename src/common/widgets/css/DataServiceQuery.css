@@ -1,0 +1,83 @@
+.query-range-icon{
+    /* display: inline-block; */
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    border: 1px solid #d9d9d9;
+    padding: 5px;
+    color: #0083CB;
+}
+.query-range-icon.bounds{
+    position: relative;
+    top: -47px;
+}
+.textarea-control.query-range-textarea-control{
+    height: 70px;
+    padding-left: 5px;
+    display: inline-block;
+    width: 76%;
+}
+.textarea-control.query-range-textarea-control textarea{
+    height: 73px;
+    width: 85%;
+}
+.query-range-icon-container{
+    display: inline-block;
+    margin-right: 5px;
+    position: relative;
+    bottom: 8px;
+}
+.spatial-querymode-container{
+    margin-top: 16px;
+}
+.spatial-querymode-select-content{
+    margin-bottom: 16px;
+}
+.widget-content-container.widget-scroll-content.data-services{
+    padding-bottom: 0px;
+    height:unset;
+}
+.widget-dataservice-container.widget-container{
+    position: absolute;
+    right: 17px;
+    top: 110px;
+    font-size: 12px;
+}
+.widget-dataservice-title{
+    font-size: 12px;
+}
+.textarea-container.dataservice-textarea-container{
+    margin-top: 16px;
+}
+.analysistype.dataservice-analysistype{
+    margin-top: 0;
+}
+.textarea-control.dataservice-textarea-control{
+    height:40px;
+    padding-left: 5px;
+    width: unset;
+}
+.textarea-control.dataservice-textarea-control textarea{
+    height:43px;
+    padding-left: 5px;
+}
+
+.dataservice-maxfeatures-container{
+    margin-top: 16px;
+}
+.dataservice-distance-container{
+    margin-top: 16px;
+}
+.run-btn .analysising-btn.dataservice-querying-btn{
+    width: 200px;
+}
+.querymode-selectname{
+    /* font-weight: bolder; */
+    margin: 8px 0 0 0px;
+    border: 1px solid #D9D9D9;
+    padding: 5px 5px 5px 7px;
+    background: #d4d1d13d;
+}
+.query-range-icon:hover{
+    border: 1px solid #108EE9;
+}

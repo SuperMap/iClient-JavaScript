@@ -8,13 +8,12 @@
  */
 .drop-down-container {
     position: relative;
-    width: 200px;
+    width: 100%;
     height: 58px;
     /* margin-top: 6px; */
 }
 
 .drop-down-box {
-    width: 192px;
     height: 50px;
     background: #FFFFFF;
     margin: 0 auto;
@@ -31,7 +30,7 @@
 .triangle-btn {
     position: relative;
     bottom: 46px;
-    left: 173px;
+    left: 90%;
     width: 10px;
     height: 10px;
     cursor: pointer;
@@ -45,7 +44,7 @@
     position: absolute !important;
     top: 61px;
     left: 0;
-    width: 184px;
+    width: 91%;
     /* height: 92px; */
     background: #FFFFFF;
     padding: 8px;
@@ -57,7 +56,6 @@
 
 
 .drop-down-item {
-    width: 177px;
     height: 42px;
     margin-bottom: 8px;
     cursor: pointer;
@@ -73,7 +71,6 @@
 }
 
 .drop-down-img div {
-    width: 48px;
     height: 42px;
 }
 
@@ -81,12 +78,12 @@
     position: relative;
     bottom: 40px;
     left: 57px;
-    width: 120px;
     height: 16px;
     font-size: 12px;
     font-weight: bold;
     color: #595959;
     overflow: hidden;
+    width: 50%
 }
 
 .drop-down-remark {
@@ -100,6 +97,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: 65%;
 }
 
 .drop-down-content.chart-content{
@@ -1606,7 +1604,6 @@ a.leaflet-control-ctv-toggle {
 }
 
 .lable_describe {
-    width: 192px;
     height: 16px;
     font-size: 12px;
     color: #595959;
@@ -1658,7 +1655,6 @@ a.leaflet-control-ctv-toggle {
 }
 .chart_select {
     height: 28px;
-    width: 192px;
     background: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-radius: 2px;
@@ -1672,7 +1668,6 @@ a.leaflet-control-ctv-toggle {
 }
 
 .select-name {
-    width: 170px;
     height: 26px;
     line-height: 26px;
     overflow: hidden;
@@ -1685,7 +1680,7 @@ a.leaflet-control-ctv-toggle {
 .chart-triangle-btn {
     position: relative;
     bottom: 18px;
-    left: 173px;
+    left: 90%;
     width: 13px;
     height: 10px;
     cursor: pointer;
@@ -1699,24 +1694,14 @@ a.leaflet-control-ctv-toggle {
     position: absolute;
     left: 0;
     top: 30px;
-    width: 200px;
-    /* min-height: 34px; */
-    /* max-height: 152px; */
     padding: 5px 0 0;
     background: #fff;
     box-shadow: 0 1px 4px 0 rgba(0,0,0,.15);
     border-radius: 2px;
     z-index: 10000;
-    /* height: 34px; */
     display: none;
     overflow: hidden scroll;
-    max-height: 200px;
-}
-
-.chart-select-content {
-    width: 186px;
-    /* min-height: 28px;
-    max-height: 140px; */
+    max-height: 210px;
 }
 
 ::-webkit-scrollbar {
@@ -2005,7 +1990,6 @@ a.leaflet-control-ctv-toggle {
 
 .select-control {
     position: relative;
-    width: 200px;
 }
 
 .di-font-content-md {
@@ -2036,7 +2020,7 @@ a.leaflet-control-ctv-toggle {
 .analyusistype-container input,
 .analyusistype-container select,
 .analyusistype-container .textarea-control {
-    width: 183px;
+    width: 91%;
     padding-left: 8px;
     padding-right: 8px;
     background: #FFFFFF;
@@ -2087,7 +2071,7 @@ a.leaflet-control-ctv-toggle {
 
 .run-btn .analysis-btn,
 .run-btn .analysising-container {
-    width: 200px;
+    width: 100%;
     height: 28px;
     padding-right: 0px;
     background: #108EE9;
@@ -2100,7 +2084,7 @@ a.leaflet-control-ctv-toggle {
 
 .run-btn .analysising-btn {
     position: relative;
-    width: 119px;
+    width: 64%;
     height: 28px;
     line-height: 28px;
     /* padding-left: 25px; */
@@ -2113,7 +2097,7 @@ a.leaflet-control-ctv-toggle {
 }
 
 .run-btn .analysis-cancel {
-    width: 70px;
+    width: 29%;
     height: 28px;
     margin-left: 12px;
     padding-left: 0px;
@@ -2217,7 +2201,6 @@ svg:not(:root) {
 }
 
 select.widget-select-options {
-    width: 202px ;
     height: 28px ;
     margin-top: -3px ;
     margin-bottom: 16px;
@@ -2230,7 +2213,8 @@ select.widget-select-options>option{
 
 /* 分析面板滚动条 */
 .widget-content-container.widget-scroll-content{
-    height:712px;
+    width: 200px;
+    height: 712px;
     overflow: auto;
     padding: 16px 10px 16px 16px;
     font-size: 12px;
@@ -2281,7 +2265,7 @@ select.widget-select-options>option{
     color: rgb(89, 89, 89);
     letter-spacing: 0.14px;
     border: 0px;
-    width: 99%;
+    width: 96%;
     font-size: 12px;
 }
 
@@ -2299,7 +2283,7 @@ div.buffer-radius>div {
     margin-bottom: 16px;
 }
 div.buffer-radius>div>input {
-    width: 112px;
+    width: 53%;
     height: 24px;
     margin-right: 5px;
     margin-top: 0px;
@@ -2307,7 +2291,6 @@ div.buffer-radius>div>input {
 }
 div.buffer-radius .buffer-unit {
     position: relative;
-    width: 62px;
     height: 28px;
     display: inline-block;
     vertical-align: bottom;
@@ -2381,4 +2364,87 @@ div.buffer-radius .buffer-unit {
 }
 .buffer-unit .scrollarea-content .select-option{
     width: unset;
+}
+.query-range-icon{
+    /* display: inline-block; */
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    border: 1px solid #d9d9d9;
+    padding: 5px;
+    color: #0083CB;
+}
+.query-range-icon.bounds{
+    position: relative;
+    top: -47px;
+}
+.textarea-control.query-range-textarea-control{
+    height: 70px;
+    padding-left: 5px;
+    display: inline-block;
+    width: 76%;
+}
+.textarea-control.query-range-textarea-control textarea{
+    height: 73px;
+    width: 85%;
+}
+.query-range-icon-container{
+    display: inline-block;
+    margin-right: 5px;
+    position: relative;
+    bottom: 8px;
+}
+.spatial-querymode-container{
+    margin-top: 16px;
+}
+.spatial-querymode-select-content{
+    margin-bottom: 16px;
+}
+.widget-content-container.widget-scroll-content.data-services{
+    padding-bottom: 0px;
+    height:unset;
+}
+.widget-dataservice-container.widget-container{
+    position: absolute;
+    right: 17px;
+    top: 110px;
+    font-size: 12px;
+}
+.widget-dataservice-title{
+    font-size: 12px;
+}
+.textarea-container.dataservice-textarea-container{
+    margin-top: 16px;
+}
+.analysistype.dataservice-analysistype{
+    margin-top: 0;
+}
+.textarea-control.dataservice-textarea-control{
+    height:40px;
+    padding-left: 5px;
+    width: unset;
+}
+.textarea-control.dataservice-textarea-control textarea{
+    height:43px;
+    padding-left: 5px;
+}
+
+.dataservice-maxfeatures-container{
+    margin-top: 16px;
+}
+.dataservice-distance-container{
+    margin-top: 16px;
+}
+.run-btn .analysising-btn.dataservice-querying-btn{
+    width: 200px;
+}
+.querymode-selectname{
+    /* font-weight: bolder; */
+    margin: 8px 0 0 0px;
+    border: 1px solid #D9D9D9;
+    padding: 5px 5px 5px 7px;
+    background: #d4d1d13d;
+}
+.query-range-icon:hover{
+    border: 1px solid #108EE9;
 }

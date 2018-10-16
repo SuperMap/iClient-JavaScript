@@ -1,0 +1,35 @@
+<!--********************************************************************
+* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n='resources.title_dataServiceQuery'></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="leaflet.pm,iclient9-leaflet-css" src="../../dist/leaflet/include-leaflet.js"></script>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <div id="loading">....</div>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var map, url = host + "/iserver/services/map-world/rest/maps/World";
+        map = L.map('map', {
+            preferCanvas: true,
+            crs: L.CRS.EPSG4326,
+            center: [20, 80],
+            maxZoom: 18,
+            zoom: 2
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
+
+        var dataserviceUrl = host + '/iserver/services/data-world/rest/data';
+        var dataServiceQuery = L.supermap.widgets.dataServiceQuery(dataserviceUrl, ['World:Countries']).addTo(map);
+    </script>
+</body>
+
+</html>
