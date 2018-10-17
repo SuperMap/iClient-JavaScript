@@ -4,12 +4,12 @@ import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
 import {Bounds} from '../../../src/common/commonTypes/Bounds';
 import '../../resources/themeLabelData';
-import {LevelRenderer} from "@supermap/iclient-common";
 
 var url = GlobeParameter.China4326URL;
 var themeLayer;
+var labelFeatures = [];
 var addThemeFeatures = () => {
-    var labelFeatures = [];
+
     var feat;
     for (var i = 0; i < themeData.length; i++) {
         var lonlat = themeData[i].lonLat.split(",");
@@ -44,6 +44,7 @@ describe('leaflet_LabelThemeLayer', () => {
         tiledMapLayer(url).addTo(map);
     });
     beforeEach(() => {
+
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         themeLayer = labelThemeLayer("ThemeLayer").addTo(map);
@@ -143,37 +144,56 @@ describe('leaflet_LabelThemeLayer', () => {
         expect(themeLayer.styleGroups.length).toEqual(6);
     });
 
-    //清除当前图层的所有矢量要素
-    it('removeAllFeatures',()=>{
-        themeLayer.removeAllFeatures();
-        expect(themeLayer.labelFeatures.length).toEqual(0);
-        themeLayer.clearCache();
-        expect(themeLayer.cache).toEqual({});
-        expect(themeLayer.cacheFields.length).toEqual(0);
-        //renderer.clear(); not write
-        themeLayer.on("featuresremoved",function(e){
-            expect(e.features.length).toEqual(0);
-            expect(e.success).toBeTruthy();
-        });
-        map.zoomIn(6);
-        //模拟地图缩放场景
-        map.on("zoomend",function(){
+    it('setOpacity', (done) => {
+        var listen = function (e) {
+            console.log('ccccc');
+            expect(e.layer).toBe(themeLayer);
+            expect(e.property).toEqual('opacity');
+            expect(themeLayer.options.opacity).toEqual(0);
+            map.off("changelayer",listen);
+            done();
+        };
+        map.on("changelayer", listen);
+        themeLayer.setOpacity(0);
+
+
+    });
+    // 清除当前图层的所有矢量要素
+    xit('removeAllFeatures', (done) => {
+        let removed=false;
+        let zoomed=false;
+        var listening = function () {
+            console.log('aaaaaaa');
+            expect(removed).toBeTruthy();
             expect(themeLayer.labelFeatures.length).toEqual(0);
-            themeLayer.clearCache();
             expect(themeLayer.cache).toEqual({});
             expect(themeLayer.cacheFields.length).toEqual(0);
-        });
-    });
+            map.off("zoomend", this);
+            done();
+        };
+        var removeListen = function (e) {
+            console.log('bbbbbb');
+            expect(themeLayer.labelFeatures.length).toEqual(0);
+            expect(themeLayer.cache).toEqual({});
+            expect(themeLayer.cacheFields.length).toEqual(0);
+            expect(e.features.length).toEqual(0);
+            expect(e.success).toBeTruthy();
+            themeLayer.off("featuresremoved", this);
+            removed=true;
+            map.on("zoomend", listening);
+            map.zoomIn(6);
 
-    it('setOpacity',()=>{
-        themeLayer.setOpacity(0);
-        expect(themeLayer.options.opacity).toEqual(0);
-        themeLayer._updateOpacity();
 
-        map.on("changelayer",function(e){
-            expect(e.layer).toBe(themeLayer);
-            expect(e.property).toEqual(0);
-        });
+        };
+
+        const features = [].concat(labelFeatures);
+        themeLayer.on("featuresremoved", removeListen);
+        themeLayer.addFeatures(features);
+
+        themeLayer.removeAllFeatures();
+
+        //模拟地图缩放场景
+
     });
 
     //获取经（压盖）处理后将要绘制在图层上的标签要素,原参数数据往右上方避让
