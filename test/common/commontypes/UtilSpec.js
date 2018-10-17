@@ -18,7 +18,7 @@ describe('Util', () =>{
             "BenoitLink":7,
             "Brealey":14763.75,
         };
-        var result = Util.extend(destination, source);
+        var result = SuperMap.Util.extend(destination, source);
         expect(result).toEqual(destination);
     });
 
@@ -31,14 +31,14 @@ describe('Util', () =>{
             "fath": 6,
             "ind": 9
         };
-        Util.copy(des,soc);
+        SuperMap.Util.copy(des,soc);
         expect(des.fath).toEqual(6);
         expect(des.ind).toEqual(9);
     });
 
     it('reset', () => {
         var obj={"apple":1, "bear":2, banana:{"orange":3},name:['Alice','Jack']};
-        Util.reset(obj);
+        SuperMap.Util.reset(obj);
         expect(obj.apple).toBe(null);
         expect(obj.bear).toBe(null);
         expect(obj.banana).toBe(null);
@@ -46,27 +46,27 @@ describe('Util', () =>{
     });
 
     it('getElement', () => {
-        var resulrArr=Util.getElement('string',1,2,3);
+        var resulrArr=SuperMap.Util.getElement('string',1,2,3);
         expect(resulrArr[1]).toEqual(1);
         expect(resulrArr[2]).toEqual(2);
         });
 
     it('isElement', () => {
         var o={a:1,b:2};
-        var elements=Util.isElement(o);
+        var elements=SuperMap.Util.isElement(o);
         expect(elements).toEqual (false);
     });
 
     it('isArray',()=>{
         var arr=[1,2];
-        var obj=Util.isArray(arr);
+        var obj=SuperMap.Util.isArray(arr);
         expect(obj).toEqual(true);
     });
 
     it('removeItem', () => {
         var arr=[1,2,3,4,5];
         var item=5;
-        var arrResult=Util.removeItem(arr,item);
+        var arrResult=SuperMap.Util.removeItem(arr,item);
         expect(arrResult).toEqual([1,2,3,4]);
     });
 
@@ -74,7 +74,7 @@ describe('Util', () =>{
         //arr为null的情况
         var arr=null;
         var obj1={a:"lll"};
-        var re=Util.indexOf(arr,obj1);
+        var re=SuperMap.Util.indexOf(arr,obj1);
         expect(re).toEqual(-1);
         //array不为null的情况
         var array=[1,2,3,{ hobby:"dancing"}];
@@ -84,7 +84,7 @@ describe('Util', () =>{
        //去掉js语言的数组的indexOf方法
         array.indexOf=null;
         //测试
-         var result=Util.indexOf(array,obj);
+         var result=SuperMap.Util.indexOf(array,obj);
          expect(result).toEqual(-1);
        //从备份恢复js语言的数组的indexOf方法
         //array.indexOf=backUpMethod;
@@ -101,12 +101,12 @@ describe('Util', () =>{
         var overflow="hidden";
         //opacity<1.0
         var opacity = 0.5;
-        Util.modifyDOMElement(testDom,id,px,sz,position,border,overflow,opacity);
+        SuperMap.Util.modifyDOMElement(testDom,id,px,sz,position,border,overflow,opacity);
         expect(testDom.id).toBe("box");
         expect(testDom.style.opacity).toBe('0.5');
         //opacity=1.0
         var opa = 1.0;
-        Util.modifyDOMElement(testDom,id,px,sz,position,border,overflow,opa);
+        SuperMap.Util.modifyDOMElement(testDom,id,px,sz,position,border,overflow,opa);
         expect(testDom.style.opa).toBe();
     });
 
@@ -119,7 +119,7 @@ describe('Util', () =>{
             toString:"World",
              advantage:"difficult"
         };
-        var result=Util.applyDefaults(to,from);
+        var result=SuperMap.Util.applyDefaults(to,from);
         expect(result.advantage).toEqual(from.advantage);
         expect(result.toString).toEqual(from.toString);
     });
@@ -132,63 +132,63 @@ describe('Util', () =>{
                 constructor:[1,2,3]
             }
         };
-        var paramsArr=Util.getParameterString(params);
+        var paramsArr=SuperMap.Util.getParameterString(params);
         expect(paramsArr).toBe("type=json&coordinates=abc,edf&properties=%5Bobject%20Object%5D");
     });
 
     it('urlAppend', () => {
         var url="http:/www.baidu.com";
         var paramsStr="returnContent=true";
-        var newUrl=Util.urlAppend(url,paramsStr);
+        var newUrl=SuperMap.Util.urlAppend(url,paramsStr);
         expect(newUrl).toBe("http:/www.baidu.com?returnContent=true");
     });
 
     it('toFloat',()=>{
         var number="1.234567890345678912345612234555667";
         var precision=null;
-        var newNumber=Util.toFloat(number,precision);
+        var newNumber=SuperMap.Util.toFloat(number,precision);
         expect(newNumber).toEqual(1.2345678903457);
     });
 
     it('rad',()=>{
         var angle=720;
-        var result=Util.rad(angle);
+        var result=SuperMap.Util.rad(angle);
         expect(result).toBe(12.566370614359172);
     });
 
     it('getParameters',()=>{
         var URL=" http://54.223.164.155:8090/iserver/services/addressmatch-Address/restjsr/v1/address?a=1&b=2";
-        var parameters=Util.getParameters(URL);
+        var parameters=SuperMap.Util.getParameters(URL);
         expect(parameters).toEqual({ a: "1", b: "2" });
     });
     it('normalizeScale',()=>{
         var scale=1/10000000000;
-        var normScale=Util.normalizeScale(scale);
+        var normScale=SuperMap.Util.normalizeScale(scale);
         expect(normScale).toBe(1e-10);
     });
 
     it('getResolutionFromScale',()=>{
         var scale=1/1250000000;
         var units=null;
-        var resolution=Util.getResolutionFromScale(scale,units);
+        var resolution=SuperMap.Util.getResolutionFromScale(scale,units);
         expect(resolution).toEqual(2.97635783253946);
     });
 
     it('getScaleFromResolution',()=>{
         var getScaleFromResolution=2.97635783253946;
         var units=null;
-        var scale=Util.getScaleFromResolution(getScaleFromResolution,units);
+        var scale=SuperMap.Util.getScaleFromResolution(getScaleFromResolution,units);
         expect(scale).toEqual(1250000000);
     });
 
 
     it('isInTheSameDomain',()=>{
         var Url="http://iclient.supermap.io/examples/leaflet/editor.html#addressMatchService";
-        var correct=Util.isInTheSameDomain(Url);
+        var correct=SuperMap.Util.isInTheSameDomain(Url);
         expect(correct).toBeFalsy(false);
 
         var errorUrl="httttttp:wwwwwww.bbbb";
-        var error=Util.isInTheSameDomain(errorUrl);
+        var error=SuperMap.Util.isInTheSameDomain(errorUrl);
         expect(error).toBeTruthy(true);
     });
 
@@ -198,14 +198,14 @@ describe('Util', () =>{
         var scale=4.629244301712164E-9;
         var coordUnit="DEGREE";
         var datumAxis=6378137;
-        var dpi=Util.calculateDpi(viewBounds,viewer,scale,coordUnit,datumAxis);
+        var dpi=SuperMap.Util.calculateDpi(viewBounds,viewer,scale,coordUnit,datumAxis);
         expect(dpi).toEqual(95.99999999999964);
     });
 
     it('toJSON',()=>{
         //1、obj为null
         var nullObj=null;
-        var result=Util.toJSON(nullObj);
+        var result=SuperMap.Util.toJSON(nullObj);
         expect(result).toBe(null);
         //2、obj不为null
         //var date = new Date();
@@ -218,7 +218,7 @@ describe('Util', () =>{
             true:true,
             time:"Wed Sep 19 2018 15:33:53 GMT+0800 (中国标准时间)"
         };
-        var jsonObj=Util.toJSON(obj);
+        var jsonObj=SuperMap.Util.toJSON(obj);
         expect(jsonObj).toEqual(`{'1':1,'resourceConfigID':"maps",'resourceType':"CatalogList",'array':[1,2,3,4,5,6],'true':true,'time':"Wed Sep 19 2018 15:33:53 GMT+0800 (中国标准时间)"}`);
 
         //obj[ "toJSON"]为function
@@ -227,7 +227,7 @@ describe('Util', () =>{
                 return "aaa";
             }
         };
-        var funResults=Util.toJSON(funObj);
+        var funResults=SuperMap.Util.toJSON(funObj);
         expect(funResults).toEqual("aaa");
     });
 
@@ -236,7 +236,7 @@ describe('Util', () =>{
         var dpi=95.99999999999964;
         var coordUnit="DEGREE";
         var datumAxis=6378137;
-        var result=Util.getResolutionFromScaleDpi(scale,dpi,coordUnit,datumAxis);
+        var result=SuperMap.Util.getResolutionFromScaleDpi(scale,dpi,coordUnit,datumAxis);
         expect(result).toEqual(0.513429918072625);
 
     });
@@ -246,7 +246,7 @@ describe('Util', () =>{
         var dpi=95.99999999999964;
         var coordUnit="DEGREE";
         var datumAxis=6378137;
-        var result=Util.getScaleFromResolutionDpi(resolution,dpi,coordUnit,datumAxis);
+        var result=SuperMap.Util.getScaleFromResolutionDpi(resolution,dpi,coordUnit,datumAxis);
         expect(result).toEqual(4.629244301712165e-9);
     });
 
@@ -255,7 +255,7 @@ describe('Util', () =>{
             true:true,
             respose:"helloWorld"
         };
-        Util.transformResult(result);
+        SuperMap.Util.transformResult(result);
         expect(result).toEqual({"true":true,"respose":"helloWorld"})
 
     });
@@ -267,7 +267,7 @@ describe('Util', () =>{
             birthday:"八月十九",
         };
         var des={};
-        Util.copyAttributes(des,soc);
+        SuperMap.Util.copyAttributes(des,soc);
         expect(des).toEqual(soc);
     });
 
@@ -291,7 +291,7 @@ describe('Util', () =>{
         var clip=[
             "say","CLASS_NAME"
     ];
-        Util.copyAttributesWithClip(source,destination,clip);
+        SuperMap.Util.copyAttributesWithClip(source,destination,clip);
         expect(destination.name).toEqual(source.name);
         expect(destination.hobby).toEqual(source.hobby);
         expect(destination.age).toEqual(source.age);
@@ -304,7 +304,7 @@ describe('Util', () =>{
             age:18,
             height:160
         };
-        var copy=Util.cloneObject(needCloneObj);
+        var copy=SuperMap.Util.cloneObject(needCloneObj);
         expect(copy).toEqual(needCloneObj);
     });
 
@@ -314,14 +314,14 @@ describe('Util', () =>{
         var a2 = new SuperMap.Geometry.Point(-152, 89);
         var a3 = new SuperMap.Geometry.Point(-111.04, 45.68);
         var a4 = new SuperMap.Geometry.Point(-152, 89);
-        var intersectValue=Util.lineIntersection(a1,a2,a3,a4);
+        var intersectValue=SuperMap.Util.lineIntersection(a1,a2,a3,a4);
         expect(intersectValue).toEqual("Coincident");
         //平行
         var a5 = new SuperMap.Geometry.Point(20, 80);
         var a6 = new SuperMap.Geometry.Point(140, 160);
         var a7 = new SuperMap.Geometry.Point(20, 20);
         var a8 = new SuperMap.Geometry.Point(140, 100);
-        var intersectValue1 =Util.lineIntersection(a5,a6,a7,a8);
+        var intersectValue1 =SuperMap.Util.lineIntersection(a5,a6,a7,a8);
         expect(intersectValue1).toEqual("Parallel");
     });
 
@@ -338,7 +338,7 @@ describe('Util', () =>{
         });
         var text = "北京超图";
         var dom = document.createElement('div');
-        var result=Util.getTextBounds(style,text,dom);
+        var result=SuperMap.Util.getTextBounds(style,text,dom);
         expect(result.textWidth).toBeGreaterThan(60);
         expect(result.textWidth).toBeLessThan(70);
         expect(result.textHeight).toEqual(18);
