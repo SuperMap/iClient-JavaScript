@@ -7,9 +7,9 @@ import '../../resources/themeLabelData';
 
 var url = GlobeParameter.China4326URL;
 var themeLayer;
-var labelFeatures = [];
-var addThemeFeatures = () => {
 
+var addThemeFeatures = () => {
+    var labelFeatures = [];
     var feat;
     for (var i = 0; i < themeData.length; i++) {
         var lonlat = themeData[i].lonLat.split(",");
@@ -44,7 +44,6 @@ describe('leaflet_LabelThemeLayer', () => {
         tiledMapLayer(url).addTo(map);
     });
     beforeEach(() => {
-
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         themeLayer = labelThemeLayer("ThemeLayer").addTo(map);
@@ -109,6 +108,7 @@ describe('leaflet_LabelThemeLayer', () => {
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        themeLayer.remove();
         themeLayer = null;
     });
     afterAll(() => {
@@ -146,7 +146,6 @@ describe('leaflet_LabelThemeLayer', () => {
 
     it('setOpacity', (done) => {
         var listen = function (e) {
-            console.log('ccccc');
             expect(e.layer).toBe(themeLayer);
             expect(e.property).toEqual('opacity');
             expect(themeLayer.options.opacity).toEqual(0);
@@ -155,45 +154,33 @@ describe('leaflet_LabelThemeLayer', () => {
         };
         map.on("changelayer", listen);
         themeLayer.setOpacity(0);
-
-
     });
-    // 清除当前图层的所有矢量要素
-    xit('removeAllFeatures', (done) => {
+    //清除当前图层的所有矢量要素
+    it('removeAllFeatures', (done) => {
         let removed=false;
-        let zoomed=false;
         var listening = function () {
-            console.log('aaaaaaa');
             expect(removed).toBeTruthy();
             expect(themeLayer.labelFeatures.length).toEqual(0);
             expect(themeLayer.cache).toEqual({});
             expect(themeLayer.cacheFields.length).toEqual(0);
-            map.off("zoomend", this);
+            map.off("zoomend", listening);
+            map.setZoom(3);
             done();
         };
         var removeListen = function (e) {
-            console.log('bbbbbb');
             expect(themeLayer.labelFeatures.length).toEqual(0);
             expect(themeLayer.cache).toEqual({});
             expect(themeLayer.cacheFields.length).toEqual(0);
             expect(e.features.length).toEqual(0);
-            expect(e.success).toBeTruthy();
-            themeLayer.off("featuresremoved", this);
+            expect(e.succeed).toBeTruthy();
+            themeLayer.off("featuresremoved", removeListen);
             removed=true;
             map.on("zoomend", listening);
+            //模拟地图缩放场景
             map.zoomIn(6);
-
-
         };
-
-        const features = [].concat(labelFeatures);
         themeLayer.on("featuresremoved", removeListen);
-        themeLayer.addFeatures(features);
-
         themeLayer.removeAllFeatures();
-
-        //模拟地图缩放场景
-
     });
 
     //获取经（压盖）处理后将要绘制在图层上的标签要素,原参数数据往右上方避让

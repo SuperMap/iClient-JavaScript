@@ -460,6 +460,7 @@ export class Render {
      */
     trigger(eventName, event) {
         this.handler.trigger(eventName, event);
+        this.handler.dispatch(eventName, event);
         return this;
     }
 

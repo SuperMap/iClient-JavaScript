@@ -399,6 +399,11 @@ export var ThemeLayer = L.Layer.extend({
         }
         return this;
     },
+    fire: function (type, data, propagate) { // eslint-disable-line no-unused-vars
+        this.renderer.trigger(type, data);
+        L.Layer.prototype.fire.call(this, type, data, propagate);
+        return this;
+    },
 
     /**
      * @function L.supermap.ThemeLayer.prototype.addTFEvents

@@ -37,7 +37,11 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         dataServiceQuery.off("getfeaturessuccessed");
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
+    afterAll(() => {
+        dataServiceQuery.messageBox.closeView();
+        dataServiceQuery.remove();
+        window.document.body.removeChild(testDiv);
+    });
     it('getFeatureByID', (done) => {
         expect(dataServiceQuery).not.toBeNull();
         spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
