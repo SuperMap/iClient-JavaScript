@@ -71,7 +71,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
                 done();
             }
         })
-        var analysitBtn = document.getElementsByClassName('analysis-btn')[0];
+        var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
         analysitBtn.click();
     });
 
@@ -103,7 +103,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
                 done();
             }
         });
-        var deleteLayersBtn = document.getElementsByClassName('delete-layers')[0];
+        var deleteLayersBtn = document.getElementsByClassName('widget-analysis__analysisbtn--deletelayers')[0];
         deleteLayersBtn.click();
         expect(dataServiceQuery.viewModel.resultLayers.length === 0);
 
@@ -114,7 +114,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
 
         var maxFeaturesInput = document.getElementsByClassName('max-features-input')[0];
         maxFeaturesInput.value = '1';
-        var analysitBtn = document.getElementsByClassName('analysis-btn')[0];
+        var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
         analysitBtn.click();
 
     });
@@ -143,20 +143,20 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        })
-        var deleteLayersBtn = document.getElementsByClassName('delete-layers')[0];
+        });
+        var deleteLayersBtn = document.getElementsByClassName('widget-analysis__analysisbtn--deletelayers')[0];
         deleteLayersBtn.click();
 
         var queryModelSelectName = document.getElementById('queryModelSelectName');
         queryModelSelectName.title = 'BOUNDS';
         queryModelSelectName.innerHTML = 'BOUNDS';
-        dataServiceQuery.queryModeltOnchange('BOUNDS')
+        dataServiceQuery.queryModeltOnchange('BOUNDS');
 
 
-        var queryRangeTextArea = document.getElementsByClassName('query-range-textarea')[0];
+        var queryRangeTextArea = document.getElementsByClassName('widget-textarea--rangequery')[0];
         queryRangeTextArea.value = `{"leftBottom":{"x":64.86328125,"y":18.984375},"rightTop":{"x":89.12109375,"y":37.44140625}}`;
 
-        var analysitBtn = document.getElementsByClassName('analysis-btn')[0];
+        var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
         analysitBtn.click();
     });
 
@@ -189,18 +189,18 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
                 done();
             }
         })
-        var deleteLayersBtn = document.getElementsByClassName('delete-layers')[0];
+        var deleteLayersBtn = document.getElementsByClassName('widget-analysis__analysisbtn--deletelayers')[0];
         deleteLayersBtn.click();
 
         var queryModelSelectName = document.getElementById('queryModelSelectName');
         queryModelSelectName.title = 'BUFFER';
         queryModelSelectName.innerHTML = 'BUFFER';
-        dataServiceQuery.queryModeltOnchange('BUFFER')
+        dataServiceQuery.queryModeltOnchange('BUFFER');
 
-        var queryRangeTextArea = document.getElementsByClassName('query-range-textarea')[0];
+        var queryRangeTextArea = document.getElementsByClassName('widget-textarea--rangequery')[0];
         queryRangeTextArea.value = `{"id":0,"style":null,"parts":[1],"points":[{"y":42,"x":21.5}],"type":"POINT"}`;
 
-        var analysitBtn = document.getElementsByClassName('analysis-btn')[0];
+        var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
         analysitBtn.click();
     });
 
@@ -229,15 +229,15 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
                 done();
             }
         })
-        var deleteLayersBtn = document.getElementsByClassName('delete-layers')[0];
+        var deleteLayersBtn = document.getElementsByClassName('widget-analysis__analysisbtn--deletelayers')[0];
         deleteLayersBtn.click();
 
         var queryModelSelectName = document.getElementById('queryModelSelectName');
         queryModelSelectName.title = 'SPATIAL';
         queryModelSelectName.innerHTML = 'SPATIAL';
-        dataServiceQuery.queryModeltOnchange('SPATIAL')
+        dataServiceQuery.queryModeltOnchange('SPATIAL');
 
-        var queryRangeTextArea = document.getElementsByClassName('query-range-textarea')[0];
+        var queryRangeTextArea = document.getElementsByClassName('widget-textarea--rangequery')[0];
         queryRangeTextArea.value = `{"id":0,"style":null,"parts":[1],"points":[{"y":42,"x":21.5}],"type":"POINT"}`;
 
         var spatialQueryModeSelectName = document.getElementById('spatialQueryModeSelectName');
@@ -262,7 +262,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         boundsLayer = L.geoJSON(boundsLayer);
         map.fire('pm:create', {'shape': 'Rectangle', 'layer': boundsLayer.getLayers()[0]});
 
-        var analysitBtn = document.getElementsByClassName('analysis-btn')[0];
+        var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
         analysitBtn.click();
 
     });
@@ -277,7 +277,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             expect(false).toBeTruthy();
             done();
         }
-    })
+    });
 
     it('setDataSetNames_Array', (done) => {
         dataServiceQuery.setDataSetNames(['World:Capitals']);
@@ -289,7 +289,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             expect(false).toBeTruthy();
             done();
         }
-    })
+    });
 
     it('setGetFeatureMode_string', (done) => {
         dataServiceQuery.setGetFeatureMode('SQL');

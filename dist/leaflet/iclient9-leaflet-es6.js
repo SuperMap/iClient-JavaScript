@@ -86731,6 +86731,19 @@ var DataServiceQueryView = WidgetsViewBase.extend({
     },
 
     /**
+     * @function L.supermap.widgets.dataServiceQuery.prototype.setDataSetNames
+     * @description 设置查询的数据集名。
+     * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries";
+     */
+    setDataSetNames(dataSetNames) {
+        if (dataSetNames instanceof Array) {
+            this.dataSetNames = dataSetNames;
+        } else {
+            this.dataSetNames = dataSetNames.split(" ");
+        }
+    },
+
+    /**
      * @function L.supermap.widgets.dataServiceQuery.prototype.setGetFeatureMode
      * @description 设置查询方式。
      * @param {(Array.<SuperMap.GetFeatureMode>|SuperMap.GetFeatureMode)} getFeatureMode - 查询方式。

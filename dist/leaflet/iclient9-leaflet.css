@@ -722,9 +722,14 @@
 .widget-messageboxcontainer {
     position: absolute;
     top: 20px;
-    right: 650px;
-    height: 50px;
-    min-width: 500px;
+
+    /*绝对定位左右居中(注：该方法需要设置最大宽度)*/
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    min-height: 50px;
+    max-width: 500px;
     border-radius: 2px;
     background-color: white;
     z-index: 1000;
