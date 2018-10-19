@@ -10,6 +10,9 @@ import { CommonContainer, DropDownBox, Select, MessageBox, Lang, KernelDensityJo
  * @class L.supermap.widgets.distributedAnalysis
  * @classdesc 分布式分析微件。
  * @param {string} processingUrl - 分布式分析服务地址。
+ * @param {Object} options - 可选参数。
+ * @param {function} options.style - 设置图层点线面默认样式，点 样式返回 maker 或者 circleMaker;线和面返回 L.path 样式。
+ * @param {function} options.onEachFeature - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
  * @category Widgets DistributedAnalysis
  */
 export var DistributedAnalysisView = WidgetsViewBase.extend({

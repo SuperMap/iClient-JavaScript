@@ -10,6 +10,9 @@ import {CommonContainer, DropDownBox, Select, MessageBox, Lang} from '@supermap/
  * @class L.supermap.widgets.clientComputation
  * @classdesc 客户端计算微件，用于进行叠加图层的客户端计算。
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
+ * @param {Object} options - 可选参数。
+ * @param {function} options.style - 设置图层点线面默认样式，点 样式返回 maker 或者 circleMaker;线和面返回 L.path 样式。
+ * @param {function} options.onEachFeature - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
  * @category Widgets ClientComputation
  */
 export var ClientComputationView = WidgetsViewBase.extend({
@@ -55,7 +58,7 @@ export var ClientComputationView = WidgetsViewBase.extend({
         this.fillData = fillData;
 
         let analysisMethod = document.getElementById('dropDownTop').getAttribute('data-value');
-        let currentFillData;
+        let currentFillData = {};
         switch (analysisMethod) {
             case 'isolines':
                 currentFillData = fillData['point'];
@@ -313,7 +316,7 @@ export var ClientComputationView = WidgetsViewBase.extend({
                 let layersSelect = document.getElementById('layersSelect');
                 let layerSelectName = document.getElementById('layerSelectName');
                 let analysisMethod = dropDownItems.children[i].getAttribute('data-value');
-                let currentFillData;
+                let currentFillData = {};
                 switch (analysisMethod) {
                     case 'buffer':
                         isolineDiv.classList.add('hidden');

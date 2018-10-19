@@ -12,10 +12,6 @@ import {DataFlowViewModel} from './DataFlowViewModel';
  * @category Widgets DataFlow
  * @param {Object} options - 可选参数
  * @param {string} [options.position="topright"] - 控件所在位置，包括 'topleft', 'topright', 'bottomleft' or 'bottomright'
- * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
- `function(geoJsonPoint, latlng) {
-                                                return L.marker(latlng);
-                                            }`
  * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
  `function (feature) {
                                                     return {
