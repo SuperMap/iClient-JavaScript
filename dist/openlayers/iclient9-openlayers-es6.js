@@ -3190,55 +3190,58 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(125);
+var supermapol_icons = __webpack_require__(126);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/widgets-icon.css
-var widgets_icon = __webpack_require__(118);
+var widgets_icon = __webpack_require__(119);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Icon.css
-var Icon = __webpack_require__(113);
+var Icon = __webpack_require__(114);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/OpenFile.css
-var OpenFile = __webpack_require__(101);
+var OpenFile = __webpack_require__(102);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/MessageBox.css
-var MessageBox = __webpack_require__(100);
+var MessageBox = __webpack_require__(101);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
-var DataFlow = __webpack_require__(99);
+var DataFlow = __webpack_require__(100);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Search.css
-var POISearch = __webpack_require__(98);
+var Search = __webpack_require__(99);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CommonContainer.css
-var WidgetContainer = __webpack_require__(97);
+var CommonContainer = __webpack_require__(98);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DropDownBox.css
-var WidgetDropDownBox = __webpack_require__(96);
+var DropDownBox = __webpack_require__(97);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Select.css
-var WidgetSelect = __webpack_require__(95);
+var Select = __webpack_require__(96);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(94);
+var CityTabsPage = __webpack_require__(95);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(93);
+var NavTabsPage = __webpack_require__(94);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(92);
+var PaginationContainer = __webpack_require__(93);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PopContainer.css
-var PopContainer = __webpack_require__(91);
+var PopContainer = __webpack_require__(92);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Analysis.css
-var Analysis = __webpack_require__(90);
+var Analysis = __webpack_require__(91);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DistributedAnalysis.css
-var DistributedAnalysis = __webpack_require__(89);
+var DistributedAnalysis = __webpack_require__(90);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/ClientComputation.css
-var ClientComputation = __webpack_require__(88);
+var ClientComputation = __webpack_require__(89);
+
+// EXTERNAL MODULE: ./src/common/widgets/css/DataServiceQuery.css
+var DataServiceQuery = __webpack_require__(88);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -3247,6 +3250,7 @@ var ClientComputation = __webpack_require__(88);
 
 
 //微件样式
+
 
 
 
@@ -4461,18 +4465,12 @@ var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
 var GetFeatureMode = SuperMap.GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
-    /** 通过范围查询加属性过滤器的模式来获取要素。 */
-    BOUNDS_ATTRIBUTEFILTER: "BOUNDS_ATTRIBUTEFILTER",
     /** 通过几何对象的缓冲区来获取要素。 */
     BUFFER: "BUFFER",
-    /** 通过缓冲区加属性过滤器的模式来获取要素。 */
-    BUFFER_ATTRIBUTEFILTER: "BUFFER_ATTRIBUTEFILTER",
     /** 通过 ID 来获取要素。 */
     ID: "ID",
     /** 通过空间查询模式来获取要素。 */
     SPATIAL: "SPATIAL",
-    /** 通过空间查询加属性过滤器的模式来获取要素。 */
-    SPATIAL_ATTRIBUTEFILTER: 'SPATIAL_ATTRIBUTEFILTER',
     /** 通过 SQL 查询来获取要素。 */
     SQL: 'SQL'
 }
@@ -62335,6 +62333,7 @@ class Render_Render {
      */
     trigger(eventName, event) {
         this.handler.trigger(eventName, event);
+        this.handler.dispatch(eventName, event);
         return this;
     }
 
@@ -63353,8 +63352,7 @@ class FileModel_FileModel {
     constructor(options) {
         this.FileTypes = FileTypes;
         this.FileConfig = FileConfig;
-        this.map = options && options.map ? options.map : null;
-        this.loadFileObject = [];
+        this.loadFileObject = options && options.loadFileObject ? options.loadFileObject : [];
     }
 
     /**
@@ -63399,7 +63397,7 @@ class MessageBox {
         //原生js形式
         const messageBoxContainer = document.createElement("div");
         messageBoxContainer.hidden = true;
-        messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+        messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
 
         //图标
         const iconContainer = document.createElement("div");
@@ -63411,16 +63409,16 @@ class MessageBox {
 
         //内容：
         const messageBox = document.createElement("div");
-        messageBox.setAttribute("class", "messageBox");
+        messageBox.setAttribute("class", "widget-messagebox");
         messageBox.innerHTML = "";
         messageBoxContainer.appendChild(messageBox);
         this.messageBox = messageBox;
 
         //关闭按钮
         const cancelContainer = document.createElement("div");
-        cancelContainer.setAttribute("class", "cancelContainer");
+        cancelContainer.setAttribute("class", "widget-messagebox__cancelbtncontainer");
         const cancelBtn = document.createElement("button");
-        cancelBtn.setAttribute("class", "cancelBtn");
+        cancelBtn.setAttribute("class", "widget-messagebox__cancelBtn");
         cancelBtn.innerHTML = "x";
         cancelBtn.onclick = this.closeView.bind(this);
         cancelContainer.appendChild(cancelBtn);
@@ -63448,14 +63446,14 @@ class MessageBox {
         //设置提示框的样式：
         if (type === "success") {
             this.icon.setAttribute("class", "supermapol-icons-message-success");
-            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-green");
+            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-green");
 
         } else if (type === "failure") {
             this.icon.setAttribute("class", "supermapol-icons-message-failure");
-            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-red");
+            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-red");
         } else if (type === "warring") {
             this.icon.setAttribute("class", "supermapol-icons-message-warning");
-            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
         }
         this.messageBox.innerHTML = message;
         this.messageBoxContainer.hidden = false;
@@ -63463,6 +63461,75 @@ class MessageBox {
 }
 
 SuperMap.Widgets.MessageBox = MessageBox;
+// CONCATENATED MODULE: ./src/common/widgets/templates/TemplateBase.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.TemplateBase
+ * @classdesc 微件公用组件父类，由于约束统一封装的公用组件结构
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @category Widgets Common
+ */
+class TemplateBase {
+    constructor(options) {
+        options = options ? options : {};
+        /**
+         * @member {string} [SuperMap.Widgets.TemplateBase.prototype.id=null]
+         * @description  组件 dom 元素 id
+         */
+        this.id = options.id ? options.id : null;
+
+        /**
+         * @member {Element} [SuperMap.Widgets.TemplateBase.prototype.rootContainer=null]
+         * @description  组件 dom 元素对象
+         */
+        this.rootContainer = null;
+    }
+
+    /**
+     * @function SuperMap.Widgets.TemplateBase.prototype.getElement
+     * @description 获取当前组件元素对象
+     * @return {Element}
+     */
+    getElement() {
+        //todo 其实感觉再这里给组件设置不太合理
+        if (this.id) {
+            this.rootContainer.id = this.id;
+        }
+
+        return this.rootContainer;
+    }
+
+    /**
+     * @function SuperMap.Widgets.TemplateBase.prototype._initView
+     * @description 初始化模板
+     */
+    _initView() {
+        //子类实现此方法
+    }
+
+    /**
+     * @function SuperMap.Widgets.TemplateBase.prototype.showView
+     * @description 显示组件
+     */
+    showView() {
+        this.rootContainer.hidden = false;
+    }
+
+    /**
+     * @function SuperMap.Widgets.TemplateBase.prototype.closeView
+     * @description 隐藏组件
+     */
+    closeView() {
+        this.rootContainer.hidden = true;
+    }
+}
+
+SuperMap.Widgets.TemplateBase = TemplateBase;
 // CONCATENATED MODULE: ./src/common/widgets/templates/CommonContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -63473,22 +63540,26 @@ SuperMap.Widgets.MessageBox = MessageBox;
 /**
  * @class SuperMap.Widgets.CommonContainer
  * @classdesc 微件统一外框。
- * @param {string} title - 标题。
- * @param {Object} position - 设置外框绝对位置，包括上下左右：{"top":"5px","bottom":"5px","left":"5px","right":"5px"}
+ * @param {Object} options - 组件可选参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {string} options.title - 标题。
  * @category Widgets Common
  */
-class CommonContainer {
-    constructor(title, position = null) {
-        this._initContainer(title, position);
+class CommonContainer_CommonContainer extends TemplateBase {
+    constructor(options) {
+        super(options);
+        let title = options.title ? options.title : "";
+        this._initView(title);
     }
 
-    _initContainer(title, position) {
+    /**
+     * @private
+     * @override
+     */
+    _initView(title) {
         const container = document.createElement("div");
         container.setAttribute("class", "widget-container");
-        this.container = container;
-        if (position) {
-            this.setContainerPosition(position);
-        }
+
         //title
         const titleContainer = document.createElement("div");
         titleContainer.setAttribute("class", "widget-title");
@@ -63498,29 +63569,12 @@ class CommonContainer {
         container.appendChild(titleContainer);
         //container
         const widgetContent = document.createElement("div");
-        widgetContent.setAttribute("class", "widget-content-container");
+        widgetContent.setAttribute("class", "widget-content");
         container.appendChild(widgetContent);
         this.content = widgetContent;
 
+        this.rootContainer = container;
         return container;
-    }
-
-    /**
-     * @function SuperMap.Widgets.CommonContainer.prototype.getElement
-     * @description 改变容器绝对位置
-     */
-    setContainerPosition(position) {
-        for (let name in position) {
-            this.container.style[name] = position[name];
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.CommonContainer.prototype.getElement
-     * @description 获取当前模板 Dom 元素
-     */
-    getElement() {
-        return this.container;
     }
 
     /**
@@ -63540,7 +63594,7 @@ class CommonContainer {
     }
 }
 
-SuperMap.Widgets.CommonContainer = CommonContainer;
+SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
 // CONCATENATED MODULE: ./src/common/widgets/templates/Select.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -63552,50 +63606,44 @@ SuperMap.Widgets.CommonContainer = CommonContainer;
  * @class SuperMap.Widgets.Select
  * @classdesc 微件统一的文字下拉框。
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
+ * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
  * @category Widgets Common
  */
-class Select {
+class Select_Select extends TemplateBase {
     constructor(options) {
+        super(options);
         this._initView(options);
     }
 
     _initView(options) {
-        let selectTool = this._createElement('div', "select-tool");
+        let selectTool = this._createElement('div', "widget-selecttool");
 
         if (options.labelName) {
-            let label = this._createElement('label', 'lable_describe', selectTool);
+            let label = this._createElement('label', 'widget-selecttool__lable--describe', selectTool);
             label.innerHTML = options.labelName;
         }
 
-        let chartSelect = this._createElement('div', 'chart_select', selectTool);
+        let chartSelect = this._createElement('div', 'widget-selecttool--chart', selectTool);
         chartSelect.setAttribute('tabindex', '1');
 
-        let selectName = this._createElement('div', "select-name", chartSelect);
+        let selectName = this._createElement('div', "widget-selecttool__name", chartSelect);
         selectName.title = options.optionsArr[0];
         selectName.innerHTML = options.optionsArr[0];
 
-        let chartTriangleBtn = this._createElement('div', 'chart-triangle-btn', chartSelect);
-        let triangleBtn = this._createElement('div', 'triangle-down-img', chartTriangleBtn);
-        let selectContent = this._createElement('div', 'select-content', chartSelect);
-        let scrollarea = this._createElement('div', 'scrollarea chart-select-content', selectContent);
-        let scrollareaContent = this._createElement('div', 'scrollarea-content', scrollarea);
+        let chartTriangleBtn = this._createElement('div', 'widget-selecttool__trianglebtn--chart', chartSelect);
+        let triangleBtn = this._createElement('div', 'widget-triangle-down-img', chartTriangleBtn);
+        let selectContent = this._createElement('div', 'widget-selecttool__content', chartSelect);
+        let scrollarea = this._createElement('div', 'widget-selecttool__content--chart', selectContent);
+        let scrollareaContent = this._createElement('div', 'widget-selecttool__scrollarea__content', scrollarea);
         scrollareaContent.setAttribute('tabindex', '1');
-        this.createOptions(scrollareaContent, options.optionsArr)
+        this.createOptions(scrollareaContent, options.optionsArr);
         this.optionClickEvent(scrollareaContent, selectName, options.optionsClickCb);
         // 下拉框显示 & 隐藏事件
         this._selectClickEvent(chartSelect, selectContent, triangleBtn);
-        this.selectTool = selectTool;
-    }
-
-    /**
-     * @function SuperMap.Widgets.Select.prototype.getElement
-     * @description 获取当前模板 Dom 元素。
-     */
-    getElement() {
-        return this.selectTool;
+        this.rootContainer = selectTool;
     }
 
     /**
@@ -63604,7 +63652,7 @@ class Select {
      */
     createOptions(container, optionsArr) {
         for (let i in optionsArr) {
-            let option = this._createElement('div', 'select-option', container);
+            let option = this._createElement('div', 'widget-selecttool__option', container);
             option.title = optionsArr[i];
             option.innerHTML = optionsArr[i];
         }
@@ -63619,26 +63667,26 @@ class Select {
         eventElement.onclick = function (e) {
             if (contentElement.style.display === "block") {
                 contentElement.style.display = "none";
-                triangleBtn.className = "triangle-down-img";
+                triangleBtn.className = "widget-triangle-down-img";
             } else {
                 contentElement.style.display = "block";
                 triangleBtn.className = "triangle-up-img";
             }
             e.preventDefault();
             e.stopPropagation();
-        }
+        };
         eventElement.onmousedown = function (evt) {
-            //console.log('drop-down-box onmousedown '+evt.target.className);
+            //console.log('dropdownbox onmousedown '+evt.target.className);
             if (evt.target !== this) {
                 this.focus();
                 evt.preventDefault();
                 evt.stopPropagation()
             }
-        }
+        };
         eventElement.onblur = function () {
 
             contentElement.style.display = "none";
-            triangleBtn.className = "triangle-down-img";
+            triangleBtn.className = "widget-triangle-down-img";
         }
     }
 
@@ -63673,7 +63721,7 @@ class Select {
     }
 }
 
-SuperMap.Widgets.Select = Select;
+SuperMap.Widgets.Select = Select_Select;
 
 // CONCATENATED MODULE: ./src/common/widgets/templates/DropDownBox.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -63681,90 +63729,92 @@ SuperMap.Widgets.Select = Select;
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
+
 /**
  * @class SuperMap.Widgets.DropDownBox
  * @classdesc 微件统一的图片下拉框。
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {string} optionsArr.title - 下拉框 title。
  * @param {string} optionsArr.remark - 下拉框解释标记文本。
- * @param {string} optionsArr.icon - 下拉框图标。 
+ * @param {string} optionsArr.icon - 下拉框图标。
  * @param {string} [optionsArr.dataValue] - 下拉框 attribute 名为 data-value 的值 。
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
  * @category Widgets Common
  */
-class DropDownBox {
+class DropDownBox_DropDownBox extends TemplateBase {
     constructor(optionsArr) {
+        super(optionsArr);
         this._initView(optionsArr);
     }
+
     /**
      * @function SuperMap.Widgets.DropDownBox.prototype._initView
      * @description 初始化下拉框。
      * @private
+     * @override
      */
     _initView(optionsArr) {
         let dropDownContainer = document.createElement('div');
-        dropDownContainer.className = 'drop-down-container';
+        dropDownContainer.className = 'widget-dropdownbox--container';
         let dropDownBox = document.createElement('div');
         dropDownBox.setAttribute('tabindex', '1');
-        dropDownBox.className = "drop-down-box";
+        dropDownBox.className = "widget-dropdownbox";
         dropDownContainer.appendChild(dropDownBox);
 
         let dropDownTopContainer = document.createElement('div');
         dropDownBox.appendChild(dropDownTopContainer);
 
-        this._creatDropDownOption(optionsArr[0], dropDownTopContainer);
+        this._createDropDownOption(optionsArr[0], dropDownTopContainer);
 
         let triangleBtnContainer = document.createElement('div');
-        triangleBtnContainer.className = 'triangle-btn';
+        triangleBtnContainer.className = 'widget-dropdownbox__triangle-btn';
         dropDownBox.appendChild(triangleBtnContainer);
 
         let triangleBtn = document.createElement('div');
-        triangleBtn.className = 'triangle-down-img';
+        triangleBtn.className = 'widget-triangle-down-img';
         triangleBtnContainer.appendChild(triangleBtn);
 
-        let creatDropDownBoxParam = {
+        let createDropDownBoxParam = {
             "parentEle": dropDownBox,
-            "dropDownContent": ['drop-down-content chart-content', 'dropDownContent'],
-            "dropDownItems": 'scrollarea drop-down-items',
-            "scrollareaContent": 'scrollarea-content',
+            "dropDownContent": ['widget-dropdownbox__content widget-dropdownbox__content--chart', 'dropDownContent'],
+            "scrollareaContent": 'widget-selecttool__scrollarea__content',
             "optionsArr": optionsArr,
             "triangleBtn": triangleBtn,
             "dropDownTopContainer": dropDownTopContainer
-        }
-        this._creatDropDownBox(creatDropDownBoxParam);
+        };
+        this._createDropDownBox(createDropDownBoxParam);
 
-        this.dropDownContainer = dropDownContainer;
+        this.rootContainer = dropDownContainer;
 
     }
+
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._creatDropDownBox
+     * @function SuperMap.Widgets.DropDownBox.prototype._createDropDownBox
      * @description 创建下拉框。
      * @private
      */
-    _creatDropDownBox(creatDropDownBoxParam) {
-        let dropDownBox = creatDropDownBoxParam.parentEle;
-        let dropDownTopContainer = creatDropDownBoxParam.dropDownTopContainer;
+    _createDropDownBox(createDropDownBoxParam) {
+        let dropDownBox = createDropDownBoxParam.parentEle;
+        let dropDownTopContainer = createDropDownBoxParam.dropDownTopContainer;
         let dropDownContent = document.createElement('div');
-        dropDownContent.className = creatDropDownBoxParam.dropDownContent[0];
+        dropDownContent.className = createDropDownBoxParam.dropDownContent[0];
         dropDownBox.appendChild(dropDownContent);
 
-        let dropDownItems = document.createElement('div');
-        dropDownItems.className = creatDropDownBoxParam.dropDownItems;
-        dropDownContent.appendChild(dropDownItems);
-
         let scrollareaContent = document.createElement('div');
-        scrollareaContent.className = creatDropDownBoxParam.scrollareaContent;
-        dropDownItems.appendChild(scrollareaContent);
-        let optionsArr = creatDropDownBoxParam.optionsArr;
+        scrollareaContent.className = createDropDownBoxParam.scrollareaContent;
+        dropDownContent.appendChild(scrollareaContent);
+
+        let optionsArr = createDropDownBoxParam.optionsArr;
         for (let i = 0; i < optionsArr.length; i++) {
-            this._creatDropDownOption(optionsArr[i], scrollareaContent)
+            this._createDropDownOption(optionsArr[i], scrollareaContent)
         }
         // 下拉框显示 & 隐藏事件
-        let triangleBtn = creatDropDownBoxParam.triangleBtn;
+        let triangleBtn = createDropDownBoxParam.triangleBtn;
         this._dropDownClickEvent(dropDownBox, dropDownContent, triangleBtn);
 
-        this._eleOnblur(dropDownBox, dropDownContent, triangleBtn)
+        this._eleOnblur(dropDownBox, dropDownContent, triangleBtn);
 
         // 下拉框 options 点击事件
         let scrollareaOptions = scrollareaContent.children;
@@ -63777,13 +63827,13 @@ class DropDownBox {
     }
 
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._creatDropDownOption
+     * @function SuperMap.Widgets.DropDownBox.prototype._createDropDownOption
      * @description 创建下拉框子元素。
      * @private
      */
-    _creatDropDownOption(data, parentElement){
+    _createDropDownOption(data, parentElement) {
         let ele = document.createElement('div');
-        ele.className = 'drop-down-item';
+        ele.className = 'widget-dropdownbox__item';
         let dataItem = data;
         if (dataItem['dataValue']) {
             ele.setAttribute('data-value', dataItem['dataValue']);
@@ -63791,7 +63841,7 @@ class DropDownBox {
         parentElement.appendChild(ele);
 
         let imgContainer = document.createElement('div');
-        imgContainer.className = 'drop-down-img';
+        imgContainer.className = 'widget-dropdownbox__item__img';
         ele.appendChild(imgContainer);
 
         let img = document.createElement('div');
@@ -63804,13 +63854,13 @@ class DropDownBox {
         imgContainer.appendChild(img);
 
         let title = document.createElement('div');
-        title.className = 'drop-down-title';
+        title.className = 'widget-dropdownbox__item__title';
         title.title = dataItem.title;
         title.innerHTML = dataItem.title;
         ele.appendChild(title);
 
         let remark = document.createElement('div');
-        remark.className = 'drop-down-remark';
+        remark.className = 'widget-dropdownbox__item__remark';
         remark.title = dataItem.remark;
         remark.innerHTML = dataItem.remark;
         ele.appendChild(remark);
@@ -63825,16 +63875,16 @@ class DropDownBox {
         eventElement.onclick = function (e) {
             if (contentElement.style.display === "block") {
                 contentElement.style.display = "none";
-                triangleBtn.className = "triangle-down-img";
+                triangleBtn.className = "widget-triangle-down-img";
             } else {
                 contentElement.style.display = "block";
                 triangleBtn.className = "triangle-up-img";
             }
             e.preventDefault();
             e.stopPropagation()
-        }
+        };
         eventElement.onmousedown = function (evt) {
-            //console.log('drop-down-box onmousedown '+evt.target.className);
+            //console.log('dropdownbox onmousedown '+evt.target.className);
             if (evt.target !== this) {
                 this.focus();
                 evt.preventDefault();
@@ -63851,29 +63901,25 @@ class DropDownBox {
     _eleOnblur(eventElement, contentElement, triangleBtn) {
         eventElement.onblur = function () {
             contentElement.style.display = "none";
-            triangleBtn.className = "triangle-down-img";
+            triangleBtn.className = "widget-triangle-down-img";
         }
     }
+
     /**
-    * @function SuperMap.Widgets.DropDownBox.prototype._createElement
-    * @description 通用创建元素。
-    * @private
-    */
+     * @function SuperMap.Widgets.DropDownBox.prototype._createElement
+     * @description 通用创建元素。
+     * @private
+     */
     _createElement(tagName, className, parentEle) {
         let ele = document.createElement(tagName || 'div');
         className && ~~(ele.className = className);
         parentEle && parentEle.appendChild(ele);
         return ele;
     }
-    /**
-     * @function SuperMap.Widgets.DropDownBox.prototype.getElement
-     * @description 获取当前模板 Dom 元素。
-     */
-    getElement() {
-        return this.dropDownContainer;
-    }
+
 }
-SuperMap.Widgets.DropDownBox = DropDownBox;
+
+SuperMap.Widgets.DropDownBox = DropDownBox_DropDownBox;
 
 // CONCATENATED MODULE: ./src/common/widgets/templates/PopContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -63881,58 +63927,68 @@ SuperMap.Widgets.DropDownBox = DropDownBox;
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-class PopContainer {
-    constructor(title) {
-        this._initView(title);
+
+/**
+ * @class SuperMap.Widgets.PopContainer
+ * @classdesc 弹框组件
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {string} options.title - 弹框组件名称。
+ * @category Widgets Common
+ */
+class PopContainer_PopContainer extends TemplateBase {
+    constructor(options) {
+        options = options ? options : {};
+        super(options);
+        options.title = options.title ? options.title : "";
+        this._initView(options.title);
     }
 
+    /**
+     * @private
+     * @override
+     */
     _initView(titile) {
         const container = document.createElement("div");
-        container.setAttribute("class", "widgets-pop-container");
+        container.setAttribute("class", "widget-popcontainer");
 
         //header
         const header = document.createElement("div");
-        header.setAttribute("class", "widgets-pop-header");
+        header.setAttribute("class", "widget-popcontainer__header");
         const title = document.createElement("label");
-        title.setAttribute("class", "widgets-pop-titlename");
+        title.setAttribute("class", "widget-popcontainer__header__title");
         title.innerHTML = titile;
         header.appendChild(title);
 
         const closeBtn = document.createElement("span");
-        closeBtn.setAttribute("class", "supermapol-icons-clear widgets-pop-close");
+        closeBtn.setAttribute("class", "supermapol-icons-clear widget-popcontainer__header__close");
         closeBtn.onclick = this.closeView.bind(this);
         container.appendChild(closeBtn);
         container.appendChild(header);
 
         //content
         const content = document.createElement("div");
-        content.setAttribute("class", "widgets-pop-content");
+        content.setAttribute("class", "widget-popcontainer__content");
         this.content = content;
 
         container.appendChild(content);
 
-        this.container = container;
+        this.rootContainer = container;
 
     }
 
-    getElement() {
-        return this.container;
-    }
-
+    /**
+     * @function SuperMap.Widgets.PopContainer.prototype.appendContent
+     * @description 追加内容
+     * @param {Element} dom - 内容元素
+     */
     appendContent(dom) {
         this.content.appendChild(dom);
     }
 
-    showView() {
-        this.container.hidden = false;
-    }
-
-    closeView() {
-        this.container.hidden = true;
-    }
 }
 
-SuperMap.Widgets.PopContainer = PopContainer;
+SuperMap.Widgets.PopContainer = PopContainer_PopContainer;
 // CONCATENATED MODULE: ./src/common/widgets/templates/AttributesPopContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -63940,16 +63996,29 @@ SuperMap.Widgets.PopContainer = PopContainer;
 
 
 
-class AttributesPopContainer_AttributesPopContainer extends PopContainer {
-    constructor(attributes) {
-        super("属性");
-        this.container.firstChild.hidden = true;
-        this._createAttributesTable(attributes);
+/**
+ * @class SuperMap.Widgets.AttributesPopContainer
+ * @classdesc 属性弹框组件
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {Object} options.title - 属性弹框组件名称。
+ * @param {Object} options.attributes - 组件需要显示的属性内容。
+ * @category Widgets Common
+ */
+class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopContainer {
+    constructor(options) {
+        //默认为属性：
+        options.title = options.title ? options.title : "属性";
+
+        super(options);
+        this.rootContainer.firstChild.hidden = true;
+        options.attributes = options.attributes ? options.attributes : [];
+        this._createAttributesTable(options.attributes);
     }
 
     _createAttributesTable(attributes) {
         const table = document.createElement("table");
-        table.setAttribute("class", "content-table");
+        table.setAttribute("class", "widget-popcontainer__content__table");
 
         const tbody = document.createElement("tbody");
 
@@ -63957,7 +64026,7 @@ class AttributesPopContainer_AttributesPopContainer extends PopContainer {
         for (let name in attributes) {
             const tr = document.createElement("tr");
             if (single) {
-                tr.setAttribute("class", "odd");
+                tr.setAttribute("class", "widget-popcontainer__content__td--color");
             }
             const title = document.createElement("td");
             const titleSpan = document.createElement("Span");
@@ -63982,46 +64051,58 @@ SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopCo
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-class IndexTabsPageContainer {
-    constructor() {
+
+
+
+/**
+ * @class IndexTabsPageContainer
+ * @description 标签索引组件
+ * @param {Object} options - 可选参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @category Widgets Common
+ */
+class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
+    constructor(options) {
+        super(options);
         this._initView();
     }
 
+    /**
+     * @private
+     * @override
+     */
     _initView() {
         const container = document.createElement("div");
-        container.setAttribute("class", "widgets-tabpage");
+        container.setAttribute("class", "widget-tabpage");
 
         const header = document.createElement("ul");
         this.header = header;
 
         const content = document.createElement("div");
-        content.setAttribute("class", "widgets-tabpage-content");
+        content.setAttribute("class", "widget-tabpage__content");
         this.content = content;
 
         container.appendChild(header);
         container.appendChild(content);
-        this.container = container;
+        this.rootContainer = container;
 
     }
 
-    showView() {
-        this.container.hidden = false;
-    }
-
-    closeView() {
-        this.container.hidden = true;
-    }
-
-    getElement() {
-        return this.container;
-    }
-
-
+    /**
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.setTabs
+     * @description 设置标签元素
+     * @param {Array.<Element>} tabs
+     */
     setTabs(tabs) {
         this.removeAllTabs();
         this.appendTabs(tabs);
     }
 
+    /**
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.appendTabs
+     * @description 追加标签元素
+     * @param {Array.<Element>} tabs
+     */
     appendTabs(tabs) {
         for (let i = 0; i < tabs.length; i++) {
             let title = document.createElement("span");
@@ -64043,7 +64124,7 @@ class IndexTabsPageContainer {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeTab
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeTab
      * @description 删除某个标签页面
      * @param {number} index - 标签索引号
      */
@@ -64053,7 +64134,7 @@ class IndexTabsPageContainer {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeAllTabs
+     * @function IndexTabsPageContainer.prototype.removeAllTabs
      * @description 删除所有标签F
      */
     removeAllTabs() {
@@ -64076,6 +64157,8 @@ class IndexTabsPageContainer {
     }
 
 }
+
+SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer_IndexTabsPageContainer;
 // CONCATENATED MODULE: ./src/common/widgets/templates/CityTabsPage.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64087,16 +64170,18 @@ class IndexTabsPageContainer {
 /**
  * @class SuperMap.Widgets.CityTabsPage
  * @classdesc 城市地址匹配组件模板
- * @category Widgets Common
- * @param {Object|Array.<string>} config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ * @category Widgets Common
  */
-class CityTabsPage_CityTabsPage extends IndexTabsPageContainer {
-    constructor(config) {
-        super();
+class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageContainer {
+    constructor(options) {
+        super(options);
         //去掉默认的边框阴影样式：
-        this.container.classList.add("noneBoxShadow");
-        this.config = config;
+        this.rootContainer.classList.add("widget-citytabpage--noneBoxShadow");
+        this.config = options.config;
         //header，若 config为城市名称数组，则直接加载内容
         if (Util_Util.isArray(this.config)) {
             this.header.hidden = true;
@@ -64171,12 +64256,12 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer {
         const city = document.createElement("div");
 
         const cityClass = document.createElement("div");
-        cityClass.setAttribute("class", "py-key");
+        cityClass.setAttribute("class", "widget-citytabpag__py-key");
         cityClass.innerHTML = key;
         city.appendChild(cityClass);
 
         const cityContent = document.createElement("div");
-        cityContent.setAttribute("class", "city-content");
+        cityContent.setAttribute("class", "widget-citytabpag__content");
 
         for (let i = 0; i < cities.length; i++) {
             let span = document.createElement("span");
@@ -64198,31 +64283,34 @@ SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- 
- /**
+
+
+
+/**
  * @class SuperMap.Widgets.NavTabsPage
  * @classdesc 标签页面组件
+ * @param {Object} options - 组件配置参数。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面。
  * @category Widgets Common
- * @param {Array.<Object>} [tabs=[]] - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面。
- */ 
+ */
 //  todo 思考拆分的控件应该以哪种方式使用
-class NavTabsPage {
-    constructor(tabs = [], id = null) {
-        this.navTabsPage = null;
+class NavTabsPage_NavTabsPage extends TemplateBase {
+    constructor(options) {
+        super(options);
         this.navTabsTitle = null;
         this.navTabsContent = null;
-
-        this.rootContainer = document.createElement("div");
-        if (id) {
-            this.rootContainer.id = id;
-        }
-        this._initContainer(tabs);
-
+        options.tabs = options.tabs ? options.tabs : [];
+        this._initView(options.tabs);
     }
 
-    _initContainer(tabs) {
+    /**
+     * @override
+     * @private
+     */
+    _initView(tabs) {
         const navTabsPage = document.createElement("div");
-        navTabsPage.setAttribute("class", "widgets-navtabs-page");
+        navTabsPage.setAttribute("class", "widget-navtabspage");
 
         //关闭按钮
         const closeBtn = document.createElement("span");
@@ -64233,13 +64321,13 @@ class NavTabsPage {
         //标签
         const navTabsTitle = document.createElement("div");
         this.navTabsTitle = navTabsTitle;
-        navTabsTitle.setAttribute("class", "widgets-navtabs-title");
+        navTabsTitle.setAttribute("class", "widget-navtabspage__title");
         navTabsPage.appendChild(navTabsTitle);
 
         //内容
         const navTabsContent = document.createElement("div");
         this.navTabsContent = navTabsContent;
-        navTabsContent.setAttribute("class", "widgets-navtabs-content");
+        navTabsContent.setAttribute("class", "widget-navtabspage__content");
         navTabsPage.appendChild(navTabsContent);
 
         //若 tabs 初始传入值，则
@@ -64247,11 +64335,7 @@ class NavTabsPage {
             this.appendTabs(tabs);
         }
 
-        this.navTabsPage = navTabsPage;
-    }
-
-    getElement() {
-        return this.navTabsPage;
+        this.rootContainer = navTabsPage;
     }
 
     /**
@@ -64285,7 +64369,7 @@ class NavTabsPage {
         }
         //todo 确认是否两个子元素的 index 相互对应
         //默认显示第一个标签对象
-        this.navTabsTitle.firstChild.setAttribute("class", "tabs-select");
+        this.navTabsTitle.firstChild.setAttribute("class", "widget-navtabspage__tabs--select");
         this.navTabsContent.firstChild.hidden = false;
     }
 
@@ -64310,32 +64394,21 @@ class NavTabsPage {
         }
     }
 
-    /**
-     * @function NavTabsPage.prototype.closeView
-     * @description 关闭当前窗口
-     */
-    closeView() {
-        this.navTabsPage.hidden = true;
-    }
-
-    showView() {
-        this.navTabsPage.hidden = false;
-    }
-
     _changeTabsPage(e) {
         const index = e.target.index;
         for (let i = 0; i < this.navTabsTitle.children.length; i++) {
             this.navTabsTitle.children[i].setAttribute("class", "");
             this.navTabsContent.children[i].hidden = true;
             if (i === index) {
-                this.navTabsTitle.children[i].setAttribute("class", "tabs-select");
+                this.navTabsTitle.children[i].setAttribute("class", "widget-navtabspage__tabs--select");
                 this.navTabsContent.children[i].hidden = false;
             }
         }
     }
 
 }
-SuperMap.Widgets.NavTabsPage = NavTabsPage;
+
+SuperMap.Widgets.NavTabsPage = NavTabsPage_NavTabsPage;
 // CONCATENATED MODULE: ./src/common/widgets/templates/PaginationContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64346,52 +64419,52 @@ SuperMap.Widgets.NavTabsPage = NavTabsPage;
 /**
  * @class SuperMap.Widgets.PaginationContainer
  * @classdesc 分页组件模板
+ * @param {Object} options - 组件配置参数。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象
+ * @param {number} options.pageCounts - 页数
  * @category Widgets Common
- * @param {HTMLElement} contents - 页面填充的 DOM 元素对象
- * @param {number} pageCounts - 页数
  */
-class PaginationContainer {
-    constructor(contents = null, pageCounts = 0) {
+class PaginationContainer_PaginationContainer extends TemplateBase {
+    constructor(options) {
+        options = options ? options : {};
+        super(options);
         this.currentPage = 0;
         this.pageNumberLis = [];
         this.currentPageNumberLis = [];
         this.linkageEvent = null;
-        this._initView(contents, pageCounts);
+
+        options.contents = options.contents ? options.contents : null;
+        options.pageCounts = options.pageCounts ? options.pageCounts : 0;
+        this._initView(options.contents, options.pageCounts);
     }
 
     /**
-     * @description 设置页面联动函数
-     * @param linkageEvent
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setLinkageEvent
+     * @description 设置页面联动方法
+     * @param {function} linkageEvent - 联动方法，实现指定功能
      */
     setLinkageEvent(linkageEvent) {
         this.linkageEvent = linkageEvent;
     }
 
-    getElement() {
-        return this.container;
-    }
-
-    showView() {
-        this.container.hidden = false;
-    }
-
-    closeView() {
-        this.container.hidden = true;
-    }
-
+    /**
+     * @private
+     * @override
+     */
     _initView(contents, pageCounts) {
         const container = document.createElement("div");
-        container.setAttribute("class", "widgets-pagination");
+        container.setAttribute("class", "widget-pagination");
 
         //content
         const content = document.createElement("div");
-        content.setAttribute("class", "widgets-pagination-content");
+        content.setAttribute("class", "widget-pagination__content");
         container.appendChild(content);
         this.content = content;
 
         //link
         const link = document.createElement("ul");
-        link.setAttribute("class", "widgets-pagination-link");
+        link.setAttribute("class", "widget-pagination__link");
         link.onclick = this._changePageEvent.bind(this);
         container.appendChild(link);
         this._createLink(link);
@@ -64403,14 +64476,14 @@ class PaginationContainer {
         if (pageCounts !== 0) {
             this.setPageLink(pageCounts);
         }
-        this.container = container;
-
+        this.rootContainer = container;
     }
 
     /**---------以下是页面相关操作 **/
     /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setContent
      * @description 设置页面内容
-     * @param element
+     * @param {Element} element - 页面内容元素
      */
     setContent(element) {
         this.clearContent();
@@ -64418,14 +64491,16 @@ class PaginationContainer {
     }
 
     /**
-     * @description 添加内容
-     * @param element
+     * @function SuperMap.Widgets.PaginationContainer.prototype.appendContent
+     * @description 追加内容
+     * @param {Element} element - 页面内容元素
      */
     appendContent(element) {
         this.content.appendChild(element);
     }
 
     /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.clearContent
      * @description 清空内容元素
      */
     clearContent() {
@@ -64436,7 +64511,8 @@ class PaginationContainer {
 
     /** -----以下是页码相关的操作：**/
     /**
-     * @description 设置页码
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setPageLink
+     * @description 设置页码数
      * @param {Number} pageNumber
      */
     setPageLink(pageNumber) {
@@ -64448,7 +64524,7 @@ class PaginationContainer {
         //创建页码
         this._createPageLi(pageNumber);
         //添加页码到页码列表
-        this.appendPageLink();
+        this._appendPageLink();
     }
 
     /**
@@ -64480,7 +64556,7 @@ class PaginationContainer {
      * @description 添加页码到页码列表
      * @private
      */
-    appendPageLink() {
+    _appendPageLink() {
         //todo 如何插入中间
         for (let i = 0; i < this.currentPageNumberLis.length; i++) {
             this.link.insertBefore(this.currentPageNumberLis[i], this.link.childNodes[this.link.children.length - 2]);
@@ -64505,6 +64581,7 @@ class PaginationContainer {
     }
 
     /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.clearPageLink
      * @description 清除页码列表
      */
     clearPageLink() {
@@ -64540,7 +64617,6 @@ class PaginationContainer {
 
             ul.appendChild(li);
         }
-
     }
 
     /**
@@ -64551,7 +64627,6 @@ class PaginationContainer {
     _changePageEvent(e) {
         //todo
         const trigger = e.target;
-        console.log(trigger);
         //若列表禁用，点击无效
         if (trigger.parentElement.classList[0] === "disable") {
             return;
@@ -64571,7 +64646,7 @@ class PaginationContainer {
 
         //根据 currentPageNumberLis 创建页码列表
         this.clearPageLink();
-        this.appendPageLink();
+        this._appendPageLink();
     }
 
     /**
@@ -64645,7 +64720,7 @@ class PaginationContainer {
 
 }
 
-SuperMap.Widgets.PaginationContainer = PaginationContainer;
+SuperMap.Widgets.PaginationContainer = PaginationContainer_PaginationContainer;
 // CONCATENATED MODULE: ./src/common/widgets/util/Util.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64675,262 +64750,6 @@ let widgetsUtil = {
 // EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
 var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(23);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
-
-// CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-let FileReaderUtil = {
-    rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
-    rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
-    rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
-
-    /**
-     * 读取文件
-     * @param fileType
-     * @param file
-     * @param success
-     * @param failed
-     * @param context
-     */
-    readFile(fileType, file, success, failed, context) {
-        if (FileTypes.JSON === fileType || FileTypes.GEOJSON === fileType) {
-            this.readTextFile(file, success, failed, context)
-        } else if (FileTypes.EXCEL === fileType || FileTypes.CSV === fileType) {
-            this.readXLSXFile(file, success, failed, context)
-        }
-
-    },
-
-    /**
-     * 读取文本文件
-     * @param file
-     * @param success
-     * @param failed
-     * @param context
-     */
-    readTextFile(file, success, failed, context) {
-        let reader = new FileReader();
-        reader.onloadend = function (evt) {
-            success && success.call(context, evt.target.result);
-        };
-        reader.onerror = function (error) {
-            failed && failed.call(context, error)
-        };
-        this.rAT ? reader.readAsText(file.file, 'utf-8') : reader.readAsBinaryString(file.file);
-    },
-
-    /**
-     * 读取excel或csv文件
-     * @param file
-     * @param success
-     * @param failed
-     * @param context
-     */
-    readXLSXFile(file, success, failed, context) {
-        let reader = new FileReader();
-        reader.onloadend = function (evt) {
-            let xLSXData = new Uint8Array(evt.target.result);
-            let workbook = external_function_try_return_XLSX_catch_e_return_default.a.read(xLSXData, {type: "array"});
-            try {
-                if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
-                    //暂时只读取第一个sheets的内容
-                    let sheetName = workbook.SheetNames[0];
-                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_default.a.utils.sheet_to_csv(workbook.Sheets[sheetName]);
-                    success && success.call(context, xLSXCSVString);
-                }
-            } catch (error) {
-                failed && failed.call(context, error);
-            }
-        };
-        reader.onerror = function (error) {
-            failed && failed.call(context, error)
-        };
-        this.rABF && reader.readAsArrayBuffer(file.file);
-    },
-
-    /**
-     * @function SuperMap.Widgets.FileReaderUtil.prototype.processDataToGeoJson
-     * @description 将读取回来得数据统一处理为 GeoJSON 格式
-     * @param {string} type - 文件类型
-     * @param {Object} data - 读取返回的数据对象
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
-     * @private
-     */
-    processDataToGeoJson(type, data) {
-        //数据处理
-        if (type === "EXCEL" || type === "CSV") {
-            return this.processExcelDataToGeoJson(data);
-        } else if (type === 'JSON' || type === 'GEOJSON') {
-            let geojson = null;
-            let result = data;
-
-            //geojson、json未知，通过类容来判断
-            if ((typeof result) === "string") {
-                result = JSON.parse(result);
-            }
-            if (result.type === 'ISERVER') {
-                geojson = result.data.recordsets[0].features;
-            } else if (result.type === 'FeatureCollection') {
-                //geojson
-                geojson = result;
-            } else {
-                //不支持数据
-                // this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的 'GEOJSON' 格式数据！"});
-                throw new Error("Unsupported data type.");
-                // return false;
-            }
-            return geojson;
-        } else {
-            // this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的'EXCEL','CSV','GEOJSON'格式数据！"});
-            throw new Error("Unsupported data type.");
-        }
-    },
-    /**
-     * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
-     * @description 表格文件数据处理
-     * @param {Object} data - 读取的表格文件数据
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
-     * @private
-     */
-    processExcelDataToGeoJson(data) {
-        //处理为对象格式转化
-        let dataContent = this.string2Csv(data);
-        let fieldCaptions = dataContent.colTitles;
-
-        //位置属性处理
-        let xfieldIndex = -1,
-            yfieldIndex = -1;
-        for (let i = 0, len = fieldCaptions.length; i < len; i++) {
-            if (this.isXField(fieldCaptions[i])) {
-                xfieldIndex = i;
-            }
-            if (this.isYField(fieldCaptions[i])) {
-                yfieldIndex = i;
-            }
-        }
-        // feature 构建后期支持坐标系 4326/3857
-        let features = [];
-        for (let i = 0, len = dataContent.rows.length; i < len; i++) {
-            let row = dataContent.rows[i];
-            //if (featureFrom === "LonLat") {
-            let x = Number(row[xfieldIndex]),
-                y = Number(row[yfieldIndex]);
-
-            //属性信息
-            let attributes = {};
-            for (let index in dataContent.colTitles) {
-                let key = dataContent.colTitles[index];
-                attributes[key] = dataContent.rows[i][index];
-            }
-
-            //目前csv 只支持处理点，所以先生成点类型的 geojson
-            let feature = {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [x, y]
-                },
-                "properties": attributes
-            };
-            features.push(feature);
-        }
-        return features;
-    },
-    /**
-     * 判断是否地理X坐标
-     * @param data
-     */
-    isXField(data) {
-        var lowerdata = data.toLowerCase();
-        return (lowerdata === "x" || lowerdata === "smx" ||
-            lowerdata === "jd" || lowerdata === "经度" || lowerdata === "东经" || lowerdata === "longitude" ||
-            lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng");
-    },
-
-    /**
-     * 判断是否地理Y坐标
-     * @param data
-     */
-    isYField(data) {
-        var lowerdata = data.toLowerCase();
-        return (lowerdata === "y" || lowerdata === "smy" ||
-            lowerdata === "wd" || lowerdata === "纬度" || lowerdata === "北纬" ||
-            lowerdata === "latitude" || lowerdata === "lat");
-    },
-    /**
-     * 字符串转为dataEditor 支持的csv格式数据
-     * @param string
-     * @param withoutTitle
-     */
-    string2Csv(string, withoutTitle) {
-        // let rows = string.split('\r\n');
-        let rows = string.split('\n');
-        let result = {};
-        if (!withoutTitle) {
-            result["colTitles"] = rows[0].split(',');
-        } else {
-            result["colTitles"] = [];
-        }
-        result['rows'] = [];
-        for (let i = (withoutTitle) ? 0 : 1; i < rows.length; i++) {
-            rows[i] && result['rows'].push(rows[i].split(','));
-        }
-        return result;
-    }
-
-};
-// CONCATENATED MODULE: ./src/common/widgets/util/index.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-
-// CONCATENATED MODULE: ./src/common/widgets/index.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-//数据
-
-//组件
-
-//提示框微件
-
-//公用模板：
-
-
-
-
-
-
-
-
-
-
-//工具类
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -65038,6 +64857,273 @@ let Lang = {
 SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
 
+// CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.Widgets.FileReaderUtil
+ * @classdesc 微件读取文件工具类
+ * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
+ */
+let FileReaderUtil = {
+    rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
+    rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
+    rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
+
+    /**
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.readFile
+     * @description 读取文件
+     * @param {string} fileType - 当前读取的文件类型
+     *
+     * @param {Object} file - 读取回来的文件内容对象
+     * @param {function} success - 读取文件成功回调函数
+     * @param {function} failed - 读取文件失败回调函数
+     * @param {Object} context - 回调重定向对象
+     */
+    readFile(fileType, file, success, failed, context) {
+        if (FileTypes.JSON === fileType || FileTypes.GEOJSON === fileType) {
+            this.readTextFile(file, success, failed, context)
+        } else if (FileTypes.EXCEL === fileType || FileTypes.CSV === fileType) {
+            this.readXLSXFile(file, success, failed, context)
+        }
+    },
+
+    /**
+     * 读取文本文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param {Object} context - 回调重定向对象
+     */
+    readTextFile(file, success, failed, context) {
+        let reader = new FileReader();
+        reader.onloadend = function (evt) {
+            success && success.call(context, evt.target.result);
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error)
+        };
+        this.rAT ? reader.readAsText(file.file, 'utf-8') : reader.readAsBinaryString(file.file);
+    },
+
+    /**
+     * 读取excel或csv文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param {Object} context - 回调重定向对象
+     */
+    readXLSXFile(file, success, failed, context) {
+        let reader = new FileReader();
+        reader.onloadend = function (evt) {
+            let xLSXData = new Uint8Array(evt.target.result);
+            let workbook = external_function_try_return_XLSX_catch_e_return_default.a.read(xLSXData, {type: "array"});
+            try {
+                if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
+                    //暂时只读取第一个sheets的内容
+                    let sheetName = workbook.SheetNames[0];
+                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_default.a.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+                    success && success.call(context, xLSXCSVString);
+                }
+            } catch (error) {
+                failed && failed.call(context, error);
+            }
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error)
+        };
+        this.rABF && reader.readAsArrayBuffer(file.file);
+    },
+
+    /**
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.processDataToGeoJson
+     * @description 将读取回来得数据统一处理为 GeoJSON 格式
+     * @param {string} type - 文件类型
+     * @param {Object} data - 读取返回的数据对象
+     * @param {function} success - 数据处理成功的回调
+     * @param {function} failed - 数据处理失败的回调
+     * @param {Object} context - 回调重定向对象
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @private
+     */
+    processDataToGeoJson(type, data, success, failed, context) {
+        let geojson = null;
+        if (type === "EXCEL" || type === "CSV") {
+            geojson = this.processExcelDataToGeoJson(data);
+            success && success.call(context, geojson);
+        } else if (type === 'JSON' || type === 'GEOJSON') {
+            let result = data;
+            //geojson、json未知，通过类容来判断
+            if ((typeof result) === "string") {
+                result = JSON.parse(result);
+            }
+            if (result.type === 'ISERVER') {
+                geojson = result.data.recordsets[0].features;
+            } else if (result.type === 'FeatureCollection') {
+                //geojson
+                geojson = result;
+            } else {
+                //不支持数据
+                failed && failed.call(context, Lang.i18n('msg_dataInWrongGeoJSONFormat'));
+            }
+            success && success.call(context, geojson);
+        } else {
+            failed && failed.call(context, Lang.i18n('msg_dataInWrongFormat'));
+        }
+    },
+    /**
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
+     * @description 表格文件数据处理
+     * @param {Object} data - 读取的表格文件数据
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @private
+     */
+    processExcelDataToGeoJson(data) {
+        //处理为对象格式转化
+        let dataContent = this.string2Csv(data);
+        let fieldCaptions = dataContent.colTitles;
+
+        //位置属性处理
+        let xfieldIndex = -1,
+            yfieldIndex = -1;
+        for (let i = 0, len = fieldCaptions.length; i < len; i++) {
+            if (this.isXField(fieldCaptions[i])) {
+                xfieldIndex = i;
+            }
+            if (this.isYField(fieldCaptions[i])) {
+                yfieldIndex = i;
+            }
+        }
+        // feature 构建后期支持坐标系 4326/3857
+        let features = [];
+        for (let i = 0, len = dataContent.rows.length; i < len; i++) {
+            let row = dataContent.rows[i];
+            //if (featureFrom === "LonLat") {
+            let x = Number(row[xfieldIndex]),
+                y = Number(row[yfieldIndex]);
+
+            //属性信息
+            let attributes = {};
+            for (let index in dataContent.colTitles) {
+                let key = dataContent.colTitles[index];
+                attributes[key] = dataContent.rows[i][index];
+            }
+
+            //目前csv 只支持处理点，所以先生成点类型的 geojson
+            let feature = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [x, y]
+                },
+                "properties": attributes
+            };
+            features.push(feature);
+        }
+        return features;
+    },
+    /**
+     * 判断是否地理X坐标
+     * @param data
+     */
+    isXField(data) {
+        var lowerdata = data.toLowerCase();
+        return (lowerdata === "x" || lowerdata === "smx" ||
+            lowerdata === "jd" || lowerdata === "经度" || lowerdata === "东经" || lowerdata === "longitude" ||
+            lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng");
+    },
+
+    /**
+     * 判断是否地理Y坐标
+     * @param data
+     */
+    isYField(data) {
+        var lowerdata = data.toLowerCase();
+        return (lowerdata === "y" || lowerdata === "smy" ||
+            lowerdata === "wd" || lowerdata === "纬度" || lowerdata === "北纬" ||
+            lowerdata === "latitude" || lowerdata === "lat");
+    },
+    /**
+     * 字符串转为dataEditor 支持的csv格式数据
+     * @param string
+     * @param withoutTitle
+     */
+    string2Csv(string, withoutTitle) {
+        // let rows = string.split('\r\n');
+        let rows = string.split('\n');
+        let result = {};
+        if (!withoutTitle) {
+            result["colTitles"] = rows[0].split(',');
+        } else {
+            result["colTitles"] = [];
+        }
+        result['rows'] = [];
+        for (let i = (withoutTitle) ? 0 : 1; i < rows.length; i++) {
+            rows[i] && result['rows'].push(rows[i].split(','));
+        }
+        return result;
+    }
+
+};
+
+SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
+
+
+// CONCATENATED MODULE: ./src/common/widgets/util/index.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+// CONCATENATED MODULE: ./src/common/widgets/index.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+//数据
+
+//组件
+
+//提示框微件
+
+//公用模板：
+
+
+
+
+
+
+
+
+
+
+//工具类
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
 
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -65054,6 +65140,7 @@ let en = {
     'title_dataFlowService': 'Data Flow Service',
     'title_distributedAnalysis': 'Distributed Analysis',
     'title_clientComputing': 'Client Computing',
+    'title_dataServiceQuery': 'Data Service Query',
 
     'text_input_value_inputDataFlowUrl': 'Please enter the data stream service address such as: ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': 'Display feature information',
@@ -65109,19 +65196,37 @@ let en = {
     'text_label_buffer': '[Buffer]',
     'text_label_isolines': '[Isolines]',
     'text_label_queryRangeTips': 'The default is the full range of input data. Example: -74.050, 40.650, -73.850, 40.850',
-    
+    'text_label_queryModel': 'Query mode',
+    'text_label_IDArrayOfFeatures': 'ID array of features',
+    'text_label_maxFeatures': 'The maximum number of features that can be returned',
+    'text_label_bufferDistance': 'Buffer distance',
+    'text_label_queryRange1': 'Query range',
+    'text_label_spatialQueryMode': 'Spatial query mode',
+    'text_label_featureFilter': 'Feature filter',
+    'text_label_geometricObject': 'Geometric object',
+    'text_label_queryMode': 'Query mode',
+
     "btn_analyze": "Analyze",
     "btn_analyzing": "Analyzing",
     "btn_emptyTheAnalysisLayer": "Empty the analysis layer",
     "btn_cancelAnalysis": "Cancel",
+    "btn_query": "Query",
+    "btn_querying": "Querying",
+    "btn_emptyTheRresultLayer": "Clear all result layers",
 
+    'msg_dataReturnedIsEmpty.': 'The request is successful and the data returned by the query is empty.',
     'msg_dataFlowServiceHasBeenSubscribed': 'The data stream service has been subscribed to.',
     'msg_inputDataFlowUrlFirst': 'Please enter the data stream service address first.',
     'msg_datasetOrMethodUnsupport': 'This dataset does not support this analysis type. Please reselect the dataset.',
     'msg_selectDataset': 'Please select a data set!',
     'msg_setTheWeightField': 'Please set the weight field!',
     'msg_theFieldNotSupportAnalysis': 'The field you currently select does not support analysis!',
-    'msg_resultIsEmpty': 'The result of the analysis is empty!'
+    'msg_resultIsEmpty': 'The result of the analysis is empty!',
+    'msg_openFileFail': 'Failed to open file!',
+    'msg_fileTypeUnsupported': 'File format is not supported!',
+    'msg_fileSizeExceeded': 'File size exceeded! The file size should not exceed 10M!',
+    'msg_dataInWrongGeoJSONFormat': 'Wrong data format! Non standard GEOJSON format data!',
+    'msg_dataInWrongFormat': 'Wrong data format! Non standard EXCEL, CSV or GEOJSON format data!'
 
 
 };
@@ -65145,6 +65250,7 @@ let zh = {
     'title_dataFlowService': '数据流服务',
     'title_distributedAnalysis': '分布式分析',
     'title_clientComputing': '客户端计算',
+    'title_dataServiceQuery': '数据服务查询',
     
     'text_input_value_inputDataFlowUrl': '请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': '显示要素信息',
@@ -65200,11 +65306,22 @@ let zh = {
     'text_label_buffer': '[缓冲区]',
     'text_label_isolines': '[等值线]',
     'text_label_queryRangeTips': '默认为输入数据的全幅范围。范例：-74.050,40.650,-73.850,40.850',
+    'text_label_IDArrayOfFeatures': '要素 ID 数组',
+    'text_label_maxFeatures': '最多可返回的要素数量',
+    'text_label_bufferDistance': '缓冲区距离',
+    'text_label_queryRange1': '查询范围',
+    'text_label_spatialQueryMode': '空间查询模式',
+    'text_label_featureFilter': '要素过滤器',
+    'text_label_geometricObject': '几何对象',
+    'text_label_queryMode': '查询模式',
 
     "btn_analyze": "分析",
     "btn_analyzing": "分析中",
     "btn_emptyTheAnalysisLayer": "清空分析图层",
     "btn_cancelAnalysis": "取消",
+    "btn_query": "查询",
+    "btn_querying": "查询中",
+    "btn_emptyTheRresultLayer": "清除所有结果图层",
 
 
     'msg_dataFlowServiceHasBeenSubscribed': '已订阅该数据流服务。',
@@ -65213,8 +65330,14 @@ let zh = {
     'msg_selectDataset': '请选择数据集！',
     'msg_setTheWeightField': '请设置权重字段！',
     'msg_theFieldNotSupportAnalysis': '您当前选择的字段不支持分析！',
-    'msg_resultIsEmpty': '分析的结果为空！'
-    
+    'msg_resultIsEmpty': '分析的结果为空！',
+    'msg_dataReturnedIsEmpty': '请求成功，查询返回的数据为空。',
+    'msg_openFileFail': '打开文件失败！',
+    'msg_fileTypeUnsupported': '不支持该文件格式！',
+    'msg_fileSizeExceeded': '文件大小超限！文件大小不得超过 10M！',
+    'msg_dataInWrongGeoJSONFormat': '数据格式错误！非标准的 GEOJSON 格式数据！',
+    'msg_dataInWrongFormat': '数据格式错误！非标准的 EXCEL, CSV 或 GEOJSON 格式数据！'
+
 };
 
 SuperMap.Lang["zh-CN"] = zh;
@@ -70854,7 +70977,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             return resolutions;
         }
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(Util_Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+            resolutions.push(Util_Util.getResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
     }
@@ -76666,11 +76789,11 @@ class MapboxStyles_MapboxStyles extends external_ol_default.a.Observable {
         if (this.style) {
             this._mbStyle = this.style;
             this._resolve(this.style);
-        } else {
+        } else if (this.url) {
             FetchRequest.get(this.url).then(response =>
                 response.json()).then(mbStyle => {
                 this._mbStyle = mbStyle;
-                this._resolve(mbStyle)
+                this._resolve()
             });
         }
     }
@@ -76730,56 +76853,60 @@ class MapboxStyles_MapboxStyles extends external_ol_default.a.Observable {
             Util_Util.extend(oldLayerStyle, newLayerStyle);
             count++;
         }
-        this._createStyleFunction(this._mbStyle, this._spriteData, this._spriteImageUrl);
+        this._createStyleFunction();
     }
-    _resolve(mbStyle) {
-        if (mbStyle.sprite) {
+    setStyle(style) {
+        this._mbStyle = style;
+        this._resolve();
+    }
+    _resolve() {
+        if (this._mbStyle.sprite) {
             const spriteScale = window.devicePixelRatio >= 1.5 ? 0.5 : 1;
             const sizeFactor = spriteScale == 0.5 ? '@2x' : '';
             //兼容一下iServer 等iServer修改
-            mbStyle.sprite = mbStyle.sprite.replace('@2x', "");
-            const spriteUrl = this._toSpriteUrl(mbStyle.sprite, this.path, sizeFactor + '.json');
+            this._mbStyle.sprite = this._mbStyle.sprite.replace('@2x', "");
+            const spriteUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + '.json');
             FetchRequest.get(spriteUrl)
                 .then(response =>
                     response.json()).then(spritesJson => {
                     this._spriteData = spritesJson;
-                    this._spriteImageUrl = this._toSpriteUrl(mbStyle.sprite, this.path, sizeFactor + '.png');
-                    let spriteImage = null;
+                    this._spriteImageUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + '.png');
+                    this._spriteImage = null;
                     const img = new Image();
                     img.crossOrigin = 'anonymous';
                     img.onload = () => {
-                        spriteImage = img;
-                        this._initStyleFunction(mbStyle, this._spriteData, spriteImage);
+                        this._spriteImage = img;
+                        this._initStyleFunction();
                     };
                     img.src = this._spriteImageUrl;
 
                 })
         } else {
-            this._initStyleFunction(mbStyle, null, null);
+            this._initStyleFunction();
         }
     }
-    _initStyleFunction(mbStyle, spriteData, spriteImage) {
-        this._createStyleFunction(mbStyle, spriteData, spriteImage);
+    _initStyleFunction() {
+        this._createStyleFunction();
         /**
          * @event ol.supermap.MapboxStyles#styleloaded
          * @description 样式加载成功后触发。
          */
         this.dispatchEvent('styleloaded');
     }
-    _createStyleFunction(mbStyle, spriteData, spriteImage) {
+    _createStyleFunction() {
         if (this.map) {
-            window.olms.applyBackground(this.map, mbStyle);
+            window.olms.applyBackground(this.map, this._mbStyle);
         }
-        this.featureStyleFuntion = this._getStyleFunction(mbStyle, spriteData, spriteImage)
+        this.featureStyleFuntion = this._getStyleFunction();
     }
-    _getStyleFunction(mbStyle, spriteData, spriteImage) {
-        var fun = window.olms.stylefunction({
+    _getStyleFunction() {
+        this.fun = window.olms.stylefunction({
             setStyle: function () {},
             set: function () {},
             changed: function () {}
-        }, mbStyle, this.source, this.resolutions, spriteData, "", spriteImage);
+        }, this._mbStyle, this.source, this.resolutions, this._spriteData, "", this._spriteImage);
         return (feature, resolution) => {
-            const style = fun(feature, resolution);
+            const style = this.fun(feature, resolution);
             if (this.selectedObject && this.selectedObject.selectedId === feature.getId() && this.selectedObject.sourceLayer === feature.get('layer')) {
                 const styleIndex = style && style[0] ? style[0].getZIndex() : 99999;
                 let selectStyles = this.selectedStyle(feature, resolution);
@@ -84914,7 +85041,12 @@ module.exports = __webpack_require__(36);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 102 */,
+/* 102 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 103 */,
 /* 104 */,
 /* 105 */,
@@ -84925,29 +85057,30 @@ module.exports = __webpack_require__(36);
 /* 110 */,
 /* 111 */,
 /* 112 */,
-/* 113 */
+/* 113 */,
+/* 114 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 114 */,
 /* 115 */,
 /* 116 */,
 /* 117 */,
-/* 118 */
+/* 118 */,
+/* 119 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 119 */,
 /* 120 */,
 /* 121 */,
 /* 122 */,
 /* 123 */,
 /* 124 */,
-/* 125 */
+/* 125 */,
+/* 126 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

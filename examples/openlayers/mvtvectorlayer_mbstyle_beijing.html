@@ -82,156 +82,174 @@
 </head>
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-<div id="popup" class="ol-popup">
-    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-    <div id="popup-content"></div>
-</div>
-<div id='menu' class="mapboxgl-ctrl">
-    <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
-    <label for='basic' data-i18n="resources.text_vectorDefaultStyle"></label>
-    <input id='dark' type='radio' name='rtoggle' value='dark'>
-    <label for='dark' data-i18n="resources.text_darkBlueStyle"></label>
-    <input id='fiordcolor' type='radio' name='rtoggle' value='fiordcolor'>
-    <label for='fiordcolor' data-i18n="resources.text_fiordStyle"></label>
-    <input id='klokantech' type='radio' name='rtoggle' value='klokantech'>
-    <label for='klokantech' data-i18n="resources.text_klokantechStyle"></label>
-    <input id='osm' type='radio' name='rtoggle' value='OSM'>
-    <label for='osm' data-i18n="resources.text_osmStyle"></label>
-    <input id='positron' type='radio' name='rtoggle' value='positron'>
-    <label for='positron' data-i18n="resources.text_positronStyle"></label>
-</div>
-<script type="text/javascript" include='bootstrap-css' src="../js/include-web.js"></script>
-<script type="text/javascript" include='ol-debug,ol-mapbox-style' src="../../dist/openlayers/include-openlayers.js"></script>
-<script type="text/javascript">
-    var url = (window.isLocal ? window.server : "http://54.223.164.155:8090") +
-        "/iserver/services/map-beijing/rest/maps/beijingMap";
-    /**
-     * Elements that make up the popup.
-     */
-    var container = document.getElementById('popup');
-    var content = document.getElementById('popup-content');
-    var closer = document.getElementById('popup-closer');
-    /**
-     * Create an overlay to anchor the popup to the map.
-     */
-    var overlay = new ol.Overlay({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    });
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
+    <div id='menu' class="mapboxgl-ctrl">
+        <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+        <label for='basic' data-i18n="resources.text_vectorDefaultStyle"></label>
+        <input id='dark' type='radio' name='rtoggle' value='dark'>
+        <label for='dark' data-i18n="resources.text_darkBlueStyle"></label>
+        <input id='fiordcolor' type='radio' name='rtoggle' value='fiordcolor'>
+        <label for='fiordcolor' data-i18n="resources.text_fiordStyle"></label>
+        <input id='klokantech' type='radio' name='rtoggle' value='klokantech'>
+        <label for='klokantech' data-i18n="resources.text_klokantechStyle"></label>
+        <input id='osm' type='radio' name='rtoggle' value='OSM'>
+        <label for='osm' data-i18n="resources.text_osmStyle"></label>
+        <input id='positron' type='radio' name='rtoggle' value='positron'>
+        <label for='positron' data-i18n="resources.text_positronStyle"></label>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/i18next/10.0.7/i18next.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.1/jquery-i18next.min.js"></script>
+    <script type="text/javascript" src="../js/utils.js"></script>
+    <script type="text/javascript" src=".././locales/zh-CN/resources.js"></script>
+    <script type="text/javascript" src="../js/localization.js"></script>
+    <script>
+        Localization.initializeI18N('../', function () {
+            Localization.localize();
+            Localization.initGlobal();
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 
-
-    /**
-     * Add a click handler to hide the popup.
-     * @return {boolean} Don't follow the href.
-     */
-    closer.onclick = function () {
-        overlay.setPosition(undefined);
-        closer.blur();
-        return false;
-    };
-
-    var stylesJson = {
-        'basic': "beijing.json",
-        'dark': "beijingDark.json",
-        'fiordcolor': "beijingFiord.json",
-        'klokantech': "beijingKlokantech.json",
-        'osm': "beijingOSM.json",
-        'positron': "beijingPositron.json"
-    }
-    var vectorLayer, currentStyleID, styles = {};
-    var map = new ol.Map({
-        target: 'map',
-        overlays: [overlay],
-        controls: ol.control.defaults({
-            attributionOptions: {
-                collapsed: false
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.js"></script>
+    <script type="text/javascript" src="http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js"></script>
+    <script type="text/javascript" src="../../dist/openlayers/iclient9-openlayers-es6.min.js"></script>
+    <link rel="stylesheet" href="../../dist/openlayers/iclient9-openlayers.min.css">
+    <script type="text/javascript">
+        var url = (window.isLocal ? window.server : "http://54.223.164.155:8090") +
+            "/iserver/services/map-beijing/rest/maps/beijingMap";
+        /**
+         * Elements that make up the popup.
+         */
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+        /**
+         * Create an overlay to anchor the popup to the map.
+         */
+        var overlay = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
             }
-        })
-            .extend([new ol.supermap.control.Logo()]),
-        view: new ol.View({
-            maxResolution: 40075016.68557849 / 512,
-            center: ol.proj.fromLonLat([116.4, 39.9]),
-            zoom: 11
-        })
-    });
-    var targetStyle;
-    switchStyle(null, 'basic');
-    map.on('click', function (e) {
-        var features = map.getFeaturesAtPixel(e.pixel);
-        if (features) {
-            var coordinate = e.coordinate;
-            content.innerHTML = "Layer: " + features[0].get('layer') + "<br />" +
-                (features[0].get('NAME') ? "Name:  " + features[0].get('NAME') + "<br />" : "") +
-                (features[0].get('道路名称') ? "道路名称:  " + features[0].get('道路名称') + "<br />" : "");
-            overlay.setPosition(coordinate);
-            targetStyle.setSelectedId(features[0].getId(), features[0].get('layer'));
-            vectorLayer.changed();
-        }
+        });
 
-    });
-    var layerList = document.getElementById('menu');
-    var inputs = layerList.getElementsByTagName('input');
 
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].onclick = switchStyle;
-    }
+        /**
+         * Add a click handler to hide the popup.
+         * @return {boolean} Don't follow the href.
+         */
+        closer.onclick = function () {
+            overlay.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
 
-    function switchStyle(e, targetStyleID) {
-        var styleID = targetStyleID || e.target.id;
-        if (styleID === currentStyleID) {
-            return;
+        var stylesJson = {
+            'basic': "beijing.json",
+            'dark': "beijingDark.json",
+            'fiordcolor': "beijingFiord.json",
+            'klokantech': "beijingKlokantech.json",
+            'osm': "beijingOSM.json",
+            'positron': "beijingPositron.json"
         }
-        var options = {
-            source: 'vector-tiles',
-            map: map
-        }
-        overlay.setPosition(undefined);
-        closer.blur();
-        if (styles[styleID]) {
-            options.style = styles[styleID];
-            targetStyle = new ol.supermap.MapboxStyles(options);
-            targetStyle.on('styleloaded', function () {
-                styleLoaded(styleID, this);
-            });
-        } else {
-            $.get('../data/styles/' + stylesJson[styleID], function (json) {
-                styles[styleID] = json;
-                options.style = styles[styleID];
-                targetStyle = new ol.supermap.MapboxStyles(options);
-                targetStyle.on('styleloaded', function () {
-                    styleLoaded(styleID, this);
-                });
+        var vectorLayer, currentStyleID, styles = {};
+        var selectID = 'basic';
+        var map = new ol.Map({
+            target: 'map',
+            overlays: [overlay],
+            controls: ol.control.defaults({
+                    attributionOptions: {
+                        collapsed: false
+                    }
+                })
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                maxResolution: 40075016.68557849 / 512,
+                center: ol.proj.fromLonLat([116.4, 39.9]),
+                zoom: 11
             })
-        }
-    }
+        });
+        var targetStyle;
+        switchStyle(null, 'basic');
+        map.on('click', function (e) {
+            var features = map.getFeaturesAtPixel(e.pixel);
+            if (features) {
+                var coordinate = e.coordinate;
+                content.innerHTML = "Layer: " + features[0].get('layer') + "<br />" +
+                    (features[0].get('NAME') ? "Name:  " + features[0].get('NAME') + "<br />" : "") +
+                    (features[0].get('道路名称') ? "道路名称:  " + features[0].get('道路名称') + "<br />" : "");
+                overlay.setPosition(coordinate);
+                targetStyle.setSelectedId(features[0].getId(), features[0].get('layer'));
+                vectorLayer.changed();
+            }
 
-    function styleLoaded(styleID, targetStyle) {
-        if (!vectorLayer) {
-            var vectorTileOptions = {
-                url: url,
-                format: new ol.format.MVT({
-                    featureClass: ol.Feature
-                }),
-                tileType: 'ViewBounds'
-            };
-            vectorLayer = new ol.layer.VectorTile({
-                //设置避让参数
-                declutter: true,
-                style: targetStyle.getStyleFunction(),
-                source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
-            });
-            map.addLayer(vectorLayer);
-        } else {
-            vectorLayer.setStyle(targetStyle.getStyleFunction());
-            currentStyleID = styleID;
+        });
+        var layerList = document.getElementById('menu');
+        var inputs = layerList.getElementsByTagName('input');
+
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].onclick = switchStyle;
         }
-        currentStyleID = styleID;
-    }
-</script>
+
+        function switchStyle(e, targetStyleID) {
+            selectID = targetStyleID || e.target.id;
+            if (selectID === currentStyleID) {
+                return;
+            }
+            overlay.setPosition(undefined);
+            closer.blur();
+            if (styles[selectID]) {
+                targetStyle.setStyle(styles[selectID]);
+            } else {
+                $.get('../data/styles/' + stylesJson[selectID], function (json) {
+                    styles[selectID] = json;
+                    if (targetStyle) {
+                        targetStyle.setStyle(json);
+                    } else {
+                        targetStyle = new ol.supermap.MapboxStyles({
+                            source: 'vector-tiles',
+                            map: map,
+                            style: json
+                        });
+                        targetStyle.on('styleloaded', function () {
+                            styleLoaded(selectID);
+                        });
+                    }
+
+                })
+            }
+        }
+
+        function styleLoaded(styleID) {
+            currentStyleID = styleID;
+            if (!vectorLayer) {
+                var vectorTileOptions = {
+                    url: url,
+                    format: new ol.format.MVT({
+                        featureClass: ol.Feature
+                    }),
+                    tileType: 'ViewBounds'
+                };
+                vectorLayer = new ol.layer.VectorTile({
+                    //设置避让参数
+                    declutter: true,
+                    style: targetStyle.getStyleFunction(),
+                    source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
+                });
+                map.addLayer(vectorLayer);
+            } else {
+                vectorLayer.changed();
+            }
+
+        }
+    </script>
 </body>
 
 </html>

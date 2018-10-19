@@ -31,6 +31,7 @@ var typeLinks = {
     "ol.source.State": olapi + "ol.source.html#.State",
     "ol.layer.Layer": olapi + "ol.layer.Layer.html",
     "ol.FeatureStyleFunction": olapi + "ol.html#.FeatureStyleFunction",
+    "ol.StyleFunction": olapi + "ol.html#.StyleFunction",
    
 
     //leaflet
