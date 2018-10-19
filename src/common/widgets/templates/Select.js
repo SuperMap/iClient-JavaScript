@@ -1,57 +1,51 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 import {SuperMap} from '../../SuperMap';
+import {TemplateBase} from './TemplateBase';
 
 /**
  * @class SuperMap.Widgets.Select
  * @classdesc 微件统一的文字下拉框。
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
+ * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
  * @category Widgets Common
  */
-export class Select {
+export class Select extends TemplateBase {
     constructor(options) {
+        super(options);
         this._initView(options);
     }
 
     _initView(options) {
-        let selectTool = this._createElement('div', "select-tool");
+        let selectTool = this._createElement('div', "widget-selecttool");
 
         if (options.labelName) {
-            let label = this._createElement('label', 'lable_describe', selectTool);
+            let label = this._createElement('label', 'widget-selecttool__lable--describe', selectTool);
             label.innerHTML = options.labelName;
         }
 
-        let chartSelect = this._createElement('div', 'chart_select', selectTool);
+        let chartSelect = this._createElement('div', 'widget-selecttool--chart', selectTool);
         chartSelect.setAttribute('tabindex', '1');
 
-        let selectName = this._createElement('div', "select-name", chartSelect);
+        let selectName = this._createElement('div', "widget-selecttool__name", chartSelect);
         selectName.title = options.optionsArr[0];
         selectName.innerHTML = options.optionsArr[0];
 
-        let chartTriangleBtn = this._createElement('div', 'chart-triangle-btn', chartSelect);
-        let triangleBtn = this._createElement('div', 'triangle-down-img', chartTriangleBtn);
-        let selectContent = this._createElement('div', 'select-content', chartSelect);
-        let scrollarea = this._createElement('div', 'scrollarea chart-select-content', selectContent);
-        let scrollareaContent = this._createElement('div', 'scrollarea-content', scrollarea);
+        let chartTriangleBtn = this._createElement('div', 'widget-selecttool__trianglebtn--chart', chartSelect);
+        let triangleBtn = this._createElement('div', 'widget-triangle-down-img', chartTriangleBtn);
+        let selectContent = this._createElement('div', 'widget-selecttool__content', chartSelect);
+        let scrollarea = this._createElement('div', 'widget-selecttool__content--chart', selectContent);
+        let scrollareaContent = this._createElement('div', 'widget-selecttool__scrollarea__content', scrollarea);
         scrollareaContent.setAttribute('tabindex', '1');
-        this.createOptions(scrollareaContent, options.optionsArr)
+        this.createOptions(scrollareaContent, options.optionsArr);
         this.optionClickEvent(scrollareaContent, selectName, options.optionsClickCb);
         // 下拉框显示 & 隐藏事件
         this._selectClickEvent(chartSelect, selectContent, triangleBtn);
-        this.selectTool = selectTool;
-    }
-
-    /**
-     * @function SuperMap.Widgets.Select.prototype.getElement
-     * @description 获取当前模板 Dom 元素。
-     */
-    getElement() {
-        return this.selectTool;
+        this.rootContainer = selectTool;
     }
 
     /**
@@ -60,7 +54,7 @@ export class Select {
      */
     createOptions(container, optionsArr) {
         for (let i in optionsArr) {
-            let option = this._createElement('div', 'select-option', container);
+            let option = this._createElement('div', 'widget-selecttool__option', container);
             option.title = optionsArr[i];
             option.innerHTML = optionsArr[i];
         }
@@ -75,26 +69,26 @@ export class Select {
         eventElement.onclick = function (e) {
             if (contentElement.style.display === "block") {
                 contentElement.style.display = "none";
-                triangleBtn.className = "triangle-down-img";
+                triangleBtn.className = "widget-triangle-down-img";
             } else {
                 contentElement.style.display = "block";
                 triangleBtn.className = "triangle-up-img";
             }
             e.preventDefault();
             e.stopPropagation();
-        }
+        };
         eventElement.onmousedown = function (evt) {
-            //console.log('drop-down-box onmousedown '+evt.target.className);
+            //console.log('dropdownbox onmousedown '+evt.target.className);
             if (evt.target !== this) {
                 this.focus();
                 evt.preventDefault();
                 evt.stopPropagation()
             }
-        }
+        };
         eventElement.onblur = function () {
 
             contentElement.style.display = "none";
-            triangleBtn.className = "triangle-down-img";
+            triangleBtn.className = "widget-triangle-down-img";
         }
     }
 

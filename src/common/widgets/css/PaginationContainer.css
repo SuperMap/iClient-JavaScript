@@ -1,4 +1,5 @@
-.widgets-pagination {
+/**分页组件样式**/
+.widget-pagination {
     line-height: normal;
     width: 303px;
     background: #FFFFFF;
@@ -7,18 +8,18 @@
     max-height: 610px;
 }
 
-.widgets-pagination-content {
+.widget-pagination__content {
     max-height: 505px;
 }
 
-.widgets-pagination-link {
+.widget-pagination__link {
     display: table;
     padding: 0;
     margin: 10px auto;
     text-align: center;
 }
 
-.widgets-pagination-link li {
+.widget-pagination__link li {
     float: left;
     display: inline;
     width: 5px;
@@ -32,15 +33,15 @@
     border-bottom: 1px solid transparent;
 }
 
-.widgets-pagination-link li.disable {
+.widget-pagination__link li.disable {
     color: #919191;
 }
 
-.widgets-pagination-link li.disable:hover {
+.widget-pagination__link li.disable:hover {
     cursor: not-allowed;
 }
 
-.widgets-pagination-link li.active {
+.widget-pagination__link li.active {
     color: #FFFFFF;
     background-color: #0083CB;
 }

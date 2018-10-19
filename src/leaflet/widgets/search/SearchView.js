@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-import '../../core/Base';
+import {WidgetsViewBase} from '../WidgetsViewBase';
 import {config} from './CityConfig';
 import {
     // WidgetSelect,
@@ -12,6 +12,7 @@ import {
     PaginationContainer,
     AttributesPopContainer
 } from '@supermap/iclient-common';
+
 import {SearchViewModel} from './SearchViewModel';
 
 /**
@@ -25,25 +26,20 @@ import {SearchViewModel} from './SearchViewModel';
  *                                    配置两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或 ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
  * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能
+ * @param {function} options.style - 设置图层点线面默认样式，点 样式返回 maker 或者 circleMaker;线和面返回 L.path 样式。
+ * @param {function} options.onEachFeature - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
  * @extends {L.Control}
  * @fires L.supermap.widgets.search#searchsucceed
  */
-export var SearchView = L.Control.extend({
+export var SearchView = WidgetsViewBase.extend({
     options: {
-        //控件位置 继承自leaflet control
-        position: 'topright',
-        orientation: 'horizontal',
         cityConfig: config,
         cityGeoCodingConfig: null,
         isGeoCoding: true
     },
 
     initialize(options) {
-        L.setOptions(this, options);
-
-        //事件监听对象
-        this.event = new L.Evented();
-
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
         //当前选中查询的图层名：
         this.currentSearchLayerName = "";
         this.isSearchLayer = false;
@@ -53,12 +49,12 @@ export var SearchView = L.Control.extend({
      * @function L.supermap.widgets.search.prototype.onAdd
      * @description 向底图添加微件
      * @private
+     * @override
      */
     onAdd: function (map) {
-        this.map = map;
         //初始化微件业务逻辑执行对象 viewModel
         this.viewModel = new SearchViewModel(map, this.options.cityGeoCodingConfig);
-        return this._initPoiSearchView();
+        return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
     /**
      * @function L.supermap.widgets.search.prototype.addSearchLayer
@@ -70,39 +66,32 @@ export var SearchView = L.Control.extend({
         this.viewModel.addSearchLayers(layers);
     },
 
-    /**
-     * @function L.supermap.widgets.search.prototype.on
-     * @param {string} eventType - 监听的事件类型
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
-    },
-
     /*----------以下是创建 dom 元素的方法---------*/
     /**
-     * @function L.supermap.widgets.search.prototype._initPoiSearchView
+     * @function L.supermap.widgets.search.prototype._initView
      * @description 创建地址匹配或图层要素查询微件。
+     * @override  //todo 复写的方法是否要加上 这个标签
      * @returns {HTMLElement}
      * @private
+     * @override
      */
-    _initPoiSearchView() {
+    _initView() {
         // self 便于 this 对象的使用
         const self = this;
         const div = document.createElement("div");
-        div.setAttribute("class", "poi");
+        div.setAttribute("class", "widget-search-container");
 
         //外框
         const poiContainer = document.createElement("div");
-        poiContainer.setAttribute("class", "widgets-poi");
+        poiContainer.setAttribute("class", "widget-search");
         //主体
         //---------下拉框：
         const poiSettings = document.createElement("div");
-        poiSettings.setAttribute("class", "widgets-poi-settings");
+        poiSettings.setAttribute("class", "widget-search__settings");
         //下拉框
         const poiSearchName = document.createElement("div");
         //由View 维护，进行交互操作
-        poiSearchName.setAttribute("class", "widgets-poi-settings-name");
+        poiSearchName.setAttribute("class", "widget-search__settings__name");
         //poiSettings.innerHTML 通过下拉框选项改变
 
         poiSettings.appendChild(poiSearchName);
@@ -116,7 +105,7 @@ export var SearchView = L.Control.extend({
         //城市地址匹配页面：
         let citySelect = null;
         if (this.options.isGeoCoding) {
-            const cityTabsPageObj = new CityTabsPage(this.options.cityConfig);
+            const cityTabsPageObj = new CityTabsPage({config: this.options.cityConfig});
             citySelect = cityTabsPageObj.getElement();
             //点选城市名，修改显示，并执行定位城市查询【城市列表列表点击事件】
             cityTabsPageObj.content.onclick = (e) => {
@@ -135,15 +124,15 @@ export var SearchView = L.Control.extend({
         //图层查询页面：写法是为了为了代码可读性
         const layersSelect = function () {
             const layersSelect = document.createElement("div");
-            layersSelect.setAttribute("class", "layers-select");
+            layersSelect.setAttribute("class", "widget-search__layers");
 
             const layersContent = document.createElement("div");
-            layersContent.setAttribute("class", "poi-layers-content");
+            layersContent.setAttribute("class", "widget-search-layers-content");
             layersSelect.appendChild(layersContent);
 
             //header todo 两个选项的功能暂没用到，先关闭，后续用到再打开
             const layersHeader = document.createElement("div");
-            layersHeader.setAttribute("class", "poi-layers-header");
+            layersHeader.setAttribute("class", "widget-search__layers__header");
             //加载搜索条件
             const loadBtn = document.createElement("div");
             loadBtn.setAttribute("class", "load-btn");
@@ -167,7 +156,7 @@ export var SearchView = L.Control.extend({
 
             //body
             const layerSelectOptions = document.createElement("div");
-            layerSelectOptions.setAttribute("class", "poi-layers-body");
+            layerSelectOptions.setAttribute("class", "widget-search__layers__body");
             //选中查询图层监听
             //选择查询图层【图层列表点击事件】
             layerSelectOptions.onclick = (e) => {
@@ -175,19 +164,19 @@ export var SearchView = L.Control.extend({
                 self.clearSearchResult();
 
                 let selectLayerOption = null;
-                if (e.target.classList[0] === "widgets-singlesSelect") {
+                if (e.target.classList[0] === "widget-search__layers__itme__singleselect") {
                     selectLayerOption = e.target;
-                } else if (e.target.classList[0] === "single-default-img" || e.target.classList[0] === "single-label") {
+                } else if (e.target.classList[0] === "widget-single-default-img" || e.target.classList[0] === "single-label") {
                     selectLayerOption = e.target.parentNode;
                 } else {
                     return;
                 }
 
-                if (document.getElementsByClassName("single-checked-img").length > 0) {
-                    document.getElementsByClassName("single-checked-img")[0].setAttribute("class", "single-default-img");
+                if (document.getElementsByClassName("widget-single-checked-img").length > 0) {
+                    document.getElementsByClassName("widget-single-checked-img")[0].setAttribute("class", "widget-single-default-img");
                 }
 
-                selectLayerOption.firstChild.setAttribute("class", "single-checked-img");
+                selectLayerOption.firstChild.setAttribute("class", "widget-single-checked-img");
                 self.currentSearchLayerName = selectLayerOption.lastChild.innerText;
                 self.isSearchLayer = true;
                 poiSearchName.removeChild(poiSearchName.firstChild);
@@ -206,18 +195,18 @@ export var SearchView = L.Control.extend({
         }();
 
         //配置开启 城市匹配功能则添加
-        let navTabsPageOptions = [];
+        let navTabs = [];
         if (citySelect) {
-            navTabsPageOptions.push({
+            navTabs.push({
                 title: "搜索城市",
                 content: citySelect
             })
         }
-        navTabsPageOptions.push({
+        navTabs.push({
             title: "搜索图层",
             content: layersSelect
         });
-        const navTabsPageObject = new NavTabsPage(navTabsPageOptions);
+        const navTabsPageObject = new NavTabsPage({tabs: navTabs});
         const navTabsPage = navTabsPageObject.getElement();
         navTabsPageObject.closeView();
         poiContainer.appendChild(navTabsPage);
@@ -238,7 +227,7 @@ export var SearchView = L.Control.extend({
 
         //---------搜索输入框：
         const poiInputContainer = document.createElement("div");
-        poiInputContainer.setAttribute("class", "widgets-poi-input");
+        poiInputContainer.setAttribute("class", "widget-search__input");
         const poiInput = document.createElement("input");
         poiInput.type = "text";
         poiInput.placeholder = "搜索城市地点或图层要素";
@@ -251,7 +240,6 @@ export var SearchView = L.Control.extend({
         poiInputClose.setAttribute("class", "supermapol-icons-close");
         poiInputClose.hidden = true;
 
-        this.poiInputClose = poiInputClose;
         poiInputContainer.appendChild(poiInputClose);
 
         poiContainer.appendChild(poiInputContainer);
@@ -259,7 +247,7 @@ export var SearchView = L.Control.extend({
 
         //--------搜索按钮：
         const searchBtn = document.createElement("div");
-        searchBtn.setAttribute("class", "widgets-poi-icon supermapol-icons-search");
+        searchBtn.setAttribute("class", "widget-search-icon supermapol-icons-search");
         //查询要素或匹配要素【搜索按钮点击事件】
         searchBtn.onclick = () => {
             //若是遮挡结果显示，则关闭
@@ -307,21 +295,21 @@ export var SearchView = L.Control.extend({
             //【结果列表点击事件】，以支持联动map上对应要素：
             resultDomObj.content.onclick = (e) => {
                 let selectFeatureOption = null;
-                if (e.target.parentNode.className === "poi-result-info") {
+                if (e.target.parentNode.className === "widget-search-result-info") {
                     selectFeatureOption = e.target.parentNode.parentNode;
-                } else if (e.target.parentNode.className === "poi-result-items") {
+                } else if (e.target.parentNode.className === "widget-search__resultitme") {
                     selectFeatureOption = e.target.parentNode;
-                } else if (e.target.className === "poi-result-items") {
+                } else if (e.target.className === "widget-search__resultitme") {
                     selectFeatureOption = e.target;
                 } else {
                     return;
                 }
                 //修改
-                if (document.getElementsByClassName("poi-result-selected").length > 0) {
-                    document.getElementsByClassName("poi-result-selected")[0].classList.remove("poi-result-selected");
+                if (document.getElementsByClassName("widget-search__resultitme-selected").length > 0) {
+                    document.getElementsByClassName("widget-search__resultitme-selected")[0].classList.remove("widget-search__resultitme-selected");
                 }
 
-                selectFeatureOption.firstChild.classList.add("poi-result-selected");
+                selectFeatureOption.firstChild.classList.add("widget-search__resultitme-selected");
 
                 let filter = selectFeatureOption.children[1].firstChild.innerText;
                 //联动地图上要素响应
@@ -345,24 +333,14 @@ export var SearchView = L.Control.extend({
             poiInputClose.hidden = false;
         };
 
-        //关闭在控件上触发地图的事件响应：
-        poiContainer.addEventListener('mouseover', function () {
-            self.map.dragging.disable();
-            self.map.scrollWheelZoom.disable();
-            self.map.doubleClickZoom.disable();
-        });
-        poiContainer.addEventListener('mouseout', function () {
-            self.map.dragging.enable();
-            self.map.scrollWheelZoom.enable();
-            self.map.doubleClickZoom.enable();
-        });
-
         //添加提示框
         this.messageBox = new MessageBox();
         //绑定 VM 的监听
         this._addViewModelListener();
         div.appendChild(poiContainer);
 
+        //阻止 map 默认事件
+        this._preventMapEvent(div, this.map);
         return div;
     },
 
@@ -373,13 +351,13 @@ export var SearchView = L.Control.extend({
      */
     _createSearchLayerItem(layerName) {
         const layerOption = document.createElement("div");
-        layerOption.setAttribute("class", "poi-search-layer");
+        layerOption.setAttribute("class", "widget-search__layers__itme");
 
         // 创建圆形单选框
         const singleSelect = document.createElement("div");
-        singleSelect.setAttribute("class", "widgets-singlesSelect");
+        singleSelect.setAttribute("class", "widget-search__layers__itme__singleselect");
         const singleIcon = document.createElement("div");
-        singleIcon.setAttribute("class", "single-default-img");
+        singleIcon.setAttribute("class", "widget-single-default-img");
         singleSelect.appendChild(singleIcon);
         const singleLabel = document.createElement("span");
         singleLabel.setAttribute("class", "single-label");
@@ -396,7 +374,7 @@ export var SearchView = L.Control.extend({
         };*/
         // layerOption.appendChild(attributesSelect);
 
-        document.getElementsByClassName("poi-layers-body")[0].appendChild(layerOption);
+        document.getElementsByClassName("widget-search__layers__body")[0].appendChild(layerOption);
     },
 
     /**
@@ -406,22 +384,22 @@ export var SearchView = L.Control.extend({
      */
     _createResultItem(featureType, properties) {
         const item = document.createElement("div");
-        item.setAttribute("class", "poi-result-items");
+        item.setAttribute("class", "widget-search__resultitme");
 
         let icon = document.createElement("div");
         if (featureType === "Point" || featureType === "MultiPoint") {
-            icon.setAttribute("class", "supermapol-icons-marker-layer poi-result-icon");
+            icon.setAttribute("class", "supermapol-icons-marker-layer widget-search-result-icon");
         } else if (featureType === "LineString" || featureType === "MultiLineString ") {
-            icon.setAttribute("class", "supermapol-icons-line-layer poi-result-icon");
+            icon.setAttribute("class", "supermapol-icons-line-layer widget-search-result-icon");
         } else if (featureType === "Polygon" || featureType === "MultiPolygon") {
-            icon.setAttribute("class", "supermapol-icons-polygon-layer poi-result-icon");
+            icon.setAttribute("class", "supermapol-icons-polygon-layer widget-search-result-icon");
         } else {
-            icon.setAttribute("class", "supermapol-icons-point-layer poi-result-icon");
+            icon.setAttribute("class", "supermapol-icons-point-layer widget-search-result-icon");
         }
         item.appendChild(icon);
 
         const info = document.createElement("div");
-        info.setAttribute("class", "poi-result-info");
+        info.setAttribute("class", "widget-search-result-info");
         const info1 = document.createElement("div");
         info.appendChild(info1);
 
@@ -439,7 +417,7 @@ export var SearchView = L.Control.extend({
 
         //暂时删除复选框UI
         const check = document.createElement("div");
-        check.setAttribute("class", "widget-checkbox checkbox-default-img");
+        check.setAttribute("class", "widget-checkbox widget-checkbox-default-img");
         // item.appendChild(check);
         return item;
     },
@@ -468,14 +446,16 @@ export var SearchView = L.Control.extend({
             const data = e.result;
             this.clearSearchResult();
             this.searchResultLayer = L.featureGroup(data, {
-                pointToLayer: null
+                pointToLayer: this.options.style,
+                style: this.options.style,
+                onEachFeature: this.options.onEachFeature
             }).bindPopup(function (layer) {
                 return (new AttributesPopContainer(layer.feature.properties)).getElement();
             }).addTo(this.map);
 
             //查询结果列表：
             this._prepareResultData(data);
-            this.event.fire("searchsucceed", {result: this.searchResultLayer.toGeoJSON()});
+            this._event.fire("searchsucceed", {result: this.searchResultLayer.toGeoJSON()});
         });
 
         //----地址匹配服务监听
@@ -484,10 +464,13 @@ export var SearchView = L.Control.extend({
             //先清空当前有的地址匹配图层
             this.clearSearchResult();
 
-            this.searchResultLayer = L.geoJSON(data)
-                .bindPopup(function (layer) {
-                    return (new AttributesPopContainer(layer.feature.properties)).getElement();
-                }).addTo(this.map);
+            this.searchResultLayer = L.geoJSON(data, {
+                pointToLayer: this.options.style,
+                style: this.options.style,
+                onEachFeature: this.options.onEachFeature
+            }).bindPopup(function (layer) {
+                return (new AttributesPopContainer(layer.feature.properties)).getElement();
+            }).addTo(this.map);
 
             //查询结果列表：
             this._prepareResultData(data);
@@ -496,7 +479,7 @@ export var SearchView = L.Control.extend({
              * @description 数据流服务成功返回数据后触发
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this.event.fire("searchsucceed", {result: data});
+            this._event.fire("searchsucceed", {result: data});
         });
 
         //----地址匹配或图层查询失败监听
@@ -574,8 +557,8 @@ export var SearchView = L.Control.extend({
         this._resultDomObj.showView();
 
         //查询完成默认选中第一个结果：
-        content.firstChild.getElementsByClassName("poi-result-icon")[0].classList.add("poi-result-selected");
-        const filter = content.firstChild.getElementsByClassName("poi-result-info")[0].firstChild.innerText;
+        content.firstChild.getElementsByClassName("widget-search-result-icon")[0].classList.add("widget-search__resultitme-selected");
+        const filter = content.firstChild.getElementsByClassName("widget-search-result-info")[0].firstChild.innerText;
 
         this._linkageFeature(filter);
     },
@@ -611,14 +594,14 @@ export var SearchView = L.Control.extend({
         }
 
         this.searchResultLayer.eachLayer((layer) => {
-            this._resetLayerStyleToDefault(layer);
+            // this._resetLayerStyleToDefault(layer);
 
             if (layer.filterAttribute && layer.filterAttribute.filterAttributeValue === filterValue ||
                 layer.feature.properties && layer.feature.properties.name === filterValue) {
                 this._setSelectedLayerStyle(layer);
-                layer.bindPopup(function () {
+                /*layer.bindPopup(function () {
                     return (new AttributesPopContainer(layer.feature.properties)).getElement()
-                }, {closeOnClick: false}).openPopup().addTo(this.map);
+                }, {closeOnClick: false}).openPopup().addTo(this.map);*/
                 //若这个图层只有一个点的话，则直接 flyTo 到点：
                 this._flyToBounds(this.searchResultLayer.getBounds());
                 let center;
@@ -640,37 +623,15 @@ export var SearchView = L.Control.extend({
         if (this.searchResultLayer) {
             this.map.closePopup();
             //若当前是查询图层的结果，则不删除图层，只修改样式
-            if (this.isSearchLayer) {
-                const self = this;
-                this.searchResultLayer.eachLayer(function (layer) {
-                    self._resetLayerStyleToDefault(layer);
-                    layer.addTo(self.map)
-                });
-            } else {
+            if (!this.isSearchLayer) {
                 this.map.removeLayer(this.searchResultLayer);
             }
+            if (this._selectFeature) {
+                this.map.removeLayer(this._selectFeature);
+            }
+            this._selectFeature = null;
             this.searchResultLayer = null;
             this.currentResult = null;
-        }
-    },
-
-    /**
-     * @function L.supermap.widgets.search.prototype._resetLayerStyleToDefault
-     * @description 恢复图层默认样式
-     * @param {L.layer} layer - 需要恢复样式的图层
-     * @private
-     */
-    _resetLayerStyleToDefault(layer) {
-        if (layer.setIcon) {
-            layer.setIcon(L.divIcon({className: 'default-marker-icon', iconAnchor: [12.5, 0]}));
-        } else {
-            layer.setStyle({
-                fillColor: 'blue',
-                weight: 1,
-                opacity: 1,
-                color: 'blue',
-                fillOpacity: 0.6
-            });
         }
     },
 
@@ -681,17 +642,31 @@ export var SearchView = L.Control.extend({
      * @private
      */
     _setSelectedLayerStyle(layer) {
-        if (layer.setIcon) {
-            layer.setIcon(L.divIcon({className: 'select-marker-icon', iconAnchor: [15, 0]}));
-        } else {
-            layer.setStyle({
+        if (this._selectFeature) {
+            this.map.removeLayer(this._selectFeature);
+            this._selectFeature = null;
+        }
+        //circleMarker 需要变成 marker 的样式：
+        this._selectFeature = L.geoJSON(layer.toGeoJSON(), {
+            //点选中样式, todo marker 显示位置需要调整
+            pointToLayer: (geoJsonPoint, latlng) => {
+                return L.marker(latlng, {
+                    icon: L.divIcon({className: 'widget-select-marker-icon', iconAnchor: [15, 0]})
+                })
+            },
+            //线和面选中样式：
+            style: {
                 fillColor: 'red',
                 weight: 1,
                 opacity: 1,
                 color: 'red',
                 fillOpacity: 0.2
-            });
-        }
+            }
+        }).addTo(this.map);
+        this._selectFeature.bindPopup(function () {
+            return (new AttributesPopContainer({attributes: layer.feature.properties})).getElement()
+        }, {closeOnClick: false}).openPopup().addTo(this.map);
+
     }
 });
 

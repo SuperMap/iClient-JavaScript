@@ -9,37 +9,35 @@ import '../../core/Base';
 
 /**
  * @class L.supermap.widgets.GeoJsonLayersDataModel
- * @description 多图层数据模型
+ * @description 多图层数据模型 todo 看看如何完善
  * @category Widgets Common
  * @private
  * @param {Array.<Object>} layers - 图层数组。
  * @param {L.supermap.widgets.geoJSONLayerWithName} layers.layerObject - 含有 layerName 与 GeoJSON 图层的对象。
  * @fires L.supermap.widgets.GeoJsonLayersDataModel#newlayeradded
  */
-export var GeoJsonLayersDataModel = L.Evented.extend({
-    initialize(layers) {
+export class GeoJsonLayersDataModel {
+    constructor(layers) {
         this.layers = [];
         if (layers && layers.length > 0) {
             this.addLayers(layers);
         }
         this.currentLayerDataModel = null;
-    },
-    addLayers(layers) {
+    }
+
+    addLayers(layers, success, failed, context) {
         for (let i = 0; i < layers.length; i++) {
             let layerName = layers[i].layerName;
-            let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i].layer);
-            //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
-            this.layers[layerName] = geoJsonLayerDataModel;
-            /**
-             * @event L.supermap.widgets.GeoJsonLayersDataModel#newlayeradded
-             * @description 新图层添加完成之后触发。
-             * @property {Object} newLayer - 新添加的图层数据。
-             * @property {string} newLayer.layerName - 图层名。
-             * @property {L.supermap.widgets.GeoJsonLayersDataModel} newLayer.layer - 图层。
-             */
-            this.fire("newlayeradded", {layerName: layerName, layer: geoJsonLayerDataModel});
+            if (layers[i].layer instanceof L.GeoJSON) {
+                let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i].layer);
+                //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
+                this.layers[layerName] = geoJsonLayerDataModel;
+                success && success.call(context, {layerName: layerName, layer: geoJsonLayerDataModel});
+            } else {
+                failed && failed.call(context, "")
+            }
         }
-    },
+    }
 
     /**
      * @function L.supermap.widgets.GeoJsonLayersDataModel.prototype.setCurrentLayerDataModel
@@ -51,10 +49,9 @@ export var GeoJsonLayersDataModel = L.Evented.extend({
             this.currentLayerDataModel = this.layers[layerName];
         }
     }
-});
+}
 
 L.supermap.widgets.GeoJsonLayersDataModel = GeoJsonLayersDataModel;
-
 
 /**
  * @class L.supermap.widgets.GeoJsonLayerDataModel

@@ -1,5 +1,5 @@
 /** 提示框样式 **/
-.messageBoxContainer {
+.widget-messageboxcontainer {
     position: absolute;
     top: 20px;
     right: 650px;
@@ -10,19 +10,19 @@
     z-index: 1000;
 }
 
-.border-bottom-orange {
+.widget-border-bottom-orange {
     border-bottom: orange solid 1.5px;
 }
 
-.border-bottom-red {
+.widget-border-bottom-red {
     border-bottom: red solid 1.5px;
 }
 
-.border-bottom-green {
+.widget-border-bottom-green {
     border-bottom: green solid 1.5px;
 }
 
-.messageBoxContainer .icon {
+.widget-messageboxcontainer .icon {
     float: left;
     font-size: 24px;
     margin-left: 20px;
@@ -30,31 +30,31 @@
     display: inline-block;
 }
 
-.messageBoxContainer .supermapol-icons-message-success {
+.widget-messageboxcontainer .supermapol-icons-message-success {
     color: green;
 }
 
-.messageBoxContainer .supermapol-icons-message-failure {
+.widget-messageboxcontainer .supermapol-icons-message-failure {
     color: red;
 }
 
-.messageBoxContainer .supermapol-icons-message-warning {
+.widget-messageboxcontainer .supermapol-icons-message-warning {
     color: orange;
 }
 
-.messageBox {
+.widget-messagebox {
     float: left;
     color: #595959;
     font-size: 12px;
     margin: 15px 10px;
 }
 
-.cancelContainer {
+.widget-messagebox__cancelbtncontainer {
     position: relative;
     height: 5px;
 }
 
-.cancelBtn {
+.widget-messagebox__cancelBtn {
     position: absolute;
     top: 15px;
     right: 5px;
@@ -64,7 +64,7 @@
     cursor: pointer;
 }
 
-.cancelBtn:hover {
+.widget-messagebox__cancelBtn:hover {
     border: none;
     font-weight: 600;
 }

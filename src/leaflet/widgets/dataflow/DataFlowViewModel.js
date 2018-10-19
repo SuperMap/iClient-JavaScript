@@ -3,8 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import { DataFlowLayer } from "../../overlay/DataFlowLayer";
-import { CommontypesConversion } from '../../core/CommontypesConversion';
+import {DataFlowLayer} from "../../overlay/DataFlowLayer";
+import {CommontypesConversion} from '../../core/CommontypesConversion';
 
 /**
  * @class L.supermap.widgets.dataFlowViewModel
@@ -13,10 +13,6 @@ import { CommontypesConversion } from '../../core/CommontypesConversion';
  * @param {L.Map} map - 当前微件所在的底图
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
  * @param {Object} options - 可选参数。
- * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
- `function(geoJsonPoint, latlng) {
-                                                return L.marker(latlng);
-                                            }`
  * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
  `function (feature) {
                                                     return {
@@ -34,16 +30,8 @@ import { CommontypesConversion } from '../../core/CommontypesConversion';
 export var DataFlowViewModel = L.Evented.extend({
     options: {
         _defaultLayerOptions: {
+            //style 返回 marker样式或者 L.path 样式
             style: null,
-            pointToLayer: function (geoJsonPoint, latlng) {
-                return L.circleMarker(latlng, {
-                    color: "red",
-                    weight: 1.5,
-                    fillColor: "red",
-                    fillOpacity: 0.4,
-                    radius: 6
-                });
-            },
             onEachFeature: function (feature, layer) {
                 let content = "属性信息如下：<br>";
                 for (let key in feature.properties) {
@@ -67,6 +55,8 @@ export var DataFlowViewModel = L.Evented.extend({
         }
         //合并用户的 dataFlowLayerOptions
         L.Util.extend(this.options._defaultLayerOptions, dataFlowLayerOptions);
+        //点样式也存储在style里
+        this.options._defaultLayerOptions.pointToLayer = this.options._defaultLayerOptions.style;
 
         /**
          * @member {boolean} [L.supermap.widgets.dataFlowViewModel.prototype.popupsStatus=true]
@@ -132,7 +122,7 @@ export var DataFlowViewModel = L.Evented.extend({
              * @description 数据流订阅成功后触发。
              * @property {Object} result - 返回的数据。
              */
-            this.fire("subscribesuccessed", { result: result });
+            this.fire("subscribesuccessed", {result: result});
         });
         dataFlowLayer.on('dataupdated', (result) => {
             //派发出订阅返回的数据：
@@ -141,7 +131,7 @@ export var DataFlowViewModel = L.Evented.extend({
              * @description 数据返回成功之后触发。
              * @property {Object} result - 返回的数据。
              */
-            this.fire("dataupdated", { result: result });
+            this.fire("dataupdated", {result: result});
             //若数据超出当前视图范围，则移动到数据所在视图范围：
             let layerBounds = result.layer.getBounds(),
                 mapBounds = CommontypesConversion.toSuperMapBounds(this.map.getBounds()),

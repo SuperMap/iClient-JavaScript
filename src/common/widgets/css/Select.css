@@ -1,0 +1,127 @@
+/**下拉选择器组件**/
+.widget-selecttool {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+}
+
+.widget-selecttool__lable--describe {
+    display: inline-block;
+    margin-bottom: 5px;
+    max-width: 100%;
+    height: 16px;
+    font-size: 12px;
+    color: #595959;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.widget-selecttool,
+.widget-selecttool .widget-selecttool__content {
+    width: 100%;
+    left: 0;
+    min-height: 28px;
+}
+
+.widget-selecttool__scrollarea__content {
+    margin-top: 0;
+    margin-left: 0;
+    padding-bottom: 5px;
+}
+
+.widget-selecttool__option {
+    width: 99%;
+    height: 17px;
+    line-height: 20px;
+    padding: 5px 8px 7px 8px;
+    font-size: 12px;
+    color: #595959;
+    cursor: pointer;
+    background: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.widget-selecttool__option:hover {
+    background-color: #E6F9FF;
+}
+
+.widget-selecttool .widget-selecttool--chart {
+    left: 0;
+    height: 26px;
+    position: relative;
+}
+
+.widget-selecttool--chart {
+    height: 28px;
+    width: 192px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+    padding-left: 8px;
+    font-size: 12px;
+    color: #595959;
+}
+
+/* test */
+.widget-selecttool--chart:hover {
+    border: 1px solid #108EE9;
+}
+
+.widget-selecttool__name {
+    width: 170px;
+    height: 26px;
+    line-height: 26px;
+    overflow: hidden;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.widget-selecttool__trianglebtn--chart {
+    position: relative;
+    bottom: 18px;
+    left: 173px;
+    width: 13px;
+    height: 10px;
+    cursor: pointer;
+}
+
+.widget-selecttool__trianglebtn--chart > div {
+    width: 100%;
+    height: 100%;
+}
+
+.widget-selecttool__content {
+    position: absolute;
+    left: 0;
+    top: 30px;
+    width: 200px;
+    padding: 5px 0 0;
+    background: #fff;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .15);
+    border-radius: 2px;
+    z-index: 10000;
+    display: none;
+    overflow: hidden scroll;
+    max-height: 200px;
+}
+
+.widget-selecttool__content--chart {
+    width: 186px;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: rgb(255, 255, 255);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(200, 204, 209);
+}

@@ -1,4 +1,5 @@
-input.distributeInput {
+/**分布式分析样式**/
+.widget-distributeanalysis__input {
     height: 24px;
     margin-bottom: 16px;
 }

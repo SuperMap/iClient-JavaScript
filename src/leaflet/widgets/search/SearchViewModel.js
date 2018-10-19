@@ -54,17 +54,6 @@ export var SearchViewModel = L.Evented.extend({
         });
         //查询缓存
         this.searchCache = {};
-
-        //监听 dataModel 数据变化：//看如何优化
-        this.dataModel.on("newlayeradded", (e) => {
-            /**
-             * @event L.supermap.widgets.searchViewModel#newlayeradded
-             * @description 添加查询图层事件
-             * @property {Object} result  - 事件返回的新的查询图层对象。
-             * @property {string} layerName  - 事件返回的新的查询图层对象名。
-             */
-            this.fire("newlayeradded", {layerName: e.layerName});
-        });
     },
 
     /**
@@ -145,7 +134,15 @@ export var SearchViewModel = L.Evented.extend({
      * @param {Array.<L.GeoJSON>} layers - 新添加的图层对象。
      */
     addSearchLayers(layers) {
-        this.dataModel.addLayers(layers)
+        this.dataModel.addLayers(layers, (e) => {
+            /**
+             * @event L.supermap.widgets.searchViewModel#newlayeradded
+             * @description 添加查询图层事件
+             * @property {Object} result  - 事件返回的新的查询图层对象。
+             * @property {string} layerName  - 事件返回的新的查询图层对象名。
+             */
+            this.fire("newlayeradded", {layerName: e.layerName});
+        }, null, this);
     },
 
     /**

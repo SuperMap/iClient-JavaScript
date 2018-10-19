@@ -1,23 +1,32 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    SuperMap
-} from '../../SuperMap';
-import {
-    PopContainer
-} from './PopContainer';
+import {SuperMap} from '../../SuperMap';
+import {PopContainer} from './PopContainer';
 
+/**
+ * @class SuperMap.Widgets.AttributesPopContainer
+ * @classdesc 属性弹框组件
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {Object} options.title - 属性弹框组件名称。
+ * @param {Object} options.attributes - 组件需要显示的属性内容。
+ * @category Widgets Common
+ */
 export class AttributesPopContainer extends PopContainer {
-    constructor(attributes) {
-        super("属性");
-        this.container.firstChild.hidden = true;
-        this._createAttributesTable(attributes);
+    constructor(options) {
+        //默认为属性：
+        options.title = options.title ? options.title : "属性";
+
+        super(options);
+        this.rootContainer.firstChild.hidden = true;
+        options.attributes = options.attributes ? options.attributes : [];
+        this._createAttributesTable(options.attributes);
     }
 
     _createAttributesTable(attributes) {
         const table = document.createElement("table");
-        table.setAttribute("class", "content-table");
+        table.setAttribute("class", "widget-popcontainer__content__table");
 
         const tbody = document.createElement("tbody");
 
@@ -25,7 +34,7 @@ export class AttributesPopContainer extends PopContainer {
         for (let name in attributes) {
             const tr = document.createElement("tr");
             if (single) {
-                tr.setAttribute("class", "odd");
+                tr.setAttribute("class", "widget-popcontainer__content__td--color");
             }
             const title = document.createElement("td");
             const titleSpan = document.createElement("Span");

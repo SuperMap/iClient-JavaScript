@@ -1,46 +1,58 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-export class IndexTabsPageContainer {
-    constructor() {
+import {SuperMap} from '../../SuperMap';
+import {TemplateBase} from './TemplateBase';
+
+/**
+ * @class IndexTabsPageContainer
+ * @description 标签索引组件
+ * @param {Object} options - 可选参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @category Widgets Common
+ */
+export class IndexTabsPageContainer extends TemplateBase {
+    constructor(options) {
+        super(options);
         this._initView();
     }
 
+    /**
+     * @private
+     * @override
+     */
     _initView() {
         const container = document.createElement("div");
-        container.setAttribute("class", "widgets-tabpage");
+        container.setAttribute("class", "widget-tabpage");
 
         const header = document.createElement("ul");
         this.header = header;
 
         const content = document.createElement("div");
-        content.setAttribute("class", "widgets-tabpage-content");
+        content.setAttribute("class", "widget-tabpage__content");
         this.content = content;
 
         container.appendChild(header);
         container.appendChild(content);
-        this.container = container;
+        this.rootContainer = container;
 
     }
 
-    showView() {
-        this.container.hidden = false;
-    }
-
-    closeView() {
-        this.container.hidden = true;
-    }
-
-    getElement() {
-        return this.container;
-    }
-
-
+    /**
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.setTabs
+     * @description 设置标签元素
+     * @param {Array.<Element>} tabs
+     */
     setTabs(tabs) {
         this.removeAllTabs();
         this.appendTabs(tabs);
     }
 
+    /**
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.appendTabs
+     * @description 追加标签元素
+     * @param {Array.<Element>} tabs
+     */
     appendTabs(tabs) {
         for (let i = 0; i < tabs.length; i++) {
             let title = document.createElement("span");
@@ -62,7 +74,7 @@ export class IndexTabsPageContainer {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeTab
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeTab
      * @description 删除某个标签页面
      * @param {number} index - 标签索引号
      */
@@ -72,7 +84,7 @@ export class IndexTabsPageContainer {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeAllTabs
+     * @function IndexTabsPageContainer.prototype.removeAllTabs
      * @description 删除所有标签F
      */
     removeAllTabs() {
@@ -95,3 +107,5 @@ export class IndexTabsPageContainer {
     }
 
 }
+
+SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer;

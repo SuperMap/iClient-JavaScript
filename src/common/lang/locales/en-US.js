@@ -94,7 +94,12 @@ let en = {
     'msg_selectDataset': 'Please select a data set!',
     'msg_setTheWeightField': 'Please set the weight field!',
     'msg_theFieldNotSupportAnalysis': 'The field you currently select does not support analysis!',
-    'msg_resultIsEmpty': 'The result of the analysis is empty!'
+    'msg_resultIsEmpty': 'The result of the analysis is empty!',
+    'msg_openFileFail': 'Failed to open file!',
+    'msg_fileTypeUnsupported': 'File format is not supported!',
+    'msg_fileSizeExceeded': 'File size exceeded! The file size should not exceed 10M!',
+    'msg_dataInWrongGeoJSONFormat': 'Wrong data format! Non standard GEOJSON format data!',
+    'msg_dataInWrongFormat': 'Wrong data format! Non standard EXCEL, CSV or GEOJSON format data!'
 
 
 };

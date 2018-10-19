@@ -1,4 +1,5 @@
-.widgets-navtabs-page {
+/** NavTabsPage 标签组件样式**/
+.widget-navtabspage {
     position: absolute;
     overflow: hidden;
     min-width: 520px;
@@ -9,11 +10,11 @@
     font-size: 12px;
     color: #595959;
     top: 44px;
-    right: 0px;
+    right: 0;
     z-index: 1000;
 }
 
-.widgets-navtabs-page .supermapol-icons-close {
+.widget-navtabspage .supermapol-icons-close {
     position: absolute;
     cursor: pointer;
     top: 11px;
@@ -21,14 +22,14 @@
     color: #BFBFBF;
 }
 
-.widgets-navtabs-title {
+.widget-navtabspage__title {
     height: 35px;
     line-height: 36px;
     background-color: #F5F5F5;
     box-shadow: 0 1px 0 0 #E9E9E9;
 }
 
-.widgets-navtabs-title > span {
+.widget-navtabspage__title > span {
     float: left;
     color: #919191;
     cursor: pointer;
@@ -37,12 +38,8 @@
     text-align: center;
 }
 
-.widgets-navtabs-title > span.tabs-select {
+.widget-navtabspage__title > span.widget-navtabspage__tabs--select {
     color: #595959;
     background: white;
     border-bottom: 2px solid transparent;
-}
-
-.widgets-navtabs-content {
-
 }

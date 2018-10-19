@@ -1,31 +1,34 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import {SuperMap} from '../../SuperMap';
- /**
+import {SuperMap} from '../../SuperMap';
+import {TemplateBase} from './TemplateBase';
+
+/**
  * @class SuperMap.Widgets.NavTabsPage
  * @classdesc 标签页面组件
+ * @param {Object} options - 组件配置参数。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面。
  * @category Widgets Common
- * @param {Array.<Object>} [tabs=[]] - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面。
- */ 
+ */
 //  todo 思考拆分的控件应该以哪种方式使用
-export class NavTabsPage {
-    constructor(tabs = [], id = null) {
-        this.navTabsPage = null;
+export class NavTabsPage extends TemplateBase {
+    constructor(options) {
+        super(options);
         this.navTabsTitle = null;
         this.navTabsContent = null;
-
-        this.rootContainer = document.createElement("div");
-        if (id) {
-            this.rootContainer.id = id;
-        }
-        this._initContainer(tabs);
-
+        options.tabs = options.tabs ? options.tabs : [];
+        this._initView(options.tabs);
     }
 
-    _initContainer(tabs) {
+    /**
+     * @override
+     * @private
+     */
+    _initView(tabs) {
         const navTabsPage = document.createElement("div");
-        navTabsPage.setAttribute("class", "widgets-navtabs-page");
+        navTabsPage.setAttribute("class", "widget-navtabspage");
 
         //关闭按钮
         const closeBtn = document.createElement("span");
@@ -36,13 +39,13 @@ export class NavTabsPage {
         //标签
         const navTabsTitle = document.createElement("div");
         this.navTabsTitle = navTabsTitle;
-        navTabsTitle.setAttribute("class", "widgets-navtabs-title");
+        navTabsTitle.setAttribute("class", "widget-navtabspage__title");
         navTabsPage.appendChild(navTabsTitle);
 
         //内容
         const navTabsContent = document.createElement("div");
         this.navTabsContent = navTabsContent;
-        navTabsContent.setAttribute("class", "widgets-navtabs-content");
+        navTabsContent.setAttribute("class", "widget-navtabspage__content");
         navTabsPage.appendChild(navTabsContent);
 
         //若 tabs 初始传入值，则
@@ -50,11 +53,7 @@ export class NavTabsPage {
             this.appendTabs(tabs);
         }
 
-        this.navTabsPage = navTabsPage;
-    }
-
-    getElement() {
-        return this.navTabsPage;
+        this.rootContainer = navTabsPage;
     }
 
     /**
@@ -88,7 +87,7 @@ export class NavTabsPage {
         }
         //todo 确认是否两个子元素的 index 相互对应
         //默认显示第一个标签对象
-        this.navTabsTitle.firstChild.setAttribute("class", "tabs-select");
+        this.navTabsTitle.firstChild.setAttribute("class", "widget-navtabspage__tabs--select");
         this.navTabsContent.firstChild.hidden = false;
     }
 
@@ -113,29 +112,18 @@ export class NavTabsPage {
         }
     }
 
-    /**
-     * @function NavTabsPage.prototype.closeView
-     * @description 关闭当前窗口
-     */
-    closeView() {
-        this.navTabsPage.hidden = true;
-    }
-
-    showView() {
-        this.navTabsPage.hidden = false;
-    }
-
     _changeTabsPage(e) {
         const index = e.target.index;
         for (let i = 0; i < this.navTabsTitle.children.length; i++) {
             this.navTabsTitle.children[i].setAttribute("class", "");
             this.navTabsContent.children[i].hidden = true;
             if (i === index) {
-                this.navTabsTitle.children[i].setAttribute("class", "tabs-select");
+                this.navTabsTitle.children[i].setAttribute("class", "widget-navtabspage__tabs--select");
                 this.navTabsContent.children[i].hidden = false;
             }
         }
     }
 
 }
+
 SuperMap.Widgets.NavTabsPage = NavTabsPage;

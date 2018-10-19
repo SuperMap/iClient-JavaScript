@@ -95,8 +95,13 @@ let zh = {
     'msg_setTheWeightField': '请设置权重字段！',
     'msg_theFieldNotSupportAnalysis': '您当前选择的字段不支持分析！',
     'msg_resultIsEmpty': '分析的结果为空！',
-    'msg_dataReturnedIsEmpty': '请求成功，查询返回的数据为空。'
-    
+    'msg_dataReturnedIsEmpty': '请求成功，查询返回的数据为空。',
+    'msg_openFileFail': '打开文件失败！',
+    'msg_fileTypeUnsupported': '不支持该文件格式！',
+    'msg_fileSizeExceeded': '文件大小超限！文件大小不得超过 10M！',
+    'msg_dataInWrongGeoJSONFormat': '数据格式错误！非标准的 GEOJSON 格式数据！',
+    'msg_dataInWrongFormat': '数据格式错误！非标准的 EXCEL, CSV 或 GEOJSON 格式数据！'
+
 };
 export { zh };
 SuperMap.Lang["zh-CN"] = zh;

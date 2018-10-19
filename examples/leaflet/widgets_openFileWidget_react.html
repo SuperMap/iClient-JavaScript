@@ -30,7 +30,7 @@
         var infoView = L.control({position: 'topright'});
         infoView.onAdd = function () {
             var me = this;
-            me._div = L.DomUtil.create('div', "openFileContainer");
+            me._div = L.DomUtil.create('div', "widget-openfile");
             //避免与"源码"控件重叠
             me._div.style["margin"] = "40px 4px 0px 0px";
             me._div.id = "addDataContainer";
@@ -83,11 +83,11 @@
 
         render() {
             return <div className="file-select">
-                <label className="file-selectSpan" htmlFor="input_file">
+                <label className="widget-openfile__span--select" htmlFor="input_file">
                     <div className="supermapol-icons-upload"/>
-                    <span className="openFile-span">{this.props.text}</span>
+                    <span className="widget-openfile__span">{this.props.text}</span>
                 </label>
-                <input className="openFile_input" id="input_file" type="file"
+                <input className="widget-openfile__input" id="input_file" type="file"
                        accept=".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                        onChange={this.fileSelectfn}/>
             </div>

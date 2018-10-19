@@ -13,8 +13,7 @@ export class FileModel {
     constructor(options) {
         this.FileTypes = FileTypes;
         this.FileConfig = FileConfig;
-        this.map = options && options.map ? options.map : null;
-        this.loadFileObject = [];
+        this.loadFileObject = options && options.loadFileObject ? options.loadFileObject : [];
     }
 
     /**

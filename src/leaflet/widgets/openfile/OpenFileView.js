@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-import '../../core/Base';
+import {WidgetsViewBase} from '../WidgetsViewBase';
 import {OpenFileViewModel} from "./OpenFileViewModel";
 import {MessageBox, Lang} from '@supermap/iclient-common';
 
@@ -12,26 +12,16 @@ import {MessageBox, Lang} from '@supermap/iclient-common';
  * @category Widgets OpenFile
  * @fires L.supermap.widgets.openFile#openfilesuccess
  */
-export var OpenFileView = L.Control.extend({
+export var OpenFileView = WidgetsViewBase.extend({
     options: {
         //绑定的底图图层
-        layer: null,
-        //控件位置 继承自leaflet control
-        position: 'topright'
+        layer: null
     },
-    
-    /**
-     * @function L.supermap.widgets.openFile.prototype.onAdd
-     * @description 向底图添加微件
-     * @private
-     */
-    onAdd: function (map) {
-        this.map = map;
-        this.event = new L.Evented();
-        if (this.options.orientation !== 'vertical') {
-            this.options.orientation = 'horizontal';
-        }
-        return this._initOpenFileView();
+
+    initialize(options) {
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
+        //初始化 ViewModel:
+        this.viewModel = new OpenFileViewModel();
     },
 
     /**
@@ -45,28 +35,27 @@ export var OpenFileView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.openFile.prototype._initOpenFileView
+     * @function L.supermap.widgets.openFile.prototype._initView
      * @description 创建打开本地文件数据微件
      * @returns {HTMLElement}
      * @private
+     * @override
      */
-    _initOpenFileView: function () {
-        //初始化 ViewModel:
-        this.viewModel = new OpenFileViewModel(this.map, this);
-        //初始化 view
+    _initView() {
 
-        const uploadContent = L.DomUtil.create('div', 'openFileContainer');
+        //初始化 view
+        const uploadContent = L.DomUtil.create('div', 'widget-openfile');
         uploadContent.id = 'openFile';
 
         this.fileSelect = L.DomUtil.create('div', '', uploadContent);
-        this.label = L.DomUtil.create('label', 'file-selectSpan', this.fileSelect);
+        this.label = L.DomUtil.create('label', 'widget-openfile__span--select', this.fileSelect);
         this.label.htmlFor = "input_file";
 
         L.DomUtil.create('div', 'supermapol-icons-upload', this.label);
-        const fileSpan = L.DomUtil.create('span', 'openFile-span', this.label);
+        const fileSpan = L.DomUtil.create('span', 'widget-openfile__span', this.label);
         fileSpan.appendChild(document.createTextNode(Lang.i18n('text_chooseFile')));
 
-        this.fileInput = L.DomUtil.create('input', 'openFile_input', this.fileSelect);
+        this.fileInput = L.DomUtil.create('input', 'widget-openfile__input', this.fileSelect);
         this.fileInput.id = "input_file";
         this.fileInput.type = "file";
         this.fileInput.accept = ".json,.geojson,.csv,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
@@ -97,15 +86,12 @@ export var OpenFileView = L.Control.extend({
              * @description 打开文件成功。
              * @property {Object} e - 事件对象。
              */
-            this.event.fire("openfilesuccess", e);
+            this._event.fire("openfilesuccess", e);
         });
 
-        this.rootContainer = uploadContent;
+        // 阻止 map 默认事件
+        this._preventMapEvent(uploadContent, this.map);
         return uploadContent;
-    },
-
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
     }
 
 });

@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -4155,17 +4140,17 @@ var MessageBox = __webpack_require__(109);
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
 var DataFlow = __webpack_require__(108);
 
-// EXTERNAL MODULE: ./src/common/widgets/css/POISearch.css
-var POISearch = __webpack_require__(107);
+// EXTERNAL MODULE: ./src/common/widgets/css/Search.css
+var Search = __webpack_require__(107);
 
-// EXTERNAL MODULE: ./src/common/widgets/css/WidgetContainer.css
-var WidgetContainer = __webpack_require__(106);
+// EXTERNAL MODULE: ./src/common/widgets/css/CommonContainer.css
+var CommonContainer = __webpack_require__(106);
 
-// EXTERNAL MODULE: ./src/common/widgets/css/WidgetDropDownBox.css
-var WidgetDropDownBox = __webpack_require__(105);
+// EXTERNAL MODULE: ./src/common/widgets/css/DropDownBox.css
+var DropDownBox = __webpack_require__(105);
 
-// EXTERNAL MODULE: ./src/common/widgets/css/WidgetSelect.css
-var WidgetSelect = __webpack_require__(104);
+// EXTERNAL MODULE: ./src/common/widgets/css/Select.css
+var Select = __webpack_require__(104);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
 var CityTabsPage = __webpack_require__(103);
@@ -5413,18 +5398,12 @@ var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
 var GetFeatureMode = SuperMap.GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
-    /** 通过范围查询加属性过滤器的模式来获取要素。 */
-    BOUNDS_ATTRIBUTEFILTER: "BOUNDS_ATTRIBUTEFILTER",
     /** 通过几何对象的缓冲区来获取要素。 */
     BUFFER: "BUFFER",
-    /** 通过缓冲区加属性过滤器的模式来获取要素。 */
-    BUFFER_ATTRIBUTEFILTER: "BUFFER_ATTRIBUTEFILTER",
     /** 通过 ID 来获取要素。 */
     ID: "ID",
     /** 通过空间查询模式来获取要素。 */
     SPATIAL: "SPATIAL",
-    /** 通过空间查询加属性过滤器的模式来获取要素。 */
-    SPATIAL_ATTRIBUTEFILTER: 'SPATIAL_ATTRIBUTEFILTER',
     /** 通过 SQL 查询来获取要素。 */
     SQL: 'SQL'
 }
@@ -63287,6 +63266,7 @@ class Render_Render {
      */
     trigger(eventName, event) {
         this.handler.trigger(eventName, event);
+        this.handler.dispatch(eventName, event);
         return this;
     }
 
@@ -64305,8 +64285,7 @@ class FileModel_FileModel {
     constructor(options) {
         this.FileTypes = FileTypes;
         this.FileConfig = FileConfig;
-        this.map = options && options.map ? options.map : null;
-        this.loadFileObject = [];
+        this.loadFileObject = options && options.loadFileObject ? options.loadFileObject : [];
     }
 
     /**
@@ -64351,7 +64330,7 @@ class MessageBox {
         //原生js形式
         const messageBoxContainer = document.createElement("div");
         messageBoxContainer.hidden = true;
-        messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+        messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
 
         //图标
         const iconContainer = document.createElement("div");
@@ -64363,16 +64342,16 @@ class MessageBox {
 
         //内容：
         const messageBox = document.createElement("div");
-        messageBox.setAttribute("class", "messageBox");
+        messageBox.setAttribute("class", "widget-messagebox");
         messageBox.innerHTML = "";
         messageBoxContainer.appendChild(messageBox);
         this.messageBox = messageBox;
 
         //关闭按钮
         const cancelContainer = document.createElement("div");
-        cancelContainer.setAttribute("class", "cancelContainer");
+        cancelContainer.setAttribute("class", "widget-messagebox__cancelbtncontainer");
         const cancelBtn = document.createElement("button");
-        cancelBtn.setAttribute("class", "cancelBtn");
+        cancelBtn.setAttribute("class", "widget-messagebox__cancelBtn");
         cancelBtn.innerHTML = "x";
         cancelBtn.onclick = this.closeView.bind(this);
         cancelContainer.appendChild(cancelBtn);
@@ -64400,14 +64379,14 @@ class MessageBox {
         //设置提示框的样式：
         if (type === "success") {
             this.icon.setAttribute("class", "supermapol-icons-message-success");
-            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-green");
+            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-green");
 
         } else if (type === "failure") {
             this.icon.setAttribute("class", "supermapol-icons-message-failure");
-            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-red");
+            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-red");
         } else if (type === "warring") {
             this.icon.setAttribute("class", "supermapol-icons-message-warning");
-            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
         }
         this.messageBox.innerHTML = message;
         this.messageBoxContainer.hidden = false;
@@ -64415,6 +64394,75 @@ class MessageBox {
 }
 
 SuperMap.Widgets.MessageBox = MessageBox;
+// CONCATENATED MODULE: ./src/common/widgets/templates/TemplateBase.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.TemplateBase
+ * @classdesc 微件公用组件父类，由于约束统一封装的公用组件结构
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @category Widgets Common
+ */
+class TemplateBase {
+    constructor(options) {
+        options = options ? options : {};
+        /**
+         * @member {string} [SuperMap.Widgets.TemplateBase.prototype.id=null]
+         * @description  组件 dom 元素 id
+         */
+        this.id = options.id ? options.id : null;
+
+        /**
+         * @member {Element} [SuperMap.Widgets.TemplateBase.prototype.rootContainer=null]
+         * @description  组件 dom 元素对象
+         */
+        this.rootContainer = null;
+    }
+
+    /**
+     * @function SuperMap.Widgets.TemplateBase.prototype.getElement
+     * @description 获取当前组件元素对象
+     * @return {Element}
+     */
+    getElement() {
+        //todo 其实感觉再这里给组件设置不太合理
+        if (this.id) {
+            this.rootContainer.id = this.id;
+        }
+
+        return this.rootContainer;
+    }
+
+    /**
+     * @function SuperMap.Widgets.TemplateBase.prototype._initView
+     * @description 初始化模板
+     */
+    _initView() {
+        //子类实现此方法
+    }
+
+    /**
+     * @function SuperMap.Widgets.TemplateBase.prototype.showView
+     * @description 显示组件
+     */
+    showView() {
+        this.rootContainer.hidden = false;
+    }
+
+    /**
+     * @function SuperMap.Widgets.TemplateBase.prototype.closeView
+     * @description 隐藏组件
+     */
+    closeView() {
+        this.rootContainer.hidden = true;
+    }
+}
+
+SuperMap.Widgets.TemplateBase = TemplateBase;
 // CONCATENATED MODULE: ./src/common/widgets/templates/CommonContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64425,22 +64473,26 @@ SuperMap.Widgets.MessageBox = MessageBox;
 /**
  * @class SuperMap.Widgets.CommonContainer
  * @classdesc 微件统一外框。
- * @param {string} title - 标题。
- * @param {Object} position - 设置外框绝对位置，包括上下左右：{"top":"5px","bottom":"5px","left":"5px","right":"5px"}
+ * @param {Object} options - 组件可选参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {string} options.title - 标题。
  * @category Widgets Common
  */
-class CommonContainer {
-    constructor(title, position = null) {
-        this._initContainer(title, position);
+class CommonContainer_CommonContainer extends TemplateBase {
+    constructor(options) {
+        super(options);
+        let title = options.title ? options.title : "";
+        this._initView(title);
     }
 
-    _initContainer(title, position) {
+    /**
+     * @private
+     * @override
+     */
+    _initView(title) {
         const container = document.createElement("div");
         container.setAttribute("class", "widget-container");
-        this.container = container;
-        if (position) {
-            this.setContainerPosition(position);
-        }
+
         //title
         const titleContainer = document.createElement("div");
         titleContainer.setAttribute("class", "widget-title");
@@ -64450,29 +64502,12 @@ class CommonContainer {
         container.appendChild(titleContainer);
         //container
         const widgetContent = document.createElement("div");
-        widgetContent.setAttribute("class", "widget-content-container");
+        widgetContent.setAttribute("class", "widget-content");
         container.appendChild(widgetContent);
         this.content = widgetContent;
 
+        this.rootContainer = container;
         return container;
-    }
-
-    /**
-     * @function SuperMap.Widgets.CommonContainer.prototype.getElement
-     * @description 改变容器绝对位置
-     */
-    setContainerPosition(position) {
-        for (let name in position) {
-            this.container.style[name] = position[name];
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.CommonContainer.prototype.getElement
-     * @description 获取当前模板 Dom 元素
-     */
-    getElement() {
-        return this.container;
     }
 
     /**
@@ -64492,7 +64527,7 @@ class CommonContainer {
     }
 }
 
-SuperMap.Widgets.CommonContainer = CommonContainer;
+SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
 // CONCATENATED MODULE: ./src/common/widgets/templates/Select.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64504,50 +64539,44 @@ SuperMap.Widgets.CommonContainer = CommonContainer;
  * @class SuperMap.Widgets.Select
  * @classdesc 微件统一的文字下拉框。
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
+ * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
  * @category Widgets Common
  */
-class Select {
+class Select_Select extends TemplateBase {
     constructor(options) {
+        super(options);
         this._initView(options);
     }
 
     _initView(options) {
-        let selectTool = this._createElement('div', "select-tool");
+        let selectTool = this._createElement('div', "widget-selecttool");
 
         if (options.labelName) {
-            let label = this._createElement('label', 'lable_describe', selectTool);
+            let label = this._createElement('label', 'widget-selecttool__lable--describe', selectTool);
             label.innerHTML = options.labelName;
         }
 
-        let chartSelect = this._createElement('div', 'chart_select', selectTool);
+        let chartSelect = this._createElement('div', 'widget-selecttool--chart', selectTool);
         chartSelect.setAttribute('tabindex', '1');
 
-        let selectName = this._createElement('div', "select-name", chartSelect);
+        let selectName = this._createElement('div', "widget-selecttool__name", chartSelect);
         selectName.title = options.optionsArr[0];
         selectName.innerHTML = options.optionsArr[0];
 
-        let chartTriangleBtn = this._createElement('div', 'chart-triangle-btn', chartSelect);
-        let triangleBtn = this._createElement('div', 'triangle-down-img', chartTriangleBtn);
-        let selectContent = this._createElement('div', 'select-content', chartSelect);
-        let scrollarea = this._createElement('div', 'scrollarea chart-select-content', selectContent);
-        let scrollareaContent = this._createElement('div', 'scrollarea-content', scrollarea);
+        let chartTriangleBtn = this._createElement('div', 'widget-selecttool__trianglebtn--chart', chartSelect);
+        let triangleBtn = this._createElement('div', 'widget-triangle-down-img', chartTriangleBtn);
+        let selectContent = this._createElement('div', 'widget-selecttool__content', chartSelect);
+        let scrollarea = this._createElement('div', 'widget-selecttool__content--chart', selectContent);
+        let scrollareaContent = this._createElement('div', 'widget-selecttool__scrollarea__content', scrollarea);
         scrollareaContent.setAttribute('tabindex', '1');
-        this.createOptions(scrollareaContent, options.optionsArr)
+        this.createOptions(scrollareaContent, options.optionsArr);
         this.optionClickEvent(scrollareaContent, selectName, options.optionsClickCb);
         // 下拉框显示 & 隐藏事件
         this._selectClickEvent(chartSelect, selectContent, triangleBtn);
-        this.selectTool = selectTool;
-    }
-
-    /**
-     * @function SuperMap.Widgets.Select.prototype.getElement
-     * @description 获取当前模板 Dom 元素。
-     */
-    getElement() {
-        return this.selectTool;
+        this.rootContainer = selectTool;
     }
 
     /**
@@ -64556,7 +64585,7 @@ class Select {
      */
     createOptions(container, optionsArr) {
         for (let i in optionsArr) {
-            let option = this._createElement('div', 'select-option', container);
+            let option = this._createElement('div', 'widget-selecttool__option', container);
             option.title = optionsArr[i];
             option.innerHTML = optionsArr[i];
         }
@@ -64571,26 +64600,26 @@ class Select {
         eventElement.onclick = function (e) {
             if (contentElement.style.display === "block") {
                 contentElement.style.display = "none";
-                triangleBtn.className = "triangle-down-img";
+                triangleBtn.className = "widget-triangle-down-img";
             } else {
                 contentElement.style.display = "block";
                 triangleBtn.className = "triangle-up-img";
             }
             e.preventDefault();
             e.stopPropagation();
-        }
+        };
         eventElement.onmousedown = function (evt) {
-            //console.log('drop-down-box onmousedown '+evt.target.className);
+            //console.log('dropdownbox onmousedown '+evt.target.className);
             if (evt.target !== this) {
                 this.focus();
                 evt.preventDefault();
                 evt.stopPropagation()
             }
-        }
+        };
         eventElement.onblur = function () {
 
             contentElement.style.display = "none";
-            triangleBtn.className = "triangle-down-img";
+            triangleBtn.className = "widget-triangle-down-img";
         }
     }
 
@@ -64625,7 +64654,7 @@ class Select {
     }
 }
 
-SuperMap.Widgets.Select = Select;
+SuperMap.Widgets.Select = Select_Select;
 
 // CONCATENATED MODULE: ./src/common/widgets/templates/DropDownBox.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -64633,90 +64662,92 @@ SuperMap.Widgets.Select = Select;
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
+
 /**
  * @class SuperMap.Widgets.DropDownBox
  * @classdesc 微件统一的图片下拉框。
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {string} optionsArr.title - 下拉框 title。
  * @param {string} optionsArr.remark - 下拉框解释标记文本。
- * @param {string} optionsArr.icon - 下拉框图标。 
+ * @param {string} optionsArr.icon - 下拉框图标。
  * @param {string} [optionsArr.dataValue] - 下拉框 attribute 名为 data-value 的值 。
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
  * @category Widgets Common
  */
-class DropDownBox {
+class DropDownBox_DropDownBox extends TemplateBase {
     constructor(optionsArr) {
+        super(optionsArr);
         this._initView(optionsArr);
     }
+
     /**
      * @function SuperMap.Widgets.DropDownBox.prototype._initView
      * @description 初始化下拉框。
      * @private
+     * @override
      */
     _initView(optionsArr) {
         let dropDownContainer = document.createElement('div');
-        dropDownContainer.className = 'drop-down-container';
+        dropDownContainer.className = 'widget-dropdownbox--container';
         let dropDownBox = document.createElement('div');
         dropDownBox.setAttribute('tabindex', '1');
-        dropDownBox.className = "drop-down-box";
+        dropDownBox.className = "widget-dropdownbox";
         dropDownContainer.appendChild(dropDownBox);
 
         let dropDownTopContainer = document.createElement('div');
         dropDownBox.appendChild(dropDownTopContainer);
 
-        this._creatDropDownOption(optionsArr[0], dropDownTopContainer);
+        this._createDropDownOption(optionsArr[0], dropDownTopContainer);
 
         let triangleBtnContainer = document.createElement('div');
-        triangleBtnContainer.className = 'triangle-btn';
+        triangleBtnContainer.className = 'widget-dropdownbox__triangle-btn';
         dropDownBox.appendChild(triangleBtnContainer);
 
         let triangleBtn = document.createElement('div');
-        triangleBtn.className = 'triangle-down-img';
+        triangleBtn.className = 'widget-triangle-down-img';
         triangleBtnContainer.appendChild(triangleBtn);
 
-        let creatDropDownBoxParam = {
+        let createDropDownBoxParam = {
             "parentEle": dropDownBox,
-            "dropDownContent": ['drop-down-content chart-content', 'dropDownContent'],
-            "dropDownItems": 'scrollarea drop-down-items',
-            "scrollareaContent": 'scrollarea-content',
+            "dropDownContent": ['widget-dropdownbox__content widget-dropdownbox__content--chart', 'dropDownContent'],
+            "scrollareaContent": 'widget-selecttool__scrollarea__content',
             "optionsArr": optionsArr,
             "triangleBtn": triangleBtn,
             "dropDownTopContainer": dropDownTopContainer
-        }
-        this._creatDropDownBox(creatDropDownBoxParam);
+        };
+        this._createDropDownBox(createDropDownBoxParam);
 
-        this.dropDownContainer = dropDownContainer;
+        this.rootContainer = dropDownContainer;
 
     }
+
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._creatDropDownBox
+     * @function SuperMap.Widgets.DropDownBox.prototype._createDropDownBox
      * @description 创建下拉框。
      * @private
      */
-    _creatDropDownBox(creatDropDownBoxParam) {
-        let dropDownBox = creatDropDownBoxParam.parentEle;
-        let dropDownTopContainer = creatDropDownBoxParam.dropDownTopContainer;
+    _createDropDownBox(createDropDownBoxParam) {
+        let dropDownBox = createDropDownBoxParam.parentEle;
+        let dropDownTopContainer = createDropDownBoxParam.dropDownTopContainer;
         let dropDownContent = document.createElement('div');
-        dropDownContent.className = creatDropDownBoxParam.dropDownContent[0];
+        dropDownContent.className = createDropDownBoxParam.dropDownContent[0];
         dropDownBox.appendChild(dropDownContent);
 
-        let dropDownItems = document.createElement('div');
-        dropDownItems.className = creatDropDownBoxParam.dropDownItems;
-        dropDownContent.appendChild(dropDownItems);
-
         let scrollareaContent = document.createElement('div');
-        scrollareaContent.className = creatDropDownBoxParam.scrollareaContent;
-        dropDownItems.appendChild(scrollareaContent);
-        let optionsArr = creatDropDownBoxParam.optionsArr;
+        scrollareaContent.className = createDropDownBoxParam.scrollareaContent;
+        dropDownContent.appendChild(scrollareaContent);
+
+        let optionsArr = createDropDownBoxParam.optionsArr;
         for (let i = 0; i < optionsArr.length; i++) {
-            this._creatDropDownOption(optionsArr[i], scrollareaContent)
+            this._createDropDownOption(optionsArr[i], scrollareaContent)
         }
         // 下拉框显示 & 隐藏事件
-        let triangleBtn = creatDropDownBoxParam.triangleBtn;
+        let triangleBtn = createDropDownBoxParam.triangleBtn;
         this._dropDownClickEvent(dropDownBox, dropDownContent, triangleBtn);
 
-        this._eleOnblur(dropDownBox, dropDownContent, triangleBtn)
+        this._eleOnblur(dropDownBox, dropDownContent, triangleBtn);
 
         // 下拉框 options 点击事件
         let scrollareaOptions = scrollareaContent.children;
@@ -64729,13 +64760,13 @@ class DropDownBox {
     }
 
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._creatDropDownOption
+     * @function SuperMap.Widgets.DropDownBox.prototype._createDropDownOption
      * @description 创建下拉框子元素。
      * @private
      */
-    _creatDropDownOption(data, parentElement){
+    _createDropDownOption(data, parentElement) {
         let ele = document.createElement('div');
-        ele.className = 'drop-down-item';
+        ele.className = 'widget-dropdownbox__item';
         let dataItem = data;
         if (dataItem['dataValue']) {
             ele.setAttribute('data-value', dataItem['dataValue']);
@@ -64743,7 +64774,7 @@ class DropDownBox {
         parentElement.appendChild(ele);
 
         let imgContainer = document.createElement('div');
-        imgContainer.className = 'drop-down-img';
+        imgContainer.className = 'widget-dropdownbox__item__img';
         ele.appendChild(imgContainer);
 
         let img = document.createElement('div');
@@ -64756,13 +64787,13 @@ class DropDownBox {
         imgContainer.appendChild(img);
 
         let title = document.createElement('div');
-        title.className = 'drop-down-title';
+        title.className = 'widget-dropdownbox__item__title';
         title.title = dataItem.title;
         title.innerHTML = dataItem.title;
         ele.appendChild(title);
 
         let remark = document.createElement('div');
-        remark.className = 'drop-down-remark';
+        remark.className = 'widget-dropdownbox__item__remark';
         remark.title = dataItem.remark;
         remark.innerHTML = dataItem.remark;
         ele.appendChild(remark);
@@ -64777,16 +64808,16 @@ class DropDownBox {
         eventElement.onclick = function (e) {
             if (contentElement.style.display === "block") {
                 contentElement.style.display = "none";
-                triangleBtn.className = "triangle-down-img";
+                triangleBtn.className = "widget-triangle-down-img";
             } else {
                 contentElement.style.display = "block";
                 triangleBtn.className = "triangle-up-img";
             }
             e.preventDefault();
             e.stopPropagation()
-        }
+        };
         eventElement.onmousedown = function (evt) {
-            //console.log('drop-down-box onmousedown '+evt.target.className);
+            //console.log('dropdownbox onmousedown '+evt.target.className);
             if (evt.target !== this) {
                 this.focus();
                 evt.preventDefault();
@@ -64803,29 +64834,25 @@ class DropDownBox {
     _eleOnblur(eventElement, contentElement, triangleBtn) {
         eventElement.onblur = function () {
             contentElement.style.display = "none";
-            triangleBtn.className = "triangle-down-img";
+            triangleBtn.className = "widget-triangle-down-img";
         }
     }
+
     /**
-    * @function SuperMap.Widgets.DropDownBox.prototype._createElement
-    * @description 通用创建元素。
-    * @private
-    */
+     * @function SuperMap.Widgets.DropDownBox.prototype._createElement
+     * @description 通用创建元素。
+     * @private
+     */
     _createElement(tagName, className, parentEle) {
         let ele = document.createElement(tagName || 'div');
         className && ~~(ele.className = className);
         parentEle && parentEle.appendChild(ele);
         return ele;
     }
-    /**
-     * @function SuperMap.Widgets.DropDownBox.prototype.getElement
-     * @description 获取当前模板 Dom 元素。
-     */
-    getElement() {
-        return this.dropDownContainer;
-    }
+
 }
-SuperMap.Widgets.DropDownBox = DropDownBox;
+
+SuperMap.Widgets.DropDownBox = DropDownBox_DropDownBox;
 
 // CONCATENATED MODULE: ./src/common/widgets/templates/PopContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -64833,58 +64860,68 @@ SuperMap.Widgets.DropDownBox = DropDownBox;
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-class PopContainer {
-    constructor(title) {
-        this._initView(title);
+
+/**
+ * @class SuperMap.Widgets.PopContainer
+ * @classdesc 弹框组件
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {string} options.title - 弹框组件名称。
+ * @category Widgets Common
+ */
+class PopContainer_PopContainer extends TemplateBase {
+    constructor(options) {
+        options = options ? options : {};
+        super(options);
+        options.title = options.title ? options.title : "";
+        this._initView(options.title);
     }
 
+    /**
+     * @private
+     * @override
+     */
     _initView(titile) {
         const container = document.createElement("div");
-        container.setAttribute("class", "widgets-pop-container");
+        container.setAttribute("class", "widget-popcontainer");
 
         //header
         const header = document.createElement("div");
-        header.setAttribute("class", "widgets-pop-header");
+        header.setAttribute("class", "widget-popcontainer__header");
         const title = document.createElement("label");
-        title.setAttribute("class", "widgets-pop-titlename");
+        title.setAttribute("class", "widget-popcontainer__header__title");
         title.innerHTML = titile;
         header.appendChild(title);
 
         const closeBtn = document.createElement("span");
-        closeBtn.setAttribute("class", "supermapol-icons-clear widgets-pop-close");
+        closeBtn.setAttribute("class", "supermapol-icons-clear widget-popcontainer__header__close");
         closeBtn.onclick = this.closeView.bind(this);
         container.appendChild(closeBtn);
         container.appendChild(header);
 
         //content
         const content = document.createElement("div");
-        content.setAttribute("class", "widgets-pop-content");
+        content.setAttribute("class", "widget-popcontainer__content");
         this.content = content;
 
         container.appendChild(content);
 
-        this.container = container;
+        this.rootContainer = container;
 
     }
 
-    getElement() {
-        return this.container;
-    }
-
+    /**
+     * @function SuperMap.Widgets.PopContainer.prototype.appendContent
+     * @description 追加内容
+     * @param {Element} dom - 内容元素
+     */
     appendContent(dom) {
         this.content.appendChild(dom);
     }
 
-    showView() {
-        this.container.hidden = false;
-    }
-
-    closeView() {
-        this.container.hidden = true;
-    }
 }
 
-SuperMap.Widgets.PopContainer = PopContainer;
+SuperMap.Widgets.PopContainer = PopContainer_PopContainer;
 // CONCATENATED MODULE: ./src/common/widgets/templates/AttributesPopContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64892,16 +64929,29 @@ SuperMap.Widgets.PopContainer = PopContainer;
 
 
 
-class AttributesPopContainer_AttributesPopContainer extends PopContainer {
-    constructor(attributes) {
-        super("属性");
-        this.container.firstChild.hidden = true;
-        this._createAttributesTable(attributes);
+/**
+ * @class SuperMap.Widgets.AttributesPopContainer
+ * @classdesc 属性弹框组件
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {Object} options.title - 属性弹框组件名称。
+ * @param {Object} options.attributes - 组件需要显示的属性内容。
+ * @category Widgets Common
+ */
+class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopContainer {
+    constructor(options) {
+        //默认为属性：
+        options.title = options.title ? options.title : "属性";
+
+        super(options);
+        this.rootContainer.firstChild.hidden = true;
+        options.attributes = options.attributes ? options.attributes : [];
+        this._createAttributesTable(options.attributes);
     }
 
     _createAttributesTable(attributes) {
         const table = document.createElement("table");
-        table.setAttribute("class", "content-table");
+        table.setAttribute("class", "widget-popcontainer__content__table");
 
         const tbody = document.createElement("tbody");
 
@@ -64909,7 +64959,7 @@ class AttributesPopContainer_AttributesPopContainer extends PopContainer {
         for (let name in attributes) {
             const tr = document.createElement("tr");
             if (single) {
-                tr.setAttribute("class", "odd");
+                tr.setAttribute("class", "widget-popcontainer__content__td--color");
             }
             const title = document.createElement("td");
             const titleSpan = document.createElement("Span");
@@ -64934,46 +64984,58 @@ SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopCo
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-class IndexTabsPageContainer {
-    constructor() {
+
+
+
+/**
+ * @class IndexTabsPageContainer
+ * @description 标签索引组件
+ * @param {Object} options - 可选参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @category Widgets Common
+ */
+class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
+    constructor(options) {
+        super(options);
         this._initView();
     }
 
+    /**
+     * @private
+     * @override
+     */
     _initView() {
         const container = document.createElement("div");
-        container.setAttribute("class", "widgets-tabpage");
+        container.setAttribute("class", "widget-tabpage");
 
         const header = document.createElement("ul");
         this.header = header;
 
         const content = document.createElement("div");
-        content.setAttribute("class", "widgets-tabpage-content");
+        content.setAttribute("class", "widget-tabpage__content");
         this.content = content;
 
         container.appendChild(header);
         container.appendChild(content);
-        this.container = container;
+        this.rootContainer = container;
 
     }
 
-    showView() {
-        this.container.hidden = false;
-    }
-
-    closeView() {
-        this.container.hidden = true;
-    }
-
-    getElement() {
-        return this.container;
-    }
-
-
+    /**
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.setTabs
+     * @description 设置标签元素
+     * @param {Array.<Element>} tabs
+     */
     setTabs(tabs) {
         this.removeAllTabs();
         this.appendTabs(tabs);
     }
 
+    /**
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.appendTabs
+     * @description 追加标签元素
+     * @param {Array.<Element>} tabs
+     */
     appendTabs(tabs) {
         for (let i = 0; i < tabs.length; i++) {
             let title = document.createElement("span");
@@ -64995,7 +65057,7 @@ class IndexTabsPageContainer {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeTab
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeTab
      * @description 删除某个标签页面
      * @param {number} index - 标签索引号
      */
@@ -65005,7 +65067,7 @@ class IndexTabsPageContainer {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeAllTabs
+     * @function IndexTabsPageContainer.prototype.removeAllTabs
      * @description 删除所有标签F
      */
     removeAllTabs() {
@@ -65028,6 +65090,8 @@ class IndexTabsPageContainer {
     }
 
 }
+
+SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer_IndexTabsPageContainer;
 // CONCATENATED MODULE: ./src/common/widgets/templates/CityTabsPage.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -65039,16 +65103,18 @@ class IndexTabsPageContainer {
 /**
  * @class SuperMap.Widgets.CityTabsPage
  * @classdesc 城市地址匹配组件模板
- * @category Widgets Common
- * @param {Object|Array.<string>} config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ * @category Widgets Common
  */
-class CityTabsPage_CityTabsPage extends IndexTabsPageContainer {
-    constructor(config) {
-        super();
+class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageContainer {
+    constructor(options) {
+        super(options);
         //去掉默认的边框阴影样式：
-        this.container.classList.add("noneBoxShadow");
-        this.config = config;
+        this.rootContainer.classList.add("widget-citytabpage--noneBoxShadow");
+        this.config = options.config;
         //header，若 config为城市名称数组，则直接加载内容
         if (Util.isArray(this.config)) {
             this.header.hidden = true;
@@ -65123,12 +65189,12 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer {
         const city = document.createElement("div");
 
         const cityClass = document.createElement("div");
-        cityClass.setAttribute("class", "py-key");
+        cityClass.setAttribute("class", "widget-citytabpag__py-key");
         cityClass.innerHTML = key;
         city.appendChild(cityClass);
 
         const cityContent = document.createElement("div");
-        cityContent.setAttribute("class", "city-content");
+        cityContent.setAttribute("class", "widget-citytabpag__content");
 
         for (let i = 0; i < cities.length; i++) {
             let span = document.createElement("span");
@@ -65150,31 +65216,34 @@ SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- 
- /**
+
+
+
+/**
  * @class SuperMap.Widgets.NavTabsPage
  * @classdesc 标签页面组件
+ * @param {Object} options - 组件配置参数。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面。
  * @category Widgets Common
- * @param {Array.<Object>} [tabs=[]] - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面。
- */ 
+ */
 //  todo 思考拆分的控件应该以哪种方式使用
-class NavTabsPage {
-    constructor(tabs = [], id = null) {
-        this.navTabsPage = null;
+class NavTabsPage_NavTabsPage extends TemplateBase {
+    constructor(options) {
+        super(options);
         this.navTabsTitle = null;
         this.navTabsContent = null;
-
-        this.rootContainer = document.createElement("div");
-        if (id) {
-            this.rootContainer.id = id;
-        }
-        this._initContainer(tabs);
-
+        options.tabs = options.tabs ? options.tabs : [];
+        this._initView(options.tabs);
     }
 
-    _initContainer(tabs) {
+    /**
+     * @override
+     * @private
+     */
+    _initView(tabs) {
         const navTabsPage = document.createElement("div");
-        navTabsPage.setAttribute("class", "widgets-navtabs-page");
+        navTabsPage.setAttribute("class", "widget-navtabspage");
 
         //关闭按钮
         const closeBtn = document.createElement("span");
@@ -65185,13 +65254,13 @@ class NavTabsPage {
         //标签
         const navTabsTitle = document.createElement("div");
         this.navTabsTitle = navTabsTitle;
-        navTabsTitle.setAttribute("class", "widgets-navtabs-title");
+        navTabsTitle.setAttribute("class", "widget-navtabspage__title");
         navTabsPage.appendChild(navTabsTitle);
 
         //内容
         const navTabsContent = document.createElement("div");
         this.navTabsContent = navTabsContent;
-        navTabsContent.setAttribute("class", "widgets-navtabs-content");
+        navTabsContent.setAttribute("class", "widget-navtabspage__content");
         navTabsPage.appendChild(navTabsContent);
 
         //若 tabs 初始传入值，则
@@ -65199,11 +65268,7 @@ class NavTabsPage {
             this.appendTabs(tabs);
         }
 
-        this.navTabsPage = navTabsPage;
-    }
-
-    getElement() {
-        return this.navTabsPage;
+        this.rootContainer = navTabsPage;
     }
 
     /**
@@ -65237,7 +65302,7 @@ class NavTabsPage {
         }
         //todo 确认是否两个子元素的 index 相互对应
         //默认显示第一个标签对象
-        this.navTabsTitle.firstChild.setAttribute("class", "tabs-select");
+        this.navTabsTitle.firstChild.setAttribute("class", "widget-navtabspage__tabs--select");
         this.navTabsContent.firstChild.hidden = false;
     }
 
@@ -65262,32 +65327,21 @@ class NavTabsPage {
         }
     }
 
-    /**
-     * @function NavTabsPage.prototype.closeView
-     * @description 关闭当前窗口
-     */
-    closeView() {
-        this.navTabsPage.hidden = true;
-    }
-
-    showView() {
-        this.navTabsPage.hidden = false;
-    }
-
     _changeTabsPage(e) {
         const index = e.target.index;
         for (let i = 0; i < this.navTabsTitle.children.length; i++) {
             this.navTabsTitle.children[i].setAttribute("class", "");
             this.navTabsContent.children[i].hidden = true;
             if (i === index) {
-                this.navTabsTitle.children[i].setAttribute("class", "tabs-select");
+                this.navTabsTitle.children[i].setAttribute("class", "widget-navtabspage__tabs--select");
                 this.navTabsContent.children[i].hidden = false;
             }
         }
     }
 
 }
-SuperMap.Widgets.NavTabsPage = NavTabsPage;
+
+SuperMap.Widgets.NavTabsPage = NavTabsPage_NavTabsPage;
 // CONCATENATED MODULE: ./src/common/widgets/templates/PaginationContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -65298,52 +65352,52 @@ SuperMap.Widgets.NavTabsPage = NavTabsPage;
 /**
  * @class SuperMap.Widgets.PaginationContainer
  * @classdesc 分页组件模板
+ * @param {Object} options - 组件配置参数。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象
+ * @param {number} options.pageCounts - 页数
  * @category Widgets Common
- * @param {HTMLElement} contents - 页面填充的 DOM 元素对象
- * @param {number} pageCounts - 页数
  */
-class PaginationContainer {
-    constructor(contents = null, pageCounts = 0) {
+class PaginationContainer_PaginationContainer extends TemplateBase {
+    constructor(options) {
+        options = options ? options : {};
+        super(options);
         this.currentPage = 0;
         this.pageNumberLis = [];
         this.currentPageNumberLis = [];
         this.linkageEvent = null;
-        this._initView(contents, pageCounts);
+
+        options.contents = options.contents ? options.contents : null;
+        options.pageCounts = options.pageCounts ? options.pageCounts : 0;
+        this._initView(options.contents, options.pageCounts);
     }
 
     /**
-     * @description 设置页面联动函数
-     * @param linkageEvent
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setLinkageEvent
+     * @description 设置页面联动方法
+     * @param {function} linkageEvent - 联动方法，实现指定功能
      */
     setLinkageEvent(linkageEvent) {
         this.linkageEvent = linkageEvent;
     }
 
-    getElement() {
-        return this.container;
-    }
-
-    showView() {
-        this.container.hidden = false;
-    }
-
-    closeView() {
-        this.container.hidden = true;
-    }
-
+    /**
+     * @private
+     * @override
+     */
     _initView(contents, pageCounts) {
         const container = document.createElement("div");
-        container.setAttribute("class", "widgets-pagination");
+        container.setAttribute("class", "widget-pagination");
 
         //content
         const content = document.createElement("div");
-        content.setAttribute("class", "widgets-pagination-content");
+        content.setAttribute("class", "widget-pagination__content");
         container.appendChild(content);
         this.content = content;
 
         //link
         const link = document.createElement("ul");
-        link.setAttribute("class", "widgets-pagination-link");
+        link.setAttribute("class", "widget-pagination__link");
         link.onclick = this._changePageEvent.bind(this);
         container.appendChild(link);
         this._createLink(link);
@@ -65355,14 +65409,14 @@ class PaginationContainer {
         if (pageCounts !== 0) {
             this.setPageLink(pageCounts);
         }
-        this.container = container;
-
+        this.rootContainer = container;
     }
 
     /**---------以下是页面相关操作 **/
     /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setContent
      * @description 设置页面内容
-     * @param element
+     * @param {Element} element - 页面内容元素
      */
     setContent(element) {
         this.clearContent();
@@ -65370,14 +65424,16 @@ class PaginationContainer {
     }
 
     /**
-     * @description 添加内容
-     * @param element
+     * @function SuperMap.Widgets.PaginationContainer.prototype.appendContent
+     * @description 追加内容
+     * @param {Element} element - 页面内容元素
      */
     appendContent(element) {
         this.content.appendChild(element);
     }
 
     /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.clearContent
      * @description 清空内容元素
      */
     clearContent() {
@@ -65388,7 +65444,8 @@ class PaginationContainer {
 
     /** -----以下是页码相关的操作：**/
     /**
-     * @description 设置页码
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setPageLink
+     * @description 设置页码数
      * @param {Number} pageNumber
      */
     setPageLink(pageNumber) {
@@ -65400,7 +65457,7 @@ class PaginationContainer {
         //创建页码
         this._createPageLi(pageNumber);
         //添加页码到页码列表
-        this.appendPageLink();
+        this._appendPageLink();
     }
 
     /**
@@ -65432,7 +65489,7 @@ class PaginationContainer {
      * @description 添加页码到页码列表
      * @private
      */
-    appendPageLink() {
+    _appendPageLink() {
         //todo 如何插入中间
         for (let i = 0; i < this.currentPageNumberLis.length; i++) {
             this.link.insertBefore(this.currentPageNumberLis[i], this.link.childNodes[this.link.children.length - 2]);
@@ -65457,6 +65514,7 @@ class PaginationContainer {
     }
 
     /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.clearPageLink
      * @description 清除页码列表
      */
     clearPageLink() {
@@ -65492,7 +65550,6 @@ class PaginationContainer {
 
             ul.appendChild(li);
         }
-
     }
 
     /**
@@ -65503,7 +65560,6 @@ class PaginationContainer {
     _changePageEvent(e) {
         //todo
         const trigger = e.target;
-        console.log(trigger);
         //若列表禁用，点击无效
         if (trigger.parentElement.classList[0] === "disable") {
             return;
@@ -65523,7 +65579,7 @@ class PaginationContainer {
 
         //根据 currentPageNumberLis 创建页码列表
         this.clearPageLink();
-        this.appendPageLink();
+        this._appendPageLink();
     }
 
     /**
@@ -65597,7 +65653,7 @@ class PaginationContainer {
 
 }
 
-SuperMap.Widgets.PaginationContainer = PaginationContainer;
+SuperMap.Widgets.PaginationContainer = PaginationContainer_PaginationContainer;
 // CONCATENATED MODULE: ./src/common/widgets/util/Util.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -65627,262 +65683,6 @@ let widgetsUtil = {
 // EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
 var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(24);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
-
-// CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-let FileReaderUtil = {
-    rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
-    rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
-    rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
-
-    /**
-     * 读取文件
-     * @param fileType
-     * @param file
-     * @param success
-     * @param failed
-     * @param context
-     */
-    readFile(fileType, file, success, failed, context) {
-        if (FileTypes.JSON === fileType || FileTypes.GEOJSON === fileType) {
-            this.readTextFile(file, success, failed, context)
-        } else if (FileTypes.EXCEL === fileType || FileTypes.CSV === fileType) {
-            this.readXLSXFile(file, success, failed, context)
-        }
-
-    },
-
-    /**
-     * 读取文本文件
-     * @param file
-     * @param success
-     * @param failed
-     * @param context
-     */
-    readTextFile(file, success, failed, context) {
-        let reader = new FileReader();
-        reader.onloadend = function (evt) {
-            success && success.call(context, evt.target.result);
-        };
-        reader.onerror = function (error) {
-            failed && failed.call(context, error)
-        };
-        this.rAT ? reader.readAsText(file.file, 'utf-8') : reader.readAsBinaryString(file.file);
-    },
-
-    /**
-     * 读取excel或csv文件
-     * @param file
-     * @param success
-     * @param failed
-     * @param context
-     */
-    readXLSXFile(file, success, failed, context) {
-        let reader = new FileReader();
-        reader.onloadend = function (evt) {
-            let xLSXData = new Uint8Array(evt.target.result);
-            let workbook = external_function_try_return_XLSX_catch_e_return_default.a.read(xLSXData, {type: "array"});
-            try {
-                if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
-                    //暂时只读取第一个sheets的内容
-                    let sheetName = workbook.SheetNames[0];
-                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_default.a.utils.sheet_to_csv(workbook.Sheets[sheetName]);
-                    success && success.call(context, xLSXCSVString);
-                }
-            } catch (error) {
-                failed && failed.call(context, error);
-            }
-        };
-        reader.onerror = function (error) {
-            failed && failed.call(context, error)
-        };
-        this.rABF && reader.readAsArrayBuffer(file.file);
-    },
-
-    /**
-     * @function SuperMap.Widgets.FileReaderUtil.prototype.processDataToGeoJson
-     * @description 将读取回来得数据统一处理为 GeoJSON 格式
-     * @param {string} type - 文件类型
-     * @param {Object} data - 读取返回的数据对象
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
-     * @private
-     */
-    processDataToGeoJson(type, data) {
-        //数据处理
-        if (type === "EXCEL" || type === "CSV") {
-            return this.processExcelDataToGeoJson(data);
-        } else if (type === 'JSON' || type === 'GEOJSON') {
-            let geojson = null;
-            let result = data;
-
-            //geojson、json未知，通过类容来判断
-            if ((typeof result) === "string") {
-                result = JSON.parse(result);
-            }
-            if (result.type === 'ISERVER') {
-                geojson = result.data.recordsets[0].features;
-            } else if (result.type === 'FeatureCollection') {
-                //geojson
-                geojson = result;
-            } else {
-                //不支持数据
-                // this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的 'GEOJSON' 格式数据！"});
-                throw new Error("Unsupported data type.");
-                // return false;
-            }
-            return geojson;
-        } else {
-            // this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的'EXCEL','CSV','GEOJSON'格式数据！"});
-            throw new Error("Unsupported data type.");
-        }
-    },
-    /**
-     * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
-     * @description 表格文件数据处理
-     * @param {Object} data - 读取的表格文件数据
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
-     * @private
-     */
-    processExcelDataToGeoJson(data) {
-        //处理为对象格式转化
-        let dataContent = this.string2Csv(data);
-        let fieldCaptions = dataContent.colTitles;
-
-        //位置属性处理
-        let xfieldIndex = -1,
-            yfieldIndex = -1;
-        for (let i = 0, len = fieldCaptions.length; i < len; i++) {
-            if (this.isXField(fieldCaptions[i])) {
-                xfieldIndex = i;
-            }
-            if (this.isYField(fieldCaptions[i])) {
-                yfieldIndex = i;
-            }
-        }
-        // feature 构建后期支持坐标系 4326/3857
-        let features = [];
-        for (let i = 0, len = dataContent.rows.length; i < len; i++) {
-            let row = dataContent.rows[i];
-            //if (featureFrom === "LonLat") {
-            let x = Number(row[xfieldIndex]),
-                y = Number(row[yfieldIndex]);
-
-            //属性信息
-            let attributes = {};
-            for (let index in dataContent.colTitles) {
-                let key = dataContent.colTitles[index];
-                attributes[key] = dataContent.rows[i][index];
-            }
-
-            //目前csv 只支持处理点，所以先生成点类型的 geojson
-            let feature = {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [x, y]
-                },
-                "properties": attributes
-            };
-            features.push(feature);
-        }
-        return features;
-    },
-    /**
-     * 判断是否地理X坐标
-     * @param data
-     */
-    isXField(data) {
-        var lowerdata = data.toLowerCase();
-        return (lowerdata === "x" || lowerdata === "smx" ||
-            lowerdata === "jd" || lowerdata === "经度" || lowerdata === "东经" || lowerdata === "longitude" ||
-            lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng");
-    },
-
-    /**
-     * 判断是否地理Y坐标
-     * @param data
-     */
-    isYField(data) {
-        var lowerdata = data.toLowerCase();
-        return (lowerdata === "y" || lowerdata === "smy" ||
-            lowerdata === "wd" || lowerdata === "纬度" || lowerdata === "北纬" ||
-            lowerdata === "latitude" || lowerdata === "lat");
-    },
-    /**
-     * 字符串转为dataEditor 支持的csv格式数据
-     * @param string
-     * @param withoutTitle
-     */
-    string2Csv(string, withoutTitle) {
-        // let rows = string.split('\r\n');
-        let rows = string.split('\n');
-        let result = {};
-        if (!withoutTitle) {
-            result["colTitles"] = rows[0].split(',');
-        } else {
-            result["colTitles"] = [];
-        }
-        result['rows'] = [];
-        for (let i = (withoutTitle) ? 0 : 1; i < rows.length; i++) {
-            rows[i] && result['rows'].push(rows[i].split(','));
-        }
-        return result;
-    }
-
-};
-// CONCATENATED MODULE: ./src/common/widgets/util/index.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-
-// CONCATENATED MODULE: ./src/common/widgets/index.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-//数据
-
-//组件
-
-//提示框微件
-
-//公用模板：
-
-
-
-
-
-
-
-
-
-
-//工具类
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -65990,6 +65790,273 @@ let Lang = {
 SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
 
+// CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.Widgets.FileReaderUtil
+ * @classdesc 微件读取文件工具类
+ * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
+ */
+let FileReaderUtil = {
+    rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
+    rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
+    rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
+
+    /**
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.readFile
+     * @description 读取文件
+     * @param {string} fileType - 当前读取的文件类型
+     *
+     * @param {Object} file - 读取回来的文件内容对象
+     * @param {function} success - 读取文件成功回调函数
+     * @param {function} failed - 读取文件失败回调函数
+     * @param {Object} context - 回调重定向对象
+     */
+    readFile(fileType, file, success, failed, context) {
+        if (FileTypes.JSON === fileType || FileTypes.GEOJSON === fileType) {
+            this.readTextFile(file, success, failed, context)
+        } else if (FileTypes.EXCEL === fileType || FileTypes.CSV === fileType) {
+            this.readXLSXFile(file, success, failed, context)
+        }
+    },
+
+    /**
+     * 读取文本文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param {Object} context - 回调重定向对象
+     */
+    readTextFile(file, success, failed, context) {
+        let reader = new FileReader();
+        reader.onloadend = function (evt) {
+            success && success.call(context, evt.target.result);
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error)
+        };
+        this.rAT ? reader.readAsText(file.file, 'utf-8') : reader.readAsBinaryString(file.file);
+    },
+
+    /**
+     * 读取excel或csv文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param {Object} context - 回调重定向对象
+     */
+    readXLSXFile(file, success, failed, context) {
+        let reader = new FileReader();
+        reader.onloadend = function (evt) {
+            let xLSXData = new Uint8Array(evt.target.result);
+            let workbook = external_function_try_return_XLSX_catch_e_return_default.a.read(xLSXData, {type: "array"});
+            try {
+                if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
+                    //暂时只读取第一个sheets的内容
+                    let sheetName = workbook.SheetNames[0];
+                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_default.a.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+                    success && success.call(context, xLSXCSVString);
+                }
+            } catch (error) {
+                failed && failed.call(context, error);
+            }
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error)
+        };
+        this.rABF && reader.readAsArrayBuffer(file.file);
+    },
+
+    /**
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.processDataToGeoJson
+     * @description 将读取回来得数据统一处理为 GeoJSON 格式
+     * @param {string} type - 文件类型
+     * @param {Object} data - 读取返回的数据对象
+     * @param {function} success - 数据处理成功的回调
+     * @param {function} failed - 数据处理失败的回调
+     * @param {Object} context - 回调重定向对象
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @private
+     */
+    processDataToGeoJson(type, data, success, failed, context) {
+        let geojson = null;
+        if (type === "EXCEL" || type === "CSV") {
+            geojson = this.processExcelDataToGeoJson(data);
+            success && success.call(context, geojson);
+        } else if (type === 'JSON' || type === 'GEOJSON') {
+            let result = data;
+            //geojson、json未知，通过类容来判断
+            if ((typeof result) === "string") {
+                result = JSON.parse(result);
+            }
+            if (result.type === 'ISERVER') {
+                geojson = result.data.recordsets[0].features;
+            } else if (result.type === 'FeatureCollection') {
+                //geojson
+                geojson = result;
+            } else {
+                //不支持数据
+                failed && failed.call(context, Lang.i18n('msg_dataInWrongGeoJSONFormat'));
+            }
+            success && success.call(context, geojson);
+        } else {
+            failed && failed.call(context, Lang.i18n('msg_dataInWrongFormat'));
+        }
+    },
+    /**
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
+     * @description 表格文件数据处理
+     * @param {Object} data - 读取的表格文件数据
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @private
+     */
+    processExcelDataToGeoJson(data) {
+        //处理为对象格式转化
+        let dataContent = this.string2Csv(data);
+        let fieldCaptions = dataContent.colTitles;
+
+        //位置属性处理
+        let xfieldIndex = -1,
+            yfieldIndex = -1;
+        for (let i = 0, len = fieldCaptions.length; i < len; i++) {
+            if (this.isXField(fieldCaptions[i])) {
+                xfieldIndex = i;
+            }
+            if (this.isYField(fieldCaptions[i])) {
+                yfieldIndex = i;
+            }
+        }
+        // feature 构建后期支持坐标系 4326/3857
+        let features = [];
+        for (let i = 0, len = dataContent.rows.length; i < len; i++) {
+            let row = dataContent.rows[i];
+            //if (featureFrom === "LonLat") {
+            let x = Number(row[xfieldIndex]),
+                y = Number(row[yfieldIndex]);
+
+            //属性信息
+            let attributes = {};
+            for (let index in dataContent.colTitles) {
+                let key = dataContent.colTitles[index];
+                attributes[key] = dataContent.rows[i][index];
+            }
+
+            //目前csv 只支持处理点，所以先生成点类型的 geojson
+            let feature = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [x, y]
+                },
+                "properties": attributes
+            };
+            features.push(feature);
+        }
+        return features;
+    },
+    /**
+     * 判断是否地理X坐标
+     * @param data
+     */
+    isXField(data) {
+        var lowerdata = data.toLowerCase();
+        return (lowerdata === "x" || lowerdata === "smx" ||
+            lowerdata === "jd" || lowerdata === "经度" || lowerdata === "东经" || lowerdata === "longitude" ||
+            lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng");
+    },
+
+    /**
+     * 判断是否地理Y坐标
+     * @param data
+     */
+    isYField(data) {
+        var lowerdata = data.toLowerCase();
+        return (lowerdata === "y" || lowerdata === "smy" ||
+            lowerdata === "wd" || lowerdata === "纬度" || lowerdata === "北纬" ||
+            lowerdata === "latitude" || lowerdata === "lat");
+    },
+    /**
+     * 字符串转为dataEditor 支持的csv格式数据
+     * @param string
+     * @param withoutTitle
+     */
+    string2Csv(string, withoutTitle) {
+        // let rows = string.split('\r\n');
+        let rows = string.split('\n');
+        let result = {};
+        if (!withoutTitle) {
+            result["colTitles"] = rows[0].split(',');
+        } else {
+            result["colTitles"] = [];
+        }
+        result['rows'] = [];
+        for (let i = (withoutTitle) ? 0 : 1; i < rows.length; i++) {
+            rows[i] && result['rows'].push(rows[i].split(','));
+        }
+        return result;
+    }
+
+};
+
+SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
+
+
+// CONCATENATED MODULE: ./src/common/widgets/util/index.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+// CONCATENATED MODULE: ./src/common/widgets/index.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+//数据
+
+//组件
+
+//提示框微件
+
+//公用模板：
+
+
+
+
+
+
+
+
+
+
+//工具类
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
 
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -66087,7 +66154,12 @@ let en = {
     'msg_selectDataset': 'Please select a data set!',
     'msg_setTheWeightField': 'Please set the weight field!',
     'msg_theFieldNotSupportAnalysis': 'The field you currently select does not support analysis!',
-    'msg_resultIsEmpty': 'The result of the analysis is empty!'
+    'msg_resultIsEmpty': 'The result of the analysis is empty!',
+    'msg_openFileFail': 'Failed to open file!',
+    'msg_fileTypeUnsupported': 'File format is not supported!',
+    'msg_fileSizeExceeded': 'File size exceeded! The file size should not exceed 10M!',
+    'msg_dataInWrongGeoJSONFormat': 'Wrong data format! Non standard GEOJSON format data!',
+    'msg_dataInWrongFormat': 'Wrong data format! Non standard EXCEL, CSV or GEOJSON format data!'
 
 
 };
@@ -66192,8 +66264,13 @@ let zh = {
     'msg_setTheWeightField': '请设置权重字段！',
     'msg_theFieldNotSupportAnalysis': '您当前选择的字段不支持分析！',
     'msg_resultIsEmpty': '分析的结果为空！',
-    'msg_dataReturnedIsEmpty': '请求成功，查询返回的数据为空。'
-    
+    'msg_dataReturnedIsEmpty': '请求成功，查询返回的数据为空。',
+    'msg_openFileFail': '打开文件失败！',
+    'msg_fileTypeUnsupported': '不支持该文件格式！',
+    'msg_fileSizeExceeded': '文件大小超限！文件大小不得超过 10M！',
+    'msg_dataInWrongGeoJSONFormat': '数据格式错误！非标准的 GEOJSON 格式数据！',
+    'msg_dataInWrongFormat': '数据格式错误！非标准的 EXCEL, CSV 或 GEOJSON 格式数据！'
+
 };
 
 SuperMap.Lang["zh-CN"] = zh;
@@ -70280,6 +70357,13 @@ var ThemeLayer = external_L_default.a.Layer.extend({
         } else {
             external_L_default.a.Layer.prototype.off.call(this, event, callback);
         }
+        return this;
+    },
+    fire: function (type, data, propagate) { // eslint-disable-line no-unused-vars
+        if (this.renderer) {
+            this.renderer.trigger(type, data);
+        }
+        external_L_default.a.Layer.prototype.fire.call(this, type, data, propagate);
         return this;
     },
 
@@ -82977,6 +83061,124 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
 
 
 
+// CONCATENATED MODULE: ./src/leaflet/widgets/WidgetsViewBase.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+* This program are made available under the terms of the Apache License, Version 2.0
+* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class WidgetsViewBase
+ * @classdesc lealfet 微件基类
+ * @param {Object} options - 参数。
+ * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括: 'topleft', 'topright', 'bottomleft' 和 'bottomright'，默认为'topright'。
+ * @param {function} options.style - 设置图层点线面默认样式，点 样式返回 maker 或者 circleMaker;线和面返回 L.path 样式。
+ * @param {function} options.onEachFeature - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
+ */
+var WidgetsViewBase = external_L_default.a.Control.extend({
+    options: {
+        //控件位置 继承自leaflet control
+        position: 'topright',
+        //默认样式，以支持微件设置图层基本样式
+        style: (feature, latLng) => {
+            if (latLng /*&& feature instanceof L.latLng || feature.geometry.type.toLowerCase() === "point"*/) {
+                return external_L_default.a.circleMarker(latLng, {
+                    fillColor: 'blue',
+                    weight: 1,
+                    opacity: 1,
+                    color: 'blue',
+                    fillOpacity: 0.6
+                });
+            } else {
+                return {
+                    fillColor: 'blue',
+                    weight: 1,
+                    opacity: 1,
+                    color: 'blue',
+                    fillOpacity: 0.6
+                }
+            }
+        },
+        onEachFeature: null
+    },
+
+    initialize(options) {
+        external_L_default.a.setOptions(this, options);
+        //微件事件处理对象：//todo 确认一些公开或私有的成员变量
+        this._event = new external_L_default.a.Evented();
+        //微件根 dom 元素：
+        this.rootContainer = null;
+        //图层参数，主要配置微件返回数据图层的样式和事件等
+    },
+
+    /**
+     * @function L.supermap.widgets.widgetsViewBase.prototype.onAdd
+     * @description 向底图添加微件
+     */
+    onAdd(map) {
+        //子类实现此方法
+        this.map = map;
+        this.rootContainer = this._initView();
+        return this.rootContainer;
+    },
+
+    /**
+     * @function L.supermap.widgets.widgetsViewBase.prototype.on
+     * @param {string} eventType - 监听的事件类型
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    on(eventType, callback) {
+        this._event.on(eventType, callback);
+    },
+
+    /**
+     * @function L.supermap.widgets.widgetsViewBase.prototype.off
+     * @description 事件关闭。
+     * @param {string} eventType - 监听的事件名
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    off(eventType, callback) {
+        this._event.off(eventType, callback);
+    },
+
+    /**
+     * @function L.supermap.widgets.widgetsViewBase.prototype._initView
+     * @description 初始化微件UI
+     * @private
+     */
+    _initView() {
+        //子类实现此方法
+    },
+
+    /**
+     * @function L.supermap.widgets.widgetsViewBase.prototype._preventMapEvent
+     * @description 阻止 map 默认事件。
+     * @private
+     */
+    _preventMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
+
+});
+
+var widgetsViewBase = function (options) {
+    return new WidgetsViewBase(options);
+};
+
+external_L_default.a.supermap.widgets.widgetsViewBase = widgetsViewBase;
 // CONCATENATED MODULE: ./src/leaflet/widgets/openfile/OpenFileViewModel.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -82996,14 +83198,9 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
  * @fires L.supermap.widgets.openFileViewModel#openfilefail
  */
 var OpenFileViewModel = external_L_default.a.Evented.extend({
-    initialize(map) {
-        if (map) {
-            this.fileModel = new FileModel_FileModel({map: map});
-        } else {
-            return new Error(`Cannot find map, fileModel.map cannot be null.`);
-        }
+    initialize() {
+        this.fileModel = new FileModel_FileModel();
     },
-
 
     /**
      * @function L.supermap.widgets.openFileViewModel.prototype.readFile
@@ -83022,7 +83219,7 @@ var OpenFileViewModel = external_L_default.a.Evented.extend({
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            this.fire("filesizeexceed", {messageType: "warring", message: "文件大小不得超过 10M。"});
+            this.fire("filesizeexceed", {messageType: "warring", message: Lang.i18n('msg_fileSizeExceeded')});
             return false;
         }
 
@@ -83038,7 +83235,7 @@ var OpenFileViewModel = external_L_default.a.Evented.extend({
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            this.fire("errorfileformat", {messageType: "failure", message: "不支持该文件格式！"});
+            this.fire("errorfileformat", {messageType: "failure", message: Lang.i18n('msg_fileTypeUnsupported')});
             return false;
         }
         //文件类型限制
@@ -83071,19 +83268,22 @@ var OpenFileViewModel = external_L_default.a.Evented.extend({
             path: this.fileModel.loadFileObject.filePath
         }, (data) => {
             //将数据统一转换为 geoJson 格式加载到底图
-            const geojson = FileReaderUtil.processDataToGeoJson(type, data);
-            if (geojson) {
-                /**
-                 * @event L.supermap.widgets.openFileViewModel#openfilesuccess
-                 * @description 打开文件成功。
-                 * @property {GeoJSONObject} result - GeoJSON 格式数据。
-                 * @property {string} layerName - 图层名。
-                 */
-                this.fire("openfilesuccess", {
-                    result: geojson,
-                    layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
-                });
-            }
+            FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
+                if (geojson) {
+                    /**
+                     * @event L.supermap.widgets.openFileViewModel#openfilesuccess
+                     * @description 打开文件成功。
+                     * @property {GeoJSONObject} result - GeoJSON 格式数据。
+                     * @property {string} layerName - 图层名。
+                     */
+                    this.fire("openfilesuccess", {
+                        result: geojson,
+                        layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
+                    });
+                }
+            }, (e) => {
+                me.fire("openfilefail", {messageType: "failure", message: e.errorMassage});
+            }, this);
         }, () => {
             /**
              * @event L.supermap.widgets.openFileViewModel#openfilefail
@@ -83091,11 +83291,9 @@ var OpenFileViewModel = external_L_default.a.Evented.extend({
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            me.fire("openfilefail", {messageType: "failure", message: "打开文件失败！"});
-            // throw new Error("Incorrect data format: " + error);
+            me.fire("openfilefail", {messageType: "failure", message: Lang.i18n('msg_openFileFail')});
         }, this);
     }
-
 
 });
 
@@ -83120,26 +83318,16 @@ external_L_default.a.supermap.widgets.util = widgetsUtil;
  * @category Widgets OpenFile
  * @fires L.supermap.widgets.openFile#openfilesuccess
  */
-var OpenFileView = external_L_default.a.Control.extend({
+var OpenFileView = WidgetsViewBase.extend({
     options: {
         //绑定的底图图层
-        layer: null,
-        //控件位置 继承自leaflet control
-        position: 'topright'
+        layer: null
     },
-    
-    /**
-     * @function L.supermap.widgets.openFile.prototype.onAdd
-     * @description 向底图添加微件
-     * @private
-     */
-    onAdd: function (map) {
-        this.map = map;
-        this.event = new external_L_default.a.Evented();
-        if (this.options.orientation !== 'vertical') {
-            this.options.orientation = 'horizontal';
-        }
-        return this._initOpenFileView();
+
+    initialize(options) {
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
+        //初始化 ViewModel:
+        this.viewModel = new OpenFileViewModel();
     },
 
     /**
@@ -83153,28 +83341,27 @@ var OpenFileView = external_L_default.a.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.openFile.prototype._initOpenFileView
+     * @function L.supermap.widgets.openFile.prototype._initView
      * @description 创建打开本地文件数据微件
      * @returns {HTMLElement}
      * @private
+     * @override
      */
-    _initOpenFileView: function () {
-        //初始化 ViewModel:
-        this.viewModel = new OpenFileViewModel(this.map, this);
-        //初始化 view
+    _initView() {
 
-        const uploadContent = external_L_default.a.DomUtil.create('div', 'openFileContainer');
+        //初始化 view
+        const uploadContent = external_L_default.a.DomUtil.create('div', 'widget-openfile');
         uploadContent.id = 'openFile';
 
         this.fileSelect = external_L_default.a.DomUtil.create('div', '', uploadContent);
-        this.label = external_L_default.a.DomUtil.create('label', 'file-selectSpan', this.fileSelect);
+        this.label = external_L_default.a.DomUtil.create('label', 'widget-openfile__span--select', this.fileSelect);
         this.label.htmlFor = "input_file";
 
         external_L_default.a.DomUtil.create('div', 'supermapol-icons-upload', this.label);
-        const fileSpan = external_L_default.a.DomUtil.create('span', 'openFile-span', this.label);
+        const fileSpan = external_L_default.a.DomUtil.create('span', 'widget-openfile__span', this.label);
         fileSpan.appendChild(document.createTextNode(Lang.i18n('text_chooseFile')));
 
-        this.fileInput = external_L_default.a.DomUtil.create('input', 'openFile_input', this.fileSelect);
+        this.fileInput = external_L_default.a.DomUtil.create('input', 'widget-openfile__input', this.fileSelect);
         this.fileInput.id = "input_file";
         this.fileInput.type = "file";
         this.fileInput.accept = ".json,.geojson,.csv,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
@@ -83205,15 +83392,12 @@ var OpenFileView = external_L_default.a.Control.extend({
              * @description 打开文件成功。
              * @property {Object} e - 事件对象。
              */
-            this.event.fire("openfilesuccess", e);
+            this._event.fire("openfilesuccess", e);
         });
 
-        this.rootContainer = uploadContent;
+        // 阻止 map 默认事件
+        this._preventMapEvent(uploadContent, this.map);
         return uploadContent;
-    },
-
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
     }
 
 });
@@ -83290,37 +83474,35 @@ const CityConfig_config = {
 
 /**
  * @class L.supermap.widgets.GeoJsonLayersDataModel
- * @description 多图层数据模型
+ * @description 多图层数据模型 todo 看看如何完善
  * @category Widgets Common
  * @private
  * @param {Array.<Object>} layers - 图层数组。
  * @param {L.supermap.widgets.geoJSONLayerWithName} layers.layerObject - 含有 layerName 与 GeoJSON 图层的对象。
  * @fires L.supermap.widgets.GeoJsonLayersDataModel#newlayeradded
  */
-var GeoJsonLayersDataModel = external_L_default.a.Evented.extend({
-    initialize(layers) {
+class GeoJsonLayersModel_GeoJsonLayersDataModel {
+    constructor(layers) {
         this.layers = [];
         if (layers && layers.length > 0) {
             this.addLayers(layers);
         }
         this.currentLayerDataModel = null;
-    },
-    addLayers(layers) {
+    }
+
+    addLayers(layers, success, failed, context) {
         for (let i = 0; i < layers.length; i++) {
             let layerName = layers[i].layerName;
-            let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i].layer);
-            //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
-            this.layers[layerName] = geoJsonLayerDataModel;
-            /**
-             * @event L.supermap.widgets.GeoJsonLayersDataModel#newlayeradded
-             * @description 新图层添加完成之后触发。
-             * @property {Object} newLayer - 新添加的图层数据。
-             * @property {string} newLayer.layerName - 图层名。
-             * @property {L.supermap.widgets.GeoJsonLayersDataModel} newLayer.layer - 图层。
-             */
-            this.fire("newlayeradded", {layerName: layerName, layer: geoJsonLayerDataModel});
+            if (layers[i].layer instanceof external_L_default.a.GeoJSON) {
+                let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i].layer);
+                //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
+                this.layers[layerName] = geoJsonLayerDataModel;
+                success && success.call(context, {layerName: layerName, layer: geoJsonLayerDataModel});
+            } else {
+                failed && failed.call(context, "")
+            }
         }
-    },
+    }
 
     /**
      * @function L.supermap.widgets.GeoJsonLayersDataModel.prototype.setCurrentLayerDataModel
@@ -83332,10 +83514,9 @@ var GeoJsonLayersDataModel = external_L_default.a.Evented.extend({
             this.currentLayerDataModel = this.layers[layerName];
         }
     }
-});
+}
 
-external_L_default.a.supermap.widgets.GeoJsonLayersDataModel = GeoJsonLayersDataModel;
-
+external_L_default.a.supermap.widgets.GeoJsonLayersDataModel = GeoJsonLayersModel_GeoJsonLayersDataModel;
 
 /**
  * @class L.supermap.widgets.GeoJsonLayerDataModel
@@ -83528,7 +83709,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
             external_L_default.a.setOptions(this, options);
         }
         //初始化Model
-        this.dataModel = new GeoJsonLayersDataModel();
+        this.dataModel = new GeoJsonLayersModel_GeoJsonLayersDataModel();
         //初始话地址匹配服务
 
         this.geoCodeService = new services_AddressMatchService_AddressMatchService(this.options.cityGeoCodingConfig.addressUrl);
@@ -83541,17 +83722,6 @@ var SearchViewModel = external_L_default.a.Evented.extend({
         });
         //查询缓存
         this.searchCache = {};
-
-        //监听 dataModel 数据变化：//看如何优化
-        this.dataModel.on("newlayeradded", (e) => {
-            /**
-             * @event L.supermap.widgets.searchViewModel#newlayeradded
-             * @description 添加查询图层事件
-             * @property {Object} result  - 事件返回的新的查询图层对象。
-             * @property {string} layerName  - 事件返回的新的查询图层对象名。
-             */
-            this.fire("newlayeradded", {layerName: e.layerName});
-        });
     },
 
     /**
@@ -83632,7 +83802,15 @@ var SearchViewModel = external_L_default.a.Evented.extend({
      * @param {Array.<L.GeoJSON>} layers - 新添加的图层对象。
      */
     addSearchLayers(layers) {
-        this.dataModel.addLayers(layers)
+        this.dataModel.addLayers(layers, (e) => {
+            /**
+             * @event L.supermap.widgets.searchViewModel#newlayeradded
+             * @description 添加查询图层事件
+             * @property {Object} result  - 事件返回的新的查询图层对象。
+             * @property {string} layerName  - 事件返回的新的查询图层对象名。
+             */
+            this.fire("newlayeradded", {layerName: e.layerName});
+        }, null, this);
     },
 
     /**
@@ -83711,6 +83889,7 @@ external_L_default.a.supermap.widgets.searchViewModel = searchViewModel;
 
 
 
+
 /**
  * @class L.supermap.widgets.search
  * @classdesc 图层查询微件。
@@ -83722,25 +83901,20 @@ external_L_default.a.supermap.widgets.searchViewModel = searchViewModel;
  *                                    配置两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或 ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
  * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能
+ * @param {function} options.style - 设置图层点线面默认样式，点 样式返回 maker 或者 circleMaker;线和面返回 L.path 样式。
+ * @param {function} options.onEachFeature - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
  * @extends {L.Control}
  * @fires L.supermap.widgets.search#searchsucceed
  */
-var SearchView = external_L_default.a.Control.extend({
+var SearchView = WidgetsViewBase.extend({
     options: {
-        //控件位置 继承自leaflet control
-        position: 'topright',
-        orientation: 'horizontal',
         cityConfig: CityConfig_config,
         cityGeoCodingConfig: null,
         isGeoCoding: true
     },
 
     initialize(options) {
-        external_L_default.a.setOptions(this, options);
-
-        //事件监听对象
-        this.event = new external_L_default.a.Evented();
-
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
         //当前选中查询的图层名：
         this.currentSearchLayerName = "";
         this.isSearchLayer = false;
@@ -83750,12 +83924,12 @@ var SearchView = external_L_default.a.Control.extend({
      * @function L.supermap.widgets.search.prototype.onAdd
      * @description 向底图添加微件
      * @private
+     * @override
      */
     onAdd: function (map) {
-        this.map = map;
         //初始化微件业务逻辑执行对象 viewModel
         this.viewModel = new SearchViewModel(map, this.options.cityGeoCodingConfig);
-        return this._initPoiSearchView();
+        return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
     /**
      * @function L.supermap.widgets.search.prototype.addSearchLayer
@@ -83767,39 +83941,32 @@ var SearchView = external_L_default.a.Control.extend({
         this.viewModel.addSearchLayers(layers);
     },
 
-    /**
-     * @function L.supermap.widgets.search.prototype.on
-     * @param {string} eventType - 监听的事件类型
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
-    },
-
     /*----------以下是创建 dom 元素的方法---------*/
     /**
-     * @function L.supermap.widgets.search.prototype._initPoiSearchView
+     * @function L.supermap.widgets.search.prototype._initView
      * @description 创建地址匹配或图层要素查询微件。
+     * @override  //todo 复写的方法是否要加上 这个标签
      * @returns {HTMLElement}
      * @private
+     * @override
      */
-    _initPoiSearchView() {
+    _initView() {
         // self 便于 this 对象的使用
         const self = this;
         const div = document.createElement("div");
-        div.setAttribute("class", "poi");
+        div.setAttribute("class", "widget-search-container");
 
         //外框
         const poiContainer = document.createElement("div");
-        poiContainer.setAttribute("class", "widgets-poi");
+        poiContainer.setAttribute("class", "widget-search");
         //主体
         //---------下拉框：
         const poiSettings = document.createElement("div");
-        poiSettings.setAttribute("class", "widgets-poi-settings");
+        poiSettings.setAttribute("class", "widget-search__settings");
         //下拉框
         const poiSearchName = document.createElement("div");
         //由View 维护，进行交互操作
-        poiSearchName.setAttribute("class", "widgets-poi-settings-name");
+        poiSearchName.setAttribute("class", "widget-search__settings__name");
         //poiSettings.innerHTML 通过下拉框选项改变
 
         poiSettings.appendChild(poiSearchName);
@@ -83813,7 +83980,7 @@ var SearchView = external_L_default.a.Control.extend({
         //城市地址匹配页面：
         let citySelect = null;
         if (this.options.isGeoCoding) {
-            const cityTabsPageObj = new CityTabsPage_CityTabsPage(this.options.cityConfig);
+            const cityTabsPageObj = new CityTabsPage_CityTabsPage({config: this.options.cityConfig});
             citySelect = cityTabsPageObj.getElement();
             //点选城市名，修改显示，并执行定位城市查询【城市列表列表点击事件】
             cityTabsPageObj.content.onclick = (e) => {
@@ -83832,15 +83999,15 @@ var SearchView = external_L_default.a.Control.extend({
         //图层查询页面：写法是为了为了代码可读性
         const layersSelect = function () {
             const layersSelect = document.createElement("div");
-            layersSelect.setAttribute("class", "layers-select");
+            layersSelect.setAttribute("class", "widget-search__layers");
 
             const layersContent = document.createElement("div");
-            layersContent.setAttribute("class", "poi-layers-content");
+            layersContent.setAttribute("class", "widget-search-layers-content");
             layersSelect.appendChild(layersContent);
 
             //header todo 两个选项的功能暂没用到，先关闭，后续用到再打开
             const layersHeader = document.createElement("div");
-            layersHeader.setAttribute("class", "poi-layers-header");
+            layersHeader.setAttribute("class", "widget-search__layers__header");
             //加载搜索条件
             const loadBtn = document.createElement("div");
             loadBtn.setAttribute("class", "load-btn");
@@ -83864,7 +84031,7 @@ var SearchView = external_L_default.a.Control.extend({
 
             //body
             const layerSelectOptions = document.createElement("div");
-            layerSelectOptions.setAttribute("class", "poi-layers-body");
+            layerSelectOptions.setAttribute("class", "widget-search__layers__body");
             //选中查询图层监听
             //选择查询图层【图层列表点击事件】
             layerSelectOptions.onclick = (e) => {
@@ -83872,19 +84039,19 @@ var SearchView = external_L_default.a.Control.extend({
                 self.clearSearchResult();
 
                 let selectLayerOption = null;
-                if (e.target.classList[0] === "widgets-singlesSelect") {
+                if (e.target.classList[0] === "widget-search__layers__itme__singleselect") {
                     selectLayerOption = e.target;
-                } else if (e.target.classList[0] === "single-default-img" || e.target.classList[0] === "single-label") {
+                } else if (e.target.classList[0] === "widget-single-default-img" || e.target.classList[0] === "single-label") {
                     selectLayerOption = e.target.parentNode;
                 } else {
                     return;
                 }
 
-                if (document.getElementsByClassName("single-checked-img").length > 0) {
-                    document.getElementsByClassName("single-checked-img")[0].setAttribute("class", "single-default-img");
+                if (document.getElementsByClassName("widget-single-checked-img").length > 0) {
+                    document.getElementsByClassName("widget-single-checked-img")[0].setAttribute("class", "widget-single-default-img");
                 }
 
-                selectLayerOption.firstChild.setAttribute("class", "single-checked-img");
+                selectLayerOption.firstChild.setAttribute("class", "widget-single-checked-img");
                 self.currentSearchLayerName = selectLayerOption.lastChild.innerText;
                 self.isSearchLayer = true;
                 poiSearchName.removeChild(poiSearchName.firstChild);
@@ -83903,18 +84070,18 @@ var SearchView = external_L_default.a.Control.extend({
         }();
 
         //配置开启 城市匹配功能则添加
-        let navTabsPageOptions = [];
+        let navTabs = [];
         if (citySelect) {
-            navTabsPageOptions.push({
+            navTabs.push({
                 title: "搜索城市",
                 content: citySelect
             })
         }
-        navTabsPageOptions.push({
+        navTabs.push({
             title: "搜索图层",
             content: layersSelect
         });
-        const navTabsPageObject = new NavTabsPage(navTabsPageOptions);
+        const navTabsPageObject = new NavTabsPage_NavTabsPage({tabs: navTabs});
         const navTabsPage = navTabsPageObject.getElement();
         navTabsPageObject.closeView();
         poiContainer.appendChild(navTabsPage);
@@ -83935,7 +84102,7 @@ var SearchView = external_L_default.a.Control.extend({
 
         //---------搜索输入框：
         const poiInputContainer = document.createElement("div");
-        poiInputContainer.setAttribute("class", "widgets-poi-input");
+        poiInputContainer.setAttribute("class", "widget-search__input");
         const poiInput = document.createElement("input");
         poiInput.type = "text";
         poiInput.placeholder = "搜索城市地点或图层要素";
@@ -83948,7 +84115,6 @@ var SearchView = external_L_default.a.Control.extend({
         poiInputClose.setAttribute("class", "supermapol-icons-close");
         poiInputClose.hidden = true;
 
-        this.poiInputClose = poiInputClose;
         poiInputContainer.appendChild(poiInputClose);
 
         poiContainer.appendChild(poiInputContainer);
@@ -83956,7 +84122,7 @@ var SearchView = external_L_default.a.Control.extend({
 
         //--------搜索按钮：
         const searchBtn = document.createElement("div");
-        searchBtn.setAttribute("class", "widgets-poi-icon supermapol-icons-search");
+        searchBtn.setAttribute("class", "widget-search-icon supermapol-icons-search");
         //查询要素或匹配要素【搜索按钮点击事件】
         searchBtn.onclick = () => {
             //若是遮挡结果显示，则关闭
@@ -83991,7 +84157,7 @@ var SearchView = external_L_default.a.Control.extend({
         //--------搜索按钮 END
 
         //查询结果页面
-        const resultDomObj = new PaginationContainer();
+        const resultDomObj = new PaginationContainer_PaginationContainer();
         this._resultDomObj = resultDomObj;
         const resultContainer = function createResultPage() {
             const resultContainer = resultDomObj.getElement();
@@ -84004,21 +84170,21 @@ var SearchView = external_L_default.a.Control.extend({
             //【结果列表点击事件】，以支持联动map上对应要素：
             resultDomObj.content.onclick = (e) => {
                 let selectFeatureOption = null;
-                if (e.target.parentNode.className === "poi-result-info") {
+                if (e.target.parentNode.className === "widget-search-result-info") {
                     selectFeatureOption = e.target.parentNode.parentNode;
-                } else if (e.target.parentNode.className === "poi-result-items") {
+                } else if (e.target.parentNode.className === "widget-search__resultitme") {
                     selectFeatureOption = e.target.parentNode;
-                } else if (e.target.className === "poi-result-items") {
+                } else if (e.target.className === "widget-search__resultitme") {
                     selectFeatureOption = e.target;
                 } else {
                     return;
                 }
                 //修改
-                if (document.getElementsByClassName("poi-result-selected").length > 0) {
-                    document.getElementsByClassName("poi-result-selected")[0].classList.remove("poi-result-selected");
+                if (document.getElementsByClassName("widget-search__resultitme-selected").length > 0) {
+                    document.getElementsByClassName("widget-search__resultitme-selected")[0].classList.remove("widget-search__resultitme-selected");
                 }
 
-                selectFeatureOption.firstChild.classList.add("poi-result-selected");
+                selectFeatureOption.firstChild.classList.add("widget-search__resultitme-selected");
 
                 let filter = selectFeatureOption.children[1].firstChild.innerText;
                 //联动地图上要素响应
@@ -84042,24 +84208,14 @@ var SearchView = external_L_default.a.Control.extend({
             poiInputClose.hidden = false;
         };
 
-        //关闭在控件上触发地图的事件响应：
-        poiContainer.addEventListener('mouseover', function () {
-            self.map.dragging.disable();
-            self.map.scrollWheelZoom.disable();
-            self.map.doubleClickZoom.disable();
-        });
-        poiContainer.addEventListener('mouseout', function () {
-            self.map.dragging.enable();
-            self.map.scrollWheelZoom.enable();
-            self.map.doubleClickZoom.enable();
-        });
-
         //添加提示框
         this.messageBox = new MessageBox();
         //绑定 VM 的监听
         this._addViewModelListener();
         div.appendChild(poiContainer);
 
+        //阻止 map 默认事件
+        this._preventMapEvent(div, this.map);
         return div;
     },
 
@@ -84070,13 +84226,13 @@ var SearchView = external_L_default.a.Control.extend({
      */
     _createSearchLayerItem(layerName) {
         const layerOption = document.createElement("div");
-        layerOption.setAttribute("class", "poi-search-layer");
+        layerOption.setAttribute("class", "widget-search__layers__itme");
 
         // 创建圆形单选框
         const singleSelect = document.createElement("div");
-        singleSelect.setAttribute("class", "widgets-singlesSelect");
+        singleSelect.setAttribute("class", "widget-search__layers__itme__singleselect");
         const singleIcon = document.createElement("div");
-        singleIcon.setAttribute("class", "single-default-img");
+        singleIcon.setAttribute("class", "widget-single-default-img");
         singleSelect.appendChild(singleIcon);
         const singleLabel = document.createElement("span");
         singleLabel.setAttribute("class", "single-label");
@@ -84093,7 +84249,7 @@ var SearchView = external_L_default.a.Control.extend({
         };*/
         // layerOption.appendChild(attributesSelect);
 
-        document.getElementsByClassName("poi-layers-body")[0].appendChild(layerOption);
+        document.getElementsByClassName("widget-search__layers__body")[0].appendChild(layerOption);
     },
 
     /**
@@ -84103,22 +84259,22 @@ var SearchView = external_L_default.a.Control.extend({
      */
     _createResultItem(featureType, properties) {
         const item = document.createElement("div");
-        item.setAttribute("class", "poi-result-items");
+        item.setAttribute("class", "widget-search__resultitme");
 
         let icon = document.createElement("div");
         if (featureType === "Point" || featureType === "MultiPoint") {
-            icon.setAttribute("class", "supermapol-icons-marker-layer poi-result-icon");
+            icon.setAttribute("class", "supermapol-icons-marker-layer widget-search-result-icon");
         } else if (featureType === "LineString" || featureType === "MultiLineString ") {
-            icon.setAttribute("class", "supermapol-icons-line-layer poi-result-icon");
+            icon.setAttribute("class", "supermapol-icons-line-layer widget-search-result-icon");
         } else if (featureType === "Polygon" || featureType === "MultiPolygon") {
-            icon.setAttribute("class", "supermapol-icons-polygon-layer poi-result-icon");
+            icon.setAttribute("class", "supermapol-icons-polygon-layer widget-search-result-icon");
         } else {
-            icon.setAttribute("class", "supermapol-icons-point-layer poi-result-icon");
+            icon.setAttribute("class", "supermapol-icons-point-layer widget-search-result-icon");
         }
         item.appendChild(icon);
 
         const info = document.createElement("div");
-        info.setAttribute("class", "poi-result-info");
+        info.setAttribute("class", "widget-search-result-info");
         const info1 = document.createElement("div");
         info.appendChild(info1);
 
@@ -84136,7 +84292,7 @@ var SearchView = external_L_default.a.Control.extend({
 
         //暂时删除复选框UI
         const check = document.createElement("div");
-        check.setAttribute("class", "widget-checkbox checkbox-default-img");
+        check.setAttribute("class", "widget-checkbox widget-checkbox-default-img");
         // item.appendChild(check);
         return item;
     },
@@ -84165,14 +84321,16 @@ var SearchView = external_L_default.a.Control.extend({
             const data = e.result;
             this.clearSearchResult();
             this.searchResultLayer = external_L_default.a.featureGroup(data, {
-                pointToLayer: null
+                pointToLayer: this.options.style,
+                style: this.options.style,
+                onEachFeature: this.options.onEachFeature
             }).bindPopup(function (layer) {
                 return (new AttributesPopContainer_AttributesPopContainer(layer.feature.properties)).getElement();
             }).addTo(this.map);
 
             //查询结果列表：
             this._prepareResultData(data);
-            this.event.fire("searchsucceed", {result: this.searchResultLayer.toGeoJSON()});
+            this._event.fire("searchsucceed", {result: this.searchResultLayer.toGeoJSON()});
         });
 
         //----地址匹配服务监听
@@ -84181,10 +84339,13 @@ var SearchView = external_L_default.a.Control.extend({
             //先清空当前有的地址匹配图层
             this.clearSearchResult();
 
-            this.searchResultLayer = external_L_default.a.geoJSON(data)
-                .bindPopup(function (layer) {
-                    return (new AttributesPopContainer_AttributesPopContainer(layer.feature.properties)).getElement();
-                }).addTo(this.map);
+            this.searchResultLayer = external_L_default.a.geoJSON(data, {
+                pointToLayer: this.options.style,
+                style: this.options.style,
+                onEachFeature: this.options.onEachFeature
+            }).bindPopup(function (layer) {
+                return (new AttributesPopContainer_AttributesPopContainer(layer.feature.properties)).getElement();
+            }).addTo(this.map);
 
             //查询结果列表：
             this._prepareResultData(data);
@@ -84193,7 +84354,7 @@ var SearchView = external_L_default.a.Control.extend({
              * @description 数据流服务成功返回数据后触发
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this.event.fire("searchsucceed", {result: data});
+            this._event.fire("searchsucceed", {result: data});
         });
 
         //----地址匹配或图层查询失败监听
@@ -84271,8 +84432,8 @@ var SearchView = external_L_default.a.Control.extend({
         this._resultDomObj.showView();
 
         //查询完成默认选中第一个结果：
-        content.firstChild.getElementsByClassName("poi-result-icon")[0].classList.add("poi-result-selected");
-        const filter = content.firstChild.getElementsByClassName("poi-result-info")[0].firstChild.innerText;
+        content.firstChild.getElementsByClassName("widget-search-result-icon")[0].classList.add("widget-search__resultitme-selected");
+        const filter = content.firstChild.getElementsByClassName("widget-search-result-info")[0].firstChild.innerText;
 
         this._linkageFeature(filter);
     },
@@ -84308,14 +84469,14 @@ var SearchView = external_L_default.a.Control.extend({
         }
 
         this.searchResultLayer.eachLayer((layer) => {
-            this._resetLayerStyleToDefault(layer);
+            // this._resetLayerStyleToDefault(layer);
 
             if (layer.filterAttribute && layer.filterAttribute.filterAttributeValue === filterValue ||
                 layer.feature.properties && layer.feature.properties.name === filterValue) {
                 this._setSelectedLayerStyle(layer);
-                layer.bindPopup(function () {
-                    return (new AttributesPopContainer_AttributesPopContainer(layer.feature.properties)).getElement()
-                }, {closeOnClick: false}).openPopup().addTo(this.map);
+                /*layer.bindPopup(function () {
+                    return (new AttributesPopContainer(layer.feature.properties)).getElement()
+                }, {closeOnClick: false}).openPopup().addTo(this.map);*/
                 //若这个图层只有一个点的话，则直接 flyTo 到点：
                 this._flyToBounds(this.searchResultLayer.getBounds());
                 let center;
@@ -84337,37 +84498,15 @@ var SearchView = external_L_default.a.Control.extend({
         if (this.searchResultLayer) {
             this.map.closePopup();
             //若当前是查询图层的结果，则不删除图层，只修改样式
-            if (this.isSearchLayer) {
-                const self = this;
-                this.searchResultLayer.eachLayer(function (layer) {
-                    self._resetLayerStyleToDefault(layer);
-                    layer.addTo(self.map)
-                });
-            } else {
+            if (!this.isSearchLayer) {
                 this.map.removeLayer(this.searchResultLayer);
             }
+            if (this._selectFeature) {
+                this.map.removeLayer(this._selectFeature);
+            }
+            this._selectFeature = null;
             this.searchResultLayer = null;
             this.currentResult = null;
-        }
-    },
-
-    /**
-     * @function L.supermap.widgets.search.prototype._resetLayerStyleToDefault
-     * @description 恢复图层默认样式
-     * @param {L.layer} layer - 需要恢复样式的图层
-     * @private
-     */
-    _resetLayerStyleToDefault(layer) {
-        if (layer.setIcon) {
-            layer.setIcon(external_L_default.a.divIcon({className: 'default-marker-icon', iconAnchor: [12.5, 0]}));
-        } else {
-            layer.setStyle({
-                fillColor: 'blue',
-                weight: 1,
-                opacity: 1,
-                color: 'blue',
-                fillOpacity: 0.6
-            });
         }
     },
 
@@ -84378,17 +84517,31 @@ var SearchView = external_L_default.a.Control.extend({
      * @private
      */
     _setSelectedLayerStyle(layer) {
-        if (layer.setIcon) {
-            layer.setIcon(external_L_default.a.divIcon({className: 'select-marker-icon', iconAnchor: [15, 0]}));
-        } else {
-            layer.setStyle({
+        if (this._selectFeature) {
+            this.map.removeLayer(this._selectFeature);
+            this._selectFeature = null;
+        }
+        //circleMarker 需要变成 marker 的样式：
+        this._selectFeature = external_L_default.a.geoJSON(layer.toGeoJSON(), {
+            //点选中样式, todo marker 显示位置需要调整
+            pointToLayer: (geoJsonPoint, latlng) => {
+                return external_L_default.a.marker(latlng, {
+                    icon: external_L_default.a.divIcon({className: 'widget-select-marker-icon', iconAnchor: [15, 0]})
+                })
+            },
+            //线和面选中样式：
+            style: {
                 fillColor: 'red',
                 weight: 1,
                 opacity: 1,
                 color: 'red',
                 fillOpacity: 0.2
-            });
-        }
+            }
+        }).addTo(this.map);
+        this._selectFeature.bindPopup(function () {
+            return (new AttributesPopContainer_AttributesPopContainer({attributes: layer.feature.properties})).getElement()
+        }, {closeOnClick: false}).openPopup().addTo(this.map);
+
     }
 });
 
@@ -84413,10 +84566,6 @@ external_L_default.a.supermap.widgets.search = searchView;
  * @param {L.Map} map - 当前微件所在的底图
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
  * @param {Object} options - 可选参数。
- * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
- `function(geoJsonPoint, latlng) {
-                                                return L.marker(latlng);
-                                            }`
  * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
  `function (feature) {
                                                     return {
@@ -84434,16 +84583,8 @@ external_L_default.a.supermap.widgets.search = searchView;
 var DataFlowViewModel = external_L_default.a.Evented.extend({
     options: {
         _defaultLayerOptions: {
+            //style 返回 marker样式或者 L.path 样式
             style: null,
-            pointToLayer: function (geoJsonPoint, latlng) {
-                return external_L_default.a.circleMarker(latlng, {
-                    color: "red",
-                    weight: 1.5,
-                    fillColor: "red",
-                    fillOpacity: 0.4,
-                    radius: 6
-                });
-            },
             onEachFeature: function (feature, layer) {
                 let content = "属性信息如下：<br>";
                 for (let key in feature.properties) {
@@ -84467,6 +84608,8 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
         }
         //合并用户的 dataFlowLayerOptions
         external_L_default.a.Util.extend(this.options._defaultLayerOptions, dataFlowLayerOptions);
+        //点样式也存储在style里
+        this.options._defaultLayerOptions.pointToLayer = this.options._defaultLayerOptions.style;
 
         /**
          * @member {boolean} [L.supermap.widgets.dataFlowViewModel.prototype.popupsStatus=true]
@@ -84532,7 +84675,7 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
              * @description 数据流订阅成功后触发。
              * @property {Object} result - 返回的数据。
              */
-            this.fire("subscribesuccessed", { result: result });
+            this.fire("subscribesuccessed", {result: result});
         });
         dataFlowLayer.on('dataupdated', (result) => {
             //派发出订阅返回的数据：
@@ -84541,7 +84684,7 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
              * @description 数据返回成功之后触发。
              * @property {Object} result - 返回的数据。
              */
-            this.fire("dataupdated", { result: result });
+            this.fire("dataupdated", {result: result});
             //若数据超出当前视图范围，则移动到数据所在视图范围：
             let layerBounds = result.layer.getBounds(),
                 mapBounds = CommontypesConversion_CommontypesConversion.toSuperMapBounds(this.map.getBounds()),
@@ -84644,57 +84787,28 @@ external_L_default.a.supermap.widgets.dataFlowViewModel = dataFlowViewModel;
  * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
  * @fires L.supermap.widgets.dataFlow#dataupdated
  */
-var DataFlowView = external_L_default.a.Control.extend({
-    options: {
-        //绑定的底图图层
-        layer: null,
-        //控件位置 继承自leaflet control
-        position: 'topright',
-        orientation: 'horizontal',
-        pointToLayer: null,
-        style: null,
-        onEachFeature: null
-    },
-
+var DataFlowView = WidgetsViewBase.extend({
     initialize(options) {
-        external_L_default.a.Util.setOptions(this, options);
-        this.event = new external_L_default.a.Evented();
-        //是否初始化数据服务样式：
-        let styleOptions = null;
-        if (this.options.pointToLayer || this.options.style || this.options.onEachFeature) {
-            styleOptions = {};
-            if (this.options.pointToLayer) {
-                styleOptions.pointToLayer = this.options.pointToLayer;
-            }
-            if (this.options.style) {
-                styleOptions.style = this.options.style;
-
-            }
-            if (this.options.onEachFeature) {
-                styleOptions.onEachFeature = this.options.onEachFeature;
-            }
-        }
-        this.styleOptions = styleOptions;
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
     },
 
     /**
      * @function L.supermap.widgets.dataFlow.prototype.onAdd
      * @description 向底图添加微件
+     * @override
      * @private
      */
     onAdd(map) {
-        this.map = map;
-        this.viewModel = new DataFlowViewModel(map, this.styleOptions);
-        return this._initView();
-    },
-
-    /**
-     * @function L.supermap.widgets.dataFlow.prototype.on
-     * @param {string} eventType - 监听的事件类型
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
+        //为了避免空对象为复写默认配置的现象，先判断参数是否为空
+        let options = {};
+        if (this.options.style) {
+            options.style = this.options.style;
+        }
+        if (this.options.onEachFeature) {
+            options.style = this.options.onEachFeature;
+        }
+        this.viewModel = new DataFlowViewModel(map, options);
+        return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
 
     /**
@@ -84702,15 +84816,16 @@ var DataFlowView = external_L_default.a.Control.extend({
      * @description 创建打开本地文件数据微件
      * @returns {HTMLElement}
      * @private
+     * @override
      */
     _initView() {
-        const ContainerObj = new CommonContainer(Lang.i18n("title_dataFlowService"), {"top": "32px", "right": "96px"});
-        const Container = ContainerObj.getElement();
+        const containerObj = new CommonContainer_CommonContainer({title: Lang.i18n("title_dataFlowService")});
+        const container = containerObj.getElement();
 
-        const widgetContent = ContainerObj.getContentElement();
+        const widgetContent = containerObj.getContentElement();
         widgetContent.style.padding = "10px 18px";
         const dataFlowContainer1 = document.createElement("div");
-        dataFlowContainer1.setAttribute("class", "dataflow-container");
+        dataFlowContainer1.setAttribute("class", "widget-dataflow__container");
         //输入框
         const dataFlowInputContainer = document.createElement("div");
         dataFlowInputContainer.setAttribute("class", "widget-input-default");
@@ -84720,7 +84835,6 @@ var DataFlowView = external_L_default.a.Control.extend({
         dataFlowInput.placeholder = Lang.i18n('text_input_value_inputDataFlowUrl');
         dataFlowInput.title = Lang.i18n('text_input_value_inputDataFlowUrl');
 
-        this.dataFlowInput = dataFlowInput;
         dataFlowInputContainer.appendChild(dataFlowInput);
         //删除输入值按钮:
         const inputClearBtn = document.createElement("span");
@@ -84742,27 +84856,27 @@ var DataFlowView = external_L_default.a.Control.extend({
 
         //复选框条件
         const dataFlowContainer2 = document.createElement("div");
-        dataFlowContainer2.setAttribute("class", "dataflow-container");
+        dataFlowContainer2.setAttribute("class", "widget-dataflow__container");
         const checkboxContainer = document.createElement("div");
         checkboxContainer.setAttribute("class", "widget-checkbox-container");
         const attributesCheckbox = document.createElement("div");
-        attributesCheckbox.setAttribute("class", "widget-checkbox-default checkbox-selected-img");
+        attributesCheckbox.setAttribute("class", "widget-checkbox-default widget-checkbox-selected-img");
         attributesCheckbox.checked = true;
         checkboxContainer.appendChild(attributesCheckbox);
         const checkboxLabel = document.createElement("div");
-        checkboxLabel.setAttribute("class", "label label-selected");
+        checkboxLabel.setAttribute("class", "widget-label widget-label-selected");
         checkboxLabel.innerHTML = Lang.i18n('text_displayFeaturesInfo');
         checkboxContainer.appendChild(checkboxLabel);
         //----是否显示属性框【属性框复选框点击事件】
         attributesCheckbox.onclick = (e) => {
             e.target.checked = !e.target.checked;
             if (e.target.checked) {
-                checkboxLabel.setAttribute("class", "label label-selected");
-                e.target.setAttribute("class", "widget-checkbox-default checkbox-selected-img");
+                checkboxLabel.setAttribute("class", "widget-label widget-label-selected");
+                e.target.setAttribute("class", "widget-checkbox-default widget-checkbox-selected-img");
                 this.viewModel.openPopups();
             } else {
-                checkboxLabel.setAttribute("class", "label");
-                e.target.setAttribute("class", "widget-checkbox-default checkbox-default-img");
+                checkboxLabel.setAttribute("class", "widget-label");
+                e.target.setAttribute("class", "widget-checkbox-default widget-checkbox-default-img");
                 this.viewModel.closePopups();
             }
         };
@@ -84772,7 +84886,7 @@ var DataFlowView = external_L_default.a.Control.extend({
 
         //订阅按钮,取消按钮:
         const dataFlowContainer3 = document.createElement("div");
-        dataFlowContainer3.setAttribute("class", "dataflow-container init-center");
+        dataFlowContainer3.setAttribute("class", "widget-dataflow__container widget-init-center");
         const subscribe = document.createElement("button");
         subscribe.setAttribute("class", "widget-button-default");
         subscribe.innerHTML = Lang.i18n('text_subscribe');
@@ -84796,19 +84910,6 @@ var DataFlowView = external_L_default.a.Control.extend({
         dataFlowContainer3.appendChild(cancelSubscribe);
         widgetContent.appendChild(dataFlowContainer3);
 
-        //关闭在控件上触发地图的事件响应：
-        const self = this;
-        Container.addEventListener('mouseover', function () {
-            self.map.dragging.disable();
-            self.map.scrollWheelZoom.disable();
-            self.map.doubleClickZoom.disable();
-        });
-        Container.addEventListener('mouseout', function () {
-            self.map.dragging.enable();
-            self.map.scrollWheelZoom.enable();
-            self.map.doubleClickZoom.enable();
-        });
-
         //增加提示框：
         this.messageBox = new MessageBox();
 
@@ -84827,10 +84928,13 @@ var DataFlowView = external_L_default.a.Control.extend({
          */
         this.viewModel.on("dataupdated", (result) => {
             this.messageBox.closeView();
-            this.event.fire("dataupdated", result);
+            this._event.fire("dataupdated", result);
         });
 
-        return Container;
+        //关闭在控件上触发地图的事件响应：
+        //阻止 map 默认事件
+        this._preventMapEvent(container, this.map);
+        return container;
     }
 
 });
@@ -84854,19 +84958,19 @@ external_L_default.a.supermap.widgets.dataFlow = dataFlowView;
  * @classdesc 含有 layerName 与 GeoJSON 图层的对象。
  * @private
  * @param {Object} layerObject - 图层对象。
- * @param {string} layerObject.layerName -  图层名。
- * @param {L.GeoJSON} layerObject.layer -  图层。
+ * @param {string} layerName -  图层名。
+ * @param {L.GeoJSON} layer -  图层。
  * @category Widgets Common
  */
 class GeoJSONLayerWithName {
-    constructor(layerObject) {
-        this.layerName = layerObject.layerName;
-        this.layer = layerObject.layer;
+    constructor(layerName, layer) {
+        this.layerName = layerName;
+        this.layer = layer;
     }
 }
 
-var geoJSONLayerWithName = function (options) {
-    return new GeoJSONLayerWithName(options);
+var geoJSONLayerWithName = function (layerName, layer) {
+    return new GeoJSONLayerWithName(layerName, layer);
 };
 
 external_L_default.a.supermap.widgets.geoJSONLayerWithName = geoJSONLayerWithName;
@@ -84874,6 +84978,7 @@ external_L_default.a.supermap.widgets.geoJSONLayerWithName = geoJSONLayerWithNam
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -84904,14 +85009,11 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
 
     getLayersData(layersArr) {
         let result = {};
-        let pointData={}, lineData={}, polygonData={};
+        let pointData = {}, lineData = {}, polygonData = {};
         for (let i = 0; i < layersArr; i++) {
-            layersArr[i] = new GeoJSONLayerWithName({
-                'layerName': layersArr[i].layerName,
-                'layer': layersArr[i].layer
-            })
+            layersArr[i] = new GeoJSONLayerWithName(layersArr[i].layerName, layersArr[i].layer)
         }
-        this.geoJsonLayersDataModel = new GeoJsonLayersDataModel(layersArr);
+        this.geoJsonLayersDataModel = new GeoJsonLayersModel_GeoJsonLayersDataModel(layersArr);
         // 把 layersArr 转成 key = layername 对象，方便获取 fields 时遍历
         let dataObj = [];
         for (let i = 0; i < layersArr.length; i++) {
@@ -84951,8 +85053,8 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
                 fieldsValue: fieldsValue,
                 features: dataObj[key].layer
             }
-            
-            let layersType =  dataObj[key].layer.features[0].geometry.type;
+
+            let layersType = dataObj[key].layer.features[0].geometry.type;
             if (layersType === "Point") {
                 pointData[key] = obj;
             } else if (layersType === "LineString") {
@@ -84991,7 +85093,7 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
                 "breaks": fieldsValue,
                 "zProperty": params.analysisFields,
                 "analysisCellSize": params.analysisCellSize,
-                "options": { gridType: "point", property: params.analysisFields, weight: Number(params.analysisBreaks) }
+                "options": {gridType: "point", property: params.analysisFields, weight: Number(params.analysisBreaks)}
             };
             this.worker.postMessage(analysisParams);
             this.worker.onmessage = (e) => {
@@ -85012,13 +85114,13 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
                             }
                             layer.on({
                                 'mouseover': function () {
-                                    layer.setStyle({ color: "#ffffff", weight: 5 })
+                                    layer.setStyle({color: "#ffffff", weight: 5})
                                 },
                                 'mouseout': function () {
-                                    layer.setStyle({ color: '#1060C2', weight: 3 })
+                                    layer.setStyle({color: '#1060C2', weight: 3})
                                 },
                                 "click": function () {
-                                    layer.setStyle({ color: "#ffffff", weight: 5 })
+                                    layer.setStyle({color: "#ffffff", weight: 5})
 
                                 }
                             });
@@ -85031,7 +85133,7 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
                      * @property {L.GeoJSON} layer - 加载完成后的结果图层。
                      * @property {string} name - 加载完成后的结果图层名称。
                      */
-                    me.fire('layerloaded', { "layer": turfLayer, "name": params.resultLayersName });
+                    me.fire('layerloaded', {"layer": turfLayer, "name": params.resultLayersName});
                     me.worker.terminate();
                 }
 
@@ -85066,7 +85168,7 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
                                 })
                             },
                             'mouseout': function () {
-                                layer.setStyle({ color: "#ffffff", fillColor: '#1060C2', fillOpacity: .5, weight: 1.5 })
+                                layer.setStyle({color: "#ffffff", fillColor: '#1060C2', fillOpacity: .5, weight: 1.5})
                             },
                             "click": function () {
                                 layer.setStyle({
@@ -85082,7 +85184,7 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
 
                 }).addTo(map);
                 me.turfLayers.push(turfLayer);
-                me.fire('layerloaded', { "layer": turfLayer, "name": params.resultLayersName });
+                me.fire('layerloaded', {"layer": turfLayer, "name": params.resultLayersName});
                 me.worker.terminate();
             };
         }
@@ -85101,7 +85203,7 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
          * @description 图层删除之后触发。
          * @property {Array.<L.GeoJSON>} layer - 需要删除的图层数组。
          */
-        this.fire('layersremoved', { layers: this.turfLayers });
+        this.fire('layersremoved', {layers: this.turfLayers});
     }
 
     /**
@@ -85112,6 +85214,7 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
         this.worker.terminate();
     }
 }
+
 var clientComputationViewModel = function (options) {
     return new ClientComputationViewModel_ClientComputationViewModel(options);
 };
@@ -85132,45 +85235,25 @@ external_L_default.a.supermap.widgets.clientComputationViewModel = clientComputa
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @category Widgets ClientComputation
  */
-var ClientComputationView = external_L_default.a.Control.extend({
-
-    options: {
-        //控件位置 继承自 leaflet control
-        position: 'topright'
-    },
+var ClientComputationView = WidgetsViewBase.extend({
 
     initialize: function (workerUrl, options) {
         if (!workerUrl) {
             throw new Error('workerUrl is required');
         }
         this.workerUrl = workerUrl;
-
-        //事件监听对象
-        this.event = new external_L_default.a.Evented();
-        external_L_default.a.Util.setOptions(this, options);
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
     },
     /**
      * @function L.supermap.widgets.clientComputation.prototype.onAdd
      * @description 添加控件。
      * @private
+     * @override
      */
     onAdd: function (map) {
         this.map = map;
-        if (this.options.orientation !== 'vertical') {
-            this.options.orientation = 'horizontal';
-        }
-        return this._initSpatialAnalysisView();
+        return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
-
-    /**
-     * @function L.supermap.widgets.clientComputation.prototype.on
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
-    },
-
     /**
      * @function L.supermap.widgets.clientComputation.prototype.addLayer
      * @description 添加叠加图层。
@@ -85197,9 +85280,11 @@ var ClientComputationView = external_L_default.a.Control.extend({
         let analysisMethod = document.getElementById('dropDownTop').getAttribute('data-value');
         let currentFillData;
         switch (analysisMethod) {
-            case 'isolines': currentFillData = fillData['point'];
+            case 'isolines':
+                currentFillData = fillData['point'];
                 break;
-            case 'buffer': currentFillData = fillData['point'];
+            case 'buffer':
+                currentFillData = fillData['point'];
                 break;
         }
         if (JSON.stringify(currentFillData) == '{}') {
@@ -85242,15 +85327,17 @@ var ClientComputationView = external_L_default.a.Control.extend({
         // 通过当前选中字段 填充 TextArea 初始值
         let getValueTextArea = document.getElementById('getValueTextArea');
         getValueTextArea.value = textAreaData[fieldsSelectName].toString().replace(/,/g, ",\r\n");
-        getValueTextArea.setAttribute('data-value', textAreaData[fieldsSelectName])
+        getValueTextArea.setAttribute('data-value', textAreaData[fieldsSelectName]);
 
         // 结果图层
         let resultLayersName = document.getElementById('resultLayersName');
         let analysisType = document.getElementById('dropDownTop').getAttribute('data-value');
         switch (analysisType) {
-            case 'isolines': resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
+            case 'isolines':
+                resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
                 break;
-            case 'buffer': resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
+            case 'buffer':
+                resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                 break;
 
         }
@@ -85262,52 +85349,53 @@ var ClientComputationView = external_L_default.a.Control.extend({
      * @returns {HTMLElement}
      * @private
      */
-    _initSpatialAnalysisView: function () {
+    _initView: function () {
         //初始化 ViewModel
         this.workerUrl && ~~(this.viewModel = new ClientComputationViewModel_ClientComputationViewModel(this.workerUrl));
         //初始化 view
         // Container
-        let container = (new CommonContainer(Lang.i18n('title_clientComputing'))).getElement();
-        container.classList.add('widget-analysis-container');
+        let container = (new CommonContainer_CommonContainer({title: Lang.i18n('title_clientComputing')})).getElement();
+        container.classList.add('widget-analysis');
         container.children[0].style.fontSize = '12px';
         let analysisOptionsArr = [{
             'title': Lang.i18n('text_isoline'),
             'dataValue': 'isolines',
             'remark': Lang.i18n('text_extractDiscreteValue'),
             'icon': {
-                'className': 'analyst-isoline-img'
+                'className': 'widget-analyst-isoline-img'
             }
         }, {
             'title': Lang.i18n('text_buffer'),
             'dataValue': 'buffer',
             'remark': Lang.i18n('text_specifyTheDistance'),
             'icon': {
-                'className': 'analyst-buffer-img'
+                'className': 'widget-analyst-buffer-img'
             }
         }];
         let widgetContentContainer = container.children[1];
-        widgetContentContainer.classList.add('analysis-content-container');
-        widgetContentContainer.classList.add('widget-scroll-content');
+        widgetContentContainer.classList.add('widget-content--scroll');
+        widgetContentContainer.classList.add('widget-content--analysis');
 
         // 下拉框
-        let dropDownBox = (new DropDownBox(analysisOptionsArr)).getElement();
+        let dropDownBox = (new DropDownBox_DropDownBox(analysisOptionsArr)).getElement();
         widgetContentContainer.appendChild(dropDownBox);
         let dropDownTopContainer = dropDownBox.children[0].children[0];
-        let dropDownItems = dropDownBox.children[0].children[2].children[0].children[0];
+        let dropDownItems = dropDownBox.children[0].children[2].children[0];
         dropDownTopContainer.children[0].id = 'dropDownTop';
         // analysisContainer
-        let analyusisTypeContainer = external_L_default.a.DomUtil.create('div', 'analyusistype-container di-font-content-md', widgetContentContainer);
-        let analysisType = external_L_default.a.DomUtil.create('div', 'analysistype', analyusisTypeContainer);
+        let analysisTypeContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container', widgetContentContainer);
 
         // 分析图层
-        let analysisLayer = external_L_default.a.DomUtil.create('div', 'analysisLayer', analysisType);
-        let layerSelectControl = external_L_default.a.DomUtil.create('div', 'select-control', analysisLayer);
+        let analysisLayer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container__analysisLayer', analysisTypeContainer);
+
+
+        let layerSelectControl = external_L_default.a.DomUtil.create('div', 'widget-analysis__selecttool', analysisLayer);
         layerSelectControl.id = 'layerSelectControl';
         let layerOptions = {
             'optionsArr': [''],
             'labelName': Lang.i18n('text_label_analysisLayer')
-        }
-        let layerSelectObj = new Select(layerOptions);
+        };
+        let layerSelectObj = new Select_Select(layerOptions);
         let layerSelectTool = layerSelectObj.getElement();
         this.layerSelectObj = layerSelectObj;
         layerSelectControl.appendChild(layerSelectTool);
@@ -85320,16 +85408,16 @@ var ClientComputationView = external_L_default.a.Control.extend({
 
         // ISOLINE
         // 提取字段
-        let div = external_L_default.a.DomUtil.create('div', '', analysisType);
-        let isolineDiv = external_L_default.a.DomUtil.create('div', 'analyse ISOLINE surface_option', div);
+        let div = external_L_default.a.DomUtil.create('div', 'widget-analysis__container__analysistype', analysisTypeContainer);
+        let isolineDiv = external_L_default.a.DomUtil.create('div', 'widget-clientcomputation__isoline', div);
         let fieldsOptions = {
             'optionsArr': [''],
             'labelName': Lang.i18n('text_label_extractField'),
             'optionsClickCb': this.fieldsSelectOnchange
 
-        }
-        let fieldsSelectControl = external_L_default.a.DomUtil.create('div', 'select-control', isolineDiv);
-        let fieldsSelectObj = new Select(fieldsOptions);
+        };
+        let fieldsSelectControl = external_L_default.a.DomUtil.create('div', 'widget-analysis__selecttool', isolineDiv);
+        let fieldsSelectObj = new Select_Select(fieldsOptions);
         let fieldsSelectTool = fieldsSelectObj.getElement();
         this.fieldsSelectObj = fieldsSelectObj;
         let fieldsSelectName = fieldsSelectTool.children[1].children[0];
@@ -85339,15 +85427,15 @@ var ClientComputationView = external_L_default.a.Control.extend({
         fieldsSelectControl.appendChild(fieldsSelectTool);
 
         // 提取值
-        let textareaContainer = external_L_default.a.DomUtil.create('div', 'textarea-container', isolineDiv);
-        let textareaSpan = external_L_default.a.DomUtil.create('span', 'textarea-name', textareaContainer);
+        let textareaContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container', isolineDiv);
+        let textareaSpan = external_L_default.a.DomUtil.create('span', 'widget-textarea__name', textareaContainer);
         textareaSpan.innerHTML = Lang.i18n('text_label_extractedValue');
-        let textareaControl = external_L_default.a.DomUtil.create('div', 'textarea-control', textareaContainer);
+        let textareaControl = external_L_default.a.DomUtil.create('div', 'widget-textarea', textareaContainer);
         textareaControl.id = 'getValueText';
-        let scrollarea = external_L_default.a.DomUtil.create('div', 'scrollarea', textareaControl);
-        let scrollareaContent = external_L_default.a.DomUtil.create('div', 'scrollarea-content', scrollarea);
+        let scrollarea = external_L_default.a.DomUtil.create('div', '', textareaControl);
+        let scrollareaContent = external_L_default.a.DomUtil.create('div', 'widget-scrollarea-content', scrollarea);
         scrollareaContent.setAttribute('tabindex', '1');
-        let getValueTextArea = external_L_default.a.DomUtil.create('textarea', 'textarea', scrollareaContent);
+        let getValueTextArea = external_L_default.a.DomUtil.create('textarea', 'widget-textarea__content', scrollareaContent);
         getValueTextArea.id = 'getValueTextArea';
         getValueTextArea.setAttribute('rows', '20');
 
@@ -85367,8 +85455,8 @@ var ClientComputationView = external_L_default.a.Control.extend({
 
         // BUFFER
         // 缓冲半径
-        let bufferDiv = external_L_default.a.DomUtil.create('div', 'analyse BUFFER hidden', analysisType);
-        let bufferRadius = external_L_default.a.DomUtil.create('div', 'buffer-radius', bufferDiv);
+        let bufferDiv = external_L_default.a.DomUtil.create('div', 'widget-clientcomputation__buffer hidden', div);
+        let bufferRadius = external_L_default.a.DomUtil.create('div', 'widget-clientcomputation__buffer--radius', bufferDiv);
         let bufferRadiusSpan = external_L_default.a.DomUtil.create('span', '', bufferRadius);
         bufferRadiusSpan.innerHTML = Lang.i18n('text_label_bufferRadius');
         let bufferRadiusDiv = external_L_default.a.DomUtil.create('div', '', bufferRadius);
@@ -85376,7 +85464,7 @@ var ClientComputationView = external_L_default.a.Control.extend({
         bufferRadiusInput.id = 'bufferRadiusInput';
         bufferRadiusInput.value = '10';
         bufferRadiusInput.setAttribute('placeholder', Lang.i18n('text_label_defaultkilometers'));
-        let bufferUnit = external_L_default.a.DomUtil.create('div', 'buffer-unit', bufferRadiusDiv);
+        let bufferUnit = external_L_default.a.DomUtil.create('div', 'widget-clientcomputation__buffer--unit', bufferRadiusDiv);
         bufferUnit.id = 'bufferUnit';
         // 半径单位选择下拉框
         let bufferUnitOptions = {
@@ -85384,7 +85472,7 @@ var ClientComputationView = external_L_default.a.Control.extend({
             'labelName': Lang.i18n('text_label_unit')
         };
 
-        let bufferUnitSelectTool = (new Select(bufferUnitOptions)).getElement();
+        let bufferUnitSelectTool = (new Select_Select(bufferUnitOptions)).getElement();
         let bufferUnitSelectName = bufferUnitSelectTool.children[1].children[0];
         bufferUnitSelectName.id = 'bufferUnitSelectName';
         let bufferUnitSelect = bufferUnitSelectTool.children[1].children[2].children[0].children[0];
@@ -85394,7 +85482,7 @@ var ClientComputationView = external_L_default.a.Control.extend({
 
         // 保留原对象字段属性
         let saveFieldDiv = external_L_default.a.DomUtil.create('div', '', bufferRadius);
-        let saveAttrsContainer = external_L_default.a.DomUtil.create('div', 'is-save-attrs', saveFieldDiv);
+        let saveAttrsContainer = external_L_default.a.DomUtil.create('div', 'widget-clientcomputation__buffer--issaveattrs', saveFieldDiv);
         saveAttrsContainer.id = 'saveAttrsContainer';
         let saveAttrsCheckbox = external_L_default.a.DomUtil.create('div', 'checkbox checkbox-fault', saveAttrsContainer);
         saveAttrsCheckbox.id = 'saveAttrsCheckbox';
@@ -85403,7 +85491,7 @@ var ClientComputationView = external_L_default.a.Control.extend({
         saveAttrsLabel.innerHTML = Lang.i18n('text_retainOriginal');
 
         // 合并缓冲区
-        let isUnionContainer = external_L_default.a.DomUtil.create('div', 'is-union', saveFieldDiv);
+        let isUnionContainer = external_L_default.a.DomUtil.create('div', 'widget-clientcomputation__buffer--isunion', saveFieldDiv);
         isUnionContainer.id = 'isUnionContainer';
         let isUnionCheckbox = external_L_default.a.DomUtil.create('div', 'checkbox checkbox-fault', isUnionContainer);
         isUnionCheckbox.id = 'isUnionCheckbox';
@@ -85412,31 +85500,31 @@ var ClientComputationView = external_L_default.a.Control.extend({
         isUnionLabel.id = 'isUnionLabel';
 
         // 结果图层
-        let resultLayerDiv = external_L_default.a.DomUtil.create('div', '', analysisType);
+        let resultLayerDiv = external_L_default.a.DomUtil.create('div', 'widget-analysis__container__resultLayersName', analysisTypeContainer);
         let resultLayerSpan = external_L_default.a.DomUtil.create('span', '', resultLayerDiv);
         resultLayerSpan.innerHTML = Lang.i18n('text_label_resultLayerName');
         let resultLayersName = external_L_default.a.DomUtil.create('input', '', resultLayerDiv);
         resultLayersName.id = 'resultLayersName';
 
         // 分析按钮
-        let runBtnContainer = external_L_default.a.DomUtil.create('div', 'run-btn-container di-font-content-md', analyusisTypeContainer);
-        let runBtn = external_L_default.a.DomUtil.create('div', 'run-btn', runBtnContainer);
-        let analysisBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn', runBtn);
+        let runBtnContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container__analysisbtn', analysisTypeContainer);
+        let runBtn = external_L_default.a.DomUtil.create('div', 'widget-analysis__analysisbtn', runBtnContainer);
+        let analysisBtn = external_L_default.a.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis', runBtn);
         analysisBtn.innerHTML = Lang.i18n('btn_analyze');
-        let analysingContainer = external_L_default.a.DomUtil.create('div', 'analysing-container hidden', runBtn);
-        let analysisingBtn = external_L_default.a.DomUtil.create('div', 'analysising-btn', analysingContainer);
-        let svgContainer = external_L_default.a.DomUtil.create('div', 'svg-container', analysisingBtn);
+        let analysingContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__analysisbtn--analysing-container hidden', runBtn);
+        let analysisingBtn = external_L_default.a.DomUtil.create('div', 'widget-analysis__analysisbtn--analysising', analysingContainer);
+        let svgContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__svg-container', analysisingBtn);
         svgContainer.id = 'analyse_background';
-        svgContainer.innerHTML = `<svg class="svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        svgContainer.innerHTML = `<svg class="widget-analysis__svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <path id="ring" fill="#FFF" transform="translate(8,8)" d="M 0 0 v -8 A 8 8 0 1 1 -8.00 0 z"></path>
             <circle cx="8" cy="8" r="6" fill="#38ADF5"></circle>
             <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
             <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
-        </svg>`
+        </svg>`;
         external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_analyzing');
-        let analysisCancelBtn = external_L_default.a.DomUtil.create('button', 'analysis-cancel', analysingContainer);
+        let analysisCancelBtn = external_L_default.a.DomUtil.create('button', 'widget-analysis__analysisbtn--cancel', analysingContainer);
         analysisCancelBtn.innerHTML = Lang.i18n('btn_cancelAnalysis');
-        let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn delete-layers', runBtn);
+        let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis widget-analysis__analysisbtn--deletelayers', runBtn);
         deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheAnalysisLayer');
         let me = this;
 
@@ -85453,14 +85541,14 @@ var ClientComputationView = external_L_default.a.Control.extend({
                     case 'buffer':
                         isolineDiv.classList.add('hidden');
                         bufferDiv.classList.remove('hidden');
-                        widgetContentContainer.style.height = '422px'
+                        widgetContentContainer.style.height = '422px';
                         resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                         currentFillData = this.fillData['point'];
                         break;
                     case 'isolines':
                         isolineDiv.classList.remove('hidden');
                         bufferDiv.classList.add('hidden');
-                        widgetContentContainer.style.height = '712px'
+                        widgetContentContainer.style.height = '712px';
                         resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
                         currentFillData = this.fillData['point'];
                         break;
@@ -85496,14 +85584,14 @@ var ClientComputationView = external_L_default.a.Control.extend({
                 }
 
                 // 当前选中图层数据
-                let currentData = currentFillData[layerSelectName.title];
-                this.currentData = currentData;
+                this.currentData = currentFillData[layerSelectName.title];
                 this.currentFillData = currentFillData;
             }
         }
 
         // 字段下拉框 onchange 事件
         this.fieldsSelectOnchange = fieldsSelectOnchange.bind(this);
+
         function fieldsSelectOnchange(option) {
             if (this.currentData) {
                 let displayData = this.currentData;
@@ -85516,6 +85604,7 @@ var ClientComputationView = external_L_default.a.Control.extend({
 
         // 选中图层实时改变事件
         this.layersSelectOnchange = layersSelectOnchange.bind(this);
+
         function layersSelectOnchange(option) {
             if (this.currentData) {
                 let layerSelectName = option.title;
@@ -85607,33 +85696,23 @@ var ClientComputationView = external_L_default.a.Control.extend({
             let analysisMethod = dropDownTop.getAttribute('data-value');
             let params;
             switch (analysisMethod) {
-                case 'isolines': params = getIsolinesAnalysisParams();
+                case 'isolines':
+                    params = getIsolinesAnalysisParams();
                     break;
-                case 'buffer': params = getBufferAnalysisParams();
+                case 'buffer':
+                    params = getBufferAnalysisParams();
                     break;
             }
-            this.viewModel.analysis(params, me.map);
-            this.viewModel.on('layerloaded', (e) => {
+            me.viewModel.analysis(params, me.map);
+            me.viewModel.on('layerloaded', function () {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
-                /**
-                 * @event L.supermap.widgets.clientComputation#analysissuccessed
-                 * @description 分析完成之后触发。
-                 * @property {L.GeoJSON} layer - 加载完成后的结果图层。
-                 * @property {string} name - 加载完成后的结果图层名称。
-                 */
-                this.event.fire('analysissuccessed', { "layer": e.layer, "name": e.name })
             });
             // 若分析的结果为空
             me.viewModel.on('analysisfailed', function () {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 me.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
-                /**
-                 * @event L.supermap.widgets.clientComputation#analysisfailed
-                 * @description 分析失败之后触发。
-                 */
-                this.event.fire('analysissuccessed')
             })
         }
         // 取消按钮点击事件
@@ -85644,16 +85723,9 @@ var ClientComputationView = external_L_default.a.Control.extend({
         }
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
-            /**
-             * @event L.supermap.widgets.clientComputation#layersremoved
-             * @description 结果图层删除后触发。
-             * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
-             */
-            this.viewModel.on('layersremoved', (e) => {
-                this.event.fire('layersremoved', { 'layers': e.layers });
-            })
             me.viewModel.clearLayers();
         }
+
         // 获取分析数据
         function getIsolinesAnalysisParams() {
             let dropDownTop = document.getElementById('dropDownTop');
@@ -85675,6 +85747,7 @@ var ClientComputationView = external_L_default.a.Control.extend({
             }
             return param;
         }
+
         function getBufferAnalysisParams() {
             let dropDownTop = document.getElementById('dropDownTop');
             let resultLayersName = document.getElementById('resultLayersName').value;
@@ -85692,52 +85765,32 @@ var ClientComputationView = external_L_default.a.Control.extend({
                 'isSaveStatus': isSaveStatus,
                 'isUnion': isUnion
 
-            }
+            };
             return param;
         }
-        this._container = container;
-        this._preventMapEvent(this._container, this.map);
 
-        return this._container;
+        // 阻止 map 默认事件
+        this._preventMapEvent(container, this.map);
+        return container;
     },
 
     /**
-    * @function L.supermap.widgets.clientComputation.prototype._createOptions
-    * @description 创建 select 下拉框的 options。
-    * @private
-    */
+     * @function L.supermap.widgets.clientComputation.prototype._createOptions
+     * @description 创建 select 下拉框的 options。
+     * @private
+     */
     _createOptions(container, optionsArr) {
         for (let i in optionsArr) {
             let option = document.createElement('div');
             let optData = optionsArr[i];
-            option.className = 'select-option';
+            option.className = 'widget-selecttool__option';
             option.title = optData;
             option.innerHTML = optData;
             option.setAttribute('data-value', optData);
             container.appendChild(option);
         }
-    },
-
-    /**
-    * @function L.supermap.widgets.clientComputation.prototype._preventMapEvent
-    * @description 阻止 map 默认事件。
-    * @private
-    */
-    _preventMapEvent(div, map) {
-        if (!div || !map) {
-            return;
-        }
-        div.addEventListener('mouseover', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        div.addEventListener('mouseout', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        });
     }
+
 });
 
 var clientComputationView = function (options) {
@@ -86041,48 +86094,26 @@ external_L_default.a.supermap.widgets.distributedAnalysisViewModel = distributed
  * @class L.supermap.widgets.distributedAnalysis
  * @classdesc 分布式分析微件。
  * @param {string} processingUrl - 分布式分析服务地址。
- * @fires L.supermap.widgets.distributedAnalysis#analysissuccessed
- * @fires L.supermap.widgets.distributedAnalysis#analysisfailed
- * @fires L.supermap.widgets.distributedAnalysis#layersremoved
  * @category Widgets DistributedAnalysis
  */
-var DistributedAnalysisView = external_L_default.a.Control.extend({
-
-    options: {
-        //控件位置 继承自 leaflet control
-        position: 'topright'
-    },
+var DistributedAnalysisView = WidgetsViewBase.extend({
 
     initialize: function (processingUrl, options) {
-        this.processingUrl = processingUrl;
-        //事件监听对象
-        this.event = new external_L_default.a.Evented();
-
-        external_L_default.a.Util.setOptions(this, options);
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
+        //初始化 ViewModel:
+        this.viewModel = new DistributedAnalysisViewModel_DistributedAnalysisViewModel(processingUrl);
     },
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype.onAdd
      * @description 添加控件。
      * @private
+     * @override
      */
     onAdd: function (map) {
-        this.map = map;
-        if (this.options.orientation !== 'vertical') {
-            this.options.orientation = 'horizontal';
-        }
-        let container = this._initDistributedAnalystView();
         this._fillDataToView();
-        return container;
+        return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
 
-    /**
-     * @function L.supermap.widgets.distributedAnalysis.prototype.on
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
-    },
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._fillDataToView
      * @description 填充数据到 view。
@@ -86097,48 +86128,25 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             this._createOptions(this.datasetSelect, datasetOptionsArr);
             this.datasetSelectObj.optionClickEvent(this.datasetSelect, this.datasetSelectName, this.datasetSelectOnchange);
             this.dataHash = e.result.datasetHash;
-        })
+        });
         this.viewModel.getDatasetsName();
     },
 
     /**
-     * @function L.supermap.widgets.distributedAnalysis.prototype._preventMapEvent
-     * @description 阻止 map 默认事件。
-     * @private
-     */
-    _preventMapEvent(div, map) {
-        if (!div || !map) {
-            return;
-        }
-        div.addEventListener('mouseover', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        div.addEventListener('mouseout', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        });
-    },
-
-    /**
-     * @function L.supermap.widgets.distributedAnalysis.prototype._initDistributedAnalystView
+     * @function L.supermap.widgets.distributedAnalysis.prototype._initView
      * @description 创建分布式分析微件。
      * @returns {HTMLElement}
      * @private
+     * @override
      */
-    _initDistributedAnalystView: function () {
-        //初始化 ViewModel:
-        this.viewModel = new DistributedAnalysisViewModel_DistributedAnalysisViewModel(this.processingUrl);
-
+    _initView: function () {
         // 微件 container
-        let container = (new CommonContainer(Lang.i18n('title_distributedAnalysis'))).getElement();
-        container.classList.add('widget-analysis-container');
+        let container = (new CommonContainer_CommonContainer({title: Lang.i18n('title_distributedAnalysis')})).getElement();
+        container.classList.add('widget-analysis');
         container.children[0].style.fontSize = '12px';
 
         // 微件内容 container
-        let widgetContentContainer = external_L_default.a.DomUtil.create('div', 'widget-content-container widget-scroll-content analysis-content-container', container);
+        let widgetContentContainer = external_L_default.a.DomUtil.create('div', 'widget-content widget-content--scroll widget-content--analysis', container);
 
         // 分析方式下拉框
         let analysisOptionsArr = [{
@@ -86146,27 +86154,27 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             'dataValue': 'density',
             'remark': Lang.i18n('text_CalculateTheValuePerUnitArea'),
             'icon': {
-                'className': 'analyst-density-img'
+                'className': 'widget-analyst-density-img'
             }
         }];
-        let dropDownBox = (new DropDownBox(analysisOptionsArr)).getElement();
+        let dropDownBox = (new DropDownBox_DropDownBox(analysisOptionsArr)).getElement();
         widgetContentContainer.appendChild(dropDownBox);
         // 选中的 dropDownItem
         let dropDownTop = dropDownBox.children[0].children[0].children[0];
 
         // 各分析参数 container
-        let analyusisTypeContainer = external_L_default.a.DomUtil.create('div', 'analyusistype-container di-font-content-md', widgetContentContainer);
-        let analysisType = external_L_default.a.DomUtil.create('div', 'analysistype', analyusisTypeContainer);
-        let analysisLayer = external_L_default.a.DomUtil.create('div', 'analysisLayer', analysisType);
+        let analysisTypeContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container', widgetContentContainer);
+        let analysisType = external_L_default.a.DomUtil.create('div', 'analysistype', analysisTypeContainer);
+        let analysisLayer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container__analysisLayer', analysisType);
 
         // 数据集下拉框
-        let datasetSelectControl = external_L_default.a.DomUtil.create('div', 'select-control', analysisLayer);
+        let datasetSelectControl = external_L_default.a.DomUtil.create('div', 'widget-analysis__selecttool', analysisLayer);
         let datasetOptions = {
             'optionsArr': [Lang.i18n('text_option_selectDataset')],
             'labelName': Lang.i18n('text_label_dataset'),
             "optionsClickCb": datasetSelectOnchange.bind(this)
-        }
-        let datasetSelectObj = new Select(datasetOptions);
+        };
+        let datasetSelectObj = new Select_Select(datasetOptions);
         let datasetSelectTool = datasetSelectObj.getElement();
         this.datasetSelectObj = datasetSelectObj;
         datasetSelectControl.appendChild(datasetSelectTool);
@@ -86179,7 +86187,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         this.datasetSelect = datasetSelect;
 
         // 分析方法下拉框 & 网格面类型下拉框
-        let analyseIDW = external_L_default.a.DomUtil.create('div', 'analyse IDW', analysisLayer);
+        let analyseIDW = external_L_default.a.DomUtil.create('div', 'widget-analysis__idw', analysisLayer);
         let analysisOptions = [{
             'optionsArr': [Lang.i18n('text_option_simplePointDensityAnalysis'), Lang.i18n('text_option_nuclearDensityAnalysis')],
             'labelName': Lang.i18n('text_label_analyticalMethod')
@@ -86189,9 +86197,9 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             'labelName': Lang.i18n('text_label_meshType')
         }];
         // 分析参数 select control
-        let analysisSelectControl = external_L_default.a.DomUtil.create('div', 'select-control', analyseIDW);
+        let analysisSelectControl = external_L_default.a.DomUtil.create('div', 'widget-analysis__idw__selecttool', analyseIDW);
         for (let i in analysisOptions) {
-            let selectTool = (new Select(analysisOptions[i])).getElement();
+            let selectTool = (new Select_Select(analysisOptions[i])).getElement();
             analysisSelectControl.appendChild(selectTool);
         }
 
@@ -86199,8 +86207,8 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         let weightFieldsSelectOptions = {
             'optionsArr': [Lang.i18n('text_option_notSet')],
             'labelName': Lang.i18n('text_label_weightField')
-        }
-        let weightFieldsSelectObj = new Select(weightFieldsSelectOptions);
+        };
+        let weightFieldsSelectObj = new Select_Select(weightFieldsSelectOptions);
         let weightFieldsSelectTool = weightFieldsSelectObj.getElement();
         analysisSelectControl.appendChild(weightFieldsSelectTool);
         this.weightFieldsSelectObj = weightFieldsSelectObj;
@@ -86210,14 +86218,14 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         analysisMethodSelectName.setAttribute('data-value', '0');
         let analysisMethodSelect = analysisSelectControl.children[0].children[1].children[2].children[0].children[0];
         let analysisMethodDV = ['0', '1'];
-        this._setEleAtribute(analysisMethodDV, 'data-value', analysisMethodSelect.children)
+        this._setEleAtribute(analysisMethodDV, 'data-value', analysisMethodSelect.children);
 
         // 网格面类型选中值 & option attr设置
         let gridTypeSelectName = analysisSelectControl.children[1].children[1].children[0];
         gridTypeSelectName.setAttribute('data-value', '0');
         let gridTypeSelect = analysisSelectControl.children[1].children[1].children[2].children[0].children[0];
         let gridTypeDV = ['0', '1'];
-        this._setEleAtribute(gridTypeDV, 'data-value', gridTypeSelect.children)
+        this._setEleAtribute(gridTypeDV, 'data-value', gridTypeSelect.children);
 
         // 权重值选中值
         let weightFieldsSelectName = analysisSelectControl.children[2].children[1].children[0];
@@ -86233,17 +86241,17 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             this._creatInputBox(inputOptions[i], analysisSelectControl)
         }
         let queryRangeInput = analysisSelectControl.children[3].children[1];
-        queryRangeInput.setAttribute('placeholder', Lang.i18n('text_label_queryRangeTips'))
+        queryRangeInput.setAttribute('placeholder', Lang.i18n('text_label_queryRangeTips'));
         queryRangeInput.title = Lang.i18n('text_label_queryRangeTips');
 
         // 网格大小
         let gridSizeUnitSelectOptions = {
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
-        }
+        };
         let gridSizeOptions = {
             'labelName': Lang.i18n('text_label_gridSizeInMeters'),
             'selectOptions': gridSizeUnitSelectOptions
-        }
+        };
         let gridSizeContainer = this._creatUnitSelectBox(gridSizeOptions, analysisSelectControl);
         let gridSizeInput = gridSizeContainer.children[1].children[0];
         gridSizeInput.value = '1000';
@@ -86252,11 +86260,11 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         // 搜索半径 
         let searchRadiusUnitSelectOptions = {
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
-        }
+        };
         let searchRadiusOptions = {
             'labelName': Lang.i18n('text_label_searchRadius'),
             'selectOptions': searchRadiusUnitSelectOptions
-        }
+        };
         let searchRadiusContainer = this._creatUnitSelectBox(searchRadiusOptions, analysisSelectControl);
         let searchRadiusInput = searchRadiusContainer.children[1].children[0];
         searchRadiusInput.value = '300';
@@ -86265,8 +86273,8 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         let areaUnitSelectOptions = {
             'labelName': Lang.i18n('text_label_areaUnit'),
             'optionsArr': ['SquareMile', 'SquareMeter', 'Hectare', 'Acre', 'SquareFoot', 'SquareYard']
-        }
-        let areaUnitSelectTool = (new Select(areaUnitSelectOptions)).getElement();
+        };
+        let areaUnitSelectTool = (new Select_Select(areaUnitSelectOptions)).getElement();
         analysisSelectControl.appendChild(areaUnitSelectTool);
         let areaUnitSelectName = areaUnitSelectTool.children[1].children[0];
         // 专题图分段
@@ -86275,21 +86283,21 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             'optionsArr': [Lang.i18n('text_option_notSet'), Lang.i18n('text_option_equidistantSegmentation'), Lang.i18n('text_option_logarithm'), Lang.i18n('text_option_equalCountingSegment'), Lang.i18n('text_option_squareRootSegmentation')],
             'labelName': Lang.i18n('text_label_thematicMapSegmentationMode'),
             "optionsClickCb": themeModelSelectOnchange
-        }
-        rangeContent.appendChild((new Select(rangeContentOptions)).getElement());
+        };
+        rangeContent.appendChild((new Select_Select(rangeContentOptions)).getElement());
 
         let themeModelSelectName = rangeContent.children[0].children[1].children[0];
         themeModelSelectName.setAttribute('data-value', 'NOTSET');
         let themeModelSelect = rangeContent.children[0].children[1].children[2].children[0].children[0];
-        let themeModelDataValue = ['NOTSET', 'EQUALINTERVAL', 'LOGARITHM', 'QUANTILE', 'SQUAREROOT']
-        this._setEleAtribute(themeModelDataValue, 'data-value', themeModelSelect.children)
+        let themeModelDataValue = ['NOTSET', 'EQUALINTERVAL', 'LOGARITHM', 'QUANTILE', 'SQUAREROOT'];
+        this._setEleAtribute(themeModelDataValue, 'data-value', themeModelSelect.children);
 
         let rangeContentParamInput = this._creatInputBox({
             'spanName': Lang.i18n('text_label_thematicMapSegmentationParameters'),
             'value': '20'
-        }, rangeContent)
+        }, rangeContent);
         rangeContentParamInput.classList.add('hidden');
-        let rangeContentModelSelectTool = (new Select({
+        let rangeContentModelSelectTool = (new Select_Select({
             'optionsArr': [
                 Lang.i18n('text_option_greenOrangePurpleGradient'),
                 Lang.i18n('text_option_greenOrangeRedGradient'),
@@ -86297,14 +86305,14 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
                 Lang.i18n('text_option_spectralGradient'),
                 Lang.i18n('text_option_terrainGradient')],
             'labelName': Lang.i18n('text_label_thematicMapColorGradientMode')
-        })).getElement()
+        })).getElement();
         rangeContent.appendChild(rangeContentModelSelectTool);
         rangeContentModelSelectTool.classList.add('hidden');
         let rangeContentModelSelect = rangeContentModelSelectTool.children[1].children[2].children[0].children[0];
         let rangeContentModelSelectName = rangeContentModelSelectTool.children[1].children[0];
         rangeContentModelSelectName.setAttribute('data-value', 'GREENORANGEVIOLET');
-        let rangeContentModelDV = ['GREENORANGEVIOLET', 'GREENORANGERED', 'RAINBOW', 'SPECTRUM', 'TERRAIN']
-        this._setEleAtribute(rangeContentModelDV, 'data-value', rangeContentModelSelect.children)
+        let rangeContentModelDV = ['GREENORANGEVIOLET', 'GREENORANGERED', 'RAINBOW', 'SPECTRUM', 'TERRAIN'];
+        this._setEleAtribute(rangeContentModelDV, 'data-value', rangeContentModelSelect.children);
 
         // 专题图分段模式下拉框 onchange 事件
         function themeModelSelectOnchange(option) {
@@ -86321,31 +86329,29 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         let resultLayerContainer = external_L_default.a.DomUtil.create('div', '', analysisType);
         let resultLayerSpan = external_L_default.a.DomUtil.create('span', '', resultLayerContainer);
         resultLayerSpan.innerHTML = Lang.i18n('text_label_resultLayerName');
-        let resultLayerInput = external_L_default.a.DomUtil.create('input', 'distributeInput', resultLayerContainer);
-
+        let resultLayerInput = external_L_default.a.DomUtil.create('input', 'widget-distributeanalysis__input', resultLayerContainer);
 
         // 分析 & 分析中 & 取消 按钮
-        let runBtnContainer = external_L_default.a.DomUtil.create('div', 'run-btn-container di-font-content-md', analyusisTypeContainer);
-        let runBtn = external_L_default.a.DomUtil.create('div', 'run-btn', runBtnContainer);
-        let analysisBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn', runBtn);
+        let runBtnContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container__analysisbtn', analysisTypeContainer);
+        let runBtn = external_L_default.a.DomUtil.create('div', 'widget-analysis__analysisbtn', runBtnContainer);
+        let analysisBtn = external_L_default.a.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis', runBtn);
         analysisBtn.innerHTML = Lang.i18n('btn_analyze');
-        let analysingContainer = external_L_default.a.DomUtil.create('div', 'analysing-container hidden', runBtn);
-        let analysisingBtn = external_L_default.a.DomUtil.create('div', 'analysising-btn', analysingContainer);
+        let analysingContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__analysisbtn--analysing-container hidden', runBtn);
+        let analysisingBtn = external_L_default.a.DomUtil.create('div', 'widget-analysis__analysisbtn--analysising', analysingContainer);
         analysisingBtn.style.width = '200px';
-        let svgContainer = external_L_default.a.DomUtil.create('div', 'svg-container', analysisingBtn);
-        svgContainer.innerHTML = `<svg class="svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        let svgContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__svg-container', analysisingBtn);
+        svgContainer.innerHTML = `<svg class="widget-analysis__svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <path id="ring" fill="#FFF" transform="translate(8,8)" d="M 0 0 v -8 A 8 8 0 1 1 -8.00 0 z"></path>
             <circle cx="8" cy="8" r="6" fill="#38ADF5"></circle>
             <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
             <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
-        </svg>`
+        </svg>`;
         external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_analyzing');
 
         // 删除按钮
-        let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn delete-layers', runBtn);
+        let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis widget-analysis__analysisbtn--deletelayers', runBtn);
         deleteLayersBtn.id = 'deleteLayersBtn';
         deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheAnalysisLayer');
-
 
         // 交互
         // 弹框
@@ -86378,7 +86384,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
                             _me.weightFieldsSelectObj.optionClickEvent(weightFieldsSelect, weightFieldsSelectName);
                         }
                     }
-                })
+                });
                 this.viewModel.getDatasetInfo(datasetUrl);
             }
         }
@@ -86406,7 +86412,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
                      * @property {string} name - 结果图层名称。
                      */
                     this.event.fire('analysissuccessed', {'layer': e.layer, 'name': e.name})
-                })
+                });
                 
                 this.viewModel.on('analysisfailed', (e) => {
                     this.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
@@ -86418,11 +86424,11 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
                      * @property {string} error - 服务器返回错误。
                      */
                     this.event.fire('analysisfailed', {'error': e.error})
-                })
+                });
 
                 this.viewModel.analysis(params, this.map);
             }
-        }
+        };
 
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
@@ -86433,9 +86439,9 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
              */
             this.viewModel.on('layersremoved', (e) => {
                 this.event.fire('layersremoved', { 'layers': e.layers });
-            })
+            });
             this.viewModel.clearLayers();
-        }
+        };
 
         // 获取分析参数
         function getAnalysisParam() {
@@ -86445,7 +86451,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             let queryRange = queryRangeInput.value;
             let gridSizeUnit = gridSizeUnitSelectName.title;
             let searchRadiusUnit = searchRadiusSelectName.title;
-            let areaUnit = areaUnitSelectName.title
+            let areaUnit = areaUnitSelectName.title;
             let colorGradientType = rangeContentModelSelectName.getAttribute('data-value');
             let themeModel = themeModelSelectName.getAttribute('data-value');
             let date = new Date();
@@ -86484,14 +86490,15 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             let params = {
                 'analysisParam': analysisParam,
                 'resultLayerName': resultLayerName
-            }
+            };
             return params;
         }
 
-        this._container = container;
-        this._preventMapEvent(this._container, this.map);
-        return this._container;
+        //阻止 map 默认事件
+        this._preventMapEvent(container, this.map);
+        return container;
     },
+
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._createOptions
      * @description 创建下拉框 options。
@@ -86500,13 +86507,14 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
     _createOptions(container, optionsArr) {
         for (let i in optionsArr) {
             let option = document.createElement('div');
-            option.className = 'select-option';
+            option.className = 'widget-selecttool__option';
             option.title = optionsArr[i];
             option.innerHTML = optionsArr[i];
             option.setAttribute('data-value', optionsArr[i]);
             container.appendChild(option);
         }
     },
+
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._creatInputBox
      * @description 创建含有 span 的 input 框。
@@ -86518,28 +86526,30 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         span.innerHTML = inputOptions.spanName;
         let input = external_L_default.a.DomUtil.create('input', '', div);
         input.value = inputOptions.value;
-        input.className = 'distributeInput'
+        input.className = 'widget-distributeanalysis__input';
         return div;
     },
+
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._creatInputBox
      * @description 创建含有 span 的 input 框。
      * @private
      */
     _creatUnitSelectBox(options, parentEle) {
-        let unitSelectBoxContainer = external_L_default.a.DomUtil.create('div', 'buffer-radius', parentEle);
+        let unitSelectBoxContainer = external_L_default.a.DomUtil.create('div', 'widget-clientcomputation__buffer--radius', parentEle);
         let unitSelectSpan = external_L_default.a.DomUtil.create('span', '', unitSelectBoxContainer);
         unitSelectSpan.innerHTML = options.labelName;
         let unitSelectInputContainer = external_L_default.a.DomUtil.create('div', '', unitSelectBoxContainer);
         external_L_default.a.DomUtil.create('input', 'buffer-radius-input', unitSelectInputContainer);
 
-        let unitSelectUnitContainer = external_L_default.a.DomUtil.create('div', 'buffer-unit', unitSelectInputContainer);
+        let unitSelectUnitContainer = external_L_default.a.DomUtil.create('div', 'widget-clientcomputation__buffer--unit', unitSelectInputContainer);
         let unitSelectOptions = options.selectOptions;
-        let unitSelectTool = (new Select(unitSelectOptions)).getElement();
-        unitSelectUnitContainer.appendChild(unitSelectTool)
+        let unitSelectTool = (new Select_Select(unitSelectOptions)).getElement();
+        unitSelectUnitContainer.appendChild(unitSelectTool);
 
         return unitSelectBoxContainer;
     },
+
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._setEleAtribute
      * @description 设置元素的属性名和属性值。
@@ -86635,6 +86645,9 @@ class DataServiceQueryViewModel_DataServiceQueryViewModel extends external_L_def
         let resultLayer = external_L_default.a.geoJSON(serviceResult.result.features, {
             onEachFeature: function (feature, layer) {
                 layer.bindPopup("ID: " + feature.properties.SMID);
+            },
+            pointToLayer: function (geoJsonPoint, latLng) {
+                return external_L_default.a.circleMarker(latLng, { radius: 6})
             }
         }).addTo(map);
         this.resultLayers.push(resultLayer);
@@ -86671,7 +86684,6 @@ external_L_default.a.supermap.widgets.dataServiceQueryViewModel = dataServiceQue
 
 
 
-
 /**
  * @class L.supermap.widgets.dataServiceQuery
  * @classdesc 数据服务查询微件。
@@ -86683,14 +86695,11 @@ external_L_default.a.supermap.widgets.dataServiceQueryViewModel = dataServiceQue
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfaild
  * @category Widgets DataServiceQuery
  */
-var DataServiceQueryView = external_L_default.a.Control.extend({
-
-    options: {
-        //控件位置 继承自 leaflet control
-        position: 'topright'
-    },
+var DataServiceQueryView = WidgetsViewBase.extend({
 
     initialize: function (dataServiceUrl, dataSetNames, options) {
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
+
         this.dataServiceUrl = dataServiceUrl;
         if (!dataSetNames || dataSetNames.length === 0) {
             throw new Error('Please configure the dataset of the query！')
@@ -86700,26 +86709,18 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
         } else {
             this.dataSetNames = dataSetNames.split(" ");
         }
-        //事件监听对象
-        this.event = new external_L_default.a.Evented();
-
-        external_L_default.a.Util.setOptions(this, options);
     },
 
     /**
      * @function L.supermap.widgets.dataServiceQuery.prototype.onAdd
      * @description 添加控件。
      * @private
+     * @override
      */
     onAdd: function (map) {
-        this.map = map;
-        if (this.options.orientation !== 'vertical') {
-            this.options.orientation = 'horizontal';
-        }
-        let container = this._initDataServiceQueryView();
-        return container;
+        return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
-    
+
     /**
      * @function L.supermap.widgets.dataServiceQuery.prototype.onRemove
      * @description 移除控件。
@@ -86730,38 +86731,8 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype.on
-     * @description 事件监听。
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
-    },
-    /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype.off
-     * @description 事件关闭。
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    off(eventType, callback) {
-        this.event.off(eventType, callback);
-    },
-    /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype.setDataSetNames
-     * @description 设置查询的数据集名。
-     * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries";
-     */
-    setDataSetNames(dataSetNames) {
-        if (dataSetNames instanceof Array) {
-            this.dataSetNames = dataSetNames;
-        } else {
-            this.dataSetNames = dataSetNames.split(" ");
-        }
-    },
-    /**
      * @function L.supermap.widgets.dataServiceQuery.prototype.setGetFeatureMode
-     * @description 设置查询的查询方式。
+     * @description 设置查询方式。
      * @param {(Array.<SuperMap.GetFeatureMode>|SuperMap.GetFeatureMode)} getFeatureMode - 查询方式。
      */
     setGetFeatureMode(getFeatureMode) {
@@ -86797,27 +86768,27 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype._initDataServiceQueryView
+     * @function L.supermap.widgets.dataServiceQuery.prototype._initView
      * @description 创建数据服务查询微件。
      * @returns {HTMLElement}
      * @private
      */
-    _initDataServiceQueryView: function () {
+    _initView: function () {
         // 初始化 ViewModel:
         this.viewModel = new DataServiceQueryViewModel_DataServiceQueryViewModel(this.dataServiceUrl);
         this.messageBox = new MessageBox();
 
         // 微件 container
-        let container = (new CommonContainer(Lang.i18n('title_dataServiceQuery'))).getElement();
-        container.classList.add('widget-dataservice-container');
-        container.children[0].classList.add('widget-dataservice-title')
+        let container = (new CommonContainer_CommonContainer({title: Lang.i18n('title_dataServiceQuery')})).getElement();
+        container.classList.add('widget-servicequery__container');
+        container.children[0].classList.add('widget-servicequery__title');
         let widgetContentContainer = container.children[1];
-        widgetContentContainer.classList.add('widget-scroll-content');
+        widgetContentContainer.classList.add('widget-content--scroll');
         widgetContentContainer.classList.add('data-services');
         // 微件内容 container
-        let analyusisTypeContainer = external_L_default.a.DomUtil.create('div', 'analyusistype-container di-font-content-md', widgetContentContainer);
-        let analysisType = external_L_default.a.DomUtil.create('div', 'analysistype dataservice-analysistype', analyusisTypeContainer);
-        let analysisLayer = external_L_default.a.DomUtil.create('div', 'analysisLayer', analysisType);
+        let analyusisTypeContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container', widgetContentContainer);
+        let analysisType = external_L_default.a.DomUtil.create('div', 'widget-servicequery__analysistype', analyusisTypeContainer);
+        let analysisLayer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container__analysisLayer', analysisType);
 
         let queryModelOptionsArr, getFeatureModeArr = this.options.getFeatureMode;
         // 获取查询模式
@@ -86829,99 +86800,99 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
         // 查询模式
         let queryModelContainer = external_L_default.a.DomUtil.create('div', '', analysisLayer);
         queryModelContainer.id = 'queryModelContainer';
-        let queryModelControl = external_L_default.a.DomUtil.create('div', 'select-control', queryModelContainer);
+        let queryModelControl = external_L_default.a.DomUtil.create('div', 'widget-analysis__selecttool', queryModelContainer);
         queryModelControl.id = 'queryModelControl';
         this.creatQueryModeSelect = creatQueryModeSelect.bind(this);
         this.queryModeltOnchange = queryModeltOnchange.bind(this);
-        this.creatQueryModeSelect(queryModelOptionsArr, queryModelControl)
+        this.creatQueryModeSelect(queryModelOptionsArr, queryModelControl);
 
         // 要素 ID 数组
-        let featuresIdArrContainer = external_L_default.a.DomUtil.create('div', 'textarea-container dataservice-textarea-container', analysisLayer);
+        let featuresIdArrContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container widget-textarea--dataservice__container', analysisLayer);
         let textareaSpan = external_L_default.a.DomUtil.create('span', 'textarea-name', featuresIdArrContainer);
         textareaSpan.innerHTML = Lang.i18n('text_label_IDArrayOfFeatures');
-        let textareaControl = external_L_default.a.DomUtil.create('div', 'textarea-control dataservice-textarea-control', featuresIdArrContainer);
+        let textareaControl = external_L_default.a.DomUtil.create('div', 'widget-textarea widget-textarea--dataservice', featuresIdArrContainer);
         textareaControl.id = 'getfeaturesIdArr';
         let scrollarea = external_L_default.a.DomUtil.create('div', 'scrollarea', textareaControl);
-        let scrollareaContent = external_L_default.a.DomUtil.create('div', 'scrollarea-content', scrollarea);
+        let scrollareaContent = external_L_default.a.DomUtil.create('div', 'widget-scrollarea-content', scrollarea);
         scrollareaContent.setAttribute('tabindex', '1');
-        let getValueTextArea = external_L_default.a.DomUtil.create('textarea', 'textarea', scrollareaContent);
+        let getValueTextArea = external_L_default.a.DomUtil.create('textarea', 'widget-textarea__content', scrollareaContent);
         getValueTextArea.value = '[1,2,3]';
-        getValueTextArea.id = 'getValueTextArea'
+        getValueTextArea.id = 'getValueTextArea';
 
         // SQL 最多可返回的要素数量
-        let maxFeaturesContainer = external_L_default.a.DomUtil.create('div', 'dataservice-maxfeatures-container hidden', analysisLayer);
+        let maxFeaturesContainer = external_L_default.a.DomUtil.create('div', 'widget-servicequery__maxfeatures-container hidden', analysisLayer);
         let maxFeaturesOtions = {
             'spanName': Lang.i18n('text_label_maxFeatures'),
             'value': '1000'
         };
-        let maxFeaturesInputBox = this._creatInputBox(maxFeaturesOtions, maxFeaturesContainer)
+        let maxFeaturesInputBox = this._creatInputBox(maxFeaturesOtions, maxFeaturesContainer);
         let maxFeaturesInput = maxFeaturesInputBox.children[1];
         maxFeaturesInput.classList.add('max-features-input');
         // Buffer 缓冲区距离
-        let bufferDistanceContainer = external_L_default.a.DomUtil.create('div', 'dataservice-distance-container hidden', analysisLayer);
+        let bufferDistanceContainer = external_L_default.a.DomUtil.create('div', 'widget-servicequery__distance-container hidden', analysisLayer);
         let bufferDistanceOtions = {
             'spanName': Lang.i18n('text_label_bufferDistance'),
             'value': '10'
         };
-        let bufferDistanceInputBox = this._creatInputBox(bufferDistanceOtions, bufferDistanceContainer)
+        let bufferDistanceInputBox = this._creatInputBox(bufferDistanceOtions, bufferDistanceContainer);
         let bufferDistanceInput = bufferDistanceInputBox.children[1];
 
 
         // Bounds 查询范围；
-        let queryRangeContainer = external_L_default.a.DomUtil.create('div', 'textarea-container dataservice-textarea-container hidden', analysisLayer);
+        let queryRangeContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container widget-textarea--dataservice__container hidden', analysisLayer);
         let queryRangetextareaSpan = external_L_default.a.DomUtil.create('span', 'textarea-name', queryRangeContainer);
         let queryRangeMainContent = external_L_default.a.DomUtil.create('div', '', queryRangeContainer);
-        let queryRangeIconContainer = external_L_default.a.DomUtil.create('div', 'query-range-icon-container', queryRangeMainContent);
+        let queryRangeIconContainer = external_L_default.a.DomUtil.create('div', 'widget-servicequery__rangeicon-container', queryRangeMainContent);
         queryRangetextareaSpan.innerHTML = Lang.i18n('text_label_queryRange1');
-        let queryRangeRecIcon = external_L_default.a.DomUtil.create('div', 'query-range-icon supermapol-icons-polygon-layer bounds', queryRangeIconContainer);
-        let queryRangeLineIcon = external_L_default.a.DomUtil.create('div', 'query-range-icon supermapol-icons-line-layer hidden', queryRangeIconContainer);
-        let queryRangePointIcon = external_L_default.a.DomUtil.create('div', 'query-range-icon supermapol-icons-point-layer hidden', queryRangeIconContainer);
-        let queryRangetextareaControl = external_L_default.a.DomUtil.create('div', 'textarea-control query-range-textarea-control', queryRangeMainContent);
+        let queryRangeRecIcon = external_L_default.a.DomUtil.create('div', 'widget-servicequery__rangeicon supermapol-icons-polygon-layer bounds', queryRangeIconContainer);
+        let queryRangeLineIcon = external_L_default.a.DomUtil.create('div', 'widget-servicequery__rangeicon supermapol-icons-line-layer hidden', queryRangeIconContainer);
+        let queryRangePointIcon = external_L_default.a.DomUtil.create('div', 'widget-servicequery__rangeicon supermapol-icons-point-layer hidden', queryRangeIconContainer);
+        let queryRangetextareaControl = external_L_default.a.DomUtil.create('div', 'widget-textarea widget-textarea--rangequery', queryRangeMainContent);
         queryRangetextareaControl.id = 'getfeaturesIdArr';
-        let queryRangescrollarea = external_L_default.a.DomUtil.create('div', 'scrollarea', queryRangetextareaControl);
-        let queryRangescrollareaContent = external_L_default.a.DomUtil.create('div', 'scrollarea-content', queryRangescrollarea);
+        let queryRangescrollarea = external_L_default.a.DomUtil.create('div', '', queryRangetextareaControl);
+        let queryRangescrollareaContent = external_L_default.a.DomUtil.create('div', 'widget-scrollarea-content', queryRangescrollarea);
         queryRangescrollareaContent.setAttribute('tabindex', '1');
-        let queryRangeTextArea = external_L_default.a.DomUtil.create('textarea', 'textarea query-range-textarea', queryRangescrollareaContent);
+        let queryRangeTextArea = external_L_default.a.DomUtil.create('textarea', 'widget-textarea__content widget-textarea--rangequery__content', queryRangescrollareaContent);
         queryRangeTextArea.value = '{"leftBottom":{"x":-5,"y":-5},"rightTop":{"x":5,"y":5}}';
 
         // geometry 空间查询模式
-        let spatialQueryModeContainer = external_L_default.a.DomUtil.create('div', 'spatial-querymode-container hidden', analysisLayer);
+        let spatialQueryModeContainer = external_L_default.a.DomUtil.create('div', 'widget-servicequery__spatialquerymode-container hidden', analysisLayer);
         let spatialQueryModeOptions = {
             'optionsArr': ['CONTAIN', 'CROSS', 'DISJOINT', 'IDENTITY', 'INTERSECT', 'NONE', 'OVERLAP', 'TOUCH', 'WITHIN'],
             'labelName': Lang.i18n('text_label_spatialQueryMode')
-        }
-        let spatialQueryModeControl = external_L_default.a.DomUtil.create('div', 'select-control', spatialQueryModeContainer);
-        let spatialQueryModeSelectTool = (new Select(spatialQueryModeOptions)).getElement();
+        };
+        let spatialQueryModeControl = external_L_default.a.DomUtil.create('div', 'widget-analysis__selecttool', spatialQueryModeContainer);
+        let spatialQueryModeSelectTool = (new Select_Select(spatialQueryModeOptions)).getElement();
         spatialQueryModeSelectTool.children[1].classList.add('dataservice-select');
         spatialQueryModeControl.appendChild(spatialQueryModeSelectTool);
         let spatialQueryModeSelectName = spatialQueryModeSelectTool.children[1].children[0];
         spatialQueryModeSelectName.id = 'spatialQueryModeSelectName';
         let spatialQueryModeSelectContent = spatialQueryModeSelectTool.children[1].children[2];
-        spatialQueryModeSelectContent.classList.add('spatial-querymode-select-content')
+        spatialQueryModeSelectContent.classList.add('widget-servicequery__spatialquerymode__selectcontent');
 
 
         // 分析按钮
-        let runBtnContainer = external_L_default.a.DomUtil.create('div', 'run-btn-container di-font-content-md', analysisLayer);
-        let runBtn = external_L_default.a.DomUtil.create('div', 'run-btn', runBtnContainer);
-        let analysisBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn', runBtn);
+        let runBtnContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container__analysisbtn', analysisLayer);
+        let runBtn = external_L_default.a.DomUtil.create('div', 'widget-analysis__analysisbtn', runBtnContainer);
+        let analysisBtn = external_L_default.a.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis', runBtn);
         analysisBtn.innerHTML = Lang.i18n('btn_query');
-        let analysingContainer = external_L_default.a.DomUtil.create('div', 'analysing-container hidden', runBtn);
-        let analysisingBtn = external_L_default.a.DomUtil.create('div', 'analysising-btn dataservice-querying-btn', analysingContainer);
-        let svgContainer = external_L_default.a.DomUtil.create('div', 'svg-container', analysisingBtn);
-        svgContainer.innerHTML = `<svg class="svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        let analysingContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__analysisbtn--analysing-container hidden', runBtn);
+        let analysisingBtn = external_L_default.a.DomUtil.create('div', 'widget-analysis__analysisbtn--analysising widget-servicequery__querybtn--querying', analysingContainer);
+        let svgContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__svg-container', analysisingBtn);
+        svgContainer.innerHTML = `<svg class="widget-analysis__svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
              <path id="ring" fill="#FFF" transform="translate(8,8)" d="M 0 0 v -8 A 8 8 0 1 1 -8.00 0 z"></path>
              <circle cx="8" cy="8" r="6" fill="#38ADF5"></circle>
              <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
              <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
-         </svg>`
+         </svg>`;
         external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_querying');
 
         // 删除按钮
-        let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn delete-layers', runBtn);
+        let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis widget-analysis__analysisbtn--deletelayers', runBtn);
         deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheRresultLayer');
 
         // 设置当前显示参数
-        queryModeltOnchange(queryModelOptionsArr[0])
+        queryModeltOnchange(queryModelOptionsArr[0]);
 
         // 分析按钮点击事件
         let me = this;
@@ -86942,21 +86913,21 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
                  * @description features 获取成功时触发。
                  * @property {Object} result - 服务器返回的结果。
                  */
-                this.event.fire('getfeaturessuccessed', { 'result': e.result })
-            })
+                this._event.fire('getfeaturessuccessed', {'result': e.result})
+            });
             this.viewModel.on('getfeaturesfaild', (e) => {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 this.messageBox.showView(e.error.errorMsg, "failure");
                 /**
-                * @event L.supermap.widgets.dataServiceQuery#getfeaturesfaild
-                * @description features 获取失败时触发。
-                * @property {string} error - 服务器返回的错误。
-                */
-                this.event.fire('getfeaturesfaild', { 'error': e.error })
-            })
+                 * @event L.supermap.widgets.dataServiceQuery#getfeaturesfaild
+                 * @description features 获取失败时触发。
+                 * @property {string} error - 服务器返回的错误。
+                 */
+                this._event.fire('getfeaturesfaild', {'error': e.error})
+            });
             this.viewModel.getFeatures(queryParams, this.map);
-        }
+        };
 
         let bounds, resultLayer;
         // 矩形 & 多边形绘制
@@ -86975,7 +86946,7 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
             }
             e.stopPropagation();
             e.preventDefault();
-        }
+        };
 
         // 线绘制
         queryRangeLineIcon.onclick = (e) => {
@@ -86985,7 +86956,7 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
             this.map.pm.enableDraw('Line');
             e.stopPropagation();
             e.preventDefault();
-        }
+        };
 
         // 点绘制
         queryRangePointIcon.onclick = (e) => {
@@ -86995,17 +86966,17 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
             this.map.pm.enableDraw('Marker');
             e.stopPropagation();
             e.preventDefault();
-        }
+        };
 
         this.map.on('pm:create', (e) => {
             if (e.shape === 'Rectangle') {
                 resultLayer = e.layer;
-                let boundsT = resultLayer.getBounds()
+                let boundsT = resultLayer.getBounds();
                 bounds = external_L_default.a.bounds([boundsT._southWest.lng, boundsT._southWest.lat], [boundsT._northEast.lng, boundsT._northEast.lat]);
                 let geo = {
-                    'leftBottom': { 'x': boundsT._southWest.lng, 'y': boundsT._southWest.lat },
-                    'rightTop': { 'x': boundsT._northEast.lng, 'y': boundsT._northEast.lat }
-                }
+                    'leftBottom': {'x': boundsT._southWest.lng, 'y': boundsT._southWest.lat},
+                    'rightTop': {'x': boundsT._northEast.lng, 'y': boundsT._northEast.lat}
+                };
                 queryRangeTextArea.value = JSON.stringify(geo);
             }
             if (e.shape === 'Marker') {
@@ -87025,7 +86996,7 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
             this.viewModel.clearLayers();
-        }
+        };
 
         function creatQueryModeSelect(queryModelOptionsArr, queryModelControl) {
             // 查询模式
@@ -87036,8 +87007,8 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
                     'optionsArr': queryModelOptionsArr,
                     'labelName': Lang.i18n('text_label_queryMode'),
                     'optionsClickCb': this.queryModeltOnchange
-                }
-                let queryModelSelectTool = (new Select(queryModelOptions)).getElement();
+                };
+                let queryModelSelectTool = (new Select_Select(queryModelOptions)).getElement();
                 queryModelControl.appendChild(queryModelSelectTool);
                 queryModelSelectName = queryModelSelectTool.children[1].children[0];
                 queryModelSelectTool.children[1].classList.add('dataservice-select');
@@ -87047,7 +87018,7 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
             } else {
                 let span = external_L_default.a.DomUtil.create('span', '', queryModelContainer);
                 span.innerHTML = Lang.i18n('text_label_queryMode');
-                queryModelSelectName = external_L_default.a.DomUtil.create('div', 'querymode-selectname', queryModelContainer);
+                queryModelSelectName = external_L_default.a.DomUtil.create('div', 'widget-servicequery__querymode-selectname', queryModelContainer);
                 let text = external_L_default.a.DomUtil.create('span', '', queryModelSelectName);
                 if (queryModelOptionsArr instanceof Array) {
                     text.innerHTML = queryModelOptionsArr[0];
@@ -87060,6 +87031,7 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
             queryModelSelectName.id = 'queryModelSelectName';
             return queryModelSelectName;
         }
+
         // 查询模式下拉框 onchange 事件
         function queryModeltOnchange(option) {
             // 获取当前选中查询模式
@@ -87109,7 +87081,6 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
                     break;
             }
         }
-
 
         // 获取查询参数
         function getQueryParams() {
@@ -87171,9 +87142,8 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
             return queryParam;
         }
 
-
-        this.container = container;
-        this._preventMapEvent(this.container, this.map)
+        //阻止 map 默认事件
+        this._preventMapEvent(container, this.map);
         return container;
     },
 
@@ -87190,28 +87160,8 @@ var DataServiceQueryView = external_L_default.a.Control.extend({
         input.value = inputOptions.value;
         // input.className = 'distributeInput'
         return div;
-    },
-
-    /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype._preventMapEvent
-     * @description 阻止 map 默认事件。
-     * @private
-     */
-    _preventMapEvent(div, map) {
-        if (!div || !map) {
-            return;
-        }
-        div.addEventListener('mouseover', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        div.addEventListener('mouseout', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        });
     }
+
 });
 var dataServiceQueryView = function (dataServiceUrl, dataSetNames, options) {
     return new DataServiceQueryView(dataServiceUrl, dataSetNames, options);
@@ -87271,7 +87221,7 @@ external_L_default.a.supermap.widgets.dataServiceQuery = dataServiceQueryView;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "clientComputationLayer", function() { return clientComputationLayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJSONLayerWithName", function() { return GeoJSONLayerWithName; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "geoJSONLayerWithName", function() { return geoJSONLayerWithName; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJsonLayersDataModel", function() { return GeoJsonLayersDataModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJsonLayersDataModel", function() { return GeoJsonLayersModel_GeoJsonLayersDataModel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJsonLayerDataModel", function() { return GeoJsonLayerDataModel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DistributedAnalysisView", function() { return DistributedAnalysisView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "distributedAnalysisView", function() { return distributedAnalysisView; });
@@ -90867,7 +90817,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */

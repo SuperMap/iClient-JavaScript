@@ -8,16 +8,18 @@ import {Util} from '../../commontypes/Util';
 /**
  * @class SuperMap.Widgets.CityTabsPage
  * @classdesc 城市地址匹配组件模板
- * @category Widgets Common
- * @param {Object|Array.<string>} config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ * @category Widgets Common
  */
 export class CityTabsPage extends IndexTabsPageContainer {
-    constructor(config) {
-        super();
+    constructor(options) {
+        super(options);
         //去掉默认的边框阴影样式：
-        this.container.classList.add("noneBoxShadow");
-        this.config = config;
+        this.rootContainer.classList.add("widget-citytabpage--noneBoxShadow");
+        this.config = options.config;
         //header，若 config为城市名称数组，则直接加载内容
         if (Util.isArray(this.config)) {
             this.header.hidden = true;
@@ -92,12 +94,12 @@ export class CityTabsPage extends IndexTabsPageContainer {
         const city = document.createElement("div");
 
         const cityClass = document.createElement("div");
-        cityClass.setAttribute("class", "py-key");
+        cityClass.setAttribute("class", "widget-citytabpag__py-key");
         cityClass.innerHTML = key;
         city.appendChild(cityClass);
 
         const cityContent = document.createElement("div");
-        cityContent.setAttribute("class", "city-content");
+        cityContent.setAttribute("class", "widget-citytabpag__content");
 
         for (let i = 0; i < cities.length; i++) {
             let span = document.createElement("span");

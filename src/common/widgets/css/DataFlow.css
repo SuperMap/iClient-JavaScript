@@ -1,12 +1,13 @@
-.init-center {
+/** dataFlow 数据流服务样式**/
+.widget-init-center {
     text-align: center;
 }
 
-.dataflow-container {
+.widget-dataflow__container {
     line-height: 36px;
 }
 
-.dataflow-container div {
+.widget-dataflow__container div {
     float: left;
     min-width: 300px;
 }
@@ -37,7 +38,7 @@
 }
 
 /*微件输入框清除按钮*/
-.supermapol-icons-close:before {
+.widget-dataflow__container .supermapol-icons-close:before {
     content: "\e6ae";
 }
 
@@ -95,13 +96,13 @@
     cursor: pointer;
 }
 
-.label {
+.widget-label {
     margin-left: 20px;
     line-height: 16px;
     font-size: 12px;
     color: #919191;
 }
 
-.label-selected {
+.widget-label-selected {
     color: #595959 !important;
 }

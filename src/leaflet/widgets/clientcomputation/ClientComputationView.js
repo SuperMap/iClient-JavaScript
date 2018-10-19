@@ -2,58 +2,35 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-import '../../core/Base';
-import { ClientComputationViewModel } from "./ClientComputationViewModel";
-import { CommonContainer, DropDownBox, Select, MessageBox, Lang } from '@supermap/iclient-common';
+import {WidgetsViewBase} from '../WidgetsViewBase';
+import {ClientComputationViewModel} from "./ClientComputationViewModel";
+import {CommonContainer, DropDownBox, Select, MessageBox, Lang} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.clientComputation
  * @classdesc 客户端计算微件，用于进行叠加图层的客户端计算。
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
- * @fires L.supermap.widgets.clientComputation#analysissuccessed
- * @fires L.supermap.widgets.clientComputation#analysisfailed
- * @fires L.supermap.widgets.clientComputation#layersremoved
  * @category Widgets ClientComputation
  */
-export var ClientComputationView = L.Control.extend({
-
-    options: {
-        //控件位置 继承自 leaflet control
-        position: 'topright'
-    },
+export var ClientComputationView = WidgetsViewBase.extend({
 
     initialize: function (workerUrl, options) {
         if (!workerUrl) {
             throw new Error('workerUrl is required');
         }
         this.workerUrl = workerUrl;
-
-        //事件监听对象
-        this.event = new L.Evented();
-        L.Util.setOptions(this, options);
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
     },
     /**
      * @function L.supermap.widgets.clientComputation.prototype.onAdd
      * @description 添加控件。
      * @private
+     * @override
      */
     onAdd: function (map) {
         this.map = map;
-        if (this.options.orientation !== 'vertical') {
-            this.options.orientation = 'horizontal';
-        }
-        return this._initSpatialAnalysisView();
+        return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
-
-    /**
-     * @function L.supermap.widgets.clientComputation.prototype.on
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
-    },
-
     /**
      * @function L.supermap.widgets.clientComputation.prototype.addLayer
      * @description 添加叠加图层。
@@ -80,9 +57,11 @@ export var ClientComputationView = L.Control.extend({
         let analysisMethod = document.getElementById('dropDownTop').getAttribute('data-value');
         let currentFillData;
         switch (analysisMethod) {
-            case 'isolines': currentFillData = fillData['point'];
+            case 'isolines':
+                currentFillData = fillData['point'];
                 break;
-            case 'buffer': currentFillData = fillData['point'];
+            case 'buffer':
+                currentFillData = fillData['point'];
                 break;
         }
         if (JSON.stringify(currentFillData) == '{}') {
@@ -125,15 +104,17 @@ export var ClientComputationView = L.Control.extend({
         // 通过当前选中字段 填充 TextArea 初始值
         let getValueTextArea = document.getElementById('getValueTextArea');
         getValueTextArea.value = textAreaData[fieldsSelectName].toString().replace(/,/g, ",\r\n");
-        getValueTextArea.setAttribute('data-value', textAreaData[fieldsSelectName])
+        getValueTextArea.setAttribute('data-value', textAreaData[fieldsSelectName]);
 
         // 结果图层
         let resultLayersName = document.getElementById('resultLayersName');
         let analysisType = document.getElementById('dropDownTop').getAttribute('data-value');
         switch (analysisType) {
-            case 'isolines': resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
+            case 'isolines':
+                resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
                 break;
-            case 'buffer': resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
+            case 'buffer':
+                resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                 break;
 
         }
@@ -145,51 +126,52 @@ export var ClientComputationView = L.Control.extend({
      * @returns {HTMLElement}
      * @private
      */
-    _initSpatialAnalysisView: function () {
+    _initView: function () {
         //初始化 ViewModel
         this.workerUrl && ~~(this.viewModel = new ClientComputationViewModel(this.workerUrl));
         //初始化 view
         // Container
-        let container = (new CommonContainer(Lang.i18n('title_clientComputing'))).getElement();
-        container.classList.add('widget-analysis-container');
+        let container = (new CommonContainer({title: Lang.i18n('title_clientComputing')})).getElement();
+        container.classList.add('widget-analysis');
         container.children[0].style.fontSize = '12px';
         let analysisOptionsArr = [{
             'title': Lang.i18n('text_isoline'),
             'dataValue': 'isolines',
             'remark': Lang.i18n('text_extractDiscreteValue'),
             'icon': {
-                'className': 'analyst-isoline-img'
+                'className': 'widget-analyst-isoline-img'
             }
         }, {
             'title': Lang.i18n('text_buffer'),
             'dataValue': 'buffer',
             'remark': Lang.i18n('text_specifyTheDistance'),
             'icon': {
-                'className': 'analyst-buffer-img'
+                'className': 'widget-analyst-buffer-img'
             }
         }];
         let widgetContentContainer = container.children[1];
-        widgetContentContainer.classList.add('analysis-content-container');
-        widgetContentContainer.classList.add('widget-scroll-content');
+        widgetContentContainer.classList.add('widget-content--scroll');
+        widgetContentContainer.classList.add('widget-content--analysis');
 
         // 下拉框
         let dropDownBox = (new DropDownBox(analysisOptionsArr)).getElement();
         widgetContentContainer.appendChild(dropDownBox);
         let dropDownTopContainer = dropDownBox.children[0].children[0];
-        let dropDownItems = dropDownBox.children[0].children[2].children[0].children[0];
+        let dropDownItems = dropDownBox.children[0].children[2].children[0];
         dropDownTopContainer.children[0].id = 'dropDownTop';
         // analysisContainer
-        let analyusisTypeContainer = L.DomUtil.create('div', 'analyusistype-container di-font-content-md', widgetContentContainer);
-        let analysisType = L.DomUtil.create('div', 'analysistype', analyusisTypeContainer);
+        let analysisTypeContainer = L.DomUtil.create('div', 'widget-analysis__container', widgetContentContainer);
 
         // 分析图层
-        let analysisLayer = L.DomUtil.create('div', 'analysisLayer', analysisType);
-        let layerSelectControl = L.DomUtil.create('div', 'select-control', analysisLayer);
+        let analysisLayer = L.DomUtil.create('div', 'widget-analysis__container__analysisLayer', analysisTypeContainer);
+
+
+        let layerSelectControl = L.DomUtil.create('div', 'widget-analysis__selecttool', analysisLayer);
         layerSelectControl.id = 'layerSelectControl';
         let layerOptions = {
             'optionsArr': [''],
             'labelName': Lang.i18n('text_label_analysisLayer')
-        }
+        };
         let layerSelectObj = new Select(layerOptions);
         let layerSelectTool = layerSelectObj.getElement();
         this.layerSelectObj = layerSelectObj;
@@ -203,15 +185,15 @@ export var ClientComputationView = L.Control.extend({
 
         // ISOLINE
         // 提取字段
-        let div = L.DomUtil.create('div', '', analysisType);
-        let isolineDiv = L.DomUtil.create('div', 'analyse ISOLINE surface_option', div);
+        let div = L.DomUtil.create('div', 'widget-analysis__container__analysistype', analysisTypeContainer);
+        let isolineDiv = L.DomUtil.create('div', 'widget-clientcomputation__isoline', div);
         let fieldsOptions = {
             'optionsArr': [''],
             'labelName': Lang.i18n('text_label_extractField'),
             'optionsClickCb': this.fieldsSelectOnchange
 
-        }
-        let fieldsSelectControl = L.DomUtil.create('div', 'select-control', isolineDiv);
+        };
+        let fieldsSelectControl = L.DomUtil.create('div', 'widget-analysis__selecttool', isolineDiv);
         let fieldsSelectObj = new Select(fieldsOptions);
         let fieldsSelectTool = fieldsSelectObj.getElement();
         this.fieldsSelectObj = fieldsSelectObj;
@@ -222,15 +204,15 @@ export var ClientComputationView = L.Control.extend({
         fieldsSelectControl.appendChild(fieldsSelectTool);
 
         // 提取值
-        let textareaContainer = L.DomUtil.create('div', 'textarea-container', isolineDiv);
-        let textareaSpan = L.DomUtil.create('span', 'textarea-name', textareaContainer);
+        let textareaContainer = L.DomUtil.create('div', 'widget-analysis__container', isolineDiv);
+        let textareaSpan = L.DomUtil.create('span', 'widget-textarea__name', textareaContainer);
         textareaSpan.innerHTML = Lang.i18n('text_label_extractedValue');
-        let textareaControl = L.DomUtil.create('div', 'textarea-control', textareaContainer);
+        let textareaControl = L.DomUtil.create('div', 'widget-textarea', textareaContainer);
         textareaControl.id = 'getValueText';
-        let scrollarea = L.DomUtil.create('div', 'scrollarea', textareaControl);
-        let scrollareaContent = L.DomUtil.create('div', 'scrollarea-content', scrollarea);
+        let scrollarea = L.DomUtil.create('div', '', textareaControl);
+        let scrollareaContent = L.DomUtil.create('div', 'widget-scrollarea-content', scrollarea);
         scrollareaContent.setAttribute('tabindex', '1');
-        let getValueTextArea = L.DomUtil.create('textarea', 'textarea', scrollareaContent);
+        let getValueTextArea = L.DomUtil.create('textarea', 'widget-textarea__content', scrollareaContent);
         getValueTextArea.id = 'getValueTextArea';
         getValueTextArea.setAttribute('rows', '20');
 
@@ -250,8 +232,8 @@ export var ClientComputationView = L.Control.extend({
 
         // BUFFER
         // 缓冲半径
-        let bufferDiv = L.DomUtil.create('div', 'analyse BUFFER hidden', analysisType);
-        let bufferRadius = L.DomUtil.create('div', 'buffer-radius', bufferDiv);
+        let bufferDiv = L.DomUtil.create('div', 'widget-clientcomputation__buffer hidden', div);
+        let bufferRadius = L.DomUtil.create('div', 'widget-clientcomputation__buffer--radius', bufferDiv);
         let bufferRadiusSpan = L.DomUtil.create('span', '', bufferRadius);
         bufferRadiusSpan.innerHTML = Lang.i18n('text_label_bufferRadius');
         let bufferRadiusDiv = L.DomUtil.create('div', '', bufferRadius);
@@ -259,7 +241,7 @@ export var ClientComputationView = L.Control.extend({
         bufferRadiusInput.id = 'bufferRadiusInput';
         bufferRadiusInput.value = '10';
         bufferRadiusInput.setAttribute('placeholder', Lang.i18n('text_label_defaultkilometers'));
-        let bufferUnit = L.DomUtil.create('div', 'buffer-unit', bufferRadiusDiv);
+        let bufferUnit = L.DomUtil.create('div', 'widget-clientcomputation__buffer--unit', bufferRadiusDiv);
         bufferUnit.id = 'bufferUnit';
         // 半径单位选择下拉框
         let bufferUnitOptions = {
@@ -277,7 +259,7 @@ export var ClientComputationView = L.Control.extend({
 
         // 保留原对象字段属性
         let saveFieldDiv = L.DomUtil.create('div', '', bufferRadius);
-        let saveAttrsContainer = L.DomUtil.create('div', 'is-save-attrs', saveFieldDiv);
+        let saveAttrsContainer = L.DomUtil.create('div', 'widget-clientcomputation__buffer--issaveattrs', saveFieldDiv);
         saveAttrsContainer.id = 'saveAttrsContainer';
         let saveAttrsCheckbox = L.DomUtil.create('div', 'checkbox checkbox-fault', saveAttrsContainer);
         saveAttrsCheckbox.id = 'saveAttrsCheckbox';
@@ -286,7 +268,7 @@ export var ClientComputationView = L.Control.extend({
         saveAttrsLabel.innerHTML = Lang.i18n('text_retainOriginal');
 
         // 合并缓冲区
-        let isUnionContainer = L.DomUtil.create('div', 'is-union', saveFieldDiv);
+        let isUnionContainer = L.DomUtil.create('div', 'widget-clientcomputation__buffer--isunion', saveFieldDiv);
         isUnionContainer.id = 'isUnionContainer';
         let isUnionCheckbox = L.DomUtil.create('div', 'checkbox checkbox-fault', isUnionContainer);
         isUnionCheckbox.id = 'isUnionCheckbox';
@@ -295,31 +277,31 @@ export var ClientComputationView = L.Control.extend({
         isUnionLabel.id = 'isUnionLabel';
 
         // 结果图层
-        let resultLayerDiv = L.DomUtil.create('div', '', analysisType);
+        let resultLayerDiv = L.DomUtil.create('div', 'widget-analysis__container__resultLayersName', analysisTypeContainer);
         let resultLayerSpan = L.DomUtil.create('span', '', resultLayerDiv);
         resultLayerSpan.innerHTML = Lang.i18n('text_label_resultLayerName');
         let resultLayersName = L.DomUtil.create('input', '', resultLayerDiv);
         resultLayersName.id = 'resultLayersName';
 
         // 分析按钮
-        let runBtnContainer = L.DomUtil.create('div', 'run-btn-container di-font-content-md', analyusisTypeContainer);
-        let runBtn = L.DomUtil.create('div', 'run-btn', runBtnContainer);
-        let analysisBtn = L.DomUtil.create('button', 'analysis-btn', runBtn);
+        let runBtnContainer = L.DomUtil.create('div', 'widget-analysis__container__analysisbtn', analysisTypeContainer);
+        let runBtn = L.DomUtil.create('div', 'widget-analysis__analysisbtn', runBtnContainer);
+        let analysisBtn = L.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis', runBtn);
         analysisBtn.innerHTML = Lang.i18n('btn_analyze');
-        let analysingContainer = L.DomUtil.create('div', 'analysing-container hidden', runBtn);
-        let analysisingBtn = L.DomUtil.create('div', 'analysising-btn', analysingContainer);
-        let svgContainer = L.DomUtil.create('div', 'svg-container', analysisingBtn);
+        let analysingContainer = L.DomUtil.create('div', 'widget-analysis__analysisbtn--analysing-container hidden', runBtn);
+        let analysisingBtn = L.DomUtil.create('div', 'widget-analysis__analysisbtn--analysising', analysingContainer);
+        let svgContainer = L.DomUtil.create('div', 'widget-analysis__svg-container', analysisingBtn);
         svgContainer.id = 'analyse_background';
-        svgContainer.innerHTML = `<svg class="svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        svgContainer.innerHTML = `<svg class="widget-analysis__svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <path id="ring" fill="#FFF" transform="translate(8,8)" d="M 0 0 v -8 A 8 8 0 1 1 -8.00 0 z"></path>
             <circle cx="8" cy="8" r="6" fill="#38ADF5"></circle>
             <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
             <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
-        </svg>`
+        </svg>`;
         L.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_analyzing');
-        let analysisCancelBtn = L.DomUtil.create('button', 'analysis-cancel', analysingContainer);
+        let analysisCancelBtn = L.DomUtil.create('button', 'widget-analysis__analysisbtn--cancel', analysingContainer);
         analysisCancelBtn.innerHTML = Lang.i18n('btn_cancelAnalysis');
-        let deleteLayersBtn = L.DomUtil.create('button', 'analysis-btn delete-layers', runBtn);
+        let deleteLayersBtn = L.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis widget-analysis__analysisbtn--deletelayers', runBtn);
         deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheAnalysisLayer');
         let me = this;
 
@@ -336,14 +318,14 @@ export var ClientComputationView = L.Control.extend({
                     case 'buffer':
                         isolineDiv.classList.add('hidden');
                         bufferDiv.classList.remove('hidden');
-                        widgetContentContainer.style.height = '422px'
+                        widgetContentContainer.style.height = '422px';
                         resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                         currentFillData = this.fillData['point'];
                         break;
                     case 'isolines':
                         isolineDiv.classList.remove('hidden');
                         bufferDiv.classList.add('hidden');
-                        widgetContentContainer.style.height = '712px'
+                        widgetContentContainer.style.height = '712px';
                         resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
                         currentFillData = this.fillData['point'];
                         break;
@@ -379,14 +361,14 @@ export var ClientComputationView = L.Control.extend({
                 }
 
                 // 当前选中图层数据
-                let currentData = currentFillData[layerSelectName.title];
-                this.currentData = currentData;
+                this.currentData = currentFillData[layerSelectName.title];
                 this.currentFillData = currentFillData;
             }
         }
 
         // 字段下拉框 onchange 事件
         this.fieldsSelectOnchange = fieldsSelectOnchange.bind(this);
+
         function fieldsSelectOnchange(option) {
             if (this.currentData) {
                 let displayData = this.currentData;
@@ -399,6 +381,7 @@ export var ClientComputationView = L.Control.extend({
 
         // 选中图层实时改变事件
         this.layersSelectOnchange = layersSelectOnchange.bind(this);
+
         function layersSelectOnchange(option) {
             if (this.currentData) {
                 let layerSelectName = option.title;
@@ -490,33 +473,23 @@ export var ClientComputationView = L.Control.extend({
             let analysisMethod = dropDownTop.getAttribute('data-value');
             let params;
             switch (analysisMethod) {
-                case 'isolines': params = getIsolinesAnalysisParams();
+                case 'isolines':
+                    params = getIsolinesAnalysisParams();
                     break;
-                case 'buffer': params = getBufferAnalysisParams();
+                case 'buffer':
+                    params = getBufferAnalysisParams();
                     break;
             }
-            this.viewModel.analysis(params, me.map);
-            this.viewModel.on('layerloaded', (e) => {
+            me.viewModel.analysis(params, me.map);
+            me.viewModel.on('layerloaded', function () {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
-                /**
-                 * @event L.supermap.widgets.clientComputation#analysissuccessed
-                 * @description 分析完成之后触发。
-                 * @property {L.GeoJSON} layer - 加载完成后的结果图层。
-                 * @property {string} name - 加载完成后的结果图层名称。
-                 */
-                this.event.fire('analysissuccessed', { "layer": e.layer, "name": e.name })
             });
             // 若分析的结果为空
             me.viewModel.on('analysisfailed', function () {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 me.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
-                /**
-                 * @event L.supermap.widgets.clientComputation#analysisfailed
-                 * @description 分析失败之后触发。
-                 */
-                this.event.fire('analysissuccessed')
             })
         }
         // 取消按钮点击事件
@@ -527,16 +500,9 @@ export var ClientComputationView = L.Control.extend({
         }
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
-            /**
-             * @event L.supermap.widgets.clientComputation#layersremoved
-             * @description 结果图层删除后触发。
-             * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
-             */
-            this.viewModel.on('layersremoved', (e) => {
-                this.event.fire('layersremoved', { 'layers': e.layers });
-            })
             me.viewModel.clearLayers();
         }
+
         // 获取分析数据
         function getIsolinesAnalysisParams() {
             let dropDownTop = document.getElementById('dropDownTop');
@@ -558,6 +524,7 @@ export var ClientComputationView = L.Control.extend({
             }
             return param;
         }
+
         function getBufferAnalysisParams() {
             let dropDownTop = document.getElementById('dropDownTop');
             let resultLayersName = document.getElementById('resultLayersName').value;
@@ -575,52 +542,32 @@ export var ClientComputationView = L.Control.extend({
                 'isSaveStatus': isSaveStatus,
                 'isUnion': isUnion
 
-            }
+            };
             return param;
         }
-        this._container = container;
-        this._preventMapEvent(this._container, this.map);
 
-        return this._container;
+        // 阻止 map 默认事件
+        this._preventMapEvent(container, this.map);
+        return container;
     },
 
     /**
-    * @function L.supermap.widgets.clientComputation.prototype._createOptions
-    * @description 创建 select 下拉框的 options。
-    * @private
-    */
+     * @function L.supermap.widgets.clientComputation.prototype._createOptions
+     * @description 创建 select 下拉框的 options。
+     * @private
+     */
     _createOptions(container, optionsArr) {
         for (let i in optionsArr) {
             let option = document.createElement('div');
             let optData = optionsArr[i];
-            option.className = 'select-option';
+            option.className = 'widget-selecttool__option';
             option.title = optData;
             option.innerHTML = optData;
             option.setAttribute('data-value', optData);
             container.appendChild(option);
         }
-    },
-
-    /**
-    * @function L.supermap.widgets.clientComputation.prototype._preventMapEvent
-    * @description 阻止 map 默认事件。
-    * @private
-    */
-    _preventMapEvent(div, map) {
-        if (!div || !map) {
-            return;
-        }
-        div.addEventListener('mouseover', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        div.addEventListener('mouseout', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        });
     }
+
 });
 
 export var clientComputationView = function (options) {

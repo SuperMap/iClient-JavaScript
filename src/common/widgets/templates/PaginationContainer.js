@@ -2,57 +2,57 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../../SuperMap';
-
+import {TemplateBase} from './TemplateBase';
 
 /**
  * @class SuperMap.Widgets.PaginationContainer
  * @classdesc 分页组件模板
+ * @param {Object} options - 组件配置参数。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象
+ * @param {number} options.pageCounts - 页数
  * @category Widgets Common
- * @param {HTMLElement} contents - 页面填充的 DOM 元素对象
- * @param {number} pageCounts - 页数
  */
-export class PaginationContainer {
-    constructor(contents = null, pageCounts = 0) {
+export class PaginationContainer extends TemplateBase {
+    constructor(options) {
+        options = options ? options : {};
+        super(options);
         this.currentPage = 0;
         this.pageNumberLis = [];
         this.currentPageNumberLis = [];
         this.linkageEvent = null;
-        this._initView(contents, pageCounts);
+
+        options.contents = options.contents ? options.contents : null;
+        options.pageCounts = options.pageCounts ? options.pageCounts : 0;
+        this._initView(options.contents, options.pageCounts);
     }
 
     /**
-     * @description 设置页面联动函数
-     * @param linkageEvent
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setLinkageEvent
+     * @description 设置页面联动方法
+     * @param {function} linkageEvent - 联动方法，实现指定功能
      */
     setLinkageEvent(linkageEvent) {
         this.linkageEvent = linkageEvent;
     }
 
-    getElement() {
-        return this.container;
-    }
-
-    showView() {
-        this.container.hidden = false;
-    }
-
-    closeView() {
-        this.container.hidden = true;
-    }
-
+    /**
+     * @private
+     * @override
+     */
     _initView(contents, pageCounts) {
         const container = document.createElement("div");
-        container.setAttribute("class", "widgets-pagination");
+        container.setAttribute("class", "widget-pagination");
 
         //content
         const content = document.createElement("div");
-        content.setAttribute("class", "widgets-pagination-content");
+        content.setAttribute("class", "widget-pagination__content");
         container.appendChild(content);
         this.content = content;
 
         //link
         const link = document.createElement("ul");
-        link.setAttribute("class", "widgets-pagination-link");
+        link.setAttribute("class", "widget-pagination__link");
         link.onclick = this._changePageEvent.bind(this);
         container.appendChild(link);
         this._createLink(link);
@@ -64,14 +64,14 @@ export class PaginationContainer {
         if (pageCounts !== 0) {
             this.setPageLink(pageCounts);
         }
-        this.container = container;
-
+        this.rootContainer = container;
     }
 
     /**---------以下是页面相关操作 **/
     /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setContent
      * @description 设置页面内容
-     * @param element
+     * @param {Element} element - 页面内容元素
      */
     setContent(element) {
         this.clearContent();
@@ -79,14 +79,16 @@ export class PaginationContainer {
     }
 
     /**
-     * @description 添加内容
-     * @param element
+     * @function SuperMap.Widgets.PaginationContainer.prototype.appendContent
+     * @description 追加内容
+     * @param {Element} element - 页面内容元素
      */
     appendContent(element) {
         this.content.appendChild(element);
     }
 
     /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.clearContent
      * @description 清空内容元素
      */
     clearContent() {
@@ -97,7 +99,8 @@ export class PaginationContainer {
 
     /** -----以下是页码相关的操作：**/
     /**
-     * @description 设置页码
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setPageLink
+     * @description 设置页码数
      * @param {Number} pageNumber
      */
     setPageLink(pageNumber) {
@@ -109,7 +112,7 @@ export class PaginationContainer {
         //创建页码
         this._createPageLi(pageNumber);
         //添加页码到页码列表
-        this.appendPageLink();
+        this._appendPageLink();
     }
 
     /**
@@ -141,7 +144,7 @@ export class PaginationContainer {
      * @description 添加页码到页码列表
      * @private
      */
-    appendPageLink() {
+    _appendPageLink() {
         //todo 如何插入中间
         for (let i = 0; i < this.currentPageNumberLis.length; i++) {
             this.link.insertBefore(this.currentPageNumberLis[i], this.link.childNodes[this.link.children.length - 2]);
@@ -166,6 +169,7 @@ export class PaginationContainer {
     }
 
     /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.clearPageLink
      * @description 清除页码列表
      */
     clearPageLink() {
@@ -201,7 +205,6 @@ export class PaginationContainer {
 
             ul.appendChild(li);
         }
-
     }
 
     /**
@@ -212,7 +215,6 @@ export class PaginationContainer {
     _changePageEvent(e) {
         //todo
         const trigger = e.target;
-        console.log(trigger);
         //若列表禁用，点击无效
         if (trigger.parentElement.classList[0] === "disable") {
             return;
@@ -232,7 +234,7 @@ export class PaginationContainer {
 
         //根据 currentPageNumberLis 创建页码列表
         this.clearPageLink();
-        this.appendPageLink();
+        this._appendPageLink();
     }
 
     /**

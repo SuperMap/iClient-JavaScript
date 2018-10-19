@@ -10,19 +10,19 @@ import '../../core/Base';
  * @classdesc 含有 layerName 与 GeoJSON 图层的对象。
  * @private
  * @param {Object} layerObject - 图层对象。
- * @param {string} layerObject.layerName -  图层名。
- * @param {L.GeoJSON} layerObject.layer -  图层。
+ * @param {string} layerName -  图层名。
+ * @param {L.GeoJSON} layer -  图层。
  * @category Widgets Common
  */
 export class GeoJSONLayerWithName {
-    constructor(layerObject) {
-        this.layerName = layerObject.layerName;
-        this.layer = layerObject.layer;
+    constructor(layerName, layer) {
+        this.layerName = layerName;
+        this.layer = layer;
     }
 }
 
-export var geoJSONLayerWithName = function (options) {
-    return new GeoJSONLayerWithName(options);
+export var geoJSONLayerWithName = function (layerName, layer) {
+    return new GeoJSONLayerWithName(layerName, layer);
 };
 
 L.supermap.widgets.geoJSONLayerWithName = geoJSONLayerWithName;

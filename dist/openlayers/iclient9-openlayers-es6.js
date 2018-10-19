@@ -3207,16 +3207,16 @@ var MessageBox = __webpack_require__(100);
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
 var DataFlow = __webpack_require__(99);
 
-// EXTERNAL MODULE: ./src/common/widgets/css/POISearch.css
+// EXTERNAL MODULE: ./src/common/widgets/css/Search.css
 var POISearch = __webpack_require__(98);
 
-// EXTERNAL MODULE: ./src/common/widgets/css/WidgetContainer.css
+// EXTERNAL MODULE: ./src/common/widgets/css/CommonContainer.css
 var WidgetContainer = __webpack_require__(97);
 
-// EXTERNAL MODULE: ./src/common/widgets/css/WidgetDropDownBox.css
+// EXTERNAL MODULE: ./src/common/widgets/css/DropDownBox.css
 var WidgetDropDownBox = __webpack_require__(96);
 
-// EXTERNAL MODULE: ./src/common/widgets/css/WidgetSelect.css
+// EXTERNAL MODULE: ./src/common/widgets/css/Select.css
 var WidgetSelect = __webpack_require__(95);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css

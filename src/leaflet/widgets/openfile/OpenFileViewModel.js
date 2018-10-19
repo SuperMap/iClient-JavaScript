@@ -6,7 +6,8 @@ import '../../core/Base';
 import {
     FileModel,
     FileReaderUtil,
-    widgetsUtil
+    widgetsUtil,
+    Lang
 } from '@supermap/iclient-common';
 
 /**
@@ -20,14 +21,9 @@ import {
  * @fires L.supermap.widgets.openFileViewModel#openfilefail
  */
 export var OpenFileViewModel = L.Evented.extend({
-    initialize(map) {
-        if (map) {
-            this.fileModel = new FileModel({map: map});
-        } else {
-            return new Error(`Cannot find map, fileModel.map cannot be null.`);
-        }
+    initialize() {
+        this.fileModel = new FileModel();
     },
-
 
     /**
      * @function L.supermap.widgets.openFileViewModel.prototype.readFile
@@ -46,7 +42,7 @@ export var OpenFileViewModel = L.Evented.extend({
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            this.fire("filesizeexceed", {messageType: "warring", message: "文件大小不得超过 10M。"});
+            this.fire("filesizeexceed", {messageType: "warring", message: Lang.i18n('msg_fileSizeExceeded')});
             return false;
         }
 
@@ -62,7 +58,7 @@ export var OpenFileViewModel = L.Evented.extend({
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            this.fire("errorfileformat", {messageType: "failure", message: "不支持该文件格式！"});
+            this.fire("errorfileformat", {messageType: "failure", message: Lang.i18n('msg_fileTypeUnsupported')});
             return false;
         }
         //文件类型限制
@@ -95,19 +91,22 @@ export var OpenFileViewModel = L.Evented.extend({
             path: this.fileModel.loadFileObject.filePath
         }, (data) => {
             //将数据统一转换为 geoJson 格式加载到底图
-            const geojson = FileReaderUtil.processDataToGeoJson(type, data);
-            if (geojson) {
-                /**
-                 * @event L.supermap.widgets.openFileViewModel#openfilesuccess
-                 * @description 打开文件成功。
-                 * @property {GeoJSONObject} result - GeoJSON 格式数据。
-                 * @property {string} layerName - 图层名。
-                 */
-                this.fire("openfilesuccess", {
-                    result: geojson,
-                    layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
-                });
-            }
+            FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
+                if (geojson) {
+                    /**
+                     * @event L.supermap.widgets.openFileViewModel#openfilesuccess
+                     * @description 打开文件成功。
+                     * @property {GeoJSONObject} result - GeoJSON 格式数据。
+                     * @property {string} layerName - 图层名。
+                     */
+                    this.fire("openfilesuccess", {
+                        result: geojson,
+                        layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
+                    });
+                }
+            }, (e) => {
+                me.fire("openfilefail", {messageType: "failure", message: e.errorMassage});
+            }, this);
         }, () => {
             /**
              * @event L.supermap.widgets.openFileViewModel#openfilefail
@@ -115,11 +114,9 @@ export var OpenFileViewModel = L.Evented.extend({
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            me.fire("openfilefail", {messageType: "failure", message: "打开文件失败！"});
-            // throw new Error("Incorrect data format: " + error);
+            me.fire("openfilefail", {messageType: "failure", message: Lang.i18n('msg_openFileFail')});
         }, this);
     }
-
 
 });
 

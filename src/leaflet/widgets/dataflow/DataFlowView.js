@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-import '../../core/Base';
+import {WidgetsViewBase} from '../WidgetsViewBase';
 import {MessageBox, CommonContainer, Lang} from '@supermap/iclient-common';
 import {DataFlowViewModel} from './DataFlowViewModel';
 
@@ -28,57 +28,28 @@ import {DataFlowViewModel} from './DataFlowViewModel';
  * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
  * @fires L.supermap.widgets.dataFlow#dataupdated
  */
-export var DataFlowView = L.Control.extend({
-    options: {
-        //绑定的底图图层
-        layer: null,
-        //控件位置 继承自leaflet control
-        position: 'topright',
-        orientation: 'horizontal',
-        pointToLayer: null,
-        style: null,
-        onEachFeature: null
-    },
-
+export var DataFlowView = WidgetsViewBase.extend({
     initialize(options) {
-        L.Util.setOptions(this, options);
-        this.event = new L.Evented();
-        //是否初始化数据服务样式：
-        let styleOptions = null;
-        if (this.options.pointToLayer || this.options.style || this.options.onEachFeature) {
-            styleOptions = {};
-            if (this.options.pointToLayer) {
-                styleOptions.pointToLayer = this.options.pointToLayer;
-            }
-            if (this.options.style) {
-                styleOptions.style = this.options.style;
-
-            }
-            if (this.options.onEachFeature) {
-                styleOptions.onEachFeature = this.options.onEachFeature;
-            }
-        }
-        this.styleOptions = styleOptions;
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
     },
 
     /**
      * @function L.supermap.widgets.dataFlow.prototype.onAdd
      * @description 向底图添加微件
+     * @override
      * @private
      */
     onAdd(map) {
-        this.map = map;
-        this.viewModel = new DataFlowViewModel(map, this.styleOptions);
-        return this._initView();
-    },
-
-    /**
-     * @function L.supermap.widgets.dataFlow.prototype.on
-     * @param {string} eventType - 监听的事件类型
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
+        //为了避免空对象为复写默认配置的现象，先判断参数是否为空
+        let options = {};
+        if (this.options.style) {
+            options.style = this.options.style;
+        }
+        if (this.options.onEachFeature) {
+            options.style = this.options.onEachFeature;
+        }
+        this.viewModel = new DataFlowViewModel(map, options);
+        return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
 
     /**
@@ -86,15 +57,16 @@ export var DataFlowView = L.Control.extend({
      * @description 创建打开本地文件数据微件
      * @returns {HTMLElement}
      * @private
+     * @override
      */
     _initView() {
-        const ContainerObj = new CommonContainer(Lang.i18n("title_dataFlowService"), {"top": "32px", "right": "96px"});
-        const Container = ContainerObj.getElement();
+        const containerObj = new CommonContainer({title: Lang.i18n("title_dataFlowService")});
+        const container = containerObj.getElement();
 
-        const widgetContent = ContainerObj.getContentElement();
+        const widgetContent = containerObj.getContentElement();
         widgetContent.style.padding = "10px 18px";
         const dataFlowContainer1 = document.createElement("div");
-        dataFlowContainer1.setAttribute("class", "dataflow-container");
+        dataFlowContainer1.setAttribute("class", "widget-dataflow__container");
         //输入框
         const dataFlowInputContainer = document.createElement("div");
         dataFlowInputContainer.setAttribute("class", "widget-input-default");
@@ -104,7 +76,6 @@ export var DataFlowView = L.Control.extend({
         dataFlowInput.placeholder = Lang.i18n('text_input_value_inputDataFlowUrl');
         dataFlowInput.title = Lang.i18n('text_input_value_inputDataFlowUrl');
 
-        this.dataFlowInput = dataFlowInput;
         dataFlowInputContainer.appendChild(dataFlowInput);
         //删除输入值按钮:
         const inputClearBtn = document.createElement("span");
@@ -126,27 +97,27 @@ export var DataFlowView = L.Control.extend({
 
         //复选框条件
         const dataFlowContainer2 = document.createElement("div");
-        dataFlowContainer2.setAttribute("class", "dataflow-container");
+        dataFlowContainer2.setAttribute("class", "widget-dataflow__container");
         const checkboxContainer = document.createElement("div");
         checkboxContainer.setAttribute("class", "widget-checkbox-container");
         const attributesCheckbox = document.createElement("div");
-        attributesCheckbox.setAttribute("class", "widget-checkbox-default checkbox-selected-img");
+        attributesCheckbox.setAttribute("class", "widget-checkbox-default widget-checkbox-selected-img");
         attributesCheckbox.checked = true;
         checkboxContainer.appendChild(attributesCheckbox);
         const checkboxLabel = document.createElement("div");
-        checkboxLabel.setAttribute("class", "label label-selected");
+        checkboxLabel.setAttribute("class", "widget-label widget-label-selected");
         checkboxLabel.innerHTML = Lang.i18n('text_displayFeaturesInfo');
         checkboxContainer.appendChild(checkboxLabel);
         //----是否显示属性框【属性框复选框点击事件】
         attributesCheckbox.onclick = (e) => {
             e.target.checked = !e.target.checked;
             if (e.target.checked) {
-                checkboxLabel.setAttribute("class", "label label-selected");
-                e.target.setAttribute("class", "widget-checkbox-default checkbox-selected-img");
+                checkboxLabel.setAttribute("class", "widget-label widget-label-selected");
+                e.target.setAttribute("class", "widget-checkbox-default widget-checkbox-selected-img");
                 this.viewModel.openPopups();
             } else {
-                checkboxLabel.setAttribute("class", "label");
-                e.target.setAttribute("class", "widget-checkbox-default checkbox-default-img");
+                checkboxLabel.setAttribute("class", "widget-label");
+                e.target.setAttribute("class", "widget-checkbox-default widget-checkbox-default-img");
                 this.viewModel.closePopups();
             }
         };
@@ -156,7 +127,7 @@ export var DataFlowView = L.Control.extend({
 
         //订阅按钮,取消按钮:
         const dataFlowContainer3 = document.createElement("div");
-        dataFlowContainer3.setAttribute("class", "dataflow-container init-center");
+        dataFlowContainer3.setAttribute("class", "widget-dataflow__container widget-init-center");
         const subscribe = document.createElement("button");
         subscribe.setAttribute("class", "widget-button-default");
         subscribe.innerHTML = Lang.i18n('text_subscribe');
@@ -180,19 +151,6 @@ export var DataFlowView = L.Control.extend({
         dataFlowContainer3.appendChild(cancelSubscribe);
         widgetContent.appendChild(dataFlowContainer3);
 
-        //关闭在控件上触发地图的事件响应：
-        const self = this;
-        Container.addEventListener('mouseover', function () {
-            self.map.dragging.disable();
-            self.map.scrollWheelZoom.disable();
-            self.map.doubleClickZoom.disable();
-        });
-        Container.addEventListener('mouseout', function () {
-            self.map.dragging.enable();
-            self.map.scrollWheelZoom.enable();
-            self.map.doubleClickZoom.enable();
-        });
-
         //增加提示框：
         this.messageBox = new MessageBox();
 
@@ -211,10 +169,13 @@ export var DataFlowView = L.Control.extend({
          */
         this.viewModel.on("dataupdated", (result) => {
             this.messageBox.closeView();
-            this.event.fire("dataupdated", result);
+            this._event.fire("dataupdated", result);
         });
 
-        return Container;
+        //关闭在控件上触发地图的事件响应：
+        //阻止 map 默认事件
+        this._preventMapEvent(container, this.map);
+        return container;
     }
 
 });

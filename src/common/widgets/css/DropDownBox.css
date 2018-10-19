@@ -1,0 +1,99 @@
+/**下拉框组件样式**/
+.widget-dropdownbox--container {
+    position: relative;
+    width: 200px;
+    height: 58px;
+    margin-bottom: 16px;
+}
+
+.widget-dropdownbox {
+    width: 192px;
+    height: 50px;
+    background: #FFFFFF;
+    margin: 0 auto;
+    padding: 8px 0 0 8px;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+}
+
+.widget-dropdownbox:hover {
+    border: 1px solid #108EE9;
+}
+
+.widget-dropdownbox__triangle-btn {
+    position: relative;
+    bottom: 46px;
+    left: 173px;
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+}
+
+.widget-dropdownbox__triangle-btn > div {
+    width: 105%;
+    height: 100%;
+}
+
+.widget-dropdownbox__content {
+    position: absolute !important;
+    top: 61px;
+    left: 0;
+    width: 184px;
+    /* height: 92px; */
+    background: #FFFFFF;
+    padding: 8px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+    z-index: 10001;
+}
+
+.widget-dropdownbox__item {
+    width: 177px;
+    height: 42px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    color: #595959;
+}
+
+.widget-dropdownbox__content .widget-dropdownbox__item:hover .widget-dropdownbox__item__title {
+    color: #108EE9;
+}
+
+.widget-dropdownbox__content .widget-dropdownbox__item:hover .widget-dropdownbox__item__remark {
+    color: #108EE9;
+}
+
+.widget-dropdownbox__item__img div {
+    width: 48px;
+    height: 42px;
+}
+
+.widget-dropdownbox__item__title {
+    position: relative;
+    bottom: 40px;
+    left: 57px;
+    width: 120px;
+    height: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #595959;
+    overflow: hidden;
+}
+
+.widget-dropdownbox__item__remark {
+    position: relative;
+    bottom: 32px;
+    left: 57px;
+    width: 120px;
+    height: 16px;
+    font-size: 12px;
+    color: #919191;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.widget-dropdownbox__content--chart {
+    display: none;
+}

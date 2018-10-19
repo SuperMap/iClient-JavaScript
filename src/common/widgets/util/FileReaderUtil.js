@@ -1,21 +1,30 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+import {SuperMap} from '../../SuperMap';
 import XLSX from 'xlsx'
 import {FileTypes} from '../CommonTypes';
+import {Lang} from '../../lang/Lang';
 
+/**
+ * @class SuperMap.Widgets.FileReaderUtil
+ * @classdesc 微件读取文件工具类
+ * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
+ */
 export let FileReaderUtil = {
     rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
     rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
     rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
 
     /**
-     * 读取文件
-     * @param fileType
-     * @param file
-     * @param success
-     * @param failed
-     * @param context
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.readFile
+     * @description 读取文件
+     * @param {string} fileType - 当前读取的文件类型
+     *
+     * @param {Object} file - 读取回来的文件内容对象
+     * @param {function} success - 读取文件成功回调函数
+     * @param {function} failed - 读取文件失败回调函数
+     * @param {Object} context - 回调重定向对象
      */
     readFile(fileType, file, success, failed, context) {
         if (FileTypes.JSON === fileType || FileTypes.GEOJSON === fileType) {
@@ -23,7 +32,6 @@ export let FileReaderUtil = {
         } else if (FileTypes.EXCEL === fileType || FileTypes.CSV === fileType) {
             this.readXLSXFile(file, success, failed, context)
         }
-
     },
 
     /**
@@ -31,7 +39,7 @@ export let FileReaderUtil = {
      * @param file
      * @param success
      * @param failed
-     * @param context
+     * @param {Object} context - 回调重定向对象
      */
     readTextFile(file, success, failed, context) {
         let reader = new FileReader();
@@ -49,7 +57,7 @@ export let FileReaderUtil = {
      * @param file
      * @param success
      * @param failed
-     * @param context
+     * @param {Object} context - 回调重定向对象
      */
     readXLSXFile(file, success, failed, context) {
         let reader = new FileReader();
@@ -78,17 +86,19 @@ export let FileReaderUtil = {
      * @description 将读取回来得数据统一处理为 GeoJSON 格式
      * @param {string} type - 文件类型
      * @param {Object} data - 读取返回的数据对象
+     * @param {function} success - 数据处理成功的回调
+     * @param {function} failed - 数据处理失败的回调
+     * @param {Object} context - 回调重定向对象
      * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
      * @private
      */
-    processDataToGeoJson(type, data) {
-        //数据处理
+    processDataToGeoJson(type, data, success, failed, context) {
+        let geojson = null;
         if (type === "EXCEL" || type === "CSV") {
-            return this.processExcelDataToGeoJson(data);
+            geojson = this.processExcelDataToGeoJson(data);
+            success && success.call(context, geojson);
         } else if (type === 'JSON' || type === 'GEOJSON') {
-            let geojson = null;
             let result = data;
-
             //geojson、json未知，通过类容来判断
             if ((typeof result) === "string") {
                 result = JSON.parse(result);
@@ -100,14 +110,11 @@ export let FileReaderUtil = {
                 geojson = result;
             } else {
                 //不支持数据
-                // this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的 'GEOJSON' 格式数据！"});
-                throw new Error("Unsupported data type.");
-                // return false;
+                failed && failed.call(context, Lang.i18n('msg_dataInWrongGeoJSONFormat'));
             }
-            return geojson;
+            success && success.call(context, geojson);
         } else {
-            // this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的'EXCEL','CSV','GEOJSON'格式数据！"});
-            throw new Error("Unsupported data type.");
+            failed && failed.call(context, Lang.i18n('msg_dataInWrongFormat'));
         }
     },
     /**
@@ -204,3 +211,6 @@ export let FileReaderUtil = {
     }
 
 };
+
+SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
+

@@ -18,7 +18,7 @@ export class MessageBox {
         //原生js形式
         const messageBoxContainer = document.createElement("div");
         messageBoxContainer.hidden = true;
-        messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+        messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
 
         //图标
         const iconContainer = document.createElement("div");
@@ -30,16 +30,16 @@ export class MessageBox {
 
         //内容：
         const messageBox = document.createElement("div");
-        messageBox.setAttribute("class", "messageBox");
+        messageBox.setAttribute("class", "widget-messagebox");
         messageBox.innerHTML = "";
         messageBoxContainer.appendChild(messageBox);
         this.messageBox = messageBox;
 
         //关闭按钮
         const cancelContainer = document.createElement("div");
-        cancelContainer.setAttribute("class", "cancelContainer");
+        cancelContainer.setAttribute("class", "widget-messagebox__cancelbtncontainer");
         const cancelBtn = document.createElement("button");
-        cancelBtn.setAttribute("class", "cancelBtn");
+        cancelBtn.setAttribute("class", "widget-messagebox__cancelBtn");
         cancelBtn.innerHTML = "x";
         cancelBtn.onclick = this.closeView.bind(this);
         cancelContainer.appendChild(cancelBtn);
@@ -67,14 +67,14 @@ export class MessageBox {
         //设置提示框的样式：
         if (type === "success") {
             this.icon.setAttribute("class", "supermapol-icons-message-success");
-            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-green");
+            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-green");
 
         } else if (type === "failure") {
             this.icon.setAttribute("class", "supermapol-icons-message-failure");
-            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-red");
+            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-red");
         } else if (type === "warring") {
             this.icon.setAttribute("class", "supermapol-icons-message-warning");
-            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
         }
         this.messageBox.innerHTML = message;
         this.messageBoxContainer.hidden = false;

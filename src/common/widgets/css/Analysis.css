@@ -1,65 +1,67 @@
+/**分析微件公共样式**/
 .hidden,
 .display_none {
     display: none;
 }
 
+/**分析面板滚动条**/
+.widget-content--scroll {
+    max-height: 500px;
+    overflow: auto;
+    padding: 16px 10px 16px 16px;
+    font-size: 12px;
+    overflow-x: hidden;
+}
 
-/* widget container */
-.widget-analysis-container.widget-container{
+/**分析微件相关样式**/
+.widget-analysis {
     position: absolute;
     right: 10px;
     top: 32px;
     font-size: 12px;
 }
-.widget-content-container.analysis-content-container{
+
+.widget-content--analysis {
     font-size: 12px;
     padding: 16px 10px 16px 16px;
 }
 
-.run-btn-container {
+.widget-analysis__container__analysisbtn {
     position: relative;
-    z-index: 100;
+    font-size: 12px;
     margin-bottom: 12px;
     margin-top: 16px;
+    z-index: 100;
 }
 
-.analyusistype-container .analysistype {
-    margin-top: 16px;
-}
-
-.select-control {
-    position: relative;
-}
-
-.di-font-content-md {
+.widget-analysis__container .widget-textarea {
+    display: block;
+    width: 183px;
+    margin-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    outline: none;
     font-size: 12px;
+    color: #595959;
+    letter-spacing: 0.14px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
 }
 
-.analyusistype-container span,
-.analyusistype-container input,
-.analyusistype-container select,
-.analyusistype-container .textarea-control {
+.widget-analysis__container span,
+.widget-analysis__container input,
+.widget-analysis__container select {
     display: block;
     color: #595959;
     letter-spacing: 0.14px;
 }
 
-.analyusistype-container input,
-.analyusistype-container select,
-.analyusistype-container .textarea-control {
+.widget-analysis__container input,
+.widget-analysis__container select {
     margin-top: 8px;
-}
-
-
-.analyusistype-container input,
-.analyusistype-container select {
     height: 28px;
-}
-
-.analyusistype-container input,
-.analyusistype-container select,
-.analyusistype-container .textarea-control {
-    width: 91%;
+    width: 183px;
     padding-left: 8px;
     padding-right: 8px;
     background: #FFFFFF;
@@ -70,58 +72,61 @@
     /* margin-bottom: 16px; */
 }
 
-.analyusistype-container input:hover,
-.analyusistype-container select:hover,
-.analyusistype-container .textarea-control:hover {
+.widget-analysis__container input:hover,
+.widget-analysis__container select:hover {
     border: 1px solid #108EE9;
 }
 
-.analyusistype-container input:focus,
-.analyusistype-container select:focus,
-.analyusistype-container .textarea-control:focus {
+.widget-analysis__container .widget-textarea:hover {
     border: 1px solid #108EE9;
 }
 
-.analysistype .clip-layer,
-.analysistype .operateLayer,
-.analysistype .analysisLayer {
+.widget-analysis__container input:focus,
+.widget-analysis__container select:focus,
+.widget-textarea:focus {
+    border: 1px solid #108EE9;
+}
+
+.widget-analysis__container__selectpram .clip-layer,
+.widget-analysis__container__selectpram .operateLayer,
+.widget-analysis__container__analysisLayer {
     margin-bottom: 16px;
 }
 
-.analysistype .analyse>div {
+.widget-clientcomputation__buffer > div, .widget-clientcomputation__isoline > div {
     margin-bottom: 16px;
 }
 
 /* 分析按钮 */
-.run-btn button {
+.widget-analysis__analysisbtn button {
     border: none;
     border-radius: 2px;
     color: #FFFFFF;
-    padding-right: 0px;
+    padding-right: 0;
     line-height: 2em;
     text-transform: none;
 
 }
 
-.run-btn button.disabled {
+.widget-analysis__analysisbtn button.disabled {
     cursor: not-allowed;
     background-color: #80B5CF;
 }
 
-.run-btn .analysis-btn,
-.run-btn .analysising-container {
+.widget-analysis__analysisbtn--analysis,
+.widget-analysis__analysisbtn--analysising-container {
     width: 100%;
     height: 28px;
-    padding-right: 0px;
+    padding-right: 0;
     background: #108EE9;
     outline: none;
 }
 
-.run-btn .analysis-btn:hover {
+.widget-analysis__analysisbtn--analysis:hover {
     background: #38ADF5;
 }
 
-.run-btn .analysising-btn {
+.widget-analysis__analysisbtn--analysising {
     position: relative;
     width: 64%;
     height: 28px;
@@ -135,26 +140,26 @@
     vertical-align: bottom;
 }
 
-.run-btn .analysis-cancel {
+.widget-analysis__analysisbtn--cancel {
     width: 29%;
     height: 28px;
     margin-left: 12px;
-    padding-left: 0px;
+    padding-left: 0;
     line-height: 27px;
     text-align: center;
     background: #485465;
 }
 
-.run-btn .analysis-cancel:hover {
+.widget-analysis__analysisbtn--cancel:hover {
     background: #747D8A;
 }
 
-.run-btn .analysis-cancel:focus {
+.widget-analysis__analysisbtn--cancel:focus {
     background: #3E4857;
     outline: none;
 }
 
-.analysising-btn span {
+.widget-analysis__analysisbtn--analysising span {
     position: relative;
     /* left: 30px; */
     height: 28px;
@@ -165,7 +170,7 @@
     color: #FFFFFF;
 }
 
-.svg-container{
+.widget-analysis__svg-container {
     position: relative;
     /* left: 30px; */
     /* top: 4px; */
@@ -173,10 +178,12 @@
     cursor: not-allowed;
     vertical-align: bottom;
 }
+
 svg:not(:root) {
     overflow: hidden;
 }
-.svg-rotate {
+
+.widget-analysis__svg-rotate {
     position: relative;
     top: 4px;
     animation-name: svgrotate;
@@ -196,7 +203,8 @@ svg:not(:root) {
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-timing-function: linear;
 }
-@keyframes svgrotate{
+
+@keyframes svgrotate {
     0% {
         -webkit-transform: rotate(0deg) translateZ(0);
         transform: rotate(0deg) translateZ(0);
@@ -210,7 +218,8 @@ svg:not(:root) {
         transform: rotate(1turn) translateZ(0);
     }
 }
-@-webkit-keyframes svgrotate{
+
+@-webkit-keyframes svgrotate {
     0% {
         -webkit-transform: rotate(0deg) translateZ(0);
         transform: rotate(0deg) translateZ(0);
@@ -224,7 +233,8 @@ svg:not(:root) {
         transform: rotate(1turn) translateZ(0);
     }
 }
-@-moz-keyframes svgrotate{
+
+@-moz-keyframes svgrotate {
     0% {
         -webkit-transform: rotate(0deg) translateZ(0);
         transform: rotate(0deg) translateZ(0);
@@ -240,38 +250,33 @@ svg:not(:root) {
 }
 
 select.widget-select-options {
-    height: 28px ;
-    margin-top: -3px ;
+    width: 202px;
+    height: 28px;
+    margin-top: -3px;
     margin-bottom: 16px;
 }
-select.widget-select-options>option{
+
+select.widget-select-options > option {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-/* 分析面板滚动条 */
-.widget-content-container.widget-scroll-content{
-    width: 200px;
-    height: 712px;
-    overflow: auto;
-    padding: 16px 10px 16px 16px;
-    font-size: 12px;
-}
-.widget-scroll-content::-webkit-scrollbar{
+.widget-content--scroll::-webkit-scrollbar {
     width: 6px;
     height: 6px;
     background-color: #F5F5F5;
 }
-    
-.widget-scroll-content::-webkit-scrollbar-thumb {
+
+.widget-content--scroll::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: rgb(191, 195, 201);
 }
-.analysis-content-container .select-tool{
+
+.widget-content--analysis .widget-selecttool {
     margin-bottom: 16px;
 }
 
-.analysis-btn.delete-layers{
+.widget-analysis__analysisbtn--deletelayers {
     margin-top: 10px;
 }

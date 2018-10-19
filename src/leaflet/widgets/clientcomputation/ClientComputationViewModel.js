@@ -4,9 +4,10 @@
 
 import L from "leaflet";
 import '../../core/Base';
-import { GeoJSONLayerWithName } from '../commonmodels/GeoJSONLayerWithName';
-import { GeoJsonLayersDataModel } from '../commonmodels/GeoJsonLayersModel';
-import { AttributesPopContainer } from '@supermap/iclient-common';
+import {GeoJSONLayerWithName} from '../commonmodels/GeoJSONLayerWithName';
+import {GeoJsonLayersDataModel} from '../commonmodels/GeoJsonLayersModel';
+import {AttributesPopContainer} from '@supermap/iclient-common';
+
 /**
  * @class L.supermap.widgets.clientComputationViewModel
  * @classdesc 客户端计算微件功能类。
@@ -31,12 +32,9 @@ export class ClientComputationViewModel extends L.Evented {
 
     getLayersData(layersArr) {
         let result = {};
-        let pointData={}, lineData={}, polygonData={};
+        let pointData = {}, lineData = {}, polygonData = {};
         for (let i = 0; i < layersArr; i++) {
-            layersArr[i] = new GeoJSONLayerWithName({
-                'layerName': layersArr[i].layerName,
-                'layer': layersArr[i].layer
-            })
+            layersArr[i] = new GeoJSONLayerWithName(layersArr[i].layerName, layersArr[i].layer)
         }
         this.geoJsonLayersDataModel = new GeoJsonLayersDataModel(layersArr);
         // 把 layersArr 转成 key = layername 对象，方便获取 fields 时遍历
@@ -78,8 +76,8 @@ export class ClientComputationViewModel extends L.Evented {
                 fieldsValue: fieldsValue,
                 features: dataObj[key].layer
             }
-            
-            let layersType =  dataObj[key].layer.features[0].geometry.type;
+
+            let layersType = dataObj[key].layer.features[0].geometry.type;
             if (layersType === "Point") {
                 pointData[key] = obj;
             } else if (layersType === "LineString") {
@@ -118,7 +116,7 @@ export class ClientComputationViewModel extends L.Evented {
                 "breaks": fieldsValue,
                 "zProperty": params.analysisFields,
                 "analysisCellSize": params.analysisCellSize,
-                "options": { gridType: "point", property: params.analysisFields, weight: Number(params.analysisBreaks) }
+                "options": {gridType: "point", property: params.analysisFields, weight: Number(params.analysisBreaks)}
             };
             this.worker.postMessage(analysisParams);
             this.worker.onmessage = (e) => {
@@ -139,13 +137,13 @@ export class ClientComputationViewModel extends L.Evented {
                             }
                             layer.on({
                                 'mouseover': function () {
-                                    layer.setStyle({ color: "#ffffff", weight: 5 })
+                                    layer.setStyle({color: "#ffffff", weight: 5})
                                 },
                                 'mouseout': function () {
-                                    layer.setStyle({ color: '#1060C2', weight: 3 })
+                                    layer.setStyle({color: '#1060C2', weight: 3})
                                 },
                                 "click": function () {
-                                    layer.setStyle({ color: "#ffffff", weight: 5 })
+                                    layer.setStyle({color: "#ffffff", weight: 5})
 
                                 }
                             });
@@ -158,7 +156,7 @@ export class ClientComputationViewModel extends L.Evented {
                      * @property {L.GeoJSON} layer - 加载完成后的结果图层。
                      * @property {string} name - 加载完成后的结果图层名称。
                      */
-                    me.fire('layerloaded', { "layer": turfLayer, "name": params.resultLayersName });
+                    me.fire('layerloaded', {"layer": turfLayer, "name": params.resultLayersName});
                     me.worker.terminate();
                 }
 
@@ -193,7 +191,7 @@ export class ClientComputationViewModel extends L.Evented {
                                 })
                             },
                             'mouseout': function () {
-                                layer.setStyle({ color: "#ffffff", fillColor: '#1060C2', fillOpacity: .5, weight: 1.5 })
+                                layer.setStyle({color: "#ffffff", fillColor: '#1060C2', fillOpacity: .5, weight: 1.5})
                             },
                             "click": function () {
                                 layer.setStyle({
@@ -209,7 +207,7 @@ export class ClientComputationViewModel extends L.Evented {
 
                 }).addTo(map);
                 me.turfLayers.push(turfLayer);
-                me.fire('layerloaded', { "layer": turfLayer, "name": params.resultLayersName });
+                me.fire('layerloaded', {"layer": turfLayer, "name": params.resultLayersName});
                 me.worker.terminate();
             };
         }
@@ -228,7 +226,7 @@ export class ClientComputationViewModel extends L.Evented {
          * @description 图层删除之后触发。
          * @property {Array.<L.GeoJSON>} layer - 需要删除的图层数组。
          */
-        this.fire('layersremoved', { layers: this.turfLayers });
+        this.fire('layersremoved', {layers: this.turfLayers});
     }
 
     /**
@@ -239,6 +237,7 @@ export class ClientComputationViewModel extends L.Evented {
         this.worker.terminate();
     }
 }
+
 export var clientComputationViewModel = function (options) {
     return new ClientComputationViewModel(options);
 };

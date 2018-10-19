@@ -1,15 +1,12 @@
-.widgets-tabpage {
+/**CityTabsPage 样式**/
+.widget-tabpage {
     width: 488px;
     margin: 3px auto 0 auto;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
 }
 
-.noneBoxShadow {
-    box-shadow: none;
-}
-
 /*header*/
-.widgets-tabpage ul {
+.widget-tabpage ul {
     margin: 0;
     padding: 0;
     height: 39px;
@@ -17,7 +14,7 @@
     overflow: hidden;
 }
 
-.widgets-tabpage ul li {
+.widget-tabpage ul li {
     float: left;
     list-style: none;
     padding: 7px 7px 0 7px;
@@ -27,13 +24,13 @@
     color: #0083CB;
 }
 
-.widgets-tabpage ul li.on {
+.widget-tabpage ul li.on {
     border-bottom-color: #0083cb;
     position: relative;
 }
 
 /*content*/
-.widgets-tabpage-content {
+.widget-tabpage__content {
     border-top: 1px solid #DDD;
     margin-top: -1px;
     clear: left;
@@ -42,11 +39,16 @@
     padding-top: 10px;
 }
 
-.widgets-tabpage-content div {
+.widget-tabpage__content div {
     float: left;
 }
 
-.py-key {
+/** CityTabsPage 样式**/
+.widget-citytabpage--noneBoxShadow {
+    box-shadow: none;
+}
+
+.widget-citytabpag__py-key {
     display: inline-block;
     padding-left: 7px;
     font-weight: bold;
@@ -55,12 +57,12 @@
     vertical-align: top;
 }
 
-.city-content {
+.widget-citytabpag__content {
     margin-left: 14px;
     max-width: 450px;
 }
 
-.city-content > span {
+.widget-citytabpag__content > span {
     display: inline-block;
     float: left;
     height: 18px;
@@ -70,6 +72,6 @@
     cursor: pointer;
 }
 
-.city-content > span:hover {
+.widget-citytabpag__content > span:hover {
     color: #0083CB;
 }

@@ -1,45 +1,48 @@
-.checkbox-default-img {
+/** 未有相应字体图样的图片样式 **/
+.widget-checkbox-default-img {
     background: url("../image/iweb_checkbox_default_icon.png") no-repeat;
 }
 
-.checkbox-selected-img {
+.widget-checkbox-selected-img {
     background: url("../image/iweb_checkbox_selected_icon.png") no-repeat;
 }
 
-.analyst-buffer-img {
+.widget-analyst-buffer-img {
     background: url("../image/analyst_buffer_icon.png") no-repeat;
 }
 
-.analyst-isoline-img {
+.widget-analyst-isoline-img {
     background: url("../image/analyst_isoline_icon.png") no-repeat;
 }
 
-.triangle-down-img {
+.widget-triangle-down-img {
     background: url("../image/triangle-down-icon.png") no-repeat;
 }
 
-.triangle-up-img {
+.widget-triangle-up-img {
     background: url("../image/triangle-up-icon.png") no-repeat;
 }
-.single-default-img {
+
+.widget-single-default-img {
     background: url("../image/radiobox-disabled.png") no-repeat;
 }
 
-.single-checked-img {
+.widget-single-checked-img {
     background: url("../image/radiobox-checked.png") no-repeat;
 }
 
-.default-marker-icon {
+.widget-default-marker-icon {
     height: 41px !important;
-    width:25px!important;
+    width: 25px !important;
     background: url("../image/marker-icon.png") no-repeat;
 }
 
-.select-marker-icon {
-    height: 42px!important;
-    width: 30px!important;
+.widget-select-marker-icon {
+    height: 42px !important;
+    width: 30px !important;
     background: url("../image/marker-gold.png") no-repeat;
 }
-.analyst-density-img{
+
+.widget-analyst-density-img {
     background: url("../image/analyst-density-icon.png") no-repeat;
 }

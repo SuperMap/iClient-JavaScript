@@ -1,11 +1,20 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 import L from "leaflet";
-import '../../core/Base';
-import { DataServiceQueryViewModel } from './DataServiceQueryViewModel';
-import { CommonContainer, Select, MessageBox, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, Lang } from '@supermap/iclient-common';
+import {WidgetsViewBase} from '../WidgetsViewBase';
+import {DataServiceQueryViewModel} from './DataServiceQueryViewModel';
+import {
+    CommonContainer,
+    Select,
+    MessageBox,
+    GetFeaturesByIDsParameters,
+    GetFeaturesBySQLParameters,
+    GetFeaturesByBoundsParameters,
+    GetFeaturesByBufferParameters,
+    GetFeaturesByGeometryParameters,
+    Lang
+} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.dataServiceQuery
@@ -18,14 +27,11 @@ import { CommonContainer, Select, MessageBox, GetFeaturesByIDsParameters, GetFea
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfaild
  * @category Widgets DataServiceQuery
  */
-export var DataServiceQueryView = L.Control.extend({
-
-    options: {
-        //控件位置 继承自 leaflet control
-        position: 'topright'
-    },
+export var DataServiceQueryView = WidgetsViewBase.extend({
 
     initialize: function (dataServiceUrl, dataSetNames, options) {
+        WidgetsViewBase.prototype.initialize.apply(this, [options]);
+
         this.dataServiceUrl = dataServiceUrl;
         if (!dataSetNames || dataSetNames.length === 0) {
             throw new Error('Please configure the dataset of the query！')
@@ -35,26 +41,18 @@ export var DataServiceQueryView = L.Control.extend({
         } else {
             this.dataSetNames = dataSetNames.split(" ");
         }
-        //事件监听对象
-        this.event = new L.Evented();
-
-        L.Util.setOptions(this, options);
     },
 
     /**
      * @function L.supermap.widgets.dataServiceQuery.prototype.onAdd
      * @description 添加控件。
      * @private
+     * @override
      */
     onAdd: function (map) {
-        this.map = map;
-        if (this.options.orientation !== 'vertical') {
-            this.options.orientation = 'horizontal';
-        }
-        let container = this._initDataServiceQueryView();
-        return container;
+        return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
-    
+
     /**
      * @function L.supermap.widgets.dataServiceQuery.prototype.onRemove
      * @description 移除控件。
@@ -64,36 +62,6 @@ export var DataServiceQueryView = L.Control.extend({
         this.map.off('pm:create');
     },
 
-    /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype.on
-     * @description 事件监听。
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
-    },
-    /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype.off
-     * @description 事件关闭。
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    off(eventType, callback) {
-        this.event.off(eventType, callback);
-    },
-    /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype.setDataSetNames
-     * @description 设置查询的数据集名。
-     * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries";
-     */
-    setDataSetNames(dataSetNames) {
-        if (dataSetNames instanceof Array) {
-            this.dataSetNames = dataSetNames;
-        } else {
-            this.dataSetNames = dataSetNames.split(" ");
-        }
-    },
     /**
      * @function L.supermap.widgets.dataServiceQuery.prototype.setGetFeatureMode
      * @description 设置查询方式。
@@ -132,27 +100,27 @@ export var DataServiceQueryView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype._initDataServiceQueryView
+     * @function L.supermap.widgets.dataServiceQuery.prototype._initView
      * @description 创建数据服务查询微件。
      * @returns {HTMLElement}
      * @private
      */
-    _initDataServiceQueryView: function () {
+    _initView: function () {
         // 初始化 ViewModel:
         this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl);
         this.messageBox = new MessageBox();
 
         // 微件 container
-        let container = (new CommonContainer(Lang.i18n('title_dataServiceQuery'))).getElement();
-        container.classList.add('widget-dataservice-container');
-        container.children[0].classList.add('widget-dataservice-title')
+        let container = (new CommonContainer({title: Lang.i18n('title_dataServiceQuery')})).getElement();
+        container.classList.add('widget-servicequery__container');
+        container.children[0].classList.add('widget-servicequery__title');
         let widgetContentContainer = container.children[1];
-        widgetContentContainer.classList.add('widget-scroll-content');
+        widgetContentContainer.classList.add('widget-content--scroll');
         widgetContentContainer.classList.add('data-services');
         // 微件内容 container
-        let analyusisTypeContainer = L.DomUtil.create('div', 'analyusistype-container di-font-content-md', widgetContentContainer);
-        let analysisType = L.DomUtil.create('div', 'analysistype dataservice-analysistype', analyusisTypeContainer);
-        let analysisLayer = L.DomUtil.create('div', 'analysisLayer', analysisType);
+        let analyusisTypeContainer = L.DomUtil.create('div', 'widget-analysis__container', widgetContentContainer);
+        let analysisType = L.DomUtil.create('div', 'widget-servicequery__analysistype', analyusisTypeContainer);
+        let analysisLayer = L.DomUtil.create('div', 'widget-analysis__container__analysisLayer', analysisType);
 
         let queryModelOptionsArr, getFeatureModeArr = this.options.getFeatureMode;
         // 获取查询模式
@@ -164,99 +132,99 @@ export var DataServiceQueryView = L.Control.extend({
         // 查询模式
         let queryModelContainer = L.DomUtil.create('div', '', analysisLayer);
         queryModelContainer.id = 'queryModelContainer';
-        let queryModelControl = L.DomUtil.create('div', 'select-control', queryModelContainer);
+        let queryModelControl = L.DomUtil.create('div', 'widget-analysis__selecttool', queryModelContainer);
         queryModelControl.id = 'queryModelControl';
         this.creatQueryModeSelect = creatQueryModeSelect.bind(this);
         this.queryModeltOnchange = queryModeltOnchange.bind(this);
-        this.creatQueryModeSelect(queryModelOptionsArr, queryModelControl)
+        this.creatQueryModeSelect(queryModelOptionsArr, queryModelControl);
 
         // 要素 ID 数组
-        let featuresIdArrContainer = L.DomUtil.create('div', 'textarea-container dataservice-textarea-container', analysisLayer);
+        let featuresIdArrContainer = L.DomUtil.create('div', 'widget-analysis__container widget-textarea--dataservice__container', analysisLayer);
         let textareaSpan = L.DomUtil.create('span', 'textarea-name', featuresIdArrContainer);
         textareaSpan.innerHTML = Lang.i18n('text_label_IDArrayOfFeatures');
-        let textareaControl = L.DomUtil.create('div', 'textarea-control dataservice-textarea-control', featuresIdArrContainer);
+        let textareaControl = L.DomUtil.create('div', 'widget-textarea widget-textarea--dataservice', featuresIdArrContainer);
         textareaControl.id = 'getfeaturesIdArr';
         let scrollarea = L.DomUtil.create('div', 'scrollarea', textareaControl);
-        let scrollareaContent = L.DomUtil.create('div', 'scrollarea-content', scrollarea);
+        let scrollareaContent = L.DomUtil.create('div', 'widget-scrollarea-content', scrollarea);
         scrollareaContent.setAttribute('tabindex', '1');
-        let getValueTextArea = L.DomUtil.create('textarea', 'textarea', scrollareaContent);
+        let getValueTextArea = L.DomUtil.create('textarea', 'widget-textarea__content', scrollareaContent);
         getValueTextArea.value = '[1,2,3]';
-        getValueTextArea.id = 'getValueTextArea'
+        getValueTextArea.id = 'getValueTextArea';
 
         // SQL 最多可返回的要素数量
-        let maxFeaturesContainer = L.DomUtil.create('div', 'dataservice-maxfeatures-container hidden', analysisLayer);
+        let maxFeaturesContainer = L.DomUtil.create('div', 'widget-servicequery__maxfeatures-container hidden', analysisLayer);
         let maxFeaturesOtions = {
             'spanName': Lang.i18n('text_label_maxFeatures'),
             'value': '1000'
         };
-        let maxFeaturesInputBox = this._creatInputBox(maxFeaturesOtions, maxFeaturesContainer)
+        let maxFeaturesInputBox = this._creatInputBox(maxFeaturesOtions, maxFeaturesContainer);
         let maxFeaturesInput = maxFeaturesInputBox.children[1];
         maxFeaturesInput.classList.add('max-features-input');
         // Buffer 缓冲区距离
-        let bufferDistanceContainer = L.DomUtil.create('div', 'dataservice-distance-container hidden', analysisLayer);
+        let bufferDistanceContainer = L.DomUtil.create('div', 'widget-servicequery__distance-container hidden', analysisLayer);
         let bufferDistanceOtions = {
             'spanName': Lang.i18n('text_label_bufferDistance'),
             'value': '10'
         };
-        let bufferDistanceInputBox = this._creatInputBox(bufferDistanceOtions, bufferDistanceContainer)
+        let bufferDistanceInputBox = this._creatInputBox(bufferDistanceOtions, bufferDistanceContainer);
         let bufferDistanceInput = bufferDistanceInputBox.children[1];
 
 
         // Bounds 查询范围；
-        let queryRangeContainer = L.DomUtil.create('div', 'textarea-container dataservice-textarea-container hidden', analysisLayer);
+        let queryRangeContainer = L.DomUtil.create('div', 'widget-analysis__container widget-textarea--dataservice__container hidden', analysisLayer);
         let queryRangetextareaSpan = L.DomUtil.create('span', 'textarea-name', queryRangeContainer);
         let queryRangeMainContent = L.DomUtil.create('div', '', queryRangeContainer);
-        let queryRangeIconContainer = L.DomUtil.create('div', 'query-range-icon-container', queryRangeMainContent);
+        let queryRangeIconContainer = L.DomUtil.create('div', 'widget-servicequery__rangeicon-container', queryRangeMainContent);
         queryRangetextareaSpan.innerHTML = Lang.i18n('text_label_queryRange1');
-        let queryRangeRecIcon = L.DomUtil.create('div', 'query-range-icon supermapol-icons-polygon-layer bounds', queryRangeIconContainer);
-        let queryRangeLineIcon = L.DomUtil.create('div', 'query-range-icon supermapol-icons-line-layer hidden', queryRangeIconContainer);
-        let queryRangePointIcon = L.DomUtil.create('div', 'query-range-icon supermapol-icons-point-layer hidden', queryRangeIconContainer);
-        let queryRangetextareaControl = L.DomUtil.create('div', 'textarea-control query-range-textarea-control', queryRangeMainContent);
+        let queryRangeRecIcon = L.DomUtil.create('div', 'widget-servicequery__rangeicon supermapol-icons-polygon-layer bounds', queryRangeIconContainer);
+        let queryRangeLineIcon = L.DomUtil.create('div', 'widget-servicequery__rangeicon supermapol-icons-line-layer hidden', queryRangeIconContainer);
+        let queryRangePointIcon = L.DomUtil.create('div', 'widget-servicequery__rangeicon supermapol-icons-point-layer hidden', queryRangeIconContainer);
+        let queryRangetextareaControl = L.DomUtil.create('div', 'widget-textarea widget-textarea--rangequery', queryRangeMainContent);
         queryRangetextareaControl.id = 'getfeaturesIdArr';
-        let queryRangescrollarea = L.DomUtil.create('div', 'scrollarea', queryRangetextareaControl);
-        let queryRangescrollareaContent = L.DomUtil.create('div', 'scrollarea-content', queryRangescrollarea);
+        let queryRangescrollarea = L.DomUtil.create('div', '', queryRangetextareaControl);
+        let queryRangescrollareaContent = L.DomUtil.create('div', 'widget-scrollarea-content', queryRangescrollarea);
         queryRangescrollareaContent.setAttribute('tabindex', '1');
-        let queryRangeTextArea = L.DomUtil.create('textarea', 'textarea query-range-textarea', queryRangescrollareaContent);
+        let queryRangeTextArea = L.DomUtil.create('textarea', 'widget-textarea__content widget-textarea--rangequery__content', queryRangescrollareaContent);
         queryRangeTextArea.value = '{"leftBottom":{"x":-5,"y":-5},"rightTop":{"x":5,"y":5}}';
 
         // geometry 空间查询模式
-        let spatialQueryModeContainer = L.DomUtil.create('div', 'spatial-querymode-container hidden', analysisLayer);
+        let spatialQueryModeContainer = L.DomUtil.create('div', 'widget-servicequery__spatialquerymode-container hidden', analysisLayer);
         let spatialQueryModeOptions = {
             'optionsArr': ['CONTAIN', 'CROSS', 'DISJOINT', 'IDENTITY', 'INTERSECT', 'NONE', 'OVERLAP', 'TOUCH', 'WITHIN'],
             'labelName': Lang.i18n('text_label_spatialQueryMode')
-        }
-        let spatialQueryModeControl = L.DomUtil.create('div', 'select-control', spatialQueryModeContainer);
+        };
+        let spatialQueryModeControl = L.DomUtil.create('div', 'widget-analysis__selecttool', spatialQueryModeContainer);
         let spatialQueryModeSelectTool = (new Select(spatialQueryModeOptions)).getElement();
         spatialQueryModeSelectTool.children[1].classList.add('dataservice-select');
         spatialQueryModeControl.appendChild(spatialQueryModeSelectTool);
         let spatialQueryModeSelectName = spatialQueryModeSelectTool.children[1].children[0];
         spatialQueryModeSelectName.id = 'spatialQueryModeSelectName';
         let spatialQueryModeSelectContent = spatialQueryModeSelectTool.children[1].children[2];
-        spatialQueryModeSelectContent.classList.add('spatial-querymode-select-content')
+        spatialQueryModeSelectContent.classList.add('widget-servicequery__spatialquerymode__selectcontent');
 
 
         // 分析按钮
-        let runBtnContainer = L.DomUtil.create('div', 'run-btn-container di-font-content-md', analysisLayer);
-        let runBtn = L.DomUtil.create('div', 'run-btn', runBtnContainer);
-        let analysisBtn = L.DomUtil.create('button', 'analysis-btn', runBtn);
+        let runBtnContainer = L.DomUtil.create('div', 'widget-analysis__container__analysisbtn', analysisLayer);
+        let runBtn = L.DomUtil.create('div', 'widget-analysis__analysisbtn', runBtnContainer);
+        let analysisBtn = L.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis', runBtn);
         analysisBtn.innerHTML = Lang.i18n('btn_query');
-        let analysingContainer = L.DomUtil.create('div', 'analysing-container hidden', runBtn);
-        let analysisingBtn = L.DomUtil.create('div', 'analysising-btn dataservice-querying-btn', analysingContainer);
-        let svgContainer = L.DomUtil.create('div', 'svg-container', analysisingBtn);
-        svgContainer.innerHTML = `<svg class="svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        let analysingContainer = L.DomUtil.create('div', 'widget-analysis__analysisbtn--analysing-container hidden', runBtn);
+        let analysisingBtn = L.DomUtil.create('div', 'widget-analysis__analysisbtn--analysising widget-servicequery__querybtn--querying', analysingContainer);
+        let svgContainer = L.DomUtil.create('div', 'widget-analysis__svg-container', analysisingBtn);
+        svgContainer.innerHTML = `<svg class="widget-analysis__svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
              <path id="ring" fill="#FFF" transform="translate(8,8)" d="M 0 0 v -8 A 8 8 0 1 1 -8.00 0 z"></path>
              <circle cx="8" cy="8" r="6" fill="#38ADF5"></circle>
              <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
              <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
-         </svg>`
+         </svg>`;
         L.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_querying');
 
         // 删除按钮
-        let deleteLayersBtn = L.DomUtil.create('button', 'analysis-btn delete-layers', runBtn);
+        let deleteLayersBtn = L.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis widget-analysis__analysisbtn--deletelayers', runBtn);
         deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheRresultLayer');
 
         // 设置当前显示参数
-        queryModeltOnchange(queryModelOptionsArr[0])
+        queryModeltOnchange(queryModelOptionsArr[0]);
 
         // 分析按钮点击事件
         let me = this;
@@ -277,21 +245,21 @@ export var DataServiceQueryView = L.Control.extend({
                  * @description features 获取成功时触发。
                  * @property {Object} result - 服务器返回的结果。
                  */
-                this.event.fire('getfeaturessuccessed', { 'result': e.result })
-            })
+                this._event.fire('getfeaturessuccessed', {'result': e.result})
+            });
             this.viewModel.on('getfeaturesfaild', (e) => {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 this.messageBox.showView(e.error.errorMsg, "failure");
                 /**
-                * @event L.supermap.widgets.dataServiceQuery#getfeaturesfaild
-                * @description features 获取失败时触发。
-                * @property {string} error - 服务器返回的错误。
-                */
-                this.event.fire('getfeaturesfaild', { 'error': e.error })
-            })
+                 * @event L.supermap.widgets.dataServiceQuery#getfeaturesfaild
+                 * @description features 获取失败时触发。
+                 * @property {string} error - 服务器返回的错误。
+                 */
+                this._event.fire('getfeaturesfaild', {'error': e.error})
+            });
             this.viewModel.getFeatures(queryParams, this.map);
-        }
+        };
 
         let bounds, resultLayer;
         // 矩形 & 多边形绘制
@@ -310,7 +278,7 @@ export var DataServiceQueryView = L.Control.extend({
             }
             e.stopPropagation();
             e.preventDefault();
-        }
+        };
 
         // 线绘制
         queryRangeLineIcon.onclick = (e) => {
@@ -320,7 +288,7 @@ export var DataServiceQueryView = L.Control.extend({
             this.map.pm.enableDraw('Line');
             e.stopPropagation();
             e.preventDefault();
-        }
+        };
 
         // 点绘制
         queryRangePointIcon.onclick = (e) => {
@@ -330,17 +298,17 @@ export var DataServiceQueryView = L.Control.extend({
             this.map.pm.enableDraw('Marker');
             e.stopPropagation();
             e.preventDefault();
-        }
+        };
 
         this.map.on('pm:create', (e) => {
             if (e.shape === 'Rectangle') {
                 resultLayer = e.layer;
-                let boundsT = resultLayer.getBounds()
+                let boundsT = resultLayer.getBounds();
                 bounds = L.bounds([boundsT._southWest.lng, boundsT._southWest.lat], [boundsT._northEast.lng, boundsT._northEast.lat]);
                 let geo = {
-                    'leftBottom': { 'x': boundsT._southWest.lng, 'y': boundsT._southWest.lat },
-                    'rightTop': { 'x': boundsT._northEast.lng, 'y': boundsT._northEast.lat }
-                }
+                    'leftBottom': {'x': boundsT._southWest.lng, 'y': boundsT._southWest.lat},
+                    'rightTop': {'x': boundsT._northEast.lng, 'y': boundsT._northEast.lat}
+                };
                 queryRangeTextArea.value = JSON.stringify(geo);
             }
             if (e.shape === 'Marker') {
@@ -360,7 +328,7 @@ export var DataServiceQueryView = L.Control.extend({
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
             this.viewModel.clearLayers();
-        }
+        };
 
         function creatQueryModeSelect(queryModelOptionsArr, queryModelControl) {
             // 查询模式
@@ -371,7 +339,7 @@ export var DataServiceQueryView = L.Control.extend({
                     'optionsArr': queryModelOptionsArr,
                     'labelName': Lang.i18n('text_label_queryMode'),
                     'optionsClickCb': this.queryModeltOnchange
-                }
+                };
                 let queryModelSelectTool = (new Select(queryModelOptions)).getElement();
                 queryModelControl.appendChild(queryModelSelectTool);
                 queryModelSelectName = queryModelSelectTool.children[1].children[0];
@@ -382,7 +350,7 @@ export var DataServiceQueryView = L.Control.extend({
             } else {
                 let span = L.DomUtil.create('span', '', queryModelContainer);
                 span.innerHTML = Lang.i18n('text_label_queryMode');
-                queryModelSelectName = L.DomUtil.create('div', 'querymode-selectname', queryModelContainer);
+                queryModelSelectName = L.DomUtil.create('div', 'widget-servicequery__querymode-selectname', queryModelContainer);
                 let text = L.DomUtil.create('span', '', queryModelSelectName);
                 if (queryModelOptionsArr instanceof Array) {
                     text.innerHTML = queryModelOptionsArr[0];
@@ -395,6 +363,7 @@ export var DataServiceQueryView = L.Control.extend({
             queryModelSelectName.id = 'queryModelSelectName';
             return queryModelSelectName;
         }
+
         // 查询模式下拉框 onchange 事件
         function queryModeltOnchange(option) {
             // 获取当前选中查询模式
@@ -444,7 +413,6 @@ export var DataServiceQueryView = L.Control.extend({
                     break;
             }
         }
-
 
         // 获取查询参数
         function getQueryParams() {
@@ -506,9 +474,8 @@ export var DataServiceQueryView = L.Control.extend({
             return queryParam;
         }
 
-
-        this.container = container;
-        this._preventMapEvent(this.container, this.map)
+        //阻止 map 默认事件
+        this._preventMapEvent(container, this.map);
         return container;
     },
 
@@ -525,28 +492,8 @@ export var DataServiceQueryView = L.Control.extend({
         input.value = inputOptions.value;
         // input.className = 'distributeInput'
         return div;
-    },
-
-    /**
-     * @function L.supermap.widgets.dataServiceQuery.prototype._preventMapEvent
-     * @description 阻止 map 默认事件。
-     * @private
-     */
-    _preventMapEvent(div, map) {
-        if (!div || !map) {
-            return;
-        }
-        div.addEventListener('mouseover', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        div.addEventListener('mouseout', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        });
     }
+
 });
 export var dataServiceQueryView = function (dataServiceUrl, dataSetNames, options) {
     return new DataServiceQueryView(dataServiceUrl, dataSetNames, options);

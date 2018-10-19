@@ -33,7 +33,20 @@
 
     L.supermap.tiledMapLayer(url).addTo(map);
     //添加微件：
-    var poiSearch = L.supermap.widgets.search();
+    var poiSearch = L.supermap.widgets.search({
+        //设置结果图层样式：
+        /*style: (feature, latLng) => {
+            if (latLng /!*&& feature instanceof L.latLng || feature.geometry.type.toLowerCase() === "point"*!/) {
+                return L.circleMarker(latLng, {
+                    fillColor: 'red',
+                    weight: 1,
+                    opacity: 1,
+                    color: 'red',
+                    fillOpacity: 0.6
+                });
+            }
+        }*/
+    });
     poiSearch.addTo(map);
 
     //添加示例图层：
@@ -50,11 +63,18 @@
             .queryService(sqlurl)
             .queryByBounds(param, function (serviceResult) {
                 var result = serviceResult.result;
-                var resultLayer = L.geoJSON(result.recordsets[0].features).addTo(map);
-                poiSearch.addSearchLayer([L.supermap.widgets.geoJSONLayerWithName({
-                    layerName: "首都",
-                    layer: resultLayer
-                })]);
+                var resultLayer = L.geoJSON(result.recordsets[0].features, {
+                    pointToLayer: (geoJsonPoint, latlng) => {
+                        return L.circleMarker(latlng, {
+                            fillColor: 'blue',
+                            weight: 1,
+                            opacity: 1,
+                            color: 'blue',
+                            fillOpacity: 0.6
+                        });
+                    },
+                }).addTo(map);
+                poiSearch.addSearchLayer([L.supermap.widgets.geoJSONLayerWithName("首都", resultLayer)]);
             });
     }
 </script>

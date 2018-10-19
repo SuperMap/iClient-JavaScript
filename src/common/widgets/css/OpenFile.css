@@ -1,12 +1,7 @@
-/*--数据列表容器--*/
-.openFileContainer {
- /*   margin-top: 20px !important;
-    margin-right: 4px !important;*/
-}
-
-.file-selectSpan {
+/*--打开文件微件样式--*/
+.widget-openfile__span--select {
     position: relative;
-/*    margin: 20px auto;*/
+    /*    margin: 20px auto;*/
     width: 110px;
     height: 32px;
     font-size: 14px;
@@ -21,13 +16,13 @@
     display: block;
 }
 
-.file-selectSpan:hover {
+.widget-openfile__span--select:hover {
     border: 1px solid #38ADF5;
     color: #38ADF5;
     cursor: pointer;
 }
 
-.file-selectSpan .supermapol-icons-upload {
+.widget-openfile__span--select .supermapol-icons-upload {
     position: absolute;
     top: 8px;
     left: 10px;
@@ -38,13 +33,13 @@
     padding-right: 5px;
 }
 
-.file-selectSpan .openFile-span {
+.widget-openfile__span--select .widget-openfile__span {
     display: block;
     position: absolute;
     left: 32px;
 }
 
-.openFile_input {
+.widget-openfile__input {
     position: relative;
     left: 190px;
     top: 49px;

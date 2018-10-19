@@ -1,28 +1,32 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 import {SuperMap} from '../../SuperMap';
+import {TemplateBase} from './TemplateBase';
 
 /**
  * @class SuperMap.Widgets.CommonContainer
  * @classdesc 微件统一外框。
- * @param {string} title - 标题。
- * @param {Object} position - 设置外框绝对位置，包括上下左右：{"top":"5px","bottom":"5px","left":"5px","right":"5px"}
+ * @param {Object} options - 组件可选参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {string} options.title - 标题。
  * @category Widgets Common
  */
-export class CommonContainer {
-    constructor(title, position = null) {
-        this._initContainer(title, position);
+export class CommonContainer extends TemplateBase {
+    constructor(options) {
+        super(options);
+        let title = options.title ? options.title : "";
+        this._initView(title);
     }
 
-    _initContainer(title, position) {
+    /**
+     * @private
+     * @override
+     */
+    _initView(title) {
         const container = document.createElement("div");
         container.setAttribute("class", "widget-container");
-        this.container = container;
-        if (position) {
-            this.setContainerPosition(position);
-        }
+
         //title
         const titleContainer = document.createElement("div");
         titleContainer.setAttribute("class", "widget-title");
@@ -32,29 +36,12 @@ export class CommonContainer {
         container.appendChild(titleContainer);
         //container
         const widgetContent = document.createElement("div");
-        widgetContent.setAttribute("class", "widget-content-container");
+        widgetContent.setAttribute("class", "widget-content");
         container.appendChild(widgetContent);
         this.content = widgetContent;
 
+        this.rootContainer = container;
         return container;
-    }
-
-    /**
-     * @function SuperMap.Widgets.CommonContainer.prototype.getElement
-     * @description 改变容器绝对位置
-     */
-    setContainerPosition(position) {
-        for (let name in position) {
-            this.container.style[name] = position[name];
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.CommonContainer.prototype.getElement
-     * @description 获取当前模板 Dom 元素
-     */
-    getElement() {
-        return this.container;
     }
 
     /**
