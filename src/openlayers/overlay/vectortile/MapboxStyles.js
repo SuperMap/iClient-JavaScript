@@ -93,7 +93,7 @@ export class MapboxStyles extends ol.Observable {
         olExtends(this.map);
         if (this.style) {
             this._mbStyle = this.style;
-            this._resolve(this.style);
+            this._resolve();
         } else if (this.url) {
             FetchRequest.get(this.url).then(response =>
                 response.json()).then(mbStyle => {
