@@ -13,7 +13,7 @@ import '../../../resources/QueryService.js';
 var map, url = GlobeParameter.WorldURL, testDiv, clientComputation;
 var dataServiceURL = GlobeParameter.wokerURL;
 describe('leaflet_clientcomputation_ClientComputationView', () => {
-    var serviceResult, clientComputationLayer;
+    var  clientComputationLayer;
     var originalTimeout, resultLayer, setLayer;
     var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
     beforeAll(() => {
@@ -35,6 +35,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
         clientComputation = new ClientComputationView(wokerURL);
         clientComputation.addTo(map);
 
+        
         var queryUrl = "https://www.supermapol.com/iserver/services/map_ShiLiShuJu/rest/maps/中国历史5级以上地震_1900至2016@自然气候数据";
         spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
             // let param = JSON.parse(queryString.replace(/\'/g, "\""));
@@ -71,6 +72,10 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
         })
         queryBySQLService.events.on({ 'processCompleted': QueryBySQLCompleted });
         queryBySQLService.processAsync(params);
+        document.getElementById('getValueText').style.height = '1px';
+     
+      
+      
 
 
         setTimeout(() => {
@@ -103,17 +108,20 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        serviceResult = null;
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
+    afterAll(() => {
+        map = null;
+        document.body.removeChild(testDiv);
     });
 
     it('addLayer,isoline', (done) => {
         setTimeout(() => {
             try {
                 expect(document.getElementById('dropDownTop').getAttribute('data-value')).toBe("isolines");
-                clientComputation.on('analysissuccessed', (e) => {
+                clientComputation.viewModel.on('layerloaded', (e) => {
                     try {
                         if (e.name.indexOf("等值线") > -1) {
                             expect(e.layer._layers).not.toBeNull;
@@ -131,7 +139,8 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                         done();
                     }
                 });
-                var analysitBtn = document.getElementsByClassName('analysis-btn')[0];
+                     
+                var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
                 analysitBtn.click();
             } catch (exception) {
                 expect(false).toBeTruthy();
@@ -147,11 +156,11 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
         setTimeout(() => {
             try {
                 document.getElementById('dropDownTop').click();
-                document.getElementsByClassName('drop-down-item')[2].click();
-                clientComputation.on('analysissuccessed', (e) => {
+                document.getElementsByClassName('widget-dropdownbox__item')[2].click();
+                clientComputation.viewModel.on('layerloaded', (e) => {
                     try {
                         if (e.name.indexOf("等值线") > -1) {
-                            expect(e.layer._layers).not.toBeNull;
+                            expect(e.name.layer._layers).not.toBeNull;
                             expect(e.layer._layers).not.toBeUndefined;
                             done();
                         }
@@ -169,7 +178,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                     }
                 });
                 expect(document.getElementById('bufferRadiusInput').getAttribute('placeholder')).toContain("10千米");
-                var analysitBtn = document.getElementsByClassName('analysis-btn')[0];
+                var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
                 analysitBtn.click();
 
             } catch (exception) {
@@ -177,7 +186,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 console.log("clientcomputation" + exception.name + ":" + exception.message);
                 done();
             }
-        }, 4000)
+        }, 1000)
 
     });
 
