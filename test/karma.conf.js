@@ -47,6 +47,7 @@ module.exports = function (config) {
             './test-main-common.js',
 
             /***leaflet的源码***/
+            {pattern: './libs/workers/TurfWorkerForTest.js', include: false},
             {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
             {pattern: '../src/leaflet/**/**/*.css', include: false},
             '../src/leaflet/**/!(ClientComputationView|index).js',
