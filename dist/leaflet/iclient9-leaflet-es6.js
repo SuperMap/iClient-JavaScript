@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -31557,7 +31572,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -31577,23 +31592,19 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
                 tempObj['input'][name] = kernelDensityJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = kernelDensityJobParameter[name];
                 continue;
             }
-            
+
             tempObj['analyst'] = tempObj['analyst'] || {};
-            if (name === 'query') {
-                if(tempObj['analyst'][name]){
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-                }else{
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
-                }
+            if (name === 'query' && kernelDensityJobParameter[name]) {
+                tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name];
             }
-            if(name === 'mappingParameters'){
+            if (name === 'mappingParameters') {
                 tempObj['analyst'][name] = tempObj['analyst'][name] || {};
                 tempObj['analyst']['mappingParameters'] = kernelDensityJobParameter[name];
             }
@@ -31601,7 +31612,6 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
     }
 }
 SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobParameter;
-
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -83705,9 +83715,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
             return new Error(`Cannot find map, fileModel.map cannot be null.`);
         }
 
-        if (options) {
-            external_L_default.a.setOptions(this, options);
-        }
+        external_L_default.a.Util.setOptions(this, options);
         //初始化Model
         this.dataModel = new GeoJsonLayersModel_GeoJsonLayersDataModel();
         //初始话地址匹配服务
@@ -83717,7 +83725,9 @@ var SearchViewModel = external_L_default.a.Evented.extend({
             address: null,
             city: "北京市",
             maxResult: 70,
-            prjCoordSys: JSON.stringify({epsgCode: 4326}),
+            prjCoordSys: JSON.stringify({
+                epsgCode: 4326
+            }),
             key: this.options.cityGeoCodingConfig.key
         });
         //查询缓存
@@ -83753,14 +83763,18 @@ var SearchViewModel = external_L_default.a.Evented.extend({
                  * @description 图层属性查询成功后触发。
                  * @property {Object} result - 图层数据。
                  */
-                this.fire("searchlayersucceed", {result: resultFeatures});
+                this.fire("searchlayersucceed", {
+                    result: resultFeatures
+                });
             } else {
                 /**
                  * @event L.supermap.widgets.searchViewModel#searchfield
                  * @description 图层属性查询失败后触发。
                  * @property {string} searchType - 图层属性查询状态。
                  */
-                this.fire("searchfield", {searchType: "searchLayersField"});
+                this.fire("searchfield", {
+                    searchType: "searchLayersField"
+                });
             }
         }
     },
@@ -83778,18 +83792,24 @@ var SearchViewModel = external_L_default.a.Evented.extend({
              * @description 城市地址匹配成功够触发。
              * @property {Object} result - 城市匹配成功后返回的数据。
              */
-            this.fire("geocodesucceed", {result: this.searchCache[keyWords]});
+            this.fire("geocodesucceed", {
+                result: this.searchCache[keyWords]
+            });
         } else {
             this.geoCodeParam.address = keyWords;
             const self = this;
             this.geoCodeService.code(this.geoCodeParam, (geocodingResult) => {
                 if (geocodingResult.result) {
                     if (geocodingResult.result.error || geocodingResult.result.length === 0) {
-                        self.fire("searchfield", {searchType: "searchGeocodeField"});
+                        self.fire("searchfield", {
+                            searchType: "searchGeocodeField"
+                        });
                         return;
                     }
-                    const geoJsonResult = self._dataToGeoJson(geocodingResult.result);
-                    self.fire("geocodesucceed", {result: geoJsonResult});
+                    const geoJsonResult = self._dataToGeoJson(geocodingResult.result,self.geoCodeParam);
+                    self.fire("geocodesucceed", {
+                        result: geoJsonResult
+                    });
                 }
 
             });
@@ -83809,7 +83829,9 @@ var SearchViewModel = external_L_default.a.Evented.extend({
              * @property {Object} result  - 事件返回的新的查询图层对象。
              * @property {string} layerName  - 事件返回的新的查询图层对象名。
              */
-            this.fire("newlayeradded", {layerName: e.layerName});
+            this.fire("newlayeradded", {
+                layerName: e.layerName
+            });
         }, null, this);
     },
 
@@ -83839,7 +83861,9 @@ var SearchViewModel = external_L_default.a.Evented.extend({
                 const center = external_L_default.a.latLng(geocodingResult.result[0].location.y, geocodingResult.result[0].location.x);
                 self.map.setView(center, 8);
             } else {
-                self.fire("searchfield", {searchType: "cityGeocodeField"});
+                self.fire("searchfield", {
+                    searchType: "cityGeocodeField"
+                });
             }
 
         });
@@ -83851,7 +83875,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
      * @param data
      * @private
      */
-    _dataToGeoJson(data) {
+    _dataToGeoJson(data,geoCodeParam) {
         let features = [];
         for (let i = 0; i < data.length; i++) {
             let feature = {
@@ -83861,8 +83885,8 @@ var SearchViewModel = external_L_default.a.Evented.extend({
                     coordinates: [data[i].location.x, data[i].location.y]
                 },
                 properties: {
-                    name: data[i].name,
-                    address: data[i].formatedAddress
+                    name: data[i].name || geoCodeParam.address,
+                    address: data[i].formatedAddress || data[i].address
                 }
             };
             features.push(feature);
@@ -83878,7 +83902,6 @@ var searchViewModel = function (options) {
 };
 
 external_L_default.a.supermap.widgets.searchViewModel = searchViewModel;
-
 // CONCATENATED MODULE: ./src/leaflet/widgets/search/SearchView.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -83909,7 +83932,10 @@ external_L_default.a.supermap.widgets.searchViewModel = searchViewModel;
 var SearchView = WidgetsViewBase.extend({
     options: {
         cityConfig: CityConfig_config,
-        cityGeoCodingConfig: null,
+        cityGeoCodingConfig: {
+            addressUrl: "http://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China",
+            key: "fvV2osxwuZWlY0wJb8FEb2i5"
+        },
         isGeoCoding: true
     },
 
@@ -83928,7 +83954,7 @@ var SearchView = WidgetsViewBase.extend({
      */
     onAdd: function (map) {
         //初始化微件业务逻辑执行对象 viewModel
-        this.viewModel = new SearchViewModel(map, this.options.cityGeoCodingConfig);
+        this.viewModel = new SearchViewModel(map, this.options);
         return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
     /**
@@ -83980,7 +84006,9 @@ var SearchView = WidgetsViewBase.extend({
         //城市地址匹配页面：
         let citySelect = null;
         if (this.options.isGeoCoding) {
-            const cityTabsPageObj = new CityTabsPage_CityTabsPage({config: this.options.cityConfig});
+            const cityTabsPageObj = new CityTabsPage_CityTabsPage({
+                config: this.options.cityConfig
+            });
             citySelect = cityTabsPageObj.getElement();
             //点选城市名，修改显示，并执行定位城市查询【城市列表列表点击事件】
             cityTabsPageObj.content.onclick = (e) => {
@@ -84081,7 +84109,9 @@ var SearchView = WidgetsViewBase.extend({
             title: "搜索图层",
             content: layersSelect
         });
-        const navTabsPageObject = new NavTabsPage_NavTabsPage({tabs: navTabs});
+        const navTabsPageObject = new NavTabsPage_NavTabsPage({
+            tabs: navTabs
+        });
         const navTabsPage = navTabsPageObject.getElement();
         navTabsPageObject.closeView();
         poiContainer.appendChild(navTabsPage);
@@ -84330,7 +84360,9 @@ var SearchView = WidgetsViewBase.extend({
 
             //查询结果列表：
             this._prepareResultData(data);
-            this._event.fire("searchsucceed", {result: this.searchResultLayer.toGeoJSON()});
+            this._event.fire("searchsucceed", {
+                result: this.searchResultLayer.toGeoJSON()
+            });
         });
 
         //----地址匹配服务监听
@@ -84354,7 +84386,9 @@ var SearchView = WidgetsViewBase.extend({
              * @description 数据流服务成功返回数据后触发
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("searchsucceed", {result: data});
+            this._event.fire("searchsucceed", {
+                result: data
+            });
         });
 
         //----地址匹配或图层查询失败监听
@@ -84404,7 +84438,8 @@ var SearchView = WidgetsViewBase.extend({
      * @private
      */
     _createResultListByPageNum(page, data) {
-        let start = 0, end;
+        let start = 0,
+            end;
         if (page === 1 && data.length < 8) {
             //data数据不满8个时：
             end = data.length;
@@ -84471,7 +84506,7 @@ var SearchView = WidgetsViewBase.extend({
         this.searchResultLayer.eachLayer((layer) => {
             // this._resetLayerStyleToDefault(layer);
 
-            if (layer.filterAttribute && layer.filterAttribute.filterAttributeValue === filterValue ||
+            if (!filterValue || layer.filterAttribute && layer.filterAttribute.filterAttributeValue === filterValue ||
                 layer.feature.properties && layer.feature.properties.name === filterValue) {
                 this._setSelectedLayerStyle(layer);
                 /*layer.bindPopup(function () {
@@ -84526,7 +84561,10 @@ var SearchView = WidgetsViewBase.extend({
             //点选中样式, todo marker 显示位置需要调整
             pointToLayer: (geoJsonPoint, latlng) => {
                 return external_L_default.a.marker(latlng, {
-                    icon: external_L_default.a.divIcon({className: 'widget-select-marker-icon', iconAnchor: [15, 0]})
+                    icon: external_L_default.a.divIcon({
+                        className: 'widget-select-marker-icon',
+                        iconAnchor: [15, 0]
+                    })
                 })
             },
             //线和面选中样式：
@@ -84539,8 +84577,12 @@ var SearchView = WidgetsViewBase.extend({
             }
         }).addTo(this.map);
         this._selectFeature.bindPopup(function () {
-            return (new AttributesPopContainer_AttributesPopContainer({attributes: layer.feature.properties})).getElement()
-        }, {closeOnClick: false}).openPopup().addTo(this.map);
+            return (new AttributesPopContainer_AttributesPopContainer({
+                attributes: layer.feature.properties
+            })).getElement()
+        }, {
+            closeOnClick: false
+        }).openPopup().addTo(this.map);
 
     }
 });
@@ -86072,6 +86114,7 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
          * @property {Array.<L.GeoJSON>} layers - 结果图层数组。
          */
         this.fire('layersremoved', { 'layers': this.resultLayers });
+        this.resultLayers = [];
     }
     
 }
@@ -90832,7 +90875,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */

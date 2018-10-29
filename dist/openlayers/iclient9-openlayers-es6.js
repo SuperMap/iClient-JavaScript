@@ -30624,7 +30624,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -30644,23 +30644,19 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
                 tempObj['input'][name] = kernelDensityJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = kernelDensityJobParameter[name];
                 continue;
             }
-            
+
             tempObj['analyst'] = tempObj['analyst'] || {};
-            if (name === 'query') {
-                if(tempObj['analyst'][name]){
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-                }else{
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
-                }
+            if (name === 'query' && kernelDensityJobParameter[name]) {
+                tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name];
             }
-            if(name === 'mappingParameters'){
+            if (name === 'mappingParameters') {
                 tempObj['analyst'][name] = tempObj['analyst'][name] || {};
                 tempObj['analyst']['mappingParameters'] = kernelDensityJobParameter[name];
             }
@@ -30668,7 +30664,6 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
     }
 }
 SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobParameter;
-
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -75753,6 +75748,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
             var y = -tileCoord[2] - 1;
             if (me.tileType === 'ZXY') {
                 params = "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&x=" + x + "&y=" + y + "&z=" + z;
+
             } else if (me.tileType === 'ViewBounds') {
                 var tileExtent = me.tileGrid.getTileCoordExtent(
                     tileCoord);

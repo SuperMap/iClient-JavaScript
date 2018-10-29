@@ -2,8 +2,12 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-import {WidgetsViewBase} from '../WidgetsViewBase';
-import {config} from './CityConfig';
+import {
+    WidgetsViewBase
+} from '../WidgetsViewBase';
+import {
+    config
+} from './CityConfig';
 import {
     // WidgetSelect,
     MessageBox,
@@ -13,7 +17,9 @@ import {
     AttributesPopContainer
 } from '@supermap/iclient-common';
 
-import {SearchViewModel} from './SearchViewModel';
+import {
+    SearchViewModel
+} from './SearchViewModel';
 
 /**
  * @class L.supermap.widgets.search
@@ -34,7 +40,10 @@ import {SearchViewModel} from './SearchViewModel';
 export var SearchView = WidgetsViewBase.extend({
     options: {
         cityConfig: config,
-        cityGeoCodingConfig: null,
+        cityGeoCodingConfig: {
+            addressUrl: "http://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China",
+            key: "fvV2osxwuZWlY0wJb8FEb2i5"
+        },
         isGeoCoding: true
     },
 
@@ -53,7 +62,7 @@ export var SearchView = WidgetsViewBase.extend({
      */
     onAdd: function (map) {
         //初始化微件业务逻辑执行对象 viewModel
-        this.viewModel = new SearchViewModel(map, this.options.cityGeoCodingConfig);
+        this.viewModel = new SearchViewModel(map, this.options);
         return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
     /**
@@ -105,7 +114,9 @@ export var SearchView = WidgetsViewBase.extend({
         //城市地址匹配页面：
         let citySelect = null;
         if (this.options.isGeoCoding) {
-            const cityTabsPageObj = new CityTabsPage({config: this.options.cityConfig});
+            const cityTabsPageObj = new CityTabsPage({
+                config: this.options.cityConfig
+            });
             citySelect = cityTabsPageObj.getElement();
             //点选城市名，修改显示，并执行定位城市查询【城市列表列表点击事件】
             cityTabsPageObj.content.onclick = (e) => {
@@ -206,7 +217,9 @@ export var SearchView = WidgetsViewBase.extend({
             title: "搜索图层",
             content: layersSelect
         });
-        const navTabsPageObject = new NavTabsPage({tabs: navTabs});
+        const navTabsPageObject = new NavTabsPage({
+            tabs: navTabs
+        });
         const navTabsPage = navTabsPageObject.getElement();
         navTabsPageObject.closeView();
         poiContainer.appendChild(navTabsPage);
@@ -455,7 +468,9 @@ export var SearchView = WidgetsViewBase.extend({
 
             //查询结果列表：
             this._prepareResultData(data);
-            this._event.fire("searchsucceed", {result: this.searchResultLayer.toGeoJSON()});
+            this._event.fire("searchsucceed", {
+                result: this.searchResultLayer.toGeoJSON()
+            });
         });
 
         //----地址匹配服务监听
@@ -479,7 +494,9 @@ export var SearchView = WidgetsViewBase.extend({
              * @description 数据流服务成功返回数据后触发
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("searchsucceed", {result: data});
+            this._event.fire("searchsucceed", {
+                result: data
+            });
         });
 
         //----地址匹配或图层查询失败监听
@@ -529,7 +546,8 @@ export var SearchView = WidgetsViewBase.extend({
      * @private
      */
     _createResultListByPageNum(page, data) {
-        let start = 0, end;
+        let start = 0,
+            end;
         if (page === 1 && data.length < 8) {
             //data数据不满8个时：
             end = data.length;
@@ -596,7 +614,7 @@ export var SearchView = WidgetsViewBase.extend({
         this.searchResultLayer.eachLayer((layer) => {
             // this._resetLayerStyleToDefault(layer);
 
-            if (layer.filterAttribute && layer.filterAttribute.filterAttributeValue === filterValue ||
+            if (!filterValue || layer.filterAttribute && layer.filterAttribute.filterAttributeValue === filterValue ||
                 layer.feature.properties && layer.feature.properties.name === filterValue) {
                 this._setSelectedLayerStyle(layer);
                 /*layer.bindPopup(function () {
@@ -651,7 +669,10 @@ export var SearchView = WidgetsViewBase.extend({
             //点选中样式, todo marker 显示位置需要调整
             pointToLayer: (geoJsonPoint, latlng) => {
                 return L.marker(latlng, {
-                    icon: L.divIcon({className: 'widget-select-marker-icon', iconAnchor: [15, 0]})
+                    icon: L.divIcon({
+                        className: 'widget-select-marker-icon',
+                        iconAnchor: [15, 0]
+                    })
                 })
             },
             //线和面选中样式：
@@ -664,8 +685,12 @@ export var SearchView = WidgetsViewBase.extend({
             }
         }).addTo(this.map);
         this._selectFeature.bindPopup(function () {
-            return (new AttributesPopContainer({attributes: layer.feature.properties})).getElement()
-        }, {closeOnClick: false}).openPopup().addTo(this.map);
+            return (new AttributesPopContainer({
+                attributes: layer.feature.properties
+            })).getElement()
+        }, {
+            closeOnClick: false
+        }).openPopup().addTo(this.map);
 
     }
 });

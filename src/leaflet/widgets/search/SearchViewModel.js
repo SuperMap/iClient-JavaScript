@@ -3,9 +3,15 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import {GeoCodingParameter} from '@supermap/iclient-common';
-import {AddressMatchService} from '../../services/AddressMatchService';
-import {GeoJsonLayersDataModel} from '../commonmodels/GeoJsonLayersModel';
+import {
+    GeoCodingParameter
+} from '@supermap/iclient-common';
+import {
+    AddressMatchService
+} from '../../services/AddressMatchService';
+import {
+    GeoJsonLayersDataModel
+} from '../commonmodels/GeoJsonLayersModel';
 
 /**
  * @class L.supermap.widgets.searchViewModel
@@ -37,9 +43,7 @@ export var SearchViewModel = L.Evented.extend({
             return new Error(`Cannot find map, fileModel.map cannot be null.`);
         }
 
-        if (options) {
-            L.setOptions(this, options);
-        }
+        L.Util.setOptions(this, options);
         //初始化Model
         this.dataModel = new GeoJsonLayersDataModel();
         //初始话地址匹配服务
@@ -49,7 +53,9 @@ export var SearchViewModel = L.Evented.extend({
             address: null,
             city: "北京市",
             maxResult: 70,
-            prjCoordSys: JSON.stringify({epsgCode: 4326}),
+            prjCoordSys: JSON.stringify({
+                epsgCode: 4326
+            }),
             key: this.options.cityGeoCodingConfig.key
         });
         //查询缓存
@@ -85,14 +91,18 @@ export var SearchViewModel = L.Evented.extend({
                  * @description 图层属性查询成功后触发。
                  * @property {Object} result - 图层数据。
                  */
-                this.fire("searchlayersucceed", {result: resultFeatures});
+                this.fire("searchlayersucceed", {
+                    result: resultFeatures
+                });
             } else {
                 /**
                  * @event L.supermap.widgets.searchViewModel#searchfield
                  * @description 图层属性查询失败后触发。
                  * @property {string} searchType - 图层属性查询状态。
                  */
-                this.fire("searchfield", {searchType: "searchLayersField"});
+                this.fire("searchfield", {
+                    searchType: "searchLayersField"
+                });
             }
         }
     },
@@ -110,18 +120,24 @@ export var SearchViewModel = L.Evented.extend({
              * @description 城市地址匹配成功够触发。
              * @property {Object} result - 城市匹配成功后返回的数据。
              */
-            this.fire("geocodesucceed", {result: this.searchCache[keyWords]});
+            this.fire("geocodesucceed", {
+                result: this.searchCache[keyWords]
+            });
         } else {
             this.geoCodeParam.address = keyWords;
             const self = this;
             this.geoCodeService.code(this.geoCodeParam, (geocodingResult) => {
                 if (geocodingResult.result) {
                     if (geocodingResult.result.error || geocodingResult.result.length === 0) {
-                        self.fire("searchfield", {searchType: "searchGeocodeField"});
+                        self.fire("searchfield", {
+                            searchType: "searchGeocodeField"
+                        });
                         return;
                     }
-                    const geoJsonResult = self._dataToGeoJson(geocodingResult.result);
-                    self.fire("geocodesucceed", {result: geoJsonResult});
+                    const geoJsonResult = self._dataToGeoJson(geocodingResult.result,self.geoCodeParam);
+                    self.fire("geocodesucceed", {
+                        result: geoJsonResult
+                    });
                 }
 
             });
@@ -141,7 +157,9 @@ export var SearchViewModel = L.Evented.extend({
              * @property {Object} result  - 事件返回的新的查询图层对象。
              * @property {string} layerName  - 事件返回的新的查询图层对象名。
              */
-            this.fire("newlayeradded", {layerName: e.layerName});
+            this.fire("newlayeradded", {
+                layerName: e.layerName
+            });
         }, null, this);
     },
 
@@ -171,7 +189,9 @@ export var SearchViewModel = L.Evented.extend({
                 const center = L.latLng(geocodingResult.result[0].location.y, geocodingResult.result[0].location.x);
                 self.map.setView(center, 8);
             } else {
-                self.fire("searchfield", {searchType: "cityGeocodeField"});
+                self.fire("searchfield", {
+                    searchType: "cityGeocodeField"
+                });
             }
 
         });
@@ -183,7 +203,7 @@ export var SearchViewModel = L.Evented.extend({
      * @param data
      * @private
      */
-    _dataToGeoJson(data) {
+    _dataToGeoJson(data,geoCodeParam) {
         let features = [];
         for (let i = 0; i < data.length; i++) {
             let feature = {
@@ -193,8 +213,8 @@ export var SearchViewModel = L.Evented.extend({
                     coordinates: [data[i].location.x, data[i].location.y]
                 },
                 properties: {
-                    name: data[i].name,
-                    address: data[i].formatedAddress
+                    name: data[i].name || geoCodeParam.address,
+                    address: data[i].formatedAddress || data[i].address
                 }
             };
             features.push(feature);

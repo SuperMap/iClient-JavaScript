@@ -1,11 +1,22 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
-import {OutputSetting} from './OutputSetting';
-import {MappingParameters} from './MappingParameters';
+import {
+    SuperMap
+} from '../SuperMap';
+import {
+    Util
+} from '../commontypes/Util';
+import {
+    AnalystSizeUnit,
+    AnalystAreaUnit
+} from '../REST';
+import {
+    OutputSetting
+} from './OutputSetting';
+import {
+    MappingParameters
+} from './MappingParameters';
 
 
 /**
@@ -125,7 +136,7 @@ export class KernelDensityJobParameter {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -145,23 +156,19 @@ export class KernelDensityJobParameter {
                 tempObj['input'][name] = kernelDensityJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = kernelDensityJobParameter[name];
                 continue;
             }
-            
+
             tempObj['analyst'] = tempObj['analyst'] || {};
-            if (name === 'query') {
-                if(tempObj['analyst'][name]){
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-                }else{
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
-                }
+            if (name === 'query' && kernelDensityJobParameter[name]) {
+                tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name];
             }
-            if(name === 'mappingParameters'){
+            if (name === 'mappingParameters') {
                 tempObj['analyst'][name] = tempObj['analyst'][name] || {};
                 tempObj['analyst']['mappingParameters'] = kernelDensityJobParameter[name];
             }
