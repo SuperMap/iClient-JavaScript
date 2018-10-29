@@ -30,5 +30,6 @@
     addressMatchURL_code: "http://localhost:8090/iserver/services/addressmatch-Address/restjsr/v1/address/geocoding",
     addressMatchURL_decode: "http://localhost:8090/iserver/services/addressmatch-Address/restjsr/v1/address/geodecoding",
     ChinaProvincesURL: "http://localhost:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces",
-    californiaURL: "http://localhost:8090/iserver/services/map-mvt-California/rest/maps/California"
-}
+    californiaURL: "http://localhost:8090/iserver/services/map-mvt-California/rest/maps/California",
+    distributedAnalysisURL:"http://54.223.164.155:8090/iserver/services/distributedanalyst/rest/v1/jobs",
+    }

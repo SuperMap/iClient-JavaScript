@@ -128,6 +128,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
          * @property {Array.<L.GeoJSON>} layers - 结果图层数组。
          */
         this.fire('layersremoved', { 'layers': this.resultLayers });
+        this.resultLayers = [];
     }
     
 }
