@@ -4,7 +4,7 @@
 
 if( 'undefined' === typeof window){
     importScripts('https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.js')
-}
+
 /**
  * 空间分析所需工具类
  */
@@ -335,4 +335,5 @@ function analysis(params) {
         }
         return buffer;
     }
+}
 }

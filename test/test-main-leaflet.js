@@ -71,3 +71,4 @@ import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
 /* widget */
 import './leaflet/widgets/dataservicequery/DataServiceQueryViewSpec.js';
 import './leaflet/widgets/clientcomputation/ClientComputationViewSpec.js';
+import './leaflet/widgets/openfile/OpenFileViewSpec.js';
