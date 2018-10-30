@@ -34,6 +34,117 @@ describe('leaflet_openfile_OpenFileView', () => {
     });
 
     it('readFile', (done) => {
+        var china={
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "81",
+                        "name": "香港",
+                        "cp": [
+                            114.2578,
+                            22.3242
+                        ],
+                        "childNum": 1
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [
+                                    114.6094,
+                                    22.4121
+                                ],
+                                [
+                                    114.5215,
+                                    22.1484
+                                ],
+                                [
+                                    114.3457,
+                                    22.1484
+                                ],
+                                [
+                                    113.9063,
+                                    22.1484
+                                ],
+                                [
+                                    113.8184,
+                                    22.1924
+                                ],
+                                [
+                                    113.9063,
+                                    22.4121
+                                ],
+                                [
+                                    114.1699,
+                                    22.5439
+                                ],
+                                [
+                                    114.3457,
+                                    22.5439
+                                ],
+                                [
+                                    114.4336,
+                                    22.5439
+                                ],
+                                [
+                                    114.4336,
+                                    22.4121
+                                ],
+                                [
+                                    114.6094,
+                                    22.4121
+                                ]
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "82",
+                        "name": "澳门",
+                        "cp": [
+                            113.5547,
+                            22.1484
+                        ],
+                        "childNum": 1
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [
+                                    113.5986,
+                                    22.1649
+                                ],
+                                [
+                                    113.6096,
+                                    22.1265
+                                ],
+                                [
+                                    113.5547,
+                                    22.11
+                                ],
+                                [
+                                    113.5437,
+                                    22.2034
+                                ],
+                                [
+                                    113.5767,
+                                    22.2034
+                                ],
+                                [
+                                    113.5986,
+                                    22.1649
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        };
 
         var openFile = L.supermap.widgets.openFile().addTo(map).setPosition('bottomleft');
 
