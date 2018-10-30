@@ -59,7 +59,7 @@
 </div>
 <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
+    var host = window.isLocal ? window.server : "http://iclsvr.supermap.io";
     var layer,
         processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
         mapURL = host + "/iserver/services/map-world/rest/maps/World",
@@ -113,7 +113,7 @@
     }
 
     if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken('http://54.223.164.155:8090/iserver', token);
+        SuperMap.SecurityManager.registerToken('http://iclsvr.supermap.io/iserver', token);
     }
 
     function TopologyValidatorJobs() {

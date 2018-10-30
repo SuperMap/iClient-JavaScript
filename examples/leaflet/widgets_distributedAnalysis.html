@@ -27,11 +27,11 @@
         var baseLayer = L.supermap.tiledMapLayer(url).addTo(map);
 
         var control = L.control.layers().addTo(map).setPosition('topleft').addBaseLayer(baseLayer, 'baseLayer');
-        var distributedHost = window.isLocal ? window.server : "http://54.223.164.155:8090";
+        var distributedHost = window.isLocal ? window.server : "http://iclsvr.supermap.io";
         var distributedAnalystUrl = distributedHost + "/iserver/services/distributedanalyst/rest/v1/jobs";
         if (!window.isLocal) {        
             var token = '49VfFjD18ZebM8yuODoT0pbOLE6rvtTtFWjQejNd2iLatUwWRVrIXjds0m8vkqjLLywULjUhHM1vo8rxdwfi6Q';
-            SuperMap.SecurityManager.registerToken('http://54.223.164.155:8090/iserver', token);
+            SuperMap.SecurityManager.registerToken('http://iclsvr.supermap.io/iserver', token);
         }
 
         var distributedAnalysis = L.supermap.widgets.distributedAnalysis(distributedAnalystUrl);
