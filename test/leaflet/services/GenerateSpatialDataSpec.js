@@ -3,6 +3,7 @@ import {GenerateSpatialDataParameters} from '../../../src/common/iServer/Generat
 import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
 import {DataReturnMode} from '../../../src/common/REST';
 import request from 'request';
+import {FetchRequest} from "@supermap/iclient-common";
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -41,6 +42,15 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', () => {
             })
         });
         var generateSpatialDataService = spatialAnalystService(spatialAnalystURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
+            var expectParams = `{'routeTable':"RouteDT_road@Changchun",'routeIDField':"RouteID",'attributeFilter':null,'eventTable':"LinearEventTabDT@Changchun",'eventRouteIDField':"RouteID",'measureField':"",'measureStartField':"LineMeasureFrom",'measureEndField':"LineMeasureTo",'measureOffsetField':"",'errorInfoField':"",'retainedFields':null,'dataReturnOption':{'expectCount':1000,'dataset':"GenerateSpatialData_leafletTest",'dataReturnMode':"DATASET_ONLY",'deleteExistResultDataset':true}}`;
+            expect(params).toBe(expectParams);
+            expect(options).not.toBeNull();
+            var resultJSON = `{"succeed":true,"recordset":null,"message":null,"dataset":"GenerateSpatialData_leafletTest@Changchun"}`;
+            return Promise.resolve(new Response(resultJSON));
+        });
         generateSpatialDataService.generateSpatialData(generateSpatialDataParameters, (result) => {
             serviceResult = result;
 
@@ -52,7 +62,7 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
-                expect(serviceResult.result.succeed).toBe(true);
+                expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.dataset).toEqual(resultDataset + "@Changchun");
                 generateSpatialDataService.destroy();
                 done();
@@ -63,12 +73,5 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', () => {
                 done();
             }
         }, 5000);
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datachangchunURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });
