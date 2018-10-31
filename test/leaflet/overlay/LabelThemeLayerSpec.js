@@ -2,7 +2,7 @@ import {labelThemeLayer} from '../../../src/leaflet/overlay/LabelThemeLayer';
 import {themeFeature} from '../../../src/leaflet/overlay/theme/ThemeFeature';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
-import {Bounds} from '../../../src/common/commonTypes/Bounds';
+import {Bounds} from '../../../src/common/commontypes/Bounds';
 import '../../resources/themeLabelData';
 
 var url = GlobeParameter.China4326URL;

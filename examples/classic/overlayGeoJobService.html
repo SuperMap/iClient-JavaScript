@@ -72,7 +72,7 @@
 <script type="text/javascript" src="../../dist/classic/include-classic.js"></script>
 <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
+    var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
     var resultLayer,
         processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
         mapURL = host + "/iserver/services/map-world/rest/maps/World",
@@ -95,7 +95,7 @@
 
     var processingService = new SuperMap.REST.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
     if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken('http://54.223.164.155:8090/iserver', token);
+        SuperMap.SecurityManager.registerToken(processingsUrl, token);
     }
     $("#mode").change(function () {
         var mode = $(this).val();

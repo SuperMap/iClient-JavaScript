@@ -1,7 +1,7 @@
 import {Label} from '../../../src/mapboxgl/overlay/LabelThemeLayer';
 import {ThemeFeature} from '../../../src/mapboxgl/overlay/theme/ThemeFeature';
 import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
-import {Bounds} from '../../../src/common/commonTypes/Bounds';
+import {Bounds} from '../../../src/common/commontypes/Bounds';
 import '../../resources/themeLabelData';
 import mapboxgl from 'mapbox-gl';
 

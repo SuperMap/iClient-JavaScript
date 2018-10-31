@@ -63,9 +63,9 @@
 <script type="text/javascript" include="draw" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 <script>
     var map,
-        baseUrl = (window.isLocal ? window.server : "http://54.223.164.155:8090") + "/iserver/services/map-world/rest/maps/World",
+        baseUrl = (window.isLocal ? window.server : "http://iclsvr.supermap.io") + "/iserver/services/map-world/rest/maps/World",
         mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
-        processingsUrl = (window.isLocal ? window.server : "http://54.223.164.155:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
+        processingsUrl = (window.isLocal ? window.server : "http://114.115.213.31:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
         token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..';
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
@@ -114,7 +114,7 @@
     });
 
     if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken('http://54.223.164.155:8090/iserver', token);
+        SuperMap.SecurityManager.registerToken(processingsUrl, token);
     }
     var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
     bindClick();

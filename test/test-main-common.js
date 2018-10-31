@@ -101,18 +101,18 @@ import './common/style/CartoCSSSpec.js';
 import './common/security/KeyServiceParameterSpec.js';
 import './common/security/SecurityManagerSpec.js';
 
-/**common -- commonTypes**/
-import './common/commonTypes/BaseTypesSpec.js';
-import './common/commonTypes/BoundsSpec.js';
-import './common/commonTypes/DateSpec.js';
-import './common/commonTypes/LonLatSpec.js';
-import './common/commonTypes/PixelSpec.js';
-import './common/commonTypes/VectorSpec.js';
+/**common -- commontypes**/
+import './common/commontypes/BaseTypesSpec.js';
+import './common/commontypes/BoundsSpec.js';
+import './common/commontypes/DateSpec.js';
+import './common/commontypes/LonLatSpec.js';
+import './common/commontypes/PixelSpec.js';
+import './common/commontypes/VectorSpec.js';
 import './common/commontypes/UtilSpec.js';
-import './common/commonTypes/geometry/CollectionSpec.js';
-import './common/commonTypes/geometry/GeoTextSpec.js';
-import './common/commonTypes/geometry/LineStringSpec.js';
-import './common/commonTypes/geometry/LinearRingSpec.js';
+import './common/commontypes/geometry/CollectionSpec.js';
+import './common/commontypes/geometry/GeoTextSpec.js';
+import './common/commontypes/geometry/LineStringSpec.js';
+import './common/commontypes/geometry/LinearRingSpec.js';
 
 /**common -- overlay**/
 import './common/overlay/feature/ShapeFactorySpec.js';
