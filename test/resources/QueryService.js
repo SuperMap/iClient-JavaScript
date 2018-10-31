@@ -601,3 +601,304 @@ var clientComputationViewJson={
     "currentCount": 414,
     "customResponse": null
 };
+
+var capitals={
+    "recordsets": [
+        {
+            "datasetName": "Capitals@World#1",
+            "features": [
+              
+                {
+                    "fieldNames": [
+                        "SmID",
+                        "SmX",
+                        "SmY",
+                        "SmLibTileID",
+                        "SmUserID",
+                        "SmGeometrySize",
+                        "USERID",
+                        "POP",
+                        "CAPITAL_LO",
+                        "CAPITAL_CH",
+                        "COUNTRY_CH",
+                        "CAPITAL_EN",
+                        "COUNTRY_EN",
+                        "COUNTRY",
+                        "CAP_POP",
+                        "CAPITAL"
+                    ],
+                    "ID": 158,
+                    "fieldValues": [
+                        "158",
+                        "74.77000242310424",
+                        "42.87999593045312",
+                        "1",
+                        "0",
+                        "16",
+                        "0",
+                        "900000.0",
+                        "Бишкек",
+                        "比什凯克",
+                        "吉尔吉斯斯坦",
+                        "Bishkek",
+                        "Kyrgyzstan",
+                        "吉尔吉斯斯坦",
+                        "900000.0",
+                        "比什凯克"
+                    ],
+                    "geometry": {
+                        "id": 158,
+                        "center": {
+                            "y": 42.8799959304531,
+                            "x": 74.7700024231042
+                        },
+                        "style": null,
+                        "parts": [
+                            1
+                        ],
+                        "partTopo": [],
+                        "points": [
+                            {
+                                "y": 42.8799959304531,
+                                "x": 74.7700024231042
+                            }
+                        ],
+                        "type": "POINT"
+                    }
+                },
+                {
+                    "fieldNames": [
+                        "SmID",
+                        "SmX",
+                        "SmY",
+                        "SmLibTileID",
+                        "SmUserID",
+                        "SmGeometrySize",
+                        "USERID",
+                        "POP",
+                        "CAPITAL_LO",
+                        "CAPITAL_CH",
+                        "COUNTRY_CH",
+                        "CAPITAL_EN",
+                        "COUNTRY_EN",
+                        "COUNTRY",
+                        "CAP_POP",
+                        "CAPITAL"
+                    ],
+                    "ID": 159,
+                    "fieldValues": [
+                        "159",
+                        "68.90000429590324",
+                        "38.62999793226339",
+                        "1",
+                        "0",
+                        "16",
+                        "0",
+                        "543107.0",
+                        "Душанбе",
+                        "杜尚别",
+                        "塔吉克斯坦",
+                        "Dushanbe",
+                        "Tajikistan",
+                        "塔吉克斯坦",
+                        "543107.0",
+                        "杜尚别"
+                    ],
+                    "geometry": {
+                        "id": 159,
+                        "center": {
+                            "y": 38.6299979322634,
+                            "x": 68.9000042959032
+                        },
+                        "style": null,
+                        "parts": [
+                            1
+                        ],
+                        "partTopo": [],
+                        "points": [
+                            {
+                                "y": 38.6299979322634,
+                                "x": 68.9000042959032
+                            }
+                        ],
+                        "type": "POINT"
+                    }
+                },
+                {
+                    "fieldNames": [
+                        "SmID",
+                        "SmX",
+                        "SmY",
+                        "SmLibTileID",
+                        "SmUserID",
+                        "SmGeometrySize",
+                        "USERID",
+                        "POP",
+                        "CAPITAL_LO",
+                        "CAPITAL_CH",
+                        "COUNTRY_CH",
+                        "CAPITAL_EN",
+                        "COUNTRY_EN",
+                        "COUNTRY",
+                        "CAP_POP",
+                        "CAPITAL"
+                    ],
+                    "ID": 170,
+                    "fieldValues": [
+                        "170",
+                        "116.38803641666053",
+                        "39.90618904574261",
+                        "1",
+                        "0",
+                        "16",
+                        "0",
+                        "7480601.0",
+                        "北京",
+                        "北京",
+                        "中华人民共和国",
+                        "Beijing",
+                        "China",
+                        "中华人民共和国",
+                        "7480601.0",
+                        "北京"
+                    ],
+                    "geometry": {
+                        "id": 170,
+                        "center": {
+                            "y": 39.9061890457426,
+                            "x": 116.388036416661
+                        },
+                        "style": null,
+                        "parts": [
+                            1
+                        ],
+                        "partTopo": [],
+                        "points": [
+                            {
+                                "y": 39.9061890457426,
+                                "x": 116.388036416661
+                            }
+                        ],
+                        "type": "POINT"
+                    }
+                },
+                
+                {
+                    "fieldNames": [
+                        "SmID",
+                        "SmX",
+                        "SmY",
+                        "SmLibTileID",
+                        "SmUserID",
+                        "SmGeometrySize",
+                        "USERID",
+                        "POP",
+                        "CAPITAL_LO",
+                        "CAPITAL_CH",
+                        "COUNTRY_CH",
+                        "CAPITAL_EN",
+                        "COUNTRY_EN",
+                        "COUNTRY",
+                        "CAP_POP",
+                        "CAPITAL"
+                    ],
+                    "ID": 260,
+                    "fieldValues": [
+                        "260",
+                        "103.0",
+                        "42.0",
+                        "1",
+                        "0",
+                        "20",
+                        "",
+                        "1.0",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "test"
+                    ],
+                    "geometry": {
+                        "id": 260,
+                        "center": {
+                            "y": 42,
+                            "x": 103
+                        },
+                        "style": null,
+                        "parts": [
+                            1
+                        ],
+                        "partTopo": [],
+                        "points": [
+                            {
+                                "y": 42,
+                                "x": 103
+                            }
+                        ],
+                        "type": "POINT"
+                    }
+                }
+            ],
+            "fieldCaptions": [
+                "SmID",
+                "SmX",
+                "SmY",
+                "SmLibTileID",
+                "SmUserID",
+                "SmGeometrySize",
+                "USERID",
+                "POP",
+                "CAPITAL_LO",
+                "CAPITAL_CH",
+                "COUNTRY_CH",
+                "CAPITAL_EN",
+                "COUNTRY_EN",
+                "COUNTRY",
+                "CAP_POP",
+                "CAPITAL"
+            ],
+            "fieldTypes": [
+                "INT32",
+                "DOUBLE",
+                "DOUBLE",
+                "INT32",
+                "INT32",
+                "INT32",
+                "INT32",
+                "DOUBLE",
+                "WTEXT",
+                "WTEXT",
+                "WTEXT",
+                "WTEXT",
+                "WTEXT",
+                "WTEXT",
+                "DOUBLE",
+                "WTEXT"
+            ],
+            "fields": [
+                "SmID",
+                "SmX",
+                "SmY",
+                "SmLibTileID",
+                "SmUserID",
+                "SmGeometrySize",
+                "USERID",
+                "POP",
+                "CAPITAL_LO",
+                "CAPITAL_CH",
+                "COUNTRY_CH",
+                "CAPITAL_EN",
+                "COUNTRY_EN",
+                "COUNTRY",
+                "CAP_POP",
+                "CAPITAL"
+            ]
+        }
+    ],
+    "totalCount": 229,
+    "currentCount": 229,
+    "customResponse": null
+};
