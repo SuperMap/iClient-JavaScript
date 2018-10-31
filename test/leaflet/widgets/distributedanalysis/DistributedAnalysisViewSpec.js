@@ -58,6 +58,11 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
+    afterAll(() => {
+        map=null;
+        window.document.body.removeChild(testDiv);
+    });
     // 分析
     it('analysis',(done)=>{
         expect(distributedAnalysis).not.toBeNull();
