@@ -126,7 +126,7 @@ describe('openlayers_GraphicLayer', () => {
         });
     });
 
-    xit('constructor_webgl', (done) => {
+    it('constructor_webgl', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
         });
@@ -182,7 +182,7 @@ describe('openlayers_GraphicLayer', () => {
         });
     });
 
-    xit('CloverShape', (done) => {
+    it('CloverShape', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
         });
@@ -259,9 +259,9 @@ describe('openlayers_GraphicLayer', () => {
 
                 let pixel = map.getPixelFromCoordinate([-36.16, 39.05]);
                 map.forEachFeatureAtPixel(pixel,
-                    (graphic) => {
+                    (graphic,layer) => {
                         expect(graphic).not.toBeNull();
-                        console.log(graphic);
+                        expect(layer).toEqual(graphicLayer);
                     });
                 // map.removeLayer(graphicLayer);
                 done();
@@ -299,6 +299,16 @@ describe('openlayers_GraphicLayer', () => {
             const graphicSource = graphicLayer.getSource();
             graphicSource.addGraphics(graphics);
             expect(graphicSource.graphics.length).toEqual(10);
+            graphicLayer.getSource()._forEachFeatureAtCoordinate([-35.16, 38.05], 1, (result) => {
+                    expect(result).not.toBeNull();
+                });
+
+                let pixel = map.getPixelFromCoordinate([-35.16, 38.05]);
+                map.forEachFeatureAtPixel(pixel,
+                    (graphic,layer) => {
+                        expect(graphic).toBe(graphics[0]);
+                        expect(layer).toBe(graphicLayer);
+                    });
             done();
         }, 4000);
     });
