@@ -212,7 +212,7 @@ export class Graphic extends ol.source.ImageCanvas {
                     if (callback) {
                         callback(graphics[i], e);
                     }
-                    return;
+                    continue;
                 }
                 if (me.isHighLight) {
                     me._highLightClose();

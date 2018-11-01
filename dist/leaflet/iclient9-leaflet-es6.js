@@ -86456,7 +86456,7 @@ var DistributedAnalysisView = WidgetsViewBase.extend({
                      * @property {L.GeoJSON} layer - 结果图层。
                      * @property {string} name - 结果图层名称。
                      */
-                    this.event.fire('analysissuccessed', {'layer': e.layer, 'name': e.name})
+                    this._event.fire('analysissuccessed', {'layer': e.layer, 'name': e.name})
                 });
                 
                 this.viewModel.on('analysisfailed', (e) => {
@@ -86468,7 +86468,7 @@ var DistributedAnalysisView = WidgetsViewBase.extend({
                      * @description 分析失败后触发。
                      * @property {string} error - 服务器返回错误。
                      */
-                    this.event.fire('analysisfailed', {'error': e.error})
+                    this._event.fire('analysisfailed', {'error': e.error})
                 });
 
                 this.viewModel.analysis(params, this.map);
@@ -86483,7 +86483,7 @@ var DistributedAnalysisView = WidgetsViewBase.extend({
              * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
              */
             this.viewModel.on('layersremoved', (e) => {
-                this.event.fire('layersremoved', { 'layers': e.layers });
+                this._event.fire('layersremoved', { 'layers': e.layers });
             });
             this.viewModel.clearLayers();
         };
