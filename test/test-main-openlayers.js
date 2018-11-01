@@ -4,14 +4,15 @@ import './openlayers/control/ChangeTileVersionSpec.js';
 /*openlayers -- core*/
 import './openlayers/core/StyleUtilsSpec.js';
 import './openlayers/core/UtilSpec.js';
+import './openlayers/core/MapExtendSpec.js';
 
 /*openlayers -- mapping*/
 import './openlayers/mapping/ImageSuperMapRestSpec.js';
 import './openlayers/mapping/WebMapSpec.js';
 
 /*openlayers -- overlay*/
-import  './openlayers/overlay/DataFlowSpec.js';
-import  './openlayers/overlay/graphic/GraphicSpec.js';
+import './openlayers/overlay/DataFlowSpec.js';
+import './openlayers/overlay/graphic/GraphicSpec.js';
 import './openlayers/overlay/GraphicSpec.js';
 
 import './openlayers/overlay/GraphSpec.js';
@@ -59,4 +60,3 @@ import './openlayers/services/ThiessenAnalysisSpec.js';
 import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
 import './openlayers/services/AddressMatchServiceSpec.js';
 import './openlayers/services/GridCellInfosServiceSpec.js';
-

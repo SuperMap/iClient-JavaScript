@@ -7,17 +7,13 @@ import {
     HitCloverShape
 } from '../../../src/openlayers/overlay/graphic/HitCloverShape';
 
-import { Graphic as GraphicObj } from '../../../src/openlayers/overlay/graphic/Graphic'
+import {
+    Graphic as GraphicObj
+} from '../../../src/openlayers/overlay/graphic/Graphic'
 
 import {
     Graphic as GraphicSource
 } from '../../../src/openlayers/overlay/Graphic.js';
-import {
-    MapService
-} from '../../../src/openlayers/services/MapService';
-import {
-    TileSuperMapRest
-} from '../../../src/openlayers/mapping/TileSuperMapRest';
 import {
     FetchRequest
 } from '../../../src/common/util/FetchRequest';
@@ -63,66 +59,59 @@ describe('openlayers_GraphicLayer', () => {
         });
         var count = 5; //矢量点的个数
         var graphics = [];
-        new MapService(url).getMapInfo((serviceResult) => {
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [0, 0],
-                    zoom: 2,
-                    projection: 'EPSG:4326'
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2,
+                projection: 'EPSG:4326'
+            }),
+            renderer: ['canvas']
+        });
+        map.once('postrender', function () {
+            var randomCircleStyles = new ol.style.Circle({
+                radius: 5,
+                fill: new ol.style.Fill({
+                    color: '#000000'
                 }),
-                renderer: ['canvas']
+                stroke: new ol.style.Stroke({
+                    color: '#000000'
+                })
             });
-            map.once('postrender', function () {
-                var options = TileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
-                var layer = new ol.layer.Tile({
-                    source: new TileSuperMapRest(options)
-                });
-                map.addLayer(layer);
-                var randomCircleStyles = new ol.style.Circle({
-                    radius: 5,
-                    fill: new ol.style.Fill({
-                        color: '#000000'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#000000'
-                    })
-                });
-                for (var j = 0; j < count; ++j) {
-                    graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
-                    graphics[j].setStyle(randomCircleStyles);
-                }
-                var clone = graphics[0].clone();
-                expect(clone.getId()).toEqual(graphics[0].getId());
-                expect(clone.getGeometry()).toEqual(graphics[0].getGeometry());
-                expect(clone.getStyle()).toEqual(graphics[0].getStyle());
-                clone.destroy();
-                graphicLayer = new ol.layer.Image({
-                    source: new GraphicSource({
-                        graphics: graphics,
-                        map: map,
-                        highLightStyle: new ol.style.Circle({
-                            radius: 5,
-                            fill: new ol.style.Fill({
-                                color: '#000000'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: '#000000'
-                            })
+            for (var j = 0; j < count; ++j) {
+                graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+                graphics[j].setStyle(randomCircleStyles);
+            }
+            var clone = graphics[0].clone();
+            expect(clone.getId()).toEqual(graphics[0].getId());
+            expect(clone.getGeometry()).toEqual(graphics[0].getGeometry());
+            expect(clone.getStyle()).toEqual(graphics[0].getStyle());
+            clone.destroy();
+            graphicLayer = new ol.layer.Image({
+                source: new GraphicSource({
+                    graphics: graphics,
+                    map: map,
+                    highLightStyle: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                            color: '#000000'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#000000'
                         })
                     })
-                });
-                map.addLayer(graphicLayer);
-                var a = new GraphicSource({
-                    graphics: graphics,
-                    map: map
-                })._forEachFeatureAtCoordinate(coors[1], 1, (result) => {
-                    console.log(result);
-                });
-                expect(a).not.toBeNull();
-                // map.removeLayer(graphicLayer);
-                done();
+                })
             });
+            map.addLayer(graphicLayer);
+            var a = new GraphicSource({
+                graphics: graphics,
+                map: map
+            })._forEachFeatureAtCoordinate(coors[1], 1, (result) => {
+                console.log(result);
+            });
+            expect(a).not.toBeNull();
+            // map.removeLayer(graphicLayer);
+            done();
         });
     });
 
@@ -132,54 +121,47 @@ describe('openlayers_GraphicLayer', () => {
         });
         var count = 5; //矢量点的个数
         var graphics = [];
-        new MapService(url).getMapInfo((serviceResult) => {
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [0, 0],
-                    zoom: 2,
-                    projection: 'EPSG:4326'
-                }),
-                renderer: ['webgl']
-            });
-            var options = TileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
-            var layer = new ol.layer.Tile({
-                source: new TileSuperMapRest(options)
-            });
-            map.addLayer(layer);
-            var randomCircleStyles = new ol.style.RegularShape({
-                radius: 5,
-                fill: new ol.style.Fill({
-                    color: '#000000'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#000000'
-                }),
-                points: 3
-            });
-            for (var j = 0; j < count; ++j) {
-                graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
-                graphics[j].setStyle(randomCircleStyles);
-            }
-            graphicLayer = new ol.layer.Image({
-                source: new GraphicSource({
-                    graphics: graphics,
-                    map: map,
-                    highLightStyle: new ol.style.RegularShape({
-                        radius: 5,
-                        fill: new ol.style.Fill({
-                            color: '#000000'
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: '#000000'
-                        }),
-                        points: 3
-                    })
-                })
-            });
-            map.addLayer(graphicLayer);
-            done();
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2,
+                projection: 'EPSG:4326'
+            }),
+            renderer: ['webgl']
         });
+        var randomCircleStyles = new ol.style.RegularShape({
+            radius: 5,
+            fill: new ol.style.Fill({
+                color: '#000000'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#000000'
+            }),
+            points: 3
+        });
+        for (var j = 0; j < count; ++j) {
+            graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+            graphics[j].setStyle(randomCircleStyles);
+        }
+        graphicLayer = new ol.layer.Image({
+            source: new GraphicSource({
+                graphics: graphics,
+                map: map,
+                highLightStyle: new ol.style.RegularShape({
+                    radius: 5,
+                    fill: new ol.style.Fill({
+                        color: '#000000'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#000000'
+                    }),
+                    points: 3
+                })
+            })
+        });
+        map.addLayer(graphicLayer);
+        done();
     });
 
     it('CloverShape', (done) => {
@@ -188,84 +170,76 @@ describe('openlayers_GraphicLayer', () => {
         });
         var count = 5; //矢量点的个数
         var graphics = [];
-        new MapService(url).getMapInfo((serviceResult) => {
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [0, 0],
-                    zoom: 2,
-                    projection: 'EPSG:4326'
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2,
+                projection: 'EPSG:4326'
+            }),
+            renderer: ['webgl']
+        });
+        map.once('postrender', function () {
+            var cloverShapeStyle = new CloverShape({
+                radius: 20,
+                angle: 30,
+                count: 3,
+                stroke: new ol.style.Stroke({
+                    color: "rgba(0,166,0,1)",
                 }),
-                renderer: ['webgl']
+                fill: new ol.style.Fill({
+                    color: "rgba(0,166,0,1)",
+                }),
+            })
+            expect(cloverShapeStyle.getCount()).toEqual(3);
+            for (var j = 0; j < count; ++j) {
+                graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
+                graphics[j].setStyle(cloverShapeStyle);
+            }
+            var hitCloverShape = new HitCloverShape({
+                radius: 20,
+                angle: 30,
+                stroke: new ol.style.Stroke({
+                    color: "rgba(255,166,0,1)",
+                }),
+                fill: new ol.style.Fill({
+                    color: "rgba(255,166,0,1)",
+                }),
+                sAngle: 30,
+                eAngle: 60
+            })
+            expect(hitCloverShape.getSAngle()).toEqual(30);
+            expect(hitCloverShape.getEAngle()).toEqual(60);
+            graphicLayer = new ol.layer.Image({
+                source: new GraphicSource({
+                    graphics: graphics,
+                    map: map,
+                    onclick: (result) => {
+                        console.log(result);
+                    },
+                    highLightStyle: hitCloverShape
+                })
             });
-            map.once('postrender', function () {
-                var options = TileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
-                var layer = new ol.layer.Tile({
-                    source: new TileSuperMapRest(options)
-                });
-                map.addLayer(layer);
-                var cloverShapeStyle = new CloverShape({
-                    radius: 20,
-                    angle: 30,
-                    count: 3,
-                    stroke: new ol.style.Stroke({
-                        color: "rgba(0,166,0,1)",
-                    }),
-                    fill: new ol.style.Fill({
-                        color: "rgba(0,166,0,1)",
-                    }),
-                })
-                expect(cloverShapeStyle.getCount()).toEqual(3);
-                for (var j = 0; j < count; ++j) {
-                    graphics[j] = new GraphicObj(new ol.geom.Point(coors[j]));
-                    graphics[j].setStyle(cloverShapeStyle);
-                }
-                var hitCloverShape = new HitCloverShape({
-                    radius: 20,
-                    angle: 30,
-                    stroke: new ol.style.Stroke({
-                        color: "rgba(255,166,0,1)",
-                    }),
-                    fill: new ol.style.Fill({
-                        color: "rgba(255,166,0,1)",
-                    }),
-                    sAngle: 30,
-                    eAngle: 60
-                })
-                expect(hitCloverShape.getSAngle()).toEqual(30);
-                expect(hitCloverShape.getEAngle()).toEqual(60);
-                graphicLayer = new ol.layer.Image({
-                    source: new GraphicSource({
-                        graphics: graphics,
-                        map: map,
-                        onclick: (result) => {
-                            console.log(result);
-                        },
-                        highLightStyle: hitCloverShape
-                    })
-                });
-                map.addLayer(graphicLayer);
-                var resolution = 1;
-                graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[2], resolution, (result) => {
-                    console.log(result);
-                    expect(result).not.toBeNull();
-                });
-                graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[1], resolution, (result) => {
-                    expect(result).not.toBeNull();
-                });
-                graphicLayer.getSource()._forEachFeatureAtCoordinate([-126.16, 39.05], resolution, (result) => {
-                    expect(result).not.toBeNull();
-                });
+            map.addLayer(graphicLayer);
+            var resolution = 1;
+            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[2], resolution, (result) => {
+                console.log(result);
+                expect(result).not.toBeNull();
+            });
+            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[1], resolution, (result) => {
+                expect(result).not.toBeNull();
+            });
+            graphicLayer.getSource()._forEachFeatureAtCoordinate([-126.16, 39.05], resolution, (result) => {
+                expect(result).not.toBeNull();
+            });
 
-                let pixel = map.getPixelFromCoordinate([-36.16, 39.05]);
-                map.forEachFeatureAtPixel(pixel,
-                    (graphic,layer) => {
-                        expect(graphic).not.toBeNull();
-                        expect(layer).toEqual(graphicLayer);
-                    });
-                // map.removeLayer(graphicLayer);
-                done();
-            });
+            let pixel = map.getPixelFromCoordinate([-36.16, 39.05]);
+            map.forEachFeatureAtPixel(pixel,
+                (graphic, layer) => {
+                    expect(graphic).not.toBeNull();
+                    expect(layer).toEqual(graphicLayer);
+                });
+            done();
         });
     });
 
@@ -300,15 +274,15 @@ describe('openlayers_GraphicLayer', () => {
             graphicSource.addGraphics(graphics);
             expect(graphicSource.graphics.length).toEqual(10);
             graphicLayer.getSource()._forEachFeatureAtCoordinate([-35.16, 38.05], 1, (result) => {
-                    expect(result).not.toBeNull();
-                });
+                expect(result).not.toBeNull();
+            });
 
-                let pixel = map.getPixelFromCoordinate([-35.16, 38.05]);
-                map.forEachFeatureAtPixel(pixel,
-                    (graphic,layer) => {
-                        expect(graphic).toBe(graphics[0]);
-                        expect(layer).toBe(graphicLayer);
-                    });
+            let pixel = map.getPixelFromCoordinate([-35.16, 38.05]);
+            map.forEachFeatureAtPixel(pixel,
+                (graphic, layer) => {
+                    expect(graphic).toBe(graphics[0]);
+                    expect(layer).toBe(graphicLayer);
+                });
             done();
         }, 4000);
     });
@@ -583,10 +557,10 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it('forEachFeatureAtCoordinate_ICL_1047',(done)=>{
+    it('forEachFeatureAtCoordinate_ICL_1047', (done) => {
         //三叶草的生成坐标
-        var coordinate=[
-            [ 50.154958667070076,-0.89592969754775]
+        var coordinate = [
+            [50.154958667070076, -0.89592969754775]
         ];
         let graphics = [];
         map = new ol.Map({
@@ -623,7 +597,7 @@ describe('openlayers_GraphicLayer', () => {
             count: 1,
             stroke: new ol.style.Stroke({
                 color: "rgba(0,166,0,1)",
-                width:1
+                width: 1
             }),
             fill: new ol.style.Fill({
                 color: "rgba(0,166,0,1)",
@@ -636,22 +610,22 @@ describe('openlayers_GraphicLayer', () => {
                 var resolution = 1;
                 var evtPixel = [-35.16, 38.05];
                 //1、当鼠标点击在三叶草叶子内时,得到要素,调用高亮函数
-                var innerCoors = [25.576171875,-27.158203125];
-                var callback = function (a,b) {
+                var innerCoors = [25.576171875, -27.158203125];
+                var callback = function (a, b) {
                     expect(b).toNotBe(null);
-                    expect(a.coordinate).toBe([25.576171875,-27.158203125]);
+                    expect(a.coordinate).toBe([25.576171875, -27.158203125]);
                 };
-                graphicLayer.getSource()._forEachFeatureAtCoordinate(innerCoors,resolution,callback,evtPixel);
+                graphicLayer.getSource()._forEachFeatureAtCoordinate(innerCoors, resolution, callback, evtPixel);
                 spyOn(graphicLayer, '_highLight');
-                expect( graphicLayer.getSource()._highLight).toHaveBeenCalled();
+                expect(graphicLayer.getSource()._highLight).toHaveBeenCalled();
                 //2、当鼠标点击在三叶草外时, 关闭高亮，返回undefined
-                var outerCoors=[ 27.685546875,-26.015625];
-                var re=graphicLayer.getSource()._forEachFeatureAtCoordinate(outerCoors,resolution,callback,evtPixel);
+                var outerCoors = [27.685546875, -26.015625];
+                var re = graphicLayer.getSource()._forEachFeatureAtCoordinate(outerCoors, resolution, callback, evtPixel);
                 spyOn(graphicLayer, '_highLightClose');
-                expect( graphicLayer.getSource()._highLightClose).toHaveBeenCalled();
+                expect(graphicLayer.getSource()._highLightClose).toHaveBeenCalled();
                 expect(re).toBe(undefined);
             }
             done();
-            }, 4000);
+        }, 4000);
     });
 });
