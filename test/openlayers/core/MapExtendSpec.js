@@ -74,12 +74,14 @@ describe('openlayers_MapExtend', () => {
             });
 
             let pixel = map.getPixelFromCoordinate([30, 30]);
+            let count = 0;
             map.forEachFeatureAtPixel(pixel,
                 (graphic, layer) => {
-                    console.log(1);
+                    count++;
                     expect(graphics).toContain(graphic);
                     expect(layer).toBe(graphicLayer);
                 });
+            expect(count).toBe(2); 
             expect(map.getFeaturesAtPixel(pixel).length).toBe(2);
             map.removeLayer(graphicLayer);
             done();
@@ -138,12 +140,14 @@ describe('openlayers_MapExtend', () => {
 
         setTimeout(() => {
             let pixel = map.getPixelFromCoordinate([-11, 7]);
+            let count=0;
             map.forEachFeatureAtPixel(pixel,
                 (feature, layer) => {
-                    console.log(2);
+                    count++;
                     expect([feature, feature1, feature2]).toContain(feature);
                     expect([vectorLayer1, vectorLayer, vectorLayer2]).toContain(layer);
                 });
+            expect(count).toBe(3);
             expect(map.getFeaturesAtPixel(pixel).length).toBe(3);
             map.removeLayer(layers);
             done();

@@ -107,15 +107,13 @@ describe('openlayers_GraphicLayer', () => {
                 graphics: graphics,
                 map: map
             })._forEachFeatureAtCoordinate(coors[1], 1, (result) => {
-                console.log(result);
+                expect(result).not.toBeNull();
             });
-            expect(a).not.toBeNull();
-            // map.removeLayer(graphicLayer);
             done();
         });
     });
 
-    it('constructor_webgl', (done) => {
+    xit('constructor_webgl', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
         });
@@ -176,8 +174,7 @@ describe('openlayers_GraphicLayer', () => {
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
-            }),
-            renderer: ['webgl']
+            })
         });
         map.once('postrender', function () {
             var cloverShapeStyle = new CloverShape({
@@ -223,7 +220,6 @@ describe('openlayers_GraphicLayer', () => {
             map.addLayer(graphicLayer);
             var resolution = 1;
             graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[2], resolution, (result) => {
-                console.log(result);
                 expect(result).not.toBeNull();
             });
             graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[1], resolution, (result) => {
