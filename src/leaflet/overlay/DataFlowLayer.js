@@ -63,6 +63,11 @@ export var DataFlowLayer = L.LayerGroup.extend({
         L.Util.setOptions(this, options);
         this.url = url;
         this._layers = {};
+        this.dataService = new DataFlowService(this.url, {
+            geometry: this.options.geometry,
+            prjCoordSys: this.options.prjCoordSys,
+            excludeField: this.options.excludeField
+        })
 
     },
     /**
@@ -72,11 +77,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
      * @param {L.Map} map - 待添加的地图。
      */
     onAdd: function (map) { // eslint-disable-line no-unused-vars
-        this.dataService = new DataFlowService(this.url, {
-            geometry: this.options.geometry,
-            prjCoordSys: this.options.prjCoordSys,
-            excludeField: this.options.excludeField
-        }).initSubscribe();
+        this.dataService.initSubscribe();
         /**
          * @event L.supermap.dataFlowLayer#subscribesuccessed
          * @description 初始化成功后触发。

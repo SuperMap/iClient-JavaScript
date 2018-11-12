@@ -90,6 +90,7 @@
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-teamcity-reporter": "^1.0.0",
+    "mock-socket": "^8.0.5",
     "nightwatch": "^0.9.5",
     "open": "0.0.5",
     "pngjs": "^3.3.0",

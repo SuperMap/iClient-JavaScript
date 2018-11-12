@@ -74,4 +74,5 @@ import './leaflet/widgets/dataservicequery/DataServiceQueryViewSpec.js';
 import './leaflet/widgets/distributedanalysis/DistributedAnalysisViewSpec.js';
 import './leaflet/widgets/clientcomputation/ClientComputationViewSpec.js';
 import './leaflet/widgets/search/SearchViewSpec.js';
+import './leaflet/widgets/dataflow/DataFlowViewSpec.js';
 

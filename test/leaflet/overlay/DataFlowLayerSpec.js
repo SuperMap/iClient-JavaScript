@@ -1,16 +1,14 @@
 ﻿﻿import { dataFlowService } from '../../../src/leaflet/services/DataFlowService';
 import { dataFlowLayer } from '../../../src/leaflet/overlay/DataFlowLayer';
 import { SecurityManager } from '../../../src/common/security/SecurityManager';
-import { tiledMapLayer } from '../../../src/leaflet/mapping/TiledMapLayer';
-
-var wsHost = "ws:\//" + "54.223.164.155:8800";
-var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
-var urlMap = "http://54.223.164.155:8090/iserver/services/map-china400/rest/maps/China";
+import { Server } from 'mock-socket';
+var urlDataFlow = "ws:\//localhost:8001/";
+var server;
 describe('leaflet_DataFlowLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    // var token = "15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..";
-    var token = "0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..";
+    var layer, service;
+    var mockServer = new Server(urlDataFlow);
     beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -20,7 +18,6 @@ describe('leaflet_DataFlowLayer', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "400px";
         window.document.body.appendChild(testDiv);
-        SecurityManager.registerToken(urlDataFlow, token);
         map = L.map('map', {
             preferCanvas: true,
             crs: L.CRS.EPSG3857,
@@ -28,19 +25,48 @@ describe('leaflet_DataFlowLayer', () => {
             maxZoom: 18,
             zoom: 12
         });
-        tiledMapLayer(urlMap).addTo(map);
 
-
+        var e = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [0, 0]
+            },
+            "properties": {
+                "id": 1
+            }
+    };
+        mockServer.on('connection', socket => {
+            socket.on('message', () => {
+                console.log("onmessage");
+             });
+            socket.on('close', () => { });
+            socket.send(JSON.stringify(e));
+            socket.close();
+        });
     });
     beforeEach(() => {
+        layer = null;
+        service = null;
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
 
     });
     afterEach(() => {
+        if (service) {
+            service.unSubscribe();
+            service.unBroadcast();
+            service.destroy();
+        }
+        if (layer) {
+            layer.remove();
+        }
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(() => {
+        mockServer.stop();
+        mockServer=null;
+        map = null;
         window.document.body.removeChild(testDiv);
     });
 
@@ -63,8 +89,6 @@ describe('leaflet_DataFlowLayer', () => {
             };
             flowService.broadcast(feature);
         }
-
-        var layer;
         var service;
         var timer;
         try {
@@ -79,9 +103,10 @@ describe('leaflet_DataFlowLayer', () => {
                 }
             });
             layer.addTo(map);
-            service = dataFlowService(urlDataFlow);
+            service = layer.dataService;
             spyOn(service.dataFlow, '_connect').and.callFake(() => {
-                return new WebSocket(urlDataFlow + '/broadcast' + "?token=" + token);
+
+                return new WebSocket(urlDataFlow);
             });
 
             service.initBroadcast();
@@ -90,7 +115,6 @@ describe('leaflet_DataFlowLayer', () => {
                 expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
                 expect(dataFlow.EVENT_TYPES.length).toEqual(8);
                 expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
-                expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast?token=" + token);
                 timer = window.setInterval(broadcast_Point(service), 1000);
             });
 
@@ -106,14 +130,6 @@ describe('leaflet_DataFlowLayer', () => {
         finally {
             if (timer) {
                 window.clearInterval(timer);
-            }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-                service.destroy();
-            }
-            if (layer) {
-                layer.remove();
             }
         }
     });
@@ -131,16 +147,14 @@ describe('leaflet_DataFlowLayer', () => {
             };
             flowService.broadcast(feature);
         }
-
-        var layer;
-        var service;
         var timer;
         try {
             layer = dataFlowLayer(urlDataFlow);
             layer.addTo(map);
-            service = dataFlowService(urlDataFlow);
+            service = layer.dataService;
             spyOn(service.dataFlow, '_connect').and.callFake(() => {
-                return new WebSocket(urlDataFlow + '/broadcast' + "?token=" + token);
+
+                return new WebSocket(urlDataFlow);
             });
             service.initBroadcast();
             service.on('broadcastSocketConnected', (e) => {
@@ -154,15 +168,6 @@ describe('leaflet_DataFlowLayer', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-                service.destroy();
-            }
-            if (layer) {
-                layer.remove();
-            }
-
         }
     });
 
@@ -180,15 +185,16 @@ describe('leaflet_DataFlowLayer', () => {
             flowService.broadcast(feature);
         }
 
-        var layer;
+
         var service;
         var timer;
         try {
             layer = dataFlowLayer(urlDataFlow);
             layer.addTo(map);
-            service = dataFlowService(urlDataFlow);
+            service = layer.dataService;
             spyOn(service.dataFlow, '_connect').and.callFake(() => {
-                return new WebSocket(urlDataFlow + '/broadcast' + "?token=" + token);
+
+                return new WebSocket(urlDataFlow);
             });
             service.initBroadcast();
             service.on('broadcastSocketConnected', (e) => {
@@ -205,15 +211,6 @@ describe('leaflet_DataFlowLayer', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-                service.destroy();
-            }
-            if (layer) {
-                layer.remove();
-            }
-
         }
     });
 
@@ -231,15 +228,16 @@ describe('leaflet_DataFlowLayer', () => {
             flowService.broadcast(feature);
         }
 
-        var layer;
+
         var service;
         var timer;
         try {
             layer = dataFlowLayer(urlDataFlow);
             layer.addTo(map);
-            service = dataFlowService(urlDataFlow);
+            service = layer.dataService;
             spyOn(service.dataFlow, '_connect').and.callFake(() => {
-                return new WebSocket(urlDataFlow + '/broadcast' + "?token=" + token);
+
+                return new WebSocket(urlDataFlow);
             });
             service.initBroadcast();
             service.on('broadcastSocketConnected', (e) => {
@@ -256,37 +254,23 @@ describe('leaflet_DataFlowLayer', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-                service.destroy();
-            }
-            if (layer) {
-                layer.remove();
-            }
+
         }
     });
 
     it('onRemove', (done) => {
-        var layer;
-        try {
-            layer = dataFlowLayer(urlDataFlow);
-            layer.addTo(map);
-            layer.onRemove(map);
-            setTimeout(() => {
-                expect(layer).not.toBeNull();
-                done();
-            }, 4000)
-        } finally {
-            if (layer) {
-                layer.remove();
-            }
-        }
+
+        layer = dataFlowLayer(urlDataFlow);
+        layer.addTo(map);
+        layer.onRemove(map);
+        setTimeout(() => {
+            expect(layer).not.toBeNull();
+            done();
+        }, 4000)
     });
 
     it('setExcludeField', (done) => {
-        var layer;
-        var socket = new WebSocket(urlDataFlow + '/broadcast' + "?token=" + token);
+        var socket = new WebSocket(urlDataFlow);
         try {
             layer = dataFlowLayer(urlDataFlow);
             var dataService = new dataFlowService(urlDataFlow, null)
@@ -294,7 +278,6 @@ describe('leaflet_DataFlowLayer', () => {
                 return socket;
             });
             spyOn(socket, "send").and.callFake(() => {
-
             });
             layer.dataService = dataService.initSubscribe();
             setTimeout(() => {
@@ -305,39 +288,72 @@ describe('leaflet_DataFlowLayer', () => {
         } catch (e) {
             console.log(e);
         }
-        finally {
-            if (layer) {
-                layer.remove();
-            }
-        }
     });
 
     it('setGeometry', (done) => {
-        var layer;
-        var socket = new WebSocket(urlDataFlow + '/broadcast' + "?token=" + token);
-        try {
-            layer = dataFlowLayer(urlDataFlow);
-            var dataService = new dataFlowService(urlDataFlow, null)
-            spyOn(dataService.dataFlow, '_connect').and.callFake(() => {
-                return socket;
-            });
-            spyOn(socket, "send").and.callFake(() => {
-            });
-            layer.dataService = dataService.initSubscribe();
-            var geometry = {
-                coordinates: [[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8415115329708], [116.381741960923, 39.8765100055449]]],
-                type: "Polygon"
-            };
-            setTimeout(() => {
-                layer.setGeometry(geometry);
-                expect(layer).not.toBeNull();
-                done();
-            }, 4000)
-        } finally {
-            if (layer) {
-                layer.remove();
+
+        var socket = new WebSocket(urlDataFlow);
+
+        layer = dataFlowLayer(urlDataFlow);
+        var dataService = new dataFlowService(urlDataFlow, null)
+        spyOn(dataService.dataFlow, '_connect').and.callFake(() => {
+            return socket;
+        });
+        spyOn(socket, "send").and.callFake(() => {
+        });
+        layer.dataService = dataService.initSubscribe();
+        var geometry = {
+            coordinates: [[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8415115329708], [116.381741960923, 39.8765100055449]]],
+            type: "Polygon"
+        };
+        setTimeout(() => {
+            layer.setGeometry(geometry);
+            expect(layer).not.toBeNull();
+            done();
+        }, 4000)
+
+    });
+
+    it('_onMessageSuccessed', (done) => {
+        var socket = new WebSocket(urlDataFlow);
+        spyOn(socket, "send").and.callFake(() => {
+        });
+        layer = dataFlowLayer(urlDataFlow);
+        spyOn(layer.dataService.dataFlow, '_connect').and.callFake(() => {
+            return socket;
+        });
+        layer.addTo(map);
+
+        var e = {
+            featureResult:
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [0, 0]
+                },
+                "properties": {
+                    "id": 1
+                }
             }
-        }
+        };
+      
+        setTimeout(() => {
+            layer.on('dataupdated', (e) => {
+                try {
+                    expect(e.layer).not.toBeNull;
+                    expect(e.layer).not.toBeUndefined;
+                    done();
+
+                } catch (exception) {
+                    console.log("'_onMessageSuccessed'案例失败：" + exception.name + ":" + exception.message);
+                    expect(false).toBeTruthy();
+                    done();
+                }
+            });
+            layer.dataService.dataFlow.events.triggerEvent('messageSuccessed', e);
+        }, 2000)
+
     });
 });
 
