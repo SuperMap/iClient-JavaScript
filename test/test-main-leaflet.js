@@ -13,7 +13,7 @@ import './leaflet/mapping/TileLayer.WMTSSpec.js';
 import './leaflet/mapping/WebMapSpec.js';
 
 /*leaflet -- overlay*/
-import './leaflet/overlay/DataFlowlayerSpec.js';
+
 import './leaflet/overlay/EchartsLayerSpec.js';
 /*deck相关测试未通过，待解决后打开注释*/
 import './leaflet/overlay/graphic/GraphicSpec.js';
@@ -75,4 +75,5 @@ import './leaflet/widgets/distributedanalysis/DistributedAnalysisViewSpec.js';
 import './leaflet/widgets/clientcomputation/ClientComputationViewSpec.js';
 import './leaflet/widgets/search/SearchViewSpec.js';
 import './leaflet/widgets/dataflow/DataFlowViewSpec.js';
+import './leaflet/overlay/DataFlowlayerSpec.js';
 

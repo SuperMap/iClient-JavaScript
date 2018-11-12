@@ -10,6 +10,7 @@ var wsHost = "ws:\//" + "54.223.164.155:8800";
 var urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
 describe('mapboxgl_DataFlowService', () => {
     var originalTimeout;
+    var service;
     var token = "15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..";
     beforeAll(() => {
         SecurityManager.registerToken(urlDataFlow, token);
@@ -17,10 +18,15 @@ describe('mapboxgl_DataFlowService', () => {
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+        service=null;
 
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        if (service) {
+            service.unSubscribe();
+            service.unBroadcast();
+        }
     });
 
     /* it('initSubscribe', (done) => {
@@ -50,7 +56,7 @@ describe('mapboxgl_DataFlowService', () => {
                     type: "Point"
                 },
                 id: 1,
-                type: "Featur\e",
+                type: "Feature",
                 properties: {
                     id: 1,
                     time: new Date()
@@ -58,7 +64,7 @@ describe('mapboxgl_DataFlowService', () => {
             };
             flowService.broadcast(feature);
         }
-        var service;
+      
         var timer;
         try {
             service = new DataFlowService(urlDataFlow);
@@ -78,10 +84,6 @@ describe('mapboxgl_DataFlowService', () => {
         } finally {
             if (timer) {
                 window.clearInterval(timer);
-            }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
             }
         }
     });
@@ -107,7 +109,7 @@ describe('mapboxgl_DataFlowService', () => {
             flowService.broadcast(feature);
         }
 
-        var service;
+      
         var timer;
         try {
             service = new DataFlowService(urlDataFlow);
@@ -123,10 +125,7 @@ describe('mapboxgl_DataFlowService', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
+           
         }
     });
 
@@ -154,7 +153,7 @@ describe('mapboxgl_DataFlowService', () => {
             flowService.broadcast(feature);
         }
 
-        var service;
+      
         var timer;
         try {
             service = new DataFlowService(urlDataFlow);
@@ -171,10 +170,6 @@ describe('mapboxgl_DataFlowService', () => {
         } finally {
             if (timer) {
                 window.clearInterval(timer);
-            }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
             }
         }
     });
@@ -212,7 +207,7 @@ describe('mapboxgl_DataFlowService', () => {
             };
             flowService.broadcast(feature);
         }
-        var service;
+      
         var timer;
         try {
             service = new DataFlowService(urlDataFlow);
@@ -229,10 +224,6 @@ describe('mapboxgl_DataFlowService', () => {
         } finally {
             if (timer) {
                 window.clearInterval(timer);
-            }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
             }
         }
     });

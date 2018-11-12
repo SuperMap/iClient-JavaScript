@@ -25,6 +25,7 @@ describe('ol_DataFlow', () => {
     var fill = new ol.style.Fill({
         color: 'rgba(255,0,0,0.9)'
     });
+    var layer,service;
     beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -52,10 +53,19 @@ describe('ol_DataFlow', () => {
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+         layer = null;
+         service = null;
 
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        if (service) {
+            service.unSubscribe();
+            service.unBroadcast();
+        }
+        if (layer) {
+            map.removeLayer(layer);
+        }
     });
     afterAll(() => {
         window.document.body.removeChild(testDiv);
@@ -79,8 +89,8 @@ describe('ol_DataFlow', () => {
             flowService.broadcast(feature);
         }
 
-        var layer;
-        var service;
+       
+      
         var timer;
         try {
             var layer = new ol.layer.Vector({
@@ -115,13 +125,7 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
-            if (layer) {
-                map.removeLayer(layer);
-            }
+
         }
     });
 
@@ -146,8 +150,8 @@ describe('ol_DataFlow', () => {
             flowService.broadcast(feature);
         }
 
-        var layer;
-        var service;
+       
+      
         var timer;
         try {
             var layer = new ol.layer.Vector({
@@ -176,15 +180,7 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
-            if (layer) {
-                map.removeLayer(layer);
-            }
-
-        }
+                    }
     });
 
     it('broadcast_Polygon', (done) => {
@@ -211,8 +207,8 @@ describe('ol_DataFlow', () => {
             flowService.broadcast(feature);
         }
 
-        var layer;
-        var service;
+       
+      
         var timer;
         try {
             var layer = new ol.layer.Vector({
@@ -243,14 +239,7 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
-            }
-            if (layer) {
-                map.removeLayer(layer);
-            }
-
+           
         }
     });
 
@@ -288,8 +277,8 @@ describe('ol_DataFlow', () => {
             flowService.broadcast(feature);
         }
 
-        var layer;
-        var service;
+       
+      
         var timer;
         try {
             var layer = new ol.layer.Vector({
@@ -320,27 +309,18 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (service) {
-                service.unSubscribe();
-                service.unBroadcast();
             }
-            if (layer) {
-                map.removeLayer(layer);
-            }
-
-        }
     });
 
     it('setExcludeField', (done) => {
-        var layer;
-        try {
+       
             var source = new ol.source.DataFlow({
                 ws: urlDataFlow
             });
-            source.on('subscribeSuccessed',(e) => {
+            source.on('subscribeSuccessed', (e) => {
                 source.setExcludeField("id");
             });
-            
+
             var layer = new ol.layer.Vector({
                 source: source,
                 style: new ol.style.Style({
@@ -357,17 +337,10 @@ describe('ol_DataFlow', () => {
                 expect(layer).not.toBeNull();
                 done();
             }, 4000)
-        } finally {
-            if (layer) {
-                map.removeLayer(layer);
-            }
-
-        }
+        
     });
 
     it('setGeometry', (done) => {
-        var layer;
-        try {
             var source = new ol.source.DataFlow({
                 ws: urlDataFlow
             });
@@ -383,10 +356,10 @@ describe('ol_DataFlow', () => {
                 ],
                 type: "Polygon"
             };
-            source.on('subscribeSuccessed',(e) => {
+            source.on('subscribeSuccessed', (e) => {
                 source.setGeometry(geometry);
             });
-            
+
             var layer = new ol.layer.Vector({
                 source: source,
                 style: new ol.style.Style({
@@ -403,12 +376,5 @@ describe('ol_DataFlow', () => {
                 expect(layer).not.toBeNull();
                 done();
             }, 4000)
-        } finally {
-
-            if (layer) {
-                map.removeLayer(layer);
-            }
-
-        }
     });
 });

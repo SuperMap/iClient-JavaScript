@@ -59,7 +59,8 @@ describe('leaflet_DataFlowLayer', () => {
             service.destroy();
         }
         if (layer) {
-            layer.remove();
+            layer.onRemove(map);
+            layer=null;
         }
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
@@ -73,7 +74,6 @@ describe('leaflet_DataFlowLayer', () => {
     xit('bug', () => {
         console.log('1、destroy分支走不进去');
         console.log('2、unBroadcast的if分支条件缺少!');
-        console.log("3、setGeometry、setExcludeField方法报错:Failed to execute 'send' on 'WebSocket: Still in CONNECTING state'");
     });
 
     it('broadcast_Point', (done) => {
@@ -89,7 +89,7 @@ describe('leaflet_DataFlowLayer', () => {
             };
             flowService.broadcast(feature);
         }
-        var service;
+      
         var timer;
         try {
             layer = dataFlowLayer(urlDataFlow, {
@@ -105,7 +105,6 @@ describe('leaflet_DataFlowLayer', () => {
             layer.addTo(map);
             service = layer.dataService;
             spyOn(service.dataFlow, '_connect').and.callFake(() => {
-
                 return new WebSocket(urlDataFlow);
             });
 
@@ -184,9 +183,6 @@ describe('leaflet_DataFlowLayer', () => {
             };
             flowService.broadcast(feature);
         }
-
-
-        var service;
         var timer;
         try {
             layer = dataFlowLayer(urlDataFlow);
@@ -228,8 +224,6 @@ describe('leaflet_DataFlowLayer', () => {
             flowService.broadcast(feature);
         }
 
-
-        var service;
         var timer;
         try {
             layer = dataFlowLayer(urlDataFlow);
