@@ -47,16 +47,16 @@ export class DataFlow extends ol.source.Vector {
         this.featureCache = {};
     }
 
-    /**
-     * @function ol.source.DataFlow.prototype.setPrjCoordSys
-     * @description 设置坐标参考系。
-     * @param {Object} prjCoordSys - 参考系。
-     */
-    setPrjCoordSys(prjCoordSys) {
-        this.dataService.setPrjCoordSys(prjCoordSys);
-        this.prjCoordSys = prjCoordSys;
-        return this;
-    }
+    // /**
+    //  * @function ol.source.DataFlow.prototype.setPrjCoordSys
+    //  * @description 设置坐标参考系。
+    //  * @param {Object} prjCoordSys - 参考系。
+    //  */
+    // setPrjCoordSys(prjCoordSys) {
+    //     this.dataService.setPrjCoordSys(prjCoordSys);
+    //     this.prjCoordSys = prjCoordSys;
+    //     return this;
+    // }
 
     /**
      * @function ol.source.DataFlow.prototype.setExcludeField

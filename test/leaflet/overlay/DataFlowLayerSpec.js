@@ -1,6 +1,5 @@
 ﻿﻿import { dataFlowService } from '../../../src/leaflet/services/DataFlowService';
 import { dataFlowLayer } from '../../../src/leaflet/overlay/DataFlowLayer';
-import { SecurityManager } from '../../../src/common/security/SecurityManager';
 import { Server } from 'mock-socket';
 var urlDataFlow = "ws:\//localhost:8001/";
 var server;
@@ -53,14 +52,14 @@ describe('leaflet_DataFlowLayer', () => {
 
     });
     afterEach(() => {
+        if (layer) {
+            layer.onRemove(map);
+            layer=null;
+        }
         if (service) {
             service.unSubscribe();
             service.unBroadcast();
             service.destroy();
-        }
-        if (layer) {
-            layer.onRemove(map);
-            layer=null;
         }
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
@@ -69,11 +68,6 @@ describe('leaflet_DataFlowLayer', () => {
         mockServer=null;
         map = null;
         window.document.body.removeChild(testDiv);
-    });
-
-    xit('bug', () => {
-        console.log('1、destroy分支走不进去');
-        console.log('2、unBroadcast的if分支条件缺少!');
     });
 
     it('broadcast_Point', (done) => {
@@ -102,12 +96,11 @@ describe('leaflet_DataFlowLayer', () => {
                     };
                 }
             });
-            layer.addTo(map);
             service = layer.dataService;
             spyOn(service.dataFlow, '_connect').and.callFake(() => {
                 return new WebSocket(urlDataFlow);
             });
-
+            layer.addTo(map);
             service.initBroadcast();
             service.on('broadcastSocketConnected', (e) => {
                 var dataFlow = service.dataFlow;
@@ -123,6 +116,7 @@ describe('leaflet_DataFlowLayer', () => {
                 expect(layer.options).not.toBeNull();
                 expect(service).not.toBeNull();
                 expect(service._events.broadcastSocketConnected.length).toEqual(1);
+                service.unBroadcast();
                 done();
             }, 4000)
         }
@@ -345,6 +339,7 @@ describe('leaflet_DataFlowLayer', () => {
                     done();
                 }
             });
+            // done();
             layer.dataService.dataFlow.events.triggerEvent('messageSuccessed', e);
         }, 2000)
 

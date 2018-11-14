@@ -1,31 +1,23 @@
 ﻿﻿import ol from 'openlayers';
 import {
-    TileSuperMapRest
-} from '../../../src/openlayers/mapping/TileSuperMapRest';
-import {
     DataFlowService
 } from '../../../src/openlayers/services/DataFlowService';
 import {
     DataFlow
 } from '../../../src/openlayers/overlay/DataFlow';
-import {
-    SecurityManager
-} from '../../../src/common/security/SecurityManager';
-import {
-    TiledMapLayer
-} from '../../../src/leaflet/mapping/TiledMapLayer';
 
-var wsHost = "ws:\//" + "54.223.164.155:8800";
-var urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
-var urlMap = "http://54.223.164.155:8090/iserver/services/map-china400/rest/maps/China";
+import { Server } from 'mock-socket';
+var urlDataFlow = "ws:\//localhost:8004/";
+var server;
+
 describe('ol_DataFlow', () => {
     var originalTimeout;
     var testDiv, map;
-    var token = "15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..";
     var fill = new ol.style.Fill({
         color: 'rgba(255,0,0,0.9)'
     });
-    var layer,service;
+    var layer, service;
+    var mockServer = new Server(urlDataFlow);
     beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -35,7 +27,6 @@ describe('ol_DataFlow', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "400px";
         window.document.body.appendChild(testDiv);
-        SecurityManager.registerToken(urlDataFlow, token);
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -44,17 +35,30 @@ describe('ol_DataFlow', () => {
                 projection: 'EPSG:3857'
             })
         });
-        // map.addLayer(new ol.layer.Tile({
-        //     source: new TileSuperMapRest({
-        //         urlMap: urlMap
-        //     })
-        // }));
+        var e = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [0, 0]
+            },
+            "properties": {
+                "id": 1
+            }
+        };
+        mockServer.on('connection', socket => {
+            socket.on('message', () => {
+                console.log("onmessage");
+            });
+            socket.on('close', () => { });
+            socket.send(JSON.stringify(e));
+            socket.close();
+        });
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-         layer = null;
-         service = null;
+        layer = null;
+        service = null;
 
     });
     afterEach(() => {
@@ -68,6 +72,9 @@ describe('ol_DataFlow', () => {
         }
     });
     afterAll(() => {
+        mockServer.stop();
+        mockServer = null;
+        map = null;
         window.document.body.removeChild(testDiv);
     });
 
@@ -89,8 +96,6 @@ describe('ol_DataFlow', () => {
             flowService.broadcast(feature);
         }
 
-       
-      
         var timer;
         try {
             var layer = new ol.layer.Vector({
@@ -113,7 +118,7 @@ describe('ol_DataFlow', () => {
                 expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
                 expect(dataFlow.EVENT_TYPES.length).toEqual(8);
                 expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
-                expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast?token=" + token);
+                expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "broadcast");
                 timer = window.setInterval(broadcast_Point(service), 1000);
             });
 
@@ -149,9 +154,6 @@ describe('ol_DataFlow', () => {
             };
             flowService.broadcast(feature);
         }
-
-       
-      
         var timer;
         try {
             var layer = new ol.layer.Vector({
@@ -180,7 +182,7 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-                    }
+        }
     });
 
     it('broadcast_Polygon', (done) => {
@@ -207,8 +209,8 @@ describe('ol_DataFlow', () => {
             flowService.broadcast(feature);
         }
 
-       
-      
+
+
         var timer;
         try {
             var layer = new ol.layer.Vector({
@@ -239,7 +241,7 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-           
+
         }
     });
 
@@ -276,9 +278,6 @@ describe('ol_DataFlow', () => {
             };
             flowService.broadcast(feature);
         }
-
-       
-      
         var timer;
         try {
             var layer = new ol.layer.Vector({
@@ -309,72 +308,67 @@ describe('ol_DataFlow', () => {
             if (timer) {
                 window.clearInterval(timer);
             }
-            }
+        }
     });
 
     it('setExcludeField', (done) => {
+        var source = new ol.source.DataFlow({
+            ws: urlDataFlow
+        });
+        var socket = new WebSocket(urlDataFlow);
+        var service = new DataFlowService(urlDataFlow)
+        source.dataService = service;
+        spyOn(socket, "send").and.callFake(() => {
+            console.log("fakesend");
+        });
+        spyOn(source.dataService.dataFlow, '_connect').and.callFake(() => {
+            return socket;
+        });
        
-            var source = new ol.source.DataFlow({
-                ws: urlDataFlow
-            });
-            source.on('subscribeSuccessed', (e) => {
-                source.setExcludeField("id");
-            });
+        source.dataService.initSubscribe();
+        setTimeout(() => {
+            source.setExcludeField("id");
+            expect(source.excludeField).toBe("id");
+            done();
+        }, 4000)
 
-            var layer = new ol.layer.Vector({
-                source: source,
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
-                        fill: fill,
-                        radius: 6
-                    }),
-                    fill: fill,
-                })
-            });
-            map.addLayer(layer);
-
-            setTimeout(() => {
-                expect(layer).not.toBeNull();
-                done();
-            }, 4000)
-        
     });
 
     it('setGeometry', (done) => {
-            var source = new ol.source.DataFlow({
-                ws: urlDataFlow
-            });
-            var geometry = {
-                coordinates: [
-                    [
-                        [116.381741960923, 39.8765100055449],
-                        [116.414681699817, 39.8765100055449],
-                        [116.414681699817, 39.8415115329708],
-                        [116.381741960923, 39.8415115329708],
-                        [116.381741960923, 39.8765100055449]
-                    ]
-                ],
-                type: "Polygon"
-            };
-            source.on('subscribeSuccessed', (e) => {
-                source.setGeometry(geometry);
-            });
+        var source = new ol.source.DataFlow({
+            ws: urlDataFlow
+        });
+        var socket = new WebSocket(urlDataFlow);
+        var service = new DataFlowService(urlDataFlow)
+        source.dataService = service;
+        spyOn(socket, "send").and.callFake(() => {
+            console.log("fakesend");
+        });
+        spyOn(source.dataService.dataFlow, '_connect').and.callFake(() => {
+            return socket;
+        });
+       
+        source.dataService.initSubscribe();
+        // spyOn(source.service.dataFlow.subscribeWebSocket, "send").and.callFake(() => {
+        //     console.log("fakesend");
+        // });
+        var geometry = {
+            coordinates: [
+                [
+                    [116.381741960923, 39.8765100055449],
+                    [116.414681699817, 39.8765100055449],
+                    [116.414681699817, 39.8415115329708],
+                    [116.381741960923, 39.8415115329708],
+                    [116.381741960923, 39.8765100055449]
+                ]
+            ],
+            type: "Polygon"
+        };
 
-            var layer = new ol.layer.Vector({
-                source: source,
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
-                        fill: fill,
-                        radius: 6
-                    }),
-                    fill: fill,
-                })
-            });
-            map.addLayer(layer);
-
-            setTimeout(() => {
-                expect(layer).not.toBeNull();
-                done();
-            }, 4000)
+        setTimeout(() => {
+            source.setGeometry(geometry);
+            expect(source.geometry).not.toBeNull();
+            done();
+        }, 4000)
     });
 });
