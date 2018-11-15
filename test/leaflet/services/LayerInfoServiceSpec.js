@@ -203,13 +203,18 @@ describe('leaflet_LayerInfoService', () => {
     });
 
     //设置图层信息服务  并实现临时图层中子图层的修改
-    xit('setLayerInfo', (done) => {
+    it('setLayerInfo', (done) => {
         var layers = layerInfo;
         layers.description = "this is a test";
         var setLayerInfoParams = new SetLayerInfoParameters({
-            tempLayerName: "continent_T@World.1@@World Map",
+            tempLayerName: "continent_T@World.1@@World",
             resourceID: id,
             layerInfo: layers
+        });
+        spyOn(FetchRequest, 'put').and.callFake((testUrl) => {
+            expect(testUrl).toContain("/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World.json");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World"}`));
         });
         var service = layerInfoService(layerInfoURL);
         service.setLayerInfo(setLayerInfoParams, (result) => {

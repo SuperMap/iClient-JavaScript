@@ -162,7 +162,7 @@ describe('mapboxgl_LayerInfoService', () => {
         var layers = layerInfo;
         layers.description = "this is a test";
         var setLayerInfoParameters = new SetLayerInfoParameters({
-            tempLayerName: "continent_T@World.1@@World Map",
+            tempLayerName: "continent_T@World.1@@World",
             resourceID: id,
             layerInfo: layers
         });
