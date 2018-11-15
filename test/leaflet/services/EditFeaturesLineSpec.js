@@ -1,6 +1,6 @@
 import {featureService} from '../../../src/leaflet/services/FeatureService';
 import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
-
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var id1;
 
@@ -13,7 +13,6 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
     // 增加LINE要素，returnContent为true
     it('successEvent:add_LINE', (done) => {
         var addFeatureResult_LINE = null;
@@ -27,6 +26,14 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
             isUseBatch: false
         });
         var addFeaturesService = featureService(editServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Geomor_L/features.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'type':\"LINE\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`[98]`));
+        });
         addFeaturesService.editFeatures(addFeaturesParams, (result) => {
             addFeatureResult_LINE = result
         });
@@ -63,6 +70,12 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
             editType: "delete"
         });
         var deleteLineService = featureService(editServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("DELETE");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Geomor_L/features.json?ids=[98]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         deleteLineService.editFeatures(deleteFeaturesParams, (result) => {
             deleteLineResult = result
         });

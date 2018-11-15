@@ -1,5 +1,6 @@
 import {queryService} from '../../../src/leaflet/services/QueryService';
 import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
@@ -26,6 +27,15 @@ describe('leaflet_QueryService_queryBySQL', () => {
             }
         });
         var queryBySQLService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'queryMode':'SqlQuery'");
+            expect(params).toContain("'name':\"Capitals@World\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(queryBySQLEscapeJson));
+        });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });
@@ -88,6 +98,14 @@ describe('leaflet_QueryService_queryBySQL', () => {
             returnContent: false
         });
         var queryBySQLService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'name':\"Capitals@World\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a.json"}`));
+        });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });
@@ -123,6 +141,14 @@ describe('leaflet_QueryService_queryBySQL', () => {
             returnCustomResult: true
         });
         var queryBySQLService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'name':\"Capitals@World\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_7c073408732d47e7bffb8314a595e1d8","succeed":true,"customResult":{"top":38.89090807427654,"left":-175.245650649682,"bottom":-21.13090205664112,"leftBottom":{"x":-175.245650649682,"y":-21.13090205664112},"right":-47.8977476573595,"rightTop":{"x":-47.8977476573595,"y":38.89090807427654}},"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_7c073408732d47e7bffb8314a595e1d8.json"}`));
+        });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });
@@ -157,6 +183,11 @@ describe('leaflet_QueryService_queryBySQL', () => {
             }
         });
         var queryBySQLService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(Capitals@World1)"}}`));
+        });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });
@@ -185,6 +216,11 @@ describe('leaflet_QueryService_queryBySQL', () => {
             queryParams: null
         });
         var queryBySQLService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
+        });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });

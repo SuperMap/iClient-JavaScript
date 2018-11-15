@@ -43,8 +43,7 @@ describe('openlayers_SpatialAnalystService_surfaceAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
-           // var expectParams = `{'resolution':3000,'extractParameter':{'datumValue':0,'interval':2,'resampleTolerance':0,'smoothMethod':"BSPLINE",'smoothness':3,'clipRegion':{'id':0,'style':null,'parts':[5],'points':[{'id':"SuperMap.Geometry_11",'bounds':null,'SRID':null,'x':0,'y':4010338,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_12",'bounds':null,'SRID':null,'x':1063524,'y':4010338,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_13",'bounds':null,'SRID':null,'x':1063524,'y':3150322,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_14",'bounds':null,'SRID':null,'x':0,'y':3150322,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_15",'bounds':null,'SRID':null,'x':0,'y':4010338,'tag':null,'type':"Point"}],'type':"REGION",'prjCoordSys':{'epsgCode':null}}},'resultSetting':{'expectCount':1000,'dataset':null,'dataReturnMode':"RECORDSET_ONLY",'deleteExistResultDataset':true},'zValueFieldName':"AVG_TMP",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}`;
-            //expect(params).toBe(expectParams);
+            expect(params).toContain("extractParameter");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalystEscapedJson));
         });

@@ -9,6 +9,7 @@ import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/Geome
 import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
 import {BufferEndType} from '../../../src/common/REST';
 import {DataReturnMode} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var originalTimeout, serviceResult;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
@@ -45,6 +46,15 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RoadLine2@Changchun/buffer.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'leftDistance':{'value':10}");
+            expect(params).toContain("'semicircleLineSegment':10");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"BufferAnalystByDatasets_olTest@Changchun"}`));
+        });
         spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
         });
@@ -72,6 +82,16 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(changchunServiceUrl + "/datasets/RoadLine2@Changchun/buffer.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'endType':\"ROUND\"");
+            expect(params).toContain("'leftDistance':{'value':10}");
+            expect(params).toContain("'rightDistance':{'value':10}");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(bufferAnalysis_byDatasetResultJson));
+        });
         spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
         });
@@ -130,6 +150,14 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var bufferAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(changchunServiceUrl + "/geometry/buffer.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'leftDistance':{'exp':null,'value':250}");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));
+        });
         bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (result) => {
             serviceResult = result;
         });
@@ -157,11 +185,5 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
                 done();
             }
         }, 8000);
-    });
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datachangchunURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });

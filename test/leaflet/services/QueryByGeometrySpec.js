@@ -1,5 +1,6 @@
 import {queryService} from '../../../src/leaflet/services/QueryService';
 import {QueryByGeometryParameters} from '../../../src/common/iServer/QueryByGeometryParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
@@ -28,6 +29,15 @@ describe('leaflet_QueryService_queryByGeometry', ()=> {
             geometry: polygon
         });
         var queryByGeometryService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'queryMode':'SpatialQuery'");
+            expect(params).toContain("'startRecord':1");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(queryByGeometryEscapeJson));
+        });
         queryByGeometryService.queryByGeometry(queryByGeometryParams, (result)=> {
             serviceResult = result;
         });
@@ -92,6 +102,14 @@ describe('leaflet_QueryService_queryByGeometry', ()=> {
             returnContent: false
         });
         var queryByGeometryService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'expectCount':10");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a.json"}`));
+        });
         queryByGeometryService.queryByGeometry(queryByGeometryParams, (result)=> {
             serviceResult = result;
         });
@@ -124,6 +142,10 @@ describe('leaflet_QueryService_queryByGeometry', ()=> {
             geometry: polygon
         });
         var queryByGeometryService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("POST");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(Capitals@World1)"}}`));
+        });
         queryByGeometryService.queryByGeometry(queryByGeometryParams, (result)=> {
             serviceResult = result;
         });
@@ -154,6 +176,10 @@ describe('leaflet_QueryService_queryByGeometry', ()=> {
             geometry: polygon
         });
         var queryByGeometryService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
+        });
         queryByGeometryService.queryByGeometry(queryByGeometryParams, (result)=> {
             serviceResult = result;
         });

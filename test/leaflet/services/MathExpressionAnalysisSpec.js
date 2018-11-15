@@ -1,6 +1,7 @@
 import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
 import {MathExpressionAnalysisParameters} from '../../../src/common/iServer/MathExpressionAnalysisParameters';
 import request from 'request';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -33,6 +34,13 @@ describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', () => {
             deleteExistResultDataset: true
         });
         var mathExpressionAnalystService = spatialAnalystService(spatialAnalystURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/.json?returnContent=true");
+            expect(params).toContain("'expression':\"[Jingjin.JingjinTerrain] + 600\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(surfaceAnalystEscapedJson));
+        });
         mathExpressionAnalystService.densityAnalysis(mathExpressionAnalysisParams, (result) => {
             serviceResult = result;
         });

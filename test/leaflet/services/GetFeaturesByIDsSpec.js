@@ -1,5 +1,6 @@
 import {featureService} from '../../../src/leaflet/services/FeatureService';
 import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
@@ -25,6 +26,13 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             IDs: [1, 2, 3]
         });
         var getFeaturesByIDsService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesByIDs)));
+        });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             serviceResult = result
         });
@@ -36,10 +44,10 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
-                expect(serviceResult.result.featureCount).toEqual(3);
-                expect(serviceResult.result.totalCount).toEqual(3);
+                expect(serviceResult.result.featureCount).toEqual(1);
+                expect(serviceResult.result.totalCount).toEqual(1);
                 expect(serviceResult.result.features.type).toBe("FeatureCollection");
-                expect(serviceResult.result.features.features.length).toEqual(3);
+                expect(serviceResult.result.features.features.length).toEqual(1);
                 for (var i = 0; i < serviceResult.result.features.features.length; i++) {
                     expect(serviceResult.result.features.features[i].type).toBe("Feature");
                     expect(serviceResult.result.features.features[i].geometry.type).toBe("Point");
@@ -82,6 +90,13 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             IDs: [1, 2, 3]
         });
         var getFeaturesByIDsService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1392ef903de94fb695e8552894f7969f","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_1392ef903de94fb695e8552894f7969f.json"}`));
+        });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             serviceResult = result
         });
@@ -113,6 +128,14 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             IDs: [1, 2, 3]
         });
         var getFeaturesByIDsService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'datasetNames':[\"World1:Capitals\"]");
+            expect(params).toContain("'getFeatureMode':\"ID\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+        });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             serviceResult = result
         });
@@ -141,6 +164,12 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             datasetNames: null
         });
         var getFeaturesByIDsService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
+        });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             serviceResult = result
         });

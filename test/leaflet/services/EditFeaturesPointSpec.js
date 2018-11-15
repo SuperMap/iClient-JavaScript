@@ -1,5 +1,6 @@
 import {featureService} from '../../../src/leaflet/services/FeatureService';
 import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var id1, id2, id3;
@@ -27,6 +28,14 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             isUseBatch: false
         });
         var addFeaturesService = featureService(editServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Neighbor_P/features.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'type':\"POINT\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`[92]`));
+        });
         addFeaturesService.editFeatures(addFeaturesParams, (result) => {
             addFeatureResult_POINT = result
         });
@@ -67,6 +76,14 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             isUseBatch: true
         });
         var addFeaturesService = featureService(editServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Neighbor_P/features.json?isUseBatch=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'type':\"Point\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","succeed":true}`));
+        });
         addFeaturesService.editFeatures(addFeaturesParams, (result) => {
             addFeaturesResult = result
         });
@@ -105,6 +122,12 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             editType: "delete"
         });
         var deletePointsService = featureService(editServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("DELETE");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Neighbor_P/features.json?ids=[92,93,94]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         deletePointsService.editFeatures(deleteFeaturesParams, (result) => {
             deletePointsResult = result
         });
@@ -138,6 +161,13 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             editType: "add"
         });
         var nullFeaturesService = featureService(editServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Neighbor_P/features.json?");
+            expect(params).toContain("[]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"the features is empty addFeatures method"}}`));
+        });
         nullFeaturesService.editFeatures(nullFeaturesParams, (result) => {
             featuresNullResult = result
         });

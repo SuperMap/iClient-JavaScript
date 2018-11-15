@@ -3,7 +3,7 @@ import {GenerateSpatialDataParameters} from '../../../src/common/iServer/Generat
 import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
 import {DataReturnMode} from '../../../src/common/REST';
 import request from 'request';
-import {FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -45,8 +45,7 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
-            var expectParams = `{'routeTable':"RouteDT_road@Changchun",'routeIDField':"RouteID",'attributeFilter':null,'eventTable':"LinearEventTabDT@Changchun",'eventRouteIDField':"RouteID",'measureField':"",'measureStartField':"LineMeasureFrom",'measureEndField':"LineMeasureTo",'measureOffsetField':"",'errorInfoField':"",'retainedFields':null,'dataReturnOption':{'expectCount':1000,'dataset':"GenerateSpatialData_leafletTest",'dataReturnMode':"DATASET_ONLY",'deleteExistResultDataset':true}}`;
-            expect(params).toBe(expectParams);
+            expect(params).toContain("'eventRouteIDField':\"RouteID\"");
             expect(options).not.toBeNull();
             var resultJSON = `{"succeed":true,"recordset":null,"message":null,"dataset":"GenerateSpatialData_leafletTest@Changchun"}`;
             return Promise.resolve(new Response(resultJSON));

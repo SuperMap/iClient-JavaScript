@@ -1,5 +1,6 @@
 import {featureService} from '../../../src/leaflet/services/FeatureService';
 import {GetFeaturesByBufferParameters} from '../../../src/common/iServer/GetFeaturesByBufferParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
@@ -30,6 +31,14 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
             toIndex: 19
         });
         var getFeaturesByBufferService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
+            expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(getFeasByBuffer));
+        });
         getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
             serviceResult = result
         });
@@ -44,29 +53,29 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
                 expect(serviceResult.result.featureCount).toBeGreaterThan(0);
                 expect(serviceResult.result.totalCount).toBeGreaterThan(0);
                 expect(serviceResult.result.features.type).toBe("FeatureCollection");
-                expect(serviceResult.result.features.features.length).toEqual(20);
+                expect(serviceResult.result.features.features.length).toEqual(3);
                 for (var i = 0; i < serviceResult.result.features.features.length; i++) {
                     expect(serviceResult.result.features.features[i].type).toBe("Feature");
                     expect(serviceResult.result.features.features[i].geometry.type).toBe("Point");
                     expect(serviceResult.result.features.features[i].geometry.coordinates.length).toEqual(2);
                 }
                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
-                    CAPITAL: "圣多美",
-                    CAPITAL_CH: "圣多美",
-                    CAPITAL_EN: "Sao Tome",
-                    CAPITAL_LO: "São Tomé",
-                    CAP_POP: "53300.0",
-                    COUNTRY: "圣多美和普林西比",
-                    COUNTRY_CH: "圣多美和普林西比",
-                    COUNTRY_EN: "Sao Tome & Principe",
-                    ID: 19,
-                    POP: "53300.0",
+                    CAPITAL: "蒙罗维亚",
+                    CAPITAL_CH: "蒙罗维亚",
+                    CAPITAL_EN: "Monrovia",
+                    CAPITAL_LO: "Monrovia",
+                    CAP_POP: "939524.0",
+                    COUNTRY: "利比里亚",
+                    COUNTRY_CH: "利比里亚",
+                    COUNTRY_EN: "Liberia",
+                    ID: 18,
+                    POP: "939524.0",
                     SMGEOMETRYSIZE: "16",
-                    SMID: "19",
+                    SMID: "18",
                     SMLIBTILEID: "1",
                     SMUSERID: "0",
-                    SMX: "6.728004415891377",
-                    SMY: "0.33699598913014484",
+                    SMX: "-10.797002688415517",
+                    SMY: "6.300998929176444",
                     USERID: "0"
                 }));
                 getFeaturesByBufferService.destroy();
@@ -90,6 +99,14 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
             geometry: polygon
         });
         var getFeaturesByBufferService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
+            expect(params).toContain("'bufferDistance':30");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_02c1636b347046d9b1428bce7118c4df","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_02c1636b347046d9b1428bce7118c4df.json"}`));
+        });
         getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
             serviceResult = result
         });
@@ -124,6 +141,14 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
             geometry: polygon
         });
         var getFeaturesByBufferService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
+            expect(params).toContain("'bufferDistance':30");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+        });
         getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
             serviceResult = result
         });
@@ -156,6 +181,14 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
             geometry: polygon
         });
         var getFeaturesByBufferService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
+            expect(params).toContain("'bufferDistance':30");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
+        });
         getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
             serviceResult = result
         });

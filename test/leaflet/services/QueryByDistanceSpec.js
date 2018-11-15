@@ -1,5 +1,6 @@
 import {queryService} from '../../../src/leaflet/services/QueryService';
 import {QueryByDistanceParameters} from '../../../src/common/iServer/QueryByDistanceParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
@@ -26,6 +27,15 @@ describe('leaflet_QueryService_queryByDistance', () => {
             geometry: circleMarker
         });
         var queryByDistanceService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'queryMode':'DistanceQuery'");
+            expect(params).toContain("'distance':10");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(queryByDistanceEscapeJson));
+        });
         queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
         });
@@ -88,6 +98,14 @@ describe('leaflet_QueryService_queryByDistance', () => {
             returnContent: false
         });
         var queryByDistanceService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'distance':10");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a.json"}`));
+        });
         queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
         });
@@ -121,6 +139,11 @@ describe('leaflet_QueryService_queryByDistance', () => {
             geometry: circleMarker
         });
         var queryByDistanceService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(Capitals@World1)"}}`));
+        });
         queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
         });
@@ -152,6 +175,10 @@ describe('leaflet_QueryService_queryByDistance', () => {
             geometry: circleMarker
         });
         var queryByDistanceService = queryService(worldMapURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
+        });
         queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
         });

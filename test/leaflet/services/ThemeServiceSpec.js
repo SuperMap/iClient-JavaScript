@@ -23,6 +23,7 @@ import {ThemeRange} from '../../../src/common/iServer/ThemeRange';
 import {ThemeUniqueItem} from '../../../src/common/iServer/ThemeUniqueItem';
 import {ThemeUnique} from '../../../src/common/iServer/ThemeUnique';
 import {RangeMode} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var WorldURL = GlobeParameter.WorldURL;      //ThemeDotDensity, ThemeLable
 var ChinaURL = GlobeParameter.ChinaURL;      //ThemeGraduatedSymbol, ThemeRange, ThemeUnique
@@ -58,6 +59,13 @@ describe('leaflet_ThemeService', () => {
             dataSourceNames: ['World']
         });
         var themeDotDensityService = themeService(WorldURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(WorldURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dotExpression':\"Pop_1994\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_3bf6200f253a42d1bd7b44637e07225f","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_3bf6200f253a42d1bd7b44637e07225f.json"}`));
+        });
         themeDotDensityService.getThemeInfo(themeDotDensityParameters, (result) => {
             serviceResult = result
         });
@@ -112,6 +120,12 @@ describe('leaflet_ThemeService', () => {
             dataSourceNames: ['China']
         });
         var themeGraduatedSymbolService = themeService(ChinaURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(ChinaURL + "/tempLayersSet.json?");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_53ac9e8fb44b4fee92cc0bd0d503e00c","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_53ac9e8fb44b4fee92cc0bd0d503e00c.json"}`));
+        });
         themeGraduatedSymbolService.getThemeInfo(themeGraduatedSymbolParameters, (result) => {
             serviceResult = result
         });
@@ -189,6 +203,12 @@ describe('leaflet_ThemeService', () => {
             datasetNames: ["BaseMap_R"]
         });
         var themeGraphService = themeService(jingjinPopulationURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(jingjinPopulationURL + "/tempLayersSet.json?");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_7042d3977d3440b2a02375d7bde4a640","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_7042d3977d3440b2a02375d7bde4a640.json"}`));
+        });
         themeGraphService.getThemeInfo(themeGraphParameters, (result) => {
             serviceResult = result
         });
@@ -267,6 +287,12 @@ describe('leaflet_ThemeService', () => {
             themes: [themeGridRange]
         });
         var themeGridRangeService = themeService(jingjinPopulationURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(jingjinPopulationURL + "/tempLayersSet.json?");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496.json"}`));
+        });
         themeGridRangeService.getThemeInfo(themeGridRangeParameters, (result) => {
             serviceResult = result
         });
@@ -355,6 +381,12 @@ describe('leaflet_ThemeService', () => {
             dataSourceNames: ["World"]
         });
         var themeLableService = themeService(WorldURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(WorldURL + "/tempLayersSet.json?");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_aaffb9a238aa4ab88cca495fbca6991b","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_aaffb9a238aa4ab88cca495fbca6991b.json"}`));
+        });
         themeLableService.getThemeInfo(themeLableParameters, (result) => {
             serviceResult = result
         });
@@ -416,6 +448,12 @@ describe('leaflet_ThemeService', () => {
             themes: [themeRange]
         });
         var themeRangeService = themeService(ChinaURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(ChinaURL + "/tempLayersSet.json?");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_689a8864220f484ea694c6f7d60ca3cb","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_689a8864220f484ea694c6f7d60ca3cb.json"}`));
+        });
         themeRangeService.getThemeInfo(themeRangeParameters, (result) => {
             serviceResult = result
         });
@@ -476,6 +514,12 @@ describe('leaflet_ThemeService', () => {
             themes: [themeUnique]
         });
         var themeUniqueService = themeService(ChinaURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(ChinaURL + "/tempLayersSet.json?");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_2cbb15b9a3dc4fddad377781f250d3a7","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_2cbb15b9a3dc4fddad377781f250d3a7.json"}`));
+        });
         themeUniqueService.getThemeInfo(themeUniqueParameters, (result) => {
             serviceResult = result
         });

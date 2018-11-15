@@ -1,5 +1,6 @@
 import {featureService} from '../../../src/leaflet/services/FeatureService';
 import {GetFeaturesByGeometryParameters} from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
@@ -17,7 +18,6 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
     it('successEvent:getFeaturesByGeometry_returnContent=true', (done) => {
         var polygon = L.polygon([[0, 0], [-30, 0], [-10, 30], [0, 0]]);
         var getFeaturesByGeometryParams = new GetFeaturesByGeometryParameters({
@@ -27,6 +27,14 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             spatialQueryMode: "INTERSECT"
         });
         var getFeaturesByGeometryService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesByGeometry)));
+        });
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
             serviceResult = result
         });
@@ -38,10 +46,10 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
-                expect(serviceResult.result.featureCount).toEqual(6);
-                expect(serviceResult.result.totalCount).toEqual(6);
+                expect(serviceResult.result.featureCount).toEqual(1);
+                expect(serviceResult.result.totalCount).toEqual(1);
                 expect(serviceResult.result.features.type).toBe("FeatureCollection");
-                expect(serviceResult.result.features.features.length).toEqual(6);
+                expect(serviceResult.result.features.features.length).toEqual(1);
                 for (var i = 0; i < serviceResult.result.features.features.length; i++) {
                     expect(serviceResult.result.features.features[i].type).toBe("Feature");
                     expect(serviceResult.result.features.features[i].geometry.type).toBe("MultiPolygon");
@@ -49,23 +57,8 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
                 expect(serviceResult.result.features.features[0].geometry.coordinates.length).toEqual(2);
                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
                     CAPITAL: "利伯维尔",
-                    COLORID: "3",
-                    COLOR_MAP: "2",
-                    CONTINENT: "非洲",
-                    COUNTRY: "加蓬",
                     ID: 127,
-                    POP_1994: "1561195.0",
-                    SMAREA: "2.6069257614190192E11",
-                    SMGEOMETRYSIZE: "7852",
-                    SMID: "127",
-                    SMPERIMETER: "4057062.431196515",
-                    SMSDRIE: "14.519582",
-                    SMSDRIN: "2.3178983",
-                    SMSDRIS: "-3.9252772",
-                    SMSDRIW: "8.700832",
-                    SMUSERID: "133",
-                    SQKM: "261859.89",
-                    SQMI: "101104.11"
+                    SMID: "127"
                 }));
                 getFeaturesByGeometryService.destroy();
                 done();
@@ -87,6 +80,14 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             spatialQueryMode: "INTERSECT"
         });
         var getFeaturesByGeometryService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_952187de2cde43a6bcfff2938c93dd9f","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_952187de2cde43a6bcfff2938c93dd9f.json"}`));
+        });
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
             serviceResult = result
         });
@@ -120,6 +121,13 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             datasetNames: ["World1:Countries"]
         });
         var getFeaturesByGeometryService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            // expect(params).toContain("'datasetNames':[\"World1:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+        });
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
             serviceResult = result
         });
@@ -149,6 +157,13 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             datasetNames: ["World:Countries"]
         });
         var getFeaturesByGeometryService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"getFeatureByBuffer方法中传入的参数为空"}}`));
+        });
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
             serviceResult = result
         });
@@ -160,7 +175,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(400);
-                //expect(serviceResult.error.errorMsg).toBe("在FeatureResults资源中，检查请求体时，发现Queryparam为空。");
+                expect(serviceResult.error.errorMsg).toBe("getFeatureByBuffer方法中传入的参数为空");
                 getFeaturesByGeometryService.destroy();
                 done();
             } catch (exception) {

@@ -1,7 +1,7 @@
 import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
 import {DensityKernelAnalystParameters} from '../../../src/common/iServer/DensityKernelAnalystParameters';
 import request from 'request';
-import {FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -38,8 +38,9 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
-            var expectParams = `{'bounds':{'left':3800,'bottom':-3800,'right':8200,'top':-2200,'centerLonLat':null},'fieldName':"SmLength",'resultGridDatasetResolution':null,'searchRadius':50,'targetDatasource':null,'resultGridName':"KernelDensity_leafletTest",'deleteExistResultDataset':true}`;
-            expect(params).toBe(expectParams);
+            expect(params).not.toBeNull();
+            expect(params).toContain("'bounds':{'left':3800,'bottom':-3800,'right':8200,'top':-2200");
+            expect(params).toContain("'fieldName':\"SmLength\"");
             expect(options).not.toBeNull();
             var resultJson=`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_leafletTest@Changchun"}`;
             return Promise.resolve(new Response(resultJson));

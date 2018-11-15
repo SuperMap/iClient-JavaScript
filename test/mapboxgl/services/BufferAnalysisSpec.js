@@ -8,6 +8,7 @@ import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
 import {BufferEndType} from '../../../src/common/REST';
 import {DataReturnMode} from '../../../src/common/REST';
 import request from 'request';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -39,6 +40,14 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer.json?returnContent=true");
+            var expectParams = `{'bufferAnalystParameter':{'endType':"ROUND",'leftDistance':{'value':200},'rightDistance':{'value':200},'semicircleLineSegment':10,'radiusUnit':"METER"},'filterQueryParameter':{'attributeFilter':"NAME='莲花池东路'",'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null},'dataReturnOption':{'expectCount':2000,'dataset':"BufferAnalystByDatasets_mbglTest",'dataReturnMode':"DATASET_ONLY",'deleteExistResultDataset':true},'isAttributeRetained':true,'isUnion':false}`;
+            expect(params).toContain("bufferAnalystParameter");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(bufferAttributeRetainedMapboxEscapedJson));
+        });
         service.bufferAnalysis(bufferAnalystParameters, (result) => {
             serviceResult = result;
         });
@@ -50,7 +59,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
                 expect(serviceResult.object.mode).toEqual("datasets");
                 var result = serviceResult.result;
                 expect(result).not.toBeNull();
-                expect(result.succeed).toBe(true);
+                expect(result.succeed).toBeTruthy();
                 expect(result.recordset.features.type).toEqual("FeatureCollection");
                 var features = result.recordset.features.features[0];
                 expect(features.id).toEqual(1);
@@ -73,15 +82,15 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         }, 7000);
     });
 
-    //缓冲区数据集分析  isAttributeRetained 为 false
+    // 缓冲区数据集分析  isAttributeRetained 为 false
     it('bufferAnalysis_isAttributeRetained:false', (done) => {
         var bufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
-            //设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
+            // 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
             filterQueryParameter: new FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
-            //是否将缓冲区与源记录集中的对象合并后返回
+            // 是否将缓冲区与源记录集中的对象合并后返回
             isUnion: true,
-            //是否保留进行缓冲区分析的对象的字段属性
+            // 是否保留进行缓冲区分析的对象的字段属性
             isAttributeRetained: false,
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
@@ -91,6 +100,14 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer.json?returnContent=true");
+            var expectParams = `{'bufferAnalystParameter':{'endType':"ROUND",'leftDistance':{'value':200},'rightDistance':{'value':200},'semicircleLineSegment':10,'radiusUnit':"METER"},'filterQueryParameter':{'attributeFilter':"NAME='莲花池东路'",'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null},'isUnion':true,'isAttributeRetained':false,'dataReturnOption':{'expectCount':1000,'dataset':null,'dataReturnMode':"RECORDSET_ONLY",'deleteExistResultDataset':true}}`;
+            expect(params).toContain("bufferAnalystParameter");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify({"succeed":true,"recordset":null,"message":null,"dataset":"BufferAnalystByDatasets_mbglTest@Jingjin"})));
+        });
         service.bufferAnalysis(bufferAnalystParameters, (result) => {
             serviceResult = result;
         });
@@ -102,20 +119,8 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
                 expect(serviceResult.object.mode).toEqual("datasets");
                 var result = serviceResult.result;
                 expect(result).not.toBeNull();
-                expect(result.succeed).toBe(true);
-                expect(result.recordset.features.type).toEqual("FeatureCollection");
-                var features = result.recordset.features.features[0];
-                expect(features.id).toEqual(1);
-                expect(features.type).toEqual("Feature");
-                expect(features.geometry.type).toEqual("MultiPolygon");
-                var coordinate = features.geometry.coordinates[0][0];
-                expect(coordinate.length).toBeGreaterThan(0);
-                for (var i = 0; i < coordinate.length; i++) {
-                    expect(coordinate[i].length).toEqual(2);
-                }
-                expect(result.recordset.fieldCaptions.length).toEqual(10);
-                expect(result.recordset.fieldTypes.length).toEqual(result.recordset.fieldCaptions.length);
-                expect(result.recordset.fields.length).toEqual(result.recordset.fieldCaptions.length);
+                expect(result.succeed).toBeTruthy();
+                expect(result.dataset).toBe("BufferAnalystByDatasets_mbglTest@Jingjin");
                 done();
             } catch (e) {
                 console.log("'bufferAnalysis_isAttributeRetained:false'案例失败" + e.name + ":" + e.message);
@@ -126,11 +131,11 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
     });
 
     var resultDataset = "BufferAnalystByDatasets_mbglTest";
-    //缓冲区数据集分析  返回值为数据集
+    // 缓冲区数据集分析  返回值为数据集
     it('bufferAnalysis_DATASET_ONLY', (done) => {
         var bufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
-            //设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
+            // 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
             filterQueryParameter: new FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
@@ -146,6 +151,14 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer.json?returnContent=true");
+            var params = `{'bufferAnalystParameter':{'endType':"ROUND",'leftDistance':{'value':200},'rightDistance':{'value':200},'semicircleLineSegment':10,'radiusUnit':"METER"},'filterQueryParameter':{'attributeFilter':"NAME='莲花池东路'",'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null},'dataReturnOption':{'expectCount':2000,'dataset':"BufferAnalystByDatasets_mbglTest",'dataReturnMode':"DATASET_ONLY",'deleteExistResultDataset':true},'isAttributeRetained':true,'isUnion':false}`;
+            expect(params).toContain("bufferAnalystParameter");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(bufferAnalysisByDatasetMapboxEscapedJson));
+        });
         service.bufferAnalysis(bufferAnalystParameters, (result) => {
             serviceResult = result;
         });
@@ -168,7 +181,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         }, 6000);
     });
 
-    //缓冲区分析 几何对象缓冲区分析
+    // 缓冲区分析 几何对象缓冲区分析
     it('bufferAnalysis_byGeometry', (done) => {
         var pointList = [
             [116.1916654036, 39.8888542507],
@@ -199,6 +212,14 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
             })
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/geometry/buffer.json?returnContent=true");
+            var params = `{'analystParameter':{'endType':"ROUND",'leftDistance':{'exp':null,'value':300},'rightDistance':{'exp':null,'value':300},'semicircleLineSegment':10,'radiusUnit':"METER"},'sourceGeometry':{'id':0,'style':null,'parts':[8],'points':[{'id':"SuperMap.Geometry_13",'bounds':null,'SRID':null,'x':116.1916654036,'y':39.8888542507,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_14",'bounds':null,'SRID':null,'x':116.2031567225,'y':39.8888542507,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_15",'bounds':null,'SRID':null,'x':116.2156351162,'y':39.8963250173,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_16",'bounds':null,'SRID':null,'x':116.2740019864,'y':39.8970124079,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_17",'bounds':null,'SRID':null,'x':116.3103285499,'y':39.8970574832,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_18",'bounds':null,'SRID':null,'x':116.3321510064,'y':39.8970392162,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_19",'bounds':null,'SRID':null,'x':116.3377051439,'y':39.8973437531,'tag':null,'type':"Point"},{'id':"SuperMap.Geometry_20",'bounds':null,'SRID':null,'x':116.3463089006,'y':39.8978391816,'tag':null,'type':"Point"}],'type':"LINE",'prjCoordSys':{'epsgCode':4326}},'sourceGeometrySRID':4326}`;
+            expect(params).toContain("analystParameter");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(bufferAnalysisByGeometryMapboxEscapedJson));
+        });
         service.bufferAnalysis(goBufferAnalystParameters, (result) => {
             serviceResult = result;
         });
@@ -225,12 +246,5 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
                 done();
             }
         }, 5000);
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datajingjinURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });

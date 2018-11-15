@@ -75,24 +75,30 @@ var layersInfo = {
             "symbolScale": 0,
             "minScale": 3.3755954145620026e-9,
             "representationField": ""
-        }]
+        }],
     },
-    "type": "UGC",
-    "queryable": false,
-    "opaqueRate": 100,
-    "minVisibleGeometrySize": 0,
-    "name": "World Map",
-    "bounds": {
-        "top": 118.05408801141,
-        "left": -180,
-        "bottom": -90,
-        "leftBottom": {"x": -180, "y": -90},
-        "right": 180,
-        "rightTop": {"x": 180, "y": 118.05408801141}
-    },
-    "symbolScale": 0,
-    "minScale": 0,
-    "ugcLayerType": "VECTOR"
+
+        "type": "UGC",
+        "queryable": false,
+        "opaqueRate": 100,
+        "minVisibleGeometrySize": 0,
+        "name": "World",
+        "bounds": {
+            "top": 90,
+            "left": -180,
+            "bottom": -90,
+            "leftBottom": {
+                "x": -180,
+                "y": -90
+            },
+            "right": 180,
+            "rightTop": {
+                "x": 180,
+                "y": 90
+            }
+        },
+        "symbolScale": 0,
+        "minScale": 0
 };
 
 var layerInfo = {

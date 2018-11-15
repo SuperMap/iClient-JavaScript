@@ -1,6 +1,6 @@
 import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
 import {DatasetThiessenAnalystParameters} from '../../../src/common/iServer/DatasetThiessenAnalystParameters';
-import {FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -25,10 +25,9 @@ describe('leaflet_SpatialAnalystService_thiessenAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/Factory@Changchun/thiessenpolygon.json?returnContent=true");
-            var expectParams = `{'clipRegion':null,'createResultDataset':false,'resultDatasetName':null,'resultDatasourceName':null,'returnResultRegion':true,'dataset':"Factory@Changchun",'filterQueryParameter':null}`;
-            expect(params).toBe(expectParams);
+            expect(params).toContain("'dataset':\"Factory@Changchun\"");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(thiessenAnalysisEscapedJson)));
+            return Promise.resolve(new Response(JSON.stringify(thiessenAnalysisDatasetsEscapedJson)));
         });
         thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters, (result) => {
             serviceResult = result;

@@ -57,8 +57,7 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/interpolation/kriging.json?returnContent=true");
-            var expectParams = "{'bounds':{'left':-2640403.63,'bottom':1873792.1,'right':3247669.39,'top':5921501.4,'centerLonLat':null},'searchRadius':\"0\",'zValueFieldName':\"AVG_TMP\",'zValueScale':1,'resolution':null,'filterQueryParameter':{'attributeFilter':\"\"},'outputDatasetName':\"Interpolation_UnvsKriging_lfTest\",'outputDatasourceName':\"Interpolation\",'pixelFormat':\"DOUBLE\",'dataset':\"SamplesP@Interpolation\",'inputPoints':null,'InterpolationAnalystType':\"dataset\",'clipParam':null,'type':\"UniversalKriging\",'angle':0,'nugget':0,'range':0,'sill':0,'variogramMode':\"SPHERICAL\",'searchMode':\"KDTREE_FIXED_COUNT\",'mean':null,'exponent':\"EXP1\",'expectedCount':12,'maxPointCountForInterpolation':200,'maxPointCountInNode':50}";
-            expect(params).toBe(expectParams);
+            expect(params).toContain("'variogramMode':\"SPHERICAL\"");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(interpolationUnvsKrigingEscapedJson));
         }); 

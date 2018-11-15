@@ -1,5 +1,6 @@
 import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
 import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -38,6 +39,14 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
             "isIgnoreGap": false
         });
         var routeCalculateMeasureService = spatialAnalystService(spatialAnalystURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/geometry/calculatemeasure.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'type':\"LINEM\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"measure":195.39962171759203,"succeed":true,"message":null}`));
+        });
         routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParams, (result)=> {
             serviceResult = result;
         });

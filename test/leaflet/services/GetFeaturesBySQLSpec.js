@@ -1,5 +1,6 @@
 import {featureService} from '../../../src/leaflet/services/FeatureService';
 import {GetFeaturesBySQLParameters} from '../../../src/common/iServer/GetFeaturesBySQLParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
@@ -28,6 +29,13 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
             datasetNames: ["World:Countries"]
         });
         var getFeaturesBySQLService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesBySQL)));
+        });
         getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, (result) => {
             serviceResult = result
         });
@@ -45,25 +53,12 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
                 expect(serviceResult.result.features.features.length).toEqual(1);
                 expect(serviceResult.result.features.features[0].type).toBe("Feature");
                 expect(serviceResult.result.features.features[0].geometry.type).toBe("MultiPolygon");
-                expect(serviceResult.result.features.features[0].geometry.coordinates.length).toEqual(23);
+                expect(serviceResult.result.features.features[0].geometry.coordinates.length).toEqual(2);
                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
                     SMID: '247',
-                    SMSDRIW: '73.62005',
-                    SMSDRIN: '53.55374',
-                    SMSDRIE: '134.76846',
-                    SMSDRIS: '18.168884',
-                    SMUSERID: '220',
-                    SMAREA: '9.474653104403307E12',
-                    SMPERIMETER: '3.964840435482521E7',
-                    SMGEOMETRYSIZE: '79904',
-                    SQKM: '9367281.0',
-                    SQMI: '3616707.25',
-                    COLOR_MAP: '1',
                     CAPITAL: '北京',
-                    COUNTRY: '中华人民共和国',
+                    COUNTRY:"中华人民共和国",
                     POP_1994: '1.128139689E9',
-                    COLORID: '3',
-                    CONTINENT: '亚洲',
                     ID: 247
                 }));
                 getFeaturesBySQLService.destroy();
@@ -87,6 +82,14 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
             datasetNames: ["World:Countries"]
         });
         var getFeaturesBySQLService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(params).toContain("'queryParameter':{'name':\"Countries@World\",'attributeFilter':\"SMID%26gt;0\"}");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_aeeacd0b0b3e492b9bdab6fa92e91184","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_aeeacd0b0b3e492b9bdab6fa92e91184.json"}`));
+        });
         getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, (result) => {
             serviceResult = result
         });
@@ -120,6 +123,14 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
             datasetNames: ["World1:Countries"]
         });
         var getFeaturesBySQLService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'datasetNames':[\"World1:Countries\"]");
+            expect(params).toContain("'queryParameter':{'name':\"Countries@World\",'attributeFilter':\"SMID%26gt;0\"}");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+        });
         getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, (result) => {
             serviceResult = result
         });
@@ -149,6 +160,14 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
             datasetNames: ["World:Countries"]
         });
         var getFeaturesBySQLService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(params).toContain("'queryParameter':null");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults资源中，检查请求体时，发现Queryparam为空。"}}`));
+        });
         getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, (result) => {
             serviceResult = result
         });

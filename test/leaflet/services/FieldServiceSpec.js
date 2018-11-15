@@ -1,5 +1,6 @@
 import {fieldService} from '../../../src/leaflet/services/FieldService';
 import {FieldStatisticsParameters} from '../../../src/common/iServer/FieldStatisticsParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var params = {
@@ -22,6 +23,13 @@ describe('leaflet_FieldService', () => {
     //字段查询服务 成功事件
     it('successEvent:getFields', (done) => {
         var getFieldsService = fieldService(dataServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe("http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields.json?");
+            expect(options).not.toBeNull();
+            var getFieldsEscapedJson = `{"fieldNames":["SmID","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmUserID","SmGeometrySize"],"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriW","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriN","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriE","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriS","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmUserID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmGeometrySize"]}`;
+            return Promise.resolve(new Response(getFieldsEscapedJson));
+        });
         getFieldsService.getFields(params, (result) => {
             serviceResult = result
         });
@@ -50,6 +58,12 @@ describe('leaflet_FieldService', () => {
     //字段查询服务 失败事件
     it('failEvent:getFields_dataSourceNotExist', (done) => {
         var getFieldsService = fieldService(dataServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe("http://localhost:8090/iserver/services/data-world/rest/data/datasources/World1/datasets/continent_T/fields.json?");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+        });
         getFieldsService.getFields({
             datasource: "World1",
             dataset: "continent_T"
@@ -86,6 +100,23 @@ describe('leaflet_FieldService', () => {
             statisticMode: ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"]
         });
         var getFieldStatisticsInfoService = fieldService(dataServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method,url) => {
+            expect(method).toBe("GET");
+            if (url.indexOf("/AVERAGE.json?") > -1) {
+                return Promise.resolve(new Response(`{"result":4,"mode":"AVERAGE"}`));
+            }else if(url.indexOf("/MAX.json?")>-1){
+                return Promise.resolve(new Response(`{"result":7,"mode":"MAX"}`));
+            }else if(url.indexOf("/MIN.json?")>-1){
+                return Promise.resolve(new Response(`{"result":1,"mode":"MIN"}`));
+            }else if(url.indexOf("/STDDEVIATION.json?")>-1){
+                return Promise.resolve(new Response(`{"result":2.160246899469287,"mode":"STDDEVIATION"}`));
+            }else if(url.indexOf("/SUM.json?")>-1){
+                return Promise.resolve(new Response(`{"result":28,"mode":"SUM"}`));
+            }else if(url.indexOf("/VARIANCE.json?")>-1){
+                return Promise.resolve(new Response(`{"result":4.666666666666667,"mode":"VARIANCE"}`));
+            }
+            return Promise.resolve();
+        });
         getFieldStatisticsInfoService.getFieldStatisticsInfo(getFieldStatisticsInfoParams, (result) => {
             serviceResult = result
         });
@@ -127,6 +158,23 @@ describe('leaflet_FieldService', () => {
             statisticMode: ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"]
         });
         var getFieldStatisticsInfoService = fieldService(dataServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method,url) => {
+            expect(method).toBe("GET");
+            if (url.indexOf("/AVERAGE.json?") > -1) {
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/MAX.json?")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/MIN.json?")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/STDDEVIATION.json?")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/SUM.json?")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }else if(url.indexOf("/VARIANCE.json?")>-1){
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
+            }
+            return Promise.resolve();
+        });
         getFieldStatisticsInfoService.getFieldStatisticsInfo(getFieldStatisticsInfoParams, (result) => {
             serviceResult = result
         });
