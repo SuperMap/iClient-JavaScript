@@ -118,6 +118,7 @@ import './common/commontypes/geometry/LinearRingSpec.js';
 import './common/overlay/feature/ShapeFactorySpec.js';
 import './common/overlay/levelRenderer/AreaSpec.js';
 import './common/overlay/levelRenderer/ClipSpec.js';
+import './common/overlay/levelRenderer/AnimationSpec.js';
 import './common/overlay/levelRenderer/ColorSpec.js';
 import './common/overlay/levelRenderer/ComputeBoundingBoxSpec';
 import './common/overlay/levelRenderer/CurveSpec.js';
