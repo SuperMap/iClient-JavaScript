@@ -95,7 +95,7 @@ describe('leaflet_ChangeTileVersion', () => {
         expect(tileVersion.tileVersions.length).toEqual(2);
     });
 
-    it('tilesVersion', () => {
+    xit('tilesVersion', () => {
         tileVersion.tilesVersion("0");
         var version = tileVersion.getVersion();
         expect(version).toEqual("0");
