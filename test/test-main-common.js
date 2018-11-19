@@ -163,3 +163,5 @@ import './common/iPortal/iPortalServicesQueryParamSpec.js';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
+
+import './common/util/FetchRequestSpec';
