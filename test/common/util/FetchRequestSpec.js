@@ -1,7 +1,8 @@
 import { FetchRequest, isCORS, setCORS } from '../../../src/common//util/FetchRequest';
 
 describe('FetchRequest', () => {
-
+    var defaultval = SuperMap.Util.RequestJSONPPromise.limitLength;
+    var defaltCors=isCORS();
     it('RequestJSONPPromise', () => {
         var url = "http://test.supermap.io/examples/leaflet/editor.html#addressMatchService";
         var params;
@@ -29,5 +30,8 @@ describe('FetchRequest', () => {
         expect(SuperMap.Util.RequestJSONPPromise.issue.calls.count()).toBe(4);
     });
 
-
+    afterAll(() => {
+        SuperMap.Util.RequestJSONPPromise.limitLength = defaultval;
+        setCORS(defaltCors);
+    });
 })
