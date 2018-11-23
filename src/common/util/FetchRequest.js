@@ -129,7 +129,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=PUT",
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.DELETE(config);
+            return SuperMap.Util.RequestJSONPPromise.PUT(config);
 
         }
         return this._fetch(url, params, options, 'PUT');

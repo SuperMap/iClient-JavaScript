@@ -168,3 +168,5 @@ import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
 import './common/widgets/chart/ChartModelSpec.js';
 import './common/widgets/chart/ChartViewModelSpec.js';
 import './common/widgets/chart/ChartViewSpec.js';
+
+import './common/util/FetchRequestSpec';
