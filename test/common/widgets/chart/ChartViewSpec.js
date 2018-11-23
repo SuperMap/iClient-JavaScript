@@ -45,11 +45,10 @@ describe('ChartView', () => {
     it('setStyle', () => {
         var style = {
             backgroundColor: "#fff",
-            tooltip: "test",
-            grid: "test"
+            grid: {}
         }
-        var options = chartView.setStyle(style);
-        expect(options).not.toBeDefined();
+        chartView.setStyle(style);
+        expect(chartView.echart).not.toBeNull();
     });
     it('changeType', () => {
         chartView.changeType("bar");
