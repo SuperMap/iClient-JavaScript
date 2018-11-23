@@ -163,3 +163,8 @@ import './common/iPortal/iPortalServicesQueryParamSpec.js';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
+
+/**common -- widgets**/
+import './common/widgets/chart/ChartModelSpec.js';
+import './common/widgets/chart/ChartViewModelSpec.js';
+import './common/widgets/chart/ChartViewSpec.js';

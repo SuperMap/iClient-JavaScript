@@ -1212,6 +1212,12 @@ var exampleConfig = {
                     version: "9.1.0",
                     thumbnail: "widgets_dataServiceQuery.png",
                     fileName: "widgets_dataServiceQuery"
+                },{
+                    name: "图表",
+                    name_en: "chart",
+                    version: "9.1.1",
+                    thumbnail: "widgets_chart.png",
+                    fileName: "widgets_chart"
                 }]
             },
             "widgetsAdvanced": {

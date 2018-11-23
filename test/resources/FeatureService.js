@@ -217,3 +217,55 @@ var getFeaturesBySQL = {
     "totalCount": 1,
     "featureCount": 1
 };
+var getFeaturesBySQLService = {
+    "result": {
+        "featureCount": 1,
+        "featureUriList": [],
+        "totalCount": 1,
+        "features": {
+            "type": "FeatureCollection",
+            "features": [{
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [117.399930020897631, 40.0590434404585]
+                },
+                "id": 1,
+                "properties": {
+                    "SMID": "1",
+                    "SMX": "117.39993002089763",
+                    "SMY": "40.0590434404585", 
+                    "SMLIBTILEID": "1", 
+                    "SMUSERID": "21"
+                },
+                "type": "Feature"
+            }]
+        }
+    }
+}
+var QueryBySQLService = {
+    "result": {
+        "currentCount": 1,
+        "totalCount": 1,
+        "recordsets": [{
+            "datasetName": "Rivers@World",
+            "fields": ["NAME","KILOMETERS"],
+            "fieldCaptions": ["NAME","KILOMETERS"],
+            "fieldTypes": ["TEXT","DOUBEL"],
+            "features": {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [117.399930020897631, 40.0590434404585]
+                    },
+                    "id": 1,
+                    "properties": {
+                        "NAME": "21",
+                        "KILOMETERS": "21.2"
+                    },
+                    "type": "Feature"
+                }]
+            }
+        }]
+    }
+}

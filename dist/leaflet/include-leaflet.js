@@ -80,11 +80,11 @@
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.12.13/xlsx.core.min.js");
         }
         if (!inArray(excludes, 'iclient9-leaflet')) {
-            if (supportES6() && !inArray(includes, 'iclient9-plot-leaflet')) {
-                inputScript("../../dist/leaflet/iclient9-leaflet-es6.min.js");
-            } else {
+            // if (supportES6() && !inArray(includes, 'iclient9-plot-leaflet')) {
+            //     inputScript("../../dist/leaflet/iclient9-leaflet-es6.min.js");
+            // } else {
                 inputScript("../../dist/leaflet/iclient9-leaflet.min.js");
-            }
+            // }
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
             inputCSS("../../dist/leaflet/iclient9-leaflet.min.css");
