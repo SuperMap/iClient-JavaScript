@@ -86,7 +86,7 @@ describe('openlayers_Graph', () => {
         done();
     });
 
-    it('setChartsType, setOpacity', (done) => {
+    xit('setChartsType, setOpacity', (done) => {
         var graphThemeSource = new Graph("BarThemeLayer", "Bar", {
             map: map,
             chartsSetting: {
