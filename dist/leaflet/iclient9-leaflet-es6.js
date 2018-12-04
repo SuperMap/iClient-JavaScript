@@ -8410,7 +8410,7 @@ class Collection_Collection extends Geometry_Geometry {
             this.addComponents(components);
         }
         this.CLASS_NAME = "SuperMap.Geometry.Collection";
-        this.type = "Collection";
+        this.geometryType = "Collection";
     }
 
     /**
@@ -8643,7 +8643,7 @@ class MultiPoint_MultiPoint extends Collection_Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
         this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
-        this.type = "MultiPoint";
+        this.geometryType = "MultiPoint";
     }
 
     /**
@@ -8699,7 +8699,7 @@ class Curve_Curve extends MultiPoint_MultiPoint {
          */
         this.componentTypes = ["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"];
         this.CLASS_NAME = "SuperMap.Geometry.Curve";
-        this.type = "Curve";
+        this.geometryType = "Curve";
         
     }
 
@@ -8757,7 +8757,7 @@ class Point_Point extends Geometry_Geometry {
          */
         this.type = type || "Point";
         this.CLASS_NAME = "SuperMap.Geometry.Point";
-        this.type = "Point";
+        this.geometryType = "Point";
     }
 
     /**
@@ -8878,7 +8878,7 @@ class LineString_LineString extends Curve_Curve {
     constructor(points) {
         super(points);
         this.CLASS_NAME = "SuperMap.Geometry.LineString";
-        this.type = "LineString";
+        this.geometryType = "LineString";
     }
 
     /**
@@ -9234,7 +9234,7 @@ class GeoText_GeoText extends Geometry_Geometry {
         };
         this.element = document.createElement('span');
         this.CLASS_NAME = "SuperMap.Geometry.GeoText";
-        this.type = "GeoText";
+        this.geometryType = "GeoText";
     }
 
     /**
@@ -9538,7 +9538,7 @@ class LinearRing_LinearRing extends LineString_LineString {
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
         this.CLASS_NAME = "SuperMap.Geometry.LinearRing";
-        this.type = "LinearRing";
+        this.geometryType = "LinearRing";
     }
 
     /**
@@ -9658,7 +9658,7 @@ class MultiLineString_MultiLineString extends Collection_Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.LineString"];
         this.CLASS_NAME = "SuperMap.Geometry.MultiLineString";
-        this.type = "MultiLineString";
+        this.geometryType = "MultiLineString";
     }
 
 
@@ -9702,7 +9702,7 @@ class MultiPolygon_MultiPolygon extends Collection_Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.Polygon"];
         this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
-        this.type = "MultiPolygon";
+        this.geometryType = "MultiPolygon";
     }
 
 
@@ -9746,7 +9746,7 @@ class Polygon_Polygon extends Collection_Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing"];
         this.CLASS_NAME = "SuperMap.Geometry.Polygon";
-        this.type = "Polygon";
+        this.geometryType = "Polygon";
     }
 
     /**
@@ -9825,7 +9825,7 @@ class Rectangle_Rectangle extends Geometry_Geometry {
         this.height = height;
 
         this.CLASS_NAME = "SuperMap.Geometry.Rectangle";
-        this.type = "Rectangle";
+        this.geometryType = "Rectangle";
     }
 
     /**
@@ -12250,6 +12250,7 @@ class Route_Route extends Collection_Collection {
         }
 
         this.CLASS_NAME = "SuperMap.Route";
+        this.geometryType = "LINEM";
     }
 
     /**
@@ -12487,7 +12488,7 @@ class ServerGeometry_ServerGeometry {
     toGeometry() {
         var me = this,
             geoType = me.type;
-        switch (geoType) {
+        switch (geoType.toUpperCase()) {
             case GeometryType.POINT:
                 return me.toGeoPoint();
             case GeometryType.LINE:
@@ -13233,11 +13234,11 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
                 if (geometry == null) {
                     return null;
                 }
-                var geo = new ServerGeometry_ServerGeometry(geometry).toGeometry();
-                if (!geo) {
-                    return null;
+                if (!geometry.parts && geometry.points) {
+                    geometry.parts = [geometry.points.length];
                 }
-                var geometryType = geo.type;
+                var geo = new ServerGeometry_ServerGeometry(geometry).toGeometry()||geometry;
+                var geometryType = geo.geometryType||geo.type;
                 var data;
                 if (geometryType === "LinearRing") {
                     geometryType = "LineString";
@@ -13272,7 +13273,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             'point': function (point) {
                 var p = [point.x, point.y];
                 for (var name in point) {
-                    if (name !== "x" && name !== "y" && point[name] && !isNaN(point[name])) {
+                    if (name !== "x" && name !== "y" && point[name] !== null && !isNaN(point[name])) {
                         p.push(point[name]);
                     }
                 }

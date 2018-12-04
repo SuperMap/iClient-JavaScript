@@ -259,11 +259,8 @@ export class GeoJSON extends JSONFormat {
                 if (!geometry.parts && geometry.points) {
                     geometry.parts = [geometry.points.length];
                 }
-                var geo = new ServerGeometry(geometry).toGeometry();
-                if (!geo) {
-                    return null;
-                }
-                var geometryType = geo.geometryType;
+                var geo = new ServerGeometry(geometry).toGeometry()||geometry;
+                var geometryType = geo.geometryType||geo.type;
                 var data;
                 if (geometryType === "LinearRing") {
                     geometryType = "LineString";
