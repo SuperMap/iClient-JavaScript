@@ -31,7 +31,7 @@ export class LinearRing extends LineString {
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
         this.CLASS_NAME = "SuperMap.Geometry.LinearRing";
-        this.type = "LinearRing";
+        this.geometryType = "LinearRing";
     }
 
     /**

@@ -27,7 +27,7 @@ export class MultiPoint extends Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
         this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
-        this.type = "MultiPoint";
+        this.geometryType = "MultiPoint";
     }
 
     /**

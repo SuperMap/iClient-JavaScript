@@ -110,7 +110,7 @@ export class ServerGeometry {
     toGeometry() {
         var me = this,
             geoType = me.type;
-        switch (geoType) {
+        switch (geoType.toUpperCase()) {
             case GeometryType.POINT:
                 return me.toGeoPoint();
             case GeometryType.LINE:

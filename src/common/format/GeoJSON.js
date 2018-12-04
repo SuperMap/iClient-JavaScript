@@ -256,11 +256,14 @@ export class GeoJSON extends JSONFormat {
                 if (geometry == null) {
                     return null;
                 }
+                if (!geometry.parts && geometry.points) {
+                    geometry.parts = [geometry.points.length];
+                }
                 var geo = new ServerGeometry(geometry).toGeometry();
                 if (!geo) {
                     return null;
                 }
-                var geometryType = geo.type;
+                var geometryType = geo.geometryType;
                 var data;
                 if (geometryType === "LinearRing") {
                     geometryType = "LineString";
@@ -295,7 +298,7 @@ export class GeoJSON extends JSONFormat {
             'point': function (point) {
                 var p = [point.x, point.y];
                 for (var name in point) {
-                    if (name !== "x" && name !== "y" && point[name] && !isNaN(point[name])) {
+                    if (name !== "x" && name !== "y" && point[name] !== null && !isNaN(point[name])) {
                         p.push(point[name]);
                     }
                 }

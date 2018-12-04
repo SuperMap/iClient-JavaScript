@@ -32,7 +32,7 @@ export class MultiLineString extends Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.LineString"];
         this.CLASS_NAME = "SuperMap.Geometry.MultiLineString";
-        this.type = "MultiLineString";
+        this.geometryType = "MultiLineString";
     }
 
 

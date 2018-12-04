@@ -34,7 +34,7 @@ export class MultiPolygon extends Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.Polygon"];
         this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
-        this.type = "MultiPolygon";
+        this.geometryType = "MultiPolygon";
     }
 
 

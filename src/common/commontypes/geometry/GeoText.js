@@ -53,7 +53,7 @@ export class GeoText extends Geometry {
         };
         this.element = document.createElement('span');
         this.CLASS_NAME = "SuperMap.Geometry.GeoText";
-        this.type = "GeoText";
+        this.geometryType = "GeoText";
     }
 
     /**

@@ -106,6 +106,7 @@ export class Route extends Collection {
         }
 
         this.CLASS_NAME = "SuperMap.Route";
+        this.geometryType = "LINEM";
     }
 
     /**

@@ -40,7 +40,7 @@ export class Collection extends Geometry {
             this.addComponents(components);
         }
         this.CLASS_NAME = "SuperMap.Geometry.Collection";
-        this.type = "Collection";
+        this.geometryType = "Collection";
     }
 
     /**

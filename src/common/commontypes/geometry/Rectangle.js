@@ -53,7 +53,7 @@ export class Rectangle extends Geometry {
         this.height = height;
 
         this.CLASS_NAME = "SuperMap.Geometry.Rectangle";
-        this.type = "Rectangle";
+        this.geometryType = "Rectangle";
     }
 
     /**
