@@ -115,6 +115,11 @@ export class DeckglLayer {
             this.mapContainer.appendChild(this.canvas);
             return this;
         }
+        //当使用扩展的mapboxgl代码时有效
+        if (map.getCRS && map.getCRS() !== mapboxgl.CRS.EPSG3857) {
+            this.coordinateSystem = 3;
+            this.isGeographicCoordinateSystem = true;
+        }
         //创建图层容器
         this._initContainer();
 
@@ -345,6 +350,12 @@ export class DeckglLayer {
         for (let key in this.props) {
             state[key] = this.props[key];
         }
+        //当使用扩展的mapboxgl代码时有效
+        if (map.getCRS && map.getCRS() !== mapboxgl.CRS.EPSG3857) {
+            state.coordinateSystem = this.coordinateSystem;
+            state.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
+        }
+
         //更行数据
         state.data = this.data;
 
@@ -359,6 +370,8 @@ export class DeckglLayer {
     _createLayerByLayerTypeID() {
         //统一处理公共属性：
         this.props.data = this.data;
+        this.props.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
+        this.props.coordinateSystem = this.coordinateSystem;
         //添加事件监听
         this.props.pickable = Boolean(this.props.onClick) || Boolean(this.props.onHover);
 
@@ -426,9 +439,7 @@ export class DeckglLayer {
             if (this.props.color) {
                 this.props.updateTriggers.getColor = [this.props.color]
             }
-
         }
-
         this.layer = new window.DeckGL.ScatterplotLayer(this.props);
     }
 

@@ -48,14 +48,14 @@ export class Curve {
      * Method: evalCubicCoeff
      *
      * Parameters:
-     * a - {Number} 值。
-     * b - {Number} 值。
-     * c - {Number} 值。
-     * d - {Number} 值。
-     * t - {Number} 值。
+     * a - {number} 值。
+     * b - {number} 值。
+     * c - {number} 值。
+     * d - {number} 值。
+     * t - {number} 值。
      *
      * Returns:
-     * {Number}
+     * {number}
      */
 
     /*

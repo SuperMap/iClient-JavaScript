@@ -42,7 +42,7 @@ const cancel = window.cancelAnimationFrame ||
  * @classdesc Three图层渲染器
  * @param {mapboxgl.supermap.ThreeLayer} layer - ThreeJs图层。</br>
  * @param {string} [renderer="gl"] - 图层渲染方式(canvas或WebGL)。取值："gl","canvas"。</br>
- * @param {object} options - threejs渲染器初始化参数对象。参数内容详见:
+ * @param {Object} options - threejs渲染器初始化参数对象。参数内容详见:
  *          [WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}/
  *          [CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
  *

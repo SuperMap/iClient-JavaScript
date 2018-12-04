@@ -101,7 +101,7 @@ export class PaginationContainer extends TemplateBase {
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.setPageLink
      * @description 设置页码数
-     * @param {Number} pageNumber
+     * @param {number} pageNumber
      */
     setPageLink(pageNumber) {
         //清空当前页码

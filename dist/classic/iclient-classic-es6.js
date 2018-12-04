@@ -3877,7 +3877,7 @@ var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=PUT",
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.DELETE(config);
+            return SuperMap.Util.RequestJSONPPromise.PUT(config);
 
         }
         return this._fetch(url, params, options, 'PUT');
@@ -4572,6 +4572,12 @@ var GeometryType = SuperMap.GeometryType = {
     POINT: "POINT",
     /** REGION */
     REGION: "REGION",
+    /** POINTEPS */
+    POINTEPS: "POINTEPS",
+    /** LINEEPS */
+    LINEEPS: "LINEEPS",
+    /** REGIONEPS */
+    REGIONEPS: "REGIONEPS",
     /** ELLIPSE */
     ELLIPSE: "ELLIPSE",
     /** CIRCLE */
@@ -8070,10 +8076,6 @@ class Format_Format {
         this.keepData = false;
 
         Util.extend(this, options);
-        /**
-         * @member {Object} SuperMap.Format.prototype.options
-         * @description 可选参数。
-         */
         this.options = options;
 
         this.CLASS_NAME = "SuperMap.Format";
@@ -8120,6 +8122,13 @@ SuperMap.Format = Format_Format;
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写 JSON 的解析类。使用 {@link SuperMap.Format.JSON} 构造函数创建新实例。
  * @category BaseTypes Format
+ * @param {Object} [options] - 参数。
+ * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
+ * @param {string} [options.space=" "] - 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
+ * @param {string} [options.newline="\n"] - 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
+ * @param {number} [options.level=0] - 用于格式化输出, 表示的是缩进级别。
+ * @param {boolean} [options.pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
+ * @param {boolean} [options.nativeJSON] - 需要被注册的监听器对象。
  * @extends {SuperMap.Format}
  */
 class JSON_JSONFormat extends Format_Format {
@@ -8127,25 +8136,25 @@ class JSON_JSONFormat extends Format_Format {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.indent
+         * @member {string} [SuperMap.Format.JSON.prototype.indent="    "]
          * @description 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
          */
         this.indent = "    ";
 
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.space
+         * @member {string} [SuperMap.Format.JSON.prototype.space=" "]
          * @description 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
          */
         this.space = " ";
 
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.newline
+         * @member {string} [SuperMap.Format.JSON.prototype.newline="\n"]
          * @description 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
          */
         this.newline = "\n";
 
         /**
-         * @member {integer} SuperMap.Format.JSON.prototype.level 
+         * @member {integer} [SuperMap.Format.JSON.prototype.level=0] 
          * @description 用于格式化输出, 表示的是缩进级别。
          */
         this.level = 0;
@@ -8372,6 +8381,7 @@ class JSON_JSONFormat extends Format_Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeIndent
      * @description 根据缩进级别输出一个缩进字符串。
+     * @private
      * @returns {string} 一个适当的缩进字符串。
      */
     writeIndent() {
@@ -8387,6 +8397,7 @@ class JSON_JSONFormat extends Format_Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeNewline
      * @description 在格式化输出模式情况下输出代表新一行的字符串。
+     * @private
      * @returns {string} 代表新的一行的字符串。
      */
     writeNewline() {
@@ -8395,6 +8406,7 @@ class JSON_JSONFormat extends Format_Format {
 
     /**
      * @function SuperMap.Format.JSON.prototype.writeSpace
+     * @private
      * @description 在格式化输出模式情况下输出一个代表空格的字符串。
      * @returns {string} 一个空格。
      */
@@ -8538,7 +8550,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。 
      * @param {string} [options.url] - 发送请求的地址。 
      * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。 
-     * @param {String} [options.data] - 发送到服务器的数据。 
+     * @param {string} [options.data] - 发送到服务器的数据。 
      * @param {function} options.success - 请求成功后的回调函数。 
      * @param {function} options.failure - 请求失败后的回调函数。 
      * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。 

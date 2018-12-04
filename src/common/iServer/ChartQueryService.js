@@ -141,7 +141,7 @@ export class ChartQueryService extends CommonServiceBase {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
                     var geoJSONFormat = new GeoJSON();
-                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                 }
             }
 

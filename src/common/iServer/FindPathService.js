@@ -113,17 +113,17 @@ export class FindPathService extends NetworkAnalystServiceBase {
         var geoJSONFormat = new GeoJSON();
         result.pathList.forEach(function (path) {
             if (path.route) {
-                path.route = JSON.parse(geoJSONFormat.write(path.route));
+                path.route = geoJSONFormat.toGeoJSON(path.route);
             }
             if (path.pathGuideItems) {
-                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+                path.pathGuideItems = geoJSONFormat.toGeoJSON(path.pathGuideItems);
 
             }
             if (path.edgeFeatures) {
-                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+                path.edgeFeatures = geoJSONFormat.toGeoJSON(path.edgeFeatures);
             }
             if (path.nodeFeatures) {
-                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+                path.nodeFeatures = geoJSONFormat.toGeoJSON(path.nodeFeatures);
             }
         });
         return result;

@@ -24,12 +24,12 @@ export var CloudTileLayer = L.TileLayer.extend({
 
     options: {
         /**
-         * @member {String} [L.supermap.cloudTileLayer.prototype.options='quanguo']
+         * @member {string} [L.supermap.cloudTileLayer.prototype.options='quanguo']
          * @description 地图名称。
          */
         mapName: "quanguo",
         /**
-         * @member {String} L.supermap.cloudTileLayer.prototype.type
+         * @member {string} L.supermap.cloudTileLayer.prototype.type
          * @description 地图投影。
          */
         type: "web",

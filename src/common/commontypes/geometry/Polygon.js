@@ -34,6 +34,7 @@ export class Polygon extends Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing"];
         this.CLASS_NAME = "SuperMap.Geometry.Polygon";
+        this.type = "Polygon";
     }
 
     /**

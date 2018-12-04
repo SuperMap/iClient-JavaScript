@@ -148,7 +148,7 @@ export class CommonServiceBase {
      * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。 
      * @param {string} [options.url] - 发送请求的地址。 
      * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。 
-     * @param {String} [options.data] - 发送到服务器的数据。 
+     * @param {string} [options.data] - 发送到服务器的数据。 
      * @param {function} options.success - 请求成功后的回调函数。 
      * @param {function} options.failure - 请求失败后的回调函数。 
      * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。 

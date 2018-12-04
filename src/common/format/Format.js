@@ -30,10 +30,6 @@ export class Format {
         this.keepData = false;
 
         Util.extend(this, options);
-        /**
-         * @member {Object} SuperMap.Format.prototype.options
-         * @description 可选参数。
-         */
         this.options = options;
 
         this.CLASS_NAME = "SuperMap.Format";

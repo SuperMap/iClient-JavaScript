@@ -127,8 +127,8 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @function L.supermap.graphicLayer.prototype.getGraphicBy
      * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
-     * @param {String} property - graphic 的某个属性名称。
-     * @param {String} value - property 所对应的值。
+     * @param {string} property - graphic 的某个属性名称。
+     * @param {string} value - property 所对应的值。
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
@@ -145,7 +145,7 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @function L.supermap.graphicLayer.prototype.getGraphicById
      * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {String} graphicId - 矢量要素的属性 id。
+     * @param {string} graphicId - 矢量要素的属性 id。
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
@@ -155,8 +155,8 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @function L.supermap.graphicLayer.prototype.getGraphicsByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {String} attrName - graphic 的某个属性名称。
-     * @param {String} attrValue - property 所对应的值。
+     * @param {string} attrName - graphic 的某个属性名称。
+     * @param {string} attrValue - property 所对应的值。
      * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {

@@ -54,6 +54,12 @@ var GeometryType = SuperMap.GeometryType = {
     POINT: "POINT",
     /** REGION */
     REGION: "REGION",
+    /** POINTEPS */
+    POINTEPS: "POINTEPS",
+    /** LINEEPS */
+    LINEEPS: "LINEEPS",
+    /** REGIONEPS */
+    REGIONEPS: "REGIONEPS",
     /** ELLIPSE */
     ELLIPSE: "ELLIPSE",
     /** CIRCLE */

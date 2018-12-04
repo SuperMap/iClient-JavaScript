@@ -9,9 +9,9 @@ import { ChartViewModel } from "./ChartViewModel";
  * @class SuperMap.Widgets.ChartView
  * @classdesc 图表微件
  * @param {string} domID - 图表dom元素ID。
- * @param {object} options - 可选参数。
+ * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {object} options.datasets - 数据来源。
+ * @param {Object} options.datasets - 数据来源。
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -69,7 +69,7 @@ export class ChartView {
     /**
      * @function SuperMap.Widgets.ChartView.prototype.setStyle
      * @description 设置图表样式。
-     * @param {object} style - 图表样式 参考Echarts-options样式设置
+     * @param {Object} style - 图表样式 参考Echarts-options样式设置
      */
     setStyle(style) {
         let newOptions = this.viewModel.setStyle(style);
@@ -91,8 +91,8 @@ export class ChartView {
      * @function SuperMap.Widgets.ChartView.prototype.updateData
      * @description 更新图表数据
      * @param {string} url - 数据源地址
-     * @param {object} queryInfo - 查询条件
-     * @param {object} chartOption - X,Y字段信息
+     * @param {Object} queryInfo - 查询条件
+     * @param {Object} chartOption - X,Y字段信息
      */
     updateData(url, queryInfo, chartOption) {
         let me = this;
@@ -108,7 +108,7 @@ export class ChartView {
      * @function SuperMap.Widgets.ChartView.prototype._createChart
      * @description 创建图表
      * @private
-     * @param {object} data - 图表数据
+     * @param {Object} data - 图表数据
      */
     _createChart(data) {
         this.echart = echarts.init(
@@ -127,7 +127,7 @@ export class ChartView {
      * @function SuperMap.Widgets.ChartView.prototype._updateChart
      * @description 更新图表
      * @private
-     * @param {object} options - 图表参数
+     * @param {Object} options - 图表参数
      */
     _updateChart(options) {
         if(this.echart) {

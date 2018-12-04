@@ -12,15 +12,16 @@ import '../core/Base';
 export var MapExtend = function () {
 
     mapboxgl.Map.prototype.overlayLayersManager = {};
-
+    mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
     mapboxgl.Map.prototype.addLayer = function (layer, before) {
         if (layer.source) {
-            this.style.addLayer(layer, before);
-            this._update(true);
+            this.addLayerBak(layer, before);
             return this;
         }
         if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
-            this.fire('error', {error: new Error('A layer with this id already exists.')});
+            this.fire('error', {
+                error: new Error('A layer with this id already exists.')
+            });
             return;
         }
         addLayer(layer, this);
@@ -74,6 +75,27 @@ export var MapExtend = function () {
         this._update(true);
         return this;
     };
+    mapboxgl.Map.prototype.updateTransform = function (units, originX, originY, centerX, centerY, width, height) {
+        this.transform.units = units;
+        this.transform.latRange = [this._tileExtent[1], this._tileExtent[3]];
+        this.transform.lngRange = [this._tileExtent[0], this._tileExtent[2]];
+        var mercatorZfromAltitude = this.mercatorZfromAltitude;
+        mapboxgl.MercatorCoordinate.fromLngLat = function (lngLatLike, altitude) {
+            altitude = altitude || 0;
+            const lngLat = mapboxgl.LngLat.convert(lngLatLike);
+            return new mapboxgl.MercatorCoordinate(
+                (lngLat.lng - originX) / width,
+                (originY - lngLat.lat) / height,
+                mercatorZfromAltitude(altitude, lngLat.lat));
+        };
+        mapboxgl.MercatorCoordinate.prototype.toLngLat = function () {
+            return new mapboxgl.LngLat(
+                this.x * width + originX,
+                originY - this.y * height);
+        };
+        this.customConvertPoint = window.URL.createObjectURL(new Blob(['customConvertPoint = {projectX:function(x){return (x - ' + centerX + ') / ' + width + ' + 0.5},projectY:function(y){y = 0.5 - ((y - ' + centerY + ') / ' + height + ');return y < 0 ? 0 : y > 1 ? 1 : y;},toY:function(y){return (0.5-y)*' + height + '+' + centerY + ';}}']));
+    }
+
 
     function addLayer(layer, map) {
         layer.onAdd(map);
@@ -108,7 +130,9 @@ export var MapExtend = function () {
         if (beforeLayerID) {
             var beforeLayer = document.getElementById(beforeLayerID);
             if (!beforeLayer) {
-                mapboxgl.Evented.prototype.fire("error", {error: new Error(`Layer with id "${beforeLayerID}" does not exist on this document.`)});
+                mapboxgl.Evented.prototype.fire("error", {
+                    error: new Error(`Layer with id "${beforeLayerID}" does not exist on this document.`)
+                });
             }
         }
         if (layer && beforeLayer) {

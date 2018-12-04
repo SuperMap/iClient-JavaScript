@@ -7,7 +7,7 @@ import { FetchRequest } from '@supermap/iclient-common';
  * @class SuperMap.Widgets.ChartModel
  * @classdesc 图表微件数据模型
  * @private
- * @param {object} datasets - 数据来源。
+ * @param {Object} datasets - 数据来源。
  * @category Widgets Common
  */
 
@@ -48,7 +48,7 @@ export class ChartModel {
     /**
      * @function SuperMap.Widgets.ChartModel.prototype.getDataFeatures
      * @description 请求数据集的数据信息
-     * @param {object} results - 数据集信息。
+     * @param {Object} results - 数据集信息。
      * @param {function} success - 成功回调函数。
      */
     getDataFeatures(results, success) {
@@ -77,7 +77,7 @@ export class ChartModel {
     /**
      * @function SuperMap.Widgets.ChartModel.prototype.getLayerFeatures
      * @description 请求图层要素的数据信息
-     * @param {object} results - 数据集信息。
+     * @param {Object} results - 数据集信息。
      * @param {function} success - 成功回调函数。
      */
     getLayerFeatures(results, success) {

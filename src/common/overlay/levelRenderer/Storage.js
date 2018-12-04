@@ -247,7 +247,7 @@ export class Storage {
      * @function SuperMap.LevelRenderer.Storage.prototype.mod
      * @description 修改图形(Shape)或者组(Group)。
      * 
-     * @param {String} elId - 唯一标识。
+     * @param {string} elId - 唯一标识。
      * @param {Object} params - 参数。
      * @return {SuperMap.LevelRenderer.Storage} this。
      */

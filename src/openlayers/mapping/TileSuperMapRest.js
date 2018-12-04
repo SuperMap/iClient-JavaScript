@@ -228,7 +228,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
             var y = -tileCoord[2] - 1;
             var resolution = me.tileGrid.getResolution(z);
             var dpi = 96;
-            var unit = projection.getUnits();
+            var unit = projection.getUnits() || Unit.DEGREE;
             if (unit === 'degrees') {
                 unit = Unit.DEGREE;
             }
@@ -360,7 +360,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
         var resolutions = getResolutions();
 
         function getResolutions() {
-            var level = 17;
+            var level = 22;
             var dpi = 96;
             var width = (extent[2] - extent[0]);
             var height = (extent[3] - extent[1]);

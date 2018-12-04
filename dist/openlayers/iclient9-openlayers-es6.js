@@ -89,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 86);
+/******/ 	return __webpack_require__(__webpack_require__.s = 87);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -231,24 +231,24 @@ module.exports = function(eccent, phi, sinphi) {
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var proj4 = __webpack_require__(80);
+var proj4 = __webpack_require__(81);
 proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = __webpack_require__(19);
 proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(66);
+proj4.Point = __webpack_require__(67);
 proj4.toPoint = __webpack_require__(28);
 proj4.defs = __webpack_require__(32);
 proj4.transform = __webpack_require__(29);
 proj4.mgrs = __webpack_require__(27);
-proj4.version = __webpack_require__(65).version;
-__webpack_require__(64)(proj4);
+proj4.version = __webpack_require__(66).version;
+__webpack_require__(65)(proj4);
 module.exports = proj4;
 
 /***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var utils = __webpack_require__(81)
+var utils = __webpack_require__(82)
 
 var AND = '&&'
   , OR = '||'
@@ -611,10 +611,10 @@ module.exports = function(destination, source) {
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parseCode = __webpack_require__(79);
+var parseCode = __webpack_require__(80);
 var extend = __webpack_require__(18);
-var projections = __webpack_require__(75);
-var deriveConstants = __webpack_require__(72);
+var projections = __webpack_require__(76);
+var deriveConstants = __webpack_require__(73);
 
 function Projection(srsCode,callback) {
   if (!(this instanceof Projection)) {
@@ -1723,8 +1723,8 @@ var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(68);
-var adjust_axis = __webpack_require__(67);
+var datum_transform = __webpack_require__(69);
+var adjust_axis = __webpack_require__(68);
 var proj = __webpack_require__(19);
 var toPoint = __webpack_require__(28);
 module.exports = function transform(source, dest, point) {
@@ -2026,8 +2026,8 @@ module.exports = function(wkt, self) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(77);
-var units = __webpack_require__(76);
+var PrimeMeridian = __webpack_require__(78);
+var units = __webpack_require__(77);
 
 module.exports = function(defData) {
   var self = {};
@@ -2163,7 +2163,7 @@ module.exports = function(defData) {
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var globals = __webpack_require__(78);
+var globals = __webpack_require__(79);
 var parseProj = __webpack_require__(31);
 var wkt = __webpack_require__(30);
 
@@ -2222,6 +2222,12 @@ module.exports = defs;
 
 /***/ }),
 /* 33 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return echarts}catch(e){return {}}}();
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -2937,13 +2943,13 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(20)))
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -3180,68 +3186,68 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(85).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86).setImmediate))
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(126);
+var supermapol_icons = __webpack_require__(127);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/widgets-icon.css
-var widgets_icon = __webpack_require__(119);
+var widgets_icon = __webpack_require__(120);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Icon.css
-var Icon = __webpack_require__(114);
+var Icon = __webpack_require__(115);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/OpenFile.css
-var OpenFile = __webpack_require__(102);
+var OpenFile = __webpack_require__(103);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/MessageBox.css
-var MessageBox = __webpack_require__(101);
+var MessageBox = __webpack_require__(102);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
-var DataFlow = __webpack_require__(100);
+var DataFlow = __webpack_require__(101);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Search.css
-var Search = __webpack_require__(99);
+var Search = __webpack_require__(100);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CommonContainer.css
-var CommonContainer = __webpack_require__(98);
+var CommonContainer = __webpack_require__(99);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DropDownBox.css
-var DropDownBox = __webpack_require__(97);
+var DropDownBox = __webpack_require__(98);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Select.css
-var Select = __webpack_require__(96);
+var Select = __webpack_require__(97);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(95);
+var CityTabsPage = __webpack_require__(96);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(94);
+var NavTabsPage = __webpack_require__(95);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(93);
+var PaginationContainer = __webpack_require__(94);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PopContainer.css
-var PopContainer = __webpack_require__(92);
+var PopContainer = __webpack_require__(93);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Analysis.css
-var Analysis = __webpack_require__(91);
+var Analysis = __webpack_require__(92);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DistributedAnalysis.css
-var DistributedAnalysis = __webpack_require__(90);
+var DistributedAnalysis = __webpack_require__(91);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/ClientComputation.css
-var ClientComputation = __webpack_require__(89);
+var ClientComputation = __webpack_require__(90);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DataServiceQuery.css
-var DataServiceQuery = __webpack_require__(88);
+var DataServiceQuery = __webpack_require__(89);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -3270,7 +3276,7 @@ var DataServiceQuery = __webpack_require__(88);
 
 
 // EXTERNAL MODULE: ./src/openlayers/css/ChangeTileVersion.css
-var ChangeTileVersion = __webpack_require__(87);
+var ChangeTileVersion = __webpack_require__(88);
 
 // CONCATENATED MODULE: ./src/openlayers/css/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -3280,7 +3286,7 @@ var ChangeTileVersion = __webpack_require__(87);
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3344,6 +3350,12 @@ var GeometryType = SuperMap.GeometryType = {
     POINT: "POINT",
     /** REGION */
     REGION: "REGION",
+    /** POINTEPS */
+    POINTEPS: "POINTEPS",
+    /** LINEEPS */
+    LINEEPS: "LINEEPS",
+    /** REGIONEPS */
+    REGIONEPS: "REGIONEPS",
     /** ELLIPSE */
     ELLIPSE: "ELLIPSE",
     /** CIRCLE */
@@ -7456,6 +7468,7 @@ class Collection_Collection extends Geometry_Geometry {
             this.addComponents(components);
         }
         this.CLASS_NAME = "SuperMap.Geometry.Collection";
+        this.type = "Collection";
     }
 
     /**
@@ -7688,6 +7701,7 @@ class MultiPoint_MultiPoint extends Collection_Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
         this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
+        this.type = "MultiPoint";
     }
 
     /**
@@ -7743,6 +7757,8 @@ class Curve_Curve extends MultiPoint_MultiPoint {
          */
         this.componentTypes = ["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"];
         this.CLASS_NAME = "SuperMap.Geometry.Curve";
+        this.type = "Curve";
+        
     }
 
 
@@ -7799,6 +7815,7 @@ class Point_Point extends Geometry_Geometry {
          */
         this.type = type || "Point";
         this.CLASS_NAME = "SuperMap.Geometry.Point";
+        this.type = "Point";
     }
 
     /**
@@ -7919,6 +7936,7 @@ class LineString_LineString extends Curve_Curve {
     constructor(points) {
         super(points);
         this.CLASS_NAME = "SuperMap.Geometry.LineString";
+        this.type = "LineString";
     }
 
     /**
@@ -8274,6 +8292,7 @@ class GeoText_GeoText extends Geometry_Geometry {
         };
         this.element = document.createElement('span');
         this.CLASS_NAME = "SuperMap.Geometry.GeoText";
+        this.type = "GeoText";
     }
 
     /**
@@ -8577,6 +8596,7 @@ class LinearRing_LinearRing extends LineString_LineString {
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
         this.CLASS_NAME = "SuperMap.Geometry.LinearRing";
+        this.type = "LinearRing";
     }
 
     /**
@@ -8696,6 +8716,7 @@ class MultiLineString_MultiLineString extends Collection_Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.LineString"];
         this.CLASS_NAME = "SuperMap.Geometry.MultiLineString";
+        this.type = "MultiLineString";
     }
 
 
@@ -8739,6 +8760,7 @@ class MultiPolygon_MultiPolygon extends Collection_Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.Polygon"];
         this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
+        this.type = "MultiPolygon";
     }
 
 
@@ -8782,6 +8804,7 @@ class Polygon_Polygon extends Collection_Collection {
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing"];
         this.CLASS_NAME = "SuperMap.Geometry.Polygon";
+        this.type = "Polygon";
     }
 
     /**
@@ -8860,6 +8883,7 @@ class Rectangle_Rectangle extends Geometry_Geometry {
         this.height = height;
 
         this.CLASS_NAME = "SuperMap.Geometry.Rectangle";
+        this.type = "Rectangle";
     }
 
     /**
@@ -10292,20 +10316,20 @@ class Vector_Vector extends Feature_Feature {
  * 大部分样式通过 SVG 标准定义属性。
  * - fill properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
  * - stroke properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#StrokeProperties}
- * @property {Boolean} [fill] - 不需要填充则设置为 false。
+ * @property {boolean} [fill] - 不需要填充则设置为 false。
  * @property {string} [fillColor='#ee9900'] - 十六进制填充颜色。
  * @property {number} [fillOpacity=0.4] - 填充不透明度。
- * @property {Boolean} [stroke] - 不需要描边则设为 false。
+ * @property {boolean} [stroke] - 不需要描边则设为 false。
  * @property {string} [strokeColor='#ee9900'] - 十六进制描边颜色。
  * @property {number} [strokeOpacity=0.4] - 描边的不透明度(0-1)。
  * @property {number} [strokeWidth=1] - 像素描边宽度。
  * @property {string} [strokeLinecap='round'] - strokeLinecap 有三种类型 butt，round，square。
  * @property {string} [strokeDashstyle='solid'] - 有 dot，dash，dashdot，longdash，longdashdot，solid 几种样式。
- * @property {Boolean} [graphic] - 不需要则设置为 false。
+ * @property {boolean} [graphic] - 不需要则设置为 false。
  * @property {number} [pointRadius=6] - 像素点半径。
  * @property {string} [pointerEvents='visiblePainted'] - pointerEvents。
  * @property {string} [cursor] - cursor。
- * @property {Boolean} [allowRotate='false'] - 是否允许图标随着运行方向旋转。用于时空数据图层。
+ * @property {boolean} [allowRotate='false'] - 是否允许图标随着运行方向旋转。用于时空数据图层。
  * @property {string} [externalGraphic] - 连接到用来渲染点的外部的图形。
  * @property {number} [graphicWidth] - 外部图表的像素宽度。
  * @property {number} [graphicHeight] - 外部图表的高宽度。
@@ -10322,7 +10346,7 @@ class Vector_Vector extends Feature_Feature {
  * @property {number} [backgroundYOffset] - 背景图在 y 轴的偏移量。
  * @property {number} [backgroundHeight] - 背景图的高度。如果没有设置，将用 graphicHeight。
  * @property {number} [backgroundWidth] - 背景图的宽度。如果没有设置，将用 graphicWidth。
- * @property {Boolean} [isUnicode=false] - 这个属性要配合 label 属性来用，当为 true时，label 就可以使用 unicode 编码，
+ * @property {boolean} [isUnicode=false] - 这个属性要配合 label 属性来用，当为 true时，label 就可以使用 unicode 编码，
  * 比如 "a" 的 unicode 十六进制编码为 61，则 label 属性可以为 "&#x61;",其中 "&#" 为前缀，标志这个为 unicode 编码，
  * "x" 是指 16 进制,这时页面显示的是 "a"；当此值为 false 的时候，label 的内容会被直接输出，
  * 比如，label 为 "&#x61;"，这时页面显示的也是 "&#x61;"。
@@ -10332,7 +10356,7 @@ class Vector_Vector extends Feature_Feature {
  * 第二个字符代表垂直方向上的对齐，"t"=top, "m"=middle, "b"=bottom。
  * @property {number} [labelXOffset] - 标签在 x 轴方向的偏移量。
  * @property {number} [labelYOffset] - 标签在 y 轴方向的偏移量。
- * @property {Boolean} [labelSelect=false] - 如果设为 true，标签可以选用 SelectFeature 或者 similar 控件。
+ * @property {boolean} [labelSelect=false] - 如果设为 true，标签可以选用 SelectFeature 或者 similar 控件。
  * @property {string} [fontColor='#000000'] - 标签字体颜色。
  * @property {number} [fontOpacity] - 标签透明度 (0-1)。
  * @property {string} [fontFamily] - 标签的字体类型。
@@ -10429,10 +10453,6 @@ class Format_Format {
         this.keepData = false;
 
         Util_Util.extend(this, options);
-        /**
-         * @member {Object} SuperMap.Format.prototype.options
-         * @description 可选参数。
-         */
         this.options = options;
 
         this.CLASS_NAME = "SuperMap.Format";
@@ -10479,6 +10499,13 @@ SuperMap.Format = Format_Format;
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写 JSON 的解析类。使用 {@link SuperMap.Format.JSON} 构造函数创建新实例。
  * @category BaseTypes Format
+ * @param {Object} [options] - 参数。
+ * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
+ * @param {string} [options.space=" "] - 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
+ * @param {string} [options.newline="\n"] - 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
+ * @param {number} [options.level=0] - 用于格式化输出, 表示的是缩进级别。
+ * @param {boolean} [options.pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
+ * @param {boolean} [options.nativeJSON] - 需要被注册的监听器对象。
  * @extends {SuperMap.Format}
  */
 class JSON_JSONFormat extends Format_Format {
@@ -10486,25 +10513,25 @@ class JSON_JSONFormat extends Format_Format {
     constructor(options) {
         super(options);
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.indent
+         * @member {string} [SuperMap.Format.JSON.prototype.indent="    "]
          * @description 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
          */
         this.indent = "    ";
 
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.space
+         * @member {string} [SuperMap.Format.JSON.prototype.space=" "]
          * @description 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
          */
         this.space = " ";
 
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.newline
+         * @member {string} [SuperMap.Format.JSON.prototype.newline="\n"]
          * @description 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
          */
         this.newline = "\n";
 
         /**
-         * @member {integer} SuperMap.Format.JSON.prototype.level 
+         * @member {integer} [SuperMap.Format.JSON.prototype.level=0] 
          * @description 用于格式化输出, 表示的是缩进级别。
          */
         this.level = 0;
@@ -10731,6 +10758,7 @@ class JSON_JSONFormat extends Format_Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeIndent
      * @description 根据缩进级别输出一个缩进字符串。
+     * @private
      * @returns {string} 一个适当的缩进字符串。
      */
     writeIndent() {
@@ -10746,6 +10774,7 @@ class JSON_JSONFormat extends Format_Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeNewline
      * @description 在格式化输出模式情况下输出代表新一行的字符串。
+     * @private
      * @returns {string} 代表新的一行的字符串。
      */
     writeNewline() {
@@ -10754,6 +10783,7 @@ class JSON_JSONFormat extends Format_Format {
 
     /**
      * @function SuperMap.Format.JSON.prototype.writeSpace
+     * @private
      * @description 在格式化输出模式情况下输出一个代表空格的字符串。
      * @returns {string} 一个空格。
      */
@@ -10764,6 +10794,1272 @@ class JSON_JSONFormat extends Format_Format {
 }
 
 SuperMap.Format.JSON = JSON_JSONFormat;
+// CONCATENATED MODULE: ./src/common/iServer/ServerColor.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.ServerColor
+ * @category iServer Map Theme
+ * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色。
+ * @param {Object} options - 参数。
+ * @param {number} [options.red=255] - 获取或设置红色值。
+ * @param {number} [options.green=0] - 获取或设置绿色值。
+ * @param {number} [options.blue=0] - 获取或设置蓝色值。
+ */
+class ServerColor {
+
+    constructor(red, green, blue) {
+
+        /**
+         * @member {number} [SuperMap.ServerColor.prototype.red=255]
+         * @description 获取或设置红色值。
+         */
+        this.red = (!red && red != 0)?255:red;
+
+        /**
+         * @member {number} [SuperMap.ServerColor.prototype.green=0]
+         * @description 获取或设置绿色值。
+         */
+        this.green = green||0;
+
+        /**
+         * @member {number} [SuperMap.ServerColor.prototype.blue=0]
+         * @description 获取或设置蓝色值。
+         */
+        this.blue = blue||0;
+
+        this.CLASS_NAME = "SuperMap.ServerColor";
+    }
+
+    /**
+     * @function SuperMap.ServerColor.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.red = null;
+        me.green = null;
+        me.blue = null;
+    }
+
+
+    /**
+     * @function SuperMap.ServerColor.formJson
+     * @description 将 JSON 对象转化为 ServerColor 对象。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
+     * @returns {SuperMap.ServerColor} 转化后的 ServerColor 对象。
+     */
+    static fromJson(jsonObject) {
+        if (!jsonObject) {
+            return;
+        }
+        var color = new ServerColor();
+        var red = 255;
+        if (jsonObject.red !== null) {
+            red = Number(jsonObject.red);
+        }
+        color.red = red;
+
+        var green = 0;
+        if (jsonObject.green !== null) {
+            green = Number(jsonObject.green);
+        }
+        color.green = green;
+
+        var blue = 0;
+        if (jsonObject.blue !== null) {
+            blue = Number(jsonObject.blue);
+        }
+        color.blue = blue;
+        return color;
+    }
+
+}
+
+SuperMap.ServerColor = ServerColor;
+
+
+// CONCATENATED MODULE: ./src/common/iServer/ServerStyle.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.ServerStyle
+ * @category  iServer Map Theme
+ * @classdesc 服务端矢量要素风格类。
+ * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.FillGradientMode} options.fillGradientMode - 渐变填充风格的渐变类型。
+ * @param {SuperMap.ServerColor} [options.fillBackColor=[255,255,255]] - 填充背景颜色。
+ * @param {boolean} [options.fillBackOpaque=false] - 背景是否不透明。
+ * @param {SuperMap.ServerColor} [options.fillForeColor=[255,0,0]] - 填充颜色。
+ * @param {number} [options.fillGradientAngle=0] - 渐变填充的旋转角度。
+ * @param {number} [options.fillGradientOffsetRatioX=0] - 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。
+ * @param {number} [options.fillGradientOffsetRatioY=0] - 填充中心点相对于填充区域范围中心点的垂直偏移百分比。
+ * @param {number} [options.fillOpaqueRate=100] - 填充不透明度。
+ * @param {number} [options.fillSymbolID=0] - 填充符号的编码。
+ * @param {SuperMap.ServerColor} [options.lineColor] - 矢量要素的边线颜色。默认 lineColor = new ServerColor(0, 0, 0)。
+ * @param {number} [options.lineSymbolID=0] - 线状符号的编码。
+ * @param {number} [options.lineWidth=1] - 边线的宽度。
+ * @param {number} [options.markerAngle=0] - 点状符号的旋转角度。
+ * @param {number} [options.markerSize=1] - 点状符号的大小。
+ * @param {number} [options.markerSymbolID=-1] - 点状符号的编码。
+ */
+class ServerStyle_ServerStyle {
+
+    constructor(options) {
+        /**
+         * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillBackColor
+         * @description 填充背景颜色。当填充模式为渐变填充时，该颜色为填充终止色。
+         */
+        this.fillBackColor = new ServerColor(255, 255, 255);
+
+        /**
+         * @member {boolean} [SuperMap.ServerStyle.prototype.fillBackOpaque=false]
+         * @description 背景是否不透明。false 表示透明。
+         */
+        this.fillBackOpaque = false;
+
+        /**
+         * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillForeColor
+         * @description 填充颜色。当填充模式为渐变填充时，该颜色为填充起始颜色。
+         */
+        this.fillForeColor = new ServerColor(255, 0, 0);
+
+        /**
+         * @member {SuperMap.FillGradientMode} SuperMap.ServerStyle.prototype.fillGradientMode
+         * @description 渐变填充风格的渐变类型。
+         */
+        this.fillGradientMode = null;
+
+        /**
+         * @member {number} SuperMap.ServerStyle.prototype.fillGradientAngle -
+         * @description 渐变填充的旋转角度。单位为度，精确到 0.1 度，逆时针方向为正方向。
+         */
+        this.fillGradientAngle = 0;
+
+        /**
+         * @member {number} SuperMap.ServerStyle.prototype.fillGradientOffsetRatioX
+         * @description 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。它们的关系如下：设填充区域范围中心点的坐标为（x0, y0），
+         *              填充中心点的坐标为（x, y），填充区域范围的宽度为 a，水平偏移百分比为 dx，则 x=x0 + a*dx/100。
+         */
+        this.fillGradientOffsetRatioX = 0;
+
+        /**
+         * @member {number} SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY
+         * @description 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
+         *              设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
+         */
+        this.fillGradientOffsetRatioY = 0;
+
+        /**
+         * @member {number} [SuperMap.ServerStyle.prototype.fillOpaqueRate=100]
+         * @description 填充不透明度。合法值为 0 - 100 的数值。其中为 0 表示完全透明；
+         *              100 表示完全不透明。赋值小于 0 时按照 0 处理，大于 100 时按照 100 处理。
+         */
+        this.fillOpaqueRate = 100;
+
+        /**
+         * @member {number} SuperMap.ServerStyle.prototype.fillSymbolID
+         * @description 填充符号的编码。此编码用于唯一标识各普通填充风格的填充符号。
+         *              关于填充符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
+         */
+        this.fillSymbolID = 0;
+
+        /**
+         * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.lineColor
+         * @description 矢量要素的边线颜色。如果等级符号是点符号，点符号的颜色由 lineColor 控制。
+         */
+        this.lineColor = new ServerColor(0, 0, 0);
+
+        /**
+         * @member {number} [SuperMap.ServerStyle.prototype.lineSymbolID=0]
+         * @description 线状符号的编码。此编码用于唯一标识各普通填充风格的填充符号。
+         *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
+         */
+        this.lineSymbolID = 0;
+
+        /**
+         * @member {number} [SuperMap.ServerStyle.prototype.lineWidth=1.0]
+         * @description 边线的宽度。单位为毫米，精度到 0.1。
+         */
+        this.lineWidth = 1;
+
+        /**
+         * @member {number} [SuperMap.ServerStyle.prototype.markerAngle=0]
+         * @description 点状符号的旋转角度。以度为单位，精确到 0.1 度，逆时针方向为正方向。
+         */
+        this.markerAngle = 0;
+
+        /**
+         * @member {number} [SuperMap.ServerStyle.prototype.markerSize=1.0]
+         * @description 点状符号的大小。单位为毫米，精度为 0.1。当该属性设置为0时，采用符号默认大小 1.0 显示。
+         *              当该属性设置为非法值时，交由服务器默认处理。
+         */
+        this.markerSize = 1;
+
+        /**
+         * @member {number} [SuperMap.ServerStyle.prototype.markerSymbolID=-1]
+         * @description 点状符号的编码。此编码用于唯一标识各点状符号。
+         *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
+         */
+        this.markerSymbolID = -1;
+        if (options) {
+            Util_Util.extend(this, options);
+        }
+
+        this.CLASS_NAME = "SuperMap.ServerStyle";
+    }
+
+    /**
+     * @function SuperMap.ServerStyle.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        if (me.fillBackColor) {
+            me.fillBackColor.destroy();
+            me.fillBackColor = null;
+        }
+        me.fillBackOpaque = null;
+
+        if (me.fillForeColor) {
+            me.fillForeColor.destroy();
+            me.fillForeColor = null;
+        }
+        me.fillGradientMode = null;
+        me.fillGradientAngle = null;
+        me.fillGradientOffsetRatioX = null;
+        me.fillGradientOffsetRatioY = null;
+        me.fillOpaqueRate = null;
+        me.fillSymbolID = null;
+        if (me.lineColor) {
+            me.lineColor.destroy();
+            me.lineColor = null;
+        }
+        me.lineSymbolID = null;
+        me.lineWidth = null;
+        me.markerAngle = null;
+        me.markerSize = null;
+        me.markerSymbolID = null;
+    }
+
+    /**
+     * @function SuperMap.ServerStyle.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
+     * @returns {Object} 对应的 JSON 格式对象.
+     */
+    toServerJSONObject() {
+        var styleObj = {};
+        styleObj = Util_Util.copyAttributes(styleObj, this);
+        //暂时先忽略serverColor往Json的转换
+        return styleObj;
+    }
+
+    /**
+     * @function SuperMap.ServerStyle.fromJson
+     * @description 将JSON对象转换为 SuperMap.ServerStyle 对象。
+     * @param jsonObject - {Object} 要转换的 JSON 对象。
+     * @returns {SuperMap.ServerStyle} 转化后的 SuperMap.ServerStyle 对象。
+     */
+    static fromJson(jsonObject) {
+        if (!jsonObject) {
+            return;
+        }
+        return new ServerStyle_ServerStyle({
+            fillBackColor: ServerColor.fromJson(jsonObject.fillBackColor),
+            fillBackOpaque: jsonObject.fillBackOpaque,
+            fillForeColor: ServerColor.fromJson(jsonObject.fillForeColor),
+            fillGradientMode: jsonObject.fillGradientMode,
+            fillGradientAngle: jsonObject.fillGradientAngle,
+            fillGradientOffsetRatioX: jsonObject.fillGradientOffsetRatioX,
+            fillGradientOffsetRatioY: jsonObject.fillGradientOffsetRatioY,
+            fillOpaqueRate: jsonObject.fillOpaqueRate,
+            fillSymbolID: jsonObject.fillSymbolID,
+            lineColor: ServerColor.fromJson(jsonObject.lineColor),
+            lineSymbolID: jsonObject.lineSymbolID,
+            lineWidth: jsonObject.lineWidth,
+            markerAngle: jsonObject.markerAngle,
+            markerSize: jsonObject.markerSize,
+            markerSymbolID: jsonObject.markerSymbolID
+        });
+    }
+
+}
+
+
+SuperMap.ServerStyle = ServerStyle_ServerStyle;
+
+// CONCATENATED MODULE: ./src/common/iServer/PointWithMeasure.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.PointWithMeasure
+ * @category  iServer SpatialAnalyst
+ * @classdesc 路由点类。路由点是指具有线性度量值 (Measure) 的二维地理坐标点。
+ * @param {Object} options - 参数。
+ * @param {number} options.measure - 度量值，即路由对象属性值 M。
+ * @param {number} options.x - 获取当前点对象在地理坐标系下的 X 坐标值。
+ * @param {number} options.y - 获取当前点对象在地理坐标系下的 Y 坐标值。
+ * @extends {SuperMap.Geometry.Point}
+ */
+class PointWithMeasure_PointWithMeasure extends Point_Point {
+
+    constructor(options) {
+        super(options);
+
+        /**
+         * @member {number} SuperMap.PointWithMeasure.prototype.measure
+         * @description 度量值，即路由对象属性值 M。
+         */
+        this.measure = null;
+
+        if (options) {
+            Util_Util.extend(this, options);
+        }
+
+        this.CLASS_NAME = "SuperMap.PointWithMeasure";
+    }
+
+    /**
+     * @function SuperMap.PointWithMeasure.prototype.equals
+     * @description 判断两个路由点对象是否相等。如果两个路由点对象具有相同的坐标以及度量值，则认为是相等的。
+     * @param {SuperMap.PointWithMeasure} geom - 需要判断的路由点对象。
+     * @returns {boolean} 两个路由点对象是否相等（true 为相等，false 为不等）。
+     */
+    equals(geom) {
+        var equals = false;
+        if (geom != null) {
+            var isValueEquals = this.x === geom.x && this.y === geom.y && this.measure === geom.measure;
+            var isNaNValue = isNaN(this.x) && isNaN(this.y) && isNaN(this.measure);
+            var isNaNGeometry = isNaN(geom.x) && isNaN(geom.y) && isNaN(geom.measure);
+            equals = ( isValueEquals || ( isNaNValue && isNaNGeometry ));
+        }
+        return equals;
+    }
+
+
+    /**
+     * @function SuperMap.PointWithMeasure.prototype.toJson
+     * @description 转换为 JSON 对象。
+     * */
+     toJson() {
+        var result = "{";
+        if (this.measure != null && this.measure != undefined) {
+            result += "\"measure\":" + this.measure + ",";
+        }
+        result += "\"x\":" + this.x + ",";
+        result += "\"y\":" + this.y;
+        result += "}";
+        return result;
+    }
+
+
+     /**
+     * @function SuperMap.PointWithMeasure.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.measure = null;
+        me.x = null;
+        me.y = null;
+    }
+
+    /**
+     * @function SuperMap.PointWithMeasure.fromJson
+     * @description 将 JSON 对象转换为{@link SuperMap.PointWithMeasure} 对象。
+     * @param {Object} jsonObject - JSON 对象表示的路由点。
+     * @returns {SuperMap.PointWithMeasure} 转化后的 PointWithMeasure 对象。
+     */
+    static fromJson(jsonObject) {
+        if (!jsonObject) {
+            return;
+        }
+        return new PointWithMeasure_PointWithMeasure({
+            x: jsonObject.x,
+            y: jsonObject.y,
+            measure: jsonObject.measure
+        });
+    }
+
+}
+
+SuperMap.PointWithMeasure = PointWithMeasure_PointWithMeasure;
+
+// CONCATENATED MODULE: ./src/common/iServer/Route.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+/**
+ * @class SuperMap.Route
+ * @category  iServer SpatialAnalyst
+ * @classdesc 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
+ * @param {Array.<SuperMap.Geometry>} points - 形成路由对象的线数组。
+ * @param {Object} options - 参数。
+ * @param {number} options.id - 路由对象在数据库中的 id。
+ * @param {number} options.length - 路由对象的长度。单位与数据集的单位相同。
+ * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
+ * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
+ * @param {string} [options.type] - 数据类型，如："LINEM"。
+ * @extends {SuperMap.Geometry.Collection}
+ */
+class Route_Route extends Collection_Collection {
+
+    constructor(points, options) {
+        super(points, options);
+
+        /**
+         * @member {number} SuperMap.Route.prototype.id
+         * @description 路由对象在数据库中的 ID。
+         */
+        this.id = null;
+
+        /**
+         * @member {number} SuperMap.Route.prototype.center
+         * @description 路由对象的中心点。
+         */
+        this.center = null;
+
+        /**
+         * @member {string} SuperMap.Route.prototype.style
+         * @description 路由对象的样式。
+         */
+        this.style = null;
+
+        /**
+         * @member {number} SuperMap.Route.prototype.length
+         * @description 路由对象的长度。单位与数据集的单位相同。
+         */
+        this.length = null;
+
+        /**
+         *  @member {number} SuperMap.Route.prototype.maxM
+         *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
+         */
+        this.maxM = null;
+
+        /**
+         * @member {number} SuperMap.Route.prototype.minM
+         * @description 最小线性度量值，即所有结点到起始点的量算距离中最小值。
+         */
+        this.minM = null;
+
+        /**
+         * @member {Array.<number>} SuperMap.Route.prototype.parts
+         * @description 服务端几何对象中各个子对象所包含的节点个数。
+         */
+        this.parts = null;
+
+        /**
+         * @member {Array.<Object>} SuperMap.Route.prototype.points
+         * @description 路由对象的所有路由点。
+         * @example
+         * (start code)
+         * [
+         *  {
+         *      "measure": 0,
+         *      "y": -4377.027184298267,
+         *      "x": 4020.0045221720466
+         *  },
+         *  {
+         *      "measure": 37.33288381391519,
+         *      "y": -4381.569363260499,
+         *      "x": 4057.0600591960642
+         *  }
+         * ]
+         * (end)
+         */
+        this.points = null;
+
+        /**
+         * @member {string} SuperMap.Route.prototype.type
+         * @description 服务端几何对象类型。
+         */
+        this.type = null;
+
+        /**
+         * @member {Array.<string>} [SuperMap.Route.prototype.componentTypes=SuperMap.Geometry.LineString]
+         * @description components 存储的的几何对象所支持的几何类型数组。
+         */
+        this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
+
+        if (options) {
+            Util_Util.extend(this, options);
+        }
+
+        this.CLASS_NAME = "SuperMap.Route";
+    }
+
+    /**
+     *
+     * @function SuperMap.Route.prototype.toJson
+     * @description 转换为 JSON 对象。
+     * @returns {Object} JSON 对象。
+     */
+    toJson() {
+        var result = "{";
+        if (this.id != null && this.id != undefined) {
+            result += "\"id\":" + this.id + ",";
+        }
+        if (this.center != null && this.center != undefined) {
+            result += "\"center\":" + this.center + ",";
+        }
+        if (this.style != null && this.style != undefined) {
+            result += "\"style\":" + this.style + ",";
+        }
+        if (this.length != null && this.length != undefined) {
+            result += "\"length\":" + this.length + ",";
+        }
+        if (this.maxM != null && this.maxM != undefined) {
+            result += "\"maxM\":" + this.maxM + ",";
+        }
+        if (this.minM != null && this.minM != undefined) {
+            result += "\"minM\":" + this.minM + ",";
+        }
+        if (this.type != null && this.type != undefined) {
+            result += "\"type\":\"" + this.type + "\",";
+        }
+        if (this.parts != null && this.parts != undefined) {
+            result += "\"parts\":[" + this.parts[0];
+
+            for (var i = 1; i < this.parts.length; i++) {
+                result += "," + this.parts[i];
+            }
+            result += "],";
+        }
+        if (this.components != null && this.components.length > 0) {
+            result += "\"points\":[";
+            for (var j = 0, len = this.components.length; j < len; j++) {
+                for (var k = 0, len2 = this.components[j].components.length; k < len2; k++) {
+                    result += this.components[j].components[k].toJson() + ",";
+                }
+            }
+            result = result.replace(/,$/g, '');
+            result += "]";
+        }
+        result = result.replace(/,$/g, '');
+        result += "}";
+        return result;
+    }
+
+
+    /**
+     * @function SuperMap.Route.prototype.destroy
+     * @override
+     */
+    destroy() {
+        var me = this;
+        me.id = null;
+        me.center = null;
+        me.style = null;
+        me.length = null;
+        me.maxM = null;
+        me.minM = null;
+        me.type = null;
+        me.parts = null;
+        me.components.length = 0;
+        me.components = null;
+        me.componentTypes = null;
+    }
+
+
+    /**
+     * @function SuperMap.Route.fromJson
+     * @description 将 JSON 对象转换为 SuperMap.Route 对象。
+     * @param {Object} [jsonObject] - JSON 对象表示的路由对象。
+     * @returns {SuperMap.Route} 转化后的 Route 对象。
+     */
+    static fromJson(jsonObject) {
+        if (!jsonObject) {
+            return;
+        }
+
+        var geoParts = jsonObject.parts || [],
+            geoPoints = jsonObject.points || [],
+            len = geoParts.length,
+            lineList = [];
+        if (len > 0) {
+            for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
+                for (var j = 0; j < geoParts[i]; j++) {
+                    pointList.push(PointWithMeasure_PointWithMeasure.fromJson(geoPoints[pointIndex + j]));
+                }
+                pointIndex += geoParts[i];
+                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+                if (pointList[0].equals(pointList[geoParts[i] - 1])) {
+                    lineList.push(new LinearRing_LinearRing(pointList));
+                } else {
+                    lineList.push(new LineString_LineString(pointList));
+                }
+                pointList = [];
+            }
+
+        } else {
+            return null;
+        }
+
+        return new Route_Route(lineList, {
+            id: jsonObject.id,
+            center: jsonObject.center,
+            style: jsonObject.style,
+            length: jsonObject.length,
+            maxM: jsonObject.maxM,
+            minM: jsonObject.minM,
+            type: jsonObject.type,
+            parts: jsonObject.parts
+        });
+    }
+
+}
+
+SuperMap.Route = Route_Route;
+// CONCATENATED MODULE: ./src/common/iServer/ServerGeometry.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @class SuperMap.ServerGeometry
+ * @category  iServer  
+ * @classdesc 服务端几何对象类。该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
+ * @param {Object} options - 参数。
+ * @param {string} options.id - 服务端几何对象唯一标识符。
+ * @param {Array.<number>} options.parts - 服务端几何对象中各个子对象所包含的节点个数。
+ * @param {Array.<SuperMap.Geometry.Point>} options.points - 组成几何对象的节点的坐标对数组。
+ * @param {SuperMap.GeometryType} options.type - 几何对象的类型。
+ * @param {SuperMap.ServerStyle} [options.style] - 服务端几何对象的风格。
+ */
+class ServerGeometry_ServerGeometry {
+
+    constructor(options) {
+
+        /**
+         * @member {string} SuperMap.ServerGeometry.prototype.id
+         * @description 服务端几何对象唯一标识符。
+         */
+        this.id = 0;
+        
+        /**
+         * @member {SuperMap.ServerStyle} [SuperMap.ServerGeometry.prototype.style]
+         * @description 服务端几何对象的风格（ServerStyle）。
+         */
+        this.style = null;
+
+        /**
+         * @member {Array.<number>} SuperMap.ServerGeometry.prototype.parts
+         * @description 服务端几何对象中各个子对象所包含的节点个数。<br>
+         * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。
+         * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，
+         * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，
+         * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。<br>
+         * 2.通常情况，一个简单几何对象的子对象就是它本身，
+         * 因此对于简单对象来说的该字段为长度为1的整型数组，
+         * 该字段的值就是这个简单对象节点的个数。
+         * 如果一个几何对象是由几个简单对象组合而成的，
+         * 例如，一个岛状几何对象由 3 个简单的多边形组成而成，
+         * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为 3 的整型数组，
+         * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。
+         */
+        this.parts = null;
+
+        /**
+         * @member {Array.<SuperMap.Geometry.Point>} SuperMap.ServerGeometry.prototype.points
+         * @description 组成几何对象的节点的坐标对数组。<br>
+         * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，
+         * 该字段存放了组成几何对象的点坐标的数组。
+         * 对于简单的面对象，他的起点和终点的坐标点相同。<br>
+         * 2.对于复杂的几何对象，根据 Parts 属性来确定每一个组成复杂几何对象的简单对象所对应的节点的个数，
+         * 从而确定 Points 字段中坐标对的分配归属问题。
+         */
+        this.points = null;
+
+        /**
+         * @member {SuperMap.GeometryType} SuperMap.ServerGeometry.prototype.type
+         * @description 几何对象的类型（GeometryType）。
+         */
+        this.type = null;
+
+        /**
+         * @member {Object} SuperMap.ServerGeometry.prototype.prjCoordSys
+         * @description 投影坐标参数，现仅在缓冲区分析中有效。
+         */
+        this.prjCoordSys = null;
+        if (options) {
+            Util_Util.extend(this, options);
+        }
+
+        this.CLASS_NAME = "SuperMap.ServerGeometry";
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.id = null;
+        me.style = null;
+        me.parts = null;
+        me.partTopo = null;
+        me.points = null;
+        me.type = null;
+        me.prjCoordSys = null;
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeometry
+     * @description 将服务端几何对象 ServerGeometry 转换为客户端几何对象 Geometry。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
+     */
+    toGeometry() {
+        var me = this,
+            geoType = me.type;
+        switch (geoType) {
+            case GeometryType.POINT:
+                return me.toGeoPoint();
+            case GeometryType.LINE:
+                return me.toGeoLine();
+            case GeometryType.LINEM:
+                return me.toGeoLinem();
+            case GeometryType.REGION:
+                return me.toGeoRegion();
+            case GeometryType.POINTEPS:
+                return me.toGeoPoint();
+            case GeometryType.LINEEPS:
+                return me.toGeoLineEPS();
+            case GeometryType.REGIONEPS:
+                return me.toGeoRegionEPS();
+        }
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoPoint
+     * @description 将服务端的点几何对象转换为客户端几何对象。包括 Point、MultiPoint。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
+     */
+    toGeoPoint() {
+        var me = this,
+            geoParts = me.parts || [],
+            geoPoints = me.points || [],
+            len = geoParts.length;
+        if (len > 0) {
+            if (len === 1) {
+                return new Point_Point(geoPoints[0].x, geoPoints[0].y);
+            } else {
+                var pointList = [];
+                for (let i = 0; i < len; i++) {
+                    pointList.push(new Point_Point(geoPoints[i].x, geoPoints[i].y));
+                }
+                return new MultiPoint_MultiPoint(pointList);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoLine
+     * @description 将服务端的线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
+     */
+    toGeoLine() {
+        var me = this,
+            geoParts = me.parts || [],
+            geoPoints = me.points || [],
+            len = geoParts.length;
+        if (len > 0) {
+            if (len === 1) {
+                let pointList = [];
+                for (let i = 0; i < geoParts[0]; i++) {
+                    pointList.push(new Point_Point(geoPoints[i].x, geoPoints[i].y));
+                }
+                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+                if (pointList[0].equals(pointList[geoParts[0] - 1])) {
+                    return new LinearRing_LinearRing(pointList);
+                } else {
+                    return new LineString_LineString(pointList);
+                }
+            } else {
+                let lineList = [];
+                for (let i = 0; i < len; i++) {
+                    let pointList = [];
+                    for (let j = 0; j < geoParts[i]; j++) {
+                        pointList.push(new Point_Point(geoPoints[j].x, geoPoints[j].y));
+                    }
+                    lineList.push(new LineString_LineString(pointList));
+                    geoPoints.splice(0, geoParts[i]);
+                }
+                return new MultiLineString_MultiLineString(lineList);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoLineEPS
+     * @description 将服务端的线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
+     */
+    toGeoLineEPS() {
+        var me = this,
+            geoParts = me.parts || [],
+            geoPoints = me.points || [],
+            i,
+            j,
+            pointList,
+            lineList,
+            lineEPS,
+            len = geoParts.length;
+        if (len > 0) {
+            if (len === 1) {
+                for (i = 0, pointList = []; i < geoParts[0]; i++) {
+                    pointList.push(new Point_Point(geoPoints[i].x, geoPoints[i].y, geoPoints[i].type));
+                }
+                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+                if (pointList[0].equals(pointList[geoParts[0] - 1])) {
+                    lineEPS = LineString_LineString.createLineEPS(pointList);
+                    return new LinearRing_LinearRing(lineEPS);
+                } else {
+                    lineEPS = LineString_LineString.createLineEPS(pointList);
+                    return new LineString_LineString(lineEPS);
+                }
+            } else {
+                for (i = 0, lineList = []; i < len; i++) {
+                    for (j = 0, pointList = []; j < geoParts[i]; j++) {
+                        pointList.push(new Point_Point(geoPoints[j].x, geoPoints[j].y));
+                    }
+                    lineEPS = LineString_LineString.createLineEPS(pointList);
+                    lineList.push(new LineString_LineString(lineEPS));
+                    geoPoints.splice(0, geoParts[i]);
+                }
+                return new MultiLineString_MultiLineString(lineList);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoLine
+     * @description 将服务端的路由线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
+     */
+    toGeoLinem() {
+        var me = this;
+        return Route_Route.fromJson(me);
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoRegion
+     * @description 将服务端的面几何对象转换为客户端几何对象。类型为 Polygon。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
+     */
+    toGeoRegion() {
+        var me = this,
+            geoParts = me.parts || [],
+            geoTopo = me.partTopo || [],
+            geoPoints = me.points || [],
+            len = geoParts.length;
+        if (len <= 0) {
+            return null;
+        }
+        var polygonArray = [];
+        var pointList = [];
+        if (len == 1) {
+            for (let i = 0; i < geoPoints.length; i++) {
+                pointList.push(
+                    new Point_Point(geoPoints[i].x, geoPoints[i].y))
+            }
+            polygonArray.push(
+                new Polygon_Polygon(
+                    [new LinearRing_LinearRing(pointList)]
+                )
+            );
+            return new MultiPolygon_MultiPolygon(polygonArray);
+        }
+        //处理复杂面
+        var CCWArray = [];
+        var areaArray = [];
+        var polygonArrayTemp = [];
+        //polyon岛洞标识数组，初始都是岛。
+        var CCWIdent = [];
+        for (let i = 0, pointIndex = 0; i < len; i++) {
+            for (let j = 0; j < geoParts[i]; j++) {
+                pointList.push(
+                    new Point_Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y)
+                );
+            }
+            pointIndex += geoParts[i];
+            var polygon = new Polygon_Polygon(
+                [new LinearRing_LinearRing(pointList)]
+            );
+            pointList = [];
+            polygonArrayTemp.push(polygon);
+            CCWIdent.push(1);
+            areaArray.push(polygon.getArea());
+        }
+        //根据面积排序
+        ServerGeometry_ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
+        //iServer 9D新增字段
+        if (geoTopo.length === 0) {
+            //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
+            // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
+            // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
+            //目标polygon索引列表 -1标示没有被任何polygon包含，
+            var targetArray = [];
+            for (let i = 1; i < polygonArrayTemp.length; i++) {
+                for (let j = i - 1; j >= 0; j--) {
+                    targetArray[i] = -1;
+                    if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
+                        CCWIdent[i] = CCWIdent[j] * -1;
+                        if (CCWIdent[i] < 0) {
+                            targetArray[i] = j;
+                        }
+                        break;
+                    }
+                }
+            }
+            for (let i = 0; i < polygonArrayTemp.length; i++) {
+                if (CCWIdent[i] > 0) {
+                    polygonArray.push(polygonArrayTemp[i]);
+                } else {
+                    polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
+                    //占位
+                    polygonArray.push('');
+                }
+            }
+        } else {
+            //根据面积排序
+            //ServerGeometry.bubbleSort(areaArray, polygonArrayTemp,geoTopo);
+            polygonArray = new Array();
+            for (let i = 0; i < polygonArrayTemp.length; i++) {
+                if (geoTopo[i] && geoTopo[i] == -1) {
+                    CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
+                } else {
+                    if (CCWArray.length > 0 && polygonArray.length > 0) {
+                        polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
+                        CCWArray = [];
+                    }
+                    polygonArray.push(
+                        polygonArrayTemp[i]
+                    );
+                }
+                if (i == len - 1) {
+                    var polyLength = polygonArray.length;
+                    if (polyLength) {
+                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
+                    } else {
+                        for (let k = 0, length = CCWArray.length; k < length; k++) {
+                            polygonArray.push(
+                                new Polygon_Polygon(CCWArray)
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        return new MultiPolygon_MultiPolygon(polygonArray);
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoRegionEPS
+     * @description 将服务端的面几何对象转换为客户端几何对象。类型为 Polygon。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
+     */
+    toGeoRegionEPS() {
+        var me = this,
+            geoParts = me.parts || [],
+            geoTopo = me.partTopo || [],
+            geoPoints = me.points || [],
+            len = geoParts.length;
+
+        if (len <= 0) {
+            return null;
+        }
+        var polygonArray = [];
+        var pointList = [];
+        var lineEPS;
+        if (len == 1) {
+            for (var i = 0; i < geoPoints.length; i++) {
+                pointList.push(
+                    new Point_Point(geoPoints[i].x, geoPoints[i].y))
+            }
+
+            lineEPS = LineString_LineString.createLineEPS(pointList);
+            polygonArray.push(
+                new Polygon_Polygon(
+                    [new LinearRing_LinearRing(lineEPS)]
+                )
+            );
+            return new MultiPolygon_MultiPolygon(polygonArray);
+        }
+        //处理复杂面
+        var CCWArray = [];
+        var areaArray = [];
+        var polygonArrayTemp = [];
+        //polyon岛洞标识数组，初始都是岛。
+        var CCWIdent = [];
+        for (let i = 0, pointIndex = 0; i < len; i++) {
+            for (let j = 0; j < geoParts[i]; j++) {
+                pointList.push(
+                    new Point_Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y)
+                );
+            }
+            pointIndex += geoParts[i];
+
+            lineEPS = LineString_LineString.createLineEPS(pointList);
+            var polygon = new Polygon_Polygon(
+                [new LinearRing_LinearRing(lineEPS)]
+            );
+            pointList = [];
+            polygonArrayTemp.push(polygon);
+            CCWIdent.push(1);
+            areaArray.push(polygon.getArea());
+        }
+        //根据面积排序
+        ServerGeometry_ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
+        //iServer 9D新增字段
+        if (geoTopo.length === 0) {
+            //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
+            // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
+            // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
+            //目标polygon索引列表 -1标示没有被任何polygon包含，
+            var targetArray = [];
+            for (let i = 1; i < polygonArrayTemp.length; i++) {
+                for (let j = i - 1; j >= 0; j--) {
+                    targetArray[i] = -1;
+                    if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
+                        CCWIdent[i] = CCWIdent[j] * -1;
+                        if (CCWIdent[i] < 0) {
+                            targetArray[i] = j;
+                        }
+                        break;
+                    }
+                }
+            }
+            for (let i = 0; i < polygonArrayTemp.length; i++) {
+                if (CCWIdent[i] > 0) {
+                    polygonArray.push(polygonArrayTemp[i]);
+                } else {
+                    polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
+                    //占位
+                    polygonArray.push('');
+                }
+            }
+        } else {
+            //根据面积排序
+            polygonArray = new Array();
+            for (let i = 0; i < polygonArrayTemp.length; i++) {
+                if (geoTopo[i] && geoTopo[i] == -1) {
+                    CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
+                } else {
+                    if (CCWArray.length > 0 && polygonArray.length > 0) {
+                        polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
+                        CCWArray = [];
+                    }
+                    polygonArray.push(
+                        polygonArrayTemp[i]
+                    );
+                }
+                if (i == len - 1) {
+                    var polyLength = polygonArray.length;
+                    if (polyLength) {
+                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
+                    } else {
+                        for (let k = 0, length = CCWArray.length; k < length; k++) {
+                            polygonArray.push(
+                                new Polygon_Polygon(CCWArray)
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        return new MultiPolygon_MultiPolygon(polygonArray);
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.fromJson
+     * @description 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
+     * @returns {SuperMap.ServerGeometry} 转换后的 ServerGeometry 对象。
+     */
+    static fromJson(jsonObject) {
+        if (!jsonObject) {
+            return;
+        }
+        return new ServerGeometry_ServerGeometry({
+            id: jsonObject.id,
+            style: ServerStyle_ServerStyle.fromJson(jsonObject.style),
+            parts: jsonObject.parts,
+            partTopo: jsonObject.partTopo,
+            points: jsonObject.points,
+            center: jsonObject.center,
+            length: jsonObject.length,
+            maxM: jsonObject.maxM,
+            minM: jsonObject.minM,
+            type: jsonObject.type
+        });
+
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.fromGeometry
+     * @description 将客户端 Geometry 转换成服务端 ServerGeometry。
+     * @param {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
+     * @returns {SuperMap.ServerGeometry} 转换后的 ServerGeometry 对象。
+     */
+    static fromGeometry(geometry) {
+        if (!geometry) {
+            return;
+        }
+        var id = 0,
+            parts = [],
+            points = [],
+            type = null,
+            icomponents = geometry.components,
+            className = geometry.CLASS_NAME,
+            prjCoordSys = {"epsgCode": geometry.SRID};
+
+        if (!isNaN(geometry.id)) {
+            id = geometry.id;
+        }
+        //坑爹的改法，没法，为了支持态势标绘，有时间就得全改
+        if (className != "SuperMap.Geometry.LinearRing" && className != "SuperMap.Geometry.LineString" && (geometry instanceof MultiPoint_MultiPoint || geometry instanceof MultiLineString_MultiLineString)) {
+            let ilen = icomponents.length;
+            for (let i = 0; i < ilen; i++) {
+                let partPointsCount = icomponents[i].getVertices().length;
+                parts.push(partPointsCount);
+                for (let j = 0; j < partPointsCount; j++) {
+                    points.push(new Point_Point(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
+                }
+            }
+            //这里className不是多点就全部是算线
+            type = (className == "SuperMap.Geometry.MultiPoint") ? GeometryType.POINT : GeometryType.LINE;
+        } else if (geometry instanceof MultiPolygon_MultiPolygon) {
+            let ilen = icomponents.length;
+            for (let i = 0; i < ilen; i++) {
+                let polygon = icomponents[i],
+                    linearRingOfPolygon = polygon.components,
+                    linearRingOfPolygonLen = linearRingOfPolygon.length;
+                for (let j = 0; j < linearRingOfPolygonLen; j++) {
+                    let partPointsCount = linearRingOfPolygon[j].getVertices().length + 1;
+                    parts.push(partPointsCount);
+                    for (let k = 0; k < partPointsCount - 1; k++) {
+                        points.push(new Point_Point(linearRingOfPolygon[j].getVertices()[k].x, linearRingOfPolygon[j].getVertices()[k].y));
+                    }
+                    points.push(new Point_Point(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y));
+                }
+            }
+            type = GeometryType.REGION;
+        } else if (geometry instanceof Polygon_Polygon) {
+            let ilen = icomponents.length;
+            for (let i = 0; i < ilen; i++) {
+                let partPointsCount = icomponents[i].getVertices().length + 1;
+                parts.push(partPointsCount);
+                for (let j = 0; j < partPointsCount - 1; j++) {
+                    points.push(new Point_Point(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
+                }
+                points.push(new Point_Point(icomponents[i].getVertices()[0].x, icomponents[i].getVertices()[0].y));
+            }
+            type = GeometryType.REGION;
+        } else {
+            let geometryVerticesCount = geometry.getVertices().length;
+            for (let j = 0; j < geometryVerticesCount; j++) {
+                points.push(new Point_Point(geometry.getVertices()[j].x, geometry.getVertices()[j].y));
+            }
+            if (geometry instanceof LinearRing_LinearRing) {
+                points.push(new Point_Point(geometry.getVertices()[0].x, geometry.getVertices()[0].y));
+                geometryVerticesCount++;
+            }
+            parts.push(geometryVerticesCount);
+            type = (geometry instanceof Point_Point) ? GeometryType.POINT : GeometryType.LINE;
+        }
+
+        return new ServerGeometry_ServerGeometry({
+            id: id,
+            style: null,
+            parts: parts,
+            points: points,
+            type: type,
+            prjCoordSys: prjCoordSys
+        });
+    }
+
+    /**
+     * @function SuperMap.ServerGeometry.prototype.IsClockWise
+     * @description 判断 linearRing 中的点的顺序。返回值大于 0，逆时针；小于 0，顺时针。
+     * @param {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
+     * @returns {number} 返回值大于 0，逆时针；小于 0，顺时针。
+     */
+    static IsClockWise(points) {
+        var length = points.length;
+        if (length < 3) {
+            return 0.0;
+        }
+        var s = points[0].y * (points[length - 1].x - points[1].x);
+        points.push(points[0]);
+        for (var i = 1; i < length; i++) {
+            s += points[i].y * (points[i - 1].x - points[i + 1].x);
+        }
+        return s * 0.5;
+    }
+
+    static bubbleSort(areaArray, pointList, geoTopo) {
+        for (var i = 0; i < areaArray.length; i++) {
+            for (var j = 0; j < areaArray.length; j++) {
+                if (areaArray[i] > areaArray[j]) {
+                    var d = areaArray[j];
+                    areaArray[j] = areaArray[i];
+                    areaArray[i] = d;
+                    var b = pointList[j];
+                    pointList[j] = pointList[i];
+                    pointList[i] = b;
+                    if (geoTopo && geoTopo.length > 0) {
+                        var c = geoTopo[j];
+                        geoTopo[j] = geoTopo[i];
+                        geoTopo[i] = c;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+SuperMap.ServerGeometry = ServerGeometry_ServerGeometry;
 // CONCATENATED MODULE: ./src/common/format/GeoJSON.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -10787,6 +12083,14 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  * @class SuperMap.Format.GeoJSON
  * @classdesc  GeoJSON 的读和写。使用 {@link SuperMap.Format.GeoJSON} 构造器创建一个 GeoJSON 解析器。
  * @category BaseTypes Format
+ * @param {Object} [options] - 参数。
+ * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
+ * @param {string} [options.space=" "] - 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
+ * @param {string} [options.newline="\n"] - 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
+ * @param {number} [options.level=0] - 用于格式化输出, 表示的是缩进级别。
+ * @param {boolean} [options.pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
+ * @param {boolean} [options.nativeJSON] - 需要被注册的监听器对象。
+ * @param {boolean} [options.ignoreExtraDims=true] - 忽略维度超过 2 的几何要素。
  * @extends {SuperMap.Format.JSON}
  */
 class GeoJSON_GeoJSON extends JSON_JSONFormat {
@@ -10795,14 +12099,15 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
     constructor(options) {
         super(options);
         /**
-         * @member {boolean} [SuperMap.Format.GeoJSON.prototype.ignoreExtraDims=false]
+         * @member {boolean} [SuperMap.Format.GeoJSON.prototype.ignoreExtraDims=true]
          * @description 忽略维度超过 2 的几何要素。
          */
-        this.ignoreExtraDims = false;
+        this.ignoreExtraDims = true;
 
         this.CLASS_NAME = "SuperMap.Format.GeoJSON";
         /**
          * @member {Object} SuperMap.Format.GeoJSON.prototype.parseCoords 
+         * @private
          * @description 一个属性名对应着 GeoJSON 对象的几何类型的对象。每个属性其实都是一个实际上做解析用的方法。
          */
         this.parseCoords = {
@@ -10943,8 +12248,9 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
 
         };
         /**
-         * Property: extract
-         * 一个属性名对应着GeoJSON类型的对象。其值为相应的实际的解析方法。
+         * @member {Object} SuperMap.Format.GeoJSON.prototype.extract
+         * @private
+         * @description 一个属性名对应着GeoJSON类型的对象。其值为相应的实际的解析方法。
          */
         this.extract = {
             /**
@@ -10965,10 +12271,10 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
                     json.properties.texts = feature.geometry.texts;
                     json.properties.textStyle = feature.geometry.textStyle;
                 }
-                if (feature.fid !== null) {
+                if (feature.fid) {
                     json.id = feature.fid;
                 }
-                if (feature.ID !== null) {
+                if (feature.ID) {
                     json.id = feature.ID;
                 }
                 return json;
@@ -10985,9 +12291,19 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
                 if (geometry == null) {
                     return null;
                 }
-                var geo = this.toGeometry(geometry);
+                var geo = new ServerGeometry_ServerGeometry(geometry).toGeometry();
+                if (!geo) {
+                    return null;
+                }
                 var geometryType = geo.type;
-                var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
+                var data;
+                if (geometryType === "LinearRing") {
+                    geometryType = "LineString";
+                }
+                if (geometryType === "LINEM") {
+                    geometryType = "MultiLineString";
+                }
+                data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
                 geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
                 var json;
                 if (geometryType === "Collection") {
@@ -11014,7 +12330,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             'point': function (point) {
                 var p = [point.x, point.y];
                 for (var name in point) {
-                    if (name !== "x" && name !== "y" && !isNaN(point[name])) {
+                    if (name !== "x" && name !== "y" && point[name] && !isNaN(point[name])) {
                         p.push(point[name]);
                     }
                 }
@@ -11069,7 +12385,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             'multilinestring': function (multilinestring) {
                 var array = [];
                 for (var i = 0, len = multilinestring.components.length; i < len; ++i) {
-                    array.push(this.extract.linestring.apply(this, [{components: multilinestring.components[i]}]));
+                    array.push(this.extract.linestring.apply(this, [multilinestring.components[i]]));
                 }
                 return array;
             },
@@ -11083,7 +12399,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             'polygon': function (polygon) {
                 var array = [];
                 for (var i = 0, len = polygon.components.length; i < len; ++i) {
-                    array.push(this.extract.linestring.apply(this, [{components: polygon.components[i]}]));
+                    array.push(this.extract.linestring.apply(this, [polygon.components[i]]));
                 }
                 return array;
             },
@@ -11097,7 +12413,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             'multipolygon': function (multipolygon) {
                 var array = [];
                 for (var i = 0, len = multipolygon.components.length; i < len; ++i) {
-                    array.push(this.extract.polygon.apply(this, [{components: multipolygon.components[i]}]));
+                    array.push(this.extract.polygon.apply(this, [multipolygon.components[i]]));
                 }
                 return array;
             },
@@ -11112,10 +12428,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
                 var len = collection.components.length;
                 var array = new Array(len);
                 for (var i = 0; i < len; ++i) {
-                    array[i] = this.extract.geometry.apply(this, [{
-                        type: "Collection",
-                        components: collection.components[i]
-                    }]);
+                    array[i] = this.extract.geometry.apply(this, [collection.components[i]]);
                 }
                 return array;
             }
@@ -11124,17 +12437,17 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
 
     /**
      * @function SuperMap.Format.GeoJSON.prototype.read
-     * @description 反序列化一个 GeoJSON 字符串。
-     * @param {GeoJSONObject} json - GeoJSON 字符串
-     * @param {Function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
+     * @description 将 GeoJSON 对象或者GeoJSON 对象字符串转换为 SuperMap Feature 对象。
+     * @param {GeoJSONObject} json - GeoJSON 对象。
      * @param {string} [type='FeaureCollection'] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature"，和 "FeatureCollection"，如果此值为null。
+     * @param {Function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
      * @returns {Object}  返回值依赖于 type 参数的值。
      *     -如果 type 等于 "FeatureCollection"，返回值将会是 {@link SuperMap.Feature.Vector} 数组。
      *     -如果 type 为 "Geometry",输入的 JSON 对象必须表示一个唯一的几何体，然后返回值就会是 {@link SuperMap.Feature.Geometry}。
      *     -如果 type 为 "Feature"，输入的 JSON 对象也必须表示的一个要素，这样返回值才会是 {@link SuperMap.Feature.Vector}。
      */
-    
-     read(json, type, filter) {
+
+    read(json, type, filter) {
         type = (type) ? type : "FeatureCollection";
         var results = null;
         var obj = null;
@@ -11145,7 +12458,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         }
         if (!obj) {
             //SuperMap.Console.error("Bad JSON: " + json);
-        } else if (typeof(obj.type) != "string") {
+        } else if (typeof (obj.type) != "string") {
             //SuperMap.Console.error("Bad GeoJSON - no type: " + json);
         } else if (this.isValidType(obj, type)) {
             switch (type) {
@@ -11204,9 +12517,71 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
     }
 
     /**
+     * @function SuperMap.Format.GeoJSON.prototype.write
+     * @description iServer Geometry JSON 对象 转 GeoJSON对象字符串。
+     * @param {Object} obj - iServer Geometry JSON 对象。
+     * @param {boolean} [pretty=false] - 是否使用换行和缩进来控制输出。
+     * @returns {GeoJSONObject} 一个 GeoJSON 字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
+     */
+    write(obj, pretty) {
+        return super.write(this.toGeoJSON(obj), pretty);
+    }
+    /**
+     * @function SuperMap.Format.GeoJSON.prototype.fromGeoJSON
+     * @version 9.1.1
+     * @description 将 GeoJSON 对象或者GeoJSON 对象字符串转换为iServer Feature JSON。
+     * @param {GeoJSONObject} json - GeoJSON 对象。
+     * @param {string} [type='FeaureCollection'] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature"，和 "FeatureCollection"，如果此值为null。
+     * @param {Function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
+     * @returns {Object}  iServer Feature JSON。
+     */
+    fromGeoJSON(json, type, filter) {
+        let feature = this.read(json, type, filter);
+        return ServerGeometry_ServerGeometry.fromGeometry(feature);
+    }
+    /**
+     * @function SuperMap.Format.GeoJSON.prototype.toGeoJSON
+     * @version 9.1.1
+     * @description 将 GeoJSON 对象或者GeoJSON 对象字符串转换为iServer Feature JSON。
+     * @param {Object} obj - iServer Feature JSON。
+     * @returns {GeoJSONObject}  GeoJSON 对象。
+     */
+    toGeoJSON(obj) {
+        var geojson = {
+            "type": null
+        };
+        if (Util_Util.isArray(obj)) {
+            geojson.type = "FeatureCollection";
+            var numFeatures = obj.length;
+            geojson.features = new Array(numFeatures);
+            for (var i = 0; i < numFeatures; ++i) {
+                var element = obj[i];
+                if (isGeometry(element)) {
+                    let feature = {};
+                    feature.geometry = element;
+                    geojson.features[i] = this.extract.feature.apply(this, [feature]);
+                } else {
+                    geojson.features[i] = this.extract.feature.apply(this, [element]);
+                }
+            }
+        } else if (isGeometry(obj)) {
+            let feature = {};
+            feature.geometry = obj;
+            geojson = this.extract.feature.apply(this, [feature]);
+        }
+
+        function isGeometry(input) {
+            return input.hasOwnProperty("parts") && input.hasOwnProperty("points");
+        }
+
+        return geojson;
+
+    }
+    /**
      *  @function SuperMap.Format.GeoJSON.prototype.isValidType
      *  @description 检查一个 GeoJSON 对象是否和给定的类型相符的合法的对象。
      *  @returns {boolean} GeoJSON 是否是给定类型的合法对象。
+     * @private
      */
     isValidType(obj, type) {
         var valid = false;
@@ -11214,7 +12589,8 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             case "Geometry":
                 if (Util_Util.indexOf(
                         ["Point", "MultiPoint", "LineString", "MultiLineString",
-                            "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
+                            "Polygon", "MultiPolygon", "Box", "GeometryCollection"
+                        ],
                         obj.type) == -1) {
                     // unsupported geometry type
                     //SuperMap.Console.error("Unsupported geometry type: " +
@@ -11242,6 +12618,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
     /**
      * @function SuperMap.Format.GeoJSON.prototype.parseFeature
      * @description 将一个 GeoJSON 中的 feature 转化成 {@link SuperMap.Feature.Vector}> 对象。
+     * @private
      * @param {GeoJSONObject} obj - 从 GeoJSON 对象中创建一个对象。
      * @returns {SuperMap.Feature.Vector} 一个要素。
      */
@@ -11271,6 +12648,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
      * @description 将一个 GeoJSON 中的几何要素转化成 {@link SuperMap.Geometry} 对象。
      * @param {GeoJSONObject} obj - 从 GeoJSON 对象中创建一个对象。
      * @returns {SuperMap.Geometry} 一个几何要素。
+     * @private
      */
     parseGeometry(obj) {
         if (obj == null) {
@@ -11308,49 +12686,12 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         return geometry;
     }
 
-    /**
-     * @function SuperMap.Format.GeoJSON.write
-     * @description 序列化一个要素对象，几何对象，要素对象数组为一个 GeoJSON 字符串。
-     * @param {Object} obj - 一个 {@link SuperMap.Feature.Vector} 对象，一个 {@link SuperMap.Geometry} 对象或者一个要素对象数组。
-     * @param {boolean} [pretty=false] - 是否使用换行和缩进来控制输出。
-     * @returns {GeoJSONObject} 一个 GeoJSON 字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
-     */
-    write(obj, pretty) {
-        var geojson = {
-            "type": null
-        };
-        if (Util_Util.isArray(obj)) {
-            geojson.type = "FeatureCollection";
-            var numFeatures = obj.length;
-            geojson.features = new Array(numFeatures);
-            for (var i = 0; i < numFeatures; ++i) {
-                var element = obj[i];
-                if (isGeometry(element)) {
-                    let feature = {};
-                    feature.geometry = element;
-                    geojson.features[i] = this.extract.feature.apply(this, [feature]);
-                } else {
-                    geojson.features[i] = this.extract.feature.apply(this, [element]);
-                }
-            }
-        } else if (isGeometry(obj)) {
-            let feature = {};
-            feature.geometry = obj;
-            geojson = this.extract.feature.apply(this, [feature]);
-        }
-
-        function isGeometry(input) {
-            return input.hasOwnProperty("parts") && input.hasOwnProperty("points");
-        }
-
-        return super.write(geojson, pretty);
-    }
-
 
     /**
-     * @function SuperMap.Format.GeoJSON.createCRSObject
+     * @function SuperMap.Format.GeoJSON.prototype.createCRSObject
      * @description 从一个要素对象中创建一个坐标参考系对象。
      * @param {SuperMap.Feature.Vector} object - 要素对象。
+     * @private
      * @returns {GeoJSONObject} 一个可作为 GeoJSON 对象的 CRS 属性使用的对象。
      */
     createCRSObject(object) {
@@ -11404,222 +12745,6 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
 
         return attr;
     }
-
-
-    toGeometry(geometry) {
-        var me = this,
-            geoType = geometry.type;
-        if (geoType === 'polygon') {
-            geoType = GeometryType.REGION;
-        }
-        switch (geoType.toUpperCase()) {
-            case GeometryType.POINT:
-                return me.toGeoPoint(geometry);
-            case GeometryType.LINE:
-                return me.toGeoLine(geometry);
-            case GeometryType.LINEM:
-                return me.toGeoLinem(geometry);
-            case GeometryType.REGION:
-                return me.toGeoRegion(geometry);
-            case GeometryType.RECTANGLE:
-                return me.toGeoRectangle(geometry);
-            case GeometryType.POINTEPS:
-                return me.toGeoPoint(geometry);
-            // case GeometryType.LINEEPS:
-            //     return me.toGeoLineEPS();
-            // case GeometryType.REGIONEPS:
-            //     return me.toGeoRegionEPS();
-            default:
-                return geometry;
-        }
-    }
-
-    /**
-     * @function SuperMap.Format.GeoJSON.toGeoPoint
-     * @description 将服务端的点几何对象转换为几何对象。
-     */
-    toGeoPoint(geometry) {
-        var geoPoints = geometry.points || [{x: geometry.x, y: geometry.y}],
-            geoParts = geometry.parts || [geoPoints.length],
-            len = geoParts.length;
-        if (len < 1) {
-            return null;
-        }
-        if (len === 1) {
-            return {type: "Point", x: parseFloat(geoPoints[0].x), y: parseFloat(geoPoints[0].y)};
-        } else {
-            for (var i = 0, pointList = []; i < len; i++) {
-                pointList.push({x: parseFloat(geoPoints[i].x), y: parseFloat(geoPoints[i].y)});
-            }
-            return {type: "MultiPoint", components: pointList};
-        }
-
-    }
-
-
-    /**
-     *
-     * @function SuperMap.Format.GeoJSON.toGeoPoint
-     * @description 将服务端的线几何对象转换为几何对象。
-     */
-    toGeoLine(geometry) {
-        var me = this,
-            geoPoints = geometry.points || [],
-            geoParts = geometry.parts || [geoPoints.length],
-            len = geoParts.length;
-        if (len < 1) {
-            return null;
-        }
-        if (len === 1) {
-            for (var i = 0, pointList = []; i < geoParts[0]; i++) {
-                pointList.push({x: parseFloat(geoPoints[i].x), y: parseFloat(geoPoints[i].y)});
-            }
-            //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
-                pointList.pop();
-                pointList.push(pointList[0]);
-            }
-            return {type: "LineString", components: pointList};
-        } else {
-            for (var k = 0, lineList = []; k < len; k++) {
-                for (var j = 0, pointArr = []; j < geoParts[k]; j++) {
-                    pointArr.push({x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y)});
-                }
-                lineList.push(pointArr);
-                geoPoints.splice(0, geoParts[k]);
-            }
-            return {type: "MultiLineString", components: lineList};
-        }
-
-    }
-
-
-    /**
-     *
-     * @function SuperMap.Format.GeoJSON.toGeoLinem
-     * @description 将服务端的路由线几何对象转换为几何对象。
-     */
-    toGeoLinem(geometry) {
-        var me = this,
-            geoPoints = geometry.points || [],
-            geoParts = geometry.parts || [geoPoints.length],
-            len = geoParts.length,
-            lineList = [];
-        if (len < 1) {
-            return null;
-        }
-        for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
-            for (var j = 0; j < geoParts[i]; j++) {
-                pointList.push({
-                    x: parseFloat(geoPoints[pointIndex + j].x),
-                    y: parseFloat(geoPoints[pointIndex + j].y),
-                    measure: parseFloat(geoPoints[pointIndex + j].measure)
-                });
-            }
-            pointIndex += geoParts[i];
-            //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
-                pointList.pop();
-                pointList.push(pointList[0]);
-            }
-            lineList.push(pointList);
-            pointList = [];
-        }
-        return {type: "MultiLineString", components: lineList};
-    }
-
-    /**
-     *
-     * @function SuperMap.Format.GeoJSON.toGeoRegion
-     * @description 将服务端的面几何对象转换为几何对象。
-     */
-    toGeoRegion(geometry) {
-        var CCWArray = [],
-            geoPoints = geometry.points || [],
-            geoParts = geometry.parts || [geoPoints.length],
-            len = geoParts.length;
-        if (len < 1) {
-            return null;
-        }
-        var polygonArray = new Array();
-        for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
-            for (var j = 0; j < geoParts[i]; j++) {
-                pointList.push({
-                    x: parseFloat(geoPoints[pointIndex + j].x),
-                    y: parseFloat(geoPoints[pointIndex + j].y)
-                });
-            }
-
-            pointIndex += geoParts[i];
-            var linearRing = pointList.concat();
-            linearRing.pop();
-            linearRing.push(linearRing[0]);
-
-            if (this.isClockWise(linearRing) > 0) {
-                CCWArray.push(linearRing);
-            } else {
-                polygonArray.push([linearRing]);
-            }
-
-            if (i === len - 1) {
-                var polyLength = polygonArray.length;
-                if (polyLength) {
-                    polygonArray[polyLength - 1] = polygonArray[polyLength - 1].concat(CCWArray);
-                } else {
-                    for (var k = 0, length = CCWArray.length; k < length; k++) {
-                        polygonArray.push([CCWArray[k]].concat());
-                    }
-                }
-            }
-            pointList = [];
-        }
-        return {type: "MultiPolygon", components: polygonArray};
-    }
-
-    /**
-     * 
-     * @function SuperMap.Format.GeoJSON.toGeoRectangle
-     * @description 将服务端的面几何对象转换为几何对象。
-     */
-    toGeoRectangle(geometry) {
-        var me = this;
-        var center = geometry.center;
-        var halfWidth = geometry.width / 2;
-        var halfHeight = geometry.height / 2;
-
-        var serverRegion = {
-            id: geometry.id,
-            points: [
-                {x: center.x - halfWidth, y: center.y + halfHeight},
-                {x: center.x + halfWidth, y: center.y + halfHeight},
-                {x: center.x + halfWidth, y: center.y - halfHeight},
-                {x: center.x - halfWidth, y: center.y - halfHeight}
-            ],
-            partTopo: geometry.partTopo,
-            rotation: geometry.rotation,
-            style: geometry.style,
-            type: GeometryType.REGION
-        };
-
-        return me.toGeoRegion(serverRegion);
-    }
-
-    isClockWise(points) {
-        var length = points.length;
-        if (length < 3) {
-            return 0.0;
-        }
-        var s = points[0].y * (points[length - 1].x - points[1].x);
-        points.push(points[0]);
-        for (var i = 1; i < length; i++) {
-            s += points[i].y * (points[i - 1].x - points[i + 1].x);
-        }
-        return s * 0.5;
-    }
-
-    isPointsEquals(point1, point2) {
-        return (point1.x === point2.x && point1.y === point2.y);
-    }
 }
 
 SuperMap.Format.GeoJSON = GeoJSON_GeoJSON;
@@ -11666,7 +12791,7 @@ class WKT_WKT extends Format_Format {
             /**
              * @description Return a space delimited string of point coordinates.
              * @param {SuperMap.Geometry.Point} point
-             * @returns  {String} A string of coordinates representing the point
+             * @returns  {string} A string of coordinates representing the point
              */
             'point': function (point) {
                 return point.x + ' ' + point.y;
@@ -11675,7 +12800,7 @@ class WKT_WKT extends Format_Format {
             /**
              * @description  Return a comma delimited string of point coordinates from a multipoint.
              * @param {SuperMap.Geometry.MultiPoint} multipoint
-             * @returns  {String} A string of point coordinate strings representing
+             * @returns  {string} A string of point coordinate strings representing
              *                  the multipoint
              */
             'multipoint'(multipoint) {
@@ -11691,7 +12816,7 @@ class WKT_WKT extends Format_Format {
             /**
              * @description  Return a comma delimited string of point coordinates from a line.
              * @param {SuperMap.Geometry.LineString} linestring
-             * @returns  {String} A string of point coordinate strings representing
+             * @returns  {string} A string of point coordinate strings representing
              *                  the linestring
              */
             'linestring'(linestring) {
@@ -11705,7 +12830,7 @@ class WKT_WKT extends Format_Format {
             /**
              * @description  Return a comma delimited string of linestring strings from a multilinestring.
              * @param {SuperMap.Geometry.MultiLineString} multilinestring
-             * @returns  {String} A string of of linestring strings representing
+             * @returns  {string} A string of of linestring strings representing
              *                  the multilinestring
              */
             'multilinestring'(multilinestring) {
@@ -11721,7 +12846,7 @@ class WKT_WKT extends Format_Format {
             /**
              * @description  Return a comma delimited string of linear ring arrays from a polygon.
              * @param {SuperMap.Geometry.Polygon} polygon
-             * @returns  {String} An array of linear ring arrays representing the polygon
+             * @returns  {string} An array of linear ring arrays representing the polygon
              */
             'polygon'(polygon) {
                 var array = [];
@@ -11736,7 +12861,7 @@ class WKT_WKT extends Format_Format {
             /**
              * @description  Return an array of polygon arrays from a multipolygon.
              * @param {SuperMap.Geometry.MultiPolygon} multipolygon
-             * @returns  {String} An array of polygon arrays representing
+             * @returns  {string} An array of polygon arrays representing
              *                  the multipolygon
              */
             'multipolygon'(multipolygon) {
@@ -11752,7 +12877,7 @@ class WKT_WKT extends Format_Format {
             /**
              * @description  Return the WKT portion between 'GEOMETRYCOLLECTION(' and ')' for an <SuperMap.Geometry.Collection>
              * @param {SuperMap.Geometry.Collection} collection
-             * @returns  {String} internal WKT representation of the collection
+             * @returns  {string} internal WKT representation of the collection
              */
             'collection'(collection) {
                 var array = [];
@@ -11773,7 +12898,7 @@ class WKT_WKT extends Format_Format {
             /**
              * @private
              * @description  Return point feature given a point WKT fragment.
-             * @param {String} str A WKT fragment representing the point
+             * @param {string} str A WKT fragment representing the point
              * @returns  {SuperMap.Feature.Vector} A point feature
              *
              */
@@ -11785,7 +12910,7 @@ class WKT_WKT extends Format_Format {
 
             /**
              * @description  Return a multipoint feature given a multipoint WKT fragment.
-             * @param {String} A WKT fragment representing the multipoint
+             * @param {string} A WKT fragment representing the multipoint
              * @returns  {SuperMap.Feature.Vector} A multipoint feature
              * @private
              */
@@ -11804,7 +12929,7 @@ class WKT_WKT extends Format_Format {
 
             /**
              * @description  Return a linestring feature given a linestring WKT fragment.
-             * @param {String} A WKT fragment representing the linestring
+             * @param {string} A WKT fragment representing the linestring
              * @returns  {SuperMap.Feature.Vector} A linestring feature
              * @private
              */
@@ -11821,7 +12946,7 @@ class WKT_WKT extends Format_Format {
 
             /**
              * @description  Return a multilinestring feature given a multilinestring WKT fragment.
-             * @param {String} A WKT fragment representing the multilinestring
+             * @param {string} A WKT fragment representing the multilinestring
              * @returns  {SuperMap.Feature.Vector} A multilinestring feature
              * @private
              */
@@ -11840,7 +12965,7 @@ class WKT_WKT extends Format_Format {
 
             /**
              * @description  Return a polygon feature given a polygon WKT fragment.
-             * @param {String} A WKT fragment representing the polygon
+             * @param {string} A WKT fragment representing the polygon
              * @returns  {SuperMap.Feature.Vector} A polygon feature
              * @private
              */
@@ -11862,7 +12987,7 @@ class WKT_WKT extends Format_Format {
             /**
              * @private
              * @description  Return a multipolygon feature given a multipolygon WKT fragment.
-             * @param {String} A WKT fragment representing the multipolygon
+             * @param {string} A WKT fragment representing the multipolygon
              * @returns  {SuperMap.Feature.Vector} A multipolygon feature
              *
              */
@@ -11882,7 +13007,7 @@ class WKT_WKT extends Format_Format {
 
             /**
              * @description  Return an array of features given a geometrycollection WKT fragment.
-             * @param {String} A WKT fragment representing the geometrycollection
+             * @param {string} A WKT fragment representing the geometrycollection
              * @returns  {Array} An array of SuperMap.Feature.Vector
              * @private
              */
@@ -12650,7 +13775,7 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise = __webpack_require__(35);
+var promise = __webpack_require__(36);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
@@ -12661,7 +13786,7 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(82);
+var fetch = __webpack_require__(83);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(24);
@@ -12795,7 +13920,7 @@ var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=PUT",
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.DELETE(config);
+            return SuperMap.Util.RequestJSONPPromise.PUT(config);
 
         }
         return this._fetch(url, params, options, 'PUT');
@@ -14277,7 +15402,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。 
      * @param {string} [options.url] - 发送请求的地址。 
      * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。 
-     * @param {String} [options.data] - 发送到服务器的数据。 
+     * @param {string} [options.data] - 发送到服务器的数据。 
      * @param {function} options.success - 请求成功后的回调函数。 
      * @param {function} options.failure - 请求失败后的回调函数。 
      * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。 
@@ -15162,17 +16287,17 @@ class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServ
         if (result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
-                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                 }
             }
         } else if (result.recordset && result.recordset.features) {
-            result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
+            result.recordset.features =geoJSONFormat.toGeoJSON(result.recordset.features);
         }
         if (result.resultGeometry) {
-            result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
+            result.resultGeometry = geoJSONFormat.toGeoJSON(result.resultGeometry);
         }
         if (result.regions) {
-            result.regions = JSON.parse(geoJSONFormat.write(result.regions));
+            result.regions = geoJSONFormat.toGeoJSON(result.regions);
         }
 
         return result;
@@ -16169,1272 +17294,6 @@ class DatasetBufferAnalystParameters_DatasetBufferAnalystParameters extends Buff
 
 
 SuperMap.DatasetBufferAnalystParameters = DatasetBufferAnalystParameters_DatasetBufferAnalystParameters;
-// CONCATENATED MODULE: ./src/common/iServer/ServerColor.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-/**
- * @class SuperMap.ServerColor
- * @category iServer Map Theme
- * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色。
- * @param {Object} options - 参数。
- * @param {number} [options.red=255] - 获取或设置红色值。
- * @param {number} [options.green=0] - 获取或设置绿色值。
- * @param {number} [options.blue=0] - 获取或设置蓝色值。
- */
-class ServerColor {
-
-    constructor(red, green, blue) {
-
-        /**
-         * @member {number} [SuperMap.ServerColor.prototype.red=255]
-         * @description 获取或设置红色值。
-         */
-        this.red = (!red && red != 0)?255:red;
-
-        /**
-         * @member {number} [SuperMap.ServerColor.prototype.green=0]
-         * @description 获取或设置绿色值。
-         */
-        this.green = green||0;
-
-        /**
-         * @member {number} [SuperMap.ServerColor.prototype.blue=0]
-         * @description 获取或设置蓝色值。
-         */
-        this.blue = blue||0;
-
-        this.CLASS_NAME = "SuperMap.ServerColor";
-    }
-
-    /**
-     * @function SuperMap.ServerColor.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-    destroy() {
-        var me = this;
-        me.red = null;
-        me.green = null;
-        me.blue = null;
-    }
-
-
-    /**
-     * @function SuperMap.ServerColor.formJson
-     * @description 将 JSON 对象转化为 ServerColor 对象。
-     * @param {Object} jsonObject - 要转换的 JSON 对象。
-     * @returns {SuperMap.ServerColor} 转化后的 ServerColor 对象。
-     */
-    static fromJson(jsonObject) {
-        if (!jsonObject) {
-            return;
-        }
-        var color = new ServerColor();
-        var red = 255;
-        if (jsonObject.red !== null) {
-            red = Number(jsonObject.red);
-        }
-        color.red = red;
-
-        var green = 0;
-        if (jsonObject.green !== null) {
-            green = Number(jsonObject.green);
-        }
-        color.green = green;
-
-        var blue = 0;
-        if (jsonObject.blue !== null) {
-            blue = Number(jsonObject.blue);
-        }
-        color.blue = blue;
-        return color;
-    }
-
-}
-
-SuperMap.ServerColor = ServerColor;
-
-
-// CONCATENATED MODULE: ./src/common/iServer/ServerStyle.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-/**
- * @class SuperMap.ServerStyle
- * @category  iServer Map Theme
- * @classdesc 服务端矢量要素风格类。
- * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
- * @param {Object} options - 参数。
- * @param {SuperMap.FillGradientMode} options.fillGradientMode - 渐变填充风格的渐变类型。
- * @param {SuperMap.ServerColor} [options.fillBackColor=[255,255,255]] - 填充背景颜色。
- * @param {boolean} [options.fillBackOpaque=false] - 背景是否不透明。
- * @param {SuperMap.ServerColor} [options.fillForeColor=[255,0,0]] - 填充颜色。
- * @param {number} [options.fillGradientAngle=0] - 渐变填充的旋转角度。
- * @param {number} [options.fillGradientOffsetRatioX=0] - 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。
- * @param {number} [options.fillGradientOffsetRatioY=0] - 填充中心点相对于填充区域范围中心点的垂直偏移百分比。
- * @param {number} [options.fillOpaqueRate=100] - 填充不透明度。
- * @param {number} [options.fillSymbolID=0] - 填充符号的编码。
- * @param {SuperMap.ServerColor} [options.lineColor] - 矢量要素的边线颜色。默认 lineColor = new ServerColor(0, 0, 0)。
- * @param {number} [options.lineSymbolID=0] - 线状符号的编码。
- * @param {number} [options.lineWidth=1] - 边线的宽度。
- * @param {number} [options.markerAngle=0] - 点状符号的旋转角度。
- * @param {number} [options.markerSize=1] - 点状符号的大小。
- * @param {number} [options.markerSymbolID=-1] - 点状符号的编码。
- */
-class ServerStyle_ServerStyle {
-
-    constructor(options) {
-        /**
-         * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillBackColor
-         * @description 填充背景颜色。当填充模式为渐变填充时，该颜色为填充终止色。
-         */
-        this.fillBackColor = new ServerColor(255, 255, 255);
-
-        /**
-         * @member {boolean} [SuperMap.ServerStyle.prototype.fillBackOpaque=false]
-         * @description 背景是否不透明。false 表示透明。
-         */
-        this.fillBackOpaque = false;
-
-        /**
-         * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillForeColor
-         * @description 填充颜色。当填充模式为渐变填充时，该颜色为填充起始颜色。
-         */
-        this.fillForeColor = new ServerColor(255, 0, 0);
-
-        /**
-         * @member {SuperMap.FillGradientMode} SuperMap.ServerStyle.prototype.fillGradientMode
-         * @description 渐变填充风格的渐变类型。
-         */
-        this.fillGradientMode = null;
-
-        /**
-         * @member {number} SuperMap.ServerStyle.prototype.fillGradientAngle -
-         * @description 渐变填充的旋转角度。单位为度，精确到 0.1 度，逆时针方向为正方向。
-         */
-        this.fillGradientAngle = 0;
-
-        /**
-         * @member {number} SuperMap.ServerStyle.prototype.fillGradientOffsetRatioX
-         * @description 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。它们的关系如下：设填充区域范围中心点的坐标为（x0, y0），
-         *              填充中心点的坐标为（x, y），填充区域范围的宽度为 a，水平偏移百分比为 dx，则 x=x0 + a*dx/100。
-         */
-        this.fillGradientOffsetRatioX = 0;
-
-        /**
-         * @member {number} SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY
-         * @description 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
-         *              设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
-         */
-        this.fillGradientOffsetRatioY = 0;
-
-        /**
-         * @member {number} [SuperMap.ServerStyle.prototype.fillOpaqueRate=100]
-         * @description 填充不透明度。合法值为 0 - 100 的数值。其中为 0 表示完全透明；
-         *              100 表示完全不透明。赋值小于 0 时按照 0 处理，大于 100 时按照 100 处理。
-         */
-        this.fillOpaqueRate = 100;
-
-        /**
-         * @member {number} SuperMap.ServerStyle.prototype.fillSymbolID
-         * @description 填充符号的编码。此编码用于唯一标识各普通填充风格的填充符号。
-         *              关于填充符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
-         */
-        this.fillSymbolID = 0;
-
-        /**
-         * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.lineColor
-         * @description 矢量要素的边线颜色。如果等级符号是点符号，点符号的颜色由 lineColor 控制。
-         */
-        this.lineColor = new ServerColor(0, 0, 0);
-
-        /**
-         * @member {number} [SuperMap.ServerStyle.prototype.lineSymbolID=0]
-         * @description 线状符号的编码。此编码用于唯一标识各普通填充风格的填充符号。
-         *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
-         */
-        this.lineSymbolID = 0;
-
-        /**
-         * @member {number} [SuperMap.ServerStyle.prototype.lineWidth=1.0]
-         * @description 边线的宽度。单位为毫米，精度到 0.1。
-         */
-        this.lineWidth = 1;
-
-        /**
-         * @member {number} [SuperMap.ServerStyle.prototype.markerAngle=0]
-         * @description 点状符号的旋转角度。以度为单位，精确到 0.1 度，逆时针方向为正方向。
-         */
-        this.markerAngle = 0;
-
-        /**
-         * @member {number} [SuperMap.ServerStyle.prototype.markerSize=1.0]
-         * @description 点状符号的大小。单位为毫米，精度为 0.1。当该属性设置为0时，采用符号默认大小 1.0 显示。
-         *              当该属性设置为非法值时，交由服务器默认处理。
-         */
-        this.markerSize = 1;
-
-        /**
-         * @member {number} [SuperMap.ServerStyle.prototype.markerSymbolID=-1]
-         * @description 点状符号的编码。此编码用于唯一标识各点状符号。
-         *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
-         */
-        this.markerSymbolID = -1;
-        if (options) {
-            Util_Util.extend(this, options);
-        }
-
-        this.CLASS_NAME = "SuperMap.ServerStyle";
-    }
-
-    /**
-     * @function SuperMap.ServerStyle.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-    destroy() {
-        var me = this;
-        if (me.fillBackColor) {
-            me.fillBackColor.destroy();
-            me.fillBackColor = null;
-        }
-        me.fillBackOpaque = null;
-
-        if (me.fillForeColor) {
-            me.fillForeColor.destroy();
-            me.fillForeColor = null;
-        }
-        me.fillGradientMode = null;
-        me.fillGradientAngle = null;
-        me.fillGradientOffsetRatioX = null;
-        me.fillGradientOffsetRatioY = null;
-        me.fillOpaqueRate = null;
-        me.fillSymbolID = null;
-        if (me.lineColor) {
-            me.lineColor.destroy();
-            me.lineColor = null;
-        }
-        me.lineSymbolID = null;
-        me.lineWidth = null;
-        me.markerAngle = null;
-        me.markerSize = null;
-        me.markerSymbolID = null;
-    }
-
-    /**
-     * @function SuperMap.ServerStyle.prototype.toServerJSONObject
-     * @description 转换成对应的 JSON 格式对象。
-     * @returns {Object} 对应的 JSON 格式对象.
-     */
-    toServerJSONObject() {
-        var styleObj = {};
-        styleObj = Util_Util.copyAttributes(styleObj, this);
-        //暂时先忽略serverColor往Json的转换
-        return styleObj;
-    }
-
-    /**
-     * @function SuperMap.ServerStyle.fromJson
-     * @description 将JSON对象转换为 SuperMap.ServerStyle 对象。
-     * @param jsonObject - {Object} 要转换的 JSON 对象。
-     * @returns {SuperMap.ServerStyle} 转化后的 SuperMap.ServerStyle 对象。
-     */
-    static fromJson(jsonObject) {
-        if (!jsonObject) {
-            return;
-        }
-        return new ServerStyle_ServerStyle({
-            fillBackColor: ServerColor.fromJson(jsonObject.fillBackColor),
-            fillBackOpaque: jsonObject.fillBackOpaque,
-            fillForeColor: ServerColor.fromJson(jsonObject.fillForeColor),
-            fillGradientMode: jsonObject.fillGradientMode,
-            fillGradientAngle: jsonObject.fillGradientAngle,
-            fillGradientOffsetRatioX: jsonObject.fillGradientOffsetRatioX,
-            fillGradientOffsetRatioY: jsonObject.fillGradientOffsetRatioY,
-            fillOpaqueRate: jsonObject.fillOpaqueRate,
-            fillSymbolID: jsonObject.fillSymbolID,
-            lineColor: ServerColor.fromJson(jsonObject.lineColor),
-            lineSymbolID: jsonObject.lineSymbolID,
-            lineWidth: jsonObject.lineWidth,
-            markerAngle: jsonObject.markerAngle,
-            markerSize: jsonObject.markerSize,
-            markerSymbolID: jsonObject.markerSymbolID
-        });
-    }
-
-}
-
-
-SuperMap.ServerStyle = ServerStyle_ServerStyle;
-
-// CONCATENATED MODULE: ./src/common/iServer/PointWithMeasure.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-/**
- * @class SuperMap.PointWithMeasure
- * @category  iServer SpatialAnalyst
- * @classdesc 路由点类。路由点是指具有线性度量值 (Measure) 的二维地理坐标点。
- * @param {Object} options - 参数。
- * @param {number} options.measure - 度量值，即路由对象属性值 M。
- * @param {number} options.x - 获取当前点对象在地理坐标系下的 X 坐标值。
- * @param {number} options.y - 获取当前点对象在地理坐标系下的 Y 坐标值。
- * @extends {SuperMap.Geometry.Point}
- */
-class PointWithMeasure_PointWithMeasure extends Point_Point {
-
-    constructor(options) {
-        super(options);
-
-        /**
-         * @member {number} SuperMap.PointWithMeasure.prototype.measure
-         * @description 度量值，即路由对象属性值 M。
-         */
-        this.measure = null;
-
-        if (options) {
-            Util_Util.extend(this, options);
-        }
-
-        this.CLASS_NAME = "SuperMap.PointWithMeasure";
-    }
-
-    /**
-     * @function SuperMap.PointWithMeasure.prototype.equals
-     * @description 判断两个路由点对象是否相等。如果两个路由点对象具有相同的坐标以及度量值，则认为是相等的。
-     * @param {SuperMap.PointWithMeasure} geom - 需要判断的路由点对象。
-     * @returns {boolean} 两个路由点对象是否相等（true 为相等，false 为不等）。
-     */
-    equals(geom) {
-        var equals = false;
-        if (geom != null) {
-            var isValueEquals = this.x === geom.x && this.y === geom.y && this.measure === geom.measure;
-            var isNaNValue = isNaN(this.x) && isNaN(this.y) && isNaN(this.measure);
-            var isNaNGeometry = isNaN(geom.x) && isNaN(geom.y) && isNaN(geom.measure);
-            equals = ( isValueEquals || ( isNaNValue && isNaNGeometry ));
-        }
-        return equals;
-    }
-
-
-    /**
-     * @function SuperMap.PointWithMeasure.prototype.toJson
-     * @description 转换为 JSON 对象。
-     * */
-     toJson() {
-        var result = "{";
-        if (this.measure != null && this.measure != undefined) {
-            result += "\"measure\":" + this.measure + ",";
-        }
-        result += "\"x\":" + this.x + ",";
-        result += "\"y\":" + this.y;
-        result += "}";
-        return result;
-    }
-
-
-     /**
-     * @function SuperMap.PointWithMeasure.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-    destroy() {
-        var me = this;
-        me.measure = null;
-        me.x = null;
-        me.y = null;
-    }
-
-    /**
-     * @function SuperMap.PointWithMeasure.fromJson
-     * @description 将 JSON 对象转换为{@link SuperMap.PointWithMeasure} 对象。
-     * @param {Object} jsonObject - JSON 对象表示的路由点。
-     * @returns {SuperMap.PointWithMeasure} 转化后的 PointWithMeasure 对象。
-     */
-    static fromJson(jsonObject) {
-        if (!jsonObject) {
-            return;
-        }
-        return new PointWithMeasure_PointWithMeasure({
-            x: jsonObject.x,
-            y: jsonObject.y,
-            measure: jsonObject.measure
-        });
-    }
-
-}
-
-SuperMap.PointWithMeasure = PointWithMeasure_PointWithMeasure;
-
-// CONCATENATED MODULE: ./src/common/iServer/Route.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-
-
-
-/**
- * @class SuperMap.Route
- * @category  iServer SpatialAnalyst
- * @classdesc 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
- * @param {Array.<SuperMap.Geometry>} points - 形成路由对象的线数组。
- * @param {Object} options - 参数。
- * @param {number} options.id - 路由对象在数据库中的 id。
- * @param {number} options.length - 路由对象的长度。单位与数据集的单位相同。
- * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
- * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
- * @param {string} [options.type] - 数据类型，如："LINEM"。
- * @extends {SuperMap.Geometry.Collection}
- */
-class Route_Route extends Collection_Collection {
-
-    constructor(points, options) {
-        super(points, options);
-
-        /**
-         * @member {number} SuperMap.Route.prototype.id
-         * @description 路由对象在数据库中的 ID。
-         */
-        this.id = null;
-
-        /**
-         * @member {number} SuperMap.Route.prototype.center
-         * @description 路由对象的中心点。
-         */
-        this.center = null;
-
-        /**
-         * @member {string} SuperMap.Route.prototype.style
-         * @description 路由对象的样式。
-         */
-        this.style = null;
-
-        /**
-         * @member {number} SuperMap.Route.prototype.length
-         * @description 路由对象的长度。单位与数据集的单位相同。
-         */
-        this.length = null;
-
-        /**
-         *  @member {number} SuperMap.Route.prototype.maxM
-         *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
-         */
-        this.maxM = null;
-
-        /**
-         * @member {number} SuperMap.Route.prototype.minM
-         * @description 最小线性度量值，即所有结点到起始点的量算距离中最小值。
-         */
-        this.minM = null;
-
-        /**
-         * @member {Array.<number>} SuperMap.Route.prototype.parts
-         * @description 服务端几何对象中各个子对象所包含的节点个数。
-         */
-        this.parts = null;
-
-        /**
-         * @member {Array.<Object>} SuperMap.Route.prototype.points
-         * @description 路由对象的所有路由点。
-         * @example
-         * (start code)
-         * [
-         *  {
-         *      "measure": 0,
-         *      "y": -4377.027184298267,
-         *      "x": 4020.0045221720466
-         *  },
-         *  {
-         *      "measure": 37.33288381391519,
-         *      "y": -4381.569363260499,
-         *      "x": 4057.0600591960642
-         *  }
-         * ]
-         * (end)
-         */
-        this.points = null;
-
-        /**
-         * @member {string} SuperMap.Route.prototype.type
-         * @description 服务端几何对象类型。
-         */
-        this.type = null;
-
-        /**
-         * @member {Array.<string>} [SuperMap.Route.prototype.componentTypes=SuperMap.Geometry.LineString]
-         * @description components 存储的的几何对象所支持的几何类型数组。
-         */
-        this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
-
-        if (options) {
-            Util_Util.extend(this, options);
-        }
-
-        this.CLASS_NAME = "SuperMap.Route";
-    }
-
-    /**
-     *
-     * @function SuperMap.Route.prototype.toJson
-     * @description 转换为 JSON 对象。
-     * @returns {Object} JSON 对象。
-     */
-    toJson() {
-        var result = "{";
-        if (this.id != null && this.id != undefined) {
-            result += "\"id\":" + this.id + ",";
-        }
-        if (this.center != null && this.center != undefined) {
-            result += "\"center\":" + this.center + ",";
-        }
-        if (this.style != null && this.style != undefined) {
-            result += "\"style\":" + this.style + ",";
-        }
-        if (this.length != null && this.length != undefined) {
-            result += "\"length\":" + this.length + ",";
-        }
-        if (this.maxM != null && this.maxM != undefined) {
-            result += "\"maxM\":" + this.maxM + ",";
-        }
-        if (this.minM != null && this.minM != undefined) {
-            result += "\"minM\":" + this.minM + ",";
-        }
-        if (this.type != null && this.type != undefined) {
-            result += "\"type\":\"" + this.type + "\",";
-        }
-        if (this.parts != null && this.parts != undefined) {
-            result += "\"parts\":[" + this.parts[0];
-
-            for (var i = 1; i < this.parts.length; i++) {
-                result += "," + this.parts[i];
-            }
-            result += "],";
-        }
-        if (this.components != null && this.components.length > 0) {
-            result += "\"points\":[";
-            for (var j = 0, len = this.components.length; j < len; j++) {
-                for (var k = 0, len2 = this.components[j].components.length; k < len2; k++) {
-                    result += this.components[j].components[k].toJson() + ",";
-                }
-            }
-            result = result.replace(/,$/g, '');
-            result += "]";
-        }
-        result = result.replace(/,$/g, '');
-        result += "}";
-        return result;
-    }
-
-
-    /**
-     * @function SuperMap.Route.prototype.destroy
-     * @override
-     */
-    destroy() {
-        var me = this;
-        me.id = null;
-        me.center = null;
-        me.style = null;
-        me.length = null;
-        me.maxM = null;
-        me.minM = null;
-        me.type = null;
-        me.parts = null;
-        me.components.length = 0;
-        me.components = null;
-        me.componentTypes = null;
-    }
-
-
-    /**
-     * @function SuperMap.Route.fromJson
-     * @description 将 JSON 对象转换为 SuperMap.Route 对象。
-     * @param {Object} [jsonObject] - JSON 对象表示的路由对象。
-     * @returns {SuperMap.Route} 转化后的 Route 对象。
-     */
-    static fromJson(jsonObject) {
-        if (!jsonObject) {
-            return;
-        }
-
-        var geoParts = jsonObject.parts || [],
-            geoPoints = jsonObject.points || [],
-            len = geoParts.length,
-            lineList = [];
-        if (len > 0) {
-            for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
-                for (var j = 0; j < geoParts[i]; j++) {
-                    pointList.push(PointWithMeasure_PointWithMeasure.fromJson(geoPoints[pointIndex + j]));
-                }
-                pointIndex += geoParts[i];
-                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-                if (pointList[0].equals(pointList[geoParts[i] - 1])) {
-                    lineList.push(new LinearRing_LinearRing(pointList));
-                } else {
-                    lineList.push(new LineString_LineString(pointList));
-                }
-                pointList = [];
-            }
-
-        } else {
-            return null;
-        }
-
-        return new Route_Route(lineList, {
-            id: jsonObject.id,
-            center: jsonObject.center,
-            style: jsonObject.style,
-            length: jsonObject.length,
-            maxM: jsonObject.maxM,
-            minM: jsonObject.minM,
-            type: jsonObject.type,
-            parts: jsonObject.parts
-        });
-    }
-
-}
-
-SuperMap.Route = Route_Route;
-// CONCATENATED MODULE: ./src/common/iServer/ServerGeometry.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @class SuperMap.ServerGeometry
- * @category  iServer  
- * @classdesc 服务端几何对象类。该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
- * @param {Object} options - 参数。
- * @param {string} options.id - 服务端几何对象唯一标识符。
- * @param {Array.<number>} options.parts - 服务端几何对象中各个子对象所包含的节点个数。
- * @param {Array.<SuperMap.Geometry.Point>} options.points - 组成几何对象的节点的坐标对数组。
- * @param {SuperMap.GeometryType} options.type - 几何对象的类型。
- * @param {SuperMap.ServerStyle} [options.style] - 服务端几何对象的风格。
- */
-class ServerGeometry_ServerGeometry {
-
-    constructor(options) {
-
-        /**
-         * @member {string} SuperMap.ServerGeometry.prototype.id
-         * @description 服务端几何对象唯一标识符。
-         */
-        this.id = 0;
-        
-        /**
-         * @member {SuperMap.ServerStyle} [SuperMap.ServerGeometry.prototype.style]
-         * @description 服务端几何对象的风格（ServerStyle）。
-         */
-        this.style = null;
-
-        /**
-         * @member {Array.<number>} SuperMap.ServerGeometry.prototype.parts
-         * @description 服务端几何对象中各个子对象所包含的节点个数。<br>
-         * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。
-         * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，
-         * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，
-         * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。<br>
-         * 2.通常情况，一个简单几何对象的子对象就是它本身，
-         * 因此对于简单对象来说的该字段为长度为1的整型数组，
-         * 该字段的值就是这个简单对象节点的个数。
-         * 如果一个几何对象是由几个简单对象组合而成的，
-         * 例如，一个岛状几何对象由 3 个简单的多边形组成而成，
-         * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为 3 的整型数组，
-         * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。
-         */
-        this.parts = null;
-
-        /**
-         * @member {Array.<SuperMap.Geometry.Point>} SuperMap.ServerGeometry.prototype.points
-         * @description 组成几何对象的节点的坐标对数组。<br>
-         * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，
-         * 该字段存放了组成几何对象的点坐标的数组。
-         * 对于简单的面对象，他的起点和终点的坐标点相同。<br>
-         * 2.对于复杂的几何对象，根据 Parts 属性来确定每一个组成复杂几何对象的简单对象所对应的节点的个数，
-         * 从而确定 Points 字段中坐标对的分配归属问题。
-         */
-        this.points = null;
-
-        /**
-         * @member {SuperMap.GeometryType} SuperMap.ServerGeometry.prototype.type
-         * @description 几何对象的类型（GeometryType）。
-         */
-        this.type = null;
-
-        /**
-         * @member {Object} SuperMap.ServerGeometry.prototype.prjCoordSys
-         * @description 投影坐标参数，现仅在缓冲区分析中有效。
-         */
-        this.prjCoordSys = null;
-        if (options) {
-            Util_Util.extend(this, options);
-        }
-
-        this.CLASS_NAME = "SuperMap.ServerGeometry";
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-    destroy() {
-        var me = this;
-        me.id = null;
-        me.style = null;
-        me.parts = null;
-        me.partTopo = null;
-        me.points = null;
-        me.type = null;
-        me.prjCoordSys = null;
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.toGeometry
-     * @description 将服务端几何对象 ServerGeometry 转换为客户端几何对象 Geometry。
-     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
-     */
-    toGeometry() {
-        var me = this,
-            geoType = me.type;
-        switch (geoType) {
-            case GeometryType.POINT:
-                return me.toGeoPoint();
-            case GeometryType.LINE:
-                return me.toGeoLine();
-            case GeometryType.LINEM:
-                return me.toGeoLinem();
-            case GeometryType.REGION:
-                return me.toGeoRegion();
-            case GeometryType.POINTEPS:
-                return me.toGeoPoint();
-            case GeometryType.LINEEPS:
-                return me.toGeoLineEPS();
-            case GeometryType.REGIONEPS:
-                return me.toGeoRegionEPS();
-        }
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.toGeoPoint
-     * @description 将服务端的点几何对象转换为客户端几何对象。包括 Point、MultiPoint。
-     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
-     */
-    toGeoPoint() {
-        var me = this,
-            geoParts = me.parts || [],
-            geoPoints = me.points || [],
-            len = geoParts.length;
-        if (len > 0) {
-            if (len === 1) {
-                return new Point_Point(geoPoints[0].x, geoPoints[0].y);
-            } else {
-                var pointList = [];
-                for (let i = 0; i < len; i++) {
-                    pointList.push(new Point_Point(geoPoints[i].x, geoPoints[i].y));
-                }
-                return new MultiPoint_MultiPoint(pointList);
-            }
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.toGeoLine
-     * @description 将服务端的线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
-     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
-     */
-    toGeoLine() {
-        var me = this,
-            geoParts = me.parts || [],
-            geoPoints = me.points || [],
-            len = geoParts.length;
-        if (len > 0) {
-            if (len === 1) {
-                let pointList = [];
-                for (let i = 0; i < geoParts[0]; i++) {
-                    pointList.push(new Point_Point(geoPoints[i].x, geoPoints[i].y));
-                }
-                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-                if (pointList[0].equals(pointList[geoParts[0] - 1])) {
-                    return new LinearRing_LinearRing(pointList);
-                } else {
-                    return new LineString_LineString(pointList);
-                }
-            } else {
-                let lineList = [];
-                for (let i = 0; i < len; i++) {
-                    let pointList = [];
-                    for (let j = 0; j < geoParts[i]; j++) {
-                        pointList.push(new Point_Point(geoPoints[j].x, geoPoints[j].y));
-                    }
-                    lineList.push(new LineString_LineString(pointList));
-                    geoPoints.splice(0, geoParts[i]);
-                }
-                return new MultiLineString_MultiLineString(lineList);
-            }
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.toGeoLineEPS
-     * @description 将服务端的线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
-     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
-     */
-    toGeoLineEPS() {
-        var me = this,
-            geoParts = me.parts || [],
-            geoPoints = me.points || [],
-            i,
-            j,
-            pointList,
-            lineList,
-            lineEPS,
-            len = geoParts.length;
-        if (len > 0) {
-            if (len === 1) {
-                for (i = 0, pointList = []; i < geoParts[0]; i++) {
-                    pointList.push(new Point_Point(geoPoints[i].x, geoPoints[i].y, geoPoints[i].type));
-                }
-                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-                if (pointList[0].equals(pointList[geoParts[0] - 1])) {
-                    lineEPS = LineString_LineString.createLineEPS(pointList);
-                    return new LinearRing_LinearRing(lineEPS);
-                } else {
-                    lineEPS = LineString_LineString.createLineEPS(pointList);
-                    return new LineString_LineString(lineEPS);
-                }
-            } else {
-                for (i = 0, lineList = []; i < len; i++) {
-                    for (j = 0, pointList = []; j < geoParts[i]; j++) {
-                        pointList.push(new Point_Point(geoPoints[j].x, geoPoints[j].y));
-                    }
-                    lineEPS = LineString_LineString.createLineEPS(pointList);
-                    lineList.push(new LineString_LineString(lineEPS));
-                    geoPoints.splice(0, geoParts[i]);
-                }
-                return new MultiLineString_MultiLineString(lineList);
-            }
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.toGeoLine
-     * @description 将服务端的路由线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
-     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
-     */
-    toGeoLinem() {
-        var me = this;
-        return Route_Route.fromJson(me);
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.toGeoRegion
-     * @description 将服务端的面几何对象转换为客户端几何对象。类型为 Polygon。
-     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
-     */
-    toGeoRegion() {
-        var me = this,
-            geoParts = me.parts || [],
-            geoTopo = me.partTopo || [],
-            geoPoints = me.points || [],
-            len = geoParts.length;
-        if (len <= 0) {
-            return null;
-        }
-        var polygonArray = [];
-        var pointList = [];
-        if (len == 1) {
-            for (let i = 0; i < geoPoints.length; i++) {
-                pointList.push(
-                    new Point_Point(geoPoints[i].x, geoPoints[i].y))
-            }
-            polygonArray.push(
-                new Polygon_Polygon(
-                    [new LinearRing_LinearRing(pointList)]
-                )
-            );
-            return new MultiPolygon_MultiPolygon(polygonArray);
-        }
-        //处理复杂面
-        var CCWArray = [];
-        var areaArray = [];
-        var polygonArrayTemp = [];
-        //polyon岛洞标识数组，初始都是岛。
-        var CCWIdent = [];
-        for (let i = 0, pointIndex = 0; i < len; i++) {
-            for (let j = 0; j < geoParts[i]; j++) {
-                pointList.push(
-                    new Point_Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y)
-                );
-            }
-            pointIndex += geoParts[i];
-            var polygon = new Polygon_Polygon(
-                [new LinearRing_LinearRing(pointList)]
-            );
-            pointList = [];
-            polygonArrayTemp.push(polygon);
-            CCWIdent.push(1);
-            areaArray.push(polygon.getArea());
-        }
-        //根据面积排序
-        ServerGeometry_ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
-        //iServer 9D新增字段
-        if (geoTopo.length === 0) {
-            //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
-            // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
-            // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
-            //目标polygon索引列表 -1标示没有被任何polygon包含，
-            var targetArray = [];
-            for (let i = 1; i < polygonArrayTemp.length; i++) {
-                for (let j = i - 1; j >= 0; j--) {
-                    targetArray[i] = -1;
-                    if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
-                        CCWIdent[i] = CCWIdent[j] * -1;
-                        if (CCWIdent[i] < 0) {
-                            targetArray[i] = j;
-                        }
-                        break;
-                    }
-                }
-            }
-            for (let i = 0; i < polygonArrayTemp.length; i++) {
-                if (CCWIdent[i] > 0) {
-                    polygonArray.push(polygonArrayTemp[i]);
-                } else {
-                    polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
-                    //占位
-                    polygonArray.push('');
-                }
-            }
-        } else {
-            //根据面积排序
-            //ServerGeometry.bubbleSort(areaArray, polygonArrayTemp,geoTopo);
-            polygonArray = new Array();
-            for (let i = 0; i < polygonArrayTemp.length; i++) {
-                if (geoTopo[i] && geoTopo[i] == -1) {
-                    CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
-                } else {
-                    if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
-                        CCWArray = [];
-                    }
-                    polygonArray.push(
-                        polygonArrayTemp[i]
-                    );
-                }
-                if (i == len - 1) {
-                    var polyLength = polygonArray.length;
-                    if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
-                    } else {
-                        for (let k = 0, length = CCWArray.length; k < length; k++) {
-                            polygonArray.push(
-                                new Polygon_Polygon(CCWArray)
-                            );
-                        }
-                    }
-                }
-            }
-        }
-        return new MultiPolygon_MultiPolygon(polygonArray);
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.toGeoRegionEPS
-     * @description 将服务端的面几何对象转换为客户端几何对象。类型为 Polygon。
-     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
-     */
-    toGeoRegionEPS() {
-        var me = this,
-            geoParts = me.parts || [],
-            geoTopo = me.partTopo || [],
-            geoPoints = me.points || [],
-            len = geoParts.length;
-
-        if (len <= 0) {
-            return null;
-        }
-        var polygonArray = [];
-        var pointList = [];
-        var lineEPS;
-        if (len == 1) {
-            for (var i = 0; i < geoPoints.length; i++) {
-                pointList.push(
-                    new Point_Point(geoPoints[i].x, geoPoints[i].y))
-            }
-
-            lineEPS = LineString_LineString.createLineEPS(pointList);
-            polygonArray.push(
-                new Polygon_Polygon(
-                    [new LinearRing_LinearRing(lineEPS)]
-                )
-            );
-            return new MultiPolygon_MultiPolygon(polygonArray);
-        }
-        //处理复杂面
-        var CCWArray = [];
-        var areaArray = [];
-        var polygonArrayTemp = [];
-        //polyon岛洞标识数组，初始都是岛。
-        var CCWIdent = [];
-        for (let i = 0, pointIndex = 0; i < len; i++) {
-            for (let j = 0; j < geoParts[i]; j++) {
-                pointList.push(
-                    new Point_Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y)
-                );
-            }
-            pointIndex += geoParts[i];
-
-            lineEPS = LineString_LineString.createLineEPS(pointList);
-            var polygon = new Polygon_Polygon(
-                [new LinearRing_LinearRing(lineEPS)]
-            );
-            pointList = [];
-            polygonArrayTemp.push(polygon);
-            CCWIdent.push(1);
-            areaArray.push(polygon.getArea());
-        }
-        //根据面积排序
-        ServerGeometry_ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
-        //iServer 9D新增字段
-        if (geoTopo.length === 0) {
-            //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
-            // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
-            // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
-            //目标polygon索引列表 -1标示没有被任何polygon包含，
-            var targetArray = [];
-            for (let i = 1; i < polygonArrayTemp.length; i++) {
-                for (let j = i - 1; j >= 0; j--) {
-                    targetArray[i] = -1;
-                    if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
-                        CCWIdent[i] = CCWIdent[j] * -1;
-                        if (CCWIdent[i] < 0) {
-                            targetArray[i] = j;
-                        }
-                        break;
-                    }
-                }
-            }
-            for (let i = 0; i < polygonArrayTemp.length; i++) {
-                if (CCWIdent[i] > 0) {
-                    polygonArray.push(polygonArrayTemp[i]);
-                } else {
-                    polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
-                    //占位
-                    polygonArray.push('');
-                }
-            }
-        } else {
-            //根据面积排序
-            polygonArray = new Array();
-            for (let i = 0; i < polygonArrayTemp.length; i++) {
-                if (geoTopo[i] && geoTopo[i] == -1) {
-                    CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
-                } else {
-                    if (CCWArray.length > 0 && polygonArray.length > 0) {
-                        polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
-                        CCWArray = [];
-                    }
-                    polygonArray.push(
-                        polygonArrayTemp[i]
-                    );
-                }
-                if (i == len - 1) {
-                    var polyLength = polygonArray.length;
-                    if (polyLength) {
-                        polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
-                    } else {
-                        for (let k = 0, length = CCWArray.length; k < length; k++) {
-                            polygonArray.push(
-                                new Polygon_Polygon(CCWArray)
-                            );
-                        }
-                    }
-                }
-            }
-        }
-        return new MultiPolygon_MultiPolygon(polygonArray);
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.fromJson
-     * @description 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。
-     * @param {Object} jsonObject - 要转换的 JSON 对象。
-     * @returns {SuperMap.ServerGeometry} 转换后的 ServerGeometry 对象。
-     */
-    static fromJson(jsonObject) {
-        if (!jsonObject) {
-            return;
-        }
-        return new ServerGeometry_ServerGeometry({
-            id: jsonObject.id,
-            style: ServerStyle_ServerStyle.fromJson(jsonObject.style),
-            parts: jsonObject.parts,
-            partTopo: jsonObject.partTopo,
-            points: jsonObject.points,
-            center: jsonObject.center,
-            length: jsonObject.length,
-            maxM: jsonObject.maxM,
-            minM: jsonObject.minM,
-            type: jsonObject.type
-        });
-
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.fromGeometry
-     * @description 将客户端 Geometry 转换成服务端 ServerGeometry。
-     * @param {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
-     * @returns {SuperMap.ServerGeometry} 转换后的 ServerGeometry 对象。
-     */
-    static fromGeometry(geometry) {
-        if (!geometry) {
-            return;
-        }
-        var id = 0,
-            parts = [],
-            points = [],
-            type = null,
-            icomponents = geometry.components,
-            className = geometry.CLASS_NAME,
-            prjCoordSys = {"epsgCode": geometry.SRID};
-
-        if (!isNaN(geometry.id)) {
-            id = geometry.id;
-        }
-        //坑爹的改法，没法，为了支持态势标绘，有时间就得全改
-        if (className != "SuperMap.Geometry.LinearRing" && className != "SuperMap.Geometry.LineString" && (geometry instanceof MultiPoint_MultiPoint || geometry instanceof MultiLineString_MultiLineString)) {
-            let ilen = icomponents.length;
-            for (let i = 0; i < ilen; i++) {
-                let partPointsCount = icomponents[i].getVertices().length;
-                parts.push(partPointsCount);
-                for (let j = 0; j < partPointsCount; j++) {
-                    points.push(new Point_Point(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
-                }
-            }
-            //这里className不是多点就全部是算线
-            type = (className == "SuperMap.Geometry.MultiPoint") ? GeometryType.POINT : GeometryType.LINE;
-        } else if (geometry instanceof MultiPolygon_MultiPolygon) {
-            let ilen = icomponents.length;
-            for (let i = 0; i < ilen; i++) {
-                let polygon = icomponents[i],
-                    linearRingOfPolygon = polygon.components,
-                    linearRingOfPolygonLen = linearRingOfPolygon.length;
-                for (let j = 0; j < linearRingOfPolygonLen; j++) {
-                    let partPointsCount = linearRingOfPolygon[j].getVertices().length + 1;
-                    parts.push(partPointsCount);
-                    for (let k = 0; k < partPointsCount - 1; k++) {
-                        points.push(new Point_Point(linearRingOfPolygon[j].getVertices()[k].x, linearRingOfPolygon[j].getVertices()[k].y));
-                    }
-                    points.push(new Point_Point(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y));
-                }
-            }
-            type = GeometryType.REGION;
-        } else if (geometry instanceof Polygon_Polygon) {
-            let ilen = icomponents.length;
-            for (let i = 0; i < ilen; i++) {
-                let partPointsCount = icomponents[i].getVertices().length + 1;
-                parts.push(partPointsCount);
-                for (let j = 0; j < partPointsCount - 1; j++) {
-                    points.push(new Point_Point(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
-                }
-                points.push(new Point_Point(icomponents[i].getVertices()[0].x, icomponents[i].getVertices()[0].y));
-            }
-            type = GeometryType.REGION;
-        } else {
-            let geometryVerticesCount = geometry.getVertices().length;
-            for (let j = 0; j < geometryVerticesCount; j++) {
-                points.push(new Point_Point(geometry.getVertices()[j].x, geometry.getVertices()[j].y));
-            }
-            if (geometry instanceof LinearRing_LinearRing) {
-                points.push(new Point_Point(geometry.getVertices()[0].x, geometry.getVertices()[0].y));
-                geometryVerticesCount++;
-            }
-            parts.push(geometryVerticesCount);
-            type = (geometry instanceof Point_Point) ? GeometryType.POINT : GeometryType.LINE;
-        }
-
-        return new ServerGeometry_ServerGeometry({
-            id: id,
-            style: null,
-            parts: parts,
-            points: points,
-            type: type,
-            prjCoordSys: prjCoordSys
-        });
-    }
-
-    /**
-     * @function SuperMap.ServerGeometry.prototype.IsClockWise
-     * @description 判断 linearRing 中的点的顺序。返回值大于 0，逆时针；小于 0，顺时针。
-     * @param {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
-     * @returns {number} 返回值大于 0，逆时针；小于 0，顺时针。
-     */
-    static IsClockWise(points) {
-        var length = points.length;
-        if (length < 3) {
-            return 0.0;
-        }
-        var s = points[0].y * (points[length - 1].x - points[1].x);
-        points.push(points[0]);
-        for (var i = 1; i < length; i++) {
-            s += points[i].y * (points[i - 1].x - points[i + 1].x);
-        }
-        return s * 0.5;
-    }
-
-    static bubbleSort(areaArray, pointList, geoTopo) {
-        for (var i = 0; i < areaArray.length; i++) {
-            for (var j = 0; j < areaArray.length; j++) {
-                if (areaArray[i] > areaArray[j]) {
-                    var d = areaArray[j];
-                    areaArray[j] = areaArray[i];
-                    areaArray[i] = d;
-                    var b = pointList[j];
-                    pointList[j] = pointList[i];
-                    pointList[i] = b;
-                    if (geoTopo && geoTopo.length > 0) {
-                        var c = geoTopo[j];
-                        geoTopo[j] = geoTopo[i];
-                        geoTopo[i] = c;
-                    }
-                }
-            }
-        }
-    }
-
-}
-
-SuperMap.ServerGeometry = ServerGeometry_ServerGeometry;
 // CONCATENATED MODULE: ./src/common/iServer/GeometryBufferAnalystParameters.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -17538,7 +17397,7 @@ SuperMap.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters_Geome
  * 缓冲区分析结果通过该类支持的事件的监听函数参数获取。
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
- * @param {object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -18911,7 +18770,7 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
                     var geoJSONFormat = new GeoJSON_GeoJSON();
-                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                 }
             }
 
@@ -22257,17 +22116,17 @@ class FindClosestFacilitiesService_FindClosestFacilitiesService extends NetworkA
         var geoJSONFormat = new GeoJSON_GeoJSON();
         result.facilityPathList.map(function (path) {
             if (path.route) {
-                path.route = JSON.parse(geoJSONFormat.write(path.route));
+                path.route = geoJSONFormat.toGeoJSON(path.route);
             }
             if (path.pathGuideItems) {
-                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+                path.pathGuideItems = geoJSONFormat.toGeoJSON(path.pathGuideItems);
 
             }
             if (path.edgeFeatures) {
-                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+                path.edgeFeatures = geoJSONFormat.toGeoJSON(path.edgeFeatures);
             }
             if (path.nodeFeatures) {
-                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+                path.nodeFeatures = geoJSONFormat.toGeoJSON(path.nodeFeatures);
             }
             return path;
         });
@@ -22470,10 +22329,10 @@ class FindLocationService_FindLocationService extends NetworkAnalystServiceBase_
         }
         var geoJSONFormat = new GeoJSON_GeoJSON();
         if (result.demandResults) {
-            result.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
+            result.demandResults = geoJSONFormat.toGeoJSON(result.demandResults);
         }
         if (result.supplyResults) {
-            result.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults));
+            result.supplyResults = geoJSONFormat.toGeoJSON(result.supplyResults);
         }
 
         return result;
@@ -22687,16 +22546,16 @@ class FindMTSPPathsService_FindMTSPPathsService extends NetworkAnalystServiceBas
         var geoJSONFormat = new GeoJSON_GeoJSON();
         result.pathList.map(function (path) {
             if (path.route) {
-                path.route = JSON.parse(geoJSONFormat.write(path.route));
+                path.route = geoJSONFormat.toGeoJSON(path.route);
             }
             if (path.pathGuideItems) {
-                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+                path.pathGuideItems = geoJSONFormat.toGeoJSON(path.pathGuideItems);
             }
             if (path.edgeFeatures) {
-                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+                path.edgeFeatures = geoJSONFormat.toGeoJSON(path.edgeFeatures);
             }
             if (path.nodeFeatures) {
-                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+                path.nodeFeatures = geoJSONFormat.toGeoJSON(path.nodeFeatures);
             }
             return path;
         });
@@ -22905,17 +22764,17 @@ class FindPathService_FindPathService extends NetworkAnalystServiceBase_NetworkA
         var geoJSONFormat = new GeoJSON_GeoJSON();
         result.pathList.forEach(function (path) {
             if (path.route) {
-                path.route = JSON.parse(geoJSONFormat.write(path.route));
+                path.route = geoJSONFormat.toGeoJSON(path.route);
             }
             if (path.pathGuideItems) {
-                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+                path.pathGuideItems = geoJSONFormat.toGeoJSON(path.pathGuideItems);
 
             }
             if (path.edgeFeatures) {
-                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+                path.edgeFeatures = geoJSONFormat.toGeoJSON(path.edgeFeatures);
             }
             if (path.nodeFeatures) {
-                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+                path.nodeFeatures = geoJSONFormat.toGeoJSON(path.nodeFeatures);
             }
         });
         return result;
@@ -23139,16 +22998,16 @@ class FindServiceAreasService_FindServiceAreasService extends NetworkAnalystServ
         var geoJSONFormat = new GeoJSON_GeoJSON();
         result.serviceAreaList.map(function (serviceArea) {
             if (serviceArea.serviceRegion) {
-                serviceArea.serviceRegion = JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion));
+                serviceArea.serviceRegion = geoJSONFormat.toGeoJSON(serviceArea.serviceRegion);
             }
             if (serviceArea.edgeFeatures) {
-                serviceArea.edgeFeatures = JSON.parse(geoJSONFormat.write(serviceArea.edgeFeatures));
+                serviceArea.edgeFeatures = geoJSONFormat.toGeoJSON(serviceArea.edgeFeatures);
             }
             if (serviceArea.nodeFeatures) {
-                serviceArea.nodeFeatures = JSON.parse(geoJSONFormat.write(serviceArea.nodeFeatures));
+                serviceArea.nodeFeatures = geoJSONFormat.toGeoJSON(serviceArea.nodeFeatures);
             }
             if (serviceArea.routes) {
-                serviceArea.routes = JSON.parse(geoJSONFormat.write(serviceArea.routes));
+                serviceArea.routes = geoJSONFormat.toGeoJSON(serviceArea.routes);
             }
             return serviceArea;
         });
@@ -23354,16 +23213,16 @@ class FindTSPPathsService_FindTSPPathsService extends NetworkAnalystServiceBase_
         var geoJSONFormat = new GeoJSON_GeoJSON();
         result.tspPathList.forEach(function (path) {
             if (path.route) {
-                path.route = JSON.parse(geoJSONFormat.write(path.route));
+                path.route = geoJSONFormat.toGeoJSON(path.route);
             }
             if (path.pathGuideItems) {
-                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+                path.pathGuideItems = geoJSONFormat.toGeoJSON(path.pathGuideItems);
             }
             if (path.edgeFeatures) {
-                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+                path.edgeFeatures = geoJSONFormat.toGeoJSON(path.edgeFeatures);
             }
             if (path.nodeFeatures) {
-                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+                path.nodeFeatures = geoJSONFormat.toGeoJSON(path.nodeFeatures);
             }
         });
         return result;
@@ -24575,7 +24434,7 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
         result = Util_Util.transformResult(result);
         if (me.format === DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new GeoJSON_GeoJSON();
-            result.features = JSON.parse(geoJSONFormat.write(result.features));
+            result.features = geoJSONFormat.toGeoJSON(result.features);
         }
         me.events.triggerEvent("processCompleted", {result: result});
     }
@@ -32090,7 +31949,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
                         })
                     }
                     if (me.format === DataFormat.GEOJSON) {
-                        recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                        recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                     }
                 }
             }
@@ -38650,7 +38509,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(34);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(35);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -39303,7 +39162,7 @@ SuperMap.ElasticSearch = ElasticSearch_ElasticSearch;
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(33);
+var lodash_topairs = __webpack_require__(34);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -44945,8 +44804,8 @@ class Circle_Circle extends ShapeParameters {
      * @function SuperMap.Feature.ShapeParameters.Circle.prototype.constructor
      * @description 创建一个圆形参数对象。
      * @param {number} x - 圆心 x 坐标，必设参数。
-     * @param {Number} y - 圆心 y 坐标，必设参数。
-     * @param {Number} r - 圆半径，必设参数。
+     * @param {number} y - 圆心 y 坐标，必设参数。
+     * @param {number} r - 圆半径，必设参数。
      * @returns {SuperMap.Feature.ShapeParameters.Circle} 圆形参数对象。
      */
     constructor(x, y, r) {
@@ -45352,8 +45211,8 @@ class levelRenderer_Util_Util {
      *
      * @param {Object} target - 目标对象。
      * @param {Object} source - 源对象。
-     * @param {String} key - 键。
-     * @param {Boolean} overwrite - 是否覆盖。
+     * @param {string} key - 键。
+     * @param {boolean} overwrite - 是否覆盖。
      * @return {Object} 目标对象
      */
     mergeItem(target, source, key, overwrite) {
@@ -45382,7 +45241,7 @@ class levelRenderer_Util_Util {
      * 
      * @param {Object} target - 目标对象。
      * @param {Object} source - 源对象。
-     * @param {Boolean} overwrite - 是否覆盖。
+     * @param {boolean} overwrite - 是否覆盖。
      * @return {Object} 目标对象。
      */
     merge(target, source, overwrite) {
@@ -45944,14 +45803,14 @@ class levelRenderer_Curve_Curve {
      * Method: evalCubicCoeff
      *
      * Parameters:
-     * a - {Number} 值。
-     * b - {Number} 值。
-     * c - {Number} 值。
-     * d - {Number} 值。
-     * t - {Number} 值。
+     * a - {number} 值。
+     * b - {number} 值。
+     * c - {number} 值。
+     * d - {number} 值。
+     * t - {number} 值。
      *
      * Returns:
-     * {Number}
+     * {number}
      */
 
     /*
@@ -50145,7 +50004,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
 
         /**
          * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.__dirty
-         * @description {Boolean}
+         * @description {boolean}
          */
         this.__dirty = true;
 
@@ -50310,7 +50169,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @description 绘制图形。
      *
      * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
-     * @param {Boolean} isHighlight - 是否使用高亮属性。
+     * @param {boolean} isHighlight - 是否使用高亮属性。
      * @param {Function} updateCallback - 需要异步加载资源的 shape 可以通过这个 callback(e),让painter更新视图，base.brush 没用，需要的话重载 brush。
      */
     brush(ctx, isHighlight) {
@@ -54484,7 +54343,7 @@ class Graph_Graph extends feature_Theme_Theme {
      * @param {Array.<number>} [dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox。
      *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
      * @param {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
-     * @returns {Boolean} 初始化参数是否成功。
+     * @returns {boolean} 初始化参数是否成功。
      */
     initBaseParameter() {
         // 参数初始化是否成功
@@ -58092,7 +57951,7 @@ class Storage_Storage {
      * @function SuperMap.LevelRenderer.Storage.prototype.mod
      * @description 修改图形(Shape)或者组(Group)。
      * 
-     * @param {String} elId - 唯一标识。
+     * @param {string} elId - 唯一标识。
      * @param {Object} params - 参数。
      * @return {SuperMap.LevelRenderer.Storage} this。
      */
@@ -60033,7 +59892,7 @@ class Handler_Handler extends Eventful {
          * y - {number} 鼠标 y。
          *
          * Returns:
-         * {Boolean} 是否找到图形。
+         * {boolean} 是否找到图形。
          *
          */
         function findHover(shape, x, y) {
@@ -60544,7 +60403,7 @@ class Handler_Handler extends Eventful {
      *
      * Parameters:
      * event - {Object} 事件。
-     * isTouch - {Boolean} 是否触摸。
+     * isTouch - {boolean} 是否触摸。
      *
      */
     _zrenderEventFixed(event, isTouch) {
@@ -63456,6 +63315,816 @@ class MessageBox {
 }
 
 SuperMap.Widgets.MessageBox = MessageBox;
+// EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
+var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(33);
+var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
+
+// CONCATENATED MODULE: ./src/common/widgets/chart/ChartModel.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.ChartModel
+ * @classdesc 图表微件数据模型
+ * @private
+ * @param {Object} datasets - 数据来源。
+ * @category Widgets Common
+ */
+
+class ChartModel_ChartModel {
+
+    constructor(datasets) {
+        this.datasets = datasets;
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartModel.prototype.getDatasetInfo
+     * @description 获得数据集数据。
+     * @param {string} datasetUrl - 数据集资源地址。
+     */
+    getDatasetInfo(success) {
+        let datasetUrl = this.datasets.url;
+        let me = this;
+
+        FetchRequest.get(datasetUrl).then(function (response) {
+            return response.json();
+        }).then(function (results) {
+            if (results.datasetInfo) {
+                let datasetInfo = results.datasetInfo;
+                me.datasetsInfo = {
+                    dataSourceName: datasetInfo.dataSourceName,
+                    datasetName: datasetInfo.name,
+                    mapName: results.name
+                };
+                success({
+                    result: me.datasetsInfo
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartModel.prototype.getDataFeatures
+     * @description 请求数据集的数据信息
+     * @param {Object} results - 数据集信息。
+     * @param {function} success - 成功回调函数。
+     */
+    getDataFeatures(results, success) {
+        let datasetsInfo = results.result;
+        let getFeatureParam, getFeatureBySQLParams, getFeatureBySQLService;
+        let params = {
+            name: datasetsInfo.datasetName + "@" + datasetsInfo.dataSourceName
+        }
+        Object.assign(params, this.datasets.queryInfo);
+        getFeatureParam = new SuperMap.FilterParameter(params);
+        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: getFeatureParam,
+            datasetNames: [datasetsInfo.dataSourceName + ":" + datasetsInfo.datasetName],
+            fromIndex: 0,
+            toIndex: 100000
+        });
+        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(datasetsInfo.dataUrl, {
+            eventListeners: {
+                "processCompleted": success,
+                "processFailed": function () { }
+            }
+        });
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartModel.prototype.getLayerFeatures
+     * @description 请求图层要素的数据信息
+     * @param {Object} results - 数据集信息。
+     * @param {function} success - 成功回调函数。
+     */
+    getLayerFeatures(results, success) {
+        let datasetsInfo = results.result;
+        let queryParam, queryBySQLParams, queryBySQLService;
+        let params = {
+            name: datasetsInfo.mapName
+        }
+        Object.assign(params, this.datasets.queryInfo);
+        queryParam = new SuperMap.FilterParameter(params);
+        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+            queryParams: [queryParam],
+            expectCount: 100000
+        });
+        queryBySQLService = new SuperMap.QueryBySQLService(datasetsInfo.dataUrl, {
+            eventListeners: {
+                "processCompleted": success,
+                "processFailed": function () { }
+            }
+        });
+        queryBySQLService.processAsync(queryBySQLParams);
+    }
+}
+// CONCATENATED MODULE: ./src/common/widgets/chart/ChartViewModel.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.Widgets.ChartViewModel
+ * @classdesc 图表微件功能类
+ * @param {Object} options - 可选参数。
+ * @param {string} options.type - 图表类型。
+ * @param {Object} options.datasets - 数据来源。
+ * @param {Array.<Object>} options.chartOptions - 图表可选参数。
+ * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
+ * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
+ * @param {string} options.chartOptions.xAxis.name - 图表X轴名称。
+ * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
+ * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
+ * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
+ */
+
+class ChartViewModel_ChartViewModel {
+
+    constructor(options) {
+        this.datasets = options.datasets;
+        this.xField = [];
+        this.yField = [];
+        this.grid = {
+            top: "50px",
+            bottom: "50px",
+            left: "50px",
+            right: "60px"
+        };
+        this.chartType = options.type || "bar";
+        this._initXYField(options.chartOptions);
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._initXYField
+     * @description 初始化XY字段。
+     * @private
+     * @param {Object} chartOptions - options里的图表参数
+     */
+    _initXYField(chartOptions) {
+        let me = this;
+        if (chartOptions && chartOptions.length > 0) {
+            chartOptions.forEach(function (option) {
+                if (option.xAxis) {
+                    me.xField.push({
+                        field: option.xAxis.field,
+                        name: option.xAxis.name
+                    });
+                }
+                if (option.yAxis) {
+                    me.yField.push({
+                        field: option.yAxis.field,
+                        name: option.yAxis.name
+                    });
+                }
+            });
+        }
+    }
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype.getDatasetInfo
+     * @description 获得数据集数据。
+     * @param {function} success - 成功回调函数
+     */
+    getDatasetInfo(success) {
+        this.createChart = success;
+        if (this.datasets && this._checkUrl(this.datasets.url)) {
+            this.chartModel = new ChartModel_ChartModel(this.datasets);
+            this.chartModel.getDatasetInfo(this._getDatasetInfoSuccess.bind(this));
+        }
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._getDatasetInfoSuccess
+     * @description 成功回调函数。
+     * @private
+     * @param {Object} results - 数据集信息
+     */
+    _getDatasetInfoSuccess(results) {
+        let datasetUrl = this.datasets.url;
+        //判断服务为地图服务 或者 数据服务
+        let restIndex = datasetUrl.indexOf("rest");
+        if (restIndex > 0) {
+            let index = datasetUrl.indexOf("/", restIndex + 5);
+            let type = datasetUrl.substring(restIndex + 5, index);
+            let dataUrl = datasetUrl.substring(0, restIndex + 4) + "/data";
+
+            if (type === "maps") {
+                let mapIndex = datasetUrl.indexOf("/", index + 1);
+                let mapName = datasetUrl.substring(index + 1, mapIndex);
+                dataUrl = datasetUrl.substring(0, restIndex + 4) + "/maps/" + mapName;
+                results.result.dataUrl = dataUrl;
+                this._getLayerFeatures(results);
+            } else if (type === "data") {
+                results.result.dataUrl = dataUrl;
+                this._getDataFeatures(results);
+            }
+        }
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._getDataFeatures
+     * @description 请求数据集的数据信息
+     * @private
+     * @param {Object} results - 数据集信息
+     */
+    _getDataFeatures(results) {
+        this.chartModel.getDataFeatures(results, this._getChartDatas.bind(this));
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._getLayerFeatures
+     * @description 请求图层的数据信息
+     * @private
+     * @param {Object} results - 数据集信息
+     */
+    _getLayerFeatures(results) {
+        this.chartModel.getLayerFeatures(results, this._getChartDatasFromLayer.bind(this));
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._getChartDatas
+     * @description 将请求回来的数据转换为图表所需的数据格式
+     * @private
+     * @param {Object} results - 数据要素信息
+     */
+    _getChartDatas(results) {
+        if (results.result.features) {
+            this.features = results.result.features;
+            let features = results.result.features.features;
+            let data = {};
+            if (features.length) {
+                let feature = features[0];
+                let attrFields = [],
+                    itemTypes = [];
+                for (let attr in feature.properties) {
+                    attrFields.push(attr);
+                    itemTypes.push(this._getDataType(feature.properties[attr]));
+                }
+                data = {
+                    features: results.result.features,
+                    fieldCaptions: attrFields,
+                    fieldTypes: itemTypes,
+                    fieldValues: []
+                }
+                for (let m in itemTypes) {
+                    let fieldValue = [];
+
+                    for (let j in features) {
+                        let feature = features[j];
+                        let caption = data.fieldCaptions[m];
+                        let value = feature.properties[caption];
+                        fieldValue.push(value);
+                    }
+                    data.fieldValues.push(fieldValue);
+                }
+                this.createChart(data);
+            }
+        }
+    }
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._getChartDatasFromLayer
+     * @description 将请求回来的数据转换为图表所需的数据格式
+     * @private
+     * @param {Object} results - 图层数据要素信息
+     */
+    _getChartDatasFromLayer(results) {
+        if (results.result.recordsets) {
+            let recordsets = results.result.recordsets[0];
+            let features = recordsets.features.features;
+            this.features = recordsets.features;
+            let data = {};
+            if (features.length) {
+                data = {
+                    features: recordsets.features,
+                    fieldCaptions: recordsets.fieldCaptions,
+                    fieldTypes: recordsets.fieldTypes,
+                    fieldValues: []
+                }
+                for (let m in data.fieldCaptions) {
+                    let fieldValue = [];
+
+                    for (let j in features) {
+                        let feature = features[j];
+                        let caption = data.fieldCaptions[m];
+                        let value = feature.properties[caption];
+                        fieldValue.push(value);
+                    }
+                    data.fieldValues.push(fieldValue);
+                }
+                this.createChart(data);
+            }
+        }
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._createChartOptions
+     * @description 创建图表所需参数
+     * @private
+     * @param {Object} data - 图表数据
+     */
+    _createChartOptions(data) {
+        this.calculatedData = this._createChartDatas(data);
+        return this.updateChartOptions(this.chartType);
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype.changeType
+     * @description 改变图表类型
+     * @param {string} type - 图表类型
+     */
+    changeType(type) {
+        if (type !== this.chartType) {
+            this.chartType = type;
+            return this.updateChartOptions(this.chartType);
+        }
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype.updateData
+     * @description 改变图表类型
+     * @param {string} url - 数据源地址
+     * @param {Object} queryInfo - 查询条件
+     * @param {Object} chartOption - X,Y字段信息
+     * @param {function} success - 成功回调函数
+     */
+    updateData(url, queryInfo, chartOption, success) {
+        this.updateChart = success;
+        this.xField = [];
+        this.yField = [];
+        this._initXYField(chartOption);
+        this.datasets = {
+            url: url,
+            queryInfo: queryInfo
+        }
+        this.getDatasetInfo(this._updateDataSuccess.bind(this));
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._updateDataSuccess
+     * @description 改变图表类型
+     * @private
+     * @param {Object} data - 图表数据
+     */
+    _updateDataSuccess(data) {
+        let options = this._createChartOptions(data);
+        this.updateChart(options);
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype.updateChartOptions
+     * @description 更新图表所需参数
+     * @param {string} type - 图表类型
+     * @param {Object} style - 图表样式
+     */
+    updateChartOptions(type, style) {
+        if (this.calculatedData) {
+            let grid = this.grid;
+            let series = this._createChartSeries(this.calculatedData, type);
+            let datas = [];
+            for (let i in this.calculatedData.XData) {
+                datas.push({
+                    value: this.calculatedData.XData[i].fieldsData
+                });
+            }
+            let xAxis = {
+                type: "category",
+                name: this.xField[0].name || "X",
+                data: datas,
+                nameTextStyle: {
+                    color: '#fff',
+                    fontSize: 14
+                },
+                splitLine: {
+                    show: false
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#eee'
+                    }
+                }
+            }
+            let yAxis = {
+                type: "value",
+                name: this.yFieldName || "Y",
+                data: {},
+                nameTextStyle: {
+                    color: '#fff',
+                    fontSize: 14
+                },
+                splitLine: {
+                    show: false
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#eee'
+                    }
+                }
+            }
+            let tooltip = {
+                formatter: '{b0}: {c0}'
+            };
+            let backgroundColor = '#404a59';
+            if (style) {
+                if (style.grid) {
+                    grid = style.grid;
+                }
+                if (style.tooltip) {
+                    tooltip = style.tooltip;
+                }
+                if (style.backgroundColor) {
+                    backgroundColor = style.backgroundColor;
+                }
+            }
+            return {
+                backgroundColor: backgroundColor,
+                grid: grid,
+                series: series,
+                xAxis: xAxis,
+                yAxis: yAxis,
+                tooltip: tooltip
+            }
+        }
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._createChartDatas
+     * @description 构建图表数据
+     * @private
+     * @param {Object} data - 源数据
+     */
+    _createChartDatas(data) {
+        let fieldIndex = 0, yfieldIndexs = [];
+        let fieldCaptions = data.fieldCaptions;
+        let me = this;
+        //X
+        fieldCaptions.forEach(function (field, index) {
+            if (me.xField[0] && field === me.xField[0].field) {
+                fieldIndex = index;
+            }
+        });
+        //Y
+        this.yFieldName = "";
+        this.yField.forEach(function (value, index) {
+            if (index !== 0) {
+                me.yFieldName = me.yFieldName + ",";
+            }
+            me.yFieldName = me.yFieldName + value.name;
+            fieldCaptions.forEach(function (field, index) {
+                if (field === value.field) {
+                    yfieldIndexs.push(index);
+                }
+            });
+        })
+        let datas = this._getAttrData(data, fieldIndex);
+        let yDatas = [];
+        if (yfieldIndexs.length > 0) {
+            yfieldIndexs.forEach(function (yfieldIndex) {
+                let yData = [];
+                for (let i in data.fieldValues[yfieldIndex]) {
+                    yData.push({
+                        value: data.fieldValues[yfieldIndex][i]
+                    });
+                }
+                yDatas.push(yData);
+            });
+        } else {                     //未指定Y字段时，y轴计数
+            let YData = [],
+                XData = [],
+                len = datas.length;
+
+            //计算X轴，Y轴数据，并去重
+            for (let i = 0; i < len; i++) {
+                let isSame = false;
+                for (let j = 0, leng = XData.length; j < leng; j++) {
+                    if (datas[i].fieldsData === XData[j].fieldsData) {
+                        YData[j].value++;
+                        XData[j].recordIndexs.push(i);
+                        isSame = true;
+                        break;
+                    }
+                }
+                if (!isSame) {
+                    if (datas[i].fieldsData) {
+                        XData.push({ fieldsData: datas[i].fieldsData, recordIndexs: [i] });
+                        YData.push({ value: 1 });
+                    }
+                }
+            }
+            datas = XData;
+            yDatas = [YData];
+        }
+        return {
+            XData: datas,
+            YData: yDatas
+        }
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._getAttrData
+     * @description 选中字段数据
+     * @private
+     * @param {Object} datacontent - 图表数据
+     * @param {number} index - 字段索引
+     */
+    _getAttrData(datacontent, index) {
+        if (index === 0) {
+            this.xField = [{
+                field: datacontent.fieldCaptions[index],
+                name: datacontent.fieldCaptions[index]
+            }];
+        }
+        let fieldsDatas = [];
+        for (let i = 0, len = datacontent.fieldValues[index].length; i < len; i++) {
+            let value = datacontent.fieldValues[index][i];
+            fieldsDatas.push({
+                recordIndexs: i,
+                fieldsData: value
+            });
+        }
+        return fieldsDatas;
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._createChartSeries
+     * @description 图表数据
+     * @private
+     * @param {Object} calculatedData - 图表数据
+     * @param {string} chartType - 图表类型
+     */
+    _createChartSeries(calculatedData, chartType) {
+        let series = [];
+        let yDatas = calculatedData.YData;
+        yDatas.forEach(function (yData) {
+            let value = 0;
+            let serieData = [];
+            for (let data of yData) {
+                value = data.value;
+                serieData.push({
+                    value: value
+                });
+            }
+            let serie = {
+                type: chartType,
+                data: serieData,
+                name: "y"
+            };
+
+            series.push(serie);
+        });
+        return series;
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._isDate
+     * @description 判断是否为日期
+     * @private
+     * @param {string} data - 字符串
+     */
+    _isDate(data) {
+        let reg = /((^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(10|12|0?[13578])([-\/\._])(3[01]|[12][0-9]|0?[1-9])$)|(^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(11|0?[469])([-\/\._])(30|[12][0-9]|0?[1-9])$)|(^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(0?2)([-\/\._])(2[0-8]|1[0-9]|0?[1-9])$)|(^([2468][048]00)([-\/\._])(0?2)([-\/\._])(29)$)|(^([3579][26]00)([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][0][48])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][0][48])([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][2468][048])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][2468][048])([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][13579][26])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][13579][26])([-\/\._])(0?2)([-\/\._])(29)$))/ig;
+        return reg.test(data);
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._isNumber
+     * @description 判断是否为数值
+     * @private
+     * @param {string} data - 字符串
+     */
+    _isNumber(data) {
+        let mdata = Number(data);
+        if (mdata === 0) {
+            return true;
+        }
+        return !isNaN(mdata);
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._getDataType
+     * @description 判断数据的类型
+     * @private
+     * @param {string} data - 字符串
+     */
+    _getDataType(data) {
+        if (data !== null && data !== undefined && data !== '') {
+            if (this._isDate(data)) {
+                return "DATE";
+            }
+            if (this._isNumber(data)) {
+                return "NUMBER";
+            }
+        }
+        return "STRING";
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._checkUrl
+     * @description 检查url是否符合要求
+     * @private
+     * @param {string} url
+     */
+    _checkUrl(url) {
+        let match;
+        if (url === '' || !this._isMatchUrl(url)) {
+            match = false;
+        } else if (/^http[s]?:\/\/localhost/.test(url) || /^http[s]?:\/\/127.0.0.1/.test(url)) {
+            //不是实际域名
+            match = false;
+        } else {
+            match = true;
+        }
+        return match;
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._isMatchUrl
+     * @description 判断输入的地址是否符合地址格式
+     * @private
+     * @param {string} str - url
+     */
+    _isMatchUrl(str) {
+        var reg = new RegExp('(https?|http|file|ftp)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]');
+        return reg.test(str);
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype.getStyle
+     * @description 获取图表样式。
+     */
+    getStyle() {
+        let style = {
+            grid: this.grid,
+            tooltip: this.tooltip,
+            backgroundColor: this.backgroundColor
+        }
+        return style;
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype.getFeatures
+     * @description 获取地图服务，数据服务请求返回的数据。
+     */
+    getFeatures() {
+        return this.features;
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype.setStyle
+     * @description 设置图表样式。
+     * @param {Object} style - 图表样式
+     */
+    setStyle(style) {
+        return this.updateChartOptions(this.chartType, style);
+    }
+}
+SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
+// CONCATENATED MODULE: ./src/common/widgets/chart/ChartView.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.Widgets.ChartView
+ * @classdesc 图表微件
+ * @param {string} domID - 图表dom元素ID。
+ * @param {Object} options - 可选参数。
+ * @param {string} options.type - 图表类型。
+ * @param {Object} options.datasets - 数据来源。
+ * @param {Array.<Object>} options.chartOptions - 图表可选参数。
+ * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
+ * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
+ * @param {string} options.chartOptions.xAxis.name - 图表X轴名称。
+ * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
+ * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
+ * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
+ * @category Widgets Common
+ */
+class ChartView_ChartView {
+
+    constructor(domID, options) {
+        this.domID = domID;
+        this.chartType = options.type || "bar";
+        this.viewModel = new ChartViewModel_ChartViewModel(options);
+        //添加控件。
+        this._fillDataToView();
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartView.prototype.onAdd
+     * @description 创建图表之后成功回调
+     * @param {function} addChart - 回调函数
+     */
+    onAdd(addChart) {
+        this.addChart = addChart;
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartView.prototype._fillDataToView
+     * @description 填充数据到 view。
+     * @private
+     */
+    _fillDataToView() {
+        //iclient9 绑定createChart事件成功回调
+        this.viewModel.getDatasetInfo(this._createChart.bind(this));
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartView.prototype.getStyle
+     * @description 获取图表样式。
+     */
+    getStyle() {
+        return this.viewModel.getStyle()
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartView.prototype.getFeatures
+     * @description 获取地图服务，数据服务请求返回的数据。
+     */
+    getFeatures() {
+        return this.viewModel.getFeatures();
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartView.prototype.setStyle
+     * @description 设置图表样式。
+     * @param {Object} style - 图表样式 参考Echarts-options样式设置
+     */
+    setStyle(style) {
+        let newOptions = this.viewModel.setStyle(style);
+        this._updateChart(newOptions);
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartView.prototype.changeType
+     * @description 改变图表类型
+     * @param {string} type - 图表类型
+     */
+    changeType(type) {
+        this.chartType = type;
+        let newOptions = this.viewModel.changeType(type);
+        this._updateChart(newOptions);
+    }
+    
+    /**
+     * @function SuperMap.Widgets.ChartView.prototype.updateData
+     * @description 更新图表数据
+     * @param {string} url - 数据源地址
+     * @param {Object} queryInfo - 查询条件
+     * @param {Object} chartOption - X,Y字段信息
+     */
+    updateData(url, queryInfo, chartOption) {
+        let me = this;
+        this.viewModel.updateData(url, queryInfo, chartOption, function(options) {
+            me._updateChart(options);
+            if(me.addChart) {
+                me.addChart();
+            }
+        });
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartView.prototype._createChart
+     * @description 创建图表
+     * @private
+     * @param {Object} data - 图表数据
+     */
+    _createChart(data) {
+        this.echart = external_function_try_return_echarts_catch_e_return_default.a.init(
+            document.getElementById(this.domID), 
+            null,
+            { renderer: "canvas"}
+        )
+        let options = this.viewModel._createChartOptions(data);
+        this.echart.setOption(options);
+        if(this.addChart) {
+            this.addChart();
+        }
+    }
+
+    /**
+     * @function SuperMap.Widgets.ChartView.prototype._updateChart
+     * @description 更新图表
+     * @private
+     * @param {Object} options - 图表参数
+     */
+    _updateChart(options) {
+        if(this.echart) {
+            this.echart.clear();
+            this.echart.setOption(options);
+        }
+    }
+}
+
+SuperMap.Widgets.Chart = ChartView_ChartView;
 // CONCATENATED MODULE: ./src/common/widgets/templates/TemplateBase.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64508,7 +65177,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.setPageLink
      * @description 设置页码数
-     * @param {Number} pageNumber
+     * @param {number} pageNumber
      */
     setPageLink(pageNumber) {
         //清空当前页码
@@ -64789,7 +65458,7 @@ let Lang = {
     /**
      * @function SuperMap.Lang.setCode
      * @description 设置语言代码。
-     * @param {String} code - 此参数遵循IETF规范。
+     * @param {string} code - 此参数遵循IETF规范。
      */
     setCode: function () {
         var lang = this.getLanguageFromCookie();
@@ -64834,7 +65503,7 @@ let Lang = {
     /**
      * @function SuperMap.Lang.i18n
      * @description 从当前语言字符串的字典查找 key。
-     * @param {String} key - 字典中 i18n 字符串值的关键字。
+     * @param {string} key - 字典中 i18n 字符串值的关键字。
      * @returns {string} 国际化的字符串。
      */
     i18n: function (key) {
@@ -65089,6 +65758,9 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
 
 //提示框微件
 
+//图表微件
+
+
 //公用模板：
 
 
@@ -65101,6 +65773,8 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
 
 
 //工具类
+
+
 
 
 
@@ -67032,7 +67706,7 @@ class core_Util_Util {
     static toGeoJSON(smObj) {
         if (smObj) {
             var format = new GeoJSON_GeoJSON();
-            return JSON.parse(format.write(smObj));
+            return format.toGeoJSON(smObj);
         }
     }
 
@@ -68108,7 +68782,7 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
             var y = -tileCoord[2] - 1;
             var resolution = me.tileGrid.getResolution(z);
             var dpi = 96;
-            var unit = projection.getUnits();
+            var unit = projection.getUnits() || Unit.DEGREE;
             if (unit === 'degrees') {
                 unit = Unit.DEGREE;
             }
@@ -68240,7 +68914,7 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
         var resolutions = getResolutions();
 
         function getResolutions() {
-            var level = 17;
+            var level = 22;
             var dpi = 96;
             var width = (extent[2] - extent[0]);
             var height = (extent[3] - extent[1]);
@@ -69545,7 +70219,7 @@ class GeoFeature_GeoFeature extends theme_Theme_Theme {
     /**
      * @function ol.source.GeoFeature.prototype.getCacheCount
      * @description 获取当前缓存数量。
-     * @returns {Number} 返回当前缓存数量。
+     * @returns {number} 返回当前缓存数量。
      */
     getCacheCount() {
         return this.cacheFields.length;
@@ -69598,7 +70272,7 @@ external_ol_default.a.source.GeoFeature = GeoFeature_GeoFeature;
  * @class ol.source.Unique
  * @category  Visualization Theme
  * @classdesc 单值专题图图层源。
- * @param {String} name - 图层名称
+ * @param {string} name - 图层名称
  * @param {Object} opt_options - 参数。
  * @param {ol.Map} opt_options.map - 当前 Map 对象。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层ID。
@@ -72320,16 +72994,16 @@ class DataFlow_DataFlow extends external_ol_default.a.source.Vector {
         this.featureCache = {};
     }
 
-    /**
-     * @function ol.source.DataFlow.prototype.setPrjCoordSys
-     * @description 设置坐标参考系。
-     * @param {Object} prjCoordSys - 参考系。
-     */
-    setPrjCoordSys(prjCoordSys) {
-        this.dataService.setPrjCoordSys(prjCoordSys);
-        this.prjCoordSys = prjCoordSys;
-        return this;
-    }
+    // /**
+    //  * @function ol.source.DataFlow.prototype.setPrjCoordSys
+    //  * @description 设置坐标参考系。
+    //  * @param {Object} prjCoordSys - 参考系。
+    //  */
+    // setPrjCoordSys(prjCoordSys) {
+    //     this.dataService.setPrjCoordSys(prjCoordSys);
+    //     this.prjCoordSys = prjCoordSys;
+    //     return this;
+    // }
 
     /**
      * @function ol.source.DataFlow.prototype.setExcludeField
@@ -73784,8 +74458,8 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
     /**
      * @function ol.source.Graphic.prototype.getGraphicBy
      * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
-     * @param {String} property - graphic 的某个属性名称。
-     * @param {String} value - property 所对应的值。
+     * @param {string} property - graphic 的某个属性名称。
+     * @param {string} value - property 所对应的值。
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
@@ -73802,7 +74476,7 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
     /**
      * @function ol.source.Graphic.prototype.getGraphicById
      * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {String} graphicId - 矢量要素的属性 id
+     * @param {string} graphicId - 矢量要素的属性 id
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
@@ -73812,8 +74486,8 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
     /**
      * @function ol.source.Graphic.prototype.getGraphicsByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {String} attrName - graphic 的某个属性名称。
-     * @param {String} attrValue - property 所对应的值。
+     * @param {string} attrName - graphic 的某个属性名称。
+     * @param {string} attrValue - property 所对应的值。
      * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
@@ -74720,7 +75394,7 @@ external_ol_default.a.source.Mapv = Mapv_Mapv;
  * @param {Array.<number>} opt_options.symbolSetting.codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
  * @param {number} [opt_options.symbolSetting.maxR] - 圆形的最大半径。
  * @param {number} [opt_options.symbolSetting.minR] - 圆形的最小半径。
- * @param {String} [opt_options.symbolSetting.fillColor] - 圆形的填充色，如：fillColor: "#FFB980"。
+ * @param {string} [opt_options.symbolSetting.fillColor] - 圆形的填充色，如：fillColor: "#FFB980"。
  * @param {Object} [opt_options.symbolSetting.circleStyle] - 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
  * @param {number} [opt_options.symbolSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @param {Object} [opt_options.symbolSetting.circleHoverStyle] - 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。
@@ -78068,7 +78742,7 @@ external_ol_default.a.supermap.NetworkAnalystService = NetworkAnalystService_Net
  *          //doSomething
  *      })
  * @param {string} url - 分布式分析服务地址。
- * @param {object} options - 参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -78896,7 +79570,7 @@ external_ol_default.a.supermap.ProcessingService = ProcessingService_ProcessingS
  *            提供：范围查询，SQL 查询，几何查询，距离查询。
  * @extends {ol.supermap.ServiceBase}
  * @param {string} url - 地图查询服务访问地址。
- * @param {object} options - 参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -79061,7 +79735,7 @@ external_ol_default.a.supermap.QueryService = services_QueryService_QueryService
  *          //doSomething
  *      })
  * @param {string} url - 服务的访问地址。
- * @param {object} options - 参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -79609,7 +80283,7 @@ external_ol_default.a.supermap.ThemeService = services_ThemeService_ThemeService
  *      .queryStop(params,function(result){
  *           //doSomething
  *      })
- * @param {String} url - 服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
@@ -80024,7 +80698,7 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -80227,7 +80901,7 @@ exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -80352,7 +81026,7 @@ exports.inverse = function(p) {
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(9);
@@ -80468,7 +81142,7 @@ exports.names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -80551,7 +81225,7 @@ exports.names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var pj_mlfn = __webpack_require__(25);
@@ -80576,7 +81250,7 @@ module.exports = function(arg, es, en) {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 var C00 = 1;
@@ -80605,15 +81279,15 @@ module.exports = function(es) {
 };
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
 var adjust_lat = __webpack_require__(4);
-var pj_enfn = __webpack_require__(43);
+var pj_enfn = __webpack_require__(44);
 var MAX_ITER = 20;
 var pj_mlfn = __webpack_require__(25);
-var pj_inv_mlfn = __webpack_require__(42);
+var pj_inv_mlfn = __webpack_require__(43);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var asinz = __webpack_require__(2);
@@ -80716,7 +81390,7 @@ exports.inverse = function(p) {
 exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -80767,7 +81441,7 @@ exports.names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports) {
 
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
@@ -80991,7 +81665,7 @@ exports.inverse = function(p) {
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(9);
@@ -81124,7 +81798,7 @@ exports.inverse = function(p) {
 exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -81171,7 +81845,7 @@ exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -81208,13 +81882,13 @@ module.exports = function(eccent, q) {
 };
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
 var qsfnz = __webpack_require__(15);
 var msfnz = __webpack_require__(3);
-var iqsfnz = __webpack_require__(49);
+var iqsfnz = __webpack_require__(50);
 /*
   reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
@@ -81277,7 +81951,7 @@ exports.names = ["cea"];
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -81382,7 +82056,7 @@ exports.names = ["gnom"];
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -81509,7 +82183,7 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -81803,7 +82477,7 @@ exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area",
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mlfn = __webpack_require__(5);
@@ -81911,7 +82585,7 @@ exports.inverse = function(p) {
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -82015,7 +82689,7 @@ exports.names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -82156,7 +82830,7 @@ exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Confo
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var tsfnz = __webpack_require__(12);
@@ -82329,7 +83003,7 @@ exports.inverse = function(p) {
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports) {
 
 /*
@@ -82415,7 +83089,7 @@ exports.names = ["somerc"];
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -82587,7 +83261,7 @@ exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (vari
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports) {
 
 module.exports = function(esinp, exp) {
@@ -82595,11 +83269,11 @@ module.exports = function(esinp, exp) {
 };
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var FORTPI = Math.PI/4;
-var srat = __webpack_require__(60);
+var srat = __webpack_require__(61);
 var HALF_PI = Math.PI/2;
 var MAX_ITER = 20;
 exports.init = function() {
@@ -82646,10 +83320,10 @@ exports.names = ["gauss"];
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var gauss = __webpack_require__(61);
+var gauss = __webpack_require__(62);
 var adjust_lon = __webpack_require__(1);
 exports.init = function() {
   gauss.init.apply(this);
@@ -82709,7 +83383,7 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
@@ -82733,13 +83407,14 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
   __webpack_require__(26),
+  __webpack_require__(64),
   __webpack_require__(63),
-  __webpack_require__(62),
+  __webpack_require__(60),
   __webpack_require__(59),
   __webpack_require__(58),
   __webpack_require__(57),
@@ -82749,16 +83424,15 @@ var projs = [
   __webpack_require__(53),
   __webpack_require__(52),
   __webpack_require__(51),
-  __webpack_require__(50),
+  __webpack_require__(49),
   __webpack_require__(48),
   __webpack_require__(47),
   __webpack_require__(46),
   __webpack_require__(45),
-  __webpack_require__(44),
+  __webpack_require__(42),
   __webpack_require__(41),
   __webpack_require__(40),
-  __webpack_require__(39),
-  __webpack_require__(38)
+  __webpack_require__(39)
 ];
 module.exports = function(proj4){
   projs.forEach(function(proj){
@@ -82767,13 +83441,13 @@ module.exports = function(proj4){
 };
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module) {
 
 module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mgrs = __webpack_require__(27);
@@ -82813,7 +83487,7 @@ module.exports = Point;
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports) {
 
 module.exports = function(crs, denorm, point) {
@@ -82870,7 +83544,7 @@ module.exports = function(crs, denorm, point) {
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
 var PJD_3PARAM = 1;
@@ -82975,7 +83649,7 @@ module.exports = function(source, dest, point) {
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -83384,7 +84058,7 @@ module.exports = datum;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports) {
 
 exports.MERIT = {
@@ -83604,7 +84278,7 @@ exports.sphere = {
 };
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports) {
 
 exports.wgs84 = {
@@ -83689,13 +84363,13 @@ exports.rnb72 = {
 };
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Datum = __webpack_require__(71);
-var Ellipsoid = __webpack_require__(70);
+var Datum = __webpack_require__(72);
+var Ellipsoid = __webpack_require__(71);
 var extend = __webpack_require__(18);
-var datum = __webpack_require__(69);
+var datum = __webpack_require__(70);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
 var SIXTH = 0.1666666666666666667;
@@ -83751,7 +84425,7 @@ module.exports = function(json) {
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports) {
 
 exports.init = function() {
@@ -83767,7 +84441,7 @@ exports.names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var msfnz = __webpack_require__(3);
@@ -83870,12 +84544,12 @@ exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(74),
-  __webpack_require__(73)
+  __webpack_require__(75),
+  __webpack_require__(74)
 ];
 var names = {};
 var projStore = [];
@@ -83910,7 +84584,7 @@ exports.start = function() {
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports) {
 
 exports.ft = {to_meter: 0.3048};
@@ -83918,7 +84592,7 @@ exports['us-ft'] = {to_meter: 1200 / 3937};
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports) {
 
 exports.greenwich = 0.0; //"0dE",
@@ -83936,7 +84610,7 @@ exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports) {
 
 module.exports = function(defs) {
@@ -83953,7 +84627,7 @@ module.exports = function(defs) {
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var defs = __webpack_require__(32);
@@ -83994,7 +84668,7 @@ function parse(code){
 module.exports = parse;
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var proj = __webpack_require__(19);
@@ -84063,7 +84737,7 @@ function proj4(fromProj, toProj, coord) {
 module.exports = proj4;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports) {
 
 function getObjectType(obj) {
@@ -84095,7 +84769,7 @@ module.exports = {
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -84519,7 +85193,7 @@ module.exports = {
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -84709,7 +85383,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -84899,10 +85573,10 @@ process.umask = function() { return 0; };
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(20), __webpack_require__(83)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(20), __webpack_require__(84)))
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -84958,7 +85632,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(84);
+__webpack_require__(85);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -84972,18 +85646,12 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(20)))
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37);
-module.exports = __webpack_require__(36);
+__webpack_require__(38);
+module.exports = __webpack_require__(37);
 
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 88 */
@@ -85076,7 +85744,12 @@ module.exports = __webpack_require__(36);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 103 */,
+/* 103 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 104 */,
 /* 105 */,
 /* 106 */,
@@ -85087,29 +85760,30 @@ module.exports = __webpack_require__(36);
 /* 111 */,
 /* 112 */,
 /* 113 */,
-/* 114 */
+/* 114 */,
+/* 115 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 115 */,
 /* 116 */,
 /* 117 */,
 /* 118 */,
-/* 119 */
+/* 119 */,
+/* 120 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 120 */,
 /* 121 */,
 /* 122 */,
 /* 123 */,
 /* 124 */,
 /* 125 */,
-/* 126 */
+/* 126 */,
+/* 127 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -107,10 +107,10 @@ export class FindLocationService extends NetworkAnalystServiceBase {
         }
         var geoJSONFormat = new GeoJSON();
         if (result.demandResults) {
-            result.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
+            result.demandResults = geoJSONFormat.toGeoJSON(result.demandResults);
         }
         if (result.supplyResults) {
-            result.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults));
+            result.supplyResults = geoJSONFormat.toGeoJSON(result.supplyResults);
         }
 
         return result;

@@ -153,7 +153,7 @@ export class QueryService extends CommonServiceBase {
                         })
                     }
                     if (me.format === DataFormat.GEOJSON) {
-                        recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                        recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                     }
                 }
             }

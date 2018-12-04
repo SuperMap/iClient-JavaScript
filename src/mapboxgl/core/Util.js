@@ -76,7 +76,7 @@ export class Util {
     static toGeoJSON(smObj) {
         if (smObj) {
             var format = new GeoJSONFormat();
-            return JSON.parse(format.write(smObj));
+            return format.toGeoJSON(smObj);
         }
     }
 

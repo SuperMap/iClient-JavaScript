@@ -21,7 +21,7 @@ import {ServiceBase} from './ServiceBase';
  *            提供：范围查询，SQL 查询，几何查询，距离查询。
  * @extends {ol.supermap.ServiceBase}
  * @param {string} url - 地图查询服务访问地址。
- * @param {object} options - 参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。

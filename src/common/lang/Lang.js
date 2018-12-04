@@ -40,7 +40,7 @@ let Lang = {
     /**
      * @function SuperMap.Lang.setCode
      * @description 设置语言代码。
-     * @param {String} code - 此参数遵循IETF规范。
+     * @param {string} code - 此参数遵循IETF规范。
      */
     setCode: function () {
         var lang = this.getLanguageFromCookie();
@@ -85,7 +85,7 @@ let Lang = {
     /**
      * @function SuperMap.Lang.i18n
      * @description 从当前语言字符串的字典查找 key。
-     * @param {String} key - 字典中 i18n 字符串值的关键字。
+     * @param {string} key - 字典中 i18n 字符串值的关键字。
      * @returns {string} 国际化的字符串。
      */
     i18n: function (key) {

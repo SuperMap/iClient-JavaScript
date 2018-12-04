@@ -404,7 +404,7 @@ export class MapvRenderer extends BaseLayer {
     }
     /**
      * @function MapvRenderer.prototype.clear
-     * @param {object} context - 当前环境。
+     * @param {Object} context - 当前环境。
      * @description 清除环境。
      */
     clear(context) {

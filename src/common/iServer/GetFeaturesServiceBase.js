@@ -148,7 +148,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         result = Util.transformResult(result);
         if (me.format === DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new GeoJSON();
-            result.features = JSON.parse(geoJSONFormat.write(result.features));
+            result.features = geoJSONFormat.toGeoJSON(result.features);
         }
         me.events.triggerEvent("processCompleted", {result: result});
     }

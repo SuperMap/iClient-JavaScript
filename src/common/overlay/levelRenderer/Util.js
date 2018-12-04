@@ -113,8 +113,8 @@ export class Util {
      *
      * @param {Object} target - 目标对象。
      * @param {Object} source - 源对象。
-     * @param {String} key - 键。
-     * @param {Boolean} overwrite - 是否覆盖。
+     * @param {string} key - 键。
+     * @param {boolean} overwrite - 是否覆盖。
      * @return {Object} 目标对象
      */
     mergeItem(target, source, key, overwrite) {
@@ -143,7 +143,7 @@ export class Util {
      * 
      * @param {Object} target - 目标对象。
      * @param {Object} source - 源对象。
-     * @param {Boolean} overwrite - 是否覆盖。
+     * @param {boolean} overwrite - 是否覆盖。
      * @return {Object} 目标对象。
      */
     merge(target, source, overwrite) {

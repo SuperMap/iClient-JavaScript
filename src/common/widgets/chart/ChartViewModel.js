@@ -7,9 +7,9 @@ import { ChartModel } from "./ChartModel";
 /**
  * @class SuperMap.Widgets.ChartViewModel
  * @classdesc 图表微件功能类
- * @param {object} options - 可选参数。
+ * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {object} options.datasets - 数据来源。
+ * @param {Object} options.datasets - 数据来源。
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -39,7 +39,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._initXYField
      * @description 初始化XY字段。
      * @private
-     * @param {object} chartOptions - options里的图表参数
+     * @param {Object} chartOptions - options里的图表参数
      */
     _initXYField(chartOptions) {
         let me = this;
@@ -77,7 +77,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._getDatasetInfoSuccess
      * @description 成功回调函数。
      * @private
-     * @param {object} results - 数据集信息
+     * @param {Object} results - 数据集信息
      */
     _getDatasetInfoSuccess(results) {
         let datasetUrl = this.datasets.url;
@@ -105,7 +105,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._getDataFeatures
      * @description 请求数据集的数据信息
      * @private
-     * @param {object} results - 数据集信息
+     * @param {Object} results - 数据集信息
      */
     _getDataFeatures(results) {
         this.chartModel.getDataFeatures(results, this._getChartDatas.bind(this));
@@ -115,7 +115,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._getLayerFeatures
      * @description 请求图层的数据信息
      * @private
-     * @param {object} results - 数据集信息
+     * @param {Object} results - 数据集信息
      */
     _getLayerFeatures(results) {
         this.chartModel.getLayerFeatures(results, this._getChartDatasFromLayer.bind(this));
@@ -125,7 +125,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._getChartDatas
      * @description 将请求回来的数据转换为图表所需的数据格式
      * @private
-     * @param {object} results - 数据要素信息
+     * @param {Object} results - 数据要素信息
      */
     _getChartDatas(results) {
         if (results.result.features) {
@@ -165,7 +165,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._getChartDatasFromLayer
      * @description 将请求回来的数据转换为图表所需的数据格式
      * @private
-     * @param {object} results - 图层数据要素信息
+     * @param {Object} results - 图层数据要素信息
      */
     _getChartDatasFromLayer(results) {
         if (results.result.recordsets) {
@@ -200,7 +200,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._createChartOptions
      * @description 创建图表所需参数
      * @private
-     * @param {object} data - 图表数据
+     * @param {Object} data - 图表数据
      */
     _createChartOptions(data) {
         this.calculatedData = this._createChartDatas(data);
@@ -223,8 +223,8 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype.updateData
      * @description 改变图表类型
      * @param {string} url - 数据源地址
-     * @param {object} queryInfo - 查询条件
-     * @param {object} chartOption - X,Y字段信息
+     * @param {Object} queryInfo - 查询条件
+     * @param {Object} chartOption - X,Y字段信息
      * @param {function} success - 成功回调函数
      */
     updateData(url, queryInfo, chartOption, success) {
@@ -243,7 +243,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._updateDataSuccess
      * @description 改变图表类型
      * @private
-     * @param {object} data - 图表数据
+     * @param {Object} data - 图表数据
      */
     _updateDataSuccess(data) {
         let options = this._createChartOptions(data);
@@ -254,7 +254,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype.updateChartOptions
      * @description 更新图表所需参数
      * @param {string} type - 图表类型
-     * @param {object} style - 图表样式
+     * @param {Object} style - 图表样式
      */
     updateChartOptions(type, style) {
         if (this.calculatedData) {
@@ -330,7 +330,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._createChartDatas
      * @description 构建图表数据
      * @private
-     * @param {object} data - 源数据
+     * @param {Object} data - 源数据
      */
     _createChartDatas(data) {
         let fieldIndex = 0, yfieldIndexs = [];
@@ -403,7 +403,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._getAttrData
      * @description 选中字段数据
      * @private
-     * @param {object} datacontent - 图表数据
+     * @param {Object} datacontent - 图表数据
      * @param {number} index - 字段索引
      */
     _getAttrData(datacontent, index) {
@@ -428,7 +428,7 @@ export class ChartViewModel {
      * @function SuperMap.Widgets.ChartViewModel.prototype._createChartSeries
      * @description 图表数据
      * @private
-     * @param {object} calculatedData - 图表数据
+     * @param {Object} calculatedData - 图表数据
      * @param {string} chartType - 图表类型
      */
     _createChartSeries(calculatedData, chartType) {
@@ -551,7 +551,7 @@ export class ChartViewModel {
     /**
      * @function SuperMap.Widgets.ChartViewModel.prototype.setStyle
      * @description 设置图表样式。
-     * @param {object} style - 图表样式
+     * @param {Object} style - 图表样式
      */
     setStyle(style) {
         return this.updateChartOptions(this.chartType, style);

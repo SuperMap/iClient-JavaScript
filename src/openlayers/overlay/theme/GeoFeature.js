@@ -228,7 +228,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.getCacheCount
      * @description 获取当前缓存数量。
-     * @returns {Number} 返回当前缓存数量。
+     * @returns {number} 返回当前缓存数量。
      */
     getCacheCount() {
         return this.cacheFields.length;

@@ -1238,6 +1238,12 @@ var GeometryType = _SuperMap.SuperMap.GeometryType = {
     POINT: "POINT",
     /** REGION */
     REGION: "REGION",
+    /** POINTEPS */
+    POINTEPS: "POINTEPS",
+    /** LINEEPS */
+    LINEEPS: "LINEEPS",
+    /** REGIONEPS */
+    REGIONEPS: "REGIONEPS",
     /** ELLIPSE */
     ELLIPSE: "ELLIPSE",
     /** CIRCLE */
@@ -3009,7 +3015,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
          * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。 
          * @param {string} [options.url] - 发送请求的地址。 
          * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。 
-         * @param {String} [options.data] - 发送到服务器的数据。 
+         * @param {string} [options.data] - 发送到服务器的数据。 
          * @param {function} options.success - 请求成功后的回调函数。 
          * @param {function} options.failure - 请求失败后的回调函数。 
          * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。 
@@ -3424,7 +3430,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
                 url: url += "&_method=PUT",
                 data: params
             };
-            return _SuperMap.SuperMap.Util.RequestJSONPPromise.DELETE(config);
+            return _SuperMap.SuperMap.Util.RequestJSONPPromise.PUT(config);
         }
         return this._fetch(url, params, options, 'PUT');
     },
@@ -9506,7 +9512,7 @@ _SuperMap.SuperMap.AddressMatchService = AddressMatchService;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.Format = undefined;
 
@@ -9530,71 +9536,67 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param {Object} [options.data] - 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
  */
 var Format = exports.Format = function () {
-  function Format(options) {
-    _classCallCheck(this, Format);
+    function Format(options) {
+        _classCallCheck(this, Format);
 
-    /**
-     * @member {Object} SuperMap.Format.prototype.data 
-     * @description 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
-     */
-    this.data = null;
+        /**
+         * @member {Object} SuperMap.Format.prototype.data 
+         * @description 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
+         */
+        this.data = null;
 
-    /**
-     * APIProperty: keepData
-     * @member {Object} [SuperMap.Format.prototype.keepData=false]
-     * @description 保持最近读到的数据的引用（通过 <data> 属性）。
-     */
-    this.keepData = false;
+        /**
+         * APIProperty: keepData
+         * @member {Object} [SuperMap.Format.prototype.keepData=false]
+         * @description 保持最近读到的数据的引用（通过 <data> 属性）。
+         */
+        this.keepData = false;
 
-    _Util.Util.extend(this, options);
-    /**
-     * @member {Object} SuperMap.Format.prototype.options
-     * @description 可选参数。
-     */
-    this.options = options;
+        _Util.Util.extend(this, options);
+        this.options = options;
 
-    this.CLASS_NAME = "SuperMap.Format";
-  }
-
-  /**
-   * @function SuperMap.Format.prototype.destroy
-   * @description 销毁该格式类，释放相关资源。
-   */
-
-
-  _createClass(Format, [{
-    key: 'destroy',
-    value: function destroy() {}
-    //用来销毁该格式类，释放相关资源
-
-
-    /**
-     * @function SuperMap.Format.prototype.read
-     * @description 来从字符串中读取数据。
-     * @param {string} data - 读取的数据。
-     */
-
-  }, {
-    key: 'read',
-    value: function read(data) {} // eslint-disable-line no-unused-vars
-    //用来从字符串中读取数据
-
-
-    /**
-     * @function SuperMap.Format.prototype.write
-     * @description 将对象写成字符串。
-     * @param {Object} object - 可序列化的对象。
-     * @returns {string} 对象被写成字符串。
-     */
-
-  }, {
-    key: 'write',
-    value: function write(object) {// eslint-disable-line no-unused-vars
-      //用来写字符串
+        this.CLASS_NAME = "SuperMap.Format";
     }
-  }]);
 
-  return Format;
+    /**
+     * @function SuperMap.Format.prototype.destroy
+     * @description 销毁该格式类，释放相关资源。
+     */
+
+
+    _createClass(Format, [{
+        key: 'destroy',
+        value: function destroy() {}
+        //用来销毁该格式类，释放相关资源
+
+
+        /**
+         * @function SuperMap.Format.prototype.read
+         * @description 来从字符串中读取数据。
+         * @param {string} data - 读取的数据。
+         */
+
+    }, {
+        key: 'read',
+        value: function read(data) {} // eslint-disable-line no-unused-vars
+        //用来从字符串中读取数据
+
+
+        /**
+         * @function SuperMap.Format.prototype.write
+         * @description 将对象写成字符串。
+         * @param {Object} object - 可序列化的对象。
+         * @returns {string} 对象被写成字符串。
+         */
+
+    }, {
+        key: 'write',
+        value: function write(object) {// eslint-disable-line no-unused-vars
+            //用来写字符串
+        }
+    }]);
+
+    return Format;
 }();
 
 _SuperMap.SuperMap.Format = Format;
@@ -9632,6 +9634,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写 JSON 的解析类。使用 {@link SuperMap.Format.JSON} 构造函数创建新实例。
  * @category BaseTypes Format
+ * @param {Object} [options] - 参数。
+ * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
+ * @param {string} [options.space=" "] - 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
+ * @param {string} [options.newline="\n"] - 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
+ * @param {number} [options.level=0] - 用于格式化输出, 表示的是缩进级别。
+ * @param {boolean} [options.pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
+ * @param {boolean} [options.nativeJSON] - 需要被注册的监听器对象。
  * @extends {SuperMap.Format}
  */
 var JSONFormat = exports.JSONFormat = function (_Format) {
@@ -9641,7 +9650,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         _classCallCheck(this, JSONFormat);
 
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.indent
+         * @member {string} [SuperMap.Format.JSON.prototype.indent="    "]
          * @description 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
          */
         var _this = _possibleConstructorReturn(this, (JSONFormat.__proto__ || Object.getPrototypeOf(JSONFormat)).call(this, options));
@@ -9649,19 +9658,19 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         _this.indent = "    ";
 
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.space
+         * @member {string} [SuperMap.Format.JSON.prototype.space=" "]
          * @description 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
          */
         _this.space = " ";
 
         /**
-         * @member {string} SuperMap.Format.JSON.prototype.newline
+         * @member {string} [SuperMap.Format.JSON.prototype.newline="\n"]
          * @description 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
          */
         _this.newline = "\n";
 
         /**
-         * @member {integer} SuperMap.Format.JSON.prototype.level 
+         * @member {integer} [SuperMap.Format.JSON.prototype.level=0] 
          * @description 用于格式化输出, 表示的是缩进级别。
          */
         _this.level = 0;
@@ -9883,6 +9892,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         /**
          * @function SuperMap.Format.JSON.prototype.writeIndent
          * @description 根据缩进级别输出一个缩进字符串。
+         * @private
          * @returns {string} 一个适当的缩进字符串。
          */
 
@@ -9901,6 +9911,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         /**
          * @function SuperMap.Format.JSON.prototype.writeNewline
          * @description 在格式化输出模式情况下输出代表新一行的字符串。
+         * @private
          * @returns {string} 代表新的一行的字符串。
          */
 
@@ -9912,6 +9923,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
 
         /**
          * @function SuperMap.Format.JSON.prototype.writeSpace
+         * @private
          * @description 在格式化输出模式情况下输出一个代表空格的字符串。
          * @returns {string} 一个空格。
          */

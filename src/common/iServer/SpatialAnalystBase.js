@@ -80,17 +80,17 @@ export class SpatialAnalystBase extends CommonServiceBase {
         if (result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
-                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                 }
             }
         } else if (result.recordset && result.recordset.features) {
-            result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
+            result.recordset.features =geoJSONFormat.toGeoJSON(result.recordset.features);
         }
         if (result.resultGeometry) {
-            result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
+            result.resultGeometry = geoJSONFormat.toGeoJSON(result.resultGeometry);
         }
         if (result.regions) {
-            result.regions = JSON.parse(geoJSONFormat.write(result.regions));
+            result.regions = geoJSONFormat.toGeoJSON(result.regions);
         }
 
         return result;

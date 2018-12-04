@@ -26,6 +26,8 @@ export class Curve extends MultiPoint {
          */
         this.componentTypes = ["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"];
         this.CLASS_NAME = "SuperMap.Geometry.Curve";
+        this.type = "Curve";
+        
     }
 
 

@@ -178,8 +178,8 @@ export class FeatureService extends ServiceBase {
     /**
      * @private
      * @description 参数类型转换。
-     * @param {object} params - 服务参数 。
-     * @returns {object} params - 转换后的对接 SuperMap 服务的参数。
+     * @param {Object} params - 服务参数 。
+     * @returns {Object} params - 转换后的对接 SuperMap 服务的参数。
      */
     _processParams(params) {
         if (!params) {

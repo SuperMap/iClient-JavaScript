@@ -13,7 +13,7 @@ export var toGeoJSON = function (feature) {
     if (!feature) {
         return feature;
     }
-    return JSON.parse(new GeoJSONFormat().write(feature));
+    return new GeoJSONFormat().toGeoJSON(feature);
 };
 export var toSuperMapGeometry = function (geometry) {
     if (!geometry) {

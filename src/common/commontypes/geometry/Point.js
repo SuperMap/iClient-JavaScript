@@ -47,6 +47,7 @@ export class Point extends Geometry {
          */
         this.type = type || "Point";
         this.CLASS_NAME = "SuperMap.Geometry.Point";
+        this.type = "Point";
     }
 
     /**

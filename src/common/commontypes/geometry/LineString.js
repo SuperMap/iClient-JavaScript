@@ -24,6 +24,7 @@ export class LineString extends Curve {
     constructor(points) {
         super(points);
         this.CLASS_NAME = "SuperMap.Geometry.LineString";
+        this.type = "LineString";
     }
 
     /**

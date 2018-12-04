@@ -16,7 +16,7 @@ import {StopQueryService, TransferPathService, TransferSolutionService} from '@s
  *      .queryStop(params,function(result){
  *           //doSomething
  *      })
- * @param {String} url - 服务地址。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。

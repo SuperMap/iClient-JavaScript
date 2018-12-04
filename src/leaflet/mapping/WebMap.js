@@ -906,7 +906,7 @@ export var WebMap = L.LayerGroup.extend({
                 }
                 layer.setLatLngs(heatPoints);
             } else if (layer instanceof L.GeoJSON) {
-                layer.addData(JSON.parse(new GeoJSONFormat().write(features)));
+                layer.addData(new GeoJSONFormat().toGeoJSON(features));
             } else {
                 layer.addFeatures(features);
             }
