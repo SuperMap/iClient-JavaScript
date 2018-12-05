@@ -297,6 +297,7 @@ function buildNavMap(members) {
             nav = {
                 type: 'namespace',
                 longname: v.longname,
+                version:v.version,
                 name: v.name,
                 members: find({
                     kind: 'member',
@@ -321,6 +322,7 @@ function buildNavMap(members) {
                 type: 'class',
                 longname: v.longname,
                 name: v.name,
+                version:v.version,
                 members: find({
                     kind: 'member',
                     memberof: v.longname

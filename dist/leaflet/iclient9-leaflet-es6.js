@@ -64938,6 +64938,7 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
 /**
  * @class SuperMap.Widgets.ChartView
  * @classdesc 图表微件
+ * @version 9.1.1
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
@@ -67083,10 +67084,10 @@ var NonEarthCRS = external_L_default.a.Class.extend({
     scale: function (zoom) {
         if (!this.resolutions || this.resolutions.length === 0) {
             var width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
-            var defaultScale = 1 / (width / 256);
+            var defaultScale = 1.0 / (width / 256);
             return defaultScale * Math.pow(2, zoom);
         }
-        return 1 / this.resolutions[zoom];
+        return 1.0 / this.resolutions[zoom];
     },
 
     /**
@@ -67099,10 +67100,10 @@ var NonEarthCRS = external_L_default.a.Class.extend({
         if (!this.resolutions || this.resolutions.length === 0) {
             var width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
             var defaultScale = 1 / (width / 256);
-            return scale / defaultScale;
+            return  Math.log(scale / defaultScale) / Math.LN2;
         }
         for (var i = 0; i < this.resolutions.length; i++) {
-            if (1 / this.resolutions == scale) {
+            if (1.0 / this.resolutions[i] == scale) {
                 return i
             }
         }

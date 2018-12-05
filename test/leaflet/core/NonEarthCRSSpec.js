@@ -65,26 +65,25 @@ describe('leaflet_NonEarthCRS', () => {
             resolutions: [100, 100000]
         };
         var nonEarthCRS1 = nonEarthCRS(options1);
-        var bound1 = nonEarthCRS1.zoom(0.1);
-        expect(bound1).toEqual(-1);
+        var zoom1 = nonEarthCRS1.zoom(0.1);
+        expect(zoom1).toEqual(-1);
 
-        //此处待开发修改后打开
-        // var options2 = {
-        //     origin: {x: 30, y: 50},
-        //     bounds: L.bounds([-180, -90], [180, 90]),
-        //     resolutions: [100, 100000]
-        // };
-        // var nonEarthCRS2 = nonEarthCRS(options2);
-        // var bound2 = nonEarthCRS2.zoom(0.01);
-        // expect(bound2).toEqual(0);
+        var options2 = {
+            origin: {x: 30, y: 50},
+            bounds: L.bounds([-180, -90], [180, 90]),
+            resolutions: [100, 100000]
+        };
+        var nonEarthCRS2 = nonEarthCRS(options2);
+        var zoom2 = nonEarthCRS2.zoom(0.01);
+        expect(zoom2).toEqual(0);
 
         var options3 = {
             origin: {x: 30, y: 50},
             bounds: L.bounds([-128, -90], [128, 90]),
         };
         var nonEarthCRS3 = nonEarthCRS(options3);
-        var bound3 = nonEarthCRS3.zoom(10);
-        expect(bound3).toEqual(10);
+        var zoom3 = nonEarthCRS3.zoom(16);
+        expect(zoom3).toEqual(4);
     });
 
     it('CRS_distance', () => {
