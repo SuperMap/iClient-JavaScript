@@ -1,16 +1,37 @@
-﻿import {SurfaceAnalystService} from '../../../src/common/iServer/SurfaceAnalystService';
-import {DatasetSurfaceAnalystParameters} from '../../../src/common/iServer/DatasetSurfaceAnalystParameters';
-import {GeometrySurfaceAnalystParameters} from '../../../src/common/iServer/GeometrySurfaceAnalystParameters';
-import {SurfaceAnalystParametersSetting} from '../../../src/common/iServer/SurfaceAnalystParametersSetting';
-import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
-import {Util} from '../../../src/common/commontypes/Util';
-import {Point} from '../../../src/common/commontypes/geometry/Point';
-import {SmoothMethod} from '../../../src/common/REST';
-import {SurfaceAnalystMethod} from '../../../src/common/REST';
-import {FetchRequest} from '../../../src/common/util/FetchRequest';
+﻿import {
+    SurfaceAnalystService
+} from '../../../src/common/iServer/SurfaceAnalystService';
+import {
+    DatasetSurfaceAnalystParameters
+} from '../../../src/common/iServer/DatasetSurfaceAnalystParameters';
+import {
+    GeometrySurfaceAnalystParameters
+} from '../../../src/common/iServer/GeometrySurfaceAnalystParameters';
+import {
+    SurfaceAnalystParametersSetting
+} from '../../../src/common/iServer/SurfaceAnalystParametersSetting';
+import {
+    DataReturnOption
+} from '../../../src/common/iServer/DataReturnOption';
+import {
+    Util
+} from '../../../src/common/commontypes/Util';
+import {
+    Point
+} from '../../../src/common/commontypes/geometry/Point';
+import {
+    SmoothMethod
+} from '../../../src/common/REST';
+import {
+    SurfaceAnalystMethod
+} from '../../../src/common/REST';
+import {
+    FetchRequest
+} from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = "http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
-var surfaceAnalystEventArgsSystem = null, serviceFailedEventArgsSystem = null;
+var surfaceAnalystEventArgsSystem = null,
+    serviceFailedEventArgsSystem = null;
 var surfaceAnalystCompleted = (surfaceAnalystEventArgs) => {
     surfaceAnalystEventArgsSystem = surfaceAnalystEventArgs;
 };
@@ -55,7 +76,9 @@ describe('SurfaceAnalystService', () => {
             resolution: 3000,
             zValueFieldName: "AVG_TMP",
             surfaceAnalystMethod: SurfaceAnalystMethod.ISOLINE,
-            resultSetting: new DataReturnOption({expectCount: 1})
+            resultSetting: new DataReturnOption({
+                expectCount: 1
+            })
         });
         var surfaceAnalystService = initSurfaceService();
         expect(surfaceAnalystService).not.toBeNull();
@@ -63,8 +86,8 @@ describe('SurfaceAnalystService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
-            //var expectParams = "{'resolution':3000,'extractParameter':{'datumValue':0,'interval':2,'resampleTolerance':0,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'zValueFieldName':\"AVG_TMP\",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
-            //expect(params).toBe(expectParams);
+            var expectParams = "{'resolution':3000,'extractParameter':{'datumValue':0,'interval':2,'resampleTolerance':0,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'zValueFieldName':\"AVG_TMP\",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
+            expect(params).toBe(expectParams);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalystEscapedJson));
         });
@@ -117,13 +140,15 @@ describe('SurfaceAnalystService', () => {
             resolution: 3000,
             zValueFieldName: "AVG_WTR",
             surfaceAnalystMethod: SurfaceAnalystMethod.ISOREGION,
-            resultSetting: new DataReturnOption({expectCount: 1})
+            resultSetting: new DataReturnOption({
+                expectCount: 1
+            })
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/isoregion.json?returnContent=true");
-            //var expectParams = "{'resolution':3000,'extractParameter':{'datumValue':70,'interval':100,'resampleTolerance':0.7,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'zValueFieldName':\"AVG_WTR\",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
-            //expect(params).toBe(expectParams);
+            var expectParams = "{'resolution':3000,'extractParameter':{'datumValue':70,'interval':100,'resampleTolerance':0.7,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'zValueFieldName':\"AVG_WTR\",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
+            expect(params).toBe(expectParams);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalysis_Dataset_ISOREGION));
         });
@@ -172,8 +197,10 @@ describe('SurfaceAnalystService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(spatialAnalystURL + "/geometry/isoline.json?returnContent=true");
-            var expectParams = "{'resolution':3000,'extractParameter':{'datumValue':-3,'interval':0.5,'resampleTolerance':0.7,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'surfaceAnalystMethod':\"ISOLINE\",'points':[{'id':\"SuperMap.Geometry_1\",'bounds':null,'SRID':null,'x':-4000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_2\",'bounds':null,'SRID':null,'x':-4500,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_3\",'bounds':null,'SRID':null,'x':-3000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_4\",'bounds':null,'SRID':null,'x':-3000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_5\",'bounds':null,'SRID':null,'x':-2500,'y':2500,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_6\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_7\",'bounds':null,'SRID':null,'x':-2000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_8\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_9\",'bounds':null,'SRID':null,'x':2000,'y':4000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_10\",'bounds':null,'SRID':null,'x':0,'y':0,'tag':null,'type':\"Point\"}],'zValues':[-3,-2,0,-1,-3,0,1,0,1,1]}";
-            expect(params).toBe(expectParams);
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.extractParameter.resampleTolerance).toBe(0.7);
+            expect(paramsObj.resolution).toBe(3000);
+            expect(paramsObj.surfaceAnalystMethod).toBe(SurfaceAnalystMethod.ISOLINE);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalysis_Geometry_ISOLINE));
         });
@@ -225,8 +252,10 @@ describe('SurfaceAnalystService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(spatialAnalystURL + "/geometry/isoregion.json?returnContent=true");
-            var expectParams = "{'resolution':3000,'extractParameter':{'datumValue':-3,'interval':0.5,'resampleTolerance':0.7,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'surfaceAnalystMethod':\"ISOREGION\",'points':[{'id':\"SuperMap.Geometry_1\",'bounds':null,'SRID':null,'x':-4000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_2\",'bounds':null,'SRID':null,'x':-4500,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_3\",'bounds':null,'SRID':null,'x':-3000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_4\",'bounds':null,'SRID':null,'x':-3000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_5\",'bounds':null,'SRID':null,'x':-2500,'y':2500,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_6\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_7\",'bounds':null,'SRID':null,'x':-2000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_8\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_9\",'bounds':null,'SRID':null,'x':2000,'y':4000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_10\",'bounds':null,'SRID':null,'x':0,'y':0,'tag':null,'type':\"Point\"}],'zValues':[-3,0,10,20,13,8,5,20,10,15]}";
-            expect(params).toBe(expectParams);
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.extractParameter.resampleTolerance).toBe(0.7);
+            expect(paramsObj.resolution).toBe(3000);
+            expect(paramsObj.surfaceAnalystMethod).toBe(SurfaceAnalystMethod.ISOREGION);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalysis_Geometry_ISOREGION));
         });
@@ -279,5 +308,3 @@ describe('SurfaceAnalystService', () => {
         }, 1000);
     })
 });
-
-
