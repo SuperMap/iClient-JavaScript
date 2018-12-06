@@ -49,134 +49,131 @@
         }
     </style>
 
-    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-        <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-        <div id="popup" class="ol-popup">
-            <div id="popup-content"></div>
-        </div>
-        <script type="text/javascript">
-            var container = document.getElementById('popup');
-            var content = document.getElementById('popup-content');
-            var overlay = new ol.Overlay(({
-                element: container,
-                autoPan: true,
-                autoPanAnimation: {
-                    duration: 250
-                }
-            }));
-            var resultLayer,
-                urlQuery = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") +
-                "/iserver/services/map-china400/rest/maps/China_4326",
-                wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "54.223.164.155:8800");
-            var token = "0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..";
-            var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
-            var timer, featureResult, dataFlowBroadcast, source;
-            new ol.supermap.MapService(urlQuery).getMapInfo(function (serviceResult) {
-                var mapJSONObj = serviceResult.result;
-                var map = new ol.Map({
-                    target: 'map',
-                    controls: ol.control.defaults({
-                            attributionOptions: {
-                                collapsed: false
-                            }
-                        })
-                        .extend([new ol.supermap.control.Logo()]),
-                    view: new ol.View({
-                        center: [116.443571, 39.887549],
-                        zoom: 12,
-                        projection: 'EPSG:4326'
-                    }),
-                    overlays: [overlay]
-                });
-                var layer = new ol.layer.Tile({
-                    source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(
-                        urlQuery, mapJSONObj))
-                });
-                map.addLayer(layer);
-                if (!window.isLocal) {
-                    SuperMap.SecurityManager.registerToken(urlDataFlow, token);
-                }
-                query();
-
-                function query() {
-                    var param = new SuperMap.QueryBySQLParameters({
-                        queryParams: {
-                            name: "Main_Road_L@China#1",
-                            attributeFilter: "SMID = 1755"
-                        }
-                    });
-                    var fill = new ol.style.Fill({
-                        color: 'rgba(255,0,0,0.9)'
-                    });
-                    var stroke = new ol.style.Stroke({
-                        color: '#3399CC',
-                        width: 1.25
-                    });
-                    var styles = [
-                        new ol.style.Style({
-                            image: new ol.style.Circle({
-                                fill: fill,
-                                radius: 5
-                            }),
-                            fill: fill,
-                        })
-                    ];
-                    source = new ol.source.DataFlow({
-                        ws: urlDataFlow
-                    });
-                    source.on('dataupdated', function (e) {
-                        var feature = e.value.data;
-                        content.innerHTML = feature.get('time');
-                        overlay.setPosition(feature.getGeometry().getCoordinates());
-                    });
-                    resultLayer = new ol.layer.Vector({
-                        source: source,
-                        style: new ol.style.Style({
-                            image: new ol.style.Circle({
-                                fill: fill,
-                                radius: 6
-                            }),
-                            fill: fill,
-                        })
-                    });
-                    //模拟实时数据
-                    //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
-                    new ol.supermap.QueryService(urlQuery)
-                        .queryBySQL(param, function (serviceResult) {
-                            featureResult = serviceResult;
-                            dataFlowBroadcast = new ol.supermap.DataFlowService(urlDataFlow).initBroadcast();
-                            dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
-                                timer = window.setInterval("broadcast()", 2000);
-                            })
-                            map.addLayer(resultLayer);
-                        });
-
-
-                }
-            });
-            var count = 200;
-
-            function broadcast() {
-                if (count >= featureResult.result.recordsets[0].features.features[0].geometry.coordinates.length) {
-                    window.clearInterval(timer);
-                    return;
-                }
-                var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
-                var feature = {
-                    geometry: {
-                        coordinates: [point[0], point[1]],
-                        type: "Point"
-                    },
-                    type: "Feature",
-                    properties: {
-                        id: 1,
-                        time: new Date()
-                    }
-                };
-                dataFlowBroadcast.broadcast(feature);
-                count += 3;
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <div id="popup" class="ol-popup">
+        <div id="popup-content"></div>
+    </div>
+    <script type="text/javascript">
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var overlay = new ol.Overlay(({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
             }
-        </script>
-    </body>
+        }));
+        var resultLayer,
+            urlQuery = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") +
+            "/iserver/services/map-china400/rest/maps/China_4326",
+            wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "54.223.164.155:8800");
+        var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
+        var timer, featureResult, dataFlowBroadcast, source;
+        new ol.supermap.MapService(urlQuery).getMapInfo(function (serviceResult) {
+            var mapJSONObj = serviceResult.result;
+            var map = new ol.Map({
+                target: 'map',
+                controls: ol.control.defaults({
+                        attributionOptions: {
+                            collapsed: false
+                        }
+                    })
+                    .extend([new ol.supermap.control.Logo()]),
+                view: new ol.View({
+                    center: [116.443571, 39.887549],
+                    zoom: 12,
+                    projection: 'EPSG:4326'
+                }),
+                overlays: [overlay]
+            });
+            var layer = new ol.layer.Tile({
+                source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(
+                    urlQuery, mapJSONObj))
+            });
+            map.addLayer(layer);
+            SuperMap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
+            query();
+
+            function query() {
+                var param = new SuperMap.QueryBySQLParameters({
+                    queryParams: {
+                        name: "Main_Road_L@China#1",
+                        attributeFilter: "SMID = 1755"
+                    }
+                });
+                var fill = new ol.style.Fill({
+                    color: 'rgba(255,0,0,0.9)'
+                });
+                var stroke = new ol.style.Stroke({
+                    color: '#3399CC',
+                    width: 1.25
+                });
+                var styles = [
+                    new ol.style.Style({
+                        image: new ol.style.Circle({
+                            fill: fill,
+                            radius: 5
+                        }),
+                        fill: fill,
+                    })
+                ];
+                source = new ol.source.DataFlow({
+                    ws: urlDataFlow
+                });
+                source.on('dataupdated', function (e) {
+                    var feature = e.value.data;
+                    content.innerHTML = feature.get('time');
+                    overlay.setPosition(feature.getGeometry().getCoordinates());
+                });
+                resultLayer = new ol.layer.Vector({
+                    source: source,
+                    style: new ol.style.Style({
+                        image: new ol.style.Circle({
+                            fill: fill,
+                            radius: 6
+                        }),
+                        fill: fill,
+                    })
+                });
+                //模拟实时数据
+                //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
+                new ol.supermap.QueryService(urlQuery)
+                    .queryBySQL(param, function (serviceResult) {
+                        featureResult = serviceResult;
+                        dataFlowBroadcast = new ol.supermap.DataFlowService(urlDataFlow).initBroadcast();
+                        dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
+                            timer = window.setInterval("broadcast()", 2000);
+                        })
+                        map.addLayer(resultLayer);
+                    });
+
+
+            }
+        });
+        var count = 200;
+
+        function broadcast() {
+            if (count >= featureResult.result.recordsets[0].features.features[0].geometry.coordinates.length) {
+                window.clearInterval(timer);
+                return;
+            }
+            var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
+            var feature = {
+                geometry: {
+                    coordinates: [point[0], point[1]],
+                    type: "Point"
+                },
+                type: "Feature",
+                properties: {
+                    id: 1,
+                    time: new Date()
+                }
+            };
+            dataFlowBroadcast.broadcast(feature);
+            count += 3;
+        }
+    </script>
+</body>
 
 </html>

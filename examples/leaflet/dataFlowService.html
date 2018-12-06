@@ -16,7 +16,6 @@
     <script type="text/javascript">
         var host = window.isLocal ? window.server : "http://iclsvr.supermap.io";
         var wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
-        var token = "0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..";
         var map,
             urlMap = host + "/iserver/services/map-china400/rest/maps/China",
             urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326",
@@ -29,9 +28,8 @@
             zoom: 12
         });
         L.supermap.tiledMapLayer(urlMap).addTo(map);
-        if (!window.isLocal) {
-            SuperMap.SecurityManager.registerToken(urlDataFlow, token);
-        }
+
+        SuperMap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
 
         var popup = L.popup({
             offset: L.point(0, 0),

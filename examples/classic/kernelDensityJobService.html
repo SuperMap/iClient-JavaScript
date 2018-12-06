@@ -3,6 +3,7 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_kernelDensityJobService"></title>
@@ -19,197 +20,209 @@
         }
     </style>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<div id="control" class="control" style='width:300px'>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title" data-i18n="resources.text_kernelDensityJobService"></h3>
-        </div>
-        <div class="panel-body">
-            <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_inputData"></span><span
-                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span>　</span>
-                <input id="datasetName" type="text" class="form-control"
-                       value="samples_newyork_taxi_2013-01_14k"/>
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="control" class="control" style='width:300px'>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-i18n="resources.text_kernelDensityJobService"></h3>
             </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_analysisMethod"></span><span
-                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span>　</span>
-                <div>
-                    <select class="form-control" id="method" name="clientType">
-                        <option value="0" selected="selected" data-i18n="resources.text_simpleDenAnalyst">
-                        </option>
-                        <option value="1" data-i18n="resources.title_densityAnalystService"></option>
-                    </select>
+            <div class="panel-body">
+                <div class="input-group">
+                    <span class="input-group-addon"><span data-i18n="resources.text_inputData"></span><span data-i18n="[title]resources.text_requiredField"
+                            style='color: red;'> * </span>　</span>
+                    <input id="datasetName" type="text" class="form-control" value="samples_newyork_taxi_2013-01_14k" />
                 </div>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_meshSurfaceType"></span><span
-                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
-                <select class="form-control" id="meshType" name="clientType">
-                    <option value="0" selected="selected" data-i18n="resources.text_4grid"></option>
-                    <option value="1" data-i18n="resources.text_6grid"></option>
-                </select>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_weightField"></span>
-                <input id="fields" type="text" class="form-control" value="col7,col8"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_analysisRange"></span>
-                <input id="query" type="text" class="form-control" value="-74.150, 40.550, -73.750, 40.950"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_gridSize"></span><span
-                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span>　</span>
-                <input id="resolution" type="text" class="form-control" value="80"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_gridSizeUnit"></span>
-                <select class="form-control" id="meshSizeUnit" name="clientType">
-                    <option value="Meter" selected="selected">Meter</option>
-                    <option value="Kilometer">Kilometer</option>
-                    <option value="Yard">Yard</option>
-                    <option value="Foot">Foot</option>
-                    <option value="Mile">Mile</option>
-                </select>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_searchRadius"></span><span
-                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span>　</span>
-                <input id="radius" type="text" class="form-control" value="300"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_searchRadiusUnit"></span>
-                <select class="form-control" id="radiusUnit" name="clientType">
-                    <option value="Meter" selected="selected">Meter</option>
-                    <option value="Kilometer">Kilometer</option>
-                    <option value="Yard">Yard</option>
-                    <option value="Foot">Foot</option>
-                    <option value="Mile">Mile</option>
-                </select>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_areaUnit"></span>
-                <select class="form-control" id="areaUnit" name="clientType">
-                    <option value="SquareMile" selected="selected">SquareMile</option>
-                    <option value="Hectare">Hectare</option>
-                    <option value="Are">Are</option>
-                    <option value="Acre">Acre</option>
-                    <option value="SquareFoot">SquareFoot</option>
-                    <option value="SquareYard">SquareYard</option>
-                    <option value="SquareMeter">SquareMeter</option>
-                </select>
-            </div>
-            <p>
-            <div align="right">
-                <input type="button" id='btn' class="btn btn-primary" data-i18n="[value]resources.text_analyst"/>
+                <p>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span data-i18n="resources.text_analysisMethod"></span><span
+                                data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span>　</span>
+                        <div>
+                            <select class="form-control" id="method" name="clientType">
+                                <option value="0" selected="selected" data-i18n="resources.text_simpleDenAnalyst">
+                                </option>
+                                <option value="1" data-i18n="resources.title_densityAnalystService"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <p>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span data-i18n="resources.text_meshSurfaceType"></span><span
+                                    data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
+                            <select class="form-control" id="meshType" name="clientType">
+                                <option value="0" selected="selected" data-i18n="resources.text_4grid"></option>
+                                <option value="1" data-i18n="resources.text_6grid"></option>
+                            </select>
+                        </div>
+                        <p>
+                            <div class="input-group">
+                                <span class="input-group-addon" data-i18n="resources.text_weightField"></span>
+                                <input id="fields" type="text" class="form-control" value="col7,col8" />
+                            </div>
+                            <p>
+                                <div class="input-group">
+                                    <span class="input-group-addon" data-i18n="resources.text_analysisRange"></span>
+                                    <input id="query" type="text" class="form-control" value="-74.150, 40.550, -73.750, 40.950" />
+                                </div>
+                                <p>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span data-i18n="resources.text_gridSize"></span><span
+                                                data-i18n="[title]resources.text_requiredField" style='color: red;'> *
+                                            </span>　</span>
+                                        <input id="resolution" type="text" class="form-control" value="80" />
+                                    </div>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" data-i18n="resources.text_gridSizeUnit"></span>
+                                            <select class="form-control" id="meshSizeUnit" name="clientType">
+                                                <option value="Meter" selected="selected">Meter</option>
+                                                <option value="Kilometer">Kilometer</option>
+                                                <option value="Yard">Yard</option>
+                                                <option value="Foot">Foot</option>
+                                                <option value="Mile">Mile</option>
+                                            </select>
+                                        </div>
+                                        <p>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span data-i18n="resources.text_searchRadius"></span><span
+                                                        data-i18n="[title]resources.text_requiredField" style='color: red;'>
+                                                        * </span>　</span>
+                                                <input id="radius" type="text" class="form-control" value="300" />
+                                            </div>
+                                            <p>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" data-i18n="resources.text_searchRadiusUnit"></span>
+                                                    <select class="form-control" id="radiusUnit" name="clientType">
+                                                        <option value="Meter" selected="selected">Meter</option>
+                                                        <option value="Kilometer">Kilometer</option>
+                                                        <option value="Yard">Yard</option>
+                                                        <option value="Foot">Foot</option>
+                                                        <option value="Mile">Mile</option>
+                                                    </select>
+                                                </div>
+                                                <p>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" data-i18n="resources.text_areaUnit"></span>
+                                                        <select class="form-control" id="areaUnit" name="clientType">
+                                                            <option value="SquareMile" selected="selected">SquareMile</option>
+                                                            <option value="Hectare">Hectare</option>
+                                                            <option value="Are">Are</option>
+                                                            <option value="Acre">Acre</option>
+                                                            <option value="SquareFoot">SquareFoot</option>
+                                                            <option value="SquareYard">SquareYard</option>
+                                                            <option value="SquareMeter">SquareMeter</option>
+                                                        </select>
+                                                    </div>
+                                                    <p>
+                                                        <div align="right">
+                                                            <input type="button" id='btn' class="btn btn-primary"
+                                                                data-i18n="[value]resources.text_analyst" />
+                                                        </div>
             </div>
         </div>
     </div>
-</div>
-<script type="text/javascript" src="../../dist/classic/include-classic.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
-    var resultLayer,
-        processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        mapURL = host + "/iserver/services/map-world/rest/maps/World",
-        token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..',
-        map = new SuperMap.Map("map", {
-            controls: [
-                new SuperMap.Control.Navigation(),
-                new SuperMap.Control.Zoom(),
-                new SuperMap.Control.LayerSwitcher()
+    <script type="text/javascript" src="../../dist/classic/include-classic.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
+        var resultLayer,
+            processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.Navigation(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.LayerSwitcher()
 
-            ], allOverlays: true
+                ],
+                allOverlays: true
+            });
+        map.addControl(new SuperMap.Control.MousePosition());
+        var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null, {
+            maxResolution: "auto"
         });
-    map.addControl(new SuperMap.Control.MousePosition());
-    var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null, {maxResolution: "auto"});
-    layer.events.on({"layerInitialized": addLayer});
-
-    function addLayer() {
-        map.addLayers([layer]);
-        map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
-    }
-
-    var processingService = new SuperMap.REST.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
-    if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken(processingsUrl, token);
-    }
-
-    function getQuery() {
-        if ($('#query').val() === "") {
-            return "";
-        }
-        var query = [];
-        $('#query').val().split(',').map(function (el) {
-            query.push(parseFloat(el));
+        layer.events.on({
+            "layerInitialized": addLayer
         });
-        return new SuperMap.Bounds(
-            query[0],
-            query[1],
-            query[2],
-            query[3]
-        );
-    }
 
-    $('#btn').on('click', function () {
-        if ($('#msg_container')[0]) {
-            $('#msg_container').remove();
+        function addLayer() {
+            map.addLayers([layer]);
+            map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
         }
-        widgets.loader.showLoader();
-        if (map && resultLayer) {
-            map.removeLayer(resultLayer);
-        }
-        var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
-            datasetName: $('#datasetName').val(),
-            resolution: $('#resolution').val(),
-            method: $('#method option:selected').attr('value'),
-            meshType: $('#meshType option:selected').attr('value'),
-            fields: $('#fields').val(),
-            query: getQuery(),
-            radius: $('#radius').val(),
-            meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
-            radiusUnit: $('#radiusUnit option:selected').attr('value'),
-            areaUnit: $('#areaUnit option:selected').attr('value'),
+
+        var processingService = new SuperMap.REST.ProcessingService(processingsUrl, {
+            withCredentials: window.isLocal
         });
-        processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
-            if (serviceResult.error) {
-                widgets.loader.removeLoader();
-                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
-                return;
+        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+
+        function getQuery() {
+            if ($('#query').val() === "") {
+                return "";
             }
-            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
-                if (info.serviceType === 'RESTMAP') {
-                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
-                        return response.json();
-                    }).then(function (result) {
-                        var mapUrl = result[0].path;
-                        resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer("resultLayer", mapUrl, {transparent: true});
-                        resultLayer.events.on({"layerInitialized": addLayer});
+            var query = [];
+            $('#query').val().split(',').map(function (el) {
+                query.push(parseFloat(el));
+            });
+            return new SuperMap.Bounds(
+                query[0],
+                query[1],
+                query[2],
+                query[3]
+            );
+        }
 
-                        function addLayer() {
-                            map.addLayer(resultLayer);
-                            widgets.loader.removeLoader();
-                        }
-                    });
+        $('#btn').on('click', function () {
+            if ($('#msg_container')[0]) {
+                $('#msg_container').remove();
+            }
+            widgets.loader.showLoader();
+            if (map && resultLayer) {
+                map.removeLayer(resultLayer);
+            }
+            var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
+                datasetName: $('#datasetName').val(),
+                resolution: $('#resolution').val(),
+                method: $('#method option:selected').attr('value'),
+                meshType: $('#meshType option:selected').attr('value'),
+                fields: $('#fields').val(),
+                query: getQuery(),
+                radius: $('#radius').val(),
+                meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
+                radiusUnit: $('#radiusUnit option:selected').attr('value'),
+                areaUnit: $('#areaUnit option:selected').attr('value'),
+            });
+            processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                    return;
                 }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path;
+                            resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer(
+                                "resultLayer", mapUrl, {
+                                    transparent: true
+                                });
+                            resultLayer.events.on({
+                                "layerInitialized": addLayer
+                            });
+
+                            function addLayer() {
+                                map.addLayer(resultLayer);
+                                widgets.loader.removeLoader();
+                            }
+                        });
+                    }
+                });
             });
         });
-    });
-
-
-</script>
+    </script>
 </body>
+
 </html>

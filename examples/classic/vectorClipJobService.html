@@ -3,6 +3,7 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_vectorClipService"></title>
@@ -26,188 +27,197 @@
         }
     </style>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<div id="control" class="control" style='width:350px'>
-    <div class="panel panel-default">
-        <div class='panel-heading'>
-            <h3 class='panel-title' data-i18n="resources.title_vectorClipService"></h3>
-        </div>
-        <div class='panel-body'>
-            <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
-                <input id='datasetName' type='text' class='form-control'
-                       value='samples_processing_newyorkZone_R'/></div>
-            <p></p>
-            <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_queryObjectMode"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
-                <select class='form-control' id='clipMode' name='clipMode'>
-                    <option value='DATASET' selected data-i18n="resources.text_dataset"></option>
-                    <option value='GEOJSON'>Geojson</option>
-                </select>
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="control" class="control" style='width:350px'>
+        <div class="panel panel-default">
+            <div class='panel-heading'>
+                <h3 class='panel-title' data-i18n="resources.title_vectorClipService"></h3>
             </div>
-            <p></p>
-            <div class='input-group' id='datasetDiv'>
-                <span class='input-group-addon'><span data-i18n="resources.text_clipObjectDataset"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
-                <input id='datasetVectorClip' type='text' class='form-control'
-                       value='samples_processing_singleRegion_R'/>
-            </div>
-            <p></p>
-            <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_boundsQueryMode"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
-                <select class='form-control' id='mode' name='mode'>
-                    <option value='clip' selected data-i18n="resources.text_internalClip"></option>
-                    <option value='intersect' data-i18n="resources.text_externalClip"></option>
-                </select>
-            </div>
-            <p></p>
-            <div align='right'>
-                <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_clip"/>
+            <div class='panel-body'>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
+                    <input id='datasetName' type='text' class='form-control' value='samples_processing_newyorkZone_R' /></div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_queryObjectMode"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                    <select class='form-control' id='clipMode' name='clipMode'>
+                        <option value='DATASET' selected data-i18n="resources.text_dataset"></option>
+                        <option value='GEOJSON'>Geojson</option>
+                    </select>
+                </div>
+                <p></p>
+                <div class='input-group' id='datasetDiv'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_clipObjectDataset"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                    <input id='datasetVectorClip' type='text' class='form-control' value='samples_processing_singleRegion_R' />
+                </div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_boundsQueryMode"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                    <select class='form-control' id='mode' name='mode'>
+                        <option value='clip' selected data-i18n="resources.text_internalClip"></option>
+                        <option value='intersect' data-i18n="resources.text_externalClip"></option>
+                    </select>
+                </div>
+                <p></p>
+                <div align='right'>
+                    <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_clip" />
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="draw" class="control-draw">
-    <div class="btn-group" role="group" aria-label="...">
-        <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default"
-                data-i18n="resources.text_input_value_drawPolygon">
-        </button>
-        <br>
-        <button id="clear" value='Clear' type="button" class="btn btn-default"
-                data-i18n="resources.text_input_value_clear">
-        </button>
+    <div id="draw" class="control-draw">
+        <div class="btn-group" role="group" aria-label="...">
+            <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default" data-i18n="resources.text_input_value_drawPolygon">
+            </button>
+            <br>
+            <button id="clear" value='Clear' type="button" class="btn btn-default" data-i18n="resources.text_input_value_clear">
+            </button>
+        </div>
     </div>
-</div>
-<script type="text/javascript" src="../../dist/classic/include-classic.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
-    var style = {
-        strokeColor: "#304DBE",
-        strokeWidth: 2,
-        pointerEvents: "visiblePainted",
-        fillColor: "#304DBE",
-        fillOpacity: 0.8
-    };
-    var layer, resultLayer, drawPolygon, polygonLayer, points = [],
-        processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        mapURL = host + "/iserver/services/map-world/rest/maps/World",
-        token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..',
-        polygonLayer = new SuperMap.Layer.Vector("polygonLayer");
-    polygonLayer.style = style;
-    drawPolygon = new SuperMap.Control.DrawFeature(polygonLayer, SuperMap.Handler.Polygon);
-    drawPolygon.events.on({"featureadded": drawCompleted});
-    map = new SuperMap.Map("map", {
-        controls: [
-            new SuperMap.Control.Navigation(),
-            new SuperMap.Control.Zoom(),
-            new SuperMap.Control.LayerSwitcher(),
-            drawPolygon
-        ], allOverlays: true
-    });
-    map.addControl(new SuperMap.Control.MousePosition());
-    var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null, {maxResolution: "auto"});
-    layer.events.on({"layerInitialized": addLayer});
-
-    $("#clipMode").change(function () {
-        var clipMode = $(this).val();
-        if (clipMode === "DATASET") {
-            $('#draw').hide();
-            $('#datasetDiv').show();
-        }
-        if (clipMode === "GEOJSON") {
-            $('#draw').show();
-            $('#datasetDiv').hide();
-        }
-    });
-
-    function addLayer() {
-        map.addLayers([layer, polygonLayer]);
-        map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
-    }
-
-    var processingService = new SuperMap.REST.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
-    if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken(processingsUrl, token);
-    }
-
-    bindClick();
-
-    function bindClick() {
-        $('#btn').on('click', function () {
-            if ($('#msg_container')[0]) {
-                $('#msg_container').remove();
-            }
-            widgets.loader.showLoader();
-            if (map && resultLayer) {
-                map.removeLayer(resultLayer);
-            }
-            addVectorClipJobs();
+    <script type="text/javascript" src="../../dist/classic/include-classic.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
+        var style = {
+            strokeColor: "#304DBE",
+            strokeWidth: 2,
+            pointerEvents: "visiblePainted",
+            fillColor: "#304DBE",
+            fillOpacity: 0.8
+        };
+        var layer, resultLayer, drawPolygon, polygonLayer, points = [],
+            processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            polygonLayer = new SuperMap.Layer.Vector("polygonLayer");
+        polygonLayer.style = style;
+        drawPolygon = new SuperMap.Control.DrawFeature(polygonLayer, SuperMap.Handler.Polygon);
+        drawPolygon.events.on({
+            "featureadded": drawCompleted
         });
-        $('#drawPolygon').on('click', function () {
-            drawPolygon.activate();
-            polygonLayer.removeAllFeatures();
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Navigation(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.LayerSwitcher(),
+                drawPolygon
+            ],
+            allOverlays: true
         });
-        $('#clear').on('click', function () {
-            polygonLayer.removeAllFeatures();
-            points = [];
+        map.addControl(new SuperMap.Control.MousePosition());
+        var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null, {
+            maxResolution: "auto"
         });
-    }
+        layer.events.on({
+            "layerInitialized": addLayer
+        });
 
-    function drawCompleted(drawGeometryArgs) {
-        drawPolygon.deactivate();
-        points = drawGeometryArgs.feature.geometry.components[0].components;
-    }
-
-    function addVectorClipJobs() {
-        var clipParam;
-        if ($('#clipMode').val() === "DATASET") {
-            clipParam = $('#datasetVectorClip').val();
-        }
-        if ($('#clipMode').val() === "GEOJSON") {
-            if (points.length < 1) {
-                widgets.loader.removeLoader();
-                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + resources.msg_drawClipBounds, false);
-                return;
-            } else {
-                clipParam = "";
+        $("#clipMode").change(function () {
+            var clipMode = $(this).val();
+            if (clipMode === "DATASET") {
+                $('#draw').hide();
+                $('#datasetDiv').show();
             }
-        }
-        var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
-            datasetName: $('#datasetName').val(),
-            datasetVectorClip: clipParam,
-            geometryClip: points,
-            mode: $('#mode option:selected').attr('value')
-        });
-        processingService.addVectorClipJob(vectorClipJobsParameter, function (serviceResult) {
-            if (serviceResult.error) {
-                widgets.loader.removeLoader();
-                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert(resources.msg_createFailed+"<br>" + errorMsg, false);
-                return;
+            if (clipMode === "GEOJSON") {
+                $('#draw').show();
+                $('#datasetDiv').hide();
             }
-            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
-                if (info.serviceType === 'RESTMAP') {
-                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
-                        return response.json();
-                    }).then(function (result) {
-                        var mapUrl = result[0].path;
-                        resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer("resultLayer", mapUrl, {transparent: true});
-                        resultLayer.events.on({"layerInitialized": addLayer});
+        });
 
-                        function addLayer() {
-                            map.addLayer(resultLayer);
-                            widgets.loader.removeLoader();
-                        }
-                    });
+        function addLayer() {
+            map.addLayers([layer, polygonLayer]);
+            map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
+        }
+
+        var processingService = new SuperMap.REST.ProcessingService(processingsUrl, {
+            withCredentials: window.isLocal
+        });
+        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+
+        bindClick();
+
+        function bindClick() {
+            $('#btn').on('click', function () {
+                if ($('#msg_container')[0]) {
+                    $('#msg_container').remove();
                 }
+                widgets.loader.showLoader();
+                if (map && resultLayer) {
+                    map.removeLayer(resultLayer);
+                }
+                addVectorClipJobs();
             });
-        });
-    }
+            $('#drawPolygon').on('click', function () {
+                drawPolygon.activate();
+                polygonLayer.removeAllFeatures();
+            });
+            $('#clear').on('click', function () {
+                polygonLayer.removeAllFeatures();
+                points = [];
+            });
+        }
 
-</script>
+        function drawCompleted(drawGeometryArgs) {
+            drawPolygon.deactivate();
+            points = drawGeometryArgs.feature.geometry.components[0].components;
+        }
+
+        function addVectorClipJobs() {
+            var clipParam;
+            if ($('#clipMode').val() === "DATASET") {
+                clipParam = $('#datasetVectorClip').val();
+            }
+            if ($('#clipMode').val() === "GEOJSON") {
+                if (points.length < 1) {
+                    widgets.loader.removeLoader();
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + resources.msg_drawClipBounds, false);
+                    return;
+                } else {
+                    clipParam = "";
+                }
+            }
+            var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
+                datasetName: $('#datasetName').val(),
+                datasetVectorClip: clipParam,
+                geometryClip: points,
+                mode: $('#mode option:selected').attr('value')
+            });
+            processingService.addVectorClipJob(vectorClipJobsParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                    return;
+                }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path;
+                            resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer(
+                                "resultLayer", mapUrl, {
+                                    transparent: true
+                                });
+                            resultLayer.events.on({
+                                "layerInitialized": addLayer
+                            });
+
+                            function addLayer() {
+                                map.addLayer(resultLayer);
+                                widgets.loader.removeLoader();
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    </script>
 </body>
+
 </html>

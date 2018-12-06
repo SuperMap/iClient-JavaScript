@@ -3,161 +3,174 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_overlayAnalyst"></title>
     <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
-    var layer, processingService,
-        processingUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        mapURL = host + "/iserver/services/map-world/rest/maps/World",
-        token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..',
-        map = L.map('map', {
-            crs: L.CRS.EPSG4326,
-            center: [40.75, -73.95],
-            maxZoom: 18,
-            zoom: 12
-        }),
-        info = L.control({position: 'topright'});
-    L.supermap.tiledMapLayer(mapURL).addTo(map);
-    processingService = L.supermap.processingService(processingUrl,{withCredentials:window.isLocal});
-    if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken(processingUrl, token);
-    }
-    initForm();
-    bindClick();
-
-
-    function initForm() {
-        info = L.control({position: 'topright'});
-        info.onAdd = function () {
-            var popup = L.DomUtil.create('div');
-            popup.style.width = '350px';
-            popup.innerHTML = "<div class='panel panel-default'>" +
-                "<div class='panel-heading'>" +
-                "<h3 class='panel-title'>" + resources.text_overlayAnalyst + "</h3>" +
-                "</div>" +
-                "<div class='panel-body'>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>" + resources.text_sourceDataset + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
-                "<input id='datasetName' type='text' class='form-control' " +
-                "value='samples_processing_newyorkZone_R'/>" +
-                "</div><p></p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>" + resources.text_overlayDataset + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span></span>" +
-                "<input id='datasetOverlay' type='text' class='form-control' " +
-                "value='samples_processing_newyorkResidential_R'/>" +
-                "</div><p></p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>" + resources.text_analystMode + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span></span>" +
-                "<select class='form-control' id='mode' name='mode'>" +
-                "<option value='clip' selected>" + resources.text_clip + "</option>" +
-                "<option value='intersect'>" + resources.text_intersect + "</option>" +
-                "<option value='erase'>" + resources.text_erase + "</option>" +
-                "<option value='union'>" + resources.text_union + "</option>" +
-                "<option value='update'>" + resources.text_update + "</option>" +
-                "<option value='identity'>" + resources.text_identity + "</option>" +
-                "<option value='xor'>" + resources.text_xor + "</option>" +
-                "</select>" +
-                "</div><p></p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>" + resources.text_retainedFieldSource + "</span>" +
-                "<input id='srcFields' type='text' class='form-control' value='LocationID'/>" +
-                "</div><p></p>" +
-                "<div class='input-group' id='overlayField' style='display: none'>" +
-                "<span class='input-group-addon'>" + resources.text_retainedFieldOverlay + "</span>" +
-                "<input id='overlayFields' type='text' class='form-control' value='type'/>" +
-                "</div><p></p>" +
-                "<div align='right'>" +
-                "<input type='button' id='btn' class='btn btn-primary' value='" + resources.text_analyst + "'/>" +
-                "</div></div></div>";
-            handleMapEvent(popup, this._map);
-            return popup;
-        };
-        info.addTo(map);
-        $("#mode").change(function () {
-            var mode = $(this).val();
-            if (mode == "update" || mode == "clip" || mode == "erase") {
-                $("#overlayField").hide();
-            } else {
-                $("#overlayField").show();
-            }
+    <div id="map" style="width: 100%;height:100%"></div>
+    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
+        var layer, processingService,
+            processingUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            map = L.map('map', {
+                crs: L.CRS.EPSG4326,
+                center: [40.75, -73.95],
+                maxZoom: 18,
+                zoom: 12
+            }),
+            info = L.control({
+                position: 'topright'
+            });
+        L.supermap.tiledMapLayer(mapURL).addTo(map);
+        processingService = L.supermap.processingService(processingUrl, {
+            withCredentials: window.isLocal
         });
+        SuperMap.SecurityManager.registerToken(processingUrl, window.exampleToken);
+        initForm();
+        bindClick();
 
-    }
 
-    function bindClick() {
-        $('#btn').on('click', function () {
-            widgets.alert.clearAlert();
-            widgets.loader.showLoader();
-            if (map && layer) {
-                map.removeLayer(layer);
-            }
-            overlayGeoJobs();
-        });
-    }
-
-    function overlayGeoJobs() {
-        var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
-            datasetName: $('#datasetName').val(),
-            datasetOverlay: $('#datasetOverlay').val(),
-            mode: $('#mode option:selected').attr('value'),
-            srcFields: $('#srcFields').val(),
-            overlayFields: $('#overlayFields').val()
-        });
-        processingService.addOverlayGeoJob(overlayGeoJobParameter, function (serviceResult) {
-            if (serviceResult.error) {
-                widgets.loader.removeLoader();
-                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
-                return;
-            }
-            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
-                if (info.serviceType === 'RESTMAP') {
-                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
-                        return response.json();
-                    }).then(function (result) {
-                        var mapUrl = result[0].path;
-                        layer = L.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
-                        layer.addTo(map);
-                        widgets.loader.removeLoader();
-                    });
+        function initForm() {
+            info = L.control({
+                position: 'topright'
+            });
+            info.onAdd = function () {
+                var popup = L.DomUtil.create('div');
+                popup.style.width = '350px';
+                popup.innerHTML = "<div class='panel panel-default'>" +
+                    "<div class='panel-heading'>" +
+                    "<h3 class='panel-title'>" + resources.text_overlayAnalyst + "</h3>" +
+                    "</div>" +
+                    "<div class='panel-body'>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>" + resources.text_sourceDataset + "<span title='" + resources
+                    .text_requiredField + "' style='color: red;'> * </span>　</span>" +
+                    "<input id='datasetName' type='text' class='form-control' " +
+                    "value='samples_processing_newyorkZone_R'/>" +
+                    "</div><p></p>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>" + resources.text_overlayDataset + "<span title='" +
+                    resources.text_requiredField + "' style='color: red;'> * </span></span>" +
+                    "<input id='datasetOverlay' type='text' class='form-control' " +
+                    "value='samples_processing_newyorkResidential_R'/>" +
+                    "</div><p></p>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>" + resources.text_analystMode + "<span title='" + resources.text_requiredField +
+                    "' style='color: red;'> * </span></span>" +
+                    "<select class='form-control' id='mode' name='mode'>" +
+                    "<option value='clip' selected>" + resources.text_clip + "</option>" +
+                    "<option value='intersect'>" + resources.text_intersect + "</option>" +
+                    "<option value='erase'>" + resources.text_erase + "</option>" +
+                    "<option value='union'>" + resources.text_union + "</option>" +
+                    "<option value='update'>" + resources.text_update + "</option>" +
+                    "<option value='identity'>" + resources.text_identity + "</option>" +
+                    "<option value='xor'>" + resources.text_xor + "</option>" +
+                    "</select>" +
+                    "</div><p></p>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>" + resources.text_retainedFieldSource + "</span>" +
+                    "<input id='srcFields' type='text' class='form-control' value='LocationID'/>" +
+                    "</div><p></p>" +
+                    "<div class='input-group' id='overlayField' style='display: none'>" +
+                    "<span class='input-group-addon'>" + resources.text_retainedFieldOverlay + "</span>" +
+                    "<input id='overlayFields' type='text' class='form-control' value='type'/>" +
+                    "</div><p></p>" +
+                    "<div align='right'>" +
+                    "<input type='button' id='btn' class='btn btn-primary' value='" + resources.text_analyst +
+                    "'/>" +
+                    "</div></div></div>";
+                handleMapEvent(popup, this._map);
+                return popup;
+            };
+            info.addTo(map);
+            $("#mode").change(function () {
+                var mode = $(this).val();
+                if (mode == "update" || mode == "clip" || mode == "erase") {
+                    $("#overlayField").hide();
+                } else {
+                    $("#overlayField").show();
                 }
             });
-        });
-    }
 
-    function handleMapEvent(div, map) {
-        if (!div || !map) {
-            return;
         }
-        div.addEventListener('mouseover', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        div.addEventListener('mouseout', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        });
-        $("#model").on('shown.bs.modal', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        $("#model").on('hidden.bs.modal', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        })
-    }
 
-</script>
+        function bindClick() {
+            $('#btn').on('click', function () {
+                widgets.alert.clearAlert();
+                widgets.loader.showLoader();
+                if (map && layer) {
+                    map.removeLayer(layer);
+                }
+                overlayGeoJobs();
+            });
+        }
+
+        function overlayGeoJobs() {
+            var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
+                datasetName: $('#datasetName').val(),
+                datasetOverlay: $('#datasetOverlay').val(),
+                mode: $('#mode option:selected').attr('value'),
+                srcFields: $('#srcFields').val(),
+                overlayFields: $('#overlayFields').val()
+            });
+            processingService.addOverlayGeoJob(overlayGeoJobParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                    return;
+                }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path;
+                            layer = L.supermap.tiledMapLayer(mapUrl, {
+                                noWrap: true,
+                                transparent: true
+                            });
+                            layer.addTo(map);
+                            widgets.loader.removeLoader();
+                        });
+                    }
+                });
+            });
+        }
+
+        function handleMapEvent(div, map) {
+            if (!div || !map) {
+                return;
+            }
+            div.addEventListener('mouseover', function () {
+                map.dragging.disable();
+                map.scrollWheelZoom.disable();
+                map.doubleClickZoom.disable();
+            });
+            div.addEventListener('mouseout', function () {
+                map.dragging.enable();
+                map.scrollWheelZoom.enable();
+                map.doubleClickZoom.enable();
+            });
+            $("#model").on('shown.bs.modal', function () {
+                map.dragging.disable();
+                map.scrollWheelZoom.disable();
+                map.doubleClickZoom.disable();
+            });
+            $("#model").on('hidden.bs.modal', function () {
+                map.dragging.enable();
+                map.scrollWheelZoom.enable();
+                map.doubleClickZoom.enable();
+            })
+        }
+    </script>
 </body>
+
 </html>

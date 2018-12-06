@@ -3,6 +3,7 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.text_overlayAnalyst"></title>
@@ -18,142 +19,152 @@
         }
     </style>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<div id="control" class="control" style='width:350px'>
-    <div class="panel panel-default">
-        <div class='panel-heading'>
-            <h3 class='panel-title' data-i18n="resources.text_overlayAnalyst"></h3>
-        </div>
-        <div class='panel-body'>
-            <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
-                <input id='datasetName' type='text' class='form-control'
-                       value='samples_processing_newyorkZone_R'/></div>
-            <p></p>
-            <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_overlayDataset"></span>
-                    <span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
-                <input id='datasetOverlay' type='text' class='form-control'
-                       value='samples_processing_newyorkResidential_R'/>
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="control" class="control" style='width:350px'>
+        <div class="panel panel-default">
+            <div class='panel-heading'>
+                <h3 class='panel-title' data-i18n="resources.text_overlayAnalyst"></h3>
             </div>
-            <p></p>
-            <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_analystMode"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
-                <select class='form-control' id='mode' name='mode'>
-                    <option value='clip' selected data-i18n="resources.text_clip"></option>
-                    <option value='intersect' data-i18n="resources.text_intersect"></option>
-                    <option value='erase' data-i18n="resources.text_erase"></option>
-                    <option value='union' data-i18n="resources.text_union"></option>
-                    <option value='update' data-i18n="resources.text_update"></option>
-                    <option value='identity' data-i18n="resources.text_identity"></option>
-                    <option value='xor' data-i18n="resources.text_xor"></option>
-                </select>
-            </div>
-            <p></p>
-            <div class='input-group'>
-                <span class='input-group-addon' data-i18n="resources.text_retainedFieldSource"></span>
-                <input id='srcFields' type='text' class='form-control' value='LocationID'/>
-            </div>
-            <p></p>
-            <div class='input-group' id='overlayField' style='display: none'>
-                <span class='input-group-addon' data-i18n="resources.text_retainedFieldOverlay"></span>
-                <input id='overlayFields' type='text' class='form-control' value='type'/>
-            </div>
-            <p></p>
-            <div align='right'>
-                <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_analyst"/>
+            <div class='panel-body'>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
+                    <input id='datasetName' type='text' class='form-control' value='samples_processing_newyorkZone_R' /></div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_overlayDataset"></span>
+                        <span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                    <input id='datasetOverlay' type='text' class='form-control' value='samples_processing_newyorkResidential_R' />
+                </div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_analystMode"></span><span data-i18n="[title]resources.text_requiredField"
+                            style="color: red;"> * </span></span>
+                    <select class='form-control' id='mode' name='mode'>
+                        <option value='clip' selected data-i18n="resources.text_clip"></option>
+                        <option value='intersect' data-i18n="resources.text_intersect"></option>
+                        <option value='erase' data-i18n="resources.text_erase"></option>
+                        <option value='union' data-i18n="resources.text_union"></option>
+                        <option value='update' data-i18n="resources.text_update"></option>
+                        <option value='identity' data-i18n="resources.text_identity"></option>
+                        <option value='xor' data-i18n="resources.text_xor"></option>
+                    </select>
+                </div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_retainedFieldSource"></span>
+                    <input id='srcFields' type='text' class='form-control' value='LocationID' />
+                </div>
+                <p></p>
+                <div class='input-group' id='overlayField' style='display: none'>
+                    <span class='input-group-addon' data-i18n="resources.text_retainedFieldOverlay"></span>
+                    <input id='overlayFields' type='text' class='form-control' value='type' />
+                </div>
+                <p></p>
+                <div align='right'>
+                    <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_analyst" />
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script type="text/javascript" src="../../dist/classic/include-classic.js"></script>
-<script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
-    var resultLayer,
-        processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        mapURL = host + "/iserver/services/map-world/rest/maps/World",
-        token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..',
-        map = new SuperMap.Map("map", {
-            controls: [
-                new SuperMap.Control.Navigation(),
-                new SuperMap.Control.Zoom(),
-                new SuperMap.Control.LayerSwitcher()
+    <script type="text/javascript" src="../../dist/classic/include-classic.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
+        var resultLayer,
+            processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.Navigation(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.LayerSwitcher()
 
-            ], allOverlays: true
-        });
-    var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null, {maxResolution: "auto"});
-    layer.events.on({"layerInitialized": addLayer});
-
-    function addLayer() {
-        map.addLayers([layer]);
-        map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
-    }
-
-    var processingService = new SuperMap.REST.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
-    if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken(processingsUrl, token);
-    }
-    $("#mode").change(function () {
-        var mode = $(this).val();
-        if (mode == "update" || mode == "clip" || mode == "erase") {
-            $("#overlayField").hide();
-        } else {
-            $("#overlayField").show();
-        }
-    });
-
-    bindClick();
-
-    function bindClick() {
-        $('#btn').on('click', function () {
-            if ($('#msg_container')[0]) {
-                $('#msg_container').remove();
-            }
-            widgets.loader.showLoader();
-            if (map && resultLayer) {
-                map.removeLayer(resultLayer);
-            }
-            overlayGeoJobs();
-        });
-    }
-
-    function overlayGeoJobs() {
-        var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
-            datasetName: $('#datasetName').val(),
-            datasetOverlay: $('#datasetOverlay').val(),
-            mode: $('#mode option:selected').attr('value'),
-            srcFields: $('#srcFields').val(),
-            overlayFields: $('#overlayFields').val()
-        });
-        processingService.addOverlayGeoJob(overlayGeoJobParameter, function (serviceResult) {
-            if (serviceResult.error) {
-                widgets.loader.removeLoader();
-                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
-                return;
-            }
-            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
-                if (info.serviceType === 'RESTMAP') {
-                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
-                        return response.json();
-                    }).then(function (result) {
-                        var mapUrl = result[0].path;
-                        resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer("resultLayer", mapUrl, {transparent: true});
-                        resultLayer.events.on({"layerInitialized": addLayer});
-
-                        function addLayer() {
-                            map.addLayer(resultLayer);
-                            widgets.loader.removeLoader();
-                        }
-                    });
-                }
+                ],
+                allOverlays: true
             });
+        var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null, {
+            maxResolution: "auto"
         });
-    }
-</script>
+        layer.events.on({
+            "layerInitialized": addLayer
+        });
+
+        function addLayer() {
+            map.addLayers([layer]);
+            map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
+        }
+
+        var processingService = new SuperMap.REST.ProcessingService(processingsUrl, {
+            withCredentials: window.isLocal
+        });
+        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        $("#mode").change(function () {
+            var mode = $(this).val();
+            if (mode == "update" || mode == "clip" || mode == "erase") {
+                $("#overlayField").hide();
+            } else {
+                $("#overlayField").show();
+            }
+        });
+
+        bindClick();
+
+        function bindClick() {
+            $('#btn').on('click', function () {
+                if ($('#msg_container')[0]) {
+                    $('#msg_container').remove();
+                }
+                widgets.loader.showLoader();
+                if (map && resultLayer) {
+                    map.removeLayer(resultLayer);
+                }
+                overlayGeoJobs();
+            });
+        }
+
+        function overlayGeoJobs() {
+            var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
+                datasetName: $('#datasetName').val(),
+                datasetOverlay: $('#datasetOverlay').val(),
+                mode: $('#mode option:selected').attr('value'),
+                srcFields: $('#srcFields').val(),
+                overlayFields: $('#overlayFields').val()
+            });
+            processingService.addOverlayGeoJob(overlayGeoJobParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                    return;
+                }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path;
+                            resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer(
+                                "resultLayer", mapUrl, {
+                                    transparent: true
+                                });
+                            resultLayer.events.on({
+                                "layerInitialized": addLayer
+                            });
+
+                            function addLayer() {
+                                map.addLayer(resultLayer);
+                                widgets.loader.removeLoader();
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    </script>
 </body>
+
 </html>

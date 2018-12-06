@@ -36,7 +36,7 @@
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
-
+        inputScript("../js/tokengenerator.js");
         var jQueryInclude = false;
         if (!inArray(excludes, 'example-i18n')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js");

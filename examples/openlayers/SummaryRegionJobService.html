@@ -3,6 +3,7 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_SummaryRegionJobService"></title>
@@ -15,253 +16,259 @@
         }
     </style>
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<div id="popup" class="ol-popup" style='width: 500px'>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title" data-i18n="resources.title_SummaryRegionJobService"></h3>
-        </div>
-        <div class="panel-body">
-            <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_inputData"></span><span
-                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　　　　　</span>
-                <input id="datasetName" type="text" class="form-control"
-                       value="samples_processing_newyorkZone_R"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_summaryType"></span><span
-                        data-i18n="[title]resources.text_requiredField"
-                        style="color: red;"> * </span>　　　　　</span>
-                <div>
-                    <select class="form-control" id="type" name="clientType">
-                        <option value="SUMMARYMESH" selected="selected" data-i18n="resources.text_summaryMesh"></option>
-                        <option value="SUMMARYREGION" data-i18n="resources.text_summaryRegion"></option>
-                    </select>
-                </div>
-            </div>
-            <p>
-            <div id="meshTypeS" class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_meshSurfaceType"><span
-                        data-i18n="[title]resources.text_requiredField"
-                        style="color: red;"> * </span>　　</span>
-                <select class="form-control" id="meshType" name="clientType">
-                    <option value="0" selected="selected" data-i18n="resources.text_4grid"></option>
-                    <option value="1" data-i18n="resources.text_6grid"></option>
-                </select>
-            </div>
-            <p>
-            <div id="regionDatasetS" class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_summaryDataset"></span><span
-                        data-i18n="[title]resources.text_requiredField"
-                        style="color: red;"> * </span>　　</span>
-                <input id="regionDataset" type="text" class="form-control"
-                       value="samples_processing_newyorkZone_R"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_analysisRange"></span>
-                <input id="query" type="text" class="form-control" value="-74.050,40.650,-73.850,40.850"/>
-            </div>
-            <p>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_statisticStandardField"></span>
-                <span class="form-control">
-                    <input id="standardSummaryFields" type="checkbox">
-                </span>
-                <span class="input-group-addon" data-i18n="resources.text_statisticWeightField"></span>
-                <span class="form-control">
-                    <input id="weightedSummaryFields" type="checkbox">
-                </span>
-            </div>
-            <p>
-                <div id="standardS" style="display: none">
-                    <div class="input-group">
-                        <span class="input-group-addon"><span
-                                data-i18n="resources.text_statisticAttrFieldMode"></span><span
-                                data-i18n="[title]resources.text_requiredField"
-                                style="color: red;"> * </span>　</span>
-                        <input id="standardStatisticModes" type="text" class="form-control"
-                               value="max"/>
-                    </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_AttrFieldName"></span><span
-                        data-i18n="[title]resources.text_requiredField"
-                        style="color: red;"> * </span>　　　　</span>
-                <input id="standardFields" type="text" class="form-control"
-                       value="LocationID"/>
-            </div>
-            <p>
-        </div>
-        <div id="weightS" style="display: none">
-            <div class="input-group">
-                <span class="input-group-addon"><span
-                        data-i18n="resources.text_statisticWeightFieldMode"></span><span
-                        data-i18n="[title]resources.text_requiredField"
-                        style="color: red;"> * </span>　</span>
-                <input id="weightedStatisticModes" type="text" class="form-control"
-                       value="max"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_weightFieldName"></span><span
-                        data-i18n="[title]resources.text_requiredField"
-                        style="color: red;"> * </span>　　　　</span>
-                <input id="weightedFields" type="text" class="form-control"
-                       value="LocationID"/>
-            </div>
-            <p>
-        </div>
 
-        <div id="resolutionS" class="input-group">
-            <span class="input-group-addon" data-i18n="resources.text_gridSize"></span>
-            <input id="resolution" type="text" class="form-control" value="100"/>
-        </div>
-        <p>
-        <div id="meshSizeUnitS" class="input-group">
-            <span class="input-group-addon" data-i18n="resources.text_gridSizeUnit"></span>
-            <select class="form-control" id="meshSizeUnit" name="clientType">
-                <option value="Meter" selected="selected">Meter</option>
-                <option value="Kilometer">Kilometer</option>
-                <option value="Yard">Yard</option>
-                <option value="Foot">Foot</option>
-                <option value="Mile">Mile</option>
-            </select>
-        </div>
-        <p>
-        <div class="input-group">
-            <span class="input-group-addon" data-i18n="resources.text_lengthAndArea"></span>
-            <span class="form-control">
-                    <input id="sumShape" type="checkbox" checked>
-                </span>
-        </div>
-        <p>
-        <div align="right">
-            <input type="button" id='btn' class="btn btn-primary" data-i18n="[value]resources.btn_summary"/>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="popup" class="ol-popup" style='width: 500px'>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-i18n="resources.title_SummaryRegionJobService"></h3>
+            </div>
+            <div class="panel-body">
+                <div class="input-group">
+                    <span class="input-group-addon"><span data-i18n="resources.text_inputData"></span><span data-i18n="[title]resources.text_requiredField"
+                            style="color: red;"> * </span>　　　　　</span>
+                    <input id="datasetName" type="text" class="form-control" value="samples_processing_newyorkZone_R" />
+                </div>
+                <p>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span data-i18n="resources.text_summaryType"></span><span
+                                data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　　　　　</span>
+                        <div>
+                            <select class="form-control" id="type" name="clientType">
+                                <option value="SUMMARYMESH" selected="selected" data-i18n="resources.text_summaryMesh"></option>
+                                <option value="SUMMARYREGION" data-i18n="resources.text_summaryRegion"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <p>
+                        <div id="meshTypeS" class="input-group">
+                            <span class="input-group-addon" data-i18n="resources.text_meshSurfaceType"><span data-i18n="[title]resources.text_requiredField"
+                                    style="color: red;"> * </span>　　</span>
+                            <select class="form-control" id="meshType" name="clientType">
+                                <option value="0" selected="selected" data-i18n="resources.text_4grid"></option>
+                                <option value="1" data-i18n="resources.text_6grid"></option>
+                            </select>
+                        </div>
+                        <p>
+                            <div id="regionDatasetS" class="input-group">
+                                <span class="input-group-addon"><span data-i18n="resources.text_summaryDataset"></span><span
+                                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　　</span>
+                                <input id="regionDataset" type="text" class="form-control" value="samples_processing_newyorkZone_R" />
+                            </div>
+                            <p>
+                                <div class="input-group">
+                                    <span class="input-group-addon" data-i18n="resources.text_analysisRange"></span>
+                                    <input id="query" type="text" class="form-control" value="-74.050,40.650,-73.850,40.850" />
+                                </div>
+                                <p>
+                                    <p>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" data-i18n="resources.text_statisticStandardField"></span>
+                                            <span class="form-control">
+                                                <input id="standardSummaryFields" type="checkbox">
+                                            </span>
+                                            <span class="input-group-addon" data-i18n="resources.text_statisticWeightField"></span>
+                                            <span class="form-control">
+                                                <input id="weightedSummaryFields" type="checkbox">
+                                            </span>
+                                        </div>
+                                        <p>
+                                            <div id="standardS" style="display: none">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span data-i18n="resources.text_statisticAttrFieldMode"></span><span
+                                                            data-i18n="[title]resources.text_requiredField" style="color: red;">
+                                                            * </span>　</span>
+                                                    <input id="standardStatisticModes" type="text" class="form-control"
+                                                        value="max" />
+                                                </div>
+                                                <p>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span data-i18n="resources.text_AttrFieldName"></span><span
+                                                                data-i18n="[title]resources.text_requiredField" style="color: red;">
+                                                                * </span>　　　　</span>
+                                                        <input id="standardFields" type="text" class="form-control"
+                                                            value="LocationID" />
+                                                    </div>
+                                                    <p>
+                                            </div>
+                                            <div id="weightS" style="display: none">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span data-i18n="resources.text_statisticWeightFieldMode"></span><span
+                                                            data-i18n="[title]resources.text_requiredField" style="color: red;">
+                                                            * </span>　</span>
+                                                    <input id="weightedStatisticModes" type="text" class="form-control"
+                                                        value="max" />
+                                                </div>
+                                                <p>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span data-i18n="resources.text_weightFieldName"></span><span
+                                                                data-i18n="[title]resources.text_requiredField" style="color: red;">
+                                                                * </span>　　　　</span>
+                                                        <input id="weightedFields" type="text" class="form-control"
+                                                            value="LocationID" />
+                                                    </div>
+                                                    <p>
+                                            </div>
+
+                                            <div id="resolutionS" class="input-group">
+                                                <span class="input-group-addon" data-i18n="resources.text_gridSize"></span>
+                                                <input id="resolution" type="text" class="form-control" value="100" />
+                                            </div>
+                                            <p>
+                                                <div id="meshSizeUnitS" class="input-group">
+                                                    <span class="input-group-addon" data-i18n="resources.text_gridSizeUnit"></span>
+                                                    <select class="form-control" id="meshSizeUnit" name="clientType">
+                                                        <option value="Meter" selected="selected">Meter</option>
+                                                        <option value="Kilometer">Kilometer</option>
+                                                        <option value="Yard">Yard</option>
+                                                        <option value="Foot">Foot</option>
+                                                        <option value="Mile">Mile</option>
+                                                    </select>
+                                                </div>
+                                                <p>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" data-i18n="resources.text_lengthAndArea"></span>
+                                                        <span class="form-control">
+                                                            <input id="sumShape" type="checkbox" checked>
+                                                        </span>
+                                                    </div>
+                                                    <p>
+                                                        <div align="right">
+                                                            <input type="button" id='btn' class="btn btn-primary"
+                                                                data-i18n="[value]resources.btn_summary" />
+                                                        </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
-<script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
-    var layer,
-        processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        mapURL = host + "/iserver/services/map-world/rest/maps/World",
-        token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..',
-        map = new ol.Map({
-            target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
-            view: new ol.View({
-                center: [-73.95, 40.75],
-                zoom: 12,
-                projection: 'EPSG:4326'
-            })
-        });
-    map.addLayer(new ol.layer.Tile({
-        source: new ol.source.TileSuperMapRest({
-            url: mapURL,
-        }),
-    }));
-    $("#standardSummaryFields").change(function (e) {
-        if (e.target.checked) {
-            $("#standardS").show();
-            return;
-        }
-        $("#standardS").hide();
-    });
-    $("#weightedSummaryFields").change(function (e) {
-        if (e.target.checked) {
-            $("#weightS").show();
-            return;
-        }
-        $("#weightS").hide();
-    });
-    $("#type").change(function (e) {
-        if (e.target.selectedIndex === 0) {
-            $("#meshTypeS").show();
-            $("#resolutionS").show();
-            $("#meshSizeUnitS").show();
-            $("#regionDatasetS").hide();
-            return;
-        }
-        $("#meshTypeS").hide();
-        $("#resolutionS").hide();
-        $("#meshSizeUnitS").hide();
-        $("#regionDatasetS").show();
-    });
-    var processingService = new ol.supermap.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
-    var info = new ol.control.Control({element: popup});
-    info.setMap(map);
-    map.addControl(info);
-    if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken(processingsUrl, token);
-    }
-
-    function getQuery() {
-        if ($('#query').val() === "") {
-            return "";
-        }
-        var query = [];
-        $('#query').val().split(',').map(function (el) {
-            query.push(parseFloat(el));
-        });
-        return query;
-    }
-
-    $('#btn').on('click', function () {
-        if ($('#msg_container')[0]) {
-            $('#msg_container').remove();
-        }
-        widgets.loader.showLoader();
-        if (map && layer) {
-            map.removeLayer(layer);
-        }
-        var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
-            datasetName: $('#datasetName').val(),
-            regionDataset: $('#regionDataset').val(),
-            type: $('#type option:selected').attr('value'),
-            meshType: $('#meshType option:selected').attr('value'),
-            query: getQuery(),
-            standardSummaryFields: $('#standardSummaryFields').get(0).checked,
-            weightedSummaryFields: $('#weightedSummaryFields').get(0).checked,
-            standardStatisticModes: $('#standardStatisticModes').val(),
-            standardFields: $('#standardFields').val(),
-            weightedStatisticModes: $('#weightedStatisticModes').val(),
-            weightedFields: $('#weightedFields').val(),
-            resolution: $('#resolution').val(),
-            meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
-            sumShape: $('#sumShape').get(0).checked
-        });
-        processingService.addSummaryRegionJob(summaryRegionJobParameter, function (serviceResult) {
-            if (serviceResult.error) {
-                widgets.loader.removeLoader();
-                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
+        var layer,
+            processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            map = new ol.Map({
+                target: 'map',
+                controls: ol.control.defaults({
+                        attributionOptions: {
+                            collapsed: false
+                        }
+                    })
+                    .extend([new ol.supermap.control.Logo()]),
+                view: new ol.View({
+                    center: [-73.95, 40.75],
+                    zoom: 12,
+                    projection: 'EPSG:4326'
+                })
+            });
+        map.addLayer(new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+                url: mapURL,
+            }),
+        }));
+        $("#standardSummaryFields").change(function (e) {
+            if (e.target.checked) {
+                $("#standardS").show();
                 return;
             }
-            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
-                if (info.serviceType === 'RESTMAP') {
-                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
-                        return response.json();
-                    }).then(function (result) {
-                        var mapUrl = result[0].path;
-                        new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                            layer = new ol.layer.Tile({
-                                source: new ol.source.ImageSuperMapRest(ol.source.ImageSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
-                            });
-                            map.addLayer(layer);
-                            widgets.loader.removeLoader();
-                        });
-                    });
+            $("#standardS").hide();
+        });
+        $("#weightedSummaryFields").change(function (e) {
+            if (e.target.checked) {
+                $("#weightS").show();
+                return;
+            }
+            $("#weightS").hide();
+        });
+        $("#type").change(function (e) {
+            if (e.target.selectedIndex === 0) {
+                $("#meshTypeS").show();
+                $("#resolutionS").show();
+                $("#meshSizeUnitS").show();
+                $("#regionDatasetS").hide();
+                return;
+            }
+            $("#meshTypeS").hide();
+            $("#resolutionS").hide();
+            $("#meshSizeUnitS").hide();
+            $("#regionDatasetS").show();
+        });
+        var processingService = new ol.supermap.ProcessingService(processingsUrl, {
+            withCredentials: window.isLocal
+        });
+        var info = new ol.control.Control({
+            element: popup
+        });
+        info.setMap(map);
+        map.addControl(info);
+        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+
+        function getQuery() {
+            if ($('#query').val() === "") {
+                return "";
+            }
+            var query = [];
+            $('#query').val().split(',').map(function (el) {
+                query.push(parseFloat(el));
+            });
+            return query;
+        }
+
+        $('#btn').on('click', function () {
+            if ($('#msg_container')[0]) {
+                $('#msg_container').remove();
+            }
+            widgets.loader.showLoader();
+            if (map && layer) {
+                map.removeLayer(layer);
+            }
+            var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
+                datasetName: $('#datasetName').val(),
+                regionDataset: $('#regionDataset').val(),
+                type: $('#type option:selected').attr('value'),
+                meshType: $('#meshType option:selected').attr('value'),
+                query: getQuery(),
+                standardSummaryFields: $('#standardSummaryFields').get(0).checked,
+                weightedSummaryFields: $('#weightedSummaryFields').get(0).checked,
+                standardStatisticModes: $('#standardStatisticModes').val(),
+                standardFields: $('#standardFields').val(),
+                weightedStatisticModes: $('#weightedStatisticModes').val(),
+                weightedFields: $('#weightedFields').val(),
+                resolution: $('#resolution').val(),
+                meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
+                sumShape: $('#sumShape').get(0).checked
+            });
+            processingService.addSummaryRegionJob(summaryRegionJobParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                    return;
                 }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path;
+                            new ol.supermap.MapService(mapUrl).getMapInfo(function (
+                                mapInfo) {
+                                layer = new ol.layer.Tile({
+                                    source: new ol.source.ImageSuperMapRest(
+                                        ol.source.ImageSuperMapRest
+                                        .optionsFromMapJSON(mapUrl,
+                                            mapInfo.result))
+                                });
+                                map.addLayer(layer);
+                                widgets.loader.removeLoader();
+                            });
+                        });
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>

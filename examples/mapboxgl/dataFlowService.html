@@ -25,7 +25,6 @@
             urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326";
 
         wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
-        var token = "0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..";
         mapboxgl.accessToken =
             'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 
@@ -61,9 +60,7 @@
         map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-        if (!window.isLocal) {
-            SuperMap.SecurityManager.registerToken(urlDataFlow, token);
-        }
+        SuperMap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
         var popup = new mapboxgl.Popup();
 
         map.on('load', function () {

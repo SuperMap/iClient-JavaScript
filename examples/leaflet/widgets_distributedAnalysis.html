@@ -29,14 +29,12 @@
         var control = L.control.layers().addTo(map).setPosition('topleft').addBaseLayer(baseLayer, 'baseLayer');
         var distributedHost = window.isLocal ? window.server : "http://114.115.213.31:8090";
         var distributedAnalystUrl = distributedHost + "/iserver/services/distributedanalyst/rest/v1/jobs";
-        if (!window.isLocal) {        
-            var token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..';
-            SuperMap.SecurityManager.registerToken(distributedAnalystUrl, token);
-        }
+        
+        SuperMap.SecurityManager.registerToken(distributedAnalystUrl, window.exampleToken);
 
         var distributedAnalysis = L.supermap.widgets.distributedAnalysis(distributedAnalystUrl);
         distributedAnalysis.addTo(map);
-        
+
 
         distributedAnalysis.on("analysissuccessed", function (e) {
             control.addOverlay(e.layer, e.name);
@@ -46,7 +44,6 @@
                 control.removeLayer(e.layers[i]);
             }
         })
-
     </script>
 </body>
 

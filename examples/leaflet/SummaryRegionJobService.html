@@ -3,209 +3,227 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_SummaryRegionJobService"></title>
     <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
-    var layer,
-        processingUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        mapURL = host + "/iserver/services/map-world/rest/maps/World",
-        token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..',
-        map = L.map('map', {
-            crs: L.CRS.EPSG4326,
-            center: [40.75, -73.95],
-            maxZoom: 18,
-            zoom: 12
-        }),
-        info = L.control({position: 'topright'});
-    L.supermap.tiledMapLayer(mapURL).addTo(map);
+    <div id="map" style="width: 100%;height:100%"></div>
+    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://114.115.213.31:8090";
+        var layer,
+            processingUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            map = L.map('map', {
+                crs: L.CRS.EPSG4326,
+                center: [40.75, -73.95],
+                maxZoom: 18,
+                zoom: 12
+            }),
+            info = L.control({
+                position: 'topright'
+            });
+        L.supermap.tiledMapLayer(mapURL).addTo(map);
 
-    info.onAdd = function () {
-        var popup = L.DomUtil.create('div');
-        popup.style.width = '498px';
-        popup.innerHTML = "<div class='panel panel-default'>" +
-            "<div class='panel-heading'>" +
-            "<h3 class='panel-title'>" + resources.title_SummaryRegionJobService + "</h3>" +
-            "</div><div class='panel-body'>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_inputData + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　　　　　</span>" +
-            "<input id='datasetName' type='text' class='form-control'value='samples_processing_newyorkZone_R'/>" +
-            "</div><p><div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_summaryType + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　　　　　</span> <div>" +
-            "<select class='form-control' id='type' name='clientType'>" +
-            "<option value='SUMMARYMESH' selected='selected'>" + resources.text_summaryMesh + "</option>" +
-            "<option value='SUMMARYREGION'>" + resources.text_summaryRegion + "</option>" +
-            "</select></div></div><p>" +
-            "<div id='meshTypeS' class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_meshSurfaceType + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　　</span>" +
-            "<select class='form-control' id='meshType' name='clientType'>" +
-            "<option value='0' selected='selected'>" + resources.text_4grid + "</option>" +
-            "<option value='1'>" + resources.text_6grid + "</option>" +
-            "</select></div><p>" +
-            "<div id='regionDatasetS'' class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_summaryDataset + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　　</span>" +
-            "<input id='regionDataset' type='text' class='form-control' value='samples_processing_newyorkZone_R'/>" +
-            "</div><p><div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_analysisRange + "</span>" +
-            "<input id='query' type='text' class='form-control' value='-74.050,40.650,-73.850,40.850'/>" +
-            "</div><p><p><div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_statisticStandardField + "</span>" +
-            "<span class='form-control'>" +
-            "<input id='standardSummaryFields' type='checkbox'>" +
-            "</span><span class='input-group-addon'>" + resources.text_statisticWeightField + "</span>" +
-            "<span class='form-control'><input id='weightedSummaryFields' type='checkbox'>" +
-            "</span></div><p><div id='standardS' style='display: none'>" +
-            "<div class='input-group'><span class='input-group-addon'>" + resources.text_statisticAttrFieldMode + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
-            "<input id='standardStatisticModes' type='text' class='form-control' value='max'/>" +
-            "</div><p><div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_AttrFieldName + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　　　　</span>" +
-            "<input id='standardFields' type='text' class='form-control' value='LocationID'/>" +
-            "</div><p></div><div id='weightS' style='display: none'>" +
-            "<div class='input-group'><span class='input-group-addon'>" + resources.text_statisticWeightFieldMode + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
-            "<input id='weightedStatisticModes' type='text' class='form-control' value='max'/>" +
-            "</div><p><div class='input-group'><span class='input-group-addon'>" + resources.text_weightFieldName + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　　　　</span>" +
-            "<input id='weightedFields' type='text' class='form-control' value='LocationID'/>" +
-            "</div><p></div><div id='resolutionS' class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_gridSize + "</span>" +
-            "<input id='resolution' type='text' class='form-control' value='100'/>" +
-            "</div><p><div id='meshSizeUnitS' class='input-group'><span class='input-group-addon'>" + resources.text_gridSizeUnit + "</span>" +
-            "<select class='form-control' id='meshSizeUnit' name='clientType'>" +
-            "<option value='Meter' selected='selected'>Meter</option>" +
-            "<option value='Kilometer'>Kilometer</option>" +
-            "<option value='Yard'>Yard</option>" +
-            "<option value='Foot'>Foot</option>" +
-            "<option value='Mile'>Mile</option>" +
-            "</select></div><p><div class='input-group'>" +
-            "<span class='input-group-addon'>" + resources.text_lengthAndArea + "</span>" +
-            "<span class='form-control'><input id='sumShape' type='checkbox' checked>" +
-            "</span></div><p><div align='right'>" +
-            "<input type='button' id='btn' class='btn btn-primary' value='" + resources.btn_summary + "'/></div></div>"
-        handleMapEvent(popup, this._map);
-        return popup;
-    };
-    info.addTo(map);
+        info.onAdd = function () {
+            var popup = L.DomUtil.create('div');
+            popup.style.width = '498px';
+            popup.innerHTML = "<div class='panel panel-default'>" +
+                "<div class='panel-heading'>" +
+                "<h3 class='panel-title'>" + resources.title_SummaryRegionJobService + "</h3>" +
+                "</div><div class='panel-body'>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_inputData + "<span title='" + resources.text_requiredField +
+                "' style='color: red;'> * </span>　　　　　</span>" +
+                "<input id='datasetName' type='text' class='form-control'value='samples_processing_newyorkZone_R'/>" +
+                "</div><p><div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_summaryType + "<span title='" + resources.text_requiredField +
+                "' style='color: red;'> * </span>　　　　　</span> <div>" +
+                "<select class='form-control' id='type' name='clientType'>" +
+                "<option value='SUMMARYMESH' selected='selected'>" + resources.text_summaryMesh + "</option>" +
+                "<option value='SUMMARYREGION'>" + resources.text_summaryRegion + "</option>" +
+                "</select></div></div><p>" +
+                "<div id='meshTypeS' class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_meshSurfaceType + "<span title='" + resources.text_requiredField +
+                "' style='color: red;'> * </span>　　</span>" +
+                "<select class='form-control' id='meshType' name='clientType'>" +
+                "<option value='0' selected='selected'>" + resources.text_4grid + "</option>" +
+                "<option value='1'>" + resources.text_6grid + "</option>" +
+                "</select></div><p>" +
+                "<div id='regionDatasetS'' class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_summaryDataset + "<span title='" + resources.text_requiredField +
+                "' style='color: red;'> * </span>　　</span>" +
+                "<input id='regionDataset' type='text' class='form-control' value='samples_processing_newyorkZone_R'/>" +
+                "</div><p><div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_analysisRange + "</span>" +
+                "<input id='query' type='text' class='form-control' value='-74.050,40.650,-73.850,40.850'/>" +
+                "</div><p><p><div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_statisticStandardField + "</span>" +
+                "<span class='form-control'>" +
+                "<input id='standardSummaryFields' type='checkbox'>" +
+                "</span><span class='input-group-addon'>" + resources.text_statisticWeightField + "</span>" +
+                "<span class='form-control'><input id='weightedSummaryFields' type='checkbox'>" +
+                "</span></div><p><div id='standardS' style='display: none'>" +
+                "<div class='input-group'><span class='input-group-addon'>" + resources.text_statisticAttrFieldMode +
+                "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
+                "<input id='standardStatisticModes' type='text' class='form-control' value='max'/>" +
+                "</div><p><div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_AttrFieldName + "<span title='" + resources.text_requiredField +
+                "' style='color: red;'> * </span>　　　　</span>" +
+                "<input id='standardFields' type='text' class='form-control' value='LocationID'/>" +
+                "</div><p></div><div id='weightS' style='display: none'>" +
+                "<div class='input-group'><span class='input-group-addon'>" + resources.text_statisticWeightFieldMode +
+                "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
+                "<input id='weightedStatisticModes' type='text' class='form-control' value='max'/>" +
+                "</div><p><div class='input-group'><span class='input-group-addon'>" + resources.text_weightFieldName +
+                "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　　　　</span>" +
+                "<input id='weightedFields' type='text' class='form-control' value='LocationID'/>" +
+                "</div><p></div><div id='resolutionS' class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_gridSize + "</span>" +
+                "<input id='resolution' type='text' class='form-control' value='100'/>" +
+                "</div><p><div id='meshSizeUnitS' class='input-group'><span class='input-group-addon'>" + resources
+                .text_gridSizeUnit + "</span>" +
+                "<select class='form-control' id='meshSizeUnit' name='clientType'>" +
+                "<option value='Meter' selected='selected'>Meter</option>" +
+                "<option value='Kilometer'>Kilometer</option>" +
+                "<option value='Yard'>Yard</option>" +
+                "<option value='Foot'>Foot</option>" +
+                "<option value='Mile'>Mile</option>" +
+                "</select></div><p><div class='input-group'>" +
+                "<span class='input-group-addon'>" + resources.text_lengthAndArea + "</span>" +
+                "<span class='form-control'><input id='sumShape' type='checkbox' checked>" +
+                "</span></div><p><div align='right'>" +
+                "<input type='button' id='btn' class='btn btn-primary' value='" + resources.btn_summary +
+                "'/></div></div>"
+            handleMapEvent(popup, this._map);
+            return popup;
+        };
+        info.addTo(map);
 
-    $("#standardSummaryFields").change(function (e) {
-        if (e.target.checked) {
-            $("#standardS").show();
-            return;
-        }
-        $("#standardS").hide();
-    });
-    $("#weightedSummaryFields").change(function (e) {
-        if (e.target.checked) {
-            $("#weightS").show();
-            return;
-        }
-        $("#weightS").hide();
-    });
-    $("#type").change(function (e) {
-        if (e.target.selectedIndex === 0) {
-            $("#meshTypeS").show();
-            $("#resolutionS").show();
-            $("#meshSizeUnitS").show();
-            $("#regionDatasetS").hide();
-            return;
-        }
-        $("#meshTypeS").hide();
-        $("#resolutionS").hide();
-        $("#meshSizeUnitS").hide();
-        $("#regionDatasetS").show();
-    });
-    var processingService = new L.supermap.processingService(processingUrl,{withCredentials:window.isLocal});
-    if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken(processingUrl, token);
-    }
-
-
-    function getQuery() {
-        if ($('#query').val() === "") {
-            return "";
-        }
-        var query = [];
-        $('#query').val().split(',').map(function (el) {
-            query.push(parseFloat(el));
-        });
-        return L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2]));
-    }
-
-    $('#btn').on('click', function () {
-        if ($('#msg_container')[0]) {
-            $('#msg_container').remove();
-        }
-        widgets.loader.showLoader();
-        if (map && layer) {
-            map.removeLayer(layer);
-        }
-        var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
-            datasetName: $('#datasetName').val(),
-            regionDataset: $('#regionDataset').val(),
-            type: $('#type option:selected').attr('value'),
-            meshType: $('#meshType option:selected').attr('value'),
-            query: getQuery(),
-            standardSummaryFields: $('#standardSummaryFields').get(0).checked,
-            weightedSummaryFields: $('#weightedSummaryFields').get(0).checked,
-            standardStatisticModes: $('#standardStatisticModes').val(),
-            standardFields: $('#standardFields').val(),
-            weightedStatisticModes: $('#weightedStatisticModes').val(),
-            weightedFields: $('#weightedFields').val(),
-            resolution: $('#resolution').val(),
-            meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
-            sumShape: $('#sumShape').get(0).checked
-        });
-        processingService.addSummaryRegionJob(summaryRegionJobParameter, function (serviceResult) {
-            if (serviceResult.error) {
-                widgets.loader.removeLoader();
-                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false, 400);
+        $("#standardSummaryFields").change(function (e) {
+            if (e.target.checked) {
+                $("#standardS").show();
                 return;
             }
-            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
-                if (info.serviceType === 'RESTMAP') {
-                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
-                        return response.json();
-                    }).then(function (result) {
-                        var mapUrl = result[0].path;
-                        layer = L.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
-                        layer.addTo(map);
-                        widgets.loader.removeLoader();
-                    });
+            $("#standardS").hide();
+        });
+        $("#weightedSummaryFields").change(function (e) {
+            if (e.target.checked) {
+                $("#weightS").show();
+                return;
+            }
+            $("#weightS").hide();
+        });
+        $("#type").change(function (e) {
+            if (e.target.selectedIndex === 0) {
+                $("#meshTypeS").show();
+                $("#resolutionS").show();
+                $("#meshSizeUnitS").show();
+                $("#regionDatasetS").hide();
+                return;
+            }
+            $("#meshTypeS").hide();
+            $("#resolutionS").hide();
+            $("#meshSizeUnitS").hide();
+            $("#regionDatasetS").show();
+        });
+        var processingService = new L.supermap.processingService(processingUrl, {
+            withCredentials: window.isLocal
+        });
+        SuperMap.SecurityManager.registerToken(processingUrl, window.exampleToken);
+
+
+        function getQuery() {
+            if ($('#query').val() === "") {
+                return "";
+            }
+            var query = [];
+            $('#query').val().split(',').map(function (el) {
+                query.push(parseFloat(el));
+            });
+            return L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2]));
+        }
+
+        $('#btn').on('click', function () {
+            if ($('#msg_container')[0]) {
+                $('#msg_container').remove();
+            }
+            widgets.loader.showLoader();
+            if (map && layer) {
+                map.removeLayer(layer);
+            }
+            var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
+                datasetName: $('#datasetName').val(),
+                regionDataset: $('#regionDataset').val(),
+                type: $('#type option:selected').attr('value'),
+                meshType: $('#meshType option:selected').attr('value'),
+                query: getQuery(),
+                standardSummaryFields: $('#standardSummaryFields').get(0).checked,
+                weightedSummaryFields: $('#weightedSummaryFields').get(0).checked,
+                standardStatisticModes: $('#standardStatisticModes').val(),
+                standardFields: $('#standardFields').val(),
+                weightedStatisticModes: $('#weightedStatisticModes').val(),
+                weightedFields: $('#weightedFields').val(),
+                resolution: $('#resolution').val(),
+                meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
+                sumShape: $('#sumShape').get(0).checked
+            });
+            processingService.addSummaryRegionJob(summaryRegionJobParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false, 400);
+                    return;
                 }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path;
+                            layer = L.supermap.tiledMapLayer(mapUrl, {
+                                noWrap: true,
+                                transparent: true
+                            });
+                            layer.addTo(map);
+                            widgets.loader.removeLoader();
+                        });
+                    }
+                });
             });
         });
-    });
 
-    function handleMapEvent(div, map) {
-        if (!div || !map) {
-            return;
+        function handleMapEvent(div, map) {
+            if (!div || !map) {
+                return;
+            }
+            div.addEventListener('mouseover', function () {
+                map.dragging.disable();
+                map.scrollWheelZoom.disable();
+                map.doubleClickZoom.disable();
+            });
+            div.addEventListener('mouseout', function () {
+                map.dragging.enable();
+                map.scrollWheelZoom.enable();
+                map.doubleClickZoom.enable();
+            });
+            $("#model").on('shown.bs.modal', function () {
+                map.dragging.disable();
+                map.scrollWheelZoom.disable();
+                map.doubleClickZoom.disable();
+            });
+            $("#model").on('hidden.bs.modal', function () {
+                map.dragging.enable();
+                map.scrollWheelZoom.enable();
+                map.doubleClickZoom.enable();
+            })
         }
-        div.addEventListener('mouseover', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        div.addEventListener('mouseout', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        });
-        $("#model").on('shown.bs.modal', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        });
-        $("#model").on('hidden.bs.modal', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        })
-    }
-</script>
+    </script>
 </body>
+
 </html>
