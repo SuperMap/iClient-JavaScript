@@ -9,6 +9,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
 /**
  * @class L.supermap.widgets.dataFlowViewModel
  * @classdesc 数据流微件功能类。
+ * @version 9.1.1
  * @category Widgets DataFlow
  * @param {L.Map} map - 当前微件所在的底图
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。

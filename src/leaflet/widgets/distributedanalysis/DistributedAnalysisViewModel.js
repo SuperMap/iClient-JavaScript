@@ -9,6 +9,7 @@ import { ProcessingService } from '../../services/ProcessingService'
 /**
  * @class L.supermap.widgets.distributedAnalysisViewModel
  * @classdesc 分布式分析微件功能类。
+ * @version 9.1.1
  * @category Widgets DistributedAnalysis
  * @param {string} processingUrl - 分布式分析地址。
  * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetsloaded

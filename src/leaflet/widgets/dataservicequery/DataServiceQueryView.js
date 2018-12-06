@@ -19,6 +19,7 @@ import {
 /**
  * @class L.supermap.widgets.dataServiceQuery
  * @classdesc 数据服务查询微件。
+ * @version 9.1.1
  * @param {string} dataServiceUrl - 数据服务地址。
  * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries"。
  * @param {Object.<Array>} options - 可选参数。

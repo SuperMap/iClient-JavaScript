@@ -7,6 +7,7 @@ import { ChartModel } from "./ChartModel";
 /**
  * @class SuperMap.Widgets.ChartViewModel
  * @classdesc 图表微件功能类
+ * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
  * @param {Object} options.datasets - 数据来源。

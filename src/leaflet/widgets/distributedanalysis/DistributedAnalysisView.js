@@ -9,6 +9,7 @@ import { CommonContainer, DropDownBox, Select, MessageBox, Lang, KernelDensityJo
 /**
  * @class L.supermap.widgets.distributedAnalysis
  * @classdesc 分布式分析微件。
+ * @version 9.1.1
  * @param {string} processingUrl - 分布式分析服务地址。
  * @param {Object} options - 可选参数。
  * @param {function} options.style - 设置图层点线面默认样式，点 样式返回 maker 或者 circleMaker;线和面返回 L.path 样式。

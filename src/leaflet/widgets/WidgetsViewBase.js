@@ -7,6 +7,7 @@ import '../core/Base';
 /**
  * @class WidgetsViewBase
  * @classdesc lealfet 微件基类
+ * @version 9.1.1
  * @param {Object} options - 参数。
  * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括: 'topleft', 'topright', 'bottomleft' 和 'bottomright'，默认为'topright'。
  * @param {function} options.style - 设置图层点线面默认样式，点 样式返回 maker 或者 circleMaker;线和面返回 L.path 样式。

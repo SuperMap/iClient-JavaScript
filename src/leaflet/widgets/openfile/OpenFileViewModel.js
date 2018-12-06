@@ -13,6 +13,7 @@ import {
 /**
  * @class L.supermap.widgets.openFileViewModel
  * @classdesc 打开本地文件微件功能类。
+ * @version 9.1.1
  * @category Widgets OpenFile
  * @param {L.Map} map - leaflet map 对象。
  * @fires L.supermap.widgets.openFileViewModel#filesizeexceed

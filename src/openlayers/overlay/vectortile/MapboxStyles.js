@@ -174,6 +174,7 @@ export class MapboxStyles extends ol.Observable {
     }
     /**
      * @function ol.supermap.MapboxStyles.prototype.setStyle
+     * @version 9.1.1
      * @description 设置 Mapbox style 对象。
      * @param {Object} style - Mapbox style 对象。
      */

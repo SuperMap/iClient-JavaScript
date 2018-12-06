@@ -8,6 +8,7 @@ import '../../core/Base';
 /**
  * @class L.supermap.widgets.clientComputationLayer
  * @classdesc 客户端计算图层对象。
+ * @version 9.1.1
  * @param {Object} layerObject -  图层对象。
  * @param {string} layerObject.layerName -  图层名。
  * @param {L.GeoJSON} layerObject.layer -  图层。

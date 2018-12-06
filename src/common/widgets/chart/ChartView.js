@@ -6,8 +6,9 @@ import echarts from "echarts";
 import { ChartViewModel } from "./ChartViewModel";
 
 /**
- * @class SuperMap.Widgets.ChartView
+ * @class SuperMap.Widgets.Chart
  * @classdesc 图表微件
+ * @version 9.1.1
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
@@ -32,7 +33,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.onAdd
+     * @function SuperMap.Widgets.Chart.prototype.onAdd
      * @description 创建图表之后成功回调
      * @param {function} addChart - 回调函数
      */
@@ -41,7 +42,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype._fillDataToView
+     * @function SuperMap.Widgets.Chart.prototype._fillDataToView
      * @description 填充数据到 view。
      * @private
      */
@@ -51,7 +52,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.getStyle
+     * @function SuperMap.Widgets.Chart.prototype.getStyle
      * @description 获取图表样式。
      */
     getStyle() {
@@ -59,7 +60,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.getFeatures
+     * @function SuperMap.Widgets.Chart.prototype.getFeatures
      * @description 获取地图服务，数据服务请求返回的数据。
      */
     getFeatures() {
@@ -67,7 +68,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.setStyle
+     * @function SuperMap.Widgets.Chart.prototype.setStyle
      * @description 设置图表样式。
      * @param {Object} style - 图表样式 参考Echarts-options样式设置
      */
@@ -77,7 +78,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.changeType
+     * @function SuperMap.Widgets.Chart.prototype.changeType
      * @description 改变图表类型
      * @param {string} type - 图表类型
      */
@@ -88,7 +89,7 @@ export class ChartView {
     }
     
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.updateData
+     * @function SuperMap.Widgets.Chart.prototype.updateData
      * @description 更新图表数据
      * @param {string} url - 数据源地址
      * @param {Object} queryInfo - 查询条件
@@ -105,7 +106,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype._createChart
+     * @function SuperMap.Widgets.Chart.prototype._createChart
      * @description 创建图表
      * @private
      * @param {Object} data - 图表数据
@@ -124,7 +125,7 @@ export class ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype._updateChart
+     * @function SuperMap.Widgets.Chart.prototype._updateChart
      * @description 更新图表
      * @private
      * @param {Object} options - 图表参数

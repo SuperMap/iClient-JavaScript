@@ -16,6 +16,7 @@ import {
 /**
  * @class L.supermap.widgets.searchViewModel
  * @classdesc 图层查询微件功能类。
+ * @version 9.1.1
  * @category Widgets Search
  * @param {Object} options - 可选参
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应。

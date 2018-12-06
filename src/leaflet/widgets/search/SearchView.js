@@ -25,6 +25,7 @@ import {
  * @class L.supermap.widgets.search
  * @classdesc 图层查询微件。
  * @category Widgets Search
+ * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} [options.position='topright'] - 控件位置，继承自 leaflet control。
  * @param {string} [options.addressUrl] - 配置地址匹配服务。

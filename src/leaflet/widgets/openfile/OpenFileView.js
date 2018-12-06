@@ -9,6 +9,7 @@ import {MessageBox, Lang} from '@supermap/iclient-common';
 /**
  * @class L.supermap.widgets.openFile
  * @classdesc 打开文件微件，用于打开本地数据文件并加载到底图
+ * @version 9.1.1
  * @category Widgets OpenFile
  * @fires L.supermap.widgets.openFile#openfilesuccess
  */

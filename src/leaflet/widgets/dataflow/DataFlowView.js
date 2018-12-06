@@ -9,6 +9,7 @@ import {DataFlowViewModel} from './DataFlowViewModel';
 /**
  * @class L.supermap.widgets.dataFlow
  * @classdesc 数据流微件。
+ * @version 9.1.1
  * @category Widgets DataFlow
  * @param {Object} options - 可选参数
  * @param {string} [options.position="topright"] - 控件所在位置，包括 'topleft', 'topright', 'bottomleft' or 'bottomright'
