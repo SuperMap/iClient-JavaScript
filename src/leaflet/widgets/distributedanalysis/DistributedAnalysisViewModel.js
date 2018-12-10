@@ -15,6 +15,7 @@ import { ProcessingService } from '../../services/ProcessingService'
  * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetsloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetinfoloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
+ * @fires L.supermap.widgets.distributedAnalysisViewModel#analysissucceed
  * @fires L.supermap.widgets.distributedAnalysisViewModel#layerloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#layersremoved
  */
@@ -34,13 +35,13 @@ export class DistributedAnalysisViewModel extends L.Evented {
         this.distributedAnalysisModel = new DistributedAnalysisModel(processingUrl);
         this.distributedAnalysisModel.getDatasetsName();
         let me = this;
-        this.distributedAnalysisModel.on('datasetsloaded', function(e){
+        this.distributedAnalysisModel.on('datasetsloaded', function (e) {
             /**
              * @event L.supermap.widgets.distributedAnalysisViewModel#datasetsloaded
              * @description 数据集获取完成之后触发。
              * @property {Object} result - 数据集数据。
-             */ 
-            me.fire('datasetsloaded', {'result': e.result});
+             */
+            me.fire('datasetsloaded', { 'result': e.result });
         })
     }
 
@@ -49,21 +50,21 @@ export class DistributedAnalysisViewModel extends L.Evented {
      * @description 获得数据集类型与 fields。
      * @param {string} datasetUrl - 数据集资源地址。
      */
-    getDatasetInfo(datasetUrl){
+    getDatasetInfo(datasetUrl) {
         // 判断数据集类型
         this.distributedAnalysisModel.getDatasetInfo(datasetUrl);
         let me = this;
-        this.distributedAnalysisModel.on('datasetinfoloaded', function(e){
+        this.distributedAnalysisModel.on('datasetinfoloaded', function (e) {
             let type = e.result.type;
             let fields = e.result.fields;
-             /**
-             * @event L.supermap.widgets.distributedAnalysisViewModel#datasetinfoloaded
-             * @description 数据集类型与字段获取完成之后触发。
-             * @property {Object} result - 数据集数据。
-             * @property {string} result.type - 数据集类型。
-             * @property {Array.<string>} result.fields - 数据集所含有的字段。
-             */ 
-            me.fire('datasetinfoloaded', {'result': {'type': type, 'fields': fields}})
+            /**
+            * @event L.supermap.widgets.distributedAnalysisViewModel#datasetinfoloaded
+            * @description 数据集类型与字段获取完成之后触发。
+            * @property {Object} result - 数据集数据。
+            * @property {string} result.type - 数据集类型。
+            * @property {Array.<string>} result.fields - 数据集所含有的字段。
+            */
+            me.fire('datasetinfoloaded', { 'result': { 'type': type, 'fields': fields } })
         })
     }
 
@@ -75,12 +76,12 @@ export class DistributedAnalysisViewModel extends L.Evented {
      * @param {string} [params.resultLayerName] - 结果图层名称。
      * @param {L.Map} map - leaflet Map 对象。
      */
-    analysis(params, map){
+    analysis(params, map) {
         let processingService = new ProcessingService(this.processingUrl);
-        if(params.analysisParam instanceof KernelDensityJobParameter){
+        if (params.analysisParam instanceof KernelDensityJobParameter) {
             let kernelDensityJobParameter = params.analysisParam
             let me = this;
-            processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult){
+            processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
                 if (serviceResult.error) {
                     /**
                      * @event L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
@@ -95,7 +96,12 @@ export class DistributedAnalysisViewModel extends L.Evented {
                             return response.json();
                         }).then(function (result) {
                             let mapUrl = result[0].path;
-                            let layer = L.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
+                            /**
+                             * @event L.supermap.widgets.distributedAnalysisViewModel#analysissucceed
+                             * @description 分析成功后服务器返回的数据。
+                             */
+                            me.fire('analysissucceed', { 'result': result });
+                            let layer = L.supermap.tiledMapLayer(mapUrl, { noWrap: true, transparent: true });
                             me.resultLayers.push(layer);
                             layer.addTo(map);
                             /**
@@ -106,14 +112,14 @@ export class DistributedAnalysisViewModel extends L.Evented {
                              */
                             let date = new Date();
                             let resultLayerName = params.resultLayerName || date.getTime();
-                            me.fire('layerloaded', {'layer': layer, 'name': resultLayerName})
+                            me.fire('layerloaded', { 'layer': layer, 'name': resultLayerName })
                         });
                     }
                     return info;
                 });
             })
         }
-        
+
     }
     /**
      * @function L.supermap.widgets.distributedAnalysisViewModel.prototype.clearLayers
@@ -131,7 +137,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
         this.fire('layersremoved', { 'layers': this.resultLayers });
         this.resultLayers = [];
     }
-    
+
 }
 export var distributedAnalysisViewModel = function (options) {
     return new DistributedAnalysisViewModel(options);

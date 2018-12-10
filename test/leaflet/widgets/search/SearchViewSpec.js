@@ -135,7 +135,7 @@ describe('leaflet_search_SearchView', () => {
     it('search:searchFromLayer', (done) => {
 
         expect(poiSearch.viewModel.dataModel.layers).not.toBeUndefined();
-        poiSearch.viewModel.on('searchlayersucceed', function (e) {
+        poiSearch.viewModel.on('searchsucceed', function (e) {
             try {
                 expect(e.result[0].feature).not.toBeNull();
                 expect(e.result[0].feature).not.toBeUndefined();

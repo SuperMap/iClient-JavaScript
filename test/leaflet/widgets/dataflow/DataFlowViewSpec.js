@@ -71,7 +71,7 @@ describe('leaflet_dataflow_DataFlowView', () => {
     });
 
     it('subscribe', (done) => {
-            dataView.viewModel.on('subscribesuccessed', (e) => {
+            dataView.viewModel.on('subscribesucceed', (e) => {
                 try {
                     expect(e.result.currentTarget.url).toBe(urlDataFlow+"/subscribe");
                     done();

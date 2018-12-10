@@ -11,9 +11,9 @@ import {DataFlowViewModel} from './DataFlowViewModel';
  * @classdesc 数据流微件。
  * @version 9.1.1
  * @category Widgets DataFlow
- * @param {Object} options - 可选参数
- * @param {string} [options.position="topright"] - 控件所在位置，包括 'topleft', 'topright', 'bottomleft' or 'bottomright'
- * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
+ * @param {Object} options - 可选参数。
+ * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {Function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。<br>
  `function (feature) {
                                                     return {
                                                         fillColor: "red",
@@ -22,7 +22,7 @@ import {DataFlowViewModel} from './DataFlowViewModel';
                                                         weight: 0
                                                     };
                                             }`
- * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
+ * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataFlow#dataupdated
  */
 export var DataFlowView = WidgetsViewBase.extend({
@@ -151,17 +151,17 @@ export var DataFlowView = WidgetsViewBase.extend({
         //增加提示框：
         this.messageBox = new MessageBox();
 
-        this.viewModel.on("dataflowfervicefubscribed", () => {
+        this.viewModel.on("dataflowservicesubscribed", () => {
             this.messageBox.showView("已订阅该数据流服务。");
         });
 
-        this.viewModel.on("subscribesuccessed", () => {
+        this.viewModel.on("subscribesucceed", () => {
             this.messageBox.showView("数据流服务订阅成功。");
         });
 
         /**
          * @event L.supermap.widgets.dataFlow#dataupdated
-         * @description 数据流服务成功返回数据后触发
+         * @description 数据流服务成功返回数据后触发。
          * @property {Object} result  - 事件返回的数据对象。
          */
         this.viewModel.on("dataupdated", (result) => {

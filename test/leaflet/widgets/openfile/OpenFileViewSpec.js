@@ -148,7 +148,7 @@ describe('leaflet_openfile_OpenFileView', () => {
 
         var openFile = L.supermap.widgets.openFile().addTo(map).setPosition('bottomleft');
 
-        openFile.viewModel.on('openfilesuccess', function (e) {
+        openFile.viewModel.on('openfilesucced', function (e) {
             try {
                 expect(e.result.features.length).toBe(2);
                 done();

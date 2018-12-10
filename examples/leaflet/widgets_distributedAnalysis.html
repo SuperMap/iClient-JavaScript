@@ -36,7 +36,7 @@
         distributedAnalysis.addTo(map);
 
 
-        distributedAnalysis.on("analysissuccessed", function (e) {
+        distributedAnalysis.on("analysissucceed", function (e) {
             control.addOverlay(e.layer, e.name);
         })
         distributedAnalysis.on("layersremoved", function (e) {

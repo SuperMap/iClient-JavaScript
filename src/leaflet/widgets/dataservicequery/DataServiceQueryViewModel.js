@@ -12,10 +12,9 @@ import { GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesByBo
  * @version 9.1.1
  * @category Widgets DataServiceQuery
  * @param {string} dataserviceUrl - 数据服务地址。
+ * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceed
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfaild
- * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessuccessed
  */
-
 export class DataServiceQueryViewModel extends L.Evented {
 
     initialize(dataserviceUrl) {
@@ -83,11 +82,11 @@ export class DataServiceQueryViewModel extends L.Evented {
         }).addTo(map);
         this.resultLayers.push(resultLayer);
         /**
-         * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturessuccessed
+         * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceed
          * @description features 获取成功时触发。
          * @property {Object} result - 服务器返回的结果。
          */
-        this.fire('getfeaturessuccessed', { 'result': serviceResult.result.features })
+        this.fire('getfeaturessucceed', { 'result': serviceResult.result.features })
     }
 
     /**

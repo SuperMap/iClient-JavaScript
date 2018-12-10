@@ -18,8 +18,8 @@ import {
  * @param {L.Map} map - leaflet map 对象。
  * @fires L.supermap.widgets.openFileViewModel#filesizeexceed
  * @fires L.supermap.widgets.openFileViewModel#errorfileformat
- * @fires L.supermap.widgets.openFileViewModel#openfilesuccess
- * @fires L.supermap.widgets.openFileViewModel#openfilefail
+ * @fires L.supermap.widgets.openFileViewModel#openfilesucced
+ * @fires L.supermap.widgets.openFileViewModel#openfilefaild
  */
 export var OpenFileViewModel = L.Evented.extend({
     initialize() {
@@ -28,8 +28,8 @@ export var OpenFileViewModel = L.Evented.extend({
 
     /**
      * @function L.supermap.widgets.openFileViewModel.prototype.readFile
-     * @description 选中文件并加载到底图
-     * @param {Object} fileEventObject - 通过文件选择框打开的本地文件对象
+     * @description 选中文件并加载到底图。
+     * @param {Object} fileEventObject - 通过文件选择框打开的本地文件对象。
      */
     readFile(fileEventObject) {
         let inputDom = fileEventObject.target;
@@ -80,7 +80,7 @@ export var OpenFileViewModel = L.Evented.extend({
 
     /**
      * @function L.supermap.widgets.openFileViewModel.prototype._readData
-     * @description 数据文件中的数据
+     * @description 数据文件中的数据。
      * @private
      */
     _readData() {
@@ -95,27 +95,27 @@ export var OpenFileViewModel = L.Evented.extend({
             FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
                 if (geojson) {
                     /**
-                     * @event L.supermap.widgets.openFileViewModel#openfilesuccess
+                     * @event L.supermap.widgets.openFileViewModel#openfilesucced
                      * @description 打开文件成功。
                      * @property {GeoJSONObject} result - GeoJSON 格式数据。
                      * @property {string} layerName - 图层名。
                      */
-                    this.fire("openfilesuccess", {
+                    this.fire("openfilesucced", {
                         result: geojson,
                         layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
                     });
                 }
             }, (e) => {
-                me.fire("openfilefail", {messageType: "failure", message: e.errorMassage});
+                me.fire("openfilefaild", {messageType: "failure", message: e.errorMassage});
             }, this);
         }, () => {
             /**
-             * @event L.supermap.widgets.openFileViewModel#openfilefail
+             * @event L.supermap.widgets.openFileViewModel#openfilefaild
              * @description 打开文件失败。
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            me.fire("openfilefail", {messageType: "failure", message: Lang.i18n('msg_openFileFail')});
+            me.fire("openfilefaild", {messageType: "failure", message: Lang.i18n('msg_openFileFail')});
         }, this);
     }
 

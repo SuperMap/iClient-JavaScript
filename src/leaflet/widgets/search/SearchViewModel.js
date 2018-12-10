@@ -21,8 +21,8 @@ import {
  * @param {Object} options - 可选参
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应。
  * @fires L.supermap.widgets.searchViewModel#newlayeradded
- * @fires L.supermap.widgets.searchViewModel#searchlayersucceed
- * @fires L.supermap.widgets.searchViewModel#searchfield
+ * @fires L.supermap.widgets.searchViewModel#searchsucceed
+ * @fires L.supermap.widgets.searchViewModel#searchfaild
  * @fires L.supermap.widgets.searchViewModel#geocodesucceed
  */
 export var SearchViewModel = L.Evented.extend({
@@ -88,20 +88,20 @@ export var SearchViewModel = L.Evented.extend({
             let resultFeatures = this.dataModel.layers[searchLayerName].getFeaturesByKeyWord(keyWord);
             if (resultFeatures && resultFeatures.length > 0) {
                 /**
-                 * @event L.supermap.widgets.searchViewModel#searchlayersucceed
+                 * @event L.supermap.widgets.searchViewModel#searchsucceed
                  * @description 图层属性查询成功后触发。
                  * @property {Object} result - 图层数据。
                  */
-                this.fire("searchlayersucceed", {
+                this.fire("searchsucceed", {
                     result: resultFeatures
                 });
             } else {
                 /**
-                 * @event L.supermap.widgets.searchViewModel#searchfield
+                 * @event L.supermap.widgets.searchViewModel#searchfaild
                  * @description 图层属性查询失败后触发。
                  * @property {string} searchType - 图层属性查询状态。
                  */
-                this.fire("searchfield", {
+                this.fire("searchfaild", {
                     searchType: "searchLayersField"
                 });
             }
@@ -130,7 +130,7 @@ export var SearchViewModel = L.Evented.extend({
             this.geoCodeService.code(this.geoCodeParam, (geocodingResult) => {
                 if (geocodingResult.result) {
                     if (geocodingResult.result.error || geocodingResult.result.length === 0) {
-                        self.fire("searchfield", {
+                        self.fire("searchfaild", {
                             searchType: "searchGeocodeField"
                         });
                         return;
@@ -190,7 +190,7 @@ export var SearchViewModel = L.Evented.extend({
                 const center = L.latLng(geocodingResult.result[0].location.y, geocodingResult.result[0].location.x);
                 self.map.setView(center, 8);
             } else {
-                self.fire("searchfield", {
+                self.fire("searchfaild", {
                     searchType: "cityGeocodeField"
                 });
             }

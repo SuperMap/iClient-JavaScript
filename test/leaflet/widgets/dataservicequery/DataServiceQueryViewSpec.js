@@ -34,7 +34,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         serviceResult = null;
     });
     afterEach(() => {
-        dataServiceQuery.off("getfeaturessuccessed");
+        dataServiceQuery.off("getfeaturessucceed");
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(() => {
@@ -53,7 +53,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             return Promise.resolve();
         });
 
-        dataServiceQuery.on('getfeaturessuccessed', (e) => {
+        dataServiceQuery.on('getfeaturessucceed', (e) => {
             serviceResult = e.result;
             try {
                 expect(serviceResult).not.toBeNull();
@@ -87,7 +87,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             return Promise.resolve();
         });
 
-        dataServiceQuery.on('getfeaturessuccessed', (e) => {
+        dataServiceQuery.on('getfeaturessucceed', (e) => {
             serviceResult = e.result;
             try {
                 expect(serviceResult).not.toBeNull();
@@ -130,7 +130,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             return Promise.resolve();
         });
 
-        dataServiceQuery.on('getfeaturessuccessed', (e) => {
+        dataServiceQuery.on('getfeaturessucceed', (e) => {
             serviceResult = e.result;
             try {
                 expect(serviceResult).not.toBeNull();
@@ -171,7 +171,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             return Promise.resolve();
         });
 
-        dataServiceQuery.on('getfeaturessuccessed', (e) => {
+        dataServiceQuery.on('getfeaturessucceed', (e) => {
 
             serviceResult = e.result;
             if (serviceResult.error) {
@@ -215,7 +215,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             return Promise.resolve();
         });
 
-        dataServiceQuery.on('getfeaturessuccessed', (e) => {
+        dataServiceQuery.on('getfeaturessucceed', (e) => {
             serviceResult = e.result;
             try {
                 expect(serviceResult).not.toBeNull();

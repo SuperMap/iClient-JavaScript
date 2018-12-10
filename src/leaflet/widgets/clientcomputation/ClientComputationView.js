@@ -2,9 +2,9 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-import {WidgetsViewBase} from '../WidgetsViewBase';
-import {ClientComputationViewModel} from "./ClientComputationViewModel";
-import {CommonContainer, DropDownBox, Select, MessageBox, Lang} from '@supermap/iclient-common';
+import { WidgetsViewBase } from '../WidgetsViewBase';
+import { ClientComputationViewModel } from "./ClientComputationViewModel";
+import { CommonContainer, DropDownBox, Select, MessageBox, Lang } from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.clientComputation
@@ -12,8 +12,12 @@ import {CommonContainer, DropDownBox, Select, MessageBox, Lang} from '@supermap/
  * @version 9.1.1
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @param {Object} options - 可选参数。
- * @param {function} options.style - 设置图层点线面默认样式，点 样式返回 maker 或者 circleMaker;线和面返回 L.path 样式。
- * @param {function} options.onEachFeature - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
+ * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
+ * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
+ * @fires L.supermap.widgets.clientComputation#analysissucceed
+ * @fires L.supermap.widgets.clientComputation#analysisfailed
+ * @fires L.supermap.widgets.clientComputation#layersremoved
  * @category Widgets ClientComputation
  */
 export var ClientComputationView = WidgetsViewBase.extend({
@@ -125,7 +129,7 @@ export var ClientComputationView = WidgetsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.widgets.clientComputation.prototype._initOpenFileView
+     * @function L.supermap.widgets.clientComputation.prototype._initView
      * @description 创建客户端计算微件。
      * @returns {HTMLElement}
      * @private
@@ -135,7 +139,7 @@ export var ClientComputationView = WidgetsViewBase.extend({
         this.workerUrl && ~~(this.viewModel = new ClientComputationViewModel(this.workerUrl));
         //初始化 view
         // Container
-        let container = (new CommonContainer({title: Lang.i18n('title_clientComputing')})).getElement();
+        let container = (new CommonContainer({ title: Lang.i18n('title_clientComputing') })).getElement();
         container.classList.add('widget-analysis');
         container.children[0].style.fontSize = '12px';
         let analysisOptionsArr = [{
@@ -307,7 +311,6 @@ export var ClientComputationView = WidgetsViewBase.extend({
         analysisCancelBtn.innerHTML = Lang.i18n('btn_cancelAnalysis');
         let deleteLayersBtn = L.DomUtil.create('button', 'widget-analysis__analysisbtn--analysis widget-analysis__analysisbtn--deletelayers', runBtn);
         deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheAnalysisLayer');
-        let me = this;
 
         for (let i = 0; i < dropDownItems.children.length; i++) {
             // 点击何种分析类型 判断使用图层数据
@@ -484,27 +487,47 @@ export var ClientComputationView = WidgetsViewBase.extend({
                     params = getBufferAnalysisParams();
                     break;
             }
-            me.viewModel.analysis(params, me.map);
-            me.viewModel.on('layerloaded', function () {
+            this.viewModel.analysis(params, this.map);
+            this.viewModel.on('layerloaded', function (e) {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
+                /**
+                 * @event L.supermap.widgets.clientComputation#analysissucceed
+                 * @description 分析完成之后触发。
+                 * @property {L.GeoJSON} layer - 加载完成后的结果图层。
+                 * @property {string} name - 加载完成后的结果图层名称。
+                 */
+                this._event.fire('analysissucceed', { "layer": e.layer, "name": e.name })
             });
             // 若分析的结果为空
-            me.viewModel.on('analysisfailed', function () {
+            this.viewModel.on('analysisfailed', function () {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
-                me.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
+                this.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
+                /**
+                 * @event L.supermap.widgets.clientComputation#analysisfailed
+                 * @description 分析失败之后触发。
+                 */
+                this._event.fire('analysisfailed')
             })
         }
         // 取消按钮点击事件
         analysisCancelBtn.onclick = () => {
             analysingContainer.style.display = 'none';
             analysisBtn.style.display = 'block';
-            me.viewModel.cancelAnalysis()
+            this.viewModel.cancelAnalysis()
         }
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
-            me.viewModel.clearLayers();
+            /**
+             * @event L.supermap.widgets.clientComputation#layersremoved
+             * @description 结果图层删除后触发。
+             * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
+             */
+            this.viewModel.on('layersremoved', (e) => {
+                this._event.fire('layersremoved', { 'layers': e.layers });
+            })
+            this.viewModel.clearLayers();
         }
 
         // 获取分析数据

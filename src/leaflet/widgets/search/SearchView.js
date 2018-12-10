@@ -27,16 +27,17 @@ import {
  * @category Widgets Search
  * @version 9.1.1
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 控件位置，继承自 leaflet control。
  * @param {string} [options.addressUrl] - 配置地址匹配服务。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
  *                                    配置两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或 ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
  * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能
- * @param {function} options.style - 设置图层点线面默认样式，点 样式返回 maker 或者 circleMaker;线和面返回 L.path 样式。
- * @param {function} options.onEachFeature - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
+ * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
+ * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
  * @fires L.supermap.widgets.search#searchsucceed
+ * @fires L.supermap.widgets.search#searchfaild
  */
 export var SearchView = WidgetsViewBase.extend({
     options: {
@@ -57,7 +58,7 @@ export var SearchView = WidgetsViewBase.extend({
     /*------以下是一些接口-----*/
     /**
      * @function L.supermap.widgets.search.prototype.onAdd
-     * @description 向底图添加微件
+     * @description 向底图添加微件。
      * @private
      * @override
      */
@@ -68,8 +69,8 @@ export var SearchView = WidgetsViewBase.extend({
     },
     /**
      * @function L.supermap.widgets.search.prototype.addSearchLayer
-     * @description 添加可查询的图层
-     * @param {Array.<L.GeoJSON>|L.GeoJSON} layers - 可查询的图层
+     * @description 添加可查询的图层。
+     * @param {Array.<L.GeoJSON>|L.GeoJSON} layers - 可查询的图层。
      */
     addSearchLayer(layers) {
         //将可查询图层数据传入vm处理
@@ -360,7 +361,7 @@ export var SearchView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.search.prototype._createSearchLayerItem
-     * @description 创建查询图层选项：
+     * @description 创建查询图层选项。
      * @private
      */
     _createSearchLayerItem(layerName) {
@@ -393,7 +394,7 @@ export var SearchView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.search.prototype._createResultItem
-     * @description 创建查询结果列表
+     * @description 创建查询结果列表。
      * @private
      */
     _createResultItem(featureType, properties) {
@@ -439,7 +440,7 @@ export var SearchView = WidgetsViewBase.extend({
     /*----------对 VM 的一些事件监听 ----------*/
     /**
      * @function L.supermap.widgets.search.prototype._addViewModelListener
-     * @description 绑定对 VM 的事件监听
+     * @description 绑定对 VM 的事件监听。
      * @private
      */
     _addViewModelListener() {
@@ -456,7 +457,7 @@ export var SearchView = WidgetsViewBase.extend({
         });
 
         //----图层查询结果监听
-        this.viewModel.on("searchlayersucceed", (e) => {
+        this.viewModel.on("searchsucceed", (e) => {
             const data = e.result;
             this.clearSearchResult();
             this.searchResultLayer = L.featureGroup(data, {
@@ -492,16 +493,14 @@ export var SearchView = WidgetsViewBase.extend({
             this._prepareResultData(data);
             /**
              * @event L.supermap.widgets.search#searchsucceed
-             * @description 数据流服务成功返回数据后触发
+             * @description 数据流服务成功返回数据后触发。
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("searchsucceed", {
-                result: data
-            });
+            this._event.fire("searchsucceed", { result: data });
         });
 
         //----地址匹配或图层查询失败监听
-        this.viewModel.on("searchfield", (e) => {
+        this.viewModel.on("searchfaild", (e) => {
             let message = "";
             if (e.searchType === "searchGeocodeField") {
                 message = "未匹配到地址匹配服务数据！";
@@ -511,14 +510,20 @@ export var SearchView = WidgetsViewBase.extend({
                 message = "未查找到相关矢量要素！";
             }
             this.messageBox.showView(message)
+            /**
+            * @event L.supermap.widgets.search#searchfaild
+            * @description 图层属性查询失败后触发。
+            * @property {string} message - 失败原因。
+            */
+            this._event.fire("searchfaild", { message: message });
         });
     },
 
     /*-------以下是一些辅助性功能函数 -------*/
     /**
      * @function L.supermap.widgets.search.prototype._prepareResultData
-     * @description 准备需要填入结果展示页面里的数据
-     * @param {Array.<Feature>} data - 图层查询或地址匹配返回的要素数据数组
+     * @description 准备需要填入结果展示页面里的数据。
+     * @param {Array.<Feature>} data - 图层查询或地址匹配返回的要素数据数组。
      * @private
      */
     _prepareResultData(data) {
@@ -541,9 +546,9 @@ export var SearchView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.search.prototype._createResultListByPageNum
-     * @description 根据页面值填充内容
-     * @param {number} page - 页数
-     * @param {Array.<Feature>} data - 图层查询或地址匹配返回的要素数据数组
+     * @description 根据页面值填充内容。
+     * @param {number} page - 页数。
+     * @param {Array.<Feature>} data - 图层查询或地址匹配返回的要素数据数组。
      * @private
      */
     _createResultListByPageNum(page, data) {
@@ -584,8 +589,8 @@ export var SearchView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.search.prototype._flyToBounds
-     * @param {L.Bounds} bounds - 当前图层范围
-     * @description 移动到图层
+     * @param {L.Bounds} bounds - 当前图层范围。
+     * @description 移动到图层。
      * @private
      */
     _flyToBounds(bounds) {
@@ -601,7 +606,7 @@ export var SearchView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.search.prototype._linkageFeature
-     * @description 点击结果列表联动地图上要素响应
+     * @description 点击结果列表联动地图上要素响应。
      * @private
      */
     _linkageFeature(filter) {
@@ -636,7 +641,7 @@ export var SearchView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.search.prototype.clearSearchResult
-     * @description 清空当前查询的结果等
+     * @description 清空当前查询的结果等。
      */
     clearSearchResult() {
         if (this.searchResultLayer) {
@@ -656,8 +661,8 @@ export var SearchView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.search.prototype._setSelectedLayerStyle
-     * @description 设置图层选中样式
-     * @param {L.layer} layer - 需要设置选中样式的图层
+     * @description 设置图层选中样式。
+     * @param {L.layer} layer - 需要设置选中样式的图层。
      * @private
      */
     _setSelectedLayerStyle(layer) {
@@ -690,8 +695,8 @@ export var SearchView = WidgetsViewBase.extend({
                 attributes: layer.feature.properties
             })).getElement()
         }, {
-            closeOnClick: false
-        }).openPopup().addTo(this.map);
+                closeOnClick: false
+            }).openPopup().addTo(this.map);
 
     }
 });

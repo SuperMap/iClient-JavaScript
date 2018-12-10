@@ -85,11 +85,11 @@ export class DataFlowService extends ServiceBase {
         var me = this;
         me.on('subscribeSocketConnected', function (e) {
             /**
-             * @event mapboxgl.supermap.DataFlowService#subscribeSuccessed
+             * @event mapboxgl.supermap.DataFlowService#subscribesucceed
              * @description 数据流服务订阅成功后触发。
              * @property {Object} e - 事件对象。
              */
-            me.fire('subscribeSuccessed', e);
+            me.fire('subscribesucceed', e);
         })
 
     }
