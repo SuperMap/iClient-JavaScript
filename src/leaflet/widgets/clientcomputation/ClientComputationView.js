@@ -488,7 +488,7 @@ export var ClientComputationView = WidgetsViewBase.extend({
                     break;
             }
             this.viewModel.analysis(params, this.map);
-            this.viewModel.on('layerloaded', function (e) {
+            this.viewModel.on('layerloaded',  (e)=> {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 /**
@@ -500,7 +500,7 @@ export var ClientComputationView = WidgetsViewBase.extend({
                 this._event.fire('analysissucceed', { "layer": e.layer, "name": e.name })
             });
             // 若分析的结果为空
-            this.viewModel.on('analysisfailed', function () {
+            this.viewModel.on('analysisfailed', ()=> {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 this.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
