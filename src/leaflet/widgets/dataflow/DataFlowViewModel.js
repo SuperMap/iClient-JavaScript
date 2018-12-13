@@ -26,7 +26,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataFlowViewModel#dataflowservicesubscribed
  * @fires L.supermap.widgets.dataFlowViewModel#subscribesucceed
- * @fires L.supermap.widgets.dataFlowViewModel#subscribefaild
+ * @fires L.supermap.widgets.dataFlowViewModel#subscribefailed
  * @fires L.supermap.widgets.dataFlowViewModel#dataupdated
  */
 export var DataFlowViewModel = L.Evented.extend({
@@ -126,13 +126,13 @@ export var DataFlowViewModel = L.Evented.extend({
              */
             this.fire("subscribesucceed", {result: result});
         });
-        dataFlowLayer.on('subscribefaild', (result) => {
+        dataFlowLayer.on('subscribefailed', (result) => {
             /**
-             * @event L.supermap.widgets.dataFlowViewModel#subscribefaild
+             * @event L.supermap.widgets.dataFlowViewModel#subscribefailed
              * @description 数据流订阅失败后触发。
              * @property {Object} result - 返回的数据。
              */
-            this.fire("subscribefaild", {result: result});
+            this.fire("subscribefailed", {result: result});
         });
         dataFlowLayer.on('dataupdated', (result) => {
             //派发出订阅返回的数据：

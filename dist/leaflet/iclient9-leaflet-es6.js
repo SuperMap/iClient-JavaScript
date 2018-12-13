@@ -75490,7 +75490,7 @@ var NormalRenderer = external_L_default.a.GeoJSON.extend({
                                                         return feature.properties['rotate'];
                                                 }`
  * @fires L.supermap.dataFlowLayer#subscribesucceed
- * @fires L.supermap.dataFlowLayer#subscribefaild
+ * @fires L.supermap.dataFlowLayer#subscribefailed
  * @fires L.supermap.dataFlowLayer#setfilterparamsuccessed
  * @fires L.supermap.dataFlowLayer#dataupdated
  */
@@ -75532,11 +75532,11 @@ var DataFlowLayer = external_L_default.a.LayerGroup.extend({
          */
         this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesucceed", e));
         /**
-         * @event L.supermap.dataFlowLayer#subscribefaild
+         * @event L.supermap.dataFlowLayer#subscribefailed
          * @description 初始化失败后触发。
          * @property {Object} e  - 事件对象。
          */
-        this.dataService.on('subscribeSocketError', (e) => this.fire("subscribefaild", e))
+        this.dataService.on('subscribeSocketError', (e) => this.fire("subscribefailed", e))
         this.dataService.on('messageSuccessed', (msg) => this._onMessageSuccessed(msg));
         /**
          * @event L.supermap.dataFlowLayer#setfilterparamsuccessed
@@ -83866,8 +83866,8 @@ external_L_default.a.supermap.widgets.widgetsViewBase = widgetsViewBase;
  * @param {L.Map} map - leaflet map 对象。
  * @fires L.supermap.widgets.openFileViewModel#filesizeexceed
  * @fires L.supermap.widgets.openFileViewModel#errorfileformat
- * @fires L.supermap.widgets.openFileViewModel#openfilesucced
- * @fires L.supermap.widgets.openFileViewModel#openfilefaild
+ * @fires L.supermap.widgets.openFileViewModel#openfilesucceed
+ * @fires L.supermap.widgets.openFileViewModel#openfilefailed
  */
 var OpenFileViewModel = external_L_default.a.Evented.extend({
     initialize() {
@@ -83943,27 +83943,27 @@ var OpenFileViewModel = external_L_default.a.Evented.extend({
             FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
                 if (geojson) {
                     /**
-                     * @event L.supermap.widgets.openFileViewModel#openfilesucced
+                     * @event L.supermap.widgets.openFileViewModel#openfilesucceed
                      * @description 打开文件成功。
                      * @property {GeoJSONObject} result - GeoJSON 格式数据。
                      * @property {string} layerName - 图层名。
                      */
-                    this.fire("openfilesucced", {
+                    this.fire("openfilesucceed", {
                         result: geojson,
                         layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
                     });
                 }
             }, (e) => {
-                me.fire("openfilefaild", {messageType: "failure", message: e.errorMassage});
+                me.fire("openfilefailed", {messageType: "failure", message: e.errorMassage});
             }, this);
         }, () => {
             /**
-             * @event L.supermap.widgets.openFileViewModel#openfilefaild
+             * @event L.supermap.widgets.openFileViewModel#openfilefailed
              * @description 打开文件失败。
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            me.fire("openfilefaild", {messageType: "failure", message: Lang.i18n('msg_openFileFail')});
+            me.fire("openfilefailed", {messageType: "failure", message: Lang.i18n('msg_openFileFail')});
         }, this);
     }
 
@@ -83993,7 +83993,7 @@ external_L_default.a.supermap.widgets.util = widgetsUtil;
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.openFile#openfilesucceed
- * @fires L.supermap.widgets.openFile#openfilefaild
+ * @fires L.supermap.widgets.openFile#openfilefailed
  * @category Widgets OpenFile
  */
 var OpenFileView = WidgetsViewBase.extend({
@@ -84058,14 +84058,14 @@ var OpenFileView = WidgetsViewBase.extend({
         this.viewModel.on("errorfileformat", (e) => {
             this.messageBox.showView(e.message, e.messageType);
         });
-        this.viewModel.on("openfilefaild", (e) => {
+        this.viewModel.on("openfilefailed", (e) => {
             this.messageBox.showView(e.message, e.messageType);
              /**
-             * @event L.supermap.widgets.openFile#openfilefaild
+             * @event L.supermap.widgets.openFile#openfilefailed
              * @description 打开文件失败。
              * @property {Object} e - 事件对象。
              */
-            this._event.fire("openfilefaild", e);
+            this._event.fire("openfilefailed", e);
         });
         this.viewModel.on("readdatafail", (e) => {
             this.messageBox.showView(e.message, e.messageType);
@@ -84368,7 +84368,7 @@ class GeoJsonLayerDataModel {
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应。
  * @fires L.supermap.widgets.searchViewModel#newlayeradded
  * @fires L.supermap.widgets.searchViewModel#searchsucceed
- * @fires L.supermap.widgets.searchViewModel#searchfaild
+ * @fires L.supermap.widgets.searchViewModel#searchfailed
  * @fires L.supermap.widgets.searchViewModel#geocodesucceed
  */
 var SearchViewModel = external_L_default.a.Evented.extend({
@@ -84443,11 +84443,11 @@ var SearchViewModel = external_L_default.a.Evented.extend({
                 });
             } else {
                 /**
-                 * @event L.supermap.widgets.searchViewModel#searchfaild
+                 * @event L.supermap.widgets.searchViewModel#searchfailed
                  * @description 图层属性查询失败后触发。
                  * @property {string} searchType - 图层属性查询状态。
                  */
-                this.fire("searchfaild", {
+                this.fire("searchfailed", {
                     searchType: "searchLayersField"
                 });
             }
@@ -84476,7 +84476,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
             this.geoCodeService.code(this.geoCodeParam, (geocodingResult) => {
                 if (geocodingResult.result) {
                     if (geocodingResult.result.error || geocodingResult.result.length === 0) {
-                        self.fire("searchfaild", {
+                        self.fire("searchfailed", {
                             searchType: "searchGeocodeField"
                         });
                         return;
@@ -84536,7 +84536,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
                 const center = external_L_default.a.latLng(geocodingResult.result[0].location.y, geocodingResult.result[0].location.x);
                 self.map.setView(center, 8);
             } else {
-                self.fire("searchfaild", {
+                self.fire("searchfailed", {
                     searchType: "cityGeocodeField"
                 });
             }
@@ -84604,7 +84604,7 @@ external_L_default.a.supermap.widgets.searchViewModel = searchViewModel;
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
  * @fires L.supermap.widgets.search#searchsucceed
- * @fires L.supermap.widgets.search#searchfaild
+ * @fires L.supermap.widgets.search#searchfailed
  */
 var SearchView = WidgetsViewBase.extend({
     options: {
@@ -85067,7 +85067,7 @@ var SearchView = WidgetsViewBase.extend({
         });
 
         //----地址匹配或图层查询失败监听
-        this.viewModel.on("searchfaild", (e) => {
+        this.viewModel.on("searchfailed", (e) => {
             let message = "";
             if (e.searchType === "searchGeocodeField") {
                 message = "未匹配到地址匹配服务数据！";
@@ -85078,11 +85078,11 @@ var SearchView = WidgetsViewBase.extend({
             }
             this.messageBox.showView(message)
             /**
-            * @event L.supermap.widgets.search#searchfaild
+            * @event L.supermap.widgets.search#searchfailed
             * @description 图层属性查询失败后触发。
             * @property {string} message - 失败原因。
             */
-            this._event.fire("searchfaild", { message: message });
+            this._event.fire("searchfailed", { message: message });
         });
     },
 
@@ -85302,7 +85302,7 @@ external_L_default.a.supermap.widgets.search = searchView;
  * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataFlowViewModel#dataflowservicesubscribed
  * @fires L.supermap.widgets.dataFlowViewModel#subscribesucceed
- * @fires L.supermap.widgets.dataFlowViewModel#subscribefaild
+ * @fires L.supermap.widgets.dataFlowViewModel#subscribefailed
  * @fires L.supermap.widgets.dataFlowViewModel#dataupdated
  */
 var DataFlowViewModel = external_L_default.a.Evented.extend({
@@ -85402,13 +85402,13 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
              */
             this.fire("subscribesucceed", {result: result});
         });
-        dataFlowLayer.on('subscribefaild', (result) => {
+        dataFlowLayer.on('subscribefailed', (result) => {
             /**
-             * @event L.supermap.widgets.dataFlowViewModel#subscribefaild
+             * @event L.supermap.widgets.dataFlowViewModel#subscribefailed
              * @description 数据流订阅失败后触发。
              * @property {Object} result - 返回的数据。
              */
-            this.fire("subscribefaild", {result: result});
+            this.fire("subscribefailed", {result: result});
         });
         dataFlowLayer.on('dataupdated', (result) => {
             //派发出订阅返回的数据：
@@ -87366,7 +87366,7 @@ external_L_default.a.supermap.widgets.distributedAnalysis = distributedAnalysisV
  * @category Widgets DataServiceQuery
  * @param {string} dataserviceUrl - 数据服务地址。
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceed
- * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfaild
+ * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfailed
  */
 class DataServiceQueryViewModel_DataServiceQueryViewModel extends external_L_default.a.Evented {
 
@@ -87418,11 +87418,11 @@ class DataServiceQueryViewModel_DataServiceQueryViewModel extends external_L_def
     _getQureyResult(serviceResult, map) {
         if (serviceResult.error) {
             /**
-            * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfaild
+            * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfailed
             * @description features 获取失败时触发。
             * @property {string} error - 服务器返回的错误。
             */
-            this.fire('getfeaturesfaild', { 'error': serviceResult.error });
+            this.fire('getfeaturesfailed', { 'error': serviceResult.error });
             return;
         }
         let resultLayer = external_L_default.a.geoJSON(serviceResult.result.features, {
@@ -87479,7 +87479,7 @@ external_L_default.a.supermap.widgets.dataServiceQueryViewModel = dataServiceQue
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturessucceed
- * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfaild
+ * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfailed
  * @category Widgets DataServiceQuery
  */
 var DataServiceQueryView = WidgetsViewBase.extend({
@@ -87715,16 +87715,16 @@ var DataServiceQueryView = WidgetsViewBase.extend({
                  */
                 this._event.fire('getfeaturessucceed', {'result': e.result})
             });
-            this.viewModel.on('getfeaturesfaild', (e) => {
+            this.viewModel.on('getfeaturesfailed', (e) => {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 this.messageBox.showView(e.error.errorMsg, "failure");
                 /**
-                 * @event L.supermap.widgets.dataServiceQuery#getfeaturesfaild
+                 * @event L.supermap.widgets.dataServiceQuery#getfeaturesfailed
                  * @description features 获取失败时触发。
                  * @property {string} error - 服务器返回的错误。
                  */
-                this._event.fire('getfeaturesfaild', {'error': e.error})
+                this._event.fire('getfeaturesfailed', {'error': e.error})
             });
             this.viewModel.getFeatures(queryParams, this.map);
         };

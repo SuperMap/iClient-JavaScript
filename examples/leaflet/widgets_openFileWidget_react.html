@@ -68,9 +68,9 @@
             //监听vm 事件：
             this.openFileViewModel.on("filesizeexceed", this._messageListener.bind(this));
             this.openFileViewModel.on("errorfileformat", this._messageListener.bind(this));
-            this.openFileViewModel.on("openfilefaild", this._messageListener.bind(this));
+            this.openFileViewModel.on("openfilefailed", this._messageListener.bind(this));
             this.openFileViewModel.on("readdatafail", this._messageListener.bind(this));
-            this.openFileViewModel.on("openfilesucced", function (e) {
+            this.openFileViewModel.on("openfilesucceed", function (e) {
                 var layer = L.geoJSON(e.result).addTo(map);
                 map.flyToBounds(layer.getBounds());
                 layersControl.addOverlay(layer, e.layerName);

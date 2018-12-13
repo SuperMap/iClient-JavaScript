@@ -44,7 +44,7 @@ import {
                                                         return feature.properties['rotate'];
                                                 }`
  * @fires L.supermap.dataFlowLayer#subscribesucceed
- * @fires L.supermap.dataFlowLayer#subscribefaild
+ * @fires L.supermap.dataFlowLayer#subscribefailed
  * @fires L.supermap.dataFlowLayer#setfilterparamsuccessed
  * @fires L.supermap.dataFlowLayer#dataupdated
  */
@@ -86,11 +86,11 @@ export var DataFlowLayer = L.LayerGroup.extend({
          */
         this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesucceed", e));
         /**
-         * @event L.supermap.dataFlowLayer#subscribefaild
+         * @event L.supermap.dataFlowLayer#subscribefailed
          * @description 初始化失败后触发。
          * @property {Object} e  - 事件对象。
          */
-        this.dataService.on('subscribeSocketError', (e) => this.fire("subscribefaild", e))
+        this.dataService.on('subscribeSocketError', (e) => this.fire("subscribefailed", e))
         this.dataService.on('messageSuccessed', (msg) => this._onMessageSuccessed(msg));
         /**
          * @event L.supermap.dataFlowLayer#setfilterparamsuccessed

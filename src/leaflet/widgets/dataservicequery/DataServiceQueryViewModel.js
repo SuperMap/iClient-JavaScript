@@ -13,7 +13,7 @@ import { GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesByBo
  * @category Widgets DataServiceQuery
  * @param {string} dataserviceUrl - 数据服务地址。
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceed
- * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfaild
+ * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfailed
  */
 export class DataServiceQueryViewModel extends L.Evented {
 
@@ -65,11 +65,11 @@ export class DataServiceQueryViewModel extends L.Evented {
     _getQureyResult(serviceResult, map) {
         if (serviceResult.error) {
             /**
-            * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfaild
+            * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfailed
             * @description features 获取失败时触发。
             * @property {string} error - 服务器返回的错误。
             */
-            this.fire('getfeaturesfaild', { 'error': serviceResult.error });
+            this.fire('getfeaturesfailed', { 'error': serviceResult.error });
             return;
         }
         let resultLayer = L.geoJSON(serviceResult.result.features, {

@@ -22,7 +22,7 @@ import {
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应。
  * @fires L.supermap.widgets.searchViewModel#newlayeradded
  * @fires L.supermap.widgets.searchViewModel#searchsucceed
- * @fires L.supermap.widgets.searchViewModel#searchfaild
+ * @fires L.supermap.widgets.searchViewModel#searchfailed
  * @fires L.supermap.widgets.searchViewModel#geocodesucceed
  */
 export var SearchViewModel = L.Evented.extend({
@@ -97,11 +97,11 @@ export var SearchViewModel = L.Evented.extend({
                 });
             } else {
                 /**
-                 * @event L.supermap.widgets.searchViewModel#searchfaild
+                 * @event L.supermap.widgets.searchViewModel#searchfailed
                  * @description 图层属性查询失败后触发。
                  * @property {string} searchType - 图层属性查询状态。
                  */
-                this.fire("searchfaild", {
+                this.fire("searchfailed", {
                     searchType: "searchLayersField"
                 });
             }
@@ -130,7 +130,7 @@ export var SearchViewModel = L.Evented.extend({
             this.geoCodeService.code(this.geoCodeParam, (geocodingResult) => {
                 if (geocodingResult.result) {
                     if (geocodingResult.result.error || geocodingResult.result.length === 0) {
-                        self.fire("searchfaild", {
+                        self.fire("searchfailed", {
                             searchType: "searchGeocodeField"
                         });
                         return;
@@ -190,7 +190,7 @@ export var SearchViewModel = L.Evented.extend({
                 const center = L.latLng(geocodingResult.result[0].location.y, geocodingResult.result[0].location.x);
                 self.map.setView(center, 8);
             } else {
-                self.fire("searchfaild", {
+                self.fire("searchfailed", {
                     searchType: "cityGeocodeField"
                 });
             }

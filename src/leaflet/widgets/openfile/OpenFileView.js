@@ -15,7 +15,7 @@ import {MessageBox, Lang} from '@supermap/iclient-common';
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.openFile#openfilesucceed
- * @fires L.supermap.widgets.openFile#openfilefaild
+ * @fires L.supermap.widgets.openFile#openfilefailed
  * @category Widgets OpenFile
  */
 export var OpenFileView = WidgetsViewBase.extend({
@@ -80,14 +80,14 @@ export var OpenFileView = WidgetsViewBase.extend({
         this.viewModel.on("errorfileformat", (e) => {
             this.messageBox.showView(e.message, e.messageType);
         });
-        this.viewModel.on("openfilefaild", (e) => {
+        this.viewModel.on("openfilefailed", (e) => {
             this.messageBox.showView(e.message, e.messageType);
              /**
-             * @event L.supermap.widgets.openFile#openfilefaild
+             * @event L.supermap.widgets.openFile#openfilefailed
              * @description 打开文件失败。
              * @property {Object} e - 事件对象。
              */
-            this._event.fire("openfilefaild", e);
+            this._event.fire("openfilefailed", e);
         });
         this.viewModel.on("readdatafail", (e) => {
             this.messageBox.showView(e.message, e.messageType);

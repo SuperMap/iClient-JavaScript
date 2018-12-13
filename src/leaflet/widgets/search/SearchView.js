@@ -37,7 +37,7 @@ import {
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
  * @fires L.supermap.widgets.search#searchsucceed
- * @fires L.supermap.widgets.search#searchfaild
+ * @fires L.supermap.widgets.search#searchfailed
  */
 export var SearchView = WidgetsViewBase.extend({
     options: {
@@ -500,7 +500,7 @@ export var SearchView = WidgetsViewBase.extend({
         });
 
         //----地址匹配或图层查询失败监听
-        this.viewModel.on("searchfaild", (e) => {
+        this.viewModel.on("searchfailed", (e) => {
             let message = "";
             if (e.searchType === "searchGeocodeField") {
                 message = "未匹配到地址匹配服务数据！";
@@ -511,11 +511,11 @@ export var SearchView = WidgetsViewBase.extend({
             }
             this.messageBox.showView(message)
             /**
-            * @event L.supermap.widgets.search#searchfaild
+            * @event L.supermap.widgets.search#searchfailed
             * @description 图层属性查询失败后触发。
             * @property {string} message - 失败原因。
             */
-            this._event.fire("searchfaild", { message: message });
+            this._event.fire("searchfailed", { message: message });
         });
     },
 

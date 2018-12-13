@@ -18,8 +18,8 @@ import {
  * @param {L.Map} map - leaflet map 对象。
  * @fires L.supermap.widgets.openFileViewModel#filesizeexceed
  * @fires L.supermap.widgets.openFileViewModel#errorfileformat
- * @fires L.supermap.widgets.openFileViewModel#openfilesucced
- * @fires L.supermap.widgets.openFileViewModel#openfilefaild
+ * @fires L.supermap.widgets.openFileViewModel#openfilesucceed
+ * @fires L.supermap.widgets.openFileViewModel#openfilefailed
  */
 export var OpenFileViewModel = L.Evented.extend({
     initialize() {
@@ -95,27 +95,27 @@ export var OpenFileViewModel = L.Evented.extend({
             FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
                 if (geojson) {
                     /**
-                     * @event L.supermap.widgets.openFileViewModel#openfilesucced
+                     * @event L.supermap.widgets.openFileViewModel#openfilesucceed
                      * @description 打开文件成功。
                      * @property {GeoJSONObject} result - GeoJSON 格式数据。
                      * @property {string} layerName - 图层名。
                      */
-                    this.fire("openfilesucced", {
+                    this.fire("openfilesucceed", {
                         result: geojson,
                         layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
                     });
                 }
             }, (e) => {
-                me.fire("openfilefaild", {messageType: "failure", message: e.errorMassage});
+                me.fire("openfilefailed", {messageType: "failure", message: e.errorMassage});
             }, this);
         }, () => {
             /**
-             * @event L.supermap.widgets.openFileViewModel#openfilefaild
+             * @event L.supermap.widgets.openFileViewModel#openfilefailed
              * @description 打开文件失败。
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            me.fire("openfilefaild", {messageType: "failure", message: Lang.i18n('msg_openFileFail')});
+            me.fire("openfilefailed", {messageType: "failure", message: Lang.i18n('msg_openFileFail')});
         }, this);
     }
 

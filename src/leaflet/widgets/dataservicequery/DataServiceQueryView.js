@@ -28,7 +28,7 @@ import {
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturessucceed
- * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfaild
+ * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfailed
  * @category Widgets DataServiceQuery
  */
 export var DataServiceQueryView = WidgetsViewBase.extend({
@@ -264,16 +264,16 @@ export var DataServiceQueryView = WidgetsViewBase.extend({
                  */
                 this._event.fire('getfeaturessucceed', {'result': e.result})
             });
-            this.viewModel.on('getfeaturesfaild', (e) => {
+            this.viewModel.on('getfeaturesfailed', (e) => {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 this.messageBox.showView(e.error.errorMsg, "failure");
                 /**
-                 * @event L.supermap.widgets.dataServiceQuery#getfeaturesfaild
+                 * @event L.supermap.widgets.dataServiceQuery#getfeaturesfailed
                  * @description features 获取失败时触发。
                  * @property {string} error - 服务器返回的错误。
                  */
-                this._event.fire('getfeaturesfaild', {'error': e.error})
+                this._event.fire('getfeaturesfailed', {'error': e.error})
             });
             this.viewModel.getFeatures(queryParams, this.map);
         };
