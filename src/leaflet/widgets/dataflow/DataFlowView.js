@@ -12,7 +12,7 @@ import {DataFlowViewModel} from './DataFlowViewModel';
  * @version 9.1.1
  * @category Widgets DataFlow
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {Function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。<br>
  `function (feature) {
                                                     return {
