@@ -83758,7 +83758,7 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
  * @classdesc lealfet 微件基类。
  * @version 9.1.1
  * @param {Object} options - 参数。
- * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  */
@@ -84001,10 +84001,10 @@ external_L_default.a.supermap.widgets.util = widgetsUtil;
 
 /**
  * @class L.supermap.widgets.openFile
- * @classdesc 打开文件微件，用于打开本地数据文件并加载到底图
+ * @classdesc 打开文件微件，用于打开本地数据文件并加载到地图，目前支持打开 .csv|.xls|.xlsx|.geojson|.json 格式文件。
  * @version 9.1.1
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.openFile#openfilesucceed
@@ -84373,23 +84373,22 @@ class GeoJsonLayerDataModel {
 
 
 
-
 /**
  * @class L.supermap.widgets.searchViewModel
  * @classdesc 图层查询微件功能类。
  * @version 9.1.1
  * @category Widgets Search
  * @param {Object} options - 可选参
- * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应。
+ * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 本地搜索服务。
  * @fires L.supermap.widgets.searchViewModel#newlayeradded
- * @fires L.supermap.widgets.searchViewModel#searchsucceed
+ * @fires L.supermap.widgets.searchViewModel#searchlayersucceed
  * @fires L.supermap.widgets.searchViewModel#searchfailed
  * @fires L.supermap.widgets.searchViewModel#geocodesucceed
  */
 var SearchViewModel = external_L_default.a.Evented.extend({
     options: {
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China",
+            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         }
     },
@@ -84398,7 +84397,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
         if (map) {
             /**
              * @member {L.Map} [L.supermap.widgets.searchViewModel.prototype.map]
-             * @description 当前微件所在的底图。
+             * @description 当前微件所在的地图。
              */
             this.map = map;
         } else {
@@ -84410,16 +84409,12 @@ var SearchViewModel = external_L_default.a.Evented.extend({
         this.dataModel = new GeoJsonLayersModel_GeoJsonLayersDataModel();
         //初始话地址匹配服务
 
-        this.geoCodeService = new services_AddressMatchService_AddressMatchService(this.options.cityGeoCodingConfig.addressUrl);
-        this.geoCodeParam = new GeoCodingParameter_GeoCodingParameter({
-            address: null,
+        this.geoCodeParam = {
+            keyWords: '北京市',
             city: "北京市",
-            maxResult: 70,
-            prjCoordSys: JSON.stringify({
-                epsgCode: 4326
-            }),
-            key: this.options.cityGeoCodingConfig.key
-        });
+            pageSize: this.options.pageSize,
+            pageNum: this.options.pageNum
+        };
         //查询缓存
         this.searchCache = {};
     },
@@ -84427,12 +84422,12 @@ var SearchViewModel = external_L_default.a.Evented.extend({
     /**
      * @function L.supermap.widgets.searchViewModel.prototype.search
      * @description 查询。
-     * @param {string} keyWord - 查询的关键字。
+     * @param {string} keyWords - 查询的关键字。
      * @param {string} [searchLayerName] - 执行的查询类型，支执行矢量图层属性查询，当为 "geocode" 则执行地址匹配。
      */
     search(keyWord, searchLayerName) {
         if (!searchLayerName) {
-            this.searchFromCityGeocodeService(keyWord);
+            this.searchFromCityLocalSearchService(keyWord);
         } else {
             this.searchFromLayer(keyWord, searchLayerName);
         }
@@ -84449,11 +84444,11 @@ var SearchViewModel = external_L_default.a.Evented.extend({
             let resultFeatures = this.dataModel.layers[searchLayerName].getFeaturesByKeyWord(keyWord);
             if (resultFeatures && resultFeatures.length > 0) {
                 /**
-                 * @event L.supermap.widgets.searchViewModel#searchsucceed
+                 * @event L.supermap.widgets.searchViewModel#searchlayersucceed
                  * @description 图层属性查询成功后触发。
                  * @property {Object} result - 图层数据。
                  */
-                this.fire("searchsucceed", {
+                this.fire("searchlayersucceed", {
                     result: resultFeatures
                 });
             } else {
@@ -84470,11 +84465,11 @@ var SearchViewModel = external_L_default.a.Evented.extend({
     },
 
     /**
-     * @function L.supermap.widgets.searchViewModel.prototype.searchFromCityGeocodeService
+     * @function L.supermap.widgets.searchViewModel.prototype.searchFromCityLocalSearchService
      * @description 城市地址匹配查询。
      * @param {string} keyWords - 城市地址匹配查询关键字。
      */
-    searchFromCityGeocodeService(keyWords) {
+    searchFromCityLocalSearchService(keyWords) {
         //todo 是否保留缓存？请求过的数据保留一份缓存？
         if (this.searchCache[keyWords]) {
             /**
@@ -84486,23 +84481,25 @@ var SearchViewModel = external_L_default.a.Evented.extend({
                 result: this.searchCache[keyWords]
             });
         } else {
-            this.geoCodeParam.address = keyWords;
+            this.geoCodeParam.keyWords = keyWords || this.geoCodeParam.city;
             const self = this;
-            this.geoCodeService.code(this.geoCodeParam, (geocodingResult) => {
-                if (geocodingResult.result) {
-                    if (geocodingResult.result.error || geocodingResult.result.length === 0) {
-                        self.fire("searchfailed", {
-                            searchType: "searchGeocodeField"
-                        });
-                        return;
-                    }
-                    const geoJsonResult = self._dataToGeoJson(geocodingResult.result,self.geoCodeParam);
+            let url = this._getSearchUrl(this.geoCodeParam);
+            FetchRequest.get(url).then((response) => {
+                return response.json();
+            }).then((geocodingResult) => {
+                if (geocodingResult.error || geocodingResult.poiInfos.length === 0) {
+                    self.fire("searchfailed", {
+                        searchType: "searchGeocodeField"
+                    });
+                    return;
+                }
+                if (geocodingResult.poiInfos) {
+                    const geoJsonResult = self._dataToGeoJson(geocodingResult.poiInfos, self.geoCodeParam);
                     self.fire("geocodesucceed", {
                         result: geoJsonResult
                     });
                 }
-
-            });
+            })
         }
     },
 
@@ -84542,30 +84539,32 @@ var SearchViewModel = external_L_default.a.Evented.extend({
      * @param {string} city - 指定缩放的城市名。
      */
     panToCity(city) {
-        this.geoCodeParam.address = city;
+        this.geoCodeParam.keyWords = city;
         this.geoCodeParam.city = city;
         const self = this;
-        this.geoCodeService.code(this.geoCodeParam, (geocodingResult) => {
-            if (geocodingResult.result.length > 0) {
+        let url = this._getSearchUrl(this.geoCodeParam);
+        FetchRequest.get(url).then((response) => {
+            return response.json();
+        }).then((geocodingResult) => {
+            if (geocodingResult.poiInfos.length > 0) {
                 //缩放至城市
-                const center = external_L_default.a.latLng(geocodingResult.result[0].location.y, geocodingResult.result[0].location.x);
+                const center = external_L_default.a.latLng(geocodingResult.poiInfos[0].location.y, geocodingResult.poiInfos[0].location.x);
                 self.map.setView(center, 8);
             } else {
                 self.fire("searchfailed", {
                     searchType: "cityGeocodeField"
                 });
             }
-
-        });
-
+        })
     },
+
 
     /**
      * @description 将地址匹配返回的数据转为geoJson 格式数据
      * @param data
      * @private
      */
-    _dataToGeoJson(data,geoCodeParam) {
+    _dataToGeoJson(data, geoCodeParam) {
         let features = [];
         for (let i = 0; i < data.length; i++) {
             let feature = {
@@ -84575,7 +84574,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
                     coordinates: [data[i].location.x, data[i].location.y]
                 },
                 properties: {
-                    name: data[i].name || geoCodeParam.address,
+                    name: data[i].name || geoCodeParam.keyWords,
                     address: data[i].formatedAddress || data[i].address
                 }
             };
@@ -84583,8 +84582,19 @@ var SearchViewModel = external_L_default.a.Evented.extend({
         }
 
         return features;
-    }
+    },
 
+    /**
+     * /**
+     * @function L.supermap.widgets.searchViewModel.prototype._getSearchUrl
+     * @description 获取地理编码查询地址。
+     * @param {Object} geoCodeParam - 地理编码查询参数。
+     * @private
+     */
+    _getSearchUrl(geoCodeParam) {
+        let url = this.options.cityGeoCodingConfig.addressUrl + `.json?keywords=${geoCodeParam.keyWords}&city=${geoCodeParam.city}&pageSize=${geoCodeParam.pageSize}&pageNum=${geoCodeParam.pageNum}&key=${this.options.cityGeoCodingConfig.key}`;
+        return url;
+    }
 });
 
 var searchViewModel = function (options) {
@@ -84613,22 +84623,27 @@ external_L_default.a.supermap.widgets.searchViewModel = searchViewModel;
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
  *                                    配置两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或 ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
- * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能
- * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能。
+ * @param {boolean} [options.pageSize=10] - 返回记录结果数，最大设置为 20。
+ * @param {boolean} [options.pageNum=1] - 分页页码，默认 1 代表第一页。
+ * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
- * @fires L.supermap.widgets.search#searchsucceed
+ * @fires L.supermap.widgets.search#searchlayersucceed
  * @fires L.supermap.widgets.search#searchfailed
+ * @fires L.supermap.widgets.search#geocodesucceed
  */
 var SearchView = WidgetsViewBase.extend({
     options: {
         cityConfig: CityConfig_config,
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China",
+            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         },
-        isGeoCoding: true
+        isGeoCoding: true,
+        pageSize: 10,
+        pageNum: 1
     },
 
     initialize(options) {
@@ -84637,6 +84652,7 @@ var SearchView = WidgetsViewBase.extend({
         this.currentSearchLayerName = "";
         this.isSearchLayer = false;
     },
+
     /*------以下是一些接口-----*/
     /**
      * @function L.supermap.widgets.search.prototype.onAdd
@@ -84649,6 +84665,7 @@ var SearchView = WidgetsViewBase.extend({
         this.viewModel = new SearchViewModel(map, this.options);
         return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
+
     /**
      * @function L.supermap.widgets.search.prototype.addSearchLayer
      * @description 添加可查询的图层。
@@ -85039,7 +85056,7 @@ var SearchView = WidgetsViewBase.extend({
         });
 
         //----图层查询结果监听
-        this.viewModel.on("searchsucceed", (e) => {
+        this.viewModel.on("searchlayersucceed", (e) => {
             const data = e.result;
             this.clearSearchResult();
             this.searchResultLayer = external_L_default.a.featureGroup(data, {
@@ -85052,7 +85069,12 @@ var SearchView = WidgetsViewBase.extend({
 
             //查询结果列表：
             this._prepareResultData(data);
-            this._event.fire("searchsucceed", {
+            /**
+             * @event L.supermap.widgets.search#searchlayersucceed
+             * @description 图层查询成功后触发。
+             * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
+             */
+            this._event.fire("searchlayersucceed", {
                 result: this.searchResultLayer.toGeoJSON()
             });
         });
@@ -85074,11 +85096,11 @@ var SearchView = WidgetsViewBase.extend({
             //查询结果列表：
             this._prepareResultData(data);
             /**
-             * @event L.supermap.widgets.search#searchsucceed
-             * @description 数据流服务成功返回数据后触发。
+             * @event L.supermap.widgets.search#geocodesucceed
+             * @description 地址匹配服务成功后触发。
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("searchsucceed", { result: data });
+            this._event.fire("geocodesucceed", { result: data });
         });
 
         //----地址匹配或图层查询失败监听
@@ -85302,7 +85324,7 @@ external_L_default.a.supermap.widgets.search = searchView;
  * @classdesc 数据流微件功能类。
  * @version 9.1.1
  * @category Widgets DataFlow
- * @param {L.Map} map - 当前微件所在的底图。
+ * @param {L.Map} map - 当前微件所在的地图。
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
  * @param {Object} options - 可选参数。
  * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
@@ -85340,7 +85362,7 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
         if (map) {
             /**
              * @member {L.Map} [L.supermap.widgets.dataFlowViewModel.prototype.map]
-             * @description 当前微件所在的底图。
+             * @description 当前微件所在的地图。
              */
             this.map = map;
         } else {
@@ -85519,7 +85541,7 @@ external_L_default.a.supermap.widgets.dataFlowViewModel = dataFlowViewModel;
  * @version 9.1.1
  * @category Widgets DataFlow
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {Function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。<br>
  `function (feature) {
                                                     return {
@@ -85989,7 +86011,7 @@ external_L_default.a.supermap.widgets.clientComputationViewModel = clientComputa
  * @version 9.1.1
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.clientComputation#analysissucceed
@@ -86886,7 +86908,7 @@ external_L_default.a.supermap.widgets.distributedAnalysisViewModel = distributed
  * @version 9.1.1
  * @param {string} processingUrl - 分布式分析服务地址。
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.distributedAnalysis#analysissucceed
@@ -87490,7 +87512,7 @@ external_L_default.a.supermap.widgets.dataServiceQueryViewModel = dataServiceQue
  * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries"。
  * @param {Object.<Array>} options - 可选参数。
  * @param {(Array.<SuperMap.GetFeatureMode>|SuperMap.GetFeatureMode)} [options.getFeatureMode] - 查询方式。
- * @param {string} [options.position='topright'] - 微件在底图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturessucceed

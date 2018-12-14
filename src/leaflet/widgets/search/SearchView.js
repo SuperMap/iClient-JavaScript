@@ -31,22 +31,27 @@ import {
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
  *                                    配置两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或 ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
- * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能
+ * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能。
+ * @param {boolean} [options.pageSize=10] - 返回记录结果数，最大设置为 20。
+ * @param {boolean} [options.pageNum=1] - 分页页码，默认 1 代表第一页。
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
- * @fires L.supermap.widgets.search#searchsucceed
+ * @fires L.supermap.widgets.search#searchlayersucceed
  * @fires L.supermap.widgets.search#searchfailed
+ * @fires L.supermap.widgets.search#geocodesucceed
  */
 export var SearchView = WidgetsViewBase.extend({
     options: {
         cityConfig: config,
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China",
+            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         },
-        isGeoCoding: true
+        isGeoCoding: true,
+        pageSize: 10,
+        pageNum: 1
     },
 
     initialize(options) {
@@ -55,6 +60,7 @@ export var SearchView = WidgetsViewBase.extend({
         this.currentSearchLayerName = "";
         this.isSearchLayer = false;
     },
+
     /*------以下是一些接口-----*/
     /**
      * @function L.supermap.widgets.search.prototype.onAdd
@@ -67,6 +73,7 @@ export var SearchView = WidgetsViewBase.extend({
         this.viewModel = new SearchViewModel(map, this.options);
         return WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
+
     /**
      * @function L.supermap.widgets.search.prototype.addSearchLayer
      * @description 添加可查询的图层。
@@ -457,7 +464,7 @@ export var SearchView = WidgetsViewBase.extend({
         });
 
         //----图层查询结果监听
-        this.viewModel.on("searchsucceed", (e) => {
+        this.viewModel.on("searchlayersucceed", (e) => {
             const data = e.result;
             this.clearSearchResult();
             this.searchResultLayer = L.featureGroup(data, {
@@ -470,7 +477,12 @@ export var SearchView = WidgetsViewBase.extend({
 
             //查询结果列表：
             this._prepareResultData(data);
-            this._event.fire("searchsucceed", {
+            /**
+             * @event L.supermap.widgets.search#searchlayersucceed
+             * @description 图层查询成功后触发。
+             * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
+             */
+            this._event.fire("searchlayersucceed", {
                 result: this.searchResultLayer.toGeoJSON()
             });
         });
@@ -492,11 +504,11 @@ export var SearchView = WidgetsViewBase.extend({
             //查询结果列表：
             this._prepareResultData(data);
             /**
-             * @event L.supermap.widgets.search#searchsucceed
-             * @description 数据流服务成功返回数据后触发。
+             * @event L.supermap.widgets.search#geocodesucceed
+             * @description 地址匹配服务成功后触发。
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("searchsucceed", { result: data });
+            this._event.fire("geocodesucceed", { result: data });
         });
 
         //----地址匹配或图层查询失败监听

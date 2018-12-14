@@ -11,7 +11,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  * @classdesc 数据流微件功能类。
  * @version 9.1.1
  * @category Widgets DataFlow
- * @param {L.Map} map - 当前微件所在的底图。
+ * @param {L.Map} map - 当前微件所在的地图。
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
  * @param {Object} options - 可选参数。
  * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
@@ -49,7 +49,7 @@ export var DataFlowViewModel = L.Evented.extend({
         if (map) {
             /**
              * @member {L.Map} [L.supermap.widgets.dataFlowViewModel.prototype.map]
-             * @description 当前微件所在的底图。
+             * @description 当前微件所在的地图。
              */
             this.map = map;
         } else {

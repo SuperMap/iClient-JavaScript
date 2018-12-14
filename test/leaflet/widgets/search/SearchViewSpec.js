@@ -10,33 +10,31 @@ var poiSearch;
 describe('leaflet_search_SearchView', () => {
     var serviceResult, queryBySQLService;
     var originalTimeout, resultLayer;
-    var geocodingGeson = [
-        {
-            "score": 85,
-            "address": "北京市西城区槐柏树街9号北京小学",
-            "location": {
-                "x": 116.360603320322,
-                "y": 39.89671784607
-            },
-            "filters": [
-                "北京市",
-                "西城区"
-            ]
-        },
+    var geocodingGeson = {
+        poiInfos: [
+            {
+                "score": 85,
+                "address": "北京市西城区槐柏树街9号北京小学",
+                "location": {
+                    "x": 116.360603320322,
+                    "y": 39.89671784607
+                },
 
-        {
-            "score": 77.5,
-            "address": "北京市朝阳区水碓东路15号北京城市建设学校",
-            "location": {
-                "x": 116.473557329787,
-                "y": 39.9280456866728
             },
-            "filters": [
-                "北京市",
-                "朝阳区"
-            ]
-        }
-    ];
+
+            {
+                "score": 77.5,
+                "address": "北京市朝阳区水碓东路15号北京城市建设学校",
+                "location": {
+                    "x": 116.473557329787,
+                    "y": 39.9280456866728
+                },
+                "filters": [
+                    "北京市",
+                    "朝阳区"
+                ]
+            }]
+    };
 
     beforeAll((done) => {
 
@@ -57,7 +55,7 @@ describe('leaflet_search_SearchView', () => {
 
             poiSearch = L.supermap.widgets.search({
                 cityGeoCodingConfig: {
-                    addressUrl: "http://test:8090/iserver/services/addressmatch-Address/restjsr/v1/address"
+                    addressUrl: "http://test:8090/iserver/services/localsearch/rest/searchdatas/China/poiinfos"
                 },
             }).addTo(map);
             var queryUrl = " http://test:8090/iserver/services/map-world/rest/maps/World/queryResults.json?returnContent=true";
@@ -135,7 +133,7 @@ describe('leaflet_search_SearchView', () => {
     it('search:searchFromLayer', (done) => {
 
         expect(poiSearch.viewModel.dataModel.layers).not.toBeUndefined();
-        poiSearch.viewModel.on('searchsucceed', function (e) {
+        poiSearch.viewModel.on('searchlayersucceed', function (e) {
             try {
                 expect(e.result[0].feature).not.toBeNull();
                 expect(e.result[0].feature).not.toBeUndefined();
@@ -150,11 +148,11 @@ describe('leaflet_search_SearchView', () => {
         poiSearch.viewModel.search("北京", "首都");
     })
 
-    it('search:searchFromCityGeocodeService', (done) => {
+    it('search:searchFromCityLocalSearchService', (done) => {
 
         spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
             console.log(url);
-            if (url.indexOf("geocoding") > -1) {
+            if (url.indexOf("localsearch") > -1) {
                 var escapedJson = geocodingGeson;
                 return Promise.resolve(new Response(JSON.stringify(escapedJson)));
             }
@@ -177,7 +175,7 @@ describe('leaflet_search_SearchView', () => {
     it('panToCity', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
             console.log(url);
-            if (url.indexOf("geocoding") > -1) {
+            if (url.indexOf("localsearch") > -1) {
                 var escapedJson = geocodingGeson;
                 return Promise.resolve(new Response(JSON.stringify(escapedJson)));
             }
