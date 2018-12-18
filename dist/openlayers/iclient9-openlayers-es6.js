@@ -74015,8 +74015,23 @@ class WebGLRenderer_GraphicWebGLRenderer extends external_ol_default.a.Object {
         return external_ol_default.a.proj.transform(coordinates, projection, 'EPSG:4326');
     }
     _pixelToMeter(pixel) {
-        const meterRes = this.map.getView().getResolution();
-        return pixel * meterRes;
+        let view = this.map.getView();
+        let projection = view.getProjection();
+
+        let unit = projection.getUnits() || 'degrees';
+        if (unit === 'degrees') {
+            unit = Unit.DEGREE;
+        }
+        if (unit === 'm') {
+            unit = Unit.METER;
+        }
+        const res = view.getResolution();
+        if (unit === Unit.DEGREE) {
+            let meterRes= res*(Math.PI * 6378137 / 180);
+            return pixel * meterRes;
+        }else{
+            return pixel * res;
+        }
     }
 
 }
