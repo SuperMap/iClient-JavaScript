@@ -34,7 +34,7 @@ import {
  * @category  iServer
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
- * @param {Object} options - 参数。 
+ * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
@@ -145,15 +145,15 @@ export class CommonServiceBase {
      * @function  SuperMap.CommonServiceBase.prototype.request
      * @description: 该方法用于向服务发送请求。
      * @param {Object} options - 参数。
-     * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。 
-     * @param {string} [options.url] - 发送请求的地址。 
-     * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。 
-     * @param {string} [options.data] - 发送到服务器的数据。 
-     * @param {function} options.success - 请求成功后的回调函数。 
-     * @param {function} options.failure - 请求失败后的回调函数。 
-     * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。 
-     * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。 
-     * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。 
+     * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。
+     * @param {string} [options.url] - 发送请求的地址。
+     * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。
+     * @param {string} [options.data] - 发送到服务器的数据。
+     * @param {function} options.success - 请求成功后的回调函数。
+     * @param {function} options.failure - 请求失败后的回调函数。
+     * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。
+     * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
+     * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
      */
     request(options) {
         let me = this;
@@ -372,7 +372,9 @@ export class CommonServiceBase {
                 var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
                 success(result);
             }
-
+        }).catch(function (e) {
+            var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+            failure(e);
         })
     }
 }

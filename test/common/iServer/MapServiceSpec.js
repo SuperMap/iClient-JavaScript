@@ -1,4 +1,4 @@
-﻿﻿import {MapService} from '../../../src/common/iServer/MapService';
+﻿import {MapService} from '../../../src/common/iServer/MapService';
 
 var worldMapURL = GlobeParameter.worldMapURL;
 //初始化注册事件监听器的Services
@@ -85,5 +85,38 @@ describe('MapService', () => {
                 done();
             }
         }, 2000);
-    })
+    });
+
+    it('failed:processAsync_withWrongUrl', (done) => {
+        var wrongUrl = "http://iserverurl.com:8090/iserver/services/map-world/rest/maps";
+        var getMapStatusResult;
+        var mapService = new MapService(wrongUrl, {
+                eventListeners: {
+                    'processFailed': function (result) {
+                        getMapStatusResult = result;
+                    },
+                    'processCompleted': function (result) {
+                        getMapStatusResult = result;
+                    }
+                }
+            }
+        );
+        expect(mapService).not.toBeNull();
+        expect(mapService.url).toEqual(wrongUrl);
+        mapService.processAsync();
+        setTimeout(() => {
+            try {
+                expect(getMapStatusResult).not.toBeNull();
+                expect(getMapStatusResult.type).toBe("processFailed");
+                expect(getMapStatusResult.error).not.toBeNull();
+                expect(getMapStatusResult.object.options.method).toBe("GET");
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("MapService_" + exception.name + ":" + exception.message);
+                mapService.destroy();
+                done();
+            }
+        }, 15000);
+    });
 });
