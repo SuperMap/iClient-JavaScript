@@ -436,8 +436,8 @@ export class Bounds {
             return false;
         }
 
-        x = Util.toFloat(x);
-        y = Util.toFloat(y);
+        //x = Util.toFloat(x);
+        //y = Util.toFloat(y);
 
         var contains = false;
         if (inclusive) {

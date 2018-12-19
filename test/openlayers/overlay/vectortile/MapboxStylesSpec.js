@@ -1,10 +1,18 @@
 import ol from 'openlayers';
 import * as oldebug from 'openlayers/dist/ol-debug';
 import '../../../libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms';
-import { MapboxStyles } from '../../../../src/openlayers/overlay/vectortile/MapboxStyles';
-import { MapService } from '../../../../src/openlayers/services/MapService';
-import { VectorTileSuperMapRest } from '../../../../src/openlayers/overlay/VectorTileSuperMapRest';
-import { FetchRequest } from '../../../../src/common/util/FetchRequest';
+import {
+    MapboxStyles
+} from '../../../../src/openlayers/overlay/vectortile/MapboxStyles';
+import {
+    MapService
+} from '../../../../src/openlayers/services/MapService';
+import {
+    VectorTileSuperMapRest
+} from '../../../../src/openlayers/overlay/VectorTileSuperMapRest';
+import {
+    FetchRequest
+} from '../../../../src/common/util/FetchRequest';
 
 ol.render.canvas = oldebug.render.canvas;
 ol.geom.flat = oldebug.geom.flat;
@@ -89,6 +97,16 @@ describe('openlayers_MapboxStyles', () => {
         setTimeout(() => {
             layer = mapboxStyles.getStylesBySourceLayer("Military_R@California");
             expect(layer).not.toBeNull();
+            expect(layer[0].paint).not.toBeNull();
+            expect(layer[0].paint["fill-color"]).toBe("rgba(249,224,219,0.90)");
+            vectorstylesEscapedJson.layers[2].paint["fill-color"] = "rgba(255,0,0,0)";
+            delete vectorstylesEscapedJson.sprite;
+            delete vectorstylesEscapedJson.glyphs;
+            mapboxStyles.setStyle(vectorstylesEscapedJson);
+            layer = mapboxStyles.getStylesBySourceLayer("Military_R@California");
+            expect(layer).not.toBeNull();
+            expect(layer[0].paint).not.toBeNull();
+            expect(layer[0].paint["fill-color"]).toBe("rgba(255,0,0,0)");
             done();
         }, 2000);
     });

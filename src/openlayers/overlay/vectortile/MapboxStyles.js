@@ -179,6 +179,7 @@ export class MapboxStyles extends ol.Observable {
      * @param {Object} style - Mapbox style 对象。
      */
     setStyle(style) {
+        this.layersBySourceLayer={};
         this._mbStyle = style;
         this._resolve();
     }

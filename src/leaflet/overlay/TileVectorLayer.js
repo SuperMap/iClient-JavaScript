@@ -97,7 +97,7 @@ export var TileVectorLayer = VectorGrid.extend({
         }
         this.cartoCSSToLeaflet = new CartoCSSToLeaflet(me.url);
         me.initLayersInfo();
-        if (!me.options.serverCartoCSSStyle && me.options) {
+        if (!me.options.serverCartoCSSStyle && me.options.cartoCSS) {
             me.setClientCartoCSS(me.options.cartoCSS);
         }
     },
@@ -144,6 +144,7 @@ export var TileVectorLayer = VectorGrid.extend({
                 }
             }
             me.layersInfo = layersInfo;
+            me.cartoCSSToLeaflet.layersInfo = layersInfo;
             if (me.options.serverCartoCSSStyle) {
                 me.getVectorStylesFromServer();
             }
@@ -265,7 +266,7 @@ export var TileVectorLayer = VectorGrid.extend({
             layerStyleInfo = me.getLayerStyleInfo(layerName);
 
         //处理标签图层
-        if (layerStyleInfo.textField) {
+        if (layerStyleInfo && layerStyleInfo.textField) {
             var textField = layerStyleInfo.textField;
             if (textField && textField.indexOf('.')) {
                 var arr = textField.split('.');

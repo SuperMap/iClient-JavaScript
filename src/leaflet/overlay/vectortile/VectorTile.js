@@ -86,7 +86,7 @@ export var VectorTile = L.Class.extend({
                 }
 
                 //标签图层处理为文本
-                if (layerStyleInfo.type === VectorFeatureType.LABEL
+                if (layerStyleInfo && layerStyleInfo.type === VectorFeatureType.LABEL
                     && feat.type === VectorFeatureType.POINT
                     && feat.properties.attributes) {
                     feat.type = VectorFeatureType.TEXT;
