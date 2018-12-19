@@ -465,7 +465,7 @@ window.examplesResources = {
         "title_vectorTileLayerNight": "Night Style of SuperMap REST Vector Layer",
         "title_vectorTileLayerNormal": "Vector Layer of SuperMap REST",
         "title_iportalWebMap": "SuperMap iPortal Map",
-        "title_earthquakeHeatMapLayer": "Earthquake occurrences(2005-2016)(Classic)",
+        "title_earthquakeHeatMapLayer": "Earthquake occurrences(2001-2014)(Classic)",
         "title_echartsEarthquake": "Earthquake occurrences(2005-2016)",
         "title_l_echartsEarthquake": "Earthquake heat map (2000-2015)",
         "title_lianjia": "Beijing house prices of Lianjia(2018.2)",

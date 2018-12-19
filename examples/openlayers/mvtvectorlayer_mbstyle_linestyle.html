@@ -380,9 +380,7 @@
                     lineColor.push(opacity);
                     lineColor = "rgba(" + lineColor.join(",") + ")"
                     var styleOption = getEditOption(jqObject);
-                    console.log(styleOption);
                     styleOption.style.lineColor = lineColor;
-                    console.log(styleOption);
                     changeStyle(styleOption);
                 }
             });
@@ -448,7 +446,6 @@
 
         // 获取图层信息
         function getLayerInfo(layerName, layerStyle, layerType) {
-            // console.log(layerStyle);
             if (layerType !== "line") {
                 resetStyle(borderJqObject);
                 resetStyle(fillJqObject);
