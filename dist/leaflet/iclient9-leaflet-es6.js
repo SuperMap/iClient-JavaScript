@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -7876,8 +7891,8 @@ class Bounds_Bounds {
             return false;
         }
 
-        x = Util.toFloat(x);
-        y = Util.toFloat(y);
+        //x = Util.toFloat(x);
+        //y = Util.toFloat(y);
 
         var contains = false;
         if (inclusive) {
@@ -12641,6 +12656,7 @@ class ServerGeometry_ServerGeometry {
         var CCWArray = [];
         var areaArray = [];
         var polygonArrayTemp = [];
+        var polygonBounds = [];
         //polyon岛洞标识数组，初始都是岛。
         var CCWIdent = [];
         for (let i = 0, pointIndex = 0; i < len; i++) {
@@ -12655,11 +12671,14 @@ class ServerGeometry_ServerGeometry {
             );
             pointList = [];
             polygonArrayTemp.push(polygon);
+            if (geoTopo.length === 0){
+                polygonBounds.push(polygon.getBounds());
+            }
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
         //根据面积排序
-        ServerGeometry_ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
+        ServerGeometry_ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
@@ -12670,7 +12689,7 @@ class ServerGeometry_ServerGeometry {
             for (let i = 1; i < polygonArrayTemp.length; i++) {
                 for (let j = i - 1; j >= 0; j--) {
                     targetArray[i] = -1;
-                    if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
+                    if (polygonBounds[j].containsBounds(polygonBounds[i])) {
                         CCWIdent[i] = CCWIdent[j] * -1;
                         if (CCWIdent[i] < 0) {
                             targetArray[i] = j;
@@ -12757,6 +12776,7 @@ class ServerGeometry_ServerGeometry {
         var CCWArray = [];
         var areaArray = [];
         var polygonArrayTemp = [];
+        var polygonBounds = [];
         //polyon岛洞标识数组，初始都是岛。
         var CCWIdent = [];
         for (let i = 0, pointIndex = 0; i < len; i++) {
@@ -12773,11 +12793,14 @@ class ServerGeometry_ServerGeometry {
             );
             pointList = [];
             polygonArrayTemp.push(polygon);
+            if (geoTopo.length === 0){
+                polygonBounds.push(polygon.getBounds());
+            }
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
         //根据面积排序
-        ServerGeometry_ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
+        ServerGeometry_ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
@@ -12788,7 +12811,7 @@ class ServerGeometry_ServerGeometry {
             for (let i = 1; i < polygonArrayTemp.length; i++) {
                 for (let j = i - 1; j >= 0; j--) {
                     targetArray[i] = -1;
-                    if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
+                    if (polygonBounds[j].containsBounds(polygonBounds[i])) {
                         CCWIdent[i] = CCWIdent[j] * -1;
                         if (CCWIdent[i] < 0) {
                             targetArray[i] = j;
@@ -12965,7 +12988,7 @@ class ServerGeometry_ServerGeometry {
         return s * 0.5;
     }
 
-    static bubbleSort(areaArray, pointList, geoTopo) {
+    static bubbleSort(areaArray, pointList, geoTopo,polygonBounds) {
         for (var i = 0; i < areaArray.length; i++) {
             for (var j = 0; j < areaArray.length; j++) {
                 if (areaArray[i] > areaArray[j]) {
@@ -12979,6 +13002,11 @@ class ServerGeometry_ServerGeometry {
                         var c = geoTopo[j];
                         geoTopo[j] = geoTopo[i];
                         geoTopo[i] = c;
+                    }
+                    if (polygonBounds && polygonBounds.length > 0) {
+                        var f = polygonBounds[j];
+                        polygonBounds[j] = polygonBounds[i];
+                        polygonBounds[i] = f;
                     }
                 }
             }
@@ -13222,8 +13250,8 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
                 if (!geometry.parts && geometry.points) {
                     geometry.parts = [geometry.points.length];
                 }
-                var geo = new ServerGeometry_ServerGeometry(geometry).toGeometry()||geometry;
-                var geometryType = geo.geometryType||geo.type;
+                var geo = new ServerGeometry_ServerGeometry(geometry).toGeometry() || geometry;
+                var geometryType = geo.geometryType || geo.type;
                 var data;
                 if (geometryType === "LinearRing") {
                     geometryType = "LineString";
@@ -13465,12 +13493,18 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
      */
     fromGeoJSON(json, type, filter) {
         let feature = this.read(json, type, filter);
-        return ServerGeometry_ServerGeometry.fromGeometry(feature);
+        if (!Util.isArray(feature)) {
+            return this._toiSevrerFeature(feature);
+        }
+        return feature.map((element) => {
+            return this._toiSevrerFeature(element);
+        })
     }
+
     /**
      * @function SuperMap.Format.GeoJSON.prototype.toGeoJSON
      * @version 9.1.1
-     * @description 将 GeoJSON 对象或者GeoJSON 对象字符串转换为iServer Feature JSON。
+     * @description 将 iServer Feature JSON 对象转换为 GeoJSON 对象。
      * @param {Object} obj - iServer Feature JSON。
      * @returns {GeoJSONObject}  GeoJSON 对象。
      */
@@ -13496,6 +13530,8 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             let feature = {};
             feature.geometry = obj;
             geojson = this.extract.feature.apply(this, [feature]);
+        } else {
+            geojson = this.extract.feature.apply(this, [obj]);
         }
 
         function isGeometry(input) {
@@ -13509,17 +13545,17 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
      *  @function SuperMap.Format.GeoJSON.prototype.isValidType
      *  @description 检查一个 GeoJSON 对象是否和给定的类型相符的合法的对象。
      *  @returns {boolean} GeoJSON 是否是给定类型的合法对象。
-     * @private
+     *  @private
      */
     isValidType(obj, type) {
         var valid = false;
         switch (type) {
             case "Geometry":
                 if (Util.indexOf(
-                        ["Point", "MultiPoint", "LineString", "MultiLineString",
-                            "Polygon", "MultiPolygon", "Box", "GeometryCollection"
-                        ],
-                        obj.type) == -1) {
+                    ["Point", "MultiPoint", "LineString", "MultiLineString",
+                        "Polygon", "MultiPolygon", "Box", "GeometryCollection"
+                    ],
+                    obj.type) == -1) {
                     // unsupported geometry type
                     //SuperMap.Console.error("Unsupported geometry type: " +
                     // obj.type);
@@ -13645,7 +13681,22 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         }
         return crs;
     }
-
+    _toiSevrerFeature(feature) {
+        const attributes = feature.attributes;
+        const attrNames = [];
+        const attrValues = [];
+        for (var attr in attributes) {
+            attrNames.push(attr);
+            attrValues.push(attributes[attr]);
+        }
+        const newFeature = {
+            fieldNames: attrNames,
+            fieldValues: attrValues,
+            geometry: ServerGeometry_ServerGeometry.fromGeometry(feature.geometry)
+        };
+        newFeature.geometry.id = feature.fid;
+        return newFeature;
+    }
     createAttributes(feature) {
         if (!feature) {
             return null;
@@ -20309,7 +20360,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
          * {Array.<string>}
          * 此类支持的事件类型
          */
-        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"]
+        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
         super(url, options);
 
         /**
@@ -20376,7 +20427,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
             return;
         }
         this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
-        this.events.triggerEvent('broadcastSuccessed');
+        this.events.triggerEvent('broadcastSucceeded');
 
     }
 
@@ -20484,14 +20535,14 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
         if (e.data && e.data.indexOf("filterParam") >= 0) {
             var filterParam = JSON.parse(e.data);
             e.filterParam = filterParam;
-            e.eventType = 'setFilterParamSuccessed';
-            this.events.triggerEvent('setFilterParamSuccessed', e);
+            e.eventType = 'setFilterParamSucceeded';
+            this.events.triggerEvent('setFilterParamSucceeded', e);
             return;
         }
         var feature = JSON.parse(e.data);
         e.featureResult = feature;
-        e.eventType = 'messageSuccessed';
-        this.events.triggerEvent('messageSuccessed', e);
+        e.eventType = 'messageSucceeded';
+        this.events.triggerEvent('messageSucceeded', e);
     }
 
 
@@ -64168,7 +64219,8 @@ class FileModel_FileModel {
 
 /**
  * @class SuperMap.Widgets.MessageBox
- * @classdesc 微件信息提示框
+ * @version 9.1.1
+ * @classdesc 微件信息提示框。
  * @category Widgets Common
  */
 class MessageBox {
@@ -64214,7 +64266,7 @@ class MessageBox {
 
     /**
      * @function SuperMap.Widgets.MessageBox.prototype.closeView
-     * @description 关闭提示框
+     * @description 关闭提示框。
      */
     closeView() {
         this.messageBoxContainer.hidden = true;
@@ -64222,9 +64274,9 @@ class MessageBox {
 
     /**
      * @function SuperMap.Widgets.MessageBox.prototype.showView
-     * @description 显示提示框
-     * @param {string} message - 提示框显示内容
-     * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success", 默认为"warring"
+     * @description 显示提示框。
+     * @param {string} message - 提示框显示内容。
+     * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success"。
      */
     showView(message, type = 'warring') {
         //设置提示框的样式：
@@ -65065,7 +65117,8 @@ SuperMap.Widgets.Chart = ChartView_ChartView;
 
 /**
  * @class SuperMap.Widgets.TemplateBase
- * @classdesc 微件公用组件父类，由于约束统一封装的公用组件结构
+ * @classdesc 微件公用组件父类，用于约束统一封装的公用组件结构。
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Widgets Common
@@ -65075,20 +65128,20 @@ class TemplateBase {
         options = options ? options : {};
         /**
          * @member {string} [SuperMap.Widgets.TemplateBase.prototype.id=null]
-         * @description  组件 dom 元素 id
+         * @description  组件 dom 元素 id。
          */
         this.id = options.id ? options.id : null;
 
         /**
          * @member {Element} [SuperMap.Widgets.TemplateBase.prototype.rootContainer=null]
-         * @description  组件 dom 元素对象
+         * @description  组件 dom 元素对象。
          */
         this.rootContainer = null;
     }
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype.getElement
-     * @description 获取当前组件元素对象
+     * @description 获取当前组件元素对象。
      * @return {Element}
      */
     getElement() {
@@ -65102,7 +65155,7 @@ class TemplateBase {
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype._initView
-     * @description 初始化模板
+     * @description 初始化模板。
      */
     _initView() {
         //子类实现此方法
@@ -65110,7 +65163,7 @@ class TemplateBase {
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype.showView
-     * @description 显示组件
+     * @description 显示组件。
      */
     showView() {
         this.rootContainer.hidden = false;
@@ -65118,7 +65171,7 @@ class TemplateBase {
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype.closeView
-     * @description 隐藏组件
+     * @description 隐藏组件。
      */
     closeView() {
         this.rootContainer.hidden = true;
@@ -65136,10 +65189,12 @@ SuperMap.Widgets.TemplateBase = TemplateBase;
 /**
  * @class SuperMap.Widgets.CommonContainer
  * @classdesc 微件统一外框。
+ * @version 9.1.1
  * @param {Object} options - 组件可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。
  * @category Widgets Common
+ * @extends {SuperMap.Widgets.TemplateBase}
  */
 class CommonContainer_CommonContainer extends TemplateBase {
     constructor(options) {
@@ -65201,11 +65256,13 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
 /**
  * @class SuperMap.Widgets.Select
  * @classdesc 微件统一的文字下拉框。
+ * @version 9.1.1
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
+ * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
 class Select_Select extends TemplateBase {
@@ -65329,6 +65386,7 @@ SuperMap.Widgets.Select = Select_Select;
 /**
  * @class SuperMap.Widgets.DropDownBox
  * @classdesc 微件统一的图片下拉框。
+ * @version 9.1.1
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {string} optionsArr.title - 下拉框 title。
@@ -65338,6 +65396,7 @@ SuperMap.Widgets.Select = Select_Select;
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
  * @category Widgets Common
+ * @extends {SuperMap.Widgets.TemplateBase}
  */
 class DropDownBox_DropDownBox extends TemplateBase {
     constructor(optionsArr) {
@@ -65526,10 +65585,12 @@ SuperMap.Widgets.DropDownBox = DropDownBox_DropDownBox;
 
 /**
  * @class SuperMap.Widgets.PopContainer
- * @classdesc 弹框组件
+ * @classdesc 弹框组件。
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 弹框组件名称。
+ * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
 class PopContainer_PopContainer extends TemplateBase {
@@ -65575,8 +65636,8 @@ class PopContainer_PopContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PopContainer.prototype.appendContent
-     * @description 追加内容
-     * @param {Element} dom - 内容元素
+     * @description 追加内容。
+     * @param {Element} dom - 内容元素。
      */
     appendContent(dom) {
         this.content.appendChild(dom);
@@ -65595,10 +65656,12 @@ SuperMap.Widgets.PopContainer = PopContainer_PopContainer;
 /**
  * @class SuperMap.Widgets.AttributesPopContainer
  * @classdesc 属性弹框组件
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object} options.title - 属性弹框组件名称。
  * @param {Object} options.attributes - 组件需要显示的属性内容。
+ * @extends {SuperMap.Widgets.PopContainer}
  * @category Widgets Common
  */
 class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopContainer {
@@ -65651,11 +65714,13 @@ SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopCo
 
 
 /**
- * @class IndexTabsPageContainer
- * @description 标签索引组件
+ * @class SuperMap.Widgets.IndexTabsPageContainer
+ * @description 标签索引组件。
+ * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Widgets Common
+ * @extends {SuperMap.Widgets.TemplateBase}
  */
 class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
     constructor(options) {
@@ -65686,7 +65751,7 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.setTabs
-     * @description 设置标签元素
+     * @description 设置标签元素。
      * @param {Array.<Element>} tabs
      */
     setTabs(tabs) {
@@ -65696,7 +65761,7 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.appendTabs
-     * @description 追加标签元素
+     * @description 追加标签元素。
      * @param {Array.<Element>} tabs
      */
     appendTabs(tabs) {
@@ -65721,8 +65786,8 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeTab
-     * @description 删除某个标签页面
-     * @param {number} index - 标签索引号
+     * @description 删除某个标签页面。
+     * @param {number} index - 标签索引号。
      */
     removeTab(index) {
         this.header.removeChild(this.header.children[index]);
@@ -65730,8 +65795,8 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function IndexTabsPageContainer.prototype.removeAllTabs
-     * @description 删除所有标签F
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeAllTabs
+     * @description 删除所有标签。
      */
     removeAllTabs() {
         for (let i = this.header.children.length; i > 0; i--) {
@@ -65766,10 +65831,12 @@ SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer_IndexTabsPageCo
 /**
  * @class SuperMap.Widgets.CityTabsPage
  * @classdesc 城市地址匹配组件模板
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ * @extends {SuperMap.Widgets.IndexTabsPageContainer}
  * @category Widgets Common
  */
 class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageContainer {
@@ -65884,10 +65951,12 @@ SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
 
 /**
  * @class SuperMap.Widgets.NavTabsPage
- * @classdesc 标签页面组件
+ * @classdesc 标签页面组件。
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
- * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面。
+ * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组，形如：[{title: "",content: HTMLElement}]，初始时，传入则创建页面。
+ * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用
@@ -65935,9 +66004,9 @@ class NavTabsPage_NavTabsPage extends TemplateBase {
     }
 
     /**
-     * @function NavTabsPage.prototype.setTabs
-     * @description 设置标签
-     * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: {}}]
+     * @function SuperMap.Widgets.NavTabsPage.prototype.setTabs
+     * @description 设置标签。
+     * @param {Array.<Object>} tabs - 标签对象数组，形如：[{title: "",content: {}}]。
      */
     setTabs(tabs) {
         this.removeAllTabs();
@@ -65945,9 +66014,9 @@ class NavTabsPage_NavTabsPage extends TemplateBase {
     }
 
     /**
-     * @function NavTabsPage.prototype.appendTabs
-     * @description 添加标签页面
-     * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: {}}]
+     * @function SuperMap.Widgets.NavTabsPage.prototype.appendTabs
+     * @description 添加标签页面。
+     * @param {Array.<Object>} tabs - 标签对象数组，形如：[{title: "",content: {}}]。
      */
     appendTabs(tabs) {
         for (let i = 0; i < tabs.length; i++) {
@@ -65970,9 +66039,9 @@ class NavTabsPage_NavTabsPage extends TemplateBase {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeTab
-     * @description 删除某个标签页面
-     * @param {number} index - 标签索引号
+     * @function SuperMap.Widgets.NavTabsPage.prototype.removeTab
+     * @description 删除某个标签页面。
+     * @param {number} index - 标签索引号。
      */
     removeTab(index) {
         this.navTabsTitle.removeChild(this.navTabsTitle.children[index]);
@@ -65980,8 +66049,8 @@ class NavTabsPage_NavTabsPage extends TemplateBase {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeAllTabs
-     * @description 删除所有标签F
+     * @function SuperMap.Widgets.NavTabsPage.prototype.removeAllTabs
+     * @description 删除所有标签。
      */
     removeAllTabs() {
         for (let i = this.navTabsTitle.children.length; i > 0; i--) {
@@ -66014,11 +66083,13 @@ SuperMap.Widgets.NavTabsPage = NavTabsPage_NavTabsPage;
 
 /**
  * @class SuperMap.Widgets.PaginationContainer
- * @classdesc 分页组件模板
+ * @classdesc 分页组件模板。
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
- * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象
- * @param {number} options.pageCounts - 页数
+ * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
+ * @param {number} options.pageCounts - 页数。
+ * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
 class PaginationContainer_PaginationContainer extends TemplateBase {
@@ -66037,8 +66108,8 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.setLinkageEvent
-     * @description 设置页面联动方法
-     * @param {function} linkageEvent - 联动方法，实现指定功能
+     * @description 设置页面联动方法。
+     * @param {function} linkageEvent - 联动方法，实现指定功能。
      */
     setLinkageEvent(linkageEvent) {
         this.linkageEvent = linkageEvent;
@@ -66078,8 +66149,8 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
     /**---------以下是页面相关操作 **/
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.setContent
-     * @description 设置页面内容
-     * @param {Element} element - 页面内容元素
+     * @description 设置页面内容。
+     * @param {Element} element - 页面内容元素。
      */
     setContent(element) {
         this.clearContent();
@@ -66088,8 +66159,8 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.appendContent
-     * @description 追加内容
-     * @param {Element} element - 页面内容元素
+     * @description 追加内容。
+     * @param {Element} element - 页面内容元素。
      */
     appendContent(element) {
         this.content.appendChild(element);
@@ -66097,7 +66168,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.clearContent
-     * @description 清空内容元素
+     * @description 清空内容元素。
      */
     clearContent() {
         for (let i = this.content.children.length - 1; i >= 0; i--) {
@@ -66108,8 +66179,8 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
     /** -----以下是页码相关的操作：**/
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.setPageLink
-     * @description 设置页码数
-     * @param {number} pageNumber
+     * @description 设置页码数。
+     * @param {number} pageNumber - 页码数。
      */
     setPageLink(pageNumber) {
         //清空当前页码
@@ -66124,7 +66195,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 创建页码
+     * @description 创建页码。
      * @param pageNumber
      * @private
      */
@@ -66149,7 +66220,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 添加页码到页码列表
+     * @description 添加页码到页码列表。
      * @private
      */
     _appendPageLink() {
@@ -66178,7 +66249,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.clearPageLink
-     * @description 清除页码列表
+     * @description 清除页码列表。
      */
     clearPageLink() {
         for (let i = this.link.children.length - 3; i > 1; i--) {
@@ -66187,7 +66258,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 创建页码按钮
+     * @description 创建页码按钮。
      * @param ul
      * @private
      */
@@ -66216,7 +66287,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 点击页码事件
+     * @description 点击页码事件。
      * @param e
      * @private
      */
@@ -66246,7 +66317,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 根据 currentPage 改变按钮状态
+     * @description 根据 currentPage 改变按钮状态。
      * @private
      */
     _changeDisableState() {
@@ -66267,8 +66338,8 @@ class PaginationContainer_PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 根据点击页码列表事件准备需展现的页码列表
-     * @param {string|number} targetLi - 被点击的列表对象 id 或 被点击的页码值
+     * @description 根据点击页码列表事件准备需展现的页码列表。
+     * @param {string|number} targetLi - 被点击的列表对象 id 或 被点击的页码值。
      * @private
      */
     _prePageNum(targetLi) {
@@ -66464,7 +66535,8 @@ SuperMap.i18n = SuperMap.Lang.i18n;
 
 /**
  * @class SuperMap.Widgets.FileReaderUtil
- * @classdesc 微件读取文件工具类
+ * @classdesc 微件读取文件工具类。
+ * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  */
 let FileReaderUtil = {
@@ -67615,6 +67687,7 @@ function wrapToGeoJSON(objClassArray) {
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @fires L.supermap.ServiceBase#initialized
  * @fires L.supermap.ServiceBase#destroy
+ * @extends {L.Evented}
  */
 var ServiceBase = external_L_default.a.Evented.extend({
 
@@ -70070,11 +70143,23 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
         }
         var me = this;
         style = style.replace(/[@]/gi, "___");
-        style = style.replace(/\\#/gi, "___");
-        for (var attr in me.layersInfo) {
+        style = style.replace(/\\#/gi, "\#");
+
+        var cachedLayer = {};
+        me.layersInfo && Object.keys(me.layersInfo).sort().forEach(function (attr) {
             var newAttr = attr.replace(/[@#\s]/gi, "___");
-            style = style.replace(attr.replace(/[#]/gi, "\\#"), newAttr);
-        }
+            var to = attr;
+            var keys = Object.keys(cachedLayer);
+            for (let index = keys.length; index > -1; index--) {
+                if (attr.indexOf(keys[index]) > -1) {
+                    to = attr.replace(keys[index], cachedLayer[keys[index]]);
+                    break;
+                }
+            }
+            to = to.replace(/[#]/gi, "\#");
+            cachedLayer[attr] = newAttr;
+            style = style.replace(new RegExp(to, "g"), newAttr);
+        })
         style = style.replace(/[#]/gi, "\n#");
         //将zoom转化为scale，以免引起混淆
         style = style.replace(/\[zoom/gi, "[scale");
@@ -70259,11 +70344,11 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
             var value = _shader.getValue(attributes, zoom, true);
             if ((value !== null) && prop) {
                 if (prop === "fontSize") {
-                 if (fromServer) {
-                     value *= 0.8
-                 }
-                 fontSize = value + "px";
-                 style.fontSize = fontSize;
+                    if (fromServer) {
+                        value *= 0.8
+                    }
+                    fontSize = value + "px";
+                    style.fontSize = fontSize;
                 } else if (prop === "fontName") {
                     fontName = value;
                     style.fontName = fontName;
@@ -70322,7 +70407,7 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
             //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素
             //固定大小的时候单位是毫米
             if (shader.fontHeight) {
-                var text_h = shader.fontHeight * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"] * 0.85;    //毫米转像素,服务端的字体貌似要稍微小一点
+                var text_h = shader.fontHeight * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"] * 0.85; //毫米转像素,服务端的字体貌似要稍微小一点
                 style.fontSize = text_h + "px";
                 style.textHeight = text_h;
             }
@@ -70342,16 +70427,16 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
             }
             style.weight = shader.outline ? shader.outlineWidth : 0;
             if (shader.backColor) {
-                style.color = "rgba(" + shader.backColor.red + ","
-                    + shader.backColor.green + ","
-                    + shader.backColor.blue
-                    + ",1)";
+                style.color = "rgba(" + shader.backColor.red + "," +
+                    shader.backColor.green + "," +
+                    shader.backColor.blue +
+                    ",1)";
             }
             if (shader.foreColor) {
-                style.fillColor = "rgba(" + shader.foreColor.red + ","
-                    + shader.foreColor.green + ","
-                    + shader.foreColor.blue
-                    + ",1)";
+                style.fillColor = "rgba(" + shader.foreColor.red + "," +
+                    shader.foreColor.green + "," +
+                    shader.foreColor.blue +
+                    ",1)";
             }
             style.rotation = shader.rotation || 0;
             return style;
@@ -70367,55 +70452,55 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
             var leafletStyle = obj.leafletStyle;
             switch (obj.type) {
                 case "number":
-                {
-                    let value = shader[attr];
-                    if (obj.unit) {
-                        value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
+                    {
+                        let value = shader[attr];
+                        if (obj.unit) {
+                            value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
+                        }
+                        style[leafletStyle] = value;
+                        break;
                     }
-                    style[leafletStyle] = value;
-                    break;
-                }
 
                 case "color":
-                {
-                    var color = shader[attr];
-                    let value, alpha = 1;
-                    if (leafletStyle === "fillColor") {
-                        if (fillSymbolID === 0 || fillSymbolID === 1) {
-                            //当fillSymbolID为0时，用颜色填充，为1是无填充，即为透明填充，alpha通道为0
-                            alpha = 1 - fillSymbolID;
+                    {
+                        var color = shader[attr];
+                        let value, alpha = 1;
+                        if (leafletStyle === "fillColor") {
+                            if (fillSymbolID === 0 || fillSymbolID === 1) {
+                                //当fillSymbolID为0时，用颜色填充，为1是无填充，即为透明填充，alpha通道为0
+                                alpha = 1 - fillSymbolID;
+                                value = "rgba(" + color.red + "," + color.green + "," + color.blue + "," + alpha + ")";
+                            }
+                        } else if (leafletStyle === "color") {
+                            if (lineSymbolID === 0 || lineSymbolID === 5) {
+                                //对于lineSymbolID为0时，线为实线，为lineSymbolID为5时，为无线模式，即线为透明，即alpha通道为0
+                                alpha = lineSymbolID === 0 ? 1 : 0;
+                            } else {
+                                //以下几种linePattern分别模拟了桌面的SymbolID为1~4几种符号的linePattern
+                                var linePattern = [1, 0];
+                                switch (lineSymbolID) {
+                                    case 1:
+                                        linePattern = [9.7, 3.7];
+                                        break;
+                                    case 2:
+                                        linePattern = [3.7, 3.7];
+                                        break;
+                                    case 3:
+                                        linePattern = [9.7, 3.7, 2.3, 3.7];
+                                        break;
+                                    case 4:
+                                        linePattern = [9.7, 3.7, 2.3, 3.7, 2.3, 3.7];
+                                        break;
+                                    default:
+                                        break
+                                }
+                                style.lineDasharray = linePattern;
+                            }
                             value = "rgba(" + color.red + "," + color.green + "," + color.blue + "," + alpha + ")";
                         }
-                    } else if (leafletStyle === "color") {
-                        if (lineSymbolID === 0 || lineSymbolID === 5) {
-                            //对于lineSymbolID为0时，线为实线，为lineSymbolID为5时，为无线模式，即线为透明，即alpha通道为0
-                            alpha = lineSymbolID === 0 ? 1 : 0;
-                        } else {
-                            //以下几种linePattern分别模拟了桌面的SymbolID为1~4几种符号的linePattern
-                            var linePattern = [1, 0];
-                            switch (lineSymbolID) {
-                                case 1:
-                                    linePattern = [9.7, 3.7];
-                                    break;
-                                case 2:
-                                    linePattern = [3.7, 3.7];
-                                    break;
-                                case 3:
-                                    linePattern = [9.7, 3.7, 2.3, 3.7];
-                                    break;
-                                case 4:
-                                    linePattern = [9.7, 3.7, 2.3, 3.7, 2.3, 3.7];
-                                    break;
-                                default:
-                                    break
-                            }
-                            style.lineDasharray = linePattern;
-                        }
-                        value = "rgba(" + color.red + "," + color.green + "," + color.blue + "," + alpha + ")";
+                        style[leafletStyle] = value;
+                        break;
                     }
-                    style[leafletStyle] = value;
-                    break;
-                }
                 default:
                     break;
             }
@@ -74458,10 +74543,10 @@ external_L_default.a.supermap.webmap = webMap;
  * @fires L.supermap.dataFlowService#broadcastSocketConnected
  * @fires L.supermap.dataFlowService#broadcastSocketError
  * @fires L.supermap.dataFlowService#broadcastFailed
- * @fires L.supermap.dataFlowService#broadcastSuccessed
+ * @fires L.supermap.dataFlowService#broadcastSucceeded
  * @fires L.supermap.dataFlowService#subscribeSocketError
- * @fires L.supermap.dataFlowService#messageSuccessed
- * @fires L.supermap.dataFlowService#setFilterParamSuccessed
+ * @fires L.supermap.dataFlowService#messageSucceeded
+ * @fires L.supermap.dataFlowService#setFilterParamSucceeded
  */
 var services_DataFlowService_DataFlowService = ServiceBase.extend({
 
@@ -74492,7 +74577,7 @@ var services_DataFlowService_DataFlowService = ServiceBase.extend({
          * @description 广播失败。
          */
         /**
-         * @event L.supermap.dataFlowService#broadcastSuccessed
+         * @event L.supermap.dataFlowService#broadcastSucceeded
          * @description 广播成功。
          */
         /**
@@ -74504,22 +74589,22 @@ var services_DataFlowService_DataFlowService = ServiceBase.extend({
          * @description 订阅数据连接失败。
          */
         /**
-         * @event L.supermap.dataFlowService#messageSuccessed
+         * @event L.supermap.dataFlowService#messageSucceeded
          * @description 获取信息成功。
          */
         /**
-         * @event L.supermap.dataFlowService#setFilterParamSuccessed
+         * @event L.supermap.dataFlowService#setFilterParamSucceeded
          * @description 设置过滤参数成功。
          */
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,
             "broadcastSocketError": this._defaultEvent,
             "broadcastFailed": this._defaultEvent,
-            "broadcastSuccessed": this._defaultEvent,
+            "broadcastSucceeded": this._defaultEvent,
             "subscribeSocketConnected": this._defaultEvent,
             "subscribeSocketError": this._defaultEvent,
-            "messageSuccessed": this._defaultEvent,
-            "setFilterParamSuccessed": this._defaultEvent,
+            "messageSucceeded": this._defaultEvent,
+            "setFilterParamSucceeded": this._defaultEvent,
             scope: this
         })
     },
@@ -75491,9 +75576,9 @@ var NormalRenderer = external_L_default.a.GeoJSON.extend({
  `function (feature,latlng) {
                                                         return feature.properties['rotate'];
                                                 }`
- * @fires L.supermap.dataFlowLayer#subscribesucceed
+ * @fires L.supermap.dataFlowLayer#subscribesucceeded
  * @fires L.supermap.dataFlowLayer#subscribefailed
- * @fires L.supermap.dataFlowLayer#setfilterparamsuccessed
+ * @fires L.supermap.dataFlowLayer#setfilterparamsucceeded
  * @fires L.supermap.dataFlowLayer#dataupdated
  */
 
@@ -75528,24 +75613,26 @@ var DataFlowLayer = external_L_default.a.LayerGroup.extend({
     onAdd: function (map) { // eslint-disable-line no-unused-vars
         this.dataService.initSubscribe();
         /**
-         * @event L.supermap.dataFlowLayer#subscribesucceed
+         * @event L.supermap.dataFlowLayer#subscribesucceeded
          * @description 初始化成功后触发。
          * @property {Object} e  - 事件对象。
          */
-        this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesucceed", e));
+        this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesucceeded", e));
+        
         /**
          * @event L.supermap.dataFlowLayer#subscribefailed
          * @description 初始化失败后触发。
          * @property {Object} e  - 事件对象。
          */
         this.dataService.on('subscribeSocketError', (e) => this.fire("subscribefailed", e))
-        this.dataService.on('messageSuccessed', (msg) => this._onMessageSuccessed(msg));
+        this.dataService.on('messageSucceeded', (msg) => this._onMessageSuccessed(msg));
+        
         /**
-         * @event L.supermap.dataFlowLayer#setfilterparamsuccessed
+         * @event L.supermap.dataFlowLayer#setfilterparamsucceeded
          * @description 过滤参数设置成功后触发。
          * @property {Object} e  - 事件对象。
          */
-        this.dataService.on('setFilterParamSuccessed', (msg) => this.fire("setfilterparamsuccessed", msg));
+        this.dataService.on('setFilterParamSucceeded', (msg) => this.fire("setfilterparamsucceeded", msg));
         if (this.options.render === 'mapv') {
             this.addLayer(new MapvRenderer(this.url, this.options));
         } else {
@@ -78996,7 +79083,7 @@ var VectorTile = external_L_default.a.Class.extend({
                 }
 
                 //标签图层处理为文本
-                if (layerStyleInfo.type === VectorFeatureType.LABEL
+                if (layerStyleInfo && layerStyleInfo.type === VectorFeatureType.LABEL
                     && feat.type === VectorFeatureType.POINT
                     && feat.properties.attributes) {
                     feat.type = VectorFeatureType.TEXT;
@@ -79485,7 +79572,7 @@ var TileVectorLayer = VectorGrid.extend({
         }
         this.cartoCSSToLeaflet = new CartoCSSToLeaflet_CartoCSSToLeaflet(me.url);
         me.initLayersInfo();
-        if (!me.options.serverCartoCSSStyle && me.options) {
+        if (!me.options.serverCartoCSSStyle && me.options.cartoCSS) {
             me.setClientCartoCSS(me.options.cartoCSS);
         }
     },
@@ -79532,6 +79619,7 @@ var TileVectorLayer = VectorGrid.extend({
                 }
             }
             me.layersInfo = layersInfo;
+            me.cartoCSSToLeaflet.layersInfo = layersInfo;
             if (me.options.serverCartoCSSStyle) {
                 me.getVectorStylesFromServer();
             }
@@ -79653,7 +79741,7 @@ var TileVectorLayer = VectorGrid.extend({
             layerStyleInfo = me.getLayerStyleInfo(layerName);
 
         //处理标签图层
-        if (layerStyleInfo.textField) {
+        if (layerStyleInfo && layerStyleInfo.textField) {
             var textField = layerStyleInfo.textField;
             if (textField && textField.indexOf('.')) {
                 var arr = textField.split('.');
@@ -81485,6 +81573,7 @@ external_L_default.a.supermap.layerInfoService = layerInfoService;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @extends {L.supermap.ServiceBase}
  */
 var services_MeasureService_MeasureService = ServiceBase.extend({
 
@@ -81719,6 +81808,7 @@ external_L_default.a.supermap.networkAnalyst3DService = networkAnalyst3DService;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @extends {L.supermap.ServiceBase}
  */
 var NetworkAnalystService = ServiceBase.extend({
 
@@ -83065,6 +83155,7 @@ external_L_default.a.supermap.queryService = QueryService_queryService;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @extends {L.supermap.ServiceBase}
  */
 var SpatialAnalystService = ServiceBase.extend({
 
@@ -83741,13 +83832,15 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
 
 
 /**
- * @class WidgetsViewBase
- * @classdesc lealfet 微件基类。
+ * @class L.supermap.widgets.WidgetsViewBase
+ * @classdesc Lealfet 微件基类。
+ * @category Widgets Common
  * @version 9.1.1
  * @param {Object} options - 参数。
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
+ * @extends {L.Control}
  */
 var WidgetsViewBase = external_L_default.a.Control.extend({
     options: {
@@ -83787,7 +83880,7 @@ var WidgetsViewBase = external_L_default.a.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.onAdd
-     * @description 向底图添加微件
+     * @description 向地图添加微件。
      */
     onAdd(map) {
         //子类实现此方法
@@ -83798,8 +83891,8 @@ var WidgetsViewBase = external_L_default.a.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.on
-     * @param {string} eventType - 监听的事件类型
-     * @param {Function} callback - 监听事件的回调函数
+     * @param {string} eventType - 监听的事件类型。
+     * @param {Function} callback - 监听事件的回调函数。
      */
     on(eventType, callback) {
         this._event.on(eventType, callback);
@@ -83808,8 +83901,8 @@ var WidgetsViewBase = external_L_default.a.Control.extend({
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.off
      * @description 事件关闭。
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
+     * @param {string} eventType - 监听的事件名。
+     * @param {Function} callback - 监听事件的回调函数。
      */
     off(eventType, callback) {
         this._event.off(eventType, callback);
@@ -83817,7 +83910,7 @@ var WidgetsViewBase = external_L_default.a.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype._initView
-     * @description 初始化微件UI
+     * @description 初始化微件 UI。
      * @private
      */
     _initView() {
@@ -83868,8 +83961,9 @@ external_L_default.a.supermap.widgets.widgetsViewBase = widgetsViewBase;
  * @param {L.Map} map - leaflet map 对象。
  * @fires L.supermap.widgets.openFileViewModel#filesizeexceed
  * @fires L.supermap.widgets.openFileViewModel#errorfileformat
- * @fires L.supermap.widgets.openFileViewModel#openfilesucceed
+ * @fires L.supermap.widgets.openFileViewModel#openfilesucceeded
  * @fires L.supermap.widgets.openFileViewModel#openfilefailed
+ * @extends {L.Evented}
  */
 var OpenFileViewModel = external_L_default.a.Evented.extend({
     initialize() {
@@ -83945,18 +84039,18 @@ var OpenFileViewModel = external_L_default.a.Evented.extend({
             FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
                 if (geojson) {
                     /**
-                     * @event L.supermap.widgets.openFileViewModel#openfilesucceed
+                     * @event L.supermap.widgets.openFileViewModel#openfilesucceeded
                      * @description 打开文件成功。
                      * @property {GeoJSONObject} result - GeoJSON 格式数据。
                      * @property {string} layerName - 图层名。
                      */
-                    this.fire("openfilesucceed", {
+                    this.fire("openfilesucceeded", {
                         result: geojson,
                         layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
                     });
                 }
             }, (e) => {
-                me.fire("openfilefailed", {messageType: "failure", message: e.errorMassage});
+                me.fire("openfilefailed", {messageType: "failure", message: e});
             }, this);
         }, () => {
             /**
@@ -83994,8 +84088,9 @@ external_L_default.a.supermap.widgets.util = widgetsUtil;
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.widgets.openFile#openfilesucceed
+ * @fires L.supermap.widgets.openFile#openfilesucceeded
  * @fires L.supermap.widgets.openFile#openfilefailed
+ * @extends {L.supermap.widgets.widgetsViewBase}
  * @category Widgets OpenFile
  */
 var OpenFileView = WidgetsViewBase.extend({
@@ -84012,9 +84107,9 @@ var OpenFileView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.openFile.prototype.setViewStyle
-     * @description 改变微件样式
-     * @param {string} styleName - css样式名
-     * @param {string} value - css样式值
+     * @description 改变微件样式。
+     * @param {string} styleName - css 样式名。
+     * @param {string} value - css 样式值。
      */
     setViewStyle(styleName, value) {
         this.rootContainer.style[styleName] = value;
@@ -84022,7 +84117,7 @@ var OpenFileView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.openFile.prototype._initView
-     * @description 创建打开本地文件数据微件
+     * @description 创建打开本地文件数据微件。
      * @returns {HTMLElement}
      * @private
      * @override
@@ -84072,13 +84167,13 @@ var OpenFileView = WidgetsViewBase.extend({
         this.viewModel.on("readdatafail", (e) => {
             this.messageBox.showView(e.message, e.messageType);
         });
-        this.viewModel.on("openfilesucceed", (e) => {
+        this.viewModel.on("openfilesucceeded", (e) => {
             /**
-             * @event L.supermap.widgets.openFile#openfilesucceed
+             * @event L.supermap.widgets.openFile#openfilesucceeded
              * @description 打开文件成功。
              * @property {Object} e - 事件对象。
              */
-            this._event.fire("openfilesucceed", e);
+            this._event.fire("openfilesucceeded", e);
         });
 
         // 阻止 map 默认事件
@@ -84365,12 +84460,14 @@ class GeoJsonLayerDataModel {
  * @classdesc 图层查询微件功能类。
  * @version 9.1.1
  * @category Widgets Search
+ * @param {L.Map} map - Leaflet Map 对象。
  * @param {Object} options - 可选参
- * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 本地搜索服务。
+ * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""}，默认为 online 本地搜索服务。
  * @fires L.supermap.widgets.searchViewModel#newlayeradded
- * @fires L.supermap.widgets.searchViewModel#searchlayersucceed
+ * @fires L.supermap.widgets.searchViewModel#searchlayersucceeded
  * @fires L.supermap.widgets.searchViewModel#searchfailed
- * @fires L.supermap.widgets.searchViewModel#geocodesucceed
+ * @fires L.supermap.widgets.searchViewModel#geocodesucceeded
+ * @extends {L.Evented}
  */
 var SearchViewModel = external_L_default.a.Evented.extend({
     options: {
@@ -84383,7 +84480,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
     initialize(map, options) {
         if (map) {
             /**
-             * @member {L.Map} [L.supermap.widgets.searchViewModel.prototype.map]
+             * @member {L.Map} L.supermap.widgets.searchViewModel.prototype.map
              * @description 当前微件所在的地图。
              */
             this.map = map;
@@ -84431,11 +84528,11 @@ var SearchViewModel = external_L_default.a.Evented.extend({
             let resultFeatures = this.dataModel.layers[searchLayerName].getFeaturesByKeyWord(keyWord);
             if (resultFeatures && resultFeatures.length > 0) {
                 /**
-                 * @event L.supermap.widgets.searchViewModel#searchlayersucceed
+                 * @event L.supermap.widgets.searchViewModel#searchlayersucceeded
                  * @description 图层属性查询成功后触发。
                  * @property {Object} result - 图层数据。
                  */
-                this.fire("searchlayersucceed", {
+                this.fire("searchlayersucceeded", {
                     result: resultFeatures
                 });
             } else {
@@ -84460,11 +84557,11 @@ var SearchViewModel = external_L_default.a.Evented.extend({
         //todo 是否保留缓存？请求过的数据保留一份缓存？
         if (this.searchCache[keyWords]) {
             /**
-             * @event L.supermap.widgets.searchViewModel#geocodesucceed
-             * @description 城市地址匹配成功够触发。
+             * @event L.supermap.widgets.searchViewModel#geocodesucceeded
+             * @description 城市地址匹配成功后触发。
              * @property {Object} result - 城市匹配成功后返回的数据。
              */
-            this.fire("geocodesucceed", {
+            this.fire("geocodesucceeded", {
                 result: this.searchCache[keyWords]
             });
         } else {
@@ -84482,7 +84579,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
                 }
                 if (geocodingResult.poiInfos) {
                     const geoJsonResult = self._dataToGeoJson(geocodingResult.poiInfos, self.geoCodeParam);
-                    self.fire("geocodesucceed", {
+                    self.fire("geocodesucceeded", {
                         result: geoJsonResult
                     });
                 }
@@ -84499,7 +84596,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
         this.dataModel.addLayers(layers, (e) => {
             /**
              * @event L.supermap.widgets.searchViewModel#newlayeradded
-             * @description 添加查询图层事件
+             * @description 添加查询图层事件。
              * @property {Object} result  - 事件返回的新的查询图层对象。
              * @property {string} layerName  - 事件返回的新的查询图层对象名。
              */
@@ -84547,7 +84644,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
 
 
     /**
-     * @description 将地址匹配返回的数据转为geoJson 格式数据
+     * @description 将地址匹配返回的数据转为 GeoJSON 格式数据。
      * @param data
      * @private
      */
@@ -84571,8 +84668,7 @@ var SearchViewModel = external_L_default.a.Evented.extend({
         return features;
     },
 
-    /**
-     * /**
+     /**
      * @function L.supermap.widgets.searchViewModel.prototype._getSearchUrl
      * @description 获取地理编码查询地址。
      * @param {Object} geoCodeParam - 地理编码查询参数。
@@ -84616,10 +84712,10 @@ external_L_default.a.supermap.widgets.searchViewModel = searchViewModel;
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @extends {L.Control}
- * @fires L.supermap.widgets.search#searchlayersucceed
+ * @extends {L.supermap.widgets.widgetsViewBase}
+ * @fires L.supermap.widgets.search#searchlayersucceeded
  * @fires L.supermap.widgets.search#searchfailed
- * @fires L.supermap.widgets.search#geocodesucceed
+ * @fires L.supermap.widgets.search#geocodesucceeded
  */
 var SearchView = WidgetsViewBase.extend({
     options: {
@@ -84667,10 +84763,9 @@ var SearchView = WidgetsViewBase.extend({
     /**
      * @function L.supermap.widgets.search.prototype._initView
      * @description 创建地址匹配或图层要素查询微件。
-     * @override  //todo 复写的方法是否要加上 这个标签
+     * @override
      * @returns {HTMLElement}
      * @private
-     * @override
      */
     _initView() {
         // self 便于 this 对象的使用
@@ -85043,7 +85138,7 @@ var SearchView = WidgetsViewBase.extend({
         });
 
         //----图层查询结果监听
-        this.viewModel.on("searchlayersucceed", (e) => {
+        this.viewModel.on("searchlayersucceeded", (e) => {
             const data = e.result;
             this.clearSearchResult();
             this.searchResultLayer = external_L_default.a.featureGroup(data, {
@@ -85057,17 +85152,17 @@ var SearchView = WidgetsViewBase.extend({
             //查询结果列表：
             this._prepareResultData(data);
             /**
-             * @event L.supermap.widgets.search#searchlayersucceed
+             * @event L.supermap.widgets.search#searchlayersucceeded
              * @description 图层查询成功后触发。
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("searchlayersucceed", {
+            this._event.fire("searchlayersucceeded", {
                 result: this.searchResultLayer.toGeoJSON()
             });
         });
 
         //----地址匹配服务监听
-        this.viewModel.on("geocodesucceed", (e) => {
+        this.viewModel.on("geocodesucceeded", (e) => {
             const data = e.result;
             //先清空当前有的地址匹配图层
             this.clearSearchResult();
@@ -85083,11 +85178,11 @@ var SearchView = WidgetsViewBase.extend({
             //查询结果列表：
             this._prepareResultData(data);
             /**
-             * @event L.supermap.widgets.search#geocodesucceed
+             * @event L.supermap.widgets.search#geocodesucceeded
              * @description 地址匹配服务成功后触发。
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("geocodesucceed", { result: data });
+            this._event.fire("geocodesucceeded", { result: data });
         });
 
         //----地址匹配或图层查询失败监听
@@ -85325,9 +85420,10 @@ external_L_default.a.supermap.widgets.search = searchView;
                                             }`
  * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataFlowViewModel#dataflowservicesubscribed
- * @fires L.supermap.widgets.dataFlowViewModel#subscribesucceed
+ * @fires L.supermap.widgets.dataFlowViewModel#subscribesucceeded
  * @fires L.supermap.widgets.dataFlowViewModel#subscribefailed
  * @fires L.supermap.widgets.dataFlowViewModel#dataupdated
+ * @extends {L.Evented}
  */
 var DataFlowViewModel = external_L_default.a.Evented.extend({
     options: {
@@ -85348,7 +85444,7 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
     initialize(map, dataFlowLayerOptions = null) {
         if (map) {
             /**
-             * @member {L.Map} [L.supermap.widgets.dataFlowViewModel.prototype.map]
+             * @member {L.Map} L.supermap.widgets.dataFlowViewModel.prototype.map
              * @description 当前微件所在的地图。
              */
             this.map = map;
@@ -85418,13 +85514,13 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
         }
         //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
         const dataFlowLayer = new DataFlowLayer(dataFlowUrl, this.options._defaultLayerOptions);
-        dataFlowLayer.on('subscribesucceed', (result) => {
+        dataFlowLayer.on('subscribesucceeded', (result) => {
             /**
-             * @event L.supermap.widgets.dataFlowViewModel#subscribesucceed
+             * @event L.supermap.widgets.dataFlowViewModel#subscribesucceeded
              * @description 数据流订阅成功后触发。
              * @property {Object} result - 返回的数据。
              */
-            this.fire("subscribesucceed", {result: result});
+            this.fire("subscribesucceeded", {result: result});
         });
         dataFlowLayer.on('subscribefailed', (result) => {
             /**
@@ -85540,6 +85636,7 @@ external_L_default.a.supermap.widgets.dataFlowViewModel = dataFlowViewModel;
                                             }`
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataFlow#dataupdated
+ * @extends {L.supermap.widgets.widgetsViewBase}
  */
 var DataFlowView = WidgetsViewBase.extend({
     initialize(options) {
@@ -85671,7 +85768,7 @@ var DataFlowView = WidgetsViewBase.extend({
             this.messageBox.showView("已订阅该数据流服务。");
         });
 
-        this.viewModel.on("subscribesucceed", () => {
+        this.viewModel.on("subscribesucceeded", () => {
             this.messageBox.showView("数据流服务订阅成功。");
         });
 
@@ -85746,9 +85843,10 @@ external_L_default.a.supermap.widgets.geoJSONLayerWithName = geoJSONLayerWithNam
  * @category Widgets ClientComputation
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @fires L.supermap.widgets.clientComputationViewModel#analysisfailed
- * @fires L.supermap.widgets.clientComputationViewModel#analysissucceed
+ * @fires L.supermap.widgets.clientComputationViewModel#analysissucceeded
  * @fires L.supermap.widgets.clientComputationViewModel#layerloaded
  * @fires L.supermap.widgets.clientComputationViewModel#layersremoved
+ * @extends {L.Evented}
  */
 class ClientComputationViewModel_ClientComputationViewModel extends external_L_default.a.Evented {
     initialize(workerUrl) {
@@ -85861,11 +85959,11 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
                     me.fire('analysisfailed');
                 } else {
                     /**
-                     * @event L.supermap.widgets.clientComputationViewModel#analysissucceed
+                     * @event L.supermap.widgets.clientComputationViewModel#analysissucceeded
                      * @description 事件分析成功后触发。 
                      * @property {Object} data - 分析成功后的数据。
                      */
-                    me.fire('analysissucceed', {'data': e.data});
+                    me.fire('analysissucceeded', {'data': e.data});
 
                     let turfLayer = external_L_default.a.geoJSON(e.data, {
                         style: {
@@ -86001,10 +86099,11 @@ external_L_default.a.supermap.widgets.clientComputationViewModel = clientComputa
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.widgets.clientComputation#analysissucceed
+ * @fires L.supermap.widgets.clientComputation#analysissucceeded
  * @fires L.supermap.widgets.clientComputation#analysisfailed
  * @fires L.supermap.widgets.clientComputation#layersremoved
  * @category Widgets ClientComputation
+ * @extends {L.supermap.widgets.widgetsViewBase}
  */
 var ClientComputationView = WidgetsViewBase.extend({
 
@@ -86478,12 +86577,12 @@ var ClientComputationView = WidgetsViewBase.extend({
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 /**
-                 * @event L.supermap.widgets.clientComputation#analysissucceed
+                 * @event L.supermap.widgets.clientComputation#analysissucceeded
                  * @description 分析完成之后触发。
                  * @property {L.GeoJSON} layer - 加载完成后的结果图层。
                  * @property {string} name - 加载完成后的结果图层名称。
                  */
-                this._event.fire('analysissucceed', { "layer": e.layer, "name": e.name })
+                this._event.fire('analysissucceeded', { "layer": e.layer, "name": e.name })
             });
             // 若分析的结果为空
             this.viewModel.on('analysisfailed', ()=> {
@@ -86634,6 +86733,7 @@ external_L_default.a.supermap.widgets.clientComputationLayer = clientComputation
  * @param {string} processingUrl - 分布式分析地址。
  * @fires L.supermap.widgets.DistributedAnalysisModel#datasetsloaded
  * @fires L.supermap.widgets.DistributedAnalysisModel#datasetinfoloaded
+ * @extends {L.Evented}
  */
 class DistributedAnalysisModel_DistributedAnalysisModel extends external_L_default.a.Evented {
     
@@ -86751,9 +86851,10 @@ external_L_default.a.supermap.widgets.DistributedAnalysisModel = DistributedAnal
  * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetsloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetinfoloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
- * @fires L.supermap.widgets.distributedAnalysisViewModel#analysissucceed
+ * @fires L.supermap.widgets.distributedAnalysisViewModel#analysissucceeded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#layerloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#layersremoved
+ * @extends {L.Evented}
  */
 class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external_L_default.a.Evented {
     initialize(processingUrl) {
@@ -86833,7 +86934,7 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
                         }).then(function (result) {
                             let mapUrl = result[0].path;
                             /**
-                             * @event L.supermap.widgets.distributedAnalysisViewModel#analysissucceed
+                             * @event L.supermap.widgets.distributedAnalysisViewModel#analysissucceeded
                              * @description 分析成功后服务器返回的数据。
                              */
                             me.fire('analysissucceed', { 'result': result });
@@ -86898,9 +86999,10 @@ external_L_default.a.supermap.widgets.distributedAnalysisViewModel = distributed
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.widgets.distributedAnalysis#analysissucceed
+ * @fires L.supermap.widgets.distributedAnalysis#analysissucceeded
  * @fires L.supermap.widgets.distributedAnalysis#analysisfailed
  * @fires L.supermap.widgets.distributedAnalysis#layersremoved
+ * @extends {L.supermap.widgets.widgetsViewBase}
  * @category Widgets DistributedAnalysis
  */
 var DistributedAnalysisView = WidgetsViewBase.extend({
@@ -87213,12 +87315,12 @@ var DistributedAnalysisView = WidgetsViewBase.extend({
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
                     /**
-                     * @event L.supermap.widgets.distributedAnalysis#analysissucceed
+                     * @event L.supermap.widgets.distributedAnalysis#analysissucceeded
                      * @description 分析完成后触发。
                      * @property {L.GeoJSON} layer - 结果图层。
                      * @property {string} name - 结果图层名称。
                      */
-                    this._event.fire('analysissucceed', {'layer': e.layer, 'name': e.name})
+                    this._event.fire('analysissucceeded', {'layer': e.layer, 'name': e.name})
                 });
                 
                 this.viewModel.on('analysisfailed', (e) => {
@@ -87228,7 +87330,7 @@ var DistributedAnalysisView = WidgetsViewBase.extend({
                     /**
                      * @event L.supermap.widgets.distributedAnalysis#analysisfailed
                      * @description 分析失败后触发。
-                     * @property {string} error - 服务器返回错误。
+                     * @property {string} error - 服务器返回的错误。
                      */
                     this._event.fire('analysisfailed', {'error': e.error})
                 });
@@ -87338,7 +87440,7 @@ var DistributedAnalysisView = WidgetsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.widgets.distributedAnalysis.prototype._creatInputBox
+     * @function L.supermap.widgets.distributedAnalysis.prototype._creatUnitSelectBox
      * @description 创建含有 span 的 input 框。
      * @private
      */
@@ -87389,8 +87491,9 @@ external_L_default.a.supermap.widgets.distributedAnalysis = distributedAnalysisV
  * @version 9.1.1
  * @category Widgets DataServiceQuery
  * @param {string} dataserviceUrl - 数据服务地址。
- * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceed
+ * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceeded
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfailed
+ * @extends {L.Evented}
  */
 class DataServiceQueryViewModel_DataServiceQueryViewModel extends external_L_default.a.Evented {
 
@@ -87434,7 +87537,7 @@ class DataServiceQueryViewModel_DataServiceQueryViewModel extends external_L_def
 
     /**
      * @function L.supermap.widgets.dataServiceQueryViewModel.prototype._getQureyResult
-     * @description 获取 features。
+     * @description 获取查询结果。
      * @private
      * @param {Object} serviceResult - 服务器返回结果。
      * @param {L.Map} map - Leaflet Map 对象。
@@ -87459,11 +87562,11 @@ class DataServiceQueryViewModel_DataServiceQueryViewModel extends external_L_def
         }).addTo(map);
         this.resultLayers.push(resultLayer);
         /**
-         * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceed
+         * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceeded
          * @description features 获取成功时触发。
          * @property {Object} result - 服务器返回的结果。
          */
-        this.fire('getfeaturessucceed', { 'result': serviceResult.result.features })
+        this.fire('getfeaturessucceeded', { 'result': serviceResult.result.features })
     }
 
     /**
@@ -87497,14 +87600,15 @@ external_L_default.a.supermap.widgets.dataServiceQueryViewModel = dataServiceQue
  * @version 9.1.1
  * @param {string} dataServiceUrl - 数据服务地址。
  * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries"。
- * @param {Object.<Array>} options - 可选参数。
+ * @param {Object} options - 可选参数。
  * @param {(Array.<SuperMap.GetFeatureMode>|SuperMap.GetFeatureMode)} [options.getFeatureMode] - 查询方式。
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.widgets.dataServiceQuery#getfeaturessucceed
+ * @fires L.supermap.widgets.dataServiceQuery#getfeaturessucceeded
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfailed
  * @category Widgets DataServiceQuery
+ * @extends {L.supermap.widgets.widgetsViewBase}
  */
 var DataServiceQueryView = WidgetsViewBase.extend({
 
@@ -87726,18 +87830,18 @@ var DataServiceQueryView = WidgetsViewBase.extend({
             analysisBtn.style.display = 'none';
             let queryParams = getQueryParams();
 
-            this.viewModel.on('getfeaturessucceed', (e) => {
+            this.viewModel.on('getfeaturessucceeded', (e) => {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 if (e.result.features.length === 0) {
                     this.messageBox.showView(Lang.i18n('msg_dataReturnedIsEmpty'), "success");
                 }
                 /**
-                 * @event L.supermap.widgets.dataServiceQuery#getfeaturessucceed
+                 * @event L.supermap.widgets.dataServiceQuery#getfeaturessucceeded
                  * @description features 获取成功时触发。
                  * @property {Object} result - 服务器返回的结果。
                  */
-                this._event.fire('getfeaturessucceed', {'result': e.result})
+                this._event.fire('getfeaturessucceeded', {'result': e.result})
             });
             this.viewModel.on('getfeaturesfailed', (e) => {
                 analysingContainer.style.display = 'none';
@@ -91641,7 +91745,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */
