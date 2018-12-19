@@ -546,7 +546,7 @@ export class GeoJSON extends JSONFormat {
      *  @function SuperMap.Format.GeoJSON.prototype.isValidType
      *  @description 检查一个 GeoJSON 对象是否和给定的类型相符的合法的对象。
      *  @returns {boolean} GeoJSON 是否是给定类型的合法对象。
-     * @private
+     *  @private
      */
     isValidType(obj, type) {
         var valid = false;

@@ -43,9 +43,9 @@ import {
  `function (feature,latlng) {
                                                         return feature.properties['rotate'];
                                                 }`
- * @fires L.supermap.dataFlowLayer#subscribesucceed
+ * @fires L.supermap.dataFlowLayer#subscribesucceeded
  * @fires L.supermap.dataFlowLayer#subscribefailed
- * @fires L.supermap.dataFlowLayer#setfilterparamsuccessed
+ * @fires L.supermap.dataFlowLayer#setfilterparamsucceeded
  * @fires L.supermap.dataFlowLayer#dataupdated
  */
 
@@ -80,24 +80,26 @@ export var DataFlowLayer = L.LayerGroup.extend({
     onAdd: function (map) { // eslint-disable-line no-unused-vars
         this.dataService.initSubscribe();
         /**
-         * @event L.supermap.dataFlowLayer#subscribesucceed
+         * @event L.supermap.dataFlowLayer#subscribesucceeded
          * @description 初始化成功后触发。
          * @property {Object} e  - 事件对象。
          */
-        this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesucceed", e));
+        this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesucceeded", e));
+        
         /**
          * @event L.supermap.dataFlowLayer#subscribefailed
          * @description 初始化失败后触发。
          * @property {Object} e  - 事件对象。
          */
         this.dataService.on('subscribeSocketError', (e) => this.fire("subscribefailed", e))
-        this.dataService.on('messageSuccessed', (msg) => this._onMessageSuccessed(msg));
+        this.dataService.on('messageSucceeded', (msg) => this._onMessageSuccessed(msg));
+        
         /**
-         * @event L.supermap.dataFlowLayer#setfilterparamsuccessed
+         * @event L.supermap.dataFlowLayer#setfilterparamsucceeded
          * @description 过滤参数设置成功后触发。
          * @property {Object} e  - 事件对象。
          */
-        this.dataService.on('setFilterParamSuccessed', (msg) => this.fire("setfilterparamsuccessed", msg));
+        this.dataService.on('setFilterParamSucceeded', (msg) => this.fire("setfilterparamsucceeded", msg));
         if (this.options.render === 'mapv') {
             this.addLayer(new MapvRenderer(this.url, this.options));
         } else {

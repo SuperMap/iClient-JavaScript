@@ -51,7 +51,7 @@ export var WidgetsViewBase = L.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.onAdd
-     * @description 向底图添加微件
+     * @description 向地图添加微件。
      */
     onAdd(map) {
         //子类实现此方法
@@ -62,8 +62,8 @@ export var WidgetsViewBase = L.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.on
-     * @param {string} eventType - 监听的事件类型
-     * @param {Function} callback - 监听事件的回调函数
+     * @param {string} eventType - 监听的事件类型。
+     * @param {Function} callback - 监听事件的回调函数。
      */
     on(eventType, callback) {
         this._event.on(eventType, callback);
@@ -72,8 +72,8 @@ export var WidgetsViewBase = L.Control.extend({
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.off
      * @description 事件关闭。
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
+     * @param {string} eventType - 监听的事件名。
+     * @param {Function} callback - 监听事件的回调函数。
      */
     off(eventType, callback) {
         this._event.off(eventType, callback);
@@ -81,7 +81,7 @@ export var WidgetsViewBase = L.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype._initView
-     * @description 初始化微件UI
+     * @description 初始化微件 UI。
      * @private
      */
     _initView() {

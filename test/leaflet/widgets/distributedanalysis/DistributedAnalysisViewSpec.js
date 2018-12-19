@@ -75,7 +75,7 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
             return Promise.resolve();
         });
         // 分析成功的监听事件
-        distributedAnalysis.on('analysissucceed', (e) => {
+        distributedAnalysis.on('analysissucceeded', (e) => {
             // 得到响应的结果
             serviceResult = e;
             if (serviceResult.error) {
@@ -83,7 +83,7 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
             }
             try {
                 expect(serviceResult).not.toBeNull();
-                expect(serviceResult.type).toBe("analysissucceed");
+                expect(serviceResult.type).toBe("analysissucceeded");
                 // layer
                 expect(serviceResult.layer.requestParams.cacheEnabled).toBeTruthy();
                 expect(serviceResult.layer.requestParams.origin).toEqual('{"x":-180,"y":90}');

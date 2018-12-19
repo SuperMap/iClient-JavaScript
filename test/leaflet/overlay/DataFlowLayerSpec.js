@@ -340,7 +340,7 @@ describe('leaflet_DataFlowLayer', () => {
                 }
             });
             // done();
-            layer.dataService.dataFlow.events.triggerEvent('messageSuccessed', e);
+            layer.dataService.dataFlow.events.triggerEvent('messageSucceeded', e);
         }, 2000)
 
     });

@@ -5,7 +5,8 @@ import {SuperMap} from '../../SuperMap';
 
 /**
  * @class SuperMap.Widgets.TemplateBase
- * @classdesc 微件公用组件父类，由于约束统一封装的公用组件结构
+ * @classdesc 微件公用组件父类，用于约束统一封装的公用组件结构。
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Widgets Common
@@ -15,20 +16,20 @@ export class TemplateBase {
         options = options ? options : {};
         /**
          * @member {string} [SuperMap.Widgets.TemplateBase.prototype.id=null]
-         * @description  组件 dom 元素 id
+         * @description  组件 dom 元素 id。
          */
         this.id = options.id ? options.id : null;
 
         /**
          * @member {Element} [SuperMap.Widgets.TemplateBase.prototype.rootContainer=null]
-         * @description  组件 dom 元素对象
+         * @description  组件 dom 元素对象。
          */
         this.rootContainer = null;
     }
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype.getElement
-     * @description 获取当前组件元素对象
+     * @description 获取当前组件元素对象。
      * @return {Element}
      */
     getElement() {
@@ -42,7 +43,7 @@ export class TemplateBase {
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype._initView
-     * @description 初始化模板
+     * @description 初始化模板。
      */
     _initView() {
         //子类实现此方法
@@ -50,7 +51,7 @@ export class TemplateBase {
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype.showView
-     * @description 显示组件
+     * @description 显示组件。
      */
     showView() {
         this.rootContainer.hidden = false;
@@ -58,7 +59,7 @@ export class TemplateBase {
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype.closeView
-     * @description 隐藏组件
+     * @description 隐藏组件。
      */
     closeView() {
         this.rootContainer.hidden = true;

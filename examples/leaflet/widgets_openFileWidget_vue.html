@@ -86,7 +86,7 @@
                 self.openFileViewModel.on("errorfileformat", _messageListener.bind(self));
                 self.openFileViewModel.on("openfilefailed", _messageListener.bind(self));
                 self.openFileViewModel.on("readdatafail", _messageListener.bind(self));
-                self.openFileViewModel.on("openfilesucceed", function (e) {
+                self.openFileViewModel.on("openfilesucceeded", function (e) {
                     var layer = L.geoJSON(e.result).addTo(map);
                     map.flyToBounds(layer.getBounds());
                     layersControl.addOverlay(layer, e.layerName);

@@ -133,7 +133,7 @@ describe('leaflet_search_SearchView', () => {
     it('search:searchFromLayer', (done) => {
 
         expect(poiSearch.viewModel.dataModel.layers).not.toBeUndefined();
-        poiSearch.viewModel.on('searchlayersucceed', function (e) {
+        poiSearch.viewModel.on('searchlayersucceeded', function (e) {
             try {
                 expect(e.result[0].feature).not.toBeNull();
                 expect(e.result[0].feature).not.toBeUndefined();
@@ -159,7 +159,7 @@ describe('leaflet_search_SearchView', () => {
             return Promise.resolve();
         });
 
-        poiSearch.viewModel.on('geocodesucceed', function (e) {
+        poiSearch.viewModel.on('geocodesucceeded', function (e) {
             try {
                 expect(e.result[0].geometry.coordinates.length).toBe(2);
                 done();

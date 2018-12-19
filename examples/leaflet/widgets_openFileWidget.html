@@ -26,7 +26,7 @@
     var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);
     var openFileWidgets = L.supermap.widgets.openFile().addTo(map);
     //将成功返回的数据加载到地图
-    openFileWidgets.on("openfilesucceed", function (e) {
+    openFileWidgets.on("openfilesucceeded", function (e) {
         var layer = L.geoJSON(e.result).addTo(map);
         map.flyToBounds(layer.getBounds());
         layersControl.addOverlay(layer, e.layerName);

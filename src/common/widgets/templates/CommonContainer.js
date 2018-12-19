@@ -7,6 +7,7 @@ import {TemplateBase} from './TemplateBase';
 /**
  * @class SuperMap.Widgets.CommonContainer
  * @classdesc 微件统一外框。
+ * @version 9.1.1
  * @param {Object} options - 组件可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。

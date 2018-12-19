@@ -5,7 +5,8 @@ import {SuperMap} from '../../SuperMap';
 
 /**
  * @class SuperMap.Widgets.MessageBox
- * @classdesc 微件信息提示框
+ * @version 9.1.1
+ * @classdesc 微件信息提示框。
  * @category Widgets Common
  */
 export class MessageBox {
@@ -51,7 +52,7 @@ export class MessageBox {
 
     /**
      * @function SuperMap.Widgets.MessageBox.prototype.closeView
-     * @description 关闭提示框
+     * @description 关闭提示框。
      */
     closeView() {
         this.messageBoxContainer.hidden = true;
@@ -59,9 +60,9 @@ export class MessageBox {
 
     /**
      * @function SuperMap.Widgets.MessageBox.prototype.showView
-     * @description 显示提示框
-     * @param {string} message - 提示框显示内容
-     * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success", 默认为"warring"
+     * @description 显示提示框。
+     * @param {string} message - 提示框显示内容。
+     * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success"。
      */
     showView(message, type = 'warring') {
         //设置提示框的样式：

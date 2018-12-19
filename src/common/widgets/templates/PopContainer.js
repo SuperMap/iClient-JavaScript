@@ -6,7 +6,8 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class SuperMap.Widgets.PopContainer
- * @classdesc 弹框组件
+ * @classdesc 弹框组件。
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 弹框组件名称。
@@ -55,8 +56,8 @@ export class PopContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PopContainer.prototype.appendContent
-     * @description 追加内容
-     * @param {Element} dom - 内容元素
+     * @description 追加内容。
+     * @param {Element} dom - 内容元素。
      */
     appendContent(dom) {
         this.content.appendChild(dom);

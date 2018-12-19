@@ -8,7 +8,8 @@ import {Lang} from '../../lang/Lang';
 
 /**
  * @class SuperMap.Widgets.FileReaderUtil
- * @classdesc 微件读取文件工具类
+ * @classdesc 微件读取文件工具类。
+ * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  */
 export let FileReaderUtil = {

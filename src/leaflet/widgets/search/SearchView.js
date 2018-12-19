@@ -38,9 +38,9 @@ import {
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
- * @fires L.supermap.widgets.search#searchlayersucceed
+ * @fires L.supermap.widgets.search#searchlayersucceeded
  * @fires L.supermap.widgets.search#searchfailed
- * @fires L.supermap.widgets.search#geocodesucceed
+ * @fires L.supermap.widgets.search#geocodesucceeded
  */
 export var SearchView = WidgetsViewBase.extend({
     options: {
@@ -91,7 +91,6 @@ export var SearchView = WidgetsViewBase.extend({
      * @override  //todo 复写的方法是否要加上 这个标签
      * @returns {HTMLElement}
      * @private
-     * @override
      */
     _initView() {
         // self 便于 this 对象的使用
@@ -464,7 +463,7 @@ export var SearchView = WidgetsViewBase.extend({
         });
 
         //----图层查询结果监听
-        this.viewModel.on("searchlayersucceed", (e) => {
+        this.viewModel.on("searchlayersucceeded", (e) => {
             const data = e.result;
             this.clearSearchResult();
             this.searchResultLayer = L.featureGroup(data, {
@@ -478,17 +477,17 @@ export var SearchView = WidgetsViewBase.extend({
             //查询结果列表：
             this._prepareResultData(data);
             /**
-             * @event L.supermap.widgets.search#searchlayersucceed
+             * @event L.supermap.widgets.search#searchlayersucceeded
              * @description 图层查询成功后触发。
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("searchlayersucceed", {
+            this._event.fire("searchlayersucceeded", {
                 result: this.searchResultLayer.toGeoJSON()
             });
         });
 
         //----地址匹配服务监听
-        this.viewModel.on("geocodesucceed", (e) => {
+        this.viewModel.on("geocodesucceeded", (e) => {
             const data = e.result;
             //先清空当前有的地址匹配图层
             this.clearSearchResult();
@@ -504,11 +503,11 @@ export var SearchView = WidgetsViewBase.extend({
             //查询结果列表：
             this._prepareResultData(data);
             /**
-             * @event L.supermap.widgets.search#geocodesucceed
+             * @event L.supermap.widgets.search#geocodesucceeded
              * @description 地址匹配服务成功后触发。
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("geocodesucceed", { result: data });
+            this._event.fire("geocodesucceeded", { result: data });
         });
 
         //----地址匹配或图层查询失败监听

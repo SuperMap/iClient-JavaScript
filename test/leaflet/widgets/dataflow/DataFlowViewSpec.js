@@ -71,17 +71,17 @@ describe('leaflet_dataflow_DataFlowView', () => {
     });
 
     it('subscribe', (done) => {
-            dataView.viewModel.on('subscribesucceed', (e) => {
-                try {
-                    expect(e.result.currentTarget.url).toBe(urlDataFlow+"/subscribe");
-                    done();
-                } catch (exception) {
-                    console.log("'dataflow'案例失败：" + exception.name + ":" + exception.message);
-                    expect(false).toBeTruthy();
-                    done();
-                }
-            });
-            dataView.viewModel.subscribe(urlDataFlow);
+        dataView.viewModel.on('subscribesucceeded', (e) => {
+            try {
+                expect(e.result.currentTarget.url).toBe(urlDataFlow+"/subscribe");
+                done();
+            } catch (exception) {
+                console.log("'dataflow'案例失败：" + exception.name + ":" + exception.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+        dataView.viewModel.subscribe(urlDataFlow);
     });
 
     it('dataupdated', (done) => {

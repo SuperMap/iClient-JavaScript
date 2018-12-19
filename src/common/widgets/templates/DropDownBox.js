@@ -7,6 +7,7 @@ import {TemplateBase} from './TemplateBase';
 /**
  * @class SuperMap.Widgets.DropDownBox
  * @classdesc 微件统一的图片下拉框。
+ * @version 9.1.1
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {string} optionsArr.title - 下拉框 title。

@@ -25,7 +25,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
                                             }`
  * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataFlowViewModel#dataflowservicesubscribed
- * @fires L.supermap.widgets.dataFlowViewModel#subscribesucceed
+ * @fires L.supermap.widgets.dataFlowViewModel#subscribesucceeded
  * @fires L.supermap.widgets.dataFlowViewModel#subscribefailed
  * @fires L.supermap.widgets.dataFlowViewModel#dataupdated
  */
@@ -48,7 +48,7 @@ export var DataFlowViewModel = L.Evented.extend({
     initialize(map, dataFlowLayerOptions = null) {
         if (map) {
             /**
-             * @member {L.Map} [L.supermap.widgets.dataFlowViewModel.prototype.map]
+             * @member {L.Map} L.supermap.widgets.dataFlowViewModel.prototype.map
              * @description 当前微件所在的地图。
              */
             this.map = map;
@@ -118,13 +118,13 @@ export var DataFlowViewModel = L.Evented.extend({
         }
         //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
         const dataFlowLayer = new DataFlowLayer(dataFlowUrl, this.options._defaultLayerOptions);
-        dataFlowLayer.on('subscribesucceed', (result) => {
+        dataFlowLayer.on('subscribesucceeded', (result) => {
             /**
-             * @event L.supermap.widgets.dataFlowViewModel#subscribesucceed
+             * @event L.supermap.widgets.dataFlowViewModel#subscribesucceeded
              * @description 数据流订阅成功后触发。
              * @property {Object} result - 返回的数据。
              */
-            this.fire("subscribesucceed", {result: result});
+            this.fire("subscribesucceeded", {result: result});
         });
         dataFlowLayer.on('subscribefailed', (result) => {
             /**

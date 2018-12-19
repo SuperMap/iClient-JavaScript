@@ -5,8 +5,9 @@ import {SuperMap} from '../../SuperMap';
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class IndexTabsPageContainer
- * @description 标签索引组件
+ * @class SuperMap.Widgets.IndexTabsPageContainer
+ * @description 标签索引组件。
+ * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Widgets Common
@@ -40,7 +41,7 @@ export class IndexTabsPageContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.setTabs
-     * @description 设置标签元素
+     * @description 设置标签元素。
      * @param {Array.<Element>} tabs
      */
     setTabs(tabs) {
@@ -50,7 +51,7 @@ export class IndexTabsPageContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.appendTabs
-     * @description 追加标签元素
+     * @description 追加标签元素。
      * @param {Array.<Element>} tabs
      */
     appendTabs(tabs) {
@@ -75,8 +76,8 @@ export class IndexTabsPageContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeTab
-     * @description 删除某个标签页面
-     * @param {number} index - 标签索引号
+     * @description 删除某个标签页面。
+     * @param {number} index - 标签索引号。
      */
     removeTab(index) {
         this.header.removeChild(this.header.children[index]);
@@ -84,8 +85,8 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function IndexTabsPageContainer.prototype.removeAllTabs
-     * @description 删除所有标签F
+     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeAllTabs
+     * @description 删除所有标签。
      */
     removeAllTabs() {
         for (let i = this.header.children.length; i > 0; i--) {

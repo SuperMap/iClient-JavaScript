@@ -12,7 +12,7 @@ import { GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesByBo
  * @version 9.1.1
  * @category Widgets DataServiceQuery
  * @param {string} dataserviceUrl - 数据服务地址。
- * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceed
+ * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceeded
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfailed
  */
 export class DataServiceQueryViewModel extends L.Evented {
@@ -57,7 +57,7 @@ export class DataServiceQueryViewModel extends L.Evented {
 
     /**
      * @function L.supermap.widgets.dataServiceQueryViewModel.prototype._getQureyResult
-     * @description 获取 features。
+     * @description 获取查询结果。
      * @private
      * @param {Object} serviceResult - 服务器返回结果。
      * @param {L.Map} map - Leaflet Map 对象。
@@ -82,11 +82,11 @@ export class DataServiceQueryViewModel extends L.Evented {
         }).addTo(map);
         this.resultLayers.push(resultLayer);
         /**
-         * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceed
+         * @event L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceeded
          * @description features 获取成功时触发。
          * @property {Object} result - 服务器返回的结果。
          */
-        this.fire('getfeaturessucceed', { 'result': serviceResult.result.features })
+        this.fire('getfeaturessucceeded', { 'result': serviceResult.result.features })
     }
 
     /**
