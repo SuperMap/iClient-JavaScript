@@ -252,7 +252,7 @@ ul.icl-nav-menu-sub:nth-child(1) {
     font-size: 1.4rem;
     max-height: 600px;
     margin-bottom: 10px;
-    overflow: auto;
+    /* overflow: auto; */
     color: #d7d7d7;
 }
 
@@ -265,6 +265,17 @@ ul.icl-nav-menu-sub:nth-child(1) {
 
     line-height: 30px;
 }
+
+.icl-nav-menu-sub .red-circle{
+    display: inline-block; 
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    position: absolute; 
+    right: -10px; 
+    top: 7px;
+    background:#c70022; 
+} 
 
 .icl-nav-menu-sub::-webkit-scrollbar {
     width: 3px;
