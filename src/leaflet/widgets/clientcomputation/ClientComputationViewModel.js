@@ -18,6 +18,7 @@ import {AttributesPopContainer} from '@supermap/iclient-common';
  * @fires L.supermap.widgets.clientComputationViewModel#analysissucceeded
  * @fires L.supermap.widgets.clientComputationViewModel#layerloaded
  * @fires L.supermap.widgets.clientComputationViewModel#layersremoved
+ * @extends {L.Evented}
  */
 export class ClientComputationViewModel extends L.Evented {
     initialize(workerUrl) {

@@ -12,6 +12,7 @@ import {TemplateBase} from './TemplateBase';
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。
  * @category Widgets Common
+ * @extends {SuperMap.Widgets.TemplateBase}
  */
 export class CommonContainer extends TemplateBase {
     constructor(options) {

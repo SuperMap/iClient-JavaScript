@@ -14,6 +14,7 @@ import { GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesByBo
  * @param {string} dataserviceUrl - 数据服务地址。
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceeded
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfailed
+ * @extends {L.Evented}
  */
 export class DataServiceQueryViewModel extends L.Evented {
 

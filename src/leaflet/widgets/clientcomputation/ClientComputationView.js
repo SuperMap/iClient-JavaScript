@@ -19,6 +19,7 @@ import { CommonContainer, DropDownBox, Select, MessageBox, Lang } from '@superma
  * @fires L.supermap.widgets.clientComputation#analysisfailed
  * @fires L.supermap.widgets.clientComputation#layersremoved
  * @category Widgets ClientComputation
+ * @extends {L.supermap.widgets.widgetsViewBase}
  */
 export var ClientComputationView = WidgetsViewBase.extend({
 

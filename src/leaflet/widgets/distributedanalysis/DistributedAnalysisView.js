@@ -18,6 +18,7 @@ import { CommonContainer, DropDownBox, Select, MessageBox, Lang, KernelDensityJo
  * @fires L.supermap.widgets.distributedAnalysis#analysissucceeded
  * @fires L.supermap.widgets.distributedAnalysis#analysisfailed
  * @fires L.supermap.widgets.distributedAnalysis#layersremoved
+ * @extends {L.supermap.widgets.widgetsViewBase}
  * @category Widgets DistributedAnalysis
  */
 export var DistributedAnalysisView = WidgetsViewBase.extend({

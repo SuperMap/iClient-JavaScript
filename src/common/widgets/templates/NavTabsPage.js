@@ -11,6 +11,7 @@ import {TemplateBase} from './TemplateBase';
  * @param {Object} options - 组件配置参数。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组，形如：[{title: "",content: HTMLElement}]，初始时，传入则创建页面。
+ * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用

@@ -30,6 +30,7 @@ import {
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturessucceeded
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfailed
  * @category Widgets DataServiceQuery
+ * @extends {L.supermap.widgets.widgetsViewBase}
  */
 export var DataServiceQueryView = WidgetsViewBase.extend({
 

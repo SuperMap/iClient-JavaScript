@@ -12,6 +12,7 @@ import {TemplateBase} from './TemplateBase';
  * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
  * @param {number} options.pageCounts - 页数。
+ * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
 export class PaginationContainer extends TemplateBase {

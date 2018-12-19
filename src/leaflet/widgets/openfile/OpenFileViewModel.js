@@ -20,6 +20,7 @@ import {
  * @fires L.supermap.widgets.openFileViewModel#errorfileformat
  * @fires L.supermap.widgets.openFileViewModel#openfilesucceeded
  * @fires L.supermap.widgets.openFileViewModel#openfilefailed
+ * @extends {L.Evented}
  */
 export var OpenFileViewModel = L.Evented.extend({
     initialize() {

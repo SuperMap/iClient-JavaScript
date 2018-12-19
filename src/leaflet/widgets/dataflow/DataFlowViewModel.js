@@ -28,6 +28,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  * @fires L.supermap.widgets.dataFlowViewModel#subscribesucceeded
  * @fires L.supermap.widgets.dataFlowViewModel#subscribefailed
  * @fires L.supermap.widgets.dataFlowViewModel#dataupdated
+ * @extends {L.Evented}
  */
 export var DataFlowViewModel = L.Evented.extend({
     options: {

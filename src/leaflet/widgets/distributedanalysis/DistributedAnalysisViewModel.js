@@ -18,6 +18,7 @@ import { ProcessingService } from '../../services/ProcessingService'
  * @fires L.supermap.widgets.distributedAnalysisViewModel#analysissucceeded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#layerloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#layersremoved
+ * @extends {L.Evented}
  */
 export class DistributedAnalysisViewModel extends L.Evented {
     initialize(processingUrl) {

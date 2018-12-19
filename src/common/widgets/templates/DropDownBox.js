@@ -17,6 +17,7 @@ import {TemplateBase} from './TemplateBase';
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
  * @category Widgets Common
+ * @extends {SuperMap.Widgets.TemplateBase}
  */
 export class DropDownBox extends TemplateBase {
     constructor(optionsArr) {

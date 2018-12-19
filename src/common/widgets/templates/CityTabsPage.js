@@ -13,6 +13,7 @@ import {Util} from '../../commontypes/Util';
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ * @extends {SuperMap.Widgets.IndexTabsPageContainer}
  * @category Widgets Common
  */
 export class CityTabsPage extends IndexTabsPageContainer {

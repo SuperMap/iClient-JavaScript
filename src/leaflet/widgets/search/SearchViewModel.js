@@ -22,6 +22,7 @@ import {
  * @fires L.supermap.widgets.searchViewModel#searchlayersucceeded
  * @fires L.supermap.widgets.searchViewModel#searchfailed
  * @fires L.supermap.widgets.searchViewModel#geocodesucceeded
+ * @extends {L.Evented}
  */
 export var SearchViewModel = L.Evented.extend({
     options: {

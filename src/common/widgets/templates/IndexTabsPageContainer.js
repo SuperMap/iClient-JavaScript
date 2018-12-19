@@ -11,6 +11,7 @@ import {TemplateBase} from './TemplateBase';
  * @param {Object} options - 可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Widgets Common
+ * @extends {SuperMap.Widgets.TemplateBase}
  */
 export class IndexTabsPageContainer extends TemplateBase {
     constructor(options) {

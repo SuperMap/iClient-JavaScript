@@ -12,6 +12,7 @@ import {PopContainer} from './PopContainer';
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object} options.title - 属性弹框组件名称。
  * @param {Object} options.attributes - 组件需要显示的属性内容。
+ * @extends {SuperMap.Widgets.PopContainer}
  * @category Widgets Common
  */
 export class AttributesPopContainer extends PopContainer {
