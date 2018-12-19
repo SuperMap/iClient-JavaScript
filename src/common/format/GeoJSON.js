@@ -259,8 +259,8 @@ export class GeoJSON extends JSONFormat {
                 if (!geometry.parts && geometry.points) {
                     geometry.parts = [geometry.points.length];
                 }
-                var geo = new ServerGeometry(geometry).toGeometry()||geometry;
-                var geometryType = geo.geometryType||geo.type;
+                var geo = new ServerGeometry(geometry).toGeometry() || geometry;
+                var geometryType = geo.geometryType || geo.type;
                 var data;
                 if (geometryType === "LinearRing") {
                     geometryType = "LineString";
@@ -502,12 +502,18 @@ export class GeoJSON extends JSONFormat {
      */
     fromGeoJSON(json, type, filter) {
         let feature = this.read(json, type, filter);
-        return ServerGeometry.fromGeometry(feature);
+        if (!Util.isArray(feature)) {
+            return this._toiSevrerFeature(feature);
+        }
+        return feature.map((element) => {
+            return this._toiSevrerFeature(element);
+        })
     }
+
     /**
      * @function SuperMap.Format.GeoJSON.prototype.toGeoJSON
      * @version 9.1.1
-     * @description 将 GeoJSON 对象或者GeoJSON 对象字符串转换为iServer Feature JSON。
+     * @description 将 iServer Feature JSON 对象转换为 GeoJSON 对象。
      * @param {Object} obj - iServer Feature JSON。
      * @returns {GeoJSONObject}  GeoJSON 对象。
      */
@@ -533,6 +539,8 @@ export class GeoJSON extends JSONFormat {
             let feature = {};
             feature.geometry = obj;
             geojson = this.extract.feature.apply(this, [feature]);
+        } else {
+            geojson = this.extract.feature.apply(this, [obj]);
         }
 
         function isGeometry(input) {
@@ -553,10 +561,10 @@ export class GeoJSON extends JSONFormat {
         switch (type) {
             case "Geometry":
                 if (Util.indexOf(
-                        ["Point", "MultiPoint", "LineString", "MultiLineString",
-                            "Polygon", "MultiPolygon", "Box", "GeometryCollection"
-                        ],
-                        obj.type) == -1) {
+                    ["Point", "MultiPoint", "LineString", "MultiLineString",
+                        "Polygon", "MultiPolygon", "Box", "GeometryCollection"
+                    ],
+                    obj.type) == -1) {
                     // unsupported geometry type
                     //SuperMap.Console.error("Unsupported geometry type: " +
                     // obj.type);
@@ -682,7 +690,22 @@ export class GeoJSON extends JSONFormat {
         }
         return crs;
     }
-
+    _toiSevrerFeature(feature) {
+        const attributes = feature.attributes;
+        const attrNames = [];
+        const attrValues = [];
+        for (var attr in attributes) {
+            attrNames.push(attr);
+            attrValues.push(attributes[attr]);
+        }
+        const newFeature = {
+            fieldNames: attrNames,
+            fieldValues: attrValues,
+            geometry: ServerGeometry.fromGeometry(feature.geometry)
+        };
+        newFeature.geometry.id = feature.fid;
+        return newFeature;
+    }
     createAttributes(feature) {
         if (!feature) {
             return null;

@@ -13,7 +13,7 @@ import '../../../resources/QueryService.js';
 var map, url = GlobeParameter.WorldURL, testDiv, clientComputation;
 var dataServiceURL = GlobeParameter.wokerURL;
 describe('leaflet_clientcomputation_ClientComputationView', () => {
-    var  clientComputationLayer;
+    var clientComputationLayer;
     var originalTimeout, resultLayer, setLayer;
     var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
     beforeAll(() => {
@@ -35,7 +35,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
         clientComputation = new ClientComputationView(wokerURL);
         clientComputation.addTo(map);
 
-        
+
         var queryUrl = "https://www.supermapol.com/iserver/services/map_ShiLiShuJu/rest/maps/中国历史5级以上地震_1900至2016@自然气候数据";
         spyOn(FetchRequest, 'post').and.callFake((url, queryString) => {
             // let param = JSON.parse(queryString.replace(/\'/g, "\""));
@@ -73,9 +73,6 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
         queryBySQLService.events.on({ 'processCompleted': QueryBySQLCompleted });
         queryBySQLService.processAsync(params);
         document.getElementById('getValueText').style.height = '1px';
-     
-      
-      
 
 
         setTimeout(() => {
@@ -102,7 +99,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 queryFailedEventArgs = null;
                 serviceSuccessEventArgs = null;
             }
-        }, 2000)
+        }, 500)
     });
 
     beforeEach(() => {
@@ -139,7 +136,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                         done();
                     }
                 });
-                     
+
                 var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
                 analysitBtn.click();
             } catch (exception) {
@@ -147,7 +144,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 console.log("clientcomputation" + exception.name + ":" + exception.message);
                 done();
             }
-        }, 4000)
+        }, 1000)
 
     });
 
@@ -181,6 +178,30 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
                 analysitBtn.click();
 
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("clientcomputation" + exception.name + ":" + exception.message);
+                done();
+            }
+        }, 1000)
+
+    });
+
+    it('clearLayer,cancelAnalysis', (done) => {
+        setTimeout(() => {
+            try {
+                spyOn(clientComputation.viewModel, 'cancelAnalysis').and.callThrough();
+                spyOn(clientComputation.viewModel, 'clearLayers').and.callThrough();
+                var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
+                analysitBtn.click();
+              
+                var cancelBtn = document.getElementsByClassName('widget-analysis__analysisbtn--cancel')[0];
+                cancelBtn.click();
+                expect(clientComputation.viewModel.cancelAnalysis).toHaveBeenCalled();
+                var delBtn = document.getElementsByClassName('widget-analysis__analysisbtn--deletelayers')[0];
+                delBtn.click();
+                expect(clientComputation.viewModel.clearLayers).toHaveBeenCalled();
+                done();
             } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("clientcomputation" + exception.name + ":" + exception.message);

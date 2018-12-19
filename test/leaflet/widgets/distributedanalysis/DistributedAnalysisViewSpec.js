@@ -29,7 +29,7 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
                 var resultJson1 = `{"datasetCount":8,"datasetNames":["samples_processing_newyorkZone_R","samples_processing_singleRegion_R","samples_processing_newyorkRoads_L","samples_processing_newyorkPoint_P","samples_processing_newyorkResidential_R", "samples_processing_featurejoin_states_R", "samples_processing_reconstructTracks_P", "samples_newyork_taxi_2013-01_14k"],
                 "childUriList":["http://54.223.164.155:8090/iserver/services/dataca…atalog/sharefile/samples_processing_newyorkZone_R", "http://54.223.164.155:8090/iserver/services/dataca…talog/sharefile/samples_processing_singleRegion_R", "http://54.223.164.155:8090/iserver/services/dataca…talog/sharefile/samples_processing_newyorkRoads_L", "http://54.223.164.155:8090/iserver/services/dataca…talog/sharefile/samples_processing_newyorkPoint_P", "http://54.223.164.155:8090/iserver/services/dataca…sharefile/samples_processing_newyorkResidential_R", "http://54.223.164.155:8090/iserver/services/dataca…sharefile/samples_processing_featurejoin_states_R", "http://54.223.164.155:8090/iserver/services/dataca…/sharefile/samples_processing_reconstructTracks_P", "http://54.223.164.155:8090/iserver/services/dataca…atalog/sharefile/samples_newyork_taxi_2013-01_14k"]}`
                 return Promise.resolve(new Response(resultJson1));
-            } else if (url.indexOf("/datasets.json") > -1) {
+            } else  if (url.indexOf("/datasets.json") > -1) {
                 var resultJson2 = `{"datasetCount":0,"datasetNames":[],"childUriList":[]}`;
                 return Promise.resolve(new Response(resultJson2));
             } else if (url.indexOf("/samples_processing_newyorkRoads_L") > -1) {
@@ -41,7 +41,12 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
             } else if (url.indexOf("/map-kernelDensity2/rest/maps") > -1) {
                 var responseResult = `[{"resourceConfigID":"map","supportedMediaTypes":["application/xml","text/xml","application/json","application/fastjson","application/rjson","text/html","application/jsonp","application/x-java-serialized-object","application/ajax","application/kml","application/ifx","application/flex","application/flash","application/flash3d","application/ijs","application/javascript","application/html5","application/ol3","application/vt","application/vectortile","application/isl","application/silverlight","application/smc","application/supermapcloud","application/tdt","application/tianditu","application/ilt","application/leaflet","application/mbgl"],"path":"http://54.223.164.155:8090/iserver/services/map-kernelDensity4/rest/maps/kernelDensity_rate_code_Density_Map","name":"kernelDensity_rate_code_Density_Map","resourceType":"StaticResource"},{"resourceConfigID":"map","supportedMediaTypes":["application/xml","text/xml","application/json","application/fastjson","application/rjson","text/html","application/jsonp","application/x-java-serialized-object","application/ajax","application/kml","application/ifx","application/flex","application/flash","application/flash3d","application/ijs","application/javascript","application/html5","application/ol3","application/vt","application/vectortile","application/isl","application/silverlight","application/smc","application/supermapcloud","application/tdt","application/tianditu","application/ilt","application/leaflet","application/mbgl"],"path":"http://54.223.164.155:8090/iserver/services/map-kernelDensity2/rest/maps/kernelDensity_RecordCount_Density_Map","name":"kernelDensity_RecordCount_Density_Map","resourceType":"StaticResource"}]`;
                 return Promise.resolve(new Response(responseResult));
-
+            }else if (url.indexOf("/map-kernelDensity2/rest/maps") > -1) {
+                var responseResult = `[{"resourceConfigID":"map","supportedMediaTypes":["application/xml","text/xml","application/json","application/fastjson","application/rjson","text/html","application/jsonp","application/x-java-serialized-object","application/ajax","application/kml","application/ifx","application/flex","application/flash","application/flash3d","application/ijs","application/javascript","application/html5","application/ol3","application/vt","application/vectortile","application/isl","application/silverlight","application/smc","application/supermapcloud","application/tdt","application/tianditu","application/ilt","application/leaflet","application/mbgl"],"path":"http://54.223.164.155:8090/iserver/services/map-kernelDensity4/rest/maps/kernelDensity_rate_code_Density_Map","name":"kernelDensity_rate_code_Density_Map","resourceType":"StaticResource"},{"resourceConfigID":"map","supportedMediaTypes":["application/xml","text/xml","application/json","application/fastjson","application/rjson","text/html","application/jsonp","application/x-java-serialized-object","application/ajax","application/kml","application/ifx","application/flex","application/flash","application/flash3d","application/ijs","application/javascript","application/html5","application/ol3","application/vt","application/vectortile","application/isl","application/silverlight","application/smc","application/supermapcloud","application/tdt","application/tianditu","application/ilt","application/leaflet","application/mbgl"],"path":"http://54.223.164.155:8090/iserver/services/map-kernelDensity2/rest/maps/kernelDensity_RecordCount_Density_Map","name":"kernelDensity_RecordCount_Density_Map","resourceType":"StaticResource"}]`;
+                return Promise.resolve(new Response(responseResult));
+            }else if(url.indexOf("samples_processing_newyorkResidential_R")){
+                var responseResult={"childUriList":["http://test:8090/iserver/services/datacatalog/rest/datacatalog/sharefile/samples_processing_newyorkResidential_R//fields"],"supportAttachments":false,"supportFeatureMetadatas":false,"datasetInfo":{"fieldInfos":[{"isRequired":true,"defaultValue":"","name":"SmID","caption":"SmID","type":"INT32","maxLength":4,"isZeroLengthAllowed":true,"isSystemField":true},{"isRequired":true,"defaultValue":"0","name":"SmSdriW","caption":"SmSdriW","type":"SINGLE","maxLength":4,"isZeroLengthAllowed":true,"isSystemField":true},{"isRequired":true,"defaultValue":"0","name":"SmSdriN","caption":"SmSdriN","type":"SINGLE","maxLength":4,"isZeroLengthAllowed":true,"isSystemField":true},{"isRequired":true,"defaultValue":"0","name":"SmSdriE","caption":"SmSdriE","type":"SINGLE","maxLength":4,"isZeroLengthAllowed":true,"isSystemField":true},{"isRequired":true,"defaultValue":"0","name":"SmSdriS","caption":"SmSdriS","type":"SINGLE","maxLength":4,"isZeroLengthAllowed":true,"isSystemField":true},{"isRequired":true,"defaultValue":"0","name":"SmUserID","caption":"SmUserID","type":"INT32","maxLength":4,"isZeroLengthAllowed":true,"isSystemField":false},{"isRequired":true,"defaultValue":"0","name":"SmArea","caption":"SmArea","type":"DOUBLE","maxLength":8,"isZeroLengthAllowed":true,"isSystemField":true},{"isRequired":true,"defaultValue":"0","name":"SmPerimeter","caption":"SmPerimeter","type":"DOUBLE","maxLength":8,"isZeroLengthAllowed":true,"isSystemField":true},{"isRequired":false,"defaultValue":"0","name":"SmGeometrySize","caption":"SmGeometrySize","type":"INT32","maxLength":4,"isZeroLengthAllowed":true,"isSystemField":true},{"isRequired":true,"defaultValue":"-1","name":"SmGeoPosition","caption":"SmGeoPosition","type":"INT64","maxLength":8,"isZeroLengthAllowed":true,"isSystemField":true},{"isRequired":false,"defaultValue":"","name":"osm_id","caption":"osm_id","type":"WTEXT","maxLength":11,"isZeroLengthAllowed":true,"isSystemField":false},{"isRequired":false,"defaultValue":"","name":"name","caption":"name","type":"WTEXT","maxLength":48,"isZeroLengthAllowed":true,"isSystemField":false},{"isRequired":false,"defaultValue":"","name":"type","caption":"type","type":"WTEXT","maxLength":16,"isZeroLengthAllowed":true,"isSystemField":false},{"isRequired":false,"defaultValue":"","name":"LocationID","caption":"LocationID","type":"WTEXT","maxLength":16,"isZeroLengthAllowed":true,"isSystemField":false}],"epsgCode":4326,"datasetName":"newyorkResidential_R","bounds":"Left=-74.2555205,Bottom=40.4981355,Right=-73.6580247,Top=40.9115797","available":true,"name":"samples_processing_newyorkResidential_R","readOnly":false,"datasetType":"REGION","type":"UDB","url":"D:\\iserver910\\samples\\data\\ProcessingData\\processing.udb"}}
+                return Promise.resolve(new Response(JSON.stringify(responseResult)));
             }
             return Promise.resolve();
         });
@@ -158,21 +163,24 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
     });
 
     // get请求来的data里面缺失datasetInfo
-    xit('getDatasetInfo', () => {
-        var datasetSelect = distributedAnalysis.datasetSelect;
-        datasetSelect.children[2].click();
-        // var datasetUrl="http://54.223.164.155:8090/iserver/services/datacatalog/rest/datacatalog/sharefile/samples_processing_newyorkPoint_P";
-        // distributedAnalysis.viewModel.on('datasetinfoloaded', (e) => {
-        //     var result = e.result;
-        //     try {
-        //         expect(result).not.toBeNull();
-        //         done();
-        //     } catch (exception) {
-        //         console.log("'getDatasetInfo'案例失败：" + exception.name + ":" + exception.message);
-        //         done();
-        //     }
-        // });
-        distributedAnalysis.viewModel.getDatasetInfo();
+    it('getDatasetInfo', () => {
+        console.log("debug");
+        // document.getElementsByClassName("widget-triangle-down-img")[1].click();
+        var datasetUrl="/iserver/services/datacatalog/rest/datacatalog/sharefile/samples_processing_newyorkResidential_R.json";
+        distributedAnalysis.viewModel.on('datasetinfoloaded', (e) => {
+            var result = e.result;
+            try {
+              
+                expect(result).not.toBeNull();
+                done();
+            } catch (exception) {
+                console.log("'getDatasetInfo'案例失败：" + exception.name + ":" + exception.message);
+                done();
+            }
+        });
+       
+        // document.getElementsByClassName("widget-selecttool__option")[0].click();
+        distributedAnalysis.viewModel.getDatasetInfo(datasetUrl);
     });
 
 });
