@@ -1,3 +1,78 @@
+# next release #
+
+## 新特性
+
+### iClient for MapboxGL多坐标系支持
+
+- iClient for MapboxGL新增支持WGS84、China2000、Xian80、Beijing54等标准地理坐标系，覆盖MVT矢量瓦片、栅格瓦片、可视化图层、标绘等功能
+
+- 需单独引用iClient对Mapbox GL JS的增强库（基于2018年10月版本v0.51.0）
+ http://iclient.supermap.io/web/libs/mapbox-gl-js/enhancement/mapbox-gl-enhance.js
+ 
+### 新增多款功能微件
+
+-	iClient for Leaflet新增：文件打开微件、数据流微件、地址匹配与图层查询微件、客户端计算微件、分布式分析微件、数据服务查询微件
+ 
+## API changes
+
+### for Leaflet
+
+- 微件
+  - 新增打开文件微件 `L.supermap.widgets.openFile` 及功能类 `L.supermap.widgets.openFileViewModel`
+  - 新增数据流微件 `L.supermap.widgets.dataFlow` 及功能类 `L.supermap.widgets.dataFlowViewModel`
+  - 新增图层查询微件 `L.supermap.widgets.search` 及功能类 `L.supermap.widgets.searchViewModel`
+  - 新增客户端计算微件 `L.supermap.widgets.clientComputation` 及功能类 `L.supermap.widgets.clientComputationViewModel`
+  - 新增分布式分析微件 `L.supermap.widgets.distributedAnalysis` 及功能类 `L.supermap.widgets.distributedAnalysisViewModel`
+  - 新增数据服务查询微件`L.supermap.widgets.dataServiceQuery` 及功能类 `L.supermap.widgets.dataServiceQueryViewModel`
+
+### for OpenLayers
+
+- 可视化 - 矢量瓦片
+
+  - `ol.supermap.MapboxStyles` 样式类新增 `setStyle` 接口，支持整体更新样式
+
+- 可视化 - 高效率点图层 
+
+  - 支持通过 `ol.Map` 的 `forEachFeatureAtPixel` `getFeaturesAtPixel` 方法获取要素
+
+### for MapboxGL
+
+- 支持WGS84、China2000、Xian80、Beijing54等标准地理坐标系，需单独引用iClient对MapboxGL的增强库：
+ http://iclient.supermap.io/web/libs/mapbox-gl-js/enhancement/mapbox-gl-enhance.js
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.supermap.mapVLayer` 动态图层移除后可能出现的空值问题
+- 修复 `SuperMap.KernelDensityJobParameter`的 `query` 参数解析错误的问题
+- 修复无法解析 iServer 中数据类型为 `LINEEPS` `REGIONEPS` 的要素的问题
+- 修复地图是平面无投影时，在手机上访问双指放大缩小可能的错乱问题
+
+### for OpenLayers
+
+- 修复 `ol.source.Graphic` 无法点击的问题
+- 修复 `SuperMap.KernelDensityJobParameter`的 `query` 参数解析错误的问题
+- 修复无法解析 iServer 中数据类型为 `LINEEPS` `REGIONEPS` 的要素的问题
+- 修复对 `ol.layer.Group` 处理不当的问题([#26](https://github.com/SuperMap/iClient-JavaScript/issues/26))
+
+### for MapboxGL
+
+- 修复 `SuperMap.KernelDensityJobParameter`的 `query` 参数解析错误的问题
+- 修复无法解析 iServer 中数据类型为 `LINEEPS` `REGIONEPS` 的要素的问题
+
+### Classic
+
+- 修复 `SuperMap.KernelDensityJobParameter`的 `query` 参数解析错误的问题
+- 修复无法解析 iServer 中数据类型为 `LINEEPS` `REGIONEPS` 的要素的问题
+
+## Examples
+
+### for Leaflet
+  - 新增 “微件” 分类
+
+
+
 # 9.1.0 (2018-9-28) #
 
 ## API changes
@@ -49,7 +124,7 @@
     - 新增 `getGraphicsByAttribute` 接口支持通过要素 `attribute`属性对象值获取指定要素数组
     - `removeGraphics` 接口新增删除单个或多个要素的功能
 
-### for Classic
+### Classic
 - `SuperMap.Layer.MapVLayer` 支持北京54 等其他坐标系（注：数据坐标系要求与地图保持一致）
 
 ## Fixed
