@@ -28,7 +28,7 @@ export class DataFlowService extends CommonServiceBase {
          * {Array.<string>}
          * 此类支持的事件类型
          */
-        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"]
+        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
         super(url, options);
 
         /**
@@ -95,7 +95,7 @@ export class DataFlowService extends CommonServiceBase {
             return;
         }
         this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
-        this.events.triggerEvent('broadcastSuccessed');
+        this.events.triggerEvent('broadcastSucceeded');
 
     }
 
@@ -203,14 +203,14 @@ export class DataFlowService extends CommonServiceBase {
         if (e.data && e.data.indexOf("filterParam") >= 0) {
             var filterParam = JSON.parse(e.data);
             e.filterParam = filterParam;
-            e.eventType = 'setFilterParamSuccessed';
-            this.events.triggerEvent('setFilterParamSuccessed', e);
+            e.eventType = 'setFilterParamSucceeded';
+            this.events.triggerEvent('setFilterParamSucceeded', e);
             return;
         }
         var feature = JSON.parse(e.data);
         e.featureResult = feature;
-        e.eventType = 'messageSuccessed';
-        this.events.triggerEvent('messageSuccessed', e);
+        e.eventType = 'messageSucceeded';
+        this.events.triggerEvent('messageSucceeded', e);
     }
 
 

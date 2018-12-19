@@ -15,9 +15,10 @@ import {AttributesPopContainer} from '@supermap/iclient-common';
  * @category Widgets ClientComputation
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @fires L.supermap.widgets.clientComputationViewModel#analysisfailed
- * @fires L.supermap.widgets.clientComputationViewModel#analysissucceed
+ * @fires L.supermap.widgets.clientComputationViewModel#analysissucceeded
  * @fires L.supermap.widgets.clientComputationViewModel#layerloaded
  * @fires L.supermap.widgets.clientComputationViewModel#layersremoved
+ * @extends {L.Evented}
  */
 export class ClientComputationViewModel extends L.Evented {
     initialize(workerUrl) {
@@ -130,11 +131,11 @@ export class ClientComputationViewModel extends L.Evented {
                     me.fire('analysisfailed');
                 } else {
                     /**
-                     * @event L.supermap.widgets.clientComputationViewModel#analysissucceed
+                     * @event L.supermap.widgets.clientComputationViewModel#analysissucceeded
                      * @description 事件分析成功后触发。 
                      * @property {Object} data - 分析成功后的数据。
                      */
-                    me.fire('analysissucceed', {'data': e.data});
+                    me.fire('analysissucceeded', {'data': e.data});
 
                     let turfLayer = L.geoJSON(e.data, {
                         style: {

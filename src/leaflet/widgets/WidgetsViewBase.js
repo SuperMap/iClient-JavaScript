@@ -5,13 +5,15 @@ import L from "leaflet";
 import '../core/Base';
 
 /**
- * @class WidgetsViewBase
- * @classdesc lealfet 微件基类。
+ * @class L.supermap.widgets.WidgetsViewBase
+ * @classdesc Lealfet 微件基类。
+ * @category Widgets Common
  * @version 9.1.1
  * @param {Object} options - 参数。
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
+ * @extends {L.Control}
  */
 export var WidgetsViewBase = L.Control.extend({
     options: {
@@ -51,7 +53,7 @@ export var WidgetsViewBase = L.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.onAdd
-     * @description 向底图添加微件
+     * @description 向地图添加微件。
      */
     onAdd(map) {
         //子类实现此方法
@@ -62,8 +64,8 @@ export var WidgetsViewBase = L.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.on
-     * @param {string} eventType - 监听的事件类型
-     * @param {Function} callback - 监听事件的回调函数
+     * @param {string} eventType - 监听的事件类型。
+     * @param {Function} callback - 监听事件的回调函数。
      */
     on(eventType, callback) {
         this._event.on(eventType, callback);
@@ -72,8 +74,8 @@ export var WidgetsViewBase = L.Control.extend({
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.off
      * @description 事件关闭。
-     * @param {string} eventType - 监听的事件名
-     * @param {Function} callback - 监听事件的回调函数
+     * @param {string} eventType - 监听的事件名。
+     * @param {Function} callback - 监听事件的回调函数。
      */
     off(eventType, callback) {
         this._event.off(eventType, callback);
@@ -81,7 +83,7 @@ export var WidgetsViewBase = L.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype._initView
-     * @description 初始化微件UI
+     * @description 初始化微件 UI。
      * @private
      */
     _initView() {

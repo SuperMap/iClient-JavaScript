@@ -6,11 +6,13 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class SuperMap.Widgets.PaginationContainer
- * @classdesc 分页组件模板
+ * @classdesc 分页组件模板。
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
- * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象
- * @param {number} options.pageCounts - 页数
+ * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
+ * @param {number} options.pageCounts - 页数。
+ * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
 export class PaginationContainer extends TemplateBase {
@@ -29,8 +31,8 @@ export class PaginationContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.setLinkageEvent
-     * @description 设置页面联动方法
-     * @param {function} linkageEvent - 联动方法，实现指定功能
+     * @description 设置页面联动方法。
+     * @param {function} linkageEvent - 联动方法，实现指定功能。
      */
     setLinkageEvent(linkageEvent) {
         this.linkageEvent = linkageEvent;
@@ -70,8 +72,8 @@ export class PaginationContainer extends TemplateBase {
     /**---------以下是页面相关操作 **/
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.setContent
-     * @description 设置页面内容
-     * @param {Element} element - 页面内容元素
+     * @description 设置页面内容。
+     * @param {Element} element - 页面内容元素。
      */
     setContent(element) {
         this.clearContent();
@@ -80,8 +82,8 @@ export class PaginationContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.appendContent
-     * @description 追加内容
-     * @param {Element} element - 页面内容元素
+     * @description 追加内容。
+     * @param {Element} element - 页面内容元素。
      */
     appendContent(element) {
         this.content.appendChild(element);
@@ -89,7 +91,7 @@ export class PaginationContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.clearContent
-     * @description 清空内容元素
+     * @description 清空内容元素。
      */
     clearContent() {
         for (let i = this.content.children.length - 1; i >= 0; i--) {
@@ -100,8 +102,8 @@ export class PaginationContainer extends TemplateBase {
     /** -----以下是页码相关的操作：**/
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.setPageLink
-     * @description 设置页码数
-     * @param {number} pageNumber
+     * @description 设置页码数。
+     * @param {number} pageNumber - 页码数。
      */
     setPageLink(pageNumber) {
         //清空当前页码
@@ -116,7 +118,7 @@ export class PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 创建页码
+     * @description 创建页码。
      * @param pageNumber
      * @private
      */
@@ -141,7 +143,7 @@ export class PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 添加页码到页码列表
+     * @description 添加页码到页码列表。
      * @private
      */
     _appendPageLink() {
@@ -170,7 +172,7 @@ export class PaginationContainer extends TemplateBase {
 
     /**
      * @function SuperMap.Widgets.PaginationContainer.prototype.clearPageLink
-     * @description 清除页码列表
+     * @description 清除页码列表。
      */
     clearPageLink() {
         for (let i = this.link.children.length - 3; i > 1; i--) {
@@ -179,7 +181,7 @@ export class PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 创建页码按钮
+     * @description 创建页码按钮。
      * @param ul
      * @private
      */
@@ -208,7 +210,7 @@ export class PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 点击页码事件
+     * @description 点击页码事件。
      * @param e
      * @private
      */
@@ -238,7 +240,7 @@ export class PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 根据 currentPage 改变按钮状态
+     * @description 根据 currentPage 改变按钮状态。
      * @private
      */
     _changeDisableState() {
@@ -259,8 +261,8 @@ export class PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @description 根据点击页码列表事件准备需展现的页码列表
-     * @param {string|number} targetLi - 被点击的列表对象 id 或 被点击的页码值
+     * @description 根据点击页码列表事件准备需展现的页码列表。
+     * @param {string|number} targetLi - 被点击的列表对象 id 或 被点击的页码值。
      * @private
      */
     _prePageNum(targetLi) {

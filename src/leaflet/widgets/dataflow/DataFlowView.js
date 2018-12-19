@@ -24,6 +24,7 @@ import {DataFlowViewModel} from './DataFlowViewModel';
                                             }`
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataFlow#dataupdated
+ * @extends {L.supermap.widgets.widgetsViewBase}
  */
 export var DataFlowView = WidgetsViewBase.extend({
     initialize(options) {
@@ -155,7 +156,7 @@ export var DataFlowView = WidgetsViewBase.extend({
             this.messageBox.showView("已订阅该数据流服务。");
         });
 
-        this.viewModel.on("subscribesucceed", () => {
+        this.viewModel.on("subscribesucceeded", () => {
             this.messageBox.showView("数据流服务订阅成功。");
         });
 

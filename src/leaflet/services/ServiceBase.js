@@ -14,6 +14,7 @@ import L from "leaflet";
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @fires L.supermap.ServiceBase#initialized
  * @fires L.supermap.ServiceBase#destroy
+ * @extends {L.Evented}
  */
 export var ServiceBase = L.Evented.extend({
 

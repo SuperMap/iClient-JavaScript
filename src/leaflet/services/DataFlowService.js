@@ -21,10 +21,10 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @fires L.supermap.dataFlowService#broadcastSocketConnected
  * @fires L.supermap.dataFlowService#broadcastSocketError
  * @fires L.supermap.dataFlowService#broadcastFailed
- * @fires L.supermap.dataFlowService#broadcastSuccessed
+ * @fires L.supermap.dataFlowService#broadcastSucceeded
  * @fires L.supermap.dataFlowService#subscribeSocketError
- * @fires L.supermap.dataFlowService#messageSuccessed
- * @fires L.supermap.dataFlowService#setFilterParamSuccessed
+ * @fires L.supermap.dataFlowService#messageSucceeded
+ * @fires L.supermap.dataFlowService#setFilterParamSucceeded
  */
 export var DataFlowService = ServiceBase.extend({
 
@@ -55,7 +55,7 @@ export var DataFlowService = ServiceBase.extend({
          * @description 广播失败。
          */
         /**
-         * @event L.supermap.dataFlowService#broadcastSuccessed
+         * @event L.supermap.dataFlowService#broadcastSucceeded
          * @description 广播成功。
          */
         /**
@@ -67,22 +67,22 @@ export var DataFlowService = ServiceBase.extend({
          * @description 订阅数据连接失败。
          */
         /**
-         * @event L.supermap.dataFlowService#messageSuccessed
+         * @event L.supermap.dataFlowService#messageSucceeded
          * @description 获取信息成功。
          */
         /**
-         * @event L.supermap.dataFlowService#setFilterParamSuccessed
+         * @event L.supermap.dataFlowService#setFilterParamSucceeded
          * @description 设置过滤参数成功。
          */
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,
             "broadcastSocketError": this._defaultEvent,
             "broadcastFailed": this._defaultEvent,
-            "broadcastSuccessed": this._defaultEvent,
+            "broadcastSucceeded": this._defaultEvent,
             "subscribeSocketConnected": this._defaultEvent,
             "subscribeSocketError": this._defaultEvent,
-            "messageSuccessed": this._defaultEvent,
-            "setFilterParamSuccessed": this._defaultEvent,
+            "messageSucceeded": this._defaultEvent,
+            "setFilterParamSucceeded": this._defaultEvent,
             scope: this
         })
     },

@@ -15,9 +15,10 @@ import { ProcessingService } from '../../services/ProcessingService'
  * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetsloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetinfoloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
- * @fires L.supermap.widgets.distributedAnalysisViewModel#analysissucceed
+ * @fires L.supermap.widgets.distributedAnalysisViewModel#analysissucceeded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#layerloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#layersremoved
+ * @extends {L.Evented}
  */
 export class DistributedAnalysisViewModel extends L.Evented {
     initialize(processingUrl) {
@@ -97,7 +98,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
                         }).then(function (result) {
                             let mapUrl = result[0].path;
                             /**
-                             * @event L.supermap.widgets.distributedAnalysisViewModel#analysissucceed
+                             * @event L.supermap.widgets.distributedAnalysisViewModel#analysissucceeded
                              * @description 分析成功后服务器返回的数据。
                              */
                             me.fire('analysissucceed', { 'result': result });

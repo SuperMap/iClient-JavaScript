@@ -6,10 +6,12 @@ import {TemplateBase} from './TemplateBase';
 
 /**
  * @class SuperMap.Widgets.NavTabsPage
- * @classdesc 标签页面组件
+ * @classdesc 标签页面组件。
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
- * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面。
+ * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组，形如：[{title: "",content: HTMLElement}]，初始时，传入则创建页面。
+ * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用
@@ -57,9 +59,9 @@ export class NavTabsPage extends TemplateBase {
     }
 
     /**
-     * @function NavTabsPage.prototype.setTabs
-     * @description 设置标签
-     * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: {}}]
+     * @function SuperMap.Widgets.NavTabsPage.prototype.setTabs
+     * @description 设置标签。
+     * @param {Array.<Object>} tabs - 标签对象数组，形如：[{title: "",content: {}}]。
      */
     setTabs(tabs) {
         this.removeAllTabs();
@@ -67,9 +69,9 @@ export class NavTabsPage extends TemplateBase {
     }
 
     /**
-     * @function NavTabsPage.prototype.appendTabs
-     * @description 添加标签页面
-     * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: {}}]
+     * @function SuperMap.Widgets.NavTabsPage.prototype.appendTabs
+     * @description 添加标签页面。
+     * @param {Array.<Object>} tabs - 标签对象数组，形如：[{title: "",content: {}}]。
      */
     appendTabs(tabs) {
         for (let i = 0; i < tabs.length; i++) {
@@ -92,9 +94,9 @@ export class NavTabsPage extends TemplateBase {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeTab
-     * @description 删除某个标签页面
-     * @param {number} index - 标签索引号
+     * @function SuperMap.Widgets.NavTabsPage.prototype.removeTab
+     * @description 删除某个标签页面。
+     * @param {number} index - 标签索引号。
      */
     removeTab(index) {
         this.navTabsTitle.removeChild(this.navTabsTitle.children[index]);
@@ -102,8 +104,8 @@ export class NavTabsPage extends TemplateBase {
     }
 
     /**
-     * @function NavTabsPage.prototype.removeAllTabs
-     * @description 删除所有标签F
+     * @function SuperMap.Widgets.NavTabsPage.prototype.removeAllTabs
+     * @description 删除所有标签。
      */
     removeAllTabs() {
         for (let i = this.navTabsTitle.children.length; i > 0; i--) {

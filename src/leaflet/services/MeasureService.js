@@ -24,6 +24,7 @@ import {MeasureMode, MeasureService as CommonMeasureService, MeasureParameters} 
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @extends {L.supermap.ServiceBase}
  */
 export var MeasureService = ServiceBase.extend({
 

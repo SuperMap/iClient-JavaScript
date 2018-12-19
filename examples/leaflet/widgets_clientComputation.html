@@ -80,7 +80,7 @@
         // 打开文件
         var openFile = L.supermap.widgets.openFile().addTo(map).setPosition('bottomleft');
 
-        openFile.viewModel.on('openfilesucceed', function (e) {
+        openFile.viewModel.on('openfilesucceeded', function (e) {
             var layer = L.geoJSON(e.result, {
                 style: { fillColor: '#ff7373', color: '#ff7373', opacity: 1, fillOpacity: 0.8 }
             }).addTo(map);
@@ -94,7 +94,7 @@
             clientComputation.addLayer(clientComputationLayer);
         })
 
-        clientComputation.on("analysissucceed", function (e) {
+        clientComputation.on("analysissucceeded", function (e) {
             control.addOverlay(e.layer, e.name);
         })
         clientComputation.on("layersremoved", function (e) {

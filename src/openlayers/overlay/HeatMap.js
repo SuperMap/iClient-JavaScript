@@ -17,7 +17,7 @@ import {
  * @class ol.source.HeatMap
  * @classdesc 热力图层类。
  * @category Visualization HeatMap
- * @param {string} name - 图层名称
+ * @param {string} name - 图层名称s
  * @param {Object} options - 构造参数。
  * @param {ol.Map} options.map - openlayers 的 map 对象。
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("HeatMapSource_") 创建专题图层 ID。

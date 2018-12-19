@@ -15,12 +15,14 @@ import {
  * @classdesc 图层查询微件功能类。
  * @version 9.1.1
  * @category Widgets Search
+ * @param {L.Map} map - Leaflet Map 对象。
  * @param {Object} options - 可选参
- * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 本地搜索服务。
+ * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""}，默认为 online 本地搜索服务。
  * @fires L.supermap.widgets.searchViewModel#newlayeradded
- * @fires L.supermap.widgets.searchViewModel#searchlayersucceed
+ * @fires L.supermap.widgets.searchViewModel#searchlayersucceeded
  * @fires L.supermap.widgets.searchViewModel#searchfailed
- * @fires L.supermap.widgets.searchViewModel#geocodesucceed
+ * @fires L.supermap.widgets.searchViewModel#geocodesucceeded
+ * @extends {L.Evented}
  */
 export var SearchViewModel = L.Evented.extend({
     options: {
@@ -33,7 +35,7 @@ export var SearchViewModel = L.Evented.extend({
     initialize(map, options) {
         if (map) {
             /**
-             * @member {L.Map} [L.supermap.widgets.searchViewModel.prototype.map]
+             * @member {L.Map} L.supermap.widgets.searchViewModel.prototype.map
              * @description 当前微件所在的地图。
              */
             this.map = map;
@@ -81,11 +83,11 @@ export var SearchViewModel = L.Evented.extend({
             let resultFeatures = this.dataModel.layers[searchLayerName].getFeaturesByKeyWord(keyWord);
             if (resultFeatures && resultFeatures.length > 0) {
                 /**
-                 * @event L.supermap.widgets.searchViewModel#searchlayersucceed
+                 * @event L.supermap.widgets.searchViewModel#searchlayersucceeded
                  * @description 图层属性查询成功后触发。
                  * @property {Object} result - 图层数据。
                  */
-                this.fire("searchlayersucceed", {
+                this.fire("searchlayersucceeded", {
                     result: resultFeatures
                 });
             } else {
@@ -110,11 +112,11 @@ export var SearchViewModel = L.Evented.extend({
         //todo 是否保留缓存？请求过的数据保留一份缓存？
         if (this.searchCache[keyWords]) {
             /**
-             * @event L.supermap.widgets.searchViewModel#geocodesucceed
-             * @description 城市地址匹配成功够触发。
+             * @event L.supermap.widgets.searchViewModel#geocodesucceeded
+             * @description 城市地址匹配成功后触发。
              * @property {Object} result - 城市匹配成功后返回的数据。
              */
-            this.fire("geocodesucceed", {
+            this.fire("geocodesucceeded", {
                 result: this.searchCache[keyWords]
             });
         } else {
@@ -132,7 +134,7 @@ export var SearchViewModel = L.Evented.extend({
                 }
                 if (geocodingResult.poiInfos) {
                     const geoJsonResult = self._dataToGeoJson(geocodingResult.poiInfos, self.geoCodeParam);
-                    self.fire("geocodesucceed", {
+                    self.fire("geocodesucceeded", {
                         result: geoJsonResult
                     });
                 }
@@ -149,7 +151,7 @@ export var SearchViewModel = L.Evented.extend({
         this.dataModel.addLayers(layers, (e) => {
             /**
              * @event L.supermap.widgets.searchViewModel#newlayeradded
-             * @description 添加查询图层事件
+             * @description 添加查询图层事件。
              * @property {Object} result  - 事件返回的新的查询图层对象。
              * @property {string} layerName  - 事件返回的新的查询图层对象名。
              */
@@ -197,7 +199,7 @@ export var SearchViewModel = L.Evented.extend({
 
 
     /**
-     * @description 将地址匹配返回的数据转为geoJson 格式数据
+     * @description 将地址匹配返回的数据转为 GeoJSON 格式数据。
      * @param data
      * @private
      */
@@ -221,8 +223,7 @@ export var SearchViewModel = L.Evented.extend({
         return features;
     },
 
-    /**
-     * /**
+     /**
      * @function L.supermap.widgets.searchViewModel.prototype._getSearchUrl
      * @description 获取地理编码查询地址。
      * @param {Object} geoCodeParam - 地理编码查询参数。

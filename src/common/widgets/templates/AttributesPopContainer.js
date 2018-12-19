@@ -7,10 +7,12 @@ import {PopContainer} from './PopContainer';
 /**
  * @class SuperMap.Widgets.AttributesPopContainer
  * @classdesc 属性弹框组件
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object} options.title - 属性弹框组件名称。
  * @param {Object} options.attributes - 组件需要显示的属性内容。
+ * @extends {SuperMap.Widgets.PopContainer}
  * @category Widgets Common
  */
 export class AttributesPopContainer extends PopContainer {

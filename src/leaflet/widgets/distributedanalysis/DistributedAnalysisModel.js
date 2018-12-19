@@ -13,6 +13,7 @@ import { FetchRequest } from '@supermap/iclient-common';
  * @param {string} processingUrl - 分布式分析地址。
  * @fires L.supermap.widgets.DistributedAnalysisModel#datasetsloaded
  * @fires L.supermap.widgets.DistributedAnalysisModel#datasetinfoloaded
+ * @extends {L.Evented}
  */
 export class DistributedAnalysisModel extends L.Evented {
     

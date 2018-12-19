@@ -8,10 +8,12 @@ import {Util} from '../../commontypes/Util';
 /**
  * @class SuperMap.Widgets.CityTabsPage
  * @classdesc 城市地址匹配组件模板
+ * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ * @extends {SuperMap.Widgets.IndexTabsPageContainer}
  * @category Widgets Common
  */
 export class CityTabsPage extends IndexTabsPageContainer {

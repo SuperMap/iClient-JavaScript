@@ -18,8 +18,9 @@ import {
  * @param {L.Map} map - leaflet map 对象。
  * @fires L.supermap.widgets.openFileViewModel#filesizeexceed
  * @fires L.supermap.widgets.openFileViewModel#errorfileformat
- * @fires L.supermap.widgets.openFileViewModel#openfilesucceed
+ * @fires L.supermap.widgets.openFileViewModel#openfilesucceeded
  * @fires L.supermap.widgets.openFileViewModel#openfilefailed
+ * @extends {L.Evented}
  */
 export var OpenFileViewModel = L.Evented.extend({
     initialize() {
@@ -95,12 +96,12 @@ export var OpenFileViewModel = L.Evented.extend({
             FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
                 if (geojson) {
                     /**
-                     * @event L.supermap.widgets.openFileViewModel#openfilesucceed
+                     * @event L.supermap.widgets.openFileViewModel#openfilesucceeded
                      * @description 打开文件成功。
                      * @property {GeoJSONObject} result - GeoJSON 格式数据。
                      * @property {string} layerName - 图层名。
                      */
-                    this.fire("openfilesucceed", {
+                    this.fire("openfilesucceeded", {
                         result: geojson,
                         layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
                     });

@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -13222,7 +13207,7 @@ SuperMap.iPortal = iPortal_IPortal;
  * @category  iServer
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
- * @param {Object} options - 参数。 
+ * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
@@ -13333,15 +13318,15 @@ class CommonServiceBase_CommonServiceBase {
      * @function  SuperMap.CommonServiceBase.prototype.request
      * @description: 该方法用于向服务发送请求。
      * @param {Object} options - 参数。
-     * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。 
-     * @param {string} [options.url] - 发送请求的地址。 
-     * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。 
-     * @param {string} [options.data] - 发送到服务器的数据。 
-     * @param {function} options.success - 请求成功后的回调函数。 
-     * @param {function} options.failure - 请求失败后的回调函数。 
-     * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。 
-     * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。 
-     * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。 
+     * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。
+     * @param {string} [options.url] - 发送请求的地址。
+     * @param {Object} [options.params] - 作为查询字符串添加到 URL 中的一组键值对，此参数只适用于 GET 方式发送的请求。
+     * @param {string} [options.data] - 发送到服务器的数据。
+     * @param {function} options.success - 请求成功后的回调函数。
+     * @param {function} options.failure - 请求失败后的回调函数。
+     * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。
+     * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
+     * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
      */
     request(options) {
         let me = this;
@@ -13560,7 +13545,9 @@ class CommonServiceBase_CommonServiceBase {
                 var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
                 success(result);
             }
-
+        }).catch(function (e) {
+            var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+            failure(e);
         })
     }
 }
@@ -61367,6 +61354,7 @@ class ChartModel_ChartModel {
 /**
  * @class SuperMap.Widgets.ChartViewModel
  * @classdesc 图表微件功能类
+ * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
  * @param {Object} options.datasets - 数据来源。
@@ -61927,8 +61915,9 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
 
 
 /**
- * @class SuperMap.Widgets.ChartView
+ * @class SuperMap.Widgets.Chart
  * @classdesc 图表微件
+ * @version 9.1.1
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
@@ -61953,7 +61942,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.onAdd
+     * @function SuperMap.Widgets.Chart.prototype.onAdd
      * @description 创建图表之后成功回调
      * @param {function} addChart - 回调函数
      */
@@ -61962,7 +61951,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype._fillDataToView
+     * @function SuperMap.Widgets.Chart.prototype._fillDataToView
      * @description 填充数据到 view。
      * @private
      */
@@ -61972,7 +61961,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.getStyle
+     * @function SuperMap.Widgets.Chart.prototype.getStyle
      * @description 获取图表样式。
      */
     getStyle() {
@@ -61980,7 +61969,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.getFeatures
+     * @function SuperMap.Widgets.Chart.prototype.getFeatures
      * @description 获取地图服务，数据服务请求返回的数据。
      */
     getFeatures() {
@@ -61988,7 +61977,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.setStyle
+     * @function SuperMap.Widgets.Chart.prototype.setStyle
      * @description 设置图表样式。
      * @param {Object} style - 图表样式 参考Echarts-options样式设置
      */
@@ -61998,7 +61987,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.changeType
+     * @function SuperMap.Widgets.Chart.prototype.changeType
      * @description 改变图表类型
      * @param {string} type - 图表类型
      */
@@ -62009,7 +61998,7 @@ class ChartView_ChartView {
     }
     
     /**
-     * @function SuperMap.Widgets.ChartView.prototype.updateData
+     * @function SuperMap.Widgets.Chart.prototype.updateData
      * @description 更新图表数据
      * @param {string} url - 数据源地址
      * @param {Object} queryInfo - 查询条件
@@ -62026,7 +62015,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype._createChart
+     * @function SuperMap.Widgets.Chart.prototype._createChart
      * @description 创建图表
      * @private
      * @param {Object} data - 图表数据
@@ -62045,7 +62034,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartView.prototype._updateChart
+     * @function SuperMap.Widgets.Chart.prototype._updateChart
      * @description 更新图表
      * @private
      * @param {Object} options - 图表参数
@@ -71818,11 +71807,11 @@ class services_DataFlowService_DataFlowService extends ServiceBase_ServiceBase {
         var me = this;
         me.on('subscribeSocketConnected', function (e) {
             /**
-             * @event mapboxgl.supermap.DataFlowService#subscribeSuccessed
+             * @event mapboxgl.supermap.DataFlowService#subscribesucceed
              * @description 数据流服务订阅成功后触发。
              * @property {Object} e - 事件对象。
              */
-            me.fire('subscribeSuccessed', e);
+            me.fire('subscribesucceed', e);
         })
 
     }

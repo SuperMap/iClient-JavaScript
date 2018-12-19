@@ -72,7 +72,7 @@
                 prjCoordSys: options.prjCoordSys,
                 excludeField: options.excludeField
             }).initSubscribe();
-            dataFlowSubscribe.on('messageSuccessed', function (msg) {
+            dataFlowSubscribe.on('messageSucceeded', function (msg) {
                 popup.remove();
                 addLayer(msg);
             });

@@ -31,16 +31,16 @@ export class DataFlow extends ol.source.Vector {
         var me = this;
         me.dataService.on('subscribeSocketConnected', function (e) {
             me.dispatchEvent({
-                type: "subscribeSuccessed",
+                type: "subscribeSucceeded",
                 value: e
             })
         });
-        me.dataService.on('messageSuccessed', function (msg) {
+        me.dataService.on('messageSucceeded', function (msg) {
             me._onMessageSuccessed(msg);
         });
-        me.dataService.on('setFilterParamSuccessed', function (msg) {
+        me.dataService.on('setFilterParamSucceeded', function (msg) {
             me.dispatchEvent({
-                type: "setFilterParamSuccessed",
+                type: "setFilterParamSucceeded",
                 value: msg
             })
         });

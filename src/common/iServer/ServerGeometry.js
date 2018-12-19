@@ -278,6 +278,7 @@ export class ServerGeometry {
         var CCWArray = [];
         var areaArray = [];
         var polygonArrayTemp = [];
+        var polygonBounds = [];
         //polyon岛洞标识数组，初始都是岛。
         var CCWIdent = [];
         for (let i = 0, pointIndex = 0; i < len; i++) {
@@ -292,11 +293,14 @@ export class ServerGeometry {
             );
             pointList = [];
             polygonArrayTemp.push(polygon);
+            if (geoTopo.length === 0){
+                polygonBounds.push(polygon.getBounds());
+            }
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
         //根据面积排序
-        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
+        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
@@ -307,7 +311,7 @@ export class ServerGeometry {
             for (let i = 1; i < polygonArrayTemp.length; i++) {
                 for (let j = i - 1; j >= 0; j--) {
                     targetArray[i] = -1;
-                    if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
+                    if (polygonBounds[j].containsBounds(polygonBounds[i])) {
                         CCWIdent[i] = CCWIdent[j] * -1;
                         if (CCWIdent[i] < 0) {
                             targetArray[i] = j;
@@ -394,6 +398,7 @@ export class ServerGeometry {
         var CCWArray = [];
         var areaArray = [];
         var polygonArrayTemp = [];
+        var polygonBounds = [];
         //polyon岛洞标识数组，初始都是岛。
         var CCWIdent = [];
         for (let i = 0, pointIndex = 0; i < len; i++) {
@@ -410,11 +415,14 @@ export class ServerGeometry {
             );
             pointList = [];
             polygonArrayTemp.push(polygon);
+            if (geoTopo.length === 0){
+                polygonBounds.push(polygon.getBounds());
+            }
             CCWIdent.push(1);
             areaArray.push(polygon.getArea());
         }
         //根据面积排序
-        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
+        ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo, polygonBounds);
         //iServer 9D新增字段
         if (geoTopo.length === 0) {
             //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
@@ -425,7 +433,7 @@ export class ServerGeometry {
             for (let i = 1; i < polygonArrayTemp.length; i++) {
                 for (let j = i - 1; j >= 0; j--) {
                     targetArray[i] = -1;
-                    if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
+                    if (polygonBounds[j].containsBounds(polygonBounds[i])) {
                         CCWIdent[i] = CCWIdent[j] * -1;
                         if (CCWIdent[i] < 0) {
                             targetArray[i] = j;
@@ -602,7 +610,7 @@ export class ServerGeometry {
         return s * 0.5;
     }
 
-    static bubbleSort(areaArray, pointList, geoTopo) {
+    static bubbleSort(areaArray, pointList, geoTopo,polygonBounds) {
         for (var i = 0; i < areaArray.length; i++) {
             for (var j = 0; j < areaArray.length; j++) {
                 if (areaArray[i] > areaArray[j]) {
@@ -616,6 +624,11 @@ export class ServerGeometry {
                         var c = geoTopo[j];
                         geoTopo[j] = geoTopo[i];
                         geoTopo[i] = c;
+                    }
+                    if (polygonBounds && polygonBounds.length > 0) {
+                        var f = polygonBounds[j];
+                        polygonBounds[j] = polygonBounds[i];
+                        polygonBounds[i] = f;
                     }
                 }
             }

@@ -7,11 +7,13 @@ import {TemplateBase} from './TemplateBase';
 /**
  * @class SuperMap.Widgets.Select
  * @classdesc 微件统一的文字下拉框。
+ * @version 9.1.1
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
+ * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
 export class Select extends TemplateBase {

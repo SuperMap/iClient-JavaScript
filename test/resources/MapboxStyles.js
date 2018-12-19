@@ -51,7 +51,7 @@ var  vectorstylesEscapedJson={
     "glyphs": "http://54.223.164.155:8090/iserver/services/map-mvt-California/rest/maps/California/tileFeature/sdffonts/{fontstack}/{range}.pbf",
     "version": 8
 }
-var sprite={
+var spriteEscapedJson={
     "BGRR_ECCDD1_11_7": {
         "pixelRatio": 1,
         "x": 276,
