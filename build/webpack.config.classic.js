@@ -17,7 +17,9 @@ module.exports = {
     performance: configBase.performance,
     //其它解决方案配置
     resolve: configBase.resolve,
-    externals: Object.assign({}, configBase.externals),
+    externals: Object.assign({}, configBase.externals, {
+        'xlsx': "function(){try{return XLSX}catch(e){return {}}}()"
+    }),
     module: {
         rules: (function () {
             let moduleRules = [];

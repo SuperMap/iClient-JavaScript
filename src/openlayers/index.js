@@ -59,6 +59,7 @@ export {
     OutputType,
     AggregationQueryBuilderType,
     AggregationType,
+    GetFeatureMode,
     //control
     TimeFlowControl,
     //iManager
@@ -235,8 +236,25 @@ export {
     UpdateEdgeWeightParameters,
     UpdateTurnNodeWeightParameters,
     Vector,
-    VectorClipJobsParameter
-} from '@supermap/iclient-common';
+    VectorClipJobsParameter,
+    //widgets
+    FileTypes,
+    FileConfig,
+    FileModel, 
+    MessageBox,
+    CommonContainer,
+    DropDownBox,
+    Select,
+    AttributesPopContainer,
+    PopContainer,
+    IndexTabsPageContainer,
+    CityTabsPage,
+    NavTabsPage,
+    PaginationContainer,
+    widgetsUtil,
+    FileReaderUtil
+}
+from '@supermap/iclient-common';
 
 export * from './control';
 export * from './core';

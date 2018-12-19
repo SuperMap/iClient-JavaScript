@@ -7,9 +7,9 @@ import {FileTypes, FileConfig} from './CommonTypes';
 import {FileModel} from './openfile/FileModel';
 //提示框微件
 import {MessageBox} from './messagebox/MessageBox';
-//图表微件
+/* //图表微件
 import {ChartView} from './chart/ChartView';
-import {ChartViewModel} from './chart/ChartViewModel';
+import {ChartViewModel} from './chart/ChartViewModel'; */
 //公用模板：
 import {CommonContainer} from './templates/CommonContainer';
 import {Select} from './templates/Select';
@@ -28,8 +28,8 @@ import {widgetsUtil, FileReaderUtil} from './util';
 export {FileTypes, FileConfig}
 export {FileModel};
 export {MessageBox};
-export {ChartView};
-export {ChartViewModel};
+/* export {ChartView};
+export {ChartViewModel}; */
 export {CommonContainer};
 export {Select};
 export {DropDownBox};

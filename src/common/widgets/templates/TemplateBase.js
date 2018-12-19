@@ -43,6 +43,7 @@ export class TemplateBase {
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype._initView
+     * @private
      * @description 初始化模板。
      */
     _initView() {

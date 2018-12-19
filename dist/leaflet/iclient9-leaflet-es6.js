@@ -3,7 +3,7 @@
  *          iclient9-leaflet.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.0
+ *          version: v9.1.1
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -64297,818 +64297,6 @@ class MessageBox {
 }
 
 SuperMap.Widgets.MessageBox = MessageBox;
-// EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
-var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(2);
-var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
-
-// CONCATENATED MODULE: ./src/common/widgets/chart/ChartModel.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-/**
- * @class SuperMap.Widgets.ChartModel
- * @classdesc 图表微件数据模型
- * @private
- * @param {Object} datasets - 数据来源。
- * @category Widgets Common
- */
-
-class ChartModel_ChartModel {
-
-    constructor(datasets) {
-        this.datasets = datasets;
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartModel.prototype.getDatasetInfo
-     * @description 获得数据集数据。
-     * @param {string} datasetUrl - 数据集资源地址。
-     */
-    getDatasetInfo(success) {
-        let datasetUrl = this.datasets.url;
-        let me = this;
-
-        FetchRequest.get(datasetUrl).then(function (response) {
-            return response.json();
-        }).then(function (results) {
-            if (results.datasetInfo) {
-                let datasetInfo = results.datasetInfo;
-                me.datasetsInfo = {
-                    dataSourceName: datasetInfo.dataSourceName,
-                    datasetName: datasetInfo.name,
-                    mapName: results.name
-                };
-                success({
-                    result: me.datasetsInfo
-                });
-            }
-        }).catch(function (err) {
-            console.log(err);
-        });
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartModel.prototype.getDataFeatures
-     * @description 请求数据集的数据信息
-     * @param {Object} results - 数据集信息。
-     * @param {function} success - 成功回调函数。
-     */
-    getDataFeatures(results, success) {
-        let datasetsInfo = results.result;
-        let getFeatureParam, getFeatureBySQLParams, getFeatureBySQLService;
-        let params = {
-            name: datasetsInfo.datasetName + "@" + datasetsInfo.dataSourceName
-        }
-        Object.assign(params, this.datasets.queryInfo);
-        getFeatureParam = new SuperMap.FilterParameter(params);
-        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: getFeatureParam,
-            datasetNames: [datasetsInfo.dataSourceName + ":" + datasetsInfo.datasetName],
-            fromIndex: 0,
-            toIndex: 100000
-        });
-        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(datasetsInfo.dataUrl, {
-            eventListeners: {
-                "processCompleted": success,
-                "processFailed": function () { }
-            }
-        });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartModel.prototype.getLayerFeatures
-     * @description 请求图层要素的数据信息
-     * @param {Object} results - 数据集信息。
-     * @param {function} success - 成功回调函数。
-     */
-    getLayerFeatures(results, success) {
-        let datasetsInfo = results.result;
-        let queryParam, queryBySQLParams, queryBySQLService;
-        let params = {
-            name: datasetsInfo.mapName
-        }
-        Object.assign(params, this.datasets.queryInfo);
-        queryParam = new SuperMap.FilterParameter(params);
-        queryBySQLParams = new SuperMap.QueryBySQLParameters({
-            queryParams: [queryParam],
-            expectCount: 100000
-        });
-        queryBySQLService = new SuperMap.QueryBySQLService(datasetsInfo.dataUrl, {
-            eventListeners: {
-                "processCompleted": success,
-                "processFailed": function () { }
-            }
-        });
-        queryBySQLService.processAsync(queryBySQLParams);
-    }
-}
-// CONCATENATED MODULE: ./src/common/widgets/chart/ChartViewModel.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/**
- * @class SuperMap.Widgets.ChartViewModel
- * @classdesc 图表微件功能类
- * @version 9.1.1
- * @param {Object} options - 可选参数。
- * @param {string} options.type - 图表类型。
- * @param {Object} options.datasets - 数据来源。
- * @param {Array.<Object>} options.chartOptions - 图表可选参数。
- * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
- * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
- * @param {string} options.chartOptions.xAxis.name - 图表X轴名称。
- * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
- * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
- * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
- */
-
-class ChartViewModel_ChartViewModel {
-
-    constructor(options) {
-        this.datasets = options.datasets;
-        this.xField = [];
-        this.yField = [];
-        this.grid = {
-            top: "50px",
-            bottom: "50px",
-            left: "50px",
-            right: "60px"
-        };
-        this.chartType = options.type || "bar";
-        this._initXYField(options.chartOptions);
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._initXYField
-     * @description 初始化XY字段。
-     * @private
-     * @param {Object} chartOptions - options里的图表参数
-     */
-    _initXYField(chartOptions) {
-        let me = this;
-        if (chartOptions && chartOptions.length > 0) {
-            chartOptions.forEach(function (option) {
-                if (option.xAxis) {
-                    me.xField.push({
-                        field: option.xAxis.field,
-                        name: option.xAxis.name
-                    });
-                }
-                if (option.yAxis) {
-                    me.yField.push({
-                        field: option.yAxis.field,
-                        name: option.yAxis.name
-                    });
-                }
-            });
-        }
-    }
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.getDatasetInfo
-     * @description 获得数据集数据。
-     * @param {function} success - 成功回调函数
-     */
-    getDatasetInfo(success) {
-        this.createChart = success;
-        if (this.datasets && this._checkUrl(this.datasets.url)) {
-            this.chartModel = new ChartModel_ChartModel(this.datasets);
-            this.chartModel.getDatasetInfo(this._getDatasetInfoSuccess.bind(this));
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getDatasetInfoSuccess
-     * @description 成功回调函数。
-     * @private
-     * @param {Object} results - 数据集信息
-     */
-    _getDatasetInfoSuccess(results) {
-        let datasetUrl = this.datasets.url;
-        //判断服务为地图服务 或者 数据服务
-        let restIndex = datasetUrl.indexOf("rest");
-        if (restIndex > 0) {
-            let index = datasetUrl.indexOf("/", restIndex + 5);
-            let type = datasetUrl.substring(restIndex + 5, index);
-            let dataUrl = datasetUrl.substring(0, restIndex + 4) + "/data";
-
-            if (type === "maps") {
-                let mapIndex = datasetUrl.indexOf("/", index + 1);
-                let mapName = datasetUrl.substring(index + 1, mapIndex);
-                dataUrl = datasetUrl.substring(0, restIndex + 4) + "/maps/" + mapName;
-                results.result.dataUrl = dataUrl;
-                this._getLayerFeatures(results);
-            } else if (type === "data") {
-                results.result.dataUrl = dataUrl;
-                this._getDataFeatures(results);
-            }
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getDataFeatures
-     * @description 请求数据集的数据信息
-     * @private
-     * @param {Object} results - 数据集信息
-     */
-    _getDataFeatures(results) {
-        this.chartModel.getDataFeatures(results, this._getChartDatas.bind(this));
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getLayerFeatures
-     * @description 请求图层的数据信息
-     * @private
-     * @param {Object} results - 数据集信息
-     */
-    _getLayerFeatures(results) {
-        this.chartModel.getLayerFeatures(results, this._getChartDatasFromLayer.bind(this));
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getChartDatas
-     * @description 将请求回来的数据转换为图表所需的数据格式
-     * @private
-     * @param {Object} results - 数据要素信息
-     */
-    _getChartDatas(results) {
-        if (results.result.features) {
-            this.features = results.result.features;
-            let features = results.result.features.features;
-            let data = {};
-            if (features.length) {
-                let feature = features[0];
-                let attrFields = [],
-                    itemTypes = [];
-                for (let attr in feature.properties) {
-                    attrFields.push(attr);
-                    itemTypes.push(this._getDataType(feature.properties[attr]));
-                }
-                data = {
-                    features: results.result.features,
-                    fieldCaptions: attrFields,
-                    fieldTypes: itemTypes,
-                    fieldValues: []
-                }
-                for (let m in itemTypes) {
-                    let fieldValue = [];
-
-                    for (let j in features) {
-                        let feature = features[j];
-                        let caption = data.fieldCaptions[m];
-                        let value = feature.properties[caption];
-                        fieldValue.push(value);
-                    }
-                    data.fieldValues.push(fieldValue);
-                }
-                this.createChart(data);
-            }
-        }
-    }
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getChartDatasFromLayer
-     * @description 将请求回来的数据转换为图表所需的数据格式
-     * @private
-     * @param {Object} results - 图层数据要素信息
-     */
-    _getChartDatasFromLayer(results) {
-        if (results.result.recordsets) {
-            let recordsets = results.result.recordsets[0];
-            let features = recordsets.features.features;
-            this.features = recordsets.features;
-            let data = {};
-            if (features.length) {
-                data = {
-                    features: recordsets.features,
-                    fieldCaptions: recordsets.fieldCaptions,
-                    fieldTypes: recordsets.fieldTypes,
-                    fieldValues: []
-                }
-                for (let m in data.fieldCaptions) {
-                    let fieldValue = [];
-
-                    for (let j in features) {
-                        let feature = features[j];
-                        let caption = data.fieldCaptions[m];
-                        let value = feature.properties[caption];
-                        fieldValue.push(value);
-                    }
-                    data.fieldValues.push(fieldValue);
-                }
-                this.createChart(data);
-            }
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._createChartOptions
-     * @description 创建图表所需参数
-     * @private
-     * @param {Object} data - 图表数据
-     */
-    _createChartOptions(data) {
-        this.calculatedData = this._createChartDatas(data);
-        return this.updateChartOptions(this.chartType);
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.changeType
-     * @description 改变图表类型
-     * @param {string} type - 图表类型
-     */
-    changeType(type) {
-        if (type !== this.chartType) {
-            this.chartType = type;
-            return this.updateChartOptions(this.chartType);
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.updateData
-     * @description 改变图表类型
-     * @param {string} url - 数据源地址
-     * @param {Object} queryInfo - 查询条件
-     * @param {Object} chartOption - X,Y字段信息
-     * @param {function} success - 成功回调函数
-     */
-    updateData(url, queryInfo, chartOption, success) {
-        this.updateChart = success;
-        this.xField = [];
-        this.yField = [];
-        this._initXYField(chartOption);
-        this.datasets = {
-            url: url,
-            queryInfo: queryInfo
-        }
-        this.getDatasetInfo(this._updateDataSuccess.bind(this));
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._updateDataSuccess
-     * @description 改变图表类型
-     * @private
-     * @param {Object} data - 图表数据
-     */
-    _updateDataSuccess(data) {
-        let options = this._createChartOptions(data);
-        this.updateChart(options);
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.updateChartOptions
-     * @description 更新图表所需参数
-     * @param {string} type - 图表类型
-     * @param {Object} style - 图表样式
-     */
-    updateChartOptions(type, style) {
-        if (this.calculatedData) {
-            let grid = this.grid;
-            let series = this._createChartSeries(this.calculatedData, type);
-            let datas = [];
-            for (let i in this.calculatedData.XData) {
-                datas.push({
-                    value: this.calculatedData.XData[i].fieldsData
-                });
-            }
-            let xAxis = {
-                type: "category",
-                name: this.xField[0].name || "X",
-                data: datas,
-                nameTextStyle: {
-                    color: '#fff',
-                    fontSize: 14
-                },
-                splitLine: {
-                    show: false
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: '#eee'
-                    }
-                }
-            }
-            let yAxis = {
-                type: "value",
-                name: this.yFieldName || "Y",
-                data: {},
-                nameTextStyle: {
-                    color: '#fff',
-                    fontSize: 14
-                },
-                splitLine: {
-                    show: false
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: '#eee'
-                    }
-                }
-            }
-            let tooltip = {
-                formatter: '{b0}: {c0}'
-            };
-            let backgroundColor = '#404a59';
-            if (style) {
-                if (style.grid) {
-                    grid = style.grid;
-                }
-                if (style.tooltip) {
-                    tooltip = style.tooltip;
-                }
-                if (style.backgroundColor) {
-                    backgroundColor = style.backgroundColor;
-                }
-            }
-            return {
-                backgroundColor: backgroundColor,
-                grid: grid,
-                series: series,
-                xAxis: xAxis,
-                yAxis: yAxis,
-                tooltip: tooltip
-            }
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._createChartDatas
-     * @description 构建图表数据
-     * @private
-     * @param {Object} data - 源数据
-     */
-    _createChartDatas(data) {
-        let fieldIndex = 0, yfieldIndexs = [];
-        let fieldCaptions = data.fieldCaptions;
-        let me = this;
-        //X
-        fieldCaptions.forEach(function (field, index) {
-            if (me.xField[0] && field === me.xField[0].field) {
-                fieldIndex = index;
-            }
-        });
-        //Y
-        this.yFieldName = "";
-        this.yField.forEach(function (value, index) {
-            if (index !== 0) {
-                me.yFieldName = me.yFieldName + ",";
-            }
-            me.yFieldName = me.yFieldName + value.name;
-            fieldCaptions.forEach(function (field, index) {
-                if (field === value.field) {
-                    yfieldIndexs.push(index);
-                }
-            });
-        })
-        let datas = this._getAttrData(data, fieldIndex);
-        let yDatas = [];
-        if (yfieldIndexs.length > 0) {
-            yfieldIndexs.forEach(function (yfieldIndex) {
-                let yData = [];
-                for (let i in data.fieldValues[yfieldIndex]) {
-                    yData.push({
-                        value: data.fieldValues[yfieldIndex][i]
-                    });
-                }
-                yDatas.push(yData);
-            });
-        } else {                     //未指定Y字段时，y轴计数
-            let YData = [],
-                XData = [],
-                len = datas.length;
-
-            //计算X轴，Y轴数据，并去重
-            for (let i = 0; i < len; i++) {
-                let isSame = false;
-                for (let j = 0, leng = XData.length; j < leng; j++) {
-                    if (datas[i].fieldsData === XData[j].fieldsData) {
-                        YData[j].value++;
-                        XData[j].recordIndexs.push(i);
-                        isSame = true;
-                        break;
-                    }
-                }
-                if (!isSame) {
-                    if (datas[i].fieldsData) {
-                        XData.push({ fieldsData: datas[i].fieldsData, recordIndexs: [i] });
-                        YData.push({ value: 1 });
-                    }
-                }
-            }
-            datas = XData;
-            yDatas = [YData];
-        }
-        return {
-            XData: datas,
-            YData: yDatas
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getAttrData
-     * @description 选中字段数据
-     * @private
-     * @param {Object} datacontent - 图表数据
-     * @param {number} index - 字段索引
-     */
-    _getAttrData(datacontent, index) {
-        if (index === 0) {
-            this.xField = [{
-                field: datacontent.fieldCaptions[index],
-                name: datacontent.fieldCaptions[index]
-            }];
-        }
-        let fieldsDatas = [];
-        for (let i = 0, len = datacontent.fieldValues[index].length; i < len; i++) {
-            let value = datacontent.fieldValues[index][i];
-            fieldsDatas.push({
-                recordIndexs: i,
-                fieldsData: value
-            });
-        }
-        return fieldsDatas;
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._createChartSeries
-     * @description 图表数据
-     * @private
-     * @param {Object} calculatedData - 图表数据
-     * @param {string} chartType - 图表类型
-     */
-    _createChartSeries(calculatedData, chartType) {
-        let series = [];
-        let yDatas = calculatedData.YData;
-        yDatas.forEach(function (yData) {
-            let value = 0;
-            let serieData = [];
-            for (let data of yData) {
-                value = data.value;
-                serieData.push({
-                    value: value
-                });
-            }
-            let serie = {
-                type: chartType,
-                data: serieData,
-                name: "y"
-            };
-
-            series.push(serie);
-        });
-        return series;
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._isDate
-     * @description 判断是否为日期
-     * @private
-     * @param {string} data - 字符串
-     */
-    _isDate(data) {
-        let reg = /((^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(10|12|0?[13578])([-\/\._])(3[01]|[12][0-9]|0?[1-9])$)|(^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(11|0?[469])([-\/\._])(30|[12][0-9]|0?[1-9])$)|(^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(0?2)([-\/\._])(2[0-8]|1[0-9]|0?[1-9])$)|(^([2468][048]00)([-\/\._])(0?2)([-\/\._])(29)$)|(^([3579][26]00)([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][0][48])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][0][48])([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][2468][048])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][2468][048])([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][13579][26])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][13579][26])([-\/\._])(0?2)([-\/\._])(29)$))/ig;
-        return reg.test(data);
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._isNumber
-     * @description 判断是否为数值
-     * @private
-     * @param {string} data - 字符串
-     */
-    _isNumber(data) {
-        let mdata = Number(data);
-        if (mdata === 0) {
-            return true;
-        }
-        return !isNaN(mdata);
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getDataType
-     * @description 判断数据的类型
-     * @private
-     * @param {string} data - 字符串
-     */
-    _getDataType(data) {
-        if (data !== null && data !== undefined && data !== '') {
-            if (this._isDate(data)) {
-                return "DATE";
-            }
-            if (this._isNumber(data)) {
-                return "NUMBER";
-            }
-        }
-        return "STRING";
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._checkUrl
-     * @description 检查url是否符合要求
-     * @private
-     * @param {string} url
-     */
-    _checkUrl(url) {
-        let match;
-        if (url === '' || !this._isMatchUrl(url)) {
-            match = false;
-        } else if (/^http[s]?:\/\/localhost/.test(url) || /^http[s]?:\/\/127.0.0.1/.test(url)) {
-            //不是实际域名
-            match = false;
-        } else {
-            match = true;
-        }
-        return match;
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._isMatchUrl
-     * @description 判断输入的地址是否符合地址格式
-     * @private
-     * @param {string} str - url
-     */
-    _isMatchUrl(str) {
-        var reg = new RegExp('(https?|http|file|ftp)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]');
-        return reg.test(str);
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.getStyle
-     * @description 获取图表样式。
-     */
-    getStyle() {
-        let style = {
-            grid: this.grid,
-            tooltip: this.tooltip,
-            backgroundColor: this.backgroundColor
-        }
-        return style;
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.getFeatures
-     * @description 获取地图服务，数据服务请求返回的数据。
-     */
-    getFeatures() {
-        return this.features;
-    }
-
-    /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.setStyle
-     * @description 设置图表样式。
-     * @param {Object} style - 图表样式
-     */
-    setStyle(style) {
-        return this.updateChartOptions(this.chartType, style);
-    }
-}
-SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
-// CONCATENATED MODULE: ./src/common/widgets/chart/ChartView.js
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-/**
- * @class SuperMap.Widgets.Chart
- * @classdesc 图表微件
- * @version 9.1.1
- * @param {string} domID - 图表dom元素ID。
- * @param {Object} options - 可选参数。
- * @param {string} options.type - 图表类型。
- * @param {Object} options.datasets - 数据来源。
- * @param {Array.<Object>} options.chartOptions - 图表可选参数。
- * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
- * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
- * @param {string} options.chartOptions.xAxis.name - 图表X轴名称。
- * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
- * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
- * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
- * @category Widgets Common
- */
-class ChartView_ChartView {
-
-    constructor(domID, options) {
-        this.domID = domID;
-        this.chartType = options.type || "bar";
-        this.viewModel = new ChartViewModel_ChartViewModel(options);
-        //添加控件。
-        this._fillDataToView();
-    }
-
-    /**
-     * @function SuperMap.Widgets.Chart.prototype.onAdd
-     * @description 创建图表之后成功回调
-     * @param {function} addChart - 回调函数
-     */
-    onAdd(addChart) {
-        this.addChart = addChart;
-    }
-
-    /**
-     * @function SuperMap.Widgets.Chart.prototype._fillDataToView
-     * @description 填充数据到 view。
-     * @private
-     */
-    _fillDataToView() {
-        //iclient9 绑定createChart事件成功回调
-        this.viewModel.getDatasetInfo(this._createChart.bind(this));
-    }
-
-    /**
-     * @function SuperMap.Widgets.Chart.prototype.getStyle
-     * @description 获取图表样式。
-     */
-    getStyle() {
-        return this.viewModel.getStyle()
-    }
-
-    /**
-     * @function SuperMap.Widgets.Chart.prototype.getFeatures
-     * @description 获取地图服务，数据服务请求返回的数据。
-     */
-    getFeatures() {
-        return this.viewModel.getFeatures();
-    }
-
-    /**
-     * @function SuperMap.Widgets.Chart.prototype.setStyle
-     * @description 设置图表样式。
-     * @param {Object} style - 图表样式 参考Echarts-options样式设置
-     */
-    setStyle(style) {
-        let newOptions = this.viewModel.setStyle(style);
-        this._updateChart(newOptions);
-    }
-
-    /**
-     * @function SuperMap.Widgets.Chart.prototype.changeType
-     * @description 改变图表类型
-     * @param {string} type - 图表类型
-     */
-    changeType(type) {
-        this.chartType = type;
-        let newOptions = this.viewModel.changeType(type);
-        this._updateChart(newOptions);
-    }
-    
-    /**
-     * @function SuperMap.Widgets.Chart.prototype.updateData
-     * @description 更新图表数据
-     * @param {string} url - 数据源地址
-     * @param {Object} queryInfo - 查询条件
-     * @param {Object} chartOption - X,Y字段信息
-     */
-    updateData(url, queryInfo, chartOption) {
-        let me = this;
-        this.viewModel.updateData(url, queryInfo, chartOption, function(options) {
-            me._updateChart(options);
-            if(me.addChart) {
-                me.addChart();
-            }
-        });
-    }
-
-    /**
-     * @function SuperMap.Widgets.Chart.prototype._createChart
-     * @description 创建图表
-     * @private
-     * @param {Object} data - 图表数据
-     */
-    _createChart(data) {
-        this.echart = external_function_try_return_echarts_catch_e_return_default.a.init(
-            document.getElementById(this.domID), 
-            null,
-            { renderer: "canvas"}
-        )
-        let options = this.viewModel._createChartOptions(data);
-        this.echart.setOption(options);
-        if(this.addChart) {
-            this.addChart();
-        }
-    }
-
-    /**
-     * @function SuperMap.Widgets.Chart.prototype._updateChart
-     * @description 更新图表
-     * @private
-     * @param {Object} options - 图表参数
-     */
-    _updateChart(options) {
-        if(this.echart) {
-            this.echart.clear();
-            this.echart.setOption(options);
-        }
-    }
-}
-
-SuperMap.Widgets.Chart = ChartView_ChartView;
 // CONCATENATED MODULE: ./src/common/widgets/templates/TemplateBase.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -65155,6 +64343,7 @@ class TemplateBase {
 
     /**
      * @function SuperMap.Widgets.TemplateBase.prototype._initView
+     * @private
      * @description 初始化模板。
      */
     _initView() {
@@ -66762,9 +65951,9 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
 
 //提示框微件
 
-//图表微件
-
-
+/* //图表微件
+import {ChartView} from './chart/ChartView';
+import {ChartViewModel} from './chart/ChartViewModel'; */
 //公用模板：
 
 
@@ -66783,8 +65972,8 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
 
 
 
-
-
+/* export {ChartView};
+export {ChartViewModel}; */
 
 
 
@@ -75694,6 +74883,10 @@ var DataFlowLayer_dataFlowLayer = function (url, options) {
 };
 
 external_L_default.a.supermap.dataFlowLayer = DataFlowLayer_dataFlowLayer;
+// EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
+var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(2);
+var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
+
 // CONCATENATED MODULE: ./src/leaflet/overlay/EChartsLayer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -88215,6 +87408,7 @@ external_L_default.a.supermap.widgets.dataServiceQuery = dataServiceQueryView;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputType", function() { return OutputType; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationQueryBuilderType", function() { return AggregationQueryBuilderType; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationType", function() { return AggregationType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeatureMode", function() { return GetFeatureMode; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TimeFlowControl", function() { return TimeFlowControl_TimeFlowControl; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManager", function() { return iManager_IManager; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManagerServiceBase", function() { return iManagerServiceBase_IManagerServiceBase; });
@@ -88384,6 +87578,21 @@ external_L_default.a.supermap.widgets.dataServiceQuery = dataServiceQueryView;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UpdateTurnNodeWeightParameters", function() { return UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Vector", function() { return iServer_Vector_Vector; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorClipJobsParameter", function() { return VectorClipJobsParameter_VectorClipJobsParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileTypes", function() { return FileTypes; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileConfig", function() { return FileConfig; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileModel", function() { return FileModel_FileModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MessageBox", function() { return MessageBox; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CommonContainer", function() { return CommonContainer_CommonContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DropDownBox", function() { return DropDownBox_DropDownBox; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Select", function() { return Select_Select; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AttributesPopContainer", function() { return AttributesPopContainer_AttributesPopContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PopContainer", function() { return PopContainer_PopContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IndexTabsPageContainer", function() { return IndexTabsPageContainer_IndexTabsPageContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CityTabsPage", function() { return CityTabsPage_CityTabsPage; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NavTabsPage", function() { return NavTabsPage_NavTabsPage; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PaginationContainer", function() { return PaginationContainer_PaginationContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "widgetsUtil", function() { return widgetsUtil; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "logo", function() { return logo; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChangeTileVersion", function() { return ChangeTileVersion; });
@@ -88512,7 +87721,6 @@ external_L_default.a.supermap.widgets.dataServiceQuery = dataServiceQueryView;
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 
 
 
@@ -91745,7 +90953,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */

@@ -8,7 +8,8 @@ import { ChartViewModel } from "./ChartViewModel";
 /**
  * @class SuperMap.Widgets.Chart
  * @classdesc 图表微件
- * @version 9.1.1
+ * @private
+ * @version 10.X.X
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。

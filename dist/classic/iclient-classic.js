@@ -3,7 +3,7 @@
  *          iclient-classic.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.0
+ *          version: v9.1.1
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -74,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 57);
+/******/ 	return __webpack_require__(__webpack_require__.s = 76);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -112,7 +127,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _SuperMap = __webpack_require__(0);
 
-__webpack_require__(10);
+__webpack_require__(12);
 
 var Util = exports.Util = _SuperMap.SuperMap.Util = _SuperMap.SuperMap.Util || {};
 /**
@@ -2539,7 +2554,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DatasourceConnectionInfo = __webpack_require__(45);
+var _DatasourceConnectionInfo = __webpack_require__(64);
 
 var _REST = __webpack_require__(2);
 
@@ -2630,13 +2645,13 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(7);
+var _CommonServiceBase2 = __webpack_require__(8);
 
-var _FetchRequest = __webpack_require__(8);
+var _FetchRequest = __webpack_require__(10);
 
 var _Util = __webpack_require__(1);
 
-var _SecurityManager = __webpack_require__(9);
+var _SecurityManager = __webpack_require__(11);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2833,6 +2848,111 @@ _SuperMap.SuperMap.ProcessingServiceBase = ProcessingServiceBase;
 
 
 Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.TemplateBase = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+var _SuperMap = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.Widgets.TemplateBase
+ * @classdesc 微件公用组件父类，用于约束统一封装的公用组件结构。
+ * @version 9.1.1
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @category Widgets Common
+ */
+var TemplateBase = exports.TemplateBase = function () {
+    function TemplateBase(options) {
+        _classCallCheck(this, TemplateBase);
+
+        options = options ? options : {};
+        /**
+         * @member {string} [SuperMap.Widgets.TemplateBase.prototype.id=null]
+         * @description  组件 dom 元素 id。
+         */
+        this.id = options.id ? options.id : null;
+
+        /**
+         * @member {Element} [SuperMap.Widgets.TemplateBase.prototype.rootContainer=null]
+         * @description  组件 dom 元素对象。
+         */
+        this.rootContainer = null;
+    }
+
+    /**
+     * @function SuperMap.Widgets.TemplateBase.prototype.getElement
+     * @description 获取当前组件元素对象。
+     * @return {Element}
+     */
+
+
+    _createClass(TemplateBase, [{
+        key: 'getElement',
+        value: function getElement() {
+            //todo 其实感觉再这里给组件设置不太合理
+            if (this.id) {
+                this.rootContainer.id = this.id;
+            }
+
+            return this.rootContainer;
+        }
+
+        /**
+         * @function SuperMap.Widgets.TemplateBase.prototype._initView
+         * @private
+         * @description 初始化模板。
+         */
+
+    }, {
+        key: '_initView',
+        value: function _initView() {}
+        //子类实现此方法
+
+
+        /**
+         * @function SuperMap.Widgets.TemplateBase.prototype.showView
+         * @description 显示组件。
+         */
+
+    }, {
+        key: 'showView',
+        value: function showView() {
+            this.rootContainer.hidden = false;
+        }
+
+        /**
+         * @function SuperMap.Widgets.TemplateBase.prototype.closeView
+         * @description 隐藏组件。
+         */
+
+    }, {
+        key: 'closeView',
+        value: function closeView() {
+            this.rootContainer.hidden = true;
+        }
+    }]);
+
+    return TemplateBase;
+}();
+
+_SuperMap.SuperMap.Widgets.TemplateBase = TemplateBase;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var SuperMap = window.SuperMap = window.SuperMap || {};
@@ -2840,7 +2960,7 @@ SuperMap.REST = SuperMap.REST || {};
 exports.SuperMap = SuperMap;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2858,21 +2978,21 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _FetchRequest = __webpack_require__(8);
+var _FetchRequest = __webpack_require__(10);
 
-var _Events = __webpack_require__(23);
+var _Events = __webpack_require__(27);
 
-var _Credential = __webpack_require__(38);
+var _Credential = __webpack_require__(42);
 
-var _SecurityManager = __webpack_require__(9);
+var _SecurityManager = __webpack_require__(11);
 
 var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _JSON = __webpack_require__(37);
+var _JSON = __webpack_require__(41);
 
-var _BaseTypes = __webpack_require__(10);
+var _BaseTypes = __webpack_require__(12);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3273,7 +3393,35 @@ _SuperMap.SuperMap.CommonServiceBase = CommonServiceBase;
  */
 
 /***/ }),
-/* 8 */
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/**
+ * 该文件用于存储一些公用常量
+ *
+ */
+var FileTypes = exports.FileTypes = {
+    EXCEL: "EXCEL",
+    CSV: "CSV",
+    ISERVER: "ISERVER",
+    GEOJSON: "GEOJSON",
+    JSON: 'JSON'
+};
+var FileConfig = exports.FileConfig = {
+    fileMaxSize: 10 * 1024 * 1024
+};
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3289,11 +3437,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-__webpack_require__(52);
+__webpack_require__(71);
 
-__webpack_require__(47);
+__webpack_require__(66);
 
-var _fetchJsonp2 = __webpack_require__(46);
+var _fetchJsonp2 = __webpack_require__(65);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
@@ -3709,7 +3857,7 @@ _SuperMap.SuperMap.Util.RequestJSONPPromise = {
 };
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3729,7 +3877,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _FetchRequest = __webpack_require__(8);
+var _FetchRequest = __webpack_require__(10);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4128,7 +4276,7 @@ SecurityManager.ONLINE = "http://www.supermapol.com";
 _SuperMap.SuperMap.SecurityManager = SecurityManager;
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4607,7 +4755,7 @@ var ArrayExt = exports.ArrayExt = _SuperMap.SuperMap.Array = {
 };
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4622,9 +4770,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SuperMap = __webpack_require__(6);
+var _SuperMap = __webpack_require__(7);
 
-var _mapv = __webpack_require__(42);
+var _mapv = __webpack_require__(46);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5033,7 +5181,272 @@ var MapVRenderer = exports.MapVRenderer = function (_MapVBaseLayer) {
 }(MapVBaseLayer);
 
 /***/ }),
-/* 12 */
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.IndexTabsPageContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _TemplateBase2 = __webpack_require__(6);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.IndexTabsPageContainer
+ * @description 标签索引组件。
+ * @version 9.1.1
+ * @param {Object} options - 可选参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @category Widgets Common
+ * @extends {SuperMap.Widgets.TemplateBase}
+ */
+var IndexTabsPageContainer = exports.IndexTabsPageContainer = function (_TemplateBase) {
+    _inherits(IndexTabsPageContainer, _TemplateBase);
+
+    function IndexTabsPageContainer(options) {
+        _classCallCheck(this, IndexTabsPageContainer);
+
+        var _this = _possibleConstructorReturn(this, (IndexTabsPageContainer.__proto__ || Object.getPrototypeOf(IndexTabsPageContainer)).call(this, options));
+
+        _this._initView();
+        return _this;
+    }
+
+    /**
+     * @private
+     * @override
+     */
+
+
+    _createClass(IndexTabsPageContainer, [{
+        key: '_initView',
+        value: function _initView() {
+            var container = document.createElement("div");
+            container.setAttribute("class", "widget-tabpage");
+
+            var header = document.createElement("ul");
+            this.header = header;
+
+            var content = document.createElement("div");
+            content.setAttribute("class", "widget-tabpage__content");
+            this.content = content;
+
+            container.appendChild(header);
+            container.appendChild(content);
+            this.rootContainer = container;
+        }
+
+        /**
+         * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.setTabs
+         * @description 设置标签元素。
+         * @param {Array.<Element>} tabs
+         */
+
+    }, {
+        key: 'setTabs',
+        value: function setTabs(tabs) {
+            this.removeAllTabs();
+            this.appendTabs(tabs);
+        }
+
+        /**
+         * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.appendTabs
+         * @description 追加标签元素。
+         * @param {Array.<Element>} tabs
+         */
+
+    }, {
+        key: 'appendTabs',
+        value: function appendTabs(tabs) {
+            for (var i = 0; i < tabs.length; i++) {
+                var title = document.createElement("span");
+                title.index = i;
+                title.appendChild(document.createTextNode(tabs[i].title));
+                //绑定标签切换对应页面：
+                title.onclick = this._changeTabsPage.bind(this);
+                var content = tabs[i].content;
+                content.index = i;
+                content.hidden = true;
+
+                this.header.appendChild(title);
+                this.content.appendChild(content);
+            }
+            //todo 确认是否两个子元素的 index 相互对应
+            //默认显示第一个标签对象
+            this.header.firstChild.setAttribute("class", "on");
+            this.content.firstChild.hidden = false;
+        }
+
+        /**
+         * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeTab
+         * @description 删除某个标签页面。
+         * @param {number} index - 标签索引号。
+         */
+
+    }, {
+        key: 'removeTab',
+        value: function removeTab(index) {
+            this.header.removeChild(this.header.children[index]);
+            this.content.removeChild(this.content.children[index]);
+        }
+
+        /**
+         * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeAllTabs
+         * @description 删除所有标签。
+         */
+
+    }, {
+        key: 'removeAllTabs',
+        value: function removeAllTabs() {
+            for (var i = this.header.children.length; i > 0; i--) {
+                this.header.removeChild(this.header.children[i]);
+                this.content.removeChild(this.content.children[i]);
+            }
+        }
+    }, {
+        key: '_changeTabsPage',
+        value: function _changeTabsPage(e) {
+            var index = e.target.index;
+            for (var i = 0; i < this.header.children.length; i++) {
+                this.header.children[i].setAttribute("class", "");
+                this.content.children[i].hidden = true;
+                if (i === index) {
+                    this.header.children[i].setAttribute("class", "on");
+                    this.content.children[i].hidden = false;
+                }
+            }
+        }
+    }]);
+
+    return IndexTabsPageContainer;
+}(_TemplateBase2.TemplateBase);
+
+_SuperMap.SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.PopContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _TemplateBase2 = __webpack_require__(6);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.PopContainer
+ * @classdesc 弹框组件。
+ * @version 9.1.1
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {string} options.title - 弹框组件名称。
+ * @extends {SuperMap.Widgets.TemplateBase}
+ * @category Widgets Common
+ */
+var PopContainer = exports.PopContainer = function (_TemplateBase) {
+    _inherits(PopContainer, _TemplateBase);
+
+    function PopContainer(options) {
+        _classCallCheck(this, PopContainer);
+
+        options = options ? options : {};
+
+        var _this = _possibleConstructorReturn(this, (PopContainer.__proto__ || Object.getPrototypeOf(PopContainer)).call(this, options));
+
+        options.title = options.title ? options.title : "";
+        _this._initView(options.title);
+        return _this;
+    }
+
+    /**
+     * @private
+     * @override
+     */
+
+
+    _createClass(PopContainer, [{
+        key: '_initView',
+        value: function _initView(titile) {
+            var container = document.createElement("div");
+            container.setAttribute("class", "widget-popcontainer");
+
+            //header
+            var header = document.createElement("div");
+            header.setAttribute("class", "widget-popcontainer__header");
+            var title = document.createElement("label");
+            title.setAttribute("class", "widget-popcontainer__header__title");
+            title.innerHTML = titile;
+            header.appendChild(title);
+
+            var closeBtn = document.createElement("span");
+            closeBtn.setAttribute("class", "supermapol-icons-clear widget-popcontainer__header__close");
+            closeBtn.onclick = this.closeView.bind(this);
+            container.appendChild(closeBtn);
+            container.appendChild(header);
+
+            //content
+            var content = document.createElement("div");
+            content.setAttribute("class", "widget-popcontainer__content");
+            this.content = content;
+
+            container.appendChild(content);
+
+            this.rootContainer = container;
+        }
+
+        /**
+         * @function SuperMap.Widgets.PopContainer.prototype.appendContent
+         * @description 追加内容。
+         * @param {Element} dom - 内容元素。
+         */
+
+    }, {
+        key: 'appendContent',
+        value: function appendContent(dom) {
+            this.content.appendChild(dom);
+        }
+    }]);
+
+    return PopContainer;
+}(_TemplateBase2.TemplateBase);
+
+_SuperMap.SuperMap.Widgets.PopContainer = PopContainer;
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5156,7 +5569,7 @@ var GeoDecodingParameter = exports.GeoDecodingParameter = function () {
 _SuperMap.SuperMap.GeoDecodingParameter = GeoDecodingParameter;
 
 /***/ }),
-/* 13 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5265,7 +5678,7 @@ var GeoCodingParameter = exports.GeoCodingParameter = function () {
 _SuperMap.SuperMap.GeoCodingParameter = GeoCodingParameter;
 
 /***/ }),
-/* 14 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5413,7 +5826,7 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
 _SuperMap.SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
 
 /***/ }),
-/* 15 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5581,7 +5994,7 @@ var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function
 _SuperMap.SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5735,7 +6148,7 @@ var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
 _SuperMap.SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter;
 
 /***/ }),
-/* 17 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5977,7 +6390,7 @@ var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () 
 _SuperMap.SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6176,7 +6589,7 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
 _SuperMap.SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 /***/ }),
-/* 19 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6317,7 +6730,7 @@ var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = fu
 _SuperMap.SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6465,7 +6878,7 @@ var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = fu
 _SuperMap.SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
 /***/ }),
-/* 21 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6664,7 +7077,7 @@ var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () 
 _SuperMap.SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6694,7 +7107,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6714,11 +7127,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Pixel = __webpack_require__(55);
+var _Pixel = __webpack_require__(74);
 
-var _Event = __webpack_require__(54);
+var _Event = __webpack_require__(73);
 
-var _BaseTypes = __webpack_require__(10);
+var _BaseTypes = __webpack_require__(12);
 
 var _Util = __webpack_require__(1);
 
@@ -7246,7 +7659,7 @@ _SuperMap.SuperMap.Events = Events;
 _SuperMap.SuperMap.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
 
 /***/ }),
-/* 24 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7265,7 +7678,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(5);
 
-var _SummaryAttributesJobsParameter = __webpack_require__(19);
+var _SummaryAttributesJobsParameter = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7351,7 +7764,7 @@ var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = functi
 _SuperMap.SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;
 
 /***/ }),
-/* 25 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7370,7 +7783,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(5);
 
-var _TopologyValidatorJobsParameter = __webpack_require__(14);
+var _TopologyValidatorJobsParameter = __webpack_require__(18);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7456,7 +7869,7 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
 _SuperMap.SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
 
 /***/ }),
-/* 26 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7475,7 +7888,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(5);
 
-var _BuffersAnalystJobsParameter = __webpack_require__(15);
+var _BuffersAnalystJobsParameter = __webpack_require__(19);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7561,7 +7974,7 @@ var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_P
 _SuperMap.SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 
 /***/ }),
-/* 27 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7580,7 +7993,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(5);
 
-var _OverlayGeoJobParameter = __webpack_require__(16);
+var _OverlayGeoJobParameter = __webpack_require__(20);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7670,7 +8083,7 @@ var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_Processin
 _SuperMap.SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 
 /***/ }),
-/* 28 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7816,7 +8229,7 @@ var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
 _SuperMap.SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 
 /***/ }),
-/* 29 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7835,7 +8248,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(5);
 
-var _VectorClipJobsParameter = __webpack_require__(28);
+var _VectorClipJobsParameter = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7921,7 +8334,7 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
 _SuperMap.SuperMap.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 30 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7940,7 +8353,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(5);
 
-var _SummaryRegionJobParameter = __webpack_require__(17);
+var _SummaryRegionJobParameter = __webpack_require__(21);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8026,7 +8439,7 @@ var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_Pro
 _SuperMap.SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8045,7 +8458,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(5);
 
-var _SummaryMeshJobParameter = __webpack_require__(18);
+var _SummaryMeshJobParameter = __webpack_require__(22);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8135,7 +8548,7 @@ var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_Process
 _SuperMap.SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 32 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8154,7 +8567,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(5);
 
-var _SingleObjectQueryJobsParameter = __webpack_require__(20);
+var _SingleObjectQueryJobsParameter = __webpack_require__(24);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8240,7 +8653,7 @@ var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = functi
 _SuperMap.SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
-/* 33 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8259,7 +8672,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(5);
 
-var _KernelDensityJobParameter = __webpack_require__(21);
+var _KernelDensityJobParameter = __webpack_require__(25);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8346,7 +8759,7 @@ var KernelDensityJobsService = exports.KernelDensityJobsService = function (_Pro
 _SuperMap.SuperMap.KernelDensityJobsService = KernelDensityJobsService;
 
 /***/ }),
-/* 34 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8359,29 +8772,29 @@ exports.ProcessingService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SuperMap = __webpack_require__(6);
+var _SuperMap = __webpack_require__(7);
 
 var _REST = __webpack_require__(2);
 
-var _CommonServiceBase2 = __webpack_require__(7);
+var _CommonServiceBase2 = __webpack_require__(8);
 
-var _KernelDensityJobsService = __webpack_require__(33);
+var _KernelDensityJobsService = __webpack_require__(37);
 
-var _SingleObjectQueryJobsService = __webpack_require__(32);
+var _SingleObjectQueryJobsService = __webpack_require__(36);
 
-var _SummaryMeshJobsService = __webpack_require__(31);
+var _SummaryMeshJobsService = __webpack_require__(35);
 
-var _SummaryRegionJobsService = __webpack_require__(30);
+var _SummaryRegionJobsService = __webpack_require__(34);
 
-var _VectorClipJobsService = __webpack_require__(29);
+var _VectorClipJobsService = __webpack_require__(33);
 
-var _OverlayGeoJobsService = __webpack_require__(27);
+var _OverlayGeoJobsService = __webpack_require__(31);
 
-var _BuffersAnalystJobsService = __webpack_require__(26);
+var _BuffersAnalystJobsService = __webpack_require__(30);
 
-var _TopologyValidatorJobsService = __webpack_require__(25);
+var _TopologyValidatorJobsService = __webpack_require__(29);
 
-var _SummaryAttributesJobsService = __webpack_require__(24);
+var _SummaryAttributesJobsService = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9343,7 +9756,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
 _SuperMap.SuperMap.REST.ProcessingService = ProcessingService;
 
 /***/ }),
-/* 35 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9360,13 +9773,13 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(7);
+var _CommonServiceBase2 = __webpack_require__(8);
 
-var _FetchRequest = __webpack_require__(8);
+var _FetchRequest = __webpack_require__(10);
 
-var _GeoCodingParameter = __webpack_require__(13);
+var _GeoCodingParameter = __webpack_require__(17);
 
-var _GeoDecodingParameter = __webpack_require__(12);
+var _GeoDecodingParameter = __webpack_require__(16);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9493,7 +9906,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 _SuperMap.SuperMap.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9590,7 +10003,7 @@ var Format = exports.Format = function () {
 _SuperMap.SuperMap.Format = Format;
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9607,7 +10020,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Format2 = __webpack_require__(36);
+var _Format2 = __webpack_require__(40);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9929,7 +10342,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
 _SuperMap.SuperMap.Format.JSON = JSONFormat;
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10051,7 +10464,7 @@ Credential.CREDENTIAL = null;
 _SuperMap.SuperMap.Credential = Credential;
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10064,11 +10477,11 @@ exports.AddressMatchService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SuperMap = __webpack_require__(6);
+var _SuperMap = __webpack_require__(7);
 
-var _CommonServiceBase2 = __webpack_require__(7);
+var _CommonServiceBase2 = __webpack_require__(8);
 
-var _AddressMatchService = __webpack_require__(35);
+var _AddressMatchService = __webpack_require__(39);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10155,7 +10568,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 _SuperMap.SuperMap.REST.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10165,7 +10578,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _AddressMatchService = __webpack_require__(39);
+var _AddressMatchService = __webpack_require__(43);
 
 Object.defineProperty(exports, 'AddressMatchService', {
   enumerable: true,
@@ -10174,7 +10587,7 @@ Object.defineProperty(exports, 'AddressMatchService', {
   }
 });
 
-var _ProcessingService = __webpack_require__(34);
+var _ProcessingService = __webpack_require__(38);
 
 Object.defineProperty(exports, 'ProcessingService', {
   enumerable: true,
@@ -10184,7 +10597,7 @@ Object.defineProperty(exports, 'ProcessingService', {
 });
 
 /***/ }),
-/* 41 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10194,7 +10607,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _MapVRenderer = __webpack_require__(11);
+var _MapVRenderer = __webpack_require__(13);
 
 Object.defineProperty(exports, 'MapVRenderer', {
   enumerable: true,
@@ -10204,13 +10617,13 @@ Object.defineProperty(exports, 'MapVRenderer', {
 });
 
 /***/ }),
-/* 42 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
-/* 43 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10225,9 +10638,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SuperMap = __webpack_require__(6);
+var _SuperMap = __webpack_require__(7);
 
-var _MapVRenderer = __webpack_require__(11);
+var _MapVRenderer = __webpack_require__(13);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10493,7 +10906,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
 _SuperMap.SuperMap.Layer.MapVLayer = MapVLayer;
 
 /***/ }),
-/* 44 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10503,7 +10916,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _MapVLayer = __webpack_require__(43);
+var _MapVLayer = __webpack_require__(47);
 
 Object.defineProperty(exports, 'MapVLayer', {
   enumerable: true,
@@ -10512,7 +10925,7 @@ Object.defineProperty(exports, 'MapVLayer', {
   }
 });
 
-var _mapv = __webpack_require__(41);
+var _mapv = __webpack_require__(45);
 
 Object.keys(_mapv).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -10525,7 +10938,2027 @@ Object.keys(_mapv).forEach(function (key) {
 });
 
 /***/ }),
-/* 45 */
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Lang = undefined;
+
+var _SuperMap = __webpack_require__(0);
+
+/**
+ * @name Lang
+ * @memberOf SuperMap
+ * @namespace
+ * @category BaseTypes
+ * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
+ */
+var Lang = {
+
+    /**
+     * @member {string} SuperMap.Lang.code
+     * @description 当前所使用的语言类型。
+     */
+    code: null,
+
+    /**
+     * @member {string} [SuperMap.Lang.defaultCode='en-US']
+     * @description 默认使用的语言类型。
+     */
+    defaultCode: "en-US",
+
+    /**
+     * @function SuperMap.Lang.getCode
+     * @description 获取当前的语言代码。
+     * @returns {string} 当前的语言代码。
+     */
+    getCode: function getCode() {
+        if (!_SuperMap.SuperMap.Lang.code) {
+            _SuperMap.SuperMap.Lang.setCode();
+        }
+        return _SuperMap.SuperMap.Lang.code;
+    },
+
+    /**
+     * @function SuperMap.Lang.setCode
+     * @description 设置语言代码。
+     * @param {string} code - 此参数遵循IETF规范。
+     */
+    setCode: function setCode() {
+        var lang = this.getLanguageFromCookie();
+        if (lang) {
+            _SuperMap.SuperMap.Lang.code = lang;
+            return;
+        }
+        lang = _SuperMap.SuperMap.Lang.defaultCode;
+        if (navigator.appName === 'Netscape') {
+            lang = navigator.language;
+        } else {
+            lang = navigator.browserLanguage;
+        }
+        if (lang.indexOf('zh') === 0) {
+            lang = 'zh-CN';
+        }
+        if (lang.indexOf('en') === 0) {
+            lang = 'en-US';
+        }
+
+        _SuperMap.SuperMap.Lang.code = lang;
+    },
+    /**
+     * @function SuperMap.Lang.getLanguageFromCookie
+     * @description 从 cookie 中获取语言类型。
+     */
+    getLanguageFromCookie: function getLanguageFromCookie() {
+        var name = 'language=';
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) !== -1) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    },
+
+
+    /**
+     * @function SuperMap.Lang.i18n
+     * @description 从当前语言字符串的字典查找 key。
+     * @param {string} key - 字典中 i18n 字符串值的关键字。
+     * @returns {string} 国际化的字符串。
+     */
+    i18n: function i18n(key) {
+        var dictionary = _SuperMap.SuperMap.Lang[_SuperMap.SuperMap.Lang.getCode()];
+        var message = dictionary && dictionary[key];
+        if (!message) {
+            // Message not found, fall back to message key
+            message = key;
+        }
+        return message;
+    }
+
+}; /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+    * This program are made available under the terms of the Apache License, Version 2.0
+    * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+exports.Lang = Lang;
+
+_SuperMap.SuperMap.Lang = Lang;
+_SuperMap.SuperMap.i18n = _SuperMap.SuperMap.Lang.i18n;
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return XLSX}catch(e){return {}}}();
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.FileReaderUtil = undefined;
+
+var _SuperMap = __webpack_require__(0);
+
+var _xlsx = __webpack_require__(50);
+
+var _xlsx2 = _interopRequireDefault(_xlsx);
+
+var _CommonTypes = __webpack_require__(9);
+
+var _Lang = __webpack_require__(49);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @class SuperMap.Widgets.FileReaderUtil
+ * @classdesc 微件读取文件工具类。
+ * @version 9.1.1
+ * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
+ */
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+var FileReaderUtil = exports.FileReaderUtil = {
+    rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
+    rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
+    rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
+
+    /**
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.readFile
+     * @description 读取文件
+     * @param {string} fileType - 当前读取的文件类型
+     *
+     * @param {Object} file - 读取回来的文件内容对象
+     * @param {function} success - 读取文件成功回调函数
+     * @param {function} failed - 读取文件失败回调函数
+     * @param {Object} context - 回调重定向对象
+     */
+    readFile: function readFile(fileType, file, success, failed, context) {
+        if (_CommonTypes.FileTypes.JSON === fileType || _CommonTypes.FileTypes.GEOJSON === fileType) {
+            this.readTextFile(file, success, failed, context);
+        } else if (_CommonTypes.FileTypes.EXCEL === fileType || _CommonTypes.FileTypes.CSV === fileType) {
+            this.readXLSXFile(file, success, failed, context);
+        }
+    },
+
+
+    /**
+     * 读取文本文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param {Object} context - 回调重定向对象
+     */
+    readTextFile: function readTextFile(file, success, failed, context) {
+        var reader = new FileReader();
+        reader.onloadend = function (evt) {
+            success && success.call(context, evt.target.result);
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error);
+        };
+        this.rAT ? reader.readAsText(file.file, 'utf-8') : reader.readAsBinaryString(file.file);
+    },
+
+
+    /**
+     * 读取excel或csv文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param {Object} context - 回调重定向对象
+     */
+    readXLSXFile: function readXLSXFile(file, success, failed, context) {
+        var reader = new FileReader();
+        reader.onloadend = function (evt) {
+            var xLSXData = new Uint8Array(evt.target.result);
+            var workbook = _xlsx2.default.read(xLSXData, { type: "array" });
+            try {
+                if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
+                    //暂时只读取第一个sheets的内容
+                    var sheetName = workbook.SheetNames[0];
+                    var xLSXCSVString = _xlsx2.default.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+                    success && success.call(context, xLSXCSVString);
+                }
+            } catch (error) {
+                failed && failed.call(context, error);
+            }
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error);
+        };
+        this.rABF && reader.readAsArrayBuffer(file.file);
+    },
+
+
+    /**
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.processDataToGeoJson
+     * @description 将读取回来得数据统一处理为 GeoJSON 格式
+     * @param {string} type - 文件类型
+     * @param {Object} data - 读取返回的数据对象
+     * @param {function} success - 数据处理成功的回调
+     * @param {function} failed - 数据处理失败的回调
+     * @param {Object} context - 回调重定向对象
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @private
+     */
+    processDataToGeoJson: function processDataToGeoJson(type, data, success, failed, context) {
+        var geojson = null;
+        if (type === "EXCEL" || type === "CSV") {
+            geojson = this.processExcelDataToGeoJson(data);
+            success && success.call(context, geojson);
+        } else if (type === 'JSON' || type === 'GEOJSON') {
+            var result = data;
+            //geojson、json未知，通过类容来判断
+            if (typeof result === "string") {
+                result = JSON.parse(result);
+            }
+            if (result.type === 'ISERVER') {
+                geojson = result.data.recordsets[0].features;
+            } else if (result.type === 'FeatureCollection') {
+                //geojson
+                geojson = result;
+            } else {
+                //不支持数据
+                failed && failed.call(context, _Lang.Lang.i18n('msg_dataInWrongGeoJSONFormat'));
+            }
+            success && success.call(context, geojson);
+        } else {
+            failed && failed.call(context, _Lang.Lang.i18n('msg_dataInWrongFormat'));
+        }
+    },
+
+    /**
+     * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
+     * @description 表格文件数据处理
+     * @param {Object} data - 读取的表格文件数据
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @private
+     */
+    processExcelDataToGeoJson: function processExcelDataToGeoJson(data) {
+        //处理为对象格式转化
+        var dataContent = this.string2Csv(data);
+        var fieldCaptions = dataContent.colTitles;
+
+        //位置属性处理
+        var xfieldIndex = -1,
+            yfieldIndex = -1;
+        for (var i = 0, len = fieldCaptions.length; i < len; i++) {
+            if (this.isXField(fieldCaptions[i])) {
+                xfieldIndex = i;
+            }
+            if (this.isYField(fieldCaptions[i])) {
+                yfieldIndex = i;
+            }
+        }
+        // feature 构建后期支持坐标系 4326/3857
+        var features = [];
+        for (var _i = 0, _len = dataContent.rows.length; _i < _len; _i++) {
+            var row = dataContent.rows[_i];
+            //if (featureFrom === "LonLat") {
+            var x = Number(row[xfieldIndex]),
+                y = Number(row[yfieldIndex]);
+
+            //属性信息
+            var attributes = {};
+            for (var index in dataContent.colTitles) {
+                var key = dataContent.colTitles[index];
+                attributes[key] = dataContent.rows[_i][index];
+            }
+
+            //目前csv 只支持处理点，所以先生成点类型的 geojson
+            var feature = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [x, y]
+                },
+                "properties": attributes
+            };
+            features.push(feature);
+        }
+        return features;
+    },
+
+    /**
+     * 判断是否地理X坐标
+     * @param data
+     */
+    isXField: function isXField(data) {
+        var lowerdata = data.toLowerCase();
+        return lowerdata === "x" || lowerdata === "smx" || lowerdata === "jd" || lowerdata === "经度" || lowerdata === "东经" || lowerdata === "longitude" || lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng";
+    },
+
+
+    /**
+     * 判断是否地理Y坐标
+     * @param data
+     */
+    isYField: function isYField(data) {
+        var lowerdata = data.toLowerCase();
+        return lowerdata === "y" || lowerdata === "smy" || lowerdata === "wd" || lowerdata === "纬度" || lowerdata === "北纬" || lowerdata === "latitude" || lowerdata === "lat";
+    },
+
+    /**
+     * 字符串转为dataEditor 支持的csv格式数据
+     * @param string
+     * @param withoutTitle
+     */
+    string2Csv: function string2Csv(string, withoutTitle) {
+        // let rows = string.split('\r\n');
+        var rows = string.split('\n');
+        var result = {};
+        if (!withoutTitle) {
+            result["colTitles"] = rows[0].split(',');
+        } else {
+            result["colTitles"] = [];
+        }
+        result['rows'] = [];
+        for (var i = withoutTitle ? 0 : 1; i < rows.length; i++) {
+            rows[i] && result['rows'].push(rows[i].split(','));
+        }
+        return result;
+    }
+};
+
+_SuperMap.SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.widgetsUtil = undefined;
+
+var _CommonTypes = __webpack_require__(9);
+
+var widgetsUtil = exports.widgetsUtil = {
+    /**
+     * 获取上传文件类型
+     * @param fileName
+     */
+    getFileType: function getFileType(fileName) {
+        var regCSV = /^.*\.(?:csv)$/i;
+        var regExcel = /^.*\.(?:xls|xlsx)$/i; //文件名可以带空格
+        var regGeojson = /^.*\.(?:geojson|json)$/i;
+        if (regExcel.test(fileName)) {
+            //校验不通过
+            return _CommonTypes.FileTypes.EXCEL;
+        } else if (regCSV.test(fileName)) {
+            return _CommonTypes.FileTypes.CSV;
+        } else if (regGeojson.test(fileName)) {
+            return _CommonTypes.FileTypes.GEOJSON;
+        }
+        return null;
+    }
+}; /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+    * This program are made available under the terms of the Apache License, Version 2.0
+    * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.FileReaderUtil = exports.widgetsUtil = undefined;
+
+var _Util = __webpack_require__(52);
+
+var _FileReaderUtil = __webpack_require__(51);
+
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+exports.widgetsUtil = _Util.widgetsUtil;
+exports.FileReaderUtil = _FileReaderUtil.FileReaderUtil;
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.PaginationContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _TemplateBase2 = __webpack_require__(6);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.PaginationContainer
+ * @classdesc 分页组件模板。
+ * @version 9.1.1
+ * @param {Object} options - 组件配置参数。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
+ * @param {number} options.pageCounts - 页数。
+ * @extends {SuperMap.Widgets.TemplateBase}
+ * @category Widgets Common
+ */
+var PaginationContainer = exports.PaginationContainer = function (_TemplateBase) {
+    _inherits(PaginationContainer, _TemplateBase);
+
+    function PaginationContainer(options) {
+        _classCallCheck(this, PaginationContainer);
+
+        options = options ? options : {};
+
+        var _this = _possibleConstructorReturn(this, (PaginationContainer.__proto__ || Object.getPrototypeOf(PaginationContainer)).call(this, options));
+
+        _this.currentPage = 0;
+        _this.pageNumberLis = [];
+        _this.currentPageNumberLis = [];
+        _this.linkageEvent = null;
+
+        options.contents = options.contents ? options.contents : null;
+        options.pageCounts = options.pageCounts ? options.pageCounts : 0;
+        _this._initView(options.contents, options.pageCounts);
+        return _this;
+    }
+
+    /**
+     * @function SuperMap.Widgets.PaginationContainer.prototype.setLinkageEvent
+     * @description 设置页面联动方法。
+     * @param {function} linkageEvent - 联动方法，实现指定功能。
+     */
+
+
+    _createClass(PaginationContainer, [{
+        key: 'setLinkageEvent',
+        value: function setLinkageEvent(linkageEvent) {
+            this.linkageEvent = linkageEvent;
+        }
+
+        /**
+         * @private
+         * @override
+         */
+
+    }, {
+        key: '_initView',
+        value: function _initView(contents, pageCounts) {
+            var container = document.createElement("div");
+            container.setAttribute("class", "widget-pagination");
+
+            //content
+            var content = document.createElement("div");
+            content.setAttribute("class", "widget-pagination__content");
+            container.appendChild(content);
+            this.content = content;
+
+            //link
+            var link = document.createElement("ul");
+            link.setAttribute("class", "widget-pagination__link");
+            link.onclick = this._changePageEvent.bind(this);
+            container.appendChild(link);
+            this._createLink(link);
+            this.link = link;
+            //填充内容：
+            if (contents) {
+                this.setContent(contents);
+            }
+            if (pageCounts !== 0) {
+                this.setPageLink(pageCounts);
+            }
+            this.rootContainer = container;
+        }
+
+        /**---------以下是页面相关操作 **/
+        /**
+         * @function SuperMap.Widgets.PaginationContainer.prototype.setContent
+         * @description 设置页面内容。
+         * @param {Element} element - 页面内容元素。
+         */
+
+    }, {
+        key: 'setContent',
+        value: function setContent(element) {
+            this.clearContent();
+            this.appendContent(element);
+        }
+
+        /**
+         * @function SuperMap.Widgets.PaginationContainer.prototype.appendContent
+         * @description 追加内容。
+         * @param {Element} element - 页面内容元素。
+         */
+
+    }, {
+        key: 'appendContent',
+        value: function appendContent(element) {
+            this.content.appendChild(element);
+        }
+
+        /**
+         * @function SuperMap.Widgets.PaginationContainer.prototype.clearContent
+         * @description 清空内容元素。
+         */
+
+    }, {
+        key: 'clearContent',
+        value: function clearContent() {
+            for (var i = this.content.children.length - 1; i >= 0; i--) {
+                this.content.removeChild(this.content.children[i]);
+            }
+        }
+
+        /** -----以下是页码相关的操作：**/
+        /**
+         * @function SuperMap.Widgets.PaginationContainer.prototype.setPageLink
+         * @description 设置页码数。
+         * @param {number} pageNumber - 页码数。
+         */
+
+    }, {
+        key: 'setPageLink',
+        value: function setPageLink(pageNumber) {
+            //清空当前页码
+            this.pageNumberLis = [];
+            this.currentPageNumberLis = [];
+            this.clearPageLink();
+
+            //创建页码
+            this._createPageLi(pageNumber);
+            //添加页码到页码列表
+            this._appendPageLink();
+        }
+
+        /**
+         * @description 创建页码。
+         * @param pageNumber
+         * @private
+         */
+
+    }, {
+        key: '_createPageLi',
+        value: function _createPageLi(pageNumber) {
+            for (var i = 0; i < pageNumber; i++) {
+                var pageLi = document.createElement("li");
+                pageLi.innerHTML = i + 1;
+                /*const liContent = document.createElement("span");
+                liContent.innerHTML = i + 1;*/
+                // pageLi.appendChild(liContent);
+                this.pageNumberLis.push(pageLi);
+            }
+            this.pageNumberLis[0].setAttribute("class", "active");
+            this.currentPage = 1;
+            if (pageNumber < 5) {
+                this.currentPageNumberLis = this.pageNumberLis;
+            } else {
+                for (var _i = 0; _i < 5; _i++) {
+                    this.currentPageNumberLis.push(this.pageNumberLis[_i]);
+                }
+            }
+        }
+
+        /**
+         * @description 添加页码到页码列表。
+         * @private
+         */
+
+    }, {
+        key: '_appendPageLink',
+        value: function _appendPageLink() {
+            //todo 如何插入中间
+            for (var i = 0; i < this.currentPageNumberLis.length; i++) {
+                this.link.insertBefore(this.currentPageNumberLis[i], this.link.childNodes[this.link.children.length - 2]);
+            }
+
+            for (var _i2 = 0; _i2 < this.currentPageNumberLis.length; _i2++) {
+                //清空 active 状态
+                this.currentPageNumberLis[_i2].setAttribute("class", "");
+                //给当前选中的 li 赋值  active 状态
+                if (Number(this.currentPageNumberLis[_i2].innerHTML) === this.currentPage) {
+                    this.currentPageNumberLis[_i2].setAttribute("class", "active");
+                }
+            }
+
+            //根据 currentPage 改变按钮状态
+            this._changeDisableState();
+
+            if (this.linkageEvent) {
+                this.linkageEvent(this.currentPage);
+            }
+        }
+
+        /**
+         * @function SuperMap.Widgets.PaginationContainer.prototype.clearPageLink
+         * @description 清除页码列表。
+         */
+
+    }, {
+        key: 'clearPageLink',
+        value: function clearPageLink() {
+            for (var i = this.link.children.length - 3; i > 1; i--) {
+                this.link.removeChild(this.link.children[i]);
+            }
+        }
+
+        /**
+         * @description 创建页码按钮。
+         * @param ul
+         * @private
+         */
+
+    }, {
+        key: '_createLink',
+        value: function _createLink(ul) {
+            for (var i = 0; i < 4; i++) {
+                var li = document.createElement("li");
+                li.setAttribute("class", "disable");
+                var liContent = document.createElement("span");
+                li.appendChild(liContent);
+                if (i === 0) {
+                    liContent.id = "first";
+                    liContent.setAttribute("class", "supermapol-icons-first");
+                } else if (i === 1) {
+                    liContent.id = "prev";
+                    liContent.setAttribute("class", "supermapol-icons-prev");
+                } else if (i === 2) {
+                    liContent.id = "next";
+                    liContent.setAttribute("class", "supermapol-icons-next");
+                } else if (i === 3) {
+                    liContent.id = "last";
+                    liContent.setAttribute("class", "supermapol-icons-last");
+                }
+
+                ul.appendChild(li);
+            }
+        }
+
+        /**
+         * @description 点击页码事件。
+         * @param e
+         * @private
+         */
+
+    }, {
+        key: '_changePageEvent',
+        value: function _changePageEvent(e) {
+            //todo
+            var trigger = e.target;
+            //若列表禁用，点击无效
+            if (trigger.parentElement.classList[0] === "disable") {
+                return;
+            }
+            var targetLi = void 0;
+            if (trigger.id) {
+                targetLi = trigger.id;
+            } else if (Number(trigger.innerHTML)) {
+                targetLi = Number(trigger.innerHTML);
+            } else {
+                return;
+            }
+
+            //页码预处理：
+            this._prePageNum(targetLi);
+
+            //根据 currentPageNumberLis 创建页码列表
+            this.clearPageLink();
+            this._appendPageLink();
+        }
+
+        /**
+         * @description 根据 currentPage 改变按钮状态。
+         * @private
+         */
+
+    }, {
+        key: '_changeDisableState',
+        value: function _changeDisableState() {
+            this.link.children[0].setAttribute("class", "");
+            this.link.children[1].setAttribute("class", "");
+            this.link.children[this.link.children.length - 1].setAttribute("class", "");
+            this.link.children[this.link.children.length - 2].setAttribute("class", "");
+
+            if (this.currentPage === 1) {
+                this.link.children[0].setAttribute("class", "disable");
+                this.link.children[1].setAttribute("class", "disable");
+            }
+            if (this.currentPage === this.pageNumberLis.length) {
+                this.link.children[this.link.children.length - 1].setAttribute("class", "disable");
+                this.link.children[this.link.children.length - 2].setAttribute("class", "disable");
+            }
+        }
+
+        /**
+         * @description 根据点击页码列表事件准备需展现的页码列表。
+         * @param {string|number} targetLi - 被点击的列表对象 id 或 被点击的页码值。
+         * @private
+         */
+
+    }, {
+        key: '_prePageNum',
+        value: function _prePageNum(targetLi) {
+            var currentPageNumberLis = [];
+            if (targetLi === "first") {
+                this.currentPage = 1;
+            } else if (targetLi === "last") {
+                this.currentPage = this.pageNumberLis.length;
+            } else if (targetLi === "prev") {
+                this.currentPage = this.currentPage - 1;
+            } else if (targetLi === "next") {
+                this.currentPage = this.currentPage + 1;
+            } else {
+                this.currentPage = targetLi;
+            }
+
+            if (this.pageNumberLis.length <= 5) {
+                for (var i = 0; i < this.pageNumberLis.length; i++) {
+                    currentPageNumberLis.push(this.pageNumberLis[i]);
+                }
+            } else {
+                //当前点击前三，都取前五
+                if (this.currentPage <= 3) {
+                    for (var _i3 = 0; _i3 < 5; _i3++) {
+                        currentPageNumberLis.push(this.pageNumberLis[_i3]);
+                    }
+                } else if (this.currentPage >= this.pageNumberLis.length - 3) {
+                    //点击后三，都取后5
+                    for (var _i4 = this.pageNumberLis.length - 5; _i4 < this.pageNumberLis.length; _i4++) {
+                        currentPageNumberLis.push(this.pageNumberLis[_i4]);
+                    }
+                } else {
+                    //其他，取中间：
+                    for (var _i5 = this.currentPage - 3; _i5 <= this.currentPage + 1; _i5++) {
+                        currentPageNumberLis.push(this.pageNumberLis[_i5]);
+                    }
+                }
+            }
+            if (currentPageNumberLis.length > 0) {
+                this.currentPageNumberLis = currentPageNumberLis;
+            }
+        }
+    }]);
+
+    return PaginationContainer;
+}(_TemplateBase2.TemplateBase);
+
+_SuperMap.SuperMap.Widgets.PaginationContainer = PaginationContainer;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.NavTabsPage = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _TemplateBase2 = __webpack_require__(6);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.NavTabsPage
+ * @classdesc 标签页面组件。
+ * @version 9.1.1
+ * @param {Object} options - 组件配置参数。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组，形如：[{title: "",content: HTMLElement}]，初始时，传入则创建页面。
+ * @extends {SuperMap.Widgets.TemplateBase}
+ * @category Widgets Common
+ */
+//  todo 思考拆分的控件应该以哪种方式使用
+var NavTabsPage = exports.NavTabsPage = function (_TemplateBase) {
+    _inherits(NavTabsPage, _TemplateBase);
+
+    function NavTabsPage(options) {
+        _classCallCheck(this, NavTabsPage);
+
+        var _this = _possibleConstructorReturn(this, (NavTabsPage.__proto__ || Object.getPrototypeOf(NavTabsPage)).call(this, options));
+
+        _this.navTabsTitle = null;
+        _this.navTabsContent = null;
+        options.tabs = options.tabs ? options.tabs : [];
+        _this._initView(options.tabs);
+        return _this;
+    }
+
+    /**
+     * @override
+     * @private
+     */
+
+
+    _createClass(NavTabsPage, [{
+        key: '_initView',
+        value: function _initView(tabs) {
+            var navTabsPage = document.createElement("div");
+            navTabsPage.setAttribute("class", "widget-navtabspage");
+
+            //关闭按钮
+            var closeBtn = document.createElement("span");
+            closeBtn.setAttribute("class", "supermapol-icons-close");
+            closeBtn.onclick = this.closeView.bind(this);
+            navTabsPage.appendChild(closeBtn);
+
+            //标签
+            var navTabsTitle = document.createElement("div");
+            this.navTabsTitle = navTabsTitle;
+            navTabsTitle.setAttribute("class", "widget-navtabspage__title");
+            navTabsPage.appendChild(navTabsTitle);
+
+            //内容
+            var navTabsContent = document.createElement("div");
+            this.navTabsContent = navTabsContent;
+            navTabsContent.setAttribute("class", "widget-navtabspage__content");
+            navTabsPage.appendChild(navTabsContent);
+
+            //若 tabs 初始传入值，则
+            if (tabs.length > 0) {
+                this.appendTabs(tabs);
+            }
+
+            this.rootContainer = navTabsPage;
+        }
+
+        /**
+         * @function SuperMap.Widgets.NavTabsPage.prototype.setTabs
+         * @description 设置标签。
+         * @param {Array.<Object>} tabs - 标签对象数组，形如：[{title: "",content: {}}]。
+         */
+
+    }, {
+        key: 'setTabs',
+        value: function setTabs(tabs) {
+            this.removeAllTabs();
+            this.appendTabs(tabs);
+        }
+
+        /**
+         * @function SuperMap.Widgets.NavTabsPage.prototype.appendTabs
+         * @description 添加标签页面。
+         * @param {Array.<Object>} tabs - 标签对象数组，形如：[{title: "",content: {}}]。
+         */
+
+    }, {
+        key: 'appendTabs',
+        value: function appendTabs(tabs) {
+            for (var i = 0; i < tabs.length; i++) {
+                var title = document.createElement("span");
+                title.index = i;
+                title.appendChild(document.createTextNode(tabs[i].title));
+                //绑定标签切换对应页面：
+                title.onclick = this._changeTabsPage.bind(this);
+                var content = tabs[i].content;
+                content.index = i;
+                content.hidden = true;
+
+                this.navTabsTitle.appendChild(title);
+                this.navTabsContent.appendChild(content);
+            }
+            //todo 确认是否两个子元素的 index 相互对应
+            //默认显示第一个标签对象
+            this.navTabsTitle.firstChild.setAttribute("class", "widget-navtabspage__tabs--select");
+            this.navTabsContent.firstChild.hidden = false;
+        }
+
+        /**
+         * @function SuperMap.Widgets.NavTabsPage.prototype.removeTab
+         * @description 删除某个标签页面。
+         * @param {number} index - 标签索引号。
+         */
+
+    }, {
+        key: 'removeTab',
+        value: function removeTab(index) {
+            this.navTabsTitle.removeChild(this.navTabsTitle.children[index]);
+            this.navTabsContent.removeChild(this.navTabsContent.children[index]);
+        }
+
+        /**
+         * @function SuperMap.Widgets.NavTabsPage.prototype.removeAllTabs
+         * @description 删除所有标签。
+         */
+
+    }, {
+        key: 'removeAllTabs',
+        value: function removeAllTabs() {
+            for (var i = this.navTabsTitle.children.length; i > 0; i--) {
+                this.navTabsTitle.removeChild(this.navTabsTitle.children[i]);
+                this.navTabsContent.removeChild(this.navTabsContent.children[i]);
+            }
+        }
+    }, {
+        key: '_changeTabsPage',
+        value: function _changeTabsPage(e) {
+            var index = e.target.index;
+            for (var i = 0; i < this.navTabsTitle.children.length; i++) {
+                this.navTabsTitle.children[i].setAttribute("class", "");
+                this.navTabsContent.children[i].hidden = true;
+                if (i === index) {
+                    this.navTabsTitle.children[i].setAttribute("class", "widget-navtabspage__tabs--select");
+                    this.navTabsContent.children[i].hidden = false;
+                }
+            }
+        }
+    }]);
+
+    return NavTabsPage;
+}(_TemplateBase2.TemplateBase);
+
+_SuperMap.SuperMap.Widgets.NavTabsPage = NavTabsPage;
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.CityTabsPage = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _IndexTabsPageContainer = __webpack_require__(14);
+
+var _Util = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.CityTabsPage
+ * @classdesc 城市地址匹配组件模板
+ * @version 9.1.1
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
+ *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ * @extends {SuperMap.Widgets.IndexTabsPageContainer}
+ * @category Widgets Common
+ */
+var CityTabsPage = exports.CityTabsPage = function (_IndexTabsPageContain) {
+    _inherits(CityTabsPage, _IndexTabsPageContain);
+
+    function CityTabsPage(options) {
+        _classCallCheck(this, CityTabsPage);
+
+        //去掉默认的边框阴影样式：
+        var _this = _possibleConstructorReturn(this, (CityTabsPage.__proto__ || Object.getPrototypeOf(CityTabsPage)).call(this, options));
+
+        _this.rootContainer.classList.add("widget-citytabpage--noneBoxShadow");
+        _this.config = options.config;
+        //header，若 config为城市名称数组，则直接加载内容
+        if (_Util.Util.isArray(_this.config)) {
+            _this.header.hidden = true;
+            _this._createCityItem("城市", _this.config);
+            _this.content.style.border = "none";
+        } else {
+            _this._createTabs();
+            _this.header.onclick = function (e) {
+                //关闭所有元素 是否有更简化的写法？
+                for (var i = 0; i < _this.header.children.length; i++) {
+                    _this.header.children[i].setAttribute("class", "");
+                }
+                //打开点击内容元素
+                e.target.setAttribute("class", "on");
+                _this._createCityContent(e.target.innerHTML);
+            };
+        }
+
+        return _this;
+    }
+
+    /**
+     * @function SuperMap.Widgets.CityTabsPage.prototype._createTabs
+     * @description 创建 Tabs
+     * @private
+     */
+
+
+    _createClass(CityTabsPage, [{
+        key: '_createTabs',
+        value: function _createTabs() {
+            //header
+            if (_Util.Util.isArray(this.config)) {
+                for (var i = 0; i < this.config.length; i++) {
+                    var innerHTML = "";
+                    for (var key in this.config[i]) {
+                        innerHTML += key;
+                    }
+                    var li = document.createElement("li");
+                    li.innerHTML = innerHTML;
+                    this.header.appendChild(li);
+                }
+            } else {
+                for (var _key in this.config) {
+                    var _li = document.createElement("li");
+                    _li.innerHTML = _key;
+                    this.header.appendChild(_li);
+                }
+            }
+            this.header.firstChild.setAttribute("class", "on");
+            this._createCityContent(this.header.firstChild.innerHTML);
+        }
+
+        /**
+         * @function SuperMap.Widgets.CityTabsPage.prototype._createCityContent
+         * @description 创建列表容器
+         * @private
+         */
+
+    }, {
+        key: '_createCityContent',
+        value: function _createCityContent(keyName) {
+            //清除元素：
+            for (var i = this.content.children.length; i > 0; i--) {
+                this.content.removeChild(this.content.children[i - 1]);
+            }
+            //创建对应元素
+            var cities = this.config[keyName];
+            for (var key in cities) {
+                this._createCityItem(key, cities[key]);
+            }
+        }
+
+        /**
+         * @function SuperMap.Widgets.CityTabsPage.prototype._createCityContent
+         * @description 创建列表容器
+         * @private
+         */
+
+    }, {
+        key: '_createCityItem',
+        value: function _createCityItem(key, cities) {
+            var city = document.createElement("div");
+
+            var cityClass = document.createElement("div");
+            cityClass.setAttribute("class", "widget-citytabpag__py-key");
+            cityClass.innerHTML = key;
+            city.appendChild(cityClass);
+
+            var cityContent = document.createElement("div");
+            cityContent.setAttribute("class", "widget-citytabpag__content");
+
+            for (var i = 0; i < cities.length; i++) {
+                var span = document.createElement("span");
+                span.innerHTML = cities[i];
+                cityContent.appendChild(span);
+            }
+            //HOT 元素长度单独微调：
+            if (key === "HOT") {
+                cityContent.style.width = "428px";
+            }
+            city.appendChild(cityContent);
+            this.content.appendChild(city);
+        }
+    }]);
+
+    return CityTabsPage;
+}(_IndexTabsPageContainer.IndexTabsPageContainer);
+
+_SuperMap.SuperMap.Widgets.CityTabsPage = CityTabsPage;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.AttributesPopContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _PopContainer2 = __webpack_require__(15);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.AttributesPopContainer
+ * @classdesc 属性弹框组件
+ * @version 9.1.1
+ * @param {Object} options - 组件配置参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {Object} options.title - 属性弹框组件名称。
+ * @param {Object} options.attributes - 组件需要显示的属性内容。
+ * @extends {SuperMap.Widgets.PopContainer}
+ * @category Widgets Common
+ */
+var AttributesPopContainer = exports.AttributesPopContainer = function (_PopContainer) {
+    _inherits(AttributesPopContainer, _PopContainer);
+
+    function AttributesPopContainer(options) {
+        _classCallCheck(this, AttributesPopContainer);
+
+        //默认为属性：
+        options.title = options.title ? options.title : "属性";
+
+        var _this = _possibleConstructorReturn(this, (AttributesPopContainer.__proto__ || Object.getPrototypeOf(AttributesPopContainer)).call(this, options));
+
+        _this.rootContainer.firstChild.hidden = true;
+        options.attributes = options.attributes ? options.attributes : [];
+        _this._createAttributesTable(options.attributes);
+        return _this;
+    }
+
+    _createClass(AttributesPopContainer, [{
+        key: '_createAttributesTable',
+        value: function _createAttributesTable(attributes) {
+            var table = document.createElement("table");
+            table.setAttribute("class", "widget-popcontainer__content__table");
+
+            var tbody = document.createElement("tbody");
+
+            var single = true;
+            for (var name in attributes) {
+                var tr = document.createElement("tr");
+                if (single) {
+                    tr.setAttribute("class", "widget-popcontainer__content__td--color");
+                }
+                var title = document.createElement("td");
+                var titleSpan = document.createElement("Span");
+                titleSpan.innerHTML = name;
+                title.appendChild(titleSpan);
+                var value = document.createElement("td");
+                value.innerHTML = attributes[name];
+
+                tr.appendChild(title);
+                tr.appendChild(value);
+                tbody.appendChild(tr);
+                single = !single;
+            }
+            table.appendChild(tbody);
+
+            this.appendContent(table);
+        }
+    }]);
+
+    return AttributesPopContainer;
+}(_PopContainer2.PopContainer);
+
+_SuperMap.SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer;
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.DropDownBox = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _TemplateBase2 = __webpack_require__(6);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.DropDownBox
+ * @classdesc 微件统一的图片下拉框。
+ * @version 9.1.1
+ * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
+ * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {string} optionsArr.title - 下拉框 title。
+ * @param {string} optionsArr.remark - 下拉框解释标记文本。
+ * @param {string} optionsArr.icon - 下拉框图标。
+ * @param {string} [optionsArr.dataValue] - 下拉框 attribute 名为 data-value 的值 。
+ * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
+ * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
+ * @category Widgets Common
+ * @extends {SuperMap.Widgets.TemplateBase}
+ */
+var DropDownBox = exports.DropDownBox = function (_TemplateBase) {
+    _inherits(DropDownBox, _TemplateBase);
+
+    function DropDownBox(optionsArr) {
+        _classCallCheck(this, DropDownBox);
+
+        var _this = _possibleConstructorReturn(this, (DropDownBox.__proto__ || Object.getPrototypeOf(DropDownBox)).call(this, optionsArr));
+
+        _this._initView(optionsArr);
+        return _this;
+    }
+
+    /**
+     * @function SuperMap.Widgets.DropDownBox.prototype._initView
+     * @description 初始化下拉框。
+     * @private
+     * @override
+     */
+
+
+    _createClass(DropDownBox, [{
+        key: '_initView',
+        value: function _initView(optionsArr) {
+            var dropDownContainer = document.createElement('div');
+            dropDownContainer.className = 'widget-dropdownbox--container';
+            var dropDownBox = document.createElement('div');
+            dropDownBox.setAttribute('tabindex', '1');
+            dropDownBox.className = "widget-dropdownbox";
+            dropDownContainer.appendChild(dropDownBox);
+
+            var dropDownTopContainer = document.createElement('div');
+            dropDownBox.appendChild(dropDownTopContainer);
+
+            this._createDropDownOption(optionsArr[0], dropDownTopContainer);
+
+            var triangleBtnContainer = document.createElement('div');
+            triangleBtnContainer.className = 'widget-dropdownbox__triangle-btn';
+            dropDownBox.appendChild(triangleBtnContainer);
+
+            var triangleBtn = document.createElement('div');
+            triangleBtn.className = 'widget-triangle-down-img';
+            triangleBtnContainer.appendChild(triangleBtn);
+
+            var createDropDownBoxParam = {
+                "parentEle": dropDownBox,
+                "dropDownContent": ['widget-dropdownbox__content widget-dropdownbox__content--chart', 'dropDownContent'],
+                "scrollareaContent": 'widget-selecttool__scrollarea__content',
+                "optionsArr": optionsArr,
+                "triangleBtn": triangleBtn,
+                "dropDownTopContainer": dropDownTopContainer
+            };
+            this._createDropDownBox(createDropDownBoxParam);
+
+            this.rootContainer = dropDownContainer;
+        }
+
+        /**
+         * @function SuperMap.Widgets.DropDownBox.prototype._createDropDownBox
+         * @description 创建下拉框。
+         * @private
+         */
+
+    }, {
+        key: '_createDropDownBox',
+        value: function _createDropDownBox(createDropDownBoxParam) {
+            var dropDownBox = createDropDownBoxParam.parentEle;
+            var dropDownTopContainer = createDropDownBoxParam.dropDownTopContainer;
+            var dropDownContent = document.createElement('div');
+            dropDownContent.className = createDropDownBoxParam.dropDownContent[0];
+            dropDownBox.appendChild(dropDownContent);
+
+            var scrollareaContent = document.createElement('div');
+            scrollareaContent.className = createDropDownBoxParam.scrollareaContent;
+            dropDownContent.appendChild(scrollareaContent);
+
+            var optionsArr = createDropDownBoxParam.optionsArr;
+            for (var i = 0; i < optionsArr.length; i++) {
+                this._createDropDownOption(optionsArr[i], scrollareaContent);
+            }
+            // 下拉框显示 & 隐藏事件
+            var triangleBtn = createDropDownBoxParam.triangleBtn;
+            this._dropDownClickEvent(dropDownBox, dropDownContent, triangleBtn);
+
+            this._eleOnblur(dropDownBox, dropDownContent, triangleBtn);
+
+            // 下拉框 options 点击事件
+            var scrollareaOptions = scrollareaContent.children;
+
+            var _loop = function _loop(_i) {
+                scrollareaOptions[_i].onclick = function () {
+                    dropDownTopContainer.innerHTML = scrollareaOptions[_i].outerHTML;
+                    //evt.stopPropagation();
+                };
+            };
+
+            for (var _i = 0; _i < scrollareaOptions.length; _i++) {
+                _loop(_i);
+            }
+        }
+
+        /**
+         * @function SuperMap.Widgets.DropDownBox.prototype._createDropDownOption
+         * @description 创建下拉框子元素。
+         * @private
+         */
+
+    }, {
+        key: '_createDropDownOption',
+        value: function _createDropDownOption(data, parentElement) {
+            var ele = document.createElement('div');
+            ele.className = 'widget-dropdownbox__item';
+            var dataItem = data;
+            if (dataItem['dataValue']) {
+                ele.setAttribute('data-value', dataItem['dataValue']);
+            }
+            parentElement.appendChild(ele);
+
+            var imgContainer = document.createElement('div');
+            imgContainer.className = 'widget-dropdownbox__item__img';
+            ele.appendChild(imgContainer);
+
+            var img = document.createElement('div');
+            if (dataItem.icon.className) {
+                img.className = dataItem.icon.className;
+            }
+            if (dataItem.icon.background) {
+                img.style.background = dataItem.icon.background;
+            }
+            imgContainer.appendChild(img);
+
+            var title = document.createElement('div');
+            title.className = 'widget-dropdownbox__item__title';
+            title.title = dataItem.title;
+            title.innerHTML = dataItem.title;
+            ele.appendChild(title);
+
+            var remark = document.createElement('div');
+            remark.className = 'widget-dropdownbox__item__remark';
+            remark.title = dataItem.remark;
+            remark.innerHTML = dataItem.remark;
+            ele.appendChild(remark);
+        }
+
+        /**
+         * @function SuperMap.Widgets.DropDownBox.prototype._dropDownClickEvent
+         * @description 下拉框点击事件。
+         * @private
+         */
+
+    }, {
+        key: '_dropDownClickEvent',
+        value: function _dropDownClickEvent(eventElement, contentElement, triangleBtn) {
+            eventElement.onclick = function (e) {
+                if (contentElement.style.display === "block") {
+                    contentElement.style.display = "none";
+                    triangleBtn.className = "widget-triangle-down-img";
+                } else {
+                    contentElement.style.display = "block";
+                    triangleBtn.className = "triangle-up-img";
+                }
+                e.preventDefault();
+                e.stopPropagation();
+            };
+            eventElement.onmousedown = function (evt) {
+                //console.log('dropdownbox onmousedown '+evt.target.className);
+                if (evt.target !== this) {
+                    this.focus();
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                }
+            };
+        }
+
+        /**
+         * @function SuperMap.Widgets.DropDownBox.prototype._eleOnblur
+         * @description 下拉框失焦事件。
+         * @private
+         */
+
+    }, {
+        key: '_eleOnblur',
+        value: function _eleOnblur(eventElement, contentElement, triangleBtn) {
+            eventElement.onblur = function () {
+                contentElement.style.display = "none";
+                triangleBtn.className = "widget-triangle-down-img";
+            };
+        }
+
+        /**
+         * @function SuperMap.Widgets.DropDownBox.prototype._createElement
+         * @description 通用创建元素。
+         * @private
+         */
+
+    }, {
+        key: '_createElement',
+        value: function _createElement(tagName, className, parentEle) {
+            var ele = document.createElement(tagName || 'div');
+            className && ~~(ele.className = className);
+            parentEle && parentEle.appendChild(ele);
+            return ele;
+        }
+    }]);
+
+    return DropDownBox;
+}(_TemplateBase2.TemplateBase);
+
+_SuperMap.SuperMap.Widgets.DropDownBox = DropDownBox;
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Select = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _TemplateBase2 = __webpack_require__(6);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.Select
+ * @classdesc 微件统一的文字下拉框。
+ * @version 9.1.1
+ * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {string} [options.labelName] - label 名称。
+ * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
+ * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
+ * @extends {SuperMap.Widgets.TemplateBase}
+ * @category Widgets Common
+ */
+var Select = exports.Select = function (_TemplateBase) {
+    _inherits(Select, _TemplateBase);
+
+    function Select(options) {
+        _classCallCheck(this, Select);
+
+        var _this = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, options));
+
+        _this._initView(options);
+        return _this;
+    }
+
+    _createClass(Select, [{
+        key: '_initView',
+        value: function _initView(options) {
+            var selectTool = this._createElement('div', "widget-selecttool");
+
+            if (options.labelName) {
+                var label = this._createElement('label', 'widget-selecttool__lable--describe', selectTool);
+                label.innerHTML = options.labelName;
+            }
+
+            var chartSelect = this._createElement('div', 'widget-selecttool--chart', selectTool);
+            chartSelect.setAttribute('tabindex', '1');
+
+            var selectName = this._createElement('div', "widget-selecttool__name", chartSelect);
+            selectName.title = options.optionsArr[0];
+            selectName.innerHTML = options.optionsArr[0];
+
+            var chartTriangleBtn = this._createElement('div', 'widget-selecttool__trianglebtn--chart', chartSelect);
+            var triangleBtn = this._createElement('div', 'widget-triangle-down-img', chartTriangleBtn);
+            var selectContent = this._createElement('div', 'widget-selecttool__content', chartSelect);
+            var scrollarea = this._createElement('div', 'widget-selecttool__content--chart', selectContent);
+            var scrollareaContent = this._createElement('div', 'widget-selecttool__scrollarea__content', scrollarea);
+            scrollareaContent.setAttribute('tabindex', '1');
+            this.createOptions(scrollareaContent, options.optionsArr);
+            this.optionClickEvent(scrollareaContent, selectName, options.optionsClickCb);
+            // 下拉框显示 & 隐藏事件
+            this._selectClickEvent(chartSelect, selectContent, triangleBtn);
+            this.rootContainer = selectTool;
+        }
+
+        /**
+         * @function SuperMap.Widgets.Select.prototype.createOptions
+         * @description 创建所属下拉框选项。
+         */
+
+    }, {
+        key: 'createOptions',
+        value: function createOptions(container, optionsArr) {
+            for (var i in optionsArr) {
+                var option = this._createElement('div', 'widget-selecttool__option', container);
+                option.title = optionsArr[i];
+                option.innerHTML = optionsArr[i];
+            }
+        }
+
+        /**
+         * @function SuperMap.Widgets.Select.prototype._selectClickEvent
+         * @description select 点击显示&隐藏事件。
+         * @private
+         */
+
+    }, {
+        key: '_selectClickEvent',
+        value: function _selectClickEvent(eventElement, contentElement, triangleBtn) {
+            eventElement.onclick = function (e) {
+                if (contentElement.style.display === "block") {
+                    contentElement.style.display = "none";
+                    triangleBtn.className = "widget-triangle-down-img";
+                } else {
+                    contentElement.style.display = "block";
+                    triangleBtn.className = "triangle-up-img";
+                }
+                e.preventDefault();
+                e.stopPropagation();
+            };
+            eventElement.onmousedown = function (evt) {
+                //console.log('dropdownbox onmousedown '+evt.target.className);
+                if (evt.target !== this) {
+                    this.focus();
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                }
+            };
+            eventElement.onblur = function () {
+
+                contentElement.style.display = "none";
+                triangleBtn.className = "widget-triangle-down-img";
+            };
+        }
+
+        /**
+         * @function Select.prototype._createElement
+         * @description 通用创建元素。
+         * @private
+         */
+
+    }, {
+        key: '_createElement',
+        value: function _createElement(tagName, className, parentEle) {
+            var ele = document.createElement(tagName || 'div');
+            className && ~~(ele.className = className);
+            parentEle && parentEle.appendChild(ele);
+            return ele;
+        }
+
+        /**
+         * @function SuperMap.Widgets.Select.prototype.optionClickEvent
+         * @description 下拉框的 option 的点击事件。
+         */
+
+    }, {
+        key: 'optionClickEvent',
+        value: function optionClickEvent(optionEleArr, selectNameEle, optionsClickCb) {
+            var _loop = function _loop(i) {
+                var childEle = optionEleArr.children[i];
+                childEle.onclick = function () {
+                    selectNameEle.innerHTML = childEle.innerHTML;
+                    selectNameEle.title = childEle.title;
+                    if (childEle.getAttribute('data-value')) {
+                        selectNameEle.setAttribute('data-value', childEle.getAttribute('data-value'));
+                    }
+                    optionsClickCb && optionsClickCb(childEle);
+                };
+            };
+
+            for (var i = 0; i < optionEleArr.children.length; i++) {
+                _loop(i);
+            }
+        }
+    }]);
+
+    return Select;
+}(_TemplateBase2.TemplateBase);
+
+_SuperMap.SuperMap.Widgets.Select = Select;
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.CommonContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _TemplateBase2 = __webpack_require__(6);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.Widgets.CommonContainer
+ * @classdesc 微件统一外框。
+ * @version 9.1.1
+ * @param {Object} options - 组件可选参数。
+ * @param {string} options.id - 组件 dom 元素 id。
+ * @param {string} options.title - 标题。
+ * @category Widgets Common
+ * @extends {SuperMap.Widgets.TemplateBase}
+ */
+var CommonContainer = exports.CommonContainer = function (_TemplateBase) {
+    _inherits(CommonContainer, _TemplateBase);
+
+    function CommonContainer(options) {
+        _classCallCheck(this, CommonContainer);
+
+        var _this = _possibleConstructorReturn(this, (CommonContainer.__proto__ || Object.getPrototypeOf(CommonContainer)).call(this, options));
+
+        var title = options.title ? options.title : "";
+        _this._initView(title);
+        return _this;
+    }
+
+    /**
+     * @private
+     * @override
+     */
+
+
+    _createClass(CommonContainer, [{
+        key: '_initView',
+        value: function _initView(title) {
+            var container = document.createElement("div");
+            container.setAttribute("class", "widget-container");
+
+            //title
+            var titleContainer = document.createElement("div");
+            titleContainer.setAttribute("class", "widget-title");
+            var titleContent = document.createElement("div");
+            titleContent.innerHTML = title;
+            titleContainer.appendChild(titleContent);
+            container.appendChild(titleContainer);
+            //container
+            var widgetContent = document.createElement("div");
+            widgetContent.setAttribute("class", "widget-content");
+            container.appendChild(widgetContent);
+            this.content = widgetContent;
+
+            this.rootContainer = container;
+            return container;
+        }
+
+        /**
+         * @function SuperMap.Widgets.CommonContainer.prototype.getContentElement
+         * @description 获取内容元素容器
+         */
+
+    }, {
+        key: 'getContentElement',
+        value: function getContentElement() {
+            return this.content;
+        }
+
+        /**
+         * @function SuperMap.Widgets.CommonContainer.prototype.appendContent
+         * @description 填充内容元素
+         */
+
+    }, {
+        key: 'appendContent',
+        value: function appendContent(element) {
+            this.content.appendChild(element);
+        }
+    }]);
+
+    return CommonContainer;
+}(_TemplateBase2.TemplateBase);
+
+_SuperMap.SuperMap.Widgets.CommonContainer = CommonContainer;
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MessageBox = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+var _SuperMap = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.Widgets.MessageBox
+ * @version 9.1.1
+ * @classdesc 微件信息提示框。
+ * @category Widgets Common
+ */
+var MessageBox = exports.MessageBox = function () {
+    function MessageBox() {
+        _classCallCheck(this, MessageBox);
+
+        this._initView();
+    }
+
+    _createClass(MessageBox, [{
+        key: "_initView",
+        value: function _initView() {
+            //原生js形式
+            var messageBoxContainer = document.createElement("div");
+            messageBoxContainer.hidden = true;
+            messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
+
+            //图标
+            var iconContainer = document.createElement("div");
+            iconContainer.setAttribute("class", "icon");
+            this.icon = document.createElement("span");
+            this.icon.setAttribute("class", "supermapol-icons-message-warning");
+            iconContainer.appendChild(this.icon);
+            messageBoxContainer.appendChild(iconContainer);
+
+            //内容：
+            var messageBox = document.createElement("div");
+            messageBox.setAttribute("class", "widget-messagebox");
+            messageBox.innerHTML = "";
+            messageBoxContainer.appendChild(messageBox);
+            this.messageBox = messageBox;
+
+            //关闭按钮
+            var cancelContainer = document.createElement("div");
+            cancelContainer.setAttribute("class", "widget-messagebox__cancelbtncontainer");
+            var cancelBtn = document.createElement("button");
+            cancelBtn.setAttribute("class", "widget-messagebox__cancelBtn");
+            cancelBtn.innerHTML = "x";
+            cancelBtn.onclick = this.closeView.bind(this);
+            cancelContainer.appendChild(cancelBtn);
+            messageBoxContainer.appendChild(cancelContainer);
+
+            this.messageBoxContainer = messageBoxContainer;
+            document.body.appendChild(this.messageBoxContainer);
+        }
+
+        /**
+         * @function SuperMap.Widgets.MessageBox.prototype.closeView
+         * @description 关闭提示框。
+         */
+
+    }, {
+        key: "closeView",
+        value: function closeView() {
+            this.messageBoxContainer.hidden = true;
+        }
+
+        /**
+         * @function SuperMap.Widgets.MessageBox.prototype.showView
+         * @description 显示提示框。
+         * @param {string} message - 提示框显示内容。
+         * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success"。
+         */
+
+    }, {
+        key: "showView",
+        value: function showView(message) {
+            var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'warring';
+
+            //设置提示框的样式：
+            if (type === "success") {
+                this.icon.setAttribute("class", "supermapol-icons-message-success");
+                this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-green");
+            } else if (type === "failure") {
+                this.icon.setAttribute("class", "supermapol-icons-message-failure");
+                this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-red");
+            } else if (type === "warring") {
+                this.icon.setAttribute("class", "supermapol-icons-message-warning");
+                this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
+            }
+            this.messageBox.innerHTML = message;
+            this.messageBoxContainer.hidden = false;
+        }
+    }]);
+
+    return MessageBox;
+}();
+
+_SuperMap.SuperMap.Widgets.MessageBox = MessageBox;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.FileModel = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+var _CommonTypes = __webpack_require__(9);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.FileModel
+ * @description 文件数据微件数据模型，用于存储一些文件数据或状态，todo 结构待完善
+ * @category Widgets OpenFile
+ * @private
+ */
+var FileModel = exports.FileModel = function () {
+    function FileModel(options) {
+        _classCallCheck(this, FileModel);
+
+        this.FileTypes = _CommonTypes.FileTypes;
+        this.FileConfig = _CommonTypes.FileConfig;
+        this.loadFileObject = options && options.loadFileObject ? options.loadFileObject : [];
+    }
+
+    /**
+     * @function SuperMap.FileModel.prototype.set
+     * @description 设置属性值
+     * @param {string} key - 属性名称
+     * @param {string|Object} value - 属性值
+     */
+
+
+    _createClass(FileModel, [{
+        key: 'set',
+        value: function set(key, value) {
+            this[key] = value;
+        }
+
+        /**
+         * @function SuperMap.FileModel.prototype.get
+         * @description 获取数据值
+         * @param {string} key - 属性名称
+         * @returns {string|Object} value - 返回属性值
+         */
+
+    }, {
+        key: 'get',
+        value: function get(key) {
+            return this[key];
+        }
+    }]);
+
+    return FileModel;
+}();
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.FileReaderUtil = exports.widgetsUtil = exports.PaginationContainer = exports.NavTabsPage = exports.CityTabsPage = exports.IndexTabsPageContainer = exports.PopContainer = exports.AttributesPopContainer = exports.DropDownBox = exports.Select = exports.CommonContainer = exports.MessageBox = exports.FileModel = exports.FileConfig = exports.FileTypes = undefined;
+
+var _CommonTypes = __webpack_require__(9);
+
+var _FileModel = __webpack_require__(62);
+
+var _MessageBox = __webpack_require__(61);
+
+var _CommonContainer = __webpack_require__(60);
+
+var _Select = __webpack_require__(59);
+
+var _DropDownBox = __webpack_require__(58);
+
+var _AttributesPopContainer = __webpack_require__(57);
+
+var _PopContainer = __webpack_require__(15);
+
+var _IndexTabsPageContainer = __webpack_require__(14);
+
+var _CityTabsPage = __webpack_require__(56);
+
+var _NavTabsPage = __webpack_require__(55);
+
+var _PaginationContainer = __webpack_require__(54);
+
+var _util = __webpack_require__(53);
+
+/* //图表微件
+import {ChartView} from './chart/ChartView';
+import {ChartViewModel} from './chart/ChartViewModel'; */
+//公用模板：
+
+//组件
+exports.FileTypes = _CommonTypes.FileTypes;
+exports.FileConfig = _CommonTypes.FileConfig;
+//工具类
+
+//提示框微件
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+//数据
+
+exports.FileModel = _FileModel.FileModel;
+exports.MessageBox = _MessageBox.MessageBox;
+/* export {ChartView};
+export {ChartViewModel}; */
+
+exports.CommonContainer = _CommonContainer.CommonContainer;
+exports.Select = _Select.Select;
+exports.DropDownBox = _DropDownBox.DropDownBox;
+exports.AttributesPopContainer = _AttributesPopContainer.AttributesPopContainer;
+exports.PopContainer = _PopContainer.PopContainer;
+exports.IndexTabsPageContainer = _IndexTabsPageContainer.IndexTabsPageContainer;
+exports.CityTabsPage = _CityTabsPage.CityTabsPage;
+exports.NavTabsPage = _NavTabsPage.NavTabsPage;
+exports.PaginationContainer = _PaginationContainer.PaginationContainer;
+exports.widgetsUtil = _util.widgetsUtil;
+exports.FileReaderUtil = _util.FileReaderUtil;
+
+/***/ }),
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10692,7 +13125,7 @@ var DatasourceConnectionInfo = exports.DatasourceConnectionInfo = function () {
 _SuperMap.SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
 
 /***/ }),
-/* 46 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10803,7 +13236,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 47 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11240,7 +13673,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 48 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11433,7 +13866,7 @@ process.umask = function () {
 };
 
 /***/ }),
-/* 49 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11621,10 +14054,10 @@ process.umask = function () {
     attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 })(typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(22), __webpack_require__(48)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(26), __webpack_require__(67)))
 
 /***/ }),
-/* 50 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11679,16 +14112,16 @@ exports._unrefActive = exports.active = function (item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(49);
+__webpack_require__(68);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;
 exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || typeof global !== "undefined" && global.clearImmediate || undefined && undefined.clearImmediate;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(22)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(26)))
 
 /***/ }),
-/* 51 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11929,16 +14362,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     root.Promise = Promise;
   }
 })(undefined);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(50).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(69).setImmediate))
 
 /***/ }),
-/* 52 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _promisePolyfill = __webpack_require__(51);
+var _promisePolyfill = __webpack_require__(70);
 
 var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
@@ -11949,13 +14382,13 @@ window.Promise = _promisePolyfill2.default; /* Copyright© 2000 - 2018 SuperMap 
                                              * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 /***/ }),
-/* 53 */
+/* 72 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 54 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12298,7 +14731,7 @@ _SuperMap.SuperMap.Event = Event;
 _SuperMap.SuperMap.Event.observe(window, 'unload', _SuperMap.SuperMap.Event.unloadCache, false);
 
 /***/ }),
-/* 55 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12517,7 +14950,7 @@ var Pixel = exports.Pixel = function () {
 _SuperMap.SuperMap.Pixel = Pixel;
 
 /***/ }),
-/* 56 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12535,9 +14968,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Events = __webpack_require__(23);
+var _Events = __webpack_require__(27);
 
-var _elasticsearch = __webpack_require__(53);
+var _elasticsearch = __webpack_require__(72);
 
 var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
@@ -13281,173 +15714,266 @@ var ElasticSearch = exports.ElasticSearch = function () {
 _SuperMap.SuperMap.ElasticSearch = ElasticSearch;
 
 /***/ }),
-/* 57 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
-var _ElasticSearch = __webpack_require__(56);
+var _ElasticSearch = __webpack_require__(75);
 
 Object.defineProperty(exports, 'ElasticSearch', {
-  enumerable: true,
-  get: function get() {
-    return _ElasticSearch.ElasticSearch;
-  }
+    enumerable: true,
+    get: function get() {
+        return _ElasticSearch.ElasticSearch;
+    }
 });
 
-var _SecurityManager = __webpack_require__(9);
+var _SecurityManager = __webpack_require__(11);
 
 Object.defineProperty(exports, 'SecurityManager', {
-  enumerable: true,
-  get: function get() {
-    return _SecurityManager.SecurityManager;
-  }
+    enumerable: true,
+    get: function get() {
+        return _SecurityManager.SecurityManager;
+    }
 });
 
-var _KernelDensityJobParameter = __webpack_require__(21);
+var _KernelDensityJobParameter = __webpack_require__(25);
 
 Object.defineProperty(exports, 'KernelDensityJobParameter', {
-  enumerable: true,
-  get: function get() {
-    return _KernelDensityJobParameter.KernelDensityJobParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _KernelDensityJobParameter.KernelDensityJobParameter;
+    }
 });
 
-var _SingleObjectQueryJobsParameter = __webpack_require__(20);
+var _SingleObjectQueryJobsParameter = __webpack_require__(24);
 
 Object.defineProperty(exports, 'SingleObjectQueryJobsParameter', {
-  enumerable: true,
-  get: function get() {
-    return _SingleObjectQueryJobsParameter.SingleObjectQueryJobsParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _SingleObjectQueryJobsParameter.SingleObjectQueryJobsParameter;
+    }
 });
 
-var _SummaryAttributesJobsParameter = __webpack_require__(19);
+var _SummaryAttributesJobsParameter = __webpack_require__(23);
 
 Object.defineProperty(exports, 'SummaryAttributesJobsParameter', {
-  enumerable: true,
-  get: function get() {
-    return _SummaryAttributesJobsParameter.SummaryAttributesJobsParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _SummaryAttributesJobsParameter.SummaryAttributesJobsParameter;
+    }
 });
 
-var _SummaryMeshJobParameter = __webpack_require__(18);
+var _SummaryMeshJobParameter = __webpack_require__(22);
 
 Object.defineProperty(exports, 'SummaryMeshJobParameter', {
-  enumerable: true,
-  get: function get() {
-    return _SummaryMeshJobParameter.SummaryMeshJobParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _SummaryMeshJobParameter.SummaryMeshJobParameter;
+    }
 });
 
-var _SummaryRegionJobParameter = __webpack_require__(17);
+var _SummaryRegionJobParameter = __webpack_require__(21);
 
 Object.defineProperty(exports, 'SummaryRegionJobParameter', {
-  enumerable: true,
-  get: function get() {
-    return _SummaryRegionJobParameter.SummaryRegionJobParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _SummaryRegionJobParameter.SummaryRegionJobParameter;
+    }
 });
 
-var _OverlayGeoJobParameter = __webpack_require__(16);
+var _OverlayGeoJobParameter = __webpack_require__(20);
 
 Object.defineProperty(exports, 'OverlayGeoJobParameter', {
-  enumerable: true,
-  get: function get() {
-    return _OverlayGeoJobParameter.OverlayGeoJobParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _OverlayGeoJobParameter.OverlayGeoJobParameter;
+    }
 });
 
-var _BuffersAnalystJobsParameter = __webpack_require__(15);
+var _BuffersAnalystJobsParameter = __webpack_require__(19);
 
 Object.defineProperty(exports, 'BuffersAnalystJobsParameter', {
-  enumerable: true,
-  get: function get() {
-    return _BuffersAnalystJobsParameter.BuffersAnalystJobsParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _BuffersAnalystJobsParameter.BuffersAnalystJobsParameter;
+    }
 });
 
-var _TopologyValidatorJobsParameter = __webpack_require__(14);
+var _TopologyValidatorJobsParameter = __webpack_require__(18);
 
 Object.defineProperty(exports, 'TopologyValidatorJobsParameter', {
-  enumerable: true,
-  get: function get() {
-    return _TopologyValidatorJobsParameter.TopologyValidatorJobsParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _TopologyValidatorJobsParameter.TopologyValidatorJobsParameter;
+    }
 });
 
 var _OutputSetting = __webpack_require__(4);
 
 Object.defineProperty(exports, 'OutputSetting', {
-  enumerable: true,
-  get: function get() {
-    return _OutputSetting.OutputSetting;
-  }
+    enumerable: true,
+    get: function get() {
+        return _OutputSetting.OutputSetting;
+    }
 });
 
 var _MappingParameters = __webpack_require__(3);
 
 Object.defineProperty(exports, 'MappingParameters', {
-  enumerable: true,
-  get: function get() {
-    return _MappingParameters.MappingParameters;
-  }
+    enumerable: true,
+    get: function get() {
+        return _MappingParameters.MappingParameters;
+    }
 });
 
-var _GeoCodingParameter = __webpack_require__(13);
+var _GeoCodingParameter = __webpack_require__(17);
 
 Object.defineProperty(exports, 'GeoCodingParameter', {
-  enumerable: true,
-  get: function get() {
-    return _GeoCodingParameter.GeoCodingParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _GeoCodingParameter.GeoCodingParameter;
+    }
 });
 
-var _GeoDecodingParameter = __webpack_require__(12);
+var _GeoDecodingParameter = __webpack_require__(16);
 
 Object.defineProperty(exports, 'GeoDecodingParameter', {
-  enumerable: true,
-  get: function get() {
-    return _GeoDecodingParameter.GeoDecodingParameter;
-  }
+    enumerable: true,
+    get: function get() {
+        return _GeoDecodingParameter.GeoDecodingParameter;
+    }
 });
 
-var _overlay = __webpack_require__(44);
+var _widgets = __webpack_require__(63);
+
+Object.defineProperty(exports, 'FileTypes', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.FileTypes;
+    }
+});
+Object.defineProperty(exports, 'FileConfig', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.FileConfig;
+    }
+});
+Object.defineProperty(exports, 'FileModel', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.FileModel;
+    }
+});
+Object.defineProperty(exports, 'MessageBox', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.MessageBox;
+    }
+});
+Object.defineProperty(exports, 'CommonContainer', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.CommonContainer;
+    }
+});
+Object.defineProperty(exports, 'DropDownBox', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.DropDownBox;
+    }
+});
+Object.defineProperty(exports, 'Select', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.Select;
+    }
+});
+Object.defineProperty(exports, 'AttributesPopContainer', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.AttributesPopContainer;
+    }
+});
+Object.defineProperty(exports, 'PopContainer', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.PopContainer;
+    }
+});
+Object.defineProperty(exports, 'IndexTabsPageContainer', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.IndexTabsPageContainer;
+    }
+});
+Object.defineProperty(exports, 'CityTabsPage', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.CityTabsPage;
+    }
+});
+Object.defineProperty(exports, 'NavTabsPage', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.NavTabsPage;
+    }
+});
+Object.defineProperty(exports, 'PaginationContainer', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.PaginationContainer;
+    }
+});
+Object.defineProperty(exports, 'widgetsUtil', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.widgetsUtil;
+    }
+});
+Object.defineProperty(exports, 'FileReaderUtil', {
+    enumerable: true,
+    get: function get() {
+        return _widgets.FileReaderUtil;
+    }
+});
+
+var _overlay = __webpack_require__(48);
 
 Object.keys(_overlay).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _overlay[key];
-    }
-  });
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+        enumerable: true,
+        get: function get() {
+            return _overlay[key];
+        }
+    });
 });
 
-var _services = __webpack_require__(40);
+var _services = __webpack_require__(44);
 
 Object.keys(_services).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _services[key];
-    }
-  });
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+        enumerable: true,
+        get: function get() {
+            return _services[key];
+        }
+    });
 });
 
-var _SuperMap = __webpack_require__(6);
+var _SuperMap = __webpack_require__(7);
 
 Object.defineProperty(exports, 'SuperMap', {
-  enumerable: true,
-  get: function get() {
-    return _SuperMap.SuperMap;
-  }
+    enumerable: true,
+    get: function get() {
+        return _SuperMap.SuperMap;
+    }
 });
 
 /***/ })

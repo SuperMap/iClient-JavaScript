@@ -1179,46 +1179,47 @@ var exampleConfig = {
                 content: [{
                     name: "打开文件",
                     name_en: "open file widget",
-                    version: "9.1.0",
+                    version: "9.1.1",
                     thumbnail: "openFileWidget.png",
                     fileName: "widgets_openFileWidget"
                 }, {
                     name: "数据流服务",
                     name_en: "data flow service",
-                    version: "9.1.0",
+                    version: "9.1.1",
                     thumbnail: "widgets_dataFlow.png",
                     fileName: "widgets_dataFlow"
                 }, {
                     name: "地址匹配与图层要素查询",
                     name_en: "address match add features search",
-                    version: "9.1.0",
+                    version: "9.1.1",
                     thumbnail: "widgets_Search.png",
                     fileName: "widgets_Search"
                 },{
                     name: "客户端计算",
                     name_en: "client computation",
-                    version: "9.1.0",
+                    version: "9.1.1",
                     thumbnail: "widgets_clientComputation.png",
                     fileName: "widgets_clientComputation"
                 },{
                     name: "分布式分析",
                     name_en: "distribute analysis",
-                    version: "9.1.0",
+                    version: "9.1.1",
                     thumbnail: "widgets_distributedAnalysis.png",
                     fileName: "widgets_distributedAnalysis"
                 },{
                     name: "数据服务查询",
                     name_en: "data service query",
-                    version: "9.1.0",
+                    version: "9.1.1",
                     thumbnail: "widgets_dataServiceQuery.png",
                     fileName: "widgets_dataServiceQuery"
-                },{
+                }
+               /*  ,{
                     name: "图表",
                     name_en: "chart",
                     version: "9.1.1",
                     thumbnail: "widgets_chart.png",
                     fileName: "widgets_chart"
-                }]
+                } */]
             },
             "widgetsAdvanced": {
                 name: "扩展",
@@ -1226,13 +1227,13 @@ var exampleConfig = {
                 content: [{
                     name: "打开文件(React)",
                     name_en: "open file widget(React)",
-                    version: "9.1.0",
+                    version: "9.1.1",
                     thumbnail: "openFileWidget_react.png",
                     fileName: "widgets_openFileWidget_react"
                 }, {
                     name: "打开文件(Vue)",
                     name_en: "open file widget(Vue)",
-                    version: "9.1.0",
+                    version: "9.1.1",
                     thumbnail: "openFileWidget_vue.png",
                     fileName: "widgets_openFileWidget_vue"
                 }]
