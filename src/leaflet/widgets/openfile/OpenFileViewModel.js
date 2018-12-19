@@ -107,7 +107,7 @@ export var OpenFileViewModel = L.Evented.extend({
                     });
                 }
             }, (e) => {
-                me.fire("openfilefailed", {messageType: "failure", message: e.errorMassage});
+                me.fire("openfilefailed", {messageType: "failure", message: e});
             }, this);
         }, () => {
             /**
