@@ -545,6 +545,13 @@ deps = {
                     "des_en": "Logo control"
                 }]
             },
+        },
+
+        "Widget":{
+            "title": "微件",
+            "description": "微件模块",
+            "description_en": "Widget module",
+
             "OpenFile": {
                 "name": "打开文件微件",
                 "src": [
@@ -611,7 +618,8 @@ deps = {
                     "des_en": "Data service query"
                 }]
             },
-        }
+
+        },
 
     },
 
