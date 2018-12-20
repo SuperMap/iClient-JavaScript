@@ -42,6 +42,7 @@
         }
         if (inArray(includes, 'StylePanel')) {
             inputScript("../js/plottingPanel/customEditor/ColorpickerEditor.js");
+            inputScript("../js/plottingPanel/PublicStyleFunction.js");
             inputScript("../js/plottingPanel/StylePanel.js");
         }
         if (inArray(includes, 'SMLInfosPanel')) {

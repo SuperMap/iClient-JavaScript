@@ -1103,6 +1103,8 @@ window.examplesResources = {
         'text_openFile':"选择文件",
         'text_analysisLayer':"[分析图层]",
         'text_spatialAnalysisLayerName':"中国历史5级以上地震数据",
+        'text_symbolEqualSize':"等大",
+        'text_symbolDistribution':"均匀分布",
 
 
         "btn_overlayAnalyst": "叠加分析",
@@ -1270,6 +1272,11 @@ window.examplesResources = {
         "btn_create": "创建",
         "btn_undo": "撤销",
         "btn_redo": "重做",
+        "btn_symbolEqualWidth":"等宽",
+        "btn_symbolEqualHeight":"等高",
+        "btn_symbolEqualWidthHeight":"等宽高",
+        "btn_symbolLevelDistribution":"横向均匀分布",
+        "btn_symbolVerticalDistribution":"纵向均匀分布",
 
 
         "msg_addPath": "请生成路径，用于缓冲区分析",

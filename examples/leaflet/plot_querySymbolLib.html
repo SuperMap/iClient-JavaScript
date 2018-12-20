@@ -8,15 +8,17 @@
     <title data-i18n="resources.title_querySymbolLib"></title>
 </head>
 <body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="toolbar" class="panel panel-primary" style="position: absolute;top: 10px;right: 10px;width: 300px;text-align: center;z-index: 9999;border-radius: 4px;">
-    <div class='panel-heading'>
+<div id="toolbar" class="panel panel-primary" style="position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading' id="panelheading">
         <h5 class='panel-title text-center' data-i18n="resources.title_querySymbolLib"></h5></div>
-    <div class='panel-body content'>
+    <div class='panel-body content' id="panelbodycontent">
         <div class='panel'>
-            <div class='input-group'>
+
+              <div class='input-group' style="width:230px">
                 <span class='input-group-addon' data-i18n="resources.text_keyword"></span>
                 <input class='form-control' id='queryCriteria' value=''/>
             </div>
+
         </div>
         <input type="button"  data-i18n="[value]resources.btn_query" onclick="querySymbolLib()"/>&nbsp;
         <input type="button" data-i18n="[value]resources.text_input_value_modify" onclick="editSymbol()"/>&nbsp;
@@ -164,6 +166,12 @@
     window.onload = function(){
         loadSymbolLib();
     };
+    $(document).ready(function(){
+        $('#panelheading').click(function(){
+            $('#panelbodycontent').toggle();
+            $('#popupWin').toggle();
+        });
+    });
 </script>
 </body>
 </html>

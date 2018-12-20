@@ -80,12 +80,12 @@
         var polygonPoints = [];
         polygonPoints.push(new L.latLng(-11.232812197819818,-52.28812080668847));
         polygonPoints.push(new L.latLng(18.852702842151643,-3.3455361848108325));
-        plottingLayer.createSymbol(22, 1003, polygonPoints,{symbolType:SuperMap.Plot.SymbolType.ALGOSYMBOL});
+        plottingLayer.createSymbol(22, 1003, polygonPoints);
 
         //标绘点标号
         var dotPoints = [];
         dotPoints.push(new L.latLng(19.86325625,6.679675));
-        plottingLayer.createSymbol(421, 9, dotPoints,{symbolType:SuperMap.Plot.SymbolType.DOTSYMBOL,dScale:3});
+        plottingLayer.createSymbol(421, 9, dotPoints,{dScale:3});
     }
     function clearMap(){
         plottingLayer.removeAllFeatures();

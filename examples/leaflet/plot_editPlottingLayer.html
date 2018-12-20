@@ -8,26 +8,26 @@
     <title data-i18n="resources.title_editPlottingLayer"></title>
 </head>
 <body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;width: 300px;text-align: center;z-index: 9999;border-radius: 4px;">
-    <div class='panel-heading'>
+<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading' id="panelheading">
         <h5 class='panel-title text-center' data-i18n="resources.title_editPlottingLayer"></h5></div>
-    <div class='panel-body content'>
+    <div class='panel-body content' id="panelbodycontent">
         <div class='panel'>
-            <div class='input-group' style=" margin-bottom: 12px;">
+            <div class='input-group' style=" margin-bottom: 12px;width: 240px;">
                 <span class='input-group-addon' data-i18n="resources.text_editLayer"></span>
                 <select class='form-control' id='editable' onchange="editableChanges()">
                     <option value='0'>false</option>
                     <option value='1' selected>true</option>
                 </select>
             </div>
-            <div class='input-group' style=" margin-bottom: 12px;">
+            <div class='input-group' style=" margin-bottom: 12px;width: 240px;">
                 <span class='input-group-addon' data-i18n="resources.text_lockLayer"></span>
                 <select class='form-control' id='locked' onchange="lockedChanges()">
                     <option value='0' selected>false</option>
                     <option value='1'>true</option>
                 </select>
             </div>
-            <div class='input-group' style=" margin-bottom: 12px;">
+            <div class='input-group' style=" margin-bottom: 12px;width: 240px;">
                 <span class='input-group-addon' data-i18n="resources.text_selectLayer"></span>
                 <select class='form-control' id='selected' onchange="selectedChanges()">
                     <option value='0'>false</option>
@@ -96,6 +96,11 @@
     function plottingDrawCancel(){
         drawControl.handler.disable();
     }
+    $(document).ready(function(){
+        $('#panelheading').click(function(){
+            $('#panelbodycontent').toggle();
+        });
+    });
 </script>
 </body>
 </html>

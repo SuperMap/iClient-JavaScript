@@ -80,7 +80,7 @@
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.12.13/xlsx.core.min.js");
         }
         if (!inArray(excludes, 'iclient9-leaflet')) {
-            if (supportES6() && !inArray(includes, 'iclient9-plot-leaflet')) {
+            if (supportES6()) {
                 inputScript("../../dist/leaflet/iclient9-leaflet-es6.min.js");
             } else {
                 inputScript("../../dist/leaflet/iclient9-leaflet.min.js");
@@ -90,8 +90,12 @@
             inputCSS("../../dist/leaflet/iclient9-leaflet.min.css");
         }
         if (inArray(includes, 'iclient9-plot-leaflet')) {
-            inputCSS("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.0/iclient9-plot-leaflet.css");
-            inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.0/iclient9-plot-leaflet.min.js");
+            inputCSS("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.1/iclient9-plot-leaflet.css");
+            if (supportES6()) {
+                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.1/iclient9-plot-leaflet-es6.min.js");
+            } else {
+                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.1/iclient9-plot-leaflet.min.js");
+            }
         }
         if (inArray(includes, 'leaflet.heat')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js");

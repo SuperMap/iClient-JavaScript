@@ -1156,6 +1156,8 @@ window.examplesResources = {
         'text_openFile': "Select file",
         'text_analysisLayer':"[Analytical Layer]",
         'text_spatialAnalysisLayerName':"China's historical earthquake data above level 5",
+        'text_symbolEqualSize':"Equal large",
+        'text_symbolDistribution':"Uniform distribution",
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",
@@ -1321,6 +1323,11 @@ window.examplesResources = {
         "btn_create": "Create",
         "btn_undo": "Undo",
         "btn_redo": "Redo",
+        "btn_symbolEqualWidth":"Equal width",
+        "btn_symbolEqualHeight":"Equal height",
+        "btn_symbolEqualWidthHeight":"Equal width and height",
+        "btn_symbolLevelDistribution":"Horizontal uniform distribution",
+        "btn_symbolVerticalDistribution":"Vertical uniform distribution",
 
 
         "msg_addPath": "Please add the path for buffer analysis.",
