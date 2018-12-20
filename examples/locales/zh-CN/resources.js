@@ -411,7 +411,7 @@ window.examplesResources = {
         "title_iportalWebMap": "SuperMap iPortal地图",
         "title_earthquakeHeatMapLayer": "2001-2014地震次数(Classic)",
         "title_echartsEarthquake": "2005到2016年地震发生情况",
-        "title_l_echartsEarthquake": "2000年到2015年地震热力图",
+        "title_l_echartsEarthquake": "2001年到2014年地震热力图",
         "title_lianjia": "2018年2月北京房价信息",
         "title_mapvLianjia_Beijing_price": "2018年2月北京房价",
         "title_l_echartsEarthquake1": "2008到2017年地震情况统计",

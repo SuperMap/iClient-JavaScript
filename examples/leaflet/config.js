@@ -568,7 +568,7 @@ var exampleConfig = {
                     thumbnail: "l_heatMapLayer.png",
                     fileName: "heatMapLayer"
                 }, {
-                    name: "2000年到2015年地震热力图(Classic)",
+                    name: "2001年到2014年地震热力图(Classic)",
                     name_en: "Earthquake heat map (2000-2015)",
                     version: "9.1.0",
                     thumbnail: "l_earthquakeHeatMap.png",
