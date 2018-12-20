@@ -164,3 +164,11 @@ import './common/iPortal/iPortalServicesQueryParamSpec.js';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
+
+/**common -- widget**/
+import './common/widgets/templates/IndexTabsPageContainerSpec.js';
+import './common/widgets/templates/NavTabsPageSpec.js';
+import './common/widgets/templates/CommonContainerSpec.js';
+
+
+
