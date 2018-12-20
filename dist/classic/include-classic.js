@@ -50,6 +50,9 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'iclient8c')) {
+            if (!inArray(includes, 'iclient8c-plot')) {
+                window.excludePlot = true;
+            }
             inputScript("http://iclient.supermap.io/libs/iclient8c/libs/SuperMap.Include.js");
         }
         if (inArray(includes, 'mapv')) {
