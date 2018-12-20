@@ -6,7 +6,7 @@
 
 <head>
     <meta charset='utf-8' />
-    <title data-i18n="resources.title_mvtVectorLayer"></title>
+    <title data-i18n="resources.title_mvtVectorLayer4326"></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <style>
         body {
@@ -48,7 +48,8 @@
                         "type": "raster",
                         "source": {
                             "type": "raster",
-                            "tiles": ['http://t0.tianditu.com/DataServer?T=vec_c&x={x}&y={y}&l={z}'],
+                            "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                            "rasterSource":"iserver",
                             "tileSize": 256
                         },
                         "minzoom": 0,

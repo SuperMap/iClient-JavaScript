@@ -8,7 +8,7 @@
     <meta charset='utf-8' />
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script type="text/javascript" include="jquery,papaparse,widgets" src="../js/include-web.js"></script>
-    <title data-i18n="resources.title_mb_graphicLayer"></title>
+    <title data-i18n="resources.title_mb_graphicLayerWGS84"></title>
     <style>
         body {
             margin: 0;
@@ -37,6 +37,7 @@
     <script type="text/javascript" include='mapbox-gl-enhance,deck' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <div id='map'></div>
     <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
         var map = new mapboxgl.Map({
             container: 'map', 
             style: {
@@ -44,7 +45,8 @@
                 "sources": {
                     "raster-tiles": {
                         "type": "raster",
-                        "tiles": ['http://t0.tianditu.com/DataServer?T=vec_c&x={x}&y={y}&l={z}'],
+                        "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                        "rasterSource":"iserver",
                         "tileSize": 256
                     }
                 },
