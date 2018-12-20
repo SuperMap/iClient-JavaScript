@@ -188,7 +188,6 @@
             callback: {
                 getPolygon: function(feature) {
                     if (!feature.geometry || !feature.geometry.coordinates) {
-                        console.log(feature);
                         return [0, 0]
                     }
                     return feature.geometry.coordinates;

@@ -162,14 +162,12 @@
                 getStrokeWidth: 12,
                 getSourcePosition: function(feature) {
                     if (!feature.residence_lat || !feature.residence_lng) {
-                        console.log(feature);
                         return [0, 0]
                     }
                     return [Number(feature.residence_lng), Number(feature.residence_lat)];
                 },
                 getTargetPosition: function(feature) {
                     if (!feature.workplace_lng || !feature.workplace_lat) {
-                        console.log(feature);
                         return [0, 0]
                     }
                     return [Number(feature.workplace_lng), Number(feature.workplace_lat)];
@@ -210,7 +208,6 @@
             callback: {
                 getPosition: function (feature) {
                     if (!feature.workplace_lng || !feature.workplace_lat) {
-                        console.log(feature);
                         return [0, 0]
                     }
                     return [Number(feature.workplace_lng), Number(feature.workplace_lat)];
@@ -226,7 +223,6 @@
             callback: {
                 getPosition: function (feature) {
                     if (!feature.residence_lat || !feature.residence_lng) {
-                        console.log(feature);
                         return [0, 0]
                     }
                     return [Number(feature.residence_lng), Number(feature.residence_lat)];

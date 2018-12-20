@@ -839,6 +839,144 @@ var exampleConfig = {
             }
         }
     },
+    "multiCoordSys": {
+        name: "多坐标系",
+        name_en: "Multi-coordinate System",
+        version: "9.1.1",
+        // localIgnore: true,
+        content: {
+            "Multi_coordinate_Map":{
+                name:"地图",
+                name_en:"Map service",
+                version: "9.1.1",
+                content: [{
+                    name: "4326底图",
+                    name_en: "4326 Coordinate system",
+                    version: "9.1.1",
+                    thumbnail: "01_tiledMapLayer_4326.png",
+                    fileName: "01_tiledMapLayer_4326"
+                },{
+                    name: "绘图控件_4326",
+                    name_en: "Draw control 4326",
+                    version: "9.1.1",
+                    thumbnail: "control_drawControl_4326.png",
+                    fileName: "control_drawControl_4326"
+                },{
+                    name: "矢量瓦片_4326",
+                    name_en: "Mvt 4326",
+                    version: "9.1.1",
+                    thumbnail: "mvt_4326.png",
+                    fileName: "mvtVectorTile_4326"
+                }]
+            },
+            "Multi_coordinate_cluster": {
+                name: "聚合",
+                name_en: "Cluster",
+                version: "9.1.1",
+                content: [{
+                    name: "点聚合_3857",
+                    name_en: "Marker cluster 3857",
+                    version: "9.1.1",
+                    thumbnail: "markerCluster_3857.png",
+                    fileName: "markerCluster_3857"
+                }, {
+                    name: "点聚合_4326",
+                    name_en: "Marker cluster 4326",
+                    version: "9.1.1",
+                    thumbnail: "markerCluster_4326.png",
+                    fileName: "markerCluster_4326"
+                }]
+            },
+            "Multi_coordinate_DeckGL": {
+                name: "DeckGL",
+                name_en: "DeckGL",
+                version: "9.1.1",
+                content: [{
+                    name: "路径图（线）",
+                    name_en: "Path",
+                    version: "9.1.1",
+                    thumbnail: "deckglLayer_pathLayer_4326.png",
+                    fileName: "deckglLayer_pathLayer_4326"
+                }]
+            },
+            "Multi_coordinate_ECharts": {
+                name: "ECharts",
+                name_en: "ECharts",
+                version: "9.1.1",
+                content: [{
+                    name: "迁徙图",
+                    name_en: "Mock migration",
+                    version: "9.1.1",
+                    thumbnail: "echarts_geoline_4326.png",
+                    fileName: "echarts_geoline_4326"
+                }, {
+                    name: "微博签到图",
+                    name_en: "Scatter of Weibo user",
+                    version: "9.1.1",
+                    thumbnail: "echarts_scatterWeibo_4326.png",
+                    fileName: "echarts_scatterWeibo_4326"
+                }, {
+                    name: "全国铁路网络图（400万点数据绘制）",
+                    name_en: "Use lines to draw 4 millions Chinese railways",
+                    localIgnore: true,
+                    version: "9.1.1",
+                    thumbnail: "echarts_linesDrawMillionsRailwaysNetwork_4326.png",
+                    fileName: "echarts_linesDrawMillionsRailwaysNetwork_4326"
+                }]
+            },
+            "Multi_coordinate_graphicLayer": {
+                name: "高效率点图层",
+                name_en: "High efficiency point layer",
+                version: "9.1.1",
+                content: [
+                    {
+                        name: "纽约出租车145万上车点",
+                        name_en: "Points of 1.45 million NYC taxis",
+                        version: "9.1.1",
+                        thumbnail: "graphicLayer_4326.png",
+                        fileName: "graphicLayer_4326"
+                    }
+                ]
+            },
+            "Multi_coordinate_heatMap": {
+                name: "热力图",
+                name_en: "Heat map",
+                version: "9.1.1",
+                content: [{
+                    name: "中国地震数据",
+                    name_en: "China Earthquake Data",
+                    version: "9.1.1",
+                    thumbnail: "heatMapLayer_earthQuake_4326.png",
+                    fileName: "earthquakeHeatMap"
+                },
+                {
+                    name: "中国地震数据_iClient",
+                    name_en: "China Earthquake Data",
+                    version: "9.1.1",
+                    thumbnail: "heatMapLayer_earthQuake_iclient_4326.png",
+                    fileName: "earthquakeHeatMapIclient"
+                }]
+            },
+            "Multi_coordinate_MapV": {
+                name: "MapV",
+                name_en: "MapV",
+                version: "9.1.1",
+                content: [{
+                    name: "通勤图",
+                    name_en: "OD",
+                    version: "9.1.1",
+                    thumbnail: "mapvCsvcar_4326.png",
+                    fileName: "mapvCsvcar_4326"
+                },{
+                    name: "面",
+                    name_en: "Simple polygon",
+                    version: "9.1.1",
+                    thumbnail: "mapvLayerPolyon_4326.png",
+                    fileName: "mapvLayerPolyon_4326"
+                }]
+            }
+        }
+    },
     "GTC": {
         name: "GTC",
         name_en: "GTC",
@@ -869,6 +1007,7 @@ var sideBarIconConfig = {
     "iServer": "fa-server",
     "viz": "fa-map",
     "control": "fa-sliders",
+    "multiCoordSys": "fa-globe",
     "GTC": "fa-globe"
 };
 
@@ -880,6 +1019,7 @@ var sideBarIconConfig = {
 var exampleIconConfig = {
     "iServer": "fa-server",
     "viz": "fa-map",
-    "GTC": "fa-globe"
+    "GTC": "fa-globe",
+    'multiCoordSys':"fa-globe",
 };
 window.mapboxglExampleConfig = exampleConfig;

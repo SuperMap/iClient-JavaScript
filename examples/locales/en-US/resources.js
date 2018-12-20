@@ -78,7 +78,9 @@ window.examplesResources = {
             "OGC": "OGC",
             "mapping": "Third Party Map",
             "others": "Others",
-            "3D-WebGL": "3D-WebGL"
+            "3D-WebGL": "3D-WebGL",
+            "multiCoordSys": "Multi-coordinate System"
+
         },
         "more": {
             "_name": "More>>",
@@ -330,6 +332,7 @@ window.examplesResources = {
         "title_measureArea": "Area Measurement Service",
         "title_measureDistance": "Distance Measurement Service",
         "title_tiledMapLayer": "3857 Coordinate System",
+        "title_tiledMapLayer_4326": "4326 Coordinate System",
         "title_fieldService": "SuperMap Field Service",
         "title_fieldStatistics": "Dataset Field Statistics Service",
         "title_getGridCellInfos": "Data Grid Cell Query",
@@ -493,6 +496,7 @@ window.examplesResources = {
         "title_spatialAnalysis": 'Client Computation',
         "title_distributeAnalysis": 'Distribute Analysis',
         "title_dataServiceQuery": 'Data service query',
+        "title_ChinaEarthquakeHeat": 'China Earthquake heatmap',
 
 
         "text_code": "Forward Match",
