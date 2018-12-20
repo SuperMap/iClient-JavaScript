@@ -8,7 +8,7 @@ import {MessageBox, Lang} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.openFile
- * @classdesc 打开文件微件，用于打开本地数据文件并加载到地图，目前支持打开 .csv|.xls|.xlsx|.geojson|.json 格式文件。
+ * @classdesc 打开文件微件，用于打开本地数据文件并加载到地图，目前支持打开 .csv|.xls|.xlsx|.geojson|.json 格式文件，只支持WGS84经纬度坐标。
  * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
