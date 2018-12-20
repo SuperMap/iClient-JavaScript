@@ -50,7 +50,8 @@ window.examplesResources = {
             "OGC": "OGC",
             "mapping": "互联网地图",
             "others": "其他",
-            "3D-WebGL": "3D-WebGL"
+            "3D-WebGL": "3D-WebGL",
+            "multiCoordSys": "多坐标系"
         }
     },
     "footer": {
@@ -274,6 +275,7 @@ window.examplesResources = {
         "title_measureArea": "面积测量",
         "title_measureDistance": "距离测量",
         "title_tiledMapLayer": "3857底图",
+        "title_tiledMapLayer_4326": "4326底图",
         "title_fieldService": "SuperMap 字段信息",
         "title_fieldStatistics": "字段查询统计",
         "title_getGridCellInfos": "栅格查询",
@@ -442,6 +444,7 @@ window.examplesResources = {
         "title_flyBird":"飞鸟模型",
         "title_buildings":"建筑模型",
         "title_facility":"设施点(mtl+obj格式)",
+        "title_ChinaEarthquakeHeat": '中国地震数据热力图',
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",

@@ -56,6 +56,7 @@ var typeLinks = {
     "L.Rectangle": lfapi + '#rectangle',
     'L.LatLngBounds': lfapi+ '#latlngbounds',
     'L.Map': lfapi + '#map-example',
+    'L.Evented':lfapi +'#evented',
 
     //mapboxgl
     "mapboxgl.Evented": mbglapi + '#Evented',
