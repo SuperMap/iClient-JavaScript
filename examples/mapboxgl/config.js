@@ -378,8 +378,20 @@ var exampleConfig = {
                         version: "9.1.0",
                         thumbnail: "mvtVectorTile_landuse.png",
                         fileName: "mvtVectorTile_landuse"
-                    }
+                    }    
                 ]
+            },
+            "Multi_coordinate_cluster": {
+                name: "聚合",
+                name_en: "Cluster",
+                version: "9.1.1",
+                content: [  {
+                    name: "点聚合",
+                    name_en: "Marker cluster",
+                    version: "9.1.1",
+                    thumbnail: "markerCluster_3857.png",
+                    fileName: "markerCluster_3857"
+                },]
             },
             "graphicLayer": {
                 name: "高效率点图层",
@@ -560,7 +572,7 @@ var exampleConfig = {
                 name: "DeckGL",
                 name_en: "DeckGL",
                 content: [{
-                    name: "路径图（线）",
+                    name: "路径图",
                     name_en: "path",
                     version: "9.1.0",
                     thumbnail: "mb_deckglLayer_pathLayer.png",
@@ -850,20 +862,20 @@ var exampleConfig = {
                 name_en:"Map service",
                 version: "9.1.1",
                 content: [{
-                    name: "4326底图",
-                    name_en: "4326 Coordinate system",
+                    name: "地图_WGS84",
+                    name_en: "Map WGS84",
                     version: "9.1.1",
                     thumbnail: "01_tiledMapLayer_4326.png",
                     fileName: "01_tiledMapLayer_4326"
                 },{
-                    name: "绘图控件_4326",
-                    name_en: "Draw control 4326",
+                    name: "绘图控件_WGS84",
+                    name_en: "Draw control WGS84",
                     version: "9.1.1",
                     thumbnail: "control_drawControl_4326.png",
                     fileName: "control_drawControl_4326"
                 },{
-                    name: "矢量瓦片_4326",
-                    name_en: "Mvt 4326",
+                    name: "矢量瓦片_WGS84",
+                    name_en: "MVT WGS84",
                     version: "9.1.1",
                     thumbnail: "mvt_4326.png",
                     fileName: "mvtVectorTile_4326"
@@ -874,14 +886,8 @@ var exampleConfig = {
                 name_en: "Cluster",
                 version: "9.1.1",
                 content: [{
-                    name: "点聚合_3857",
-                    name_en: "Marker cluster 3857",
-                    version: "9.1.1",
-                    thumbnail: "markerCluster_3857.png",
-                    fileName: "markerCluster_3857"
-                }, {
-                    name: "点聚合_4326",
-                    name_en: "Marker cluster 4326",
+                    name: "点聚合_WGS84",
+                    name_en: "Marker Cluster WGS84",
                     version: "9.1.1",
                     thumbnail: "markerCluster_4326.png",
                     fileName: "markerCluster_4326"
@@ -892,8 +898,8 @@ var exampleConfig = {
                 name_en: "DeckGL",
                 version: "9.1.1",
                 content: [{
-                    name: "路径图（线）",
-                    name_en: "Path",
+                    name: "路径图_WGS84",
+                    name_en: "Path-layer WGS84",
                     version: "9.1.1",
                     thumbnail: "deckglLayer_pathLayer_4326.png",
                     fileName: "deckglLayer_pathLayer_4326"
@@ -904,20 +910,20 @@ var exampleConfig = {
                 name_en: "ECharts",
                 version: "9.1.1",
                 content: [{
-                    name: "迁徙图",
-                    name_en: "Mock migration",
+                    name: "迁徙图_WGS84",
+                    name_en: "Mock migration WGS84",
                     version: "9.1.1",
                     thumbnail: "echarts_geoline_4326.png",
                     fileName: "echarts_geoline_4326"
                 }, {
-                    name: "微博签到图",
-                    name_en: "Scatter of Weibo user",
+                    name: "微博签到图_WGS84",
+                    name_en: "Scatter of Weibo user WGS84",
                     version: "9.1.1",
                     thumbnail: "echarts_scatterWeibo_4326.png",
                     fileName: "echarts_scatterWeibo_4326"
                 }, {
-                    name: "全国铁路网络图（400万点数据绘制）",
-                    name_en: "Use lines to draw 4 millions Chinese railways",
+                    name: "全国铁路网络图（400万点数据绘制）_WGS84",
+                    name_en: "Use lines to draw 4 millions Chinese railways WGS84",
                     localIgnore: true,
                     version: "9.1.1",
                     thumbnail: "echarts_linesDrawMillionsRailwaysNetwork_4326.png",
@@ -930,8 +936,8 @@ var exampleConfig = {
                 version: "9.1.1",
                 content: [
                     {
-                        name: "纽约出租车145万上车点",
-                        name_en: "Points of 1.45 million NYC taxis",
+                        name: "纽约出租车145万上车点_WGS84",
+                        name_en: "Points of 1.45 million NYC taxis WGS84",
                         version: "9.1.1",
                         thumbnail: "graphicLayer_4326.png",
                         fileName: "graphicLayer_4326"
@@ -943,15 +949,15 @@ var exampleConfig = {
                 name_en: "Heat map",
                 version: "9.1.1",
                 content: [{
-                    name: "中国地震数据",
-                    name_en: "China Earthquake Data",
+                    name: "中国地震数据_WGS84",
+                    name_en: "China Earthquake Data WGS84",
                     version: "9.1.1",
                     thumbnail: "heatMapLayer_earthQuake_4326.png",
                     fileName: "earthquakeHeatMap"
                 },
                 {
-                    name: "中国地震数据_iClient",
-                    name_en: "China Earthquake Data",
+                    name: "中国地震数据（Classic）_WGS84",
+                    name_en: "China Earthquake Data WGS84",
                     version: "9.1.1",
                     thumbnail: "heatMapLayer_earthQuake_iclient_4326.png",
                     fileName: "earthquakeHeatMapIclient"
@@ -962,14 +968,14 @@ var exampleConfig = {
                 name_en: "MapV",
                 version: "9.1.1",
                 content: [{
-                    name: "通勤图",
-                    name_en: "OD",
+                    name: "通勤图_WGS84",
+                    name_en: "OD WGS84",
                     version: "9.1.1",
                     thumbnail: "mapvCsvcar_4326.png",
                     fileName: "mapvCsvcar_4326"
                 },{
-                    name: "面",
-                    name_en: "Simple polygon",
+                    name: "面_WGS84",
+                    name_en: "Simple polygon WGS84",
                     version: "9.1.1",
                     thumbnail: "mapvLayerPolyon_4326.png",
                     fileName: "mapvLayerPolyon_4326"

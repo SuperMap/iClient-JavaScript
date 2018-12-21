@@ -5,7 +5,7 @@
 
 <head>
     <meta charset='utf-8' />
-    <title data-i18n="resources.title_scatterWeibo"></title>
+    <title data-i18n="resources.title_scatterWeiboWGS84"></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <style>
@@ -27,6 +27,7 @@
     <div id='map'></div>
     <script type="text/javascript" include='mapbox-gl-enhance,echarts' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
         var map = new mapboxgl.Map({
             container: 'map',
             style: {
@@ -34,7 +35,8 @@
                 "sources": {
                     "raster-tiles": {
                         "type": "raster",
-                        "tiles": ['http://t0.tianditu.com/DataServer?T=img_c&x={x}&y={y}&l={z}'],
+                        "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                        "rasterSource":"iserver",
                         "tileSize": 256,
                     },
                 },

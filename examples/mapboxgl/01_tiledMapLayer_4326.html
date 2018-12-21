@@ -6,7 +6,7 @@
 <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <title data-i18n="resources.title_tiledMapLayer_4326"></title>
+    <title data-i18n="resources.title_tiledMapLayer_4326WGS84"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" include="mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
@@ -27,6 +27,7 @@
 <body>
     <div id='map'></div>
     <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
         var map = new mapboxgl.Map({
             container: 'map', // container id
             style: {
@@ -49,7 +50,7 @@
                         
                         //推荐；   iserver tileimage资源；扩展支持
                         //参数列表：地图服务地址（到地图名)必填 ；  rasterSource为"iserver"；必填；   transparent:可选，默认为true
-                        "tiles": ['http://iclsvr.supermap.io/iserver/services/map-world/rest/maps/World'],
+                        "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
                         "rasterSource":"iserver"
                         
                         
@@ -76,7 +77,7 @@
                 datasetNames: ["World:Countries"]
             });
             var service = new mapboxgl.supermap.FeatureService(
-                "http://iclsvr.supermap.io/iserver/services/data-world/rest/data");
+                host + "/iserver/services/data-world/rest/data");
             service.getFeaturesByIDs(idsParam, function (serviceResult) {
                 map.addSource("queryDatas", {
                     "type": "geojson",

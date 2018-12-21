@@ -7,7 +7,7 @@
 <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <title data-i18n="resources.title_drawControl"></title>
+    <title data-i18n="resources.title_drawControlWGS84"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" include="mapbox-gl-enhance,draw" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
@@ -28,7 +28,7 @@
 <body>
     <div id='map'></div>
     <script type="text/javascript">
-        var host = window.isLocal ? window.server : "http://iclsvr.supermap.io";
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
         var count = -1;
         var map = new mapboxgl.Map({
             container: 'map', 
@@ -37,7 +37,8 @@
                 "sources": {
                     "raster-tiles": {
                         "type": "raster",
-                        "tiles": ['http://t0.tianditu.com/DataServer?T=vec_c&x={x}&y={y}&l={z}'],
+                        "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                        "rasterSource":"iserver",
                         "tileSize": 256
                     }
                 },
@@ -81,7 +82,7 @@
                     spatialQueryMode: "INTERSECT"
                 });
                 new mapboxgl.supermap.FeatureService(
-                    "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data").getFeaturesByGeometry(
+                    host + "/iserver/services/data-world/rest/data").getFeaturesByGeometry(
                     geometryParam,
                     function (
                         serviceResult) {

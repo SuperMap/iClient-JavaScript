@@ -6,7 +6,7 @@
 <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <title data-i18n="resources.title_geoline"></title>
+    <title data-i18n="resources.title_geolineWGS84"></title>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <style>
         body {
@@ -28,7 +28,6 @@
     <script type="text/javascript" include='mapbox-gl-enhance,echarts' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
         var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-        var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
         var map = new mapboxgl.Map({
             container: 'map',
             style: {
@@ -36,7 +35,8 @@
                 "sources": {
                     "raster-tiles": {
                         "type": "raster",
-                        "tiles": ['http://t0.tianditu.com/DataServer?T=img_c&x={x}&y={y}&l={z}'],
+                        "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                        "rasterSource":"iserver",
                         "tileSize": 256,
                     },
                 },

@@ -6,7 +6,7 @@
 
 <head>
     <meta charset='utf-8' />
-    <title data-i18n="resources.title_markerCluster"></title>
+    <title data-i18n="resources.title_markerClusterWGS84"></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script type="text/javascript" include="jquery,papaparse" src="../js/include-web.js"></script>
     <style>
@@ -37,6 +37,7 @@
     <div id='map'></div>
     <script type="text/javascript" include='mapbox-gl-enhance' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
         $.get("../data/chinaEarthquake.csv", function (response) {
                 var dataObj = Papa.parse(response, {
                     skipEmptyLines: true,
@@ -77,11 +78,12 @@
                 container: 'map', 
                 style: {
                     "version": 8,
-                    "glyphs": "http://iclsvr.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+                    "glyphs": host + "/iserver/services/map-world/rest/maps/World/tileFeature/sdffonts/{fontstack}/{range}.pbf",
                     "sources": {
                         "raster-tiles": {
                             "type": "raster",
-                            "tiles": ['http://t0.tianditu.com/DataServer?T=vec_c&x={x}&y={y}&l={z}'],
+                            "tiles": [host + '/iserver/services/map-world/rest/maps/World'],
+                            "rasterSource":"iserver",
                             "tileSize": 256
                         }
                     },

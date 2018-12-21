@@ -50,13 +50,16 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'iclient8c')) {
+            if (!inArray(includes, 'iclient8c-plot')) {
+                window.excludePlot = true;
+            }
             inputScript("http://iclient.supermap.io/libs/iclient8c/libs/SuperMap.Include.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/echarts/3.8.5/echarts.min.js");
+            inputScript("https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.min.js");
         }
         if (inArray(includes, 'nanoscroller')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/nanoscroller.css");

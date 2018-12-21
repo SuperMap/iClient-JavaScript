@@ -27,13 +27,13 @@ import {
  * @category Widgets Search
  * @version 9.1.1
  * @param {Object} options - 可选参数。
- * @param {string} [options.addressUrl] - 配置地址匹配服务。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
  *                                    配置两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或 ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
  * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能。
- * @param {boolean} [options.pageSize=10] - 返回记录结果数，最大设置为 20。
- * @param {boolean} [options.pageNum=1] - 分页页码，默认 1 代表第一页。
+ * @param {number} [options.pageSize=10] - 地址匹配查询返回记录结果数，最大设置为 20。
+ * @param {number} [options.pageNum=1] - 地址匹配查询分页页码，默认 1 代表第一页。
+ * @param {number} [options.perPageDataNum=8] - 每页显示个数，最大值为 8。
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
@@ -51,7 +51,8 @@ export var SearchView = WidgetsViewBase.extend({
         },
         isGeoCoding: true,
         pageSize: 10,
-        pageNum: 1
+        pageNum: 1,
+        perPageDataNum: 8
     },
 
     initialize(options) {
@@ -59,6 +60,7 @@ export var SearchView = WidgetsViewBase.extend({
         //当前选中查询的图层名：
         this.currentSearchLayerName = "";
         this.isSearchLayer = false;
+        this.perPageDataNum = this.options.perPageDataNum;
     },
 
     /*------以下是一些接口-----*/
@@ -468,12 +470,19 @@ export var SearchView = WidgetsViewBase.extend({
             this.clearSearchResult();
             this.searchResultLayer = L.featureGroup(data, {
                 pointToLayer: this.options.style,
-                style: this.options.style,
-                onEachFeature: this.options.onEachFeature
+                style: this.options.style
             }).bindPopup(function (layer) {
-                return (new AttributesPopContainer(layer.feature.properties)).getElement();
+                if (layer.feature.properties) {
+                    return (new AttributesPopContainer({
+                        attributes: layer.feature.properties
+                    })).getElement();
+                }
             }).addTo(this.map);
-
+            this.searchResultLayer.eachLayer((layer) => {
+                this.options.onEachFeature ?this.options.onEachFeature(layer.toGeoJSON(), layer):
+                this._featureOnclickEvent.bind(this)(layer.toGeoJSON(), layer);
+            });
+            this.searchLayersData = data;
             //查询结果列表：
             this._prepareResultData(data);
             /**
@@ -491,15 +500,18 @@ export var SearchView = WidgetsViewBase.extend({
             const data = e.result;
             //先清空当前有的地址匹配图层
             this.clearSearchResult();
-
             this.searchResultLayer = L.geoJSON(data, {
                 pointToLayer: this.options.style,
                 style: this.options.style,
-                onEachFeature: this.options.onEachFeature
+                onEachFeature: this.options.onEachFeature || this._featureOnclickEvent.bind(this)
             }).bindPopup(function (layer) {
-                return (new AttributesPopContainer(layer.feature.properties)).getElement();
+                if (layer.feature.properties) {
+                    return (new AttributesPopContainer({
+                        attributes: layer.feature.properties
+                    })).getElement();
+                }
             }).addTo(this.map);
-
+            this.searchLayersData = data
             //查询结果列表：
             this._prepareResultData(data);
             /**
@@ -540,7 +552,7 @@ export var SearchView = WidgetsViewBase.extend({
     _prepareResultData(data) {
         this.currentResult = data;
         //向下取舍，这只页码
-        let pageCounts = Math.ceil(data.length / 8);
+        let pageCounts = Math.ceil(data.length / this.perPageDataNum);
         this._resultDomObj.setPageLink(pageCounts);
         //初始结果页面内容：
         this._createResultListByPageNum(1, data);
@@ -565,20 +577,20 @@ export var SearchView = WidgetsViewBase.extend({
     _createResultListByPageNum(page, data) {
         let start = 0,
             end;
-        if (page === 1 && data.length < 8) {
+        if (page === 1 && data.length < this.perPageDataNum) {
             //data数据不满8个时：
-            end = data.length;
-        } else if (page * 8 > data.length) {
+            end = data.length - 1;
+        } else if (page * this.perPageDataNum > data.length) {
             //最后一页且数据不满8个时
-            start = 8 * (page - 1);
-            end = data.length
+            start = this.perPageDataNum * (page - 1);
+            end = data.length - 1
         } else {
             //中间页面的情况
-            start = 8 * (page - 1);
-            end = page * 8 - 1
+            start = this.perPageDataNum * (page - 1);
+            end = page * this.perPageDataNum - 1
         }
         const content = document.createElement("div");
-        for (let i = start; i < end; i++) {
+        for (let i = start; i <= end; i++) {
             let properties, featureType = "Point";
             if (data[i].filterAttribute) {
                 featureType = data[i].feature.geometry.type;
@@ -595,7 +607,7 @@ export var SearchView = WidgetsViewBase.extend({
         content.firstChild.getElementsByClassName("widget-search-result-icon")[0].classList.add("widget-search__resultitme-selected");
         const filter = content.firstChild.getElementsByClassName("widget-search-result-info")[0].firstChild.innerText;
 
-        this._linkageFeature(filter);
+        !this._selectMarkerFeature && this._linkageFeature(filter);
     },
 
     /**
@@ -627,25 +639,19 @@ export var SearchView = WidgetsViewBase.extend({
         } else {
             filterValue = filter;
         }
-
+        this._selectFeature && this._selectFeature.addTo(this.map);
         this.searchResultLayer.eachLayer((layer) => {
             // this._resetLayerStyleToDefault(layer);
-
             if (!filterValue || layer.filterAttribute && layer.filterAttribute.filterAttributeValue === filterValue ||
                 layer.feature.properties && layer.feature.properties.name === filterValue) {
+                layer.remove();
+
                 this._setSelectedLayerStyle(layer);
                 /*layer.bindPopup(function () {
                     return (new AttributesPopContainer(layer.feature.properties)).getElement()
                 }, {closeOnClick: false}).openPopup().addTo(this.map);*/
                 //若这个图层只有一个点的话，则直接 flyTo 到点：
-                this._flyToBounds(this.searchResultLayer.getBounds());
-                let center;
-                if (layer.getLatLng) {
-                    center = layer.getLatLng();
-                } else if (layer.getCenter) {
-                    center = layer.getCenter();
-                }
-                this.map.setView(center);
+
             }
         });
     },
@@ -658,18 +664,59 @@ export var SearchView = WidgetsViewBase.extend({
         if (this.searchResultLayer) {
             this.map.closePopup();
             //若当前是查询图层的结果，则不删除图层，只修改样式
-            if (!this.isSearchLayer) {
-                this.map.removeLayer(this.searchResultLayer);
-            }
-            if (this._selectFeature) {
-                this.map.removeLayer(this._selectFeature);
-            }
+            !this.isSearchLayer && this.map.removeLayer(this.searchResultLayer);
+            this._selectMarkerFeature && this.map.removeLayer(this._selectMarkerFeature);
+            this._selectFeaturethis && this.map.removeLayer(this._selectFeature);
+            this._selectMarkerFeature = null;
             this._selectFeature = null;
             this.searchResultLayer = null;
             this.currentResult = null;
         }
     },
+    /**
+     * @function L.supermap.widgets.search.prototype._featureOnclickEvent
+     * @description 要素点击事件
+     * @param {L.layer} layer - 需要设置选中样式的图层。
+     * @private
+     */
+    _featureOnclickEvent(feature, layer) {
+        layer.on('click', () => {
+            let pageEles1 = document.getElementsByClassName('widget-pagination__link')[0];
+            this._resultDomObj._changePageEvent({ target: pageEles1.children[0].children[0] });
+            this._selectFeature && this._selectFeature.addTo(this.map);
+            layer.remove();
+            let page, dataIndex;
 
+            for (let i = 0; i < this.searchLayersData.length; i++) {
+                let item = this.searchLayersData[i]
+                if ((item.properties && (item.properties.name === feature.properties.name)) || (item.filterAttribute && (item.filterAttribute.filterAttributeName + ": " + item.filterAttribute.filterAttributeValue) === (layer.filterAttribute.filterAttributeName + ": " + layer.filterAttribute.filterAttributeValue))) {
+                    dataIndex = i % this.perPageDataNum;
+                    page = parseInt(i / this.perPageDataNum) + 1;
+                    break;
+                }
+            }
+            if (page > 1) {
+                for (let i = 1; i < page; i++) {
+                    let pageEles;
+                    pageEles = document.getElementsByClassName('widget-pagination__link')[0];
+                    this._resultDomObj._changePageEvent({ target: pageEles.children[pageEles.children.length - 2].children[0] });
+                }
+            }
+            let pageList = document.getElementsByClassName('widget-search-result-info')
+
+            let target = pageList[dataIndex].children[0];
+
+            if (target.innerHTML === feature.properties.name || target.innerHTML === (layer.filterAttribute.filterAttributeName + ": " + layer.filterAttribute.filterAttributeValue)) {
+                let selectFeatureOption = pageList[dataIndex].parentNode;
+                //修改
+                if (document.getElementsByClassName("widget-search__resultitme-selected").length > 0) {
+                    document.getElementsByClassName("widget-search__resultitme-selected")[0].classList.remove("widget-search__resultitme-selected");
+                }
+                selectFeatureOption.firstChild.classList.add("widget-search__resultitme-selected");
+                this._setSelectedLayerStyle(layer);
+            }
+        }, this)
+    },
     /**
      * @function L.supermap.widgets.search.prototype._setSelectedLayerStyle
      * @description 设置图层选中样式。
@@ -677,12 +724,11 @@ export var SearchView = WidgetsViewBase.extend({
      * @private
      */
     _setSelectedLayerStyle(layer) {
-        if (this._selectFeature) {
-            this.map.removeLayer(this._selectFeature);
-            this._selectFeature = null;
-        }
+        this._selectMarkerFeature && this._selectMarkerFeature.remove();
+        this._selectMarkerFeature = null;
+        this._selectFeature = layer;
         //circleMarker 需要变成 marker 的样式：
-        this._selectFeature = L.geoJSON(layer.toGeoJSON(), {
+        this._selectMarkerFeature = L.geoJSON(layer.toGeoJSON(), {
             //点选中样式, todo marker 显示位置需要调整
             pointToLayer: (geoJsonPoint, latlng) => {
                 return L.marker(latlng, {
@@ -701,7 +747,7 @@ export var SearchView = WidgetsViewBase.extend({
                 fillOpacity: 0.2
             }
         }).addTo(this.map);
-        this._selectFeature.bindPopup(function () {
+        this._selectMarkerFeature.bindPopup(function () {
             return (new AttributesPopContainer({
                 attributes: layer.feature.properties
             })).getElement()
@@ -709,6 +755,14 @@ export var SearchView = WidgetsViewBase.extend({
                 closeOnClick: false
             }).openPopup().addTo(this.map);
 
+        this._flyToBounds(this.searchResultLayer.getBounds());
+        let center;
+        if (layer.getLatLng) {
+            center = layer.getLatLng();
+        } else if (layer.getCenter) {
+            center = layer.getCenter();
+        }
+        this.map.setView(center);
     }
 });
 
