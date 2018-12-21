@@ -49,7 +49,7 @@
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
-        if (!inArray(excludes, 'mapbox-gl') && !inArray(includes, 'mapbox-gl-enhance')) {
+        if (!inArray(includes, 'mapbox-gl-enhance') && !inArray(excludes, 'mapbox-gl')) {
             inputCSS("http://iclient.supermap.io/web/libs/mapbox-gl-js/0.48.0/mapbox-gl.css");
             inputScript("http://iclient.supermap.io/web/libs/mapbox-gl-js/0.48.0/mapbox-gl.js");
         }
