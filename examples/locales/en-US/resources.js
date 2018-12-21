@@ -136,6 +136,9 @@ window.examplesResources = {
         "envTips": "Please run the program in server environment!"
     },
     "resources": {
+        "title_googlelayer":"google layer",
+        "title_osmlayer":"OSM layer",
+        "title_binglayer":"Bing layer",
         "title_tiledMapLayer4326": "4326 Base Map of SuperMap REST",
         "title_tiledMapLayer3857": "3857 Base Map of SuperMap REST",
         "title_imageMapLayer3857": "3857 Base Map of SuperMap REST (image)",

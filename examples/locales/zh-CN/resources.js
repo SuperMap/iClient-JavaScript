@@ -79,6 +79,9 @@ window.examplesResources = {
         "envTips": "请在服务器环境下运行示范程序!"
     },
     "resources": {
+        "title_googlelayer":"谷歌地图",
+        "title_osmlayer":"OSM地图",
+        "title_binglayer":"Bing地图",
         "title_tiledMapLayer4326": "SuperMap REST 地图服务底图",
         "title_tiledMapLayer3857": "SuperMap REST 地图服务底图",
         "title_imageMapLayer3857": "SuperMap REST 地图服务底图(image)",
@@ -257,7 +260,7 @@ window.examplesResources = {
         "title_heatMapColorManual": "热点图颜色分段配置",
         "title_heatGridMapLayer": "热点网格图",
         "title_goisLayer": "麻点图",
-        "title_elementsLayerExtension": "Elements Layer 扩展",
+        "title_elementsLayerExtension": "要素图层扩展",
         "title_clusterLayer": "聚类图层",
         "title_cartoCSSText": "文本符号",
         "title_cartoCSSPolygon": "面符号",
@@ -325,7 +328,7 @@ window.examplesResources = {
         "title_mapvForceEdge": "强边界图",
         "title_mapvPolylineIntensity": "强度线",
         "title_mapvCsvcar": "通勤图",
-        "title_mapvCsvcarWGS84": "通勤图",
+        "title_mapvCsvcarWGS84": "通勤图_WGS84",
         "title_mapvBeijingVillage": "北京村庄分布图",
         "title_layerService": "SuperMap 图层信息",
         "title_tiledMapLayerNonEarth": "SuperMap REST 平面坐标系底图",
