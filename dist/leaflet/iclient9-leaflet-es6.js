@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -84321,12 +84336,19 @@ var SearchView = WidgetsViewBase.extend({
             this.clearSearchResult();
             this.searchResultLayer = external_L_default.a.featureGroup(data, {
                 pointToLayer: this.options.style,
-                style: this.options.style,
-                onEachFeature: this.options.onEachFeature
+                style: this.options.style
             }).bindPopup(function (layer) {
-                return (new AttributesPopContainer_AttributesPopContainer(layer.feature.properties)).getElement();
+                if (layer.feature.properties) {
+                    return (new AttributesPopContainer_AttributesPopContainer({
+                        attributes: layer.feature.properties
+                    })).getElement();
+                }
             }).addTo(this.map);
-
+            this.searchResultLayer.eachLayer((layer) => {
+                this.options.onEachFeature ?this.options.onEachFeature(layer.toGeoJSON(), layer):
+                this._featureOnclickEvent.bind(this)(layer.toGeoJSON(), layer);
+            });
+            this.searchLayersData = data;
             //查询结果列表：
             this._prepareResultData(data);
             /**
@@ -84344,15 +84366,18 @@ var SearchView = WidgetsViewBase.extend({
             const data = e.result;
             //先清空当前有的地址匹配图层
             this.clearSearchResult();
-
             this.searchResultLayer = external_L_default.a.geoJSON(data, {
                 pointToLayer: this.options.style,
                 style: this.options.style,
-                onEachFeature: this.options.onEachFeature
+                onEachFeature: this.options.onEachFeature || this._featureOnclickEvent.bind(this)
             }).bindPopup(function (layer) {
-                return (new AttributesPopContainer_AttributesPopContainer(layer.feature.properties)).getElement();
+                if (layer.feature.properties) {
+                    return (new AttributesPopContainer_AttributesPopContainer({
+                        attributes: layer.feature.properties
+                    })).getElement();
+                }
             }).addTo(this.map);
-
+            this.searchLayersData = data
             //查询结果列表：
             this._prepareResultData(data);
             /**
@@ -84420,18 +84445,18 @@ var SearchView = WidgetsViewBase.extend({
             end;
         if (page === 1 && data.length < 8) {
             //data数据不满8个时：
-            end = data.length;
+            end = data.length - 1;
         } else if (page * 8 > data.length) {
             //最后一页且数据不满8个时
             start = 8 * (page - 1);
-            end = data.length
+            end = data.length - 1
         } else {
             //中间页面的情况
             start = 8 * (page - 1);
             end = page * 8 - 1
         }
         const content = document.createElement("div");
-        for (let i = start; i < end; i++) {
+        for (let i = start; i <= end; i++) {
             let properties, featureType = "Point";
             if (data[i].filterAttribute) {
                 featureType = data[i].feature.geometry.type;
@@ -84448,7 +84473,7 @@ var SearchView = WidgetsViewBase.extend({
         content.firstChild.getElementsByClassName("widget-search-result-icon")[0].classList.add("widget-search__resultitme-selected");
         const filter = content.firstChild.getElementsByClassName("widget-search-result-info")[0].firstChild.innerText;
 
-        this._linkageFeature(filter);
+        !this._selectMarkerFeature && this._linkageFeature(filter);
     },
 
     /**
@@ -84480,25 +84505,19 @@ var SearchView = WidgetsViewBase.extend({
         } else {
             filterValue = filter;
         }
-
+        this._selectFeature && this._selectFeature.addTo(this.map);
         this.searchResultLayer.eachLayer((layer) => {
             // this._resetLayerStyleToDefault(layer);
-
             if (!filterValue || layer.filterAttribute && layer.filterAttribute.filterAttributeValue === filterValue ||
                 layer.feature.properties && layer.feature.properties.name === filterValue) {
+                layer.remove();
+
                 this._setSelectedLayerStyle(layer);
                 /*layer.bindPopup(function () {
                     return (new AttributesPopContainer(layer.feature.properties)).getElement()
                 }, {closeOnClick: false}).openPopup().addTo(this.map);*/
                 //若这个图层只有一个点的话，则直接 flyTo 到点：
-                this._flyToBounds(this.searchResultLayer.getBounds());
-                let center;
-                if (layer.getLatLng) {
-                    center = layer.getLatLng();
-                } else if (layer.getCenter) {
-                    center = layer.getCenter();
-                }
-                this.map.setView(center);
+
             }
         });
     },
@@ -84511,18 +84530,59 @@ var SearchView = WidgetsViewBase.extend({
         if (this.searchResultLayer) {
             this.map.closePopup();
             //若当前是查询图层的结果，则不删除图层，只修改样式
-            if (!this.isSearchLayer) {
-                this.map.removeLayer(this.searchResultLayer);
-            }
-            if (this._selectFeature) {
-                this.map.removeLayer(this._selectFeature);
-            }
+            !this.isSearchLayer && this.map.removeLayer(this.searchResultLayer);
+            this._selectMarkerFeature && this.map.removeLayer(this._selectMarkerFeature);
+            this._selectFeaturethis && this.map.removeLayer(this._selectFeature);
+            this._selectMarkerFeature = null;
             this._selectFeature = null;
             this.searchResultLayer = null;
             this.currentResult = null;
         }
     },
+    /**
+     * @function L.supermap.widgets.search.prototype._featureOnclickEvent
+     * @description 要素点击事件
+     * @param {L.layer} layer - 需要设置选中样式的图层。
+     * @private
+     */
+    _featureOnclickEvent(feature, layer) {
+        layer.on('click', () => {
+            let pageEles1 = document.getElementsByClassName('widget-pagination__link')[0];
+            this._resultDomObj._changePageEvent({ target: pageEles1.children[0].children[0] });
+            this._selectFeature && this._selectFeature.addTo(this.map);
+            layer.remove();
+            let page, dataIndex;
 
+            for (let i = 0; i < this.searchLayersData.length; i++) {
+                let item = this.searchLayersData[i]
+                if ((item.properties && (item.properties.name === feature.properties.name)) || (item.filterAttribute && (item.filterAttribute.filterAttributeName + ": " + item.filterAttribute.filterAttributeValue) === (layer.filterAttribute.filterAttributeName + ": " + layer.filterAttribute.filterAttributeValue))) {
+                    dataIndex = i % 8;
+                    page = parseInt(i / 8) + 1;
+                    break;
+                }
+            }
+            if (page > 1) {
+                for (let i = 1; i < page; i++) {
+                    let pageEles;
+                    pageEles = document.getElementsByClassName('widget-pagination__link')[0];
+                    this._resultDomObj._changePageEvent({ target: pageEles.children[pageEles.children.length - 2].children[0] });
+                }
+            }
+            let pageList = document.getElementsByClassName('widget-search-result-info')
+
+            let target = pageList[dataIndex].children[0];
+
+            if (target.innerHTML === feature.properties.name || target.innerHTML === (layer.filterAttribute.filterAttributeName + ": " + layer.filterAttribute.filterAttributeValue)) {
+                let selectFeatureOption = pageList[dataIndex].parentNode;
+                //修改
+                if (document.getElementsByClassName("widget-search__resultitme-selected").length > 0) {
+                    document.getElementsByClassName("widget-search__resultitme-selected")[0].classList.remove("widget-search__resultitme-selected");
+                }
+                selectFeatureOption.firstChild.classList.add("widget-search__resultitme-selected");
+                this._setSelectedLayerStyle(layer);
+            }
+        }, this)
+    },
     /**
      * @function L.supermap.widgets.search.prototype._setSelectedLayerStyle
      * @description 设置图层选中样式。
@@ -84530,12 +84590,11 @@ var SearchView = WidgetsViewBase.extend({
      * @private
      */
     _setSelectedLayerStyle(layer) {
-        if (this._selectFeature) {
-            this.map.removeLayer(this._selectFeature);
-            this._selectFeature = null;
-        }
+        this._selectMarkerFeature && this._selectMarkerFeature.remove();
+        this._selectMarkerFeature = null;
+        this._selectFeature = layer;
         //circleMarker 需要变成 marker 的样式：
-        this._selectFeature = external_L_default.a.geoJSON(layer.toGeoJSON(), {
+        this._selectMarkerFeature = external_L_default.a.geoJSON(layer.toGeoJSON(), {
             //点选中样式, todo marker 显示位置需要调整
             pointToLayer: (geoJsonPoint, latlng) => {
                 return external_L_default.a.marker(latlng, {
@@ -84554,7 +84613,7 @@ var SearchView = WidgetsViewBase.extend({
                 fillOpacity: 0.2
             }
         }).addTo(this.map);
-        this._selectFeature.bindPopup(function () {
+        this._selectMarkerFeature.bindPopup(function () {
             return (new AttributesPopContainer_AttributesPopContainer({
                 attributes: layer.feature.properties
             })).getElement()
@@ -84562,6 +84621,14 @@ var SearchView = WidgetsViewBase.extend({
                 closeOnClick: false
             }).openPopup().addTo(this.map);
 
+        this._flyToBounds(this.searchResultLayer.getBounds());
+        let center;
+        if (layer.getLatLng) {
+            center = layer.getLatLng();
+        } else if (layer.getCenter) {
+            center = layer.getCenter();
+        }
+        this.map.setView(center);
     }
 });
 
@@ -90938,7 +91005,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */
