@@ -27,13 +27,13 @@ import {
  * @category Widgets Search
  * @version 9.1.1
  * @param {Object} options - 可选参数。
- * @param {string} [options.addressUrl] - 配置地址匹配服务。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
  *                                    配置两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或 ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
  * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能。
- * @param {boolean} [options.pageSize=10] - 返回记录结果数，最大设置为 20。
- * @param {boolean} [options.pageNum=1] - 分页页码，默认 1 代表第一页。
+ * @param {number} [options.pageSize=10] - 地址匹配查询返回记录结果数，最大设置为 20。
+ * @param {number} [options.pageNum=1] - 地址匹配查询分页页码，默认 1 代表第一页。
+ * @param {number} [options.perPageDataNum=8] - 每页显示个数，最大值为 8。
  * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
@@ -51,7 +51,8 @@ export var SearchView = WidgetsViewBase.extend({
         },
         isGeoCoding: true,
         pageSize: 10,
-        pageNum: 1
+        pageNum: 1,
+        perPageDataNum: 8
     },
 
     initialize(options) {
@@ -59,6 +60,7 @@ export var SearchView = WidgetsViewBase.extend({
         //当前选中查询的图层名：
         this.currentSearchLayerName = "";
         this.isSearchLayer = false;
+        this.perPageDataNum = this.options.perPageDataNum;
     },
 
     /*------以下是一些接口-----*/
@@ -550,7 +552,7 @@ export var SearchView = WidgetsViewBase.extend({
     _prepareResultData(data) {
         this.currentResult = data;
         //向下取舍，这只页码
-        let pageCounts = Math.ceil(data.length / 8);
+        let pageCounts = Math.ceil(data.length / this.perPageDataNum);
         this._resultDomObj.setPageLink(pageCounts);
         //初始结果页面内容：
         this._createResultListByPageNum(1, data);
@@ -575,17 +577,17 @@ export var SearchView = WidgetsViewBase.extend({
     _createResultListByPageNum(page, data) {
         let start = 0,
             end;
-        if (page === 1 && data.length < 8) {
+        if (page === 1 && data.length < this.perPageDataNum) {
             //data数据不满8个时：
             end = data.length - 1;
-        } else if (page * 8 > data.length) {
+        } else if (page * this.perPageDataNum > data.length) {
             //最后一页且数据不满8个时
-            start = 8 * (page - 1);
+            start = this.perPageDataNum * (page - 1);
             end = data.length - 1
         } else {
             //中间页面的情况
-            start = 8 * (page - 1);
-            end = page * 8 - 1
+            start = this.perPageDataNum * (page - 1);
+            end = page * this.perPageDataNum - 1
         }
         const content = document.createElement("div");
         for (let i = start; i <= end; i++) {
@@ -688,8 +690,8 @@ export var SearchView = WidgetsViewBase.extend({
             for (let i = 0; i < this.searchLayersData.length; i++) {
                 let item = this.searchLayersData[i]
                 if ((item.properties && (item.properties.name === feature.properties.name)) || (item.filterAttribute && (item.filterAttribute.filterAttributeName + ": " + item.filterAttribute.filterAttributeValue) === (layer.filterAttribute.filterAttributeName + ": " + layer.filterAttribute.filterAttributeValue))) {
-                    dataIndex = i % 8;
-                    page = parseInt(i / 8) + 1;
+                    dataIndex = i % this.perPageDataNum;
+                    page = parseInt(i / this.perPageDataNum) + 1;
                     break;
                 }
             }
