@@ -1,4 +1,4 @@
-var group = ["标号","解除锁定","对象可见性","常用:点", "线形", "衬线", "填充","注记", "子标号" ];
+var group = ["标号","解除锁定","对象可见性","常用:点", "主线", "衬线", "填充","注记", "子标号" ];
 var displayName =["锁定","可见性","LibID","Code"];
 var displayLineStyleName = [ "线宽", "线颜色","线型","线透明度" ];
 var displaySurroundLineName = ["衬线类型", "衬线宽", "衬线颜色", "衬线透明度"];
