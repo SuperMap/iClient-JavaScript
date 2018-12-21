@@ -37,7 +37,8 @@
         L.supermap.tiledMapLayer(url).addTo(map);
         //添加微件：
         var poiSearch = L.supermap.widgets.search({
-            isGeoCoding: !window.isLocal
+            isGeoCoding: !window.isLocal,
+            perPageDataNum: 8  // 每页显示数据个数
             //设置结果图层样式：
             /*style: (feature, latLng) => {
                 if (latLng /!*&& feature instanceof L.latLng || feature.geometry.type.toLowerCase() === "point"*!/) {
