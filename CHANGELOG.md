@@ -7,7 +7,7 @@
 - iClient for MapboxGL新增支持WGS84、China2000、Xian80、Beijing54等标准地理坐标系，覆盖MVT矢量瓦片、栅格瓦片、可视化图层、标绘等功能
 
 - 需单独引用iClient对Mapbox GL JS的增强库（基于2018年10月版本v0.51.0）
- http://iclient.supermap.io/web/libs/mapbox-gl-js/enhancement/mapbox-gl-enhance.js
+ http://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
  
 ### 新增多款功能微件
 
@@ -38,7 +38,7 @@
 ### for MapboxGL
 
 - 支持WGS84、China2000、Xian80、Beijing54等标准地理坐标系，需单独引用iClient对MapboxGL的增强库：
- http://iclient.supermap.io/web/libs/mapbox-gl-js/enhancement/mapbox-gl-enhance.js
+ http://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
 
 ## Fixed
 
