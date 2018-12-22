@@ -1,7 +1,7 @@
 import ol from 'openlayers';
 import {WebMap} from '../../../src/openlayers/mapping/WebMap';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
-import '../../resources/WebMap.js';
+import '../../resources/WebMapOpenlayer.js';
 import {ArrayStatistic} from "../../../src/openlayers/core/ArrayStatistic";
 
 describe('openlayers_WebMap', () => {
