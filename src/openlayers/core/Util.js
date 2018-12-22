@@ -2,7 +2,10 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import ol from 'openlayers';
-import {Unit, Bounds, GeoJSON as GeoJSONFormat} from '@supermap/iclient-common';
+import {Unit, Bounds, GeoJSON as GeoJSONFormat, FilterParameter,
+    GetFeaturesBySQLParameters,
+    GetFeaturesBySQLService
+} from '@supermap/iclient-common';
 
 ol.supermap = ol.supermap || {};
 
@@ -262,6 +265,152 @@ export class Util {
         return Boolean(canvas && canvas.getContext("webgl2"));
     }
 
+    /**
+     * @function ol.supermap.Util.getRootUrl
+     * @description 获取请求地址前缀
+     * @param {string} url - 完整地址的url。
+     */
+    static getRootUrl(url) {
+        let tempRootUrl = {};
+        let onlineUrl = 'https://www.supermapol.com/', itestUrl = 'https://itest.supermapol.com/';
+        if (tempRootUrl[url]) {
+            return tempRootUrl[url];
+        }
+        let rootUrl = "";
+        if (url.indexOf(onlineUrl) === 0) {
+            rootUrl = onlineUrl;
+        } else if (url.indexOf(itestUrl) === 0) {
+            rootUrl = itestUrl;
+        } else {
+            let regExp = /\/apps|\/web|\/manager|\/developer|\/services/i,
+                index = url.search(regExp);
+            let anchor = this.getAnchor(url);
+            rootUrl += anchor.protocol + '//' + this.getHost(url) + '/';
+            if (index > 0) {
+                rootUrl += url.substring(rootUrl.length, index + 1);
+            }
+        }
+        tempRootUrl[url] = rootUrl;
+        return rootUrl;
+    }
+
+    /**
+     * @function ol.supermap.Util.getAnchor
+     * @description 获取https或http域名
+     * @param {string} url - 完整地址的url。
+     */
+    static getAnchor(url) {
+        let tempAnchor = {};
+        if (tempAnchor[url]) {
+            return tempAnchor[url];
+        }
+        let anchor = document.createElement('a');
+        anchor.href = url;
+        tempAnchor[url] = anchor;
+        return anchor;
+    }
+
+    /**
+     * @function ol.supermap.Util.getHost
+     * @description 获取端口号
+     * @param {string} url - {string} url地址。
+     * @returns {*|string|string}
+     */
+    static getHost(url) {
+        let anchor = this.getAnchor(url);
+        if (!anchor) {
+            return null;
+        }
+        let port = anchor.port, host = anchor.host;
+        //IE下会自动给host添加http(80), https(443)
+        if (port === "80" || port === "443") {
+            return host.split(":")[0];
+        }
+        return host;
+    }
+    /**
+     * @function ol.supermap.Util.isString
+     * @description 是否为字符串
+     * @param {string} str - 需要判断的内容
+     * @returns {boolean}
+     */
+    static isString(str) {
+        return (typeof str === 'string') && str.constructor === String;
+    }
+    /**
+     * @function ol.supermap.Util.trim
+     * @description 字符串裁剪两边的空格
+     * @param {string} str - 需要裁剪的字符串
+     * @returns {boolean}
+     */
+    static trim(str) {
+        return str.replace(/(^\s*)|(\s*$)/g, "");
+    }
+    /**
+     * @function ol.supermap.Util.newGuid
+     * @description 随机生成id
+     * @param {string} attr - 几位数字的id
+     * @returns {string}
+     */
+    static newGuid(attr) {
+        let len = attr || 32;
+        let guid = "";
+        for (let i = 1; i < len; i++) {
+            let n = Math.floor(Math.random() * 16.0).toString(16);
+            guid += n;
+        }
+        return guid;
+    }
+    /**
+     * @function ol.supermap.Util.isNumber
+     * @description 检测数据是否为number
+     * @param {string} value - 值，未知数据类型
+     * @returns {boolean}
+     */
+    static isNumber(value) {
+        if (value === '') {
+            return false;
+        }
+        let mdata = Number(value);
+        if (mdata === 0) {
+            return true;
+        }
+        return !isNaN(mdata);
+    }
+    /**
+     * @function ol.supermap.Util.getFeatureBySQL
+     * @description 获取feature
+     * @param {string} url - 获取feature的请求地址
+     * @param {string} datasetNames - 数据集名称
+     * @param {function} processCompleted - 成功请求的回调函数
+     * @param {function} processFaild - 失败请求的回调函数
+     */
+    static getFeatureBySQL(url, datasetNames, processCompleted, processFaild) {
+        let getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+        getFeatureParam = new FilterParameter({
+            name: datasetNames.join().replace(":", "@"),
+            attributeFilter: 'SMID > 0'
+        });
+        getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+            queryParameter: getFeatureParam,
+            datasetNames: datasetNames,
+            fromIndex: 0,
+            toIndex: 100000,
+            returnContent: true
+        });
+        let options = {
+            eventListeners: {
+                processCompleted: function (getFeaturesEventArgs) {
+                    processCompleted && processCompleted(getFeaturesEventArgs);
+                },
+                processFailed: function (e) {
+                    processFaild && processFaild(e);
+                }
+            }
+        };
+        getFeatureBySQLService = new GetFeaturesBySQLService(url, options);
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    }
 
 }
 

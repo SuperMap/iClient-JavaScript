@@ -72,7 +72,8 @@
         }
         if (!inArray(excludes, 'iclient9-openlayers')) {
             if (supportES6()) {
-                inputScript("../../dist/openlayers/iclient9-openlayers-es6.min.js");
+                // inputScript("../../dist/openlayers/iclient9-openlayers-es6.min.js");
+                inputScript("../../dist/openlayers/iclient9-openlayers.js");
             } else {
                 inputScript("../../dist/openlayers/iclient9-openlayers.min.js");
             }
@@ -98,6 +99,15 @@
         if (inArray(includes, 'layerswitcher')) {
             inputCSS("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.css");
             inputScript("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.js");
+        }
+        if (inArray(includes, 'jsonsql')) {
+            inputScript("http://iclient.supermap.io/web/libs/jsonsql/jsonsql.js");
+        }
+        if (inArray(includes, 'geostats')) {
+            inputScript("http://iclient.supermap.io/web/libs/geostats/geostats.js");
+        }
+        if (inArray(includes, 'canvg')) {
+            inputScript("http://iclient.supermap.io/web/libs/canvg/canvg.min.js");
         }
 
     }

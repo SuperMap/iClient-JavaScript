@@ -5,6 +5,9 @@ import ol from 'openlayers';
 import {SuperMap, CommonUtil, StringExt} from '@supermap/iclient-common';
 import {StyleMap} from '../overlay/vectortile/StyleMap';
 import {DeafultCanvasStyle} from '../overlay/vectortile/DeafultCanvasStyle';
+import {
+    Util
+} from '../core/Util';
 
 ol.supermap = ol.supermap || {};
 
@@ -567,9 +570,9 @@ export class StyleUtils {
 
     /**
      * @function ol.supermap.StyleUtils.getDefaultStyle
-     * @description 获取默认风格。
+     * @description 获取默认风格
      * @param {string} type - 类型参数。
-
+     * @returns {string} 
      */
     static getDefaultStyle(type) {
         var style = {};
@@ -580,6 +583,160 @@ export class StyleUtils {
         }
         return style;
     }
+
+    /**
+     * @function ol.supermap.StyleUtils.getDefaultStyle
+     * @description 将样式对象转换成openlayer要求的ol.style
+     * @param {string} style - 样式对象
+     * @param {string} type - feature的类型
+     * @returns {ol.style.Style}
+     */
+    static toOpenLayersStyle(style, type) {
+        style = style || this.getDefaultStyle();
+        let olStyle = new ol.style.Style();
+        let newImage, newFill, newStroke;
+        const ZERO = 0.0000001;
+        let {
+            fillColor,
+            fillOpacity,
+            strokeColor,
+            strokeWidth,
+            strokeOpacity,
+            radius,
+            lineCap,
+            src,
+            scale,
+            //size,
+            //imgSize,
+            anchor
+        } = style;
+        let fillColorArray = this.hexToRgb(fillColor);
+        if(fillColorArray){
+            fillColorArray.push(fillOpacity);
+        }
+
+        let strokeColorArray = this.hexToRgb(strokeColor);
+        if(strokeColorArray){
+            strokeColorArray.push(strokeOpacity);
+        }
+        if (type === "POINT") {
+            if (src) {
+                newImage = new ol.style.Icon({
+                    src: src,
+                    scale: scale,
+                    anchor: anchor
+                });
+            } else {
+                newImage = new ol.style.Circle({
+                    radius: radius,
+                    fill: new ol.style.Fill({
+                        color: fillColorArray
+                    }),
+                    stroke: new ol.style.Stroke({
+                        width: strokeWidth || ZERO,
+                        color: strokeColorArray
+                    })
+                });
+            }
+            olStyle.setImage(newImage);
+        } else if (type === "LINE" || type === "LINESTRING") {
+            newStroke = new ol.style.Stroke({
+                width: strokeWidth || ZERO,
+                color: strokeColorArray,
+                lineCap: lineCap || 'round', //todo 缺少lineCap
+                lineDash: this.dashStyle(style, 1)
+            });
+            olStyle.setStroke(newStroke);
+        } else {
+            newFill = new ol.style.Fill({
+                color: fillColorArray
+            });
+            newStroke = new ol.style.Stroke({
+                width: strokeWidth || ZERO,
+                color: strokeColorArray,
+                lineCap: lineCap || 'round',
+                lineDash: this.dashStyle(style, 1)
+            });
+            olStyle.setFill(newFill);
+            olStyle.setStroke(newStroke);
+        }
+        return olStyle;
+    }
+
+    /**
+     * @function ol.supermap.StyleUtils.hexToRgb
+     * @description 将16进制的颜色，转换成rgb格式
+     * @param {string} hexColor 16进制颜色
+     * @returns {string} rgb格式的颜色
+     */
+    static hexToRgb (hexColor) {
+        if (!hexColor) {
+            return;
+        }
+        var s = hexColor.replace('#', '').split('');
+        var rgb = [s[0] + s[1], s[2] + s[3], s[4] + s[5]];
+        rgb = rgb.map(function (hex) {
+            return parseInt(hex, 16);
+        });
+        return rgb;
+    }
+
+    /**
+     * @function ol.supermap.StyleUtils.formatRGB
+     * @description 将颜色数组转换成标准的rgb颜色格式
+     * @param {Array} colorArray - 颜色数组
+     * @returns {String} 'rgb(0,0,0)'或者 rgba(0,0,0,0)
+     */
+    static formatRGB(colorArray) {
+        let rgb;
+        if(colorArray.length === 3) {
+            rgb = 'rgb(';
+            colorArray.forEach(function (color,index) {
+                index === 2 ? rgb += color : rgb += color + ',';
+            });
+        } else {
+            rgb = 'rgba(';
+            colorArray.forEach(function (color,index) {
+                index === 3 ? rgb += color : rgb += color + ',';
+            });
+        }
+        return rgb;
+    }
+
+    /**
+     * @function ol.supermap.StyleUtils.getCanvasFromSVG
+     * @description 将SVG转换成Canvas
+     * @param {string} svgUrl - 颜色数组
+     * @param {object} divDom - div的dom对象
+     * @param {function} callBack - 转换成功执行的回调函数
+     */
+    static getCanvasFromSVG (svgUrl, divDom, callBack) {
+        //一个图层对应一个canvas
+        let canvg = window.canvg;
+        let canvas = document.createElement('canvas');
+        canvas.id = 'dataviz-canvas-' + Util.newGuid(8);
+        canvas.style.display = "none";
+        divDom.appendChild(canvas);
+        try {
+            canvg(canvas.id, svgUrl, {
+                ignoreMouse: true,
+                ignoreAnimation: true,
+                renderCallback: function () {
+                    if(canvas.width > 300 || canvas.height > 300) {
+                        // Util.showMessage(DataViz.Language.sizeIsWrong,'WARNING');
+                        return;
+                    }
+                    callBack(canvas);
+                },
+                forceRedraw: function () {
+                    return false
+                }
+            });
+        } catch(e) {
+            return;
+        }
+    }
+
 }
 
 ol.supermap.StyleUtils = StyleUtils;
