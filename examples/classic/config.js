@@ -70,7 +70,7 @@ var exampleConfig = {
                     fileName: "map_3baidu"
 
                 }, {
-                    name: "google layer",
+                    name: "谷歌地图",
                     name_en: "google layer",
                     thumbnail: "map_3googlelayer.png",
                     fileName: "map_3googlelayer"
@@ -82,7 +82,7 @@ var exampleConfig = {
                     fileName: "map_3bing"
 
                 }, {
-                    name: "OSM",
+                    name: "OSM地图",
                     name_en: "OSM layer",
                     thumbnail: "map_3osm.png",
                     fileName: "map_3osm"
@@ -231,7 +231,7 @@ var exampleConfig = {
                     thumbnail: "controler_navigation.png",
                     fileName: "controler_navigation"
                 }, {
-                    name: "layerswitcher",
+                    name: "图层管理器",
                     name_en: "layer switch control",
                     thumbnail: "controler_layerswitcher.png",
                     fileName: "controler_layerswitcher"
@@ -797,7 +797,7 @@ var exampleConfig = {
                     thumbnail: "vizLayer_gois.png",
                     fileName: "vizLayer_gois"
                 }, {
-                    name: "Elements Layer 扩展",
+                    name: "要素图层扩展",
                     name_en: "elements layer extension",
                     thumbnail: "vizLayer_elements.png",
                     fileName: "vizLayer_elements"

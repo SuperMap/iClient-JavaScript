@@ -899,7 +899,7 @@ var exampleConfig = {
                 version: "9.1.1",
                 content: [{
                     name: "路径图_WGS84",
-                    name_en: "Path WGS84",
+                    name_en: "Path-layer WGS84",
                     version: "9.1.1",
                     thumbnail: "deckglLayer_pathLayer_4326.png",
                     fileName: "deckglLayer_pathLayer_4326"

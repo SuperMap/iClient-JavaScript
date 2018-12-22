@@ -136,6 +136,9 @@ window.examplesResources = {
         "envTips": "Please run the program in server environment!"
     },
     "resources": {
+        "title_googlelayer":"google layer",
+        "title_osmlayer":"OSM layer",
+        "title_binglayer":"Bing layer",
         "title_tiledMapLayer4326": "4326 Base Map of SuperMap REST",
         "title_tiledMapLayer3857": "3857 Base Map of SuperMap REST",
         "title_imageMapLayer3857": "3857 Base Map of SuperMap REST (image)",
@@ -391,11 +394,11 @@ window.examplesResources = {
         "title_interpolationAnalystServiceKrigingUniversal": "Spatial Analysis - Universal Kriging Interpolation Analysis",
         "title_findMTSPPathsServiceLogistics": "Multi-traveler Analysis - Logistics Distribution ",
         "title_findTSPPathsService": "Multi-traveler Analysis - Quality Inspection",
-        "title_graphicLayer": "High efficiency point layer - points of 180K NY taxis",
+        "title_graphicLayer": "points of 180K NY taxis",
         "title_mb_graphicLayer": "High efficiency point layer",
         "title_mb_graphicLayerWGS84": "High efficiency point layer WGS84",
         "title_graphicLayer_webgl": "High efficiency point layer-webgl",
-        "title_graphicLayerClovers": "High efficiency point layer - clover",
+        "title_graphicLayerClovers": "clover",
         "title_graphicLayerTaxi": "High efficiency point layer - picture drawing of 180K NY taxis",
         "title_heatMap": "Heat map",
         "title_heatMapNY": "Heat map of New York Taxis",
