@@ -21,14 +21,14 @@ import {
  * </div>
  * @category  Visualization VectorTile
  * @param {Object} options - 初始化参数。
- * @param {(string|undefined)} [options.url] - iServer UGCV5(MVT) 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与options.style互斥，优先级低于options.style。
- * @param {(Object|undefined)} [options.style] - Mapbox style 对象。与 options.url 互斥，优先级高于 options.url。
+ * @param {(string|undefined)} [options.url] - SuperMap iServer 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与options.style互斥，优先级低于options.style。
+ * @param {(Object|string|undefined)} [options.style] - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。与 options.url 互斥，优先级高于 options.url。
  * @param {Array.<number>} [options.resolutions] - 地图分辨率数组，用于映射 zoom 值。通常情況与地图的 {@link ol.View} 的分辨率一致。</br>
  * 默认值为：[78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564, 1222.99245256282,611.49622628141,305.748113140705,152.8740565703525, 76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032, 4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395, 0.29858214173896974,0.14929107086948487,0.07464553543474244]。
  * @param {(string|Array.<string>)} [options.source] - Mapbox Style 'source'的 key 值或者 'layer' 的 ID 数组。
  * 当配置 'source' 的 key 值时，source 为该值的 layer 会被加载；
  * 当配置为 'layer' 的 ID 数组时，指定的 layer 会被加载，注意被指定的 layer 需要有相同的 source。
- * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于填充 Mapbox Style 中的 background，如没有配置 background 可不设置该参数。
+ * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
  * @param {ol.StyleFunction} [options.selectedStyle] -选中样式Function。
  * @example
  *  var mbStyle = new ol.supermap.MapboxStyles({
@@ -62,9 +62,8 @@ export class MapboxStyles extends ol.Observable {
         ];
         this.map = options.map;
         this.source = options.source;
-        this.url = options.url ? options.url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true' : "";
+        this.styleTarget = options.style || options.url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true';
         this.resolutions = options.resolutions;
-        this.style = options.style;
         this.selectedStyle = options.selectedStyle || function () {
             return new ol.style.Style({
                 fill: new ol.style.Fill({
@@ -91,16 +90,8 @@ export class MapboxStyles extends ol.Observable {
         }
         this.layersBySourceLayer = {};
         olExtends(this.map);
-        if (this.style) {
-            this._mbStyle = this.style;
-            this._resolve();
-        } else if (this.url) {
-            FetchRequest.get(this.url).then(response =>
-                response.json()).then(mbStyle => {
-                this._mbStyle = mbStyle;
-                this._resolve()
-            });
-        }
+        this._loadStyle(this.styleTarget);
+
     }
     /**
      * @function ol.supermap.MapboxStyles.prototype.getStyleFunction
@@ -143,7 +134,7 @@ export class MapboxStyles extends ol.Observable {
             sourceLayer: sourceLayer
         };
     }
-     /**
+    /**
      * @function ol.supermap.MapboxStyles.prototype.updateStyles
      * @description 更新图层样式。
      * @param {Object} layerStyles - 图层样式或图层样式数组。
@@ -179,9 +170,20 @@ export class MapboxStyles extends ol.Observable {
      * @param {Object} style - Mapbox style 对象。
      */
     setStyle(style) {
-        this.layersBySourceLayer={};
-        this._mbStyle = style;
-        this._resolve();
+        this.layersBySourceLayer = {};
+        this._loadStyle(style);
+    }
+    _loadStyle(style) {
+        if (Object.prototype.toString.call(style) == "[object Object]") {
+            this._mbStyle = style;
+            this._resolve();
+        } else {
+            FetchRequest.get(style).then(response =>
+                response.json()).then(mbStyle => {
+                this._mbStyle = mbStyle;
+                this._resolve()
+            });
+        }
     }
     _resolve() {
         if (this._mbStyle.sprite) {

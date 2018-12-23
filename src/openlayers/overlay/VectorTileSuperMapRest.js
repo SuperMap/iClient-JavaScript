@@ -25,7 +25,9 @@ ol.supermap = ol.supermap || {};
  * @category  Visualization VectorTile
  * @classdesc 矢量瓦片图层源。
  * @param {Object} options - 参数。
- * @param {string} options.url - 服务地址。
+ * @param {(string|undefined)} options.url - SuperMap iServer 地图服务地址。
+ * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 `ol.format.MVT ` 且 `options.source` 不为空时有效，优先级高于 `options.url`。
+* @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时必填。
  * @param {string} [options.crossOrigin = 'anonymous'] - 跨域模式。
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
@@ -35,78 +37,19 @@ ol.supermap = ol.supermap || {};
 export class VectorTileSuperMapRest extends ol.source.VectorTile {
 
     constructor(options) {
-        if (options.url === undefined) {
+        if (options.url === undefined && options.style === undefined) {
             return;
         }
+        var zRegEx = /\{z\}/g;
+        var xRegEx = /\{x\}/g;
+        var yRegEx = /\{y\}/g;
+        var dashYRegEx = /\{-y\}/g;
         options.crossOrigin = 'anonymous';
         options.attributions = options.attributions ||
             new ol.Attribution({
                 html: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             })
-        var layerUrl = options.url + '/tileFeature.json?';
-        if (options.format instanceof ol.format.MVT) {
-            layerUrl = options.url + '/tileFeature.mvt?';
-        }
-        //为url添加安全认证信息片段
-        options.serverType = options.serverType || ServerType.ISERVER;
-        layerUrl = appendCredential(layerUrl, options.serverType);
 
-        function appendCredential(url, serverType) {
-            var newUrl = url,
-                credential, value;
-            switch (serverType) {
-                case ServerType.IPORTAL:
-                    value = SecurityManager.getToken(url);
-                    credential = value ? new Credential(value, "token") : null;
-                    if (!credential) {
-                        value = SecurityManager.getKey(url);
-                        credential = value ? new Credential(value, "key") : null;
-                    }
-                    break;
-                case ServerType.ONLINE:
-                    value = SecurityManager.getKey(url);
-                    credential = value ? new Credential(value, "key") : null;
-                    break;
-                default:
-                    //iserver or others
-                    value = SecurityManager.getToken(url);
-                    credential = value ? new Credential(value, "token") : null;
-                    break;
-            }
-            if (credential) {
-                newUrl += "&" + credential.getUrlParameters();
-            }
-            return newUrl;
-        }
-
-        var returnAttributes = true;
-        if (options.returnAttributes !== undefined) {
-            returnAttributes = options.returnAttributes
-        }
-        var params = "";
-        params += "&returnAttributes=" + returnAttributes;
-        if (options._cache !== undefined) {
-            params += "&_cache=" + options._cache;
-        }
-        if (options.layersID !== undefined) {
-            params += "&layersID=" + options.layersID;
-        }
-        if (options.layerNames !== undefined) {
-            params += "&layerNames=" + options.layerNames;
-        }
-        if (options.expands !== undefined) {
-            params += "&expands=" + options.expands;
-        }
-        if (options.compressTolerance !== undefined) {
-            params += "&compressTolerance=" + options.compressTolerance;
-        }
-        if (options.coordinateType !== undefined) {
-            params += "&coordinateType=" + options.coordinateType;
-        }
-        if (options.returnCutEdges !== undefined) {
-            params += "&returnCutEdges=" + options.returnCutEdges;
-        }
-        layerUrl += encodeURI(params);
         super({
             attributions: options.attributions,
             cacheSize: options.cacheSize,
@@ -114,11 +57,11 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
             logo: options.logo,
             overlaps: options.overlaps,
             projection: options.projection,
-            state: options.state,
+            state: (options.format instanceof ol.format.MVT && options.style && options.source && Object.prototype.toString.call(options.style) == "[object String]") ? "loading" : options.state,
             tileClass: options.tileClass,
             tileGrid: options.tileGrid,
             tilePixelRatio: options.tilePixelRatio,
-            tileUrlFunction: tileUrlFunction,
+            tileUrlFunction: (options.format instanceof ol.format.MVT && options.style && options.source) ? zxyTileUrlFunction : tileUrlFunction,
             tileLoadFunction: (options.format instanceof ol.format.MVT) ? undefined : tileLoadFunction,
             url: options.url,
             urls: options.urls,
@@ -126,7 +69,22 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
         });
 
         var me = this;
-        me.tileType = options.tileType || 'ScaleXY';
+        me._tileType = options.tileType || 'ScaleXY';
+        if (options.format instanceof ol.format.MVT && options.style && options.source) {
+            if (Object.prototype.toString.call(options.style) == "[object String]") {
+                FetchRequest.get(options.style).then(response =>
+                    response.json()).then(mbStyle => {
+                    this._fillByStyleJSON(mbStyle, options.source);
+                    this.setState("");
+                });
+            } else {
+                this._fillByStyleJSON(options.style, options.source)
+            }
+
+        } else {
+            this._fillByRestMapOptions(options.url, options);
+        }
+
 
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
@@ -159,9 +117,27 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
                 var scale = Util.resolutionToScale(resolution, dpi, unit);
                 params = "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
             }
-            return layerUrl + encodeURI(params);
+            return me._tileUrl + encodeURI(params);
         }
 
+        function zxyTileUrlFunction(tileCoord) {
+            if (!tileCoord) {
+                return undefined;
+            } else {
+                return me._tileUrl.replace(zRegEx, tileCoord[0].toString())
+                    .replace(xRegEx, tileCoord[1].toString())
+                    .replace(yRegEx, function () {
+                        var y = -tileCoord[2] - 1;
+                        return y.toString();
+                    })
+                    .replace(dashYRegEx, function () {
+                        var z = tileCoord[0];
+                        var range = me.tileGrid.getFullTileRange(z);
+                        var y = range.getHeight() + tileCoord[2];
+                        return y.toString();
+                    });
+            }
+        }
         /**
          * @private
          * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
@@ -220,6 +196,93 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
             });
         }
     }
+    _fillByStyleJSON(style, source) {
+        if (style.sources && style.sources[source]) {
+            //ToDo 支持多个tiles地址
+            this._tileUrl = style.sources[source].tiles[0]
+        }
+        if (style.metadata && style.metadata.indexbounds) {
+            const indexbounds = style.metadata.indexbounds;
+            var max = Math.max(indexbounds[2] - indexbounds[0], indexbounds[3] - indexbounds[1]);
+            const defaultResolutions = [];
+            for (let index = 0; index < 30; index++) {
+                defaultResolutions.push(max / 512 / Math.pow(2, index));
+
+            }
+            this.tileGrid = new ol.tilegrid.TileGrid({
+                extent: style.metadata.indexbounds,
+                resolutions: defaultResolutions,
+                tileSize: [512, 512]
+            });
+        }
+    }
+    _fillByRestMapOptions(url, options) {
+        this._tileUrl = options.url + '/tileFeature.json?';
+        if (options.format instanceof ol.format.MVT) {
+            this._tileUrl = options.url + '/tileFeature.mvt?';
+        }
+        //为url添加安全认证信息片段
+        options.serverType = options.serverType || ServerType.ISERVER;
+        this._tileUrl = appendCredential(this._tileUrl, options.serverType);
+
+        function appendCredential(url, serverType) {
+            var newUrl = url,
+                credential, value;
+            switch (serverType) {
+                case ServerType.IPORTAL:
+                    value = SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, "token") : null;
+                    if (!credential) {
+                        value = SecurityManager.getKey(url);
+                        credential = value ? new Credential(value, "key") : null;
+                    }
+                    break;
+                case ServerType.ONLINE:
+                    value = SecurityManager.getKey(url);
+                    credential = value ? new Credential(value, "key") : null;
+                    break;
+                default:
+                    //iserver or others
+                    value = SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, "token") : null;
+                    break;
+            }
+            if (credential) {
+                newUrl += "&" + credential.getUrlParameters();
+            }
+            return newUrl;
+        }
+
+        var returnAttributes = true;
+        if (options.returnAttributes !== undefined) {
+            returnAttributes = options.returnAttributes
+        }
+        var params = "";
+        params += "&returnAttributes=" + returnAttributes;
+        if (options._cache !== undefined) {
+            params += "&_cache=" + options._cache;
+        }
+        if (options.layersID !== undefined) {
+            params += "&layersID=" + options.layersID;
+        }
+        if (options.layerNames !== undefined) {
+            params += "&layerNames=" + options.layerNames;
+        }
+        if (options.expands !== undefined) {
+            params += "&expands=" + options.expands;
+        }
+        if (options.compressTolerance !== undefined) {
+            params += "&compressTolerance=" + options.compressTolerance;
+        }
+        if (options.coordinateType !== undefined) {
+            params += "&coordinateType=" + options.coordinateType;
+        }
+        if (options.returnCutEdges !== undefined) {
+            params += "&returnCutEdges=" + options.returnCutEdges;
+        }
+        this._tileUrl += encodeURI(params);
+    }
+
 
     /**
      * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON

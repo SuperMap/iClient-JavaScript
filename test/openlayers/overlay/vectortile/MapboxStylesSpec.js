@@ -82,12 +82,53 @@ describe('openlayers_MapboxStyles', () => {
     it('getStyleFunction,setSelectedId', (done) => {
         var style;
         mapboxStyles = new MapboxStyles(stylesOptions);
-        setTimeout(() => {
-            mapboxStyles.setSelectedId(1, 1);
-            style = mapboxStyles.getStyleFunction();
+        var feature = new ol.Feature({
+            geometry: new ol.geom.Polygon([
+                [
+                    [0, 0],
+                    [-10, 30],
+                    [-30, 0],
+                    [0, 0]
+                ]
+            ]),
+            layer: "Military_R@California"
+        });
+        feature.setId(1);
+        mapboxStyles.on("styleloaded", () => {
+            var style =  mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
+            expect(style[0].getFill().getColor()).not.toBeNull();
+            var color = ol.color.asArray(style[0].getFill().getColor());
+            expect(color[0]).toBeCloseTo(249);
+            expect(color[1]).toBeCloseTo(224);
+            expect(color[2]).toBeCloseTo(219);
+            expect(color[3]).toBeCloseTo(0.9);
+            mapboxStyles.updateStyles({
+                "paint": {
+                    "fill-color": "rgba(249,0,0,0.90)"
+                },
+                "id": "Military_R@California#26",
+                "maxzoom": 17,
+            });
+            style =  mapboxStyles.getStyleFunction()(feature, 2.388657133911758/2);
+            expect(style).not.toBeNull();
+            expect(style[0].getFill().getColor()).not.toBeNull();
+            // color = ol.color.asArray(style[0].getFill().getColor());
+            // expect(color[0]).toBeCloseTo(249);
+            // expect(color[1]).toBeCloseTo(0);
+            // expect(color[2]).toBeCloseTo(0);
+            // expect(color[3]).toBeCloseTo(0.9);
+            mapboxStyles.setSelectedId(1, "Military_R@California");
+            style =  mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
+            expect(style).not.toBeNull();
+            expect(style[0].getFill().getColor()).not.toBeNull();
+            color = ol.color.asArray(style[0].getFill().getColor());
+            expect(color[0]).toBeCloseTo(255);
+            expect(color[1]).toBeCloseTo(0);
+            expect(color[2]).toBeCloseTo(0);
+            expect(color[3]).toBeCloseTo(1);
             done();
-        }, 2000);
+        })
 
     });
 
@@ -110,4 +151,33 @@ describe('openlayers_MapboxStyles', () => {
             done();
         }, 2000);
     });
+
+    it('init_StyleObject', (done) => {
+        var style;
+        mapboxStyles = new MapboxStyles({
+            style: vectorstylesEscapedJson,
+            map: map,
+            source: 'California'
+        });
+        setTimeout(() => {
+            style = mapboxStyles.getStyleFunction();
+            expect(style).not.toBeNull();
+            done();
+        }, 2000);
+    });
+
+    it('init_StyleUrl', (done) => {
+        var style;
+        mapboxStyles = new MapboxStyles({
+            style: url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true",
+            map: map,
+            source: 'California'
+        });
+        setTimeout(() => {
+            style = mapboxStyles.getStyleFunction();
+            expect(style).not.toBeNull();
+            done();
+        }, 2000);
+    });
+
 })
