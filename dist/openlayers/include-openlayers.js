@@ -72,8 +72,7 @@
         }
         if (!inArray(excludes, 'iclient9-openlayers')) {
             if (supportES6()) {
-                // inputScript("../../dist/openlayers/iclient9-openlayers-es6.min.js");
-                inputScript("../../dist/openlayers/iclient9-openlayers.js");
+                inputScript("../../dist/openlayers/iclient9-openlayers-es6.min.js");
             } else {
                 inputScript("../../dist/openlayers/iclient9-openlayers.min.js");
             }

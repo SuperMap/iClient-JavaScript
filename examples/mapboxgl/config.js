@@ -868,6 +868,24 @@ var exampleConfig = {
                     thumbnail: "01_tiledMapLayer_4326.png",
                     fileName: "01_tiledMapLayer_4326"
                 },{
+                    name: "地图_China2000",
+                    name_en: "Map China2000",
+                    version: "9.1.1",
+                    thumbnail: "01_tiledMapLayer.png",
+                    fileName: "01_tiledMapLayer_4490"
+                },{
+                    name: "地图_Beijing54",
+                    name_en: "Map Beijing54",
+                    version: "9.1.1",
+                    thumbnail: "01_tiledMapLayer.png",
+                    fileName: "01_tiledMapLayer_4214"
+                },{
+                    name: "地图_Xian80",
+                    name_en: "Map Xian80",
+                    version: "9.1.1",
+                    thumbnail: "01_tiledMapLayer.png",
+                    fileName: "01_tiledMapLayer_4610"
+                },{
                     name: "绘图控件_WGS84",
                     name_en: "Draw control WGS84",
                     version: "9.1.1",
