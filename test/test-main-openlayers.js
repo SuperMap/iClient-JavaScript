@@ -22,6 +22,7 @@ import './openlayers/overlay/MapvSpec.js';
 import './openlayers/overlay/RangeSpec.js';
 import './openlayers/overlay/RankSymbolSpec.js';
 import './openlayers/overlay/UniqueSpec.js';
+import './openlayers/overlay/VectorTileSuperMapRestSpec_mapboxstyle.js';
 import './openlayers/overlay/VectorTileSuperMapRestSpec.js';
 import './openlayers/overlay/theme/GeoFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeFeatureSpec.js';

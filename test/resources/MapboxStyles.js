@@ -2,13 +2,13 @@ var  vectorstylesEscapedJson={
     "sources": {
         "California": {
             "tiles": [
-                "http://54.223.164.155:8090/iserver/services/map-mvt-California/rest/maps/California/tileFeature.mvt?returnAttributes=true&width=512&height=512&viewBounds={bbox-epsg-3857}"
+                "http://localhost:8090/iserver/services/map-mvt-California/rest/maps/California/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&z={z}"
             ],
             "type": "vector"
         }
     },
     "name": "California",
-    "sprite": "http://54.223.164.155:8090/iserver/services/map-mvt-California/rest/maps/California/tilefeature/mvtsprites/sprite@2x",
+    "sprite": "http://iclsvr.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tilefeature/mvtsprites/sprite@2x",
     "layers": [
         {
             "paint": {

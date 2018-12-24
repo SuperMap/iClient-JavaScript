@@ -698,7 +698,7 @@ window.examplesResources = {
         "text_kilometre": "公里",
         "text_customAttr": '用户自定义属性',
         "text_commandPost": "指挥所",
-        "text_ShanxiXiAn": "陕西省西安市",
+        "text_shanxiXian": "陕西省西安市",
         "text_weather": "天气：晴",
         "text_direction": "方向：78°",
         "text_speed": "速度：123海里/小时",
