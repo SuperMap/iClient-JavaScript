@@ -121,8 +121,8 @@ export class WebMap extends ol.Observable {
                 description: mapInfo.description
             }; //存储地图的名称以及描述等信息，返回给用户
             that.addBaseMap(mapInfo);
-            if(mapInfo.layers.length === 0) {
-                that.sendMapToUser(0, mapInfo.layers.length);
+            if(!mapInfo.layers || mapInfo.layers.length === 0) {
+                that.sendMapToUser(0, 0);
             } else {
                 that.addLayers(mapInfo);
             }
@@ -159,7 +159,7 @@ export class WebMap extends ol.Observable {
      */
     createView(options) {
         let oldcenter = options.center,
-            zoom = options.level,
+            zoom = options.level || 1,
             extent = options.extent,
             projection = this.baseProjection;
         let center = [];
@@ -396,6 +396,7 @@ export class WebMap extends ol.Observable {
                     if(layers[n].Title === layerInfo.name) {
                         idx= n;
                         layer = layers[idx];
+                        var layerBounds = layer.WGS84BoundingBox;
                         // tileMatrixSetLink = layer.TileMatrixSetLink;
                         break;
                     }
@@ -410,7 +411,6 @@ export class WebMap extends ol.Observable {
                     }
                 }
                 let name = layerInfo.name,
-                    layerBounds = layer.WGS84BoundingBox,
                     extent = ol.proj.transformExtent(layerBounds, 'EPSG:4326', that.baseProjection),
                     matrixSet = relSet[idx];
                 //将需要的参数补上
@@ -560,7 +560,7 @@ export class WebMap extends ol.Observable {
      */
     addLayers(mapInfo) {
         let layers = mapInfo.layers, that = this;
-        let features, layerAdded = 0, len = layers.length;
+        let features = [], layerAdded = 0, len = layers.length;
         if(len > 0) {
             layers.forEach(function (layer) {
                 if((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER") {
@@ -571,9 +571,7 @@ export class WebMap extends ol.Observable {
                         return response.json()
                     }).then(function (data) {
                         if(data && data.type) {
-                            if (!data) {
-                                features = [];
-                            } else if (data.type === "JSON" || data.type === "GEOJSON") {
+                            if (data.type === "JSON" || data.type === "GEOJSON") {
                                 data.content = JSON.parse(data.content);
                                 features = that.geojsonToFeature(data.content, layer);
                             } else if (data.type === 'EXCEL' || data.type === 'CSV') {
@@ -621,9 +619,52 @@ export class WebMap extends ol.Observable {
                         that.sendMapToUser(layerAdded, len);
                         that.errorCallback && that.errorCallback(err, 'getFeatureFaild')
                     });
+                } else if(layer.dataSource.type === "REST_MAP" && layer.dataSource.url) {
+                    Util.queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, 'smid=1', null, null, function (result) {
+                        var recordsets = result && result.result.recordsets;
+                        var recordset = recordsets && recordsets[0];
+                        var attributes = recordset.fields;
+                        if (recordset && attributes) {
+                            let fileterAttrs = [];
+                            for (var i in attributes) {
+                                var value = attributes[i];
+                                if (value.indexOf('Sm') !== 0 || value === "SmID") {
+                                    fileterAttrs.push(value);
+                                }
+                            }
+                            that.getFeatures(fileterAttrs, layer, function (features) {
+                                that.addLayer(layer, features);
+                                layerAdded++;
+                                that.sendMapToUser(layerAdded, len);
+                            });
+                        }
+                    }, function (e) {
+                        that.errorCallback && that.errorCallback(e, 'getFeatureFaild');
+                    })
                 }
             }, this);
         }
+    }
+    
+    getFeatures(fields, layerInfo, resolve, reject) {
+        var that = this;
+        var source = layerInfo.dataSource;
+        //示例数据
+        //let that = openApp;
+        var fileCode = layerInfo.projection;
+        Util.queryFeatureBySQL(source.url, source.layerName, null, fields, null, function(result) {
+            var recordsets = result.result.recordsets[0];
+            var features = recordsets.features.features;
+
+            var featuresObj = that.parseGeoJsonData2Feature({
+                allDatas: { features },
+                fileCode: fileCode,
+                featureProjection: that.baseProjection
+            }, 'JSON');
+            resolve(featuresObj);
+        }, function(err) {
+            reject(err);
+        });
     }
 
     /**
@@ -831,7 +872,7 @@ export class WebMap extends ol.Observable {
         } else if(layerInfo.layerType === "MARKER"){
             layer = this.createMarkerLayer(layerInfo, features)
         }
-        if(layerInfo.name) {
+        if(layer && layerInfo.name) {
             layer.setProperties({name: layerInfo.name});
         }
         layer && this.map.addLayer(layer);

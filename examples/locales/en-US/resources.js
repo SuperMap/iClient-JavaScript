@@ -751,7 +751,7 @@ window.examplesResources = {
         "text_kilometre": " km",
         "text_customAttr": 'Custom attributes',
         "text_commandPost": "Command post",
-        "text_shanxiXiAn": "Xi'an, Shanxi",
+        "text_shanxiXian": "Xi'an, Shanxi",
         "text_weather": "Weather: clear",
         "text_direction": "Direction: 78°",
         "text_speed": "Seep: 123 km/h",
