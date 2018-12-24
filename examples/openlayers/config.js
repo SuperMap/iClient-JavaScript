@@ -854,6 +854,13 @@ var exampleConfig = {
                         localIgnore: true,
                         thumbnail: "mvtvectorlayer_mbstyle_landuse.png",
                         fileName: "mvtvectorlayer_mbstyle_landuse"
+                    },
+                    {
+                        name: "iServer 矢量瓦片服务",
+                        name_en: "iServer REST Vectortile",
+                        version: "9.1.1",
+                        thumbnail: "mvtvectorlayer_vectortilerest.png",
+                        fileName: "mvtvectorlayer_vectortilerest"
                     }
 
 

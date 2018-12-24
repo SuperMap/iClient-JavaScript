@@ -212,6 +212,15 @@ export class MapboxStyles extends ol.Observable {
         }
     }
     _initStyleFunction() {
+        if (!this.resolutions && this._mbStyle.metadata && this._mbStyle.metadata.indexbounds) {
+            const indexbounds = this._mbStyle.metadata.indexbounds;
+            var max = Math.max(indexbounds[2] - indexbounds[0], indexbounds[3] - indexbounds[1]);
+            const defaultResolutions = [];
+            for (let index = 0; index < 30; index++) {
+                defaultResolutions.push(max / 512 / Math.pow(2, index));
+            }
+            this.resolutions = defaultResolutions;
+        }
         this._createStyleFunction();
         /**
          * @event ol.supermap.MapboxStyles#styleloaded

@@ -2,17 +2,44 @@
 * Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
-<html>
+<html style="  width: 100%;height: 100%;">
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_iportalWebMap"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="../../libs/openlayers/ol.css" type="text/css">
+    <link rel="stylesheet" href="../../dist/openlayers/iclient9-openlayers.css" type="text/css">
+    <script type="text/javascript" src="../../libs/openlayers/ol-debug.js"></script>
+    <script type="text/javascript" src="../../dist/openlayers/iclient9-openlayers.js"></script>
+    <script type="text/javascript" src="./webmap/geostats.js"></script>
+    <script type="text/javascript" src="./webmap/jsonsql.js"></script>
+    <script type="text/javascript" src="./webmap/canvg.min.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="width: 100%;height:100%"></div>
+<div class="supermapol-icons-Shape-27"></div>
 <script type="text/javascript">
-    new ol.supermap.WebMap(44, {server: 'http://support.supermap.com.cn:8092'});
+    new ol.supermap.WebMap(1154664842, {
+        server: 'http://127.0.0.1:8090/iportal/apps/viewer/1154664842',
+        successCallback: function (map, mapInfo) {
+            <!-- map是地图对象， mapInfo是地图的名字以及地图描述等信息 -->
+            window.map = map;
+        },
+        errorCallback: function(error, tips) {
+          //tips: getMapFaild：获取地图信息失败；getWmtsFaild：获取wmts信息失败；getLayerFaild: 获取图层信息失败；getFeatureFaild:获取feature失败
+            console.log(error);
+        }
+       /* <!-- 关于地图的配置 -->
+        mapSetting: {
+            overlays: [
+            ],
+            controls: ol.control.defaults({
+            }),
+            mapClickCallback: function (evt) {
+                <!-- 地图点击事件回调函数 -->
+            }
+        }*/
+    });
 </script>
 </body>
-</html>
+   

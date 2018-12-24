@@ -27,7 +27,7 @@ ol.supermap = ol.supermap || {};
  * @param {Object} options - 参数。
  * @param {(string|undefined)} options.url - SuperMap iServer 地图服务地址。
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 `ol.format.MVT ` 且 `options.source` 不为空时有效，优先级高于 `options.url`。
-* @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时必填。
+ * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时必填。
  * @param {string} [options.crossOrigin = 'anonymous'] - 跨域模式。
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
@@ -38,7 +38,10 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
 
     constructor(options) {
         if (options.url === undefined && options.style === undefined) {
-            return;
+            console.error("one of 'options.style' or 'options.style' is required");
+        }
+        if(options.style && !options.source){
+            console.error("when 'options.style' is configured, 'options.source' must be provided");
         }
         var zRegEx = /\{z\}/g;
         var xRegEx = /\{x\}/g;
@@ -75,7 +78,7 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
                 FetchRequest.get(options.style).then(response =>
                     response.json()).then(mbStyle => {
                     this._fillByStyleJSON(mbStyle, options.source);
-                    this.setState("");
+                    this.setState("ready");
                 });
             } else {
                 this._fillByStyleJSON(options.style, options.source)

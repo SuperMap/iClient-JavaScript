@@ -28,6 +28,7 @@
 <script type="text/javascript" include="mapv,elasticsearch" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var map,
+            stopRender,
             timeControl,
             liveESService,
             liveRenderer,
@@ -78,16 +79,18 @@
             timeControl.updateOptions(options);
         }
         timeControl.start();
+        stopRender = false;
     }
 
     //暂停播放
     function pause() {
-        timeControl.pause();
+        timeControl && timeControl.pause();
     }
 
     //停止播放
     function stop() {
-        timeControl.stop();
+        stopRender = true;
+        timeControl && timeControl.stop();
         clearAll();
     }
 
@@ -109,7 +112,9 @@
         if (startT > endT) {
             return;
         }
+        
         var coords = wrapLatLngBounds(extent), prec;
+        
         if (level <= 2) {
             prec = 2;
         } else if (level > 2 && level <= 5) {
@@ -174,7 +179,7 @@
                 console.log(error.body);
                 return;
             }
-            renderLive(response.aggregations.zoomedInView.geohash.buckets);
+            !stopRender && renderLive(response.aggregations.zoomedInView.geohash.buckets);
         });
     }
 
