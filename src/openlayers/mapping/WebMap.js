@@ -26,43 +26,38 @@ const transformTools = new ol.format.GeoJSON();
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
  * @classdesc 对接 iPortal/Online 地图类。
- * @param {string} target - 装载地图Dom的id
- * @param {string} url - 地图的地址
  * @param {number} id - 地图的id
- * @param {Object} options - 参数。
- * @param {function} [options.sucessCallback] - 成功加载地图后调用的函数。
+ * @param {object} options - 参数。
+ * @param {string} [options.server] - 地图的地址。
+ * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
  * @param {function} [options.errorCallback] - 加载地图失败。
- * @param {string} [options.credentialKey'] - 凭证密钥。
+ * @param {string} [options.credentialKey] - 凭证密钥。
  * @param {string} [options.credentialValue] - 凭证值。
- * @param {object} [options.mapSetting] - 关于地图的设置
- * @param {array} [options.mapSetting.overlays] - ol.map的overlay
- * @param {object} [options.mapSetting.controls] - ol.map的地图控件
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @extends {ol.Observable}
  */
 export class WebMap extends ol.Observable {
 
-    constructor(target, url, id, options) {
+    constructor(id, options) {
         super();
-        this.mapUrl = url;
         this.mapId = id;
         if(options) {
-            this.sucessCallback = options.sucessCallback;
+            this.mapUrl = options.server || 'http://www.supermapol.com';
+            this.successCallback = options.successCallback;
             this.errorCallback = options.errorCallback;
             this.credentialKey = options.credentialKey;
             this.credentialValue = options.credentialValue;
         }
-        this.createMap(target, options.mapSetting);
+        this.createMap(options.mapSetting);
         this.createWebmap();
     }
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createMap
      * @description 创建地图对象以及注册地图事件
-     * @param {string} target - 装载地图对象的id
      * @param {object} mapSetting - 关于地图的设置以及需要注册的事件
      */
-    createMap(target, mapSetting) {
+    createMap(mapSetting) {
         let overlays, controls;
         if(mapSetting) {
             overlays = mapSetting.overlays;
@@ -71,12 +66,18 @@ export class WebMap extends ol.Observable {
         this.map = new ol.Map({
             overlays: overlays,
             controls: controls,
-            target: target
+            target: 'map'
         });
         mapSetting && this.registerMapEvent({
             mapClickCallback: mapSetting.mapClickCallback
         });
     }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.registerMapEvent
+     * @description 注册地图事件
+     * @param {object} mapSetting - 关于地图的设置以及需要注册的事件
+     */
     registerMapEvent(mapSetting) {
         let map = this.map;
         map.on("click", function (evt) {
@@ -91,7 +92,7 @@ export class WebMap extends ol.Observable {
     createWebmap() {
         // let appUrl = this.mapUrl;
         let mapUrl = Util.getRootUrl(this.mapUrl) + 'web/maps/' + this.mapId + '/map';
-        if (this.credentialKey) {
+        if (this.credentialValue) {
             mapUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
             // appUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
         }
@@ -562,6 +563,8 @@ export class WebMap extends ol.Observable {
         let layers = mapInfo.layers, that = this;
         let features = [], layerAdded = 0, len = layers.length;
         if(len > 0) {
+            //存储地图上所有的图层对象
+            this.layers = layers;
             layers.forEach(function (layer) {
                 if((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER") {
                     //数据存储到iportal上了
@@ -676,7 +679,7 @@ export class WebMap extends ol.Observable {
      */
     sendMapToUser(count, layersLen) {
         if(count === layersLen) {
-            this.sucessCallback(this.map, this.mapParams);
+            this.successCallback(this.map, this.mapParams, this.layers);
         }
     }
 
