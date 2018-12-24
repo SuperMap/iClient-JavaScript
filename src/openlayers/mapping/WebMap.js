@@ -121,8 +121,8 @@ export class WebMap extends ol.Observable {
                 description: mapInfo.description
             }; //存储地图的名称以及描述等信息，返回给用户
             that.addBaseMap(mapInfo);
-            if(mapInfo.layers.length === 0) {
-                that.sendMapToUser(0, mapInfo.layers.length);
+            if(!mapInfo.layers || mapInfo.layers.length === 0) {
+                that.sendMapToUser(0, 0);
             } else {
                 that.addLayers(mapInfo);
             }
@@ -159,7 +159,7 @@ export class WebMap extends ol.Observable {
      */
     createView(options) {
         let oldcenter = options.center,
-            zoom = options.level,
+            zoom = options.level || 1,
             extent = options.extent,
             projection = this.baseProjection;
         let center = [];
