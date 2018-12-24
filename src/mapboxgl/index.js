@@ -237,23 +237,24 @@ export {
     UpdateTurnNodeWeightParameters,
     Vector,
     VectorClipJobsParameter,
-     //widgets
-     FileTypes,
-     FileConfig,
-     FileModel, 
-     MessageBox,
-     CommonContainer,
-     DropDownBox,
-     Select,
-     AttributesPopContainer,
-     PopContainer,
-     IndexTabsPageContainer,
-     CityTabsPage,
-     NavTabsPage,
-     PaginationContainer,
-     widgetsUtil,
-     FileReaderUtil
-} from '@supermap/iclient-common';
+    //widgets
+    FileTypes,
+    FileConfig,
+    FileModel,
+    MessageBox,
+    CommonContainer,
+    DropDownBox,
+    Select,
+    AttributesPopContainer,
+    PopContainer,
+    IndexTabsPageContainer,
+    CityTabsPage,
+    NavTabsPage,
+    PaginationContainer,
+    widgetsUtil,
+    FileReaderUtil
+}
+from '@supermap/iclient-common';
 
 export * from './control';
 export * from './core';

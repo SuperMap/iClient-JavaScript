@@ -89,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -126,6 +126,24 @@ module.exports = g;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return turf}catch(e){return {}}}();
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return mapv}catch(e){return {}}}();
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return XLSX}catch(e){return {}}}();
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -233,271 +251,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return XLSX}catch(e){return {}}}();
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return mapv}catch(e){return {}}}();
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return turf}catch(e){return {}}}();
-
-/***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
-
-  // Store setTimeout reference so promise-polyfill will be unaffected by
-  // other code modifying setTimeout (like sinon.useFakeTimers())
-  var setTimeoutFunc = setTimeout;
-
-  function noop() {}
-  
-  // Polyfill for Function.prototype.bind
-  function bind(fn, thisArg) {
-    return function () {
-      fn.apply(thisArg, arguments);
-    };
-  }
-
-  function Promise(fn) {
-    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
-    if (typeof fn !== 'function') throw new TypeError('not a function');
-    this._state = 0;
-    this._handled = false;
-    this._value = undefined;
-    this._deferreds = [];
-
-    doResolve(fn, this);
-  }
-
-  function handle(self, deferred) {
-    while (self._state === 3) {
-      self = self._value;
-    }
-    if (self._state === 0) {
-      self._deferreds.push(deferred);
-      return;
-    }
-    self._handled = true;
-    Promise._immediateFn(function () {
-      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
-      if (cb === null) {
-        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
-        return;
-      }
-      var ret;
-      try {
-        ret = cb(self._value);
-      } catch (e) {
-        reject(deferred.promise, e);
-        return;
-      }
-      resolve(deferred.promise, ret);
-    });
-  }
-
-  function resolve(self, newValue) {
-    try {
-      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
-      if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
-        var then = newValue.then;
-        if (newValue instanceof Promise) {
-          self._state = 3;
-          self._value = newValue;
-          finale(self);
-          return;
-        } else if (typeof then === 'function') {
-          doResolve(bind(then, newValue), self);
-          return;
-        }
-      }
-      self._state = 1;
-      self._value = newValue;
-      finale(self);
-    } catch (e) {
-      reject(self, e);
-    }
-  }
-
-  function reject(self, newValue) {
-    self._state = 2;
-    self._value = newValue;
-    finale(self);
-  }
-
-  function finale(self) {
-    if (self._state === 2 && self._deferreds.length === 0) {
-      Promise._immediateFn(function() {
-        if (!self._handled) {
-          Promise._unhandledRejectionFn(self._value);
-        }
-      });
-    }
-
-    for (var i = 0, len = self._deferreds.length; i < len; i++) {
-      handle(self, self._deferreds[i]);
-    }
-    self._deferreds = null;
-  }
-
-  function Handler(onFulfilled, onRejected, promise) {
-    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-    this.promise = promise;
-  }
-
-  /**
-   * Take a potentially misbehaving resolver function and make sure
-   * onFulfilled and onRejected are only called once.
-   *
-   * Makes no guarantees about asynchrony.
-   */
-  function doResolve(fn, self) {
-    var done = false;
-    try {
-      fn(function (value) {
-        if (done) return;
-        done = true;
-        resolve(self, value);
-      }, function (reason) {
-        if (done) return;
-        done = true;
-        reject(self, reason);
-      });
-    } catch (ex) {
-      if (done) return;
-      done = true;
-      reject(self, ex);
-    }
-  }
-
-  Promise.prototype['catch'] = function (onRejected) {
-    return this.then(null, onRejected);
-  };
-
-  Promise.prototype.then = function (onFulfilled, onRejected) {
-    var prom = new (this.constructor)(noop);
-
-    handle(this, new Handler(onFulfilled, onRejected, prom));
-    return prom;
-  };
-
-  Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
-    return new Promise(function (resolve, reject) {
-      if (args.length === 0) return resolve([]);
-      var remaining = args.length;
-
-      function res(i, val) {
-        try {
-          if (val && (typeof val === 'object' || typeof val === 'function')) {
-            var then = val.then;
-            if (typeof then === 'function') {
-              then.call(val, function (val) {
-                res(i, val);
-              }, reject);
-              return;
-            }
-          }
-          args[i] = val;
-          if (--remaining === 0) {
-            resolve(args);
-          }
-        } catch (ex) {
-          reject(ex);
-        }
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        res(i, args[i]);
-      }
-    });
-  };
-
-  Promise.resolve = function (value) {
-    if (value && typeof value === 'object' && value.constructor === Promise) {
-      return value;
-    }
-
-    return new Promise(function (resolve) {
-      resolve(value);
-    });
-  };
-
-  Promise.reject = function (value) {
-    return new Promise(function (resolve, reject) {
-      reject(value);
-    });
-  };
-
-  Promise.race = function (values) {
-    return new Promise(function (resolve, reject) {
-      for (var i = 0, len = values.length; i < len; i++) {
-        values[i].then(resolve, reject);
-      }
-    });
-  };
-
-  // Use polyfill for setImmediate for performance gains
-  Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
-    function (fn) {
-      setTimeoutFunc(fn, 0);
-    };
-
-  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
-    if (typeof console !== 'undefined' && console) {
-      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
-    }
-  };
-
-  /**
-   * Set the immediate function to execute callbacks
-   * @param fn {function} Function to execute
-   * @deprecated
-   */
-  Promise._setImmediateFn = function _setImmediateFn(fn) {
-    Promise._immediateFn = fn;
-  };
-
-  /**
-   * Change the function to execute on unhandled rejection
-   * @param {function} fn Function to execute on unhandled rejection
-   * @deprecated
-   */
-  Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
-    Promise._unhandledRejectionFn = fn;
-  };
-  
-  if ( true && module.exports) {
-    module.exports = Promise;
-  } else if (!root.Promise) {
-    root.Promise = Promise;
-  }
-
-})(this);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(10).setImmediate))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -1213,909 +967,253 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(15);
-module.exports = __webpack_require__(14);
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(11);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(12)))
-
-/***/ }),
-/* 12 */
+/* 7 */
 /***/ (function(module, exports) {
 
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
+module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 13 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-(function(self) {
-  'use strict';
+/* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
 
-  // if __disableNativeFetch is set to true, the it will always polyfill fetch
-  // with Ajax.
-  if (!self.__disableNativeFetch && self.fetch) {
-    return
+  // Store setTimeout reference so promise-polyfill will be unaffected by
+  // other code modifying setTimeout (like sinon.useFakeTimers())
+  var setTimeoutFunc = setTimeout;
+
+  function noop() {}
+  
+  // Polyfill for Function.prototype.bind
+  function bind(fn, thisArg) {
+    return function () {
+      fn.apply(thisArg, arguments);
+    };
   }
 
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name)
+  function Promise(fn) {
+    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (typeof fn !== 'function') throw new TypeError('not a function');
+    this._state = 0;
+    this._handled = false;
+    this._value = undefined;
+    this._deferreds = [];
+
+    doResolve(fn, this);
+  }
+
+  function handle(self, deferred) {
+    while (self._state === 3) {
+      self = self._value;
     }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
+    if (self._state === 0) {
+      self._deferreds.push(deferred);
+      return;
     }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value)
-    }
-    return value
-  }
-
-  function Headers(headers) {
-    this.map = {}
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value)
-      }, this)
-
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name])
-      }, this)
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name)
-    value = normalizeValue(value)
-    var list = this.map[name]
-    if (!list) {
-      list = []
-      this.map[name] = list
-    }
-    list.push(value)
-  }
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
-  }
-
-  Headers.prototype.get = function(name) {
-    var values = this.map[normalizeName(name)]
-    return values ? values[0] : null
-  }
-
-  Headers.prototype.getAll = function(name) {
-    return this.map[normalizeName(name)] || []
-  }
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  }
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = [normalizeValue(value)]
-  }
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    Object.getOwnPropertyNames(this.map).forEach(function(name) {
-      this.map[name].forEach(function(value) {
-        callback.call(thisArg, value, name, this)
-      }, this)
-    }, this)
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    reader.readAsArrayBuffer(blob)
-    return fileReaderReady(reader)
-  }
-
-  function readBlobAsText(blob, options) {
-    var reader = new FileReader()
-    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
-    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
-    var _charset = blob.type.match(regex) || contentType.match(regex)
-    var args = [blob]
-
-    if(_charset) {
-      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
-    }
-
-    reader.readAsText.apply(reader, args)
-    return fileReaderReady(reader)
-  }
-
-  var support = {
-    blob: 'FileReader' in self && 'Blob' in self && (function() {
-      try {
-        new Blob();
-        return true
-      } catch(e) {
-        return false
-      }
-    })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  }
-
-  function Body() {
-    this.bodyUsed = false
-
-
-    this._initBody = function(body, options) {
-      this._bodyInit = body
-      if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-        this._options = options
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (!body) {
-        this._bodyText = ''
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
-      } else {
-        throw new Error('unsupported BodyInit type')
-      }
-    }
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      }
-
-      this.arrayBuffer = function() {
-        return this.blob().then(readBlobAsArrayBuffer)
-      }
-
-      this.text = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob, this._options)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text')
-        } else {
-          return Promise.resolve(this._bodyText)
-        }
-      }
-    } else {
-      this.text = function() {
-        var rejected = consumed(this)
-        return rejected ? rejected : Promise.resolve(this._bodyText)
-      }
-    }
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      }
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    }
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase()
-    return (methods.indexOf(upcased) > -1) ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {}
-    var body = options.body
-    if (Request.prototype.isPrototypeOf(input)) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url
-      this.credentials = input.credentials
-      if (!options.headers) {
-        this.headers = new Headers(input.headers)
-      }
-      this.method = input.method
-      this.mode = input.mode
-      if (!body) {
-        body = input._bodyInit
-        input.bodyUsed = true
-      }
-    } else {
-      this.url = input
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit'
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers)
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET')
-    this.mode = options.mode || this.mode || null
-    this.referrer = null
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body, options)
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this)
-  }
-
-  function decode(body) {
-    var form = new FormData()
-    body.trim().split('&').forEach(function(bytes) {
-      if (bytes) {
-        var split = bytes.split('=')
-        var name = split.shift().replace(/\+/g, ' ')
-        var value = split.join('=').replace(/\+/g, ' ')
-        form.append(decodeURIComponent(name), decodeURIComponent(value))
-      }
-    })
-    return form
-  }
-
-  function headers(xhr) {
-    var head = new Headers()
-    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
-    pairs.forEach(function(header) {
-      var split = header.trim().split(':')
-      var key = split.shift().trim()
-      var value = split.join(':').trim()
-      head.append(key, value)
-    })
-    return head
-  }
-
-  Body.call(Request.prototype)
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {}
-    }
-
-    this._initBody(bodyInit, options)
-    this.type = 'default'
-    this.status = options.status
-    this.ok = this.status >= 200 && this.status < 300
-    this.statusText = options.statusText
-    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
-    this.url = options.url || ''
-  }
-
-  Body.call(Response.prototype)
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  }
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''})
-    response.type = 'error'
-    return response
-  }
-
-  var redirectStatuses = [301, 302, 303, 307, 308]
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  }
-
-  self.Headers = Headers;
-  self.Request = Request;
-  self.Response = Response;
-
-  self.fetch = function(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request
-      if (Request.prototype.isPrototypeOf(input) && !init) {
-        request = input
-      } else {
-        request = new Request(input, init)
-      }
-
-      var xhr = new XMLHttpRequest()
-
-      function responseURL() {
-        if ('responseURL' in xhr) {
-          return xhr.responseURL
-        }
-
-        // Avoid security warnings on getResponseHeader when not allowed by CORS
-        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-          return xhr.getResponseHeader('X-Request-URL')
-        }
-
+    self._handled = true;
+    Promise._immediateFn(function () {
+      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+      if (cb === null) {
+        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
         return;
       }
-
-      var __onLoadHandled = false;
-
-      function onload() {
-        if (xhr.readyState !== 4) {
-          return
-        }
-        var status = (xhr.status === 1223) ? 204 : xhr.status
-        if (status < 100 || status > 599) {
-          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-          reject(new TypeError('Network request failed'))
-          return
-        }
-        var options = {
-          status: status,
-          statusText: xhr.statusText,
-          headers: headers(xhr),
-          url: responseURL()
-        }
-        var body = 'response' in xhr ? xhr.response : xhr.responseText;
-
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        resolve(new Response(body, options))
-      }
-      xhr.onreadystatechange = onload;
-      xhr.onload = onload;
-      xhr.onerror = function() {
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.open(request.method, request.url, true)
-
-      // `withCredentials` should be setted after calling `.open` in IE10
-      // http://stackoverflow.com/a/19667959/1219343
+      var ret;
       try {
-        if (request.credentials === 'include') {
-          if ('withCredentials' in xhr) {
-            xhr.withCredentials = true;
-          } else {
-            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
-          }
-        }
+        ret = cb(self._value);
       } catch (e) {
-        console && console.warn && console.warn('set withCredentials error:' + e);
+        reject(deferred.promise, e);
+        return;
+      }
+      resolve(deferred.promise, ret);
+    });
+  }
+
+  function resolve(self, newValue) {
+    try {
+      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
+      if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+        var then = newValue.then;
+        if (newValue instanceof Promise) {
+          self._state = 3;
+          self._value = newValue;
+          finale(self);
+          return;
+        } else if (typeof then === 'function') {
+          doResolve(bind(then, newValue), self);
+          return;
+        }
+      }
+      self._state = 1;
+      self._value = newValue;
+      finale(self);
+    } catch (e) {
+      reject(self, e);
+    }
+  }
+
+  function reject(self, newValue) {
+    self._state = 2;
+    self._value = newValue;
+    finale(self);
+  }
+
+  function finale(self) {
+    if (self._state === 2 && self._deferreds.length === 0) {
+      Promise._immediateFn(function() {
+        if (!self._handled) {
+          Promise._unhandledRejectionFn(self._value);
+        }
+      });
+    }
+
+    for (var i = 0, len = self._deferreds.length; i < len; i++) {
+      handle(self, self._deferreds[i]);
+    }
+    self._deferreds = null;
+  }
+
+  function Handler(onFulfilled, onRejected, promise) {
+    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+    this.promise = promise;
+  }
+
+  /**
+   * Take a potentially misbehaving resolver function and make sure
+   * onFulfilled and onRejected are only called once.
+   *
+   * Makes no guarantees about asynchrony.
+   */
+  function doResolve(fn, self) {
+    var done = false;
+    try {
+      fn(function (value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      }, function (reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      });
+    } catch (ex) {
+      if (done) return;
+      done = true;
+      reject(self, ex);
+    }
+  }
+
+  Promise.prototype['catch'] = function (onRejected) {
+    return this.then(null, onRejected);
+  };
+
+  Promise.prototype.then = function (onFulfilled, onRejected) {
+    var prom = new (this.constructor)(noop);
+
+    handle(this, new Handler(onFulfilled, onRejected, prom));
+    return prom;
+  };
+
+  Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
+    return new Promise(function (resolve, reject) {
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+
+      function res(i, val) {
+        try {
+          if (val && (typeof val === 'object' || typeof val === 'function')) {
+            var then = val.then;
+            if (typeof then === 'function') {
+              then.call(val, function (val) {
+                res(i, val);
+              }, reject);
+              return;
+            }
+          }
+          args[i] = val;
+          if (--remaining === 0) {
+            resolve(args);
+          }
+        } catch (ex) {
+          reject(ex);
+        }
       }
 
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
       }
+    });
+  };
 
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value)
-      })
+  Promise.resolve = function (value) {
+    if (value && typeof value === 'object' && value.constructor === Promise) {
+      return value;
+    }
 
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-    })
+    return new Promise(function (resolve) {
+      resolve(value);
+    });
+  };
+
+  Promise.reject = function (value) {
+    return new Promise(function (resolve, reject) {
+      reject(value);
+    });
+  };
+
+  Promise.race = function (values) {
+    return new Promise(function (resolve, reject) {
+      for (var i = 0, len = values.length; i < len; i++) {
+        values[i].then(resolve, reject);
+      }
+    });
+  };
+
+  // Use polyfill for setImmediate for performance gains
+  Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
+    function (fn) {
+      setTimeoutFunc(fn, 0);
+    };
+
+  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+    if (typeof console !== 'undefined' && console) {
+      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+    }
+  };
+
+  /**
+   * Set the immediate function to execute callbacks
+   * @param fn {function} Function to execute
+   * @deprecated
+   */
+  Promise._setImmediateFn = function _setImmediateFn(fn) {
+    Promise._immediateFn = fn;
+  };
+
+  /**
+   * Change the function to execute on unhandled rejection
+   * @param {function} fn Function to execute on unhandled rejection
+   * @deprecated
+   */
+  Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
+    Promise._unhandledRejectionFn = fn;
+  };
+  
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = Promise;
+  } else if (!root.Promise) {
+    root.Promise = Promise;
   }
-  self.fetch.polyfill = true
 
-  // Support CommonJS
-  if ( true && module.exports) {
-    module.exports = self.fetch;
-  }
-})(typeof self !== 'undefined' ? self : this);
+})(this);
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14).setImmediate))
 
 /***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16);
-/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _webmap_font_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(18);
-/* harmony import */ var _webmap_font_iconfont_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_webmap_font_iconfont_css__WEBPACK_IMPORTED_MODULE_1__);
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-/***/ }),
-/* 15 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12641,7 +11739,7 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise = __webpack_require__(6);
+var promise = __webpack_require__(8);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
@@ -12652,10 +11750,10 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(13);
+var fetch = __webpack_require__(11);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(2);
+var fetch_jsonp = __webpack_require__(5);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
@@ -38030,7 +37128,7 @@ SuperMap.ElasticSearch = ElasticSearch_ElasticSearch;
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(8);
+var lodash_topairs = __webpack_require__(6);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -63491,7 +62589,7 @@ let widgetsUtil = {
 
 };
 // EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
-var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(3);
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(4);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
@@ -67772,8 +66870,9 @@ const transformTools = new external_ol_default.a.format.GeoJSON();
  * @category  iPortal/Online
  * @classdesc 对接 iPortal/Online 地图类。
  * @param {number} id - 地图的id
- * @param {object} options - 参数。
- * @param {string} [options.server] - 地图的地址。
+ * @param {Object} options - 参数。
+ * @param {string} [options.map='map'] - 地图容器id。
+ * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址。
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
  * @param {function} [options.errorCallback] - 加载地图失败。
  * @param {string} [options.credentialKey] - 凭证密钥。
@@ -67786,12 +66885,13 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
     constructor(id, options) {
         super();
         this.mapId = id;
-        if(options) {
+        if (options) {
             this.mapUrl = options.server || 'http://www.supermapol.com';
             this.successCallback = options.successCallback;
             this.errorCallback = options.errorCallback;
             this.credentialKey = options.credentialKey;
             this.credentialValue = options.credentialValue;
+            this.target = options.target || "map";
         }
         this.createMap(options.mapSetting);
         this.createWebmap();
@@ -67804,14 +66904,14 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      */
     createMap(mapSetting) {
         let overlays, controls;
-        if(mapSetting) {
+        if (mapSetting) {
             overlays = mapSetting.overlays;
             controls = mapSetting.controls;
         }
         this.map = new external_ol_default.a.Map({
             overlays: overlays,
             controls: controls,
-            target: 'map'
+            target: this.target
         });
         mapSetting && this.registerMapEvent({
             mapClickCallback: mapSetting.mapClickCallback
@@ -67853,12 +66953,15 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {string} url - 请求地图的url
      */
     getMapInfo(url) {
-        let that = this, mapUrl = url;
-        if(url.indexOf('.json') === -1) {
+        let that = this,
+            mapUrl = url;
+        if (url.indexOf('.json') === -1) {
             //传递过来的url,没有包括.json,在这里加上。
             mapUrl = `${url}.json`
         }
-        FetchRequest.get(mapUrl, null, {withCredentials: true}).then(function (response) {
+        FetchRequest.get(mapUrl, null, {
+            withCredentials: true
+        }).then(function (response) {
             return response.json();
         }).then(function (mapInfo) {
             that.baseProjection = mapInfo.projection; //epsgCode是之前的数据格式 todo
@@ -67867,7 +66970,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 description: mapInfo.description
             }; //存储地图的名称以及描述等信息，返回给用户
             that.addBaseMap(mapInfo);
-            if(!mapInfo.layers || mapInfo.layers.length === 0) {
+            if (!mapInfo.layers || mapInfo.layers.length === 0) {
                 that.sendMapToUser(0, 0);
             } else {
                 that.addLayers(mapInfo);
@@ -67886,7 +66989,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         this.createView(mapInfo);
         let layer = this.createBaseLayer(mapInfo);
         this.map.addLayer(layer);
-        if(mapInfo.baseLayer && mapInfo.baseLayer.lableLayerVisible) {
+        if (mapInfo.baseLayer && mapInfo.baseLayer.lableLayerVisible) {
             let layerInfo = mapInfo.baseLayer;
             //存在天地图路网
             let labelLayer = new external_ol_default.a.layer.Tile({
@@ -67909,11 +67012,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             extent = options.extent,
             projection = this.baseProjection;
         let center = [];
-        for(let key in oldcenter) {
+        for (let key in oldcenter) {
             center.push(oldcenter[key]);
         }
         extent = [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y];
-        this.map.setView(new external_ol_default.a.View({ zoom, center, projection, extent }));
+        this.map.setView(new external_ol_default.a.View({
+            zoom,
+            center,
+            projection,
+            extent
+        }));
     }
     /**
      * @private
@@ -67921,41 +67029,42 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @description 创建底图
      * @param {object} mapInfo - 关于地图的信息
      */
-    createBaseLayer(mapInfo){
+    createBaseLayer(mapInfo) {
         let source, layerInfo = mapInfo.baseLayer || mapInfo;
         let layerType = layerInfo.layerType; //底图和rest地图兼容
-        if(layerType.indexOf('TIANDITU_VEC') > -1 || layerType.indexOf('TIANDITU_IMG') > -1
-            || layerType.indexOf('TIANDITU_TER') > -1) {
-            layerType = layerType.substr(0,12);
+        if (layerType.indexOf('TIANDITU_VEC') > -1 || layerType.indexOf('TIANDITU_IMG') > -1 ||
+            layerType.indexOf('TIANDITU_TER') > -1) {
+            layerType = layerType.substr(0, 12);
         }
         let mapUrls = {
-            CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
-            CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
-            OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
-            GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
-            JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
-            JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
-            JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
-            JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
-        }, url;
-        switch(layerType){
+                CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
+                CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
+                OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
+                GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
+                JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
+                JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+                JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+                JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
+            },
+            url;
+        switch (layerType) {
             case "TIANDITU_VEC":
             case "TIANDITU_IMG":
             case "TIANDITU_TER":
-                source=this.createTiandituSource(layerInfo, layerType, mapInfo.projection);
+                source = this.createTiandituSource(layerInfo, layerType, mapInfo.projection);
                 break;
             case "BAIDU":
-                source=this.createBaiduSource();
+                source = this.createBaiduSource();
                 break;
-            /*case 'BING':
-                source = this.createBingSource(layerInfo, mapInfo.projection);
-                break;*/
+                /*case 'BING':
+                    source = this.createBingSource(layerInfo, mapInfo.projection);
+                    break;*/
             case "WMS":
-                source=this.createWMSSource(layerInfo);
+                source = this.createWMSSource(layerInfo);
                 break;
             case "WMTS":
-                source= this.createWMTSSource(layerInfo);
+                source = this.createWMTSSource(layerInfo);
                 break;
             case 'TILE':
             case 'SUPERMAP_REST':
@@ -67981,8 +67090,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             zIndex: layerInfo.zIndex || 0,
             visible: layerInfo.visible
         });
-        if(layerInfo.name) {
-            layer.setProperties({name: layerInfo.name});
+        if (layerInfo.name) {
+            layer.setProperties({
+                name: layerInfo.name
+            });
         }
         return layer;
     }
@@ -68011,7 +67122,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             url: layerInfo.url,
             wrapX: false,
             serverType: serverType,
-            prjCoordSys: { epsgCode: projection.split(':')[1] },
+            prjCoordSys: {
+                epsgCode: projection.split(':')[1]
+            },
             tileProxy: this.tileProxy
         });
         SecurityManager_SecurityManager[`register${keyfix}`](layerInfo.url);
@@ -68046,34 +67159,34 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
     createBaiduSource() {
         return new external_ol_default.a.source.BaiduMap()
     }
-/*
-    /!**
-     * 创建bing地图的source
-     * @param layerInfo
-     * @param projection
-     * @returns {ol.source.XYZ}
-     *!/
-    createBingSource(layerInfo, projection) {
-        // todo 后台没有bing地图
-        let url = 'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
-        return new ol.source.XYZ({
-            wrapX: false,
-            projection: projection,
-            tileUrlFunction: function (coordinates) {
-                let /!*quadDigits = '', *!/[z, x, y] = [...coordinates];
-                y = y > 0 ? y - 1 : -y - 1;
-                let index = '';
-                for (let i = z; i > 0; i--) {
-                    let b = 0;
-                    let mask = 1 << (i - 1);
-                    if ((x & mask) !== 0) b++;
-                    if ((y & mask) !== 0) b += 2;
-                    index += b.toString()
+    /*
+        /!**
+         * 创建bing地图的source
+         * @param layerInfo
+         * @param projection
+         * @returns {ol.source.XYZ}
+         *!/
+        createBingSource(layerInfo, projection) {
+            // todo 后台没有bing地图
+            let url = 'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
+            return new ol.source.XYZ({
+                wrapX: false,
+                projection: projection,
+                tileUrlFunction: function (coordinates) {
+                    let /!*quadDigits = '', *!/[z, x, y] = [...coordinates];
+                    y = y > 0 ? y - 1 : -y - 1;
+                    let index = '';
+                    for (let i = z; i > 0; i--) {
+                        let b = 0;
+                        let mask = 1 << (i - 1);
+                        if ((x & mask) !== 0) b++;
+                        if ((y & mask) !== 0) b += 2;
+                        index += b.toString()
+                    }
+                    return url.replace('{quadKey}', index);
                 }
-                return url.replace('{quadKey}', index);
-            }
-        })
-    }*/
+            })
+        }*/
 
     /**
      * @private
@@ -68126,7 +67239,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let url = layerInfo.url;
         let options = {
             withCredentials: false,
-            withoutFormatSuffix:true
+            withoutFormatSuffix: true
         };
         FetchRequest.get(url, null, options).then(function (response) {
             return response.text();
@@ -68136,11 +67249,13 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             if (that.isValidResponse(capabilities)) {
                 let content = capabilities.Contents,
                     tileMatrixSet = content.TileMatrixSet,
-                    layers = content.Layer, layer, relSet = [], idx;
+                    layers = content.Layer,
+                    layer, relSet = [],
+                    idx;
 
-                for(let n=0; n<layers.length; n++) {
-                    if(layers[n].Title === layerInfo.name) {
-                        idx= n;
+                for (let n = 0; n < layers.length; n++) {
+                    if (layers[n].Title === layerInfo.name) {
+                        idx = n;
                         layer = layers[idx];
                         var layerBounds = layer.WGS84BoundingBox;
                         // tileMatrixSetLink = layer.TileMatrixSetLink;
@@ -68148,8 +67263,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     }
                 }
                 let scales = [];
-                for(let i=0; i<tileMatrixSet.length; i++) {
-                    if(tileMatrixSet[i].Identifier === layerInfo.tileMatrixSet) {
+                for (let i = 0; i < tileMatrixSet.length; i++) {
+                    if (tileMatrixSet[i].Identifier === layerInfo.tileMatrixSet) {
                         for (let h = 0; h < tileMatrixSet[i].TileMatrix.length; h++) {
                             scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator)
                         }
@@ -68237,9 +67352,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         unit = (unit && unit.toLowerCase()) || 'degrees';
         dpi = dpi > 0 ? dpi : 96;
         datumAxis = datumAxis || 6378137;
-        let res = [], matrixIds = [];
+        let res = [],
+            matrixIds = [];
         //这他妈的api不给identifier 我自己给个默认的
-        if(core_Util_Util.isArray(scales)) {
+        if (core_Util_Util.isArray(scales)) {
             scales && scales.forEach(function (scale, idx) {
                 matrixIds.push(idx);
                 res.push(this.getResolutionFromScale(scale, dpi, unit, datumAxis));
@@ -68251,9 +67367,12 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 res.push(this.getResolutionFromScale(tileMatrix['ScaleDenominator'], dpi, unit, datumAxis));
             }, this);
         }
-        return { res: res, matrixIds: matrixIds };
+        return {
+            res: res,
+            matrixIds: matrixIds
+        };
     }
-    
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getResolutionFromScale
@@ -68286,7 +67405,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @returns {boolean}
      */
     isValidResponse(response) {
-        let responseEnum = ['Contents', 'OperationsMetadata'], valid = true;
+        let responseEnum = ['Contents', 'OperationsMetadata'],
+            valid = true;
         if (responseEnum) {
             for (let i = 0; i < responseEnum.length; i++) {
                 if (!response[responseEnum[i]] || response.error) {
@@ -68305,20 +67425,25 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {object} mapInfo - 地图信息
      */
     addLayers(mapInfo) {
-        let layers = mapInfo.layers, that = this;
-        let features = [], layerAdded = 0, len = layers.length;
-        if(len > 0) {
+        let layers = mapInfo.layers,
+            that = this;
+        let features = [],
+            layerAdded = 0,
+            len = layers.length;
+        if (len > 0) {
             //存储地图上所有的图层对象
             this.layers = layers;
             layers.forEach(function (layer) {
-                if((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER") {
+                if ((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER") {
                     //数据存储到iportal上了
                     let serverId = layer.dataSource ? layer.dataSource.serverId : layer.serverId;
                     let url = `${core_Util_Util.getRootUrl(that.mapUrl)}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
-                    FetchRequest.get(url, null, {withCredentials: true}).then(function (response) {
+                    FetchRequest.get(url, null, {
+                        withCredentials: true
+                    }).then(function (response) {
                         return response.json()
                     }).then(function (data) {
-                        if(data && data.type) {
+                        if (data && data.type) {
                             if (data.type === "JSON" || data.type === "GEOJSON") {
                                 data.content = JSON.parse(data.content);
                                 features = that.geojsonToFeature(data.content, layer);
@@ -68334,9 +67459,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                         that.sendMapToUser(layerAdded, len);
                         that.errorCallback && that.errorCallback(error, 'getLayerFaild');
                     })
-                } else if(layer.layerType === 'SUPERMAP_REST' || layer.layerType === "TILE" ||
+                } else if (layer.layerType === 'SUPERMAP_REST' || layer.layerType === "TILE" ||
                     layer.layerType === "WMS" || layer.layerType === "WMTS") {
-                    if(layer.layerType === "WMTS") {
+                    if (layer.layerType === "WMTS") {
                         that.getWmtsInfo(layer, function (layerInfo) {
                             that.map.addLayer(that.createBaseLayer(layerInfo));
                         })
@@ -68345,12 +67470,14 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     }
                     layerAdded++;
                     that.sendMapToUser(layerAdded, len);
-                } else if(layer.dataSource && layer.dataSource.type === "REST_DATA") {
+                } else if (layer.dataSource && layer.dataSource.type === "REST_DATA") {
                     let dataSource = layer.dataSource;
                     //从restData获取数据
-                    core_Util_Util.getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function(result) {
+                    core_Util_Util.getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function (result) {
                         features = that.parseGeoJsonData2Feature({
-                            allDatas: { features: result.result.features.features },
+                            allDatas: {
+                                features: result.result.features.features
+                            },
                             fileCode: layer.projection,
                             featureProjection: that.baseProjection
                         });
@@ -68362,12 +67489,12 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                         that.addLayer(layer, features);
                         layerAdded++;
                         that.sendMapToUser(layerAdded, len);
-                    }, function(err) {
+                    }, function (err) {
                         layerAdded++;
                         that.sendMapToUser(layerAdded, len);
                         that.errorCallback && that.errorCallback(err, 'getFeatureFaild')
                     });
-                } else if(layer.dataSource.type === "REST_MAP" && layer.dataSource.url) {
+                } else if (layer.dataSource.type === "REST_MAP" && layer.dataSource.url) {
                     core_Util_Util.queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, 'smid=1', null, null, function (result) {
                         var recordsets = result && result.result.recordsets;
                         var recordset = recordsets && recordsets[0];
@@ -68393,24 +67520,26 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             }, this);
         }
     }
-    
+
     getFeatures(fields, layerInfo, resolve, reject) {
         var that = this;
         var source = layerInfo.dataSource;
         //示例数据
         //let that = openApp;
         var fileCode = layerInfo.projection;
-        core_Util_Util.queryFeatureBySQL(source.url, source.layerName, null, fields, null, function(result) {
+        core_Util_Util.queryFeatureBySQL(source.url, source.layerName, null, fields, null, function (result) {
             var recordsets = result.result.recordsets[0];
             var features = recordsets.features.features;
 
             var featuresObj = that.parseGeoJsonData2Feature({
-                allDatas: { features },
+                allDatas: {
+                    features
+                },
                 fileCode: fileCode,
                 featureProjection: that.baseProjection
             }, 'JSON');
             resolve(featuresObj);
-        }, function(err) {
+        }, function (err) {
             reject(err);
         });
     }
@@ -68423,7 +67552,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {number} layersLen - 叠加图层总数
      */
     sendMapToUser(count, layersLen) {
-        if(count === layersLen) {
+        if (count === layersLen) {
             this.successCallback(this.map, this.mapParams, this.layers);
         }
     }
@@ -68465,7 +67594,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 for (let j = 0, leng = rowDatas.length; j < leng; j++) {
                     attributes[colTitles[j]] = rowDatas[j];
                 }
-                let feature = new external_ol_default.a.Feature({ geometry: olGeom, Properties: attributes });
+                let feature = new external_ol_default.a.Feature({
+                    geometry: olGeom,
+                    Properties: attributes
+                });
                 feature.attributes = attributes;
                 features.push(feature);
             }
@@ -68513,7 +67645,11 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             }
             let properties;
             if (isMarker) {
-                properties = Object.assign({}, { featureInfo: featureInfo }, { useStyle: useStyle });
+                properties = Object.assign({}, {
+                    featureInfo: featureInfo
+                }, {
+                    useStyle: useStyle
+                });
                 //feature上添加图层的id，为了对应图层
                 feature.layerId = layerInfo.timeId;
                 //删除不需要的属性，因为这两个属性存储在properties上
@@ -68541,7 +67677,11 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 style.src = style.externalGraphic;
 
                 useStyle = style;
-                properties = Object.assign({}, { featureInfo: featureInfo }, { useStyle: useStyle });
+                properties = Object.assign({}, {
+                    featureInfo: featureInfo
+                }, {
+                    useStyle: useStyle
+                });
                 delete attr._smiportal_description;
                 delete attr._smiportal_imgLinkUrl;
                 delete attr._smiportal_title;
@@ -68578,7 +67718,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 allFeatures[i].properties.lat = coordinate[1];
             }
             feature.attributes = allFeatures[i].properties || {};
-            feature.setProperties({ Properties: feature.attributes });
+            feature.setProperties({
+                Properties: feature.attributes
+            });
             features.push(feature);
         }
         return features;
@@ -68593,38 +67735,40 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      */
     addLayer(layerInfo, features) {
         let layer, allFeatures;
-        if(layerInfo.style && layerInfo.filterCondition) {
-            if(layerInfo.layerType === "RANGE") {
+        if (layerInfo.style && layerInfo.filterCondition) {
+            if (layerInfo.layerType === "RANGE") {
                 allFeatures = features;
             }
             //将feature根据过滤条件进行过滤, 分段专题图因为要计算styleGroup所以暂时不过滤
             features = this.getFiterFeatures(layerInfo.filterCondition, features);
         }
-        if(layerInfo.layerType === "VECTOR") {
+        if (layerInfo.layerType === "VECTOR") {
             if (layerInfo.featureType === "POINT") {
-                if(layerInfo.style.type === 'SYMBOL_POINT') {
+                if (layerInfo.style.type === 'SYMBOL_POINT') {
                     layer = this.createSymbolLayer(layerInfo, features);
-                } else{
+                } else {
                     layer = this.createGraphicLayer(layerInfo, features);
                 }
             } else {
                 //线和面
                 layer = this.createVectorLayer(layerInfo, features)
             }
-        } else if(layerInfo.layerType === "UNIQUE") {
+        } else if (layerInfo.layerType === "UNIQUE") {
             layer = this.createUniqueLayer(layerInfo, features);
-        } else if(layerInfo.layerType === "RANGE") {
+        } else if (layerInfo.layerType === "RANGE") {
             layer = this.createRangeLayer(layerInfo, features, allFeatures);
-        } else if(layerInfo.layerType === "HEAT") {
+        } else if (layerInfo.layerType === "HEAT") {
             layer = this.createHeatLayer(layerInfo, features);
-        } else if(layerInfo.layerType === "MARKER"){
+        } else if (layerInfo.layerType === "MARKER") {
             layer = this.createMarkerLayer(layerInfo, features)
         }
-        if(layer && layerInfo.name) {
-            layer.setProperties({name: layerInfo.name});
+        if (layer && layerInfo.name) {
+            layer.setProperties({
+                name: layerInfo.name
+            });
         }
         layer && this.map.addLayer(layer);
-        if(layerInfo.labelStyle && layerInfo.labelStyle.labelField) {
+        if (layerInfo.labelStyle && layerInfo.labelStyle.labelField) {
             //存在标签专题图
             this.addLabelLayer(layerInfo, features);
         }
@@ -68646,7 +67790,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let feature = allFeatures[i];
             let filterResult = false;
             try {
-                filterResult = jsonsql.query(sql, { attributes: feature.attributes });
+                filterResult = jsonsql.query(sql, {
+                    attributes: feature.attributes
+                });
             } catch (err) {
                 //必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
                 return false;
@@ -68686,10 +67832,12 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             render: 'canvas',
             map: this.map,
             isHighLight: false,
-            onClick: function(){}
+            onClick: function () {}
         });
         source.refresh();
-        return new external_ol_default.a.layer.Image({source: source});
+        return new external_ol_default.a.layer.Image({
+            source: source
+        });
     }
 
     /**
@@ -68702,33 +67850,33 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      */
     getGraphicsFromFeatures(features, style) {
         let olStyle, shape;
-        if(style.type === "IMAGE_POINT") {
+        if (style.type === "IMAGE_POINT") {
             //image-point
             let imageInfo = style.imageInfo;
             let imgDom = imageInfo.img;
-            if(!imgDom || !imgDom.src) {
+            if (!imgDom || !imgDom.src) {
                 imgDom = new Image();
                 //要组装成完整的url
                 imgDom.src = core_Util_Util.getRootUrl(this.mapUrl) + imageInfo.url;
             }
             shape = new external_ol_default.a.style.Icon({
-                img:  imgDom,
-                scale: 2*style.radius/imageInfo.size.w,
+                img: imgDom,
+                scale: 2 * style.radius / imageInfo.size.w,
                 imgSize: [imageInfo.size.w, imageInfo.size.h],
-                anchor : [0.5, 0.5]
+                anchor: [0.5, 0.5]
             });
-        } else if(style.type === "SVG_POINT") {
-            if(!this.svgDiv) {
+        } else if (style.type === "SVG_POINT") {
+            if (!this.svgDiv) {
                 this.svgDiv = document.createElement('div');
                 document.body.appendChild(this.svgDiv);
             }
             let that = this;
             StyleUtils_StyleUtils.getCanvasFromSVG(style.url, this.svgDiv, function (canvas) {
                 shape = new external_ol_default.a.style.Icon({
-                    img:  that.setColorToCanvas(canvas,style),
-                    scale: style.radius/canvas.width,
+                    img: that.setColorToCanvas(canvas, style),
+                    scale: style.radius / canvas.width,
                     imgSize: [canvas.width, canvas.height],
-                    anchor : [0.5, 0.5],
+                    anchor: [0.5, 0.5],
                     opacity: style.fillOpacity
                 });
             });
@@ -68739,7 +67887,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         }
         let graphics = [];
         //构建graphic
-        for(let i in features){
+        for (let i in features) {
             let graphic = new external_ol_default.a.Graphic(features[i].getGeometry(), features[i].attributes);
             graphic.setStyle(shape);
             graphics.push(graphic);
@@ -68755,7 +67903,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {object} parameters - 样式参数
      * @return {object}
      */
-    setColorToCanvas(canvas,parameters) {
+    setColorToCanvas(canvas, parameters) {
         let context = canvas.getContext('2d');
         let fillColor = StyleUtils_StyleUtils.hexToRgb(parameters.fillColor);
         fillColor && fillColor.push(parameters.fillOpacity);
@@ -68794,9 +67942,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {object} parameters - 样式参数
      * @returns {ol.style.Style}
      */
-    getSymbolStyle(parameters){
+    getSymbolStyle(parameters) {
         let text = '';
-        if(parameters.unicode){
+        if (parameters.unicode) {
             //todo 为什么要判断，难道还有其他的图层会进来
             text = String.fromCharCode(parseInt(parameters.unicode.replace(/^&#x/, ''), 16));
         }
@@ -68812,8 +67960,12 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 font: parameters.fontSize + " " + "supermapol-icons",
                 placement: 'point',
                 textAlign: 'center',
-                fill: new external_ol_default.a.style.Fill({ color: fillColor}),
-                backgroundFill: new external_ol_default.a.style.Fill({ color: [0, 0, 0, 0]}),
+                fill: new external_ol_default.a.style.Fill({
+                    color: fillColor
+                }),
+                backgroundFill: new external_ol_default.a.style.Fill({
+                    color: [0, 0, 0, 0]
+                }),
                 stroke: new external_ol_default.a.style.Stroke({
                     width: parameters.strokeWidth || 0.000001,
                     color: strokeColor
@@ -68844,12 +67996,12 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         layer.setStyle(features => {
             let labelField = labelStyle.labelField;
             let label = features.attributes[labelField.trim()] + "";
-            if(label === "undefined") {
+            if (label === "undefined") {
                 return null;
             }
             let styleOL = layer.get('styleOL');
             let text = styleOL.getText();
-            if(text && text.setText){
+            if (text && text.setText) {
                 text.setText(label);
             }
             return styleOL;
@@ -68867,11 +68019,15 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
     getLabelStyle(parameters) {
         return new external_ol_default.a.style.Style({
             text: new external_ol_default.a.style.Text({
-                font: parameters.fontSize + " " +parameters.fontFamily,
+                font: parameters.fontSize + " " + parameters.fontFamily,
                 placement: 'point',
                 textAlign: 'center',
-                fill: new external_ol_default.a.style.Fill({ color: parameters.fill}),
-                backgroundFill: new external_ol_default.a.style.Fill({ color: [255, 255, 255, 0.7]}),
+                fill: new external_ol_default.a.style.Fill({
+                    color: parameters.fill
+                }),
+                backgroundFill: new external_ol_default.a.style.Fill({
+                    color: [255, 255, 255, 0.7]
+                }),
                 padding: [3, 3, 3, 3],
                 offsetY: -20
             })
@@ -68886,7 +68042,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {array} features -feature的集合
      * @returns {ol.style.Style}
      */
-    createVectorLayer (layerInfo, features) {
+    createVectorLayer(layerInfo, features) {
         let style = StyleUtils_StyleUtils.toOpenLayersStyle(layerInfo.style, layerInfo.featureType);
         return new external_ol_default.a.layer.Vector({
             style: style,
@@ -68922,7 +68078,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             layerOptions.gradient[i] = customSettings[i];
         }
         // 权重字段恢复
-        if(themeSetting.weight){
+        if (themeSetting.weight) {
             this.changeWeight(features, themeSetting.weight);
         }
         return new external_ol_default.a.layer.Heatmap(layerOptions);
@@ -68937,14 +68093,14 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      */
     changeWeight(features, weightFeild) {
         this.fieldMaxValue = {};
-        this.getMaxValue(features,weightFeild);
+        this.getMaxValue(features, weightFeild);
         let maxValue = this.fieldMaxValue[weightFeild];
         features.forEach(function (feature) {
             let attributes = feature.get("Properties") || feature.attributes;
             try {
                 let value = attributes[weightFeild];
-                feature.set('weight', value/ maxValue);
-            }catch (e){
+                feature.set('weight', value / maxValue);
+            } catch (e) {
                 // V2 热力图没有权重字段 但恢复回来却有权重字段
             }
         })
@@ -68958,17 +68114,18 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {string} weightField - 权重字段
      */
     getMaxValue(features, weightField) {
-        let values = [], attributes;
+        let values = [],
+            attributes;
         let field = weightField;
-        if(this.fieldMaxValue[field]) {
+        if (this.fieldMaxValue[field]) {
             return;
         }
-        features.forEach(function(feature){
+        features.forEach(function (feature) {
             //收集当前权重字段对应的所有值
             attributes = feature.get("Properties") || feature.attributes;
             try {
-                values.push(parseFloat(attributes[field])) ;
-            }catch (e){
+                values.push(parseFloat(attributes[field]));
+            } catch (e) {
                 // V2 热力图没有权重字段 但恢复回来却有权重字段
             }
         });
@@ -68982,7 +68139,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {array} layerInfo - 图层信息
      * @param {string} features - 所以feature的集合
      */
-    createUniqueLayer(layerInfo, features){
+    createUniqueLayer(layerInfo, features) {
         let styleSource = this.createUniqueSource(layerInfo, features);
         let layer = new external_ol_default.a.layer.Vector({
             styleSource: styleSource,
@@ -69009,12 +68166,12 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {array} features - feature 数组
      * @returns {{map: *, style: *, isHoverAble: *, highlightStyle: *, themeField: *, styleGroups: Array}}
      */
-    createUniqueSource(parameters, features){
+    createUniqueSource(parameters, features) {
         //找到合适的专题字段
         let styleGroup = this.getUniqueStyleGroup(parameters, features);
         return {
             map: this.map, //必传参数 API居然不提示
-            style: parameters.style ,
+            style: parameters.style,
             isHoverAble: parameters.isHoverAble,
             highlightStyle: parameters.highlightStyle,
             themeField: parameters.themeSetting.themeField,
@@ -69030,24 +68187,27 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {array} features - feature 数组
      * @returns {Array}
      */
-    getUniqueStyleGroup(parameters, features){
+    getUniqueStyleGroup(parameters, features) {
         // 找出所有的单值
-        let featureType = parameters.featureType, style = parameters.style, themeSetting = parameters.themeSetting;
+        let featureType = parameters.featureType,
+            style = parameters.style,
+            themeSetting = parameters.themeSetting;
         let fieldName = themeSetting.themeField,
             colors = themeSetting.colors;
 
-        let names = [], customSettings = themeSetting.customSettings;
-        for(let i in features){
+        let names = [],
+            customSettings = themeSetting.customSettings;
+        for (let i in features) {
             let attributes = features[i].attributes;
             let name = attributes[fieldName];
             let isSaved = false;
-            for(let j in names){
-                if(names[j] === name) {
+            for (let j in names) {
+                if (names[j] === name) {
                     isSaved = true;
                     break;
                 }
             }
-            if(!isSaved){
+            if (!isSaved) {
                 names.push(name);
             }
         }
@@ -69058,20 +68218,24 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
 
         //生成styleGroup
         let styleGroup = [];
-        names.forEach(function(name,index){
+        names.forEach(function (name, index) {
             let color = curentColors[index];
             if (name in customSettings) {
                 color = customSettings[name];
             }
-            if(featureType === "LINE"){
+            if (featureType === "LINE") {
                 style.strokeColor = color;
-            }else {
+            } else {
                 style.fillColor = color;
             }
             // 转化成 ol 样式
             let olStyle = StyleUtils_StyleUtils.toOpenLayersStyle(style, featureType);
 
-            styleGroup[name] = {olStyle: olStyle, color: color, value: name};
+            styleGroup[name] = {
+                olStyle: olStyle,
+                color: color,
+                value: name
+            };
         });
 
         return styleGroup;
@@ -69086,7 +68250,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {array} allFeatures- 所以的feature集合
      * @returns {ol.layer.Vector}
      */
-    createRangeLayer(layerInfo, features, allFeatures){
+    createRangeLayer(layerInfo, features, allFeatures) {
         //这里获取styleGroup要用所以的feature
         let styleSource = this.createRangeSource(layerInfo, allFeatures || features);
         let layer = new external_ol_default.a.layer.Vector({
@@ -69099,17 +68263,17 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
 
         layer.setStyle(feature => {
             let styleSource = layer.get('styleSource');
-            if(styleSource){
+            if (styleSource) {
                 let labelField = styleSource.themeField;
                 let value = Number(feature.attributes[labelField.trim()]);
                 let styleGroups = styleSource.styleGroups;
-                for(let i = 0; i < styleGroups.length; i++){
-                    if(i === 0){
-                        if(value >= styleGroups[i].start && value <= styleGroups[i].end){
+                for (let i = 0; i < styleGroups.length; i++) {
+                    if (i === 0) {
+                        if (value >= styleGroups[i].start && value <= styleGroups[i].end) {
                             return styleGroups[i].olStyle;
                         }
-                    }else {
-                        if(value > styleGroups[i].start && value <= styleGroups[i].end){
+                    } else {
+                        if (value > styleGroups[i].start && value <= styleGroups[i].end) {
                             return styleGroups[i].olStyle;
                         }
                     }
@@ -69128,16 +68292,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {array} features - 所以的feature集合
      * @returns {*}
      */
-    createRangeSource(parameters, features){
+    createRangeSource(parameters, features) {
         //找到合适的专题字段
         let styleGroup = this.getRangeStyleGroup(parameters, features);
-        if(styleGroup){
+        if (styleGroup) {
             return {
                 style: parameters.style,
                 themeField: parameters.themeSetting.themeField,
                 styleGroups: styleGroup
             };
-        }else {
+        } else {
             return false;
         }
     }
@@ -69150,32 +68314,36 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {array} features - 所以的feature集合
      * @returns {*}
      */
-    getRangeStyleGroup(parameters, features){
+    getRangeStyleGroup(parameters, features) {
         // 找出分段值
-        let featureType = parameters.featureType, themeSetting = parameters.themeSetting,
+        let featureType = parameters.featureType,
+            themeSetting = parameters.themeSetting,
             style = parameters.style;
-        let count = themeSetting.segmentCount, method = themeSetting.segmentMethod,
-            colors = themeSetting.colors, customSettings = themeSetting.customSettings,
+        let count = themeSetting.segmentCount,
+            method = themeSetting.segmentMethod,
+            colors = themeSetting.colors,
+            customSettings = themeSetting.customSettings,
             fieldName = themeSetting.themeField;
-        let values = [], attributes;
+        let values = [],
+            attributes;
         let segmentCount = count;
         let segmentMethod = method;
 
-        features.forEach(function(feature){
+        features.forEach(function (feature) {
             attributes = feature.get("Properties") || feature.attributes;
-            try{
+            try {
                 if (attributes) {
                     //过滤掉非数值的数据
-                    let value =attributes[fieldName.trim()];
+                    let value = attributes[fieldName.trim()];
                     if (value && core_Util_Util.isNumber(value)) {
-                        values.push(parseFloat(value)) ;
+                        values.push(parseFloat(value));
                     }
-                } else if(feature.get(fieldName) && core_Util_Util.isNumber(feature.get(fieldName))) {
+                } else if (feature.get(fieldName) && core_Util_Util.isNumber(feature.get(fieldName))) {
                     if (feature.get(fieldName)) {
-                        values.push(parseFloat(feature.get(fieldName))) ;
+                        values.push(parseFloat(feature.get(fieldName)));
                     }
                 }
-            }catch (e){
+            } catch (e) {
                 // console.log(e);
             }
 
@@ -69184,25 +68352,25 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let segements;
         try {
             segements = ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
-        }catch (e){
+        } catch (e) {
             // console.log(e);
         }
-        if(segements){
+        if (segements) {
             let itemNum = segmentCount;
-            if(attributes && segements[0] === segements[attributes.length-1]) {
+            if (attributes && segements[0] === segements[attributes.length - 1]) {
                 itemNum = 1;
                 segements.length = 2;
             }
 
             //保留两位有效数
-            for(let key in segements){
+            for (let key in segements) {
                 let value = segements[key];
-                if(key === 0){
+                if (key === 0) {
                     // 最小的值下舍入
-                    value = Math.floor(value*100)/100;
-                }else {
+                    value = Math.floor(value * 100) / 100;
+                } else {
                     // 其余上舍入
-                    value = Math.ceil(value*100)/100 + 0.1; // 加0.1 解决最大值没有样式问题
+                    value = Math.ceil(value * 100) / 100 + 0.1; // 加0.1 解决最大值没有样式问题
                 }
 
                 segements[key] = Number(value.toFixed(2));
@@ -69217,23 +68385,23 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     if (customSettings[index]["segment"]["start"]) {
                         segements[index] = customSettings[index]["segment"]["start"];
                     }
-                    if(customSettings[index]["segment"]["end"]) {
+                    if (customSettings[index]["segment"]["end"]) {
                         segements[index + 1] = customSettings[index]["segment"]["end"];
                     }
                 }
             }
             //生成styleGroup
             let styleGroups = [];
-            for(let i = 0; i < itemNum; i++) {
+            for (let i = 0; i < itemNum; i++) {
                 let color = curentColors[i];
                 if (i in customSettings) {
                     if (customSettings[i].color) {
                         color = customSettings[i].color;
                     }
                 }
-                if(featureType === "LINE"){
+                if (featureType === "LINE") {
                     style.strokeColor = color;
-                }else {
+                } else {
                     style.fillColor = color;
                 }
 
@@ -69243,11 +68411,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 let start = segements[i];
                 let end = segements[i + 1];
 
-                styleGroups.push({olStyle: olStyle, color: color, start: start, end: end});
+                styleGroups.push({
+                    olStyle: olStyle,
+                    color: color,
+                    start: start,
+                    end: end
+                });
             }
 
             return styleGroups;
-        }else {
+        } else {
             return false;
         }
     }
@@ -69284,15 +68457,18 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let geomType = feature.getGeometry().getType().toUpperCase();
             // let styleType = geomType === "POINT" ? 'MARKER' : geomType;
             let defaultStyle = feature.getProperties().useStyle;
-            if(geomType === 'POINT' && defaultStyle.text) {
+            if (geomType === 'POINT' && defaultStyle.text) {
                 //说明是文字的feature类型
                 geomType = "TEXT";
             }
             let featureInfo = this.setFeatureInfo(feature);
-            feature.setProperties({ useStyle: defaultStyle, featureInfo:featureInfo});
+            feature.setProperties({
+                useStyle: defaultStyle,
+                featureInfo: featureInfo
+            });
             //标注图层的feature上需要存一个layerId，为了之后样式应用到图层上使用
             // feature.layerId = timeId;
-            if(geomType === 'POINT' && defaultStyle.src &&
+            if (geomType === 'POINT' && defaultStyle.src &&
                 defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
                 //说明地址不完整
                 defaultStyle.src = core_Util_Util.getRootUrl(that.mapUrl) + defaultStyle.src;
@@ -69310,16 +68486,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      */
     setFeatureInfo(feature) {
         let featureInfo;
-        if(feature.getProperties().featureInfo && feature.getProperties().featureInfo.dataViz_title !== undefined
-            && feature.getProperties().featureInfo.dataViz_title != null) {
+        if (feature.getProperties().featureInfo && feature.getProperties().featureInfo.dataViz_title !== undefined &&
+            feature.getProperties().featureInfo.dataViz_title != null) {
             //有featureInfo信息就不需要再添加
             featureInfo = feature.getProperties().featureInfo;
         } else {
             featureInfo = this.getDefaultAttribute();
         }
         let properties = feature.getProperties();
-        for(let key in featureInfo) {
-            if(properties[key]) {
+        for (let key in featureInfo) {
+            if (properties[key]) {
                 featureInfo[key] = properties[key];
                 delete properties[key];
             }
@@ -73212,7 +72388,7 @@ class MapvCanvasLayer {
     }
 }
 // EXTERNAL MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
-var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(4);
+var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(3);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/mapv/MapvLayer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -73949,7 +73125,7 @@ class overlay_RankSymbol_RankSymbol extends overlay_Graph_Graph {
 
 external_ol_default.a.source.RankSymbol = overlay_RankSymbol_RankSymbol;
 // EXTERNAL MODULE: external "function(){try{return turf}catch(e){return {}}}()"
-var external_function_try_return_turf_catch_e_return_ = __webpack_require__(5);
+var external_function_try_return_turf_catch_e_return_ = __webpack_require__(2);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/Turf.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -74928,7 +74104,7 @@ external_ol_default.a.supermap = external_ol_default.a.supermap || {};
  * @param {Object} options - 参数。
  * @param {(string|undefined)} options.url - SuperMap iServer 地图服务地址。
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 `ol.format.MVT ` 且 `options.source` 不为空时有效，优先级高于 `options.url`。
-* @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时必填。
+ * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时必填。
  * @param {string} [options.crossOrigin = 'anonymous'] - 跨域模式。
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
@@ -74939,7 +74115,10 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
 
     constructor(options) {
         if (options.url === undefined && options.style === undefined) {
-            return;
+            console.error("one of 'options.style' or 'options.style' is required");
+        }
+        if(options.style && !options.source){
+            console.error("when 'options.style' is configured, 'options.source' must be provided");
         }
         var zRegEx = /\{z\}/g;
         var xRegEx = /\{x\}/g;
@@ -74976,7 +74155,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
                 FetchRequest.get(options.style).then(response =>
                     response.json()).then(mbStyle => {
                     this._fillByStyleJSON(mbStyle, options.source);
-                    this.setState("");
+                    this.setState("ready");
                 });
             } else {
                 this._fillByStyleJSON(options.style, options.source)
@@ -76428,6 +75607,15 @@ class MapboxStyles_MapboxStyles extends external_ol_default.a.Observable {
         }
     }
     _initStyleFunction() {
+        if (!this.resolutions && this._mbStyle.metadata && this._mbStyle.metadata.indexbounds) {
+            const indexbounds = this._mbStyle.metadata.indexbounds;
+            var max = Math.max(indexbounds[2] - indexbounds[0], indexbounds[3] - indexbounds[1]);
+            const defaultResolutions = [];
+            for (let index = 0; index < 30; index++) {
+                defaultResolutions.push(max / 512 / Math.pow(2, index));
+            }
+            this.resolutions = defaultResolutions;
+        }
         this._createStyleFunction();
         /**
          * @event ol.supermap.MapboxStyles#styleloaded
@@ -79471,307 +78659,307 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 
 
 // CONCATENATED MODULE: ./src/openlayers/index.js
-/* concated harmony reexport SuperMap */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
-/* concated harmony reexport DataFormat */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return DataFormat; });
-/* concated harmony reexport ServerType */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return ServerType; });
-/* concated harmony reexport GeometryType */__webpack_require__.d(__webpack_exports__, "GeometryType", function() { return GeometryType; });
-/* concated harmony reexport QueryOption */__webpack_require__.d(__webpack_exports__, "QueryOption", function() { return QueryOption; });
-/* concated harmony reexport JoinType */__webpack_require__.d(__webpack_exports__, "JoinType", function() { return JoinType; });
-/* concated harmony reexport EngineType */__webpack_require__.d(__webpack_exports__, "EngineType", function() { return EngineType; });
-/* concated harmony reexport MeasureMode */__webpack_require__.d(__webpack_exports__, "MeasureMode", function() { return MeasureMode; });
-/* concated harmony reexport SpatialRelationType */__webpack_require__.d(__webpack_exports__, "SpatialRelationType", function() { return SpatialRelationType; });
-/* concated harmony reexport DataReturnMode */__webpack_require__.d(__webpack_exports__, "DataReturnMode", function() { return DataReturnMode; });
-/* concated harmony reexport Unit */__webpack_require__.d(__webpack_exports__, "Unit", function() { return Unit; });
-/* concated harmony reexport BufferRadiusUnit */__webpack_require__.d(__webpack_exports__, "BufferRadiusUnit", function() { return BufferRadiusUnit; });
-/* concated harmony reexport SpatialQueryMode */__webpack_require__.d(__webpack_exports__, "SpatialQueryMode", function() { return SpatialQueryMode; });
-/* concated harmony reexport ThemeGraphTextFormat */__webpack_require__.d(__webpack_exports__, "ThemeGraphTextFormat", function() { return ThemeGraphTextFormat; });
-/* concated harmony reexport ThemeGraphType */__webpack_require__.d(__webpack_exports__, "ThemeGraphType", function() { return ThemeGraphType; });
-/* concated harmony reexport GraphAxesTextDisplayMode */__webpack_require__.d(__webpack_exports__, "GraphAxesTextDisplayMode", function() { return GraphAxesTextDisplayMode; });
-/* concated harmony reexport GraduatedMode */__webpack_require__.d(__webpack_exports__, "GraduatedMode", function() { return GraduatedMode; });
-/* concated harmony reexport RangeMode */__webpack_require__.d(__webpack_exports__, "RangeMode", function() { return RangeMode; });
-/* concated harmony reexport ThemeType */__webpack_require__.d(__webpack_exports__, "ThemeType", function() { return ThemeType; });
-/* concated harmony reexport ColorGradientType */__webpack_require__.d(__webpack_exports__, "ColorGradientType", function() { return ColorGradientType; });
-/* concated harmony reexport TextAlignment */__webpack_require__.d(__webpack_exports__, "TextAlignment", function() { return TextAlignment; });
-/* concated harmony reexport FillGradientMode */__webpack_require__.d(__webpack_exports__, "FillGradientMode", function() { return FillGradientMode; });
-/* concated harmony reexport SideType */__webpack_require__.d(__webpack_exports__, "SideType", function() { return SideType; });
-/* concated harmony reexport AlongLineDirection */__webpack_require__.d(__webpack_exports__, "AlongLineDirection", function() { return AlongLineDirection; });
-/* concated harmony reexport LabelBackShape */__webpack_require__.d(__webpack_exports__, "LabelBackShape", function() { return LabelBackShape; });
-/* concated harmony reexport LabelOverLengthMode */__webpack_require__.d(__webpack_exports__, "LabelOverLengthMode", function() { return LabelOverLengthMode; });
-/* concated harmony reexport DirectionType */__webpack_require__.d(__webpack_exports__, "DirectionType", function() { return DirectionType; });
-/* concated harmony reexport OverlayOperationType */__webpack_require__.d(__webpack_exports__, "OverlayOperationType", function() { return OverlayOperationType; });
-/* concated harmony reexport SupplyCenterType */__webpack_require__.d(__webpack_exports__, "SupplyCenterType", function() { return SupplyCenterType; });
-/* concated harmony reexport TurnType */__webpack_require__.d(__webpack_exports__, "TurnType", function() { return TurnType; });
-/* concated harmony reexport BufferEndType */__webpack_require__.d(__webpack_exports__, "BufferEndType", function() { return BufferEndType; });
-/* concated harmony reexport SmoothMethod */__webpack_require__.d(__webpack_exports__, "SmoothMethod", function() { return SmoothMethod; });
-/* concated harmony reexport SurfaceAnalystMethod */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystMethod", function() { return SurfaceAnalystMethod; });
-/* concated harmony reexport ColorSpaceType */__webpack_require__.d(__webpack_exports__, "ColorSpaceType", function() { return ColorSpaceType; });
-/* concated harmony reexport ChartType */__webpack_require__.d(__webpack_exports__, "ChartType", function() { return ChartType; });
-/* concated harmony reexport EditType */__webpack_require__.d(__webpack_exports__, "EditType", function() { return EditType; });
-/* concated harmony reexport TransferTactic */__webpack_require__.d(__webpack_exports__, "TransferTactic", function() { return TransferTactic; });
-/* concated harmony reexport TransferPreference */__webpack_require__.d(__webpack_exports__, "TransferPreference", function() { return TransferPreference; });
-/* concated harmony reexport GridType */__webpack_require__.d(__webpack_exports__, "GridType", function() { return GridType; });
-/* concated harmony reexport ClientType */__webpack_require__.d(__webpack_exports__, "ClientType", function() { return ClientType; });
-/* concated harmony reexport LayerType */__webpack_require__.d(__webpack_exports__, "LayerType", function() { return LayerType; });
-/* concated harmony reexport UGCLayerType */__webpack_require__.d(__webpack_exports__, "UGCLayerType", function() { return UGCLayerType; });
-/* concated harmony reexport StatisticMode */__webpack_require__.d(__webpack_exports__, "StatisticMode", function() { return StatisticMode; });
-/* concated harmony reexport PixelFormat */__webpack_require__.d(__webpack_exports__, "PixelFormat", function() { return PixelFormat; });
-/* concated harmony reexport SearchMode */__webpack_require__.d(__webpack_exports__, "SearchMode", function() { return SearchMode; });
-/* concated harmony reexport SummaryType */__webpack_require__.d(__webpack_exports__, "SummaryType", function() { return SummaryType; });
-/* concated harmony reexport InterpolationAlgorithmType */__webpack_require__.d(__webpack_exports__, "InterpolationAlgorithmType", function() { return InterpolationAlgorithmType; });
-/* concated harmony reexport VariogramMode */__webpack_require__.d(__webpack_exports__, "VariogramMode", function() { return VariogramMode; });
-/* concated harmony reexport Exponent */__webpack_require__.d(__webpack_exports__, "Exponent", function() { return Exponent; });
-/* concated harmony reexport ClipAnalystMode */__webpack_require__.d(__webpack_exports__, "ClipAnalystMode", function() { return ClipAnalystMode; });
-/* concated harmony reexport AnalystAreaUnit */__webpack_require__.d(__webpack_exports__, "AnalystAreaUnit", function() { return AnalystAreaUnit; });
-/* concated harmony reexport AnalystSizeUnit */__webpack_require__.d(__webpack_exports__, "AnalystSizeUnit", function() { return AnalystSizeUnit; });
-/* concated harmony reexport StatisticAnalystMode */__webpack_require__.d(__webpack_exports__, "StatisticAnalystMode", function() { return StatisticAnalystMode; });
-/* concated harmony reexport TopologyValidatorRule */__webpack_require__.d(__webpack_exports__, "TopologyValidatorRule", function() { return TopologyValidatorRule; });
-/* concated harmony reexport OutputType */__webpack_require__.d(__webpack_exports__, "OutputType", function() { return OutputType; });
-/* concated harmony reexport AggregationQueryBuilderType */__webpack_require__.d(__webpack_exports__, "AggregationQueryBuilderType", function() { return AggregationQueryBuilderType; });
-/* concated harmony reexport AggregationType */__webpack_require__.d(__webpack_exports__, "AggregationType", function() { return AggregationType; });
-/* concated harmony reexport GetFeatureMode */__webpack_require__.d(__webpack_exports__, "GetFeatureMode", function() { return GetFeatureMode; });
-/* concated harmony reexport TimeFlowControl */__webpack_require__.d(__webpack_exports__, "TimeFlowControl", function() { return TimeFlowControl_TimeFlowControl; });
-/* concated harmony reexport IManager */__webpack_require__.d(__webpack_exports__, "IManager", function() { return iManager_IManager; });
-/* concated harmony reexport IManagerServiceBase */__webpack_require__.d(__webpack_exports__, "IManagerServiceBase", function() { return iManagerServiceBase_IManagerServiceBase; });
-/* concated harmony reexport IManagerCreateNodeParam */__webpack_require__.d(__webpack_exports__, "IManagerCreateNodeParam", function() { return iManagerCreateNodeParam_IManagerCreateNodeParam; });
-/* concated harmony reexport IPortal */__webpack_require__.d(__webpack_exports__, "IPortal", function() { return iPortal_IPortal; });
-/* concated harmony reexport IPortalMap */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
-/* concated harmony reexport IPortalMapsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
-/* concated harmony reexport IPortalService */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
-/* concated harmony reexport IPortalServiceBase */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
-/* concated harmony reexport IPortalServicesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
-/* concated harmony reexport Online */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
-/* concated harmony reexport OnlineData */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
-/* concated harmony reexport OnlineQueryDatasParameter */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
-/* concated harmony reexport ServiceStatus */__webpack_require__.d(__webpack_exports__, "ServiceStatus", function() { return ServiceStatus; });
-/* concated harmony reexport DataItemType */__webpack_require__.d(__webpack_exports__, "DataItemType", function() { return DataItemType; });
-/* concated harmony reexport DataItemOrderBy */__webpack_require__.d(__webpack_exports__, "DataItemOrderBy", function() { return DataItemOrderBy; });
-/* concated harmony reexport FilterField */__webpack_require__.d(__webpack_exports__, "FilterField", function() { return FilterField; });
-/* concated harmony reexport OnlineServiceBase */__webpack_require__.d(__webpack_exports__, "OnlineServiceBase", function() { return OnlineServiceBase_OnlineServiceBase; });
-/* concated harmony reexport KeyServiceParameter */__webpack_require__.d(__webpack_exports__, "KeyServiceParameter", function() { return KeyServiceParameter_KeyServiceParameter; });
-/* concated harmony reexport SecurityManager */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
-/* concated harmony reexport ServerInfo */__webpack_require__.d(__webpack_exports__, "ServerInfo", function() { return ServerInfo_ServerInfo; });
-/* concated harmony reexport TokenServiceParameter */__webpack_require__.d(__webpack_exports__, "TokenServiceParameter", function() { return TokenServiceParameter_TokenServiceParameter; });
-/* concated harmony reexport ElasticSearch */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
-/* concated harmony reexport FetchRequest */__webpack_require__.d(__webpack_exports__, "FetchRequest", function() { return FetchRequest; });
-/* concated harmony reexport AreaSolarRadiationParameters */__webpack_require__.d(__webpack_exports__, "AreaSolarRadiationParameters", function() { return AreaSolarRadiationParameters_AreaSolarRadiationParameters; });
-/* concated harmony reexport AggregationParameter */__webpack_require__.d(__webpack_exports__, "AggregationParameter", function() { return AggregationParameter_AggregationParameter; });
-/* concated harmony reexport AggQueryBuilderParameter */__webpack_require__.d(__webpack_exports__, "AggQueryBuilderParameter", function() { return AggQueryBuilderParameter_AggQueryBuilderParameter; });
-/* concated harmony reexport BufferAnalystParameters */__webpack_require__.d(__webpack_exports__, "BufferAnalystParameters", function() { return BufferAnalystParameters_BufferAnalystParameters; });
-/* concated harmony reexport BufferDistance */__webpack_require__.d(__webpack_exports__, "BufferDistance", function() { return BufferDistance_BufferDistance; });
-/* concated harmony reexport BuffersAnalystJobsParameter */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
-/* concated harmony reexport BufferSetting */__webpack_require__.d(__webpack_exports__, "BufferSetting", function() { return BufferSetting_BufferSetting; });
-/* concated harmony reexport BurstPipelineAnalystParameters */__webpack_require__.d(__webpack_exports__, "BurstPipelineAnalystParameters", function() { return BurstPipelineAnalystParameters_BurstPipelineAnalystParameters; });
-/* concated harmony reexport ChartQueryFilterParameter */__webpack_require__.d(__webpack_exports__, "ChartQueryFilterParameter", function() { return ChartQueryFilterParameter_ChartQueryFilterParameter; });
-/* concated harmony reexport ChartQueryParameters */__webpack_require__.d(__webpack_exports__, "ChartQueryParameters", function() { return ChartQueryParameters_ChartQueryParameters; });
-/* concated harmony reexport ClipParameter */__webpack_require__.d(__webpack_exports__, "ClipParameter", function() { return ClipParameter_ClipParameter; });
-/* concated harmony reexport ColorDictionary */__webpack_require__.d(__webpack_exports__, "ColorDictionary", function() { return ColorDictionary_ColorDictionary; });
-/* concated harmony reexport ComputeWeightMatrixParameters */__webpack_require__.d(__webpack_exports__, "ComputeWeightMatrixParameters", function() { return ComputeWeightMatrixParameters_ComputeWeightMatrixParameters; });
-/* concated harmony reexport DataReturnOption */__webpack_require__.d(__webpack_exports__, "DataReturnOption", function() { return DataReturnOption_DataReturnOption; });
-/* concated harmony reexport DatasetBufferAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetBufferAnalystParameters", function() { return DatasetBufferAnalystParameters_DatasetBufferAnalystParameters; });
-/* concated harmony reexport DatasetInfo */__webpack_require__.d(__webpack_exports__, "DatasetInfo", function() { return DatasetInfo_DatasetInfo; });
-/* concated harmony reexport DatasetOverlayAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetOverlayAnalystParameters", function() { return DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters; });
-/* concated harmony reexport DatasetSurfaceAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetSurfaceAnalystParameters", function() { return DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters; });
-/* concated harmony reexport DatasetThiessenAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetThiessenAnalystParameters", function() { return DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters; });
-/* concated harmony reexport DatasourceConnectionInfo */__webpack_require__.d(__webpack_exports__, "DatasourceConnectionInfo", function() { return DatasourceConnectionInfo_DatasourceConnectionInfo; });
-/* concated harmony reexport DensityKernelAnalystParameters */__webpack_require__.d(__webpack_exports__, "DensityKernelAnalystParameters", function() { return DensityKernelAnalystParameters_DensityKernelAnalystParameters; });
-/* concated harmony reexport EditFeaturesParameters */__webpack_require__.d(__webpack_exports__, "EditFeaturesParameters", function() { return EditFeaturesParameters_EditFeaturesParameters; });
-/* concated harmony reexport FacilityAnalyst3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalyst3DParameters", function() { return FacilityAnalyst3DParameters_FacilityAnalyst3DParameters; });
-/* concated harmony reexport FacilityAnalystSinks3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSinks3DParameters", function() { return FacilityAnalystSinks3DParameters_FacilityAnalystSinks3DParameters; });
-/* concated harmony reexport FacilityAnalystSources3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSources3DParameters", function() { return FacilityAnalystSources3DParameters_FacilityAnalystSources3DParameters; });
-/* concated harmony reexport FacilityAnalystStreamParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystStreamParameters", function() { return FacilityAnalystStreamParameters_FacilityAnalystStreamParameters; });
-/* concated harmony reexport FacilityAnalystTracedown3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTracedown3DParameters", function() { return FacilityAnalystTracedown3DParameters_FacilityAnalystTracedown3DParameters; });
-/* concated harmony reexport FacilityAnalystTraceup3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTraceup3DParameters", function() { return FacilityAnalystTraceup3DParameters_FacilityAnalystTraceup3DParameters; });
-/* concated harmony reexport FacilityAnalystUpstream3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystUpstream3DParameters", function() { return FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters; });
-/* concated harmony reexport FieldParameters */__webpack_require__.d(__webpack_exports__, "FieldParameters", function() { return FieldParameters_FieldParameters; });
-/* concated harmony reexport FieldStatisticsParameters */__webpack_require__.d(__webpack_exports__, "FieldStatisticsParameters", function() { return FieldStatisticsParameters_FieldStatisticsParameters; });
-/* concated harmony reexport FilterParameter */__webpack_require__.d(__webpack_exports__, "FilterParameter", function() { return FilterParameter_FilterParameter; });
-/* concated harmony reexport FilterAggParameter */__webpack_require__.d(__webpack_exports__, "FilterAggParameter", function() { return FilterAggParameter_FilterAggParameter; });
-/* concated harmony reexport FindClosestFacilitiesParameters */__webpack_require__.d(__webpack_exports__, "FindClosestFacilitiesParameters", function() { return FindClosestFacilitiesParameters_FindClosestFacilitiesParameters; });
-/* concated harmony reexport FindLocationParameters */__webpack_require__.d(__webpack_exports__, "FindLocationParameters", function() { return FindLocationParameters_FindLocationParameters; });
-/* concated harmony reexport FindMTSPPathsParameters */__webpack_require__.d(__webpack_exports__, "FindMTSPPathsParameters", function() { return FindMTSPPathsParameters_FindMTSPPathsParameters; });
-/* concated harmony reexport FindPathParameters */__webpack_require__.d(__webpack_exports__, "FindPathParameters", function() { return FindPathParameters_FindPathParameters; });
-/* concated harmony reexport FindServiceAreasParameters */__webpack_require__.d(__webpack_exports__, "FindServiceAreasParameters", function() { return FindServiceAreasParameters_FindServiceAreasParameters; });
-/* concated harmony reexport FindTSPPathsParameters */__webpack_require__.d(__webpack_exports__, "FindTSPPathsParameters", function() { return FindTSPPathsParameters_FindTSPPathsParameters; });
-/* concated harmony reexport GenerateSpatialDataParameters */__webpack_require__.d(__webpack_exports__, "GenerateSpatialDataParameters", function() { return GenerateSpatialDataParameters_GenerateSpatialDataParameters; });
-/* concated harmony reexport GeoBoundingBoxQueryBuilderParameter */__webpack_require__.d(__webpack_exports__, "GeoBoundingBoxQueryBuilderParameter", function() { return GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter; });
-/* concated harmony reexport GeoCodingParameter */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
-/* concated harmony reexport GeoDecodingParameter */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
-/* concated harmony reexport GeoHashGridAggParameter */__webpack_require__.d(__webpack_exports__, "GeoHashGridAggParameter", function() { return GeoHashGridAggParameter_GeoHashGridAggParameter; });
-/* concated harmony reexport GeometryBufferAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometryBufferAnalystParameters", function() { return GeometryBufferAnalystParameters_GeometryBufferAnalystParameters; });
-/* concated harmony reexport GeometryOverlayAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometryOverlayAnalystParameters", function() { return GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters; });
-/* concated harmony reexport GeometrySurfaceAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometrySurfaceAnalystParameters", function() { return GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters; });
-/* concated harmony reexport GeometryThiessenAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometryThiessenAnalystParameters", function() { return GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters; });
-/* concated harmony reexport GeoRelationAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeoRelationAnalystParameters", function() { return GeoRelationAnalystParameters_GeoRelationAnalystParameters; });
-/* concated harmony reexport GetFeaturesByBoundsParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBoundsParameters", function() { return GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters; });
-/* concated harmony reexport GetFeaturesByBufferParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBufferParameters", function() { return GetFeaturesByBufferParameters_GetFeaturesByBufferParameters; });
-/* concated harmony reexport GetFeaturesByGeometryParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByGeometryParameters", function() { return GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters; });
-/* concated harmony reexport GetFeaturesByIDsParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByIDsParameters", function() { return GetFeaturesByIDsParameters_GetFeaturesByIDsParameters; });
-/* concated harmony reexport GetFeaturesBySQLParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesBySQLParameters", function() { return GetFeaturesBySQLParameters_GetFeaturesBySQLParameters; });
-/* concated harmony reexport GetGridCellInfosParameters */__webpack_require__.d(__webpack_exports__, "GetGridCellInfosParameters", function() { return GetGridCellInfosParameters_GetGridCellInfosParameters; });
-/* concated harmony reexport Grid */__webpack_require__.d(__webpack_exports__, "Grid", function() { return Grid_Grid; });
-/* concated harmony reexport Image */__webpack_require__.d(__webpack_exports__, "Image", function() { return Image_Image; });
-/* concated harmony reexport InterpolationAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationAnalystParameters", function() { return InterpolationAnalystParameters_InterpolationAnalystParameters; });
-/* concated harmony reexport InterpolationIDWAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationIDWAnalystParameters", function() { return InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters; });
-/* concated harmony reexport InterpolationKrigingAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationKrigingAnalystParameters", function() { return InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameters; });
-/* concated harmony reexport InterpolationRBFAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationRBFAnalystParameters", function() { return InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters; });
-/* concated harmony reexport JoinItem */__webpack_require__.d(__webpack_exports__, "JoinItem", function() { return JoinItem_JoinItem; });
-/* concated harmony reexport KernelDensityJobParameter */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
-/* concated harmony reexport LabelImageCell */__webpack_require__.d(__webpack_exports__, "LabelImageCell", function() { return LabelImageCell_LabelImageCell; });
-/* concated harmony reexport LabelMatrixCell */__webpack_require__.d(__webpack_exports__, "LabelMatrixCell", function() { return LabelMatrixCell; });
-/* concated harmony reexport LabelMixedTextStyle */__webpack_require__.d(__webpack_exports__, "LabelMixedTextStyle", function() { return LabelMixedTextStyle_LabelMixedTextStyle; });
-/* concated harmony reexport LabelSymbolCell */__webpack_require__.d(__webpack_exports__, "LabelSymbolCell", function() { return LabelSymbolCell_LabelSymbolCell; });
-/* concated harmony reexport LabelThemeCell */__webpack_require__.d(__webpack_exports__, "LabelThemeCell", function() { return LabelThemeCell_LabelThemeCell; });
-/* concated harmony reexport LayerStatus */__webpack_require__.d(__webpack_exports__, "LayerStatus", function() { return LayerStatus_LayerStatus; });
-/* concated harmony reexport LinkItem */__webpack_require__.d(__webpack_exports__, "LinkItem", function() { return LinkItem_LinkItem; });
-/* concated harmony reexport MathExpressionAnalysisParameters */__webpack_require__.d(__webpack_exports__, "MathExpressionAnalysisParameters", function() { return MathExpressionAnalysisParameters_MathExpressionAnalysisParameters; });
-/* concated harmony reexport MeasureParameters */__webpack_require__.d(__webpack_exports__, "MeasureParameters", function() { return MeasureParameters_MeasureParameters; });
-/* concated harmony reexport OutputSetting */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
-/* concated harmony reexport MappingParameters */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
-/* concated harmony reexport OverlapDisplayedOptions */__webpack_require__.d(__webpack_exports__, "OverlapDisplayedOptions", function() { return OverlapDisplayedOptions_OverlapDisplayedOptions; });
-/* concated harmony reexport OverlayAnalystParameters */__webpack_require__.d(__webpack_exports__, "OverlayAnalystParameters", function() { return OverlayAnalystParameters_OverlayAnalystParameters; });
-/* concated harmony reexport OverlayGeoJobParameter */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
-/* concated harmony reexport PointWithMeasure */__webpack_require__.d(__webpack_exports__, "PointWithMeasure", function() { return PointWithMeasure_PointWithMeasure; });
-/* concated harmony reexport QueryByBoundsParameters */__webpack_require__.d(__webpack_exports__, "QueryByBoundsParameters", function() { return QueryByBoundsParameters_QueryByBoundsParameters; });
-/* concated harmony reexport QueryByDistanceParameters */__webpack_require__.d(__webpack_exports__, "QueryByDistanceParameters", function() { return QueryByDistanceParameters_QueryByDistanceParameters; });
-/* concated harmony reexport QueryByGeometryParameters */__webpack_require__.d(__webpack_exports__, "QueryByGeometryParameters", function() { return QueryByGeometryParameters_QueryByGeometryParameters; });
-/* concated harmony reexport QueryBySQLParameters */__webpack_require__.d(__webpack_exports__, "QueryBySQLParameters", function() { return QueryBySQLParameters_QueryBySQLParameters; });
-/* concated harmony reexport QueryParameters */__webpack_require__.d(__webpack_exports__, "QueryParameters", function() { return QueryParameters_QueryParameters; });
-/* concated harmony reexport Route */__webpack_require__.d(__webpack_exports__, "Route", function() { return Route_Route; });
-/* concated harmony reexport RouteCalculateMeasureParameters */__webpack_require__.d(__webpack_exports__, "RouteCalculateMeasureParameters", function() { return RouteCalculateMeasureParameters_RouteCalculateMeasureParameters; });
-/* concated harmony reexport RouteLocatorParameters */__webpack_require__.d(__webpack_exports__, "RouteLocatorParameters", function() { return RouteLocatorParameters_RouteLocatorParameters; });
-/* concated harmony reexport ServerColor */__webpack_require__.d(__webpack_exports__, "ServerColor", function() { return ServerColor; });
-/* concated harmony reexport ServerFeature */__webpack_require__.d(__webpack_exports__, "ServerFeature", function() { return ServerFeature_ServerFeature; });
-/* concated harmony reexport ServerGeometry */__webpack_require__.d(__webpack_exports__, "ServerGeometry", function() { return ServerGeometry_ServerGeometry; });
-/* concated harmony reexport ServerStyle */__webpack_require__.d(__webpack_exports__, "ServerStyle", function() { return ServerStyle_ServerStyle; });
-/* concated harmony reexport ServerTextStyle */__webpack_require__.d(__webpack_exports__, "ServerTextStyle", function() { return ServerTextStyle_ServerTextStyle; });
-/* concated harmony reexport ServerTheme */__webpack_require__.d(__webpack_exports__, "ServerTheme", function() { return ServerTheme_ServerTheme; });
-/* concated harmony reexport SetLayerInfoParameters */__webpack_require__.d(__webpack_exports__, "SetLayerInfoParameters", function() { return SetLayerInfoParameters_SetLayerInfoParameters; });
-/* concated harmony reexport SetLayersInfoParameters */__webpack_require__.d(__webpack_exports__, "SetLayersInfoParameters", function() { return SetLayersInfoParameters_SetLayersInfoParameters; });
-/* concated harmony reexport SetLayerStatusParameters */__webpack_require__.d(__webpack_exports__, "SetLayerStatusParameters", function() { return SetLayerStatusParameters_SetLayerStatusParameters; });
-/* concated harmony reexport SingleObjectQueryJobsParameter */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
-/* concated harmony reexport StopQueryParameters */__webpack_require__.d(__webpack_exports__, "StopQueryParameters", function() { return StopQueryParameters_StopQueryParameters; });
-/* concated harmony reexport SummaryAttributesJobsParameter */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
-/* concated harmony reexport SummaryMeshJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
-/* concated harmony reexport SummaryRegionJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
-/* concated harmony reexport SupplyCenter */__webpack_require__.d(__webpack_exports__, "SupplyCenter", function() { return SupplyCenter_SupplyCenter; });
-/* concated harmony reexport SurfaceAnalystParameters */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParameters", function() { return SurfaceAnalystParameters_SurfaceAnalystParameters; });
-/* concated harmony reexport SurfaceAnalystParametersSetting */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParametersSetting", function() { return SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting; });
-/* concated harmony reexport TerrainCurvatureCalculationParameters */__webpack_require__.d(__webpack_exports__, "TerrainCurvatureCalculationParameters", function() { return TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameters; });
-/* concated harmony reexport CommonTheme */__webpack_require__.d(__webpack_exports__, "CommonTheme", function() { return Theme_Theme; });
-/* concated harmony reexport ThemeDotDensity */__webpack_require__.d(__webpack_exports__, "ThemeDotDensity", function() { return ThemeDotDensity_ThemeDotDensity; });
-/* concated harmony reexport ThemeFlow */__webpack_require__.d(__webpack_exports__, "ThemeFlow", function() { return ThemeFlow_ThemeFlow; });
-/* concated harmony reexport ThemeGraduatedSymbol */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbol", function() { return ThemeGraduatedSymbol_ThemeGraduatedSymbol; });
-/* concated harmony reexport ThemeGraduatedSymbolStyle */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbolStyle", function() { return ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle; });
-/* concated harmony reexport ThemeGraph */__webpack_require__.d(__webpack_exports__, "ThemeGraph", function() { return ThemeGraph_ThemeGraph; });
-/* concated harmony reexport ThemeGraphAxes */__webpack_require__.d(__webpack_exports__, "ThemeGraphAxes", function() { return ThemeGraphAxes_ThemeGraphAxes; });
-/* concated harmony reexport ThemeGraphItem */__webpack_require__.d(__webpack_exports__, "ThemeGraphItem", function() { return ThemeGraphItem_ThemeGraphItem; });
-/* concated harmony reexport ThemeGraphSize */__webpack_require__.d(__webpack_exports__, "ThemeGraphSize", function() { return ThemeGraphSize_ThemeGraphSize; });
-/* concated harmony reexport ThemeGraphText */__webpack_require__.d(__webpack_exports__, "ThemeGraphText", function() { return ThemeGraphText_ThemeGraphText; });
-/* concated harmony reexport ThemeGridRange */__webpack_require__.d(__webpack_exports__, "ThemeGridRange", function() { return ThemeGridRange_ThemeGridRange; });
-/* concated harmony reexport ThemeGridRangeItem */__webpack_require__.d(__webpack_exports__, "ThemeGridRangeItem", function() { return ThemeGridRangeItem_ThemeGridRangeItem; });
-/* concated harmony reexport ThemeGridUnique */__webpack_require__.d(__webpack_exports__, "ThemeGridUnique", function() { return ThemeGridUnique_ThemeGridUnique; });
-/* concated harmony reexport ThemeGridUniqueItem */__webpack_require__.d(__webpack_exports__, "ThemeGridUniqueItem", function() { return ThemeGridUniqueItem_ThemeGridUniqueItem; });
-/* concated harmony reexport ThemeLabel */__webpack_require__.d(__webpack_exports__, "ThemeLabel", function() { return ThemeLabel_ThemeLabel; });
-/* concated harmony reexport ThemeLabelAlongLine */__webpack_require__.d(__webpack_exports__, "ThemeLabelAlongLine", function() { return ThemeLabelAlongLine_ThemeLabelAlongLine; });
-/* concated harmony reexport ThemeLabelBackground */__webpack_require__.d(__webpack_exports__, "ThemeLabelBackground", function() { return ThemeLabelBackground_ThemeLabelBackground; });
-/* concated harmony reexport ThemeLabelItem */__webpack_require__.d(__webpack_exports__, "ThemeLabelItem", function() { return ThemeLabelItem_ThemeLabelItem; });
-/* concated harmony reexport ThemeLabelText */__webpack_require__.d(__webpack_exports__, "ThemeLabelText", function() { return ThemeLabelText_ThemeLabelText; });
-/* concated harmony reexport ThemeLabelUniqueItem */__webpack_require__.d(__webpack_exports__, "ThemeLabelUniqueItem", function() { return ThemeLabelUniqueItem_ThemeLabelUniqueItem; });
-/* concated harmony reexport ThemeMemoryData */__webpack_require__.d(__webpack_exports__, "ThemeMemoryData", function() { return ThemeMemoryData; });
-/* concated harmony reexport ThemeOffset */__webpack_require__.d(__webpack_exports__, "ThemeOffset", function() { return ThemeOffset_ThemeOffset; });
-/* concated harmony reexport ThemeParameters */__webpack_require__.d(__webpack_exports__, "ThemeParameters", function() { return ThemeParameters_ThemeParameters; });
-/* concated harmony reexport ThemeRange */__webpack_require__.d(__webpack_exports__, "ThemeRange", function() { return ThemeRange_ThemeRange; });
-/* concated harmony reexport ThemeRangeItem */__webpack_require__.d(__webpack_exports__, "ThemeRangeItem", function() { return ThemeRangeItem_ThemeRangeItem; });
-/* concated harmony reexport ThemeUnique */__webpack_require__.d(__webpack_exports__, "ThemeUnique", function() { return ThemeUnique_ThemeUnique; });
-/* concated harmony reexport ThemeUniqueItem */__webpack_require__.d(__webpack_exports__, "ThemeUniqueItem", function() { return ThemeUniqueItem_ThemeUniqueItem; });
-/* concated harmony reexport ThiessenAnalystParameters */__webpack_require__.d(__webpack_exports__, "ThiessenAnalystParameters", function() { return ThiessenAnalystParameters_ThiessenAnalystParameters; });
-/* concated harmony reexport TopologyValidatorJobsParameter */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
-/* concated harmony reexport TransferLine */__webpack_require__.d(__webpack_exports__, "TransferLine", function() { return TransferLine_TransferLine; });
-/* concated harmony reexport TransferPathParameters */__webpack_require__.d(__webpack_exports__, "TransferPathParameters", function() { return TransferPathParameters_TransferPathParameters; });
-/* concated harmony reexport TransferSolutionParameters */__webpack_require__.d(__webpack_exports__, "TransferSolutionParameters", function() { return TransferSolutionParameters_TransferSolutionParameters; });
-/* concated harmony reexport TransportationAnalystParameter */__webpack_require__.d(__webpack_exports__, "TransportationAnalystParameter", function() { return TransportationAnalystParameter_TransportationAnalystParameter; });
-/* concated harmony reexport TransportationAnalystResultSetting */__webpack_require__.d(__webpack_exports__, "TransportationAnalystResultSetting", function() { return TransportationAnalystResultSetting_TransportationAnalystResultSetting; });
-/* concated harmony reexport UGCLayer */__webpack_require__.d(__webpack_exports__, "UGCLayer", function() { return UGCLayer_UGCLayer; });
-/* concated harmony reexport UGCMapLayer */__webpack_require__.d(__webpack_exports__, "UGCMapLayer", function() { return UGCMapLayer_UGCMapLayer; });
-/* concated harmony reexport UGCSubLayer */__webpack_require__.d(__webpack_exports__, "UGCSubLayer", function() { return UGCSubLayer_UGCSubLayer; });
-/* concated harmony reexport UpdateEdgeWeightParameters */__webpack_require__.d(__webpack_exports__, "UpdateEdgeWeightParameters", function() { return UpdateEdgeWeightParameters_UpdateEdgeWeightParameters; });
-/* concated harmony reexport UpdateTurnNodeWeightParameters */__webpack_require__.d(__webpack_exports__, "UpdateTurnNodeWeightParameters", function() { return UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters; });
-/* concated harmony reexport Vector */__webpack_require__.d(__webpack_exports__, "Vector", function() { return iServer_Vector_Vector; });
-/* concated harmony reexport VectorClipJobsParameter */__webpack_require__.d(__webpack_exports__, "VectorClipJobsParameter", function() { return VectorClipJobsParameter_VectorClipJobsParameter; });
-/* concated harmony reexport FileTypes */__webpack_require__.d(__webpack_exports__, "FileTypes", function() { return FileTypes; });
-/* concated harmony reexport FileConfig */__webpack_require__.d(__webpack_exports__, "FileConfig", function() { return FileConfig; });
-/* concated harmony reexport FileModel */__webpack_require__.d(__webpack_exports__, "FileModel", function() { return FileModel_FileModel; });
-/* concated harmony reexport MessageBox */__webpack_require__.d(__webpack_exports__, "MessageBox", function() { return MessageBox; });
-/* concated harmony reexport CommonContainer */__webpack_require__.d(__webpack_exports__, "CommonContainer", function() { return CommonContainer_CommonContainer; });
-/* concated harmony reexport DropDownBox */__webpack_require__.d(__webpack_exports__, "DropDownBox", function() { return DropDownBox_DropDownBox; });
-/* concated harmony reexport Select */__webpack_require__.d(__webpack_exports__, "Select", function() { return Select_Select; });
-/* concated harmony reexport AttributesPopContainer */__webpack_require__.d(__webpack_exports__, "AttributesPopContainer", function() { return AttributesPopContainer_AttributesPopContainer; });
-/* concated harmony reexport PopContainer */__webpack_require__.d(__webpack_exports__, "PopContainer", function() { return PopContainer_PopContainer; });
-/* concated harmony reexport IndexTabsPageContainer */__webpack_require__.d(__webpack_exports__, "IndexTabsPageContainer", function() { return IndexTabsPageContainer_IndexTabsPageContainer; });
-/* concated harmony reexport CityTabsPage */__webpack_require__.d(__webpack_exports__, "CityTabsPage", function() { return CityTabsPage_CityTabsPage; });
-/* concated harmony reexport NavTabsPage */__webpack_require__.d(__webpack_exports__, "NavTabsPage", function() { return NavTabsPage_NavTabsPage; });
-/* concated harmony reexport PaginationContainer */__webpack_require__.d(__webpack_exports__, "PaginationContainer", function() { return PaginationContainer_PaginationContainer; });
-/* concated harmony reexport widgetsUtil */__webpack_require__.d(__webpack_exports__, "widgetsUtil", function() { return widgetsUtil; });
-/* concated harmony reexport FileReaderUtil */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil; });
-/* concated harmony reexport ChangeTileVersion */__webpack_require__.d(__webpack_exports__, "ChangeTileVersion", function() { return ChangeTileVersion_ChangeTileVersion; });
-/* concated harmony reexport Logo */__webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo_Logo; });
-/* concated harmony reexport StyleUtils */__webpack_require__.d(__webpack_exports__, "StyleUtils", function() { return StyleUtils_StyleUtils; });
-/* concated harmony reexport Util */__webpack_require__.d(__webpack_exports__, "Util", function() { return core_Util_Util; });
-/* concated harmony reexport MapExtend */__webpack_require__.d(__webpack_exports__, "MapExtend", function() { return MapExtend; });
-/* concated harmony reexport BaiduMap */__webpack_require__.d(__webpack_exports__, "BaiduMap", function() { return BaiduMap_BaiduMap; });
-/* concated harmony reexport ImageSuperMapRest */__webpack_require__.d(__webpack_exports__, "ImageSuperMapRest", function() { return ImageSuperMapRest_ImageSuperMapRest; });
-/* concated harmony reexport SuperMapCloud */__webpack_require__.d(__webpack_exports__, "SuperMapCloud", function() { return SuperMapCloud_SuperMapCloud; });
-/* concated harmony reexport Tianditu */__webpack_require__.d(__webpack_exports__, "Tianditu", function() { return Tianditu_Tianditu; });
-/* concated harmony reexport TileSuperMapRest */__webpack_require__.d(__webpack_exports__, "TileSuperMapRest", function() { return TileSuperMapRest_TileSuperMapRest; });
-/* concated harmony reexport WebMap */__webpack_require__.d(__webpack_exports__, "WebMap", function() { return WebMap_WebMap; });
-/* concated harmony reexport DataFlow */__webpack_require__.d(__webpack_exports__, "DataFlow", function() { return DataFlow_DataFlow; });
-/* concated harmony reexport Graph */__webpack_require__.d(__webpack_exports__, "Graph", function() { return overlay_Graph_Graph; });
-/* concated harmony reexport Graphic */__webpack_require__.d(__webpack_exports__, "Graphic", function() { return Graphic_Graphic; });
-/* concated harmony reexport Label */__webpack_require__.d(__webpack_exports__, "Label", function() { return overlay_Label_Label; });
-/* concated harmony reexport Mapv */__webpack_require__.d(__webpack_exports__, "Mapv", function() { return Mapv_Mapv; });
-/* concated harmony reexport Range */__webpack_require__.d(__webpack_exports__, "Range", function() { return Range_Range; });
-/* concated harmony reexport RankSymbol */__webpack_require__.d(__webpack_exports__, "RankSymbol", function() { return overlay_RankSymbol_RankSymbol; });
-/* concated harmony reexport Turf */__webpack_require__.d(__webpack_exports__, "Turf", function() { return Turf_Turf; });
-/* concated harmony reexport Unique */__webpack_require__.d(__webpack_exports__, "Unique", function() { return Unique_Unique; });
-/* concated harmony reexport VectorTileSuperMapRest */__webpack_require__.d(__webpack_exports__, "VectorTileSuperMapRest", function() { return VectorTileSuperMapRest_VectorTileSuperMapRest; });
-/* concated harmony reexport HeatMap */__webpack_require__.d(__webpack_exports__, "HeatMap", function() { return HeatMap_HeatMap; });
-/* concated harmony reexport OverlayGraphic */__webpack_require__.d(__webpack_exports__, "OverlayGraphic", function() { return graphic_Graphic_Graphic; });
-/* concated harmony reexport CloverShape */__webpack_require__.d(__webpack_exports__, "CloverShape", function() { return CloverShape_CloverShape; });
-/* concated harmony reexport HitCloverShape */__webpack_require__.d(__webpack_exports__, "HitCloverShape", function() { return HitCloverShape_HitCloverShape; });
-/* concated harmony reexport GraphicCanvasRenderer */__webpack_require__.d(__webpack_exports__, "GraphicCanvasRenderer", function() { return CanvasRenderer_GraphicCanvasRenderer; });
-/* concated harmony reexport GraphicWebGLRenderer */__webpack_require__.d(__webpack_exports__, "GraphicWebGLRenderer", function() { return WebGLRenderer_GraphicWebGLRenderer; });
-/* concated harmony reexport MapvCanvasLayer */__webpack_require__.d(__webpack_exports__, "MapvCanvasLayer", function() { return MapvCanvasLayer; });
-/* concated harmony reexport MapvLayer */__webpack_require__.d(__webpack_exports__, "MapvLayer", function() { return MapvLayer_MapvLayer; });
-/* concated harmony reexport GeoFeature */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
-/* concated harmony reexport Theme */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
-/* concated harmony reexport ThemeFeature */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
-/* concated harmony reexport pointStyle */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
-/* concated harmony reexport lineStyle */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
-/* concated harmony reexport polygonStyle */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
-/* concated harmony reexport DeafultCanvasStyle */__webpack_require__.d(__webpack_exports__, "DeafultCanvasStyle", function() { return DeafultCanvasStyle; });
-/* concated harmony reexport pointMap */__webpack_require__.d(__webpack_exports__, "pointMap", function() { return pointMap; });
-/* concated harmony reexport lineMap */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
-/* concated harmony reexport polygonMap */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
-/* concated harmony reexport StyleMap */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
-/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
-/* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
-/* concated harmony reexport ChartService */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
-/* concated harmony reexport DataFlowService */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
-/* concated harmony reexport FeatureService */__webpack_require__.d(__webpack_exports__, "FeatureService", function() { return FeatureService_FeatureService; });
-/* concated harmony reexport FieldService */__webpack_require__.d(__webpack_exports__, "FieldService", function() { return FieldService_FieldService; });
-/* concated harmony reexport GridCellInfosService */__webpack_require__.d(__webpack_exports__, "GridCellInfosService", function() { return GridCellInfosService_GridCellInfosService; });
-/* concated harmony reexport LayerInfoService */__webpack_require__.d(__webpack_exports__, "LayerInfoService", function() { return LayerInfoService_LayerInfoService; });
-/* concated harmony reexport MapService */__webpack_require__.d(__webpack_exports__, "MapService", function() { return services_MapService_MapService; });
-/* concated harmony reexport MeasureService */__webpack_require__.d(__webpack_exports__, "MeasureService", function() { return services_MeasureService_MeasureService; });
-/* concated harmony reexport NetworkAnalyst3DService */__webpack_require__.d(__webpack_exports__, "NetworkAnalyst3DService", function() { return NetworkAnalyst3DService_NetworkAnalyst3DService; });
-/* concated harmony reexport NetworkAnalystService */__webpack_require__.d(__webpack_exports__, "NetworkAnalystService", function() { return NetworkAnalystService_NetworkAnalystService; });
-/* concated harmony reexport ProcessingService */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
-/* concated harmony reexport QueryService */__webpack_require__.d(__webpack_exports__, "QueryService", function() { return services_QueryService_QueryService; });
-/* concated harmony reexport ServiceBase */__webpack_require__.d(__webpack_exports__, "ServiceBase", function() { return ServiceBase_ServiceBase; });
-/* concated harmony reexport SpatialAnalystService */__webpack_require__.d(__webpack_exports__, "SpatialAnalystService", function() { return SpatialAnalystService_SpatialAnalystService; });
-/* concated harmony reexport ThemeService */__webpack_require__.d(__webpack_exports__, "ThemeService", function() { return services_ThemeService_ThemeService; });
-/* concated harmony reexport TrafficTransferAnalystService */__webpack_require__.d(__webpack_exports__, "TrafficTransferAnalystService", function() { return TrafficTransferAnalystService_TrafficTransferAnalystService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return DataFormat; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return ServerType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryType", function() { return GeometryType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryOption", function() { return QueryOption; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "JoinType", function() { return JoinType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EngineType", function() { return EngineType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureMode", function() { return MeasureMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SpatialRelationType", function() { return SpatialRelationType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataReturnMode", function() { return DataReturnMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Unit", function() { return Unit; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferRadiusUnit", function() { return BufferRadiusUnit; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SpatialQueryMode", function() { return SpatialQueryMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphTextFormat", function() { return ThemeGraphTextFormat; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphType", function() { return ThemeGraphType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraphAxesTextDisplayMode", function() { return GraphAxesTextDisplayMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraduatedMode", function() { return GraduatedMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RangeMode", function() { return RangeMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeType", function() { return ThemeType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorGradientType", function() { return ColorGradientType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TextAlignment", function() { return TextAlignment; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FillGradientMode", function() { return FillGradientMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SideType", function() { return SideType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AlongLineDirection", function() { return AlongLineDirection; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelBackShape", function() { return LabelBackShape; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelOverLengthMode", function() { return LabelOverLengthMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DirectionType", function() { return DirectionType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayOperationType", function() { return OverlayOperationType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SupplyCenterType", function() { return SupplyCenterType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TurnType", function() { return TurnType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferEndType", function() { return BufferEndType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SmoothMethod", function() { return SmoothMethod; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystMethod", function() { return SurfaceAnalystMethod; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorSpaceType", function() { return ColorSpaceType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartType", function() { return ChartType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EditType", function() { return EditType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferTactic", function() { return TransferTactic; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferPreference", function() { return TransferPreference; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GridType", function() { return GridType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClientType", function() { return ClientType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LayerType", function() { return LayerType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCLayerType", function() { return UGCLayerType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StatisticMode", function() { return StatisticMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PixelFormat", function() { return PixelFormat; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SearchMode", function() { return SearchMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryType", function() { return SummaryType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationAlgorithmType", function() { return InterpolationAlgorithmType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VariogramMode", function() { return VariogramMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Exponent", function() { return Exponent; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClipAnalystMode", function() { return ClipAnalystMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AnalystAreaUnit", function() { return AnalystAreaUnit; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AnalystSizeUnit", function() { return AnalystSizeUnit; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StatisticAnalystMode", function() { return StatisticAnalystMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TopologyValidatorRule", function() { return TopologyValidatorRule; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputType", function() { return OutputType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationQueryBuilderType", function() { return AggregationQueryBuilderType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationType", function() { return AggregationType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeatureMode", function() { return GetFeatureMode; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TimeFlowControl", function() { return TimeFlowControl_TimeFlowControl; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManager", function() { return iManager_IManager; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManagerServiceBase", function() { return iManagerServiceBase_IManagerServiceBase; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManagerCreateNodeParam", function() { return iManagerCreateNodeParam_IManagerCreateNodeParam; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortal", function() { return iPortal_IPortal; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServiceStatus", function() { return ServiceStatus; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataItemType", function() { return DataItemType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataItemOrderBy", function() { return DataItemOrderBy; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FilterField", function() { return FilterField; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineServiceBase", function() { return OnlineServiceBase_OnlineServiceBase; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "KeyServiceParameter", function() { return KeyServiceParameter_KeyServiceParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerInfo", function() { return ServerInfo_ServerInfo; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TokenServiceParameter", function() { return TokenServiceParameter_TokenServiceParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FetchRequest", function() { return FetchRequest; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AreaSolarRadiationParameters", function() { return AreaSolarRadiationParameters_AreaSolarRadiationParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationParameter", function() { return AggregationParameter_AggregationParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggQueryBuilderParameter", function() { return AggQueryBuilderParameter_AggQueryBuilderParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferAnalystParameters", function() { return BufferAnalystParameters_BufferAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferDistance", function() { return BufferDistance_BufferDistance; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferSetting", function() { return BufferSetting_BufferSetting; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BurstPipelineAnalystParameters", function() { return BurstPipelineAnalystParameters_BurstPipelineAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartQueryFilterParameter", function() { return ChartQueryFilterParameter_ChartQueryFilterParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartQueryParameters", function() { return ChartQueryParameters_ChartQueryParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClipParameter", function() { return ClipParameter_ClipParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorDictionary", function() { return ColorDictionary_ColorDictionary; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ComputeWeightMatrixParameters", function() { return ComputeWeightMatrixParameters_ComputeWeightMatrixParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataReturnOption", function() { return DataReturnOption_DataReturnOption; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetBufferAnalystParameters", function() { return DatasetBufferAnalystParameters_DatasetBufferAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetInfo", function() { return DatasetInfo_DatasetInfo; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetOverlayAnalystParameters", function() { return DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetSurfaceAnalystParameters", function() { return DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetThiessenAnalystParameters", function() { return DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasourceConnectionInfo", function() { return DatasourceConnectionInfo_DatasourceConnectionInfo; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DensityKernelAnalystParameters", function() { return DensityKernelAnalystParameters_DensityKernelAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EditFeaturesParameters", function() { return EditFeaturesParameters_EditFeaturesParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalyst3DParameters", function() { return FacilityAnalyst3DParameters_FacilityAnalyst3DParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSinks3DParameters", function() { return FacilityAnalystSinks3DParameters_FacilityAnalystSinks3DParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSources3DParameters", function() { return FacilityAnalystSources3DParameters_FacilityAnalystSources3DParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystStreamParameters", function() { return FacilityAnalystStreamParameters_FacilityAnalystStreamParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTracedown3DParameters", function() { return FacilityAnalystTracedown3DParameters_FacilityAnalystTracedown3DParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTraceup3DParameters", function() { return FacilityAnalystTraceup3DParameters_FacilityAnalystTraceup3DParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystUpstream3DParameters", function() { return FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldParameters", function() { return FieldParameters_FieldParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldStatisticsParameters", function() { return FieldStatisticsParameters_FieldStatisticsParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FilterParameter", function() { return FilterParameter_FilterParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FilterAggParameter", function() { return FilterAggParameter_FilterAggParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindClosestFacilitiesParameters", function() { return FindClosestFacilitiesParameters_FindClosestFacilitiesParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindLocationParameters", function() { return FindLocationParameters_FindLocationParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindMTSPPathsParameters", function() { return FindMTSPPathsParameters_FindMTSPPathsParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindPathParameters", function() { return FindPathParameters_FindPathParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindServiceAreasParameters", function() { return FindServiceAreasParameters_FindServiceAreasParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindTSPPathsParameters", function() { return FindTSPPathsParameters_FindTSPPathsParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GenerateSpatialDataParameters", function() { return GenerateSpatialDataParameters_GenerateSpatialDataParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoBoundingBoxQueryBuilderParameter", function() { return GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoHashGridAggParameter", function() { return GeoHashGridAggParameter_GeoHashGridAggParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryBufferAnalystParameters", function() { return GeometryBufferAnalystParameters_GeometryBufferAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryOverlayAnalystParameters", function() { return GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometrySurfaceAnalystParameters", function() { return GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryThiessenAnalystParameters", function() { return GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoRelationAnalystParameters", function() { return GeoRelationAnalystParameters_GeoRelationAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBoundsParameters", function() { return GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBufferParameters", function() { return GetFeaturesByBufferParameters_GetFeaturesByBufferParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByGeometryParameters", function() { return GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByIDsParameters", function() { return GetFeaturesByIDsParameters_GetFeaturesByIDsParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesBySQLParameters", function() { return GetFeaturesBySQLParameters_GetFeaturesBySQLParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetGridCellInfosParameters", function() { return GetGridCellInfosParameters_GetGridCellInfosParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Grid", function() { return Grid_Grid; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Image", function() { return Image_Image; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationAnalystParameters", function() { return InterpolationAnalystParameters_InterpolationAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationIDWAnalystParameters", function() { return InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationKrigingAnalystParameters", function() { return InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationRBFAnalystParameters", function() { return InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "JoinItem", function() { return JoinItem_JoinItem; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelImageCell", function() { return LabelImageCell_LabelImageCell; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelMatrixCell", function() { return LabelMatrixCell; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelMixedTextStyle", function() { return LabelMixedTextStyle_LabelMixedTextStyle; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelSymbolCell", function() { return LabelSymbolCell_LabelSymbolCell; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelThemeCell", function() { return LabelThemeCell_LabelThemeCell; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LayerStatus", function() { return LayerStatus_LayerStatus; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LinkItem", function() { return LinkItem_LinkItem; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MathExpressionAnalysisParameters", function() { return MathExpressionAnalysisParameters_MathExpressionAnalysisParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureParameters", function() { return MeasureParameters_MeasureParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlapDisplayedOptions", function() { return OverlapDisplayedOptions_OverlapDisplayedOptions; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayAnalystParameters", function() { return OverlayAnalystParameters_OverlayAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PointWithMeasure", function() { return PointWithMeasure_PointWithMeasure; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryByBoundsParameters", function() { return QueryByBoundsParameters_QueryByBoundsParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryByDistanceParameters", function() { return QueryByDistanceParameters_QueryByDistanceParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryByGeometryParameters", function() { return QueryByGeometryParameters_QueryByGeometryParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryBySQLParameters", function() { return QueryBySQLParameters_QueryBySQLParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryParameters", function() { return QueryParameters_QueryParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Route", function() { return Route_Route; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RouteCalculateMeasureParameters", function() { return RouteCalculateMeasureParameters_RouteCalculateMeasureParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RouteLocatorParameters", function() { return RouteLocatorParameters_RouteLocatorParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerColor", function() { return ServerColor; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerFeature", function() { return ServerFeature_ServerFeature; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerGeometry", function() { return ServerGeometry_ServerGeometry; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerStyle", function() { return ServerStyle_ServerStyle; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerTextStyle", function() { return ServerTextStyle_ServerTextStyle; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerTheme", function() { return ServerTheme_ServerTheme; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SetLayerInfoParameters", function() { return SetLayerInfoParameters_SetLayerInfoParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SetLayersInfoParameters", function() { return SetLayersInfoParameters_SetLayersInfoParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SetLayerStatusParameters", function() { return SetLayerStatusParameters_SetLayerStatusParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StopQueryParameters", function() { return StopQueryParameters_StopQueryParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SupplyCenter", function() { return SupplyCenter_SupplyCenter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParameters", function() { return SurfaceAnalystParameters_SurfaceAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParametersSetting", function() { return SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TerrainCurvatureCalculationParameters", function() { return TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CommonTheme", function() { return Theme_Theme; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeDotDensity", function() { return ThemeDotDensity_ThemeDotDensity; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFlow", function() { return ThemeFlow_ThemeFlow; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbol", function() { return ThemeGraduatedSymbol_ThemeGraduatedSymbol; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbolStyle", function() { return ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraph", function() { return ThemeGraph_ThemeGraph; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphAxes", function() { return ThemeGraphAxes_ThemeGraphAxes; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphItem", function() { return ThemeGraphItem_ThemeGraphItem; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphSize", function() { return ThemeGraphSize_ThemeGraphSize; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphText", function() { return ThemeGraphText_ThemeGraphText; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridRange", function() { return ThemeGridRange_ThemeGridRange; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridRangeItem", function() { return ThemeGridRangeItem_ThemeGridRangeItem; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridUnique", function() { return ThemeGridUnique_ThemeGridUnique; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridUniqueItem", function() { return ThemeGridUniqueItem_ThemeGridUniqueItem; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabel", function() { return ThemeLabel_ThemeLabel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelAlongLine", function() { return ThemeLabelAlongLine_ThemeLabelAlongLine; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelBackground", function() { return ThemeLabelBackground_ThemeLabelBackground; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelItem", function() { return ThemeLabelItem_ThemeLabelItem; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelText", function() { return ThemeLabelText_ThemeLabelText; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelUniqueItem", function() { return ThemeLabelUniqueItem_ThemeLabelUniqueItem; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeMemoryData", function() { return ThemeMemoryData; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeOffset", function() { return ThemeOffset_ThemeOffset; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeParameters", function() { return ThemeParameters_ThemeParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeRange", function() { return ThemeRange_ThemeRange; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeRangeItem", function() { return ThemeRangeItem_ThemeRangeItem; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeUnique", function() { return ThemeUnique_ThemeUnique; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeUniqueItem", function() { return ThemeUniqueItem_ThemeUniqueItem; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThiessenAnalystParameters", function() { return ThiessenAnalystParameters_ThiessenAnalystParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferLine", function() { return TransferLine_TransferLine; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferPathParameters", function() { return TransferPathParameters_TransferPathParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferSolutionParameters", function() { return TransferSolutionParameters_TransferSolutionParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransportationAnalystParameter", function() { return TransportationAnalystParameter_TransportationAnalystParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransportationAnalystResultSetting", function() { return TransportationAnalystResultSetting_TransportationAnalystResultSetting; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCLayer", function() { return UGCLayer_UGCLayer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCMapLayer", function() { return UGCMapLayer_UGCMapLayer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCSubLayer", function() { return UGCSubLayer_UGCSubLayer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UpdateEdgeWeightParameters", function() { return UpdateEdgeWeightParameters_UpdateEdgeWeightParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UpdateTurnNodeWeightParameters", function() { return UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Vector", function() { return iServer_Vector_Vector; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorClipJobsParameter", function() { return VectorClipJobsParameter_VectorClipJobsParameter; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileTypes", function() { return FileTypes; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileConfig", function() { return FileConfig; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileModel", function() { return FileModel_FileModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MessageBox", function() { return MessageBox; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CommonContainer", function() { return CommonContainer_CommonContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DropDownBox", function() { return DropDownBox_DropDownBox; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Select", function() { return Select_Select; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AttributesPopContainer", function() { return AttributesPopContainer_AttributesPopContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PopContainer", function() { return PopContainer_PopContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IndexTabsPageContainer", function() { return IndexTabsPageContainer_IndexTabsPageContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CityTabsPage", function() { return CityTabsPage_CityTabsPage; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NavTabsPage", function() { return NavTabsPage_NavTabsPage; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PaginationContainer", function() { return PaginationContainer_PaginationContainer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "widgetsUtil", function() { return widgetsUtil; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChangeTileVersion", function() { return ChangeTileVersion_ChangeTileVersion; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo_Logo; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StyleUtils", function() { return StyleUtils_StyleUtils; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Util", function() { return core_Util_Util; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapExtend", function() { return MapExtend; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BaiduMap", function() { return BaiduMap_BaiduMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ImageSuperMapRest", function() { return ImageSuperMapRest_ImageSuperMapRest; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMapCloud", function() { return SuperMapCloud_SuperMapCloud; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Tianditu", function() { return Tianditu_Tianditu; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TileSuperMapRest", function() { return TileSuperMapRest_TileSuperMapRest; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "WebMap", function() { return WebMap_WebMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlow", function() { return DataFlow_DataFlow; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Graph", function() { return overlay_Graph_Graph; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Graphic", function() { return Graphic_Graphic; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Label", function() { return overlay_Label_Label; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Mapv", function() { return Mapv_Mapv; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Range", function() { return Range_Range; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RankSymbol", function() { return overlay_RankSymbol_RankSymbol; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Turf", function() { return Turf_Turf; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Unique", function() { return Unique_Unique; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileSuperMapRest", function() { return VectorTileSuperMapRest_VectorTileSuperMapRest; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "HeatMap", function() { return HeatMap_HeatMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayGraphic", function() { return graphic_Graphic_Graphic; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CloverShape", function() { return CloverShape_CloverShape; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "HitCloverShape", function() { return HitCloverShape_HitCloverShape; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraphicCanvasRenderer", function() { return CanvasRenderer_GraphicCanvasRenderer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraphicWebGLRenderer", function() { return WebGLRenderer_GraphicWebGLRenderer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapvCanvasLayer", function() { return MapvCanvasLayer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapvLayer", function() { return MapvLayer_MapvLayer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DeafultCanvasStyle", function() { return DeafultCanvasStyle; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "pointMap", function() { return pointMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FeatureService", function() { return FeatureService_FeatureService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldService", function() { return FieldService_FieldService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GridCellInfosService", function() { return GridCellInfosService_GridCellInfosService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LayerInfoService", function() { return LayerInfoService_LayerInfoService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapService", function() { return services_MapService_MapService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureService", function() { return services_MeasureService_MeasureService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NetworkAnalyst3DService", function() { return NetworkAnalyst3DService_NetworkAnalyst3DService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NetworkAnalystService", function() { return NetworkAnalystService_NetworkAnalystService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryService", function() { return services_QueryService_QueryService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServiceBase", function() { return ServiceBase_ServiceBase; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SpatialAnalystService", function() { return SpatialAnalystService_SpatialAnalystService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeService", function() { return services_ThemeService_ThemeService; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TrafficTransferAnalystService", function() { return TrafficTransferAnalystService_TrafficTransferAnalystService; });
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -79784,14 +78972,920 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 
 
 /***/ }),
-/* 16 */
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
+/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _webmap_font_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
+/* harmony import */ var _webmap_font_iconfont_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_webmap_font_iconfont_css__WEBPACK_IMPORTED_MODULE_1__);
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+(function(self) {
+  'use strict';
+
+  // if __disableNativeFetch is set to true, the it will always polyfill fetch
+  // with Ajax.
+  if (!self.__disableNativeFetch && self.fetch) {
+    return
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name)
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name')
+    }
+    return name.toLowerCase()
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value)
+    }
+    return value
+  }
+
+  function Headers(headers) {
+    this.map = {}
+
+    if (headers instanceof Headers) {
+      headers.forEach(function(value, name) {
+        this.append(name, value)
+      }, this)
+
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function(name) {
+        this.append(name, headers[name])
+      }, this)
+    }
+  }
+
+  Headers.prototype.append = function(name, value) {
+    name = normalizeName(name)
+    value = normalizeValue(value)
+    var list = this.map[name]
+    if (!list) {
+      list = []
+      this.map[name] = list
+    }
+    list.push(value)
+  }
+
+  Headers.prototype['delete'] = function(name) {
+    delete this.map[normalizeName(name)]
+  }
+
+  Headers.prototype.get = function(name) {
+    var values = this.map[normalizeName(name)]
+    return values ? values[0] : null
+  }
+
+  Headers.prototype.getAll = function(name) {
+    return this.map[normalizeName(name)] || []
+  }
+
+  Headers.prototype.has = function(name) {
+    return this.map.hasOwnProperty(normalizeName(name))
+  }
+
+  Headers.prototype.set = function(name, value) {
+    this.map[normalizeName(name)] = [normalizeValue(value)]
+  }
+
+  Headers.prototype.forEach = function(callback, thisArg) {
+    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+      this.map[name].forEach(function(value) {
+        callback.call(thisArg, value, name, this)
+      }, this)
+    }, this)
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'))
+    }
+    body.bodyUsed = true
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function(resolve, reject) {
+      reader.onload = function() {
+        resolve(reader.result)
+      }
+      reader.onerror = function() {
+        reject(reader.error)
+      }
+    })
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader()
+    reader.readAsArrayBuffer(blob)
+    return fileReaderReady(reader)
+  }
+
+  function readBlobAsText(blob, options) {
+    var reader = new FileReader()
+    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
+    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
+    var _charset = blob.type.match(regex) || contentType.match(regex)
+    var args = [blob]
+
+    if(_charset) {
+      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
+    }
+
+    reader.readAsText.apply(reader, args)
+    return fileReaderReady(reader)
+  }
+
+  var support = {
+    blob: 'FileReader' in self && 'Blob' in self && (function() {
+      try {
+        new Blob();
+        return true
+      } catch(e) {
+        return false
+      }
+    })(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  function Body() {
+    this.bodyUsed = false
+
+
+    this._initBody = function(body, options) {
+      this._bodyInit = body
+      if (typeof body === 'string') {
+        this._bodyText = body
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body
+        this._options = options
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body
+      } else if (!body) {
+        this._bodyText = ''
+      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+        // Only support ArrayBuffers for POST method.
+        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else {
+        throw new Error('unsupported BodyInit type')
+      }
+    }
+
+    if (support.blob) {
+      this.blob = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob')
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]))
+        }
+      }
+
+      this.arrayBuffer = function() {
+        return this.blob().then(readBlobAsArrayBuffer)
+      }
+
+      this.text = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return readBlobAsText(this._bodyBlob, this._options)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as text')
+        } else {
+          return Promise.resolve(this._bodyText)
+        }
+      }
+    } else {
+      this.text = function() {
+        var rejected = consumed(this)
+        return rejected ? rejected : Promise.resolve(this._bodyText)
+      }
+    }
+
+    if (support.formData) {
+      this.formData = function() {
+        return this.text().then(decode)
+      }
+    }
+
+    this.json = function() {
+      return this.text().then(JSON.parse)
+    }
+
+    return this
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase()
+    return (methods.indexOf(upcased) > -1) ? upcased : method
+  }
+
+  function Request(input, options) {
+    options = options || {}
+    var body = options.body
+    if (Request.prototype.isPrototypeOf(input)) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read')
+      }
+      this.url = input.url
+      this.credentials = input.credentials
+      if (!options.headers) {
+        this.headers = new Headers(input.headers)
+      }
+      this.method = input.method
+      this.mode = input.mode
+      if (!body) {
+        body = input._bodyInit
+        input.bodyUsed = true
+      }
+    } else {
+      this.url = input
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit'
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers)
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET')
+    this.mode = options.mode || this.mode || null
+    this.referrer = null
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests')
+    }
+    this._initBody(body, options)
+  }
+
+  Request.prototype.clone = function() {
+    return new Request(this)
+  }
+
+  function decode(body) {
+    var form = new FormData()
+    body.trim().split('&').forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+    return form
+  }
+
+  function headers(xhr) {
+    var head = new Headers()
+    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
+    pairs.forEach(function(header) {
+      var split = header.trim().split(':')
+      var key = split.shift().trim()
+      var value = split.join(':').trim()
+      head.append(key, value)
+    })
+    return head
+  }
+
+  Body.call(Request.prototype)
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {}
+    }
+
+    this._initBody(bodyInit, options)
+    this.type = 'default'
+    this.status = options.status
+    this.ok = this.status >= 200 && this.status < 300
+    this.statusText = options.statusText
+    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+    this.url = options.url || ''
+  }
+
+  Body.call(Response.prototype)
+
+  Response.prototype.clone = function() {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    })
+  }
+
+  Response.error = function() {
+    var response = new Response(null, {status: 0, statusText: ''})
+    response.type = 'error'
+    return response
+  }
+
+  var redirectStatuses = [301, 302, 303, 307, 308]
+
+  Response.redirect = function(url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code')
+    }
+
+    return new Response(null, {status: status, headers: {location: url}})
+  }
+
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
+
+  self.fetch = function(input, init) {
+    return new Promise(function(resolve, reject) {
+      var request
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input
+      } else {
+        request = new Request(input, init)
+      }
+
+      var xhr = new XMLHttpRequest()
+
+      function responseURL() {
+        if ('responseURL' in xhr) {
+          return xhr.responseURL
+        }
+
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
+        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+          return xhr.getResponseHeader('X-Request-URL')
+        }
+
+        return;
+      }
+
+      var __onLoadHandled = false;
+
+      function onload() {
+        if (xhr.readyState !== 4) {
+          return
+        }
+        var status = (xhr.status === 1223) ? 204 : xhr.status
+        if (status < 100 || status > 599) {
+          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+          reject(new TypeError('Network request failed'))
+          return
+        }
+        var options = {
+          status: status,
+          statusText: xhr.statusText,
+          headers: headers(xhr),
+          url: responseURL()
+        }
+        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        resolve(new Response(body, options))
+      }
+      xhr.onreadystatechange = onload;
+      xhr.onload = onload;
+      xhr.onerror = function() {
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.open(request.method, request.url, true)
+
+      // `withCredentials` should be setted after calling `.open` in IE10
+      // http://stackoverflow.com/a/19667959/1219343
+      try {
+        if (request.credentials === 'include') {
+          if ('withCredentials' in xhr) {
+            xhr.withCredentials = true;
+          } else {
+            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
+          }
+        }
+      } catch (e) {
+        console && console.warn && console.warn('set withCredentials error:' + e);
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob'
+      }
+
+      request.headers.forEach(function(value, name) {
+        xhr.setRequestHeader(name, value)
+      })
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+    })
+  }
+  self.fetch.polyfill = true
+
+  // Support CommonJS
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = self.fetch;
+  }
+})(typeof self !== 'undefined' ? self : this);
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
+
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(12)))
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(13);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(9);
+module.exports = __webpack_require__(10);
+
+
+/***/ }),
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 17 */,
-/* 18 */
+/* 21 */,
+/* 22 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

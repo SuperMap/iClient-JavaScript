@@ -27,8 +27,9 @@ const transformTools = new ol.format.GeoJSON();
  * @category  iPortal/Online
  * @classdesc 对接 iPortal/Online 地图类。
  * @param {number} id - 地图的id
- * @param {object} options - 参数。
- * @param {string} [options.server] - 地图的地址。
+ * @param {Object} options - 参数。
+ * @param {string} [options.map='map'] - 地图容器id。
+ * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址。
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
  * @param {function} [options.errorCallback] - 加载地图失败。
  * @param {string} [options.credentialKey] - 凭证密钥。
@@ -41,12 +42,13 @@ export class WebMap extends ol.Observable {
     constructor(id, options) {
         super();
         this.mapId = id;
-        if(options) {
+        if (options) {
             this.mapUrl = options.server || 'http://www.supermapol.com';
             this.successCallback = options.successCallback;
             this.errorCallback = options.errorCallback;
             this.credentialKey = options.credentialKey;
             this.credentialValue = options.credentialValue;
+            this.target = options.target || "map";
         }
         this.createMap(options.mapSetting);
         this.createWebmap();
@@ -59,14 +61,14 @@ export class WebMap extends ol.Observable {
      */
     createMap(mapSetting) {
         let overlays, controls;
-        if(mapSetting) {
+        if (mapSetting) {
             overlays = mapSetting.overlays;
             controls = mapSetting.controls;
         }
         this.map = new ol.Map({
             overlays: overlays,
             controls: controls,
-            target: 'map'
+            target: this.target
         });
         mapSetting && this.registerMapEvent({
             mapClickCallback: mapSetting.mapClickCallback
@@ -108,12 +110,15 @@ export class WebMap extends ol.Observable {
      * @param {string} url - 请求地图的url
      */
     getMapInfo(url) {
-        let that = this, mapUrl = url;
-        if(url.indexOf('.json') === -1) {
+        let that = this,
+            mapUrl = url;
+        if (url.indexOf('.json') === -1) {
             //传递过来的url,没有包括.json,在这里加上。
             mapUrl = `${url}.json`
         }
-        FetchRequest.get(mapUrl, null, {withCredentials: true}).then(function (response) {
+        FetchRequest.get(mapUrl, null, {
+            withCredentials: true
+        }).then(function (response) {
             return response.json();
         }).then(function (mapInfo) {
             that.baseProjection = mapInfo.projection; //epsgCode是之前的数据格式 todo
@@ -122,7 +127,7 @@ export class WebMap extends ol.Observable {
                 description: mapInfo.description
             }; //存储地图的名称以及描述等信息，返回给用户
             that.addBaseMap(mapInfo);
-            if(!mapInfo.layers || mapInfo.layers.length === 0) {
+            if (!mapInfo.layers || mapInfo.layers.length === 0) {
                 that.sendMapToUser(0, 0);
             } else {
                 that.addLayers(mapInfo);
@@ -141,7 +146,7 @@ export class WebMap extends ol.Observable {
         this.createView(mapInfo);
         let layer = this.createBaseLayer(mapInfo);
         this.map.addLayer(layer);
-        if(mapInfo.baseLayer && mapInfo.baseLayer.lableLayerVisible) {
+        if (mapInfo.baseLayer && mapInfo.baseLayer.lableLayerVisible) {
             let layerInfo = mapInfo.baseLayer;
             //存在天地图路网
             let labelLayer = new ol.layer.Tile({
@@ -164,11 +169,16 @@ export class WebMap extends ol.Observable {
             extent = options.extent,
             projection = this.baseProjection;
         let center = [];
-        for(let key in oldcenter) {
+        for (let key in oldcenter) {
             center.push(oldcenter[key]);
         }
         extent = [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y];
-        this.map.setView(new ol.View({ zoom, center, projection, extent }));
+        this.map.setView(new ol.View({
+            zoom,
+            center,
+            projection,
+            extent
+        }));
     }
     /**
      * @private
@@ -176,41 +186,42 @@ export class WebMap extends ol.Observable {
      * @description 创建底图
      * @param {object} mapInfo - 关于地图的信息
      */
-    createBaseLayer(mapInfo){
+    createBaseLayer(mapInfo) {
         let source, layerInfo = mapInfo.baseLayer || mapInfo;
         let layerType = layerInfo.layerType; //底图和rest地图兼容
-        if(layerType.indexOf('TIANDITU_VEC') > -1 || layerType.indexOf('TIANDITU_IMG') > -1
-            || layerType.indexOf('TIANDITU_TER') > -1) {
-            layerType = layerType.substr(0,12);
+        if (layerType.indexOf('TIANDITU_VEC') > -1 || layerType.indexOf('TIANDITU_IMG') > -1 ||
+            layerType.indexOf('TIANDITU_TER') > -1) {
+            layerType = layerType.substr(0, 12);
         }
         let mapUrls = {
-            CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
-            CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
-            OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
-            GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
-            JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
-            JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
-            JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
-            JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
-        }, url;
-        switch(layerType){
+                CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
+                CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
+                OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
+                GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
+                JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
+                JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+                JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+                JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
+            },
+            url;
+        switch (layerType) {
             case "TIANDITU_VEC":
             case "TIANDITU_IMG":
             case "TIANDITU_TER":
-                source=this.createTiandituSource(layerInfo, layerType, mapInfo.projection);
+                source = this.createTiandituSource(layerInfo, layerType, mapInfo.projection);
                 break;
             case "BAIDU":
-                source=this.createBaiduSource();
+                source = this.createBaiduSource();
                 break;
-            /*case 'BING':
-                source = this.createBingSource(layerInfo, mapInfo.projection);
-                break;*/
+                /*case 'BING':
+                    source = this.createBingSource(layerInfo, mapInfo.projection);
+                    break;*/
             case "WMS":
-                source=this.createWMSSource(layerInfo);
+                source = this.createWMSSource(layerInfo);
                 break;
             case "WMTS":
-                source= this.createWMTSSource(layerInfo);
+                source = this.createWMTSSource(layerInfo);
                 break;
             case 'TILE':
             case 'SUPERMAP_REST':
@@ -236,8 +247,10 @@ export class WebMap extends ol.Observable {
             zIndex: layerInfo.zIndex || 0,
             visible: layerInfo.visible
         });
-        if(layerInfo.name) {
-            layer.setProperties({name: layerInfo.name});
+        if (layerInfo.name) {
+            layer.setProperties({
+                name: layerInfo.name
+            });
         }
         return layer;
     }
@@ -266,7 +279,9 @@ export class WebMap extends ol.Observable {
             url: layerInfo.url,
             wrapX: false,
             serverType: serverType,
-            prjCoordSys: { epsgCode: projection.split(':')[1] },
+            prjCoordSys: {
+                epsgCode: projection.split(':')[1]
+            },
             tileProxy: this.tileProxy
         });
         SecurityManager[`register${keyfix}`](layerInfo.url);
@@ -301,34 +316,34 @@ export class WebMap extends ol.Observable {
     createBaiduSource() {
         return new ol.source.BaiduMap()
     }
-/*
-    /!**
-     * 创建bing地图的source
-     * @param layerInfo
-     * @param projection
-     * @returns {ol.source.XYZ}
-     *!/
-    createBingSource(layerInfo, projection) {
-        // todo 后台没有bing地图
-        let url = 'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
-        return new ol.source.XYZ({
-            wrapX: false,
-            projection: projection,
-            tileUrlFunction: function (coordinates) {
-                let /!*quadDigits = '', *!/[z, x, y] = [...coordinates];
-                y = y > 0 ? y - 1 : -y - 1;
-                let index = '';
-                for (let i = z; i > 0; i--) {
-                    let b = 0;
-                    let mask = 1 << (i - 1);
-                    if ((x & mask) !== 0) b++;
-                    if ((y & mask) !== 0) b += 2;
-                    index += b.toString()
+    /*
+        /!**
+         * 创建bing地图的source
+         * @param layerInfo
+         * @param projection
+         * @returns {ol.source.XYZ}
+         *!/
+        createBingSource(layerInfo, projection) {
+            // todo 后台没有bing地图
+            let url = 'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
+            return new ol.source.XYZ({
+                wrapX: false,
+                projection: projection,
+                tileUrlFunction: function (coordinates) {
+                    let /!*quadDigits = '', *!/[z, x, y] = [...coordinates];
+                    y = y > 0 ? y - 1 : -y - 1;
+                    let index = '';
+                    for (let i = z; i > 0; i--) {
+                        let b = 0;
+                        let mask = 1 << (i - 1);
+                        if ((x & mask) !== 0) b++;
+                        if ((y & mask) !== 0) b += 2;
+                        index += b.toString()
+                    }
+                    return url.replace('{quadKey}', index);
                 }
-                return url.replace('{quadKey}', index);
-            }
-        })
-    }*/
+            })
+        }*/
 
     /**
      * @private
@@ -381,7 +396,7 @@ export class WebMap extends ol.Observable {
         let url = layerInfo.url;
         let options = {
             withCredentials: false,
-            withoutFormatSuffix:true
+            withoutFormatSuffix: true
         };
         FetchRequest.get(url, null, options).then(function (response) {
             return response.text();
@@ -391,11 +406,13 @@ export class WebMap extends ol.Observable {
             if (that.isValidResponse(capabilities)) {
                 let content = capabilities.Contents,
                     tileMatrixSet = content.TileMatrixSet,
-                    layers = content.Layer, layer, relSet = [], idx;
+                    layers = content.Layer,
+                    layer, relSet = [],
+                    idx;
 
-                for(let n=0; n<layers.length; n++) {
-                    if(layers[n].Title === layerInfo.name) {
-                        idx= n;
+                for (let n = 0; n < layers.length; n++) {
+                    if (layers[n].Title === layerInfo.name) {
+                        idx = n;
                         layer = layers[idx];
                         var layerBounds = layer.WGS84BoundingBox;
                         // tileMatrixSetLink = layer.TileMatrixSetLink;
@@ -403,8 +420,8 @@ export class WebMap extends ol.Observable {
                     }
                 }
                 let scales = [];
-                for(let i=0; i<tileMatrixSet.length; i++) {
-                    if(tileMatrixSet[i].Identifier === layerInfo.tileMatrixSet) {
+                for (let i = 0; i < tileMatrixSet.length; i++) {
+                    if (tileMatrixSet[i].Identifier === layerInfo.tileMatrixSet) {
                         for (let h = 0; h < tileMatrixSet[i].TileMatrix.length; h++) {
                             scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator)
                         }
@@ -492,9 +509,10 @@ export class WebMap extends ol.Observable {
         unit = (unit && unit.toLowerCase()) || 'degrees';
         dpi = dpi > 0 ? dpi : 96;
         datumAxis = datumAxis || 6378137;
-        let res = [], matrixIds = [];
+        let res = [],
+            matrixIds = [];
         //这他妈的api不给identifier 我自己给个默认的
-        if(Util.isArray(scales)) {
+        if (Util.isArray(scales)) {
             scales && scales.forEach(function (scale, idx) {
                 matrixIds.push(idx);
                 res.push(this.getResolutionFromScale(scale, dpi, unit, datumAxis));
@@ -506,9 +524,12 @@ export class WebMap extends ol.Observable {
                 res.push(this.getResolutionFromScale(tileMatrix['ScaleDenominator'], dpi, unit, datumAxis));
             }, this);
         }
-        return { res: res, matrixIds: matrixIds };
+        return {
+            res: res,
+            matrixIds: matrixIds
+        };
     }
-    
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getResolutionFromScale
@@ -541,7 +562,8 @@ export class WebMap extends ol.Observable {
      * @returns {boolean}
      */
     isValidResponse(response) {
-        let responseEnum = ['Contents', 'OperationsMetadata'], valid = true;
+        let responseEnum = ['Contents', 'OperationsMetadata'],
+            valid = true;
         if (responseEnum) {
             for (let i = 0; i < responseEnum.length; i++) {
                 if (!response[responseEnum[i]] || response.error) {
@@ -560,20 +582,25 @@ export class WebMap extends ol.Observable {
      * @param {object} mapInfo - 地图信息
      */
     addLayers(mapInfo) {
-        let layers = mapInfo.layers, that = this;
-        let features = [], layerAdded = 0, len = layers.length;
-        if(len > 0) {
+        let layers = mapInfo.layers,
+            that = this;
+        let features = [],
+            layerAdded = 0,
+            len = layers.length;
+        if (len > 0) {
             //存储地图上所有的图层对象
             this.layers = layers;
             layers.forEach(function (layer) {
-                if((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER") {
+                if ((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER") {
                     //数据存储到iportal上了
                     let serverId = layer.dataSource ? layer.dataSource.serverId : layer.serverId;
                     let url = `${Util.getRootUrl(that.mapUrl)}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
-                    FetchRequest.get(url, null, {withCredentials: true}).then(function (response) {
+                    FetchRequest.get(url, null, {
+                        withCredentials: true
+                    }).then(function (response) {
                         return response.json()
                     }).then(function (data) {
-                        if(data && data.type) {
+                        if (data && data.type) {
                             if (data.type === "JSON" || data.type === "GEOJSON") {
                                 data.content = JSON.parse(data.content);
                                 features = that.geojsonToFeature(data.content, layer);
@@ -589,9 +616,9 @@ export class WebMap extends ol.Observable {
                         that.sendMapToUser(layerAdded, len);
                         that.errorCallback && that.errorCallback(error, 'getLayerFaild');
                     })
-                } else if(layer.layerType === 'SUPERMAP_REST' || layer.layerType === "TILE" ||
+                } else if (layer.layerType === 'SUPERMAP_REST' || layer.layerType === "TILE" ||
                     layer.layerType === "WMS" || layer.layerType === "WMTS") {
-                    if(layer.layerType === "WMTS") {
+                    if (layer.layerType === "WMTS") {
                         that.getWmtsInfo(layer, function (layerInfo) {
                             that.map.addLayer(that.createBaseLayer(layerInfo));
                         })
@@ -600,12 +627,14 @@ export class WebMap extends ol.Observable {
                     }
                     layerAdded++;
                     that.sendMapToUser(layerAdded, len);
-                } else if(layer.dataSource && layer.dataSource.type === "REST_DATA") {
+                } else if (layer.dataSource && layer.dataSource.type === "REST_DATA") {
                     let dataSource = layer.dataSource;
                     //从restData获取数据
-                    Util.getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function(result) {
+                    Util.getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function (result) {
                         features = that.parseGeoJsonData2Feature({
-                            allDatas: { features: result.result.features.features },
+                            allDatas: {
+                                features: result.result.features.features
+                            },
                             fileCode: layer.projection,
                             featureProjection: that.baseProjection
                         });
@@ -617,12 +646,12 @@ export class WebMap extends ol.Observable {
                         that.addLayer(layer, features);
                         layerAdded++;
                         that.sendMapToUser(layerAdded, len);
-                    }, function(err) {
+                    }, function (err) {
                         layerAdded++;
                         that.sendMapToUser(layerAdded, len);
                         that.errorCallback && that.errorCallback(err, 'getFeatureFaild')
                     });
-                } else if(layer.dataSource.type === "REST_MAP" && layer.dataSource.url) {
+                } else if (layer.dataSource.type === "REST_MAP" && layer.dataSource.url) {
                     Util.queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, 'smid=1', null, null, function (result) {
                         var recordsets = result && result.result.recordsets;
                         var recordset = recordsets && recordsets[0];
@@ -648,24 +677,26 @@ export class WebMap extends ol.Observable {
             }, this);
         }
     }
-    
+
     getFeatures(fields, layerInfo, resolve, reject) {
         var that = this;
         var source = layerInfo.dataSource;
         //示例数据
         //let that = openApp;
         var fileCode = layerInfo.projection;
-        Util.queryFeatureBySQL(source.url, source.layerName, null, fields, null, function(result) {
+        Util.queryFeatureBySQL(source.url, source.layerName, null, fields, null, function (result) {
             var recordsets = result.result.recordsets[0];
             var features = recordsets.features.features;
 
             var featuresObj = that.parseGeoJsonData2Feature({
-                allDatas: { features },
+                allDatas: {
+                    features
+                },
                 fileCode: fileCode,
                 featureProjection: that.baseProjection
             }, 'JSON');
             resolve(featuresObj);
-        }, function(err) {
+        }, function (err) {
             reject(err);
         });
     }
@@ -678,7 +709,7 @@ export class WebMap extends ol.Observable {
      * @param {number} layersLen - 叠加图层总数
      */
     sendMapToUser(count, layersLen) {
-        if(count === layersLen) {
+        if (count === layersLen) {
             this.successCallback(this.map, this.mapParams, this.layers);
         }
     }
@@ -720,7 +751,10 @@ export class WebMap extends ol.Observable {
                 for (let j = 0, leng = rowDatas.length; j < leng; j++) {
                     attributes[colTitles[j]] = rowDatas[j];
                 }
-                let feature = new ol.Feature({ geometry: olGeom, Properties: attributes });
+                let feature = new ol.Feature({
+                    geometry: olGeom,
+                    Properties: attributes
+                });
                 feature.attributes = attributes;
                 features.push(feature);
             }
@@ -768,7 +802,11 @@ export class WebMap extends ol.Observable {
             }
             let properties;
             if (isMarker) {
-                properties = Object.assign({}, { featureInfo: featureInfo }, { useStyle: useStyle });
+                properties = Object.assign({}, {
+                    featureInfo: featureInfo
+                }, {
+                    useStyle: useStyle
+                });
                 //feature上添加图层的id，为了对应图层
                 feature.layerId = layerInfo.timeId;
                 //删除不需要的属性，因为这两个属性存储在properties上
@@ -796,7 +834,11 @@ export class WebMap extends ol.Observable {
                 style.src = style.externalGraphic;
 
                 useStyle = style;
-                properties = Object.assign({}, { featureInfo: featureInfo }, { useStyle: useStyle });
+                properties = Object.assign({}, {
+                    featureInfo: featureInfo
+                }, {
+                    useStyle: useStyle
+                });
                 delete attr._smiportal_description;
                 delete attr._smiportal_imgLinkUrl;
                 delete attr._smiportal_title;
@@ -833,7 +875,9 @@ export class WebMap extends ol.Observable {
                 allFeatures[i].properties.lat = coordinate[1];
             }
             feature.attributes = allFeatures[i].properties || {};
-            feature.setProperties({ Properties: feature.attributes });
+            feature.setProperties({
+                Properties: feature.attributes
+            });
             features.push(feature);
         }
         return features;
@@ -848,38 +892,40 @@ export class WebMap extends ol.Observable {
      */
     addLayer(layerInfo, features) {
         let layer, allFeatures;
-        if(layerInfo.style && layerInfo.filterCondition) {
-            if(layerInfo.layerType === "RANGE") {
+        if (layerInfo.style && layerInfo.filterCondition) {
+            if (layerInfo.layerType === "RANGE") {
                 allFeatures = features;
             }
             //将feature根据过滤条件进行过滤, 分段专题图因为要计算styleGroup所以暂时不过滤
             features = this.getFiterFeatures(layerInfo.filterCondition, features);
         }
-        if(layerInfo.layerType === "VECTOR") {
+        if (layerInfo.layerType === "VECTOR") {
             if (layerInfo.featureType === "POINT") {
-                if(layerInfo.style.type === 'SYMBOL_POINT') {
+                if (layerInfo.style.type === 'SYMBOL_POINT') {
                     layer = this.createSymbolLayer(layerInfo, features);
-                } else{
+                } else {
                     layer = this.createGraphicLayer(layerInfo, features);
                 }
             } else {
                 //线和面
                 layer = this.createVectorLayer(layerInfo, features)
             }
-        } else if(layerInfo.layerType === "UNIQUE") {
+        } else if (layerInfo.layerType === "UNIQUE") {
             layer = this.createUniqueLayer(layerInfo, features);
-        } else if(layerInfo.layerType === "RANGE") {
+        } else if (layerInfo.layerType === "RANGE") {
             layer = this.createRangeLayer(layerInfo, features, allFeatures);
-        } else if(layerInfo.layerType === "HEAT") {
+        } else if (layerInfo.layerType === "HEAT") {
             layer = this.createHeatLayer(layerInfo, features);
-        } else if(layerInfo.layerType === "MARKER"){
+        } else if (layerInfo.layerType === "MARKER") {
             layer = this.createMarkerLayer(layerInfo, features)
         }
-        if(layer && layerInfo.name) {
-            layer.setProperties({name: layerInfo.name});
+        if (layer && layerInfo.name) {
+            layer.setProperties({
+                name: layerInfo.name
+            });
         }
         layer && this.map.addLayer(layer);
-        if(layerInfo.labelStyle && layerInfo.labelStyle.labelField) {
+        if (layerInfo.labelStyle && layerInfo.labelStyle.labelField) {
             //存在标签专题图
             this.addLabelLayer(layerInfo, features);
         }
@@ -901,7 +947,9 @@ export class WebMap extends ol.Observable {
             let feature = allFeatures[i];
             let filterResult = false;
             try {
-                filterResult = jsonsql.query(sql, { attributes: feature.attributes });
+                filterResult = jsonsql.query(sql, {
+                    attributes: feature.attributes
+                });
             } catch (err) {
                 //必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
                 return false;
@@ -941,10 +989,12 @@ export class WebMap extends ol.Observable {
             render: 'canvas',
             map: this.map,
             isHighLight: false,
-            onClick: function(){}
+            onClick: function () {}
         });
         source.refresh();
-        return new ol.layer.Image({source: source});
+        return new ol.layer.Image({
+            source: source
+        });
     }
 
     /**
@@ -957,33 +1007,33 @@ export class WebMap extends ol.Observable {
      */
     getGraphicsFromFeatures(features, style) {
         let olStyle, shape;
-        if(style.type === "IMAGE_POINT") {
+        if (style.type === "IMAGE_POINT") {
             //image-point
             let imageInfo = style.imageInfo;
             let imgDom = imageInfo.img;
-            if(!imgDom || !imgDom.src) {
+            if (!imgDom || !imgDom.src) {
                 imgDom = new Image();
                 //要组装成完整的url
                 imgDom.src = Util.getRootUrl(this.mapUrl) + imageInfo.url;
             }
             shape = new ol.style.Icon({
-                img:  imgDom,
-                scale: 2*style.radius/imageInfo.size.w,
+                img: imgDom,
+                scale: 2 * style.radius / imageInfo.size.w,
                 imgSize: [imageInfo.size.w, imageInfo.size.h],
-                anchor : [0.5, 0.5]
+                anchor: [0.5, 0.5]
             });
-        } else if(style.type === "SVG_POINT") {
-            if(!this.svgDiv) {
+        } else if (style.type === "SVG_POINT") {
+            if (!this.svgDiv) {
                 this.svgDiv = document.createElement('div');
                 document.body.appendChild(this.svgDiv);
             }
             let that = this;
             StyleUtils.getCanvasFromSVG(style.url, this.svgDiv, function (canvas) {
                 shape = new ol.style.Icon({
-                    img:  that.setColorToCanvas(canvas,style),
-                    scale: style.radius/canvas.width,
+                    img: that.setColorToCanvas(canvas, style),
+                    scale: style.radius / canvas.width,
                     imgSize: [canvas.width, canvas.height],
-                    anchor : [0.5, 0.5],
+                    anchor: [0.5, 0.5],
                     opacity: style.fillOpacity
                 });
             });
@@ -994,7 +1044,7 @@ export class WebMap extends ol.Observable {
         }
         let graphics = [];
         //构建graphic
-        for(let i in features){
+        for (let i in features) {
             let graphic = new ol.Graphic(features[i].getGeometry(), features[i].attributes);
             graphic.setStyle(shape);
             graphics.push(graphic);
@@ -1010,7 +1060,7 @@ export class WebMap extends ol.Observable {
      * @param {object} parameters - 样式参数
      * @return {object}
      */
-    setColorToCanvas(canvas,parameters) {
+    setColorToCanvas(canvas, parameters) {
         let context = canvas.getContext('2d');
         let fillColor = StyleUtils.hexToRgb(parameters.fillColor);
         fillColor && fillColor.push(parameters.fillOpacity);
@@ -1049,9 +1099,9 @@ export class WebMap extends ol.Observable {
      * @param {object} parameters - 样式参数
      * @returns {ol.style.Style}
      */
-    getSymbolStyle(parameters){
+    getSymbolStyle(parameters) {
         let text = '';
-        if(parameters.unicode){
+        if (parameters.unicode) {
             //todo 为什么要判断，难道还有其他的图层会进来
             text = String.fromCharCode(parseInt(parameters.unicode.replace(/^&#x/, ''), 16));
         }
@@ -1067,8 +1117,12 @@ export class WebMap extends ol.Observable {
                 font: parameters.fontSize + " " + "supermapol-icons",
                 placement: 'point',
                 textAlign: 'center',
-                fill: new ol.style.Fill({ color: fillColor}),
-                backgroundFill: new ol.style.Fill({ color: [0, 0, 0, 0]}),
+                fill: new ol.style.Fill({
+                    color: fillColor
+                }),
+                backgroundFill: new ol.style.Fill({
+                    color: [0, 0, 0, 0]
+                }),
                 stroke: new ol.style.Stroke({
                     width: parameters.strokeWidth || 0.000001,
                     color: strokeColor
@@ -1099,12 +1153,12 @@ export class WebMap extends ol.Observable {
         layer.setStyle(features => {
             let labelField = labelStyle.labelField;
             let label = features.attributes[labelField.trim()] + "";
-            if(label === "undefined") {
+            if (label === "undefined") {
                 return null;
             }
             let styleOL = layer.get('styleOL');
             let text = styleOL.getText();
-            if(text && text.setText){
+            if (text && text.setText) {
                 text.setText(label);
             }
             return styleOL;
@@ -1122,11 +1176,15 @@ export class WebMap extends ol.Observable {
     getLabelStyle(parameters) {
         return new ol.style.Style({
             text: new ol.style.Text({
-                font: parameters.fontSize + " " +parameters.fontFamily,
+                font: parameters.fontSize + " " + parameters.fontFamily,
                 placement: 'point',
                 textAlign: 'center',
-                fill: new ol.style.Fill({ color: parameters.fill}),
-                backgroundFill: new ol.style.Fill({ color: [255, 255, 255, 0.7]}),
+                fill: new ol.style.Fill({
+                    color: parameters.fill
+                }),
+                backgroundFill: new ol.style.Fill({
+                    color: [255, 255, 255, 0.7]
+                }),
                 padding: [3, 3, 3, 3],
                 offsetY: -20
             })
@@ -1141,7 +1199,7 @@ export class WebMap extends ol.Observable {
      * @param {array} features -feature的集合
      * @returns {ol.style.Style}
      */
-    createVectorLayer (layerInfo, features) {
+    createVectorLayer(layerInfo, features) {
         let style = StyleUtils.toOpenLayersStyle(layerInfo.style, layerInfo.featureType);
         return new ol.layer.Vector({
             style: style,
@@ -1177,7 +1235,7 @@ export class WebMap extends ol.Observable {
             layerOptions.gradient[i] = customSettings[i];
         }
         // 权重字段恢复
-        if(themeSetting.weight){
+        if (themeSetting.weight) {
             this.changeWeight(features, themeSetting.weight);
         }
         return new ol.layer.Heatmap(layerOptions);
@@ -1192,14 +1250,14 @@ export class WebMap extends ol.Observable {
      */
     changeWeight(features, weightFeild) {
         this.fieldMaxValue = {};
-        this.getMaxValue(features,weightFeild);
+        this.getMaxValue(features, weightFeild);
         let maxValue = this.fieldMaxValue[weightFeild];
         features.forEach(function (feature) {
             let attributes = feature.get("Properties") || feature.attributes;
             try {
                 let value = attributes[weightFeild];
-                feature.set('weight', value/ maxValue);
-            }catch (e){
+                feature.set('weight', value / maxValue);
+            } catch (e) {
                 // V2 热力图没有权重字段 但恢复回来却有权重字段
             }
         })
@@ -1213,17 +1271,18 @@ export class WebMap extends ol.Observable {
      * @param {string} weightField - 权重字段
      */
     getMaxValue(features, weightField) {
-        let values = [], attributes;
+        let values = [],
+            attributes;
         let field = weightField;
-        if(this.fieldMaxValue[field]) {
+        if (this.fieldMaxValue[field]) {
             return;
         }
-        features.forEach(function(feature){
+        features.forEach(function (feature) {
             //收集当前权重字段对应的所有值
             attributes = feature.get("Properties") || feature.attributes;
             try {
-                values.push(parseFloat(attributes[field])) ;
-            }catch (e){
+                values.push(parseFloat(attributes[field]));
+            } catch (e) {
                 // V2 热力图没有权重字段 但恢复回来却有权重字段
             }
         });
@@ -1237,7 +1296,7 @@ export class WebMap extends ol.Observable {
      * @param {array} layerInfo - 图层信息
      * @param {string} features - 所以feature的集合
      */
-    createUniqueLayer(layerInfo, features){
+    createUniqueLayer(layerInfo, features) {
         let styleSource = this.createUniqueSource(layerInfo, features);
         let layer = new ol.layer.Vector({
             styleSource: styleSource,
@@ -1264,12 +1323,12 @@ export class WebMap extends ol.Observable {
      * @param {array} features - feature 数组
      * @returns {{map: *, style: *, isHoverAble: *, highlightStyle: *, themeField: *, styleGroups: Array}}
      */
-    createUniqueSource(parameters, features){
+    createUniqueSource(parameters, features) {
         //找到合适的专题字段
         let styleGroup = this.getUniqueStyleGroup(parameters, features);
         return {
             map: this.map, //必传参数 API居然不提示
-            style: parameters.style ,
+            style: parameters.style,
             isHoverAble: parameters.isHoverAble,
             highlightStyle: parameters.highlightStyle,
             themeField: parameters.themeSetting.themeField,
@@ -1285,24 +1344,27 @@ export class WebMap extends ol.Observable {
      * @param {array} features - feature 数组
      * @returns {Array}
      */
-    getUniqueStyleGroup(parameters, features){
+    getUniqueStyleGroup(parameters, features) {
         // 找出所有的单值
-        let featureType = parameters.featureType, style = parameters.style, themeSetting = parameters.themeSetting;
+        let featureType = parameters.featureType,
+            style = parameters.style,
+            themeSetting = parameters.themeSetting;
         let fieldName = themeSetting.themeField,
             colors = themeSetting.colors;
 
-        let names = [], customSettings = themeSetting.customSettings;
-        for(let i in features){
+        let names = [],
+            customSettings = themeSetting.customSettings;
+        for (let i in features) {
             let attributes = features[i].attributes;
             let name = attributes[fieldName];
             let isSaved = false;
-            for(let j in names){
-                if(names[j] === name) {
+            for (let j in names) {
+                if (names[j] === name) {
                     isSaved = true;
                     break;
                 }
             }
-            if(!isSaved){
+            if (!isSaved) {
                 names.push(name);
             }
         }
@@ -1313,20 +1375,24 @@ export class WebMap extends ol.Observable {
 
         //生成styleGroup
         let styleGroup = [];
-        names.forEach(function(name,index){
+        names.forEach(function (name, index) {
             let color = curentColors[index];
             if (name in customSettings) {
                 color = customSettings[name];
             }
-            if(featureType === "LINE"){
+            if (featureType === "LINE") {
                 style.strokeColor = color;
-            }else {
+            } else {
                 style.fillColor = color;
             }
             // 转化成 ol 样式
             let olStyle = StyleUtils.toOpenLayersStyle(style, featureType);
 
-            styleGroup[name] = {olStyle: olStyle, color: color, value: name};
+            styleGroup[name] = {
+                olStyle: olStyle,
+                color: color,
+                value: name
+            };
         });
 
         return styleGroup;
@@ -1341,7 +1407,7 @@ export class WebMap extends ol.Observable {
      * @param {array} allFeatures- 所以的feature集合
      * @returns {ol.layer.Vector}
      */
-    createRangeLayer(layerInfo, features, allFeatures){
+    createRangeLayer(layerInfo, features, allFeatures) {
         //这里获取styleGroup要用所以的feature
         let styleSource = this.createRangeSource(layerInfo, allFeatures || features);
         let layer = new ol.layer.Vector({
@@ -1354,17 +1420,17 @@ export class WebMap extends ol.Observable {
 
         layer.setStyle(feature => {
             let styleSource = layer.get('styleSource');
-            if(styleSource){
+            if (styleSource) {
                 let labelField = styleSource.themeField;
                 let value = Number(feature.attributes[labelField.trim()]);
                 let styleGroups = styleSource.styleGroups;
-                for(let i = 0; i < styleGroups.length; i++){
-                    if(i === 0){
-                        if(value >= styleGroups[i].start && value <= styleGroups[i].end){
+                for (let i = 0; i < styleGroups.length; i++) {
+                    if (i === 0) {
+                        if (value >= styleGroups[i].start && value <= styleGroups[i].end) {
                             return styleGroups[i].olStyle;
                         }
-                    }else {
-                        if(value > styleGroups[i].start && value <= styleGroups[i].end){
+                    } else {
+                        if (value > styleGroups[i].start && value <= styleGroups[i].end) {
                             return styleGroups[i].olStyle;
                         }
                     }
@@ -1383,16 +1449,16 @@ export class WebMap extends ol.Observable {
      * @param {array} features - 所以的feature集合
      * @returns {*}
      */
-    createRangeSource(parameters, features){
+    createRangeSource(parameters, features) {
         //找到合适的专题字段
         let styleGroup = this.getRangeStyleGroup(parameters, features);
-        if(styleGroup){
+        if (styleGroup) {
             return {
                 style: parameters.style,
                 themeField: parameters.themeSetting.themeField,
                 styleGroups: styleGroup
             };
-        }else {
+        } else {
             return false;
         }
     }
@@ -1405,32 +1471,36 @@ export class WebMap extends ol.Observable {
      * @param {array} features - 所以的feature集合
      * @returns {*}
      */
-    getRangeStyleGroup(parameters, features){
+    getRangeStyleGroup(parameters, features) {
         // 找出分段值
-        let featureType = parameters.featureType, themeSetting = parameters.themeSetting,
+        let featureType = parameters.featureType,
+            themeSetting = parameters.themeSetting,
             style = parameters.style;
-        let count = themeSetting.segmentCount, method = themeSetting.segmentMethod,
-            colors = themeSetting.colors, customSettings = themeSetting.customSettings,
+        let count = themeSetting.segmentCount,
+            method = themeSetting.segmentMethod,
+            colors = themeSetting.colors,
+            customSettings = themeSetting.customSettings,
             fieldName = themeSetting.themeField;
-        let values = [], attributes;
+        let values = [],
+            attributes;
         let segmentCount = count;
         let segmentMethod = method;
 
-        features.forEach(function(feature){
+        features.forEach(function (feature) {
             attributes = feature.get("Properties") || feature.attributes;
-            try{
+            try {
                 if (attributes) {
                     //过滤掉非数值的数据
-                    let value =attributes[fieldName.trim()];
+                    let value = attributes[fieldName.trim()];
                     if (value && Util.isNumber(value)) {
-                        values.push(parseFloat(value)) ;
+                        values.push(parseFloat(value));
                     }
-                } else if(feature.get(fieldName) && Util.isNumber(feature.get(fieldName))) {
+                } else if (feature.get(fieldName) && Util.isNumber(feature.get(fieldName))) {
                     if (feature.get(fieldName)) {
-                        values.push(parseFloat(feature.get(fieldName))) ;
+                        values.push(parseFloat(feature.get(fieldName)));
                     }
                 }
-            }catch (e){
+            } catch (e) {
                 // console.log(e);
             }
 
@@ -1439,25 +1509,25 @@ export class WebMap extends ol.Observable {
         let segements;
         try {
             segements = ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
-        }catch (e){
+        } catch (e) {
             // console.log(e);
         }
-        if(segements){
+        if (segements) {
             let itemNum = segmentCount;
-            if(attributes && segements[0] === segements[attributes.length-1]) {
+            if (attributes && segements[0] === segements[attributes.length - 1]) {
                 itemNum = 1;
                 segements.length = 2;
             }
 
             //保留两位有效数
-            for(let key in segements){
+            for (let key in segements) {
                 let value = segements[key];
-                if(key === 0){
+                if (key === 0) {
                     // 最小的值下舍入
-                    value = Math.floor(value*100)/100;
-                }else {
+                    value = Math.floor(value * 100) / 100;
+                } else {
                     // 其余上舍入
-                    value = Math.ceil(value*100)/100 + 0.1; // 加0.1 解决最大值没有样式问题
+                    value = Math.ceil(value * 100) / 100 + 0.1; // 加0.1 解决最大值没有样式问题
                 }
 
                 segements[key] = Number(value.toFixed(2));
@@ -1472,23 +1542,23 @@ export class WebMap extends ol.Observable {
                     if (customSettings[index]["segment"]["start"]) {
                         segements[index] = customSettings[index]["segment"]["start"];
                     }
-                    if(customSettings[index]["segment"]["end"]) {
+                    if (customSettings[index]["segment"]["end"]) {
                         segements[index + 1] = customSettings[index]["segment"]["end"];
                     }
                 }
             }
             //生成styleGroup
             let styleGroups = [];
-            for(let i = 0; i < itemNum; i++) {
+            for (let i = 0; i < itemNum; i++) {
                 let color = curentColors[i];
                 if (i in customSettings) {
                     if (customSettings[i].color) {
                         color = customSettings[i].color;
                     }
                 }
-                if(featureType === "LINE"){
+                if (featureType === "LINE") {
                     style.strokeColor = color;
-                }else {
+                } else {
                     style.fillColor = color;
                 }
 
@@ -1498,11 +1568,16 @@ export class WebMap extends ol.Observable {
                 let start = segements[i];
                 let end = segements[i + 1];
 
-                styleGroups.push({olStyle: olStyle, color: color, start: start, end: end});
+                styleGroups.push({
+                    olStyle: olStyle,
+                    color: color,
+                    start: start,
+                    end: end
+                });
             }
 
             return styleGroups;
-        }else {
+        } else {
             return false;
         }
     }
@@ -1539,15 +1614,18 @@ export class WebMap extends ol.Observable {
             let geomType = feature.getGeometry().getType().toUpperCase();
             // let styleType = geomType === "POINT" ? 'MARKER' : geomType;
             let defaultStyle = feature.getProperties().useStyle;
-            if(geomType === 'POINT' && defaultStyle.text) {
+            if (geomType === 'POINT' && defaultStyle.text) {
                 //说明是文字的feature类型
                 geomType = "TEXT";
             }
             let featureInfo = this.setFeatureInfo(feature);
-            feature.setProperties({ useStyle: defaultStyle, featureInfo:featureInfo});
+            feature.setProperties({
+                useStyle: defaultStyle,
+                featureInfo: featureInfo
+            });
             //标注图层的feature上需要存一个layerId，为了之后样式应用到图层上使用
             // feature.layerId = timeId;
-            if(geomType === 'POINT' && defaultStyle.src &&
+            if (geomType === 'POINT' && defaultStyle.src &&
                 defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
                 //说明地址不完整
                 defaultStyle.src = Util.getRootUrl(that.mapUrl) + defaultStyle.src;
@@ -1565,16 +1643,16 @@ export class WebMap extends ol.Observable {
      */
     setFeatureInfo(feature) {
         let featureInfo;
-        if(feature.getProperties().featureInfo && feature.getProperties().featureInfo.dataViz_title !== undefined
-            && feature.getProperties().featureInfo.dataViz_title != null) {
+        if (feature.getProperties().featureInfo && feature.getProperties().featureInfo.dataViz_title !== undefined &&
+            feature.getProperties().featureInfo.dataViz_title != null) {
             //有featureInfo信息就不需要再添加
             featureInfo = feature.getProperties().featureInfo;
         } else {
             featureInfo = this.getDefaultAttribute();
         }
         let properties = feature.getProperties();
-        for(let key in featureInfo) {
-            if(properties[key]) {
+        for (let key in featureInfo) {
+            if (properties[key]) {
                 featureInfo[key] = properties[key];
                 delete properties[key];
             }

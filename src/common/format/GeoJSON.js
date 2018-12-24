@@ -42,7 +42,7 @@ import {
 } from '../commontypes/geometry/MultiPolygon';
 import {
     ServerGeometry
-} from '../../common/iServer/ServerGeometry';
+} from '../iServer/ServerGeometry';
 
 /**
  * @class SuperMap.Format.GeoJSON
