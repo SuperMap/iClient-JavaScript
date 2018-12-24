@@ -1,8 +1,14 @@
 import ol from 'openlayers';
-import {WebMap} from '../../../src/openlayers/mapping/WebMap';
-import {FetchRequest} from '../../../src/common/util/FetchRequest';
+import {
+    WebMap
+} from '../../../src/openlayers/mapping/WebMap';
+import {
+    FetchRequest
+} from '../../../src/common/util/FetchRequest';
 import '../../resources/WebMapOpenlayer.js';
-import {ArrayStatistic} from "../../../src/openlayers/core/ArrayStatistic";
+import {
+    ArrayStatistic
+} from "../../../src/openlayers/core/ArrayStatistic";
 
 describe('openlayers_WebMap', () => {
     var originalTimeout, testDiv, webMap;
@@ -31,7 +37,9 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {server: server});
+        var datavizWebmap = new WebMap(id, {
+            server: server
+        });
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -42,7 +50,7 @@ describe('openlayers_WebMap', () => {
 
             var view = datavizWebmap.map.getView();
             expect(view.getZoom()).toBe(1);
-            expect(view.getCenter()).toEqual([0,-7.081154551613622e-10]);
+            expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
             expect(datavizWebmap.mapParams.title).toBe('tianditu');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
@@ -91,7 +99,7 @@ describe('openlayers_WebMap', () => {
 
             var view = datavizWebmap.map.getView();
             expect(view.getZoom()).toBe(2);
-            expect(view.getCenter()).toEqual([-10.195312499999957,-0.7031249999999929]);
+            expect(view.getCenter()).toEqual([-10.195312499999957, -0.7031249999999929]);
             expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
             expect(datavizWebmap.mapParams.description).toBe('This is a image');
             expect(options.successCallback).toHaveBeenCalled();
@@ -129,7 +137,7 @@ describe('openlayers_WebMap', () => {
 
             var view = datavizWebmap.map.getView();
             expect(view.getZoom()).toBe(4);
-            expect(view.getCenter()).toEqual([95.88885232500002,26.710421085]);
+            expect(view.getCenter()).toEqual([95.88885232500002, 26.710421085]);
             expect(datavizWebmap.mapParams.title).toBe('ter');
             expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
             expect(options.successCallback).toHaveBeenCalled();
@@ -151,7 +159,7 @@ describe('openlayers_WebMap', () => {
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -211,7 +219,7 @@ describe('openlayers_WebMap', () => {
         });
         spyOn(options, 'successCallback');
         spyOn(options, 'errorCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -237,7 +245,7 @@ describe('openlayers_WebMap', () => {
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -269,7 +277,7 @@ describe('openlayers_WebMap', () => {
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -298,13 +306,13 @@ describe('openlayers_WebMap', () => {
             if (url === server + ".json") {
                 var mapJson = datavizWebMap_Theme_base;
                 return Promise.resolve(new Response(mapJson));
-            } else if(url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
+            } else if (url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
                 return Promise.resolve(new Response(csvData));
             }
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -335,13 +343,13 @@ describe('openlayers_WebMap', () => {
             if (url === server + ".json") {
                 var mapJson = datavizWebMap_Theme_base_Line;
                 return Promise.resolve(new Response(mapJson));
-            } else if(url === `${rootUrl}web/datas/374284777/content.json?pageSize=9999999&currentPage=1`) {
+            } else if (url === `${rootUrl}web/datas/374284777/content.json?pageSize=9999999&currentPage=1`) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -351,7 +359,7 @@ describe('openlayers_WebMap', () => {
 
             var view = datavizWebmap.map.getView();
             expect(view.getZoom()).toBe(10);
-            expect(view.getCenter()).toEqual([12957099.912590493,  4857107.635483593]);
+            expect(view.getCenter()).toEqual([12957099.912590493, 4857107.635483593]);
             expect(datavizWebmap.mapParams.title).toBe('Line_basis');
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(options.successCallback).toHaveBeenCalled();
@@ -372,7 +380,7 @@ describe('openlayers_WebMap', () => {
             if (url === server + ".json") {
                 var mapJson = datavizWebMap_Image;
                 return Promise.resolve(new Response(mapJson));
-            } else if(url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
+            } else if (url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -405,7 +413,7 @@ describe('openlayers_WebMap', () => {
             if (url === server + ".json") {
                 var mapJson = datavizWebMap_SVG;
                 return Promise.resolve(new Response(mapJson));
-            } else if(url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
+            } else if (url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -439,13 +447,13 @@ describe('openlayers_WebMap', () => {
             if (url === server + ".json") {
                 var mapJson = datavizWebMap_Unique;
                 return Promise.resolve(new Response(mapJson));
-            } else if(url === `${rootUrl}web/datas/658963918/content.json?pageSize=9999999&currentPage=1`) {
+            } else if (url === `${rootUrl}web/datas/658963918/content.json?pageSize=9999999&currentPage=1`) {
                 return Promise.resolve(new Response(xlsData));
             }
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -476,7 +484,7 @@ describe('openlayers_WebMap', () => {
             if (url === server + ".json") {
                 var mapJson = datavizWebMap_Range;
                 return Promise.resolve(new Response(mapJson));
-            } else if(url === `${rootUrl}web/datas/1236941499/content.json?pageSize=9999999&currentPage=1`) {
+            } else if (url === `${rootUrl}web/datas/1236941499/content.json?pageSize=9999999&currentPage=1`) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -514,7 +522,7 @@ describe('openlayers_WebMap', () => {
             if (url === server + ".json") {
                 var mapJson = datavizWebMap_Heat;
                 return Promise.resolve(new Response(mapJson));
-            } else if(url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
+            } else if (url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
                 return Promise.resolve(new Response(csvData));
             }
             return Promise.resolve();
@@ -547,13 +555,13 @@ describe('openlayers_WebMap', () => {
             if (url === server + ".json") {
                 var mapJson = datavizWebMap_Marker;
                 return Promise.resolve(new Response(mapJson));
-            } else if(url === `${rootUrl}web/datas/579431262/content.json?pageSize=9999999&currentPage=1`) {
+            } else if (url === `${rootUrl}web/datas/579431262/content.json?pageSize=9999999&currentPage=1`) {
                 return Promise.resolve(new Response(markerData));
             }
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -588,7 +596,7 @@ describe('openlayers_WebMap', () => {
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -620,19 +628,19 @@ describe('openlayers_WebMap', () => {
             if (url === server + ".json") {
                 var mapJson = datavizWebMap_RestData;
                 return Promise.resolve(new Response(mapJson));
-            } else if(url === 'http://support.supermap.com:8090/iserver/services/data-jingjin/rest/data/featureResults.json?returnContent=true&fromIndex=0&toIndex=100000') {
+            } else if (url === 'http://support.supermap.com:8090/iserver/services/data-jingjin/rest/data/featureResults.json?returnContent=true&fromIndex=0&toIndex=100000') {
                 return Promise.resolve(new Response(supermapData));
             }
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'post').and.callFake((url) => {
-            if(url === 'http://192.168.12.27:8091/iserver/services/data-jingjin/rest/data/featureResults.json?returnContent=true&fromIndex=0&toIndex=100000') {
+            if (url === 'http://192.168.12.27:8091/iserver/services/data-jingjin/rest/data/featureResults.json?returnContent=true&fromIndex=0&toIndex=100000') {
                 return Promise.resolve(new Response(supermapData));
             }
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
-        var datavizWebmap = new WebMap(id,options);
+        var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
             expect(datavizWebmap.mapUrl).toBe(server);
@@ -737,7 +745,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id,{});
+        var datavizWebmap = new WebMap(id, {});
         var layerInfo = JSON.parse(wmtsInfo);
         datavizWebmap.createWMTSSource(layerInfo);
 
@@ -756,7 +764,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id,{});
+        var datavizWebmap = new WebMap(id, {});
         var layerInfo = JSON.parse(wmtsInfo1);
         datavizWebmap.createWMTSSource(layerInfo);
 
@@ -774,7 +782,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id,{});
+        var datavizWebmap = new WebMap(id, {});
         var canvas = document.createElement('canvas');
         var params = {
             fillColor: '#0083cb',
@@ -797,7 +805,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id,{});
+        var datavizWebmap = new WebMap(id, {});
         var params = {
             unicode: "&#xe694",
             fillColor: '#ffffff',
@@ -823,7 +831,9 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, {});
         var features = [];
         var feature = new ol.Feature();
-        feature.setProperties({ field: '10'});
+        feature.setProperties({
+            field: '10'
+        });
         features.push(feature);
         setTimeout(() => {
             datavizWebmap.fieldMaxValue = {
@@ -846,7 +856,12 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, {});
         setTimeout(() => {
             var mapInfo = {
-                baseLayer: {zIndex:1,visible: true,layerType:'WMTS',projection: 'EPSG:3857'}
+                baseLayer: {
+                    zIndex: 1,
+                    visible: true,
+                    layerType: 'WMTS',
+                    projection: 'EPSG:3857'
+                }
             };
             spyOn(datavizWebmap, "createWMTSSource");
             datavizWebmap.createBaseLayer(mapInfo);
@@ -861,7 +876,7 @@ describe('openlayers_WebMap', () => {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             } else {
-                let wmtsData ='<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
+                let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
                 return Promise.resolve(new Response(wmtsData));
             }
         });
@@ -873,7 +888,7 @@ describe('openlayers_WebMap', () => {
             var layerInfo = {
                 url: 'http://support.supermap.com:8090/iserver/services/maps/wmts100'
             };
-            var successCallback = function() {};
+            var successCallback = function () {};
             datavizWebmap.getWmtsInfo(layerInfo, successCallback);
             expect(datavizWebmap.isValidResponse).toHaveBeenCalled();
             done();
@@ -885,7 +900,7 @@ describe('openlayers_WebMap', () => {
             if (url === defaultServeRequest + ".json") {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
-            } 
+            }
         });
         var datavizWebmap = new WebMap(id, {});
         setTimeout(() => {
@@ -905,7 +920,9 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, {});
         setTimeout(() => {
             var scales = {
-                TileMatrix: [{Identifier:''}]
+                TileMatrix: [{
+                    Identifier: ''
+                }]
             };
             expect(datavizWebmap.getReslutionsFromScales(scales, 96, 'degrees', 1000)).toBeDefined();
             done();
@@ -924,12 +941,14 @@ describe('openlayers_WebMap', () => {
             var params = '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
             var features = [];
             var feature = new ol.Feature();
-            feature.set("Properties", { field: 10});
+            feature.set("Properties", {
+                field: 10
+            });
             features.push(feature);
-            spyOn(ArrayStatistic, "getArraySegments").and.callFake(() =>{
+            spyOn(ArrayStatistic, "getArraySegments").and.callFake(() => {
                 return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
             });
-            datavizWebmap.getRangeStyleGroup(JSON.parse(params),features);
+            datavizWebmap.getRangeStyleGroup(JSON.parse(params), features);
             expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
             done();
         }, 1000);
@@ -942,7 +961,7 @@ describe('openlayers_WebMap', () => {
                 return Promise.resolve(new Response(mapJson));
             }
         });
-        spyOn(ArrayStatistic, "getArraySegments").and.callFake(() =>{
+        spyOn(ArrayStatistic, "getArraySegments").and.callFake(() => {
             return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
         });
         var datavizWebmap = new WebMap(id, {});
@@ -952,7 +971,7 @@ describe('openlayers_WebMap', () => {
             var feature = new ol.Feature();
             feature.set("field", 10);
             features.push(feature);
-            datavizWebmap.getRangeStyleGroup(JSON.parse(params),features);
+            datavizWebmap.getRangeStyleGroup(JSON.parse(params), features);
             expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
             done();
         }, 1000)

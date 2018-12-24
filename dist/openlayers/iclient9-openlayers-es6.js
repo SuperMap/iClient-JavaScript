@@ -3,7 +3,7 @@
  *          iclient9-openlayers.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.0
+ *          version: v9.1.1
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
