@@ -4,7 +4,9 @@
 import ol from 'openlayers';
 import {Unit, Bounds, GeoJSON as GeoJSONFormat, FilterParameter,
     GetFeaturesBySQLParameters,
-    GetFeaturesBySQLService
+    GetFeaturesBySQLService,
+    QueryBySQLParameters,
+    QueryOption
 } from '@supermap/iclient-common';
 
 ol.supermap = ol.supermap || {};
@@ -410,6 +412,35 @@ export class Util {
         };
         getFeatureBySQLService = new GetFeaturesBySQLService(url, options);
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    }
+
+    static queryFeatureBySQL(url, layerName, attributeFilter, fields, epsgCode, processCompleted, processFaild, startRecord, recordLength, onlyAttribute) {
+        var queryParam, queryBySQLParams, queryBySQLService;
+        queryParam = new FilterParameter({
+            name: layerName,
+            attributeFilter: attributeFilter
+        });
+        if (fields) {
+            queryParam.fields = fields;
+        }
+        var params = {
+            queryParams: [queryParam]
+        };
+        if (onlyAttribute) {
+            params.queryOption = QueryOption.ATTRIBUTE;
+        }
+        startRecord && (params.startRecord = startRecord);
+        recordLength && (params.expectCount = recordLength);
+        if (epsgCode) {
+            params.prjCoordSys = {
+                epsgCode: epsgCode
+            }
+        }
+        queryBySQLParams = new QueryBySQLParameters(params);
+        queryBySQLService = new ol.supermap.QueryService(url);
+        queryBySQLService.queryBySQL(queryBySQLParams, function (data) {
+            data.type === 'processCompleted' ? processCompleted(data) : processFaild(data)
+        });
     }
 
 }

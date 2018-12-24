@@ -1,6 +1,6 @@
-import {Color} from './Color';
+import {Color} from '../../../common/overlay/levelRenderer/Color';
 
-Color.initialize();
+var ColorRender = new Color();
 // let "http://www.qzu.zj.cn": "#bd10e0"
 // 					"www.qzct.net": "#7ed321" = new SuperMap.LevelRenderer.Tool.Color();
 
@@ -78,10 +78,10 @@ export class ColorsPickerUtil  {
      * {Array} 颜色数组。
      */
     static getStepColors (start, end, step){
-        start = Color.toRGBA(start);
-        end = Color.toRGBA(end);
-        start = Color.getData(start);
-        end = Color.getData(end);
+        start = ColorRender.toRGBA(start);
+        end = ColorRender.toRGBA(end);
+        start = ColorRender.getData(start);
+        end = ColorRender.getData(end);
 
         var colors = [];
         var stepR = (end[0] - start[0]) / step;
@@ -91,10 +91,10 @@ export class ColorsPickerUtil  {
         // 生成颜色集合
         // fix by linfeng 颜色堆积
         for (var i = 0, r = start[0], g = start[1], b = start[2], a = start[3]; i < step; i++) {
-            colors[i] = Color.toColor([
-                Color.adjust(Math.floor(r), [ 0, 255 ]),
-                Color.adjust(Math.floor(g), [ 0, 255 ]),
-                Color.adjust(Math.floor(b), [ 0, 255 ]),
+            colors[i] = ColorRender.toColor([
+                ColorRender.adjust(Math.floor(r), [ 0, 255 ]),
+                ColorRender.adjust(Math.floor(g), [ 0, 255 ]),
+                ColorRender.adjust(Math.floor(b), [ 0, 255 ]),
                 a.toFixed(4) - 0
             ],'hex');
             r += stepR;
@@ -106,7 +106,7 @@ export class ColorsPickerUtil  {
         g = end[1];
         b = end[2];
         a = end[3];
-        colors[i] = Color.toColor([r, g, b, a], 'hex');
+        colors[i] = ColorRender.toColor([r, g, b, a], 'hex');
         return colors;
     }
 
