@@ -30,6 +30,8 @@
 - 可视化 - 矢量瓦片
 
   - `ol.supermap.MapboxStyles` 样式类新增 `setStyle` 接口，支持整体更新样式
+  - `ol.supermap.MapboxStyles` 样式类 `options.style` 支持传入获取 Mapbox Style JSON 对象的 URL 
+  - `ol.source.VectorTileSuperMapRest` 新增 `options.style`  `options.source` 参数，支持传入 Mapbox Style JSON 对象或 URL
 
 - 可视化 - 高效率点图层 
 
@@ -69,7 +71,18 @@
 ## Examples
 
 ### for Leaflet
-  - 新增 “微件” 分类
+
+  - 新增 “微件” 分类及相关示例
+
+### for OpenLayers
+
+  - 新增 “可视化 - 矢量瓦片 - iServer 矢量瓦片服务” 示例
+
+### for MapboxGL
+
+  - 新增 “多坐标系” 分类及相关示例
+
+  - 新增 “可视化 - 聚合” 示例
 
 
 
