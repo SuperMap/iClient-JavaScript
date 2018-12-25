@@ -172,6 +172,10 @@ export class WebMap extends ol.Observable {
         for (let key in oldcenter) {
             center.push(oldcenter[key]);
         }
+        if(center.length === 0) {
+            //兼容wms
+            center = [0,0];
+        }
         extent = [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y];
         this.map.setView(new ol.View({
             zoom,
