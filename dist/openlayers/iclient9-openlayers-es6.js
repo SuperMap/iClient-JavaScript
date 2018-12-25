@@ -67015,6 +67015,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         for (let key in oldcenter) {
             center.push(oldcenter[key]);
         }
+        if(center.length === 0) {
+            //兼容wms
+            center = [0,0];
+        }
         extent = [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y];
         this.map.setView(new external_ol_default.a.View({
             zoom,
