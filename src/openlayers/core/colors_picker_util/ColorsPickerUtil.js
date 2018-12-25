@@ -1,4 +1,4 @@
-import {Color} from '../../../common/overlay/levelRenderer/Color';
+import {Color} from '@supermap/iclient-common/overlay/levelRenderer/Color';
 
 var ColorRender = new Color();
 // let "http://www.qzu.zj.cn": "#bd10e0"

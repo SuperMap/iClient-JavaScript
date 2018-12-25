@@ -37,6 +37,7 @@
     <div id='map'></div>
     <script type="text/javascript" include='mapbox-gl-enhance' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
          $.get("../data/chinaEarthquake.csv", function (response) {
                 var dataObj = Papa.parse(response, {
                     skipEmptyLines: true,
@@ -77,11 +78,11 @@
                 container: 'map', 
                 style: {
                     "version": 8,
-                    "glyphs": "http://iclsvr.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+                    "glyphs": host + "/iserver/services/map-china400/rest/maps/China/tileFeature/sdffonts/{fontstack}/{range}.pbf",
                     "sources": {
                         "raster-tiles": {
                             "type": "raster",
-                            "tiles": ['http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}'],
+                            "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
                             "tileSize": 256
                         }
                     },
@@ -103,7 +104,7 @@
                     data: geojson,
                     cluster: true,
                     clusterMaxZoom: 14, 
-                    clusterRadius: 50 
+                    clusterRadius: 100 
                 });
 
                 map.addLayer({

@@ -31,7 +31,7 @@ import {
  * @fires mapboxgl.supermap.HeatMapLayer#featuresadded
  * @fires mapboxgl.supermap.HeatMapLayer#changelayer
  * @fires mapboxgl.supermap.HeatMapLayer#featuresremoved
- * 
+ *
  */
 export class HeatMapLayer extends mapboxgl.Evented {
 
@@ -229,7 +229,6 @@ export class HeatMapLayer extends mapboxgl.Evented {
         CommonUtil.modifyDOMElement(this.rootCanvas, null, null, null,
             "absolute", null, null, this.opacity);
         this.canvasContext = this.rootCanvas.getContext('2d');
-
         this.mapContainer.appendChild(this.rootCanvas);
     }
 
@@ -265,7 +264,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
          * @event mapboxgl.supermap.HeatMapLayer#featuresadded
          * @description 要素添加完成之后触发。
          * @property {GeoJSONObject} features - 被添加的要素。
-         * @property {boolean} succeed - 要素是否成功添加。 
+         * @property {boolean} succeed - 要素是否成功添加。
          */
         this.fire(this.EVENT_TYPES[0], {features: features, succeed: true});
         //支持更新features，刷新底图
@@ -302,7 +301,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
                  * @event mapboxgl.supermap.HeatMapLayer#changelayer
                  * @description 图层属性改变之后触发。
                  * @property {Object} layer - 图层。
-                 * @property {string} property - 被改变的图层属性。 
+                 * @property {string} property - 被改变的图层属性。
                  */
                 this.fire('changelayer', {layer: this, property: "opacity"});
             }
@@ -623,6 +622,8 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.rootCanvas.style.height = canvas.style.height;
         this.rootCanvas.width = this.maxWidth = parseInt(canvas.width);
         this.rootCanvas.height = this.maxHeight = parseInt(canvas.height);
+        let devicePixelRatio = window.devicePixelRatio || 1;
+        devicePixelRatio !== 1 && this.canvasContext && this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         this.refresh();
     }
 
