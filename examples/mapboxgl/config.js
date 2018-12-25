@@ -308,8 +308,7 @@ var exampleConfig = {
             "VectorTileLayer": {
                 name: "矢量瓦片",
                 name_en: "Vector tile",
-                content: [
-                    {
+                content: [{
                         name: "China",
                         name_en: "China",
                         thumbnail: "mvtVectorTile.png",
@@ -378,39 +377,36 @@ var exampleConfig = {
                         version: "9.1.0",
                         thumbnail: "mvtVectorTile_landuse.png",
                         fileName: "mvtVectorTile_landuse"
-                    }    
+                    }
                 ]
             },
-            "Multi_coordinate_cluster": {
+            "cluster": {
                 name: "聚合",
                 name_en: "Cluster",
                 version: "9.1.1",
-                content: [  {
+                content: [{
                     name: "点聚合",
                     name_en: "Marker cluster",
                     version: "9.1.1",
                     thumbnail: "markerCluster_3857.png",
                     fileName: "markerCluster_3857"
-                },]
+                }]
             },
             "graphicLayer": {
                 name: "高效率点图层",
                 name_en: "High efficiency point layer",
-                content: [
-                    {
-                        name: "纽约出租车145万上车点",
-                        name_en: "points of 1.45 million NYC taxis",
-                        version: "9.1.0",
-                        thumbnail: "mb_graphicLayer.png",
-                        fileName: "graphicLayer"
-                    }
-                ]
+                content: [{
+                    name: "纽约出租车145万上车点",
+                    name_en: "points of 1.45 million NYC taxis",
+                    version: "9.1.0",
+                    thumbnail: "mb_graphicLayer.png",
+                    fileName: "graphicLayer"
+                }]
             },
             "ECharts": {
                 name: "ECharts",
                 name_en: "ECharts",
-                content: [
-                    {
+                content: [{
                         name: "全国空气质量图",
                         name_en: "ECharts",
                         thumbnail: "echarts_effectScatter.png",
@@ -529,8 +525,7 @@ var exampleConfig = {
             "EChartsGL": {
                 name: "EChartsGL",
                 name_en: "EChartsGL",
-                content: [
-                    {
+                content: [{
                         name: "上海房价可视化图",
                         name_en: "Shanghai building price",
                         thumbnail: "echartsGL_ShanghaiBuildingPrice.png",
@@ -639,8 +634,7 @@ var exampleConfig = {
             "MapV": {
                 name: "MapV",
                 name_en: "MapV",
-                content: [
-                    {
+                content: [{
                         name: "蜂巢图",
                         name_en: "honeycomb",
                         version: "9.1.0",
@@ -721,39 +715,36 @@ var exampleConfig = {
             "threejs": {
                 name: "threejs",
                 name_en: "threejs",
-                content: [
-                    {
-                        name: "建筑模型",
-                        name_en: "buildings",
-                        version: "9.1.0",
-                        thumbnail: "mb_threejs_buildings.png",
-                        fileName: "threejsLayer_buildings"
-                    }, {
-                        name: "设施点(mtl+obj格式)",
-                        name_en: "facility(mtl+obj)",
-                        version: "9.1.0",
-                        thumbnail: "mb_threejs_facility.png",
-                        fileName: "threejsLayer_facility"
-                    }, {
-                        name: "飞机模型(gltf格式)",
-                        name_en: "airplane(gltf)",
-                        version: "9.1.0",
-                        thumbnail: "mb_threejs_airplane.png",
-                        fileName: "threejsLayer_airplane"
-                    }, {
-                        name: "飞鸟模型",
-                        name_en: "bird",
-                        version: "9.1.0",
-                        thumbnail: "mb_threejs_bird.png",
-                        fileName: "threejsLayer_bird"
-                    }
-                ]
+                content: [{
+                    name: "建筑模型",
+                    name_en: "buildings",
+                    version: "9.1.0",
+                    thumbnail: "mb_threejs_buildings.png",
+                    fileName: "threejsLayer_buildings"
+                }, {
+                    name: "设施点(mtl+obj格式)",
+                    name_en: "facility(mtl+obj)",
+                    version: "9.1.0",
+                    thumbnail: "mb_threejs_facility.png",
+                    fileName: "threejsLayer_facility"
+                }, {
+                    name: "飞机模型(gltf格式)",
+                    name_en: "airplane(gltf)",
+                    version: "9.1.0",
+                    thumbnail: "mb_threejs_airplane.png",
+                    fileName: "threejsLayer_airplane"
+                }, {
+                    name: "飞鸟模型",
+                    name_en: "bird",
+                    version: "9.1.0",
+                    thumbnail: "mb_threejs_bird.png",
+                    fileName: "threejsLayer_bird"
+                }]
             },
             "Theme2D": {
                 name: "二维专题图",
                 name_en: "2D thematic layer",
-                content: [
-                    {
+                content: [{
                         name: "单值专题图",
                         name_en: "unique",
                         thumbnail: "uniqueThemeLayer.png",
@@ -788,8 +779,7 @@ var exampleConfig = {
             "Theme3D": {
                 name: "三维专题图",
                 name_en: "3D thematic layer",
-                content: [
-                    {
+                content: [{
                         name: "单值专题图",
                         name_en: "unique",
                         thumbnail: "theme_3Dlayer_unique.png",
@@ -857,9 +847,9 @@ var exampleConfig = {
         version: "9.1.1",
         // localIgnore: true,
         content: {
-            "Multi_coordinate_Map":{
-                name:"地图",
-                name_en:"Map service",
+            "Multi_coordinate_Map": {
+                name: "地图",
+                name_en: "Map service",
                 version: "9.1.1",
                 content: [{
                     name: "地图_WGS84",
@@ -867,34 +857,34 @@ var exampleConfig = {
                     version: "9.1.1",
                     thumbnail: "01_tiledMapLayer_4326.png",
                     fileName: "01_tiledMapLayer_4326"
-                },{
+                }, {
                     name: "地图_China2000",
                     name_en: "Map China2000",
                     localIgnore: true,
                     version: "9.1.1",
                     thumbnail: "01_tiledMapLayer.png",
                     fileName: "01_tiledMapLayer_4490"
-                },{
+                }, {
                     name: "地图_Beijing54",
                     name_en: "Map Beijing54",
                     version: "9.1.1",
                     localIgnore: true,
                     thumbnail: "01_tiledMapLayer.png",
                     fileName: "01_tiledMapLayer_4214"
-                },{
+                }, {
                     name: "地图_Xian80",
                     name_en: "Map Xian80",
                     localIgnore: true,
                     version: "9.1.1",
                     thumbnail: "01_tiledMapLayer.png",
                     fileName: "01_tiledMapLayer_4610"
-                },{
+                }, {
                     name: "绘图控件_WGS84",
                     name_en: "Draw control WGS84",
                     version: "9.1.1",
                     thumbnail: "control_drawControl_4326.png",
                     fileName: "control_drawControl_4326"
-                },{
+                }, {
                     name: "矢量瓦片_WGS84",
                     name_en: "MVT WGS84",
                     version: "9.1.1",
@@ -955,34 +945,33 @@ var exampleConfig = {
                 name: "高效率点图层",
                 name_en: "High efficiency point layer",
                 version: "9.1.1",
-                content: [
-                    {
-                        name: "纽约出租车145万上车点_WGS84",
-                        name_en: "Points of 1.45 million NYC taxis WGS84",
-                        version: "9.1.1",
-                        thumbnail: "graphicLayer_4326.png",
-                        fileName: "graphicLayer_4326"
-                    }
-                ]
+                content: [{
+                    name: "纽约出租车145万上车点_WGS84",
+                    name_en: "Points of 1.45 million NYC taxis WGS84",
+                    version: "9.1.1",
+                    thumbnail: "graphicLayer_4326.png",
+                    fileName: "graphicLayer_4326"
+                }]
             },
             "Multi_coordinate_heatMap": {
                 name: "热力图",
                 name_en: "Heat map",
                 version: "9.1.1",
                 content: [{
-                    name: "地震数据_WGS84",
-                    name_en: "Earthquake Data WGS84",
-                    version: "9.1.1",
-                    thumbnail: "heatMapLayer_earthQuake_4326.png",
-                    fileName: "earthquakeHeatMap"
-                },
-                {
-                    name: "地震数据（Classic）_WGS84",
-                    name_en: "Earthquake Data WGS84",
-                    version: "9.1.1",
-                    thumbnail: "heatMapLayer_earthQuake_iclient_4326.png",
-                    fileName: "earthquakeHeatMapIclient"
-                }]
+                        name: "地震数据_WGS84",
+                        name_en: "Earthquake Data WGS84",
+                        version: "9.1.1",
+                        thumbnail: "heatMapLayer_earthQuake_4326.png",
+                        fileName: "earthquakeHeatMap"
+                    },
+                    {
+                        name: "地震数据（Classic）_WGS84",
+                        name_en: "Earthquake Data WGS84",
+                        version: "9.1.1",
+                        thumbnail: "heatMapLayer_earthQuake_iclient_4326.png",
+                        fileName: "earthquakeHeatMapIclient"
+                    }
+                ]
             },
             "Multi_coordinate_MapV": {
                 name: "MapV",
@@ -994,7 +983,7 @@ var exampleConfig = {
                     version: "9.1.1",
                     thumbnail: "mapvCsvcar_4326.png",
                     fileName: "mapvCsvcar_4326"
-                },{
+                }, {
                     name: "面_WGS84",
                     name_en: "Simple polygon WGS84",
                     version: "9.1.1",
@@ -1012,14 +1001,12 @@ var exampleConfig = {
             "GTC2017": {
                 name: "2017",
                 name_en: "2017",
-                content: [
-                    {
-                        name: "GTC2017",
-                        name_en: "GTC2017",
-                        thumbnail: "gtc2017.gif",
-                        fileName: "GTC2017"
-                    }
-                ]
+                content: [{
+                    name: "GTC2017",
+                    name_en: "GTC2017",
+                    thumbnail: "gtc2017.gif",
+                    fileName: "GTC2017"
+                }]
             }
         }
     }
@@ -1047,6 +1034,6 @@ var exampleIconConfig = {
     "iServer": "fa-server",
     "viz": "fa-map",
     "GTC": "fa-globe",
-    'multiCoordSys':"fa-globe",
+    'multiCoordSys': "fa-globe",
 };
 window.mapboxglExampleConfig = exampleConfig;
