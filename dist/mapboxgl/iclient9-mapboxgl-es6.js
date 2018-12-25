@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -69250,7 +69235,7 @@ external_mapboxgl_default.a.supermap.ThreeLayer = ThreeLayer_ThreeLayer;
  * @fires mapboxgl.supermap.HeatMapLayer#featuresadded
  * @fires mapboxgl.supermap.HeatMapLayer#changelayer
  * @fires mapboxgl.supermap.HeatMapLayer#featuresremoved
- * 
+ *
  */
 class HeatMapLayer_HeatMapLayer extends external_mapboxgl_default.a.Evented {
 
@@ -69448,7 +69433,6 @@ class HeatMapLayer_HeatMapLayer extends external_mapboxgl_default.a.Evented {
         Util_Util.modifyDOMElement(this.rootCanvas, null, null, null,
             "absolute", null, null, this.opacity);
         this.canvasContext = this.rootCanvas.getContext('2d');
-
         this.mapContainer.appendChild(this.rootCanvas);
     }
 
@@ -69484,7 +69468,7 @@ class HeatMapLayer_HeatMapLayer extends external_mapboxgl_default.a.Evented {
          * @event mapboxgl.supermap.HeatMapLayer#featuresadded
          * @description 要素添加完成之后触发。
          * @property {GeoJSONObject} features - 被添加的要素。
-         * @property {boolean} succeed - 要素是否成功添加。 
+         * @property {boolean} succeed - 要素是否成功添加。
          */
         this.fire(this.EVENT_TYPES[0], {features: features, succeed: true});
         //支持更新features，刷新底图
@@ -69521,7 +69505,7 @@ class HeatMapLayer_HeatMapLayer extends external_mapboxgl_default.a.Evented {
                  * @event mapboxgl.supermap.HeatMapLayer#changelayer
                  * @description 图层属性改变之后触发。
                  * @property {Object} layer - 图层。
-                 * @property {string} property - 被改变的图层属性。 
+                 * @property {string} property - 被改变的图层属性。
                  */
                 this.fire('changelayer', {layer: this, property: "opacity"});
             }
@@ -69842,6 +69826,8 @@ class HeatMapLayer_HeatMapLayer extends external_mapboxgl_default.a.Evented {
         this.rootCanvas.style.height = canvas.style.height;
         this.rootCanvas.width = this.maxWidth = parseInt(canvas.width);
         this.rootCanvas.height = this.maxHeight = parseInt(canvas.height);
+        let devicePixelRatio = window.devicePixelRatio || 1;
+        devicePixelRatio !== 1 && this.canvasContext && this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         this.refresh();
     }
 
