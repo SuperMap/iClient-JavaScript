@@ -870,6 +870,7 @@ var exampleConfig = {
                 },{
                     name: "地图_China2000",
                     name_en: "Map China2000",
+                    localIgnore: true,
                     version: "9.1.1",
                     thumbnail: "01_tiledMapLayer.png",
                     fileName: "01_tiledMapLayer_4490"
@@ -877,11 +878,13 @@ var exampleConfig = {
                     name: "地图_Beijing54",
                     name_en: "Map Beijing54",
                     version: "9.1.1",
+                    localIgnore: true,
                     thumbnail: "01_tiledMapLayer.png",
                     fileName: "01_tiledMapLayer_4214"
                 },{
                     name: "地图_Xian80",
                     name_en: "Map Xian80",
+                    localIgnore: true,
                     version: "9.1.1",
                     thumbnail: "01_tiledMapLayer.png",
                     fileName: "01_tiledMapLayer_4610"
@@ -967,15 +970,15 @@ var exampleConfig = {
                 name_en: "Heat map",
                 version: "9.1.1",
                 content: [{
-                    name: "中国地震数据_WGS84",
-                    name_en: "China Earthquake Data WGS84",
+                    name: "地震数据_WGS84",
+                    name_en: "Earthquake Data WGS84",
                     version: "9.1.1",
                     thumbnail: "heatMapLayer_earthQuake_4326.png",
                     fileName: "earthquakeHeatMap"
                 },
                 {
-                    name: "中国地震数据（Classic）_WGS84",
-                    name_en: "China Earthquake Data WGS84",
+                    name: "地震数据（Classic）_WGS84",
+                    name_en: "Earthquake Data WGS84",
                     version: "9.1.1",
                     thumbnail: "heatMapLayer_earthQuake_iclient_4326.png",
                     fileName: "earthquakeHeatMapIclient"
