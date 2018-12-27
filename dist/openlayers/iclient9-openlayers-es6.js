@@ -64725,6 +64725,7 @@ external_ol_default.a.supermap.Util = core_Util_Util;
 
 
 external_ol_default.a.supermap = external_ol_default.a.supermap || {};
+var padding = 8, doublePadding = padding*2;
 
 /**
  * @class ol.supermap.StyleUtils
@@ -65362,7 +65363,8 @@ class StyleUtils_StyleUtils {
                 lineDash: this.dashStyle(style, 1)
             });
             olStyle.setStroke(newStroke);
-        } else {
+        } else if(type === 'POLYGON' ||
+            type === 'MULTIPOLYGON'){
             newFill = new external_ol_default.a.style.Fill({
                 color: fillColorArray
             });
@@ -65370,12 +65372,204 @@ class StyleUtils_StyleUtils {
                 width: strokeWidth || ZERO,
                 color: strokeColorArray,
                 lineCap: lineCap || 'round',
-                lineDash: this.dashStyle(style, 1)
+                lineDash:this.dashStyle(style, 1)
             });
             olStyle.setFill(newFill);
             olStyle.setStroke(newStroke);
+        } else {
+            let result = this.getCanvas(style);
+            newImage = new external_ol_default.a.style.Icon({
+                img:  result.canvas,
+                imgSize:[result.width,result.height],
+                scale: 1,
+                anchor : [0.5, 0.5]
+            });
+            olStyle.setImage(newImage);
         }
         return olStyle;
+    }
+
+    /**
+     * 获取文字标注对应的canvas
+     * @param style
+     * @returns {{canvas: *, width: number, height: number}}
+     */
+    static getCanvas(style) {
+        let canvas;
+        if(style.canvas) {
+            if(document.querySelector("#"+style.canvas)) {
+                canvas = document.getElemntById(style.canvas);
+            } else {
+                canvas = this.createCanvas(style);
+            }
+        } else {
+            //不存在canvas，当前feature
+            canvas = this.createCanvas(style);
+            style.canvas = canvas.id;
+        }
+        canvas.style.display = "none";
+        var ctx = canvas.getContext("2d");
+        //行高
+        let lineHeight = Number(style.font.replace(/[^0-9]/ig,""));
+        let textArray = style.text.split('\r\n');
+        let lenght = textArray.length;
+        //在改变canvas大小后再绘制。否则会被清除
+        ctx.font = style.font;
+        let size = this.drawRect(ctx, style, textArray, lineHeight, canvas);
+        this.positionY = padding;
+        if(lenght > 1) {
+            textArray.forEach(function (text, i) {
+                if(i !== 0) {
+                    this.positionY = this.positionY + lineHeight;
+                }
+                this.canvasTextAutoLine(text,style,ctx,lineHeight, size.width);
+            }, this);
+        } else {
+            this.canvasTextAutoLine(textArray[0],style,ctx,lineHeight, size.width);
+        }
+        return {
+            canvas: canvas,
+            width: size.width,
+            height: size.height
+        };
+    }
+    /**
+     * 创建当前feature对应的canvas
+     * @param style  {object}
+     * @returns {HTMLElement}
+     */
+    static createCanvas(style) {
+        let div = document.createElement('div');
+        document.body.appendChild(div);
+        let canvas = document.createElement('canvas');
+        canvas.id = style.canvas ? style.canvas : 'textCanvas' + core_Util_Util.newGuid(8);
+        div.appendChild(canvas);
+        return canvas;
+    }
+    /**
+     * 绘制矩形边框背景
+     * @param ctx
+     * @param style
+     * @param textArray
+     * @param lineHeight
+     * @param canvas
+     * @returns {{width: number, height: number}}
+     */
+    static drawRect(ctx, style, textArray, lineHeight, canvas) {
+        let backgroundFill = style.backgroundFill, maxWidth = style.maxWidth - doublePadding;
+        let width, height = 0, lineCount=0, lineWidths = [];
+        //100的宽度，去掉左右两边3padding
+        textArray.forEach(function (arrText) {
+            let line='', isOverMax;
+            lineCount++;
+            for (var n = 0; n < arrText.length; n++) {
+                let textLine = line + arrText[n];
+                let metrics = ctx.measureText(textLine);
+                let textWidth = metrics.width;
+                if ((textWidth > maxWidth && n > 0) || arrText[n] === '\n') {
+                    line = arrText[n];
+                    lineCount++;
+                    //有换行，记录当前换行的width
+                    isOverMax = true;
+                } else {
+                    line = textLine;
+                    width = textWidth;
+                }
+            }
+            if(isOverMax) {
+                lineWidths.push(maxWidth);
+            } else {
+                lineWidths.push(width);
+            }
+        }, this);
+        width = this.getCanvasWidth(lineWidths, maxWidth);
+        height = lineCount * lineHeight;
+        height += doublePadding;
+        canvas.width = width;
+        canvas.height = height;
+        ctx.fillStyle = backgroundFill;
+        ctx.fillRect(0,0,width,height);
+        return {
+            width: width,
+            height: height
+        }
+    }
+    /**
+     * 获取自适应的宽度（如果没有超过最大宽度，就用文字的宽度）
+     * @param lineWidths
+     * @param maxWidth
+     * @returns {number}
+     */
+    static getCanvasWidth(lineWidths, maxWidth) {
+        let width = 0;
+        for(let i=0; i< lineWidths.length; i++) {
+            let lineW = lineWidths[i];
+            if(lineW >= maxWidth) {
+                //有任何一行超过最大高度，就用最大高度
+                return maxWidth + doublePadding;
+            } else if(lineW > width) {
+                //自己换行，就要比较每行的最大宽度
+                width = lineW;
+            }
+        }
+        return width + doublePadding;
+    }
+    /**
+     * 绘制文字，解决换行问题
+     * @param text
+     * @param style
+     * @param ctx
+     * @param lineHeight
+     */
+    static canvasTextAutoLine(text,style,ctx,lineHeight, canvasWidth) {
+        // 字符分隔为数组
+        ctx.font = style.font;
+        let textAlign = style.textAlign;
+        let x = this.getPositionX(textAlign, canvasWidth);
+        let arrText = text.split('');
+        let line = '', fillColor = style.fillColor;
+        //每一行限制的高度
+        let maxWidth= style.maxWidth - doublePadding;
+        for (var n = 0; n < arrText.length; n++) {
+            let testLine = line + arrText[n];
+            let metrics = ctx.measureText(testLine);
+            let testWidth = metrics.width;
+            if ((testWidth > maxWidth && n > 0) || arrText[n] === '\n') {
+                ctx.fillStyle = fillColor;
+                ctx.textAlign=textAlign;
+                ctx.textBaseline="top";
+                ctx.fillText(line, x, this.positionY);
+                line = arrText[n];
+                this.positionY += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        ctx.fillStyle = fillColor;
+        ctx.textAlign=textAlign;
+        ctx.textBaseline="top";
+        ctx.fillText(line, x, this.positionY);
+    }
+    /**
+     * 得到绘制的起点位置，根据align不同，位置也不同
+     * @param textAlign
+     * @returns {number}
+     */
+    static getPositionX(textAlign, canvasWidth) {
+        let x;
+        let width = canvasWidth - doublePadding; //减去padding
+        switch (textAlign) {
+            case 'center':
+                x = width / 2;
+                break;
+            case 'right':
+                x = width;
+                break;
+            default:
+                x = 8;
+                break;
+        }
+        return x;
     }
 
     /**
@@ -66877,6 +67071,7 @@ const transformTools = new external_ol_default.a.format.GeoJSON();
  * @param {function} [options.errorCallback] - 加载地图失败。
  * @param {string} [options.credentialKey] - 凭证密钥。
  * @param {string} [options.credentialValue] - 凭证值。
+ * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @extends {ol.Observable}
  */
@@ -66892,6 +67087,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             this.credentialKey = options.credentialKey;
             this.credentialValue = options.credentialValue;
             this.target = options.target || "map";
+            this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
         }
         this.createMap(options.mapSetting);
         this.createWebmap();
@@ -66935,13 +67131,23 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @description 创建webmap
      */
     createWebmap() {
-        // let appUrl = this.mapUrl;
         let mapUrl = core_Util_Util.getRootUrl(this.mapUrl) + 'web/maps/' + this.mapId + '/map';
         if (this.credentialValue) {
             mapUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
-            // appUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
+
+        }
+        let filter = 'getUrlResource.json?url=';
+        if(this.excludePortalProxyUrl && this.mapUrl.indexOf(filter) > -1) {
+            //大屏需求,或者有加上代理的
+            let urlArray = this.mapUrl.split(filter);
+            if(urlArray.length > 1) {
+                let url = urlArray[1];
+                mapUrl = urlArray[0] + filter + core_Util_Util.getRootUrl(url) + 'web/maps/' + this.mapId + '/map.json';
+            }
         }
         //todo 请求用户以及更新时间和地图标签等参数，暂时不需要
+        // let appUrl = this.mapUrl;
+        // appUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
         // this.getAppInfo(appUrl);
         this.getMapInfo(mapUrl);
     }
@@ -66976,7 +67182,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 that.addLayers(mapInfo);
             }
         }).catch(function (error) {
-            that.errorCallback && that.errorCallback(error, 'getMapFaild');
+            that.errorCallback && that.errorCallback(error, 'getMapFaild', that.map);
         });
     }
     /**
@@ -66989,7 +67195,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         this.createView(mapInfo);
         let layer = this.createBaseLayer(mapInfo);
         this.map.addLayer(layer);
-        if (mapInfo.baseLayer && mapInfo.baseLayer.lableLayerVisible) {
+        if (mapInfo.baseLayer && mapInfo.baseLayer.labelLayerVisible) {
             let layerInfo = mapInfo.baseLayer;
             //存在天地图路网
             let labelLayer = new external_ol_default.a.layer.Tile({
@@ -67089,16 +67295,26 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             default:
                 break;
         }
-        let layer = new external_ol_default.a.layer.Tile({
+        var layer = new external_ol_default.a.layer.Tile({
             source: source,
             zIndex: layerInfo.zIndex || 0,
             visible: layerInfo.visible
         });
+        var layerId = core_Util_Util.newGuid(8);
         if (layerInfo.name) {
             layer.setProperties({
-                name: layerInfo.name
+                name: layerInfo.name,
+                layerId: layerId
             });
         }
+        if(!mapInfo.baseLayer) {
+            //不是底图
+            layer.setVisible(layerInfo.visible);
+            layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
+        }
+        //否则没有ID，对不上号
+        layerInfo.layer = layer;
+        layerInfo.layerId = layerId;
         return layer;
     }
     /**
@@ -67296,7 +67512,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 callback(layerInfo);
             }
         }).catch(function (error) {
-            that.errorCallback && that.errorCallback(error, 'getWmtsFaild')
+            that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
         });
     }
 
@@ -67447,6 +67663,13 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     }).then(function (response) {
                         return response.json()
                     }).then(function (data) {
+                        if(!data.succeed === false) {
+                            //请求失败
+                            layerAdded++;
+                            that.sendMapToUser(layerAdded, len);
+                            that.errorCallback && that.errorCallback(data.error, 'getLayerFaild', that.map);
+                            return;
+                        }
                         if (data && data.type) {
                             if (data.type === "JSON" || data.type === "GEOJSON") {
                                 data.content = JSON.parse(data.content);
@@ -67461,7 +67684,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     }).catch(function (error) {
                         layerAdded++;
                         that.sendMapToUser(layerAdded, len);
-                        that.errorCallback && that.errorCallback(error, 'getLayerFaild');
+                        that.errorCallback && that.errorCallback(error, 'getLayerFaild', that.map);
                     })
                 } else if (layer.layerType === 'SUPERMAP_REST' || layer.layerType === "TILE" ||
                     layer.layerType === "WMS" || layer.layerType === "WMTS") {
@@ -67496,7 +67719,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     }, function (err) {
                         layerAdded++;
                         that.sendMapToUser(layerAdded, len);
-                        that.errorCallback && that.errorCallback(err, 'getFeatureFaild')
+                        that.errorCallback && that.errorCallback(err, 'getFeatureFaild', that.map)
                     });
                 } else if (layer.dataSource.type === "REST_MAP" && layer.dataSource.url) {
                     core_Util_Util.queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, 'smid=1', null, null, function (result) {
@@ -67515,10 +67738,13 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                                 that.addLayer(layer, features);
                                 layerAdded++;
                                 that.sendMapToUser(layerAdded, len);
+                            },function (e) {
+                                layerAdded++;
+                                that.errorCallback && that.errorCallback(e, 'getFeatureFaild', that.map);
                             });
                         }
                     }, function (e) {
-                        that.errorCallback && that.errorCallback(e, 'getFeatureFaild');
+                        that.errorCallback && that.errorCallback(e, 'getFeatureFaild', that.map);
                     })
                 }
             }, this);
@@ -67766,12 +67992,18 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         } else if (layerInfo.layerType === "MARKER") {
             layer = this.createMarkerLayer(layerInfo, features)
         }
+        let layerId = core_Util_Util.newGuid(8);
         if (layer && layerInfo.name) {
             layer.setProperties({
-                name: layerInfo.name
+                name: layerInfo.name,
+                layerId: layerId
             });
         }
         layer && this.map.addLayer(layer);
+        layerInfo.layer = layer;
+        layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
+        layer.setVisible(layerInfo.visible);
+        layerInfo.layerId = layerId;
         if (layerInfo.labelStyle && layerInfo.labelStyle.labelField) {
             //存在标签专题图
             this.addLabelLayer(layerInfo, features);
@@ -67838,7 +68070,6 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             isHighLight: false,
             onClick: function () {}
         });
-        source.refresh();
         return new external_ol_default.a.layer.Image({
             source: source
         });
