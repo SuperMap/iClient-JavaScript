@@ -843,7 +843,7 @@ var exampleConfig = {
     },
     "multiCoordSys": {
         name: "多坐标系",
-        name_en: "Multi-coordinate System",
+        name_en: "Multiple CRS",
         version: "9.1.1",
         // localIgnore: true,
         content: {
@@ -966,7 +966,7 @@ var exampleConfig = {
                     },
                     {
                         name: "地震数据（Classic）_WGS84",
-                        name_en: "Earthquake Data WGS84",
+                        name_en: "Earthquake Data WGS84(Classic)",
                         version: "9.1.1",
                         thumbnail: "heatMapLayer_earthQuake_iclient_4326.png",
                         fileName: "earthquakeHeatMapIclient"

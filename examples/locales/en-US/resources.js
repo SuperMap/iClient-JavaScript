@@ -79,7 +79,7 @@ window.examplesResources = {
             "mapping": "Third Party Map",
             "others": "Others",
             "3D-WebGL": "3D-WebGL",
-            "multiCoordSys": "Multi-coordinate System"
+            "multiCoordSys": "Multiple CRS"
 
         },
         "more": {

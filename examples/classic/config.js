@@ -132,7 +132,7 @@ var exampleConfig = {
         content: {
             "vectorLayer": {
                 name: "矢量图层",
-                name_en: "Vector_layer",
+                name_en: "Vector layer",
                 content: [{
                     name: "矢量图形数据",
                     name_en: "vector layer data",
@@ -979,7 +979,7 @@ var exampleConfig = {
                     thumbnail: "OGC_GeoJSON.png",
                     fileName: "OGC_GeoJSON"
                 }, {
-                    name: "WFS 查询",
+                    name: "WFS查询",
                     name_en: "WFS query",
                     thumbnail: "OGC_queryByWFS.png",
                     fileName: "OGC_queryByWFS"
