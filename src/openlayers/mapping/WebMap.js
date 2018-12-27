@@ -34,6 +34,7 @@ const transformTools = new ol.format.GeoJSON();
  * @param {function} [options.errorCallback] - 加载地图失败。
  * @param {string} [options.credentialKey] - 凭证密钥。
  * @param {string} [options.credentialValue] - 凭证值。
+ * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @extends {ol.Observable}
  */
@@ -49,6 +50,7 @@ export class WebMap extends ol.Observable {
             this.credentialKey = options.credentialKey;
             this.credentialValue = options.credentialValue;
             this.target = options.target || "map";
+            this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
         }
         this.createMap(options.mapSetting);
         this.createWebmap();
@@ -92,13 +94,23 @@ export class WebMap extends ol.Observable {
      * @description 创建webmap
      */
     createWebmap() {
-        // let appUrl = this.mapUrl;
         let mapUrl = Util.getRootUrl(this.mapUrl) + 'web/maps/' + this.mapId + '/map';
         if (this.credentialValue) {
             mapUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
-            // appUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
+
+        }
+        let filter = 'getUrlResource.json?url=';
+        if(this.excludePortalProxyUrl && this.mapUrl.indexOf(filter) > -1) {
+            //大屏需求,或者有加上代理的
+            let urlArray = this.mapUrl.split(filter);
+            if(urlArray.length > 1) {
+                let url = urlArray[1];
+                mapUrl = urlArray[0] + filter + Util.getRootUrl(url) + 'web/maps/' + this.mapId + '/map.json';
+            }
         }
         //todo 请求用户以及更新时间和地图标签等参数，暂时不需要
+        // let appUrl = this.mapUrl;
+        // appUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
         // this.getAppInfo(appUrl);
         this.getMapInfo(mapUrl);
     }
@@ -133,7 +145,7 @@ export class WebMap extends ol.Observable {
                 that.addLayers(mapInfo);
             }
         }).catch(function (error) {
-            that.errorCallback && that.errorCallback(error, 'getMapFaild');
+            that.errorCallback && that.errorCallback(error, 'getMapFaild', that.map);
         });
     }
     /**
@@ -146,7 +158,7 @@ export class WebMap extends ol.Observable {
         this.createView(mapInfo);
         let layer = this.createBaseLayer(mapInfo);
         this.map.addLayer(layer);
-        if (mapInfo.baseLayer && mapInfo.baseLayer.lableLayerVisible) {
+        if (mapInfo.baseLayer && mapInfo.baseLayer.labelLayerVisible) {
             let layerInfo = mapInfo.baseLayer;
             //存在天地图路网
             let labelLayer = new ol.layer.Tile({
@@ -246,16 +258,26 @@ export class WebMap extends ol.Observable {
             default:
                 break;
         }
-        let layer = new ol.layer.Tile({
+        var layer = new ol.layer.Tile({
             source: source,
             zIndex: layerInfo.zIndex || 0,
             visible: layerInfo.visible
         });
+        var layerId = Util.newGuid(8);
         if (layerInfo.name) {
             layer.setProperties({
-                name: layerInfo.name
+                name: layerInfo.name,
+                layerId: layerId
             });
         }
+        if(!mapInfo.baseLayer) {
+            //不是底图
+            layer.setVisible(layerInfo.visible);
+            layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
+        }
+        //否则没有ID，对不上号
+        layerInfo.layer = layer;
+        layerInfo.layerId = layerId;
         return layer;
     }
     /**
@@ -453,7 +475,7 @@ export class WebMap extends ol.Observable {
                 callback(layerInfo);
             }
         }).catch(function (error) {
-            that.errorCallback && that.errorCallback(error, 'getWmtsFaild')
+            that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
         });
     }
 
@@ -604,6 +626,13 @@ export class WebMap extends ol.Observable {
                     }).then(function (response) {
                         return response.json()
                     }).then(function (data) {
+                        if(!data.succeed === false) {
+                            //请求失败
+                            layerAdded++;
+                            that.sendMapToUser(layerAdded, len);
+                            that.errorCallback && that.errorCallback(data.error, 'getLayerFaild', that.map);
+                            return;
+                        }
                         if (data && data.type) {
                             if (data.type === "JSON" || data.type === "GEOJSON") {
                                 data.content = JSON.parse(data.content);
@@ -618,7 +647,7 @@ export class WebMap extends ol.Observable {
                     }).catch(function (error) {
                         layerAdded++;
                         that.sendMapToUser(layerAdded, len);
-                        that.errorCallback && that.errorCallback(error, 'getLayerFaild');
+                        that.errorCallback && that.errorCallback(error, 'getLayerFaild', that.map);
                     })
                 } else if (layer.layerType === 'SUPERMAP_REST' || layer.layerType === "TILE" ||
                     layer.layerType === "WMS" || layer.layerType === "WMTS") {
@@ -653,7 +682,7 @@ export class WebMap extends ol.Observable {
                     }, function (err) {
                         layerAdded++;
                         that.sendMapToUser(layerAdded, len);
-                        that.errorCallback && that.errorCallback(err, 'getFeatureFaild')
+                        that.errorCallback && that.errorCallback(err, 'getFeatureFaild', that.map)
                     });
                 } else if (layer.dataSource.type === "REST_MAP" && layer.dataSource.url) {
                     Util.queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, 'smid=1', null, null, function (result) {
@@ -672,10 +701,13 @@ export class WebMap extends ol.Observable {
                                 that.addLayer(layer, features);
                                 layerAdded++;
                                 that.sendMapToUser(layerAdded, len);
+                            },function (e) {
+                                layerAdded++;
+                                that.errorCallback && that.errorCallback(e, 'getFeatureFaild', that.map);
                             });
                         }
                     }, function (e) {
-                        that.errorCallback && that.errorCallback(e, 'getFeatureFaild');
+                        that.errorCallback && that.errorCallback(e, 'getFeatureFaild', that.map);
                     })
                 }
             }, this);
@@ -923,12 +955,18 @@ export class WebMap extends ol.Observable {
         } else if (layerInfo.layerType === "MARKER") {
             layer = this.createMarkerLayer(layerInfo, features)
         }
+        let layerId = Util.newGuid(8);
         if (layer && layerInfo.name) {
             layer.setProperties({
-                name: layerInfo.name
+                name: layerInfo.name,
+                layerId: layerId
             });
         }
         layer && this.map.addLayer(layer);
+        layerInfo.layer = layer;
+        layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
+        layer.setVisible(layerInfo.visible);
+        layerInfo.layerId = layerId;
         if (layerInfo.labelStyle && layerInfo.labelStyle.labelField) {
             //存在标签专题图
             this.addLabelLayer(layerInfo, features);
@@ -995,7 +1033,6 @@ export class WebMap extends ol.Observable {
             isHighLight: false,
             onClick: function () {}
         });
-        source.refresh();
         return new ol.layer.Image({
             source: source
         });
