@@ -1,5 +1,8 @@
 # next release #
 
+
+# 9.1.1 (2018-12-27) #
+
 ## 新特性
 
 ### iClient for MapboxGL多坐标系支持
@@ -8,10 +11,14 @@
 
 - 需单独引用iClient对Mapbox GL JS的增强库（基于2018年10月版本v0.51.0）
  http://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
+
+![whatsNewMultiCoordinate](http://iclient.supermap.io/img/whatsNewMultiCoordinate.png)
  
 ### 新增多款功能微件
 
 -	iClient for Leaflet新增：文件打开微件、数据流微件、地址匹配与图层查询微件、客户端计算微件、分布式分析微件、数据服务查询微件
+
+![whatsNewWidgets](http://iclient.supermap.io/web/img/whatsNewWidgets1.png)
  
 ## API changes
 
