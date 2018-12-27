@@ -14,6 +14,8 @@ let en = {
     'title_distributedAnalysis': 'Distributed Analysis',
     'title_clientComputing': 'Client Computing',
     'title_dataServiceQuery': 'Data Service Query',
+    'title_searchCity':'Search city',
+    'title_searchLayer':' Search layer',
 
     'text_input_value_inputDataFlowUrl': 'Please enter the data stream service address such as: ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': 'Display feature information',
@@ -78,6 +80,10 @@ let en = {
     'text_label_featureFilter': 'Feature filter',
     'text_label_geometricObject': 'Geometric object',
     'text_label_queryMode': 'Query mode',
+    'text_label_searchTips': 'Search for city locations or layer features',
+    'text_label_chooseSearchLayers': 'Select a query layer',
+    'text_loadSearchCriteria': 'Load search criteria',
+    'text_saveSearchCriteria': 'Save search criteria',
 
     "btn_analyze": "Analyze",
     "btn_analyzing": "Analyzing",
@@ -99,7 +105,13 @@ let en = {
     'msg_fileTypeUnsupported': 'File format is not supported!',
     'msg_fileSizeExceeded': 'File size exceeded! The file size should not exceed 10M!',
     'msg_dataInWrongGeoJSONFormat': 'Wrong data format! Non standard GEOJSON format data!',
-    'msg_dataInWrongFormat': 'Wrong data format! Non standard EXCEL, CSV or GEOJSON format data!'
+    'msg_dataInWrongFormat': 'Wrong data format! Non standard EXCEL, CSV or GEOJSON format data!',
+    'msg_searchKeywords': "Search keywords cannot be empty. Please enter your search criteria.",
+    'msg_searchGeocodeField':"Did not match the address matching service data!",
+    'msg_cityGeocodeField':"The address matching service of the current city is not configured.",
+    'msg_getFeatureField':"No related vector features found!",
+    'msg_dataflowservicesubscribed':'The data stream service has been subscribed to.',
+    'msg_subscribesucceeded':'The data stream service subscription was successful.'
 
 
 };

@@ -15,7 +15,9 @@ let zh = {
     'title_distributedAnalysis': '分布式分析',
     'title_clientComputing': '客户端计算',
     'title_dataServiceQuery': '数据服务查询',
-    
+    'title_searchCity':'搜索城市',
+    'title_searchLayer':'搜索图层',
+
     'text_input_value_inputDataFlowUrl': '请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': '显示要素信息',
     'text_subscribe': '订阅',
@@ -78,6 +80,11 @@ let zh = {
     'text_label_featureFilter': '要素过滤器',
     'text_label_geometricObject': '几何对象',
     'text_label_queryMode': '查询模式',
+    'text_label_searchTips': '搜索城市地点或图层要素',
+    'text_label_chooseSearchLayers': '选择查询图层',
+    'text_loadSearchCriteria': '加载搜索条件',
+    'text_saveSearchCriteria': '保存搜索条件',
+
 
     "btn_analyze": "分析",
     "btn_analyzing": "分析中",
@@ -86,7 +93,7 @@ let zh = {
     "btn_query": "查询",
     "btn_querying": "查询中",
     "btn_emptyTheRresultLayer": "清除所有结果图层",
-
+    
 
     'msg_dataFlowServiceHasBeenSubscribed': '已订阅该数据流服务。',
     'msg_inputDataFlowUrlFirst': '请先输入数据流服务地址。',
@@ -100,7 +107,13 @@ let zh = {
     'msg_fileTypeUnsupported': '不支持该文件格式！',
     'msg_fileSizeExceeded': '文件大小超限！文件大小不得超过 10M！',
     'msg_dataInWrongGeoJSONFormat': '数据格式错误！非标准的 GEOJSON 格式数据！',
-    'msg_dataInWrongFormat': '数据格式错误！非标准的 EXCEL, CSV 或 GEOJSON 格式数据！'
+    'msg_dataInWrongFormat': '数据格式错误！非标准的 EXCEL, CSV 或 GEOJSON 格式数据！',
+    'msg_searchKeywords': "搜索关键字不能为空，请输入搜索条件。",
+    'msg_searchGeocodeField':"未匹配到地址匹配服务数据！",
+    'msg_cityGeocodeField':"未配置当前城市的地址匹配服务。",
+    'msg_getFeatureField':"未查找到相关矢量要素！",
+    'msg_dataflowservicesubscribed':'已订阅该数据流服务。',
+    'msg_subscribesucceeded':'数据流服务订阅成功。'
 
 };
 export { zh };

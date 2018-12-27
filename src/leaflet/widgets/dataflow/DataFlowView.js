@@ -153,11 +153,11 @@ export var DataFlowView = WidgetsViewBase.extend({
         this.messageBox = new MessageBox();
 
         this.viewModel.on("dataflowservicesubscribed", () => {
-            this.messageBox.showView("已订阅该数据流服务。");
+            this.messageBox.showView(Lang.i18n("msg_dataflowservicesubscribed"));
         });
 
         this.viewModel.on("subscribesucceeded", () => {
-            this.messageBox.showView("数据流服务订阅成功。");
+            this.messageBox.showView(Lang.i18n("msg_subscribesucceeded"));
         });
 
         /**

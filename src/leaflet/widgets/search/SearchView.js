@@ -14,7 +14,8 @@ import {
     NavTabsPage,
     CityTabsPage,
     PaginationContainer,
-    AttributesPopContainer
+    AttributesPopContainer,
+    Lang
 } from '@supermap/iclient-common';
 
 import {
@@ -162,7 +163,7 @@ export var SearchView = WidgetsViewBase.extend({
             loadIcon.setAttribute("class", "supermapol-icons-poi-load");
             loadBtn.appendChild(loadIcon);
             const loadBtnText = document.createElement("span");
-            loadBtnText.appendChild(document.createTextNode("加载搜索条件"));
+            loadBtnText.appendChild(document.createTextNode(Lang.i18n("text_loadSearchCriteria")));
             loadBtn.appendChild(loadBtnText);
             //保存搜索条件
             const saveBtn = document.createElement("div");
@@ -172,7 +173,7 @@ export var SearchView = WidgetsViewBase.extend({
             icon.setAttribute("class", "supermapol-icons-poi-save");
             saveBtn.appendChild(icon);
             const saveBtnText = document.createElement("span");
-            saveBtnText.appendChild(document.createTextNode("保存搜索条件"));
+            saveBtnText.appendChild(document.createTextNode(Lang.i18n("text_saveSearchCriteria")));
             saveBtn.appendChild(saveBtnText);
 
             //body
@@ -219,12 +220,12 @@ export var SearchView = WidgetsViewBase.extend({
         let navTabs = [];
         if (citySelect) {
             navTabs.push({
-                title: "搜索城市",
+                title: Lang.i18n("title_searchCity"),
                 content: citySelect
             })
         }
         navTabs.push({
-            title: "搜索图层",
+            title: Lang.i18n("title_searchLayer"),
             content: layersSelect
         });
         const navTabsPageObject = new NavTabsPage({
@@ -244,7 +245,7 @@ export var SearchView = WidgetsViewBase.extend({
         poiContainer.appendChild(poiSettings);
         //初始时，下拉框若没赋值显示信息，则再次赋值：
         if (!poiSearchName.innerText) {
-            poiSearchName.appendChild(document.createTextNode("选择查询图层"));
+            poiSearchName.appendChild(document.createTextNode(Lang.i18n("text_label_chooseSearchLayers")));
         }
         //---------下拉框 END
 
@@ -253,7 +254,7 @@ export var SearchView = WidgetsViewBase.extend({
         poiInputContainer.setAttribute("class", "widget-search__input");
         const poiInput = document.createElement("input");
         poiInput.type = "text";
-        poiInput.placeholder = "搜索城市地点或图层要素";
+        poiInput.placeholder = Lang.i18n("text_label_searchTips");
 
         poiInputContainer.appendChild(poiInput);
         //由View 维护，进行交互操作
@@ -280,7 +281,7 @@ export var SearchView = WidgetsViewBase.extend({
             navTabsPageObject.closeView();
             const keyWord = this.poiInput.value.trim();
             if (keyWord === "") {
-                this.messageBox.showView("搜索关键字不能为空，请输入搜索条件。");
+                this.messageBox.showView(Lang.i18n('msg_searchKeywords'));
                 return;
             }
             if (this.isSearchLayer) {
@@ -479,8 +480,8 @@ export var SearchView = WidgetsViewBase.extend({
                 }
             }).addTo(this.map);
             this.searchResultLayer.eachLayer((layer) => {
-                this.options.onEachFeature ?this.options.onEachFeature(layer.toGeoJSON(), layer):
-                this._featureOnclickEvent.bind(this)(layer.toGeoJSON(), layer);
+                this.options.onEachFeature ? this.options.onEachFeature(layer.toGeoJSON(), layer) :
+                    this._featureOnclickEvent.bind(this)(layer.toGeoJSON(), layer);
             });
             this.searchLayersData = data;
             //查询结果列表：
@@ -519,26 +520,30 @@ export var SearchView = WidgetsViewBase.extend({
              * @description 地址匹配服务成功后触发。
              * @property {Object} result  - 事件返回的 GeoJSON 格式数据对象。
              */
-            this._event.fire("geocodesucceeded", { result: data });
+            this._event.fire("geocodesucceeded", {
+                result: data
+            });
         });
 
         //----地址匹配或图层查询失败监听
         this.viewModel.on("searchfailed", (e) => {
             let message = "";
             if (e.searchType === "searchGeocodeField") {
-                message = "未匹配到地址匹配服务数据！";
+                message = Lang.i18n("msg_searchGeocodeField");
             } else if (e.searchType === "cityGeocodeField") {
-                message = "未配置当前城市的地址匹配服务。";
+                message = Lang.i18n("msg_cityGeocodeField");
             } else {
-                message = "未查找到相关矢量要素！";
+                message = Lang.i18n("msg_getFeatureField");
             }
             this.messageBox.showView(message)
             /**
-            * @event L.supermap.widgets.search#searchfailed
-            * @description 图层属性查询失败后触发。
-            * @property {string} message - 失败原因。
-            */
-            this._event.fire("searchfailed", { message: message });
+             * @event L.supermap.widgets.search#searchfailed
+             * @description 图层属性查询失败后触发。
+             * @property {string} message - 失败原因。
+             */
+            this._event.fire("searchfailed", {
+                message: message
+            });
         });
     },
 
@@ -682,7 +687,9 @@ export var SearchView = WidgetsViewBase.extend({
     _featureOnclickEvent(feature, layer) {
         layer.on('click', () => {
             let pageEles1 = document.getElementsByClassName('widget-pagination__link')[0];
-            this._resultDomObj._changePageEvent({ target: pageEles1.children[0].children[0] });
+            this._resultDomObj._changePageEvent({
+                target: pageEles1.children[0].children[0]
+            });
             this._selectFeature && this._selectFeature.addTo(this.map);
             layer.remove();
             let page, dataIndex;
@@ -699,7 +706,9 @@ export var SearchView = WidgetsViewBase.extend({
                 for (let i = 1; i < page; i++) {
                     let pageEles;
                     pageEles = document.getElementsByClassName('widget-pagination__link')[0];
-                    this._resultDomObj._changePageEvent({ target: pageEles.children[pageEles.children.length - 2].children[0] });
+                    this._resultDomObj._changePageEvent({
+                        target: pageEles.children[pageEles.children.length - 2].children[0]
+                    });
                 }
             }
             let pageList = document.getElementsByClassName('widget-search-result-info')
@@ -752,8 +761,8 @@ export var SearchView = WidgetsViewBase.extend({
                 attributes: layer.feature.properties
             })).getElement()
         }, {
-                closeOnClick: false
-            }).openPopup().addTo(this.map);
+            closeOnClick: false
+        }).openPopup().addTo(this.map);
 
         this._flyToBounds(this.searchResultLayer.getBounds());
         let center;
