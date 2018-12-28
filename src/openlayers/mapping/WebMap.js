@@ -537,7 +537,7 @@ export class WebMap extends ol.Observable {
         datumAxis = datumAxis || 6378137;
         let res = [],
             matrixIds = [];
-        //这他妈的api不给identifier 我自己给个默认的
+        //给个默认的
         if (Util.isArray(scales)) {
             scales && scales.forEach(function (scale, idx) {
                 matrixIds.push(idx);
