@@ -3,6 +3,7 @@ var PNG = require('pngjs').PNG;
 var getPixels = require("get-pixels");
 var size = require('image-size');
 var n = 0; //截图次数
+var mapsize;
 
 var commonTools = ({
 
@@ -42,6 +43,7 @@ var commonTools = ({
         browser.pause(5000);
         browser.saveScreenshot(screenShotPath, function () {
             console.log('Screenshot has been saved , now start to get StdTile from Screenshot');
+            //dimensions 是整幅图 图片的大小
             size(screenShotPath, function (err, dimensions) {
                 var totalWidth = dimensions.width;
                 var totalHeight = dimensions.height;
@@ -53,6 +55,7 @@ var commonTools = ({
         });
         browser.pause(2000, function () {
             commonTools.deleteFolders('./examples-test/temp');
+            // commonTools.deleteFolders('./examples-test/output');
         })
     },
 
