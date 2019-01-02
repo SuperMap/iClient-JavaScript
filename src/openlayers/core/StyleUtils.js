@@ -424,7 +424,7 @@ export class StyleUtils {
             return [];
         }
         var w = style.strokeWidth * widthFactor;
-        var str = style.strokeDashstyle;
+        var str = style.strokeDashstyle || style.lineDash;
         switch (str) {
             case 'solid':
                 return [];
@@ -644,7 +644,7 @@ export class StyleUtils {
             newStroke = new ol.style.Stroke({
                 width: strokeWidth || ZERO,
                 color: strokeColorArray,
-                lineCap: lineCap || 'round', //todo 缺少lineCap
+                lineCap: lineCap || 'round',
                 lineDash: this.dashStyle(style, 1)
             });
             olStyle.setStroke(newStroke);

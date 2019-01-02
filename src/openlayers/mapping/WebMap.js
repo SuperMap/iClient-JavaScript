@@ -626,7 +626,7 @@ export class WebMap extends ol.Observable {
                     }).then(function (response) {
                         return response.json()
                     }).then(function (data) {
-                        if(!data.succeed === false) {
+                        if(data.succeed === false) {
                             //请求失败
                             layerAdded++;
                             that.sendMapToUser(layerAdded, len);
@@ -927,14 +927,7 @@ export class WebMap extends ol.Observable {
      * @param {array} features - 图层上的feature集合
      */
     addLayer(layerInfo, features) {
-        let layer, allFeatures;
-        if (layerInfo.style && layerInfo.filterCondition) {
-            if (layerInfo.layerType === "RANGE") {
-                allFeatures = features;
-            }
-            //将feature根据过滤条件进行过滤, 分段专题图因为要计算styleGroup所以暂时不过滤
-            features = this.getFiterFeatures(layerInfo.filterCondition, features);
-        }
+        let layer;
         if (layerInfo.layerType === "VECTOR") {
             if (layerInfo.featureType === "POINT") {
                 if (layerInfo.style.type === 'SYMBOL_POINT') {
@@ -949,23 +942,23 @@ export class WebMap extends ol.Observable {
         } else if (layerInfo.layerType === "UNIQUE") {
             layer = this.createUniqueLayer(layerInfo, features);
         } else if (layerInfo.layerType === "RANGE") {
-            layer = this.createRangeLayer(layerInfo, features, allFeatures);
+            layer = this.createRangeLayer(layerInfo, features);
         } else if (layerInfo.layerType === "HEAT") {
             layer = this.createHeatLayer(layerInfo, features);
         } else if (layerInfo.layerType === "MARKER") {
             layer = this.createMarkerLayer(layerInfo, features)
         }
         let layerId = Util.newGuid(8);
-        if (layer && layerInfo.name) {
-            layer.setProperties({
+        if (layer) {
+            layerInfo.name && layer.setProperties({
                 name: layerInfo.name,
                 layerId: layerId
             });
+            layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
+            layer.setVisible(layerInfo.visible);
         }
         layer && this.map.addLayer(layer);
         layerInfo.layer = layer;
-        layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
-        layer.setVisible(layerInfo.visible);
         layerInfo.layerId = layerId;
         if (layerInfo.labelStyle && layerInfo.labelStyle.labelField) {
             //存在标签专题图
@@ -1181,7 +1174,7 @@ export class WebMap extends ol.Observable {
      */
     addLabelLayer(layerInfo, features) {
         let labelStyle = layerInfo.labelStyle;
-        let style = this.getLabelStyle(labelStyle);
+        let style = this.getLabelStyle(labelStyle, layerInfo);
         let layer = new ol.layer.Vector({
             declutter: true,
             styleOL: style,
@@ -1211,13 +1204,22 @@ export class WebMap extends ol.Observable {
      * @private
      * @function ol.supermap.WebMap.prototype.getLabelStyle
      * @description 获取标签样式
-     * @param {object} parameters - 样式参数
+     * @param {object} parameters - 标签图层样式参数
+     * @param {object} layerInfo - 图层样式参数
      * @returns {ol.style.Style}
      */
-    getLabelStyle(parameters) {
+    getLabelStyle(parameters, layerInfo) {
+        let radius = layerInfo.style.radius || 0;
+        let strokeWidth = layerInfo.style.strokeWidth || 0;
+        let offsetY = -1.8 * radius - strokeWidth;
+        if (offsetY > -20) {
+            offsetY = -20;
+        }
+        parameters.offsetY = offsetY;
+        
         return new ol.style.Style({
             text: new ol.style.Text({
-                font: parameters.fontSize + " " + parameters.fontFamily,
+                font: "14px " + parameters.fontFamily,
                 placement: 'point',
                 textAlign: 'center',
                 fill: new ol.style.Fill({
@@ -1227,7 +1229,7 @@ export class WebMap extends ol.Observable {
                     color: [255, 255, 255, 0.7]
                 }),
                 padding: [3, 3, 3, 3],
-                offsetY: -20
+                offsetY: parameters.offsetY
             })
         });
     }
@@ -1335,14 +1337,14 @@ export class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.createUniqueLayer
      * @description 获取当前字段对应的最大值，用于计算权重
      * @param {array} layerInfo - 图层信息
-     * @param {string} features - 所以feature的集合
+     * @param {array} features - 所有feature结合
      */
     createUniqueLayer(layerInfo, features) {
         let styleSource = this.createUniqueSource(layerInfo, features);
         let layer = new ol.layer.Vector({
             styleSource: styleSource,
             source: new ol.source.Vector({
-                features: features,
+                features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
             })
         });
@@ -1444,17 +1446,16 @@ export class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.createRangeLayer
      * @description 创建分段图层
      * @param {object} layerInfo- 图层信息
-     * @param {array} features - 通过过滤条件筛选过的feature结合
-     * @param {array} allFeatures- 所以的feature集合
+     * @param {array} features - 所有feature结合
      * @returns {ol.layer.Vector}
      */
-    createRangeLayer(layerInfo, features, allFeatures) {
+    createRangeLayer(layerInfo, features) {
         //这里获取styleGroup要用所以的feature
-        let styleSource = this.createRangeSource(layerInfo, allFeatures || features);
+        let styleSource = this.createRangeSource(layerInfo, features);
         let layer = new ol.layer.Vector({
             styleSource: styleSource,
             source: new ol.source.Vector({
-                features: features,
+                features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
             })
         });
