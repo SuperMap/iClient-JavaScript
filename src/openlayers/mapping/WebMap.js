@@ -133,7 +133,7 @@ export class WebMap extends ol.Observable {
         }).then(function (response) {
             return response.json();
         }).then(function (mapInfo) {
-            that.baseProjection = mapInfo.projection; //epsgCode是之前的数据格式 todo
+            that.baseProjection = mapInfo.projection; 
             that.mapParams = {
                 title: mapInfo.title,
                 description: mapInfo.description
@@ -325,7 +325,6 @@ export class WebMap extends ol.Observable {
      * @returns {ol.source.Tianditu} 天地图的source
      */
     createTiandituSource(layerInfo, layerType, projection, isLabel) {
-        //todo 后台存储没有存储isLabel是否有标签
         let options = {
             layerType: layerType.split('_')[1].toLowerCase(),
             isLabel: isLabel || false,
@@ -1018,6 +1017,7 @@ export class WebMap extends ol.Observable {
      * @return {string}
      */
     createGraphicLayer(layerInfo, features) {
+        features = layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features;
         let graphics = this.getGraphicsFromFeatures(features, layerInfo.style);
         let source = new ol.source.Graphic({
             graphics: graphics,
@@ -1112,7 +1112,8 @@ export class WebMap extends ol.Observable {
      * @private
      * @function ol.supermap.WebMap.prototype.createSymbolLayer
      * @description 添加符号图层
-     * @param {object} features - feature的集合
+     * @param {object} layerInfo - 图层信息
+     * @param {array} features - feature的集合
      * @return {object}
      */
     createSymbolLayer(layerInfo, features) {
@@ -1120,7 +1121,7 @@ export class WebMap extends ol.Observable {
         return new ol.layer.Vector({
             style: style,
             source: new ol.source.Vector({
-                features: features,
+                features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
             })
         });
@@ -1136,7 +1137,6 @@ export class WebMap extends ol.Observable {
     getSymbolStyle(parameters) {
         let text = '';
         if (parameters.unicode) {
-            //todo 为什么要判断，难道还有其他的图层会进来
             text = String.fromCharCode(parseInt(parameters.unicode.replace(/^&#x/, ''), 16));
         }
         // 填充色 + 透明度
@@ -1247,7 +1247,7 @@ export class WebMap extends ol.Observable {
         return new ol.layer.Vector({
             style: style,
             source: new ol.source.Vector({
-                features: features,
+                features: layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features,
                 wrapX: false
             })
         });
@@ -1262,6 +1262,8 @@ export class WebMap extends ol.Observable {
      * @returns {ol.layer.Heatmap}
      */
     createHeatLayer(layerInfo, features) {
+        //因为热力图，随着过滤，需要重新计算权重
+        features = layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features;
         let source = new ol.source.Vector({
             features: features,
             wrapX: false
@@ -1292,6 +1294,7 @@ export class WebMap extends ol.Observable {
      * @param {string} weightFeild - 权重字段
      */
     changeWeight(features, weightFeild) {
+        let that = this;
         this.fieldMaxValue = {};
         this.getMaxValue(features, weightFeild);
         let maxValue = this.fieldMaxValue[weightFeild];
@@ -1301,7 +1304,7 @@ export class WebMap extends ol.Observable {
                 let value = attributes[weightFeild];
                 feature.set('weight', value / maxValue);
             } catch (e) {
-                // V2 热力图没有权重字段 但恢复回来却有权重字段
+                that.errorCallback && that.errorCallback(e);
             }
         })
     }
@@ -1314,8 +1317,7 @@ export class WebMap extends ol.Observable {
      * @param {string} weightField - 权重字段
      */
     getMaxValue(features, weightField) {
-        let values = [],
-            attributes;
+        let values = [], that = this, attributes;
         let field = weightField;
         if (this.fieldMaxValue[field]) {
             return;
@@ -1326,7 +1328,7 @@ export class WebMap extends ol.Observable {
             try {
                 values.push(parseFloat(attributes[field]));
             } catch (e) {
-                // V2 热力图没有权重字段 但恢复回来却有权重字段
+                that.errorCallback && that.errorCallback(e);
             }
         });
         this.fieldMaxValue[field] = ArrayStatistic.getArrayStatistic(values, 'Maximum');
@@ -1527,7 +1529,7 @@ export class WebMap extends ol.Observable {
             attributes;
         let segmentCount = count;
         let segmentMethod = method;
-
+        let that = this;
         features.forEach(function (feature) {
             attributes = feature.get("Properties") || feature.attributes;
             try {
@@ -1543,7 +1545,7 @@ export class WebMap extends ol.Observable {
                     }
                 }
             } catch (e) {
-                // console.log(e);
+                that.errorCallback && that.errorCallback(e);
             }
 
         });
@@ -1552,7 +1554,7 @@ export class WebMap extends ol.Observable {
         try {
             segements = ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
         } catch (e) {
-            // console.log(e);
+            that.errorCallback && that.errorCallback(e);
         }
         if (segements) {
             let itemNum = segmentCount;
