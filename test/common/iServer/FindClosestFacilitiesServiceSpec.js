@@ -1,8 +1,9 @@
-﻿﻿import {FindClosestFacilitiesService} from '../../../src/common/iServer/FindClosestFacilitiesService';
+﻿import {FindClosestFacilitiesService} from '../../../src/common/iServer/FindClosestFacilitiesService';
 import {FindClosestFacilitiesParameters} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
 import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
 import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
 import {Point} from '../../../src/common/commontypes/geometry/Point';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;
 var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
@@ -55,6 +56,9 @@ describe('FindClosestFacilitiesService', () => {
         parameter.expectFacilityCount = 2;
         parameter.parameter = analystParameter;
         var closestFacilitiesService = initFindClosestFacilitiesService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(JSON.stringify(findClosetFacilitiesResultJson_False)));
+        });
         closestFacilitiesService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -101,6 +105,9 @@ describe('FindClosestFacilitiesService', () => {
             parameter: transAnaParams
         });
         var closestFacilitiesService = initFindClosestFacilitiesService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"facilityPathList":null}`));
+        });
         closestFacilitiesService.processAsync(facilitiesParams);
         setTimeout(() => {
             try {
@@ -174,6 +181,9 @@ describe('FindClosestFacilitiesService', () => {
             parameter: transAnaParams
         });
         var closestFacilitiesService = initFindClosestFacilitiesService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数facilities 不是有效的JSON 字符串对象"}}`));
+        });
         closestFacilitiesService.processAsync(facilitiesParams);
         setTimeout(() => {
             try {

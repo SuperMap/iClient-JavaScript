@@ -42,8 +42,7 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', () => {
             expect(params).toContain("'bounds':{'left':3800,'bottom':-3800,'right':8200,'top':-2200");
             expect(params).toContain("'fieldName':\"SmLength\"");
             expect(options).not.toBeNull();
-            var resultJson=`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_leafletTest@Changchun"}`;
-            return Promise.resolve(new Response(resultJson));
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_leafletTest@Changchun"}`));
         });
         densityAnalystService.densityAnalysis(densityAnalystParameters, (result) => {
             serviceResult = result;

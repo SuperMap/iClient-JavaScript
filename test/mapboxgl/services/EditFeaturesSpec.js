@@ -1,5 +1,6 @@
 import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
 import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 var id;
@@ -37,6 +38,11 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
             returnContent: true
         });
         var service = new FeatureService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features.json?returnContent=true");
+            return Promise.resolve(new Response(`[257]`));
+        });
         service.editFeatures(addFeatureParams, (result) => {
             serviceResult = result
         });
@@ -70,6 +76,11 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
             editType: "delete"
         });
         var service = new FeatureService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("DELETE");
+            expect(testUrl).toBe(url + "/datasources/World/datasets/Capitals/features.json?ids=[257]");
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         service.editFeatures(deleteFeatureParams, (result) => {
             serviceResult = result
         });

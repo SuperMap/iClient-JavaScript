@@ -40,29 +40,32 @@ describe('SetLayersInfoService', () => {
         var setLayersInfoService = initSetLayersInfoService();
         expect(setLayersInfoService).not.toBeNull();
         expect(setLayersInfoService.url).toEqual(url);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe('POST');
-            expect(testUrl).toBe(url + "/tempLayersSet.json?");
-            var expectParams = "[{'completeLineSymbolDisplayed':false,'visible':true,'maxScale':0,'caption':null,'description':\"\",'symbolScalable':false,'subLayers':{'layers':[{'joinItems':null,'completeLineSymbolDisplayed':false,'ugcLayerType':\"VECTOR\",'displayFilter':null,'visible':true,'maxScale':1.350238165824801e-8,'fieldValuesDisplayFilter':{'fieldName':\"\",'values':[],'fieldValuesDisplayMode':\"DISABLE\"},'caption':\"continent_T@World\",'description':\"\",'symbolScalable':false,'subLayers':{},'type':\"UGC\",'datasetInfo':{'charset':null,'isReadOnly':false,'encodeType':null,'recordCount':0,'bounds':{'top':65.22103117946571,'left':-150.51082428252954,'bottom':-84.34257921576281,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571}},'name':\"continent_T\",'isFileCache':false,'description':null,'prjCoordSys':null,'type':\"TEXT\",'dataSourceName':\"World\",'tableName':null},'queryable':false,'opaqueRate':100,'minVisibleGeometrySize':0.4,'name':\"continent_T@World\",'bounds':{'top':65.22103117946571,'left':-150.51082428252954,'bottom':-84.34257921576281,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571}},'style':{'fillGradientOffsetRatioX':0,'markerSize':2.4,'fillForeColor':{'red':208,'green':255,'blue':240,'alpha':255},'fillGradientOffsetRatioY':0,'markerWidth':0,'markerAngle':0,'fillSymbolID':0,'lineColor':{'red':0,'green':128,'blue':0,'alpha':255},'markerSymbolID':0,'lineWidth':0.1,'markerHeight':0,'fillOpaqueRate':100,'fillBackOpaque':true,'fillBackColor':{'red':255,'green':255,'blue':255,'alpha':255},'fillGradientMode':\"NONE\",'lineSymbolID':0,'fillGradientAngle':0},'displayOrderBy':null,'symbolScale':0,'minScale':3.3755954145620026e-9,'representationField':\"\",'colorDictionary':null}]},'type':\"UGC\",'queryable':false,'opaqueRate':100,'minVisibleGeometrySize':0,'name':\"World\",'bounds':{'top':90,'left':-180,'bottom':-90,'leftBottom':{'x':-180,'y':-90},'right':180,'rightTop':{'x':180,'y':90}},'symbolScale':0,'minScale':0,'object':null}]";
-            expect(params).toBe(expectParams);
+        spyOn(FetchRequest, 'post').and.callFake((testUrl,options) => {
+            expect(testUrl).toBe(url+"/tempLayersSet.json?");
             expect(options).not.toBeNull();
-            var escapedJson = "{\"postResultType\":\"CreateChild\",\"newResourceID\":\"9e195daff6974da6b366eb37c97e5ad9_a932e5360977478596dfa4cfd9936d53\",\"succeed\":true,\"newResourceLocation\":\"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/9e195daff6974da6b366eb37c97e5ad9_a932e5360977478596dfa4cfd9936d53.json\"}";
-            return Promise.resolve(new Response(escapedJson));
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json"}`));
         });
         setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         setLayersInfoService.processAsync(layers);
         setTimeout(() => {
-            expect(setLayersEventArgsSystem.type).toEqual("processCompleted");
-            var serviceResult = setLayersEventArgsSystem.result;
-            expect(serviceResult).not.toBeNull();
-            expect(serviceResult.succeed).toBeTruthy();
-            expect(serviceResult.postResultType).toEqual("CreateChild");
-            expect(serviceResult.newResourceLocation).not.toBeNull();
-            expect(serviceResult.newResourceID).not.toBeNull();
-            id = serviceResult.newResourceID;
-            setLayersInfoService.destroy();
-            done();
-        }, 1000)
+            try {
+                expect(setLayersEventArgsSystem.type).toEqual("processCompleted");
+                var serviceResult = setLayersEventArgsSystem.result;
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.succeed).toBeTruthy();
+                expect(serviceResult.postResultType).toEqual("CreateChild");
+                expect(serviceResult.newResourceLocation).not.toBeNull();
+                expect(serviceResult.newResourceID).not.toBeNull();
+                id = serviceResult.newResourceID;
+                setLayersInfoService.destroy();
+                done();
+            } catch (e) {
+                console.log("'setNewTempLayer'案例失败" + e.name + ":" + e.message);
+                setLayersInfoService.destroy();
+                expect(false).toBeTruthy();
+                done();
+            }
+        }, 3000);
     });
 
     //修改临时图层的信息 isTempLayers=true
@@ -78,14 +81,10 @@ describe('SetLayersInfoService', () => {
         var layers = layersInfo;
         layers.description = "test";
         setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe('PUT');
-            expect(testUrl).toBe(url + "/tempLayersSet/" + id + ".json?");
-            var expectParams = "[{'completeLineSymbolDisplayed':false,'visible':true,'maxScale':0,'caption':null,'description':\"test\",'symbolScalable':false,'subLayers':{'layers':[{'joinItems':null,'completeLineSymbolDisplayed':false,'ugcLayerType':\"VECTOR\",'displayFilter':null,'visible':true,'maxScale':1.350238165824801e-8,'fieldValuesDisplayFilter':{'fieldName':\"\",'values':[],'fieldValuesDisplayMode':\"DISABLE\"},'caption':\"continent_T@World\",'description':\"\",'symbolScalable':false,'subLayers':{},'type':\"UGC\",'datasetInfo':{'charset':null,'isReadOnly':false,'encodeType':null,'recordCount':0,'bounds':{'top':65.22103117946571,'left':-150.51082428252954,'bottom':-84.34257921576281,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571}},'name':\"continent_T\",'isFileCache':false,'description':null,'prjCoordSys':null,'type':\"TEXT\",'dataSourceName':\"World\",'tableName':null},'queryable':false,'opaqueRate':100,'minVisibleGeometrySize':0.4,'name':\"continent_T@World\",'bounds':{'top':65.22103117946571,'left':-150.51082428252954,'bottom':-84.34257921576281,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571}},'style':{'fillGradientOffsetRatioX':0,'markerSize':2.4,'fillForeColor':{'red':208,'green':255,'blue':240,'alpha':255},'fillGradientOffsetRatioY':0,'markerWidth':0,'markerAngle':0,'fillSymbolID':0,'lineColor':{'red':0,'green':128,'blue':0,'alpha':255},'markerSymbolID':0,'lineWidth':0.1,'markerHeight':0,'fillOpaqueRate':100,'fillBackOpaque':true,'fillBackColor':{'red':255,'green':255,'blue':255,'alpha':255},'fillGradientMode':\"NONE\",'lineSymbolID':0,'fillGradientAngle':0},'displayOrderBy':null,'symbolScale':0,'minScale':3.3755954145620026e-9,'representationField':\"\",'colorDictionary':null}]},'type':\"UGC\",'queryable':false,'opaqueRate':100,'minVisibleGeometrySize':0,'name':\"World\",'bounds':{'top':90,'left':-180,'bottom':-90,'leftBottom':{'x':-180,'y':-90},'right':180,'rightTop':{'x':180,'y':90}},'symbolScale':0,'minScale':0,'object':null}]";
-            expect(params).toBe(expectParams);
+        spyOn(FetchRequest, 'put').and.callFake((testUrl) => {
+            expect(testUrl).toBe(url+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json?");
             expect(options).not.toBeNull();
-            var escapedJson = "{\"succeed\":true}";
-            return Promise.resolve(new Response(escapedJson));
+            return Promise.resolve(new Response(`{"succeed":true}`));
         });
         setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         setLayersInfoService.processAsync(layers);

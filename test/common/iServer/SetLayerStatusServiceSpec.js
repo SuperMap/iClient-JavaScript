@@ -1,6 +1,7 @@
 import {SetLayerStatusService} from '../../../src/common/iServer/SetLayerStatusService';
 import {SetLayerStatusParameters} from '../../../src/common/iServer/SetLayerStatusParameters';
 import {LayerStatus} from '../../../src/common/iServer/LayerStatus';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.WorldURL;
 var setLayersStatusEvtArgs = null, setLayersStatusFaildEvtArgs = null;
@@ -80,7 +81,18 @@ describe('SetLayerStatusService_processAsync', () => {
         setLayerStatusParams.layerStatusList.push(layerStatus);
         var processCompleted = (createTempLayerEventArgs) => {
             resourceID = createTempLayerEventArgs.result.newResourceID;
-        }
+        };
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
+            expect(testUrl).toBe(url+"/tempLayersSet.json?");
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_e0d63a4c61b840d1b33852fae49bad11","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/f701028a2b7144b19b582f55c1902b18_e0d63a4c61b840d1b33852fae49bad11.json"}`));
+        });
+        spyOn(FetchRequest, 'put').and.callFake((testUrl,params,options) => {
+            expect(testUrl).toBe(url+"/tempLayersSet/f701028a2b7144b19b582f55c1902b18_e0d63a4c61b840d1b33852fae49bad11.json?elementRemain=true&reference=f701028a2b7144b19b582f55c1902b18_e0d63a4c61b840d1b33852fae49bad11&holdTime=15");
+            expect(params).toContain("\"type\":\"UGC\"");
+            expect(params).toContain("\"name\":\"super\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         setLayerStatusService.events.on({"processCompleted": processCompleted});
         setLayerStatusService.processAsync(setLayerStatusParams);
         setTimeout(() => {

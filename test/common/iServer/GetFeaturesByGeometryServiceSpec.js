@@ -1,7 +1,8 @@
-﻿﻿import {GetFeaturesByGeometryService} from '../../../src/common/iServer/GetFeaturesByGeometryService';
+﻿import {GetFeaturesByGeometryService} from '../../../src/common/iServer/GetFeaturesByGeometryService';
 import {GetFeaturesByGeometryParameters} from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
 import {Point} from '../../../src/common/commontypes/geometry/Point';
 import {SpatialQueryMode} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
@@ -45,6 +46,14 @@ describe('GetFeaturesByGeometryService', () => {
             geometry: point
         });
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_c0db05f011374ee08849a46d9e968d3d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/f701028a2b7144b19b582f55c1902b18_c0db05f011374ee08849a46d9e968d3d.json"}`));
+        });
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
         setTimeout(() => {
             try {
@@ -80,6 +89,14 @@ describe('GetFeaturesByGeometryService', () => {
             spatialQueryMode: SpatialQueryMode.INTERSECT,
             geometry: point
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true");
+            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
         setTimeout(() => {
             try {
@@ -113,6 +130,14 @@ describe('GetFeaturesByGeometryService', () => {
             spatialQueryMode: SpatialQueryMode.INTERSECT,
             geometry: point
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true");
+            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"features":[],"featureUriList":[],"totalCount":0,"featureCount":0}`));
+        });
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
         setTimeout(() => {
             try {
@@ -143,7 +168,16 @@ describe('GetFeaturesByGeometryService', () => {
             spatialQueryMode: SpatialQueryMode.CONTAIN
         });
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'spatialQueryMode':\"CONTAIN\"");
+            expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"getFeatureByBuffer方法中传入的参数为空"}}`));
+        });
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+
         setTimeout(() => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
@@ -175,6 +209,14 @@ describe('GetFeaturesByGeometryService', () => {
             geometry: point
         });
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
+            expect(params).toContain("'datasetNames':[\"World:CountriesNotExsit\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"getFeature方法中数据集名CountriesNotExsit不存在"}}`));
+        });
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
         setTimeout(() => {
             try {

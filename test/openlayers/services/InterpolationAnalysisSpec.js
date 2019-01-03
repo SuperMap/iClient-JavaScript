@@ -7,6 +7,7 @@ import {QueryService} from '../../../src/openlayers/services/QueryService';
 import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import {PixelFormat} from '../../../src/common/REST';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var originalTimeout, serviceResults;
 var sampleServiceUrl = GlobeParameter.spatialAnalystURL;
@@ -39,6 +40,13 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
             bounds: [-2640403.63, 1873792.1, 3247669.39, 5921501.4]
         });
         var spatialAnalystService = new SpatialAnalystService(sampleServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/interpolation/density.json?returnContent=true");
+            expect(params).toContain("'zValueFieldName':\"AVG_TMP\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_density_olTest_6@Interpolation"}`));
+        });
         spatialAnalystService.interpolationAnalysis(interpolationAnalystParameters, (serviceResult) => {
             serviceResults = serviceResult;
             expect(serviceResults).not.toBeNull();
@@ -69,6 +77,13 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
             bounds: [-2640403.63, 1873792.1, 3247669.39, 5921501.4]
         });
         var spatialAnalystService = new SpatialAnalystService(sampleServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/interpolation/idw.json?returnContent=true");
+            expect(params).toContain("'zValueFieldName':\"AVG_TMP\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_IDW_dataset_olTest_5@Interpolation"}`));
+        });
         spatialAnalystService.interpolationAnalysis(interpolationAnalystParameters, (serviceResult) => {
             serviceResults = serviceResult;
             expect(serviceResults).not.toBeNull();
@@ -92,6 +107,14 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
                     attributeFilter: "SMID>0"
                 })
             ]
+        });
+        spyOn(FetchRequest, 'post').and.callFake((url) => {
+            if (url.indexOf("/queryResults.json?returnContent=true") > -1) {
+                return Promise.resolve(new Response(JSON.stringify(interpolationAnalysis_IDW_geometryResultJson)));
+            } else if (url.indexOf("/geometry/interpolation/idw.json?returnContent=true") > -1) {
+                return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_IDW_geometry_olTest_7@Interpolation"}`));
+            }
+            return Promise.resolve();
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (serviceResult) => {
             var result = serviceResult.result;
@@ -138,14 +161,4 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
         });
     });
 
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult_density = GlobeParameter.dataspatialAnalystURL + resultDataset_density;
-        var testResult_IDW_dataset = GlobeParameter.dataspatialAnalystURL + resultDataset_IDW_dataset;
-        var testResult_IDW_geometry = GlobeParameter.dataspatialAnalystURL + resultDataset_IDW_geometry;
-        request.delete(testResult_density);
-        request.delete(testResult_IDW_dataset);
-        request.delete(testResult_IDW_geometry);
-        done();
-    });
 });

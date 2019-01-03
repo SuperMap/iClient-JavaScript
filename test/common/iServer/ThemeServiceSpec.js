@@ -31,6 +31,7 @@ import {GraduatedMode} from '../../../src/common/REST';
 import {ThemeGraphType} from '../../../src/common/REST';
 import {JoinType} from '../../../src/common/REST';
 import {LabelBackShape} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var mapServiceURL = GlobeParameter.mapServiceURL,
     themeURL = mapServiceURL + "World Map";
@@ -112,6 +113,13 @@ describe('ThemeService', () => {
             joinItems: null,
             themes: new Array(themeRange)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+        });
         themeService.processAsync(themeParameters);
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
 
@@ -180,8 +188,14 @@ describe('ThemeService', () => {
             joinItems: null,
             themes: new Array(themeRange)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+        });
         themeService.processAsync(themeParameters);
-
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -291,6 +305,13 @@ describe('ThemeService', () => {
             joinItems: null,
             themes: new Array(themeRange)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+        });
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
         themeService.processAsync(themeParameters);
 
@@ -356,6 +377,13 @@ describe('ThemeService', () => {
             dataSourceNames: new Array("World"),
             joinItems: null,
             themes: new Array(themeGraph)
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
@@ -444,6 +472,13 @@ describe('ThemeService', () => {
             joinItems: [joinItem],//new Array(joinItem)
             themes: new Array(themeRange)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+        });
         themeService.processAsync(themeParameters);
 
         setTimeout(() => {
@@ -521,6 +556,13 @@ describe('ThemeService', () => {
             dataSourceNames: new Array("World"),
             joinItems: null,
             themes: new Array(themeUnique)
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
 
@@ -608,6 +650,13 @@ describe('ThemeService', () => {
             joinItems: null,
             themes: new Array(themeUnique)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+        });
         themeService.processAsync(themeParameters);
 
         setTimeout(() => {
@@ -666,6 +715,13 @@ describe('ThemeService', () => {
             dataSourceNames: new Array("World"),
             joinItems: null,
             themes: new Array(themeLabel)
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
 
@@ -763,6 +819,13 @@ describe('ThemeService', () => {
             dataSourceNames: new Array("World"),
             joinItems: null,
             themes: new Array(themeLabel)
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
 
@@ -889,6 +952,13 @@ describe('ThemeService', () => {
             joinItems: null,
             themes: new Array(themeLabel)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+        });
         themeService.processAsync(themeParameters);
 
         setTimeout(() => {
@@ -955,6 +1025,13 @@ describe('ThemeService', () => {
             joinItems: null,
             themes: new Array(themeLabel)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+        });
         themeService.processAsync(themeParameters);
 
         setTimeout(() => {
@@ -1016,6 +1093,13 @@ describe('ThemeService', () => {
             dataSourceNames: new Array("World"),
             joinItems: null,
             themes: new Array(themeLabel)
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
 
@@ -1096,6 +1180,13 @@ describe('ThemeService', () => {
             joinItems: null,
             themes: new Array(themeRange)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+        });
         themeService.processAsync(themeParameters);
 
         setTimeout(() => {
@@ -1142,6 +1233,13 @@ describe('ThemeService', () => {
             dataSourceNames: new Array("World"),
             joinItems: null,
             themes: new Array(themeDotDensity)
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
         themeService.processAsync(themeParameters);
@@ -1201,6 +1299,13 @@ describe('ThemeService', () => {
             joinItems: null,
             themes: new Array(themeGradSym)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'dataSourceName': 'World'");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_99b6f193020345299d393ad187479086","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_99b6f193020345299d393ad187479086.json"}`));
+        });
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
         themeService.processAsync(themeParameters);
 
@@ -1239,6 +1344,13 @@ describe('ThemeService', () => {
             joinItems: null,
             themes: new Array(themeRange)
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
+            expect(params).toContain("'rangeParameter':3");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_93b0a3946d6b48e68778706bbf19d33d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_93b0a3946d6b48e68778706bbf19d33d.json"}`));
+        });
         themeService.processAsync(themeParameters);
 
         setTimeout(() => {
@@ -1262,7 +1374,7 @@ describe('ThemeService', () => {
                 done();
             }
         }, 2000);
-    })
+    });
 
     it('ThemeUniqueItem', () => {
         var themeUniqueItem = new ThemeUniqueItem({

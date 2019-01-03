@@ -1,5 +1,6 @@
 import {TransferPathService} from '../../../src/common/iServer/TransferPathService';
 import {TransferPathParameters} from '../../../src/common/iServer/TransferPathParameters';
+import {FetchRequest} from "@supermap/iclient-common";
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
 var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
@@ -55,16 +56,19 @@ describe('TransferPathService', () => {
             ],
             points: [175, 164]
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("GET");
+            return Promise.resolve(new Response(JSON.stringify(transferPathServiceResult)));
+        });
         service.processAsync(params);
-
         setTimeout(() => {
             try {
                 var result = analystEventArgsSystem.result;
                 expect(result).not.toBeNull();
                 expect(result.succeed).toBeTruthy();
                 expect(result.items.length).toBeGreaterThan(0);
-                expect(result.count).toEqual(4);
-                expect(result.totalDistance).toEqual(3732.3529872895324);
+                expect(result.count).toEqual(1);
+                expect(result.totalDistance).toBeCloseTo(3732.3529872895324);
                 service.destroy();
                 expect(service.events).toBeNull();
                 expect(service.eventListeners).toBeNull();

@@ -1,4 +1,4 @@
-﻿﻿import {MeasureService} from '../../../src/common/iServer/MeasureService';
+﻿import {MeasureService} from '../../../src/common/iServer/MeasureService';
 import {MeasureParameters} from '../../../src/common/iServer/MeasureParameters';
 import {Point} from '../../../src/common/commontypes/geometry/Point';
 import {LineString} from '../../../src/common/commontypes/geometry/LineString';
@@ -6,6 +6,7 @@ import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
 import {Polygon} from '../../../src/common/commontypes/geometry/Polygon';
 import {MeasureMode} from '../../../src/common/REST';
 import {Unit} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var mapServiceURL = GlobeParameter.mapServiceURL;
 var worldMapURL = mapServiceURL + "World Map";
@@ -49,6 +50,10 @@ describe('MeasureService', () => {
         var measureParameters = new MeasureParameters(geometry);
         expect(measureService).not.toBeNull();
         expect(measureService.url).toEqual(worldMapURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("GET");
+            return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance":1565109.0991230179}`));
+        });
         measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
         measureService.processAsync(measureParameters);
         setTimeout(() => {
@@ -86,6 +91,10 @@ describe('MeasureService', () => {
             'processCompleted': measureCompleted,
             'processFailed': measureFailed
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("GET");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 point2Ds 不合法，必须至少包含两个二维点"}}`));
+        });
         measureService.processAsync(measureParameters);
 
         setTimeout(() => {
@@ -116,6 +125,10 @@ describe('MeasureService', () => {
         var geometry = new LineString(points);
         var measureParameters = new MeasureParameters(geometry);
         measureParameters.unit = "error";
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("GET");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"No enum constant com.supermap.services.components.commontypes.Unit.error"}}`));
+        });
         measureService.events.on({
             'processCompleted': measureCompleted,
             'processFailed': measureFailed
@@ -154,6 +167,10 @@ describe('MeasureService', () => {
         ];
         var geometry = new Polygon(new LinearRing(points));
         var measureParameters = new MeasureParameters(geometry);
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("GET");
+            return Promise.resolve(new Response(`{"area":6.170492166191235E11,"unit":"METER","distance":-1}`));
+        });
         measureService.processAsync(measureParameters);
 
         setTimeout(() => {
@@ -186,6 +203,10 @@ describe('MeasureService', () => {
         ];
         var geometry = new Polygon(new LinearRing(points));
         var measureParameters = new MeasureParameters(geometry);
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("GET");
+            return Promise.resolve(new Response(`{"area":0,"unit":"METER","distance":-1}`));
+        });
         measureService.processAsync(measureParameters);
 
         setTimeout(() => {
@@ -214,6 +235,10 @@ describe('MeasureService', () => {
         var points = [new Point(0, 0), new Point(10, 10)];
         var geometry = new LineString(points);
         var measureParameters = new MeasureParameters(geometry);
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("GET");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"传入参数 points 的长度小于3。"}}`));
+        });
         measureService.processAsync(measureParameters);
 
         setTimeout(() => {
@@ -244,6 +269,10 @@ describe('MeasureService', () => {
         //服务端缺陷,new Point(20, 20),new Point(0, 0)
         var geometry = new Polygon(new LinearRing(points));
         var measureParameters = new MeasureParameters(geometry, {unit: Unit.KILOMETER});
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("GET");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"资源不存在"}}`));
+        });
         measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
         measureService.processAsync(measureParameters);
 

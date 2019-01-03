@@ -1,6 +1,7 @@
 import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
 import {MathExpressionAnalysisParameters} from '../../../src/common/iServer/MathExpressionAnalysisParameters';
 import request from 'request';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -30,6 +31,13 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', () => {
             deleteExistResultDataset: true
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
+            expect(params).toContain("'expression':\"[Jingjin.JingjinTerrain] + 600\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"MathExpression_mapboxglTest@Jingjin"}`));
+        });
         service.mathExpressionAnalysis(mathExpressionAnalysisParameters, (result) => {
             serviceResult = result;
         });
@@ -60,6 +68,13 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', () => {
             deleteExistResultDataset: false
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
+            expect(params).toContain("'expression':\"[Jingjin.JingjinTerrain] + 600\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集MathExpression_mapboxglTest@Jingjin已存在。"}}`));
+        });
         service.mathExpressionAnalysis(mathExpressionAnalysisParameters, (result) => {
             serviceResult = result;
         });
@@ -79,10 +94,4 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', () => {
         }, 8000);
     });
 
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datajingjinURL + resultDataset;
-        request.delete(testResult);
-        done();
-    });
 });

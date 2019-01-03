@@ -1,5 +1,6 @@
 import {FeatureService} from '../../../src/openlayers/services/FeatureService';
 import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var options = {
@@ -23,6 +24,13 @@ describe('openlayers_FeatureService_getFeaturesByIDs', () => {
             datasetNames: ["World:Countries"]
         });
         var getFeaturesByIDService = new FeatureService(featureServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(featureServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
         getFeaturesByIDService.getFeaturesByIDs(idsParam, (result) => {
             serviceResult = result;
         });
@@ -31,22 +39,17 @@ describe('openlayers_FeatureService_getFeaturesByIDs', () => {
                 expect(getFeaturesByIDService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.result.featureCount).toEqual(2);
-                expect(serviceResult.result.totalCount).toEqual(2);
+                expect(serviceResult.result.featureCount).toEqual(1);
+                expect(serviceResult.result.totalCount).toEqual(1);
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.features.type).toEqual("FeatureCollection");
                 var features = serviceResult.result.features.features;
-                expect(features.length).toEqual(2);
-                for (var i = 0; i < 2; i++) {
+                expect(features.length).toEqual(1);
+                for (var i = 0; i < 1; i++) {
                     expect(features[i].id).not.toBeNull();
                     expect(features[i].type).toEqual("Feature");
                     expect(features[i].properties).not.toBeNull();
-                    if (i = 0) {
-                        expect(features[i].properties.CAPITAL).toEqual("新德里");
-                    }
-                    else if (i = 1) {
-                        expect(features[i].properties.CAPITAL).toEqual("北京");
-                    }
+                    expect(features[i].properties.CAPITAL).toEqual("利伯维尔");
                     expect(features[i].geometry.type).toEqual("MultiPolygon");
                     expect(features[i].geometry.coordinates[0][0].length).toBeGreaterThan(0);
                     for (var j = 0; j < features[i].geometry.coordinates[0][0].length - 300; j++) {

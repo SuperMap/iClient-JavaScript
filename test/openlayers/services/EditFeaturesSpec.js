@@ -2,6 +2,7 @@ import ol from 'openlayers';
 import {FeatureService} from '../../../src/openlayers/services/FeatureService';
 import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
 import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
@@ -35,6 +36,14 @@ describe('openlayers_FeatureService_editFeatures', () => {
             returnContent: true
         });
         var featureService = new FeatureService(featureServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("{'fieldNames':[\"POP\",\"CAPITAL\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`[238]`));
+        });
         featureService.editFeatures(addFeatureParams, (result) => {
             serviceResult = result;
         });
@@ -76,6 +85,14 @@ describe('openlayers_FeatureService_editFeatures', () => {
             isUseBatch: true
         });
         var featureService = new FeatureService(featureServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features.json?isUseBatch=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("{'fieldNames':[\"POP\",\"CAPITAL\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","succeed":true}`));
+        });
         featureService.editFeatures(addFeatureParams, (result) => {
             serviceResult = result;
         });
@@ -115,6 +132,13 @@ describe('openlayers_FeatureService_editFeatures', () => {
             editType: "delete"
         });
         var featureService = new FeatureService(featureServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("DELETE");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features.json?ids=[238,239,240]");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         featureService.editFeatures(deleteFeatureParams, (result) => {
             serviceResult = result;
         });
@@ -147,6 +171,13 @@ describe('openlayers_FeatureService_editFeatures', () => {
             editType: "delete"
         });
         var featureService = new FeatureService(featureServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("DELETE");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features.json?ids=[241]");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"the specified features does not exist"}}`));
+        });
         featureService.editFeatures(deleteFeatureParams, (result) => {
             serviceResult = result;
         });
@@ -176,6 +207,14 @@ describe('openlayers_FeatureService_editFeatures', () => {
             IDs: [1]
         });
         var getFeaturesByIDsService = new FeatureService(editServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'datasetNames':[\"Jingjin:Landuse_R\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeatureResultJson)));
+        });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             getFeatureResult = result
         });
@@ -208,6 +247,13 @@ describe('openlayers_FeatureService_editFeatures', () => {
                 dataSetName: "Landuse_R",
                 features: data,
                 editType: "update"
+            });
+            spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+                expect(method).toBe("PUT");
+                expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features.json?");
+                expect(params).not.toBeNull();
+                expect(options).not.toBeNull();
+                return Promise.resolve(new Response(`{"succeed":true}`));
             });
             updateFeaturesService.editFeatures(updateFeaturesParams, (result) => {
                 updateFeatureResult = result

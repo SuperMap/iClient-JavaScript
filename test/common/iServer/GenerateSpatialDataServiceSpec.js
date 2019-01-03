@@ -1,4 +1,4 @@
-﻿﻿import {GenerateSpatialDataService} from '../../../src/common/iServer/GenerateSpatialDataService';
+﻿import {GenerateSpatialDataService} from '../../../src/common/iServer/GenerateSpatialDataService';
 import {GenerateSpatialDataParameters} from '../../../src/common/iServer/GenerateSpatialDataParameters';
 import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
 import {DataReturnMode} from '../../../src/common/REST';
@@ -225,88 +225,89 @@ describe('GenerateSpatialDataService', () => {
 
     // 点事件表数据集动态分段,设置deleteExistResultDataset=false，并且设置一个已存在的数据集名称。
     // deleteExistResultDataset=false时期望失败，但其实成功了，iserver中此处未走checkDatasetExist逻辑，不知是预期还是错误。
-    //xit('PointEventTable_deleteExistResultDataset=false', (done)=> {
-    //    var dataRtnOption = new DataReturnOption({
-    //        dataset: resultDataset_Point_DATASET,
-    //        deleteExistResultDataset: false,
-    //        dataReturnMode: DataReturnMode.DATASET_ONLY
-    //    });
-    //    var generateSpatialDataParameters = new GenerateSpatialDataParameters({
-    //        routeTable: "RouteDT_road@Changchun",
-    //        routeIDField: "RouteID",
-    //        eventTable: "PointEventTabDT@Changchun",
-    //        eventRouteIDField: "RouteID",
-    //        measureField: "measure",
-    //        measureStartField: null,
-    //        measureEndField: null,
-    //        measureOffsetField: "",
-    //        errorInfoField: "",
-    //        dataReturnOption: dataRtnOption
-    //    });
-    //    var generateSpatialDataService = initGenerateSpatialDataService();
-    //    generateSpatialDataService.processAsync(generateSpatialDataParameters);
-    //    setTimeout(()=> {
-    //        try {
-    //            expect(completedEventArgsSystem).toBeNull();
-    //            expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();
-    //            expect(failedEventArgsSystem.error.code).toEqual(400);
-    //            generateSpatialDataService.destroy();
-    //            expect(generateSpatialDataService.EVENT_TYPES).toBeNull();
-    //            expect(generateSpatialDataService.events).toBeNull();
-    //            expect(generateSpatialDataService.eventListeners).toBeNull();
-    //            generateSpatialDataParameters.destroy();
-    //            done();
-    //        } catch (exception) {
-    //            expect(false).toBeTruthy();
-    //            console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
-    //            generateSpatialDataService.destroy();
-    //            generateSpatialDataParameters.destroy();
-    //            done();
-    //        }
-    //    }, 2000)
-    //});
-
-    // 线事件表数据集动态分段,设置deleteExistResultDataset=false，并且设置一个已存在的数据集名称。
-    // deleteExistResultDataset=false时期望失败，但其实成功了，iserver中此处未走checkDatasetExist逻辑，不知是预期还是错误。
-    //xit('LinearEventTable_deleteExistResultDataset_false', (done)=> {
-    //    var generateSpatialDataService = initGenerateSpatialDataService();
-    //    var dataRtnOption = new DataReturnOption({
-    //        expectCount: 2000,
-    //        dataset: "generateSpatialData",
-    //        deleteExistResultDataset: false,
-    //        dataReturnMode: DataReturnMode.DATASET_AND_RECORDSET
-    //    });
-    //    var generateSpatialDataParameters = new GenerateSpatialDataParameters({
-    //        routeTable: "RouteDT_road@Changchun",
-    //        routeIDField: "RouteID",
-    //        eventTable: "LinearEventTabDT@Changchun",
-    //        eventRouteIDField: "RouteID",
-    //        measureField: "",
-    //        measureStartField: "LineMeasureFrom",
-    //        measureEndField: "",
-    //        measureOffsetField: "",
-    //        errorInfoField: "",
-    //        dataReturnOption: dataRtnOption
-    //    });
-    //    generateSpatialDataService.processAsync(generateSpatialDataParameters);
-    //    setTimeout(()=> {
-    //        try {
-    //            expect(failedEventArgsSystem.error.code).toEqual(400);
-    //            expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();
-    //            generateSpatialDataService.destroy();
-    //            expect(generateSpatialDataService.EVENT_TYPES).toBeNull();
-    //            expect(generateSpatialDataService.events).toBeNull();
-    //            expect(generateSpatialDataService.eventListeners).toBeNull();
-    //            generateSpatialDataParameters.destroy();
-    //            done();
-    //        } catch (exception) {
-    //            expect(false).toBeTruthy();
-    //            console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
-    //            generateSpatialDataService.destroy();
-    //            generateSpatialDataParameters.destroy();
-    //            done();
-    //        }
-    //    }, 2000)
-    //});
+    // xit('PointEventTable_deleteExistResultDataset=false', (done) => {
+    //     var resultDataset_Point_DATASET = "GenerateSpatial_Point_DS_Test";
+    //     var dataRtnOption = new DataReturnOption({
+    //         dataset: resultDataset_Point_DATASET,
+    //         deleteExistResultDataset: false,
+    //         dataReturnMode: DataReturnMode.DATASET_ONLY
+    //     });
+    //     var generateSpatialDataParameters = new GenerateSpatialDataParameters({
+    //         routeTable: "RouteDT_road@Changchun",
+    //         routeIDField: "RouteID",
+    //         eventTable: "PointEventTabDT@Changchun",
+    //         eventRouteIDField: "RouteID",
+    //         measureField: "measure",
+    //         measureStartField: null,
+    //         measureEndField: null,
+    //         measureOffsetField: "",
+    //         errorInfoField: "",
+    //         dataReturnOption: dataRtnOption
+    //     });
+    //     var generateSpatialDataService = initGenerateSpatialDataService();
+    //     generateSpatialDataService.processAsync(generateSpatialDataParameters);
+    //     setTimeout(() => {
+    //         try {
+    //             expect(completedEventArgsSystem).toBeNull();
+    //             expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();
+    //             expect(failedEventArgsSystem.error.code).toEqual(400);
+    //             generateSpatialDataService.destroy();
+    //             expect(generateSpatialDataService.EVENT_TYPES).toBeNull();
+    //             expect(generateSpatialDataService.events).toBeNull();
+    //             expect(generateSpatialDataService.eventListeners).toBeNull();
+    //             generateSpatialDataParameters.destroy();
+    //             done();
+    //         } catch (exception) {
+    //             expect(false).toBeTruthy();
+    //             console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
+    //             generateSpatialDataService.destroy();
+    //             generateSpatialDataParameters.destroy();
+    //             done();
+    //         }
+    //     }, 2000)
+    // });
+    //
+    // // 线事件表数据集动态分段,设置deleteExistResultDataset=false，并且设置一个已存在的数据集名称。
+    // // deleteExistResultDataset=false时期望失败，但其实成功了，iserver中此处未走checkDatasetExist逻辑，不知是预期还是错误。
+    // xit('LinearEventTable_deleteExistResultDataset_false', (done) => {
+    //     var generateSpatialDataService = initGenerateSpatialDataService();
+    //     var dataRtnOption = new DataReturnOption({
+    //         expectCount: 2000,
+    //         dataset: "generateSpatialData",
+    //         deleteExistResultDataset: false,
+    //         dataReturnMode: DataReturnMode.DATASET_AND_RECORDSET
+    //     });
+    //     var generateSpatialDataParameters = new GenerateSpatialDataParameters({
+    //         routeTable: "RouteDT_road@Changchun",
+    //         routeIDField: "RouteID",
+    //         eventTable: "LinearEventTabDT@Changchun",
+    //         eventRouteIDField: "RouteID",
+    //         measureField: "",
+    //         measureStartField: "LineMeasureFrom",
+    //         measureEndField: "",
+    //         measureOffsetField: "",
+    //         errorInfoField: "",
+    //         dataReturnOption: dataRtnOption
+    //     });
+    //     generateSpatialDataService.processAsync(generateSpatialDataParameters);
+    //     setTimeout(() => {
+    //         try {
+    //             expect(failedEventArgsSystem.error.code).toEqual(400);
+    //             expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();
+    //             generateSpatialDataService.destroy();
+    //             expect(generateSpatialDataService.EVENT_TYPES).toBeNull();
+    //             expect(generateSpatialDataService.events).toBeNull();
+    //             expect(generateSpatialDataService.eventListeners).toBeNull();
+    //             generateSpatialDataParameters.destroy();
+    //             done();
+    //         } catch (exception) {
+    //             expect(false).toBeTruthy();
+    //             console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
+    //             generateSpatialDataService.destroy();
+    //             generateSpatialDataParameters.destroy();
+    //             done();
+    //         }
+    //     }, 2000)
+    // });
 });
 

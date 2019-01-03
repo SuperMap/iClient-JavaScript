@@ -1,8 +1,9 @@
-﻿﻿import {FindTSPPathsService} from '../../../src/common/iServer/FindTSPPathsService';
+﻿import {FindTSPPathsService} from '../../../src/common/iServer/FindTSPPathsService';
 import {FindTSPPathsParameters} from '../../../src/common/iServer/FindTSPPathsParameters';
 import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
 import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
 import {Point} from '../../../src/common/commontypes/geometry/Point';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 //服务初始化时注册事件监听函数
 var url = GlobeParameter.networkAnalystURL;
@@ -60,6 +61,9 @@ describe('FindTSPPathsService', () => {
             parameter: analystParameter
         });
         var findTSPPathsService = initFindTSPPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(JSON.stringify(findTSPPathsResultJson)))
+        });
         findTSPPathsService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -75,10 +79,10 @@ describe('FindTSPPathsService', () => {
                     expect(analystResult[0].edgeFeatures.features[i].id).not.toBeNull();
                     expect(analystResult[0].edgeFeatures.features[i].properties).not.toBeNull();
                 }
-                expect(analystResult[0].edgeFeatures.features[0].id).toEqual(2886);
+                expect(analystResult[0].edgeFeatures.features[0].id).toEqual(6569);
                 expect(analystResult[0].edgeFeatures.features[0].geometry.type).toBe("LineString");
                 expect(analystResult[0].edgeFeatures.features[0].geometry.coordinates.length).toBeGreaterThan(0);
-                expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(2886);
+                expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(6569);
                 expect(analystResult[0].nodeFeatures).not.toBeNull();
                 expect(analystResult[0].nodeFeatures.type).toEqual("FeatureCollection");
                 expect(analystResult[0].nodeFeatures.features).not.toBeNull();
@@ -89,10 +93,10 @@ describe('FindTSPPathsService', () => {
                     expect(analystResult[0].nodeFeatures.features[j].id).not.toBeNull();
                     expect(analystResult[0].nodeFeatures.features[j].properties).not.toBeNull();
                 }
-                expect(analystResult[0].nodeFeatures.features[0].id).toEqual(3030);
+                expect(analystResult[0].nodeFeatures.features[0].id).toEqual(1575);
                 expect(analystResult[0].nodeFeatures.features[0].geometry.type).toBe("Point");
                 expect(analystResult[0].nodeFeatures.features[0].geometry.coordinates.length).toBeGreaterThan(0);
-                expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(3030);
+                expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(1575);
                 expect(analystResult[0].pathGuideItems).not.toBeNull();
                 expect(analystResult[0].pathGuideItems.type).toBe("FeatureCollection");
                 expect(analystResult[0].pathGuideItems.features.length).toBeGreaterThan(0);
@@ -139,6 +143,9 @@ describe('FindTSPPathsService', () => {
             parameter: analystParameter
         });
         var findTSPPathsService = initFindTSPPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数nodes 不是有效的JSON 字符串对象"}}`))
+        });
         findTSPPathsService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -184,6 +191,9 @@ describe('FindTSPPathsService', () => {
             parameter: analystParameter
         });
         var findTSPPathsService = initFindTSPPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findTSPPath 操作时出错,原因是：权重字段TurnCost1不存在。 "}}`))
+        });
         findTSPPathsService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -250,6 +260,9 @@ describe('FindTSPPathsService', () => {
             parameter: analystParameter
         });
         var findTSPPathsService = initFindTSPPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`tsppath`))
+        });
         findTSPPathsService.processAsync(parameter);
         setTimeout(() => {
             try {

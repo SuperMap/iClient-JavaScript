@@ -33,7 +33,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
             expect(params).toContain("'queryMode':'BoundsQuery'");
             expect(params).toContain("'bounds': {'rightTop':{'y':39,'x':60},'leftBottom':{'y':0,'x':0}}");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(queryByBoundsEscapeJson)));
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
@@ -51,8 +51,8 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 expect(serviceResult.result.totalCount).toEqual(serviceResult.result.currentCount);
                 expect(serviceResult.result.recordsets.length).toBeGreaterThan(0);
                 expect(serviceResult.result.recordsets[0].datasetName).toBe("Capitals@World");
-                expect(serviceResult.result.recordsets[0].fieldCaptions.length).toEqual(16);
-                expect(serviceResult.result.recordsets[0].fieldTypes.length).toEqual(16);
+                expect(serviceResult.result.recordsets[0].fieldCaptions.length).toEqual(2);
+                expect(serviceResult.result.recordsets[0].fieldTypes.length).toEqual(2);
                 expect(serviceResult.result.recordsets[0].features.type).toBe("FeatureCollection");
                 expect(serviceResult.result.recordsets[0].features.features.length).toEqual(serviceResult.result.totalCount);
                 for (var i = 0; i < serviceResult.result.recordsets[0].features.features.length; i++) {
@@ -61,23 +61,9 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.coordinates.length).toEqual(2);
                 }
                 expect(serviceResult.result.recordsets[0].features.features[0].properties).toEqual(Object({
-                    CAPITAL: "圣多美",
-                    CAPITAL_CH: "圣多美",
-                    CAPITAL_EN: "Sao Tome",
-                    CAPITAL_LO: "São Tomé",
-                    CAP_POP: "53300.0",
-                    COUNTRY: "圣多美和普林西比",
-                    COUNTRY_CH: "圣多美和普林西比",
-                    COUNTRY_EN: "Sao Tome & Principe",
-                    ID: 19,
-                    POP: "53300.0",
-                    SmGeometrySize: "16",
-                    SmID: "19",
-                    SmLibTileID: "1",
-                    SmUserID: "0",
-                    SmX: "6.728004415891377",
-                    SmY: "0.33699598913014484",
-                    USERID: "0"
+                    CAPITAL: "拉巴斯",
+                    ID: 59,
+                    SmID: "59"
                 }));
                 queryByBoundsService.destroy();
                 done();

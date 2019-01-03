@@ -37,7 +37,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
             expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
             expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(getFeasByBuffer));
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
             serviceResult = result
@@ -53,30 +53,16 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
                 expect(serviceResult.result.featureCount).toBeGreaterThan(0);
                 expect(serviceResult.result.totalCount).toBeGreaterThan(0);
                 expect(serviceResult.result.features.type).toBe("FeatureCollection");
-                expect(serviceResult.result.features.features.length).toEqual(3);
+                expect(serviceResult.result.features.features.length).toEqual(1);
                 for (var i = 0; i < serviceResult.result.features.features.length; i++) {
                     expect(serviceResult.result.features.features[i].type).toBe("Feature");
-                    expect(serviceResult.result.features.features[i].geometry.type).toBe("Point");
+                    expect(serviceResult.result.features.features[i].geometry.type).toBe("MultiPolygon");
                     expect(serviceResult.result.features.features[i].geometry.coordinates.length).toEqual(2);
                 }
                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
-                    CAPITAL: "蒙罗维亚",
-                    CAPITAL_CH: "蒙罗维亚",
-                    CAPITAL_EN: "Monrovia",
-                    CAPITAL_LO: "Monrovia",
-                    CAP_POP: "939524.0",
-                    COUNTRY: "利比里亚",
-                    COUNTRY_CH: "利比里亚",
-                    COUNTRY_EN: "Liberia",
-                    ID: 18,
-                    POP: "939524.0",
-                    SMGEOMETRYSIZE: "16",
-                    SMID: "18",
-                    SMLIBTILEID: "1",
-                    SMUSERID: "0",
-                    SMX: "-10.797002688415517",
-                    SMY: "6.300998929176444",
-                    USERID: "0"
+                    ID: 127,
+                    SMID: '127',
+                    CAPITAL: "利伯维尔"
                 }));
                 getFeaturesByBufferService.destroy();
                 done();

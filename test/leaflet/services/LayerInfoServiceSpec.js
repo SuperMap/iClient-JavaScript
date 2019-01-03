@@ -114,7 +114,7 @@ describe('leaflet_LayerInfoService', () => {
                 expect(layerService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toBe(true);
+                expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.newResourceID).not.toBeNull();
                 layerService.destroy();
                 done();
@@ -187,7 +187,7 @@ describe('leaflet_LayerInfoService', () => {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toEqual(true);
+                expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.object.resourceID).toEqual(id);
                 expect(serviceResult.object.options.method).toEqual("PUT");
                 expect(serviceResult.object.options.data).toContain("'description':\"test\"");

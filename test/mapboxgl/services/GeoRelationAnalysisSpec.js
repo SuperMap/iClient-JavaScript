@@ -2,6 +2,7 @@ import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnaly
 import {GeoRelationAnalystParameters} from '../../../src/common/iServer/GeoRelationAnalystParameters';
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import {SpatialRelationType} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 describe('mapboxgl_SpatialAnalystService_geoRelationAnalysis', () => {
@@ -33,6 +34,15 @@ describe('mapboxgl_SpatialAnalystService_geoRelationAnalysis', () => {
             returnGeoRelatedOnly: true
         });
         var service = new SpatialAnalystService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation.json?returnContent=true");
+            expect(params).toContain("'expectCount':5");
+            expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
+            expect(options).not.toBeNull();
+            var geoRelationAnalystEscapedJson = `[{"result":[1],"count":1,"source":1},{"result":[1],"count":1,"source":2},{"result":[1],"count":1,"source":3},{"result":[1],"count":1,"source":4},{"result":[1],"count":1,"source":5}]`;
+            return Promise.resolve(new Response(geoRelationAnalystEscapedJson));
+        });
         service.geoRelationAnalysis(geoRelationAnalystParameters, (result) => {
             serviceResult = result;
         });

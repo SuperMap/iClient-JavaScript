@@ -15,6 +15,7 @@ import {BufferEndType} from '../../../src/common/REST';
 import {OverlayOperationType} from '../../../src/common/REST';
 import {SmoothMethod} from '../../../src/common/REST';
 import {SurfaceAnalystMethod} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL;
 var serviceFailedEventArgsSystem = null;
@@ -172,6 +173,13 @@ describe("GeometryBatchAnalystService", () => {
         };*/
 
         var geometryBatchAnalystParameters = [bufferBatchAnalystParameter, OverlayBatchAnalystParameters, geometrySurfaceAnalystParams, interpolationIDWAnalystParams];
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true");
+            expect(params).toContain("'smoothMethod':\"BSPLINE\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(geometryBatchAnalystCommonResultJson)));
+        });
         geometryBatchAnalystService.processAsync(geometryBatchAnalystParameters);
 
         setTimeout(() => {

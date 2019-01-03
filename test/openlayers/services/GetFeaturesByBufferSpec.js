@@ -34,7 +34,7 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(featureServiceURL + "/featureResults.json?returnContent=true&fromIndex=1&toIndex=3");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(getFeasByBuffer));
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, (testResult) => {
             serviceResult = testResult;
@@ -43,18 +43,16 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
             expect(serviceResult.object.format).toBe("GEOJSON");
             var result = serviceResult.result;
             expect(result.succeed).toBe(true);
-            expect(result.featureCount).toEqual(29);
-            expect(result.totalCount).toEqual(29);
+            expect(result.featureCount).toEqual(1);
+            expect(result.totalCount).toEqual(1);
             expect(serviceResult.result.features.type).toEqual("FeatureCollection");
             var features = result.features.features;
-            expect(features.length).toEqual(3);
-            expect(features[0].id).toEqual(18);
-            expect(features[1].id).toEqual(19);
-            expect(features[2].id).toEqual(20);
+            expect(features.length).toEqual(1);
+            expect(features[0].id).toEqual(127);
             for (var i = 0; i < features.length; i++) {
                 expect(features[i].type).toEqual("Feature");
                 expect(features[i].properties).not.toBeNull();
-                expect(features[i].geometry.type).toEqual("Point");
+                expect(features[i].geometry.type).toEqual("MultiPolygon");
                 expect(features[i].geometry.coordinates.length).toEqual(2);
             }
             bufferParam.destroy();

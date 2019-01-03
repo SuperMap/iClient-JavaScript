@@ -1,5 +1,6 @@
 import {RouteCalculateMeasureService} from '../../../src/common/iServer/RouteCalculateMeasureService';
 import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var routeCalculateMeasureEventArgsSystem = null, serviceFailedEventArgsSystem = null;
@@ -71,6 +72,13 @@ describe('RouteCalculateMeasureService', () => {
             "isIgnoreGap": false
         });
         var calculateMeasureService = initCalculateMeasureService();
+        spyOn(FetchRequest, 'post').and.callFake((url, params, options) => {
+            expect(url).toBe(spatialAnalystURL + "/geometry/calculatemeasure.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'type':\"LINEM\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"measure":532.1658053450747,"succeed":true,"message":null}`));
+        });
         calculateMeasureService.processAsync(parameters);
 
         setTimeout(() => {

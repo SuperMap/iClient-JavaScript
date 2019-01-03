@@ -1,6 +1,7 @@
 import {MathExpressionAnalysisService} from '../../../src/common/iServer/MathExpressionAnalysisService';
 import {MathExpressionAnalysisParameters} from '../../../src/common/iServer/MathExpressionAnalysisParameters';
 import request from 'request';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
@@ -44,6 +45,13 @@ describe('MathExpressionAnalysisService', () => {
             resultGridName: resultDataset,
             deleteExistResultDataset: true
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
+            expect(params).toContain("'expression':\"[Jingjin.JingjinTerrain] + 600\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"MathExpression_commonTest@Jingjin"}`));
+        });
         mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
         mathExpressionAnalysisService.events.on({"processCompleted": MathExpressionAnalysisServiceCompleted});
         setTimeout(() => {
@@ -77,6 +85,13 @@ describe('MathExpressionAnalysisService', () => {
             resultGridName: "MathExpressionFail_commonTest",
             deleteExistResultDataset: true
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/XX@Jingjin/mathanalyst.json?returnContent=true");
+            expect(params).toContain("'expression':\"[Jingjin.JingjinTerrain] + 600\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集XX@Jingjin不存在"}}`));
+        });
         mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
         mathExpressionAnalysisService.events.on({"processFailed": MathExpressionAnalysisServiceFailed});
         setTimeout(() => {
@@ -95,13 +110,6 @@ describe('MathExpressionAnalysisService', () => {
                 done();
             }
         }, 6000);
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datajingjinURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });
 

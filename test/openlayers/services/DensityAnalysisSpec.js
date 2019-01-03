@@ -1,7 +1,7 @@
 import request from 'request';
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {DensityKernelAnalystParameters} from '../../../src/common/iServer/DensityKernelAnalystParameters';
-import {FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var originalTimeout, serviceResults;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
@@ -30,8 +30,8 @@ describe('openlayers_SpatialAnalystService_densityAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(changchunServiceUrl + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
-            var expectParams = `{'bounds':{'left':3800,'bottom':-3800,'right':8200,'top':-2200,'centerLonLat':null},'fieldName':"SmLength",'resultGridDatasetResolution':null,'searchRadius':50,'targetDatasource':null,'resultGridName':"KernelDensity_openlayersTest",'deleteExistResultDataset':true}`;
-            expect(params).toBe(expectParams);
+            expect(params).toContain("'bounds':{'left':3800,'bottom':-3800,'right':8200,'top':-2200");
+            expect(params).toContain("'fieldName':\"SmLength\"");
             expect(options).not.toBeNull();
             var resultJson=`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_openlayersTest@Changchun"}`;
             return Promise.resolve(new Response(resultJson));

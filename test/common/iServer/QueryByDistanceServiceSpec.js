@@ -4,6 +4,7 @@ import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import {Point} from '../../../src/common/commontypes/geometry/Point';
 import {GeometryType} from '../../../src/common/REST';
 import {QueryOption} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
@@ -63,13 +64,22 @@ describe('QueryByBoundsService', () => {
             geometry: new Point(-50, -10)
         });
         queryByDistanceParameters.holdTime = 10;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'queryMode':'DistanceQuery'");
+            expect(params).toContain("'distance':20");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
+        });
         queryByDistanceService.processAsync(queryByDistanceParameters);
         setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
                 expect(queryResult.type).toBe("FeatureCollection");
-                expect(queryResult.features.length).toEqual(5);
+                expect(queryResult.features.length).toEqual(1);
                 queryByDistanceService.destroy();
                 queryByDistanceParameters.destroy();
                 done();
@@ -99,6 +109,14 @@ describe('QueryByBoundsService', () => {
         });
         queryByDistanceParameters.startRecord = 0;
         queryByDistanceParameters.holdTime = 10;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'distance':20");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_d96d9c6b2d4641cdbb5fc7867b956ecf","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_d96d9c6b2d4641cdbb5fc7867b956ecf.json"}`));
+        });
         queryByDistanceService.processAsync(queryByDistanceParameters);
         setTimeout(() => {
             try {
@@ -137,6 +155,15 @@ describe('QueryByBoundsService', () => {
             distance: 20,
             startRecord: 0,
             holdTime: 10
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'startRecord':0");
+            expect(params).toContain("'distance':20");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
         });
         queryByDistanceService.events.on({'processFailed': queryFailed});
         queryByDistanceService.processAsync(queryByDistanceParameters);

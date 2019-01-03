@@ -82,7 +82,7 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             expect(params).toContain("'leftDistance':{'exp':null,'value':250}");
             expect(params).toContain("'semicircleLineSegment':10");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(bufferAnalysisByGeometryLEscapedJson));
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));
         });
         bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (result) => {
             serviceResult = result;
@@ -145,7 +145,7 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             expect(params).toContain("'leftDistance':{'value':10}");
             expect(params).toContain("'rightDistance':{'value':10}");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(bufferAnalysisByDatasetLEscapedJson));
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
         });
         bufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
@@ -154,7 +154,6 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe('processCompleted');
             expect(serviceResult.result.succeed).toBeTruthy();
-            expect(serviceResult.result.dataset).toEqual(resultDataset + "@Changchun");
             done();
         }, 5000);
     });

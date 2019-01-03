@@ -1,4 +1,6 @@
-import { ChartModel } from '@supermap/iclient-common/widgets/chart/ChartModel';
+import {
+    ChartModel
+} from '../../../../src/common/widgets/chart/ChartModel';
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 import '../../../resources/LayersInfo';
 

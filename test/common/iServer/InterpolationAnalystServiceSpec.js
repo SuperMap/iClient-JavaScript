@@ -134,6 +134,10 @@ describe('InterpolationAnalystService', () => {
             },
             outputDatasetName: resultDataset_IDWByDS
         });
+        spyOn(FetchRequest, 'commit').and.callFake(() => {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_IDWByDS_commonTest_32@Interpolation\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         interpolationAnalystService.processAsync(interpolationIDWAnalystParameters);
         interpolationAnalystService.events.on({"processCompleted": analyzeCompleted});
         setTimeout(() => {
@@ -156,12 +160,6 @@ describe('InterpolationAnalystService', () => {
             }
         }, 10000);
 
-    });
-    // 删除测试过程中产生的数据集
-    it('delete test resources_IDWByDS', (done) => {
-        var testResult_IDWByDS = GlobeParameter.dataspatialAnalystURL + resultDataset_IDWByDS;
-        request.delete(testResult_IDWByDS);
-        done();
     });
 
     var resultDataset_krigingByDS = "Interpolation_krigingByDS_commonTest";
@@ -190,6 +188,10 @@ describe('InterpolationAnalystService', () => {
             },
             outputDatasetName: resultDataset_krigingByDS
         });
+        spyOn(FetchRequest, 'commit').and.callFake(() => {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_krigingByDS_commonTest_29@Interpolation\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         interpolationAnalystService.processAsync(interpolationKrigingAnalystParameters);
         interpolationAnalystService.events.on({"processCompleted": analyzeCompleted});
         setTimeout(() => {
@@ -211,12 +213,6 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         }, 10000);
-    });
-    // 删除测试过程中产生的数据集
-    it('delete test resources_krigingByDS', (done) => {
-        var testResult_krigingByDS = GlobeParameter.dataspatialAnalystURL + resultDataset_krigingByDS;
-        request.delete(testResult_krigingByDS);
-        done();
     });
 
     var resultDataset_RBFByGeo = "Interpolation_RBFByGeo_commonTest";
@@ -242,6 +238,10 @@ describe('InterpolationAnalystService', () => {
                 {"z": 0, "y": 5770737.831291649, "x": 1521370.8530005363},
                 {"z": -1, "y": 5528199.929583105, "x": 1095631.459772168}]
         });
+        spyOn(FetchRequest, 'commit').and.callFake(() => {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_RBFByGeo_commonTest_23@Interpolation\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
         interpolationAnalystService.events.on({"processCompleted": analyzeCompleted});
         setTimeout(() => {
@@ -264,12 +264,6 @@ describe('InterpolationAnalystService', () => {
             }
         }, 5000);
     });
-    // 删除测试过程中产生的数据集
-    it('delete test resources_RBFByGeo', (done) => {
-        var testResult_RBFByGeo = GlobeParameter.dataspatialAnalystURL + resultDataset_RBFByGeo;
-        request.delete(testResult_RBFByGeo);
-        done();
-    });
 
     var resultDataset_densityByGeo = "Interpolation_densityByGeo_commonTest";
     //几何 点密度插值分析
@@ -290,6 +284,10 @@ describe('InterpolationAnalystService', () => {
                 {"z": 0, "y": 5770737.831291649, "x": 1521370.8530005363},
                 {"z": -1, "y": 5528199.929583105, "x": 1095631.459772168},
                 {"z": -3, "y": 5570741.490646067, "x": 1198626.2178598372}]
+        });
+        spyOn(FetchRequest, 'commit').and.callFake(() => {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_densityByGeo_commonTest_22@Interpolation\"}";
+            return Promise.resolve(new Response(escapedJson));
         });
         interpolationAnalystService.processAsync(interpolationDensityAnalystParameters);
         interpolationAnalystService.events.on({"processCompleted": analyzeCompleted});
@@ -312,12 +310,6 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         }, 5000);
-    });
-    // 删除测试过程中产生的数据集
-    it('delete test resources_densityByGeo', (done) => {
-        var testResult_densityByGeo = GlobeParameter.dataspatialAnalystURL + resultDataset_densityByGeo;
-        request.delete(testResult_densityByGeo);
-        done();
     });
 
     var resultDataset_IDWByGeo = "Interpolation_IDWByGeo_commonTest";
@@ -343,6 +335,10 @@ describe('InterpolationAnalystService', () => {
                 {"z": -1, "y": 5528199.929583105, "x": 1095631.459772168},
                 {"z": -3, "y": 5570741.490646067, "x": 1198626.2178598372}]
         });
+        spyOn(FetchRequest, 'commit').and.callFake(() => {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_IDWByGeo_commonTest_35@Interpolation\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         interpolationAnalystService.processAsync(interpolationIDWAnalystParameters);
         interpolationAnalystService.events.on({"processCompleted": analyzeCompleted});
         setTimeout(() => {
@@ -364,12 +360,6 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         }, 5000);
-    });
-    // 删除测试过程中产生的数据集
-    it('delete test resources_IDWByGeo', (done) => {
-        var testResult_IDWByGeo = GlobeParameter.dataspatialAnalystURL + resultDataset_IDWByGeo;
-        request.delete(testResult_IDWByGeo);
-        done();
     });
 
     var resultDataset_krigingByGeo = "Interpolation_krigingByGeo_commonTest";
@@ -399,6 +389,10 @@ describe('InterpolationAnalystService', () => {
                 {"z": 0, "y": 5770737.831291649, "x": 1521370.8530005363},
                 {"z": -1, "y": 5528199.929583105, "x": 1095631.459772168}]
         });
+        spyOn(FetchRequest, 'commit').and.callFake(() => {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_krigingByGeo_commonTest_22@Interpolation\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         interpolationAnalystService.processAsync(interpolationKrigingAnalystParameters);
         interpolationAnalystService.events.on({"processCompleted": analyzeCompleted});
         setTimeout(() => {
@@ -421,12 +415,6 @@ describe('InterpolationAnalystService', () => {
             }
         }, 5000);
     });
-    // 删除测试过程中产生的数据集
-    it('delete test resources', (done) => {
-        var testResult_krigingByGeo = GlobeParameter.dataspatialAnalystURL + resultDataset_krigingByGeo;
-        request.delete(testResult_krigingByGeo);
-        done();
-    });
 
     //分析失败
     it('FailedEvent', (done) => {
@@ -446,6 +434,10 @@ describe('InterpolationAnalystService', () => {
             filterQueryParameter: {
                 attributeFilter: ""
             }
+        });
+        spyOn(FetchRequest, 'commit').and.callFake(() => {
+            var escapedJson = "{\"succeed\":false,\"error\":{\"code\":400,\"errorMsg\":\"数据集xxx@Interpolation不存在\"}}";
+            return Promise.resolve(new Response(escapedJson));
         });
         interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
         interpolationAnalystService.events.on({"processFailed": analyzeFailed});

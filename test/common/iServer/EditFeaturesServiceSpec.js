@@ -1,4 +1,5 @@
-﻿﻿import {EditFeaturesService} from '../../../src/common/iServer/EditFeaturesService';
+﻿import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import {EditFeaturesService} from '../../../src/common/iServer/EditFeaturesService';
 import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
 import {Point} from '../../../src/common/commontypes/geometry/Point';
 import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
@@ -53,6 +54,14 @@ describe('EditFeaturesService', () => {
             returnContent: true
         });
         var addFeatureService = new EditFeaturesService(editServiceURL, addFeatureOptions);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/features.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'type':\"REGION\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`[134]`));
+        });
         addFeatureService.processAsync(addFeaturesParams);
         setTimeout(() => {
             try {
@@ -117,6 +126,13 @@ describe('EditFeaturesService', () => {
             editType: EditType.UPDATE
         });
         var updateFeaturesService = new EditFeaturesService(editServiceURL, updateFeaturesOptions);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("PUT");
+            expect(testUrl).toBe(editServiceURL + "/features.json?");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         updateFeaturesService.processAsync(updateFeaturesParams);
         setTimeout(() => {
             try {
@@ -161,6 +177,13 @@ describe('EditFeaturesService', () => {
             editType: EditType.DELETE
         });
         var deleteFeaturesService = new EditFeaturesService(editServiceURL, deleteFeaturesOptions);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("DELETE");
+            expect(testUrl).toBe(editServiceURL + "/features.json?ids=[134]");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
         deleteFeaturesService.processAsync(deleteFeaturesParams);
         setTimeout(() => {
             try {
@@ -204,6 +227,13 @@ describe('EditFeaturesService', () => {
             returnContent: true
         });
         var noParamsService = new EditFeaturesService(editServiceURL, noParamsOptions);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/features.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"the features is empty addFeatures method"}}`));
+        });
         noParamsService.processAsync(noParams);
         setTimeout(() => {
             try {

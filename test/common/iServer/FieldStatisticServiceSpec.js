@@ -1,5 +1,6 @@
-﻿﻿import {FieldStatisticService} from '../../../src/common/iServer/FieldStatisticService';
+﻿import {FieldStatisticService} from '../../../src/common/iServer/FieldStatisticService';
 import {StatisticMode} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null, fieldStatisticEventArgsSystem = null;
@@ -38,6 +39,10 @@ describe('FieldStatisticService', () => {
         fieldStatisticService.datasource = "World";
         fieldStatisticService.field = "SmID";
         fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/Countries/fields/SmID/AVERAGE.json?");
+            return Promise.resolve(new Response(`{"result":124,"mode":"AVERAGE"}`));
+        });
         fieldStatisticService.events.on({'processCompleted': fieldStatisticCompleted});
         fieldStatisticService.processAsync();
         setTimeout(() => {
@@ -69,6 +74,10 @@ describe('FieldStatisticService', () => {
         fieldStatisticService.datasource = "World";
         fieldStatisticService.field = "NotIDThis";
         fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/NoDataset/fields/NotIDThis/AVERAGE.json?");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":500,"errorMsg":"抛出未被捕获的异常,错误信息是数据集NoDataset在数据源中不存在"}}`));
+        });
         fieldStatisticService.events.on({'processFailed': fieldStatisticFailed});
         fieldStatisticService.processAsync();
         setTimeout(() => {

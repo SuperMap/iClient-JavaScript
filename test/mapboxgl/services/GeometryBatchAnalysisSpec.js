@@ -5,6 +5,7 @@ import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
 import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
 import {BufferEndType} from '../../../src/common/REST';
 import {OverlayOperationType} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceUrl = GlobeParameter.spatialAnalystURL;
 describe('mapboxgl_SpatialAnalystService_geometryBatchAnalysis', () => {
@@ -76,6 +77,13 @@ describe('mapboxgl_SpatialAnalystService_geometryBatchAnalysis', () => {
         //批量分析参数
         var parameters = [geoBufferAnalystParams, OverlayBatchAnalystParameters];
         //批量分析
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(serviceUrl + "/geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true");
+            expect(params).toContain("'operation':\"CLIP\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(geometryBatchAnalystEscapedJson)));
+        });
         new SpatialAnalystService(serviceUrl).geometrybatchAnalysis(parameters, function (result) {
             serviceResult = result;
         });
@@ -83,7 +91,7 @@ describe('mapboxgl_SpatialAnalystService_geometryBatchAnalysis', () => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result.succeed).toEqual(true);
-            expect(serviceResult.result.length).toEqual(2);
+            expect(serviceResult.result.length).toEqual(1);
             for (var i = 0; i < serviceResult.result.length; i++) {
                 expect(serviceResult.result[i].resultGeometry).not.toBeNull();
                 expect(serviceResult.result[i].resultGeometry.geometry).not.toBeNull();

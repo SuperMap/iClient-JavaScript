@@ -3,6 +3,7 @@ import {GenerateSpatialDataParameters} from '../../../src/common/iServer/Generat
 import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
 import {DataReturnMode} from '../../../src/common/REST';
 import request from 'request';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -42,6 +43,15 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', () => {
             })
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'routeIDField':\"RouteID\"");
+            expect(options).not.toBeNull();
+            var resultJSON = `{"succeed":true,"recordset":null,"message":null,"dataset":"GenerateSpatialData_mapboxglTest@Changchun"}`;
+            return Promise.resolve(new Response(resultJSON));
+        });
         service.generateSpatialData(generateSpatialDataParameters, (result) => {
             serviceResult = result;
         });
@@ -58,12 +68,5 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', () => {
                 done();
             }
         }, 5000);
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datachangchunURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });

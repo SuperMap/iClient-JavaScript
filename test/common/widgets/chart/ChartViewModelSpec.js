@@ -1,4 +1,4 @@
-import { ChartViewModel } from '@supermap/iclient-common/widgets/chart/ChartViewModel';
+import { ChartViewModel } from '../../../../src/common/widgets/chart/ChartView';
 import '../../../resources/FeatureService';
 
 describe('ChartViewModel', () => {

@@ -32,8 +32,7 @@ describe('leaflet_SpatialAnalystService_overlayAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/BaseMap_R@Jingjin/overlay.json?returnContent=true");
-            var expectParams = "{'operation':\"UNION\",'operateDataset':\"Neighbor_R@Jingjin\",'tolerance':0,'dataReturnOption':{'expectCount':2,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'operateDatasetFields':[],'operateDatasetFilter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null},'operateRegions':[],'sourceDatasetFields':[],'sourceDatasetFilter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
-            expect(params).toBe(expectParams);
+            expect(params).toContain("'operateDataset':\"Neighbor_R@Jingjin\"");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(overlayEscapedJson));
         });

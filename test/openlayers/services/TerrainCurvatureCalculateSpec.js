@@ -1,6 +1,7 @@
 import request from 'request';
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {TerrainCurvatureCalculationParameters} from '../../../src/common/iServer/TerrainCurvatureCalculationParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var originalTimeout, serviceResults;
 var sampleServiceUrl = GlobeParameter.spatialAnalystURL;
@@ -25,6 +26,13 @@ describe('openlayers_SpatialAnalystService_terrainCurvatureCalculate', () => {
         });
         //向iServer发起地形曲率计算请求
         var spatialAnalystService = new SpatialAnalystService(sampleServiceUrl);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(sampleServiceUrl + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature.json?returnContent=true");
+            expect(params).toContain("'zFactor':1");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"averageCurvatureResult":{"succeed":true,"recordset":null,"message":null,"dataset":"TerrainCurvature_openlayersTest@Jingjin"}}`));
+        });
         spatialAnalystService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, (serviceResult) => {
             serviceResults = serviceResult;
         });
@@ -34,12 +42,5 @@ describe('openlayers_SpatialAnalystService_terrainCurvatureCalculate', () => {
             expect(serviceResults.result.recordset).not.toBeNull();
             done();
         }, 8000);
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datajingjinURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });

@@ -90,7 +90,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
             expect(params).toContain("'leftDistance':{'value':10}");
             expect(params).toContain("'rightDistance':{'value':10}");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(bufferAnalysis_byDatasetResultJson));
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byDatasetResultJson)));
         });
         spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;

@@ -1,8 +1,9 @@
-﻿﻿import {FindPathService} from '../../../src/common/iServer/FindPathService';
+﻿import {FindPathService} from '../../../src/common/iServer/FindPathService';
 import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
 import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
 import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
 import {Point} from '../../../src/common/commontypes/geometry/Point';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;
 //服务初始化时注册事件监听函数
@@ -60,6 +61,9 @@ describe('FindPathService', () => {
             parameter: analystParameter
         });
         var findPathService = initFindPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(JSON.stringify(findPathResultJson)))
+        });
         findPathService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -70,9 +74,9 @@ describe('FindPathService', () => {
                 expect(analystResult[0].edgeFeatures.features).not.toBeNull();
                 expect(analystResult[0].edgeFeatures.features[0].type).toEqual("Feature");
                 expect(analystResult[0].edgeFeatures.features[0].geometry).not.toBeNull();
-                expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(8367);
+                expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(4786);
                 expect(analystResult[0].nodeFeatures).not.toBeNull();
-                expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(2);
+                expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(1575);
                 expect(analystResult[0].pathGuideItems).not.toBeNull();
                 expect(analystResult[0].route).not.toBeNull();
                 findPathService.destroy();
@@ -116,6 +120,9 @@ describe('FindPathService', () => {
             parameter: analystParameter
         });
         var findPathService = initFindPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"pathList":[{"pathGuideItems":null,"nodeIDs":[],"route":null,"edgeFeatures":null,"weight":53,"nodeFeatures":null,"stopWeights":[53],"edgeIDs":[]}]}`))
+        });
         findPathService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -166,6 +173,9 @@ describe('FindPathService', () => {
             parameter: analystParameter
         });
         var findPathService = initFindPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数nodes 不是有效的JSON 字符串对象"}}`))
+        });
         findPathService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -212,6 +222,9 @@ describe('FindPathService', () => {
             parameter: analystParameter
         });
         var findPathService = initFindPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findPath 操作时出错,原因是：权重字段TurnCost1不存在。 "}}`))
+        });
         findPathService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -235,6 +248,9 @@ describe('FindPathService', () => {
     //参数为空
     it('processAsync_parameterNull', (done) => {
         var findPathService = initFindPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findPath 操作时出错,原因是：parameter\\nNode或者Point的个数至少有一个大于0 "}}`))
+        });
         findPathService.processAsync();
         setTimeout(() => {
             try {
@@ -279,6 +295,9 @@ describe('FindPathService', () => {
             parameter: analystParameter
         });
         var findPathService = initFindPathService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findPath 操作时出错,原因是：parameter\\nNode或者Point的个数至少有一个大于0 "}}`))
+        });
         findPathService.processAsync(parameter);
         setTimeout(() => {
             try {

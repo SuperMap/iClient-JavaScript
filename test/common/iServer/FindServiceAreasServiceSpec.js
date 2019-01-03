@@ -1,8 +1,9 @@
-﻿﻿import {FindServiceAreasService} from '../../../src/common/iServer/FindServiceAreasService';
+﻿import {FindServiceAreasService} from '../../../src/common/iServer/FindServiceAreasService';
 import {FindServiceAreasParameters} from '../../../src/common/iServer/FindServiceAreasParameters';
 import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
 import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
 import {Point} from '../../../src/common/commontypes/geometry/Point';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;
 //服务初始化时注册事件监听函数
@@ -62,13 +63,16 @@ describe('FindServiceAreasService', () => {
             parameter: analystParameter
         });
         var findServiceAreasService = initFindServiceAreasService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(JSON.stringify(findServiceAreasResultJson)))
+        });
         findServiceAreasService.processAsync(parameter);
         setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList != null).toBeTruthy();
                 expect(analystResult.serviceAreaList[0].edgeFeatures != null).toBeTruthy();
-                expect(analystResult.serviceAreaList[0].edgeIDs[0]).toEqual(8366);
+                expect(analystResult.serviceAreaList[0].edgeIDs[0]).toEqual(48);
                 expect(analystResult.serviceAreaList[0].nodeFeatures != null).toBeTruthy();
                 expect(analystResult.serviceAreaList[0].routes != null).toBeTruthy();
                 expect(analystResult.serviceAreaList[0].serviceRegion != null).toBeTruthy();
@@ -114,17 +118,20 @@ describe('FindServiceAreasService', () => {
             parameter: analystParameter
         });
         var findServiceAreasService = initFindServiceAreasService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(JSON.stringify(findServiceAreasResultJson)))
+        });
         findServiceAreasService.processAsync(parameter);
 
         setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList).not.toBeNull();
-                expect(analystResult.serviceAreaList[0].edgeFeatures).toBeNull();
-                expect(analystResult.serviceAreaList[0].edgeIDs.length).toEqual(0);
-                expect(analystResult.serviceAreaList[0].nodeFeatures).toBeNull();
-                expect(analystResult.serviceAreaList[0].nodeIDs.length).toEqual(0);
-                expect(analystResult.serviceAreaList[0].routes).toBeNull();
+                expect(analystResult.serviceAreaList[0].edgeFeatures).not.toBeNull();
+                expect(analystResult.serviceAreaList[0].edgeIDs.length).toEqual(2);
+                expect(analystResult.serviceAreaList[0].nodeFeatures).not.toBeNull();
+                expect(analystResult.serviceAreaList[0].nodeIDs.length).toEqual(2);
+                expect(analystResult.serviceAreaList[0].routes).not.toBeNull();
                 expect(analystResult.serviceAreaList[0].serviceRegion).not.toBeNull();
                 findServiceAreasService.destroy();
                 expect(findServiceAreasService.EVENT_TYPES).toBeNull();
@@ -170,6 +177,9 @@ describe('FindServiceAreasService', () => {
             parameter: analystParameter
         });
         var findServiceAreasService = initFindServiceAreasService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数centers 不是有效的JSON 字符串对象"}}`))
+        });
         findServiceAreasService.processAsync(parameter);
 
         setTimeout(() => {
@@ -220,6 +230,9 @@ describe('FindServiceAreasService', () => {
             parameter: analystParameter
         });
         var findServiceAreasService = initFindServiceAreasService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findServiceAreas 操作时出错,原因是：权重字段TurnCost1不存在。"}}`))
+        });
         findServiceAreasService.processAsync(parameter);
 
         setTimeout(() => {
@@ -244,6 +257,9 @@ describe('FindServiceAreasService', () => {
     //参数为空
     it('processAsync_parameterNull', (done) => {
         var findServiceAreasService = initFindServiceAreasService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findServiceAreas 操作时出错,原因是：权重字段TurnCost1不存在。"}}`))
+        });
         findServiceAreasService.processAsync();
 
         setTimeout(() => {
@@ -292,6 +308,9 @@ describe('FindServiceAreasService', () => {
             parameter: analystParameter
         });
         var findServiceAreasService = initFindServiceAreasService();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findServiceAreas 操作时出错,原因是：权重字段TurnCost1不存在。"}}`))
+        });
         findServiceAreasService.processAsync(parameter);
         setTimeout(() => {
             try {

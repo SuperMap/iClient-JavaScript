@@ -1,4 +1,5 @@
-﻿﻿import {BufferAnalystService} from '../../../src/common/iServer/BufferAnalystService';
+﻿import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import {BufferAnalystService} from '../../../src/common/iServer/BufferAnalystService';
 import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/GeometryBufferAnalystParameters';
 import {DatasetBufferAnalystParameters} from '../../../src/common/iServer/DatasetBufferAnalystParameters';
 import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
@@ -52,11 +53,26 @@ describe('BufferAnalystService', () => {
         dsBufferAnalystParameters.bufferSetting.semicircleLineSegment = 5;
         dsBufferAnalystParameters.bufferSetting.leftDistance.value = 100;
         dsBufferAnalystParameters.resultSetting = resultSetting;
+
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Landuse_R@Jingjin/buffer.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'dataReturnMode':\"DATASET_ONLY\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
+        });
+
         bfServiceByDatasets.processAsync(dsBufferAnalystParameters);
         setTimeout(() => {
             try {
                 expect(bfServiceByDatasets.mode).toEqual("datasets");
                 expect(analystEventArgsSystem).not.toBeNull();
+                var analystResult = analystEventArgsSystem.result;
+                expect(analystResult).not.toBeNull();
+                expect(analystResult.message).toBeNull();
+                expect(analystResult.recordset).toBeNull();
+                expect(analystResult.succeed).toBeTruthy();
                 bfServiceByDatasets.destroy();
                 expect(bfServiceByDatasets.events).toBeNull();
                 expect(bfServiceByDatasets.eventListeners).toBeNull();
@@ -85,13 +101,31 @@ describe('BufferAnalystService', () => {
         var geometryBufferAnalystParameters = new GeometryBufferAnalystParameters();
         geometryBufferAnalystParameters.sourceGeometry = sourceGeometry;
         geometryBufferAnalystParameters.bufferSetting = bufferSetting;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/geometry/buffer.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'semicircleLineSegment':5");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));
+        });
         bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
         setTimeout(() => {
             try {
+                expect(analystEventArgsSystem.type).toBe("processCompleted");
                 var bfMode = analystEventArgsSystem.result.resultGeometry;
                 expect(bfMode).not.toBeNull();
                 expect(bfMode.type).toEqual("Feature");
                 bfServiceByGeometry.destroy();
+                var analystResult = analystEventArgsSystem.result;
+                expect(analystResult).not.toBeNull();
+                expect(analystResult.message).toBeNull();
+                expect(analystResult.image).toBeNull();
+                expect(analystResult.succeed).toBeTruthy();
+                var resultGeometry = analystResult.resultGeometry;
+                expect(resultGeometry.type).toBe("Feature");
+                expect(resultGeometry.geometry.type).toBe("MultiPolygon");
+                expect(resultGeometry.geometry.coordinates.length).toEqual(1);
                 expect(bfServiceByGeometry.events).toBeNull();
                 expect(bfServiceByGeometry.eventListeners).toBeNull();
                 expect(bfServiceByGeometry.mode).toBeNull();
@@ -120,9 +154,18 @@ describe('BufferAnalystService', () => {
         var geometryBufferAnalystParameters = new GeometryBufferAnalystParameters();
         geometryBufferAnalystParameters.sourceGeometry = sourceGeometry;
         geometryBufferAnalystParameters.bufferSetting = bufferSetting;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/geometry/buffer.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'semicircleLineSegment':5");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"左缓冲距离不能小于等于0。"}}`));
+        });
         bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
         setTimeout(() => {
             try {
+
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -142,13 +185,6 @@ describe('BufferAnalystService', () => {
                 done();
             }
         }, 4000)
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datajingjinURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });
 

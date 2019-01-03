@@ -7,6 +7,7 @@ import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
 import {GeometryType} from '../../../src/common/REST';
 import {QueryOption} from '../../../src/common/REST';
 import {SpatialQueryMode} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
@@ -76,8 +77,16 @@ describe('QueryByGeometryService', () => {
         });
         queryByGeometryParameters.startRecord = 0;
         queryByGeometryParameters.holdTime = 10;
-        queryByGeometryService.processAsync(queryByGeometryParameters);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'name':\"Capitals@World\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6.json"}`));
+        });
 
+        queryByGeometryService.processAsync(queryByGeometryParameters);
         setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result;
@@ -125,13 +134,22 @@ describe('QueryByGeometryService', () => {
         });
         queryByGeometryParameters.startRecord = 0;
         queryByGeometryParameters.holdTime = 10;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'attributeFilter':\"SmID%26lt;20\"");
+            expect(params).toContain("'name':\"Capitals@World\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
+        });
         queryByGeometryService.processAsync(queryByGeometryParameters);
         setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
                 expect(queryResult.type).toBe("FeatureCollection");
-                expect(queryResult.features.length).toEqual(10);
+                expect(queryResult.features.length).toEqual(1);
                 queryByGeometryService.destroy();
                 queryByGeometryParameters.destroy();
                 done();
@@ -159,13 +177,19 @@ describe('QueryByGeometryService', () => {
         });
         queryByGeometryParameters.startRecord = 0;
         queryByGeometryParameters.holdTime = 10;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'networkType':\"POINT\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
+        });
         queryByGeometryService.events.on({'processFailed': queryFailed});
         queryByGeometryService.processAsync(queryByGeometryParameters);
-
         var queryFailed = (e) => {
-            failedResult = e;
-        }
-
+            var failedResult = e;
+        };
         setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();

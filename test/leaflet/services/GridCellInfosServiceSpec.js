@@ -56,14 +56,13 @@ describe('leaflet_GridCellInfosService', () => {
                     expect(serviceResult.object.dataSourceName).toBe("World");
                     expect(serviceResult.object.datasetName).toBe("WorldEarth");
                     expect(serviceResult.object.datasetType).toBe("IMAGE");
-                    // expect(FetchRequest.commit.calls.count()).toEqual(2);
+                    expect(FetchRequest.commit.calls.count()).toEqual(2);
                     params.destroy();
+                    done();
                     } catch (exception) {
-                        expect(false).toBeTruthy();
-                        console.log("getGridCellInfos'案例失败：" + exception.name + ":" + exception.message);
-                        done();
-                    } finally {
-                        done();
+                    expect(false).toBeTruthy();
+                    console.log("getGridCellInfos'案例失败：" + exception.name + ":" + exception.message);
+                    done();
                     }
             }, 2000);
         });

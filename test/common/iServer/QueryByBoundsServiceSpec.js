@@ -4,6 +4,7 @@ import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
 import {GeometryType} from '../../../src/common/REST';
 import {QueryOption} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
@@ -66,13 +67,22 @@ describe('QueryByBoundsService_processAsync', () => {
         });
         queryByBoundsParameters.startRecord = 0;
         queryByBoundsParameters.holdTime = 10;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'queryMode':'BoundsQuery'");
+            expect(params).toContain("'name':\"Countries@World\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
+        });
         queryByBoundsService.processAsync(queryByBoundsParameters);
         setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
                 expect(queryResult.type).toBe("FeatureCollection");
-                expect(queryResult.features.length).toEqual(15);
+                expect(queryResult.features.length).toEqual(1);
                 queryByBoundsService.destroy();
                 expect(queryByBoundsService.EVENT_TYPES).toBeNull();
                 expect(queryByBoundsService.events).toBeNull();
@@ -106,6 +116,15 @@ describe('QueryByBoundsService_processAsync', () => {
         queryByBoundsParameters.startRecord = 0;
         queryByBoundsParameters.holdTime = 10;
         queryByBoundsParameters.returnCustomResult = true;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'queryMode':'BoundsQuery'");
+            expect(params).toContain("'expectCount':100");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_74e108f826bb45e2be52a31c6d448486","succeed":true,"customResult":{"top":37.95041694606847,"left":1.2015454003744992,"bottom":0.32300103608403674,"leftBottom":{"x":1.2015454003744992,"y":0.32300103608403674},"right":58.588002445423115,"rightTop":{"x":58.588002445423115,"y":37.95041694606847}},"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_74e108f826bb45e2be52a31c6d448486.json"}`));
+        });
         queryByBoundsService.processAsync(queryByBoundsParameters);
 
         setTimeout(() => {
@@ -117,8 +136,8 @@ describe('QueryByBoundsService_processAsync', () => {
                 expect(queryResult.newResourceLocation.length).toBeGreaterThan(0);
                 expect(queryResult.newResourceID).not.toBeNull();
                 expect(queryResult.customResult).not.toBeNull();
-                expect(queryResult.customResult.bottom).toEqual(41.19657897949219);
-                expect(queryResult.customResult.left).toEqual(-180);
+                expect(queryResult.customResult.bottom).toEqual(0.32300103608403674);
+                expect(queryResult.customResult.left).toEqual(1.2015454003744992);
                 queryByBoundsService.destroy();
                 queryByBoundsParameters.destroy();
                 done();
@@ -145,6 +164,15 @@ describe('QueryByBoundsService_processAsync', () => {
         });
         queryByBoundsParameters.startRecord = 0;
         queryByBoundsParameters.holdTime = 10;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'queryMode':'BoundsQuery'");
+            expect(params).toContain("'expectCount':100");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
+        });
         queryByBoundsService.processAsync(queryByBoundsParameters);
 
         setTimeout(() => {

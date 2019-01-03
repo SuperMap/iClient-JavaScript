@@ -34,7 +34,7 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
             expect(params).toContain("'datasetNames':[\"World:Countries\"]");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(getFeaturesBySQL)));
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, (result) => {
             serviceResult = result
@@ -55,11 +55,9 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
                 expect(serviceResult.result.features.features[0].geometry.type).toBe("MultiPolygon");
                 expect(serviceResult.result.features.features[0].geometry.coordinates.length).toEqual(2);
                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
-                    SMID: '247',
-                    CAPITAL: '北京',
-                    COUNTRY:"中华人民共和国",
-                    POP_1994: '1.128139689E9',
-                    ID: 247
+                    CAPITAL: "利伯维尔",
+                    ID: 127,
+                    SMID: "127"
                 }));
                 getFeaturesBySQLService.destroy();
                 done();

@@ -1,6 +1,7 @@
 import {AddressMatchService} from '../../../src/common/iServer/AddressMatchService';
 import {GeoCodingParameter} from '../../../src/common/iServer/GeoCodingParameter';
 import {GeoDecodingParameter} from '../../../src/common/iServer/GeoDecodingParameter';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var addressMatchURL_code = GlobeParameter.addressMatchURL_code;
 var addressMatchURL_decode = GlobeParameter.addressMatchURL_decode;
@@ -47,6 +48,12 @@ describe('AddressMatchService', () => {
             maxReturn: -1
         });
         var addressCodeService = new AddressMatchService(addressMatchURL_code, options);
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL_code);
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(codeSuccessEscapedJson));
+        });
         addressCodeService.code(addressMatchURL_code, GeoCodingParams);
         setTimeout(() => {
             try {
@@ -94,6 +101,12 @@ describe('AddressMatchService', () => {
             geoDecodingRadius: 500
         });
         var addressDeCodeService = new AddressMatchService(addressMatchURL_decode, options);
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL_decode);
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(decodeSuccessEscapedJson));
+        });
         addressDeCodeService.decode(addressMatchURL_decode, GeoDeCodingParams);
         setTimeout(() => {
             try {

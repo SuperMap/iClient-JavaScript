@@ -1,5 +1,6 @@
 ﻿import {StopQueryService} from '../../../src/common/iServer/StopQueryService';
 import {StopQueryParameters} from '../../../src/common/iServer/StopQueryParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
 var stopQueryServiceEventArgsSystem = null, serviceFailedEventArgsSystem = null;
@@ -53,6 +54,9 @@ describe('StopQueryService', () => {
             keyWord: '人民',
             returnPosition: true
         });
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":{"x":5308.614037099708,"y":-3935.573639156803}}]`));
+        });
         stopQueryService.processAsync(stopQueryServiceParams);
         setTimeout(() => {
             try {
@@ -78,6 +82,9 @@ describe('StopQueryService', () => {
         var stopQueryServiceParams = new StopQueryParameters({
             keyWord: '人民',
             returnPosition: false
+        });
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":null}]`));
         });
         stopQueryService.processAsync(stopQueryServiceParams);
         setTimeout(() => {

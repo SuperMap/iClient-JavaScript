@@ -1,7 +1,8 @@
-﻿﻿import {GeoRelationAnalystService} from '../../../src/common/iServer/GeoRelationAnalystService';
+﻿import {GeoRelationAnalystService} from '../../../src/common/iServer/GeoRelationAnalystService';
 import {GeoRelationAnalystParameters} from '../../../src/common/iServer/GeoRelationAnalystParameters';
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import {SpatialRelationType} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var completedEventArgsSystem, failedEventArgsSystem;
@@ -52,12 +53,20 @@ describe('GeoRelationAnalystService', () => {
             returnGeoRelatedOnly: true
         });
         var datasetRelationService = initGeoRelationAnalystService();
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation.json?returnContent=true");
+            expect(params).toContain("'expectCount':20");
+            expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(geoRelationAnalystCommonResultJson)));
+        });
         datasetRelationService.processAsync(datasetGeoRelationParameters);
         setTimeout(() => {
             try {
                 expect(datasetRelationService).not.toBeNull();
                 expect(completedEventArgsSystem.result).not.toBeNull();
-                expect(completedEventArgsSystem.result.length).toEqual(7);
+                expect(completedEventArgsSystem.result.length).toEqual(1);
                 datasetRelationService.destroy();
                 expect(datasetRelationService.EVENT_TYPES).toBeNull();
                 expect(datasetRelationService.events).toBeNull();
@@ -92,6 +101,14 @@ describe('GeoRelationAnalystService', () => {
             returnGeoRelatedOnly: true
         });
         var datasetRelationService = initGeoRelationAnalystService();
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation.json?returnContent=true");
+            expect(params).toContain("'expectCount':5");
+            expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`[{"result":[1],"count":1,"source":1},{"result":[1],"count":1,"source":2},{"result":[1],"count":1,"source":3},{"result":[1],"count":1,"source":4},{"result":[1],"count":1,"source":5}]`));
+        });
         datasetRelationService.processAsync(datasetGeoRelationParameters);
         setTimeout(() => {
             try {
@@ -130,13 +147,20 @@ describe('GeoRelationAnalystService', () => {
             returnGeoRelatedOnly: true
         });
         var datasetRelationService = initGeoRelationAnalystService();
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation.json?returnContent=true");
+            expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集标识为null。"}}`));
+        });
         datasetRelationService.processAsync(datasetGeoRelationParameters);
         setTimeout(() => {
             try {
                 expect(failedEventArgsSystem).not.toBeNull();
                 expect(failedEventArgsSystem.error).not.toBeNull();
-                //  expect(failedEventArgsSystem.error.code).toEqual(400);
-                // expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();
+                expect(failedEventArgsSystem.error.code).toEqual(400);
+                expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();
                 datasetRelationService.destroy();
                 expect(datasetRelationService.EVENT_TYPES).toBeNull();
                 expect(datasetRelationService.events).toBeNull();

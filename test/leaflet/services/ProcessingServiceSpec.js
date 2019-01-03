@@ -33,7 +33,7 @@ describe('leaflet_ProcessingService', () => {
     it('getKernelDensityJobs_processCompleted', (done) => {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/density")==0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/density")===0) {
                 var escapedJson = "[" + kernelDensityJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }

@@ -1,5 +1,6 @@
 import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
 import {GetFeaturesByGeometryParameters} from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
@@ -26,6 +27,14 @@ describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
             spatialQueryMode: "INTERSECT"
         });
         var service = new FeatureService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
         service.getFeaturesByGeometry(geometryParam, (result) => {
             serviceResult = result
         });

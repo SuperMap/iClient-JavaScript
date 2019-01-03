@@ -1,6 +1,7 @@
-﻿﻿import {GetFeaturesBySQLService} from '../../../src/common/iServer/GetFeaturesBySQLService';
+﻿import {GetFeaturesBySQLService} from '../../../src/common/iServer/GetFeaturesBySQLService';
 import {GetFeaturesBySQLParameters} from '../../../src/common/iServer/GetFeaturesBySQLParameters';
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
@@ -42,6 +43,13 @@ describe('GetFeaturesBySQLService', () => {
             }),
             returnContent: false
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_96f665c1638c4a8aa96a62caaaed5922","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/f701028a2b7144b19b582f55c1902b18_96f665c1638c4a8aa96a62caaaed5922.json"}`));
+        });
         getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
         setTimeout(() => {
             try {
@@ -82,6 +90,13 @@ describe('GetFeaturesBySQLService', () => {
             fromIndex: 2,
             toIndex: 10
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=2&toIndex=10");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
         getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
         setTimeout(() => {
             try {
@@ -112,6 +127,12 @@ describe('GetFeaturesBySQLService', () => {
             returnContent: true,
             fromIndex: 2,
             toIndex: 10
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=2&toIndex=10");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
         });
         getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
         setTimeout(() => {
@@ -146,6 +167,13 @@ describe('GetFeaturesBySQLService', () => {
             returnContent: true,
             fromIndex: 2,
             toIndex: 10
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=2&toIndex=10");
+            expect(params).toContain("'datasetNames':[\"World:Countriess\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"getFeature方法中数据集名CapitalsNotExsit不存在"}}`));
         });
         getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
         setTimeout(() => {

@@ -1,6 +1,7 @@
 import {TerrainCurvatureCalculationService} from '../../../src/common/iServer/TerrainCurvatureCalculationService';
 import {TerrainCurvatureCalculationParameters} from '../../../src/common/iServer/TerrainCurvatureCalculationParameters';
 import request from 'request';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
@@ -42,6 +43,13 @@ describe('TerrainCurvatureCalculationService', () => {
             averageCurvatureName: resultDataset,
             deleteExistResultDataset: true
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature.json?returnContent=true");
+            expect(params).toContain("'zFactor':1");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"averageCurvatureResult":{"succeed":true,"recordset":null,"message":null,"dataset":"TerrainCurvature_commonTest@Jingjin"}}`));
+        });
         terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
         terrainCurvatureCalculationService.events.on({"processCompleted": TerrainCurvatureCalculationServiceCompleted});
         setTimeout(() => {
@@ -74,6 +82,13 @@ describe('TerrainCurvatureCalculationService', () => {
             averageCurvatureName: "TerrainCurvatureFail_commonTest",
             deleteExistResultDataset: true
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/XX@Jingjin/terraincalculation/curvature.json?returnContent=true");
+            expect(params).toContain("'zFactor':1");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集XX@Jingjin不存在"}}`));
+        });
         terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
         terrainCurvatureCalculationService.events.on({'processFailed': TerrainCurvatureCalculationServiceFailed});
         setTimeout(() => {
@@ -96,13 +111,6 @@ describe('TerrainCurvatureCalculationService', () => {
                 done();
             }
         }, 10000);
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datajingjinURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });
 

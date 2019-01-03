@@ -2,6 +2,7 @@ import {TransferSolutionService} from '../../../src/common/iServer/TransferSolut
 import {TransferSolutionParameters} from '../../../src/common/iServer/TransferSolutionParameters';
 import {TransferTactic} from '../../../src/common/REST';
 import {TransferPreference} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
@@ -56,6 +57,10 @@ describe('TransferSolutionService', () => {
             walkingRatio: 10,
             points: [175, 179]
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method) => {
+            expect(method).toBe("GET");
+            return Promise.resolve(new Response(JSON.stringify(TransferSolutionServiceResult)));
+        });
         service.events.on({"processCompleted": succeed});
         service.processAsync(params);
         setTimeout(() => {
@@ -63,7 +68,7 @@ describe('TransferSolutionService', () => {
                 var result = serviceCompletedEventArgsSystem.result;
                 expect(result).not.toBeNull();
                 expect(result.defaultGuide).not.toBeNull();
-                expect(result.defaultGuide.count).toEqual(5);
+                expect(result.defaultGuide.count).toEqual(1);
                 expect(result.solutionItems).not.toBeNull();
                 service.destroy();
                 expect(service.events == null).toBeTruthy();

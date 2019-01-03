@@ -4,7 +4,7 @@ import {SetLayerStatusParameters} from '../../../src/common/iServer/SetLayerStat
 import {SetLayersInfoParameters} from '../../../src/common/iServer/SetLayersInfoParameters';
 import {SetLayerInfoParameters} from '../../../src/common/iServer/SetLayerInfoParameters';
 import '../../resources/LayersInfo';
-import {FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.WorldURL;
 var options = {
@@ -48,8 +48,8 @@ describe('openlayers_LayerInfoService', () => {
                 expect(serviceResult.result.name).toEqual("World");
                 var layers = serviceResult.result.subLayers.layers;
                 expect(layers.length).toBe(1);
-                // expect(layers[0].caption).toEqual("continent_T@World");
-                // expect(layers[0].name).toEqual("Capitals@World#3");
+                expect(layers[0].caption).toEqual("continent_T@World");
+                expect(layers[0].name).toEqual("continent_T@World");
                 for (var i = 0; i < layers.length; i++) {
                     expect(layers[i].type).toEqual("UGC");
                     expect(layers[i].CLASS_NAME).toContain("SuperMap");

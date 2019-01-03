@@ -34,7 +34,7 @@ describe('mapboxgl_GridCellInfosService', () => {
                 if (testUrl.indexOf("imageValue.json") > 0) {
                     return Promise.resolve(new Response(getGridCellInfosEcapedJson));
                 }
-            };
+            }
             return null;
         });
 

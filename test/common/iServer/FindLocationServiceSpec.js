@@ -1,7 +1,8 @@
-﻿﻿import {FindLocationService} from '../../../src/common/iServer/FindLocationService';
+﻿import {FindLocationService} from '../../../src/common/iServer/FindLocationService';
 import {FindLocationParameters} from '../../../src/common/iServer/FindLocationParameters';
 import {SupplyCenter} from '../../../src/common/iServer/SupplyCenter'
 import {SupplyCenterType} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;
 //服务初始化时注册事件监听函数
@@ -60,6 +61,9 @@ describe('FindLocationService', () => {
             weightName: weightName
         });
         var findLocationService = initFindLocationService_RegisterListener();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(JSON.stringify(findLocationResultJson)));
+        });
         findLocationService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -71,10 +75,10 @@ describe('FindLocationService', () => {
                 expect(analystResult.demandResults.features[0].geometry).not.toBeNull();
                 expect(analystResult.demandResults.features[0].geometry.type).toEqual("Point");
                 expect(analystResult.demandResults.features[0].geometry.coordinates.length).toEqual(2);
-                expect(analystResult.demandResults.features[0].properties.actualResourceValue).toEqual(470);
-                expect(analystResult.demandResults.features[0].properties.demandID).toEqual(885);
+                expect(analystResult.demandResults.features[0].properties.actualResourceValue).toEqual(161);
+                expect(analystResult.demandResults.features[0].properties.demandID).toEqual(124);
                 expect(analystResult.demandResults.features[0].properties.isEdge).toBeFalsy();
-                expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(1358);
+                expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(139);
                 expect(analystResult.supplyResults).not.toBeNull();
                 expect(analystResult.supplyResults.type).toEqual("FeatureCollection");
                 expect(analystResult.supplyResults.features).not.toBeNull();
@@ -83,11 +87,11 @@ describe('FindLocationService', () => {
                 expect(analystResult.supplyResults.features[0].geometry.type).toEqual("Point");
                 expect(analystResult.supplyResults.features[0].geometry.coordinates.length).toEqual(2);
                 expect(analystResult.supplyResults.features[0].properties.actualResourceValue).toEqual(0);
-                expect(analystResult.supplyResults.features[0].properties.averageWeight).toEqual(289.6734693877551);
-                expect(analystResult.supplyResults.features[0].properties.demandCount).toEqual(49);
+                expect(analystResult.supplyResults.features[0].properties.averageWeight).toEqual(79.5);
+                expect(analystResult.supplyResults.features[0].properties.demandCount).toEqual(6);
                 expect(analystResult.supplyResults.features[0].properties.maxWeight).toEqual(500);
-                expect(analystResult.supplyResults.features[0].properties.nodeID).toEqual(1358);
-                expect(analystResult.supplyResults.features[0].properties.totalWeights).toEqual(14194);
+                expect(analystResult.supplyResults.features[0].properties.nodeID).toEqual(139);
+                expect(analystResult.supplyResults.features[0].properties.totalWeights).toEqual(477);
                 expect(analystResult.supplyResults.features[0].properties.type).toEqual("OPTIONALCENTER");
                 findLocationService.destroy();
                 expect(findLocationService.EVENT_TYPES).toBeNull();
@@ -133,6 +137,9 @@ describe('FindLocationService', () => {
             weightName: weightName
         });
         var findLocationService = initFindLocationService_RegisterListener();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(JSON.stringify(findLocationResultJson)));
+        });
         findLocationService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -144,10 +151,10 @@ describe('FindLocationService', () => {
                 expect(analystResult.demandResults.features[0].geometry).not.toBeNull();
                 expect(analystResult.demandResults.features[0].geometry.type).toEqual("Point");
                 expect(analystResult.demandResults.features[0].geometry.coordinates.length).toEqual(2);
-                expect(analystResult.demandResults.features[0].properties.actualResourceValue).toEqual(470);
-                expect(analystResult.demandResults.features[0].properties.demandID).toEqual(885);
+                expect(analystResult.demandResults.features[0].properties.actualResourceValue).toEqual(161);
+                expect(analystResult.demandResults.features[0].properties.demandID).toEqual(124);
                 expect(analystResult.demandResults.features[0].properties.isEdge).toBeFalsy();
-                expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(1358);
+                expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(139);
                 expect(analystResult.supplyResults).not.toBeNull();
                 expect(analystResult.supplyResults.type).toEqual("FeatureCollection");
                 expect(analystResult.supplyResults.features).not.toBeNull();
@@ -156,11 +163,11 @@ describe('FindLocationService', () => {
                 expect(analystResult.supplyResults.features[0].geometry.type).toEqual("Point");
                 expect(analystResult.supplyResults.features[0].geometry.coordinates.length).toEqual(2);
                 expect(analystResult.supplyResults.features[0].properties.actualResourceValue).toEqual(0);
-                expect(analystResult.supplyResults.features[0].properties.averageWeight).toEqual(289.6734693877551);
-                expect(analystResult.supplyResults.features[0].properties.demandCount).toEqual(49);
+                expect(analystResult.supplyResults.features[0].properties.averageWeight).toEqual(79.5);
+                expect(analystResult.supplyResults.features[0].properties.demandCount).toEqual(6);
                 expect(analystResult.supplyResults.features[0].properties.maxWeight).toEqual(500);
-                expect(analystResult.supplyResults.features[0].properties.nodeID).toEqual(1358);
-                expect(analystResult.supplyResults.features[0].properties.totalWeights).toEqual(14194);
+                expect(analystResult.supplyResults.features[0].properties.nodeID).toEqual(139);
+                expect(analystResult.supplyResults.features[0].properties.totalWeights).toEqual(477);
                 expect(analystResult.supplyResults.features[0].properties.type).toEqual("OPTIONALCENTER");
                 findLocationService.destroy();
                 expect(findLocationService.EVENT_TYPES).toBeNull();
@@ -205,6 +212,9 @@ describe('FindLocationService', () => {
             weightName: weightName
         });
         var findLocationService = initFindLocationService_RegisterListener();
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"key(UGCTransportationAnalystProvider.checkField.turnWeightList.illegal) not found in resources."}}`));
+        });
         findLocationService.processAsync(parameter);
         setTimeout(() => {
             try {

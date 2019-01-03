@@ -1,10 +1,10 @@
-﻿﻿import {ComputeWeightMatrixService} from '../../../src/common/iServer/ComputeWeightMatrixService';
+﻿import {ComputeWeightMatrixService} from '../../../src/common/iServer/ComputeWeightMatrixService';
 import {ComputeWeightMatrixParameters} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
 import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
 import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
 import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
 import {Point} from '../../../src/common/commontypes/geometry/Point';
-
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var url = GlobeParameter.networkAnalystURL;
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
 var initComputeWeightMatrixService_RegisterListener = () => {
@@ -57,16 +57,25 @@ describe('ComputeWeightMatrixService', () => {
             nodes: nodeArray,
             parameter: analystParameter
         });
+
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/weightmatrix.json?");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`[[0,53],[53,0]]`));
+        });
+
         computeWeightMatrixService.processAsync(parameter);
 
         setTimeout(() => {
             try {
                 expect(computeWeightMatrixService).not.toBeNull();
                 expect(serviceCompletedEventArgsSystem.result).not.toBeNull();
-                /*  expect(serviceCompletedEventArgsSystem.result[0][0]).toEqual(0);
-                 expect(serviceCompletedEventArgsSystem.result[0][1]).toEqual(53);
-                 expect(serviceCompletedEventArgsSystem.result[1][0]).toEqual(53);
-                 expect(serviceCompletedEventArgsSystem.result[1][1]).toEqual(0);*/
+                expect(serviceCompletedEventArgsSystem.result[0][0]).toEqual(0);
+                expect(serviceCompletedEventArgsSystem.result[0][1]).toEqual(53);
+                expect(serviceCompletedEventArgsSystem.result[1][0]).toEqual(53);
+                expect(serviceCompletedEventArgsSystem.result[1][1]).toEqual(0);
                 computeWeightMatrixService.destroy();
                 expect(computeWeightMatrixService.EVENT_TYPES).toBeNull();
                 expect(computeWeightMatrixService.events).toBeNull();
@@ -110,6 +119,15 @@ describe('ComputeWeightMatrixService', () => {
             nodes: nodeArray,
             parameter: analystParameter
         });
+
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/weightmatrix.json?");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数nodes 不是有效的JSON 字符串对象"}}`));
+        });
+
         computeWeightMatrixService.processAsync(parameter);
         setTimeout(() => {
             try {
@@ -213,6 +231,13 @@ describe('ComputeWeightMatrixService', () => {
             isAnalyzeById: 2,
             nodes: nodeArray,
             parameter: analystParameter
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/weightmatrix.json?");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findWeightMatrix 操作时出错,原因是：parameter\\nNode或者Point的个数至少有一个大于0 "}}`));
         });
         var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
         computeWeightMatrixService.processAsync(parameter);

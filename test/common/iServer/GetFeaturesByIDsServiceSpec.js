@@ -1,5 +1,6 @@
-﻿﻿import {GetFeaturesByIDsService} from '../../../src/common/iServer/GetFeaturesByIDsService';
+﻿import {GetFeaturesByIDsService} from '../../../src/common/iServer/GetFeaturesByIDsService';
 import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
@@ -41,6 +42,14 @@ describe('GetFeaturesByIDsService', () => {
             toIndex: -1,
             IDs: [1, 2, 3]
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
+            expect(params).toContain("'getFeatureMode':\"ID\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_96f665c1638c4a8aa96a62caaaed5922","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/f701028a2b7144b19b582f55c1902b18_96f665c1638c4a8aa96a62caaaed5922.json"}`));
+        });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
         setTimeout(() => {
             try {
@@ -75,6 +84,14 @@ describe('GetFeaturesByIDsService', () => {
             toIndex: -1,
             IDs: [1, 2, 3]
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true");
+            expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
+            expect(params).toContain("'getFeatureMode':\"ID\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
         setTimeout(() => {
             try {
@@ -102,6 +119,12 @@ describe('GetFeaturesByIDsService', () => {
         var getFeaturesByIDsService = initGetFeaturesByIDsService();
         var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
             IDs: []
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
         });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
         setTimeout(() => {
@@ -134,6 +157,14 @@ describe('GetFeaturesByIDsService', () => {
             toIndex: -1,
             IDs: [1, 2, 3]
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            expect(params).toContain("'datasetNames':[\"World:CapitalsNotExsit\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"getFeature方法中数据集名CapitalsNotExsit不存在"}}`));
+        });
+
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
         setTimeout(() => {
             try {

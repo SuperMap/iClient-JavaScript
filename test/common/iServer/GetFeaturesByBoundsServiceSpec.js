@@ -1,6 +1,7 @@
 import {GetFeaturesByBoundsService} from '../../../src/common/iServer/GetFeaturesByBoundsService';
 import {GetFeaturesByBoundsParameters} from '../../../src/common/iServer/GetFeaturesByBoundsParameters';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 
 var url = GlobeParameter.dataServiceURL;
@@ -50,6 +51,13 @@ describe('GetFeaturesByBoundsService', () => {
         var boundsParams = new GetFeaturesByBoundsParameters({
             datasetNames: ["World:Countries"],
             bounds: new Bounds(0, 0, 90, 90)
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByBoundsService.processAsync(boundsParams);
         setTimeout(() => {

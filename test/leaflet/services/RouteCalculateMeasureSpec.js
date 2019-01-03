@@ -45,7 +45,7 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
             expect(params).not.toBeNull();
             expect(params).toContain("'type':\"LINEM\"");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(`{"measure":195.39962171759203,"succeed":true,"message":null}`));
+            return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasureServiceResult)));
         });
         routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParams, (result)=> {
             serviceResult = result;
@@ -57,8 +57,8 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
-                expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.measure).toBe(195.39962171759203);
+                expect(serviceResult.result.succeed).toBeTruthy();
+                expect(serviceResult.result.measure).toBe(627.9307113458588);
                 routeCalculateMeasureService.destroy();
                 done();
             } catch (exception) {

@@ -34,7 +34,7 @@ describe('leaflet_QueryService_queryByDistance', () => {
             expect(params).toContain("'queryMode':'DistanceQuery'");
             expect(params).toContain("'distance':10");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(queryByDistanceEscapeJson));
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
@@ -52,8 +52,8 @@ describe('leaflet_QueryService_queryByDistance', () => {
                 expect(serviceResult.result.totalCount).toBeGreaterThan(0);
                 expect(serviceResult.result.recordsets.length).toBeGreaterThan(0);
                 expect(serviceResult.result.recordsets[0].datasetName).toBe("Capitals@World");
-                expect(serviceResult.result.recordsets[0].fieldCaptions.length).toEqual(16);
-                expect(serviceResult.result.recordsets[0].fieldTypes.length).toEqual(16);
+                expect(serviceResult.result.recordsets[0].fieldCaptions.length).toEqual(2);
+                expect(serviceResult.result.recordsets[0].fieldTypes.length).toEqual(2);
                 expect(serviceResult.result.recordsets[0].features.type).toBe("FeatureCollection");
                 expect(serviceResult.result.recordsets[0].features.features.length).toBeGreaterThan(0);
                 for (var i = 0; i < serviceResult.result.recordsets[0].features.features.length; i++) {
@@ -61,23 +61,11 @@ describe('leaflet_QueryService_queryByDistance', () => {
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.type).toBe("Point");
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.coordinates.length).toEqual(2);
                 }
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_CH).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_EN).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_LO).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAP_POP).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY_CH).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY_EN).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.ID).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.POP).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmGeometrySize).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmID).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmLibTileID).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmUserID).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmX).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmY).not.toBeUndefined();
-                expect(serviceResult.result.recordsets[0].features.features[0].properties.USERID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties).toEqual(Object({
+                    CAPITAL: "拉巴斯",
+                    ID: 59,
+                    SmID: "59"
+                }));
                 queryByDistanceService.destroy();
                 done();
             } catch (exception) {

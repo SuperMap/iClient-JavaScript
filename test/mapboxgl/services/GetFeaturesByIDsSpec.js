@@ -1,5 +1,6 @@
 import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
 import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 
@@ -22,6 +23,13 @@ describe('mapboxgl_FeatureService_getFeaturesByIDs', () => {
             datasetNames: ["World:Countries"]
         });
         var service = new FeatureService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
         service.getFeaturesByIDs(idsParam, (result) => {
             serviceResult = result
         });
@@ -35,7 +43,7 @@ describe('mapboxgl_FeatureService_getFeaturesByIDs', () => {
                 expect(serviceResult.result.featureCount).toEqual(1);
                 expect(serviceResult.result.totalCount).toEqual(serviceResult.result.featureCount);
                 expect(serviceResult.result.features.type).toEqual("FeatureCollection");
-                expect(serviceResult.result.features.features[0].id).toEqual(247);
+                expect(serviceResult.result.features.features[0].id).toEqual(127);
                 expect(serviceResult.result.features.features[0].type).toEqual("Feature");
                 expect(serviceResult.result.features.features[0].geometry.type).toEqual("MultiPolygon");
                 var coordinates = serviceResult.result.features.features[0].geometry.coordinates;

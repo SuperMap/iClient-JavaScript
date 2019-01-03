@@ -1,6 +1,7 @@
 import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
 import {DatasetOverlayAnalystParameters} from '../../../src/common/iServer/DatasetOverlayAnalystParameters';
 import {OverlayOperationType} from '../../../src/common/REST';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -31,6 +32,13 @@ describe('mapboxgl_SpatialAnalystService_overlayAnalysis', () => {
             operation: OverlayOperationType.UNION
         });
         var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/BaseMap_R@Jingjin/overlay.json?returnContent=true");
+            expect(params).toContain("'operateDataset':\"Neighbor_R@Jingjin\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(overlayEscapedJson));
+        });
         service.overlayAnalysis(datasetOverlayAnalystParameters, (result) => {
             serviceResult = result;
             try {

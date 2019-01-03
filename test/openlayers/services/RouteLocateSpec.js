@@ -4,6 +4,7 @@ import {RouteLocatorParameters} from '../../../src/common/iServer/RouteLocatorPa
 import {QueryService} from '../../../src/openlayers/services/QueryService';
 import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 
 var originalTimeout, serviceResults;
@@ -29,6 +30,15 @@ describe('openlayers_SpatialAnalystService_routeLocate', () => {
                     attributeFilter: "RouteID=1690"
                 })
             ]
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method,url) => {
+            expect(method).toBe("POST");
+            if(url.indexOf("/queryResults.json?returnContent=true")>-1){
+                return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasure_queryBySQLServiceResult)));
+            }else if(url.indexOf("/routelocator.json?returnContent=true")>-1){
+                return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasureServiceResult)));
+            }
+            return Promise.resolve();
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (SQLQueryServiceResult) => {
             var queryBySQLResult = SQLQueryServiceResult.result.recordsets[0].features;
@@ -70,6 +80,15 @@ describe('openlayers_SpatialAnalystService_routeLocate', () => {
                     attributeFilter: "RouteID=1690"
                 })
             ]
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method,url) => {
+            expect(method).toBe("POST");
+            if(url.indexOf("/queryResults.json?returnContent=true")>-1){
+                return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasure_queryBySQLServiceResult)));
+            }else if(url.indexOf("/routelocator.json?returnContent=true")>-1){
+                return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasureServiceResult)));
+            }
+            return Promise.resolve();
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (SQLQueryServiceResult) => {
             var queryBySQLResult = SQLQueryServiceResult.result.recordsets[0].features;

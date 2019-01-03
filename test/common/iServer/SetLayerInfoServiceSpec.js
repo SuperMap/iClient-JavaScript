@@ -1,6 +1,7 @@
 import {SetLayerInfoService} from '../../../src/common/iServer/SetLayerInfoService';
 import {SetLayersInfoService} from '../../../src/common/iServer/SetLayersInfoService';
 import '../../resources/LayersInfo';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.WorldURL;
 var setLayerFailedEventArgsSystem = null, setLayerEventArgsSystem = null;
@@ -45,6 +46,12 @@ describe('SetLayerInfoService', () => {
         });
         expect(setLayersInfoService).not.toBeNull();
         expect(setLayersInfoService.url).toEqual(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url+"/tempLayersSet.json?");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_4b85e5ba2d65456c82e430c7636fba8d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/f701028a2b7144b19b582f55c1902b18_4b85e5ba2d65456c82e430c7636fba8d.json"}`));
+        });
         setLayersInfoService.events.on({"processCompleted": setLayerInfoCompleted});
         setLayersInfoService.processAsync(layersInformation);
         setTimeout(() => {
@@ -79,6 +86,12 @@ describe('SetLayerInfoService', () => {
             var setLayerInfoService = initSetLayerInfoService(url1);
             expect(setLayerInfoService).not.toBeNull();
             expect(setLayerInfoService.url).toEqual(url1);
+            spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+                expect(method).toBe("PUT");
+                expect(testUrl).toBe(url1+".json");
+                expect(options).not.toBeNull();
+                return Promise.resolve(new Response(`{"succeed":true}`));
+            });
             setLayerInfoService.events.on({"processCompleted": setLayerInfoCompleted});
             setLayerInfoService.processAsync(layerInformation);
             setTimeout(() => {

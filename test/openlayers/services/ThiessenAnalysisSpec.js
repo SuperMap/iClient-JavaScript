@@ -2,7 +2,7 @@ import ol from 'openlayers';
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {DatasetThiessenAnalystParameters} from '../../../src/common/iServer/DatasetThiessenAnalystParameters';
 import {GeometryThiessenAnalystParameters} from '../../../src/common/iServer/GeometryThiessenAnalystParameters';
-import {FetchRequest} from "@supermap/iclient-common";
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var originalTimeout, serviceResults;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;

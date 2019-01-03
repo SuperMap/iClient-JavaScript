@@ -1,7 +1,7 @@
 import {DensityAnalystService} from '../../../src/common/iServer/DensityAnalystService';
 import {DensityKernelAnalystParameters} from '../../../src/common/iServer/DensityKernelAnalystParameters';
 import request from 'request';
-
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var serviceFailedEventArgsSystem = null;
@@ -45,6 +45,14 @@ describe('DensityAnalystService', () => {
             //删除重复的数据集
             deleteExistResultDataset: true
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'fieldName':\"SmLength\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_commonTest@Changchun"}`));
+        });
         densityAnalystService.processAsync(densityKernelAnalystParameters);
         densityAnalystService.events.on({"processCompleted": analyzeCompleted});
         setTimeout(() => {
@@ -79,6 +87,14 @@ describe('DensityAnalystService', () => {
             resultGridName: resultDataset,
             deleteExistResultDataset: true
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/xx@Changchun/densityanalyst/kernel.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'fieldName':\"SmLength\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集xx@Changchun不存在"}}`));
+        });
         densityAnalystService.processAsync(densityKernelAnalystParameters);
         densityAnalystService.events.on({"processFailed": analyzeFailed});
         setTimeout(() => {
@@ -99,12 +115,5 @@ describe('DensityAnalystService', () => {
                 done();
             }
         }, 5000);
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.datachangchunURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });

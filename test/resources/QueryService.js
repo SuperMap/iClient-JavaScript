@@ -1,157 +1,3 @@
-var queryEscapedJson = {
-    "recordsets": [
-        {
-            "datasetName": "Countries@World",
-            "features": [
-                {
-                    "fieldNames": [
-                        "SmID",
-                        "SmSdriW",
-                        "SmSdriN",
-                        "SmSdriE",
-                        "SmSdriS",
-                        "SmUserID",
-                        "SmArea",
-                        "SmPerimeter",
-                        "SmGeometrySize",
-                        "SQKM",
-                        "SQMI",
-                        "COLOR_MAP",
-                        "CAPITAL",
-                        "COUNTRY",
-                        "POP_1994",
-                        "ColorID",
-                        "CONTINENT"
-                    ],
-                    "ID": 1,
-                    "fieldValues": [
-                        "1",
-                        "-180.0",
-                        "81.85193",
-                        "180.0",
-                        "41.19658",
-                        "1",
-                        "1.7005229542876414E13",
-                        "2.6624681347891757E8",
-                        "386848",
-                        "1.6911282E7",
-                        "6529445.0",
-                        "4",
-                        "莫斯科",
-                        "俄罗斯",
-                        "1.518276E8",
-                        "1",
-                        "亚洲"
-                    ],
-                    "geometry": null
-                },
-                {
-                    "fieldNames": [
-                        "SmID",
-                        "SmSdriW",
-                        "SmSdriN",
-                        "SmSdriE",
-                        "SmSdriS",
-                        "SmUserID",
-                        "SmArea",
-                        "SmPerimeter",
-                        "SmGeometrySize",
-                        "SQKM",
-                        "SQMI",
-                        "COLOR_MAP",
-                        "CAPITAL",
-                        "COUNTRY",
-                        "POP_1994",
-                        "ColorID",
-                        "CONTINENT"
-                    ],
-                    "ID": 2,
-                    "fieldValues": [
-                        "2",
-                        "10.487914",
-                        "80.76416",
-                        "33.637497",
-                        "74.34305",
-                        "2",
-                        "6.243427603572511E10",
-                        "8114259.248833748",
-                        "35812",
-                        "61909.1",
-                        "23903.1",
-                        "1",
-                        " ",
-                        " 北极地区",
-                        "3148.0",
-                        "1",
-                        "欧洲"
-                    ],
-                    "geometry": null
-                }
-            ],
-            "fieldCaptions": [
-                "SmID",
-                "SmSdriW",
-                "SmSdriN",
-                "SmSdriE",
-                "SmSdriS",
-                "SmUserID",
-                "SmArea",
-                "SmPerimeter",
-                "SmGeometrySize",
-                "SQKM",
-                "SQMI",
-                "COLOR_MAP",
-                "Capital",
-                "Country",
-                "Pop_1994",
-                "ColorIDtest",
-                "CONTINENT"
-            ],
-            "fieldTypes": [
-                "INT32",
-                "SINGLE",
-                "SINGLE",
-                "SINGLE",
-                "SINGLE",
-                "INT32",
-                "DOUBLE",
-                "DOUBLE",
-                "INT32",
-                "DOUBLE",
-                "DOUBLE",
-                "TEXT",
-                "TEXT",
-                "TEXT",
-                "DOUBLE",
-                "INT32",
-                "TEXT"
-            ],
-            "fields": [
-                "SmID",
-                "SmSdriW",
-                "SmSdriN",
-                "SmSdriE",
-                "SmSdriS",
-                "SmUserID",
-                "SmArea",
-                "SmPerimeter",
-                "SmGeometrySize",
-                "SQKM",
-                "SQMI",
-                "COLOR_MAP",
-                "CAPITAL",
-                "COUNTRY",
-                "POP_1994",
-                "ColorID",
-                "CONTINENT"
-            ]
-        }
-    ],
-    "totalCount": 247,
-    "currentCount": 2,
-    "customResponse": null
-};
-
 var clientComputationViewJson={
     "recordsets": [
         {
@@ -903,191 +749,52 @@ var capitals={
     "customResponse": null
 };
 
-var queryByBoundsEscapeJson = {
-    "recordsets": [
-        {
-            "datasetName": "Capitals@World",
-            "features": [
-                {
-                    "fieldNames": [
-                        "SmID",
-                        "SmX",
-                        "SmY",
-                        "SmLibTileID",
-                        "SmUserID",
-                        "SmGeometrySize",
-                        "USERID",
-                        "POP",
-                        "CAPITAL_LO",
-                        "CAPITAL_CH",
-                        "COUNTRY_CH",
-                        "CAPITAL_EN",
-                        "COUNTRY_EN",
-                        "COUNTRY",
-                        "CAP_POP",
-                        "CAPITAL"
-                    ],
-                    "ID": 19,
-                    "fieldValues": [
-                        "19",
-                        "6.728004415891377",
-                        "0.33699598913014484",
-                        "1",
-                        "0",
-                        "16",
-                        "0",
-                        "53300.0",
-                        "São Tomé",
-                        "圣多美",
-                        "圣多美和普林西比",
-                        "Sao Tome",
-                        "Sao Tome & Principe",
-                        "圣多美和普林西比",
-                        "53300.0",
-                        "圣多美"
-                    ],
-                    "geometry": {
-                        "id": 19,
-                        "center": {
-                            "y": 0.336995989130145,
-                            "x": 6.72800441589138
-                        },
-                        "style": null,
-                        "parts": [
-                            1
-                        ],
-                        "partTopo": [],
-                        "points": [
-                            {
-                                "y": 0.336995989130145,
-                                "x": 6.72800441589138
-                            }
-                        ],
-                        "type": "POINT"
-                    }
-                },
-                {
-                    "fieldNames": [
-                        "SmID",
-                        "SmX",
-                        "SmY",
-                        "SmLibTileID",
-                        "SmUserID",
-                        "SmGeometrySize",
-                        "USERID",
-                        "POP",
-                        "CAPITAL_LO",
-                        "CAPITAL_CH",
-                        "COUNTRY_CH",
-                        "CAPITAL_EN",
-                        "COUNTRY_EN",
-                        "COUNTRY",
-                        "CAP_POP",
-                        "CAPITAL"
-                    ],
-                    "ID": 20,
-                    "fieldValues": [
-                        "20",
-                        "2.6325003069568993",
-                        "6.6011040413199495",
-                        "1",
-                        "0",
-                        "16",
-                        "0",
-                        "234168.0",
-                        "Porto-Novo",
-                        "波多诺伏",
-                        "贝宁",
-                        "Porto Novo",
-                        "Benin",
-                        "贝宁",
-                        "234168.0",
-                        "波多诺伏"
-                    ],
-                    "geometry": {
-                        "id": 20,
-                        "center": {
-                            "y": 6.60110404131995,
-                            "x": 2.6325003069569
-                        },
-                        "style": null,
-                        "parts": [
-                            1
-                        ],
-                        "partTopo": [],
-                        "points": [
-                            {
-                                "y": 6.60110404131995,
-                                "x": 2.6325003069569
-                            }
-                        ],
-                        "type": "POINT"
-                    }
-                }
+var queryResultJson = {
+    "recordsets": [{
+        "datasetName": "Capitals@World",
+        "features": [{
+            "fieldNames": [
+                "SmID",
+                "CAPITAL"
             ],
+            "ID": 59,
+            "fieldValues": [
+                "59",
+                "拉巴斯"
+            ],
+            "geometry": {
+                "id": 59,
+                "center": {
+                    "y": -16.4990069929844,
+                    "x": -68.1462446098307
+                },
+                "style": null,
+                "parts": [
+                    1
+                ],
+                "partTopo": [],
+                "points": [{
+                    "y": -16.4990069929844,
+                    "x": -68.1462446098307
+                }],
+                "type": "POINT"
+            }
+        }
+        ],
         "fieldCaptions": [
             "SmID",
-            "SmX",
-            "SmY",
-            "SmLibTileID",
-            "SmUserID",
-            "SmGeometrySize",
-            "USERID",
-            "POP",
-            "CAPITAL_LO",
-            "CAPITAL_CH",
-            "COUNTRY_CH",
-            "CAPITAL_EN",
-            "COUNTRY_EN",
-            "COUNTRY",
-            "CAP_POP",
             "CAPITAL"
         ],
         "fieldTypes": [
             "INT32",
-            "DOUBLE",
-            "DOUBLE",
-            "INT32",
-            "INT32",
-            "INT32",
-            "INT32",
-            "DOUBLE",
-            "WTEXT",
-            "WTEXT",
-            "WTEXT",
-            "WTEXT",
-            "WTEXT",
-            "WTEXT",
-            "DOUBLE",
             "WTEXT"
         ],
         "fields": [
             "SmID",
-            "SmX",
-            "SmY",
-            "SmLibTileID",
-            "SmUserID",
-            "SmGeometrySize",
-            "USERID",
-            "POP",
-            "CAPITAL_LO",
-            "CAPITAL_CH",
-            "COUNTRY_CH",
-            "CAPITAL_EN",
-            "COUNTRY_EN",
-            "COUNTRY",
-            "CAP_POP",
             "CAPITAL"
         ]
-        }
-    ],
-    "totalCount": 2,
-    "currentCount": 2,
+    }],
+    "totalCount": 1,
+    "currentCount": 1,
     "customResponse": null
 };
-
-var queryByDistanceEscapeJson="{\"recordsets\":[{\"datasetName\":\"Capitals@World\",\"features\":[{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":167,\"fieldValues\":[\"167\",\"105.82000238598519\",\"21.030003066242273\",\"1\",\"0\",\"16\",\"0\",\"1431270.0\",\"Hà Nội\",\"河内\",\"越南\",\"Hanoi\",\"Vietnam\",\"越南\",\"1431270.0\",\"河内\"],\"geometry\":{\"id\":167,\"center\":{\"y\":21.030003066242273,\"x\":105.82000238598519},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":21.030003066242273,\"x\":105.82000238598519}],\"type\":\"POINT\"}}],\"fieldCaptions\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"fieldTypes\":[\"INT32\",\"DOUBLE\",\"DOUBLE\",\"INT32\",\"INT32\",\"INT32\",\"INT32\",\"DOUBLE\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"DOUBLE\",\"WTEXT\"],\"fields\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"]}],\"totalCount\":1,\"currentCount\":1,\"customResponse\":null}";
-
-var queryByGeometryEscapeJson = "{\"recordsets\":[{\"datasetName\":\"Capitals@World\",\"features\":[{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":49,\"fieldValues\":[\"49\",\"39.253347298189766\",\"-6.817356064000194\",\"1\",\"0\",\"16\",\"0\",\"2698652.0\",\"Dodoma\",\"达累斯萨拉姆\",\"坦桑尼亚\",\"Dar es Salaam\",\"Tanzania\",\"坦桑尼亚\",\"2698652.0\",\"达累斯萨拉姆\"],\"geometry\":{\"id\":49,\"center\":{\"y\":-6.817356064000194,\"x\":39.253347298189766},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":-6.817356064000194,\"x\":39.253347298189766}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":174,\"fieldValues\":[\"174\",\"31.020003395825285\",\"-17.829999013060934\",\"1\",\"0\",\"16\",\"0\",\"1542813.0\",\"Harare\",\"哈拉雷\",\"津巴布韦\",\"Harare\",\"Zimbabwe\",\"津巴布韦\",\"1542813.0\",\"哈拉雷\"],\"geometry\":{\"id\":174,\"center\":{\"y\":-17.829999013060934,\"x\":31.020003395825285},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":-17.829999013060934,\"x\":31.020003395825285}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":179,\"fieldValues\":[\"179\",\"28.170000297413026\",\"-15.429995959678699\",\"1\",\"0\",\"16\",\"0\",\"1267440.0\",\"Lusaka\",\"卢萨卡\",\"赞比亚\",\"Lusaka\",\"Zambia\",\"赞比亚\",\"1267440.0\",\"卢萨卡\"],\"geometry\":{\"id\":179,\"center\":{\"y\":-15.429995959678699,\"x\":28.170000297413026},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":-15.429995959678699,\"x\":28.170000297413026}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":180,\"fieldValues\":[\"180\",\"29.35600232025743\",\"-3.3720029963673355\",\"1\",\"0\",\"16\",\"0\",\"331700.0\",\"Bujumbura\",\"布琼布拉\",\"布隆迪\",\"Bujumbura\",\"Burundi\",\"布隆迪\",\"331700.0\",\"布琼布拉\"],\"geometry\":{\"id\":180,\"center\":{\"y\":-3.3720029963673355,\"x\":29.35600232025743},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":-3.3720029963673355,\"x\":29.35600232025743}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":183,\"fieldValues\":[\"183\",\"33.774003300725525\",\"-13.983003038795545\",\"1\",\"0\",\"16\",\"0\",\"646750.0\",\"Lilongwe\",\"利隆圭\",\"马拉维\",\"Lilongwe\",\"Malawi\",\"马拉维\",\"646750.0\",\"利隆圭\"],\"geometry\":{\"id\":183,\"center\":{\"y\":-13.983003038795545,\"x\":33.774003300725525},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":-13.983003038795545,\"x\":33.774003300725525}],\"type\":\"POINT\"}}],\"fieldCaptions\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"fieldTypes\":[\"INT32\",\"DOUBLE\",\"DOUBLE\",\"INT32\",\"INT32\",\"INT32\",\"INT32\",\"DOUBLE\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"DOUBLE\",\"WTEXT\"],\"fields\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"]}],\"totalCount\":7,\"currentCount\":5,\"customResponse\":null}";
-
-var queryBySQLEscapeJson = "{\"recordsets\":[{\"datasetName\":\"Capitals@World\",\"features\":[{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":1,\"fieldValues\":[\"1\",\"-47.8977476573595\",\"-15.792110943058866\",\"1\",\"0\",\"16\",\"0\",\"2207718.0\",\"Brasília\",\"巴西利亚\",\"巴西\",\"Brasilia\",\"Brazil\",\"巴西\",\"2207718.0\",\"巴西利亚\"],\"geometry\":{\"id\":1,\"center\":{\"y\":-15.792110943058866,\"x\":-47.8977476573595},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":-15.792110943058866,\"x\":-47.8977476573595}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":2,\"fieldValues\":[\"2\",\"-171.739493590236\",\"-13.837022952831255\",\"1\",\"0\",\"16\",\"0\",\"40407.0\",\"Apia\",\"阿皮亚\",\"萨摩亚\",\"Apia\",\"Samoa\",\"萨摩亚\",\"40407.0\",\"阿皮亚\"],\"geometry\":{\"id\":2,\"center\":{\"y\":-13.837022952831255,\"x\":-171.739493590236},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":-13.837022952831255,\"x\":-171.739493590236}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":3,\"fieldValues\":[\"3\",\"-175.245650649682\",\"-21.13090205664112\",\"1\",\"0\",\"16\",\"0\",\"22400.0\",\"Nukuʻalofa\",\"努库阿洛法\",\"汤加\",\"Nuku' alofa\",\"Tonga\",\"汤加\",\"22400.0\",\"努库阿洛法\"],\"geometry\":{\"id\":3,\"center\":{\"y\":-21.13090205664112,\"x\":-175.245650649682},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":-21.13090205664112,\"x\":-175.245650649682}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":4,\"fieldValues\":[\"4\",\"-90.52489769414747\",\"14.618007066982969\",\"1\",\"0\",\"16\",\"0\",\"994938.0\",\"La Nueva Guatemala de la Asunción\",\"危地马拉\",\"危地马拉\",\"Guatemala\",\"Guatemala\",\"危地马拉\",\"994938.0\",\"危地马拉\"],\"geometry\":{\"id\":4,\"center\":{\"y\":14.618007066982969,\"x\":-90.52489769414747},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":14.618007066982969,\"x\":-90.52489769414747}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":5,\"fieldValues\":[\"5\",\"-79.51707859374812\",\"9.00287992114162\",\"1\",\"0\",\"16\",\"0\",\"408168.0\",\"Panamá\",\"巴拿马\",\"巴拿马\",\"Panama\",\"Panama\",\"巴拿马\",\"408168.0\",\"巴拿马\"],\"geometry\":{\"id\":5,\"center\":{\"y\":9.00287992114162,\"x\":-79.51707859374812},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":9.00287992114162,\"x\":-79.51707859374812}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":6,\"fieldValues\":[\"6\",\"-72.34310663251681\",\"18.52661707557256\",\"1\",\"0\",\"16\",\"0\",\"1234742.0\",\"Pòtoprens\",\"太子港\",\"海地\",\"Port-au-Prince\",\"Haiti\",\"海地\",\"1234742.0\",\"太子港\"],\"geometry\":{\"id\":6,\"center\":{\"y\":18.52661707557256,\"x\":-72.34310663251681},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":18.52661707557256,\"x\":-72.34310663251681}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":7,\"fieldValues\":[\"7\",\"-77.33999659167222\",\"25.066997945263694\",\"1\",\"0\",\"16\",\"0\",\"227940.0\",\"Nassau\",\"拿骚\",\"巴哈马\",\"Nassau\",\"The Bahamas\",\"巴哈马\",\"227940.0\",\"拿骚\"],\"geometry\":{\"id\":7,\"center\":{\"y\":25.066997945263694,\"x\":-77.33999659167222},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":25.066997945263694,\"x\":-77.33999659167222}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":8,\"fieldValues\":[\"8\",\"-76.95383368844213\",\"38.89090807427654\",\"1\",\"0\",\"16\",\"0\",\"552433.0\",\"Washington D.C.\",\"华盛顿\",\"美国\",\"Washington D.C.\",\"United States\",\"美国\",\"552433.0\",\"华盛顿\"],\"geometry\":{\"id\":8,\"center\":{\"y\":38.89090807427654,\"x\":-76.95383368844213},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":38.89090807427654,\"x\":-76.95383368844213}],\"type\":\"POINT\"}},{\"fieldNames\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"ID\":9,\"fieldValues\":[\"9\",\"-62.731997581262746\",\"17.292995971450082\",\"1\",\"0\",\"16\",\"0\",\"12920.0\",\"Basseterre\",\"巴斯特尔\",\"圣基茨和尼维斯\",\"Basseterre\",\"St. Kitts & Nevis\",\"圣基茨和尼维斯\",\"12920.0\",\"巴斯特尔\"],\"geometry\":{\"id\":9,\"center\":{\"y\":17.292995971450082,\"x\":-62.731997581262746},\"style\":null,\"parts\":[1],\"partTopo\":[],\"points\":[{\"y\":17.292995971450082,\"x\":-62.731997581262746}],\"type\":\"POINT\"}}],\"fieldCaptions\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"],\"fieldTypes\":[\"INT32\",\"DOUBLE\",\"DOUBLE\",\"INT32\",\"INT32\",\"INT32\",\"INT32\",\"DOUBLE\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"WTEXT\",\"DOUBLE\",\"WTEXT\"],\"fields\":[\"SmID\",\"SmX\",\"SmY\",\"SmLibTileID\",\"SmUserID\",\"SmGeometrySize\",\"USERID\",\"POP\",\"CAPITAL_LO\",\"CAPITAL_CH\",\"COUNTRY_CH\",\"CAPITAL_EN\",\"COUNTRY_EN\",\"COUNTRY\",\"CAP_POP\",\"CAPITAL\"]}],\"totalCount\":9,\"currentCount\":9,\"customResponse\":null}";

@@ -31,7 +31,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
             expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(getFeaturesByIDs)));
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             serviceResult = result
@@ -50,27 +50,13 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
                 expect(serviceResult.result.features.features.length).toEqual(1);
                 for (var i = 0; i < serviceResult.result.features.features.length; i++) {
                     expect(serviceResult.result.features.features[i].type).toBe("Feature");
-                    expect(serviceResult.result.features.features[i].geometry.type).toBe("Point");
+                    expect(serviceResult.result.features.features[i].geometry.type).toBe("MultiPolygon");
                     expect(serviceResult.result.features.features[i].geometry.coordinates.length).toEqual(2);
                 }
                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
-                    CAPITAL: "巴西利亚",
-                    CAPITAL_CH: "巴西利亚",
-                    CAPITAL_EN: "Brasilia",
-                    CAPITAL_LO: "Brasília",
-                    CAP_POP: "2207718.0",
-                    COUNTRY: "巴西",
-                    COUNTRY_CH: "巴西",
-                    COUNTRY_EN: "Brazil",
-                    ID: 1,
-                    POP: "2207718.0",
-                    SMGEOMETRYSIZE: "16",
-                    SMID: "1",
-                    SMLIBTILEID: "1",
-                    SMUSERID: "0",
-                    SMX: "-47.8977476573595",
-                    SMY: "-15.792110943058866",
-                    USERID: "0"
+                    CAPITAL: "利伯维尔",
+                    ID: 127,
+                    SMID: "127"
                 }));
                 getFeaturesByIDsService.destroy();
                 done();

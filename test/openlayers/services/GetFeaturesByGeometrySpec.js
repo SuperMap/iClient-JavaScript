@@ -1,6 +1,7 @@
 import ol from 'openlayers';
 import {FeatureService} from '../../../src/openlayers/services/FeatureService';
 import {GetFeaturesByGeometryParameters} from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var options = {
@@ -26,6 +27,14 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
             spatialQueryMode: "INTERSECT"
         });
         var getFeaturesByGeometryService = new FeatureService(featureServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(featureServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
+            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
         getFeaturesByGeometryService.getFeaturesByGeometry(geometryParam, (result) => {
             serviceResult = result;
         });

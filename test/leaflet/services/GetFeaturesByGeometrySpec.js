@@ -33,7 +33,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
             expect(params).toContain("'datasetNames':[\"World:Countries\"]");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(getFeaturesByGeometry)));
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
             serviceResult = result
@@ -124,7 +124,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            // expect(params).toContain("'datasetNames':[\"World1:Countries\"]");
+            expect(params).toContain("'datasetNames':[\"World1:Countries\"]");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });

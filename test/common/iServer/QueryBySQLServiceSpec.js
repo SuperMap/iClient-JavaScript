@@ -56,6 +56,14 @@ describe('testQueryBySQLService_processAsync', () => {
         queryBySQLParameters.startRecord = 0;
         queryBySQLParameters.holdTime = 10;
         queryBySQLParameters.returnCustomResult = false;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'name':\"Countries@World\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6.json"}`));
+        });
         queryBySQLService.processAsync(queryBySQLParameters);
         setTimeout(() => {
             try {
@@ -117,6 +125,14 @@ describe('testQueryBySQLService_processAsync', () => {
             startRecord: 0,
             holdTime: 10
         });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'name':\"Countries@World\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
+        });
         queryBySQLService.events.on({'processCompleted': QueryBySQLCompleted});
         queryBySQLService.processAsync(queryBySQLParameters);
         setTimeout(() => {
@@ -173,6 +189,15 @@ describe('testQueryBySQLService_processAsync', () => {
         queryBySQLParameters.startRecord = 0;
         queryBySQLParameters.holdTime = 10;
         queryBySQLParameters.returnCustomResult = true;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("attributeFilter':\"SmID=50\"");
+            expect(params).toContain("'name':\"Countries@World\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_4fbe0a1122a947978a94aaf1f7a3bd2e","succeed":true,"customResult":{"top":33.17113494873047,"left":9.31138801574707,"bottom":19.499065399169922,"leftBottom":{"x":9.31138801574707,"y":19.499065399169922},"right":25.15166473388672,"rightTop":{"x":25.15166473388672,"y":33.17113494873047}},"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_4fbe0a1122a947978a94aaf1f7a3bd2e.json"}`));
+        });
         queryBySQLService.processAsync(queryBySQLParameters);
         setTimeout(() => {
             try {
@@ -221,6 +246,15 @@ describe('testQueryBySQLService_processAsync', () => {
             networkType: GeometryType.POINT,
             queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
             queryParams: new Array()
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'holdTime':10");
+            expect(params).toContain("'networkType':\"POINT\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
         });
         queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
         queryBySQLService.processAsync(queryBySQLParameters);
@@ -273,6 +307,14 @@ describe('testQueryBySQLService_processAsync', () => {
                 name: "notExist"
             })),
             returnContent: false
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(params).not.toBeNull();
+            expect(params).toContain("'attributeFilter':\"SmID%26gt;0\"");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(notExist)"}}`));
         });
         queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
         queryBySQLService.processAsync(queryBySQLParameters);
@@ -327,7 +369,6 @@ describe('testQueryBySQLService_processAsync', () => {
                 name: "Countries@World"
             })),
             returnFeatureWithFieldCaption:true,
-            //returnFeatureWithFieldCaption
             returnContent: true
         });
         queryBySQLParameters.startRecord = 0;
@@ -335,12 +376,12 @@ describe('testQueryBySQLService_processAsync', () => {
         queryBySQLParameters.returnCustomResult = false;
 
         spyOn(FetchRequest, 'post').and.callFake((url, params, options) => {
-            // http://54.223.164.155:8090/iserver/services/map-world/rest/maps/World%20Map/queryResults.json?returnContent=true
             expect(url).toBe(worldMapURL + "/queryResults.json?returnContent=true");
             expect(params).not.toBeNull();
+            expect(params).toContain("'name':\"Countries@World\"");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(queryEscapedJson)));
-        }); 
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
+        });
 
         queryBySQLService.processAsync(queryBySQLParameters);
         setTimeout(() => {
@@ -348,14 +389,12 @@ describe('testQueryBySQLService_processAsync', () => {
                 var queryResult = serviceSuccessEventArgs.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
                 expect(queryResult.type).toBe("FeatureCollection");
-                expect(queryResult.features.length).toBe(2);
+                expect(queryResult.features.length).toBe(1);
                 expect(queryResult.features[0].properties).not.toBeNull();
-                // queryResult.features[0].properties["COLOR_MAP"]
-                //  console.log("QueryBySQLService_" + queryResult.features[1].properties["COLOR_MAP"]);   
-                expect(queryResult.features[1].properties["ColorIDtest"]).toEqual('1');   
+                expect(queryResult.features[0].properties["CAPITAL"]).toBe('拉巴斯');
+                expect(queryResult.features[0].properties["SmID"]).toEqual('59');
                 queryBySQLService.destroy();
                 queryBySQLParameters.destroy();
-
                 queryFailedEventArgs = null;
                 serviceSuccessEventArgs = null;
                 done();
