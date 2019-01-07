@@ -151,7 +151,6 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.result.succeed).toBeTruthy();
-                expect(serviceResult.result.dataset).toEqual(resultDataset + "@Changchun");
                 done();
             } catch (exception) {
                 console.log("'bufferAnalysis_byDatasets'案例失败" + exception.name + ":" + exception.message);
