@@ -1,12 +1,12 @@
-import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
-import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/GeometryBufferAnalystParameters';
-import {DatasetBufferAnalystParameters} from '../../../src/common/iServer/DatasetBufferAnalystParameters';
-import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
-import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
-import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
-import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
-import {BufferEndType} from '../../../src/common/REST';
-import {DataReturnMode} from '../../../src/common/REST';
+import { spatialAnalystService } from '../../../src/leaflet/services/SpatialAnalystService';
+import { GeometryBufferAnalystParameters } from '../../../src/common/iServer/GeometryBufferAnalystParameters';
+import { DatasetBufferAnalystParameters } from '../../../src/common/iServer/DatasetBufferAnalystParameters';
+import { BufferSetting } from '../../../src/common/iServer/BufferSetting';
+import { BufferDistance } from '../../../src/common/iServer/BufferDistance';
+import { FilterParameter } from '../../../src/common/iServer/FilterParameter';
+import { DataReturnOption } from '../../../src/common/iServer/DataReturnOption';
+import { BufferEndType } from '../../../src/common/REST';
+import { DataReturnMode } from '../../../src/common/REST';
 import request from 'request';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
@@ -63,13 +63,13 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             [-4210.533, 8182.656],
             [-4261.485, 8554.893]
         ];
-        var roadLine = L.polyline(pointsList, {color: 'red'});
+        var roadLine = L.polyline(pointsList, { color: 'red' });
         var geoBufferAnalystParams = new GeometryBufferAnalystParameters({
             sourceGeometry: roadLine,
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
-                leftDistance: new BufferDistance({value: 250}),
-                rightDistance: new BufferDistance({value: 250}),
+                leftDistance: new BufferDistance({ value: 250 }),
+                rightDistance: new BufferDistance({ value: 250 }),
                 semicircleLineSegment: 10
             })
         });
@@ -84,10 +84,7 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));
         });
-        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (result) => {
-            serviceResult = result;
-        });
-        setTimeout(() => {
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (serviceResult) => {
             try {
                 expect(bufferAnalystService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -112,7 +109,8 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
+
     });
 
     var resultDataset = "bufferAnalystByDatasets_leafletTest";
@@ -124,8 +122,8 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             }),
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
-                leftDistance: {value: 10},
-                rightDistance: {value: 10},
+                leftDistance: { value: 10 },
+                rightDistance: { value: 10 },
                 semicircleLineSegment: 10
             }),
             resultSetting: new DataReturnOption({
@@ -149,13 +147,20 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
         });
         bufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
+            try {
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toBe('processCompleted');
+                expect(serviceResult.result.succeed).toBeTruthy();
+                expect(serviceResult.result.dataset).toEqual(resultDataset + "@Changchun");
+                done();
+            } catch (exception) {
+                console.log("'bufferAnalysis_byDatasets'案例失败" + exception.name + ":" + exception.message);
+                bufferAnalystService.destroy();
+                expect(false).toBeTruthy();
+                done();
+            }
         });
-        setTimeout(() => {
-            expect(serviceResult).not.toBeNull();
-            expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.result.succeed).toBeTruthy();
-            done();
-        }, 5000);
+
     });
 
 });

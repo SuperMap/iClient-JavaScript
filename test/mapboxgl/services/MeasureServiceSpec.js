@@ -39,8 +39,6 @@ describe('mapboxgl_MeasureService', () => {
         });
         service.measureDistance(measureParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -55,7 +53,7 @@ describe('mapboxgl_MeasureService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+    });
     });
 
     //测距:失败事件
@@ -77,8 +75,6 @@ describe('mapboxgl_MeasureService', () => {
         });
         service.measureDistance(measureParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -91,7 +87,7 @@ describe('mapboxgl_MeasureService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000);
+    });
     });
 
     //测面积成功事件
@@ -114,8 +110,6 @@ describe('mapboxgl_MeasureService', () => {
         });
         service.measureArea(measureParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -130,7 +124,7 @@ describe('mapboxgl_MeasureService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+    });
     });
 
     //测面积失败事件
@@ -150,8 +144,6 @@ describe('mapboxgl_MeasureService', () => {
         });
         service.measureArea(measureParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -164,6 +156,6 @@ describe('mapboxgl_MeasureService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+    });
     });
 });

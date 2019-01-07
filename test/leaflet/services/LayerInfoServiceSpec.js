@@ -34,8 +34,6 @@ describe('leaflet_LayerInfoService', () => {
         });
         layerService.getLayersInfo((result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(layerService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -70,7 +68,7 @@ describe('leaflet_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     // 子图层显示控制服务
@@ -108,13 +106,11 @@ describe('leaflet_LayerInfoService', () => {
         });
         layerService.setLayerStatus(setLayerStatusParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(layerService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toBeTruthy();
+                expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.newResourceID).not.toBeNull();
                 layerService.destroy();
                 done();
@@ -124,7 +120,7 @@ describe('leaflet_LayerInfoService', () => {
                 layerService.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //新建临时图层   isTempLayers=false
@@ -141,9 +137,7 @@ describe('leaflet_LayerInfoService', () => {
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json"}`));
         });
         service.setLayersInfo(setLayersInfoParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -161,7 +155,7 @@ describe('leaflet_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //修改临时图层的信息 isTempLayers=true
@@ -180,14 +174,12 @@ describe('leaflet_LayerInfoService', () => {
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         service.setLayersInfo(setLayersInfoParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toBeTruthy();
+                expect(serviceResult.result.succeed).toEqual(true);
                 expect(serviceResult.object.resourceID).toEqual(id);
                 expect(serviceResult.object.options.method).toEqual("PUT");
                 expect(serviceResult.object.options.data).toContain("'description':\"test\"");
@@ -199,7 +191,7 @@ describe('leaflet_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //设置图层信息服务  并实现临时图层中子图层的修改
@@ -218,9 +210,7 @@ describe('leaflet_LayerInfoService', () => {
         });
         var service = layerInfoService(layerInfoURL);
         service.setLayerInfo(setLayerInfoParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -237,6 +227,6 @@ describe('leaflet_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

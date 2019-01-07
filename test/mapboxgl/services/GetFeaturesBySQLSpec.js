@@ -35,8 +35,7 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
         });
         service.getFeaturesBySQL(sqlParam, (result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
+    
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -65,6 +64,6 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

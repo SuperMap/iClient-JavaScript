@@ -34,14 +34,12 @@ describe('mapboxgl_GridCellInfosService', () => {
                 if (testUrl.indexOf("imageValue.json") > 0) {
                     return Promise.resolve(new Response(getGridCellInfosEcapedJson));
                 }
-            }
+            };
             return null;
         });
 
         service.getGridCellInfos(getGridCellInfosParam, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -63,6 +61,6 @@ describe('mapboxgl_GridCellInfosService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     })
 });

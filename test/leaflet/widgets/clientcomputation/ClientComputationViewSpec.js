@@ -14,9 +14,9 @@ var map, url = GlobeParameter.WorldURL, testDiv, clientComputation;
 var dataServiceURL = GlobeParameter.wokerURL;
 describe('leaflet_clientcomputation_ClientComputationView', () => {
     var clientComputationLayer;
-    var originalTimeout, resultLayer, setLayer;
+    var originalTimeout, resultLayer, setLayer,result;
     var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
-    beforeAll(() => {
+    beforeAll((done) => {
         testDiv = document.createElement("div");
         testDiv.id = 'map';
         testDiv.style.margin = "0 auto";
@@ -52,7 +52,34 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
             queryFailedEventArgs = serviceFailedEventArgs;
         };
         var QueryBySQLCompleted = (queryEventArgs) => {
-            serviceSuccessEventArgs = queryEventArgs;
+             serviceSuccessEventArgs = queryEventArgs;
+                        try {
+                result = L.Util.transform(serviceSuccessEventArgs.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
+                resultLayer = L.geoJSON(result, {
+                    style: { fillColor: '#ff7373', color: '#ff7373', opacity: 1, fillOpacity: 0.8 },
+                    pointToLayer: function (geoJsonPoint, latLng) {
+                        return L.circleMarker(latLng, { radius: 6, color: '#ff7373', fillColor: '#ff7373' })
+                    }
+                }).addTo(map);
+                setLayer = {
+                    'layerName': "中国历史5级以上地震数据",
+                    'layer': resultLayer,
+                    'fields': ['震级', '深度', '经度', '纬度', 'SmID', 'SmX', 'SmY']
+                };
+                clientComputationLayer = new ClientComputationLayer(setLayer);
+                clientComputation.addLayer(clientComputationLayer);
+                document.getElementById('getValueText').style.height = '1px';
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("clientcomputation" + exception.name + ":" + exception.message);
+                queryBySQLService.destroy();
+                params.destroy();
+                queryFailedEventArgs = null;
+                serviceSuccessEventArgs = null;
+                done();
+            }
+           
         };
         var options = {
             eventListeners: {
@@ -72,34 +99,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
         })
         queryBySQLService.events.on({ 'processCompleted': QueryBySQLCompleted });
         queryBySQLService.processAsync(params);
-        document.getElementById('getValueText').style.height = '1px';
-
-
-        setTimeout(() => {
-            try {
-                var result = L.Util.transform(serviceSuccessEventArgs.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
-                resultLayer = L.geoJSON(result, {
-                    style: { fillColor: '#ff7373', color: '#ff7373', opacity: 1, fillOpacity: 0.8 },
-                    pointToLayer: function (geoJsonPoint, latLng) {
-                        return L.circleMarker(latLng, { radius: 6, color: '#ff7373', fillColor: '#ff7373' })
-                    }
-                }).addTo(map);
-                setLayer = {
-                    'layerName': "中国历史5级以上地震数据",
-                    'layer': resultLayer,
-                    'fields': ['震级', '深度', '经度', '纬度', 'SmID', 'SmX', 'SmY']
-                };
-                clientComputationLayer = new ClientComputationLayer(setLayer);
-                clientComputation.addLayer(clientComputationLayer);
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("clientcomputation" + exception.name + ":" + exception.message);
-                queryBySQLService.destroy();
-                params.destroy();
-                queryFailedEventArgs = null;
-                serviceSuccessEventArgs = null;
-            }
-        }, 500)
+    
     });
 
     beforeEach(() => {
@@ -144,13 +144,12 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 console.log("clientcomputation" + exception.name + ":" + exception.message);
                 done();
             }
-        }, 1000)
-
+        }, 600)
     });
 
 
     it('addLayer,buffer', (done) => {
-        setTimeout(() => {
+    
             try {
                 document.getElementById('dropDownTop').click();
                 document.getElementsByClassName('widget-dropdownbox__item')[2].click();
@@ -183,12 +182,10 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 console.log("clientcomputation" + exception.name + ":" + exception.message);
                 done();
             }
-        }, 1000)
-
+   
     });
 
     it('clearLayer,cancelAnalysis', (done) => {
-        setTimeout(() => {
             try {
                 spyOn(clientComputation.viewModel, 'cancelAnalysis').and.callThrough();
                 spyOn(clientComputation.viewModel, 'clearLayers').and.callThrough();
@@ -207,8 +204,6 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 console.log("clientcomputation" + exception.name + ":" + exception.message);
                 done();
             }
-        }, 1000)
-
     });
 
 })

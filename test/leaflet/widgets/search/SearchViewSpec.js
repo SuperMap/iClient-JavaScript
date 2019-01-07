@@ -38,7 +38,7 @@ describe('leaflet_search_SearchView', () => {
 
     beforeAll((done) => {
 
-        setTimeout(() => {
+        // setTimeout(() => {
             testDiv = document.createElement("div");
             testDiv.id = 'map';
             testDiv.style.margin = "0 auto";
@@ -113,7 +113,7 @@ describe('leaflet_search_SearchView', () => {
             queryBySQLService = new QueryBySQLService(queryUrl, options);
             queryBySQLService.events.on({ 'processCompleted': QueryBySQLCompleted });
             queryBySQLService.processAsync(params);
-        }, 4000);
+        // }, 4000);
     });
 
     beforeEach(() => {

@@ -34,10 +34,7 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`[98]`));
         });
-        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
-            addFeatureResult_LINE = result
-        });
-        setTimeout(() => {
+        addFeaturesService.editFeatures(addFeaturesParams, (addFeatureResult_LINE) => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_LINE.type).toBe("processCompleted");
@@ -57,7 +54,7 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     // 删除LINE要素
@@ -76,10 +73,7 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        deleteLineService.editFeatures(deleteFeaturesParams, (result) => {
-            deleteLineResult = result
-        });
-        setTimeout(() => {
+        deleteLineService.editFeatures(deleteFeaturesParams, (deleteLineResult) => {
             try {
                 expect(deleteLineService).not.toBeNull();
                 expect(deleteLineResult).not.toBeNull();
@@ -96,6 +90,6 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
                 deleteLineService.destroy();
                 done();
             }
-        }, 2000);
+        });
     });
 });

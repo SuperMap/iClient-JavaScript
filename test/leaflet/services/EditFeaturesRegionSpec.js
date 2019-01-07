@@ -1,6 +1,6 @@
-import {featureService} from '../../../src/leaflet/services/FeatureService';
-import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
-import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+import { featureService } from '../../../src/leaflet/services/FeatureService';
+import { EditFeaturesParameters } from '../../../src/common/iServer/EditFeaturesParameters';
+import { GetFeaturesByIDsParameters } from '../../../src/common/iServer/GetFeaturesByIDsParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
@@ -39,9 +39,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             return Promise.resolve(new Response(`[115]`));
         });
         addFeaturesService.editFeatures(addFeaturesParams, (result) => {
-            addFeatureResult_REGION = result
-        });
-        setTimeout(() => {
+            addFeatureResult_REGION = result;
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_REGION.type).toBe("processCompleted");
@@ -61,7 +59,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     // 增加REGION要素，returnContent为false
@@ -86,9 +84,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_78a67b1809614341b9314f311a47c1d4","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-jingjin/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_78a67b1809614341b9314f311a47c1d4.json"}`));
         });
         addFeaturesService.editFeatures(addFeaturesParams, (result) => {
-            addFeatureResult = result
-        });
-        setTimeout(() => {
+            addFeatureResult = result;
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult.type).toBe("processCompleted");
@@ -110,7 +106,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     //  批量删除要素
@@ -130,9 +126,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         deleteFeaturesService.editFeatures(deleteFeaturesParams, (result) => {
-            deleteFeatureResult = result
-        });
-        setTimeout(() => {
+            deleteFeatureResult = result;
             try {
                 expect(deleteFeaturesService).not.toBeNull();
                 expect(deleteFeatureResult).not.toBeNull();
@@ -149,7 +143,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 deleteFeaturesService.destroy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     // 更新要素
@@ -171,9 +165,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             return Promise.resolve(new Response(JSON.stringify(getFeatureResultJson)));
         });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
-            getFeatureResult = result
-        });
-        setTimeout(() => {
+            getFeatureResult = result;
             if (getFeatureResult != null) {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeatureResult.type).toBe("processCompleted");
@@ -188,7 +180,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 getFeaturesByIDsService.destroy();
                 done();
             }
-        }, 4000)
+        });
     });
 
     // 将上面获取的要素update
@@ -213,8 +205,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             });
             updateFeaturesService.editFeatures(updateFeaturesParams, (result) => {
                 updateFeatureResult = result
-            });
-            setTimeout(() => {
+
                 if (updateFeatureResult != null) {
                     try {
                         expect(updateFeaturesService).not.toBeNull();
@@ -234,11 +225,12 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                     console.log("'updateFeature'在设置的延时时间内未完成要素更新");
                     done();
                 }
-            }, 5000);
+            })
         }
         else {
             console.log("'updateFeature'未获取到数据");
             done();
+
         }
     });
 });

@@ -70,7 +70,6 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
     });
     // 分析
     it('analysis', (done) => {
-        setTimeout(() => {
         expect(distributedAnalysis).not.toBeNull();
         spyOn(FetchRequest, 'post').and.callFake((url) => {
             if (url.indexOf("/density.json") > -1) {
@@ -116,7 +115,6 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
         document.getElementsByClassName('widget-content widget-content--scroll widget-content--analysis')[0].style="max-height: 880px;";
         var analysitBtn = document.getElementsByClassName('widget-analysis__analysisbtn--analysis')[0];
         analysitBtn.click();
-    }, 4000)
     });
 
     it('clearLayers', (done) => {

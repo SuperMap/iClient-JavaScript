@@ -65,8 +65,6 @@ describe('mapboxgl_SpatialAnalystService_routeCalculateMeasure', () => {
         });
         service.routeCalculateMeasure(routeCalculateMeasureParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -79,6 +77,6 @@ describe('mapboxgl_SpatialAnalystService_routeCalculateMeasure', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 });

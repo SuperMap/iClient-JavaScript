@@ -68,8 +68,7 @@ describe('leaflet_ThemeService', () => {
         });
         themeDotDensityService.getThemeInfo(themeDotDensityParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+       
             try {
                 expect(themeDotDensityService).not.toBeNull();
                 expect(themeDotDensityService.options.serverType).toBe("iServer");
@@ -93,7 +92,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     // 等级符号专题图
@@ -128,8 +127,7 @@ describe('leaflet_ThemeService', () => {
         });
         themeGraduatedSymbolService.getThemeInfo(themeGraduatedSymbolParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+      
             try {
                 expect(themeGraduatedSymbolService).not.toBeNull();
                 expect(themeGraduatedSymbolService.options.serverType).toBe("iServer");
@@ -153,7 +151,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     // 统计专题图
@@ -211,8 +209,7 @@ describe('leaflet_ThemeService', () => {
         });
         themeGraphService.getThemeInfo(themeGraphParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+       
             try {
                 expect(themeGraphService).not.toBeNull();
                 expect(themeGraphService.options.serverType).toBe("iServer");
@@ -236,7 +233,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     // 栅格分段专题图
@@ -295,8 +292,7 @@ describe('leaflet_ThemeService', () => {
         });
         themeGridRangeService.getThemeInfo(themeGridRangeParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+      
             try {
                 expect(themeGridRangeService).not.toBeNull();
                 expect(themeGridRangeService.options.serverType).toBe("iServer");
@@ -319,7 +315,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 6000)
+        });
     });
 
     // 标签专题图
@@ -389,8 +385,7 @@ describe('leaflet_ThemeService', () => {
         });
         themeLableService.getThemeInfo(themeLableParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+      
             try {
                 expect(themeLableService).not.toBeNull();
                 expect(themeLableService.options.serverType).toBe("iServer");
@@ -413,7 +408,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     // 范围分段专题图
@@ -456,8 +451,7 @@ describe('leaflet_ThemeService', () => {
         });
         themeRangeService.getThemeInfo(themeRangeParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+        
             try {
                 expect(themeRangeService).not.toBeNull();
                 expect(themeRangeService.options.serverType).toBe("iServer");
@@ -480,7 +474,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 
     it('successEvent:ThemeUnique', (done) => {
@@ -522,8 +516,7 @@ describe('leaflet_ThemeService', () => {
         });
         themeUniqueService.getThemeInfo(themeUniqueParameters, (result) => {
             serviceResult = result
-        });
-        setTimeout(function () {
+      
             try {
                 expect(themeUniqueService).not.toBeNull();
                 expect(themeUniqueService.options.serverType).toBe("iServer");
@@ -546,7 +539,7 @@ describe('leaflet_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        });
     });
 });
 

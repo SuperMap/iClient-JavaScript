@@ -44,9 +44,7 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
             return Promise.resolve(new Response(`[257]`));
         });
         service.editFeatures(addFeatureParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -64,7 +62,7 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //删除要素
@@ -82,9 +80,7 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         service.editFeatures(deleteFeatureParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -99,6 +95,6 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

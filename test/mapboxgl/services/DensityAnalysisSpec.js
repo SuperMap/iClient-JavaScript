@@ -40,8 +40,6 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
         });
         service.densityAnalysis(densityKernelAnalystParameters, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -54,7 +52,7 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 8000);
+        });
     });
 
     //点密度分析, 不删除重复的数据集(默认), 本测试的resultGridName需要是一个已经存在的数据集
@@ -77,8 +75,6 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
         });
         service.densityAnalysis(densityKernelAnalystParameters, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -91,7 +87,7 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     // 删除测试过程中产生的测试数据集

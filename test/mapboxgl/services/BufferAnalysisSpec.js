@@ -1,12 +1,12 @@
-import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
-import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/GeometryBufferAnalystParameters';
-import {DatasetBufferAnalystParameters} from '../../../src/common/iServer/DatasetBufferAnalystParameters';
-import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
-import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
-import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
-import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
-import {BufferEndType} from '../../../src/common/REST';
-import {DataReturnMode} from '../../../src/common/REST';
+import { SpatialAnalystService } from '../../../src/mapboxgl/services/SpatialAnalystService';
+import { GeometryBufferAnalystParameters } from '../../../src/common/iServer/GeometryBufferAnalystParameters';
+import { DatasetBufferAnalystParameters } from '../../../src/common/iServer/DatasetBufferAnalystParameters';
+import { BufferSetting } from '../../../src/common/iServer/BufferSetting';
+import { BufferDistance } from '../../../src/common/iServer/BufferDistance';
+import { FilterParameter } from '../../../src/common/iServer/FilterParameter';
+import { DataReturnOption } from '../../../src/common/iServer/DataReturnOption';
+import { BufferEndType } from '../../../src/common/REST';
+import { DataReturnMode } from '../../../src/common/REST';
 import request from 'request';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
@@ -31,11 +31,11 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         var bufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
             //设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
-            filterQueryParameter: new FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
+            filterQueryParameter: new FilterParameter({ attributeFilter: "NAME='莲花池东路'" }),
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
-                leftDistance: {value: 200},
-                rightDistance: {value: 200},
+                leftDistance: { value: 200 },
+                rightDistance: { value: 200 },
                 semicircleLineSegment: 10
             })
         });
@@ -49,8 +49,6 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         });
         service.bufferAnalysis(bufferAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -78,7 +76,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 7000);
+        });
     });
 
     // 缓冲区数据集分析  isAttributeRetained 为 false
@@ -86,15 +84,15 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         var bufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
             // 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
-            filterQueryParameter: new FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
+            filterQueryParameter: new FilterParameter({ attributeFilter: "NAME='莲花池东路'" }),
             // 是否将缓冲区与源记录集中的对象合并后返回
             isUnion: true,
             // 是否保留进行缓冲区分析的对象的字段属性
             isAttributeRetained: false,
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
-                leftDistance: {value: 200},
-                rightDistance: {value: 200},
+                leftDistance: { value: 200 },
+                rightDistance: { value: 200 },
                 semicircleLineSegment: 10
             })
         });
@@ -108,8 +106,6 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         });
         service.bufferAnalysis(bufferAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -125,7 +121,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     var resultDataset = "BufferAnalystByDatasets_mbglTest";
@@ -134,11 +130,11 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         var bufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
             // 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
-            filterQueryParameter: new FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
+            filterQueryParameter: new FilterParameter({ attributeFilter: "NAME='莲花池东路'" }),
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
-                leftDistance: {value: 200},
-                rightDistance: {value: 200},
+                leftDistance: { value: 200 },
+                rightDistance: { value: 200 },
                 semicircleLineSegment: 10
             }),
             resultSetting: new DataReturnOption({
@@ -158,8 +154,6 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         });
         service.bufferAnalysis(bufferAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -175,7 +169,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 6000);
+        });
     });
 
     // 缓冲区分析 几何对象缓冲区分析
@@ -202,8 +196,8 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
             sourceGeometrySRID: 4326,
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
-                leftDistance: new BufferDistance({value: 300}),
-                rightDistance: new BufferDistance({value: 300}),
+                leftDistance: new BufferDistance({ value: 300 }),
+                rightDistance: new BufferDistance({ value: 300 }),
                 radiusUnit: "METER",
                 semicircleLineSegment: 10
             })
@@ -218,8 +212,6 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
         });
         service.bufferAnalysis(goBufferAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -241,6 +233,6 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

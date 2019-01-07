@@ -49,8 +49,7 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
         });
         routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+
             try {
                 expect(routeCalculateMeasureService).not.toBeNull();
                 expect(routeCalculateMeasureService.options.serverType).toBe('iServer');
@@ -67,6 +66,6 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

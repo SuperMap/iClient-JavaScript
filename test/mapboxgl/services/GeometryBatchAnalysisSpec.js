@@ -86,8 +86,6 @@ describe('mapboxgl_SpatialAnalystService_geometryBatchAnalysis', () => {
         });
         new SpatialAnalystService(serviceUrl).geometrybatchAnalysis(parameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(() => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result.succeed).toEqual(true);
@@ -101,6 +99,6 @@ describe('mapboxgl_SpatialAnalystService_geometryBatchAnalysis', () => {
                 expect(serviceResult.result[i].succeed).toBe(true);
             }
             done();
-        }, 3000)
+        });
     });
 });

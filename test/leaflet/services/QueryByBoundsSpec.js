@@ -37,8 +37,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
         });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+      
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -73,7 +72,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     it('successEvent:queryByBounds_customsResult=true', (done)=> {
@@ -100,8 +99,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
         });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+      
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -121,7 +119,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
 
@@ -139,8 +137,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
         });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+      
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -157,7 +154,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
 
@@ -175,8 +172,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
         });
         queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
-        });
-        setTimeout(()=> {
+      
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -193,7 +189,7 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 queryByBoundsService.destroy();
                 done();
             }
-        }, 2000);
+        })
     })
 });
 

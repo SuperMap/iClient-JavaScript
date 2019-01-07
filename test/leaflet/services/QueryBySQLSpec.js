@@ -38,8 +38,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
@@ -74,7 +73,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     it('successEvent:queryBySQL_returnContent=false', (done) => {
@@ -96,8 +95,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+    
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
@@ -116,7 +114,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     it('successEvent:queryBySQL_customsResult=true', (done) => {
@@ -139,8 +137,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+      
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
@@ -160,7 +157,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     it('failEvent:queryBySQL_layerNotExist', (done) => {
@@ -178,8 +175,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+       
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
@@ -196,7 +192,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     it('failEvent:queryBySQL_queryParamsNull', (done) => {
@@ -211,8 +207,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
         });
         queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+       
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
@@ -229,7 +224,7 @@ describe('leaflet_QueryService_queryBySQL', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        })
     })
 });
 

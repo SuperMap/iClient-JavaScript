@@ -33,8 +33,6 @@ describe('mapboxgl_FieldService', () => {
         });
         service.getFields(fieldParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -51,7 +49,7 @@ describe('mapboxgl_FieldService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //字段统计服务
@@ -90,8 +88,6 @@ describe('mapboxgl_FieldService', () => {
         });
         service.getFieldStatisticsInfo(fieldStatisticsParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.currentStatisticResult).not.toBeNull();
@@ -116,6 +112,6 @@ describe('mapboxgl_FieldService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

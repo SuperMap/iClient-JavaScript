@@ -78,7 +78,6 @@ describe('mapboxgl_MapvRenderer', () => {
         else {
             mapvLayer = map.getLayer("mapv")
         }
-        // mapvLayer;
         renderer = map.getLayer("mapv").renderer;
     });
 
@@ -93,7 +92,6 @@ describe('mapboxgl_MapvRenderer', () => {
     });
 
     it('moveStartEvent,moveEndEvent,rotateStartEvent_#22', (done) => {
-        setTimeout(() => {
             expect(renderer).not.toBeNull();
 
             spyOn(map, 'getPitch').and.callFake(() => {
@@ -108,6 +106,5 @@ describe('mapboxgl_MapvRenderer', () => {
             // expect(renderer._show).toHaveBeenCalled();
             expect(renderer.canvasLayer.canvas.style.display).toEqual('none');
             done();
-        }, 6000);
     });
 })

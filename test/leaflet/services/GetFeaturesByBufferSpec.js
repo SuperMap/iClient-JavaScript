@@ -1,5 +1,5 @@
-import {featureService} from '../../../src/leaflet/services/FeatureService';
-import {GetFeaturesByBufferParameters} from '../../../src/common/iServer/GetFeaturesByBufferParameters';
+import { featureService } from '../../../src/leaflet/services/FeatureService';
+import { GetFeaturesByBufferParameters } from '../../../src/common/iServer/GetFeaturesByBufferParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
@@ -40,9 +40,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesByBufferService.options.serverType).toBe("iServer");
@@ -72,7 +70,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     it('successEvent:getFeaturesByBuffer_returnContent=false', (done) => {
@@ -94,9 +92,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_02c1636b347046d9b1428bce7118c4df","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_02c1636b347046d9b1428bce7118c4df.json"}`));
         });
         getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesByBufferService.options.serverType).toBe("iServer");
@@ -115,7 +111,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     it('failEvent:getFeaturesByBuffer_datasetNotExist', (done) => {
@@ -136,9 +132,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });
         getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesByBufferService.options.serverType).toBe("iServer");
@@ -155,7 +149,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     it('failEvent:getFeaturesByBuffer_datasetNamesNull', (done) => {
@@ -176,9 +170,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
         });
         getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesByBufferService.options.serverType).toBe("iServer");
@@ -195,7 +187,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
                 getFeaturesByBufferService.destroy();
                 done();
             }
-        }, 2000);
+        });
     })
 });
 

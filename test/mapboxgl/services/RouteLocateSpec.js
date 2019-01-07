@@ -56,8 +56,6 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', () => {
         });
         service.routeLocate(routeLocatorParameters_point, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -72,8 +70,7 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
-
+    });
     });
 
     //路由定位 里程定线
@@ -113,8 +110,6 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', () => {
         });
         service.routeLocate(routeLocatorParameters_line, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -133,6 +128,6 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 });

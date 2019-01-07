@@ -52,9 +52,6 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', () => {
         });
         generateSpatialDataService.generateSpatialData(generateSpatialDataParameters, (result) => {
             serviceResult = result;
-
-        });
-        setTimeout(() => {
             try {
                 expect(generateSpatialDataService).not.toBeNull();
                 expect(generateSpatialDataService.options.serverType).toBe('iServer');
@@ -71,6 +68,6 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

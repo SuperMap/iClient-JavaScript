@@ -45,8 +45,6 @@ describe('mapboxgl_SpatialAnalystService_geoRelationAnalysis', () => {
         });
         service.geoRelationAnalysis(geoRelationAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             expect(service).not.toBeNull();
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toEqual("processCompleted");
@@ -58,6 +56,6 @@ describe('mapboxgl_SpatialAnalystService_geoRelationAnalysis', () => {
                 expect(serviceResult.result[i].result.length).toEqual(1);
             }
             done();
-        }, 5000)
+        });
     });
 });

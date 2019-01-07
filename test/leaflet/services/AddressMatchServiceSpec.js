@@ -1,6 +1,6 @@
-import {addressMatchService} from '../../../src/leaflet/services/AddressMatchService';
-import {GeoCodingParameter} from '../../../src/common/iServer/GeoCodingParameter';
-import {GeoDecodingParameter} from '../../../src/common/iServer/GeoDecodingParameter';
+import { addressMatchService } from '../../../src/leaflet/services/AddressMatchService';
+import { GeoCodingParameter } from '../../../src/common/iServer/GeoCodingParameter';
+import { GeoDecodingParameter } from '../../../src/common/iServer/GeoDecodingParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 
@@ -33,19 +33,15 @@ describe('leaflet_AddressMatchService', () => {
         var geoCodingService = addressMatchService(addressMatchURL, options);
 
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-             expect(testUrl).toBe(addressMatchURL + "/geocoding");
-             expect(params).not.toBeNull();
-             expect(options).not.toBeNull();
-             return Promise.resolve(new Response(codeSuccessEscapedJson));
-         }); 
-        
-         geoCodingService.code(geoCodingParams, (result) => {
-            serviceResult = result
+            expect(testUrl).toBe(addressMatchURL + "/geocoding");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(codeSuccessEscapedJson));
         });
-        setTimeout(() => {
+        geoCodingService.code(geoCodingParams, (serviceResult) => {
+            expect(geoCodingService).not.toBeNull();
+            expect(geoCodingService.options.serverType).toBe("iServer");
             try {
-                expect(geoCodingService).not.toBeNull();
-                expect(geoCodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
                 expect(result).not.toBeNull();
@@ -64,7 +60,7 @@ describe('leaflet_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     it('successEvent:decode', (done) => {
@@ -87,11 +83,8 @@ describe('leaflet_AddressMatchService', () => {
             return Promise.resolve(new Response(decodeSuccessEscapedJson));
         });
 
-        GeoDecodingService.decode(GeoDecodingParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
-            try {
+        GeoDecodingService.decode(GeoDecodingParams, (serviceResult) => {
+                     try {
                 expect(GeoDecodingService).not.toBeNull();
                 expect(GeoDecodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
@@ -112,7 +105,7 @@ describe('leaflet_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     it('failEvent:code_AddressNull', (done) => {
@@ -130,12 +123,9 @@ describe('leaflet_AddressMatchService', () => {
             expect(testUrl).toBe(addressMatchURL + "/geocoding");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(codeFailEscapedJson));
-        }); 
-
-        geoCodingService.code(geoCodingParams, (result) => {
-            serviceResult = result
         });
-        setTimeout(() => {
+
+        geoCodingService.code(geoCodingParams, (serviceResult) => {
             try {
                 expect(geoCodingService).not.toBeNull();
                 expect(geoCodingService.options.serverType).toBe("iServer");
@@ -153,7 +143,7 @@ describe('leaflet_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     it('failEvent:decode_LocationInvalid', (done) => {
@@ -173,10 +163,7 @@ describe('leaflet_AddressMatchService', () => {
             return Promise.resolve(new Response(decodeFailEscapedJson));
         });
 
-        geoDecodingService.decode(GeoDecodingParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+        geoDecodingService.decode(GeoDecodingParams, (serviceResult) => {
             try {
                 expect(geoDecodingService).not.toBeNull();
                 expect(geoDecodingService.options.serverType).toBe("iServer");
@@ -195,7 +182,7 @@ describe('leaflet_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 });
 

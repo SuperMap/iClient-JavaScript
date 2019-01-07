@@ -44,10 +44,7 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_leafletTest@Changchun"}`));
         });
-        densityAnalystService.densityAnalysis(densityAnalystParameters, (result) => {
-            serviceResult = result;
-        });
-        setTimeout(() => {
+        densityAnalystService.densityAnalysis(densityAnalystParameters, (serviceResult) => {
             try {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe('processCompleted');
@@ -61,7 +58,7 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
-    });
+        });
+       });
 
 });

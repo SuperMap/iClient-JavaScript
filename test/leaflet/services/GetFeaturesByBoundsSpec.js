@@ -35,9 +35,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByBoundsService).not.toBeNull();
                 expect(getFeaturesByBoundsService.options.serverType).toBe("iServer");
@@ -58,7 +56,6 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
                     ID: 127,
                     SMID: '127',
                     CAPITAL: "利伯维尔",
-
                 }));
                 getFeaturesByBoundsService.destroy();
                 done();
@@ -68,7 +65,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     it('successEvent:getFeaturesByBounds_returnContent=false', (done) => {
@@ -87,9 +84,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_7ceca76cc8b34309a640d38555902d5d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_7ceca76cc8b34309a640d38555902d5d.json"}`));
         });
         getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByBoundsService).not.toBeNull();
                 expect(getFeaturesByBoundsService.options.serverType).toBe("iServer");
@@ -108,7 +103,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     it('failEvent:getFeaturesByBounds_datasetNotExist', (done) => {
@@ -126,9 +121,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });
         getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByBoundsService).not.toBeNull();
                 expect(getFeaturesByBoundsService.options.serverType).toBe("iServer");
@@ -145,7 +138,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
-    });
+        });
+      });
 });
 

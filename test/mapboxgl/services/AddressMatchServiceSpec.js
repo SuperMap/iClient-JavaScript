@@ -38,8 +38,6 @@ describe('mapboxgl_AddressMatchService', () => {
 
         service.code(geoCodingParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -58,7 +56,10 @@ describe('mapboxgl_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
+        // setTimeout(() => {
+     
+        // }, 5000)
     });
 
     //反向匹配，成功事件
@@ -83,10 +84,8 @@ describe('mapboxgl_AddressMatchService', () => {
         });
 
         service.decode(geoDecodingParams, (result) => {
-            serviceResult = result;
-        });
-        setTimeout(() => {
-            try {
+            serviceResult = result; 
+              try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
@@ -104,7 +103,7 @@ describe('mapboxgl_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //正向匹配，失败事件
@@ -125,9 +124,7 @@ describe('mapboxgl_AddressMatchService', () => {
             return Promise.resolve(new Response(codeFailEscapedJson));
         }); 
         service.code(geoCodingParams, (result) => {
-            serviceResult = result;
-        });
-        setTimeout(() => {
+            serviceResult = result; 
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -142,7 +139,8 @@ describe('mapboxgl_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
+
     });
 
     //反向匹配，失败事件
@@ -165,10 +163,8 @@ describe('mapboxgl_AddressMatchService', () => {
         });
 
         service.decode(geoDecodingParams, (result) => {
-            serviceResult = result;
-        });
-        setTimeout(() => {
-            try {
+            serviceResult = result; 
+             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
@@ -183,7 +179,7 @@ describe('mapboxgl_AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 });
 

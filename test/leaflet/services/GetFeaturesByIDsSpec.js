@@ -34,9 +34,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeaturesByIDsService.options.serverType).toBe("iServer");
@@ -66,8 +64,8 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
-    });
+        });
+      });
 
     it('successEvent:getFeaturesByIDs_returnContent=false', (done) => {
         var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
@@ -84,9 +82,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1392ef903de94fb695e8552894f7969f","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_1392ef903de94fb695e8552894f7969f.json"}`));
         });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeaturesByIDsService.options.serverType).toBe("iServer");
@@ -105,8 +101,8 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
-    });
+        });
+     });
 
     it('failEvent:getFeaturesByIDs_datasetNotExist', (done) => {
         var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
@@ -123,9 +119,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeaturesByIDsService.options.serverType).toBe("iServer");
@@ -142,7 +136,8 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
+    
     });
 
     it('failEvent:getFeaturesByIDs_datasetNamesNull', (done) => {
@@ -157,9 +152,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
         });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeaturesByIDsService.options.serverType).toBe("iServer");
@@ -176,7 +169,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
-    })
+        });
+        })
 });
 

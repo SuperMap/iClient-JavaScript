@@ -44,8 +44,6 @@ describe('leaflet_SpatialAnalystService_geoRelationAnalysis', () => {
         });
         service.geoRelationAnalysis(geoRelationAnalystParameters, (result) => {
             serviceResults = result;
-        });
-        setTimeout(() => {
             expect(service).not.toBeNull();
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toEqual("processCompleted");
@@ -57,6 +55,6 @@ describe('leaflet_SpatialAnalystService_geoRelationAnalysis', () => {
                 expect(serviceResults.result[i].result.length).toEqual(1);
             }
             done();
-        }, 5000)
+        });
     });
 });

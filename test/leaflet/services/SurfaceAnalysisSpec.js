@@ -50,9 +50,6 @@ describe('leaflet_SpatialAnalystService_surfaceAnalysis', ()=> {
         });
         surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, (result)=> {
             serviceResult = result;
-
-        });
-        setTimeout(()=> {
             try {
                 expect(surfaceAnalystService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -82,6 +79,6 @@ describe('leaflet_SpatialAnalystService_surfaceAnalysis', ()=> {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 });

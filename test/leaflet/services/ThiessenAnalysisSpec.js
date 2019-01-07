@@ -31,8 +31,7 @@ describe('leaflet_SpatialAnalystService_thiessenAnalysis', () => {
         });
         thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+       
             try {
                 expect(thiessenAnalystService).not.toBeNull();
                 expect(thiessenAnalystService.options.serverType).toBe('iServer');
@@ -63,6 +62,6 @@ describe('leaflet_SpatialAnalystService_thiessenAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

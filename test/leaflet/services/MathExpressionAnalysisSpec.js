@@ -1,5 +1,5 @@
-import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
-import {MathExpressionAnalysisParameters} from '../../../src/common/iServer/MathExpressionAnalysisParameters';
+import { spatialAnalystService } from '../../../src/leaflet/services/SpatialAnalystService';
+import { MathExpressionAnalysisParameters } from '../../../src/common/iServer/MathExpressionAnalysisParameters';
 import request from 'request';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
@@ -43,8 +43,6 @@ describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', () => {
         });
         mathExpressionAnalystService.densityAnalysis(mathExpressionAnalysisParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(mathExpressionAnalystService).not.toBeNull();
                 expect(mathExpressionAnalystService.options.serverType).toBe('iServer');
@@ -59,6 +57,6 @@ describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
     });
+})
 });

@@ -31,9 +31,7 @@ describe('mapboxgl_FeatureService_getFeaturesByIDs', () => {
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         service.getFeaturesByIDs(idsParam, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -60,6 +58,6 @@ describe('mapboxgl_FeatureService_getFeaturesByIDs', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 });

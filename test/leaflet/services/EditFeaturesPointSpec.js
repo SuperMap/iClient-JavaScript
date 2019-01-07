@@ -36,30 +36,27 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`[92]`));
         });
-        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
-            addFeatureResult_POINT = result
+        addFeaturesService.editFeatures(addFeaturesParams, (addFeatureResult_POINT) => {
+            try{
+            expect(addFeaturesService).not.toBeNull();
+            expect(addFeatureResult_POINT.type).toBe("processCompleted");
+            expect(addFeatureResult_POINT.object.isInTheSameDomain).toBeFalsy();
+            expect(addFeatureResult_POINT.object.options.method).toBe("POST");
+            expect(addFeatureResult_POINT.object.options.data).toContain("'parts':[1]");
+            expect(addFeatureResult_POINT.object.options.data).toContain('"POINT"');
+            expect(addFeatureResult_POINT.result).not.toBeNull();
+            expect(addFeatureResult_POINT.result.succeed).toBeTruthy();
+            expect(addFeatureResult_POINT.result.length).toEqual(1);
+            id1 = addFeatureResult_POINT.result[0];
+            addFeaturesService.destroy();
+            done();
+        } catch (exception) {
+            console.log("'successEvent:addFeature_POINT'案例失败：" + exception.name + ":" + exception.message);
+            addFeaturesService.destroy();
+            expect(false).toBeTruthy();
+            done();
+        }
         });
-        setTimeout(() => {
-            try {
-                expect(addFeaturesService).not.toBeNull();
-                expect(addFeatureResult_POINT.type).toBe("processCompleted");
-                expect(addFeatureResult_POINT.object.isInTheSameDomain).toBeFalsy();
-                expect(addFeatureResult_POINT.object.options.method).toBe("POST");
-                expect(addFeatureResult_POINT.object.options.data).toContain("'parts':[1]");
-                expect(addFeatureResult_POINT.object.options.data).toContain('"POINT"');
-                expect(addFeatureResult_POINT.result).not.toBeNull();
-                expect(addFeatureResult_POINT.result.succeed).toBeTruthy();
-                expect(addFeatureResult_POINT.result.length).toEqual(1);
-                id1 = addFeatureResult_POINT.result[0];
-                addFeaturesService.destroy();
-                done();
-            } catch (exception) {
-                console.log("'successEvent:addFeature_POINT'案例失败：" + exception.name + ":" + exception.message);
-                addFeaturesService.destroy();
-                expect(false).toBeTruthy();
-                done();
-            }
-        }, 2000)
     });
 
     // 批量增加点要素，isUseBatch为true
@@ -84,10 +81,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","succeed":true}`));
         });
-        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
-            addFeaturesResult = result
-        });
-        setTimeout(() => {
+        addFeaturesService.editFeatures(addFeaturesParams, (addFeaturesResult) => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeaturesResult.type).toBe("processCompleted");
@@ -109,7 +103,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     // 批量删除点要素
@@ -129,9 +123,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         deletePointsService.editFeatures(deleteFeaturesParams, (result) => {
-            deletePointsResult = result
-        });
-        setTimeout(() => {
+            deletePointsResult = result;
             try {
                 expect(deletePointsService).not.toBeNull();
                 expect(deletePointsResult).not.toBeNull();
@@ -148,7 +140,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
                 deletePointsService.destroy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     // 失败事件：features为空
@@ -169,9 +161,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"the features is empty addFeatures method"}}`));
         });
         nullFeaturesService.editFeatures(nullFeaturesParams, (result) => {
-            featuresNullResult = result
-        });
-        setTimeout(() => {
+            featuresNullResult = result;
             try {
                 expect(nullFeaturesService).not.toBeNull();
                 expect(featuresNullResult.type).toBe("processFailed");
@@ -188,6 +178,6 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 });

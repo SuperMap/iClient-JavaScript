@@ -36,9 +36,7 @@ describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         service.getFeaturesByGeometry(geometryParam, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -62,6 +60,6 @@ describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

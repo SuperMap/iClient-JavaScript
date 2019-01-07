@@ -46,8 +46,7 @@ describe('leaflet_SpatialAnalystService_routeLocate', () => {
         });
         routeLocatorService.routeLocate(routeLocatorParameters_line, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+        
             try {
                 expect(routeLocatorService).not.toBeNull();
                 expect(routeLocatorService.options.serverType).toBe('iServer');
@@ -71,6 +70,6 @@ describe('leaflet_SpatialAnalystService_routeLocate', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

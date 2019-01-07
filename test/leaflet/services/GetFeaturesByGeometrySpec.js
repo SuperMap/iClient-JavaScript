@@ -1,5 +1,5 @@
-import {featureService} from '../../../src/leaflet/services/FeatureService';
-import {GetFeaturesByGeometryParameters} from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
+import { featureService } from '../../../src/leaflet/services/FeatureService';
+import { GetFeaturesByGeometryParameters } from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
@@ -36,9 +36,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesByGeometryService.options.serverType).toBe("iServer");
@@ -68,7 +66,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     it('successEvent:getFeaturesByGeometry_returnContent=false', (done) => {
@@ -89,9 +87,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_952187de2cde43a6bcfff2938c93dd9f","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_952187de2cde43a6bcfff2938c93dd9f.json"}`));
         });
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByGeometryService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
@@ -109,7 +105,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     it('failEvent:getFeaturesByGeometry_datasetNotExist', (done) => {
@@ -129,9 +125,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesByGeometryService.options.serverType).toBe("iServer");
@@ -148,7 +142,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     it('failEvent:getFeaturesByGeometry_queryParamsNull', (done) => {
@@ -165,9 +159,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"getFeatureByBuffer方法中传入的参数为空"}}`));
         });
         getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesByGeometryService.options.serverType).toBe("iServer");
@@ -184,7 +176,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     })
 });
 

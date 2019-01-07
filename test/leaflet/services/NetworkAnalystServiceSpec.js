@@ -1,18 +1,18 @@
-import {networkAnalystService} from '../../../src/leaflet/services/NetworkAnalystService';
-import {BurstPipelineAnalystParameters} from '../../../src/common/iServer/BurstPipelineAnalystParameters';
-import {ComputeWeightMatrixParameters} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
-import {FindClosestFacilitiesParameters} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
-import {FindLocationParameters} from '../../../src/common/iServer/FindLocationParameters';
-import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
-import {FindTSPPathsParameters} from '../../../src/common/iServer/FindTSPPathsParameters';
-import {FindMTSPPathsParameters} from '../../../src/common/iServer/FindMTSPPathsParameters';
-import {FindServiceAreasParameters} from '../../../src/common/iServer/FindServiceAreasParameters';
-import {UpdateEdgeWeightParameters} from '../../../src/common/iServer/UpdateEdgeWeightParameters';
-import {UpdateTurnNodeWeightParameters} from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
-import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
-import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
-import {SupplyCenter} from '../../../src/common/iServer/SupplyCenter'
-import {SupplyCenterType} from '../../../src/common/REST';
+import { networkAnalystService } from '../../../src/leaflet/services/NetworkAnalystService';
+import { BurstPipelineAnalystParameters } from '../../../src/common/iServer/BurstPipelineAnalystParameters';
+import { ComputeWeightMatrixParameters } from '../../../src/common/iServer/ComputeWeightMatrixParameters';
+import { FindClosestFacilitiesParameters } from '../../../src/common/iServer/FindClosestFacilitiesParameters';
+import { FindLocationParameters } from '../../../src/common/iServer/FindLocationParameters';
+import { FindPathParameters } from '../../../src/common/iServer/FindPathParameters';
+import { FindTSPPathsParameters } from '../../../src/common/iServer/FindTSPPathsParameters';
+import { FindMTSPPathsParameters } from '../../../src/common/iServer/FindMTSPPathsParameters';
+import { FindServiceAreasParameters } from '../../../src/common/iServer/FindServiceAreasParameters';
+import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
+import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
+import { TransportationAnalystParameter } from '../../../src/common/iServer/TransportationAnalystParameter';
+import { TransportationAnalystResultSetting } from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
+import { SupplyCenterType } from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var url = GlobeParameter.networkAnalystURL;
 var options = {
@@ -45,8 +45,7 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.burstPipelineAnalyst(burstPipelineAnalystParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -62,7 +61,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //耗费矩阵分析服务
@@ -80,8 +79,7 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.computeWeightMatrix(computeWeightMatrixParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -98,9 +96,8 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
-
     //最近设施分析服务  isAnalyzeById 为 true,
     it('findClosestFacilities_isAnalyzeById:true', (done) => {
         var findClosetFacilitiesParameter = new FindClosestFacilitiesParameters({
@@ -120,8 +117,7 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -138,7 +134,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //最近设施分析服务  isAnalyzeById 为 false,
@@ -178,8 +174,7 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -236,8 +231,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
-
+        });
     });
 
     // 选址分区分析服务
@@ -251,48 +245,48 @@ describe('leaflet_NetworkAnalystService', () => {
             resourceValue: 100,         // 资源供给中心能提供的最大服务量或商品数量,必设参数
             type: supplyCenterType_OPTIONALCENTER      //选址分区中资源中心的类型包括固定中心和可选中心两种
         }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 1358,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 2972,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 5523,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 1161,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 4337,
-                resourceValue: 100,
-                type: supplyCenterType_OPTIONALCENTER
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 5732,
-                resourceValue: 100,
-                type: supplyCenterType_NULL
-            }),
-            new SupplyCenter({
-                maxWeight: 500,
-                nodeID: 663,
-                resourceValue: 100,
-                type: supplyCenterType_FIXEDCENTER
-            })
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 1358,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 2972,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 5523,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 1161,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 4337,
+            resourceValue: 100,
+            type: supplyCenterType_OPTIONALCENTER
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 5732,
+            resourceValue: 100,
+            type: supplyCenterType_NULL
+        }),
+        new SupplyCenter({
+            maxWeight: 500,
+            nodeID: 663,
+            resourceValue: 100,
+            type: supplyCenterType_FIXEDCENTER
+        })
         ];
         var findLocationParams = new FindLocationParameters({
             // 期望用于最终设施选址的资源供给中心数量,必设字段
@@ -315,8 +309,7 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.findLocation(findLocationParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -350,7 +343,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //最佳路径分析服务
@@ -383,8 +376,7 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.findPath(findPathParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -436,7 +428,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //旅行商分析服务
@@ -472,8 +464,6 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.findTSPPaths(findTSPPathsParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -523,7 +513,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //多旅行商分析服务
@@ -557,8 +547,6 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.findMTSPPaths(findMTSPPathsParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -612,7 +600,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //服务区分析服务
@@ -646,8 +634,6 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.findServiceAreas(findServiceAreasParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -702,7 +688,7 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //更新边的耗费权重服务
@@ -722,8 +708,7 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.updateEdgeWeight(updateEdgeWeightParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+     
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -735,8 +720,8 @@ describe('leaflet_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
     });
+});
 
     //转向耗费权重更新服务
     it('updateTurnNodeWeight', (done) => {
@@ -760,8 +745,6 @@ describe('leaflet_NetworkAnalystService', () => {
         });
         service.updateTurnNodeWeight(parameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -775,6 +758,6 @@ describe('leaflet_NetworkAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000)
+    });
     });
 });

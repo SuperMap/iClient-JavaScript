@@ -89,8 +89,6 @@ describe('leaflet_SpatialAnalystService_geometryBatchAnalysis', () => {
         });
         spatialAnalystService(serviceUrl).geometrybatchAnalysis(paramter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result.succeed).toEqual(true);
@@ -104,6 +102,6 @@ describe('leaflet_SpatialAnalystService_geometryBatchAnalysis', () => {
                 expect(serviceResult.result[i].succeed).toBeTruthy();
             }
             done();
-        }, 3000)
+        });
     });
 });

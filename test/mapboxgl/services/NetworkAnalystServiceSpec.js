@@ -49,8 +49,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.burstPipelineAnalyst(burstPipelineAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -66,7 +64,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+    });
     });
 
     //耗费矩阵分析服务
@@ -84,8 +82,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.computeWeightMatrix(computeWeightMatrixParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -101,7 +97,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //选址分区分析服务
@@ -136,8 +132,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.findLocation(findLocationParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -165,7 +159,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //最佳路径分析服务
@@ -198,8 +192,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.findPath(findPathParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -253,7 +245,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //旅行商分析服务
@@ -289,8 +281,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.findTSPPaths(findTSPPathsParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -330,7 +320,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     // 多旅行商分析服务
@@ -349,8 +339,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.findMTSPPaths(findMTSPPathsParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -367,7 +355,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //服务区分析服务
@@ -396,8 +384,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.findServiceAreas(parameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -425,7 +411,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //更新边的耗费权重服务
@@ -445,8 +431,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.updateEdgeWeight(updateEdgeWeightParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -458,7 +442,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //转向耗费权重更新服务
@@ -483,8 +467,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.updateTurnNodeWeight(parameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -496,7 +478,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //最近设施分析服务
@@ -535,8 +517,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -597,7 +577,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+    });
     });
     // 上游/下游 关键设施查找资源服务
     it('streamFacilityAnalyst', (done) => {
@@ -617,8 +597,6 @@ describe('mapboxgl_NetworkAnalystService', () => {
         });
         service.streamFacilityAnalyst(facilityAnalystStreamParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -630,8 +608,7 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
-
+    });
     });
 });
 

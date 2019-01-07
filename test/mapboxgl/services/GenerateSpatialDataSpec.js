@@ -54,8 +54,6 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', () => {
         });
         service.generateSpatialData(generateSpatialDataParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -67,6 +65,6 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

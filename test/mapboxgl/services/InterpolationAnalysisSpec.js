@@ -48,8 +48,7 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
         }); 
         service.interpolationAnalysis(interpolationAnalystParameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(function () {
+       
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -63,8 +62,8 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 console.log("'interpolationAnalysis_density'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
-            }
-        }, 25000);
+            } 
+        });
     }); 
 
     var resultDataset_IDW_dataset = "Interpolation_IDW_dataset_mapboxglTest";
@@ -101,9 +100,7 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
 
         service.interpolationAnalysis(interpolationAnalystParameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(function () {
-            try {
+               try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -117,6 +114,6 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 25000);
+        });
     });
 });

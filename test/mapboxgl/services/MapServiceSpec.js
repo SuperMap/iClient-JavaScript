@@ -26,8 +26,7 @@ describe('mapboxgl_MapService', () => {
         });
         service.getMapInfo((result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
+
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -52,7 +51,7 @@ describe('mapboxgl_MapService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+    });
     });
 
     //切片列表信息查询服务
@@ -63,20 +62,18 @@ describe('mapboxgl_MapService', () => {
         });
         service.getTilesets((result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toBeTruthy();
+                expect(serviceResult.result.succeed).toEqual(true);
                 done();
             } catch (e) {
                 console.log("'getMapInfo'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+    });
     });
 });
 

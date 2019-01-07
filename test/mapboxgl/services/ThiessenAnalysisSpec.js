@@ -35,8 +35,6 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
         });
         service.thiessenAnalysis(datasetThiessenAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -60,7 +58,7 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //泰森多边形分析 几何泰森多边形
@@ -110,8 +108,6 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
         });
         service.thiessenAnalysis(gThiessenAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -134,6 +130,6 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 });

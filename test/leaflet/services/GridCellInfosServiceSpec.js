@@ -1,5 +1,5 @@
-import {gridCellInfosService} from '../../../src/leaflet/services/GridCellInfosService';
-import {GetGridCellInfosParameters} from '../../../src/common/iServer/GetGridCellInfosParameters';
+import { gridCellInfosService } from '../../../src/leaflet/services/GridCellInfosService';
+import { GetGridCellInfosParameters } from '../../../src/common/iServer/GetGridCellInfosParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
@@ -18,7 +18,7 @@ describe('leaflet_GridCellInfosService', () => {
         expect(gridCellInfoService.url).toEqual(url);
     });
 
-    
+
 
     it('getGridCellInfos', (done) => {
         var params = new GetGridCellInfosParameters({
@@ -40,7 +40,6 @@ describe('leaflet_GridCellInfosService', () => {
             return null;
         });
         gridCellInfosService(url).getGridCellInfos(params, (serviceResult) => {
-            setTimeout(()=> {
                 try {
                     expect(serviceResult).not.toBeNull();
                     expect(serviceResult.type).toBe("processCompleted");
@@ -64,7 +63,6 @@ describe('leaflet_GridCellInfosService', () => {
                     console.log("getGridCellInfos'案例失败：" + exception.name + ":" + exception.message);
                     done();
                     }
-            }, 2000);
         });
     });
 });

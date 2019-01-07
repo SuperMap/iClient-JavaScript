@@ -34,8 +34,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
         });
         service.queryStop(stopQueryParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+    
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -54,7 +53,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //站点查询服务 不返回坐标
@@ -71,8 +70,6 @@ describe('leaflet_TrafficTransferAnalystService', () => {
         });
         service.queryStop(stopQueryParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -90,7 +87,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //交通换乘线路查询服务 按ID进行查询
@@ -105,9 +102,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
         });
         service.analysisTransferPath(transferPathParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
-            try {
+                   try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
@@ -138,7 +133,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //交通换乘线路查询服务  按坐标进行查询
@@ -153,8 +148,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
         });
         service.analysisTransferPath(transferPathParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+      
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -185,7 +179,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //交通换乘方案查询服务
@@ -204,8 +198,7 @@ describe('leaflet_TrafficTransferAnalystService', () => {
         });
         service.analysisTransferSolution(transferSolutionParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+       
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -245,6 +238,6 @@ describe('leaflet_TrafficTransferAnalystService', () => {
                 service.destroy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

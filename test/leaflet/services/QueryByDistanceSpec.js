@@ -1,5 +1,5 @@
-import {queryService} from '../../../src/leaflet/services/QueryService';
-import {QueryByDistanceParameters} from '../../../src/common/iServer/QueryByDistanceParameters';
+import { queryService } from '../../../src/leaflet/services/QueryService';
+import { QueryByDistanceParameters } from '../../../src/common/iServer/QueryByDistanceParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
@@ -22,7 +22,7 @@ describe('leaflet_QueryService_queryByDistance', () => {
     it('successEvent:queryByDistance_returnContent=true', (done) => {
         var circleMarker = L.circleMarker([30, 104]);
         var queryByDistanceParams = new QueryByDistanceParameters({
-            queryParams: {name: "Capitals@World"},
+            queryParams: { name: "Capitals@World" },
             distance: 10,
             geometry: circleMarker
         });
@@ -38,8 +38,7 @@ describe('leaflet_QueryService_queryByDistance', () => {
         });
         queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(queryByDistanceService).not.toBeNull();
                 expect(queryByDistanceService.options.serverType).toBe("iServer");
@@ -74,13 +73,13 @@ describe('leaflet_QueryService_queryByDistance', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        });
     });
 
     it('successEvent:queryByDistance_returnContent=false', (done) => {
         var circleMarker = L.circleMarker([30, 104]);
         var queryByDistanceParams = new QueryByDistanceParameters({
-            queryParams: {name: "Capitals@World"},
+            queryParams: { name: "Capitals@World" },
             distance: 10,
             geometry: circleMarker,
             returnContent: false
@@ -96,8 +95,7 @@ describe('leaflet_QueryService_queryByDistance', () => {
         });
         queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
+
             try {
                 expect(queryByDistanceService).not.toBeNull();
                 expect(queryByDistanceService.options.serverType).toBe("iServer");
@@ -116,13 +114,13 @@ describe('leaflet_QueryService_queryByDistance', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        });
     });
 
     it('failEvent:queryByDistance_layerNotExist', (done) => {
         var circleMarker = L.circleMarker([30, 104]);
         var queryByDistanceParams = new QueryByDistanceParameters({
-            queryParams: {name: "Capitals@World1"},
+            queryParams: { name: "Capitals@World1" },
             distance: 10,
             geometry: circleMarker
         });
@@ -134,60 +132,59 @@ describe('leaflet_QueryService_queryByDistance', () => {
         });
         queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
+
+            setTimeout(() => {
+                try {
+                    expect(queryByDistanceService).not.toBeNull();
+                    expect(queryByDistanceService.options.serverType).toBe("iServer");
+                    expect(serviceResult.type).toBe("processFailed");
+                    expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                    expect(serviceResult.error).not.toBeNull();
+                    expect(serviceResult.error.code).toEqual(400);
+                    expect(serviceResult.error.errorMsg).toBe("查询目标图层不存在。(Capitals@World1)");
+                    queryByDistanceService.destroy();
+                    done();
+                } catch (exception) {
+                    console.log("leaflet_queryByDistance_'failEvent:layerNotExist'案例失败：" + exception.name + ":" + exception.message);
+                    queryByDistanceService.destroy();
+                    expect(false).toBeTruthy();
+                    done();
+                }
+            });
         });
-        setTimeout(() => {
-            try {
-                expect(queryByDistanceService).not.toBeNull();
-                expect(queryByDistanceService.options.serverType).toBe("iServer");
-                expect(serviceResult.type).toBe("processFailed");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
-                expect(serviceResult.error).not.toBeNull();
-                expect(serviceResult.error.code).toEqual(400);
-                expect(serviceResult.error.errorMsg).toBe("查询目标图层不存在。(Capitals@World1)");
-                queryByDistanceService.destroy();
-                done();
-            } catch (exception) {
-                console.log("leaflet_queryByDistance_'failEvent:layerNotExist'案例失败：" + exception.name + ":" + exception.message);
-                queryByDistanceService.destroy();
-                expect(false).toBeTruthy();
-                done();
-            }
-        }, 2000);
     });
 
-    it('failEvent:queryByDistance_queryParamsNull', (done) => {
-        var circleMarker = L.circleMarker([30, 104]);
-        var queryByDistanceParams = new QueryByDistanceParameters({
-            queryParams: null,
-            distance: 10,
-            geometry: circleMarker
+        it('failEvent:queryByDistance_queryParamsNull', (done) => {
+            var circleMarker = L.circleMarker([30, 104]);
+            var queryByDistanceParams = new QueryByDistanceParameters({
+                queryParams: null,
+                distance: 10,
+                geometry: circleMarker
+            });
+            var queryByDistanceService = queryService(worldMapURL, options);
+            spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+                expect(method).toBe("POST");
+                return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
+            });
+            queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
+                serviceResult = result;
+                try {
+                    expect(queryByDistanceService).not.toBeNull();
+                    expect(queryByDistanceService.options.serverType).toBe("iServer");
+                    expect(serviceResult.type).toBe("processFailed");
+                    expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                    expect(serviceResult.error).not.toBeNull();
+                    expect(serviceResult.error.code).toEqual(400);
+                    expect(serviceResult.error.errorMsg).toBe("参数queryParameterSet.queryParams非法，不能为空。");
+                    queryByDistanceService.destroy();
+                    done();
+                } catch (exception) {
+                    console.log("leaflet_queryByDistance_'failEvent:queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
+                    queryByDistanceService.destroy();
+                    expect(false).toBeTruthy();
+                    done();
+                }
+            })
         });
-        var queryByDistanceService = queryService(worldMapURL, options);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
-            expect(method).toBe("POST");
-            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数queryParameterSet.queryParams非法，不能为空。"}}`));
-        });
-        queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
-            serviceResult = result;
-        });
-        setTimeout(() => {
-            try {
-                expect(queryByDistanceService).not.toBeNull();
-                expect(queryByDistanceService.options.serverType).toBe("iServer");
-                expect(serviceResult.type).toBe("processFailed");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
-                expect(serviceResult.error).not.toBeNull();
-                expect(serviceResult.error.code).toEqual(400);
-                expect(serviceResult.error.errorMsg).toBe("参数queryParameterSet.queryParams非法，不能为空。");
-                queryByDistanceService.destroy();
-                done();
-            } catch (exception) {
-                console.log("leaflet_queryByDistance_'failEvent:queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
-                queryByDistanceService.destroy();
-                expect(false).toBeTruthy();
-                done();
-            }
-        }, 2000);
-    })
-});
+    });
 
