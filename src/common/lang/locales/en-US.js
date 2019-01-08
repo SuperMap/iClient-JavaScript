@@ -111,8 +111,9 @@ let en = {
     'msg_cityGeocodeField':"The address matching service of the current city is not configured.",
     'msg_getFeatureField':"No related vector features found!",
     'msg_dataflowservicesubscribed':'The data stream service has been subscribed to.',
-    'msg_subscribesucceeded':'The data stream service subscription was successful.'
-
+    'msg_subscribesucceeded':'The data stream service subscription was successful.',
+    'msg_crsunsupport':'Does not support the coordinate system of the current map',
+    'msg_tilematrixsetunsupport':'Incoming TileMatrixSet is not supported'
 
 };
 export { en };

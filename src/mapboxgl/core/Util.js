@@ -130,6 +130,61 @@ export class Util {
         }
         return dest;
     }
+
+    
+    /**
+     * 检测数据是否为number
+     * @param value 值，未知数据类型
+     * @returns {boolean}
+     */
+    static isNumber(value) {
+        if (value === '') {
+            return false;
+        }
+        let mdata = Number(value);
+        if (mdata === 0) {
+            return true;
+        }
+        return !isNaN(mdata);
+    }
+
+     /**
+     * 随机生成id
+     * @param attr
+     * @returns {string}
+     */
+    static newGuid(attr) {
+        let len = attr || 32;
+        let guid = "";
+        for (let i = 1; i < len; i++) {
+            let n = Math.floor(Math.random() * 16.0).toString(16);
+            guid += n;
+        }
+        return guid;
+    }
+    /**
+     * @description 十六进制转 RGBA 格式。
+     * @param {Object} hex - 十六进制格式参数。
+     * @param {number} opacity -Alpha 参数。
+     * @returns {string} 生成的 RGBA 格式。
+     */
+    static hexToRgba(hex, opacity) {
+        var color = [], rgba = [];
+        hex = hex.replace(/#/, "");
+        if (hex.length == 3) {
+            var tmp = [];
+            for (let i = 0; i < 3; i++) {
+                tmp.push(hex.charAt(i) + hex.charAt(i));
+            }
+            hex = tmp.join("");
+        }
+        for (let i = 0; i < 6; i += 2) {
+            color[i] = "0x" + hex.substr(i, 2);
+            rgba.push(parseInt(Number(color[i])));
+        }
+        rgba.push(opacity);
+        return "rgba(" + rgba.join(",") + ")";
+    }
 }
 
 mapboxgl.supermap.Util = Util;

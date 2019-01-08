@@ -4,7 +4,9 @@
 import ol from 'openlayers';
 import {
     FetchRequest,
-    SecurityManager
+    SecurityManager,
+    ColorsPickerUtil,
+    ArrayStatistic
 } from '@supermap/iclient-common';
 import {
     Util
@@ -12,12 +14,6 @@ import {
 import {
     StyleUtils
 } from '../core/StyleUtils';
-import {
-    ColorsPickerUtil
-} from '../core/colors_picker_util/ColorsPickerUtil';
-import {
-    ArrayStatistic
-} from '../core/ArrayStatistic';
 
 ol.supermap = ol.supermap || {};
 //数据转换工具

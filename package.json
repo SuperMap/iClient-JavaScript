@@ -18,11 +18,11 @@
     "release-classic": "npm run release-classic-es5 && npm run release-classic-es6",
     "release-leaflet-es5": "cross-env moduleVersion=es5 npm run deploy-leaflet ./src/leaflet/index.js ./src/leaflet/css/index.js && uglifyjs ./dist/leaflet/iclient9-leaflet.js  --ecma 5 --comments /Copyright©/i -c -m -o ./dist/leaflet/iclient9-leaflet.min.js && cleancss -o  ./dist/leaflet/iclient9-leaflet.min.css ./dist/leaflet/iclient9-leaflet.css",
     "release-openlayers-es5": "cross-env moduleVersion=es5 npm run deploy-openlayers ./src/openlayers/index.js ./src/openlayers/css/index.js  && uglifyjs ./dist/openlayers/iclient9-openlayers.js  --ecma 5 --comments /Copyright©/i -c -m -o ./dist/openlayers/iclient9-openlayers.min.js && cleancss -o  ./dist/openlayers/iclient9-openlayers.min.css ./dist/openlayers/iclient9-openlayers.css",
-    "release-mapboxgl-es5": "cross-env moduleVersion=es5 npm run deploy-mapboxgl ./src/mapboxgl/index.js  && uglifyjs ./dist/mapboxgl/iclient9-mapboxgl.js  --ecma 5 --comments /Copyright©/i -c -m -o ./dist/mapboxgl/iclient9-mapboxgl.min.js",
+    "release-mapboxgl-es5": "cross-env moduleVersion=es5 npm run deploy-mapboxgl ./src/mapboxgl/index.js ./src/mapboxgl/css/index.js && uglifyjs ./dist/mapboxgl/iclient9-mapboxgl.js  --ecma 5 --comments /Copyright©/i -c -m -o ./dist/mapboxgl/iclient9-mapboxgl.min.js && cleancss -o  ./dist/mapboxgl/iclient9-mapboxgl.min.css ./dist/mapboxgl/iclient9-mapboxgl.css",
     "release-classic-es5": "cross-env moduleVersion=es5 npm run deploy-classic ./src/classic/index.js  && uglifyjs ./dist/classic/iclient-classic.js  --ecma 5 --comments /Copyright©/i -c -m -o ./dist/classic/iclient-classic.min.js",
     "release-leaflet-es6": "cross-env moduleVersion=es6 npm run deploy-leaflet ./src/leaflet/index.js ./src/leaflet/css/index.js  && uglifyjs ./dist/leaflet/iclient9-leaflet-es6.js  --ecma 6 --comments /Copyright©/i -c -m -o ./dist/leaflet/iclient9-leaflet-es6.min.js && cleancss -o  ./dist/leaflet/iclient9-leaflet.min.css ./dist/leaflet/iclient9-leaflet.css",
     "release-openlayers-es6": "cross-env moduleVersion=es6 npm run deploy-openlayers ./src/openlayers/index.js ./src/openlayers/css/index.js  && uglifyjs ./dist/openlayers/iclient9-openlayers-es6.js  --ecma 6 --comments /Copyright©/i -c -m -o ./dist/openlayers/iclient9-openlayers-es6.min.js && cleancss -o  ./dist/openlayers/iclient9-openlayers.min.css ./dist/openlayers/iclient9-openlayers.css",
-    "release-mapboxgl-es6": "cross-env moduleVersion=es6 npm run deploy-mapboxgl ./src/mapboxgl/index.js  && uglifyjs ./dist/mapboxgl/iclient9-mapboxgl-es6.js  --ecma 6 --comments /Copyright©/i -c -m -o ./dist/mapboxgl/iclient9-mapboxgl-es6.min.js",
+    "release-mapboxgl-es6": "cross-env moduleVersion=es6 npm run deploy-mapboxgl ./src/mapboxgl/index.js ./src/mapboxgl/css/index.js && uglifyjs ./dist/mapboxgl/iclient9-mapboxgl-es6.js  --ecma 6 --comments /Copyright©/i -c -m -o ./dist/mapboxgl/iclient9-mapboxgl-es6.min.js && cleancss -o  ./dist/mapboxgl/iclient9-mapboxgl.min.css ./dist/mapboxgl/iclient9-mapboxgl.css",
     "release-classic-es6": "cross-env moduleVersion=es6 npm run deploy-classic ./src/classic/index.js  && uglifyjs ./dist/classic/iclient-classic-es6.js  --ecma 6 --comments /Copyright©/i -c -m -o ./dist/classic/iclient-classic-es6.min.js",
     "deploy": "webpack --color",
     "deploy-leaflet": "webpack --config ./build/webpack.config.leaflet.js --color",
@@ -112,6 +112,7 @@
     "@mapbox/vector-tile": "1.3.0",
     "@supermap/iclient-common": "file:src/common",
     "@turf/turf": "5.1.6",
+    "canvg": "1.5.3",
     "echarts": "4.1.0",
     "elasticsearch": "13.0.1",
     "fetch-ie8": "1.5.0",
@@ -126,6 +127,7 @@
     "proj4": "2.3.15",
     "promise-polyfill": "6.0.2",
     "three": "0.92.0",
-    "xlsx": "0.12.13"
+    "xlsx": "0.12.13",
+    "xml-js": "1.6.8"
   }
 }

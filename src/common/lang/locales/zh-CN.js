@@ -113,8 +113,9 @@ let zh = {
     'msg_cityGeocodeField':"未配置当前城市的地址匹配服务。",
     'msg_getFeatureField':"未查找到相关矢量要素！",
     'msg_dataflowservicesubscribed':'已订阅该数据流服务。',
-    'msg_subscribesucceeded':'数据流服务订阅成功。'
-
+    'msg_subscribesucceeded':'数据流服务订阅成功。',
+    'msg_crsunsupport':'不支持当前地图的坐标系',
+    'msg_tilematrixsetunsupport':'不支持传入的TileMatrixSet'
 };
 export { zh };
 SuperMap.Lang["zh-CN"] = zh;

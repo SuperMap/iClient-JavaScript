@@ -289,6 +289,22 @@ var exampleConfig = {
             }
         }
     },
+    "iPortal": {
+        name: "iPortal",
+        name_en: "iPortal",
+        content: {
+            "ip_map": {
+                name: "地图",
+                name_en: "Web map",
+                content: [{
+                    name: "Web Map",
+                    name_en: "Web Map",
+                    thumbnail: "l_iPortalWebmap.png",
+                    fileName: "iPortalWebmap"
+                }]
+            }
+        }
+    },
     "viz": {
         name: "可视化",
         name_en: "Visualization",
@@ -1019,6 +1035,7 @@ var exampleConfig = {
  */
 var sideBarIconConfig = {
     "iServer": "fa-server",
+    "iPortal": "fa-desktop",
     "viz": "fa-map",
     "control": "fa-sliders",
     "multiCoordSys": "fa-globe",
@@ -1032,6 +1049,7 @@ var sideBarIconConfig = {
  */
 var exampleIconConfig = {
     "iServer": "fa-server",
+    "iPortal": "fa-desktop",
     "viz": "fa-map",
     "GTC": "fa-globe",
     'multiCoordSys': "fa-globe",

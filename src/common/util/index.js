@@ -9,10 +9,20 @@ import {
     FetchRequest
 } from './FetchRequest';
 
+import {
+    ColorsPickerUtil
+}from './ColorsPickerUtil'
+
+import {
+    ArrayStatistic
+}from './ArrayStatistic';
+
 export {
     setCORS,
     isCORS,
     setRequestTimeout,
     getRequestTimeout,
-    FetchRequest
+    FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic
 } ;

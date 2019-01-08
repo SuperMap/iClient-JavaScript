@@ -91,6 +91,8 @@ export {
     ElasticSearch,
     //util
     FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic,
     //iServer
     AreaSolarRadiationParameters,
     AggregationParameter,

@@ -5,10 +5,10 @@ import {
 import {
     FetchRequest
 } from '../../../src/common/util/FetchRequest';
-import '../../resources/WebMapOpenlayer.js';
+import '../../resources/WebMapV5.js';
 import {
     ArrayStatistic
-} from "../../../src/openlayers/core/ArrayStatistic";
+} from "../../../src/common/util/ArrayStatistic";
 
 describe('openlayers_WebMap', () => {
     var originalTimeout, testDiv, webMap;

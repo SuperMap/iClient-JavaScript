@@ -78,12 +78,29 @@
         if (inArray(includes, 'deck')) {
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
         }
+
+        if (inArray(includes, 'jsonsql')) {
+            inputScript("http://iclient.supermap.io/web/libs/jsonsql/jsonsql.js");
+        }
+        if (inArray(includes, 'geostats')) {
+            inputScript("http://iclient.supermap.io/web/libs/geostats/geostats.js");
+        }
+        if (inArray(includes, 'canvg')) {
+            inputScript("http://iclient.supermap.io/web/libs/canvg/canvg.min.js");
+        }
+        if (inArray(includes, 'convert')) {
+            inputScript("http://iclient.supermap.io/web/libs/xml-js/1.6.8/xml-js.min.js");
+        }
+        
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
             if (supportES6()) {
                 inputScript("../../dist/mapboxgl/iclient9-mapboxgl-es6.min.js");
             } else {
                 inputScript("../../dist/mapboxgl/iclient9-mapboxgl.min.js");
             }
+        }
+        if (!inArray(excludes, 'iclient9-mapboxgl-css')) {
+            inputCSS("../../dist/mapboxgl/iclient9-mapboxgl.min.css");
         }
         if (inArray(includes, 'LoaderSupport')) {
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/LoaderCommons.js");

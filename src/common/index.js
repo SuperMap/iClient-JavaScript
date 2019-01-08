@@ -359,7 +359,9 @@ import {
     isCORS,
     setRequestTimeout,
     getRequestTimeout,
-    FetchRequest
+    FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic
 } from './util';
 import {
     CartoCSS,
@@ -571,7 +573,9 @@ export {
     isCORS,
     setRequestTimeout,
     getRequestTimeout,
-    FetchRequest
+    FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic
 };
 export {
     IManager,

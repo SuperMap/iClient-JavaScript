@@ -368,6 +368,7 @@ button.ol-control-ctv-toggle {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.supermapol-icons-map:before { content: ""; }
 
 .supermapol-icons-more:before { content: "\E61D"; }
 

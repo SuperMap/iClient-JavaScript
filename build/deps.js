@@ -1016,6 +1016,17 @@ deps = {
     },
 
     "mapboxgl": {
+        "Mapping": {
+            "iPortal": {
+                "name": "iPortal webmap",
+                "src": ["./src/mapboxgl/mapping/WebMap.js"],
+                "modules": [{
+                    "name": "mapboxgl.supermap.WebMap",
+                    "des": "iPortal、Online 地图",
+                    "des_en": "SuperMap iPortal and Online tile layer"
+                }]
+            }
+        },
         "Services": {
             "title": "服务",
             "description": "服务模块",

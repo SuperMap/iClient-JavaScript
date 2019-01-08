@@ -24,7 +24,10 @@ module.exports = {
         'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
         'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
         'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
-        'xlsx': "function(){try{return XLSX}catch(e){return {}}}()"
+        'xlsx': "function(){try{return XLSX}catch(e){return {}}}()",
+        'canvg': "function(){try{return canvg}catch(e){return {}}}()",
+        'jsonsql': "function(){try{return jsonsql}catch(e){return {}}}()",
+        'xml-js': "function(){try{return convert}catch(e){return {}}}()",
     }),
 
     module: {

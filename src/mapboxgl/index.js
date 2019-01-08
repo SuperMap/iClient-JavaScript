@@ -91,6 +91,8 @@ export {
     ElasticSearch,
     //util
     FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic,
     //iServer
     AreaSolarRadiationParameters,
     AggregationParameter,
@@ -260,3 +262,4 @@ export * from './control';
 export * from './core';
 export * from './overlay';
 export * from './services';
+export * from './mapping';
