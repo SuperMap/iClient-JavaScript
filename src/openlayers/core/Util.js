@@ -268,69 +268,6 @@ export class Util {
     }
 
     /**
-     * @function ol.supermap.Util.getRootUrl
-     * @description 获取请求地址前缀
-     * @param {string} url - 完整地址的url。
-     */
-    static getRootUrl(url) {
-        let tempRootUrl = {};
-        let onlineUrl = 'https://www.supermapol.com/', itestUrl = 'https://itest.supermapol.com/';
-        if (tempRootUrl[url]) {
-            return tempRootUrl[url];
-        }
-        let rootUrl = "";
-        if (url.indexOf(onlineUrl) === 0) {
-            rootUrl = onlineUrl;
-        } else if (url.indexOf(itestUrl) === 0) {
-            rootUrl = itestUrl;
-        } else {
-            let regExp = /\/apps|\/web|\/manager|\/developer|\/services/i,
-                index = url.search(regExp);
-            let anchor = this.getAnchor(url);
-            rootUrl += anchor.protocol + '//' + this.getHost(url) + '/';
-            if (index > 0) {
-                rootUrl += url.substring(rootUrl.length, index + 1);
-            }
-        }
-        tempRootUrl[url] = rootUrl;
-        return rootUrl;
-    }
-
-    /**
-     * @function ol.supermap.Util.getAnchor
-     * @description 获取https或http域名
-     * @param {string} url - 完整地址的url。
-     */
-    static getAnchor(url) {
-        let tempAnchor = {};
-        if (tempAnchor[url]) {
-            return tempAnchor[url];
-        }
-        let anchor = document.createElement('a');
-        anchor.href = url;
-        tempAnchor[url] = anchor;
-        return anchor;
-    }
-
-    /**
-     * @function ol.supermap.Util.getHost
-     * @description 获取端口号
-     * @param {string} url - {string} url地址。
-     * @returns {*|string|string}
-     */
-    static getHost(url) {
-        let anchor = this.getAnchor(url);
-        if (!anchor) {
-            return null;
-        }
-        let port = anchor.port, host = anchor.host;
-        //IE下会自动给host添加http(80), https(443)
-        if (port === "80" || port === "443") {
-            return host.split(":")[0];
-        }
-        return host;
-    }
-    /**
      * @function ol.supermap.Util.isString
      * @description 是否为字符串
      * @param {string} str - 需要判断的内容
@@ -339,6 +276,7 @@ export class Util {
     static isString(str) {
         return (typeof str === 'string') && str.constructor === String;
     }
+    
     /**
      * @function ol.supermap.Util.trim
      * @description 字符串裁剪两边的空格

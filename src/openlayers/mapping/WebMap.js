@@ -14,6 +14,7 @@ import {
 import {
     StyleUtils
 } from '../core/StyleUtils';
+import jsonsql from 'jsonsql';
 
 ol.supermap = ol.supermap || {};
 //数据转换工具
@@ -24,12 +25,13 @@ const transformTools = new ol.format.GeoJSON();
  * @classdesc 对接 iPortal/Online 地图类。
  * @param {number} id - 地图的id
  * @param {Object} options - 参数。
- * @param {string} [options.map='map'] - 地图容器id。
+ * @param {string} [options.target='map'] - 地图容器id。
  * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址。
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
  * @param {function} [options.errorCallback] - 加载地图失败。
  * @param {string} [options.credentialKey] - 凭证密钥。
  * @param {string} [options.credentialValue] - 凭证值。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @extends {ol.Observable}
@@ -39,15 +41,15 @@ export class WebMap extends ol.Observable {
     constructor(id, options) {
         super();
         this.mapId = id;
-        if (options) {
-            this.mapUrl = options.server || 'http://www.supermapol.com';
-            this.successCallback = options.successCallback;
-            this.errorCallback = options.errorCallback;
-            this.credentialKey = options.credentialKey;
-            this.credentialValue = options.credentialValue;
-            this.target = options.target || "map";
-            this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
-        }
+        options = options || {};
+        this.server = options.server || 'http://www.supermapol.com';
+        this.successCallback = options.successCallback;
+        this.errorCallback = options.errorCallback;
+        this.credentialKey = options.credentialKey;
+        this.credentialValue = options.credentialValue;
+        this.withCredentials = options.withCredentials || false;
+        this.target = options.target || "map";
+        this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
         this.createMap(options.mapSetting);
         this.createWebmap();
     }
@@ -90,22 +92,26 @@ export class WebMap extends ol.Observable {
      * @description 创建webmap
      */
     createWebmap() {
-        let mapUrl = Util.getRootUrl(this.mapUrl) + 'web/maps/' + this.mapId + '/map';
+        let urlArr = this.server.split('');
+        if (urlArr[urlArr.length - 1] !== '/') {
+            this.server += '/';
+        }
+
+        let mapUrl = this.server + 'web/maps/' + this.mapId + '/map';
         if (this.credentialValue) {
             mapUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
 
         }
         let filter = 'getUrlResource.json?url=';
-        if(this.excludePortalProxyUrl && this.mapUrl.indexOf(filter) > -1) {
+        if (this.excludePortalProxyUrl && this.server.indexOf(filter) > -1) {
             //大屏需求,或者有加上代理的
-            let urlArray = this.mapUrl.split(filter);
-            if(urlArray.length > 1) {
-                let url = urlArray[1];
-                mapUrl = urlArray[0] + filter + Util.getRootUrl(url) + 'web/maps/' + this.mapId + '/map.json';
+            let urlArray = this.server.split(filter);
+            if (urlArray.length > 1) {
+                mapUrl = urlArray[0] + filter + this.server + 'web/maps/' + this.mapId + '/map.json';
             }
         }
         //todo 请求用户以及更新时间和地图标签等参数，暂时不需要
-        // let appUrl = this.mapUrl;
+        // let appUrl = this.server;
         // appUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
         // this.getAppInfo(appUrl);
         this.getMapInfo(mapUrl);
@@ -125,11 +131,11 @@ export class WebMap extends ol.Observable {
             mapUrl = `${url}.json`
         }
         FetchRequest.get(mapUrl, null, {
-            withCredentials: true
+            withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json();
         }).then(function (mapInfo) {
-            that.baseProjection = mapInfo.projection; 
+            that.baseProjection = mapInfo.projection;
             that.mapParams = {
                 title: mapInfo.title,
                 description: mapInfo.description
@@ -180,9 +186,9 @@ export class WebMap extends ol.Observable {
         for (let key in oldcenter) {
             center.push(oldcenter[key]);
         }
-        if(center.length === 0) {
+        if (center.length === 0) {
             //兼容wms
-            center = [0,0];
+            center = [0, 0];
         }
         extent = [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y];
         this.map.setView(new ol.View({
@@ -206,16 +212,16 @@ export class WebMap extends ol.Observable {
             layerType = layerType.substr(0, 12);
         }
         let mapUrls = {
-                CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
-                CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
-                OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
-                GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
-                JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
-                JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
-                JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
-                JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
-            },
+            CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
+            CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
+            OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
+            GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
+            JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
+            JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+            JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+            JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
+        },
             url;
         switch (layerType) {
             case "TIANDITU_VEC":
@@ -226,9 +232,9 @@ export class WebMap extends ol.Observable {
             case "BAIDU":
                 source = this.createBaiduSource();
                 break;
-                /*case 'BING':
-                    source = this.createBingSource(layerInfo, mapInfo.projection);
-                    break;*/
+            /*case 'BING':
+                source = this.createBingSource(layerInfo, mapInfo.projection);
+                break;*/
             case "WMS":
                 source = this.createWMSSource(layerInfo);
                 break;
@@ -266,7 +272,7 @@ export class WebMap extends ol.Observable {
                 layerId: layerId
             });
         }
-        if(!mapInfo.baseLayer) {
+        if (!mapInfo.baseLayer) {
             //不是底图
             layer.setVisible(layerInfo.visible);
             layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
@@ -416,7 +422,7 @@ export class WebMap extends ol.Observable {
         let that = this;
         let url = layerInfo.url;
         let options = {
-            withCredentials: false,
+            withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
         FetchRequest.get(url, null, options).then(function (response) {
@@ -585,12 +591,10 @@ export class WebMap extends ol.Observable {
     isValidResponse(response) {
         let responseEnum = ['Contents', 'OperationsMetadata'],
             valid = true;
-        if (responseEnum) {
-            for (let i = 0; i < responseEnum.length; i++) {
-                if (!response[responseEnum[i]] || response.error) {
-                    valid = false;
-                    break;
-                }
+        for (let i = 0; i < responseEnum.length; i++) {
+            if (!response[responseEnum[i]] || response.error) {
+                valid = false;
+                break;
             }
         }
         return valid;
@@ -615,13 +619,13 @@ export class WebMap extends ol.Observable {
                 if ((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER") {
                     //数据存储到iportal上了
                     let serverId = layer.dataSource ? layer.dataSource.serverId : layer.serverId;
-                    let url = `${Util.getRootUrl(that.mapUrl)}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
+                    let url = `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
                     FetchRequest.get(url, null, {
-                        withCredentials: true
+                        withCredentials: this.withCredentials
                     }).then(function (response) {
                         return response.json()
                     }).then(function (data) {
-                        if(data.succeed === false) {
+                        if (data.succeed === false) {
                             //请求失败
                             layerAdded++;
                             that.sendMapToUser(layerAdded, len);
@@ -696,7 +700,7 @@ export class WebMap extends ol.Observable {
                                 that.addLayer(layer, features);
                                 layerAdded++;
                                 that.sendMapToUser(layerAdded, len);
-                            },function (e) {
+                            }, function (e) {
                                 layerAdded++;
                                 that.errorCallback && that.errorCallback(e, 'getFeatureFaild', that.map);
                             });
@@ -836,8 +840,8 @@ export class WebMap extends ol.Observable {
                 properties = Object.assign({}, {
                     featureInfo: featureInfo
                 }, {
-                    useStyle: useStyle
-                });
+                        useStyle: useStyle
+                    });
                 //feature上添加图层的id，为了对应图层
                 feature.layerId = layerInfo.timeId;
                 //删除不需要的属性，因为这两个属性存储在properties上
@@ -868,8 +872,8 @@ export class WebMap extends ol.Observable {
                 properties = Object.assign({}, {
                     featureInfo: featureInfo
                 }, {
-                    useStyle: useStyle
-                });
+                        useStyle: useStyle
+                    });
                 delete attr._smiportal_description;
                 delete attr._smiportal_imgLinkUrl;
                 delete attr._smiportal_title;
@@ -969,7 +973,7 @@ export class WebMap extends ol.Observable {
      * @param {array} allFeatures - 图层上的feature集合
      */
     getFiterFeatures(filterCondition, allFeatures) {
-        let jsonsql = window.jsonsql;
+        let jsonsqls = window.jsonsql ? window.jsonsql : jsonsql;
         let condition = this.replaceFilterCharacter(filterCondition);
         let sql = "select * from json where (" + condition + ")";
         let filterFeatures = [];
@@ -977,12 +981,12 @@ export class WebMap extends ol.Observable {
             let feature = allFeatures[i];
             let filterResult = false;
             try {
-                filterResult = jsonsql.query(sql, {
+                filterResult = jsonsqls.query(sql, {
                     attributes: feature.attributes
                 });
             } catch (err) {
                 //必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
-                return false;
+                continue;
             }
             if (filterResult && filterResult.length > 0) {
                 //afterFilterFeatureIdx.push(i);
@@ -1020,7 +1024,7 @@ export class WebMap extends ol.Observable {
             render: 'canvas',
             map: this.map,
             isHighLight: false,
-            onClick: function () {}
+            onClick: function () { }
         });
         return new ol.layer.Image({
             source: source
@@ -1044,7 +1048,7 @@ export class WebMap extends ol.Observable {
             if (!imgDom || !imgDom.src) {
                 imgDom = new Image();
                 //要组装成完整的url
-                imgDom.src = Util.getRootUrl(this.mapUrl) + imageInfo.url;
+                imgDom.src = this.server + imageInfo.url;
             }
             shape = new ol.style.Icon({
                 img: imgDom,
@@ -1212,7 +1216,7 @@ export class WebMap extends ol.Observable {
             offsetY = -20;
         }
         parameters.offsetY = offsetY;
-        
+
         return new ol.style.Style({
             text: new ol.style.Text({
                 font: "14px " + parameters.fontFamily,
@@ -1668,7 +1672,7 @@ export class WebMap extends ol.Observable {
             if (geomType === 'POINT' && defaultStyle.src &&
                 defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
                 //说明地址不完整
-                defaultStyle.src = Util.getRootUrl(that.mapUrl) + defaultStyle.src;
+                defaultStyle.src = that.server + defaultStyle.src;
             }
             feature.setStyle(StyleUtils.toOpenLayersStyle(defaultStyle, geomType))
         }, this)

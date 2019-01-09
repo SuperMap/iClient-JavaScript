@@ -8,6 +8,7 @@ import {DeafultCanvasStyle} from '../overlay/vectortile/DeafultCanvasStyle';
 import {
     Util
 } from '../core/Util';
+import canvg from 'canvg';
 
 ol.supermap = ol.supermap || {};
 var padding = 8, doublePadding = padding*2;
@@ -906,13 +907,13 @@ export class StyleUtils {
      */
     static getCanvasFromSVG (svgUrl, divDom, callBack) {
         //一个图层对应一个canvas
-        let canvg = window.canvg;
+        let canvgs = window.canvg ? window.canvg : canvg;
         let canvas = document.createElement('canvas');
         canvas.id = 'dataviz-canvas-' + Util.newGuid(8);
         canvas.style.display = "none";
         divDom.appendChild(canvas);
         try {
-            canvg(canvas.id, svgUrl, {
+            canvgs(canvas.id, svgUrl, {
                 ignoreMouse: true,
                 ignoreAnimation: true,
                 renderCallback: function () {

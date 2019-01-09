@@ -87,7 +87,6 @@ export class WebMap extends mapboxgl.Evented {
             //大屏需求,或者有加上代理的
             let urlArray = this.server.split(filter);
             if (urlArray.length > 1) {
-                let url = urlArray[1];
                 mapUrl = urlArray[0] + filter + this.server + 'web/maps/' + this.mapId + '/map.json';
             }
         }
@@ -451,7 +450,7 @@ export class WebMap extends mapboxgl.Evented {
      */
     _getTiandituUrl(mapInfo) {
         let re = /t0/gi;
-        let tiandituUrls = [];
+        let tiandituUrls = {};
         let layerType = mapInfo.baseLayer.layerType.split('_')[1].toLowerCase();
         let isLabel = Boolean(mapInfo.baseLayer.labelLayerVisible);
         // let isLabel = true;
@@ -1493,71 +1492,6 @@ export class WebMap extends mapboxgl.Evented {
     }
 
     /**
-    * @function mapboxgl.supermap.WebMap.prototype._getRootUrl
-    * @private
-    * @description 返回根rul
-    */
-    _getRootUrl(url) {
-        if (url) {
-            let tempRootUrl = {};
-            let onlineUrl = 'https://www.supermapol.com/', itestUrl = 'https://itest.supermapol.com/';
-            if (tempRootUrl[url]) {
-                return tempRootUrl[url];
-            }
-            let rootUrl = "";
-            if (url.indexOf(onlineUrl) === 0) {
-                rootUrl = onlineUrl;
-            } else if (url.indexOf(itestUrl) === 0) {
-                rootUrl = itestUrl;
-            } else {
-                let regExp = /\/apps|\/web|\/manager|\/developer|\/services/i,
-                    index = url.search(regExp);
-                let anchor = this._getAnchor(url);
-                rootUrl += anchor.protocol + '//' + this._getHost(url) + '/';
-                if (index > 0) {
-                    rootUrl += url.substring(rootUrl.length, index + 1);
-                }
-            }
-            tempRootUrl[url] = rootUrl;
-            return rootUrl;
-        }
-    }
-
-    /**
-    * @function mapboxgl.supermap.WebMap.prototype._getHost
-    * @private
-    * @description 返回根rul
-    */
-    _getHost(url) {
-        let anchor = this._getAnchor(url);
-        if (!anchor) {
-            return null;
-        }
-        let port = anchor.port, host = anchor.host;
-        //IE下会自动给host添加http(80), https(443)
-        if (port === "80" || port === "443") {
-            return host.split(":")[0];
-        }
-        return host;
-    }
-
-    /**
-     * @private
-     * @function mapboxgl.supermap.WebMap.prototype._getAnchor
-     * @description 获取https或http域名
-     * @param {string} url - 完整地址的url。
-     */
-    _getAnchor(url) {
-        let tempAnchor = {};
-        if (tempAnchor[url]) {
-            return tempAnchor[url];
-        }
-        let anchor = document.createElement('a');
-        anchor.href = url;
-        tempAnchor[url] = anchor;
-        return anchor;
-    }
-    /**
      * @private
      * @description 判断是否地理X坐标
      * @param data
@@ -1584,13 +1518,13 @@ export class WebMap extends mapboxgl.Evented {
     /**
     * @private
     * @function mapboxgl.supermap.WebMap.prototype._transformStyleToMapBoxGl
-    * @description 根据图层类型将layerInfo中的style属性格式转换为mapboxgl中的style格式。
+    * @description 根据图层类型将 layerInfo 中的 style 属性格式转换为 mapboxgl 中的 style 格式。
     * @param {Object} style - layerInfo中的style属性
     * @param {String} type - 图层类型
     * @param {Array} [expression] - 存储颜色值得表达式 
     */
     _transformStyleToMapBoxGl(style, type, expression) {
-        let transTable;
+        let transTable = {};
         if ((style.type === 'POINT' || style.type === 'BASIC_POINT' || type === 'POINT') && type !== 'LINE') {
             transTable = {
                 "fillColor": "circle-color",
@@ -1616,7 +1550,7 @@ export class WebMap extends mapboxgl.Evented {
 
         let newObj = {}
         for (let item in style) {
-            if (transTable[item]) {
+            if (transTable && transTable[item]) {
                 newObj[transTable[item]] = style[item];
             }
         }

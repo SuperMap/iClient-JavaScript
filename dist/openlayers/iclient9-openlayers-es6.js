@@ -89,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -252,6 +252,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return jsonsql}catch(e){return {}}}();
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return canvg}catch(e){return {}}}();
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -967,13 +979,13 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -1210,10 +1222,10 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(16).setImmediate))
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11739,7 +11751,7 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise = __webpack_require__(8);
+var promise = __webpack_require__(10);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
@@ -11750,7 +11762,7 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(11);
+var fetch = __webpack_require__(13);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(5);
@@ -36475,7 +36487,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(7);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(9);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -38898,7 +38910,7 @@ class ArrayStatistic {
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(6);
+var lodash_topairs = __webpack_require__(8);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -64931,69 +64943,6 @@ class core_Util_Util {
     }
 
     /**
-     * @function ol.supermap.Util.getRootUrl
-     * @description 获取请求地址前缀
-     * @param {string} url - 完整地址的url。
-     */
-    static getRootUrl(url) {
-        let tempRootUrl = {};
-        let onlineUrl = 'https://www.supermapol.com/', itestUrl = 'https://itest.supermapol.com/';
-        if (tempRootUrl[url]) {
-            return tempRootUrl[url];
-        }
-        let rootUrl = "";
-        if (url.indexOf(onlineUrl) === 0) {
-            rootUrl = onlineUrl;
-        } else if (url.indexOf(itestUrl) === 0) {
-            rootUrl = itestUrl;
-        } else {
-            let regExp = /\/apps|\/web|\/manager|\/developer|\/services/i,
-                index = url.search(regExp);
-            let anchor = this.getAnchor(url);
-            rootUrl += anchor.protocol + '//' + this.getHost(url) + '/';
-            if (index > 0) {
-                rootUrl += url.substring(rootUrl.length, index + 1);
-            }
-        }
-        tempRootUrl[url] = rootUrl;
-        return rootUrl;
-    }
-
-    /**
-     * @function ol.supermap.Util.getAnchor
-     * @description 获取https或http域名
-     * @param {string} url - 完整地址的url。
-     */
-    static getAnchor(url) {
-        let tempAnchor = {};
-        if (tempAnchor[url]) {
-            return tempAnchor[url];
-        }
-        let anchor = document.createElement('a');
-        anchor.href = url;
-        tempAnchor[url] = anchor;
-        return anchor;
-    }
-
-    /**
-     * @function ol.supermap.Util.getHost
-     * @description 获取端口号
-     * @param {string} url - {string} url地址。
-     * @returns {*|string|string}
-     */
-    static getHost(url) {
-        let anchor = this.getAnchor(url);
-        if (!anchor) {
-            return null;
-        }
-        let port = anchor.port, host = anchor.host;
-        //IE下会自动给host添加http(80), https(443)
-        if (port === "80" || port === "443") {
-            return host.split(":")[0];
-        }
-        return host;
-    }
-    /**
      * @function ol.supermap.Util.isString
      * @description 是否为字符串
      * @param {string} str - 需要判断的内容
@@ -65002,6 +64951,7 @@ class core_Util_Util {
     static isString(str) {
         return (typeof str === 'string') && str.constructor === String;
     }
+    
     /**
      * @function ol.supermap.Util.trim
      * @description 字符串裁剪两边的空格
@@ -65109,10 +65059,15 @@ class core_Util_Util {
 }
 
 external_ol_default.a.supermap.Util = core_Util_Util;
+// EXTERNAL MODULE: external "function(){try{return canvg}catch(e){return {}}}()"
+var external_function_try_return_canvg_catch_e_return_ = __webpack_require__(7);
+var external_function_try_return_canvg_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_canvg_catch_e_return_);
+
 // CONCATENATED MODULE: ./src/openlayers/core/StyleUtils.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -66016,13 +65971,13 @@ class StyleUtils_StyleUtils {
      */
     static getCanvasFromSVG (svgUrl, divDom, callBack) {
         //一个图层对应一个canvas
-        let canvg = window.canvg;
+        let canvgs = window.canvg ? window.canvg : external_function_try_return_canvg_catch_e_return_default.a;
         let canvas = document.createElement('canvas');
         canvas.id = 'dataviz-canvas-' + core_Util_Util.newGuid(8);
         canvas.style.display = "none";
         divDom.appendChild(canvas);
         try {
-            canvg(canvas.id, svgUrl, {
+            canvgs(canvas.id, svgUrl, {
                 ignoreMouse: true,
                 ignoreAnimation: true,
                 renderCallback: function () {
@@ -67078,10 +67033,15 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
 }
 
 external_ol_default.a.source.TileSuperMapRest = TileSuperMapRest_TileSuperMapRest;
+// EXTERNAL MODULE: external "function(){try{return jsonsql}catch(e){return {}}}()"
+var external_function_try_return_jsonsql_catch_e_return_ = __webpack_require__(6);
+var external_function_try_return_jsonsql_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_jsonsql_catch_e_return_);
+
 // CONCATENATED MODULE: ./src/openlayers/mapping/WebMap.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -67096,12 +67056,13 @@ const transformTools = new external_ol_default.a.format.GeoJSON();
  * @classdesc 对接 iPortal/Online 地图类。
  * @param {number} id - 地图的id
  * @param {Object} options - 参数。
- * @param {string} [options.map='map'] - 地图容器id。
+ * @param {string} [options.target='map'] - 地图容器id。
  * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址。
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
  * @param {function} [options.errorCallback] - 加载地图失败。
  * @param {string} [options.credentialKey] - 凭证密钥。
  * @param {string} [options.credentialValue] - 凭证值。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
  * @extends {ol.Observable}
@@ -67111,15 +67072,15 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
     constructor(id, options) {
         super();
         this.mapId = id;
-        if (options) {
-            this.mapUrl = options.server || 'http://www.supermapol.com';
-            this.successCallback = options.successCallback;
-            this.errorCallback = options.errorCallback;
-            this.credentialKey = options.credentialKey;
-            this.credentialValue = options.credentialValue;
-            this.target = options.target || "map";
-            this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
-        }
+        options = options || {};
+        this.server = options.server || 'http://www.supermapol.com';
+        this.successCallback = options.successCallback;
+        this.errorCallback = options.errorCallback;
+        this.credentialKey = options.credentialKey;
+        this.credentialValue = options.credentialValue;
+        this.withCredentials = options.withCredentials || false;
+        this.target = options.target || "map";
+        this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
         this.createMap(options.mapSetting);
         this.createWebmap();
     }
@@ -67162,22 +67123,26 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @description 创建webmap
      */
     createWebmap() {
-        let mapUrl = core_Util_Util.getRootUrl(this.mapUrl) + 'web/maps/' + this.mapId + '/map';
+        let urlArr = this.server.split('');
+        if (urlArr[urlArr.length - 1] !== '/') {
+            this.server += '/';
+        }
+
+        let mapUrl = this.server + 'web/maps/' + this.mapId + '/map';
         if (this.credentialValue) {
             mapUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
 
         }
         let filter = 'getUrlResource.json?url=';
-        if(this.excludePortalProxyUrl && this.mapUrl.indexOf(filter) > -1) {
+        if (this.excludePortalProxyUrl && this.server.indexOf(filter) > -1) {
             //大屏需求,或者有加上代理的
-            let urlArray = this.mapUrl.split(filter);
-            if(urlArray.length > 1) {
-                let url = urlArray[1];
-                mapUrl = urlArray[0] + filter + core_Util_Util.getRootUrl(url) + 'web/maps/' + this.mapId + '/map.json';
+            let urlArray = this.server.split(filter);
+            if (urlArray.length > 1) {
+                mapUrl = urlArray[0] + filter + this.server + 'web/maps/' + this.mapId + '/map.json';
             }
         }
         //todo 请求用户以及更新时间和地图标签等参数，暂时不需要
-        // let appUrl = this.mapUrl;
+        // let appUrl = this.server;
         // appUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
         // this.getAppInfo(appUrl);
         this.getMapInfo(mapUrl);
@@ -67197,11 +67162,11 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             mapUrl = `${url}.json`
         }
         FetchRequest.get(mapUrl, null, {
-            withCredentials: true
+            withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json();
         }).then(function (mapInfo) {
-            that.baseProjection = mapInfo.projection; 
+            that.baseProjection = mapInfo.projection;
             that.mapParams = {
                 title: mapInfo.title,
                 description: mapInfo.description
@@ -67252,9 +67217,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         for (let key in oldcenter) {
             center.push(oldcenter[key]);
         }
-        if(center.length === 0) {
+        if (center.length === 0) {
             //兼容wms
-            center = [0,0];
+            center = [0, 0];
         }
         extent = [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y];
         this.map.setView(new external_ol_default.a.View({
@@ -67278,16 +67243,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             layerType = layerType.substr(0, 12);
         }
         let mapUrls = {
-                CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
-                CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
-                OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
-                GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
-                JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
-                JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
-                JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
-                JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
-            },
+            CLOUD: 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
+            CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
+            OSM: 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
+            GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
+            JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
+            JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+            JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+            JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
+        },
             url;
         switch (layerType) {
             case "TIANDITU_VEC":
@@ -67298,9 +67263,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             case "BAIDU":
                 source = this.createBaiduSource();
                 break;
-                /*case 'BING':
-                    source = this.createBingSource(layerInfo, mapInfo.projection);
-                    break;*/
+            /*case 'BING':
+                source = this.createBingSource(layerInfo, mapInfo.projection);
+                break;*/
             case "WMS":
                 source = this.createWMSSource(layerInfo);
                 break;
@@ -67338,7 +67303,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 layerId: layerId
             });
         }
-        if(!mapInfo.baseLayer) {
+        if (!mapInfo.baseLayer) {
             //不是底图
             layer.setVisible(layerInfo.visible);
             layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
@@ -67488,7 +67453,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let that = this;
         let url = layerInfo.url;
         let options = {
-            withCredentials: false,
+            withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
         FetchRequest.get(url, null, options).then(function (response) {
@@ -67657,12 +67622,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
     isValidResponse(response) {
         let responseEnum = ['Contents', 'OperationsMetadata'],
             valid = true;
-        if (responseEnum) {
-            for (let i = 0; i < responseEnum.length; i++) {
-                if (!response[responseEnum[i]] || response.error) {
-                    valid = false;
-                    break;
-                }
+        for (let i = 0; i < responseEnum.length; i++) {
+            if (!response[responseEnum[i]] || response.error) {
+                valid = false;
+                break;
             }
         }
         return valid;
@@ -67687,13 +67650,13 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 if ((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER") {
                     //数据存储到iportal上了
                     let serverId = layer.dataSource ? layer.dataSource.serverId : layer.serverId;
-                    let url = `${core_Util_Util.getRootUrl(that.mapUrl)}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
+                    let url = `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
                     FetchRequest.get(url, null, {
-                        withCredentials: true
+                        withCredentials: this.withCredentials
                     }).then(function (response) {
                         return response.json()
                     }).then(function (data) {
-                        if(data.succeed === false) {
+                        if (data.succeed === false) {
                             //请求失败
                             layerAdded++;
                             that.sendMapToUser(layerAdded, len);
@@ -67768,7 +67731,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                                 that.addLayer(layer, features);
                                 layerAdded++;
                                 that.sendMapToUser(layerAdded, len);
-                            },function (e) {
+                            }, function (e) {
                                 layerAdded++;
                                 that.errorCallback && that.errorCallback(e, 'getFeatureFaild', that.map);
                             });
@@ -67908,8 +67871,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 properties = Object.assign({}, {
                     featureInfo: featureInfo
                 }, {
-                    useStyle: useStyle
-                });
+                        useStyle: useStyle
+                    });
                 //feature上添加图层的id，为了对应图层
                 feature.layerId = layerInfo.timeId;
                 //删除不需要的属性，因为这两个属性存储在properties上
@@ -67940,8 +67903,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 properties = Object.assign({}, {
                     featureInfo: featureInfo
                 }, {
-                    useStyle: useStyle
-                });
+                        useStyle: useStyle
+                    });
                 delete attr._smiportal_description;
                 delete attr._smiportal_imgLinkUrl;
                 delete attr._smiportal_title;
@@ -68041,7 +68004,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {array} allFeatures - 图层上的feature集合
      */
     getFiterFeatures(filterCondition, allFeatures) {
-        let jsonsql = window.jsonsql;
+        let jsonsqls = window.jsonsql ? window.jsonsql : external_function_try_return_jsonsql_catch_e_return_default.a;
         let condition = this.replaceFilterCharacter(filterCondition);
         let sql = "select * from json where (" + condition + ")";
         let filterFeatures = [];
@@ -68049,12 +68012,12 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let feature = allFeatures[i];
             let filterResult = false;
             try {
-                filterResult = jsonsql.query(sql, {
+                filterResult = jsonsqls.query(sql, {
                     attributes: feature.attributes
                 });
             } catch (err) {
                 //必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
-                return false;
+                continue;
             }
             if (filterResult && filterResult.length > 0) {
                 //afterFilterFeatureIdx.push(i);
@@ -68092,7 +68055,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             render: 'canvas',
             map: this.map,
             isHighLight: false,
-            onClick: function () {}
+            onClick: function () { }
         });
         return new external_ol_default.a.layer.Image({
             source: source
@@ -68116,7 +68079,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             if (!imgDom || !imgDom.src) {
                 imgDom = new Image();
                 //要组装成完整的url
-                imgDom.src = core_Util_Util.getRootUrl(this.mapUrl) + imageInfo.url;
+                imgDom.src = this.server + imageInfo.url;
             }
             shape = new external_ol_default.a.style.Icon({
                 img: imgDom,
@@ -68284,7 +68247,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             offsetY = -20;
         }
         parameters.offsetY = offsetY;
-        
+
         return new external_ol_default.a.style.Style({
             text: new external_ol_default.a.style.Text({
                 font: "14px " + parameters.fontFamily,
@@ -68740,7 +68703,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             if (geomType === 'POINT' && defaultStyle.src &&
                 defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
                 //说明地址不完整
-                defaultStyle.src = core_Util_Util.getRootUrl(that.mapUrl) + defaultStyle.src;
+                defaultStyle.src = that.server + defaultStyle.src;
             }
             feature.setStyle(StyleUtils_StyleUtils.toOpenLayersStyle(defaultStyle, geomType))
         }, this)
@@ -79243,14 +79206,14 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
+/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
 /* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
+/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
 /* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__);
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -79259,7 +79222,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -79683,7 +79646,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -79873,7 +79836,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -80063,10 +80026,10 @@ process.umask = function() { return 0; };
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(12)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(14)))
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -80122,7 +80085,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(13);
+__webpack_require__(15);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -80136,26 +80099,26 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(9);
-module.exports = __webpack_require__(10);
+__webpack_require__(11);
+module.exports = __webpack_require__(12);
 
 
 /***/ }),
-/* 16 */,
-/* 17 */,
 /* 18 */,
 /* 19 */,
-/* 20 */
+/* 20 */,
+/* 21 */,
+/* 22 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 21 */,
-/* 22 */
+/* 23 */,
+/* 24 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

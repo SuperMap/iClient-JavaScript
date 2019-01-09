@@ -325,9 +325,6 @@ describe('mapboxgl_WebMap', () => {
                 cb(img)
             })
         })
-        datavizWebmap._getRootUrl = () => {
-            return '';
-        }
 
         setTimeout(() => {
             expect(datavizWebmap.credentialKey).toBeUndefined();

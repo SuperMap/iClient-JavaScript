@@ -12,8 +12,8 @@ import {
 
 describe('openlayers_WebMap', () => {
     var originalTimeout, testDiv, webMap;
-    var server = "http://127.0.0.1:8090/iportal/web/maps/1788054202/map";
-    var defaultServer = "http://www.supermapol.com";
+    var server = "http://127.0.0.1:8090/iportal/";
+    var defaultServer = "http://www.supermapol.com/";
     var defaultServeRequest = 'http://www.supermapol.com/web/maps/1788054202/map';
     var id = 1788054202;
     beforeEach(() => {
@@ -31,7 +31,7 @@ describe('openlayers_WebMap', () => {
 
     it('initialize_TIANDITU_VEC', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_TIANDITU_VEC;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -42,7 +42,7 @@ describe('openlayers_WebMap', () => {
         });
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.callBack).toBeUndefined();
             expect(datavizWebmap.errorCallback).toBeUndefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -58,7 +58,7 @@ describe('openlayers_WebMap', () => {
     });
     it('initialize_TIANDITU_IMAGE', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_TIANDITU_IMAGE;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -92,7 +92,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -120,7 +120,7 @@ describe('openlayers_WebMap', () => {
             credentialValue: 'keyValue'
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + '.json?' + options.credentialKey + '=' + options.credentialValue) {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_TIANDITU_TER;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -130,7 +130,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBe('key');
             expect(datavizWebmap.credentialValue).toBe('keyValue');
@@ -152,7 +152,7 @@ describe('openlayers_WebMap', () => {
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_BAIDU;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -162,7 +162,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -183,7 +183,7 @@ describe('openlayers_WebMap', () => {
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_OPENSTREET;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -193,7 +193,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -222,7 +222,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             expect(options.successCallback).not.toHaveBeenCalled();
@@ -238,7 +238,7 @@ describe('openlayers_WebMap', () => {
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_CLOUD;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -248,7 +248,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -270,7 +270,7 @@ describe('openlayers_WebMap', () => {
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_UNDEFIED;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -280,7 +280,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -303,7 +303,7 @@ describe('openlayers_WebMap', () => {
         };
         let rootUrl = 'http://127.0.0.1:8090/iportal/';
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_Theme_base;
                 return Promise.resolve(new Response(mapJson));
             } else if (url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
@@ -315,7 +315,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -340,7 +340,7 @@ describe('openlayers_WebMap', () => {
         };
         let rootUrl = 'http://127.0.0.1:8090/iportal/';
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_Theme_base_Line;
                 return Promise.resolve(new Response(mapJson));
             } else if (url === `${rootUrl}web/datas/374284777/content.json?pageSize=9999999&currentPage=1`) {
@@ -352,7 +352,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -377,7 +377,7 @@ describe('openlayers_WebMap', () => {
         };
         let rootUrl = 'http://127.0.0.1:8090/iportal/';
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_Image;
                 return Promise.resolve(new Response(mapJson));
             } else if (url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
@@ -389,7 +389,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -410,7 +410,7 @@ describe('openlayers_WebMap', () => {
         };
         let rootUrl = 'http://127.0.0.1:8090/iportal/';
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_SVG;
                 return Promise.resolve(new Response(mapJson));
             } else if (url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
@@ -422,7 +422,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -444,7 +444,7 @@ describe('openlayers_WebMap', () => {
         };
         let rootUrl = 'http://127.0.0.1:8090/iportal/';
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_Unique;
                 return Promise.resolve(new Response(mapJson));
             } else if (url === `${rootUrl}web/datas/658963918/content.json?pageSize=9999999&currentPage=1`) {
@@ -456,7 +456,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -481,7 +481,7 @@ describe('openlayers_WebMap', () => {
         };
         let rootUrl = 'http://127.0.0.1:8090/iportal/';
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_Range;
                 return Promise.resolve(new Response(mapJson));
             } else if (url === `${rootUrl}web/datas/1236941499/content.json?pageSize=9999999&currentPage=1`) {
@@ -493,7 +493,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -519,7 +519,7 @@ describe('openlayers_WebMap', () => {
         };
         let rootUrl = 'http://127.0.0.1:8090/iportal/';
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_Heat;
                 return Promise.resolve(new Response(mapJson));
             } else if (url === `${rootUrl}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`) {
@@ -530,7 +530,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -552,7 +552,7 @@ describe('openlayers_WebMap', () => {
         };
         let rootUrl = 'http://127.0.0.1:8090/iportal/';
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_Marker;
                 return Promise.resolve(new Response(mapJson));
             } else if (url === `${rootUrl}web/datas/579431262/content.json?pageSize=9999999&currentPage=1`) {
@@ -564,7 +564,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -589,7 +589,7 @@ describe('openlayers_WebMap', () => {
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_RestMap;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -599,7 +599,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -625,7 +625,7 @@ describe('openlayers_WebMap', () => {
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_RestData;
                 return Promise.resolve(new Response(mapJson));
             } else if (url === 'http://support.supermap.com:8090/iserver/services/data-jingjin/rest/data/featureResults.json?returnContent=true&fromIndex=0&toIndex=100000') {
@@ -643,7 +643,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -669,7 +669,7 @@ describe('openlayers_WebMap', () => {
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_WMS;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -679,7 +679,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -706,7 +706,7 @@ describe('openlayers_WebMap', () => {
         let wmtsData ='<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             } else if(url === 'http://support.supermap.com:8090/iserver/services/maps/wmts100?') {
@@ -718,7 +718,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap('map', server, options);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(server);
+            expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -739,7 +739,7 @@ describe('openlayers_WebMap', () => {
     it('createWMTSSource', (done) => {
         //第二次请求wmts参数值太大
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -750,7 +750,7 @@ describe('openlayers_WebMap', () => {
         datavizWebmap.createWMTSSource(layerInfo);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(defaultServer);
+            expect(datavizWebmap.server).toBe(defaultServer);
             done();
         }, 1000)
     });
@@ -758,7 +758,7 @@ describe('openlayers_WebMap', () => {
     it('createWMTSSource1', (done) => {
         //第二次请求wmts参数值太大
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -769,14 +769,14 @@ describe('openlayers_WebMap', () => {
         datavizWebmap.createWMTSSource(layerInfo);
 
         setTimeout(() => {
-            expect(datavizWebmap.mapUrl).toBe(defaultServer);
+            expect(datavizWebmap.server).toBe(defaultServer);
             done();
         }, 1000)
     });
 
     it('setColorToCanvas', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -799,7 +799,7 @@ describe('openlayers_WebMap', () => {
 
     it('getSymbolStyle', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -822,7 +822,7 @@ describe('openlayers_WebMap', () => {
 
     it('changeWeight', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }
@@ -847,7 +847,7 @@ describe('openlayers_WebMap', () => {
 
     it('createBaseLayer-wmts', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url === server + ".json") {
+            if (url.indexOf('map.json')>-1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             }
