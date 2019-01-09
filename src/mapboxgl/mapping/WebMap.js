@@ -74,8 +74,8 @@ export class WebMap extends mapboxgl.Evented {
      * @description 登陆窗口后添加地图图层。
      */
     _createWebMap() {
-        let urlArr =this.server.split('');
-        if(urlArr[urlArr.length-1] !== '/'){
+        let urlArr = this.server.split('');
+        if (urlArr[urlArr.length - 1] !== '/') {
             this.server += '/';
         }
         let mapUrl = this.server + 'web/maps/' + this.mapId + '/map';
@@ -258,7 +258,7 @@ export class WebMap extends mapboxgl.Evented {
         let layerType = mapInfo.baseLayer.layerType;
         let isLabel = Boolean(mapInfo.baseLayer.labelLayerVisible);
         let labelUrl = tiandituUrls['labelUrl'];
-        let tiandituUrl = tiandituUrls.slice(0, -1);
+        let tiandituUrl = tiandituUrls['tiandituUrl'];
         this._addBaselayer(tiandituUrl, 'tianditu-layers-' + layerType)
         isLabel && this._addBaselayer([labelUrl], 'tianditu-label-layers-' + layerType)
     }
@@ -476,18 +476,25 @@ export class WebMap extends mapboxgl.Evented {
 
         url += this._getParamString(options, url) + '&tilematrix={z}&tilerow={y}&tilecol={x}';
         let tiandituUrl = url.replace("{layer}", layerType).replace("{proj}", tilematrixSet);
-        tiandituUrls.push(tiandituUrl);
-        for (let i = 1; i < 8; i++) {
-            tiandituUrls.push(tiandituUrl.replace(re, `t${i}`))
+        let tiandituUrlArr = [];
+        for (let i = 0; i < 8; i++) {
+            tiandituUrlArr.push(tiandituUrl.replace(re, `t${i}`));
         }
+        tiandituUrls['tiandituUrl'] = tiandituUrlArr;
+
         // 如果有 label 图层
         if (isLabel) {
             let labelLayer = layerLabelMap[layerType];
             options.layer = labelLayer;
             labelUrl += this._getParamString(options, labelUrl) + '&tilematrix={z}&tilerow={y}&tilecol={x}';
             labelUrl = labelUrl.replace("{layer}", labelLayer).replace("{proj}", tilematrixSet);
-            tiandituUrls['labelUrl'] = labelUrl;
+            let labelUrlArr = [];
+            for (let i = 0; i < 8; i++) {
+                labelUrlArr.push(labelUrl.replace(re, `t${i}`));
+            }
+            tiandituUrls['labelUrl'] = labelUrlArr;
         }
+
         return tiandituUrls;
     }
 
@@ -1110,12 +1117,12 @@ export class WebMap extends mapboxgl.Evented {
         }
         if (features[0].weight && features.length >= 4) {
             let weight = [];
-            features.forEach(item=>{
+            features.forEach(item => {
                 weight.push(item.weight);
             })
             let max = ArrayStatistic.getMax(weight);
             let min = ArrayStatistic.getMin(weight);
-            paint["heatmap-weight"] = ["interpolate", ["linear"], ["get", 'weight'],min,0,max,1];
+            paint["heatmap-weight"] = ["interpolate", ["linear"], ["get", 'weight'], min, 0, max, 1];
         }
 
         this.map.addLayer({

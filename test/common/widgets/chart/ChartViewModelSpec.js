@@ -1,4 +1,4 @@
-import { ChartViewModel } from '../../../../src/common/widgets/chart/ChartView';
+import { ChartViewModel } from '../../../../src/common/widgets/chart/ChartViewModel';
 import '../../../resources/FeatureService';
 
 describe('ChartViewModel', () => {
