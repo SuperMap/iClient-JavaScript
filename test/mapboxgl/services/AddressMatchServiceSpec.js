@@ -1,7 +1,7 @@
 import {AddressMatchService} from '../../../src/mapboxgl/services/AddressMatchService';
 import {GeoCodingParameter} from '../../../src/common/iServer/GeoCodingParameter';
 import {GeoDecodingParameter} from '../../../src/common/iServer/GeoDecodingParameter';
-import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var addressMatchURL = GlobeParameter.addressMatchURL;
 describe('mapboxgl_AddressMatchService', () => {
@@ -27,15 +27,14 @@ describe('mapboxgl_AddressMatchService', () => {
             maxReturn: -1
         });
         var service = new AddressMatchService(addressMatchURL);
-
-        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-           // expect(testUrl).toBe(addressMatchURL + "/geocoding.json?address=公司&fromIndex=0&toIndex=10&filters=[\"北京市\",\"海淀区\"]&prjCoordSys={epsgcode:4326}&maxReturn=-1");
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params) => {
             expect(testUrl).toBe(addressMatchURL + "/geocoding");
             expect(params).not.toBeNull();
-            expect(options).not.toBeNull();
+            expect(params.address).toBe('公司');
+            expect(params.prjCoordSys).toBe("{epsgcode:4326}");
+            expect(params.filters.length).toEqual(2);
             return Promise.resolve(new Response(codeSuccessEscapedJson));
-        }); 
-
+        });
         service.code(geoCodingParams, (result) => {
             serviceResult = result;
             try {
@@ -57,9 +56,6 @@ describe('mapboxgl_AddressMatchService', () => {
                 done();
             }
         });
-        // setTimeout(() => {
-     
-        // }, 5000)
     });
 
     //反向匹配，成功事件
@@ -75,17 +71,17 @@ describe('mapboxgl_AddressMatchService', () => {
             geoDecodingRadius: 500
         });
         var service = new AddressMatchService(addressMatchURL);
-        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            // expect(testUrl).toBe(addressMatchURL + "/geodecoding.json?x=116.31740122415627&y=39.92311315752059&fromIndex=0&toIndex=5&filters=[\"北京市\",\"海淀区\"]&prjCoordSys={epsgcode:4326}&maxReturn=-1&geoDecodingRadius=500");
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params) => {
             expect(testUrl).toBe(addressMatchURL + "/geodecoding");
             expect(params).not.toBeNull();
-            expect(options).not.toBeNull();
+            expect(params.toIndex).toEqual(5);
+            expect(params.filters.length).toEqual(2);
             return Promise.resolve(new Response(decodeSuccessEscapedJson));
         });
 
         service.decode(geoDecodingParams, (result) => {
-            serviceResult = result; 
-              try {
+            serviceResult = result;
+            try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
@@ -118,13 +114,13 @@ describe('mapboxgl_AddressMatchService', () => {
         });
         var service = new AddressMatchService(addressMatchURL);
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            // expect(testUrl).toBe(addressMatchURL + "/geocoding.json?fromIndex=0&toIndex=10&filters=[\"北京市\",\"海淀区\"]&prjCoordSys={epsgcode:4326}&maxReturn=-1");
             expect(testUrl).toBe(addressMatchURL + "/geocoding");
+            expect(params.address).toBeNull();
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(codeFailEscapedJson));
-        }); 
+        });
         service.code(geoCodingParams, (result) => {
-            serviceResult = result; 
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -140,7 +136,6 @@ describe('mapboxgl_AddressMatchService', () => {
                 done();
             }
         });
-
     });
 
     //反向匹配，失败事件
@@ -156,15 +151,16 @@ describe('mapboxgl_AddressMatchService', () => {
         var service = new AddressMatchService(addressMatchURL);
 
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            // expect(testUrl).toBe(addressMatchURL + "/geodecoding.json?fromIndex=0&toIndex=5&filters=[\"北京市\",\"海淀区\"]&prjCoordSys={epsgcode:4326}&maxReturn=-1&geoDecodingRadius=500");
             expect(testUrl).toBe(addressMatchURL + "/geodecoding");
+            expect(params.geoDecodingRadius).toEqual(500);
+            expect(params.fromIndex).toEqual(0);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(decodeFailEscapedJson));
         });
 
         service.decode(geoDecodingParams, (result) => {
-            serviceResult = result; 
-             try {
+            serviceResult = result;
+            try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;

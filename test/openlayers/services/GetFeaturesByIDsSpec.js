@@ -27,14 +27,13 @@ describe('openlayers_FeatureService_getFeaturesByIDs', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(featureServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Countries");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByIDService.getFeaturesByIDs(idsParam, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(getFeaturesByIDService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -62,6 +61,6 @@ describe('openlayers_FeatureService_getFeaturesByIDs', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

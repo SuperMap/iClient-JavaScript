@@ -1,6 +1,6 @@
-import { addressMatchService } from '../../../src/leaflet/services/AddressMatchService';
-import { GeoCodingParameter } from '../../../src/common/iServer/GeoCodingParameter';
-import { GeoDecodingParameter } from '../../../src/common/iServer/GeoDecodingParameter';
+import {addressMatchService} from '../../../src/leaflet/services/AddressMatchService';
+import {GeoCodingParameter} from '../../../src/common/iServer/GeoCodingParameter';
+import {GeoDecodingParameter} from '../../../src/common/iServer/GeoDecodingParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 
@@ -33,33 +33,37 @@ describe('leaflet_AddressMatchService', () => {
         var geoCodingService = addressMatchService(addressMatchURL, options);
 
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            expect(testUrl).toBe(addressMatchURL + "/geocoding");
-            expect(params).not.toBeNull();
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(codeSuccessEscapedJson));
-        });
-        geoCodingService.code(geoCodingParams, (serviceResult) => {
-            expect(geoCodingService).not.toBeNull();
-            expect(geoCodingService.options.serverType).toBe("iServer");
-            try {
-                expect(serviceResult.type).toBe("processCompleted");
-                var result = serviceResult.result;
-                expect(result).not.toBeNull();
-                expect(result.length).toEqual(10);
-                for (var i = 0; i < result.length; i++) {
-                    expect(result[i].filters.length).toEqual(2);
-                    expect(result[i].filters[0]).toBe("北京市");
-                    expect(result[i].filters[1]).toBe("海淀区");
-                }
-                expect(result[0].score).not.toBeNull();
-                geoCodingService.destroy();
-                done();
-            } catch (exception) {
-                console.log("'successEvent:code'案例失败：" + exception.name + ":" + exception.message);
-                geoCodingService.destroy();
-                expect(false).toBeTruthy();
-                done();
-            }
+             expect(testUrl).toBe(addressMatchURL + "/geocoding");
+             expect(params).not.toBeNull();
+             expect(params.address).toBe('公司');
+             expect(params.prjCoordSys).toBe('{epsgcode:4326}');
+             expect(options).not.toBeNull();
+             return Promise.resolve(new Response(codeSuccessEscapedJson));
+         }); 
+        
+         geoCodingService.code(geoCodingParams, (result) => {
+            serviceResult = result;
+             try {
+                 expect(geoCodingService).not.toBeNull();
+                 expect(geoCodingService.options.serverType).toBe("iServer");
+                 expect(serviceResult.type).toBe("processCompleted");
+                 var result = serviceResult.result;
+                 expect(result).not.toBeNull();
+                 expect(result.length).toEqual(10);
+                 for (var i = 0; i < result.length; i++) {
+                     expect(result[i].filters.length).toEqual(2);
+                     expect(result[i].filters[0]).toBe("北京市");
+                     expect(result[i].filters[1]).toBe("海淀区");
+                 }
+                 expect(result[0].score).not.toBeNull();
+                 geoCodingService.destroy();
+                 done();
+             } catch (exception) {
+                 console.log("'successEvent:code'案例失败：" + exception.name + ":" + exception.message);
+                 geoCodingService.destroy();
+                 expect(false).toBeTruthy();
+                 done();
+             }
         });
     });
 
@@ -79,12 +83,15 @@ describe('leaflet_AddressMatchService', () => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
             expect(testUrl).toBe(addressMatchURL + "/geodecoding");
             expect(params).not.toBeNull();
+            expect(params.maxReturn).toEqual(-1);
+            expect(params.prjCoordSys).toBe('{epsgcode:4326}');
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(decodeSuccessEscapedJson));
         });
 
-        GeoDecodingService.decode(GeoDecodingParams, (serviceResult) => {
-                     try {
+        GeoDecodingService.decode(GeoDecodingParams, (result) => {
+            serviceResult = result;
+            try {
                 expect(GeoDecodingService).not.toBeNull();
                 expect(GeoDecodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
@@ -121,11 +128,14 @@ describe('leaflet_AddressMatchService', () => {
 
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
             expect(testUrl).toBe(addressMatchURL + "/geocoding");
+            expect(params.address).toBeNull();
+            expect(params.prjCoordSys).toBe('{epsgcode:4326}');
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(codeFailEscapedJson));
-        });
+        }); 
 
-        geoCodingService.code(geoCodingParams, (serviceResult) => {
+        geoCodingService.code(geoCodingParams, (result) => {
+            serviceResult = result;
             try {
                 expect(geoCodingService).not.toBeNull();
                 expect(geoCodingService.options.serverType).toBe("iServer");
@@ -159,11 +169,14 @@ describe('leaflet_AddressMatchService', () => {
 
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
             expect(testUrl).toBe(addressMatchURL + "/geodecoding");
+            expect(params.geoDecodingRadius).toEqual(500);
+            expect(params.prjCoordSys).toBe('{epsgcode:4326}');
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(decodeFailEscapedJson));
         });
 
-        geoDecodingService.decode(GeoDecodingParams, (serviceResult) => {
+        geoDecodingService.decode(GeoDecodingParams, (result) => {
+            serviceResult = result;
             try {
                 expect(geoDecodingService).not.toBeNull();
                 expect(geoDecodingService.options.serverType).toBe("iServer");

@@ -30,22 +30,29 @@ describe('openlayers_SpatialAnalystService_densityAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(changchunServiceUrl + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
-            expect(params).toContain("'bounds':{'left':3800,'bottom':-3800,'right':8200,'top':-2200");
-            expect(params).toContain("'fieldName':\"SmLength\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.fieldName).toBe("SmLength");
+            expect(paramsObj.resultGridName).toBe("KernelDensity_openlayersTest");
+            expect(paramsObj.searchRadius).toEqual(50);
             expect(options).not.toBeNull();
             var resultJson=`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_openlayersTest@Changchun"}`;
             return Promise.resolve(new Response(resultJson));
         });
         spatialAnalystService.densityAnalysis(densityAnalystParameters, (serviceResult) => {
             serviceResults = serviceResult;
-        });
-        setTimeout(() => {
+            try {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
             expect(serviceResults.result.dataset).toEqual(resultDataset+"@Changchun");
-            done();
-        }, 8000);
+                done();
+            } catch (exception) {
+                console.log("'densityAnalysis'案例失败" + exception.name + ":" + exception.message);
+                spatialAnalystService.destroy();
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
     });
 
 });

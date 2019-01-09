@@ -37,16 +37,16 @@ describe('openlayers_SpatialAnalystService_geoRelationAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(changchunServiceUrl + "/datasets/Park@Changchun/georelation.json?returnContent=true");
-            expect(params).toContain("'expectCount':5");
-            expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.dataset).toBe("Park@Changchun");
+            expect(paramsObj.sourceFilter.attributeFilter).toBe("SMID%26gt;0");
+            expect(paramsObj.spatialRelationType).toBe("INTERSECT");
             expect(options).not.toBeNull();
             var geoRelationAnalystEscapedJson = `[{"result":[1],"count":1,"source":1},{"result":[1],"count":1,"source":2},{"result":[1],"count":1,"source":3},{"result":[1],"count":1,"source":4},{"result":[1],"count":1,"source":5}]`;
             return Promise.resolve(new Response(geoRelationAnalystEscapedJson));
         });
         service.geoRelationAnalysis(geoRelationAnalystParameters, (result) => {
             serviceResults = result;
-        });
-        setTimeout(() => {
             expect(service).not.toBeNull();
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toEqual("processCompleted");
@@ -58,6 +58,6 @@ describe('openlayers_SpatialAnalystService_geoRelationAnalysis', () => {
                 expect(serviceResults.result[i].result.length).toEqual(1);
             }
             done();
-        }, 5000)
+        });
     });
 });

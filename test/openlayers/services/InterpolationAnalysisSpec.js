@@ -43,7 +43,10 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/interpolation/density.json?returnContent=true");
-            expect(params).toContain("'zValueFieldName':\"AVG_TMP\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.resolution).toEqual(3000);
+            expect(paramsObj.zValueFieldName).toBe("AVG_TMP");
+            expect(paramsObj.pixelFormat).toBe("DOUBLE");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_density_olTest_6@Interpolation"}`));
         });
@@ -80,7 +83,10 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/interpolation/idw.json?returnContent=true");
-            expect(params).toContain("'zValueFieldName':\"AVG_TMP\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.resolution).toEqual(7923.84989108);
+            expect(paramsObj.searchMode).toBe("KDTREE_FIXED_COUNT");
+            expect(paramsObj.expectedCount).toEqual(12);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_IDW_dataset_olTest_5@Interpolation"}`));
         });

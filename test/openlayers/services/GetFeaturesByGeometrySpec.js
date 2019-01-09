@@ -30,15 +30,14 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(featureServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Countries");
+            expect(paramsObj.spatialQueryMode).toBe("INTERSECT");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByGeometryService.getFeaturesByGeometry(geometryParam, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -65,6 +64,6 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

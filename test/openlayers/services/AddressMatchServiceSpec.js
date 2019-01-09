@@ -43,6 +43,8 @@ describe('openlayers_AddressMatchService', () => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
             expect(testUrl).toBe(addressMatchURL + "/geocoding");
             expect(params).not.toBeNull();
+            expect(params.address).toBe('公司');
+            expect(params.prjCoordSys).toBe('{epsgcode:4326}');
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(codeSuccessEscapedJson));
         });
@@ -91,6 +93,8 @@ describe('openlayers_AddressMatchService', () => {
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
             expect(testUrl).toBe(addressMatchURL + "/geodecoding");
             expect(params).not.toBeNull();
+            expect(params.maxReturn).toEqual(-1);
+            expect(params.prjCoordSys).toBe('{epsgcode:4326}');
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(decodeSuccessEscapedJson));
         });

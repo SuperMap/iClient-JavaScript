@@ -39,12 +39,15 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'bounds':{'left':3800,'bottom':-3800,'right':8200,'top':-2200");
-            expect(params).toContain("'fieldName':\"SmLength\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.fieldName).toBe("SmLength");
+            expect(paramsObj.resultGridName).toBe("KernelDensity_leafletTest");
+            expect(paramsObj.searchRadius).toEqual(50);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_leafletTest@Changchun"}`));
         });
-        densityAnalystService.densityAnalysis(densityAnalystParameters, (serviceResult) => {
+        densityAnalystService.densityAnalysis(densityAnalystParameters, (result) => {
+            serviceResult = result;
             try {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe('processCompleted');
@@ -59,6 +62,6 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', () => {
                 done();
             }
         });
-       });
+    });
 
 });

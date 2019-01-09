@@ -41,22 +41,22 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(changchunServiceUrl + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'routeIDField':\"RouteID\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.routeTable).toBe("RouteDT_road@Changchun");
+            expect(paramsObj.measureEndField).toBe("LineMeasureTo");
             expect(options).not.toBeNull();
             var resultJSON = `{"succeed":true,"recordset":null,"message":null,"dataset":"GenerateSpatialData_openlayersTest@Changchun"}`;
             return Promise.resolve(new Response(resultJSON));
         });
         spatialAnalystService.generateSpatialData(generateSpatialDataParameters, (serviceResult) => {
             serviceResults = serviceResult;
-        });
-        setTimeout(() => {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.succeed).toBeTruthy();
             expect(serviceResults.result.dataset).not.toBeNull();
             expect(serviceResults.result.dataset).toEqual(resultDataset + "@Changchun");
             done();
-        }, 8000);
+        });
     });
 
 });

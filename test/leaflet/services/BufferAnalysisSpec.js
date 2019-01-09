@@ -1,12 +1,12 @@
-import { spatialAnalystService } from '../../../src/leaflet/services/SpatialAnalystService';
-import { GeometryBufferAnalystParameters } from '../../../src/common/iServer/GeometryBufferAnalystParameters';
-import { DatasetBufferAnalystParameters } from '../../../src/common/iServer/DatasetBufferAnalystParameters';
-import { BufferSetting } from '../../../src/common/iServer/BufferSetting';
-import { BufferDistance } from '../../../src/common/iServer/BufferDistance';
-import { FilterParameter } from '../../../src/common/iServer/FilterParameter';
-import { DataReturnOption } from '../../../src/common/iServer/DataReturnOption';
-import { BufferEndType } from '../../../src/common/REST';
-import { DataReturnMode } from '../../../src/common/REST';
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/GeometryBufferAnalystParameters';
+import {DatasetBufferAnalystParameters} from '../../../src/common/iServer/DatasetBufferAnalystParameters';
+import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
+import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
+import {BufferEndType} from '../../../src/common/REST';
+import {DataReturnMode} from '../../../src/common/REST';
 import request from 'request';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
@@ -63,13 +63,13 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             [-4210.533, 8182.656],
             [-4261.485, 8554.893]
         ];
-        var roadLine = L.polyline(pointsList, { color: 'red' });
+        var roadLine = L.polyline(pointsList, {color: 'red'});
         var geoBufferAnalystParams = new GeometryBufferAnalystParameters({
             sourceGeometry: roadLine,
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
-                leftDistance: new BufferDistance({ value: 250 }),
-                rightDistance: new BufferDistance({ value: 250 }),
+                leftDistance: new BufferDistance({value: 250}),
+                rightDistance: new BufferDistance({value: 250}),
                 semicircleLineSegment: 10
             })
         });
@@ -78,13 +78,14 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/geometry/buffer.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("analystParameter");
-            expect(params).toContain("'leftDistance':{'exp':null,'value':250}");
-            expect(params).toContain("'semicircleLineSegment':10");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.analystParameter.endType).toBe("ROUND");
+            expect(paramsObj.analystParameter.leftDistance.value).toEqual(250);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));
         });
-        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (serviceResult) => {
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (result) => {
+            serviceResult = result;
             try {
                 expect(bufferAnalystService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -110,7 +111,6 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
                 done();
             }
         });
-
     });
 
     var resultDataset = "bufferAnalystByDatasets_leafletTest";
@@ -118,12 +118,12 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
         var dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
             filterQueryParameter: new FilterParameter({
-                attributeFilter: "NAME='团结路'"
+                attributeFilter: 'NAME="团结路"'
             }),
             bufferSetting: new BufferSetting({
                 endType: BufferEndType.ROUND,
-                leftDistance: { value: 10 },
-                rightDistance: { value: 10 },
+                leftDistance: {value: 10},
+                rightDistance: {value: 10},
                 semicircleLineSegment: 10
             }),
             resultSetting: new DataReturnOption({
@@ -138,10 +138,10 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/RoadLine2@Changchun/buffer.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("bufferAnalystParameter");
-            expect(params).toContain("'endType':\"ROUND\"");
-            expect(params).toContain("'leftDistance':{'value':10}");
-            expect(params).toContain("'rightDistance':{'value':10}");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.bufferAnalystParameter.endType).toBe("ROUND");
+            expect(paramsObj.bufferAnalystParameter.leftDistance.value).toEqual(10);
+            expect(paramsObj.dataReturnOption.expectCount).toEqual(2000);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
         });
@@ -152,14 +152,13 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.result.succeed).toBeTruthy();
                 done();
-            } catch (exception) {
+            }catch (exception) {
                 console.log("'bufferAnalysis_byDatasets'案例失败" + exception.name + ":" + exception.message);
                 bufferAnalystService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
         });
-
     });
 
 });

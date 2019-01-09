@@ -29,15 +29,13 @@ describe('openlayers_FieldService', () => {
         var service = new FieldService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe("http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields.json?");
+            expect(testUrl).toBe(url+"/datasources/World/datasets/continent_T/fields.json?");
             expect(options).not.toBeNull();
             var getFieldsEscapedJson = `{"fieldNames":["SmID","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmUserID","SmGeometrySize"],"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriW","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriN","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriE","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriS","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmUserID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmGeometrySize"]}`;
             return Promise.resolve(new Response(getFieldsEscapedJson));
         });
         service.getFields(fieldParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -54,7 +52,7 @@ describe('openlayers_FieldService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //字段查询服务失败事件
@@ -66,14 +64,12 @@ describe('openlayers_FieldService', () => {
         var service = new FieldService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe("http://localhost:8090/iserver/services/data-world/rest/data/datasources/World1/datasets/continent_T/fields.json?");
+            expect(testUrl).toBe(url+"/datasources/World1/datasets/continent_T/fields.json?");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });
         service.getFields(fieldParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -90,7 +86,7 @@ describe('openlayers_FieldService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //字段统计服务成功事件
@@ -129,8 +125,6 @@ describe('openlayers_FieldService', () => {
         });
         service.getFieldStatisticsInfo(fieldStatisticsParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.currentStatisticResult).not.toBeNull();
@@ -155,7 +149,7 @@ describe('openlayers_FieldService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //字段统计服务失败事件

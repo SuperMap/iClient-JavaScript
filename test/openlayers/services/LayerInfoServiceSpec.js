@@ -29,13 +29,10 @@ describe('openlayers_LayerInfoService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url+"/layers.json?");
-            expect(options).not.toBeNull();
             return Promise.resolve(new Response("["+JSON.stringify(layersInfo)+"]"));
         });
         layerService.getLayersInfo((result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(layerService).not.toBeNull();
                 expect(layerService.options.serverType).toBe('iServer');
@@ -68,7 +65,7 @@ describe('openlayers_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //子图层显示控制服务
@@ -94,8 +91,10 @@ describe('openlayers_LayerInfoService', () => {
             //resourceID:"46ce0e03314040d8a4a2060145d142d7_722ef5d56efe4faa90e03e81d96a7547"
         });
         var layerInfoService = new LayerInfoService(url, options);
-        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl,params,options) => {
             expect(testUrl).toBe(url+"/tempLayersSet.json?");
+            // var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            // expect(paramsObj)
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_51ae398f945b4a7f82b35b6b881cdb7c.json"}`));
         });
