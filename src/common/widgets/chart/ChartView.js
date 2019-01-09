@@ -8,7 +8,6 @@ import { ChartViewModel } from "./ChartViewModel";
 /**
  * @class SuperMap.Widgets.Chart
  * @classdesc 图表微件
- * @private
  * @version 10.X.X
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
@@ -21,7 +20,7 @@ import { ChartViewModel } from "./ChartViewModel";
  * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
  * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
- * @category Widgets Common
+ * @category Widgets Chart
  */
 export class ChartView {
 

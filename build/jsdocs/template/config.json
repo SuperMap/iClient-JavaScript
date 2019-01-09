@@ -358,6 +358,10 @@
             "DataServiceQuery": {
                 "name": "数据服务查询微件",
                 "name_en": "DataServiceQuery"
+            },
+            "Chart": {
+                "name": "图表微件",
+                "name_en": "Chart"
             }
         }
     },

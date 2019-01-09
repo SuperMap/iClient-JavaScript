@@ -2,13 +2,13 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from '../../SuperMap';
-import { FetchRequest } from '@supermap/iclient-common';
+import { FetchRequest } from '../../util/FetchRequest';
 /**
  * @class SuperMap.Widgets.ChartModel
  * @classdesc 图表微件数据模型
  * @private
  * @param {Object} datasets - 数据来源。
- * @category Widgets Common
+ * @category Widgets Chart
  */
 
 export class ChartModel {

@@ -38,7 +38,7 @@ module.exports = function (config) {
             {pattern: '../src/classic/libs/Lang/*.js', include: false},
             {pattern: '../src/classic/theme/default/*.css', include: false},
             /**测试文件**/
-             './test-main-classic.js',
+            './test-main-classic.js',
 
             /***common的源码***/
             '../src/common/**/*.js',
@@ -50,7 +50,7 @@ module.exports = function (config) {
             {pattern: './libs/workers/TurfWorkerForTest.js', include: false},
             {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
             {pattern: '../src/leaflet/**/**/*.css', include: false},
-            '../src/leaflet/**/!(ClientComputationView|index).js',
+            '../src/leaflet/**/index.js',
             /**测试文件**/
             './test-main-leaflet.js',
 
@@ -87,7 +87,7 @@ module.exports = function (config) {
             './test-main-common.js': ['browserify'],
 
             '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
-            '../src/leaflet/**/!(ClientComputationView|index).js': ['browserify'],
+            '../src/leaflet/**/!index.js': ['browserify'],
             './leaflet/**/*Spec.js': ['browserify'],
             './test-main-leaflet.js': ['browserify'],
 

@@ -169,6 +169,11 @@ import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';
 import './common/widgets/templates/IndexTabsPageContainerSpec.js';
 import './common/widgets/templates/NavTabsPageSpec.js';
 import './common/widgets/templates/CommonContainerSpec.js';
+import './common/widgets/chart/ChartModelSpec.js';
+import './common/widgets/chart/ChartViewModelSpec';
+import './common/widgets/chart/ChartViewSpec';
+
+import './common/util/FetchRequestSpec';
 
 
 
