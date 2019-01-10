@@ -37,7 +37,9 @@ describe('leaflet_SpatialAnalystService_geoRelationAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/datasets/Park@Changchun/georelation.json?returnContent=true");
-            expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.spatialRelationType).toBe("INTERSECT");
+            // expect(params).toContain("'spatialRelationType':\"INTERSECT\"");
             expect(options).not.toBeNull();
             var geoRelationAnalystEscapedJson = `[{"result":[1],"count":1,"source":1},{"result":[1],"count":1,"source":2},{"result":[1],"count":1,"source":3},{"result":[1],"count":1,"source":4},{"result":[1],"count":1,"source":5}]`;
             return Promise.resolve(new Response(geoRelationAnalystEscapedJson));

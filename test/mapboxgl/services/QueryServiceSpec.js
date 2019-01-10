@@ -38,8 +38,6 @@ describe('mapboxgl_QueryService', () => {
         });
         queryService.queryByBounds(param, (result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -68,7 +66,7 @@ describe('mapboxgl_QueryService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //地图距离查询服务
@@ -90,8 +88,6 @@ describe('mapboxgl_QueryService', () => {
         });
         queryService.queryByDistance(param, (result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -120,7 +116,7 @@ describe('mapboxgl_QueryService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //地图SQL查询服务
@@ -143,8 +139,6 @@ describe('mapboxgl_QueryService', () => {
         });
         queryService.queryBySQL(param, (result) => {
             serviceResult = result
-        });
-        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -173,7 +167,7 @@ describe('mapboxgl_QueryService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 
     //地图几何查询服务
@@ -198,10 +192,7 @@ describe('mapboxgl_QueryService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
-        queryService.queryByGeometry(param, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+        queryService.queryByGeometry(param, (serviceResult) => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -230,6 +221,6 @@ describe('mapboxgl_QueryService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+    });
     });
 });

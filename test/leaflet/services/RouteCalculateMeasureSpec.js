@@ -43,7 +43,8 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/geometry/calculatemeasure.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"LINEM\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.sourceRoute.type).toBe("LINEM");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasureServiceResult)));
         });

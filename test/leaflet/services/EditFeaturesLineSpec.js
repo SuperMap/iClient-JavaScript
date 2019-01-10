@@ -29,8 +29,8 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Geomor_L/features.json?returnContent=true");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"LINE\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].geometry.type).toBe("LINE");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`[98]`));
         });

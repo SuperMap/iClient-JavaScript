@@ -62,7 +62,9 @@ describe('leaflet_ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(WorldURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dotExpression':\"Pop_1994\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].subLayers.layers[0].theme.type).toBe("DOTDENSITY");
+            expect(paramsObj[0].subLayers.layers[0].theme.dotExpression).toBe("Pop_1994");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_3bf6200f253a42d1bd7b44637e07225f","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_3bf6200f253a42d1bd7b44637e07225f.json"}`));
         });

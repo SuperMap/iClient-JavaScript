@@ -31,8 +31,8 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Neighbor_P/features.json?returnContent=true");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"POINT\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].geometry.type).toBe("POINT");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`[92]`));
         });
@@ -76,8 +76,8 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Neighbor_P/features.json?isUseBatch=true");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"Point\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].geometry.type).toBe("POINT");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","succeed":true}`));
         });

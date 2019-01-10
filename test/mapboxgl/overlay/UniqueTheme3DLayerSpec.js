@@ -93,37 +93,38 @@ describe('mapboxgl_UniqueTheme3DLayer', () => {
                                 bearing: 0
                             });
                         }
+                        expect(themeLayer).not.toBeNull();
+                        expect(themeLayer.colorStops.length).toEqual(11);
+                        expect(themeLayer.data.type).toBe("FeatureCollection");
+                        expect(themeLayer.data.features.length).toBeGreaterThan(0);
+                        for (var i = 0; i < themeLayer.data.features.length; i++) {
+                            expect(themeLayer.data.features[i].type).toBe("Feature");
+                            expect(themeLayer.data.features[i].id).not.toBeNull();
+                            expect(themeLayer.data.features[i].properties).not.toBeNull();
+                            expect(themeLayer.data.features[i].geometry).not.toBeNull();
+                        }
+                        expect(themeLayer.enableHighlight).toBeTruthy();
+                        expect(themeLayer.height).toEqual(6000);
+                        expect(themeLayer.heightField).toBe("height");
+                        expect(themeLayer.id).toBe("uniqueTheme3DLayer");
+                        expect(themeLayer.highlight.color).toBe("#ADA91E");
+                        expect(themeLayer.legendTitle).toBe("土地利用类型");
+                        var layerStyleOptions = themeLayer.getLayerStyleOptions();
+                        expect(layerStyleOptions).not.toBeNull();
+                        expect(layerStyleOptions).not.toBeUndefined();
+                        var highlightStyleOptions = themeLayer.getHighlightStyleOptions();
+                        expect(highlightStyleOptions).not.toBeNull();
+                        expect(highlightStyleOptions).not.toBeUndefined();
+                        themeLayer.remove();
+                        done();
                     }
                 },
                 format: DataFormat.GEOJSON
             });
             queryFeatures.processAsync(getFeatureBySQLParams);
-            setTimeout(() => {
-                expect(themeLayer).not.toBeNull();
-                expect(themeLayer.colorStops.length).toEqual(11);
-                expect(themeLayer.data.type).toBe("FeatureCollection");
-                expect(themeLayer.data.features.length).toBeGreaterThan(0);
-                for (var i = 0; i < themeLayer.data.features.length; i++) {
-                    expect(themeLayer.data.features[i].type).toBe("Feature");
-                    expect(themeLayer.data.features[i].id).not.toBeNull();
-                    expect(themeLayer.data.features[i].properties).not.toBeNull();
-                    expect(themeLayer.data.features[i].geometry).not.toBeNull();
-                }
-                expect(themeLayer.enableHighlight).toBeTruthy();
-                expect(themeLayer.height).toEqual(6000);
-                expect(themeLayer.heightField).toBe("height");
-                expect(themeLayer.id).toBe("uniqueTheme3DLayer");
-                expect(themeLayer.highlight.color).toBe("#ADA91E");
-                expect(themeLayer.legendTitle).toBe("土地利用类型");
-                var layerStyleOptions = themeLayer.getLayerStyleOptions();
-                expect(layerStyleOptions).not.toBeNull();
-                expect(layerStyleOptions).not.toBeUndefined();
-                var highlightStyleOptions = themeLayer.getHighlightStyleOptions();
-                expect(highlightStyleOptions).not.toBeNull();
-                expect(highlightStyleOptions).not.toBeUndefined();
-                themeLayer.remove();
-                done();
-            }, 5000)
+            // setTimeout(() => {
+            
+            // }, 5000)
         });
     });
 });

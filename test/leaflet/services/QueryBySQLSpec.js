@@ -31,8 +31,9 @@ describe('leaflet_QueryService_queryBySQL', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'queryMode':'SqlQuery'");
-            expect(params).toContain("'name':\"Capitals@World\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryMode).toBe("SqlQuery");
+            expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
@@ -89,7 +90,8 @@ describe('leaflet_QueryService_queryBySQL', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
             expect(params).not.toBeNull();
-            expect(params).toContain("'name':\"Capitals@World\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a.json"}`));
         });
@@ -131,7 +133,8 @@ describe('leaflet_QueryService_queryBySQL', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'name':\"Capitals@World\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_7c073408732d47e7bffb8314a595e1d8","succeed":true,"customResult":{"top":38.89090807427654,"left":-175.245650649682,"bottom":-21.13090205664112,"leftBottom":{"x":-175.245650649682,"y":-21.13090205664112},"right":-47.8977476573595,"rightTop":{"x":-47.8977476573595,"y":38.89090807427654}},"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_7c073408732d47e7bffb8314a595e1d8.json"}`));
         });

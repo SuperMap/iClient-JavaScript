@@ -57,7 +57,9 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/interpolation/kriging.json?returnContent=true");
-            expect(params).toContain("'variogramMode':\"SPHERICAL\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.zValueFieldName).toBe("AVG_TMP");
+            expect(paramsObj.variogramMode).toBe("SPHERICAL");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(interpolationUnvsKrigingEscapedJson));
         }); 

@@ -26,7 +26,7 @@ describe('mapboxgl_FieldService', () => {
         var service = new FieldService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("GET");
-            expect(testUrl).toBe("http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields.json?");
+            expect(testUrl).toContain("iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields.json?");
             expect(options).not.toBeNull();
             var getFieldsEscapedJson = `{"fieldNames":["SmID","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmUserID","SmGeometrySize"],"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriW","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriN","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriE","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmSdriS","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmUserID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/continent_T/fields/SmGeometrySize"]}`;
             return Promise.resolve(new Response(getFieldsEscapedJson));

@@ -44,7 +44,9 @@ describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', () => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
             var expectParams = "{'resolution':3000,'extractParameter':{'datumValue':0,'interval':2,'resampleTolerance':0,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'zValueFieldName':\"AVG_TMP\",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
-            expect(params).toBe(expectParams);
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.extractParameter.interval).toBe(2);
+            expect(paramsObj.extractParameter.smoothMethod).toBe(SmoothMethod.BSPLINE);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalystEscapedJson));
         });

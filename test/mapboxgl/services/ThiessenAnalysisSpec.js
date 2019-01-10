@@ -29,7 +29,9 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/datasets/Town_P@Jingjin/thiessenpolygon.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'dataset':\"Town_P@Jingjin\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.dataset).toBe("Town_P@Jingjin");
+            // expect(params).toContain("'dataset':\"Town_P@Jingjin\"");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(thiessenAnalysisDatasetsEscapedJson)));
         });
@@ -102,7 +104,9 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/geometry/thiessenpolygon.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"Point\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.points[0].type).toBe("Point");
+            // expect(params).toContain("'type':\"Point\"");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(thiessenAnalysisGeometryEscapedJson));
         });

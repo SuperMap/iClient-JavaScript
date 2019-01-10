@@ -25,7 +25,8 @@ describe('leaflet_SpatialAnalystService_thiessenAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(spatialAnalystURL + "/datasets/Factory@Changchun/thiessenpolygon.json?returnContent=true");
-            expect(params).toContain("'dataset':\"Factory@Changchun\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.dataset).toBe("Factory@Changchun");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(thiessenAnalysisDatasetsEscapedJson)));
         });

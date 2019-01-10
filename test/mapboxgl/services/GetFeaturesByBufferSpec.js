@@ -33,6 +33,10 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/featureResults.json?returnContent=true&fromIndex=1&toIndex=3");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Capitals");
+            expect(paramsObj.bufferDistance).toEqual(10);
+            expect(paramsObj.getFeatureMode).toBe("BUFFER");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });

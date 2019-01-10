@@ -31,8 +31,9 @@ describe('leaflet_QueryService_queryByDistance', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'queryMode':'DistanceQuery'");
-            expect(params).toContain("'distance':10");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryMode).toBe("DistanceQuery");
+            expect(paramsObj.distance).toBe(10);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
@@ -89,7 +90,9 @@ describe('leaflet_QueryService_queryByDistance', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
             expect(params).not.toBeNull();
-            expect(params).toContain("'distance':10");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryMode).toBe("DistanceQuery");
+            expect(paramsObj.distance).toBe(10);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_3bd769669d614da2ac450c593b18e63a.json"}`));
         });

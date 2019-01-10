@@ -34,7 +34,9 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
-            expect(params).toContain("'fieldName':\"SmLength\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.fieldName).toBe("SmLength");
+            expect(paramsObj.resultGridName).toBe(resultDataset);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"KernelDensity_mapboxglTest@Changchun"}`));
         });
@@ -69,7 +71,9 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/datasets/Railway@Changchun/densityanalyst/kernel.json?returnContent=true");
-            expect(params).toContain("'fieldName':\"SmLength\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.fieldName).toBe("SmLength");
+            expect(paramsObj.resultGridName).toBe(resultDataset);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集KernelDensity_mapboxglTest@Changchun已存在。"}}`));
         });

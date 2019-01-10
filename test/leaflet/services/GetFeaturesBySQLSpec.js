@@ -32,7 +32,9 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Countries");
+            expect(paramsObj.getFeatureMode).toBe("SQL");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
@@ -81,8 +83,10 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
-            expect(params).toContain("'queryParameter':{'name':\"Countries@World\",'attributeFilter':\"SMID%26gt;0\"}");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameter.name).toBe("Countries@World");
+            expect(paramsObj.queryParameter.attributeFilter).toBe("SMID%26gt;0");
+            // expect(params).toContain("'queryParameter':{'name':\"Countries@World\",'attributeFilter':\"SMID%26gt;0\"}");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_aeeacd0b0b3e492b9bdab6fa92e91184","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_aeeacd0b0b3e492b9bdab6fa92e91184.json"}`));
         });
@@ -120,8 +124,10 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'datasetNames':[\"World1:Countries\"]");
-            expect(params).toContain("'queryParameter':{'name':\"Countries@World\",'attributeFilter':\"SMID%26gt;0\"}");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World1:Countries");
+            expect(paramsObj.queryParameter.name).toBe("Countries@World");
+            expect(paramsObj.queryParameter.attributeFilter).toBe("SMID%26gt;0");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });
@@ -155,8 +161,10 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
-            expect(params).toContain("'queryParameter':null");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Countries");
+            expect(paramsObj.queryParameter).toBeNull;
+            // expect(params).toContain("'queryParameter':null");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults资源中，检查请求体时，发现Queryparam为空。"}}`));
         });

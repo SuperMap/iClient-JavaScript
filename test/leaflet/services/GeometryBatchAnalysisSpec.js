@@ -82,8 +82,12 @@ describe('leaflet_SpatialAnalystService_geometryBatchAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(serviceUrl + "/geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'operation':\"CLIP\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].analystName).toBe("buffer");
+            expect(paramsObj[0].param.analystParameter.endType).toBe("ROUND");
+            expect(paramsObj[0].param.analystParameter.leftDistance.value).toEqual(0.05);
+            expect(paramsObj[1].analystName).toBe("overlay");
+            expect(paramsObj[1].param.operation).toBe("CLIP");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(geometryBatchAnalystEscapedJson)));
         });

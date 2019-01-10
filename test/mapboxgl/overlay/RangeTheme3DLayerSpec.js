@@ -97,37 +97,38 @@ describe('mapboxgl_RangeTheme3DLayer', () => {
                                 bearing: 0
                             })
                         }
+                        expect(themeLayer).not.toBeNull();
+                        expect(themeLayer.colorStops.length).toEqual(6);
+                        expect(themeLayer.data.type).toBe("FeatureCollection");
+                        expect(themeLayer.data.features.length).toBeGreaterThan(0);
+                        for (var i = 0; i < themeLayer.data.features.length; i++) {
+                            expect(themeLayer.data.features[i].type).toBe("Feature");
+                            expect(themeLayer.data.features[i].id).not.toBeNull();
+                            expect(themeLayer.data.features[i].properties).not.toBeNull();
+                            expect(themeLayer.data.features[i].geometry).not.toBeNull();
+                        }
+                        expect(themeLayer.enableHighlight).toBeTruthy();
+                        expect(themeLayer.heightField).toBe("POP_DENSITY99");
+                        expect(themeLayer.heightStops.length).toEqual(3);
+                        expect(themeLayer.id).toBe("range3DThemeLayer");
+                        expect(themeLayer.highlight.color).toBe("#058e94");
+                        expect(themeLayer.legendTitle).toBe("人口密度");
+                        var layerStyleOptions = themeLayer.getLayerStyleOptions();
+                        expect(layerStyleOptions).not.toBeNull();
+                        expect(layerStyleOptions).not.toBeUndefined();
+                        var highlightStyleOptions = themeLayer.getHighlightStyleOptions();
+                        expect(highlightStyleOptions).not.toBeNull();
+                        expect(highlightStyleOptions).not.toBeUndefined();
+                        themeLayer.remove();
+                        done();
                     }
                 },
                 format: DataFormat.GEOJSON
             });
             queryFeatures.processAsync(getFeatureBySQLParams);
-            setTimeout(() => {
-                expect(themeLayer).not.toBeNull();
-                expect(themeLayer.colorStops.length).toEqual(6);
-                expect(themeLayer.data.type).toBe("FeatureCollection");
-                expect(themeLayer.data.features.length).toBeGreaterThan(0);
-                for (var i = 0; i < themeLayer.data.features.length; i++) {
-                    expect(themeLayer.data.features[i].type).toBe("Feature");
-                    expect(themeLayer.data.features[i].id).not.toBeNull();
-                    expect(themeLayer.data.features[i].properties).not.toBeNull();
-                    expect(themeLayer.data.features[i].geometry).not.toBeNull();
-                }
-                expect(themeLayer.enableHighlight).toBeTruthy();
-                expect(themeLayer.heightField).toBe("POP_DENSITY99");
-                expect(themeLayer.heightStops.length).toEqual(3);
-                expect(themeLayer.id).toBe("range3DThemeLayer");
-                expect(themeLayer.highlight.color).toBe("#058e94");
-                expect(themeLayer.legendTitle).toBe("人口密度");
-                var layerStyleOptions = themeLayer.getLayerStyleOptions();
-                expect(layerStyleOptions).not.toBeNull();
-                expect(layerStyleOptions).not.toBeUndefined();
-                var highlightStyleOptions = themeLayer.getHighlightStyleOptions();
-                expect(highlightStyleOptions).not.toBeNull();
-                expect(highlightStyleOptions).not.toBeUndefined();
-                themeLayer.remove();
-                done();
-            }, 5000)
+            // setTimeout(() => {
+
+            // }, 5000)
         });
     });
 });

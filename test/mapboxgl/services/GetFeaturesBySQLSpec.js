@@ -29,7 +29,9 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Countries");
+            expect(paramsObj.getFeatureMode).toBe("SQL");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });

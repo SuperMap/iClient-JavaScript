@@ -50,7 +50,8 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/geometry/routelocator.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"LINEM\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.sourceRoute.type).toBe("LINEM");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"image":null,"resultGeometry":{"center":{"x":4076.2655245045335,"y":-4382.939424428795},"parts":[6],"style":null,"prjCoordSys":null,"id":0,"type":"LINE","partTopo":null,"points":[{"x":4029.930231958818,"y":-4378.2438540269895},{"x":4057.0600591960642,"y":-4381.569363260499},{"x":4064.595810063362,"y":-4382.60877717323},{"x":4076.2655245045335,"y":-4382.939424428795},{"x":4215.049444583775,"y":-4382.333381109672},{"x":4247.756955878764,"y":-4382.389670274902}]},"succeed":true,"message":null}`));
         });
@@ -104,7 +105,8 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/geometry/routelocator.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"LINEM\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.sourceRoute.type).toBe("LINEM");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"image":null,"resultGeometry":{"center":{"x":4076.2655245045335,"y":-4382.939424428795},"parts":[6],"style":null,"prjCoordSys":null,"id":0,"type":"LINE","partTopo":null,"points":[{"x":4029.930231958818,"y":-4378.2438540269895},{"x":4057.0600591960642,"y":-4381.569363260499},{"x":4064.595810063362,"y":-4382.60877717323},{"x":4076.2655245045335,"y":-4382.939424428795},{"x":4215.049444583775,"y":-4382.333381109672},{"x":4247.756955878764,"y":-4382.389670274902}]},"succeed":true,"message":null}`));
         });

@@ -34,8 +34,10 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
-            expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Capitals");
+            expect(paramsObj.attributeFilter).toBe("SMID%26gt;0");
+            // expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
@@ -86,8 +88,10 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
-            expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
-            expect(params).toContain("'bufferDistance':30");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Capitals");
+            expect(paramsObj.attributeFilter).toBe("SMID%26gt;0");
+            expect(paramsObj.bufferDistance).toBe(30);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_02c1636b347046d9b1428bce7118c4df","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_02c1636b347046d9b1428bce7118c4df.json"}`));
         });
@@ -126,8 +130,10 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
-            expect(params).toContain("'bufferDistance':30");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World1:Capitals");
+            expect(paramsObj.attributeFilter).toBe("SMID%26gt;0");
+            expect(paramsObj.bufferDistance).toBe(30);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });
@@ -164,8 +170,9 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'attributeFilter':\"SMID%26gt;0\"");
-            expect(params).toContain("'bufferDistance':30");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.attributeFilter).toBe("SMID%26gt;0");
+            expect(paramsObj.bufferDistance).toBe(30);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
         });

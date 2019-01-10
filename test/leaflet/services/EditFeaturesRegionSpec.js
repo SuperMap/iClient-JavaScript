@@ -33,8 +33,8 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features.json?returnContent=true");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"REGION\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].geometry.type).toBe("REGION");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`[115]`));
         });
@@ -78,8 +78,8 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features.json?");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"REGION\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].geometry.type).toBe("REGION");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_78a67b1809614341b9314f311a47c1d4","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-jingjin/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_78a67b1809614341b9314f311a47c1d4.json"}`));
         });
@@ -159,8 +159,8 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(editServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'datasetNames':[\"Jingjin:Landuse_R\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toContain("Jingjin:Landuse_R");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeatureResultJson)));
         });
@@ -199,7 +199,8 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
             spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
                 expect(method).toBe("PUT");
                 expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features.json?");
-                expect(params).not.toBeNull();
+                var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+                expect(paramsObj[0].geometry.type).toBe("REGION");
                 expect(options).not.toBeNull();
                 return Promise.resolve(new Response(`{"succeed":true}`));
             });

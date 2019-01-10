@@ -34,7 +34,8 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
-            expect(params).toContain("'expression':\"[Jingjin.JingjinTerrain] + 600\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.expression).toBe("[Jingjin.JingjinTerrain] + 600");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"MathExpression_mapboxglTest@Jingjin"}`));
         });
@@ -69,7 +70,8 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
-            expect(params).toContain("'expression':\"[Jingjin.JingjinTerrain] + 600\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.expression).toBe("[Jingjin.JingjinTerrain] + 600");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集MathExpression_mapboxglTest@Jingjin已存在。"}}`));
         });

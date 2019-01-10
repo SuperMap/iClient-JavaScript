@@ -29,7 +29,8 @@ describe('openlayers_SpatialAnalystService_mathExpressionAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(sampleServiceUrl + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
-            expect(params).toContain("'expression':\"[Jingjin.JingjinTerrain] + 600\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.expression).toBe("[Jingjin.JingjinTerrain] + 600");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"MathExpression_openlayersTest@Jingjin"}`));
         });

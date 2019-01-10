@@ -33,7 +33,8 @@ describe('mapboxgl_SpatialAnalystService_terrainCurvatureCalculate', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature.json?returnContent=true");
-            expect(params).toContain("'zFactor':1");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.zFactor).toBe(1);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"averageCurvatureResult":{"succeed":true,"recordset":null,"message":null,"dataset":"TerrainCurvature_mapboxglTest@Jingjin"}}`));
         });

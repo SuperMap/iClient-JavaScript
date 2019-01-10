@@ -1,7 +1,7 @@
-import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
-import {GenerateSpatialDataParameters} from '../../../src/common/iServer/GenerateSpatialDataParameters';
-import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
-import {DataReturnMode} from '../../../src/common/REST';
+import { SpatialAnalystService } from '../../../src/mapboxgl/services/SpatialAnalystService';
+import { GenerateSpatialDataParameters } from '../../../src/common/iServer/GenerateSpatialDataParameters';
+import { DataReturnOption } from '../../../src/common/iServer/DataReturnOption';
+import { DataReturnMode } from '../../../src/common/REST';
 import request from 'request';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
@@ -46,8 +46,8 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'routeIDField':\"RouteID\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.routeIDField).toBe("RouteID");
             expect(options).not.toBeNull();
             var resultJSON = `{"succeed":true,"recordset":null,"message":null,"dataset":"GenerateSpatialData_mapboxglTest@Changchun"}`;
             return Promise.resolve(new Response(resultJSON));

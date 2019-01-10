@@ -30,8 +30,9 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Countries");
+            expect(paramsObj.spatialQueryMode).toBe("INTERSECT");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
@@ -81,8 +82,9 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
-            expect(params).toContain("'spatialQueryMode':\"INTERSECT\"");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Countries");
+            expect(paramsObj.spatialQueryMode).toBe("INTERSECT");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_952187de2cde43a6bcfff2938c93dd9f","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/c01d29d8d41743adb673cd1cecda6ed0_952187de2cde43a6bcfff2938c93dd9f.json"}`));
         });
@@ -120,7 +122,9 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'datasetNames':[\"World1:Countries\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World1:Countries");
+            expect(paramsObj.spatialQueryMode).toBe("CONTAIN");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据源World1不存在，获取相应的数据服务组件失败"}}`));
         });
@@ -154,7 +158,9 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Countries");
+            expect(paramsObj.spatialQueryMode).toBe("CONTAIN");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"getFeatureByBuffer方法中传入的参数为空"}}`));
         });
