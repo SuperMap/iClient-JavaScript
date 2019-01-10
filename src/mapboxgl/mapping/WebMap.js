@@ -1557,7 +1557,7 @@ export class WebMap extends mapboxgl.Evented {
 
         let newObj = {}
         for (let item in style) {
-            if (transTable && transTable[item]) {
+            if (transTable[item]) {
                 newObj[transTable[item]] = style[item];
             }
         }
