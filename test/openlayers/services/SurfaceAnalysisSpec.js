@@ -43,18 +43,22 @@ describe('openlayers_SpatialAnalystService_surfaceAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(sampleServiceUrl + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
-            expect(params).toContain("extractParameter");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.extractParameter.datumValue).toEqual(0);
+            expect(paramsObj.extractParameter.smoothness).toEqual(3);
+            expect(paramsObj.extractParameter.resampleTolerance).toEqual(0);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalystEscapedJson));
         });
         surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, (surfaceAnalystServiceResult) => {
             serviceResults = surfaceAnalystServiceResult;
-        });
-        setTimeout(() => {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.recordset).not.toBeNull();
             done();
+        });
+        setTimeout(() => {
+
         }, 8000);
     });
 });

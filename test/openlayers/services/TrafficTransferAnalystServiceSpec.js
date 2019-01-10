@@ -35,8 +35,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
         });
         service.queryStop(stopQueryParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -53,7 +51,7 @@ describe('openlayers_TrafficTransferAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //站点查询服务, 不返回坐标
@@ -71,8 +69,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
         });
         service.queryStop(stopQueryParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -88,7 +84,7 @@ describe('openlayers_TrafficTransferAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //交通换乘线路查询服务  按ID进行查询
@@ -103,8 +99,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
         });
         service.analysisTransferPath(transferPathParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -134,7 +128,7 @@ describe('openlayers_TrafficTransferAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //交通换乘线路查询服务  按坐标进行查询
@@ -149,8 +143,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
         });
         service.analysisTransferPath(transferPathParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -179,7 +171,7 @@ describe('openlayers_TrafficTransferAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //交通换乘方案查询服务
@@ -198,8 +190,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
         });
         service.analysisTransferSolution(transferSolutionParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -237,6 +227,6 @@ describe('openlayers_TrafficTransferAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 });

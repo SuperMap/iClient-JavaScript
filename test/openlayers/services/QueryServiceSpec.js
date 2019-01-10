@@ -32,15 +32,14 @@ describe('openlayers_QueryService', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'queryMode':'BoundsQuery'");
-            expect(params).toContain("'bounds': {'rightTop':{'y':39,'x':60},'leftBottom':{'y':0,'x':0}}");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryMode).toBe("BoundsQuery");
+            expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryService.queryByBounds(param, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -69,7 +68,7 @@ describe('openlayers_QueryService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //地图距离查询服务
@@ -85,15 +84,14 @@ describe('openlayers_QueryService', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'queryMode':'DistanceQuery'");
-            expect(params).toContain("'distance':10");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryMode).toBe("DistanceQuery");
+            expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryService.queryByDistance(param, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -122,7 +120,7 @@ describe('openlayers_QueryService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //地图SQL查询服务
@@ -138,15 +136,15 @@ describe('openlayers_QueryService', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'queryMode':'SqlQuery'");
-            expect(params).toContain("'name':\"Capitals@World\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryMode).toBe("SqlQuery");
+            expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
+            expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("SMID %26lt; 10");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryService.queryBySQL(param, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -175,7 +173,7 @@ describe('openlayers_QueryService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //地图几何查询服务
@@ -190,14 +188,14 @@ describe('openlayers_QueryService', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/queryResults.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'queryMode':'SpatialQuery'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryMode).toBe("SpatialQuery");
+            expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryService.queryByGeometry(param, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -226,6 +224,6 @@ describe('openlayers_QueryService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 });

@@ -32,11 +32,19 @@ describe('openlayers_SpatialAnalystService_routeCalculateMeasure', () => {
                 })
             ]
         });
-        spyOn(FetchRequest, 'commit').and.callFake((method,url) => {
+        spyOn(FetchRequest, 'commit').and.callFake((method,url,params) => {
             expect(method).toBe("POST");
             if(url.indexOf("/queryResults.json?returnContent=true")>-1){
+                expect(params).not.toBeNull();
+                var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+                expect(paramsObj.queryMode).toBe("SqlQuery");
+                expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("RouteID=1690");
+                expect(paramsObj.queryParameters.queryParams[0].name).toBe("RouteDT_road@Changchun");
                 return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasure_queryBySQLServiceResult)));
             }else if(url.indexOf("/calculatemeasure.json?returnContent=true")>-1){
+                expect(params).not.toBeNull();
+                var param= JSON.parse(params.replace(/'/g, "\""));
+                expect(param.sourceRoute.type).toBe("LINEM");
                 return Promise.resolve(new Response(JSON.stringify(routeCalculateMeasureServiceResult)));
             }
             return Promise.resolve();
@@ -62,13 +70,11 @@ describe('openlayers_SpatialAnalystService_routeCalculateMeasure', () => {
             });
             routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, (routeCaculateServiceResult) => {
                 serviceResults = routeCaculateServiceResult;
+                expect(serviceResults).not.toBeNull();
+                expect(serviceResults.type).toBe('processCompleted');
+                expect(serviceResults.result.dataset).not.toBeNull();
+                done();
             });
         });
-        setTimeout(() => {
-            expect(serviceResults).not.toBeNull();
-            expect(serviceResults.type).toBe('processCompleted');
-            expect(serviceResults.result.dataset).not.toBeNull();
-            done();
-        }, 8000);
     });
 });

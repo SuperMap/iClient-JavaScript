@@ -25,20 +25,19 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(changchunServiceUrl + "/datasets/Factory@Changchun/thiessenpolygon.json?returnContent=true");
-            var expectParams = `{'clipRegion':null,'createResultDataset':false,'resultDatasetName':null,'resultDatasourceName':null,'returnResultRegion':true,'dataset':"Factory@Changchun",'filterQueryParameter':null}`;
-            expect(params).toBe(expectParams);
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.dataset).toBe("Factory@Changchun");
+            expect(paramsObj.returnResultRegion).toBeTruthy();
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(thiessenAnalysisDatasetsEscapedJson)));
         });
         spatialAnalystService.thiessenAnalysis(dThiessenAnalystParameters, (serviceResult) => {
             serviceResults = serviceResult;
-        });
-        setTimeout(() => {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
             done();
-        }, 8000);
+        });
     });
 
     //几何泰森多边形
@@ -64,14 +63,14 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(changchunServiceUrl + "/geometry/thiessenpolygon.json?returnContent=true");
-            expect(params).toContain("createResultDataset");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.returnResultRegion).toBeTruthy();
+            expect(paramsObj.points.length).toBeGreaterThan(9);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(thiessenAnalysisGeometryEscapedJson));
         });
         spatialAnalystService.thiessenAnalysis(gThiessenAnalystParameters, (serviceResult) => {
             serviceResults = serviceResult;
-        });
-        setTimeout(() => {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
@@ -92,6 +91,6 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', () => {
             }
             expect(regions.type).toEqual("FeatureCollection");
             done();
-        }, 8000);
+        });
     });
 });

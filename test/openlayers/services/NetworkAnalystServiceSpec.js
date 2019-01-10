@@ -51,8 +51,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.burstPipelineAnalyst(burstPipelineAnalystParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -68,7 +66,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     //耗费矩阵分析服务
@@ -86,8 +84,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.computeWeightMatrix(computeWeightMatrixParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -103,7 +99,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //最近设施分析服务
@@ -142,8 +138,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -204,7 +198,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
 
     });
 
@@ -226,8 +220,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.streamFacilityAnalyst(facilityAnalystStreamParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -239,7 +231,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
 
     });
 
@@ -275,8 +267,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.findLocation(findLocationParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -304,7 +294,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //最佳路径分析服务
@@ -337,8 +327,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.findPath(findPathParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -392,7 +380,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //旅行商分析服务
@@ -428,8 +416,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.findTSPPaths(findTSPPathsParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -469,7 +455,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
 
     });
 
@@ -489,8 +475,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.findMTSPPaths(findMTSPPathsParameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -507,7 +491,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //服务区分析服务
@@ -536,8 +520,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.findServiceAreas(parameter, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -565,7 +547,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
 
     });
 
@@ -586,8 +568,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.updateEdgeWeight(updateEdgeWeightParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -599,7 +579,7 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //转向耗费权重更新服务
@@ -624,8 +604,6 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         service.updateTurnNodeWeight(parameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -637,6 +615,6 @@ describe('openlayers_NetworkAnalystService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 });

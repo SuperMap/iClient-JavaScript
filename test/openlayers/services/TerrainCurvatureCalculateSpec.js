@@ -30,18 +30,17 @@ describe('openlayers_SpatialAnalystService_terrainCurvatureCalculate', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(sampleServiceUrl + "/datasets/JingjinTerrain@Jingjin/terraincalculation/curvature.json?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
-            expect(paramsObj.zFactor).toBe(1);
+            expect(paramsObj.zFactor).toEqual(1.0);
+            expect(paramsObj.deleteExistResultDataset).toBeTruthy();
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"averageCurvatureResult":{"succeed":true,"recordset":null,"message":null,"dataset":"TerrainCurvature_openlayersTest@Jingjin"}}`));
         });
         spatialAnalystService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, (serviceResult) => {
             serviceResults = serviceResult;
-        });
-        setTimeout(() => {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.recordset).not.toBeNull();
             done();
-        }, 8000);
+        });
     });
 });

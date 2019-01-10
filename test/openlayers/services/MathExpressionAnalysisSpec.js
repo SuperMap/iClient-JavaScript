@@ -31,6 +31,7 @@ describe('openlayers_SpatialAnalystService_mathExpressionAnalysis', () => {
             expect(testUrl).toBe(sampleServiceUrl + "/datasets/JingjinTerrain@Jingjin/mathanalyst.json?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.expression).toBe("[Jingjin.JingjinTerrain] + 600");
+            expect(paramsObj.resultGridName).toBe("MathExpression_openlayersTest");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"MathExpression_openlayersTest@Jingjin"}`));
         });
