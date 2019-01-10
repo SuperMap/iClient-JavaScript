@@ -28,7 +28,7 @@ describe('openlayers_SpatialAnalystService_overlayAnalysis', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(sampleServiceUrl + "/datasets/BaseMap_R@Jingjin/overlay.json?returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
-            expect(paramsObj.operateDataset).toBe("BaseMap_R@Jingjin");
+            expect(paramsObj.operateDataset).toBe("Neighbor_R@Jingjin");
             expect(paramsObj.operation).toBe("UNION");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(overlayEscapedJson));
