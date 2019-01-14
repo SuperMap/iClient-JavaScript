@@ -20,17 +20,10 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var url = GlobeParameter.spatialAnalystURL;
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var initGeometryBatchAnalystService = () => {
-    return new GeometryBatchAnalystService(url, options);
-};
-var analyzeFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var analyzeCompleted = (analyseEventArgs) => {
-    analystEventArgsSystem = analyseEventArgs;
-};
-var options = {
-    eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
+var initGeometryBatchAnalystService = (analyzeCompleted,analyzeFailed) => {
+    return new GeometryBatchAnalystService(url, {
+        eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
+    });
 };
 
 describe("GeometryBatchAnalystService", () => {
@@ -46,7 +39,32 @@ describe("GeometryBatchAnalystService", () => {
     });
 
     it('GeometryBatchAnalystService', (done) => {
-        var geometryBatchAnalystService = initGeometryBatchAnalystService();
+        var analyzeFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var analyzeCompleted = (analystEventArgsSystem) => {
+            try {
+                var bfMode = analystEventArgsSystem.result;
+                expect(bfMode).not.toBeNull();
+                expect(bfMode.length).toEqual(4);
+                expect(bfMode[0].succeed).toBeTruthy();
+                expect(bfMode[1].succeed).toBeTruthy();
+                expect(bfMode[2].succeed).toBeTruthy();
+                expect(bfMode[3].succeed).toBeTruthy();
+                expect(bfMode[1].resultGeometry.type).toEqual("Feature");
+                expect(bfMode[1].resultGeometry.geometry).not.toBeNull();
+                geometryBatchAnalystService.destroy();
+                expect(geometryBatchAnalystService.events).toBeNull();
+                expect(geometryBatchAnalystService.eventListeners).toBeNull();
+                done();
+            } catch (ex) {
+                expect(false).toBeTruthy();
+                console.log("GeometryBatchAnalystService_Test" + ex.name + ":" + ex.message);
+                geometryBatchAnalystService.destroy();
+                done();
+            }
+        };
+        var geometryBatchAnalystService = initGeometryBatchAnalystService(analyzeCompleted,analyzeFailed) ;
         //缓冲区分析参数：
         var bufferBatchAnalystParameter = {
             analystName: "buffer",
@@ -176,33 +194,14 @@ describe("GeometryBatchAnalystService", () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true");
-            expect(params).toContain("'smoothMethod':\"BSPLINE\"");
+            // expect(params).toContain("'smoothMethod':\"BSPLINE\"");
+
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            // expect(paramsObj[0].analystName).toBe("buffer");
+            expect(paramsObj[2].param.extractParameter.smoothMethod).toBe("BSPLINE");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(geometryBatchAnalystCommonResultJson)));
         });
         geometryBatchAnalystService.processAsync(geometryBatchAnalystParameters);
-
-        setTimeout(() => {
-            try {
-                var bfMode = analystEventArgsSystem.result;
-                expect(bfMode).not.toBeNull();
-                expect(bfMode.length).toEqual(4);
-                expect(bfMode[0].succeed).toBeTruthy();
-                expect(bfMode[1].succeed).toBeTruthy();
-                expect(bfMode[2].succeed).toBeTruthy();
-                expect(bfMode[3].succeed).toBeTruthy();
-                expect(bfMode[1].resultGeometry.type).toEqual("Feature");
-                expect(bfMode[1].resultGeometry.geometry).not.toBeNull();
-                geometryBatchAnalystService.destroy();
-                expect(geometryBatchAnalystService.events).toBeNull();
-                expect(geometryBatchAnalystService.eventListeners).toBeNull();
-                done();
-            } catch (ex) {
-                expect(false).toBeTruthy();
-                console.log("GeometryBatchAnalystService_Test" + ex.name + ":" + ex.message);
-                geometryBatchAnalystService.destroy();
-                done();
-            }
-        }, 4000)
     });
 });

@@ -4,13 +4,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var eventCompleted, eventFailed;
-var queryCompleted = (event) => {
-    eventCompleted = event;
-};
-var queryError = (event) => {
-    eventFailed = event;
-};
-var initGetGridCellInfosService = (url) => {
+
+var initGetGridCellInfosService = (url,queryCompleted,queryError) => {
     return new GetGridCellInfosService(url, {
         eventListeners: {
             "processCompleted": queryCompleted,
@@ -30,7 +25,13 @@ describe('GetGridCellInfosService', () => {
     });
 
     it('constructor, destroy', () => {
-        var getGridCellInfosService = initGetGridCellInfosService(dataServiceURL);
+        var queryCompleted = (event) => {
+            eventCompleted = event;
+        };
+        var queryError = (event) => {
+            eventFailed = event;
+        };
+        var getGridCellInfosService = initGetGridCellInfosService(dataServiceURL,queryCompleted,queryError);
         expect(getGridCellInfosService.CLASS_NAME).toEqual("SuperMap.GetGridCellInfosService");
         expect(getGridCellInfosService.EVENT_TYPES.length).toEqual(2);
         expect(getGridCellInfosService.EVENT_TYPES[0]).toEqual("processCompleted");
@@ -55,12 +56,13 @@ describe('GetGridCellInfosService', () => {
             X: "110",
             Y: "50"
         });
-        var myService = new GetGridCellInfosService(dataServiceURL, {
-            eventListeners: {
-                "processCompleted": queryCompleted,
-                "processFailed": queryError
-            }
-        });
+        var queryCompleted = (event) => {
+            eventCompleted = event;
+        };
+        var queryError = (event) => {
+            eventFailed = event;
+        };
+        var myService =initGetGridCellInfosService(dataServiceURL,queryCompleted,queryError);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("GET");
             expect(options).not.toBeNull();
@@ -93,6 +95,12 @@ describe('GetGridCellInfosService', () => {
 
     it('fail:processAsync', (done) => {
         var url = dataServiceURL + "/datasources/World/datasets";
+        var queryCompleted = (event) => {
+            eventCompleted = event;
+        };
+        var queryError = (event) => {
+            eventFailed = event;
+        };
         var myService = new GetGridCellInfosService(url, {
             eventListeners: {
                 "processCompleted": queryCompleted,
@@ -117,6 +125,12 @@ describe('GetGridCellInfosService', () => {
     });
 
     it('getDatasetInfoCompleted', () => {
+        var queryCompleted = (event) => {
+            eventCompleted = event;
+        };
+        var queryError = (event) => {
+            eventFailed = event;
+        };
         var myService = new GetGridCellInfosService(dataServiceURL, {
             eventListeners: {
                 "processCompleted": queryCompleted,
@@ -140,7 +154,13 @@ describe('GetGridCellInfosService', () => {
     });
 
     it('getDatasetInfoFailed', () => {
-        var myService = initGetGridCellInfosService(dataServiceURL);
+        var queryCompleted = (event) => {
+            eventCompleted = event;
+        };
+        var queryError = (event) => {
+            eventFailed = event;
+        };
+        var myService =initGetGridCellInfosService(dataServiceURL,queryCompleted,queryError);
         var result = {};
         myService.getDatasetInfoFailed(result);
         expect(result).not.toBeNull();

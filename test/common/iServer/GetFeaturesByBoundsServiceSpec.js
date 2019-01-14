@@ -7,22 +7,17 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var url = GlobeParameter.dataServiceURL;
 //服务初始化时注册事件监听函数
 var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
-var serviceCompleted = (serviceSucceedEventArgs) => {
-    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-};
-var serviceFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var options = {
-    eventListeners: {
-        'processFailed': serviceFailed,
-        'processCompleted': serviceCompleted
-    }
-};
-var initGetFeaturesByBoundsService_RegisterListener = () => {
-    return new GetFeaturesByBoundsService(url, options);
+
+var initGetFeaturesByBoundsService_RegisterListener = (serviceCompleted,serviceFailed) => {
+    return new GetFeaturesByBoundsService(url, {
+        eventListeners: {
+            'processFailed': serviceFailed,
+            'processCompleted': serviceCompleted
+        }
+    });
 };
 
+//initGetFeaturesByBoundsService_RegisterListener(serviceCompleted,serviceFailed)
 describe('GetFeaturesByBoundsService', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -34,7 +29,13 @@ describe('GetFeaturesByBoundsService', () => {
     });
 
     it('constructor, destroy', () => {
-        var getFeaturesByBoundsService = initGetFeaturesByBoundsService_RegisterListener();
+        var serviceCompleted = (serviceSucceedEventArgs) => {
+            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+        };
+        var serviceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var getFeaturesByBoundsService = initGetFeaturesByBoundsService_RegisterListener(serviceCompleted,serviceFailed);
         getFeaturesByBoundsService.events.on({
             'processFailed': serviceFailed,
             'processCompleted': serviceCompleted
@@ -47,20 +48,7 @@ describe('GetFeaturesByBoundsService', () => {
     });
 
     it('success:processAsync', (done) => {
-        var getFeaturesByBoundsService = initGetFeaturesByBoundsService_RegisterListener();
-        var boundsParams = new GetFeaturesByBoundsParameters({
-            datasetNames: ["World:Countries"],
-            bounds: new Bounds(0, 0, 90, 90)
-        });
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe("POST");
-            expect(testUrl).toBe(url + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(params).toContain("'datasetNames':[\"World:Countries\"]");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
-        });
-        getFeaturesByBoundsService.processAsync(boundsParams);
-        setTimeout(() => {
+        var serviceCompleted = (serviceSucceedEventArgsSystem) => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.features;
                 expect(analystResult).not.toBeNull();
@@ -77,6 +65,29 @@ describe('GetFeaturesByBoundsService', () => {
                 boundsParams.destroy();
                 done();
             }
-        }, 4000);
+        };
+        var serviceFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var options = {
+            eventListeners: {
+                'processFailed': serviceFailed,
+                'processCompleted': serviceCompleted
+            }
+        };
+        var getFeaturesByBoundsService = initGetFeaturesByBoundsService_RegisterListener(serviceCompleted,serviceFailed);
+        var boundsParams = new GetFeaturesByBoundsParameters({
+            datasetNames: ["World:Countries"],
+            bounds: new Bounds(0, 0, 90, 90)
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Countries");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
+        getFeaturesByBoundsService.processAsync(boundsParams);
     })
 });

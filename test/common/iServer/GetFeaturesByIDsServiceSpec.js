@@ -1,24 +1,18 @@
-﻿import {GetFeaturesByIDsService} from '../../../src/common/iServer/GetFeaturesByIDsService';
-import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+﻿import { GetFeaturesByIDsService } from '../../../src/common/iServer/GetFeaturesByIDsService';
+import { GetFeaturesByIDsParameters } from '../../../src/common/iServer/GetFeaturesByIDsParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
 var getFeatureEventArgsSystem = null;
-var getFeaturesByIDsFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var getFeaturesByIDsCompleted = (getFeaturesEventArgs) => {
-    getFeatureEventArgsSystem = getFeaturesEventArgs;
-};
-var options = {
-    eventListeners: {
-        processCompleted: getFeaturesByIDsCompleted,
-        processFailed: getFeaturesByIDsFailed
-    }
-};
-var initGetFeaturesByIDsService = () => {
-    return new GetFeaturesByIDsService(dataServiceURL, options);
+
+var initGetFeaturesByIDsService = (getFeaturesByIDsCompleted, getFeaturesByIDsFailed) => {
+    return new GetFeaturesByIDsService(dataServiceURL, {
+        eventListeners: {
+            "processCompleted": getFeaturesByIDsCompleted,
+            "processFailed": getFeaturesByIDsFailed
+        }
+    });
 };
 
 describe('GetFeaturesByIDsService', () => {
@@ -33,25 +27,10 @@ describe('GetFeaturesByIDsService', () => {
 
     //不直接返回查询结果
     it('processAsync_returnContent:false', (done) => {
-        var getFeaturesByIDsService = initGetFeaturesByIDsService();
-        var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
-            returnContent: false,
-            datasetNames: ["World:Capitals"],
-            fromIndex: 0,
-            fields: ["SMID"],
-            toIndex: -1,
-            IDs: [1, 2, 3]
-        });
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe("POST");
-            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
-            expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
-            expect(params).toContain("'getFeatureMode':\"ID\"");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_96f665c1638c4a8aa96a62caaaed5922","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/f701028a2b7144b19b582f55c1902b18_96f665c1638c4a8aa96a62caaaed5922.json"}`));
-        });
-        getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
-        setTimeout(() => {
+        var getFeaturesByIDsFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var getFeaturesByIDsCompleted = (getFeatureEventArgsSystem) => {
             try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result;
                 expect(getFeaturesByIDsService).not.toBeNull();
@@ -72,28 +51,36 @@ describe('GetFeaturesByIDsService', () => {
                 getFeaturesByIDsParameters.destroy();
                 done();
             }
-        }, 2000);
-    });
+        };
 
-    it('processAsync_returnContent:true', (done) => {
-        var getFeaturesByIDsService = initGetFeaturesByIDsService();
+        var getFeaturesByIDsService = initGetFeaturesByIDsService(getFeaturesByIDsCompleted, getFeaturesByIDsFailed)
         var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
-            returnContent: true,
+            returnContent: false,
             datasetNames: ["World:Capitals"],
             fromIndex: 0,
+            fields: ["SMID"],
             toIndex: -1,
             IDs: [1, 2, 3]
         });
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true");
-            expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
-            expect(params).toContain("'getFeatureMode':\"ID\"");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
+            // expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
+            // expect(params).toContain("'getFeatureMode':\"ID\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Capitals");
+            expect(paramsObj.getFeatureMode).toBe("ID");
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_96f665c1638c4a8aa96a62caaaed5922","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/data-world/rest/data/featureResults/f701028a2b7144b19b582f55c1902b18_96f665c1638c4a8aa96a62caaaed5922.json"}`));
         });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
-        setTimeout(() => {
+    });
+
+    it('processAsync_returnContent:true', (done) => {
+        var getFeaturesByIDsFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var getFeaturesByIDsCompleted = (getFeatureEventArgsSystem) => {
             try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result.features;
                 expect(getFeaturesByIDsService).not.toBeNull();
@@ -111,23 +98,32 @@ describe('GetFeaturesByIDsService', () => {
                 getFeaturesByIDsParameters.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var getFeaturesByIDsService = initGetFeaturesByIDsService(getFeaturesByIDsCompleted, getFeaturesByIDsFailed)
+        var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
+            returnContent: true,
+            datasetNames: ["World:Capitals"],
+            fromIndex: 0,
+            toIndex: -1,
+            IDs: [1, 2, 3]
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true");
+            // expect(params).toContain("'datasetNames':[\"World:Capitals\"]");
+            // expect(params).toContain("'getFeatureMode':\"ID\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:Capitals");
+            expect(paramsObj.getFeatureMode).toBe("ID");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+        });
+        getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
     });
 
     //测试没有传入参数时的情况
     it('processAsync_noParams', (done) => {
-        var getFeaturesByIDsService = initGetFeaturesByIDsService();
-        var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
-            IDs: []
-        });
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,options) => {
-            expect(method).toBe("POST");
-            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
-        });
-        getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
-        setTimeout(() => {
+        var getFeaturesByIDsFailed = (serviceFailedEventArgsSystem) => {
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.result).not.toBeNull();
@@ -144,12 +140,48 @@ describe('GetFeaturesByIDsService', () => {
                 getFeaturesByIDsParameters.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var getFeaturesByIDsCompleted = (getFeaturesEventArgs) => {
+            getFeatureEventArgsSystem = getFeaturesEventArgs;
+        };
+
+        var getFeaturesByIDsService = initGetFeaturesByIDsService(getFeaturesByIDsCompleted, getFeaturesByIDsFailed)
+        var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
+            IDs: []
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(dataServiceURL + "/featureResults.json?returnContent=true&fromIndex=0&toIndex=19");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"在FeatureResults中，在检验请求体时，请求体参数datasetNames为空"}}`));
+        });
+        getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
     });
 
     //查询目标图层不存在情况
     it('processAsync_LayerNotExist', (done) => {
-        var getFeaturesByIDsService = initGetFeaturesByIDsService();
+        var getFeaturesByIDsFailed = (serviceFailedEventArgsSystem) => {
+            try {
+                expect(getFeaturesByIDsService).not.toBeNull();
+                expect(serviceFailedEventArgsSystem.result).not.toBeNull();
+                expect(serviceFailedEventArgsSystem.error).not.toBeNull();
+                expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
+                expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
+                getFeaturesByIDsService.destroy();
+                getFeaturesByIDsParameters.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("GetFeaturesByIDsService_" + exception.name + ":" + exception.message);
+                getFeaturesByIDsService.destroy();
+                getFeaturesByIDsParameters.destroy();
+                done();
+            }
+        };
+        var getFeaturesByIDsCompleted = (getFeaturesEventArgs) => {
+            getFeatureEventArgsSystem = getFeaturesEventArgs;
+        };
+        var getFeaturesByIDsService = initGetFeaturesByIDsService(getFeaturesByIDsCompleted, getFeaturesByIDsFailed)
         var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
             returnContent: false,
             datasetNames: ["World:CapitalsNotExsit"],
@@ -160,30 +192,15 @@ describe('GetFeaturesByIDsService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(dataServiceURL + "/featureResults.json?");
-            expect(params).toContain("'datasetNames':[\"World:CapitalsNotExsit\"]");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.datasetNames[0]).toBe("World:CapitalsNotExsit");
+            expect(paramsObj.getFeatureMode).toBe("ID");
+            // expect(params).toContain("'datasetNames':[\"World:CapitalsNotExsit\"]");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"getFeature方法中数据集名CapitalsNotExsit不存在"}}`));
         });
 
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
-        setTimeout(() => {
-            try {
-                expect(getFeaturesByIDsService).not.toBeNull();
-                expect(serviceFailedEventArgsSystem.result).not.toBeNull();
-                expect(serviceFailedEventArgsSystem.error).not.toBeNull();
-                expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
-                expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
-                getFeaturesByIDsService.destroy();
-                getFeaturesByIDsParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("GetFeaturesByIDsService_" + exception.name + ":" + exception.message);
-                getFeaturesByIDsService.destroy();
-                getFeaturesByIDsParameters.destroy();
-                done();
-            }
-        }, 2000)
     })
 });
 

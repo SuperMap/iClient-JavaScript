@@ -1,5 +1,5 @@
-﻿import {FieldStatisticService} from '../../../src/common/iServer/FieldStatisticService';
-import {StatisticMode} from '../../../src/common/REST';
+﻿import { FieldStatisticService } from '../../../src/common/iServer/FieldStatisticService';
+import { StatisticMode } from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
@@ -32,20 +32,8 @@ describe('FieldStatisticService', () => {
 
     //存在对应数据源数据集返回查询结果
     it('success:processAsync', (done) => {
-        var fieldStatisticService = initFieldStatisticService();
-        expect(fieldStatisticService).not.toBeNull();
-        expect(fieldStatisticService.url).toBe(dataServiceURL);
-        fieldStatisticService.dataset = "Countries";
-        fieldStatisticService.datasource = "World";
-        fieldStatisticService.field = "SmID";
-        fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
-        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/Countries/fields/SmID/AVERAGE.json?");
-            return Promise.resolve(new Response(`{"result":124,"mode":"AVERAGE"}`));
-        });
-        fieldStatisticService.events.on({'processCompleted': fieldStatisticCompleted});
-        fieldStatisticService.processAsync();
-        setTimeout(() => {
+        var fieldStatisticService = new FieldStatisticService(dataServiceURL, options);
+        var fieldStatisticCompleted = (fieldStatisticEventArgsSystem) => {
             try {
                 expect(fieldStatisticEventArgsSystem).not.toBeNull();
                 expect(fieldStatisticEventArgsSystem.result.mode).toBe("AVERAGE");
@@ -64,23 +52,38 @@ describe('FieldStatisticService', () => {
                 fieldStatisticService.destroy();
                 done();
             }
-        }, 2000);
+        };
+        var fieldStatisticFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var options = {
+            eventListeners: {
+                'processCompleted': fieldStatisticCompleted,
+                'processFailed': fieldStatisticFailed
+            }
+        };
+
+        expect(fieldStatisticService).not.toBeNull();
+        expect(fieldStatisticService.url).toBe(dataServiceURL);
+        fieldStatisticService.dataset = "Countries";
+        fieldStatisticService.datasource = "World";
+        fieldStatisticService.field = "SmID";
+        fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/Countries/fields/SmID/AVERAGE.json?");
+            return Promise.resolve(new Response(`{"result":124,"mode":"AVERAGE"}`));
+        });
+        fieldStatisticService.events.on({ 'processCompleted': fieldStatisticCompleted });
+        fieldStatisticService.processAsync();
     });
 
     //错误数据集，查询错误
     it('processAsync_datasetsWrong', (done) => {
-        var fieldStatisticService = initFieldStatisticService();
-        fieldStatisticService.dataset = "NoDataset";
-        fieldStatisticService.datasource = "World";
-        fieldStatisticService.field = "NotIDThis";
-        fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
-        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/NoDataset/fields/NotIDThis/AVERAGE.json?");
-            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":500,"errorMsg":"抛出未被捕获的异常,错误信息是数据集NoDataset在数据源中不存在"}}`));
-        });
-        fieldStatisticService.events.on({'processFailed': fieldStatisticFailed});
-        fieldStatisticService.processAsync();
-        setTimeout(() => {
+        var fieldStatisticService = new FieldStatisticService(dataServiceURL, options);
+        var fieldStatisticCompleted = (fieldStatisticEventArgsSystem) => {
+           
+        };
+        var fieldStatisticFailed = (serviceFailedEventArgsSystem) => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
@@ -94,6 +97,22 @@ describe('FieldStatisticService', () => {
                 fieldStatisticService.destroy();
                 done();
             }
-        }, 2000);
+        };
+        var options = {
+            eventListeners: {
+                'processCompleted': fieldStatisticCompleted,
+                'processFailed': fieldStatisticFailed
+            }
+        };
+        fieldStatisticService.dataset = "NoDataset";
+        fieldStatisticService.datasource = "World";
+        fieldStatisticService.field = "NotIDThis";
+        fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            expect(testUrl).toBe(dataServiceURL + "/datasources/World/datasets/NoDataset/fields/NotIDThis/AVERAGE.json?");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":500,"errorMsg":"抛出未被捕获的异常,错误信息是数据集NoDataset在数据源中不存在"}}`));
+        });
+        fieldStatisticService.events.on({ 'processFailed': fieldStatisticFailed });
+        fieldStatisticService.processAsync();
     })
 });

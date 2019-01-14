@@ -35,27 +35,6 @@ describe('AddressMatchService', () => {
         };
         var codeCompleted = (analyseEventArgs) => {
             codingSuccessEventArgs = analyseEventArgs;
-        };
-        var options = {
-            eventListeners: {"processCompleted": codeCompleted, 'processFailed': codeFailed}
-        };
-        var GeoCodingParams = new GeoCodingParameter({
-            address: '公司',
-            fromIndex: 0,
-            toIndex: 10,
-            filters: '北京市,海淀区',
-            prjCoordSys: '{epsgcode:4326}',
-            maxReturn: -1
-        });
-        var addressCodeService = new AddressMatchService(addressMatchURL_code, options);
-        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            expect(testUrl).toBe(addressMatchURL_code);
-            expect(params).not.toBeNull();
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(codeSuccessEscapedJson));
-        });
-        addressCodeService.code(addressMatchURL_code, GeoCodingParams);
-        setTimeout(() => {
             try {
                 expect(addressCodeService).not.toBeNull();
                 expect(codingSuccessEventArgs).not.toBeNull();
@@ -76,7 +55,28 @@ describe('AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        };
+        var options = {
+            eventListeners: {"processCompleted": codeCompleted, 'processFailed': codeFailed}
+        };
+        var GeoCodingParams = new GeoCodingParameter({
+            address: '公司',
+            fromIndex: 0,
+            toIndex: 10,
+            filters: '北京市,海淀区',
+            prjCoordSys: '{epsgcode:4326}',
+            maxReturn: -1
+        });
+        var addressCodeService = new AddressMatchService(addressMatchURL_code, options);
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL_code);
+            expect(params.address).toBe('公司');
+            expect(params.prjCoordSys).toBe('{epsgcode:4326}');
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(codeSuccessEscapedJson));
+        });
+        addressCodeService.code(addressMatchURL_code, GeoCodingParams);
+           
     });
 
     it('decode', (done) => {
@@ -86,29 +86,6 @@ describe('AddressMatchService', () => {
         };
         var decodeCompleted = (analyseEventArgs) => {
             decodingSuccessEventArgs = analyseEventArgs;
-        };
-        var options = {
-            eventListeners: {"processCompleted": decodeCompleted, 'processFailed': decodeFailed}
-        };
-        var GeoDeCodingParams = new GeoDecodingParameter({
-            x: 116.31740122415627,
-            y: 39.92311315752059,
-            fromIndex: 0,
-            toIndex: 5,
-            filters: '北京市,海淀区',
-            prjCoordSys: '{epsgcode:4326}',
-            maxReturn: -1,
-            geoDecodingRadius: 500
-        });
-        var addressDeCodeService = new AddressMatchService(addressMatchURL_decode, options);
-        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            expect(testUrl).toBe(addressMatchURL_decode);
-            expect(params).not.toBeNull();
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(decodeSuccessEscapedJson));
-        });
-        addressDeCodeService.decode(addressMatchURL_decode, GeoDeCodingParams);
-        setTimeout(() => {
             try {
                 expect(addressDeCodeService).not.toBeNull();
                 expect(decodingSuccessEventArgs).not.toBeNull();
@@ -129,7 +106,31 @@ describe('AddressMatchService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        };
+        var options = {
+            eventListeners: {"processCompleted": decodeCompleted, 'processFailed': decodeFailed}
+        };
+        var GeoDeCodingParams = new GeoDecodingParameter({
+            x: 116.31740122415627,
+            y: 39.92311315752059,
+            fromIndex: 0,
+            toIndex: 5,
+            filters: '北京市,海淀区',
+            prjCoordSys: '{epsgcode:4326}',
+            maxReturn: -1,
+            geoDecodingRadius: 500
+        });
+        var addressDeCodeService = new AddressMatchService(addressMatchURL_decode, options);
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL_decode);
+            expect(params).not.toBeNull();
+            expect(params.x).toBe(116.31740122415627);
+            expect(params.prjCoordSys).toBe('{epsgcode:4326}');
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(decodeSuccessEscapedJson));
+        });
+        addressDeCodeService.decode(addressMatchURL_decode, GeoDeCodingParams);
+          
     });
 });
 
