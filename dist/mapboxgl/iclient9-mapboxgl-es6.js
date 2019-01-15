@@ -74645,7 +74645,7 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
             style: {
                 'version': 8,
                 'sources': {},
-                "glyphs": 'http://iclsvr.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf',
+                // "glyphs": 'http://iclsvr.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf',
                 'layers': []
             },
             crs: this.baseProjection,
@@ -75236,6 +75236,7 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
      */
     _addLabelLayer(layerInfo, features) {
         let labelStyle = layerInfo.labelStyle;
+        
         this.map.addLayer({
             "id": layerInfo.layerID + 'label',
             "type": "symbol",
@@ -75251,8 +75252,8 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
             },
             "layout": {
                 "text-field": `{${labelStyle.labelField}}`,
-                'text-size': parseFloat(labelStyle.fontSize),
-                'text-offset': [labelStyle.offsetX / 10 || 0, labelStyle.offsetY / 10 || 0],
+                'text-size': parseFloat(labelStyle.fontSize) || 12,
+                'text-offset': labelStyle.offsetX ? [labelStyle.offsetX / 10 || 0, labelStyle.offsetY / 10 || 0] : [0,-1.5],
                 'text-font': ["DIN Offc Pro Italic", "Arial Unicode MS Regular"],
                 'visibility': layerInfo.visible
             }
@@ -75635,7 +75636,7 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
         let paint = {
             "heatmap-color": color,
             "heatmap-radius": style.radius + 15,
-            'heatmap-intensity': { "base": 1, "stops": [[0, 0], [22, 1]] }
+            'heatmap-intensity': { "base": 1, "stops": [[0, 0.8], [22, 1]] }
         }
         if (features[0].weight && features.length >= 4) {
             let weight = [];
@@ -76079,7 +76080,7 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
 
         let newObj = {}
         for (let item in style) {
-            if (transTable && transTable[item]) {
+            if (transTable[item]) {
                 newObj[transTable[item]] = style[item];
             }
         }

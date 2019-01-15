@@ -547,7 +547,7 @@ deps = {
             },
         },
 
-        "Widget":{
+        "Widget": {
             "title": "微件",
             "description": "微件模块",
             "description_en": "Widget module",
@@ -904,7 +904,7 @@ deps = {
                     "name": "ol.source.Graphic",
                     "des": "高效率点图层源",
                     "des_en": "High efficiency point source"
-                },{
+                }, {
                     "name": "ol.style.CloverShape ",
                     "des": "高效率点图层源三叶草风格",
                     "des_en": "Clover style of graphic source"
@@ -921,11 +921,11 @@ deps = {
                     "name": "ol.source.VectorTileSuperMapRest",
                     "des": "矢量瓦片图层源",
                     "des_en": "Vector tile source"
-                },{
+                }, {
                     "name": "ol.supermap.MapboxStyles",
                     "des": "Mapbox 矢量瓦片风格",
                     "des_en": "Mapbox vector tile style"
-                },{
+                }, {
                     "name": "ol.supermap.VectorTileStyles",
                     "des": "矢量瓦片风格",
                     "des_en": "Vector tile style"
@@ -1017,6 +1017,9 @@ deps = {
 
     "mapboxgl": {
         "Mapping": {
+            "title": "地图",
+            "description": "基础地图模块",
+            "description_en": "Basic map module",
             "iPortal": {
                 "name": "iPortal webmap",
                 "src": ["./src/mapboxgl/mapping/WebMap.js"],

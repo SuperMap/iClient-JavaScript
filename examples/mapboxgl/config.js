@@ -292,15 +292,46 @@ var exampleConfig = {
     "iPortal": {
         name: "iPortal",
         name_en: "iPortal",
+        version: "9.1.1",
         content: {
             "ip_map": {
                 name: "地图",
-                name_en: "Web map",
+                name_en: "iPortal Web map",
+                version: "9.1.1",
                 content: [{
-                    name: "Web Map",
-                    name_en: "Web Map",
-                    thumbnail: "l_iPortalWebmap.png",
-                    fileName: "iPortalWebmap"
+                    name: "分段专题图",
+                    name_en: "Range",
+                    version: "9.1.1",
+                    thumbnail: "iPortalWebmap_range.png",
+                    fileName: "iPortalWebmap_range"
+                },
+                {
+                    name: "单值专题图",
+                    name_en: "Unique",
+                    version: "9.1.1",
+                    thumbnail: "iPortalWebmap_unique.png",
+                    fileName: "iPortalWebmap_unique"
+                },
+                {
+                    name: "标签专题图",
+                    name_en: "Label",
+                    version: "9.1.1",
+                    thumbnail: "iPortalWebmap_label.png",
+                    fileName: "iPortalWebmap_label"
+                },
+                {
+                    name: "热力图",
+                    name_en: "Heat map",
+                    version: "9.1.1",
+                    thumbnail: "iPortalWebmap_heat.png",
+                    fileName: "iPortalWebmap_heat"
+                },
+                {
+                    name: "点样式",
+                    name_en: "Point style",
+                    version: "9.1.1",
+                    thumbnail: "iPortalWebmap_unicode.png",
+                    fileName: "iPortalWebmap_unicode"
                 }]
             }
         }
