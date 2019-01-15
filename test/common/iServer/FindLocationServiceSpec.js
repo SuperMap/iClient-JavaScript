@@ -28,7 +28,7 @@ describe('FindLocationService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    xit('processAsync:default', (done) => {
+    it('processAsync:default', (done) => {
         var expectedSupplyCenterCount = 1,
             turnWeightField = "TurnCost",
             weightName = "length";
