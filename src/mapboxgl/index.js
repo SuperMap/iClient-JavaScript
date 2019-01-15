@@ -254,7 +254,9 @@ export {
     NavTabsPage,
     PaginationContainer,
     widgetsUtil,
-    FileReaderUtil
+    FileReaderUtil,
+    ChartView,
+    ChartViewModel
 }
 from '@supermap/iclient-common';
 

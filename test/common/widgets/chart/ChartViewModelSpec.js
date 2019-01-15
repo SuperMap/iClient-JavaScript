@@ -1,12 +1,16 @@
-import { ChartViewModel } from '../../../../src/common/widgets/chart/ChartViewModel';
+import {
+    ChartViewModel
+} from '../../../../src/common/widgets/chart/ChartViewModel';
 import '../../../resources/FeatureService';
 
 describe('ChartViewModel', () => {
     var options = {
         type: 'line',
         datasets: {
+            type: 'iServer', //iServer iPortal 
             url: "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World",
             // url: "http://support.supermap.com:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R",
+            withCredentials: false,
             queryInfo: {
                 attributeFilter: "SmID > 0"
             }
@@ -38,8 +42,14 @@ describe('ChartViewModel', () => {
         expect(chartViewModel.yField[0].field).toBe("KILOMETERS");
         expect(chartViewModel.yField[0].name).toBe("Kilometers");
     });
-    it('getDatasetInfo', () => {
-        var successed = function () { };
+    it('getDatasetInfo_iServer', () => {
+        var successed = function () {};
+        chartViewModel.getDatasetInfo(successed);
+        expect(chartViewModel.createChart).toBe(successed);
+    });
+    it('getDatasetInfo_iPortal', () => {
+        chartViewModel.datasets.type = 'iPortal';
+        var successed = function () {};
         chartViewModel.getDatasetInfo(successed);
         expect(chartViewModel.createChart).toBe(successed);
     });
@@ -88,7 +98,10 @@ describe('ChartViewModel', () => {
             features: recordsets.features,
             fieldCaptions: recordsets.fieldCaptions,
             fieldTypes: recordsets.fieldTypes,
-            fieldValues: [[21], [21.2]]
+            fieldValues: [
+                [21],
+                [21.2]
+            ]
         }
         chartViewModel._createChartOptions(data);
         expect(chartViewModel.calculatedData.XData).not.toBeNull();
@@ -101,14 +114,22 @@ describe('ChartViewModel', () => {
     });
     it('updateData', () => {
         var url = "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World";
+        var datasets = {
+            type: 'iServer', //iServer iPortal 
+            url,
+            withCredentials: false,
+            queryInfo: {
+                attributeFilter: "SmID > 0"
+            }
+        };
         var chartOption = [{
             xAxis: {
                 field: "AREA",
                 name: "Area"
             }
         }]
-        var successed = function () { };
-        chartViewModel.updateData(url, null, chartOption, successed);
+        var successed = function () {};
+        chartViewModel.updateData(datasets, chartOption, successed);
         expect(chartViewModel.updateChart).toBe(successed);
         expect(chartViewModel.xField[0].field).toBe("AREA");
         expect(chartViewModel.xField[0].name).toBe("Area");
@@ -120,7 +141,10 @@ describe('ChartViewModel', () => {
             features: recordsets.features,
             fieldCaptions: recordsets.fieldCaptions,
             fieldTypes: recordsets.fieldTypes,
-            fieldValues: [[21, 21], [21.2, 22]]
+            fieldValues: [
+                [21, 21],
+                [21.2, 22]
+            ]
         }
         chartViewModel._updateDataSuccess(data);
     });

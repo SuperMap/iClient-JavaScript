@@ -177,7 +177,7 @@ export let FileReaderUtil = {
         var lowerdata = data.toLowerCase();
         return (lowerdata === "x" || lowerdata === "smx" ||
             lowerdata === "jd" || lowerdata === "经度" || lowerdata === "东经" || lowerdata === "longitude" ||
-            lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng");
+            lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng" || lowerdata === "x坐标");
     },
 
     /**
@@ -188,7 +188,7 @@ export let FileReaderUtil = {
         var lowerdata = data.toLowerCase();
         return (lowerdata === "y" || lowerdata === "smy" ||
             lowerdata === "wd" || lowerdata === "纬度" || lowerdata === "北纬" ||
-            lowerdata === "latitude" || lowerdata === "lat");
+            lowerdata === "latitude" || lowerdata === "lat" || lowerdata === "y坐标");
     },
     /**
      * 字符串转为dataEditor 支持的csv格式数据

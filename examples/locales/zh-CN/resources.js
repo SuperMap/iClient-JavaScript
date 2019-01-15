@@ -458,6 +458,8 @@ window.examplesResources = {
         "title_openFile_vue": "打开文件(Vue)",
         "title_dataFlow": "数据流服务",
         "title_chart": '图表',
+        "title_chart_iServer": '图表_iServer',
+        "title_chart_iPortal": '图表_iPortal',
         "title_spatialAnalysis": '客户端计算',
         "title_distributeAnalysis": '分布式分析',
         "title_dataServiceQuery": '数据服务查询',

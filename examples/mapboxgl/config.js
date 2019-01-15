@@ -1040,6 +1040,31 @@ var exampleConfig = {
             }
         }
     },
+    "widgets": {
+        name: "微件",
+        name_en: "Widgets",
+        content: {
+            "widgetsSuperMap": {
+                name: "基础",
+                name_en: "Basic",
+                content: [
+                    {
+                        name: "图表_iServer",
+                        name_en: "chart_iServer",
+                        version: "10.X.X",
+                        thumbnail: "widgets_chart_isvr.png",
+                        fileName: "widgets_chart_isvr"
+                    },{
+                        name: "图表_iPortal",
+                        name_en: "chart_iPortal",
+                        version: "10.X.X",
+                        thumbnail: "widgets_chart_iptl.png",
+                        fileName: "widgets_chart_iptl"
+                    } 
+                ]
+            }
+        }
+    },
     "GTC": {
         name: "GTC",
         name_en: "GTC",
@@ -1070,6 +1095,7 @@ var sideBarIconConfig = {
     "viz": "fa-map",
     "control": "fa-sliders",
     "multiCoordSys": "fa-globe",
+    "widgets": "fa-window-restore",
     "GTC": "fa-globe"
 };
 
@@ -1083,6 +1109,7 @@ var exampleIconConfig = {
     "iPortal": "fa-desktop",
     "viz": "fa-map",
     "GTC": "fa-globe",
+    "widgets": "fa-window-restore",
     'multiCoordSys': "fa-globe",
 };
 window.mapboxglExampleConfig = exampleConfig;

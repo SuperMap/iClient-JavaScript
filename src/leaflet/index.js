@@ -254,7 +254,10 @@ import {
     NavTabsPage,
     PaginationContainer,
     widgetsUtil,
-    FileReaderUtil
+    FileReaderUtil,
+    ChartView,
+    ChartViewModel
+
 } from '@supermap/iclient-common';
 
 import {
@@ -704,7 +707,9 @@ export {
     NavTabsPage,
     PaginationContainer,
     widgetsUtil,
-    FileReaderUtil
+    FileReaderUtil,
+    ChartView,
+    ChartViewModel
 };
 export {
     Logo,

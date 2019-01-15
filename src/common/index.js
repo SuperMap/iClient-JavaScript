@@ -444,7 +444,9 @@ import {
     NavTabsPage,
     PaginationContainer,
     widgetsUtil,
-    FileReaderUtil
+    FileReaderUtil,
+    ChartView,
+    ChartViewModel
 } from './widgets';
 import {
     Lang,
@@ -467,7 +469,9 @@ export {
     NavTabsPage,
     PaginationContainer,
     widgetsUtil,
-    FileReaderUtil
+    FileReaderUtil,
+    ChartView,
+    ChartViewModel
 }
 export {SuperMap};
 export {

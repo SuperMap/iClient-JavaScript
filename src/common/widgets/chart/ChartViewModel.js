@@ -11,7 +11,7 @@ import { ChartModel } from "./ChartModel";
  * @version 10.X.X
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {Object} options.datasets - 数据来源。
+ * @param {SuperMap.Widgets.Chart.Datasets} options.datasets - 数据来源。
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -71,7 +71,11 @@ export class ChartViewModel {
         this.createChart = success;
         if (this.datasets && this._checkUrl(this.datasets.url)) {
             this.chartModel = new ChartModel(this.datasets);
-            this.chartModel.getDatasetInfo(this._getDatasetInfoSuccess.bind(this));
+            if(this.datasets.type === 'iServer'){
+                this.chartModel.getDatasetInfo(this._getDatasetInfoSuccess.bind(this));
+            }else if(this.datasets.type === 'iPortal'){
+                this.chartModel.getDataInfoByIptl(this._getDataInfoSuccess.bind(this));
+            }
         }
     }
 
@@ -104,6 +108,20 @@ export class ChartViewModel {
     }
 
     /**
+     * @function SuperMap.Widgets.ChartViewModel.prototype._getDataInfoSuccess
+     * @description 请求iportal数据成功之后的回调
+     * @private
+     */
+    _getDataInfoSuccess(results, type) {
+        let me = this;
+        if(type === 'RESTMAP'){
+            me._getChartDatasFromLayer(results);
+        }else{
+            me._getChartDatas(results);
+        }
+    }
+
+    /**
      * @function SuperMap.Widgets.ChartViewModel.prototype._getDataFeatures
      * @description 请求数据集的数据信息
      * @private
@@ -130,9 +148,10 @@ export class ChartViewModel {
      * @param {Object} results - 数据要素信息
      */
     _getChartDatas(results) {
-        if (results.result.features) {
+        if (results) {
+            // 数据来自restdata---results.result.features
             this.features = results.result.features;
-            let features = results.result.features.features;
+            let features = this.features.features;
             let data = {};
             if (features.length) {
                 let feature = features[0];
@@ -143,7 +162,7 @@ export class ChartViewModel {
                     itemTypes.push(this._getDataType(feature.properties[attr]));
                 }
                 data = {
-                    features: results.result.features,
+                    features,
                     fieldCaptions: attrFields,
                     fieldTypes: itemTypes,
                     fieldValues: []
@@ -224,20 +243,19 @@ export class ChartViewModel {
     /**
      * @function SuperMap.Widgets.ChartViewModel.prototype.updateData
      * @description 改变图表类型
-     * @param {string} url - 数据源地址
-     * @param {Object} queryInfo - 查询条件
-     * @param {Object} chartOption - X,Y字段信息
-     * @param {function} success - 成功回调函数
+     * @param {SuperMap.Widgets.Chart.Datasets} datasets - 数据来源
+     * @param {function} success 成功回调函数
      */
-    updateData(url, queryInfo, chartOption, success) {
+    updateData(datasets, chartOption, success) {
         this.updateChart = success;
         this.xField = [];
         this.yField = [];
         this._initXYField(chartOption);
-        this.datasets = {
-            url: url,
-            queryInfo: queryInfo
-        }
+        // type的设置默认值
+        datasets.type = datasets.type || 'iServer';
+        // withCredentials的设置默认值
+        datasets.withCredentials = datasets.withCredentials || false;
+        this.datasets = datasets;
         this.getDatasetInfo(this._updateDataSuccess.bind(this));
     }
 

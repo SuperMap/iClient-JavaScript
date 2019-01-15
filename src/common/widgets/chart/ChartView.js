@@ -12,7 +12,7 @@ import { ChartViewModel } from "./ChartViewModel";
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {Object} options.datasets - 数据来源。
+ * @param {SuperMap.Widgets.Chart.Datasets} options.datasets - 数据来源
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -22,11 +22,22 @@ import { ChartViewModel } from "./ChartViewModel";
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
  * @category Widgets Chart
  */
+/**
+ * @typedef {Object} SuperMap.Widgets.Chart.Datasets  - 数据来源
+ * @property {string} [type = 'iServer'] - 服务类型 iServer, iPortal。
+ * @property {string} url - 服务url地址。
+ * @property {boolean} [withCredentials = false]- 设置请求是否带cookie
+ * @property {SuperMap.FilterParameter} queryInfo - 查询条件
+ */
 export class ChartView {
 
     constructor(domID, options) {
         this.domID = domID;
         this.chartType = options.type || "bar";
+        // 设置options.datasets.type的默认值是iServer
+        options.datasets.type = options.datasets.type || 'iServer';
+        // 设置withCredentials的默认值为false
+        options.datasets.withCredentials = options.datasets.withCredentials || false;
         this.viewModel = new ChartViewModel(options);
         //添加控件。
         this._fillDataToView();
@@ -91,13 +102,12 @@ export class ChartView {
     /**
      * @function SuperMap.Widgets.Chart.prototype.updateData
      * @description 更新图表数据
-     * @param {string} url - 数据源地址
-     * @param {Object} queryInfo - 查询条件
-     * @param {Object} chartOption - X,Y字段信息
+     * @param {SuperMap.Widgets.Chart.Datasets} datasets - 数据来源
+     * @param {Object} chartOption - X,Y轴信息
      */
-    updateData(url, queryInfo, chartOption) {
+    updateData(datasets, chartOption) {
         let me = this;
-        this.viewModel.updateData(url, queryInfo, chartOption, function(options) {
+        this.viewModel.updateData(datasets, chartOption, function(options) {
             me._updateChart(options);
             if(me.addChart) {
                 me.addChart();

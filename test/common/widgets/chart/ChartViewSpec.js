@@ -13,8 +13,9 @@ describe('ChartView', () => {
     var options = {
         type: 'line',
         datasets: {
+            type: 'iServer', //iServer iPortal 
             url: "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World",
-            // url: "http://support.supermap.com:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R",
+            withCredentials: false,
             queryInfo: {
                 attributeFilter: "SmID > 0"
             }
@@ -56,13 +57,21 @@ describe('ChartView', () => {
     });
     it('updateData', () => {
         var url = "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World";
+        var datasets = {
+            type: 'iServer', //iServer iPortal 
+            url,
+            withCredentials: false,
+            queryInfo: {
+                attributeFilter: "SmID > 0"
+            }
+        };
         var chartOption = [{
             xAxis: {
                 field: "AREA",
                 name: "Area"
             }
         }]
-        chartView.updateData(url, null, chartOption);
+        chartView.updateData(datasets, chartOption);
     });
     it('_createChart', () => {
         var recordsets = QueryBySQLService.result.recordsets[0];
@@ -94,4 +103,5 @@ describe('ChartView', () => {
         chartView._updateChart(option);
         expect(chartView.echart).not.toBeNull();
     });
+   
 });

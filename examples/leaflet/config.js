@@ -1212,14 +1212,22 @@ var exampleConfig = {
                     version: "9.1.1",
                     thumbnail: "widgets_dataServiceQuery.png",
                     fileName: "widgets_dataServiceQuery"
-                }
-               /*  ,{
-                    name: "图表",
-                    name_en: "chart",
-                    version: "9.1.1",
-                    thumbnail: "widgets_chart.png",
-                    fileName: "widgets_chart"
-                } */]
+                },
+                {
+                    name: "图表_iServer",
+                    name_en: "chart_iServer",
+                    version: "10.X.X",
+                    thumbnail: "widgets_chart_isvr.png",
+                    fileName: "widgets_chart_isvr"
+                },{
+                    name: "图表_iPortal",
+                    name_en: "chart_iPortal",
+                    version: "10.X.X",
+                    thumbnail: "widgets_chart_iptl.png",
+                    fileName: "widgets_chart_iptl"
+                } 
+            
+            ]
             },
             "widgetsAdvanced": {
                 name: "扩展",

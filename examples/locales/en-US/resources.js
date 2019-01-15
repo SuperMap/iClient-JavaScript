@@ -514,6 +514,8 @@ window.examplesResources = {
         "title_openFile_vue": "OpenFile(Vue)",
         "title_dataFlow": "Data Flow",
         "title_chart": 'Chart',
+        "title_chart_iServer": 'Chart_iServer',
+        "title_chart_iPortal": 'Chart_iPortal',
         "title_spatialAnalysis": 'Client Computation',
         "title_distributeAnalysis": 'Distribute Analysis',
         "title_dataServiceQuery": 'Data service query',
