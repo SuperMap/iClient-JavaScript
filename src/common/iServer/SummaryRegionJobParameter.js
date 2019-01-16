@@ -193,7 +193,7 @@ export class SummaryRegionJobParameter {
             }
             if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
                 tempObj['analyst'] = tempObj['analyst'] || {};
-                if (name === 'query') {
+                if (name === 'query' && summaryRegionJobParameter[name]) {
                     tempObj['analyst'][name] = summaryRegionJobParameter[name].toBBOX();
                 } else {
                     tempObj['analyst'][name] = summaryRegionJobParameter[name];
