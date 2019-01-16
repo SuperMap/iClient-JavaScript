@@ -94,10 +94,4 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
         });
     });
 
-    // 删除测试过程中产生的测试数据集
-    xit('delete test resources', (done)=> {
-        var testResult = GlobeParameter.datachangchunURL + resultDataset;
-        request.delete(testResult);
-        done();
-    });
 });

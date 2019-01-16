@@ -33,9 +33,7 @@ describe('mapboxgl_LayerInfoService', () => {
             return Promise.resolve(new Response("["+JSON.stringify(layersInfo)+"]"));
         });
         service.getLayersInfo((result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -57,11 +55,12 @@ describe('mapboxgl_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
+
     });
 
     //子图层显示控制服务
-    it('setLayerStatus', (done) => {
+     it('setLayerStatus', (done) => {
         var layerStatus = [new LayerStatus({
             layerName: "continent_T@World",
             isVisible: true,
@@ -95,8 +94,6 @@ describe('mapboxgl_LayerInfoService', () => {
         });
         layerService.setLayerStatus(setLayerStatusParameters, (result) => {
             serviceResult = result;
-        });
-        setTimeout(() => {
             try {
                 expect(layerService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -109,7 +106,8 @@ describe('mapboxgl_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
+
     });
 
     //新建临时图层   isTempLayers=false
@@ -127,9 +125,7 @@ describe('mapboxgl_LayerInfoService', () => {
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json"}`));
         });
         service.setLayersInfo(setLayersInfoParameters, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -145,7 +141,8 @@ describe('mapboxgl_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
+
     });
 
     //修改临时图层的信息 isTempLayers=true
@@ -164,9 +161,7 @@ describe('mapboxgl_LayerInfoService', () => {
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         service.setLayersInfo(setLayersInfoParameters, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -181,11 +176,11 @@ describe('mapboxgl_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //设置图层信息服务  并实现临时图层中子图层的修改
-    xit('setLayerInfo', (done) => {
+    it('setLayerInfo', (done) => {
         var layers = layerInfo;
         layers.description = "this is a test";
         var setLayerInfoParameters = new SetLayerInfoParameters({
@@ -194,10 +189,13 @@ describe('mapboxgl_LayerInfoService', () => {
             layerInfo: layers
         });
         var service = new LayerInfoService(url);
-        service.setLayerInfo(setLayerInfoParameters, (result) => {
-            serviceResult = result
+        spyOn(FetchRequest, 'put').and.callFake((testUrl) => {
+            expect(testUrl).toContain("continent_T@World.1@@World.json");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d/continent_T@World.1@@World"}`));
         });
-        setTimeout(() => {
+        service.setLayerInfo(setLayerInfoParameters, (result) => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -212,7 +210,8 @@ describe('mapboxgl_LayerInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 8000);
+        });
+
     });
 });
                  

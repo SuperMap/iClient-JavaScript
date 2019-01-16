@@ -57,32 +57,4 @@ describe('openlayers_VectorTileSuperMapRest', () => {
             }
         }, 6000);
     });
-
-    xit('serverType of iportal', () => {
-        var iportaoUrl = "http://support.supermap.com.cn:8092/web/maps/44";
-        var vectorTileOptions, vectorTilesource;
-
-        new MapService(iportaoUrl).getMapInfo((serviceResult) => {
-            vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(iportaoUrl, serviceResult.result);
-            vectorTilesource = new VectorTileSuperMapRest(vectorTileOptions);
-            var vectorLayer = new ol.layer.VectorTile({
-                source: vectorTilesource
-            });
-            map.addLayer(vectorLayer);
-        });
-        setTimeout(() => {
-            try {
-                expect(vectorTileOptions).not.toBeNull();
-                expect(vectorTileOptions.serverType).toBe("IPORTAL");
-                expect(vectorTileOptions.crossOrigin).toBe("anonymous");
-
-                expect(vectorTilesource).not.toBeNull();
-                expect(vectorTilesource.urls.length).toBe(1);
-                done();
-            } catch (exception) {
-                console.log("'constructor and static test'案例失败：" + exception.name + ":" + exception.message);
-                expect(false).toBeTruthy();
-            }
-        }, 6000);
-    });
 });
