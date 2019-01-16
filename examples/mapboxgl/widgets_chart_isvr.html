@@ -201,9 +201,9 @@
             });
         }
         //切换数据集
-        $('#rule').onchange = () =>{
-            var selectedIndex = ($('#rule').get(0).selectedIndex);
-            var url = $('#rule').val();
+        $("#rule").change(function () {
+            var selectedIndex = ($(this).get(0).selectedIndex);
+            var url = $(this).val();
             var chartOption, serviceType, withCredentials;
             // 如果已上图，删除当前地图上的图层和数据集
             map.getLayer(resultLayer.id) && map.removeLayer(resultLayer.id) && map.removeSource(resultLayer.id);
@@ -281,7 +281,7 @@
             };
             barChart.onAdd(addDataToMap);
             barChart.updateData(datasets, chartOption);
-        };
+        });
     </script>
 </body>
 
