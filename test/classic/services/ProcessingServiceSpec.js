@@ -21,13 +21,7 @@ describe('classic_ProcessingService', () => {
         processingService = new ProcessingService(url);
     });
 
-    xit('bug记录', () => {
-        console.log("1、当不设置query时会报错,query不是必填参数");
-        console.log("2、当不设置bounds时会报错,bounds不是必填参数");
-
-    });
-
-    /*KernelDensityJobsService*/
+     /*KernelDensityJobsService*/
     it('getKernelDensityJobs_processCompleted', (done) => {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
