@@ -308,7 +308,7 @@ describe('mapboxgl_GraphThemeLayer', () => {
         graphThemeLayer.setVisibility(false);
         expect(graphThemeLayer.visibility).toBeFalsy();
     });
-   
+
     it('moveTo', () => {
         const graphThemeLayer = new Graph("GraphThemeLayer", "Bar", {
             map: map,
@@ -322,6 +322,7 @@ describe('mapboxgl_GraphThemeLayer', () => {
             charts: [1, 2, 3],
             cache: { 'name': 'ONETWO' }
         });
+        var length1 = graphThemeLayer.div.parentNode.getElementsByClassName("themeLayer").length;
         //ThemeLayer 75行已经添加过一次了
         // map.addLayer(graphThemeLayer);
         const graphThemeLayer2 = new Graph("GraphThemeLayer2", "Bar", {
@@ -338,9 +339,9 @@ describe('mapboxgl_GraphThemeLayer', () => {
         });
         //ThemeLayer 75行已经添加过一次了
         // map.addLayer(graphThemeLayer2);
-        //移动前，第一个layer是第一个
-        expect(graphThemeLayer.div.parentNode.getElementsByClassName("themeLayer")[0].id).toEqual(graphThemeLayer.id);
+        //移动前，第一个layer是倒数第二个
+        expect(graphThemeLayer.div.parentNode.getElementsByClassName("themeLayer")[length1-1].id).toEqual(graphThemeLayer.id);
         graphThemeLayer2.moveTo(graphThemeLayer.id);
-        expect(graphThemeLayer.div.parentNode.getElementsByClassName("themeLayer")[0].id).toEqual(graphThemeLayer2.id);
+        expect(graphThemeLayer.div.parentNode.getElementsByClassName("themeLayer")[length1-1].id).toEqual(graphThemeLayer2.id);
     });
 });
