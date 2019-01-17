@@ -53,7 +53,7 @@ describe('openlayers_GraphicLayer', () => {
     afterAll(() => {
         document.body.removeChild(testDiv);
     });
-    it('constructor_canvas', (done) => {
+   it('constructor_canvas', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
         });
@@ -113,7 +113,7 @@ describe('openlayers_GraphicLayer', () => {
         });
     });
 
-    xit('constructor_webgl', (done) => {
+   it('constructor_webgl', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
         });
@@ -162,7 +162,7 @@ describe('openlayers_GraphicLayer', () => {
         done();
     });
 
-    it('CloverShape', (done) => {
+   it('CloverShape', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
         });
@@ -239,7 +239,7 @@ describe('openlayers_GraphicLayer', () => {
         });
     });
 
-    it("addGraphics", (done) => {
+   it("addGraphics", (done) => {
         let graphics = [];
         map = new ol.Map({
             target: 'map',
@@ -283,7 +283,7 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("getGraphicBy add getGraphicById", (done) => {
+   it("getGraphicBy add getGraphicById", (done) => {
         let graphics = [];
         map = new ol.Map({
             target: 'map',
@@ -323,7 +323,7 @@ describe('openlayers_GraphicLayer', () => {
 
 
     });
-    it("getGraphicsByAttribute", (done) => {
+   it("getGraphicsByAttribute", (done) => {
         let graphics = [];
         map = new ol.Map({
             target: 'map',
@@ -358,7 +358,7 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("removeGraphics", (done) => {
+   it("removeGraphics", (done) => {
         let graphics = [];
         map = new ol.Map({
             target: 'map',
@@ -403,7 +403,7 @@ describe('openlayers_GraphicLayer', () => {
             done();
         }, 4000);
     });
-    it("getLayerState", (done) => {
+   it("getLayerState", (done) => {
         let graphics = [];
         map = new ol.Map({
             target: 'map',
@@ -438,7 +438,7 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("setGraphics", (done) => {
+   it("setGraphics", (done) => {
         let graphics = [];
         map = new ol.Map({
             target: 'map',
@@ -482,7 +482,7 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("setStyle", (done) => {
+   it("setStyle", (done) => {
         let graphics = [];
         map = new ol.Map({
             target: 'map',
@@ -519,7 +519,7 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it("clear", (done) => {
+   it("clear", (done) => {
         let graphics = [];
         map = new ol.Map({
             target: 'map',
@@ -553,7 +553,7 @@ describe('openlayers_GraphicLayer', () => {
         }, 4000);
     });
 
-    it('forEachFeatureAtCoordinate_ICL_1047', (done) => {
+   it('forEachFeatureAtCoordinate_ICL_1047', (done) => {
         //三叶草的生成坐标
         var coordinate = [
             [50.154958667070076, -0.89592969754775]
