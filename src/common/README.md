@@ -1,6 +1,6 @@
 # @supermap/iclient-common
 
-@supermap/iclient-classic 是 @supermap/iclient-leaflet、@supermap/iclient-openlayers、@supermap/iclient-mapboxgl、@supermap/iclient-classic 的共用依赖。
+@supermap/iclient-common 是 @supermap/iclient-leaflet、@supermap/iclient-openlayers、@supermap/iclient-mapboxgl、@supermap/iclient-classic 的共用依赖。
 
 ## 简介
 * 官网：[http://iclient.supermap.io](http://iclient.supermap.io)

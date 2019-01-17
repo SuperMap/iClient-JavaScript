@@ -3,21 +3,27 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_tiandituLayer_mecartor"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
-<script type="text/javascript">
-    var map = L.map('map', {
-        center: [0, 0],
-        zoom: 0,
-        crs: L.CRS.TianDiTu_Mercator
-    });
-    L.supermap.tiandituTileLayer({layerType: "img"}).addTo(map);
-</script>
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+        var map = L.map('map', {
+            center: [0, 0],
+            zoom: 0,
+            crs: L.CRS.TianDiTu_Mercator
+        });
+        L.supermap.tiandituTileLayer({
+            layerType: "img",
+            key: "1d109683f4d84198e37a38c442d68311"
+        }).addTo(map);
+    </script>
 </body>
+
 </html>

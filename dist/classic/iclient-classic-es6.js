@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -1474,7 +1489,7 @@ SuperMap.mixin = function (...mixins) {
  * @category BaseTypes Util
  * @description 字符串操作的一系列常用扩展函数。
  */
-var BaseTypes_StringExt = SuperMap.String = {
+var StringExt = SuperMap.String = {
 
     /**
      * @function SuperMap.String.startsWith
@@ -1655,7 +1670,7 @@ var BaseTypes_StringExt = SuperMap.String = {
  * @category BaseTypes Util
  * @description 数值操作的一系列常用扩展函数。
  */
-var BaseTypes_NumberExt = SuperMap.Number = {
+var NumberExt = SuperMap.Number = {
 
     /**
      * @member {string} [SuperMap.Number.decimalSeparator='.']
@@ -1743,7 +1758,7 @@ if (!Number.prototype.limitSigDigs) {
      *           如果传入值 为 null、0、或者是负数, 返回值 0。
      */
     Number.prototype.limitSigDigs = function (sig) {
-        return BaseTypes_NumberExt.limitSigDigs(this, sig);
+        return NumberExt.limitSigDigs(this, sig);
     };
 }
 
@@ -1754,7 +1769,7 @@ if (!Number.prototype.limitSigDigs) {
  * @category BaseTypes Util
  * @description 函数操作的一系列常用扩展函数。
  */
-var BaseTypes_FunctionExt = SuperMap.Function = {
+var FunctionExt = SuperMap.Function = {
     /**
      * @function SuperMap.Function.bind
      * @description 绑定函数到对象。方便创建 this 的作用域。
@@ -1827,7 +1842,7 @@ var BaseTypes_FunctionExt = SuperMap.Function = {
  * @category BaseTypes Util
  * @description 数组操作的一系列常用扩展函数。
  */
-var BaseTypes_ArrayExt = SuperMap.Array = {
+var ArrayExt = SuperMap.Array = {
 
     /**
      * @function SuperMap.Array.filter
@@ -1869,7 +1884,7 @@ var BaseTypes_ArrayExt = SuperMap.Array = {
 
 
 
-var Util_Util = SuperMap.Util = SuperMap.Util || {};
+var Util = SuperMap.Util = SuperMap.Util || {};
 /**
  * @name Util
  * @memberOf SuperMap
@@ -2954,7 +2969,7 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
  * @namespace
  * @description 事件处理函数.
  */
-var Event_Event = SuperMap.Event = {
+var Event = SuperMap.Event = {
 
     /**
      * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
@@ -3125,7 +3140,7 @@ var Event_Event = SuperMap.Event = {
      * @param {boolean} [useCapture=false] - 是否捕获。
      */
     observe: function (elementParam, name, observer, useCapture) {
-        var element = Util_Util.getElement(elementParam);
+        var element = Util.getElement(elementParam);
         useCapture = useCapture || false;
 
         if (name === 'keypress' &&
@@ -3145,7 +3160,7 @@ var Event_Event = SuperMap.Event = {
             if (element.id) {
                 idPrefix = element.id + "_" + idPrefix;
             }
-            element._eventCacheID = Util_Util.createUniqueID(idPrefix);
+            element._eventCacheID = Util.createUniqueID(idPrefix);
         }
 
         var cacheID = element._eventCacheID;
@@ -3179,7 +3194,7 @@ var Event_Event = SuperMap.Event = {
      * @param {(HTMLElement|string)} elementParam - 
      */
     stopObservingElement: function (elementParam) {
-        var element = Util_Util.getElement(elementParam);
+        var element = Util.getElement(elementParam);
         var cacheID = element._eventCacheID;
 
         this._removeElementObservers(SuperMap.Event.observers[cacheID]);
@@ -3212,7 +3227,7 @@ var Event_Event = SuperMap.Event = {
     stopObserving: function (elementParam, name, observer, useCapture) {
         useCapture = useCapture || false;
 
-        var element = Util_Util.getElement(elementParam);
+        var element = Util.getElement(elementParam);
         var cacheID = element._eventCacheID;
 
         if (name === 'keypress') {
@@ -3278,7 +3293,7 @@ var Event_Event = SuperMap.Event = {
 
     CLASS_NAME: "SuperMap.Event"
 };
-SuperMap.Event = Event_Event;
+SuperMap.Event = Event;
 /* prevent memory leaks in IE */
 SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 
@@ -3427,7 +3442,7 @@ class Events_Events {
          */
         this.clearMouseListener = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         if (eventTypes != null) {
             for (var i = 0, len = eventTypes.length; i < len; i++) {
@@ -3454,9 +3469,9 @@ class Events_Events {
         }
         this.extensions = null;
         if (this.element) {
-            Event_Event.stopObservingElement(this.element);
+            Event.stopObservingElement(this.element);
             if (this.element.hasScrollEvent) {
-                Event_Event.stopObserving(
+                Event.stopObserving(
                     window, "scroll", this.clearMouseListener
                 );
             }
@@ -3489,16 +3504,16 @@ class Events_Events {
      */
     attachToElement(element) {
         if (this.element) {
-            Event_Event.stopObservingElement(this.element);
+            Event.stopObservingElement(this.element);
         } else {
             // keep a bound copy of handleBrowserEvent() so that we can
             // pass the same function to both Event.observe() and .stopObserving()
-            this.eventHandler = BaseTypes_FunctionExt.bindAsEventListener(
+            this.eventHandler = FunctionExt.bindAsEventListener(
                 this.handleBrowserEvent, this
             );
 
             // to be used with observe and stopObserving
-            this.clearMouseListener = BaseTypes_FunctionExt.bind(
+            this.clearMouseListener = FunctionExt.bind(
                 this.clearMouseCache, this
             );
         }
@@ -3511,10 +3526,10 @@ class Events_Events {
             this.addEventType(eventType);
 
             // use Prototype to register the event cross-browser
-            Event_Event.observe(element, eventType, this.eventHandler);
+            Event.observe(element, eventType, this.eventHandler);
         }
         // disable dragstart in IE so that mousedown/move/up works normally
-        Event_Event.observe(element, "dragstart", Event_Event.stop);
+        Event.observe(element, "dragstart", Event.stop);
     }
 
 
@@ -3565,7 +3580,7 @@ class Events_Events {
             this.extensions[type] = new Events_Events[type](this);
         }
         if ((func != null) &&
-            (Util_Util.indexOf(this.eventTypes, type) !== -1)) {
+            (Util.indexOf(this.eventTypes, type) !== -1)) {
 
             if (obj == null) {
                 obj = this.object;
@@ -3707,7 +3722,7 @@ class Events_Events {
         }
         // don't fall through to other DOM elements
         if (!this.fallThrough) {
-            Event_Event.stop(evt, true);
+            Event.stop(evt, true);
         }
         return continueChain;
     }
@@ -3769,12 +3784,12 @@ class Events_Events {
         if (!this.includeXY) {
             this.clearMouseCache();
         } else if (!this.element.hasScrollEvent) {
-            Event_Event.observe(window, "scroll", this.clearMouseListener);
+            Event.observe(window, "scroll", this.clearMouseListener);
             this.element.hasScrollEvent = true;
         }
 
         if (!this.element.scrolls) {
-            var viewportElement = Util_Util.getViewportElement();
+            var viewportElement = Util.getViewportElement();
             this.element.scrolls = [
                 viewportElement.scrollLeft,
                 viewportElement.scrollTop
@@ -3789,7 +3804,7 @@ class Events_Events {
         }
 
         if (!this.element.offsets) {
-            this.element.offsets = Util_Util.pagePosition(this.element);
+            this.element.offsets = Util.pagePosition(this.element);
         }
 
         return new Pixel_Pixel(
@@ -3902,7 +3917,7 @@ class ElasticSearch_ElasticSearch {
          * 相当于调用 SuperMap.Events.on(eventListeners)。
          */
         this.eventListeners = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         if (this.eventListeners instanceof Object) {
             this.events.on(this.eventListeners);
         }
@@ -4456,7 +4471,7 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch_ie8_fetch = __webpack_require__(9);
+var fetch = __webpack_require__(9);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(3);
@@ -4478,7 +4493,7 @@ const FetchRequest_fetch = window.fetch;
  * @description 设置是否支持跨域。
  * @param {boolean} cors - 是否支持跨域。
  */
-var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
+var setCORS = SuperMap.setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
@@ -4486,7 +4501,7 @@ var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
  * @description 是否支持跨域。
  * @returns {boolean} 是否支持跨域。
  */
-var FetchRequest_isCORS = SuperMap.isCORS = function () {
+var isCORS = SuperMap.isCORS = function () {
     if (SuperMap.CORS != undefined) {
         return SuperMap.CORS;
     }
@@ -4497,7 +4512,7 @@ var FetchRequest_isCORS = SuperMap.isCORS = function () {
  * @description 设置请求超时时间。
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
  */
-var FetchRequest_setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
+var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
     return SuperMap.RequestTimeout = timeout;
 }
 /**
@@ -4505,10 +4520,10 @@ var FetchRequest_setRequestTimeout = SuperMap.setRequestTimeout = function (time
  * @description 获取请求超时时间。
  * @returns {number} 请求超时时间。
  */
-var FetchRequest_getRequestTimeout = SuperMap.getRequestTimeout = function () {
+var getRequestTimeout = SuperMap.getRequestTimeout = function () {
     return SuperMap.RequestTimeout || 45000;
 }
-var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
+var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -4525,13 +4540,13 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
         }
     },
     supportDirectRequest: function (url, options) {
-        return Util_Util.isInTheSameDomain(url) || FetchRequest_isCORS() || options.proxy
+        return Util.isInTheSameDomain(url) || isCORS() || options.proxy
     },
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
         url = this._processUrl(url, options);
-        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -4552,7 +4567,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
         options = options || {};
         var type = 'DELETE';
         url = this._processUrl(url, options);
-        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -4661,7 +4676,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
                 credentials: options.withCredentials ? 'include' : 'omit',
                 mode: 'cors',
-                timeout: FetchRequest_getRequestTimeout()
+                timeout: getRequestTimeout()
             }).then(function (response) {
                 return response;
             }));
@@ -4672,7 +4687,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
             headers: options.headers,
             credentials: options.withCredentials ? 'include' : 'omit',
             mode: 'cors',
-            timeout: FetchRequest_getRequestTimeout()
+            timeout: getRequestTimeout()
         }).then(function (response) {
             return response;
         });
@@ -4916,7 +4931,7 @@ class SecurityManager_SecurityManager {
         if (!serverInfo) {
             return;
         }
-        return FetchRequest_FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
+        return FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
             return response.text();
         });
     }
@@ -4927,7 +4942,7 @@ class SecurityManager_SecurityManager {
      */
     static registerServers(serverInfos) {
         this.servers = this.servers || {};
-        if (!Util_Util.isArray(serverInfos)) {
+        if (!Util.isArray(serverInfos)) {
             serverInfos = [serverInfos];
         }
         for (var i = 0; i < serverInfos.length; i++) {
@@ -4961,7 +4976,7 @@ class SecurityManager_SecurityManager {
             return;
         }
 
-        ids = (Util_Util.isArray(ids)) ? ids : [ids];
+        ids = (Util.isArray(ids)) ? ids : [ids];
         for (var i = 0; i < ids.length; i++) {
             var id = this._getUrlRestString(ids[0]) || ids[0];
             this.keys[id] = key;
@@ -5025,7 +5040,7 @@ class SecurityManager_SecurityManager {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
         };
-        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -5046,7 +5061,7 @@ class SecurityManager_SecurityManager {
             },
             withoutFormatSuffix: true
         };
-        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -5085,7 +5100,7 @@ class SecurityManager_SecurityManager {
             },
             withCredentials: true
         };
-        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -5107,7 +5122,7 @@ class SecurityManager_SecurityManager {
             withCredentials: true,
             withoutFormatSuffix: true
         };
-        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -5126,7 +5141,7 @@ class SecurityManager_SecurityManager {
      * @returns {Promise} 返回包含 iManager 登录请求结果的 Promise 对象。
      */
     static loginManager(url, loginInfoParams, options) {
-        if (!Util_Util.isInTheSameDomain(url)) {
+        if (!Util.isInTheSameDomain(url)) {
             var isNewTab = options ? options.isNewTab : true;
             this._open(url, isNewTab);
             return;
@@ -5146,7 +5161,7 @@ class SecurityManager_SecurityManager {
             }
         };
         var me = this;
-        return FetchRequest_FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
             response.text().then(function (result) {
                 me.imanagerToken = result;
                 return result;
@@ -5246,7 +5261,7 @@ SuperMap.SecurityManager = SecurityManager_SecurityManager;
  * @description 服务请求返回结果数据类型
  * @type {string}
  */
-var REST_DataFormat = SuperMap.DataFormat = {
+var DataFormat = SuperMap.DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
@@ -5260,7 +5275,7 @@ var REST_DataFormat = SuperMap.DataFormat = {
  * @description 服务器类型
  * @type {string}
  */
-var REST_ServerType = SuperMap.ServerType = {
+var ServerType = SuperMap.ServerType = {
     /** ISERVER */
     ISERVER: "ISERVER",
     /** IPORTAL */
@@ -5276,7 +5291,7 @@ var REST_ServerType = SuperMap.ServerType = {
  * @description 几何对象枚举,定义了一系列几何对象类型。
  * @type {string}
  */
-var REST_GeometryType = SuperMap.GeometryType = {
+var GeometryType = SuperMap.GeometryType = {
     /** LINE */
     LINE: "LINE",
     /** LINEM */
@@ -5310,7 +5325,7 @@ var REST_GeometryType = SuperMap.GeometryType = {
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @type {string}
  */
-var REST_QueryOption = SuperMap.QueryOption = {
+var QueryOption = SuperMap.QueryOption = {
     /** 属性 */
     ATTRIBUTE: "ATTRIBUTE",
     /** 属性和几何对象 */
@@ -5327,7 +5342,7 @@ var REST_QueryOption = SuperMap.QueryOption = {
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
  * @type {string}
  */
-var REST_JoinType = SuperMap.JoinType = {
+var JoinType = SuperMap.JoinType = {
     /** INNERJOIN */
     INNERJOIN: "INNERJOIN",
     /** LEFTJOIN */
@@ -5342,7 +5357,7 @@ var REST_JoinType = SuperMap.JoinType = {
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
  * @type {string}
  */
-var REST_SpatialQueryMode = SuperMap.SpatialQueryMode = {
+var SpatialQueryMode = SuperMap.SpatialQueryMode = {
     /** 包含空间查询模式 */
     CONTAIN: "CONTAIN",
     /** 交叉空间查询模式 */
@@ -5370,7 +5385,7 @@ var REST_SpatialQueryMode = SuperMap.SpatialQueryMode = {
  * 该类定义了数据集对象间的空间关系类型常量。
  * @type {string}
  */
-var REST_SpatialRelationType = SuperMap.SpatialRelationType = {
+var SpatialRelationType = SuperMap.SpatialRelationType = {
     /** 包含关系 */
     CONTAIN: "CONTAIN",
     /** 相交关系 */
@@ -5387,7 +5402,7 @@ var REST_SpatialRelationType = SuperMap.SpatialRelationType = {
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
  */
-var REST_MeasureMode = SuperMap.MeasureMode = {
+var MeasureMode = SuperMap.MeasureMode = {
     /** 距离测量 */
     DISTANCE: "DISTANCE",
     /** 面积测量 */
@@ -5402,7 +5417,7 @@ var REST_MeasureMode = SuperMap.MeasureMode = {
  * 该类定义了一系列距离单位类型。
  * @type {string}
  */
-var REST_Unit = SuperMap.Unit = {
+var Unit = SuperMap.Unit = {
     /**  米 */
     METER: "METER",
     /**  千米 */
@@ -5439,7 +5454,7 @@ var REST_Unit = SuperMap.Unit = {
  * 该类定义了一系列缓冲距离单位类型。
  * @type {string}
  */
-var REST_BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
+var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
     /**  厘米 */
     CENTIMETER: "CENTIMETER",
     /**  分米 */
@@ -5467,7 +5482,7 @@ var REST_BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
  * @description  数据源引擎类型枚举。
  * @type {string}
  */
-var REST_EngineType = SuperMap.EngineType = {
+var EngineType = SuperMap.EngineType = {
     /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
     IMAGEPLUGINS: "IMAGEPLUGINS",
     /**  OGC 引擎类型，针对于 Web 数据源，Web 引擎，目前支持的类型有 WMS，WFS，WCS。 */
@@ -5489,7 +5504,7 @@ var REST_EngineType = SuperMap.EngineType = {
  * @description  统计专题图文本显示格式枚举。
  * @type {string}
  */
-var REST_ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
+var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
     /**  标题。以各子项的标题来进行标注。 */
     CAPTION: "CAPTION",
     /**  标题 + 百分数。以各子项的标题和所占的百分比来进行标注。 */
@@ -5510,7 +5525,7 @@ var REST_ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
  * @description  统计专题图类型枚举。
  * @type {string}
  */
-var REST_ThemeGraphType = SuperMap.ThemeGraphType = {
+var ThemeGraphType = SuperMap.ThemeGraphType = {
     /**  面积图。 */
     AREA: "AREA",
     /**  柱状图。 */
@@ -5546,7 +5561,7 @@ var REST_ThemeGraphType = SuperMap.ThemeGraphType = {
  * @description  统计专题图坐标轴文本显示模式。
  * @type {string}
  */
-var REST_GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
+var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
     /**  显示全部文本。 */
     ALL: "ALL",
     /**  不显示。 */
@@ -5563,7 +5578,7 @@ var REST_GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
  *
  * @type {string}
  */
-var REST_GraduatedMode = SuperMap.GraduatedMode = {
+var GraduatedMode = SuperMap.GraduatedMode = {
     /**  常量分级模式。 */
     CONSTANT: "CONSTANT",
     /** 对数分级模式。 */
@@ -5579,7 +5594,7 @@ var REST_GraduatedMode = SuperMap.GraduatedMode = {
  * @description  范围分段专题图分段方式枚举。
  * @type {string}
  */
-var REST_RangeMode = SuperMap.RangeMode = {
+var RangeMode = SuperMap.RangeMode = {
     /**  自定义分段法。 */
     CUSTOMINTERVAL: "CUSTOMINTERVAL",
     /**  等距离分段法。 */
@@ -5601,7 +5616,7 @@ var REST_RangeMode = SuperMap.RangeMode = {
  * @description  专题图类型枚举。
  * @type {string}
  */
-var REST_ThemeType = SuperMap.ThemeType = {
+var ThemeType = SuperMap.ThemeType = {
     /** 点密度专题图。 */
     DOTDENSITY: "DOTDENSITY",
     /** 等级符号专题图。 */
@@ -5623,7 +5638,7 @@ var REST_ThemeType = SuperMap.ThemeType = {
  * @description  渐变颜色枚举。
  * @type {string}
  */
-var REST_ColorGradientType = SuperMap.ColorGradientType = {
+var ColorGradientType = SuperMap.ColorGradientType = {
     /** 黑白渐变色。 */
     BLACK_WHITE: "BLACKWHITE",
     /** 蓝黑渐变色。 */
@@ -5687,7 +5702,7 @@ var REST_ColorGradientType = SuperMap.ColorGradientType = {
  * @description  文本对齐枚举。
  * @type {string}
  */
-var REST_TextAlignment = SuperMap.TextAlignment = {
+var TextAlignment = SuperMap.TextAlignment = {
     /** 左上角对齐。 */
     TOPLEFT: "TOPLEFT",
     /** 顶部居中对齐。 */
@@ -5720,7 +5735,7 @@ var REST_TextAlignment = SuperMap.TextAlignment = {
  * @description  渐变填充风格的渐变类型枚举。
  * @type {string}
  */
-var REST_FillGradientMode = SuperMap.FillGradientMode = {
+var FillGradientMode = SuperMap.FillGradientMode = {
     /** 无渐变。 */
     NONE: "NONE",
     /** 线性渐变填充。 */
@@ -5740,7 +5755,7 @@ var REST_FillGradientMode = SuperMap.FillGradientMode = {
  * @description  标签沿线标注方向枚举。
  * @type {string}
  */
-var REST_AlongLineDirection = SuperMap.AlongLineDirection = {
+var AlongLineDirection = SuperMap.AlongLineDirection = {
     /** 沿线的法线方向放置标签。 */
     NORMAL: "ALONG_LINE_NORMAL",
     /** 从下到上，从左到右放置。 */
@@ -5760,7 +5775,7 @@ var REST_AlongLineDirection = SuperMap.AlongLineDirection = {
  * @description  标签专题图中标签背景的形状枚举。
  * @type {string}
  */
-var REST_LabelBackShape = SuperMap.LabelBackShape = {
+var LabelBackShape = SuperMap.LabelBackShape = {
     /** 菱形背景，即标签背景的形状为菱形。 */
     DIAMOND: "DIAMOND",
     /** 椭圆形背景，即标签背景的行状为椭圆形。 */
@@ -5784,7 +5799,7 @@ var REST_LabelBackShape = SuperMap.LabelBackShape = {
  * @description  标签专题图中超长标签的处理模式枚举。
  * @type {string}
  */
-var REST_LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
+var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
     /** 换行显示。 */
     NEWLINE: "NEWLINE",
     /** 对超长标签不进行处理。 */
@@ -5801,7 +5816,7 @@ var REST_LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
  * 在行驶引导子项中使用。
  * @type {string}
  */
-var REST_DirectionType = SuperMap.DirectionType = {
+var DirectionType = SuperMap.DirectionType = {
     /** 东。 */
     EAST: "EAST",
     /** 无方向。 */
@@ -5823,7 +5838,7 @@ var REST_DirectionType = SuperMap.DirectionType = {
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
  * @type {string}
  */
-var REST_SideType = SuperMap.SideType = {
+var SideType = SuperMap.SideType = {
     /** 路的左侧。 */
     LEFT: "LEFT",
     /** 在路上（即路的中间）。 */
@@ -5843,7 +5858,7 @@ var REST_SideType = SuperMap.SideType = {
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @type {string}
  */
-var REST_SupplyCenterType = SuperMap.SupplyCenterType = {
+var SupplyCenterType = SuperMap.SupplyCenterType = {
     /** 固定中心点。 */
     FIXEDCENTER: "FIXEDCENTER",
     /** 非中心点。 */
@@ -5860,7 +5875,7 @@ var REST_SupplyCenterType = SuperMap.SupplyCenterType = {
  * 用在行驶引导子项类中，表示转弯的方向。
  * @type {string}
  */
-var REST_TurnType = SuperMap.TurnType = {
+var TurnType = SuperMap.TurnType = {
     /** 向前直行。 */
     AHEAD: "AHEAD",
     /** 掉头。 */
@@ -5882,7 +5897,7 @@ var REST_TurnType = SuperMap.TurnType = {
  * @description  缓冲区分析BufferEnd类型。
  * @type {string}
  */
-var REST_BufferEndType = SuperMap.BufferEndType = {
+var BufferEndType = SuperMap.BufferEndType = {
     /** FLAT */
     FLAT: "FLAT",
     /** ROUND */
@@ -5895,7 +5910,7 @@ var REST_BufferEndType = SuperMap.BufferEndType = {
  * @description  叠加分析类型枚举。
  * @type {string}
  */
-var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
+var OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
     /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。。 */
@@ -5919,7 +5934,7 @@ var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
  * @description  分布式分析输出类型枚举。
  * @type {string}
  */
-var REST_OutputType = SuperMap.OutputType = {
+var OutputType = SuperMap.OutputType = {
     /** INDEXEDHDFS */
     INDEXEDHDFS: "INDEXEDHDFS",
     /** UDB */
@@ -5938,7 +5953,7 @@ var REST_OutputType = SuperMap.OutputType = {
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
  * @type {string}
  */
-var REST_SmoothMethod = SuperMap.SmoothMethod = {
+var SmoothMethod = SuperMap.SmoothMethod = {
     /** B 样条法。 */
     BSPLINE: "BSPLINE",
     /** 磨角法。 */
@@ -5952,7 +5967,7 @@ var REST_SmoothMethod = SuperMap.SmoothMethod = {
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
  * @type {string}
  */
-var REST_SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
+var SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
     /** 等值线提取。 */
     ISOLINE: "ISOLINE",
     /** 等值面提取。 */
@@ -5966,7 +5981,7 @@ var REST_SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @type {string}
  */
-var REST_DataReturnMode = SuperMap.DataReturnMode = {
+var DataReturnMode = SuperMap.DataReturnMode = {
     /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
     DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
     /** 只返回数据集标识（数据集名称@数据源名称）。 */
@@ -5982,7 +5997,7 @@ var REST_DataReturnMode = SuperMap.DataReturnMode = {
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var REST_EditType = SuperMap.EditType = {
+var EditType = SuperMap.EditType = {
     /** 增加操作。 */
     ADD: "add",
     /** 修改操作。 */
@@ -5999,7 +6014,7 @@ var REST_EditType = SuperMap.EditType = {
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var REST_TransferTactic = SuperMap.TransferTactic = {
+var TransferTactic = SuperMap.TransferTactic = {
     /** 时间短。 */
     LESS_TIME: "LESS_TIME",
     /** 少换乘。 */
@@ -6018,7 +6033,7 @@ var REST_TransferTactic = SuperMap.TransferTactic = {
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
  * @type {string}
  */
-var REST_TransferPreference = SuperMap.TransferPreference = {
+var TransferPreference = SuperMap.TransferPreference = {
     /** 公交汽车优先。 */
     BUS: "BUS",
     /** 地铁优先。 */
@@ -6036,7 +6051,7 @@ var REST_TransferPreference = SuperMap.TransferPreference = {
  * @description  地图背景格网类型枚举。
  * @type {string}
  */
-var REST_GridType = SuperMap.GridType = {
+var GridType = SuperMap.GridType = {
     /** 十字叉丝。 */
     CROSS: "CROSS",
     /** 网格线。 */
@@ -6056,7 +6071,7 @@ var REST_GridType = SuperMap.GridType = {
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
  * @type {string}
  */
-var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
+var ColorSpaceType = SuperMap.ColorSpaceType = {
     /** 该类型主要在印刷系统使用。 */
     CMYK: "CMYK",
     /** 该类型主要在显示系统中使用。 */
@@ -6069,7 +6084,7 @@ var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
  * @description  图层类型。
  * @type {string}
  */
-var REST_LayerType = SuperMap.LayerType = {
+var LayerType = SuperMap.LayerType = {
     /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。。 */
     UGC: "UGC",
     /** WMS 图层。 */
@@ -6087,7 +6102,7 @@ var REST_LayerType = SuperMap.LayerType = {
  * @description  UGC图层类型。
  * @type {string}
  */
-var REST_UGCLayerType = SuperMap.UGCLayerType = {
+var UGCLayerType = SuperMap.UGCLayerType = {
     /** 专题图层。 */
     THEME: "THEME",
     /** 矢量图层。 */
@@ -6105,7 +6120,7 @@ var REST_UGCLayerType = SuperMap.UGCLayerType = {
  * @description  字段统计方法类型。
  * @type {string}
  */
-var REST_StatisticMode = SuperMap.StatisticMode = {
+var StatisticMode = SuperMap.StatisticMode = {
     /** 统计所选字段的平均值。 */
     AVERAGE: "AVERAGE",
     /** 统计所选字段的最大值。 */
@@ -6127,7 +6142,7 @@ var REST_StatisticMode = SuperMap.StatisticMode = {
  * @description  栅格与影像数据存储的像素格式枚举。
  * @type {string}
  */
-var REST_PixelFormat = SuperMap.PixelFormat = {
+var PixelFormat = SuperMap.PixelFormat = {
     /** 每个像元用16个比特(即2个字节)表示。 */
     BIT16: "BIT16",
     /** 每个像元用32个比特(即4个字节)表示。 */
@@ -6157,7 +6172,7 @@ var REST_PixelFormat = SuperMap.PixelFormat = {
  * @description  内插时使用的样本点的查找方式枚举
  * @type {string}
  */
-var REST_SearchMode = SuperMap.SearchMode = {
+var SearchMode = SuperMap.SearchMode = {
     /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
     KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
     /** 使用 KDTREE 的定长方式查找参与内插分析的点。 */
@@ -6175,7 +6190,7 @@ var REST_SearchMode = SuperMap.SearchMode = {
  * @description  插值分析的算法的类型
  * @type {string}
  */
-var REST_InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
+var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
     /** 普通克吕金插值法。 */
     KRIGING: "KRIGING",
     /** 简单克吕金插值法。 */
@@ -6191,7 +6206,7 @@ var REST_InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
  * @type {string}
  */
-var REST_VariogramMode = SuperMap.VariogramMode = {
+var VariogramMode = SuperMap.VariogramMode = {
     /** 指数函数。 */
     EXPONENTIAL: "EXPONENTIAL",
     /** 高斯函数。 */
@@ -6207,7 +6222,7 @@ var REST_VariogramMode = SuperMap.VariogramMode = {
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
  * @type {string}
  */
-var REST_Exponent = SuperMap.Exponent = {
+var Exponent = SuperMap.Exponent = {
     /** 阶数为1。 */
     EXP1: "EXP1",
     /** 阶数为2。 */
@@ -6221,7 +6236,7 @@ var REST_Exponent = SuperMap.Exponent = {
  * @description token申请的客户端标识类型
  * @type {string}
  */
-var REST_ClientType = SuperMap.ClientType = {
+var ClientType = SuperMap.ClientType = {
     /** 指定的 IP 地址。 */
     IP: "IP",
     /** 指定的 URL。 */
@@ -6243,7 +6258,7 @@ var REST_ClientType = SuperMap.ClientType = {
  * @description 客户端专题图图表类型
  * @type {string}
  */
-var REST_ChartType = SuperMap.ChartType = {
+var ChartType = SuperMap.ChartType = {
     /** 柱状图。 */
     BAR: "Bar",
     /** 三维柱状图。 */
@@ -6267,7 +6282,7 @@ var REST_ChartType = SuperMap.ChartType = {
  * @description  裁剪分析模式
  * @type {string}
  */
-var REST_ClipAnalystMode = SuperMap.ClipAnalystMode = {
+var ClipAnalystMode = SuperMap.ClipAnalystMode = {
     /** CLIP。 */
     CLIP: "clip",
     /** INTERSECT。 */
@@ -6280,7 +6295,7 @@ var REST_ClipAnalystMode = SuperMap.ClipAnalystMode = {
  * @description 分布式分析面积单位
  * @type {string}
  */
-var REST_AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
+var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
     /** 平方米。 */
     "SQUAREMETER": "SquareMeter",
     /** 平方千米。 */
@@ -6305,7 +6320,7 @@ var REST_AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
  * @description 分布式分析单位
  * @type {string}
  */
-var REST_AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
+var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
     /** 米。 */
     "METER": "Meter",
     /** 千米。 */
@@ -6325,7 +6340,7 @@ var REST_AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
  * @description 分布式分析统计模式
  * @type {string}
  */
-var REST_StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
+var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
     /** 统计所选字段的最大值。 */
     "MAX": "max",
     /** 统计所选字段的最小值。 */
@@ -6346,7 +6361,7 @@ var REST_StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
  * @description 分布式分析聚合类型
  * @type {string}
  */
-var REST_SummaryType = SuperMap.SummaryType = {
+var SummaryType = SuperMap.SummaryType = {
     /** 格网聚合。 */
     "SUMMARYMESH": "SUMMARYMESH",
     /** 多边形聚合。 */
@@ -6359,7 +6374,7 @@ var REST_SummaryType = SuperMap.SummaryType = {
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
  * @type {string}
  */
-var REST_TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
+var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
     /** 面内无重叠，用于对面数据进行拓扑检查。 */
     REGIONNOOVERLAP: "REGIONNOOVERLAP",
     /** 面与面无重叠，用于对面数据进行拓扑检查。 */
@@ -6383,7 +6398,7 @@ var REST_TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
  * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
  * @type {string}
  */
-var REST_AggregationType = SuperMap.AggregationType = {
+var AggregationType = SuperMap.AggregationType = {
     /** 格网聚合类型。 */
     GEOHASH_GRID: "geohash_grid",
     /** 过滤聚合类型。 */
@@ -6397,7 +6412,7 @@ var REST_AggregationType = SuperMap.AggregationType = {
  * @description  聚合查询中filter查询枚举类
  * @type {string}
  */
-var REST_AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
+var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
     /** 范围查询。 */
     GEO_BOUNDING_BOX: "geo_bounding_box"
 }
@@ -6409,7 +6424,7 @@ var REST_AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
  * @description feature 查询方式。
  * @type {string}
  */
-var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
+var GetFeatureMode = SuperMap.GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
     /** 通过几何对象的缓冲区来获取要素。 */
@@ -6536,7 +6551,7 @@ class DatasourceConnectionInfo_DatasourceConnectionInfo {
         this.user = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DatasourceConnectionInfo";
@@ -6591,7 +6606,7 @@ class OutputSetting_OutputSetting {
          * @member {SuperMap.OutputType} SuperMap.OutputSetting.prototype.type
          * @description 分布式分析的输出类型。
          */
-        this.type = REST_OutputType.UDB;
+        this.type = OutputType.UDB;
 
         /**
          * @member {string} [SuperMap.OutputSetting.prototype.datasetName='analystResult']
@@ -6611,7 +6626,7 @@ class OutputSetting_OutputSetting {
          */
         this.outputPath = "";
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OutputSetting";
     }
 
@@ -6672,7 +6687,7 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.RangeMode} [SuperMap.MappingParameters.prototype.RangeMode=SuperMap.RangeMode.EQUALINTERVAL]
          * @description 专题图分段模式。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} [SuperMap.MappingParameters.prototype.rangeCount]
@@ -6684,9 +6699,9 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.ColorGradientType} [SuperMap.MappingParameters.prototype.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED]
          * @description 专题图颜色渐变模式。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.MappingParameters";
     }
 
@@ -6792,19 +6807,19 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
+        this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.radiusUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 搜索半径单位。
          */
-        this.radiusUnit = REST_AnalystSizeUnit.METER;
+        this.radiusUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystAreaUnit} [SuperMap.KernelDensityJobParameter.prototype.areaUnit=SuperMap.AnalystAreaUnit.SQUAREMILE]
          * @description 面积单位。
          */
-        this.areaUnit = REST_AnalystAreaUnit.SQUAREMILE;
+        this.areaUnit = AnalystAreaUnit.SQUAREMILE;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.KernelDensityJobParameter.prototype.output
@@ -6818,7 +6833,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
     }
@@ -6931,7 +6946,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          * @member {SuperMap.SpatialQueryMode} [SuperMap.SingleObjectQueryJobsParameter.prototype.mode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式 。
          */
-        this.mode = REST_SpatialQueryMode.CONTAIN;
+        this.mode = SpatialQueryMode.CONTAIN;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SingleObjectQueryJobsParameter.prototype.output]
@@ -6945,7 +6960,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
     }
@@ -7059,7 +7074,7 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
     }
 
@@ -7178,7 +7193,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.StatisticAnalystMode} [SuperMap.SummaryMeshJobParameter.prototype.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE]
          * @description 统计模式。
          */
-        this.statisticModes = REST_StatisticAnalystMode.AVERAGE;
+        this.statisticModes = StatisticAnalystMode.AVERAGE;
 
         /**
          * @member {number} SuperMap.SummaryMeshJobParameter.prototype.fields
@@ -7190,7 +7205,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.SummaryType} [SuperMap.SummaryMeshJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 聚合类型。
          */
-        this.type = REST_SummaryType.SUMMARYMESH;
+        this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SummaryMeshJobParameter.prototype.output]
@@ -7204,7 +7219,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryMeshJobParameter";
     }
@@ -7257,7 +7272,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
             }     
             if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
                 tempObj['analyst'] = tempObj['analyst'] || {};
-                if (name === 'query') {
+                if (name === 'query' && summaryMeshJobParameter[name]) {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name].toBBOX();
                 } else {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name];
@@ -7399,13 +7414,13 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
+        this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.SummaryType} [SuperMap.SummaryRegionJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 汇总类型。
          */
-        this.type = REST_SummaryType.SUMMARYMESH;
+        this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.SummaryRegionJobParameter.prototype.output
@@ -7419,7 +7434,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
     }
@@ -7481,7 +7496,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
             }
             if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
                 tempObj['analyst'] = tempObj['analyst'] || {};
-                if (name === 'query') {
+                if (name === 'query' && summaryRegionJobParameter[name]) {
                     tempObj['analyst'][name] = summaryRegionJobParameter[name].toBBOX();
                 } else {
                     tempObj['analyst'][name] = summaryRegionJobParameter[name];
@@ -7569,7 +7584,7 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
         */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
     }
 
@@ -7679,7 +7694,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 缓冲距离单位。
          */
-        this.distanceUnit = REST_AnalystSizeUnit.METER;
+        this.distanceUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
@@ -7702,7 +7717,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
         if (!options) {
             return this;
         }
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.BuffersAnalystJobsParameter";
     }
@@ -7813,7 +7828,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
          * @member {SuperMap.TopologyValidatorRule} [SuperMap.TopologyValidatorJobsParameter.prototype.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP]
          * @description 拓扑检查模式。
          */
-        this.rule = REST_TopologyValidatorRule.REGIONNOOVERLAP;
+        this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
@@ -7827,7 +7842,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TopologyValidatorJobsParameter";
     }
@@ -7949,7 +7964,7 @@ class GeoCodingParameter_GeoCodingParameter {
          * @description 最大返回结果数。
          */
         this.maxReturn = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -8048,7 +8063,7 @@ class GeoDecodingParameter_GeoDecodingParameter {
          * @description 查询半径。
          */
         this.geoDecodingRadius = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -8139,7 +8154,7 @@ class FileModel_FileModel {
  * @classdesc 微件信息提示框。
  * @category Widgets Common
  */
-class MessageBox_MessageBox {
+class MessageBox {
 
     constructor() {
         this._initView();
@@ -8212,7 +8227,7 @@ class MessageBox_MessageBox {
     }
 }
 
-SuperMap.Widgets.MessageBox = MessageBox_MessageBox;
+SuperMap.Widgets.MessageBox = MessageBox;
 // EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
 var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(5);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
@@ -8233,7 +8248,7 @@ var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/_
  * @example
  * var size = new SuperMap.Size(31,46);
  */
-class Size_Size {
+class Size {
 
     constructor(w, h) {
         /**
@@ -8273,7 +8288,7 @@ class Size_Size {
      * @returns {SuperMap.Size}  返回一个新的与当前 size 对象有相同宽、高的 Size 对象。
      */
     clone() {
-        return new Size_Size(this.w, this.h);
+        return new Size(this.w, this.h);
     }
 
 
@@ -8313,7 +8328,7 @@ class Size_Size {
     }
 }
 
-SuperMap.Size = Size_Size;
+SuperMap.Size = Size;
 // CONCATENATED MODULE: ./src/common/commontypes/LonLat.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -8334,7 +8349,7 @@ class LonLat_LonLat {
 
 
     constructor(lon, lat) {
-        if (Util_Util.isArray(lon)) {
+        if (Util.isArray(lon)) {
             lat = lon[1];
             lon = lon[0];
         }
@@ -8342,13 +8357,13 @@ class LonLat_LonLat {
          * @member {float} [SuperMap.LonLat.prototype.lon=0.0]
          * @description 地图的单位的 X 轴（横轴）坐标。
          */
-        this.lon = lon ? Util_Util.toFloat(lon) : 0.0;
+        this.lon = lon ? Util.toFloat(lon) : 0.0;
 
         /**
          * @member {float} [SuperMap.LonLat.prototype.lat=0.0]
          * @description 地图的单位的 Y 轴（纵轴）坐标。
          */
-        this.lat = lat ? Util_Util.toFloat(lat) : 0.0;
+        this.lat = lat ? Util.toFloat(lat) : 0.0;
         this.CLASS_NAME = "SuperMap.LonLat";
     }
 
@@ -8403,8 +8418,8 @@ class LonLat_LonLat {
         if ((lon == null) || (lat == null)) {
             throw new TypeError('LonLat.add cannot receive null values');
         }
-        return new LonLat_LonLat(this.lon + Util_Util.toFloat(lon),
-            this.lat + Util_Util.toFloat(lat));
+        return new LonLat_LonLat(this.lon + Util.toFloat(lon),
+            this.lat + Util.toFloat(lat));
     }
 
     /**
@@ -8494,7 +8509,7 @@ class LonLat_LonLat {
      * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象。
      */
     static fromArray(arr) {
-        var gotArr = Util_Util.isArray(arr),
+        var gotArr = Util.isArray(arr),
             lon = gotArr && arr[0],
             lat = gotArr && arr[1];
         return new LonLat_LonLat(lon, lat);
@@ -8533,7 +8548,7 @@ class Bounds_Bounds {
 
 
     constructor(left, bottom, right, top) {
-        if (Util_Util.isArray(left)) {
+        if (Util.isArray(left)) {
             top = left[3];
             right = left[2];
             bottom = left[1];
@@ -8543,25 +8558,25 @@ class Bounds_Bounds {
          * @member {number} SuperMap.Bounds.prototype.left
          * @description 最小的水平坐标系。
          */
-        this.left = left != null ? Util_Util.toFloat(left) : this.left;
+        this.left = left != null ? Util.toFloat(left) : this.left;
 
         /**
          * @member {number} SuperMap.Bounds.prototype.bottom
          * @description 最小的垂直坐标系。
          */
-        this.bottom = bottom != null ? Util_Util.toFloat(bottom) : this.bottom;
+        this.bottom = bottom != null ? Util.toFloat(bottom) : this.bottom;
 
         /**
          * @member {number} SuperMap.Bounds.prototype.right
          * @description 最大的水平坐标系。
          */
-        this.right = right != null ? Util_Util.toFloat(right) : this.right;
+        this.right = right != null ? Util.toFloat(right) : this.right;
 
         /**
          * @member {number} SuperMap.Bounds.prototype.top
          * @description 最大的垂直坐标系。
          */
-        this.top = top != null ? Util_Util.toFloat(top) : this.top;
+        this.top = top != null ? Util.toFloat(top) : this.top;
 
         /**
          * @member {SuperMap.LonLat} SuperMap.Bounds.prototype.centerLonLat
@@ -8725,7 +8740,7 @@ class Bounds_Bounds {
      * @returns {SuperMap.Size} 返回边框大小。
      */
     getSize() {
-        return new Size_Size(this.getWidth(), this.getHeight());
+        return new Size(this.getWidth(), this.getHeight());
     }
 
     /**
@@ -9265,7 +9280,7 @@ class Geometry_Geometry {
          * @description  此几何对象的唯一标示符。
          *
          */
-        this.id = Util_Util.createUniqueID(this.CLASS_NAME + "_");
+        this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
         /**
          * @member {SuperMap.Geometry} SuperMap.Geometry.prototype.parent
@@ -9487,7 +9502,7 @@ class Collection_Collection extends Geometry_Geometry {
         }
 
         // catch any randomly tagged-on properties
-        Util_Util.applyDefaults(geometry, this);
+        Util.applyDefaults(geometry, this);
 
         return geometry;
     }
@@ -9535,7 +9550,7 @@ class Collection_Collection extends Geometry_Geometry {
      * collection.addComponents(new SuerpMap.Geometry.Point(10,10));
      */
     addComponents(components) {
-        if (!(Util_Util.isArray(components))) {
+        if (!(Util.isArray(components))) {
             components = [components];
         }
         for (var i = 0, len = components.length; i < len; i++) {
@@ -9554,7 +9569,7 @@ class Collection_Collection extends Geometry_Geometry {
         var added = false;
         if (component) {
             if (this.componentTypes == null ||
-                (Util_Util.indexOf(this.componentTypes,
+                (Util.indexOf(this.componentTypes,
                     component.CLASS_NAME) > -1)) {
 
                 if (index != null && (index < this.components.length)) {
@@ -9583,7 +9598,7 @@ class Collection_Collection extends Geometry_Geometry {
     removeComponents(components) {
         var removed = false;
 
-        if (!(Util_Util.isArray(components))) {
+        if (!(Util.isArray(components))) {
             components = [components];
         }
         for (var i = components.length - 1; i >= 0; --i) {
@@ -9599,7 +9614,7 @@ class Collection_Collection extends Geometry_Geometry {
      * @returns {boolean} 几何对象是否移除成功。
      */
     removeComponent(component) {
-        Util_Util.removeItem(this.components, component);
+        Util.removeItem(this.components, component);
 
         // clearBounds() so that it gets recalculated on the next call
         // to this.getBounds();
@@ -9631,7 +9646,7 @@ class Collection_Collection extends Geometry_Geometry {
         if (!geometry || !geometry.CLASS_NAME ||
             (this.CLASS_NAME !== geometry.CLASS_NAME)) {
             equivalent = false;
-        } else if (!(Util_Util.isArray(geometry.components)) ||
+        } else if (!(Util.isArray(geometry.components)) ||
             (geometry.components.length !== this.components.length)) {
             equivalent = false;
         } else {
@@ -9823,7 +9838,7 @@ class Point_Point extends Geometry_Geometry {
         }
 
         // catch any randomly tagged-on properties
-        Util_Util.applyDefaults(obj, this);
+        Util.applyDefaults(obj, this);
 
         return obj;
     }
@@ -10318,7 +10333,7 @@ class GeoText_GeoText extends Geometry_Geometry {
         if (obj == null) {
             obj = new GeoText_GeoText(this.x, this.y, this.text);
         }
-        Util_Util.applyDefaults(obj, this);
+        Util.applyDefaults(obj, this);
         return obj;
     }
 
@@ -10342,7 +10357,7 @@ class GeoText_GeoText extends Geometry_Geometry {
      */
     getLabelPxBoundsByLabel(locationPixel, labelWidth, labelHeight, style) {
         var labelPxBounds, left, bottom, top, right;
-        var locationPx = Util_Util.cloneObject(locationPixel);
+        var locationPx = Util.cloneObject(locationPixel);
 
         //计算文本行数
         var theText = style.label || this.text;
@@ -10414,7 +10429,7 @@ class GeoText_GeoText extends Geometry_Geometry {
     getLabelPxBoundsByText(locationPixel, style) {
         var labelPxBounds, left, bottom, top, right;
         var labelSize = this.getLabelPxSize(style);
-        var locationPx = Util_Util.cloneObject(locationPixel);
+        var locationPx = Util.cloneObject(locationPixel);
 
         //处理文字对齐
         if (style.labelAlign && style.labelAlign !== "cm") {
@@ -10510,7 +10525,7 @@ class GeoText_GeoText extends Geometry_Geometry {
         }
         for (var i = 0; i < numRows; i++) {
             var textCharC = this.getTextCount(textRows[i]);
-            var labelWTmp = this.labelWTmp = Util_Util.getTextBounds(style, textRows[i], this.element).textWidth + textCharC.textC * spacing + bgstrokeWidth;
+            var labelWTmp = this.labelWTmp = Util.getTextBounds(style, textRows[i], this.element).textWidth + textCharC.textC * spacing + bgstrokeWidth;
             if (labelW < labelWTmp) {
                 labelW = labelWTmp;
             }
@@ -10951,7 +10966,7 @@ SuperMap.Geometry.Rectangle = Rectangle_Rectangle;
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
  */
-class Credential_Credential {
+class Credential {
 
 
     constructor(value, name) {
@@ -11026,8 +11041,8 @@ class Credential_Credential {
  *
  */
 
-Credential_Credential.CREDENTIAL = null;
-SuperMap.Credential = Credential_Credential;
+Credential.CREDENTIAL = null;
+SuperMap.Credential = Credential;
 
 // CONCATENATED MODULE: ./src/common/commontypes/Date.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -11042,7 +11057,7 @@ SuperMap.Credential = Credential_Credential;
  * @category BaseTypes Util
  * @description 包含 parse、toISOString 方法的实现，两个方法用来解析 RFC 3339 日期，遵循 ECMAScript 5 规范。
  */
-var Date_DateExt = SuperMap.Date = {
+var DateExt = SuperMap.Date = {
 
     /**
      * @description 生成代表一个具体的日期字符串，该日期遵循 ISO 8601 标准（详情查看{@link http://tools.ietf.org/html/rfc3339}）。
@@ -11158,7 +11173,7 @@ class Feature_Feature {
          * @member {string} SuperMap.Feature.prototype.id
          * @description 要素 ID。
          */
-        this.id = Util_Util.createUniqueID(this.CLASS_NAME + "_");
+        this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
         /**
          * @member {SuperMap.LonLat} SuperMap.Feature.prototype.lonlat
@@ -11242,7 +11257,7 @@ class Vector_Vector extends Feature_Feature {
         this.attributes = {};
 
         if (attributes) {
-            this.attributes = Util_Util.extend(this.attributes, attributes);
+            this.attributes = Util.extend(this.attributes, attributes);
         }
 
         /**
@@ -11574,7 +11589,7 @@ class Format_Format {
          */
         this.keepData = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.options = options;
 
         this.CLASS_NAME = "SuperMap.Format";
@@ -11931,7 +11946,7 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  * @param {number} [options.green=0] - 获取或设置绿色值。
  * @param {number} [options.blue=0] - 获取或设置蓝色值。
  */
-class ServerColor_ServerColor {
+class ServerColor {
 
     constructor(red, green, blue) {
 
@@ -11978,7 +11993,7 @@ class ServerColor_ServerColor {
         if (!jsonObject) {
             return;
         }
-        var color = new ServerColor_ServerColor();
+        var color = new ServerColor();
         var red = 255;
         if (jsonObject.red !== null) {
             red = Number(jsonObject.red);
@@ -12001,7 +12016,7 @@ class ServerColor_ServerColor {
 
 }
 
-SuperMap.ServerColor = ServerColor_ServerColor;
+SuperMap.ServerColor = ServerColor;
 
 
 // CONCATENATED MODULE: ./src/common/iServer/ServerStyle.js
@@ -12041,7 +12056,7 @@ class ServerStyle_ServerStyle {
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillBackColor
          * @description 填充背景颜色。当填充模式为渐变填充时，该颜色为填充终止色。
          */
-        this.fillBackColor = new ServerColor_ServerColor(255, 255, 255);
+        this.fillBackColor = new ServerColor(255, 255, 255);
 
         /**
          * @member {boolean} [SuperMap.ServerStyle.prototype.fillBackOpaque=false]
@@ -12053,7 +12068,7 @@ class ServerStyle_ServerStyle {
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillForeColor
          * @description 填充颜色。当填充模式为渐变填充时，该颜色为填充起始颜色。
          */
-        this.fillForeColor = new ServerColor_ServerColor(255, 0, 0);
+        this.fillForeColor = new ServerColor(255, 0, 0);
 
         /**
          * @member {SuperMap.FillGradientMode} SuperMap.ServerStyle.prototype.fillGradientMode
@@ -12099,7 +12114,7 @@ class ServerStyle_ServerStyle {
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.lineColor
          * @description 矢量要素的边线颜色。如果等级符号是点符号，点符号的颜色由 lineColor 控制。
          */
-        this.lineColor = new ServerColor_ServerColor(0, 0, 0);
+        this.lineColor = new ServerColor(0, 0, 0);
 
         /**
          * @member {number} [SuperMap.ServerStyle.prototype.lineSymbolID=0]
@@ -12134,7 +12149,7 @@ class ServerStyle_ServerStyle {
          */
         this.markerSymbolID = -1;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ServerStyle";
@@ -12180,7 +12195,7 @@ class ServerStyle_ServerStyle {
      */
     toServerJSONObject() {
         var styleObj = {};
-        styleObj = Util_Util.copyAttributes(styleObj, this);
+        styleObj = Util.copyAttributes(styleObj, this);
         //暂时先忽略serverColor往Json的转换
         return styleObj;
     }
@@ -12196,16 +12211,16 @@ class ServerStyle_ServerStyle {
             return;
         }
         return new ServerStyle_ServerStyle({
-            fillBackColor: ServerColor_ServerColor.fromJson(jsonObject.fillBackColor),
+            fillBackColor: ServerColor.fromJson(jsonObject.fillBackColor),
             fillBackOpaque: jsonObject.fillBackOpaque,
-            fillForeColor: ServerColor_ServerColor.fromJson(jsonObject.fillForeColor),
+            fillForeColor: ServerColor.fromJson(jsonObject.fillForeColor),
             fillGradientMode: jsonObject.fillGradientMode,
             fillGradientAngle: jsonObject.fillGradientAngle,
             fillGradientOffsetRatioX: jsonObject.fillGradientOffsetRatioX,
             fillGradientOffsetRatioY: jsonObject.fillGradientOffsetRatioY,
             fillOpaqueRate: jsonObject.fillOpaqueRate,
             fillSymbolID: jsonObject.fillSymbolID,
-            lineColor: ServerColor_ServerColor.fromJson(jsonObject.lineColor),
+            lineColor: ServerColor.fromJson(jsonObject.lineColor),
             lineSymbolID: jsonObject.lineSymbolID,
             lineWidth: jsonObject.lineWidth,
             markerAngle: jsonObject.markerAngle,
@@ -12249,7 +12264,7 @@ class PointWithMeasure_PointWithMeasure extends Point_Point {
         this.measure = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.PointWithMeasure";
@@ -12426,7 +12441,7 @@ class Route_Route extends Collection_Collection {
         this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.Route";
@@ -12639,7 +12654,7 @@ class ServerGeometry_ServerGeometry {
          */
         this.prjCoordSys = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ServerGeometry";
@@ -12669,19 +12684,19 @@ class ServerGeometry_ServerGeometry {
         var me = this,
             geoType = me.type;
         switch (geoType.toUpperCase()) {
-            case REST_GeometryType.POINT:
+            case GeometryType.POINT:
                 return me.toGeoPoint();
-            case REST_GeometryType.LINE:
+            case GeometryType.LINE:
                 return me.toGeoLine();
-            case REST_GeometryType.LINEM:
+            case GeometryType.LINEM:
                 return me.toGeoLinem();
-            case REST_GeometryType.REGION:
+            case GeometryType.REGION:
                 return me.toGeoRegion();
-            case REST_GeometryType.POINTEPS:
+            case GeometryType.POINTEPS:
                 return me.toGeoPoint();
-            case REST_GeometryType.LINEEPS:
+            case GeometryType.LINEEPS:
                 return me.toGeoLineEPS();
-            case REST_GeometryType.REGIONEPS:
+            case GeometryType.REGIONEPS:
                 return me.toGeoRegionEPS();
         }
     }
@@ -13098,7 +13113,7 @@ class ServerGeometry_ServerGeometry {
                 }
             }
             //这里className不是多点就全部是算线
-            type = (className == "SuperMap.Geometry.MultiPoint") ? REST_GeometryType.POINT : REST_GeometryType.LINE;
+            type = (className == "SuperMap.Geometry.MultiPoint") ? GeometryType.POINT : GeometryType.LINE;
         } else if (geometry instanceof MultiPolygon_MultiPolygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
@@ -13114,7 +13129,7 @@ class ServerGeometry_ServerGeometry {
                     points.push(new Point_Point(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y));
                 }
             }
-            type = REST_GeometryType.REGION;
+            type = GeometryType.REGION;
         } else if (geometry instanceof Polygon_Polygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
@@ -13125,7 +13140,7 @@ class ServerGeometry_ServerGeometry {
                 }
                 points.push(new Point_Point(icomponents[i].getVertices()[0].x, icomponents[i].getVertices()[0].y));
             }
-            type = REST_GeometryType.REGION;
+            type = GeometryType.REGION;
         } else {
             let geometryVerticesCount = geometry.getVertices().length;
             for (let j = 0; j < geometryVerticesCount; j++) {
@@ -13136,7 +13151,7 @@ class ServerGeometry_ServerGeometry {
                 geometryVerticesCount++;
             }
             parts.push(geometryVerticesCount);
-            type = (geometry instanceof Point_Point) ? REST_GeometryType.POINT : REST_GeometryType.LINE;
+            type = (geometry instanceof Point_Point) ? GeometryType.POINT : GeometryType.LINE;
         }
 
         return new ServerGeometry_ServerGeometry({
@@ -13673,7 +13688,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
      */
     fromGeoJSON(json, type, filter) {
         let feature = this.read(json, type, filter);
-        if (!Util_Util.isArray(feature)) {
+        if (!Util.isArray(feature)) {
             return this._toiSevrerFeature(feature);
         }
         return feature.map((element) => {
@@ -13692,7 +13707,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         var geojson = {
             "type": null
         };
-        if (Util_Util.isArray(obj)) {
+        if (Util.isArray(obj)) {
             geojson.type = "FeatureCollection";
             var numFeatures = obj.length;
             geojson.features = new Array(numFeatures);
@@ -13731,7 +13746,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         var valid = false;
         switch (type) {
             case "Geometry":
-                if (Util_Util.indexOf(
+                if (Util.indexOf(
                     ["Point", "MultiPoint", "LineString", "MultiLineString",
                         "Polygon", "MultiPolygon", "Box", "GeometryCollection"
                     ],
@@ -13800,7 +13815,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         }
         var geometry;
         if (obj.type == "GeometryCollection") {
-            if (!(Util_Util.isArray(obj.geometries))) {
+            if (!(Util.isArray(obj.geometries))) {
                 throw "GeometryCollection must have geometries array: " + obj;
             }
             var numGeom = obj.geometries.length;
@@ -13812,7 +13827,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             }
             geometry = new Collection_Collection(components);
         } else {
-            if (!(Util_Util.isArray(obj.coordinates))) {
+            if (!(Util.isArray(obj.coordinates))) {
                 throw "Geometry must have coordinates array: " + obj;
             }
             if (!this.parseCoords[obj.type.toLowerCase()]) {
@@ -14062,7 +14077,7 @@ class WKT_WKT extends Format_Format {
              *
              */
             'point': function (str) {
-                var coords = BaseTypes_StringExt.trim(str).split(this.regExes.spaces);
+                var coords = StringExt.trim(str).split(this.regExes.spaces);
                 return new Vector_Vector(new Point_Point(coords[0], coords[1])
                 );
             },
@@ -14075,7 +14090,7 @@ class WKT_WKT extends Format_Format {
              */
             'multipoint': function (str) {
                 var point;
-                var points = BaseTypes_StringExt.trim(str).split(',');
+                var points = StringExt.trim(str).split(',');
                 var components = [];
                 for (var i = 0, len = points.length; i < len; ++i) {
                     point = points[i].replace(this.regExes.trimParens, '$1');
@@ -14093,7 +14108,7 @@ class WKT_WKT extends Format_Format {
              * @private
              */
             'linestring': function (str) {
-                var points = BaseTypes_StringExt.trim(str).split(',');
+                var points = StringExt.trim(str).split(',');
                 var components = [];
                 for (var i = 0, len = points.length; i < len; ++i) {
                     components.push(this.parse.point.apply(this, [points[i]]).geometry);
@@ -14111,7 +14126,7 @@ class WKT_WKT extends Format_Format {
              */
             'multilinestring': function (str) {
                 var line;
-                var lines = BaseTypes_StringExt.trim(str).split(this.regExes.parenComma);
+                var lines = StringExt.trim(str).split(this.regExes.parenComma);
                 var components = [];
                 for (var i = 0, len = lines.length; i < len; ++i) {
                     line = lines[i].replace(this.regExes.trimParens, '$1');
@@ -14130,7 +14145,7 @@ class WKT_WKT extends Format_Format {
              */
             'polygon': function (str) {
                 var ring, linestring, linearring;
-                var rings = BaseTypes_StringExt.trim(str).split(this.regExes.parenComma);
+                var rings = StringExt.trim(str).split(this.regExes.parenComma);
                 var components = [];
                 for (var i = 0, len = rings.length; i < len; ++i) {
                     ring = rings[i].replace(this.regExes.trimParens, '$1');
@@ -14152,7 +14167,7 @@ class WKT_WKT extends Format_Format {
              */
             'multipolygon': function (str) {
                 var polygon;
-                var polygons = BaseTypes_StringExt.trim(str).split(this.regExes.doubleParenComma);
+                var polygons = StringExt.trim(str).split(this.regExes.doubleParenComma);
                 var components = [];
                 for (var i = 0, len = polygons.length; i < len; ++i) {
                     polygon = polygons[i].replace(this.regExes.trimParens, '$1');
@@ -14173,7 +14188,7 @@ class WKT_WKT extends Format_Format {
             'geometrycollection': function (str) {
                 // separate components of the collection with |
                 str = str.replace(/,\s*([A-Za-z])/g, '|$1');
-                var wktArray = BaseTypes_StringExt.trim(str).split('|');
+                var wktArray = StringExt.trim(str).split('|');
                 var components = [];
                 for (var i = 0, len = wktArray.length; i < len; ++i) {
                     components.push(this.read(wktArray[i]));
@@ -14987,7 +15002,7 @@ class iManagerServiceBase_IManagerServiceBase {
         if (param) {
             param = JSON.stringify(param);
         }
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
         });
     }
@@ -15022,7 +15037,7 @@ class iManagerCreateNodeParam_IManagerCreateNodeParam {
         this.physicalMachineName = '';        //vm所属的物理机名称.
         this.ips = [];                        //vm的ip,空数组表示随机分配
         this.userName = '';                   //vm所属用户
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
     }
 
 }
@@ -15168,7 +15183,7 @@ class iPortalServicesQueryParam_IPortalServicesQueryParam {
         this.isNotInDir = false;
         this.filterFields = [];
         this.authorizedOnly = false;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
     }
 
 }
@@ -15210,7 +15225,7 @@ class iPortalMapsQueryParam_IPortalMapsQueryParam {
         this.visitStart = null;
         this.visitEnd = null;
         this.filterFields = null;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
     }
 
 }
@@ -15238,7 +15253,7 @@ class iPortalServiceBase_IPortalServiceBase {
 
     constructor(url) {
         this.serviceUrl = url;
-        this.serverType = REST_ServerType.iPortal;
+        this.serverType = ServerType.iPortal;
         this.CLASS_NAME = "SuperMap.iPortalServiceBase";
     }
 
@@ -15254,7 +15269,7 @@ class iPortalServiceBase_IPortalServiceBase {
 
     request(method, url, param, requestOptions) {
         url = this.createCredentialUrl(url);
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
         });
     }
@@ -15296,10 +15311,10 @@ class iPortalServiceBase_IPortalServiceBase {
     getCredential() {
         var credential,
             value = SecurityManager_SecurityManager.getToken(this.serviceUrl);
-        credential = value ? new Credential_Credential(value, "token") : null;
+        credential = value ? new Credential(value, "token") : null;
         if (!credential) {
             value = this.getKey();
-            credential = value ? new Credential_Credential(value, "key") : null;
+            credential = value ? new Credential(value, "key") : null;
         }
         return credential;
     }
@@ -15370,7 +15385,7 @@ class iPortalService_IPortalService extends iPortalServiceBase_IPortalServiceBas
         this.verifyReason = null;
         this.version = null;
         this.visitCount = 0;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
         this.serviceUrl = serviceUrl;
         if (this.id) {
             this.serviceUrl = serviceUrl + "/" + this.id;
@@ -15464,7 +15479,7 @@ class iPortalMap_IPortalMap extends iPortalServiceBase_IPortalServiceBase {
         this.updateTime = 0;
         this.userName = "";
         this.visitCount = 0;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
         this.mapUrl = mapUrl;
         // if (this.id) {
         //     this.mapUrl = mapUrl + "/" + this.id;
@@ -15555,7 +15570,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
      * @returns {Promise} 返回包含 iportal web 资源信息的 Promise 对象。
      */
     load() {
-        return FetchRequest_FetchRequest.get(this.iportalUrl + '/web');
+        return FetchRequest.get(this.iportalUrl + '/web');
     }
 
     /**
@@ -15700,7 +15715,7 @@ class CommonServiceBase_CommonServiceBase {
 
         this.withCredentials = false;
 
-        if (Util_Util.isArray(url)) {
+        if (Util.isArray(url)) {
             me.urls = url;
             me.length = url.length;
             me.totalTimes = me.length;
@@ -15715,18 +15730,18 @@ class CommonServiceBase_CommonServiceBase {
             me.url = url;
         }
 
-        if (Util_Util.isArray(url) && !me.isServiceSupportPolling()) {
+        if (Util.isArray(url) && !me.isServiceSupportPolling()) {
             me.url = url[0];
             me.totalTimes = 1;
         }
 
-        me.serverType = me.serverType || REST_ServerType.ISERVER;
+        me.serverType = me.serverType || ServerType.ISERVER;
 
         options = options || {};
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
-        me.isInTheSameDomain = Util_Util.isInTheSameDomain(me.url);
+        me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 
         me.events = new Events_Events(me, null, me.EVENT_TYPES, true);
         if (me.eventListeners instanceof Object) {
@@ -15742,7 +15757,7 @@ class CommonServiceBase_CommonServiceBase {
      */
     destroy() {
         let me = this;
-        if (Util_Util.isArray(me.urls)) {
+        if (Util.isArray(me.urls)) {
             me.urls = null;
             me.index = null;
             me.length = null;
@@ -15820,22 +15835,22 @@ class CommonServiceBase_CommonServiceBase {
         let keyUrl = url,
             credential, value;
         switch (this.serverType) {
-            case REST_ServerType.IPORTAL:
+            case ServerType.IPORTAL:
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
                     value = SecurityManager_SecurityManager.getKey(keyUrl);
-                    credential = value ? new Credential_Credential(value, "key") : null;
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case REST_ServerType.ONLINE:
+            case ServerType.ONLINE:
                 value = SecurityManager_SecurityManager.getKey(keyUrl);
-                credential = value ? new Credential_Credential(value, "key") : null;
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
                 //iServer or others
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         return credential;
@@ -15881,7 +15896,7 @@ class CommonServiceBase_CommonServiceBase {
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
         me.options.url = url;
-        me.options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
+        me.options.isInTheSameDomain = Util.isInTheSameDomain(url);
         me._commit(me.options);
     }
 
@@ -15931,7 +15946,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         this.events.triggerEvent("processCompleted", {
             result: result
         });
@@ -15943,7 +15958,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessFailed(result) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         let error = result.error || result;
         this.events.triggerEvent("processFailed", {
             error: error
@@ -15953,12 +15968,12 @@ class CommonServiceBase_CommonServiceBase {
     _commit(options) {
         if (options.method === "POST" || options.method === "PUT") {
             if (options.params) {
-                options.url = Util_Util.urlAppend(options.url,
-                    Util_Util.getParameterString(options.params || {}));
+                options.url = Util.urlAppend(options.url,
+                    Util.getParameterString(options.params || {}));
             }
             options.params = options.data;
         }
-        FetchRequest_FetchRequest.commit(options.method, options.url, options.params, {
+        FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withCredentials: options.withCredentials,
             timeout: options.async ? 0 : null,
@@ -15988,15 +16003,15 @@ class CommonServiceBase_CommonServiceBase {
                 }
             }
             if (result.error) {
-                var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
+                var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
                 failure(result);
             } else {
                 result.succeed = result.succeed == undefined ? true : result.succeed;
-                var success = (options.scope) ? BaseTypes_FunctionExt.bind(options.success, options.scope) : options.success;
+                var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
                 success(result);
             }
         }).catch(function (e) {
-            var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
+            var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
             failure(e);
         })
     }
@@ -16083,7 +16098,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 
     processAsync(url, params) {
         var me = this;
-        FetchRequest_FetchRequest.get(url, params,{proxy: me.proxy}).then(function (response) {
+        FetchRequest.get(url, params,{proxy: me.proxy}).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -16145,7 +16160,7 @@ class AggQueryBuilderParameter_AggQueryBuilderParameter {
          */
         this.queryType = null;
         this.CLASS_NAME = "SuperMap.AggQueryBuilderParameter";
-        Util_Util.extend(this, option);
+        Util.extend(this, option);
     }
 
     destroy() {
@@ -16198,7 +16213,7 @@ class AggregationParameter_AggregationParameter {
         this.subAgg = null;
 
         this.CLASS_NAME = "SuperMap.AggregationParameter";
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     destroy() {
@@ -16341,7 +16356,7 @@ class AreaSolarRadiationParameters_AreaSolarRadiationParameters {
          */
         this.deleteExistResultDataset = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.AreaSolarRadiationParameters";
     }
@@ -16412,7 +16427,7 @@ class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServ
          * @member {SuperMap.DataFormat} [SuperMap.SpatialAnalystBase.prototype.format=SuperMap.DataFormat.GEOJSON]
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为 "ISERVER"，"GEOJSON"。
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
         this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
     }
 
@@ -16432,10 +16447,10 @@ class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServ
      */
     serviceProcessCompleted(result) {
         var me = this, analystResult;
-        result = Util_Util.transformResult(result);
-        if (result && me.format === REST_DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+        result = Util.transformResult(result);
+        if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             //批量分析时会返回多个结果
-            if (Util_Util.isArray(result)) {
+            if (Util.isArray(result)) {
                 for (var i = 0; i < result.length; i++) {
                     result[i] = me.toGeoJSONResult(result[i])
                 }
@@ -16555,7 +16570,7 @@ class AreaSolarRadiationService_AreaSolarRadiationService extends SpatialAnalyst
         }
 
         AreaSolarRadiationParameters_AreaSolarRadiationParameters.toObject(parameter, parameterObject);
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
 
         me.request({
@@ -16602,7 +16617,7 @@ class BufferDistance_BufferDistance {
          */
         this.value = 100;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.BufferDistance";
     }
@@ -16648,7 +16663,7 @@ class BufferSetting_BufferSetting {
          * @member {SuperMap.BufferEndType} [SuperMap.BufferSetting.prototype.endType = SuperMap.BufferEndType.FLAT]
          * @description 缓冲区端点枚举值。分为平头和圆头两种。
          */
-        this.endType = REST_BufferEndType.FLAT;
+        this.endType = BufferEndType.FLAT;
 
         /**
          * @member {SuperMap.BufferDistance} [SuperMap.BufferSetting.prototype.leftDistance=100]
@@ -16679,10 +16694,10 @@ class BufferSetting_BufferSetting {
          * {@link SuperMap.BufferRadiusUnit.FOOT}、{@link SuperMap.BufferRadiusUnit.INCH}、{@link SuperMap.BufferRadiusUnit.MILE}、{@link SuperMap.BufferRadiusUnit.YARD}。
          * 仅对BufferAnalyst有效。
          */
-        this.radiusUnit = REST_BufferRadiusUnit.METER;
+        this.radiusUnit = BufferRadiusUnit.METER;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.BufferSetting";
     }
@@ -16734,7 +16749,7 @@ class BufferAnalystParameters_BufferAnalystParameters {
          * @description 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
          */
         me.bufferSetting = new BufferSetting_BufferSetting();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.BufferAnalystParameters";
     }
 
@@ -16797,7 +16812,7 @@ class DataReturnOption_DataReturnOption {
          * @member {SuperMap.DataReturnMode} [SuperMap.DataReturnOption.prototype.dataReturnMode=SuperMap.DataReturnMode.RECORDSET_ONLY]
          * @description 数据返回模式。
          */
-        this.dataReturnMode = REST_DataReturnMode.RECORDSET_ONLY;
+        this.dataReturnMode = DataReturnMode.RECORDSET_ONLY;
 
         /**
          * @member {boolean} [SuperMap.DataReturnOption.prototype.deleteExistResultDataset=true]
@@ -16805,7 +16820,7 @@ class DataReturnOption_DataReturnOption {
          */
         this.deleteExistResultDataset = true;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.DataReturnOption";
     }
 
@@ -16902,7 +16917,7 @@ class JoinItem_JoinItem {
         this.joinType = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.JoinItem";
     }
@@ -16925,7 +16940,7 @@ class JoinItem_JoinItem {
      */
     toServerJSONObject() {
         var dataObj = {};
-        dataObj = Util_Util.copyAttributes(dataObj, this);
+        dataObj = Util.copyAttributes(dataObj, this);
         //joinFilter基本是个纯属性对象，这里不再做转换
         return dataObj;
     }
@@ -17056,7 +17071,7 @@ class LinkItem_LinkItem {
         this.primaryKeys = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.LinkItem";
@@ -17186,7 +17201,7 @@ class FilterParameter_FilterParameter {
          */
         this.fields = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.FilterParameter";
@@ -17282,7 +17297,7 @@ class DatasetBufferAnalystParameters_DatasetBufferAnalystParameters extends Buff
          */
         this.isUnion = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.DatasetBufferAnalystParameters";
     }
@@ -17374,7 +17389,7 @@ class GeometryBufferAnalystParameters_GeometryBufferAnalystParameters extends Bu
         this.sourceGeometrySRID = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = " SuperMap.GeometryBufferAnalystParameters";
     }
@@ -17462,7 +17477,7 @@ class BufferAnalystService_BufferAnalystService extends SpatialAnalystBase_Spati
          */
         this.mode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.BufferAnalystService";
     }
@@ -17502,7 +17517,7 @@ class BufferAnalystService_BufferAnalystService extends SpatialAnalystBase_Spati
             GeometryBufferAnalystParameters_GeometryBufferAnalystParameters.toObject(parameter, parameterObject);
         }
 
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",
@@ -17572,7 +17587,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      */
     getJobs(url) {
         var me = this;
-        FetchRequest_FetchRequest.get(me._processUrl(url), null, {
+        FetchRequest.get(me._processUrl(url), null, {
             proxy: me.proxy
         }).then(function (response) {
             return response.json();
@@ -17610,7 +17625,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
             withCredentials: me.withCredentials,
             isInTheSameDomain: me.isInTheSameDomain
         };
-        FetchRequest_FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+        FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
@@ -17626,12 +17641,12 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
     }
 
     serviceProcessCompleted(result, seconds) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest_FetchRequest.get(me._processUrl(result.newResourceLocation), {
+                FetchRequest.get(me._processUrl(result.newResourceLocation), {
                         _t: new Date().getTime()
                     })
                     .then(function (response) {
@@ -17789,7 +17804,7 @@ class BurstPipelineAnalystParameters_BurstPipelineAnalystParameters {
          */
         this.isUncertainDirectionValid = false;
 
-        Util_Util.extend(me, options);
+        Util.extend(me, options);
 
         this.CLASS_NAME = "SuperMap.BurstPipelineAnalystParameters";
     }
@@ -17837,7 +17852,7 @@ class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceB
          * @member {SuperMap.DataFormat} [SuperMap.NetworkAnalystServiceBase.prototype.format=SuperMap.DataFormat.GEOJSON]
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为 "ISERVER","GEOJSON"
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
         this.CLASS_NAME = "SuperMap.NetworkAnalystServiceBase";
     }
@@ -17858,8 +17873,8 @@ class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceB
      */
     serviceProcessCompleted(result) {
         var me = this, analystResult;
-        result = Util_Util.transformResult(result);
-        if (result && me.format === REST_DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+        result = Util.transformResult(result);
+        if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             analystResult = me.toGeoJSONResult(result);
         }
         if (!analystResult) {
@@ -17995,7 +18010,7 @@ class ChartFeatureInfoSpecsService_ChartFeatureInfoSpecsService extends CommonSe
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -18078,7 +18093,7 @@ class ChartQueryFilterParameter_ChartQueryFilterParameter {
          */
         this.chartFeatureInfoSpecCode = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ChartQueryFilterParameter";
     }
@@ -18184,7 +18199,7 @@ class ChartQueryParameters_ChartQueryParameters {
          * @description 期望查询结果返回的记录数，该值大于0。
          */
         this.expectCount = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ChartQueryParameters";
     }
@@ -18308,7 +18323,7 @@ class QueryParameters_QueryParameters {
          * @member {SuperMap.GeometryType} [SuperMap.QueryParameters.prototype.networkType=SuperMap.GeometryType.LINE]
          * @description 网络数据集对应的查询类型，分为点和线两种类型。
          */
-        this.networkType = REST_GeometryType.LINE;
+        this.networkType = GeometryType.LINE;
 
         /**
          * @member {SuperMap.QueryOption} [SuperMap.QueryParameters.prototype.queryOption=SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY]
@@ -18316,7 +18331,7 @@ class QueryParameters_QueryParameters {
          *              该类描述查询结果返回类型，包括只返回属性、
          *              只返回几何实体以及返回属性和几何实体。
          */
-        this.queryOption = REST_QueryOption.ATTRIBUTEANDGEOMETRY;
+        this.queryOption = QueryOption.ATTRIBUTEANDGEOMETRY;
 
         /**
          * @member {Array.<SuperMap.FilterParameter>} SuperMap.QueryParameters.prototype.queryParams
@@ -18347,7 +18362,7 @@ class QueryParameters_QueryParameters {
          * @description 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
          */
         this.returnFeatureWithFieldCaption = false;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryParameters";
     }
@@ -18446,9 +18461,9 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
          * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
          *              参数格式为"ISERVER","GEOJSON",GEOJSON
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         var me = this, end;
         if (options.format) {
             me.format = options.format.toUpperCase();
@@ -18516,8 +18531,8 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
-        if (result && result.recordsets && me.format === REST_DataFormat.GEOJSON) {
+        result = Util.transformResult(result);
+        if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
                     var geoJSONFormat = new GeoJSON_GeoJSON();
@@ -18602,7 +18617,7 @@ class ClipParameter_ClipParameter {
         this.isExactClip = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ClipParameter";
@@ -18635,18 +18650,18 @@ class ClipParameter_ClipParameter {
         var strClipParameter = "";
         var me = this;
 
-        strClipParameter += "'isClipInRegion':" + Util_Util.toJSON(me.isClipInRegion);
+        strClipParameter += "'isClipInRegion':" + Util.toJSON(me.isClipInRegion);
 
         if (me.clipDatasetName != null) {
-            strClipParameter += "," + "'clipDatasetName':" + Util_Util.toJSON(me.clipDatasetName);
+            strClipParameter += "," + "'clipDatasetName':" + Util.toJSON(me.clipDatasetName);
         }
 
         if (me.clipDatasourceName != null) {
-            strClipParameter += "," + "'clipDatasourceName':" + Util_Util.toJSON(me.clipDatasourceName);
+            strClipParameter += "," + "'clipDatasourceName':" + Util.toJSON(me.clipDatasourceName);
         }
 
         if (me.isExactClip != null) {
-            strClipParameter += "," + "'isExactClip':" + Util_Util.toJSON(me.isExactClip);
+            strClipParameter += "," + "'isExactClip':" + Util.toJSON(me.isExactClip);
         }
 
         if (me.clipRegion != null) {
@@ -18655,7 +18670,7 @@ class ClipParameter_ClipParameter {
                 var pointsCount = serverGeometry.parts[0];
                 var point2ds = serverGeometry.points.splice(0, pointsCount);
                 strClipParameter += "," + "'clipRegion':" + "{\"point2Ds\":";
-                strClipParameter += Util_Util.toJSON(point2ds);
+                strClipParameter += Util.toJSON(point2ds);
                 strClipParameter += "}";
             }
         }
@@ -18700,12 +18715,12 @@ class ColorDictionary_ColorDictionary {
          */
         this.color = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         var me = this,
             c = me.color;
         if (c) {
-            me.color = new ServerColor_ServerColor(c.red, c.green, c.blue);
+            me.color = new ServerColor(c.red, c.green, c.blue);
         }
 
         this.CLASS_NAME = "SuperMap.ColorDictionary";
@@ -18716,7 +18731,7 @@ class ColorDictionary_ColorDictionary {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -18726,7 +18741,7 @@ class ColorDictionary_ColorDictionary {
      */
     toServerJSONObject() {
         var dataObj = {};
-        dataObj = Util_Util.copyAttributes(dataObj, this);
+        dataObj = Util.copyAttributes(dataObj, this);
         return dataObj;
     }
 }
@@ -18812,7 +18827,7 @@ class TransportationAnalystResultSetting_TransportationAnalystResultSetting {
          */
         this.returnRoutes = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TransportationAnalystResultSetting";
     }
@@ -18903,7 +18918,7 @@ class TransportationAnalystParameter_TransportationAnalystParameter {
          */
         this.resultSetting = new TransportationAnalystResultSetting_TransportationAnalystResultSetting();
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TransportationAnalystParameter";
     }
@@ -18974,7 +18989,7 @@ class ComputeWeightMatrixParameters_ComputeWeightMatrixParameters {
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ComputeWeightMatrixParameters";
     }
@@ -19055,7 +19070,7 @@ class ComputeWeightMatrixService_ComputeWeightMatrixService extends NetworkAnaly
             end = me.url.substr(me.url.length - 1, 1);
         me.url = me.url + ((end === "/") ? "weightmatrix" : "/weightmatrix") + ".json?";
         jsonObject = {
-            parameter: Util_Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)
         };
         me.request({
@@ -19156,7 +19171,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
         if (end !== '/') {
             me.url += "/";
         }
-        Util_Util.extend(me, options);
+        Util.extend(me, options);
 
         this.CLASS_NAME = "SuperMap.DataFlowService";
     }
@@ -19297,7 +19312,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
                 geometry: this.geometry
             }
         };
-        return Util_Util.toJSON(filter);
+        return Util.toJSON(filter);
     }
 
 
@@ -19430,7 +19445,7 @@ class DatasetInfo_DatasetInfo {
          */
         this.type = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         var b = this.bounds;
         if (b) {
@@ -19444,7 +19459,7 @@ class DatasetInfo_DatasetInfo {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -19454,7 +19469,7 @@ class DatasetInfo_DatasetInfo {
      */
     toServerJSONObject() {
         var dataObj = {};
-        dataObj = Util_Util.copyAttributes(dataObj, this);
+        dataObj = Util.copyAttributes(dataObj, this);
         if (dataObj.bounds) {
             if (dataObj.bounds.toServerJSONObject) {
                 dataObj.bounds = dataObj.bounds.toServerJSONObject();
@@ -19487,10 +19502,10 @@ class OverlayAnalystParameters_OverlayAnalystParameters {
          * @member {SuperMap.OverlayOperationType} [SuperMap.OverlayAnalystParameters.prototype.operation=SuperMap.OverlayOperationType.UNION]
          * @description 指定叠加分析操作类型。
          */
-        this.operation = REST_OverlayOperationType.UNION;
+        this.operation = OverlayOperationType.UNION;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.OverlayAnalystParameters";
     }
@@ -19598,7 +19613,7 @@ class DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters extends Ov
          */
         this.resultSetting = new DataReturnOption_DataReturnOption();
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.DatasetOverlayAnalystParameters";
     }
@@ -19734,7 +19749,7 @@ class SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting {
          * @member {SuperMap.SmoothMethod} [SuperMap.SurfaceAnalystParametersSetting.prototype.smoothMethod=SuperMap.SmoothMethod.BSPLINE]
          * @description 获取或设置光滑处理所使用的方法。
          */
-        this.smoothMethod = REST_SmoothMethod.BSPLINE;
+        this.smoothMethod = SmoothMethod.BSPLINE;
 
         /**
          * @member {number} [SuperMap.SurfaceAnalystParametersSetting.prototype.smoothness=0]
@@ -19747,7 +19762,7 @@ class SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting {
         this.smoothness = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.SurfaceAnalystParametersSetting";
@@ -19778,20 +19793,20 @@ class SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting {
      * @returns {string} 对象 JSON 字符串。
      */
     toJSON() {
-        let json = "'datumValue':" + Util_Util.toJSON(this.datumValue);
-        json += ",'interval':" + Util_Util.toJSON(this.interval);
-        json += ",'resampleTolerance':" + Util_Util.toJSON(this.resampleTolerance);
-        json += ",'smoothMethod':" + Util_Util.toJSON(this.smoothMethod);
-        json += ",'smoothness':" + Util_Util.toJSON(this.smoothness);
+        let json = "'datumValue':" + Util.toJSON(this.datumValue);
+        json += ",'interval':" + Util.toJSON(this.interval);
+        json += ",'resampleTolerance':" + Util.toJSON(this.resampleTolerance);
+        json += ",'smoothMethod':" + Util.toJSON(this.smoothMethod);
+        json += ",'smoothness':" + Util.toJSON(this.smoothness);
         if (this.expectedZValues != null) {
-            json += "," + "'expectedZValues':" + Util_Util.toJSON(this.expectedZValues);
+            json += "," + "'expectedZValues':" + Util.toJSON(this.expectedZValues);
         }
         if (this.clipRegion != null) {
             var serverGeometry = this.clipRegion;
             if (this.clipRegion instanceof Geometry_Geometry && this.clipRegion.components) {
                 serverGeometry = ServerGeometry_ServerGeometry.fromGeometry(this.clipRegion)
             }
-            json += ",'clipRegion':" + Util_Util.toJSON(serverGeometry);
+            json += ",'clipRegion':" + Util.toJSON(serverGeometry);
         }
         return "{" + json + "}";
     }
@@ -19847,10 +19862,10 @@ class SurfaceAnalystParameters_SurfaceAnalystParameters {
          * @member {SuperMap.SurfaceAnalystMethod} [SuperMap.SurfaceAnalystParameters.prototype.surfaceAnalystMethod=SuperMap.SurfaceAnalystMethod.ISOLINE]
          * @description 获取或设置表面分析的提取方法，提取等值线和提取等值面。
          */
-        this.surfaceAnalystMethod = REST_SurfaceAnalystMethod.ISOLINE;
+        this.surfaceAnalystMethod = SurfaceAnalystMethod.ISOLINE;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.SurfaceAnalystParameters";
@@ -19926,7 +19941,7 @@ class DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters extends Su
         this.zValueFieldName = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DatasetSurfaceAnalystParameters";
@@ -20031,7 +20046,7 @@ class ThiessenAnalystParameters_ThiessenAnalystParameters {
          */
         this.returnResultRegion = true;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ThiessenAnalystParameters";
     }
@@ -20095,7 +20110,7 @@ class DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters extends 
         this.dataset = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
 
@@ -20211,7 +20226,7 @@ class DensityKernelAnalystParameters_DensityKernelAnalystParameters {
          * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
          */
         this.deleteExistResultDataset = false;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.DensityKernelAnalystParameters";
 
@@ -20293,7 +20308,7 @@ class DensityAnalystService_DensityAnalystService extends SpatialAnalystBase_Spa
         this.mode = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DensityAnalystService";
@@ -20328,7 +20343,7 @@ class DensityAnalystService_DensityAnalystService extends SpatialAnalystBase_Spa
         }
 
         DensityKernelAnalystParameters_DensityKernelAnalystParameters.toObject(parameter, parameterObject);
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
 
         me.request({
@@ -20389,7 +20404,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
          * @member {SuperMap.EditType} [SuperMap.EditFeaturesParameters.prototype.editType=SuperMap.EditType.ADD]
          * @description 要素集更新类型 (add、update、delete)。
          */
-        this.editType = REST_EditType.ADD;
+        this.editType = EditType.ADD;
 
         /**
          * @member {Array.<string|number>} [SuperMap.EditFeaturesParameters.prototype.IDs]
@@ -20409,7 +20424,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
          * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。
          */
         this.isUseBatch = false;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
     }
@@ -20441,7 +20456,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
             features,
             editType = params.editType;
 
-        if (editType === REST_EditType.DELETE) {
+        if (editType === EditType.DELETE) {
             if (params.IDs === null) {
                 return;
             }
@@ -20459,7 +20474,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
             }
         }
 
-        return Util_Util.toJSON(features);
+        return Util.toJSON(features);
     }
 
 }
@@ -20515,7 +20530,7 @@ class EditFeaturesService_EditFeaturesService extends CommonServiceBase_CommonSe
         this.isUseBatch = false;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         var me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
@@ -20557,12 +20572,12 @@ class EditFeaturesService_EditFeaturesService extends CommonServiceBase_CommonSe
         me.returnContent = params.returnContent;
         me.isUseBatch = params.isUseBatch;
         jsonParameters = EditFeaturesParameters_EditFeaturesParameters.toJsonParameters(params);
-        if (editType === REST_EditType.DELETE) {
-            ids = Util_Util.toJSON(params.IDs);
+        if (editType === EditType.DELETE) {
+            ids = Util.toJSON(params.IDs);
             me.url += "ids=" + ids;
             method = "DELETE";
             jsonParameters = ids;
-        } else if (editType === REST_EditType.UPDATE) {
+        } else if (editType === EditType.UPDATE) {
             method = "PUT";
         } else {
             if (me.isUseBatch) {
@@ -20636,7 +20651,7 @@ class FacilityAnalyst3DParameters_FacilityAnalyst3DParameters {
          *              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
          */
         this.isUncertainDirectionValid = false;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.FacilityAnalyst3DParameters";
 
     }
@@ -20939,7 +20954,7 @@ class FacilityAnalystStreamParameters_FacilityAnalystStreamParameters {
          * @description 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）。
          */
         this.queryType = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.FacilityAnalystStreamParameters";
     }
 
@@ -21290,7 +21305,7 @@ class FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters ex
         super(options);
         options = options || {};
         this.sourceNodeIDs = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.FacilityAnalystUpstream3DParameters";
     }
 
@@ -21404,9 +21419,9 @@ class FilterAggParameter_FilterAggParameter extends AggregationParameter_Aggrega
          * @member {SuperMap.AggregationType} [SuperMap.FilterAggParameter.prototype.aggType=AggregationType.FILTER]
          * @description 聚合类型。
          */
-        this.aggType = REST_AggregationType.FILTER;
+        this.aggType = AggregationType.FILTER;
         this.CLASS_NAME = "SuperMap.FilterAggParameter";
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     destroy() {
@@ -21451,7 +21466,7 @@ class FieldParameters_FieldParameters {
         this.dataset = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.FieldParameters";
@@ -21508,7 +21523,7 @@ class FieldStatisticsParameters_FieldStatisticsParameters extends FieldParameter
         this.statisticMode = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.FieldStatisticsParameters";
@@ -21594,7 +21609,7 @@ class FieldStatisticService_FieldStatisticService extends CommonServiceBase_Comm
          */
         this.statisticMode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.FieldStatisticService";
@@ -21712,7 +21727,7 @@ class FindClosestFacilitiesParameters_FindClosestFacilitiesParameters {
          *              则返回结果空间信息等都为空。
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindClosestFacilitiesParameters";
     }
@@ -21811,8 +21826,8 @@ class FindClosestFacilitiesService_FindClosestFacilitiesService extends NetworkA
             expectFacilityCount: params.expectFacilityCount,
             fromEvent: params.fromEvent,
             maxWeight: params.maxWeight,
-            parameter: Util_Util.toJSON(params.parameter),
-            event: Util_Util.toJSON(params.event),
+            parameter: Util.toJSON(params.parameter),
+            event: Util.toJSON(params.event),
             facilities: me.getJson(params.isAnalyzeById, params.facilities)
         };
         me.request({
@@ -21944,7 +21959,7 @@ class FindLocationParameters_FindLocationParameters {
          * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段。
          */
         this.weightName = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.FindLocationParameters";
     }
 
@@ -22038,7 +22053,7 @@ class FindLocationService_FindLocationService extends NetworkAnalystServiceBase_
             returnEdgeFeature: true,
             returnEdgeGeometry: true,
             returnNodeFeature: true,
-            mapParameter: Util_Util.toJSON(params.mapParameter),
+            mapParameter: Util.toJSON(params.mapParameter),
             supplyCenters: me.getCentersJson(params.supplyCenters)
         };
         me.request({
@@ -22063,7 +22078,7 @@ class FindLocationService_FindLocationService extends NetworkAnalystServiceBase_
             if (i > 0) {
                 json += ",";
             }
-            json += Util_Util.toJSON(params[i]);
+            json += Util.toJSON(params[i]);
         }
         json += "]";
         return json;
@@ -22152,7 +22167,7 @@ class FindMTSPPathsParameters_FindMTSPPathsParameters {
          *              SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindMTSPPathsParameters";
     }
@@ -22243,7 +22258,7 @@ class FindMTSPPathsService_FindMTSPPathsService extends NetworkAnalystServiceBas
         jsonObject = {
             centers: centers,
             nodes: nodes,
-            parameter: Util_Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             hasLeastTotalCost: params.hasLeastTotalCost
         };
         me.request({
@@ -22375,7 +22390,7 @@ class FindPathParameters_FindPathParameters {
          * @description 交通网络分析通用参数。
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindPathParameters";
     }
@@ -22461,7 +22476,7 @@ class FindPathService_FindPathService extends NetworkAnalystServiceBase_NetworkA
         me.url = me.url + ((end === "/") ? "path" : "/path") + ".json?";
         jsonObject = {
             hasLeastEdgeCount: params.hasLeastEdgeCount,
-            parameter: Util_Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)
         };
         me.request({
@@ -22606,7 +22621,7 @@ class FindServiceAreasParameters_FindServiceAreasParameters {
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindServiceAreasParameters";
     }
@@ -22694,7 +22709,7 @@ class FindServiceAreasService_FindServiceAreasService extends NetworkAnalystServ
         jsonObject = {
             isFromCenter: params.isFromCenter,
             isCenterMutuallyExclusive: params.isCenterMutuallyExclusive,
-            parameter: Util_Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             centers: me.getJson(params.isAnalyzeById, params.centers),
             weights: me.getJson(true, params.weights)
         };
@@ -22823,7 +22838,7 @@ class FindTSPPathsParameters_FindTSPPathsParameters {
          *              字段，则返回结果空间信息等都为空。
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindTSPPathsParameters";
     }
@@ -23085,7 +23100,7 @@ class GenerateSpatialDataParameters_GenerateSpatialDataParameters {
          */
         this.dataReturnOption = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GenerateSpatialDataParameters";
@@ -23233,7 +23248,7 @@ class GenerateSpatialDataService_GenerateSpatialDataService extends SpatialAnaly
         me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
 
         me.url += "?returnContent=true";
-        jsonParameters = Util_Util.toJSON(params);
+        jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }
 
@@ -23271,9 +23286,9 @@ class GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter ex
          * @member {SuperMap.AggregationQueryBuilderType} [SuperMap.GeoBoundingBoxQueryBuilderParameter.prototype.queryType=SuperMap.AggregationQueryBuilderType.GEO_BOUNDING_BOX]
          * @description 查询类型。
          */
-        this.queryType = REST_AggregationQueryBuilderType.GEO_BOUNDING_BOX;
+        this.queryType = AggregationQueryBuilderType.GEO_BOUNDING_BOX;
         this.CLASS_NAME = "SuperMap.GeoBoundingBoxQueryBuilderParameter";
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     destroy() {
@@ -23313,9 +23328,9 @@ class GeoHashGridAggParameter_GeoHashGridAggParameter extends AggregationParamet
          * @member {SuperMap.AggregationType} [SuperMap.GeoHashGridAggParameter.prototype.aggType=SuperMap.AggregationType.GEOHASH_GRID]
          * @description 格网聚合类型。
          */
-        this.aggType = REST_AggregationType.GEOHASH_GRID;
+        this.aggType = AggregationType.GEOHASH_GRID;
 
-        Util_Util.extend(this, option);
+        Util.extend(this, option);
 
         this.CLASS_NAME = "SuperMap.GeoHashGridAggParameter";
     }
@@ -23341,7 +23356,7 @@ class GeoHashGridAggParameter_GeoHashGridAggParameter extends AggregationParamet
         if (param.subAgg) {
             parameters.subAgg = param.subAgg;
         }
-        return Util_Util.toJson(parameters);
+        return Util.toJson(parameters);
     }
 }
 
@@ -23391,7 +23406,7 @@ class GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters extends 
         }
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.GeometryOverlayAnalystParameters";
     }
@@ -23499,7 +23514,7 @@ class GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters extends 
          */
         this.zValues = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GeometrySurfaceAnalystParameters";
@@ -23555,7 +23570,7 @@ class GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters extend
          */
         this.points = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.GeometryThiessenAnalystParameters";
     }
@@ -23677,7 +23692,7 @@ class GeoRelationAnalystParameters_GeoRelationAnalystParameters {
          */
         this.expectCount = 500;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GeoRelationAnalystParameters";
@@ -23875,7 +23890,7 @@ class GetFeaturesParametersBase_GetFeaturesParametersBase {
          */
         this.aggregations = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesParametersBase";
     }
@@ -23959,8 +23974,8 @@ class GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters extends GetFea
          * @member {SuperMap.SpatialQueryMode} [SuperMap.GetFeaturesByBoundsParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式常量。
          */
-        this.spatialQueryMode = REST_SpatialQueryMode.CONTAIN;
-        Util_Util.extend(this, options);
+        this.spatialQueryMode = SpatialQueryMode.CONTAIN;
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.GetFeaturesByBoundsParameters";
     }
 
@@ -24022,7 +24037,7 @@ class GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters extends GetFea
             parasByBounds.maxFeatures = params.maxFeatures;
         }
 
-        return Util_Util.toJSON(parasByBounds);
+        return Util.toJSON(parasByBounds);
     }
 
 
@@ -24102,9 +24117,9 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。
          * 参数格式为 "ISERVER"，"GEOJSON"。
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         var me = this, end;
         if (options.format) {
             me.format = options.format.toUpperCase();
@@ -24182,8 +24197,8 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
-        if (me.format === REST_DataFormat.GEOJSON && result.features) {
+        result = Util.transformResult(result);
+        if (me.format === DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new GeoJSON_GeoJSON();
             result.features = geoJSONFormat.toGeoJSON(result.features);
         }
@@ -24311,7 +24326,7 @@ class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFea
          * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
          */
         this.fields = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.GetFeaturesByBufferParameters";
     }
 
@@ -24367,7 +24382,7 @@ class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFea
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             paramsBySql.maxFeatures = params.maxFeatures;
         }
-        return Util_Util.toJSON(paramsBySql);
+        return Util.toJSON(paramsBySql);
     }
 
 
@@ -24500,8 +24515,8 @@ class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends Ge
          * @member {SuperMap.SpatialQueryMode} [SuperMap.GetFeaturesByGeometryParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式常量。
          */
-        this.spatialQueryMode = REST_SpatialQueryMode.CONTAIN;
-        Util_Util.extend(this, options);
+        this.spatialQueryMode = SpatialQueryMode.CONTAIN;
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesByGeometryParameters";
     }
@@ -24561,7 +24576,7 @@ class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends Ge
             parasByGeometry.maxFeatures = params.maxFeatures;
         }
 
-        return Util_Util.toJSON(parasByGeometry);
+        return Util.toJSON(parasByGeometry);
     }
 
 }
@@ -24671,7 +24686,7 @@ class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesP
          *  @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
          */
         this.fields = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesByIDsParameters";
     }
@@ -24714,7 +24729,7 @@ class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesP
             filterParameter.fields = params.fields;
             parasByIDs.queryParameter = filterParameter;
         }
-        return Util_Util.toJSON(parasByIDs);
+        return Util.toJSON(parasByIDs);
     }
 
 }
@@ -24819,7 +24834,7 @@ class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesP
          */
         this.queryParameter = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesBySQLParameters";
     }
@@ -24856,7 +24871,7 @@ class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesP
         if (params.aggregations) {
             paramsBySql.aggregations = params.aggregations;
         }
-        return Util_Util.toJSON(paramsBySql);
+        return Util.toJSON(paramsBySql);
     }
 
 }
@@ -24971,7 +24986,7 @@ class GetFieldsService_GetFieldsService extends CommonServiceBase_CommonServiceB
          */
         this.dataset = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GetFieldsService";
@@ -25055,7 +25070,7 @@ class GetGridCellInfosParameters_GetGridCellInfosParameters {
          * @description 要查询的地理位置 Y 轴。
          */
         this.Y = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
     }
@@ -25140,7 +25155,7 @@ class GetGridCellInfosService_GetGridCellInfosService extends CommonServiceBase_
          */
         this.Y = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.GetGridCellInfosService";
     }
@@ -25168,7 +25183,7 @@ class GetGridCellInfosService_GetGridCellInfosService extends CommonServiceBase_
         if (!(params instanceof GetGridCellInfosParameters_GetGridCellInfosParameters)) {
             return;
         }
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
         me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json") :
@@ -25201,7 +25216,7 @@ class GetGridCellInfosService_GetGridCellInfosService extends CommonServiceBase_
      */
     getDatasetInfoCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         me.datasetType = result.datasetInfo.type;
         me.queryGridInfos();
     }
@@ -25254,7 +25269,7 @@ SuperMap.GetGridCellInfosService = GetGridCellInfosService_GetGridCellInfosServi
  * @param {Array} srcData - 原始值数组。
  * @param {Array} targetData - 外部值数组。
  */
-class ThemeMemoryData_ThemeMemoryData {
+class ThemeMemoryData {
 
     constructor(srcData, targetData) {
         /**
@@ -25307,7 +25322,7 @@ class ThemeMemoryData_ThemeMemoryData {
 
 }
 
-SuperMap.ThemeMemoryData = ThemeMemoryData_ThemeMemoryData;
+SuperMap.ThemeMemoryData = ThemeMemoryData;
 // CONCATENATED MODULE: ./src/common/iServer/Theme.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -25345,7 +25360,7 @@ class Theme_Theme {
         this.type = type;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.Theme";
@@ -25419,19 +25434,19 @@ class ServerTextStyle_ServerTextStyle {
          * @member {SuperMap.TextAlignment} [SuperMap.ServerTextStyle.prototype.align= SuperMap.TextAlignment.BASELINECENTER]
          * @description 文本的对齐方式。
          */
-        this.align = REST_TextAlignment.BASELINECENTER;
+        this.align = TextAlignment.BASELINECENTER;
 
         /**
          * @member {SuperMap.ServerColor} [SuperMap.ServerTextStyle.prototype.backColor=(255, 255, 255)]
          * @description 文本的背景色。
          */
-        this.backColor = new ServerColor_ServerColor(255, 255, 255);
+        this.backColor = new ServerColor(255, 255, 255);
 
         /**
          * @member {SuperMap.ServerColor} [SuperMap.ServerTextStyle.prototype.foreColor=(0, 0, 0)]
          * @description 文本的前景色。
          */
-        this.foreColor = new ServerColor_ServerColor(0, 0, 0);
+        this.foreColor = new ServerColor(0, 0, 0);
 
         /**
          * @member {boolean} [SuperMap.ServerTextStyle.prototype.backOpaque=false]
@@ -25526,7 +25541,7 @@ class ServerTextStyle_ServerTextStyle {
         this.rotation = 0.0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
        this.CLASS_NAME = "SuperMap.ServerTextStyle";
@@ -25573,9 +25588,9 @@ class ServerTextStyle_ServerTextStyle {
      */
     static fromObj(obj) {
         var res = new ServerTextStyle_ServerTextStyle(obj);
-        Util_Util.copy(res, obj);
-        res.backColor = ServerColor_ServerColor.fromJson(obj.backColor);
-        res.foreColor = ServerColor_ServerColor.fromJson(obj.foreColor);
+        Util.copy(res, obj);
+        res.backColor = ServerColor.fromJson(obj.backColor);
+        res.foreColor = ServerColor.fromJson(obj.foreColor);
         return res;
     }
 
@@ -25644,7 +25659,7 @@ class ThemeLabelItem_ThemeLabelItem {
         this.style = new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeLabelItem";
 
@@ -25678,7 +25693,7 @@ class ThemeLabelItem_ThemeLabelItem {
             return;
         }
         var t = new ThemeLabelItem_ThemeLabelItem();
-        Util_Util.copy(t, obj);
+        Util.copy(t, obj);
         return t;
     }
 
@@ -25734,7 +25749,7 @@ class ThemeUniqueItem_ThemeUniqueItem {
         this.visible = true;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeUniqueItem";
@@ -25763,7 +25778,7 @@ class ThemeUniqueItem_ThemeUniqueItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.style) {
             if (obj.style.toServerJSONObject) {
                 obj.style = obj.style.toServerJSONObject();
@@ -25780,7 +25795,7 @@ class ThemeUniqueItem_ThemeUniqueItem {
      */
     static fromObj(obj) {
         var res = new ThemeUniqueItem_ThemeUniqueItem();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.style = ServerStyle_ServerStyle.fromJson(obj.style);
         return res;
 
@@ -25836,7 +25851,7 @@ class ThemeFlow_ThemeFlow {
         this.leaderLineStyle =  new ServerStyle_ServerStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeFlow";
@@ -25867,7 +25882,7 @@ class ThemeFlow_ThemeFlow {
             return;
         }
         var res = new ThemeFlow_ThemeFlow();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.leaderLineStyle = ServerStyle_ServerStyle.fromJson(obj.leaderLineStyle);
         return res;
     }
@@ -25917,7 +25932,7 @@ class ThemeOffset_ThemeOffset {
         this.offsetY = "0.0";
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeOffset";
     }
@@ -25944,7 +25959,7 @@ class ThemeOffset_ThemeOffset {
             return;
         }
         var res = new ThemeOffset_ThemeOffset();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         return res;
     }
 
@@ -26020,7 +26035,7 @@ class LabelMixedTextStyle_LabelMixedTextStyle {
         this.styles = new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.LabelMixedTextStyle"
     }
@@ -26060,7 +26075,7 @@ class LabelMixedTextStyle_LabelMixedTextStyle {
         }
         var res = new LabelMixedTextStyle_LabelMixedTextStyle();
         var stys = obj.styles;
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.defaultStyle = new ServerTextStyle_ServerTextStyle(obj.defaultStyle);
         if (stys) {
             res.styles = [];
@@ -26146,7 +26161,7 @@ class ThemeLabelText_ThemeLabelText {
         this.uniformMixedStyle =  null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeLabelText";
     }
@@ -26182,7 +26197,7 @@ class ThemeLabelText_ThemeLabelText {
             return;
         }
         var res = new ThemeLabelText_ThemeLabelText();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.uniformStyle = ServerTextStyle_ServerTextStyle.fromObj(obj.uniformStyle);
         res.uniformMixedStyle = LabelMixedTextStyle_LabelMixedTextStyle.fromObj(obj.uniformMixedStyle);
         return res;
@@ -26225,7 +26240,7 @@ class ThemeLabelAlongLine_ThemeLabelAlongLine {
          * @member {SuperMap.AlongLineDirection} [SuperMap.ThemeLabelAlongLine.prototype.alongLineDirection=SuperMap.AlongLineDirection.LB_TO_RT]
          * @description 标签沿线标注方向。
          */
-        this.alongLineDirection = REST_AlongLineDirection.LB_TO_RT;
+        this.alongLineDirection = AlongLineDirection.LB_TO_RT;
 
         /**
          * @member {boolean} [SuperMap.ThemeLabelAlongLine.prototype.angleFixed=false]
@@ -26256,7 +26271,7 @@ class ThemeLabelAlongLine_ThemeLabelAlongLine {
         this.labelRepeatInterval = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeLabelAlongLine";
@@ -26288,7 +26303,7 @@ class ThemeLabelAlongLine_ThemeLabelAlongLine {
             return;
         }
         var t = new ThemeLabelAlongLine_ThemeLabelAlongLine();
-        Util_Util.copy(t, obj);
+        Util.copy(t, obj);
         return t;
     }
 
@@ -26321,7 +26336,7 @@ class ThemeLabelBackground_ThemeLabelBackground {
          * @description 标签专题图中标签背景风格。当背景形状
          *              labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
          */
-        this.labelBackShape = REST_LabelBackShape.NONE;
+        this.labelBackShape = LabelBackShape.NONE;
 
         /**
          * @member {SuperMap.ServerStyle} [SuperMap.ThemeLabelBackground.prototype.backStyle=SuperMap.LabelBackShape.NON]
@@ -26331,7 +26346,7 @@ class ThemeLabelBackground_ThemeLabelBackground {
         this.backStyle = new ServerStyle_ServerStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeLabelBackground";
@@ -26457,7 +26472,7 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
          * @member {SuperMap.LabelOverLengthMode} [SuperMap.ThemeLabel.prototype.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
          * @description 对于标签的长度超过设置的标签最大长度 maxLabelLength 时称为超长标签。
          */
-        this.labelOverLengthMode = REST_LabelOverLengthMode.NONE;
+        this.labelOverLengthMode = LabelOverLengthMode.NONE;
 
         /**
          * @member {Array.<SuperMap.LabelMatrixCell>} SuperMap.ThemeLabel.prototype.matrixCells
@@ -26529,7 +26544,7 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
         this.textSpace = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeLabel";
@@ -26588,7 +26603,7 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return Util_Util.toJSON(this.toServerJSONObject());
+        return Util.toJSON(this.toServerJSONObject());
     }
 
     /**
@@ -26660,7 +26675,7 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
         var lab = new ThemeLabel_ThemeLabel();
         var itemsL = obj.items, itemsU = obj.uniqueItems, cells = obj.matrixCells;
         obj.matrixCells = null;
-        Util_Util.copy(lab, obj);
+        Util.copy(lab, obj);
         lab.alongLine = ThemeLabelAlongLine_ThemeLabelAlongLine.fromObj(obj);
         lab.background = ThemeLabelBackground_ThemeLabelBackground.fromObj(obj);
         lab.flow = new ThemeFlow_ThemeFlow({
@@ -26756,10 +26771,10 @@ class ThemeUnique_ThemeUnique extends Theme_Theme {
          *              但如果为某几个子项的风格进行单独设置后（设置了 ThemeUniqueItem 或 ThemeRangeItem 类中Style属性），
          *              该配色方案对于这几个子项将不起作用。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeUnique";
@@ -26798,7 +26813,7 @@ class ThemeUnique_ThemeUnique extends Theme_Theme {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.defaultStyle) {
             if (obj.defaultStyle.toServerJSONObject) {
                 obj.defaultStyle = obj.defaultStyle.toServerJSONObject();
@@ -26825,7 +26840,7 @@ class ThemeUnique_ThemeUnique extends Theme_Theme {
         var res = new ThemeUnique_ThemeUnique();
         var uItems = obj.items;
         var len = uItems ? uItems.length : 0;
-        Util_Util.extend(res, obj);
+        Util.extend(res, obj);
         res.items = [];
         res.defaultStyle = ServerStyle_ServerStyle.fromJson(obj.defaultStyle);
         for (var i = 0; i < len; i++) {
@@ -26866,7 +26881,7 @@ class ThemeGraphAxes_ThemeGraphAxes {
          * @member {SuperMap.ServerColor} [SuperMap.ThemeGraphAxes.prototype.axesColor=(0, 0, 0)]
          * @description 坐标轴颜色。当 axesDisplayed = true 时有效。
          */
-        this.axesColor =  new ServerColor_ServerColor(0, 0, 0);
+        this.axesColor =  new ServerColor(0, 0, 0);
 
         /**
          * @member {boolean} [SuperMap.ThemeGraphAxes.prototype.axesDisplayed=false]
@@ -26894,7 +26909,7 @@ class ThemeGraphAxes_ThemeGraphAxes {
         this.axesTextStyle =  new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraphAxes";
@@ -26930,8 +26945,8 @@ class ThemeGraphAxes_ThemeGraphAxes {
             return;
         }
         var res = new ThemeGraphAxes_ThemeGraphAxes();
-        Util_Util.copy(res, obj);
-        res.axesColor = ServerColor_ServerColor.fromJson(obj.axesColor);
+        Util.copy(res, obj);
+        res.axesColor = ServerColor.fromJson(obj.axesColor);
         res.axesTextStyle = ServerTextStyle_ServerTextStyle.fromObj(obj.axesTextStyle);
         return res;
     }
@@ -26971,7 +26986,7 @@ class ThemeGraphSize_ThemeGraphSize {
         this.minGraphSize = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
        this.CLASS_NAME = "SuperMap.ThemeGraphSize";
@@ -26995,7 +27010,7 @@ class ThemeGraphSize_ThemeGraphSize {
      */
     static fromObj(obj) {
         var res = new ThemeGraphSize_ThemeGraphSize();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         return res;
     }
 
@@ -27036,7 +27051,7 @@ class ThemeGraphText_ThemeGraphText {
          * @description 统计专题图文本显示格式。
          *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。
          */
-        this.graphTextFormat = REST_ThemeGraphTextFormat.CAPTION;
+        this.graphTextFormat = ThemeGraphTextFormat.CAPTION;
 
         /**
          * @member {SuperMap.ServerTextStyle} SuperMap.ThemeGraphText.prototype.graphTextStyle
@@ -27045,7 +27060,7 @@ class ThemeGraphText_ThemeGraphText {
         this.graphTextStyle =  new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraphText";
@@ -27073,7 +27088,7 @@ class ThemeGraphText_ThemeGraphText {
      */
     static fromObj(obj) {
         var res = new ThemeGraphText_ThemeGraphText();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.graphTextStyle = ServerTextStyle_ServerTextStyle.fromObj(obj.graphTextStyle);
         return res;
 
@@ -27134,7 +27149,7 @@ class ThemeGraphItem_ThemeGraphItem {
         this.uniformStyle = new ServerStyle_ServerStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraphItem";
@@ -27163,7 +27178,7 @@ class ThemeGraphItem_ThemeGraphItem {
             return;
         }
         var res = new ThemeGraphItem_ThemeGraphItem();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.uniformStyle = ServerStyle_ServerStyle.fromJson(obj.uniformStyle);
         return res;
     }
@@ -27235,7 +27250,7 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
          *              分级主要是为了减少制作统计专题图中数据大小之间的差异，使得统计图的视觉效果比较好，同时不同类别之间的比较也还是有意义的。
          *              提供三种分级模式：常数、对数和平方根，对于有值为负数的字段，不可以采用对数和平方根的分级方式。不同的等级方式用于确定符号大小的数值是不相同的。
          */
-        this.graduatedMode = REST_GraduatedMode.CONSTANT;
+        this.graduatedMode = GraduatedMode.CONSTANT;
 
         /**
          * @member {SuperMap.ThemeGraphAxes} SuperMap.ThemeGraph.prototype.graphAxes
@@ -27266,13 +27281,13 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
          * @description 统计专题图类型。SuperMap 提供了多种类型的统计图，
          *              分别为面积图、阶梯图、折线图、点状图、柱状图、三维柱状图、饼图、三维饼图、玫瑰图、三维玫瑰图、堆叠柱状图、三维堆叠柱状图、环状图。默认为面积图。
          */
-        this.graphType = REST_ThemeGraphType.AREA;
+        this.graphType = ThemeGraphType.AREA;
 
         /**
          * @member {SuperMap.GraphAxesTextDisplayMode} [SuperMap.ThemeGraph.prototype.graphAxesTextDisplayMode=SuperMap.GraphAxesTextDisplayMode.NONE]
          * @description 统计专题图坐标轴文本显示模式。
          */
-        this.graphAxesTextDisplayMode = REST_GraphAxesTextDisplayMode.NONE;
+        this.graphAxesTextDisplayMode = GraphAxesTextDisplayMode.NONE;
 
         /**
          * @member {Array.<SuperMap.ThemeGraphItem>} SuperMap.ThemeGraph.prototype.items
@@ -27397,7 +27412,7 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
         this.startAngle = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraph";
@@ -27455,7 +27470,7 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return Util_Util.toJSON(this.toServerJSONObject());
+        return Util.toJSON(this.toServerJSONObject());
     }
 
     /**
@@ -27516,7 +27531,7 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
         var res = new ThemeGraph_ThemeGraph();
         var itemsG = obj.items;
         var len = itemsG ? itemsG.length : 0;
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.items = [];
         res.flow = ThemeFlow_ThemeFlow.fromObj(obj);
         res.graphAxes = ThemeGraphAxes_ThemeGraphAxes.fromObj(obj);
@@ -27584,7 +27599,7 @@ class ThemeDotDensity_ThemeDotDensity extends Theme_Theme {
         this.value = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeDotDensity";
     }
@@ -27612,7 +27627,7 @@ class ThemeDotDensity_ThemeDotDensity extends Theme_Theme {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.style) {
             if (obj.style.toServerJSONObject) {
                 obj.style = obj.style.toServerJSONObject();
@@ -27632,7 +27647,7 @@ class ThemeDotDensity_ThemeDotDensity extends Theme_Theme {
             return;
         }
         var res = new ThemeDotDensity_ThemeDotDensity();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.style = ServerStyle_ServerStyle.fromJson(obj.style);
         return res;
     }
@@ -27696,7 +27711,7 @@ class ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle {
         this.zeroStyle = new ServerStyle_ServerStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraduatedSymbolStyle";
@@ -27726,7 +27741,7 @@ class ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle {
             return;
         }
         var res = new ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.negativeStyle = ServerStyle_ServerStyle.fromJson(obj.negativeStyle);
         res.positiveStyle = ServerStyle_ServerStyle.fromJson(obj.positiveStyle);
         res.zeroStyle = ServerStyle_ServerStyle.fromJson(obj.zeroStyle);
@@ -27815,7 +27830,7 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
         this.style =  new ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraduatedSymbol";
@@ -27833,7 +27848,7 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
             me.flow.destroy();
             me.flow = null;
         }
-        me.graduatedMode = REST_GraduatedMode.CONSTANT;
+        me.graduatedMode = GraduatedMode.CONSTANT;
         if (me.offset) {
             me.offset.destroy();
             me.offset = null;
@@ -27851,7 +27866,7 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return Util_Util.toJSON(this.toServerJSONObject());
+        return Util.toJSON(this.toServerJSONObject());
     }
 
 
@@ -27898,7 +27913,7 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
             return;
         }
         var res = new SuperMap.ThemeGraduatedSymbol();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.flow = ThemeFlow_ThemeFlow.fromObj(obj);
         res.offset = ThemeOffset_ThemeOffset.fromObj(obj);
         res.style = ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle.fromObj(obj);
@@ -27970,7 +27985,7 @@ class ThemeRangeItem_ThemeRangeItem {
         this.visible = true;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeRangeItem";
@@ -28000,7 +28015,7 @@ class ThemeRangeItem_ThemeRangeItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.style) {
             if (obj.style.toServerJSONObject) {
                 obj.style = obj.style.toServerJSONObject();
@@ -28020,7 +28035,7 @@ class ThemeRangeItem_ThemeRangeItem {
             return;
         }
         var res = new ThemeRangeItem_ThemeRangeItem();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.style = ServerStyle_ServerStyle.fromJson(obj.style);
         return res;
     }
@@ -28088,7 +28103,7 @@ class ThemeRange_ThemeRange extends Theme_Theme {
          *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，
          *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} SuperMap.ThemeRange.prototype.rangeParameter
@@ -28106,10 +28121,10 @@ class ThemeRange_ThemeRange extends Theme_Theme {
          *              方案完成填*充。但如果为某几个子项的风格进行单独设置后（设置了 {@link SuperMap.ThemeUniqueItem} 或 {@link SuperMap.ThemeRangeItem} 类中Style属性），
          *              该配色方案对于这几个子项将不起作用。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeRange";
@@ -28149,7 +28164,7 @@ class ThemeRange_ThemeRange extends Theme_Theme {
             return;
         }
         var res = new ThemeRange_ThemeRange();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         var itemsR = obj.items;
         var len = itemsR ? itemsR.length : 0;
         res.items = [];
@@ -28238,7 +28253,7 @@ class UGCLayer_UGCLayer {
          */
         this.visible = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.UGCLayer";
     }
@@ -28249,7 +28264,7 @@ class UGCLayer_UGCLayer {
      */
     destroy() {
         var me = this;
-        Util_Util.reset(me);
+        Util.reset(me);
     }
 
     /**
@@ -28259,7 +28274,7 @@ class UGCLayer_UGCLayer {
      */
     fromJson(jsonObject) {
         jsonObject = jsonObject ? jsonObject : {};
-        Util_Util.extend(this, jsonObject);
+        Util.extend(this, jsonObject);
         var b = this.bounds;
         if (b) {
             this.bounds = new Bounds_Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
@@ -28274,7 +28289,7 @@ class UGCLayer_UGCLayer {
      */
     toServerJSONObject() {
         var jsonObject = {};
-        jsonObject = Util_Util.copyAttributes(jsonObject, this);
+        jsonObject = Util.copyAttributes(jsonObject, this);
         if (jsonObject.bounds) {
             if (jsonObject.bounds.toServerJSONObject) {
                 jsonObject.bounds = jsonObject.bounds.toServerJSONObject();
@@ -28368,7 +28383,7 @@ class OverlapDisplayedOptions_OverlapDisplayedOptions {
          */
         this.verticalOverlappedSpaceSize = 0;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.ugcLayer = new UGCLayer_UGCLayer(options);
 
         this.CLASS_NAME = "SuperMap.OverlapDisplayedOptions";
@@ -28379,7 +28394,7 @@ class OverlapDisplayedOptions_OverlapDisplayedOptions {
      * @description 释放资源，将资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -28518,7 +28533,7 @@ class UGCMapLayer_UGCMapLayer extends UGCLayer_UGCLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -28633,7 +28648,7 @@ class UGCSubLayer_UGCSubLayer extends UGCMapLayer_UGCMapLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -28718,7 +28733,7 @@ class ServerTheme_ServerTheme extends UGCSubLayer_UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -28917,7 +28932,7 @@ class Grid_Grid extends UGCSubLayer_UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -28928,7 +28943,7 @@ class Grid_Grid extends UGCSubLayer_UGCSubLayer {
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
         if (this.specialColor) {
-            this.specialColor = new ServerColor_ServerColor(this.specialColor.red,
+            this.specialColor = new ServerColor(this.specialColor.red,
                 this.specialColor.green,
                 this.specialColor.blue);
         }
@@ -28937,7 +28952,7 @@ class Grid_Grid extends UGCSubLayer_UGCSubLayer {
                 color;
             for (var i in this.colors) {
                 color = this.colors[i];
-                colors.push(new ServerColor_ServerColor(color.red, color.green, color.blue));
+                colors.push(new ServerColor(color.red, color.green, color.blue));
             }
             this.colors = colors;
         }
@@ -29065,7 +29080,7 @@ class Image_UGCImage extends UGCSubLayer_UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -29076,7 +29091,7 @@ class Image_UGCImage extends UGCSubLayer_UGCSubLayer {
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
         if (this.transparentColor) {
-            this.transparentColor = new ServerColor_ServerColor(this.transparentColor.red,
+            this.transparentColor = new ServerColor(this.transparentColor.red,
                 this.transparentColor.green,
                 this.transparentColor.blue);
         }
@@ -29133,7 +29148,7 @@ class iServer_Vector_Vector extends UGCSubLayer_UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -29206,7 +29221,7 @@ class GetLayersInfoService_GetLayersInfoService extends CommonServiceBase_Common
          */
         this.isTempLayers = false;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.GetLayersInfoService";
     }
@@ -29217,7 +29232,7 @@ class GetLayersInfoService_GetLayersInfoService extends CommonServiceBase_Common
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -29250,7 +29265,7 @@ class GetLayersInfoService_GetLayersInfoService extends CommonServiceBase_Common
      */
     serviceProcessCompleted(result) {
         var me = this, existRes, layers, len;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
 
         existRes = !!result && result.length > 0;
         layers = existRes ? result[0].subLayers.layers : null;
@@ -29431,7 +29446,7 @@ class InterpolationAnalystParameters_InterpolationAnalystParameters {
          */
         this.clipParam = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.InterpolationAnalystParameters";
     }
 
@@ -29576,7 +29591,7 @@ class InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters extend
         this.maxPointCountInNode = 50;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.InterpolationRBFAnalystParameters";
 
@@ -29659,7 +29674,7 @@ class InterpolationDensityAnalystParameters_InterpolationDensityAnalystParameter
     constructor(options) {
         super(options);
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.InterpolationDensityAnalystParameters";
     }
@@ -29747,7 +29762,7 @@ class InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters extend
          */
         this.expectedCount = 12;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.InterpolationIDWAnalystParameters";
     }
@@ -29919,13 +29934,13 @@ class InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameter
          * 用户所选择的半变函数类型会影响未知点的预测，特别是曲线在原点处的不同形状有重要意义。
          * 曲线在原点处越陡，则较近领域对该预测值的影响就越大，因此输出表面就会越不光滑。
          */
-        this.variogramMode = REST_VariogramMode.SPHERICAL;
+        this.variogramMode = VariogramMode.SPHERICAL;
 
         /**
          * @member {SuperMap.Exponent} [SuperMap.InterpolationKrigingAnalystParameters.prototype.exponent=SuperMap.Exponent.EXP1]
          * @description 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数。
          */
-        this.exponent = REST_Exponent.EXP1;
+        this.exponent = Exponent.EXP1;
 
         /**
          * @member {SuperMap.SearchMode} SuperMap.InterpolationKrigingAnalystParameters.prototype.searchMode
@@ -29959,7 +29974,7 @@ class InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameter
          */
         this.maxPointCountInNode = 50;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.InterpolationKrigingAnalystParameters";
     }
@@ -30034,7 +30049,7 @@ class InterpolationAnalystService_InterpolationAnalystService extends SpatialAna
 
         this.mode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -30092,7 +30107,7 @@ class InterpolationAnalystService_InterpolationAnalystService extends SpatialAna
             }
         }
         InterpolationAnalystParameters_InterpolationAnalystParameters.toObject(parameter, parameterObject);
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
 
         me.request({
@@ -30181,14 +30196,14 @@ SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsSe
  * @description 该类可以包含 n*n 个矩阵标签元素，矩阵标签元素的类型可以是图片，符号，标签专题图等。
  *              符号类型的矩阵标签元素类、图片类型的矩阵标签元素类和专题图类型的矩阵标签元素类均继承自该类。
  */
-class LabelMatrixCell_LabelMatrixCell {
+class LabelMatrixCell {
     constructor() {
         this.CLASS_NAME = "LabelMatrixCell";
     }
 
 }
 
-SuperMap.LabelMatrixCell = LabelMatrixCell_LabelMatrixCell;
+SuperMap.LabelMatrixCell = LabelMatrixCell;
 // CONCATENATED MODULE: ./src/common/iServer/LabelImageCell.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -30215,7 +30230,7 @@ SuperMap.LabelMatrixCell = LabelMatrixCell_LabelMatrixCell;
  * @param {number} [options.width=0] - 设置图片的宽度，单位为毫米。
  * @param {boolean} [options.sizeFixed=false] - 是否固定图片的大小。
  */
-class LabelImageCell_LabelImageCell extends LabelMatrixCell_LabelMatrixCell {
+class LabelImageCell_LabelImageCell extends LabelMatrixCell {
 
     constructor(options) {
         super(options);
@@ -30256,7 +30271,7 @@ class LabelImageCell_LabelImageCell extends LabelMatrixCell_LabelMatrixCell {
         this.type = "IMAGE";
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.LabelImageCell";
@@ -30301,7 +30316,7 @@ SuperMap.LabelImageCell = LabelImageCell_LabelImageCell;
  * @param {SuperMap.ServerStyle} options.style - 获取或设置符号样式。 
  * @param {string} options.symbolIDField - 符号 ID 或符号 ID 所对应的字段名称。
  */
-class LabelSymbolCell_LabelSymbolCell extends LabelMatrixCell_LabelMatrixCell {
+class LabelSymbolCell_LabelSymbolCell extends LabelMatrixCell {
 
     constructor(options) {
         super(options);
@@ -30325,7 +30340,7 @@ class LabelSymbolCell_LabelSymbolCell extends LabelMatrixCell_LabelMatrixCell {
         this.type = "SYMBOL";
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.LabelSymbolCell";
@@ -30370,7 +30385,7 @@ SuperMap.LabelSymbolCell = LabelSymbolCell_LabelSymbolCell;
  * @param {Object} options -参数。 
  * @param {SuperMap.ThemeLabel} options.themeLabel - 使用专题图对象作为矩阵标签的一个元素。
  */
-class LabelThemeCell_LabelThemeCell extends LabelMatrixCell_LabelMatrixCell {
+class LabelThemeCell_LabelThemeCell extends LabelMatrixCell {
 
 
     constructor(options) {
@@ -30388,7 +30403,7 @@ class LabelThemeCell_LabelThemeCell extends LabelMatrixCell_LabelMatrixCell {
         this.type = "THEME";
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = " SuperMap.LabelThemeCell";
     }
@@ -30457,7 +30472,7 @@ class LayerStatus_LayerStatus {
         this.fieldValuesDisplayFilter = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.LayerStatus";
     }
@@ -30501,7 +30516,7 @@ class LayerStatus_LayerStatus {
         }
 
         if (this.fieldValuesDisplayFilter) {
-            v.push('"fieldValuesDisplayFilter":' + Util_Util.toJSON(this.fieldValuesDisplayFilter));
+            v.push('"fieldValuesDisplayFilter":' + Util.toJSON(this.fieldValuesDisplayFilter));
         }
 
         json += v;
@@ -30553,7 +30568,7 @@ class MapService_MapService extends CommonServiceBase_CommonServiceBase {
 
         this.CLASS_NAME = "SuperMap.MapService";
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         var me = this;
 
@@ -30609,7 +30624,7 @@ class MapService_MapService extends CommonServiceBase_CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;
         if (!result.code || isCodeValid) {
@@ -30703,7 +30718,7 @@ class MathExpressionAnalysisParameters_MathExpressionAnalysisParameters {
          */
         this.deleteExistResultDataset = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.MathExpressionAnalysisParameters"
     }
@@ -30827,7 +30842,7 @@ class MathExpressionAnalysisService_MathExpressionAnalysisService extends Spatia
         }
 
         MathExpressionAnalysisParameters_MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",
@@ -30880,7 +30895,7 @@ class MeasureParameters_MeasureParameters {
          * @member {SuperMap.Unit} [SuperMap.MeasureParameters.prototype.unit=SuperMap.Unit.METER]
          * @description 量算单位。即量算结果以米为单位。
          */
-        this.unit = REST_Unit.METER;
+        this.unit = Unit.METER;
 
         /**
          * @member {string} [SuperMap.MeasureParameters.prototype.prjCoordSys]
@@ -30896,7 +30911,7 @@ class MeasureParameters_MeasureParameters {
          */
         this.distanceMode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.MeasureParameters";
     }
@@ -30954,10 +30969,10 @@ class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase 
          * @member {SuperMap.MeasureMode} [SuperMap.MeasureService.prototype.measureMode=MeasureMode.DISTANCE]
          * @description 量算模式，包括距离量算模式和面积量算模式。
          */
-        this.measureMode = REST_MeasureMode.DISTANCE;
+        this.measureMode = MeasureMode.DISTANCE;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.MeasureService";
@@ -30990,7 +31005,7 @@ class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase 
             return;
         }
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.measureMode === REST_MeasureMode.AREA) {
+        if (me.measureMode === MeasureMode.AREA) {
             me.url += ((end === "/") ? "area.json?" : "/area.json?");
         } else {
             me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
@@ -31011,12 +31026,12 @@ class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase 
                 prjCoordSysTemp = '{"epsgCode"' + params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"), params.prjCoordSys.length) + "}";
             }
             paramsTemp = {
-                "point2Ds": Util_Util.toJSON(point2ds),
+                "point2Ds": Util.toJSON(point2ds),
                 "unit": params.unit,
                 "prjCoordSys": prjCoordSysTemp
             };
         } else {
-            paramsTemp = {"point2Ds": Util_Util.toJSON(point2ds), "unit": params.unit};
+            paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit};
         }
 
         me.request({
@@ -31075,7 +31090,7 @@ class OverlayAnalystService_OverlayAnalystService extends SpatialAnalystBase_Spa
         this.mode = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.OverlayAnalystService";
@@ -31118,7 +31133,7 @@ class OverlayAnalystService_OverlayAnalystService extends SpatialAnalystBase_Spa
             GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
 
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -31242,7 +31257,7 @@ class QueryByBoundsParameters_QueryByBoundsParameters extends QueryParameters_Qu
          */
         this.bounds = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryByBoundsParameters";
     }
@@ -31314,12 +31329,12 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
          * @member {string} SuperMap.QueryService.prototype.format
          * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
         this.returnFeatureWithFieldCaption = false;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.QueryService";
@@ -31395,7 +31410,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         var geoJSONFormat = new GeoJSON_GeoJSON();
         if (result && result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
@@ -31406,7 +31421,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
                             return feature;
                         })
                     }
-                    if (me.format === REST_DataFormat.GEOJSON) {
+                    if (me.format === DataFormat.GEOJSON) {
                         recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                     }
                 }
@@ -31502,7 +31517,7 @@ class QueryByBoundsService_QueryByBoundsService extends QueryService_QueryServic
             bounds = params.bounds;
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'BoundsQuery','queryParameters':";
-        jsonParameters += Util_Util.toJSON(qp);
+        jsonParameters += Util.toJSON(qp);
         jsonParameters += ",'bounds': {'rightTop':{'y':" + bounds.top + ",'x':" +
             bounds.right + "},'leftBottom':{'y':" + bounds.bottom + ",'x':" + bounds.left + "}}";
         jsonParameters = "{" + jsonParameters + "}";
@@ -31588,7 +31603,7 @@ class QueryByDistanceParameters_QueryByDistanceParameters extends QueryParameter
         this.returnContent = true;
 
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryByDistanceParameters";
     }
@@ -31674,8 +31689,8 @@ class QueryByDistanceService_QueryByDistanceService extends QueryService_QuerySe
         var sg = ServerGeometry_ServerGeometry.fromGeometry(params.geometry);
 
         jsonParameters += params.isNearest ? "'queryMode':'FindNearest','queryParameters':" : "'queryMode':'DistanceQuery','queryParameters':";
-        jsonParameters += Util_Util.toJSON(qp);
-        jsonParameters += ",'geometry':" + Util_Util.toJSON(sg) + ",'distance':" + params.distance;
+        jsonParameters += Util.toJSON(qp);
+        jsonParameters += ",'geometry':" + Util.toJSON(sg) + ",'distance':" + params.distance;
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     }
@@ -31744,9 +31759,9 @@ class QueryByGeometryParameters_QueryByGeometryParameters extends QueryParameter
          * @member {SuperMap.SpatialQueryMode} [SuperMap.QueryByGeometryParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.INTERSECT]
          * @description 空间查询模式。
          */
-        this.spatialQueryMode = REST_SpatialQueryMode.INTERSECT;
+        this.spatialQueryMode = SpatialQueryMode.INTERSECT;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryByGeometryParameters";
     }
@@ -31836,8 +31851,8 @@ class QueryByGeometryService_QueryByGeometryService extends QueryService_QuerySe
             sg = ServerGeometry_ServerGeometry.fromGeometry(geometry);
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'SpatialQuery','queryParameters':";
-        jsonParameters += Util_Util.toJSON(qp) + ",'geometry':" + Util_Util.toJSON(sg)
-            + ",'spatialQueryMode':" + Util_Util.toJSON(params.spatialQueryMode);
+        jsonParameters += Util.toJSON(qp) + ",'geometry':" + Util.toJSON(sg)
+            + ",'spatialQueryMode':" + Util.toJSON(params.spatialQueryMode);
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     }
@@ -31887,7 +31902,7 @@ class QueryBySQLParameters_QueryBySQLParameters extends QueryParameters_QueryPar
          *              为 false，则返回的是查询结果资源的 URI。
          */
         this.returnContent = true;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.QueryBySQLParameters";
     }
 
@@ -31976,7 +31991,7 @@ class QueryBySQLService_QueryBySQLService extends QueryService_QueryService {
             qp = null;
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'SqlQuery','queryParameters':";
-        jsonParameters += Util_Util.toJSON(qp);
+        jsonParameters += Util.toJSON(qp);
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     }
@@ -32033,7 +32048,7 @@ class RouteCalculateMeasureParameters_RouteCalculateMeasureParameters {
          */
         this.isIgnoreGap = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.RouteCalculateMeasureParameters";
     }
@@ -32173,7 +32188,7 @@ class RouteCalculateMeasureService_RouteCalculateMeasureService extends SpatialA
         end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
         me.url += "?returnContent=true";
-        jsonParameters = Util_Util.toJSON(params);
+        jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }
 
@@ -32288,7 +32303,7 @@ class RouteLocatorParameters_RouteLocatorParameters {
             routeHandle.points = parts;
             options.sourceRoute = routeHandle;
         }
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.RouteLocatorParameters";
     }
 
@@ -32431,7 +32446,7 @@ class RouteLocatorService_RouteLocatorService extends SpatialAnalystBase_Spatial
         }
         me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
         me.url += "?returnContent=true";
-        jsonParameters = Util_Util.toJSON(params);
+        jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }
 
@@ -32479,7 +32494,7 @@ class ServerFeature_ServerFeature {
          */
         this.geometry = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ServerFeature";
@@ -32590,7 +32605,7 @@ class SetLayerInfoParameters_SetLayerInfoParameters {
          */
         this.layerInfo = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SetLayerInfoParameters";
     }
@@ -32638,7 +32653,7 @@ class SetLayerInfoService_SetLayerInfoService extends CommonServiceBase_CommonSe
     constructor(url, options) {
         super(url, options);
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.SetLayerInfoService";
     }
@@ -32648,7 +32663,7 @@ class SetLayerInfoService_SetLayerInfoService extends CommonServiceBase_CommonSe
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -32663,7 +32678,7 @@ class SetLayerInfoService_SetLayerInfoService extends CommonServiceBase_CommonSe
         }
         var me = this;
         me.url += ".json";
-        var jsonParamsStr = Util_Util.toJSON(params);
+        var jsonParamsStr = Util.toJSON(params);
         me.request({
             method: "PUT",
             data: jsonParamsStr,
@@ -32713,7 +32728,7 @@ class SetLayersInfoParameters_SetLayersInfoParameters {
          */
         this.layersInfo = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SetLayersInfoParameters";
     }
@@ -32790,7 +32805,7 @@ class SetLayersInfoService_SetLayersInfoService extends CommonServiceBase_Common
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -32849,10 +32864,10 @@ class SetLayersInfoService_SetLayersInfoService extends CommonServiceBase_Common
                 subLayers.push(layers[i]);
             }
         }
-        jsonParams = Util_Util.extend(jsonParams, params);
+        jsonParams = Util.extend(jsonParams, params);
         jsonParams.subLayers = {"layers": subLayers};
         jsonParams.object = null;
-        var jsonParamsStr = Util_Util.toJSON([jsonParams]);
+        var jsonParamsStr = Util.toJSON([jsonParams]);
         me.request({
             method: method,
             data: jsonParamsStr,
@@ -32908,7 +32923,7 @@ class SetLayerStatusParameters_SetLayerStatusParameters {
         this.resourceID = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
 
@@ -32982,7 +32997,7 @@ class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_Comm
 
         this.mapUrl = url;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.SetLayerStatusService";
     }
@@ -32992,7 +33007,7 @@ class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_Comm
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -33058,7 +33073,7 @@ class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_Comm
      */
     createTempLayerComplete(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         if (result.succeed) {
             me.lastparams.resourceID = result.newResourceID;
         }
@@ -33088,7 +33103,7 @@ class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_Comm
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         if (result != null && me.lastparams != null) {
             result.newResourceID = me.lastparams.resourceID;
         }
@@ -33191,7 +33206,7 @@ class StopQueryParameters_StopQueryParameters {
          */
         this.returnPosition = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.StopQueryParameters";
     }
@@ -33201,7 +33216,7 @@ class StopQueryParameters_StopQueryParameters {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 }
@@ -33244,7 +33259,7 @@ class StopQueryService_StopQueryService extends CommonServiceBase_CommonServiceB
     constructor(url, options) {
         super(url, options);
         options = options || {};
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.StopQueryService";
     }
 
@@ -33253,7 +33268,7 @@ class StopQueryService_StopQueryService extends CommonServiceBase_CommonServiceB
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -33519,7 +33534,7 @@ class SupplyCenter_SupplyCenter {
         this.type = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.SupplyCenter";
@@ -33644,13 +33659,13 @@ class SurfaceAnalystService_SurfaceAnalystService extends SpatialAnalystBase_Spa
                 ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
                 params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
             DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters.toObject(params, parameterObject);
-            jsonParameters = Util_Util.toJSON(parameterObject);
+            jsonParameters = Util.toJSON(parameterObject);
         } else if (params instanceof GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters) {
             end = me.url.substr(me.url.length - 1, 1);
             me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
                 ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
                 ".json?returnContent=true";
-            jsonParameters = Util_Util.toJSON(params);
+            jsonParameters = Util.toJSON(params);
         } else {
             return;
         }
@@ -33725,7 +33740,7 @@ class TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameter
          */
         this.deleteExistResultDataset = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TerrainCurvatureCalculationParameters";
     }
@@ -33872,7 +33887,7 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
          * @member {SuperMap.ServerColor} SuperMap.ThemeGridRangeItem.prototype.color
          * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
          */
-        this.color =  new ServerColor_ServerColor();
+        this.color =  new ServerColor();
 
         /**
          * @member {number} [SuperMap.ThemeGridRangeItem.prototype.end=0]
@@ -33894,7 +33909,7 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
         this.visible = true;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeGridRangeItem";
     }
@@ -33923,7 +33938,7 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.color) {
             if (obj.color.toServerJSONObject) {
                 obj.color = obj.color.toServerJSONObject();
@@ -33943,8 +33958,8 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
             return;
         }
         var res = new ThemeGridRangeItem_ThemeGridRangeItem();
-        Util_Util.copy(res, obj);
-        res.color = ServerColor_ServerColor.fromJson(obj.color);
+        Util.copy(res, obj);
+        res.color = ServerColor.fromJson(obj.color);
         return res;
     }
 
@@ -33996,7 +34011,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
          *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，
          *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} [SuperMap.ThemeGridRange.prototype.rangeParameter=0]
@@ -34011,7 +34026,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
          * @description 渐变颜色枚举类。
          *
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         /**
          * @member {boolean} SuperMap.ThemeGridRange.prototype.reverseColor
@@ -34020,7 +34035,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
         this.reverseColor = false;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGridRange";
@@ -34059,7 +34074,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
             return;
         }
         var res = new ThemeGridRange_ThemeGridRange();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         var itemsR = obj.items;
         var len = itemsR ? itemsR.length : 0;
         res.items = [];
@@ -34106,7 +34121,7 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
          * @member {SuperMap.ServerColor} [SuperMap.ThemeGridUniqueItem.prototype.color]
          * @description 栅格单值专题图子项的显示颜色。
          */
-        this.color = new ServerColor_ServerColor();
+        this.color = new ServerColor();
 
         /**
          * @member {number} SuperMap.ThemeGridUniqueItem.prototype.unique
@@ -34121,7 +34136,7 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
         this.visible = true;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGridUniqueItem";
@@ -34150,7 +34165,7 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.color) {
             if (obj.color.toServerJSONObject) {
                 obj.color = obj.color.toServerJSONObject();
@@ -34167,8 +34182,8 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
      */
     static fromObj(obj) {
         var res = new ThemeGridUniqueItem_ThemeGridUniqueItem();
-        Util_Util.copy(res, obj);
-        res.color = ServerColor_ServerColor.fromJson(obj.color);
+        Util.copy(res, obj);
+        res.color = ServerColor.fromJson(obj.color);
         return res;
 
     }
@@ -34207,7 +34222,7 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
          * @description 栅格单值专题图的默认颜色。
          *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
          */
-        this.defaultcolor = new ServerColor_ServerColor();
+        this.defaultcolor = new ServerColor();
 
         /**
          * @member {Array.<SuperMap.ThemeGridUniqueItem>} SuperMap.ThemeGridUnique.prototype.items
@@ -34217,7 +34232,7 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
         this.items = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGridUnique";
@@ -34253,7 +34268,7 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.defaultcolor) {
             if (obj.defaultcolor.toServerJSONObject) {
                 obj.defaultcolor = obj.defaultcolor.toServerJSONObject();
@@ -34280,9 +34295,9 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
         var res = new ThemeGridUnique_ThemeGridUnique();
         var uItems = obj.items;
         var len = uItems ? uItems.length : 0;
-        Util_Util.extend(res, obj);
+        Util.extend(res, obj);
         res.items = [];
-        res.defaultcolor = ServerColor_ServerColor.fromJson(obj.defaultcolor);
+        res.defaultcolor = ServerColor.fromJson(obj.defaultcolor);
         for (var i = 0; i < len; i++) {
             res.items.push(ThemeGridUniqueItem_ThemeGridUniqueItem.fromObj(uItems[i]));
         }
@@ -34356,7 +34371,7 @@ class ThemeLabelUniqueItem_ThemeLabelUniqueItem {
         this.style = new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeLabelUniqueItem";
     }
@@ -34389,7 +34404,7 @@ class ThemeLabelUniqueItem_ThemeLabelUniqueItem {
             return;
         }
         var t = new ThemeLabelUniqueItem_ThemeLabelUniqueItem();
-        Util_Util.copy(t, obj);
+        Util.copy(t, obj);
         return t;
     }
 
@@ -34480,7 +34495,7 @@ class ThemeParameters_ThemeParameters {
         this.fieldValuesDisplayFilter = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeParameters";
@@ -34596,7 +34611,7 @@ class ThemeService_ThemeService extends CommonServiceBase_CommonServiceBase {
 
         for (var i = 0; i < parameter.themes.length; i++) {
             themeObj = parameter.themes[i];
-            var jsonTheme = Util_Util.toJSON(themeObj);
+            var jsonTheme = Util.toJSON(themeObj);
             jsonTheme = jsonTheme.slice(0, -1);
 
             jsonParameters += "{'theme': " + jsonTheme + "},'type': 'UGC','ugcLayerType': 'THEME',";
@@ -34619,11 +34634,11 @@ class ThemeService_ThemeService extends CommonServiceBase_CommonServiceBase {
 
             fieldValuesDisplayFilter = parameter.fieldValuesDisplayFilter;
             if (fieldValuesDisplayFilter) {
-                jsonParameters += "'fieldValuesDisplayFilter':" + Util_Util.toJSON(fieldValuesDisplayFilter) + ",";
+                jsonParameters += "'fieldValuesDisplayFilter':" + Util.toJSON(fieldValuesDisplayFilter) + ",";
             }
 
             if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[i]) {
-                jsonParameters += "'joinItems':[" + Util_Util.toJSON(parameter.joinItems[i]) + "],";
+                jsonParameters += "'joinItems':[" + Util.toJSON(parameter.joinItems[i]) + "],";
             }
             if (parameter.datasetNames && parameter.dataSourceNames) {
                 var datasetID = parameter.datasetNames[i] ? i : (parameter.datasetNames.length - 1);
@@ -34696,7 +34711,7 @@ class ThiessenAnalystService_ThiessenAnalystService extends SpatialAnalystBase_S
          */
         this.mode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThiessenAnalystService";
     }
@@ -34733,7 +34748,7 @@ class ThiessenAnalystService_ThiessenAnalystService extends SpatialAnalystBase_S
             GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters.toObject(parameter, parameterObject);
         }
 
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",
@@ -34783,7 +34798,7 @@ class GeometryBatchAnalystService_GeometryBatchAnalystService extends SpatialAna
         super(url, options);
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GeometryBatchAnalystService";
@@ -34805,7 +34820,7 @@ class GeometryBatchAnalystService_GeometryBatchAnalystService extends SpatialAna
         me.url += 'geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true';
 
         var parameterObjects = me._processParams(parameters);
-        var jsonParameters = Util_Util.toJSON(parameterObjects);
+        var jsonParameters = Util.toJSON(parameterObjects);
 
         me.request({
             method: "POST",
@@ -34818,7 +34833,7 @@ class GeometryBatchAnalystService_GeometryBatchAnalystService extends SpatialAna
 
     _processParams(parameters) {
         var me = this;
-        if (!Util_Util.isArray(parameters)) {
+        if (!Util.isArray(parameters)) {
             return;
         }
         var processParams = [];
@@ -35084,7 +35099,7 @@ class TransferLine_TransferLine {
          */
         this.endStopAliasName = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TransferLine";
     }
@@ -35095,7 +35110,7 @@ class TransferLine_TransferLine {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -35160,7 +35175,7 @@ class TransferPathParameters_TransferPathParameters {
          */
         this.points = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
        this.CLASS_NAME = "SuperMap.TransferPathParameters";
     }
@@ -35170,7 +35185,7 @@ class TransferPathParameters_TransferPathParameters {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -35181,7 +35196,7 @@ class TransferPathParameters_TransferPathParameters {
      */
     static toJson(params) {
         if (params) {
-            return Util_Util.toJSON(params);
+            return Util.toJSON(params);
         }
     }
 
@@ -35247,8 +35262,8 @@ class TransferPathService_TransferPathService extends CommonServiceBase_CommonSe
         me.url += "path.json?";
 
         jsonParameters = {
-            points: Util_Util.toJSON(params.points),
-            transferLines: Util_Util.toJSON(params['transferLines'])
+            points: Util.toJSON(params.points),
+            transferLines: Util.toJSON(params['transferLines'])
         };
 
         me.request({
@@ -35301,13 +35316,13 @@ class TransferSolutionParameters_TransferSolutionParameters {
          * @member {SuperMap.TransferPreference} [SuperMap.TransferSolutionParameters.prototype.transferPreference=SuperMap.TransferPreference.NONE]
          *  @description 乘车偏好枚举。
          */
-        this.transferPreference = REST_TransferPreference.NONE;
+        this.transferPreference = TransferPreference.NONE;
 
         /**
          *  @member {SuperMap.TransferTactic} [SuperMap.TransferSolutionParameters.prototype.transferTactic=TransferTactic|SuperMap.TransferTactic.LESS_TIME]
          *  @description 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。
          */
-        this.transferTactic = REST_TransferTactic.LESS_TIME;
+        this.transferTactic = TransferTactic.LESS_TIME;
 
         /**
          *  @member {number} [SuperMap.TransferSolutionParameters.prototype.walkingRatio=10]
@@ -35365,7 +35380,7 @@ class TransferSolutionParameters_TransferSolutionParameters {
          */
         this.travelTime = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TransferSolutionParameters";
     }
@@ -35375,7 +35390,7 @@ class TransferSolutionParameters_TransferSolutionParameters {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -35387,7 +35402,7 @@ class TransferSolutionParameters_TransferSolutionParameters {
      */
     static toJson(params) {
         if (params) {
-            return Util_Util.toJSON(params);
+            return Util.toJSON(params);
         }
     }
 
@@ -35457,23 +35472,23 @@ class TransferSolutionService_TransferSolutionService extends CommonServiceBase_
         me.url += "solutions.json?";
 
         jsonParameters = {
-            points: Util_Util.toJSON(params.points),
+            points: Util.toJSON(params.points),
             walkingRatio: params['walkingRatio'],
             transferTactic: params['transferTactic'],
             solutionCount: params['solutionCount'],
             transferPreference: params["transferPreference"]
         };
         if (params.evadeLines) {
-            jsonParameters["evadeLines"] = Util_Util.toJSON(params.evadeLines);
+            jsonParameters["evadeLines"] = Util.toJSON(params.evadeLines);
         }
         if (params.evadeStops) {
-            jsonParameters["evadeStops"] = Util_Util.toJSON(params.evadeStops);
+            jsonParameters["evadeStops"] = Util.toJSON(params.evadeStops);
         }
         if (params.priorLines) {
-            jsonParameters["priorLines"] = Util_Util.toJSON(params.priorLines);
+            jsonParameters["priorLines"] = Util.toJSON(params.priorLines);
         }
         if (params.priorStops) {
-            jsonParameters["priorStops"] = Util_Util.toJSON(params.priorStops);
+            jsonParameters["priorStops"] = Util.toJSON(params.priorStops);
         }
         if (params.travelTime) {
             jsonParameters["travelTime"] = params.travelTime;
@@ -35547,7 +35562,7 @@ class UpdateEdgeWeightParameters_UpdateEdgeWeightParameters {
          */
         this.edgeWeight = "";
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.UpdateEdgeWeightParameters";
     }
@@ -35734,7 +35749,7 @@ class UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters {
          * @description 耗费权重。
          */
         this.turnNodeWeight = "";
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.UpdateTurnNodeWeightParameters";
     }
 
@@ -35913,7 +35928,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          * @member {SuperMap.ClipAnalystMode} [SuperMap.VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
          * @description 裁剪分析模式 。
          */
-        this.mode = REST_ClipAnalystMode.CLIP;
+        this.mode = ClipAnalystMode.CLIP;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.VectorClipJobsParameter.prototype.output
@@ -35927,7 +35942,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
     }
@@ -36501,7 +36516,7 @@ SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
  * @category iPortal/Online
  * @description 服务发布状态。
  */
-var OnlineResources_ServiceStatus = SuperMap.ServiceStatus = {
+var ServiceStatus = SuperMap.ServiceStatus = {
     /** 不涉及，不可发布。 */
     DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
     /** 发布失败。 */
@@ -36524,7 +36539,7 @@ var OnlineResources_ServiceStatus = SuperMap.ServiceStatus = {
  * @category iPortal/Online
  * @description 数据项类型。
  */
-var OnlineResources_DataItemType = SuperMap.DataItemType = {
+var DataItemType = SuperMap.DataItemType = {
     /** AUDIO */
     AUDIO: "AUDIO",
     /** COLOR */
@@ -36583,7 +36598,7 @@ var OnlineResources_DataItemType = SuperMap.DataItemType = {
  * @category iPortal/Online
  * @description 数据排序字段。
  */
-var OnlineResources_DataItemOrderBy = SuperMap.DataItemOrderBy = {
+var DataItemOrderBy = SuperMap.DataItemOrderBy = {
     /** FILENAME */
     FILENAME: "FILENAME",
     /** ID */
@@ -36613,7 +36628,7 @@ var OnlineResources_DataItemOrderBy = SuperMap.DataItemOrderBy = {
  * @category iPortal/Online
  * @description 关键字查询时的过滤字段。
  */
-var OnlineResources_FilterField = SuperMap.FilterField = {
+var FilterField = SuperMap.FilterField = {
     /** LINKPAGE */
     LINKPAGE: "LINKPAGE",
     /** LINKPAGE */
@@ -36646,8 +36661,8 @@ class OnlineServiceBase_OnlineServiceBase {
 
     constructor(options) {
         options = options || {};
-        Util_Util.extend(this, options);
-        this.serverType = REST_ServerType.ONLINE;
+        Util.extend(this, options);
+        this.serverType = ServerType.ONLINE;
         this.CLASS_NAME = "SuperMap.OnlineServiceBase";
     }
 
@@ -36662,7 +36677,7 @@ class OnlineServiceBase_OnlineServiceBase {
      */
     request(method, url, param, requestOptions) {
         url = this.createCredentialUrl(url);
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
         });
     }
@@ -36765,7 +36780,7 @@ class OnlineData_OnlineData extends OnlineServiceBase_OnlineServiceBase {
         //数据的缩略图路径。
         this.thumbnail = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         if (this.id) {
             this.serviceUrl = serviceRootUrl + "/" + this.id;
         }
@@ -36783,7 +36798,7 @@ class OnlineData_OnlineData extends OnlineServiceBase_OnlineServiceBase {
         }
         var me = this;
         return me.request("GET", this.serviceUrl).then(function (result) {
-            Util_Util.extend(me, result);
+            Util.extend(me, result);
         });
     }
 
@@ -36851,7 +36866,7 @@ class Online_Online {
      * @returns {Promise} 返回包含网络请求结果的 Promise 对象。
      */
     load() {
-        return FetchRequest_FetchRequest.get(this.rootUrl).then(function (response) {
+        return FetchRequest.get(this.rootUrl).then(function (response) {
             return response;
         });
     }
@@ -36875,7 +36890,7 @@ class Online_Online {
         if (parameter) {
             parameter = parameter.toJSON();
         }
-        return FetchRequest_FetchRequest.get(url, parameter).then(function (json) {
+        return FetchRequest.get(url, parameter).then(function (json) {
             if (!json || !json.content || json.content.length < 1) {
                 return;
             }
@@ -36960,7 +36975,7 @@ class OnlineQueryDatasParameter_OnlineQueryDatasParameter {
          */
         this.filterFields = null;
 
-        Util_Util.extend(this, options)
+        Util.extend(this, options)
 
         this.CLASS_NAME = "SuperMap.OnlineQueryDatasParameter";
     }
@@ -37034,9 +37049,9 @@ class KeyServiceParameter_KeyServiceParameter {
     constructor(options) {
         this.name = null;
         this.serviceIds = null;
-        this.clientType = REST_ClientType.SERVER;
+        this.clientType = ClientType.SERVER;
         this.limitation = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.KeyServiceParameter";
     }
 
@@ -37102,10 +37117,10 @@ class ServerInfo_ServerInfo {
          */
         this.keyServiceUrl = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ServerInfo";
-        this.type = this.type || REST_ServerType.ISERVER;
+        this.type = this.type || ServerType.ISERVER;
         if (!this.server) {
             console.error('server url require is not  undefined')
         }
@@ -37113,7 +37128,7 @@ class ServerInfo_ServerInfo {
         //this.server = this.server.match(patten)[0];
 
         var tokenServiceSuffix = "/services/security/tokens.json";
-        if (this.type === REST_ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
+        if (this.type === ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
             tokenServiceSuffix = "/iserver" + tokenServiceSuffix;
         }
 
@@ -37122,9 +37137,9 @@ class ServerInfo_ServerInfo {
         }
 
         if (!this.keyServiceUrl) {
-            if (this.type === REST_ServerType.IPORTAL) {
+            if (this.type === ServerType.IPORTAL) {
                 this.keyServiceUrl = this.server + "/web/mycontent/keys/register.json";
-            } else if (this.type === REST_ServerType.ONLINE) {
+            } else if (this.type === ServerType.ONLINE) {
                 this.keyServiceUrl = this.server + "/web/mycontent/keys.json";
             }
         }
@@ -37174,7 +37189,7 @@ class TokenServiceParameter_TokenServiceParameter {
          * @member {SuperMap.ClientType} SuperMap.TokenServiceParameter.prototype.clientType
          * @description token 申请的客户端标识类型。
          */
-        this.clientType = REST_ClientType.NONE;
+        this.clientType = ClientType.NONE;
 
         /**
          * @member {string} [SuperMap.TokenServiceParameter.prototype.ip]
@@ -37194,7 +37209,7 @@ class TokenServiceParameter_TokenServiceParameter {
          */
         this.expiration = 60;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TokenServiceParameter";
     }
@@ -37258,7 +37273,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
  * LevelRenderer 基础工具类
  *
  */
-class levelRenderer_Util_Util {
+class Util_Util {
 
 
     /**
@@ -37561,7 +37576,7 @@ class Color_Color {
          * @member {SuperMap.LevelRenderer.Tool.Util} SuperMap.LevelRenderer.Tool.Color.prototype.util
          * @description LevelRenderer 基础工具对象。
          */
-        this.util = new levelRenderer_Util_Util();
+        this.util = new Util_Util();
         
         /**
          * @member {Object} SuperMap.LevelRenderer.Tool.Color.prototype._ctx
@@ -38652,7 +38667,7 @@ class Color_Color {
 // CONCATENATED MODULE: ./src/common/util/ColorsPickerUtil.js
 
 
-var ColorsPickerUtil_ColorRender = new Color_Color();
+var ColorRender = new Color_Color();
 // let "http://www.qzu.zj.cn": "#bd10e0"
 // 					"www.qzct.net": "#7ed321" = new SuperMap.LevelRenderer.Tool.Color();
 
@@ -38661,7 +38676,7 @@ var ColorsPickerUtil_ColorRender = new Color_Color();
  * 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
  *
  */
-class ColorsPickerUtil_ColorsPickerUtil  {
+class ColorsPickerUtil  {
     /**
      * 创建DOM canvas
      * @param height canvas 高度
@@ -38730,10 +38745,10 @@ class ColorsPickerUtil_ColorsPickerUtil  {
      * {Array} 颜色数组。
      */
     static getStepColors (start, end, step){
-        start = ColorsPickerUtil_ColorRender.toRGBA(start);
-        end = ColorsPickerUtil_ColorRender.toRGBA(end);
-        start = ColorsPickerUtil_ColorRender.getData(start);
-        end = ColorsPickerUtil_ColorRender.getData(end);
+        start = ColorRender.toRGBA(start);
+        end = ColorRender.toRGBA(end);
+        start = ColorRender.getData(start);
+        end = ColorRender.getData(end);
 
         var colors = [];
         var stepR = (end[0] - start[0]) / step;
@@ -38743,10 +38758,10 @@ class ColorsPickerUtil_ColorsPickerUtil  {
         // 生成颜色集合
         // fix by linfeng 颜色堆积
         for (var i = 0, r = start[0], g = start[1], b = start[2], a = start[3]; i < step; i++) {
-            colors[i] = ColorsPickerUtil_ColorRender.toColor([
-                ColorsPickerUtil_ColorRender.adjust(Math.floor(r), [ 0, 255 ]),
-                ColorsPickerUtil_ColorRender.adjust(Math.floor(g), [ 0, 255 ]),
-                ColorsPickerUtil_ColorRender.adjust(Math.floor(b), [ 0, 255 ]),
+            colors[i] = ColorRender.toColor([
+                ColorRender.adjust(Math.floor(r), [ 0, 255 ]),
+                ColorRender.adjust(Math.floor(g), [ 0, 255 ]),
+                ColorRender.adjust(Math.floor(b), [ 0, 255 ]),
                 a.toFixed(4) - 0
             ],'hex');
             r += stepR;
@@ -38758,7 +38773,7 @@ class ColorsPickerUtil_ColorsPickerUtil  {
         g = end[1];
         b = end[2];
         a = end[3];
-        colors[i] = ColorsPickerUtil_ColorRender.toColor([r, g, b, a], 'hex');
+        colors[i] = ColorRender.toColor([r, g, b, a], 'hex');
         return colors;
     }
 
@@ -43891,7 +43906,7 @@ class ThemeStyle_ThemeStyle {
          */
         this.labelYOffset = 0;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 }
 
@@ -43917,7 +43932,7 @@ SuperMap.ThemeStyle = ThemeStyle_ThemeStyle;
  * @category Visualization Theme
  * @classdesc 图形参数基类，此类不可实例化
  */
-class ShapeParameters_ShapeParameters {
+class ShapeParameters {
 
 
 
@@ -44012,7 +44027,7 @@ class ShapeParameters_ShapeParameters {
 
 }
 SuperMap.Feature = SuperMap.Feature || {};
-SuperMap.Feature.ShapeParameters = ShapeParameters_ShapeParameters;
+SuperMap.Feature.ShapeParameters = ShapeParameters;
 // CONCATENATED MODULE: ./src/common/overlay/feature/Point.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -44027,7 +44042,7 @@ SuperMap.Feature.ShapeParameters = ShapeParameters_ShapeParameters;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class feature_Point_Point extends ShapeParameters_ShapeParameters {
+class feature_Point_Point extends ShapeParameters {
 
 
 
@@ -44108,7 +44123,7 @@ SuperMap.Feature.ShapeParameters.Point = feature_Point_Point;
  * @classdesc 线参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
-class Line_Line extends ShapeParameters_ShapeParameters {
+class Line_Line extends ShapeParameters {
 
 
 
@@ -44178,7 +44193,7 @@ SuperMap.Feature.ShapeParameters.Line = Line_Line;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
  
-class feature_Polygon_Polygon extends ShapeParameters_ShapeParameters {
+class feature_Polygon_Polygon extends ShapeParameters {
     
   
 
@@ -44258,7 +44273,7 @@ SuperMap.Feature.ShapeParameters.Polygon = feature_Polygon_Polygon;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class feature_Rectangle_Rectangle extends ShapeParameters_ShapeParameters {
+class feature_Rectangle_Rectangle extends ShapeParameters {
     
     
     /**
@@ -44349,7 +44364,7 @@ SuperMap.Feature.ShapeParameters.Rectangle = feature_Rectangle_Rectangle;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class Sector_Sector extends ShapeParameters_ShapeParameters {
+class Sector_Sector extends ShapeParameters {
 
     
 
@@ -44460,7 +44475,7 @@ SuperMap.Feature.ShapeParameters.Sector = Sector_Sector;
  * @extent {SuperMap.Feature.ShapeParameters}
  */
 
-class Label_Label extends ShapeParameters_ShapeParameters {
+class Label_Label extends ShapeParameters {
 
 
     /**
@@ -44549,7 +44564,7 @@ SuperMap.Feature.ShapeParameters.Label = Label_Label;
  * @classdesc 图片参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
-class Image_Image extends ShapeParameters_ShapeParameters {
+class Image_Image extends ShapeParameters {
 
 
     /**
@@ -44660,7 +44675,7 @@ SuperMap.Feature.ShapeParameters.Image = Image_Image;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class Circle_Circle extends ShapeParameters_ShapeParameters {
+class Circle_Circle extends ShapeParameters {
 
 
     /**
@@ -45893,7 +45908,7 @@ class Area_Area {
          * @member {SuperMap.LevelRenderer.Tool.Util}  SuperMap.LevelRenderer.Tool.Areal.prototype.util
          * @description 基础工具对象。
          */
-        this.util = new levelRenderer_Util_Util();
+        this.util = new Util_Util();
 
         /**
          * @member {SuperMap.LevelRenderer.Tool.Curve}  SuperMap.LevelRenderer.Tool.Areal.prototype.curve
@@ -47307,7 +47322,7 @@ class Env {
  * @classdesc LevelRenderer 工具-事件辅助类
  * @private 
  */
-class levelRenderer_Event_Event {
+class Event_Event {
 
 
     /**
@@ -47871,7 +47886,7 @@ class Matrix {
 
 
 
-class SUtil_SUtil {
+class SUtil {
     /**
      * @function SuperMap.LevelRenderer.SUtil.SUtil_smoothBezier
      * @description 贝塞尔平滑曲线。
@@ -47902,12 +47917,12 @@ class SUtil_SUtil {
             max = [-Infinity, -Infinity];
             let len = points.length;
             for (let i = 0; i < len; i++) {
-                SUtil_SUtil.Util_vector.min(min, min, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
-                SUtil_SUtil.Util_vector.max(max, max, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
+                SUtil.Util_vector.min(min, min, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
+                SUtil.Util_vector.max(max, max, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
             }
             // 与指定的包围盒做并集
-            SUtil_SUtil.Util_vector.min(min, min, constraint[0]);
-            SUtil_SUtil.Util_vector.max(max, max, constraint[1]);
+            SUtil.Util_vector.min(min, min, constraint[0]);
+            SUtil.Util_vector.max(max, max, constraint[1]);
         }
 
         let len = points.length;
@@ -47929,28 +47944,28 @@ class SUtil_SUtil {
                 }
             }
 
-            SUtil_SUtil.Util_vector.sub(v, nextPoint, prevPoint);
+            SUtil.Util_vector.sub(v, nextPoint, prevPoint);
 
             // use degree to scale the handle length
-            SUtil_SUtil.Util_vector.scale(v, v, smooth);
+            SUtil.Util_vector.scale(v, v, smooth);
 
-            let d0 = SUtil_SUtil.Util_vector.distance(point, prevPoint);
-            let d1 = SUtil_SUtil.Util_vector.distance(point, nextPoint);
+            let d0 = SUtil.Util_vector.distance(point, prevPoint);
+            let d1 = SUtil.Util_vector.distance(point, nextPoint);
             let sum = d0 + d1;
             if (sum !== 0) {
                 d0 /= sum;
                 d1 /= sum;
             }
 
-            SUtil_SUtil.Util_vector.scale(v1, v, -d0);
-            SUtil_SUtil.Util_vector.scale(v2, v, d1);
-            let cp0 = SUtil_SUtil.Util_vector.add([], point, v1);
-            let cp1 = SUtil_SUtil.Util_vector.add([], point, v2);
+            SUtil.Util_vector.scale(v1, v, -d0);
+            SUtil.Util_vector.scale(v2, v, d1);
+            let cp0 = SUtil.Util_vector.add([], point, v1);
+            let cp1 = SUtil.Util_vector.add([], point, v2);
             if (hasConstraint) {
-                SUtil_SUtil.Util_vector.max(cp0, cp0, min);
-                SUtil_SUtil.Util_vector.min(cp0, cp0, max);
-                SUtil_SUtil.Util_vector.max(cp1, cp1, min);
-                SUtil_SUtil.Util_vector.min(cp1, cp1, max);
+                SUtil.Util_vector.max(cp0, cp0, min);
+                SUtil.Util_vector.min(cp0, cp0, max);
+                SUtil.Util_vector.max(cp1, cp1, min);
+                SUtil.Util_vector.min(cp1, cp1, max);
             }
             cps.push(cp0);
             cps.push(cp1);
@@ -47984,7 +47999,7 @@ class SUtil_SUtil {
 
         var distance = 0;
         for (let i = 1; i < len; i++) {
-            distance += SUtil_SUtil.Util_vector.distance([points[i - 1][0] + __OP[0], points[i - 1][1] + __OP[1]], [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
+            distance += SUtil.Util_vector.distance([points[i - 1][0] + __OP[0], points[i - 1][1] + __OP[1]], [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
         }
 
         var segs = distance / 5;
@@ -48080,18 +48095,18 @@ class SUtil_SUtil {
 }
 // 把所有工具对象放到全局静态变量上，以便直接调用工具方法，
 // 避免使用工具时频繁的创建工具对象带来的性能消耗。
-SUtil_SUtil.Util_area = new Area_Area();
-SUtil_SUtil.Util_color = new Color_Color();
-SUtil_SUtil.Util_computeBoundingBox = new ComputeBoundingBox_ComputeBoundingBox();
-SUtil_SUtil.Util_curve = new levelRenderer_Curve_Curve();
-SUtil_SUtil.Util_env = new Env();
-SUtil_SUtil.Util_event = new levelRenderer_Event_Event();
-SUtil_SUtil.Util_http = new Http();
-SUtil_SUtil.Util_log = new Log_Log();
-SUtil_SUtil.Util_math = new Math_Math();
-SUtil_SUtil.Util_matrix = new Matrix();
-SUtil_SUtil.Util = new levelRenderer_Util_Util();
-SUtil_SUtil.Util_vector = new levelRenderer_Vector_Vector();
+SUtil.Util_area = new Area_Area();
+SUtil.Util_color = new Color_Color();
+SUtil.Util_computeBoundingBox = new ComputeBoundingBox_ComputeBoundingBox();
+SUtil.Util_curve = new levelRenderer_Curve_Curve();
+SUtil.Util_env = new Env();
+SUtil.Util_event = new Event_Event();
+SUtil.Util_http = new Http();
+SUtil.Util_log = new Log_Log();
+SUtil.Util_math = new Math_Math();
+SUtil.Util_matrix = new Matrix();
+SUtil.Util = new Util_Util();
+SUtil.Util_vector = new levelRenderer_Vector_Vector();
 
 // CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Transformable.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -48148,18 +48163,18 @@ class Transformable_Transformable {
          * @description 设置图形的朝向。
          */
         this.lookAt = (function () {
-            var v = SUtil_SUtil.Util_vector.create();
+            var v = SUtil.Util_vector.create();
             // {Array.<Number>|Float32Array} target
             return function (target) {
                 if (!this.transform) {
-                    this.transform = SUtil_SUtil.Util_matrix.create();
+                    this.transform = SUtil.Util_matrix.create();
                 }
                 var m = this.transform;
-                SUtil_SUtil.Util_vector.sub(v, target, this.position);
+                SUtil.Util_vector.sub(v, target, this.position);
                 if (isAroundZero(v[0]) && isAroundZero(v[1])) {
                     return;
                 }
-                SUtil_SUtil.Util_vector.normalize(v, v);
+                SUtil.Util_vector.normalize(v, v);
                 // Y Axis
                 // TODO Scale origin ?
                 m[2] = v[0] * this.scale[1];
@@ -48231,8 +48246,8 @@ class Transformable_Transformable {
 
         var origin = [0, 0];
 
-        var m = this.transform || SUtil_SUtil.Util_matrix.create();
-        SUtil_SUtil.Util_matrix.identity(m);
+        var m = this.transform || SUtil.Util_matrix.create();
+        SUtil.Util_matrix.identity(m);
 
         if (this.needLocalTransform) {
             if (
@@ -48244,15 +48259,15 @@ class Transformable_Transformable {
                 let haveOrigin = isNotAroundZero(origin[0])
                     || isNotAroundZero(origin[1]);
                 if (haveOrigin) {
-                    SUtil_SUtil.Util_matrix.translate(
+                    SUtil.Util_matrix.translate(
                         m, m, origin
                     );
                 }
-                SUtil_SUtil.Util_matrix.scale(m, m, this.scale);
+                SUtil.Util_matrix.scale(m, m, this.scale);
                 if (haveOrigin) {
                     origin[0] = -origin[0];
                     origin[1] = -origin[1];
-                    SUtil_SUtil.Util_matrix.translate(
+                    SUtil.Util_matrix.translate(
                         m, m, origin
                     );
                 }
@@ -48265,29 +48280,29 @@ class Transformable_Transformable {
                     let haveOrigin = isNotAroundZero(origin[0])
                         || isNotAroundZero(origin[1]);
                     if (haveOrigin) {
-                        SUtil_SUtil.Util_matrix.translate(
+                        SUtil.Util_matrix.translate(
                             m, m, origin
                         );
                     }
-                    SUtil_SUtil.Util_matrix.rotate(m, m, this.rotation[0]);
+                    SUtil.Util_matrix.rotate(m, m, this.rotation[0]);
                     if (haveOrigin) {
                         origin[0] = -origin[0];
                         origin[1] = -origin[1];
-                        SUtil_SUtil.Util_matrix.translate(
+                        SUtil.Util_matrix.translate(
                             m, m, origin
                         );
                     }
                 }
             } else {
                 if (this.rotation !== 0) {
-                    SUtil_SUtil.Util_matrix.rotate(m, m, this.rotation);
+                    SUtil.Util_matrix.rotate(m, m, this.rotation);
                 }
             }
 
             if (
                 isNotAroundZero(this.position[0]) || isNotAroundZero(this.position[1])
             ) {
-                SUtil_SUtil.Util_matrix.translate(m, m, this.position);
+                SUtil.Util_matrix.translate(m, m, this.position);
             }
         }
 
@@ -48297,9 +48312,9 @@ class Transformable_Transformable {
         // 应用父节点变换
         if (this.parent && this.parent.needTransform) {
             if (this.needLocalTransform) {
-                SUtil_SUtil.Util_matrix.mul(this.transform, this.parent.transform, this.transform);
+                SUtil.Util_matrix.mul(this.transform, this.parent.transform, this.transform);
             } else {
-                SUtil_SUtil.Util_matrix.copy(this.transform, this.parent.transform);
+                SUtil.Util_matrix.copy(this.transform, this.parent.transform);
             }
         }
 
@@ -48566,8 +48581,8 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
          *
          */
         this.dataInfo = null;
-        Util_Util.extend(this, options);
-        this.id = this.id  || Util_Util.createUniqueID("smShape_");
+        Util.extend(this, options);
+        this.id = this.id  || Util.createUniqueID("smShape_");
         this.CLASS_NAME = "SuperMap.LevelRenderer.Shape";
         /**
          * @function SuperMap.LevelRenderer.Shape.prototype.getTansform
@@ -48581,9 +48596,9 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
                 var originPos = [x, y];
                 // 对鼠标的坐标也做相同的变换
                 if (this.needTransform && this.transform) {
-                    SUtil_SUtil.Util_matrix.invert(invTransform, this.transform);
+                    SUtil.Util_matrix.invert(invTransform, this.transform);
 
-                    SUtil_SUtil.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
+                    SUtil.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
 
                     if (x == originPos[0] && y == originPos[1]) {
                         // 避免外部修改导致的 needTransform 不准确
@@ -48763,14 +48778,14 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      *
      */
     doClip(ctx) {
-        var clipShapeInvTransform = SUtil_SUtil.Util_matrix.create();
+        var clipShapeInvTransform = SUtil.Util_matrix.create();
 
         if (this.__clipShapes) {
             for (var i = 0; i < this.__clipShapes.length; i++) {
                 var clipShape = this.__clipShapes[i];
                 if (clipShape.needTransform) {
                     let m = clipShape.transform;
-                    SUtil_SUtil.Util_matrix.invert(clipShapeInvTransform, m);
+                    SUtil.Util_matrix.invert(clipShapeInvTransform, m);
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -48809,7 +48824,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
             newStyle[k] = style[k];
         }
 
-        var highlightColor = SUtil_SUtil.Util_color.getHighlightColor();
+        var highlightColor = SUtil.Util_color.getHighlightColor();
         // 根据highlightStyle扩展
         if (style.brushType != 'stroke') {
             // 带填充则用高亮色加粗边线
@@ -48850,9 +48865,9 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
             } else {
                 // 线型的则用原色加工高亮
                 newStyle.strokeColor = highlightStyle.strokeColor
-                    || SUtil_SUtil.Util_color.mix(
+                    || SUtil.Util_color.mix(
                         style.strokeColor,
-                        SUtil_SUtil.Util_color.toRGB(highlightColor)
+                        SUtil.Util_color.toRGB(highlightColor)
                     );
             }
         }
@@ -48902,7 +48917,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @param {Object} style - 样式。
      */
     buildPath(ctx, style) { // eslint-disable-line no-unused-vars
-        SUtil_SUtil.Util_log('buildPath not implemented in ' + this.type);
+        SUtil.Util_log('buildPath not implemented in ' + this.type);
     }
 
 
@@ -48913,7 +48928,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @param {Object} style - 样式。
      */
     getRect(style) { // eslint-disable-line no-unused-vars
-        SUtil_SUtil.Util_log('getRect not implemented in ' + this.type);
+        SUtil.Util_log('getRect not implemented in ' + this.type);
     }
 
 
@@ -48941,7 +48956,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
             && y <= (rect.y + rect.height)
         ) {
             // 矩形内
-            return SUtil_SUtil.Util_area.isInside(this, this.style, x, y);
+            return SUtil.Util_area.isInside(this, this.style, x, y);
         }
 
         return false;
@@ -49216,7 +49231,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
 
         text = (text + '').split('\n');
 
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', textFont);
 
         switch (textBaseline) {
             case 'top':
@@ -49248,8 +49263,8 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @return {Object} 矩形区域。
      */
     static _getTextRect(text, x, y, textFont, textAlign, textBaseline) {
-        var width = SUtil_SUtil.Util_area.getTextWidth(text, textFont);
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', textFont);
+        var width = SUtil.Util_area.getTextWidth(text, textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', textFont);
 
         text = (text + '').split('\n');
 
@@ -49548,7 +49563,7 @@ class SmicText_SmicText extends Shape_Shape {
         ctx.textBaseline = style.textBaseline || 'middle';
 
         var text = (style.text + '').split('\n');
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', style.textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', style.textFont);
         var rect = this.getRectNoRotation(style);
         // var x = style.x;
         var x = style.x + __OP[0];
@@ -49793,10 +49808,10 @@ class SmicText_SmicText extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', style.textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', style.textFont);
 
-        var width = SUtil_SUtil.Util_area.getTextWidth(style.text, style.textFont);
-        var height = SUtil_SUtil.Util_area.getTextHeight(style.text, style.textFont);
+        var width = SUtil.Util_area.getTextWidth(style.text, style.textFont);
+        var height = SUtil.Util_area.getTextHeight(style.text, style.textFont);
 
         //处理文字位置，注：文本的绘制是由此 rect 决定
         var textX = style.x + __OP[0];                 // 默认start == left
@@ -50266,7 +50281,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
         this.drawText(ctx, style, this.style);
 
         //岛洞
-        var hpStyle = Util_Util.cloneObject(style);
+        var hpStyle = Util.cloneObject(style);
 
         if (hpStyle.pointList) {
             if (this.holePolygonPointLists && this.holePolygonPointLists.length > 0) {
@@ -50358,7 +50373,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
         }
 
         if (style.smooth && style.smooth !== 'spline') {
-            var controlPoints = SUtil_SUtil.SUtil_smoothBezier(pointList, style.smooth, true, style.smoothConstraint, __OP);
+            var controlPoints = SUtil.SUtil_smoothBezier(pointList, style.smooth, true, style.smoothConstraint, __OP);
 
             ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
             var cp1;
@@ -50375,7 +50390,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
             }
         } else {
             if (style.smooth === 'spline') {
-                pointList = SUtil_SUtil.SUtil_smoothSpline(pointList, true, null, __OP);
+                pointList = SUtil.SUtil_smoothSpline(pointList, true, null, __OP);
             }
 
             if (!style.lineType || style.lineType == 'solid') {
@@ -50449,7 +50464,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < pointList.length; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
                         pointList[i - 1][1] + __OP[1],
@@ -50459,7 +50474,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
                         [pattern1, pattern2]
                     );
                 }
-                SUtil_SUtil.SUtil_dashedLineTo(
+                SUtil.SUtil_dashedLineTo(
                     ctx,
                     pointList[pointList.length - 1][0] + __OP[0],
                     pointList[pointList.length - 1][1] + __OP[1],
@@ -50509,7 +50524,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < pointList.length; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
                         pointList[i - 1][1] + __OP[1],
@@ -50519,7 +50534,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
                         [pattern1, pattern2, pattern3, pattern4]
                     );
                 }
-                SUtil_SUtil.SUtil_dashedLineTo(
+                SUtil.SUtil_dashedLineTo(
                     ctx,
                     pointList[pointList.length - 1][0] + __OP[0],
                     pointList[pointList.length - 1][1] + __OP[1],
@@ -50727,7 +50742,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
         var len = Math.min(style.pointList.length, Math.round(style.pointListLength || style.pointList.length));
 
         if (style.smooth && style.smooth !== 'spline') {
-            var controlPoints = SUtil_SUtil.SUtil_smoothBezier(pointList, style.smooth, false, style.smoothConstraint, __OP);
+            var controlPoints = SUtil.SUtil_smoothBezier(pointList, style.smooth, false, style.smoothConstraint, __OP);
 
             ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
             var cp1;
@@ -50743,7 +50758,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
             }
         } else {
             if (style.smooth === 'spline') {
-                pointList = SUtil_SUtil.SUtil_smoothSpline(pointList, null, null, __OP);
+                pointList = SUtil.SUtil_smoothSpline(pointList, null, null, __OP);
                 len = pointList.length;
             }
             if (!style.lineType || style.lineType === 'solid') {
@@ -50811,7 +50826,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (var i = 1; i < len; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1],
                         pointList[i][0] + __OP[0], pointList[i][1] + __OP[1],
@@ -50858,7 +50873,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
                     * (style.lineType === 'dashed' ? 5 : 1);
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < len; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1],
                         pointList[i][0] + __OP[0], pointList[i][1] + __OP[1],
@@ -51492,8 +51507,8 @@ class SmicSector_SmicSector extends Shape_Shape {
         var endAngle = style.endAngle;              // 结束角度(0,360]
         var clockWise = style.clockWise || false;
 
-        startAngle = SUtil_SUtil.Util_math.degreeToRadian(startAngle);
-        endAngle = SUtil_SUtil.Util_math.degreeToRadian(endAngle);
+        startAngle = SUtil.Util_math.degreeToRadian(startAngle);
+        endAngle = SUtil.Util_math.degreeToRadian(endAngle);
 
         if (!clockWise) {
             // 扇形默认是逆时针方向，Y轴向上
@@ -51502,8 +51517,8 @@ class SmicSector_SmicSector extends Shape_Shape {
             endAngle = -endAngle;
         }
 
-        var unitX = SUtil_SUtil.Util_math.cos(startAngle);
-        var unitY = SUtil_SUtil.Util_math.sin(startAngle);
+        var unitX = SUtil.Util_math.cos(startAngle);
+        var unitY = SUtil.Util_math.sin(startAngle);
         ctx.moveTo(
             unitX * r0 + x,
             unitY * r0 + y
@@ -51517,8 +51532,8 @@ class SmicSector_SmicSector extends Shape_Shape {
         ctx.arc(x, y, r, startAngle, endAngle, !clockWise);
 
         ctx.lineTo(
-            SUtil_SUtil.Util_math.cos(endAngle) * r0 + x,
-            SUtil_SUtil.Util_math.sin(endAngle) * r0 + y
+            SUtil.Util_math.cos(endAngle) * r0 + x,
+            SUtil.Util_math.sin(endAngle) * r0 + y
         );
 
         if (r0 !== 0) {
@@ -51548,17 +51563,17 @@ class SmicSector_SmicSector extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var min0 = SUtil_SUtil.Util_vector.create();
-        var min1 = SUtil_SUtil.Util_vector.create();
-        var max0 = SUtil_SUtil.Util_vector.create();
-        var max1 = SUtil_SUtil.Util_vector.create();
+        var min0 = SUtil.Util_vector.create();
+        var min1 = SUtil.Util_vector.create();
+        var max0 = SUtil.Util_vector.create();
+        var max1 = SUtil.Util_vector.create();
 
         var x = style.x + __OP[0];   // 圆心x
         var y = style.y + __OP[1];   // 圆心y
         var r0 = style.r0 || 0;     // 形内半径[0,r)
         var r = style.r;            // 扇形外半径(0,r]
-        var startAngle = SUtil_SUtil.Util_math.degreeToRadian(style.startAngle);
-        var endAngle = SUtil_SUtil.Util_math.degreeToRadian(style.endAngle);
+        var startAngle = SUtil.Util_math.degreeToRadian(style.startAngle);
+        var endAngle = SUtil.Util_math.degreeToRadian(style.endAngle);
         var clockWise = style.clockWise;
 
         if (!clockWise) {
@@ -51567,19 +51582,19 @@ class SmicSector_SmicSector extends Shape_Shape {
         }
 
         if (r0 > 1) {
-            SUtil_SUtil.Util_computeBoundingBox.arc(
+            SUtil.Util_computeBoundingBox.arc(
                 x, y, r0, startAngle, endAngle, !clockWise, min0, max0
             );
         } else {
             min0[0] = max0[0] = x;
             min0[1] = max0[1] = y;
         }
-        SUtil_SUtil.Util_computeBoundingBox.arc(
+        SUtil.Util_computeBoundingBox.arc(
             x, y, r, startAngle, endAngle, !clockWise, min1, max1
         );
 
-        SUtil_SUtil.Util_vector.min(min0, min0, min1);
-        SUtil_SUtil.Util_vector.max(max0, max0, max1);
+        SUtil.Util_vector.min(min0, min0, min1);
+        SUtil.Util_vector.max(max0, max0, max1);
         style.__rect = {
             x: min0[0],
             y: min0[1],
@@ -51686,13 +51701,13 @@ class ShapeFactory_ShapeFactory {
             style["y"] = sps.y;
             style["r"] = sps.r;
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y']);
 
             //创建图形
             let shape = new SmicPoint_SmicPoint();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Line_Line) {        // 线
@@ -51704,13 +51719,13 @@ class ShapeFactory_ShapeFactory {
             // 设置style
             let style = new Object();
             style["pointList"] = sps.pointList;
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['pointList']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['pointList']);
 
             // 创建图形
             let shape = new SmicBrokenLine_SmicBrokenLine();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof feature_Polygon_Polygon) {        // 面
@@ -51722,13 +51737,13 @@ class ShapeFactory_ShapeFactory {
             //设置style
             let style = new Object();
             style["pointList"] = sps.pointList;
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['pointList']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['pointList']);
 
             //创建图形
             let shape = new SmicPolygon_SmicPolygon();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', "highlightStyle"]);
+            Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', "highlightStyle"]);
 
             return shape;
         } else if (sps instanceof feature_Rectangle_Rectangle) {        // 矩形
@@ -51744,13 +51759,13 @@ class ShapeFactory_ShapeFactory {
             style["width"] = sps.width;
             style["height"] = sps.height;
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'width', 'height']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'width', 'height']);
 
             //创建图形
             let shape = new SmicRectangle_SmicRectangle();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'width', 'height', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'width', 'height', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Sector_Sector) {        // 扇形
@@ -51770,13 +51785,13 @@ class ShapeFactory_ShapeFactory {
             }
 
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle']);
 
             //创建图形
             let shape = new SmicSector_SmicSector();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Label_Label) {        // 标签
@@ -51786,13 +51801,13 @@ class ShapeFactory_ShapeFactory {
             style["y"] = sps.y;
             style["text"] = sps.text;
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'text']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'text']);
 
             //创建图形
             let shape = new SmicText_SmicText();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'text', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'text', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Image_Image) {        // 图片
@@ -51822,13 +51837,13 @@ class ShapeFactory_ShapeFactory {
                 style["sHeight"] = sps.sHeight
             }
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'image', 'width', 'height', 'sx', 'sy', 'sWidth', 'sHeight']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'image', 'width', 'height', 'sx', 'sy', 'sWidth', 'sHeight']);
 
             //创建图形
             let shape = new SmicImage_SmicImage();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'image', 'width', 'height', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'image', 'width', 'height', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Circle_Circle) {       //圆形 用于符号专题图
@@ -51838,13 +51853,13 @@ class ShapeFactory_ShapeFactory {
             style["r"] = sps.r;
             style["y"] = sps.y;
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r']);
 
             //创建图形
             let shape = new SmicCircle_SmicCircle();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'style', 'highlightStyle', 'lineWidth', 'text', 'textPosition']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'style', 'highlightStyle', 'lineWidth', 'text', 'textPosition']);
 
             return shape;
         }
@@ -51989,7 +52004,7 @@ class ShapeFactory_ShapeFactory {
 
         // 设置用户 style
         if (sets.backgroundStyle) {
-            Util_Util.copyAttributesWithClip(bgSP.style, sets.backgroundStyle);
+            Util.copyAttributesWithClip(bgSP.style, sets.backgroundStyle);
         }
 
         // 设置背景框圆角参数
@@ -52102,7 +52117,7 @@ class ShapeFactory_ShapeFactory {
                     refLineSP.hoverable = false;
                     // 用户style
                     if (sets.xReferenceLineStyle) {
-                        Util_Util.copyAttributesWithClip(refLineSP.style, sets.xReferenceLineStyle);
+                        Util.copyAttributesWithClip(refLineSP.style, sets.xReferenceLineStyle);
                     }
                     // 生成参考线图形对象
                     refLines.push(shapeFactory.createShape(refLineSP))
@@ -52172,20 +52187,20 @@ class ShapeFactory_ShapeFactory {
             //x轴箭头
             var xSP = new feature_Polygon_Polygon(xArrowPois);
             xSP.style = {fillColor: "#008acd"};
-            Util_Util.copyAttributesWithClip(xSP.style, sets.axisStyle);
+            Util.copyAttributesWithClip(xSP.style, sets.axisStyle);
             arrows.push(shapeFactory.createShape(xSP));
 
             //y轴箭头
             var ySP = new feature_Polygon_Polygon(yArrowPois);
             ySP.style = {fillColor: "#008acd"};
-            Util_Util.copyAttributesWithClip(ySP.style, sets.axisStyle);
+            Util.copyAttributesWithClip(ySP.style, sets.axisStyle);
             arrows.push(shapeFactory.createShape(ySP));
 
             // z轴箭头 坐标轴箭头是否要使用
             if (sets.axis3DParameter && !isNaN(sets.axis3DParameter) && sets.axis3DParameter >= 15) {
                 var zSP = new feature_Polygon_Polygon(zArrowPois);
                 zSP.style = {fillColor: "#008acd"};
-                Util_Util.copyAttributesWithClip(zSP.style, sets.axisStyle);
+                Util.copyAttributesWithClip(zSP.style, sets.axisStyle);
                 arrows.push(shapeFactory.createShape(zSP));
             }
 
@@ -52204,7 +52219,7 @@ class ShapeFactory_ShapeFactory {
         };
         // 用户 style
         if (sets.axisStyle) {
-            Util_Util.copyAttributesWithClip(axisSP.style, sets.axisStyle);
+            Util.copyAttributesWithClip(axisSP.style, sets.axisStyle);
         }
         // 禁止事件
         axisSP.clickable = false;
@@ -52232,7 +52247,7 @@ class ShapeFactory_ShapeFactory {
                 };
                 // 用户 style
                 if (sets.axisYLabelsStyle) {
-                    Util_Util.copyAttributesWithClip(labelYSP.style, sets.axisYLabelsStyle);
+                    Util.copyAttributesWithClip(labelYSP.style, sets.axisYLabelsStyle);
                 }
                 // 禁止事件
                 labelYSP.clickable = false;
@@ -52252,7 +52267,7 @@ class ShapeFactory_ShapeFactory {
                     };
                     // 用户 style
                     if (sets.axisYLabelsStyle) {
-                        Util_Util.copyAttributesWithClip(labelYSP.style, sets.axisYLabelsStyle);
+                        Util.copyAttributesWithClip(labelYSP.style, sets.axisYLabelsStyle);
                     }
                     // 禁止事件
                     labelYSP.clickable = false;
@@ -52290,7 +52305,7 @@ class ShapeFactory_ShapeFactory {
                     };
                     // 用户 style
                     if (sets.axisXLabelsStyle) {
-                        Util_Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
+                        Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
                     }
                     // 禁止事件
                     labelXSP.clickable = false;
@@ -52309,7 +52324,7 @@ class ShapeFactory_ShapeFactory {
                     };
                     // 用户 style
                     if (sets.axisXLabelsStyle) {
-                        Util_Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
+                        Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
                     }
                     // 禁止事件
                     labelXSP.clickable = false;
@@ -52331,7 +52346,7 @@ class ShapeFactory_ShapeFactory {
                         };
                         // 用户 style
                         if (sets.axisXLabelsStyle) {
-                            Util_Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
+                            Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
                         }
                         // 禁止事件
                         labelXSP.clickable = false;
@@ -52404,13 +52419,13 @@ class ShapeFactory_ShapeFactory {
 
         // 基础 style
         if (style) {
-            Util_Util.copyAttributesWithClip(finalStyle, style);
+            Util.copyAttributesWithClip(finalStyle, style);
         }
 
         // 按索引赋 style
         if (styleGroup && styleGroup.length && typeof(index) !== "undefined" && !isNaN(index) && index >= 0) {
             if (styleGroup[index]) {
-                Util_Util.copyAttributesWithClip(finalStyle, styleGroup[index]);
+                Util.copyAttributesWithClip(finalStyle, styleGroup[index]);
             }
         }
 
@@ -52421,7 +52436,7 @@ class ShapeFactory_ShapeFactory {
             var v = parseFloat(value);
             for (var i = 0; i < dscLen; i++) {
                 if (dsc[i].start <= v && v < dsc[i].end) {
-                    Util_Util.copyAttributesWithClip(finalStyle, dsc[i].style);
+                    Util.copyAttributesWithClip(finalStyle, dsc[i].style);
                     break;
                 }
             }
@@ -52471,7 +52486,7 @@ class feature_Theme_Theme {
          * @member {string} SuperMap.Feature.Theme.prototype.id
          * @description 专题要素唯一标识。
          */
-        this.id = Util_Util.createUniqueID(this.CLASS_NAME + "_");
+        this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
         /**
          * @member {SuperMap.LonLat} SuperMap.Feature.Theme.prototype.lonlat
@@ -53266,7 +53281,7 @@ class Bar_Bar extends Graph_Graph {
                     }
                 }
                 barParams.style = {};
-                Util_Util.copyAttributesWithClip(barParams.style, deafaultShawdow);
+                Util.copyAttributesWithClip(barParams.style, deafaultShawdow);
             }
 
             // 图形携带的数据信息
@@ -53744,7 +53759,7 @@ class Bar3D_Bar3D extends Graph_Graph {
             // hover 模式（组合）
             polyTopSP.isHoverByRefDataID = polySideSP.isHoverByRefDataID = polyFaceSP.isHoverByRefDataID = true;
             // 高亮组(当鼠标 hover 到组内任何一个图形，整个组的图形都会高亮。refDataHoverGroup 在 isHoverByRefDataID 为 true 时有效)
-            polyTopSP.refDataHoverGroup = polySideSP.refDataHoverGroup = polyFaceSP.refDataHoverGroup = Util_Util.createUniqueID("lr_shg");
+            polyTopSP.refDataHoverGroup = polySideSP.refDataHoverGroup = polyFaceSP.refDataHoverGroup = Util.createUniqueID("lr_shg");
             // 图形携带的数据信息
             polyTopSP.dataInfo = polySideSP.dataInfo = polyFaceSP.dataInfo = {
                 field: this.fields[i],
@@ -55296,10 +55311,10 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
         this.CLASS_NAME = "SuperMap.Feature.Theme.Vector";
         this.style = style ? style : {};
         if (options) {
-            Util_Util.copyAttributesWithClip(this, options, ["shapeOptions", "dataBounds"])
+            Util.copyAttributesWithClip(this, options, ["shapeOptions", "dataBounds"])
         }
         if (shapeOptions) {
-            Util_Util.copyAttributesWithClip(this.shapeOptions, shapeOptions);
+            Util.copyAttributesWithClip(this.shapeOptions, shapeOptions);
         }
 
         //设置基础参数 dataBounds、lonlat、location
@@ -55396,7 +55411,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //赋 style
         var style = new Object();
-        style = Util_Util.copyAttributesWithClip(style, this.style, ['pointList']);
+        style = Util.copyAttributesWithClip(style, this.style, ['pointList']);
         style.pointList = pointList;
 
         //创建图形
@@ -55422,7 +55437,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -55478,7 +55493,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
             //赋 style
             var style = new Object();
             style.r = 6; //防止漏设此参数，默认 6 像素
-            style = Util_Util.copyAttributesWithClip(style, this.style);
+            style = Util.copyAttributesWithClip(style, this.style);
             style.x = refLocal[0];
             style.y = refLocal[1];
 
@@ -55505,7 +55520,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
             //修改一些 shape 可选属性，通常不需要这么做
             if (this.shapeOptions) {
-                Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+                Util.copyAttributesWithClip(shape, this.shapeOptions);
             }
 
             this.shapes.push(shape);
@@ -55557,7 +55572,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
         //赋 style
         var style = new Object();
         style.r = 6; //防止漏设此参数，默认 6 像素
-        style = Util_Util.copyAttributesWithClip(style, this.style);
+        style = Util.copyAttributesWithClip(style, this.style);
         style.x = localLX[0] - location[0];
         style.y = localLX[1] - location[1];
 
@@ -55584,7 +55599,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -55676,7 +55691,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //赋 style
         var style = {};
-        style = Util_Util.copyAttributesWithClip(style, this.style, ['pointList']);
+        style = Util.copyAttributesWithClip(style, this.style, ['pointList']);
         style.pointList = pointList;
 
         //创建图形
@@ -55707,7 +55722,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -55733,7 +55748,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
         //赋 style
         var style = new Object();
         style.r = 6; //防止漏设此参数，默认 6 像素
-        style = Util_Util.copyAttributesWithClip(style, this.style);
+        style = Util.copyAttributesWithClip(style, this.style);
         style.x = localLX[0] - location[0];
         // SuperMap.Geometry.Rectangle 使用左下角定位， SmicRectangle 使用左上角定位，需要转换
         style.y = (localLX[1] - location[1]) - 2 * geometry.width / res;
@@ -55763,7 +55778,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -55784,7 +55799,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
         //赋 style
         var style = new Object();
         style.r = 6; //防止漏设此参数，默认 6 像素
-        style = Util_Util.copyAttributesWithClip(style, this.style, ["x", "y", "text"]);
+        style = Util.copyAttributesWithClip(style, this.style, ["x", "y", "text"]);
         style.x = localLX[0] - location[0];
         style.y = localLX[1] - location[1];
         style.text = geometry.text;
@@ -55812,7 +55827,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -55981,8 +55996,8 @@ class Group_Group extends SuperMap.mixin(Eventful, Transformable_Transformable) 
          * @description 是否忽略该 Group 及其所有子节点。
          */
         this.ignore = false;
-        Util_Util.extend(this, options);
-        this.id = this.id || Util_Util.createUniqueID("smShapeGroup_");
+        Util.extend(this, options);
+        this.id = this.id || Util.createUniqueID("smShapeGroup_");
         this.CLASS_NAME = "SuperMap.LevelRenderer.Group";
     }
 
@@ -56063,7 +56078,7 @@ class Group_Group extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @param {SuperMap.LevelRenderer.Shape} child - 需要移除的子节点图形。
      */
     removeChild(child) {
-        var idx = Util_Util.indexOf(this._children, child);
+        var idx = Util.indexOf(this._children, child);
 
         this._children.splice(idx, 1);
         child.parent = null;
@@ -56440,9 +56455,9 @@ class Storage_Storage {
                             target[name] = params[name];
                         }
                     }
-                    new levelRenderer_Util_Util().merge(el, target, true);
+                    new Util_Util().merge(el, target, true);
                 } else {
-                    new levelRenderer_Util_Util().merge(el, params, true);
+                    new Util_Util().merge(el, params, true);
                 }
             }
         }
@@ -56565,7 +56580,7 @@ class Storage_Storage {
             el = elId;
         }
 
-        var idx = new levelRenderer_Util_Util().indexOf(this._roots, el);
+        var idx = new Util_Util().indexOf(this._roots, el);
         if (idx >= 0) {
             this.delFromMap(el.id);
             this._roots.splice(idx, 1);
@@ -56752,7 +56767,7 @@ class Painter_Painter {
         // 创建各层canvas
         // 背景
         //this._bgDom = Painter.createDom('bg', 'div', this);
-        this._bgDom = Painter_Painter.createDom(Util_Util.createUniqueID("SuperMap.Theme_background_"), 'div', this);
+        this._bgDom = Painter_Painter.createDom(Util.createUniqueID("SuperMap.Theme_background_"), 'div', this);
         domRoot.appendChild(this._bgDom);
         this._bgDom.onselectstart = returnFalse;
         this._bgDom.style['-webkit-user-select'] = 'none';
@@ -56761,7 +56776,7 @@ class Painter_Painter {
 
         // 高亮
         //var hoverLayer = new PaintLayer('_hoverLayer_', this);
-        var hoverLayer = new Painter_PaintLayer(Util_Util.createUniqueID("_highLightLayer_"), this);
+        var hoverLayer = new Painter_PaintLayer(Util.createUniqueID("_highLightLayer_"), this);
         this._layers['hover'] = hoverLayer;
         domRoot.appendChild(hoverLayer.dom);
         hoverLayer.initContext();
@@ -56893,7 +56908,7 @@ class Painter_Painter {
                 // Set transform
                 if (clipShape.needTransform) {
                     let m = clipShape.transform;
-                    SUtil_SUtil.Util_matrix.invert(invTransform, m);
+                    SUtil.Util_matrix.invert(invTransform, m);
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -56925,7 +56940,7 @@ class Painter_Painter {
                         try {
                             shape.brush(ctx, false, this.updatePainter);
                         } catch (error) {
-                            SUtil_SUtil.Util_log(
+                            SUtil.Util_log(
                                 error,
                                 'brush error of ' + shape.type,
                                 shape
@@ -56996,7 +57011,7 @@ class Painter_Painter {
 
             // Create a new layer
             //currentLayer = new PaintLayer(zlevel, this);
-            currentLayer = new Painter_PaintLayer(Util_Util.createUniqueID("_levelLayer_" + zlevel), this);
+            currentLayer = new Painter_PaintLayer(Util.createUniqueID("_levelLayer_" + zlevel), this);
             var prevDom = prevLayer ? prevLayer.dom : this._bgDom;
             if (prevDom.nextSibling) {
                 prevDom.parentNode.insertBefore(
@@ -57013,7 +57028,7 @@ class Painter_Painter {
             this._layers[zlevel] = currentLayer;
 
             if (this._layerConfig[zlevel]) {
-                new levelRenderer_Util_Util().merge(currentLayer, this._layerConfig[zlevel], true);
+                new Util_Util().merge(currentLayer, this._layerConfig[zlevel], true);
             }
 
             currentLayer.updateTransform();
@@ -57130,13 +57145,13 @@ class Painter_Painter {
             if (!this._layerConfig[zlevel]) {
                 this._layerConfig[zlevel] = config;
             } else {
-                new levelRenderer_Util_Util().merge(this._layerConfig[zlevel], config, true);
+                new Util_Util().merge(this._layerConfig[zlevel], config, true);
             }
 
             var layer = this._layers[zlevel];
 
             if (layer) {
-                new levelRenderer_Util_Util().merge(layer, this._layerConfig[zlevel], true);
+                new Util_Util().merge(layer, this._layerConfig[zlevel], true);
             }
         }
     }
@@ -57162,7 +57177,7 @@ class Painter_Painter {
         layer.dom.parentNode.removeChild(layer.dom);
         delete this._layers[zlevel];
 
-        this._zlevelList.splice(new levelRenderer_Util_Util().indexOf(this._zlevelList, zlevel), 1);
+        this._zlevelList.splice(new Util_Util().indexOf(this._zlevelList, zlevel), 1);
     }
 
 
@@ -57277,7 +57292,7 @@ class Painter_Painter {
      */
     toDataURL(type, backgroundColor, args) {
         //var imageDom = Painter.createDom('image', 'canvas', this);
-        var imageDom = Painter_Painter.createDom(Util_Util.createUniqueID("SuperMap.Theme.image_"), 'canvas', this);
+        var imageDom = Painter_Painter.createDom(Util.createUniqueID("SuperMap.Theme.image_"), 'canvas', this);
         this._bgDom.appendChild(imageDom);
         var ctx = imageDom.getContext('2d');
         Painter_Painter.devicePixelRatio != 1
@@ -57305,7 +57320,7 @@ class Painter_Painter {
                             try {
                                 shape.brush(ctx, false, self.updatePainter);
                             } catch (error) {
-                                SUtil_SUtil.Util_log(
+                                SUtil.Util_log(
                                     error,
                                     'brush error of ' + shape.type,
                                     shape
@@ -57397,7 +57412,7 @@ class Painter_Painter {
                 try {
                     shape.brush(ctx, true, this.updatePainter);
                 } catch (error) {
-                    SUtil_SUtil.Util_log(
+                    SUtil.Util_log(
                         error, 'hoverBrush error of ' + shape.type, shape
                     );
                 }
@@ -57646,7 +57661,7 @@ class Painter_PaintLayer extends Transformable_Transformable {
          * @description Canvas 上下文。
          */
         this.ctx = null;
-        this.dom = Painter_Painter.createDom(Util_Util.createUniqueID("SuperMap.Theme" + id), 'canvas', painter);
+        this.dom = Painter_Painter.createDom(Util.createUniqueID("SuperMap.Theme" + id), 'canvas', painter);
         this.dom.onselectstart = returnFalse; // 避免页面选中的尴尬
         this.dom.style['-webkit-user-select'] = 'none';
         this.dom.style['user-select'] = 'none';
@@ -57700,7 +57715,7 @@ class Painter_PaintLayer extends Transformable_Transformable {
      * @description  创建备份缓冲。
      */
     createBackBuffer() {
-        this.domBack = Painter_Painter.createDom(Util_Util.createUniqueID("SuperMap.Theme.back-" + this.id), 'canvas', this.painter);
+        this.domBack = Painter_Painter.createDom(Util.createUniqueID("SuperMap.Theme.back-" + this.id), 'canvas', this.painter);
         this.ctxBack = this.domBack.getContext('2d');
 
         if (Painter_Painter.devicePixelRatio != 1) {
@@ -58020,8 +58035,8 @@ class Handler_Handler extends Eventful {
                 event = this._zrenderEventFixed(event);
                 this._lastX = this._mouseX;
                 this._lastY = this._mouseY;
-                this._mouseX = SUtil_SUtil.Util_event.getX(event);
-                this._mouseY = SUtil_SUtil.Util_event.getY(event);
+                this._mouseX = SUtil.Util_event.getX(event);
+                this._mouseY = SUtil.Util_event.getY(event);
                 var dx = this._mouseX - this._lastX;
                 var dy = this._mouseY - this._lastY;
 
@@ -58217,7 +58232,7 @@ class Handler_Handler extends Eventful {
                 event = this._zrenderEventFixed(event, true);
                 this._mousemoveHandler(event);
                 if (this._isDragging) {
-                    SUtil_SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                    SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                 }
             },
 
@@ -58241,7 +58256,7 @@ class Handler_Handler extends Eventful {
                     if (now - this._lastClickMoment < Config.EVENT.touchClickDelay / 2) {
                         this._dblclickHandler(event);
                         if (this._lastHover && this._lastHover.clickable) {
-                            SUtil_SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                            SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                         }
                     }
                     this._lastClickMoment = now;
@@ -58256,7 +58271,7 @@ class Handler_Handler extends Eventful {
         if (window.addEventListener) {
             window.addEventListener('resize', this._resizeHandler);
 
-            if (SUtil_SUtil.Util_env.os.tablet || SUtil_SUtil.Util_env.os.phone) {
+            if (SUtil.Util_env.os.tablet || SUtil.Util_env.os.phone) {
                 // mobile支持
                 root.addEventListener('touchstart', this._touchstartHandler);
                 root.addEventListener('touchmove', this._touchmoveHandler);
@@ -58512,7 +58527,7 @@ class Handler_Handler extends Eventful {
         if (window.removeEventListener) {
             window.removeEventListener('resize', this._resizeHandler);
 
-            if (SUtil_SUtil.Util_env.os.tablet || SUtil_SUtil.Util_env.os.phone) {
+            if (SUtil.Util_env.os.tablet || SUtil.Util_env.os.phone) {
                 // mobile支持
                 root.removeEventListener('touchstart', this._touchstartHandler);
                 root.removeEventListener('touchmove', this._touchmoveHandler);
@@ -58791,7 +58806,7 @@ class Handler_Handler extends Eventful {
      *
      */
     _iterateAndFindHover() {
-        var invTransform = SUtil_SUtil.Util_matrix.create();
+        var invTransform = SUtil.Util_matrix.create();
 
         var list = this.storage.getShapeList();
         var currentZLevel;
@@ -58806,8 +58821,8 @@ class Handler_Handler extends Eventful {
                 tmp[1] = this._mouseY;
 
                 if (currentLayer.needTransform) {
-                    SUtil_SUtil.Util_matrix.invert(invTransform, currentLayer.transform);
-                    SUtil_SUtil.Util_vector.applyTransform(tmp, tmp, invTransform);
+                    SUtil.Util_matrix.invert(invTransform, currentLayer.transform);
+                    SUtil.Util_vector.applyTransform(tmp, tmp, invTransform);
                 }
             }
 
@@ -59576,7 +59591,7 @@ class Animation_Animation extends Eventful {
          */
         this._time = 0;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.LevelRenderer.Animation";
 
@@ -59599,7 +59614,7 @@ class Animation_Animation extends Eventful {
      * @param {SuperMap.LevelRenderer.Animation.Clip} clip - 动画片段。
      */
     remove(clip) {
-        var idx = new levelRenderer_Util_Util().indexOf(this._clips, clip);
+        var idx = new Util_Util().indexOf(this._clips, clip);
         if (idx >= 0) {
             this._clips.splice(idx, 1);
         }
@@ -60001,7 +60016,7 @@ class Animation_Animator {
                 // Assume value is a color when it is a string
                 var value = keyframes[i].value;
                 if (typeof(value) == 'string') {
-                    value = SUtil_SUtil.Util_color.toArray(value);
+                    value = SUtil.Util_color.toArray(value);
                     if (value.length === 0) {    // Invalid color
                         value[0] = value[1] = value[2] = 0;
                         value[3] = 1;
@@ -60525,7 +60540,7 @@ class Render_Render {
             }
 
             if (!target) {
-                SUtil_SUtil.Util_log(
+                SUtil.Util_log(
                     'Property "'
                     + path
                     + '" is not existed in element '
@@ -60549,12 +60564,12 @@ class Render_Render {
                     el.__aniCount--;
                     if (el.__aniCount === 0) {
                         // 从animatingElements里移除
-                        var idx = new levelRenderer_Util_Util().indexOf(animatingElements, el);
+                        var idx = new Util_Util().indexOf(animatingElements, el);
                         animatingElements.splice(idx, 1);
                     }
                 });
         } else {
-            SUtil_SUtil.Util_log('Element not existed');
+            SUtil.Util_log('Element not existed');
         }
     }
 
@@ -60608,7 +60623,7 @@ class Render_Render {
      * @return {Object} image shape。
      */
     shapeToImage(e, width, height) {
-        var id = Util_Util.createUniqueID("SuperMap.LevelRenderer.ToImage_");
+        var id = Util.createUniqueID("SuperMap.LevelRenderer.ToImage_");
         return this.painter.shapeToImage(id, e, width, height);
     }
 
@@ -60821,7 +60836,7 @@ class LevelRenderer_LevelRenderer {
      * @returns {SuperMap.LevelRenderer} LevelRenderer 实例。
      */
     init(dom) {
-        var zr = new Render_Render(Util_Util.createUniqueID("LRenderer_"), dom);
+        var zr = new Render_Render(Util.createUniqueID("LRenderer_"), dom);
         LevelRenderer_LevelRenderer._instances[zr.id] = zr;
         return zr;
     }
@@ -61121,8 +61136,8 @@ class SmicIsogon_SmicIsogon extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var sin = SUtil_SUtil.Util_math.sin;
-        var cos = SUtil_SUtil.Util_math.cos;
+        var sin = SUtil.Util_math.sin;
+        var cos = SUtil.Util_math.cos;
         var PI = Math.PI;
 
         var n = style.n;
@@ -61442,8 +61457,8 @@ class SmicStar_SmicStar extends Shape_Shape {
             return;
         }
 
-        var sin = SUtil_SUtil.Util_math.sin;
-        var cos = SUtil_SUtil.Util_math.cos;
+        var sin = SUtil.Util_math.sin;
+        var cos = SUtil.Util_math.cos;
         var PI = Math.PI;
 
         var x = style.x + __OP[0];
@@ -61647,7 +61662,7 @@ class SmicStar_SmicStar extends Shape_Shape {
  * @category BaseTypes
  * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
  */
-let Lang_Lang = {
+let Lang = {
 
     /**
      * @member {string} SuperMap.Lang.code
@@ -61736,7 +61751,7 @@ let Lang_Lang = {
 
 };
 
-SuperMap.Lang = Lang_Lang;
+SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
 
 // CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
@@ -61751,7 +61766,7 @@ SuperMap.i18n = SuperMap.Lang.i18n;
  *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
  *     strings formatted for use with <SuperMap.String.format> calls.
  */
-let en_US_en = {
+let en = {
     'title_dataFlowService': 'Data Flow Service',
     'title_distributedAnalysis': 'Distributed Analysis',
     'title_clientComputing': 'Client Computing',
@@ -61859,7 +61874,7 @@ let en_US_en = {
 
 };
 
-SuperMap.Lang['en-US'] = en_US_en;
+SuperMap.Lang['en-US'] = en;
 
 // CONCATENATED MODULE: ./src/common/lang/locales/zh-CN.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -61874,7 +61889,7 @@ SuperMap.Lang['en-US'] = en_US_en;
  *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
  *     strings formatted for use with <SuperMap.String.format> calls.
  */
-let zh_CN_zh = {
+let zh = {
     'title_dataFlowService': '数据流服务',
     'title_distributedAnalysis': '分布式分析',
     'title_clientComputing': '客户端计算',
@@ -61982,7 +61997,7 @@ let zh_CN_zh = {
     'msg_tilematrixsetunsupport':'不支持传入的TileMatrixSet'
 };
 
-SuperMap.Lang["zh-CN"] = zh_CN_zh;
+SuperMap.Lang["zh-CN"] = zh;
 
 
 // CONCATENATED MODULE: ./src/common/lang/index.js
@@ -62054,7 +62069,7 @@ var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__we
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  */
-let FileReaderUtil_FileReaderUtil = {
+let FileReaderUtil = {
     rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
     rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
     rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
@@ -62153,11 +62168,11 @@ let FileReaderUtil_FileReaderUtil = {
                 geojson = result;
             } else {
                 //不支持数据
-                failed && failed.call(context, Lang_Lang.i18n('msg_dataInWrongGeoJSONFormat'));
+                failed && failed.call(context, Lang.i18n('msg_dataInWrongGeoJSONFormat'));
             }
             success && success.call(context, geojson);
         } else {
-            failed && failed.call(context, Lang_Lang.i18n('msg_dataInWrongFormat'));
+            failed && failed.call(context, Lang.i18n('msg_dataInWrongFormat'));
         }
     },
     /**
@@ -62255,7 +62270,7 @@ let FileReaderUtil_FileReaderUtil = {
 
 };
 
-SuperMap.Widgets.FileReaderUtil = FileReaderUtil_FileReaderUtil;
+SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
 
 
 // CONCATENATED MODULE: ./src/common/widgets/chart/ChartModel.js
@@ -62288,7 +62303,7 @@ class ChartModel_ChartModel {
     getDatasetInfo(success) {
         let datasetUrl = this.datasets.url;
         let me = this;
-        FetchRequest_FetchRequest.get(datasetUrl).then(function (response) {
+        FetchRequest.get(datasetUrl).then(function (response) {
             return response.json();
         }).then(function (results) {
             if (results.datasetInfo) {
@@ -62387,7 +62402,7 @@ class ChartModel_ChartModel {
     getServiceInfo(url, success) {
         let me = this;
         // let url = `http://192.168.12.230:8092/web/datas/${dataId}`;+'?token='+ this.datasets.token
-        FetchRequest_FetchRequest.get(url , null, {
+        FetchRequest.get(url , null, {
             withCredentials: this.datasets.withCredentials
         }).then(response => {
             return response.json()
@@ -62430,7 +62445,7 @@ class ChartModel_ChartModel {
         // let url = `http://192.168.12.230:8092/web/datas/${dataId}/content.json?pageSize=9999999&currentPage=1`;
         url += '/content.json?pageSize=9999999&currentPage=1',
         // 获取图层数据
-        FetchRequest_FetchRequest.get(url, null, {
+        FetchRequest.get(url, null, {
             withCredentials: this.datasets.withCredentials
         }).then(response => {
             return response.json()
@@ -62486,14 +62501,14 @@ class ChartModel_ChartModel {
         if (serviceType === 'RESTDATA') {
             let url = `${address}/data/datasources`,
                 sourceName, datasetName;
-            FetchRequest_FetchRequest.get(url, null, {
+            FetchRequest.get(url, null, {
                 withCredentials
             }).then(response => {
                 return response.json()
             }).then(data => {
                 sourceName = data.datasourceNames[0];
                 url = `${address}/data/datasources/${sourceName}/datasets`;
-                FetchRequest_FetchRequest.get(url, null, {
+                FetchRequest.get(url, null, {
                     withCredentials
                 }).then(response => {
                     return response.json()
@@ -62511,7 +62526,7 @@ class ChartModel_ChartModel {
             // 如果是地图服务
             let url = `${address}/maps`,
                 mapName, layerName, path;
-            FetchRequest_FetchRequest.get(url, null, {
+            FetchRequest.get(url, null, {
                 withCredentials
             }).then(response => {
                 return response.json()
@@ -62519,7 +62534,7 @@ class ChartModel_ChartModel {
                 mapName = data[0].name;
                 path = data[0].path;
                 url = url = `${address}/maps/${mapName}/layers`;
-                FetchRequest_FetchRequest.get(url, null, {
+                FetchRequest.get(url, null, {
                     withCredentials
                 }).then(response => {
                     return response.json()
@@ -62625,7 +62640,7 @@ class ChartModel_ChartModel {
             queryParams: [queryParam]
         };
         if (onlyAttribute) {
-            params.queryOption = REST_QueryOption.ATTRIBUTE;
+            params.queryOption = QueryOption.ATTRIBUTE;
         }
         startRecord && (params.startRecord = startRecord);
         recordLength && (params.expectCount = recordLength);
@@ -62669,7 +62684,7 @@ class ChartModel_ChartModel {
      * @return {object} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
      */
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     /**
@@ -62701,10 +62716,10 @@ class ChartModel_ChartModel {
         let xfieldIndex = -1,
             yfieldIndex = -1;
         for (let i = 0, len = fieldCaptions.length; i < len; i++) {
-            if (FileReaderUtil_FileReaderUtil.isXField(fieldCaptions[i])) {
+            if (FileReaderUtil.isXField(fieldCaptions[i])) {
                 xfieldIndex = i;
             }
-            if (FileReaderUtil_FileReaderUtil.isYField(fieldCaptions[i])) {
+            if (FileReaderUtil.isYField(fieldCaptions[i])) {
                 yfieldIndex = i;
             }
         }
@@ -63485,7 +63500,7 @@ SuperMap.Widgets.Chart = ChartView_ChartView;
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Widgets Common
  */
-class TemplateBase_TemplateBase {
+class TemplateBase {
     constructor(options) {
         options = options ? options : {};
         /**
@@ -63541,7 +63556,7 @@ class TemplateBase_TemplateBase {
     }
 }
 
-SuperMap.Widgets.TemplateBase = TemplateBase_TemplateBase;
+SuperMap.Widgets.TemplateBase = TemplateBase;
 // CONCATENATED MODULE: ./src/common/widgets/templates/CommonContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -63559,7 +63574,7 @@ SuperMap.Widgets.TemplateBase = TemplateBase_TemplateBase;
  * @category Widgets Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
-class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
+class CommonContainer_CommonContainer extends TemplateBase {
     constructor(options) {
         super(options);
         let title = options.title ? options.title : "";
@@ -63628,7 +63643,7 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
  * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
-class Select_Select extends TemplateBase_TemplateBase {
+class Select_Select extends TemplateBase {
     constructor(options) {
         super(options);
         this._initView(options);
@@ -63761,7 +63776,7 @@ SuperMap.Widgets.Select = Select_Select;
  * @category Widgets Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
-class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
+class DropDownBox_DropDownBox extends TemplateBase {
     constructor(optionsArr) {
         super(optionsArr);
         this._initView(optionsArr);
@@ -63956,7 +63971,7 @@ SuperMap.Widgets.DropDownBox = DropDownBox_DropDownBox;
  * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
-class PopContainer_PopContainer extends TemplateBase_TemplateBase {
+class PopContainer_PopContainer extends TemplateBase {
     constructor(options) {
         options = options ? options : {};
         super(options);
@@ -64085,7 +64100,7 @@ SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopCo
  * @category Widgets Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
-class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_TemplateBase {
+class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
     constructor(options) {
         super(options);
         this._initView();
@@ -64209,7 +64224,7 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageCont
         this.rootContainer.classList.add("widget-citytabpage--noneBoxShadow");
         this.config = options.config;
         //header，若 config为城市名称数组，则直接加载内容
-        if (Util_Util.isArray(this.config)) {
+        if (Util.isArray(this.config)) {
             this.header.hidden = true;
             this._createCityItem("城市", this.config);
             this.content.style.border = "none";
@@ -64235,7 +64250,7 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageCont
      */
     _createTabs() {
         //header
-        if (Util_Util.isArray(this.config)) {
+        if (Util.isArray(this.config)) {
             for (let i = 0; i < this.config.length; i++) {
                 let innerHTML = "";
                 for (const key in this.config[i]) {
@@ -64323,7 +64338,7 @@ SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
  * @category Widgets Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用
-class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
+class NavTabsPage_NavTabsPage extends TemplateBase {
     constructor(options) {
         super(options);
         this.navTabsTitle = null;
@@ -64455,7 +64470,7 @@ SuperMap.Widgets.NavTabsPage = NavTabsPage_NavTabsPage;
  * @extends {SuperMap.Widgets.TemplateBase}
  * @category Widgets Common
  */
-class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase {
+class PaginationContainer_PaginationContainer extends TemplateBase {
     constructor(options) {
         options = options ? options : {};
         super(options);
@@ -64757,7 +64772,7 @@ SuperMap.Widgets.PaginationContainer = PaginationContainer_PaginationContainer;
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-let Util_widgetsUtil = {
+let widgetsUtil = {
     /**
      * 获取上传文件类型
      * @param fileName
@@ -64855,12 +64870,12 @@ var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(0);
  * @param {Mapv.DataSet} dataSet - 待渲染的数据集，数据所属坐标系要求与 map 保持一致。
  * @param {Object} options - 渲染的参数。
  */
-var MapVRenderer_MapVBaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
+var MapVBaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
 
-class MapVRenderer_MapVRenderer extends MapVRenderer_MapVBaseLayer {
+class MapVRenderer_MapVRenderer extends MapVBaseLayer {
     constructor(map, layer, dataSet, options) {
         super(map, dataSet, options);
-        if (!MapVRenderer_MapVBaseLayer) {
+        if (!MapVBaseLayer) {
             return this;
         }
 
@@ -66295,7 +66310,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     _processParams(params) {
@@ -66357,7 +66372,7 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileTypes", function() { return FileTypes; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileConfig", function() { return FileConfig; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileModel", function() { return FileModel_FileModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MessageBox", function() { return MessageBox_MessageBox; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MessageBox", function() { return MessageBox; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CommonContainer", function() { return CommonContainer_CommonContainer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DropDownBox", function() { return DropDownBox_DropDownBox; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Select", function() { return Select_Select; });
@@ -66367,8 +66382,8 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CityTabsPage", function() { return CityTabsPage_CityTabsPage; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NavTabsPage", function() { return NavTabsPage_NavTabsPage; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PaginationContainer", function() { return PaginationContainer_PaginationContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "widgetsUtil", function() { return Util_widgetsUtil; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil_FileReaderUtil; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "widgetsUtil", function() { return widgetsUtil; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapVLayer", function() { return MapVLayer_MapVLayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapVRenderer", function() { return MapVRenderer_MapVRenderer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });

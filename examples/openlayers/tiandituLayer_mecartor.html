@@ -3,35 +3,45 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_tiandituLayer_mecartor"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
-<div id="map" style="width: 100%;height:100%"></div>
-<script type="text/javascript">
-    var resolutions = [];
-    for (var i = 0; i < 18; i++) {
-        resolutions.push(78271.5169640203125*2 / (Math.pow(2, i)));
-    }
-    new ol.Map({
-        target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
-        view: new ol.View({
-            center: [0, 0],
-            zoom: 3
-        }),
-        layers: [new ol.layer.Tile({
-            source: new ol.source.Tianditu()
-        }), new ol.layer.Tile({
-            source: new ol.source.Tianditu({
-                isLabel: true
-            })
-        })]
-    });
-</script>
+    <div id="map" style="width: 100%;height:100%"></div>
+    <script type="text/javascript">
+        var resolutions = [];
+        for (var i = 0; i < 18; i++) {
+            resolutions.push(78271.5169640203125 * 2 / (Math.pow(2, i)));
+        }
+        new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({
+                    attributionOptions: {
+                        collapsed: false
+                    }
+                })
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 3
+            }),
+            layers: [new ol.layer.Tile({
+                source: new ol.source.Tianditu({
+                    key: "1d109683f4d84198e37a38c442d68311",
+                })
+            }), new ol.layer.Tile({
+                source: new ol.source.Tianditu({
+                    isLabel: true,
+                    key: "1d109683f4d84198e37a38c442d68311"
+                })
+            })]
+        });
+    </script>
 </body>
+
 </html>

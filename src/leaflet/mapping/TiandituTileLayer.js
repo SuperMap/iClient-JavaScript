@@ -15,6 +15,7 @@ import Attributions from '../core/Attributions'
  * @extends L.supermap.wmtsLayer
  * @param {Object} options - 切片图层参数。
  * @param {string} [options.url='http://t{s}.tianditu.com/{layer}_{proj}/wmts?'] - 地图地址。
+ * @param {string} options.key - 天地图服务密钥。详见{@link http://lbs.tianditu.gov.cn/server/MapService.html}
  * @param {string} [options.layerType='vec'] - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)
  * @param {string} [options.style='default'] - 图层风格。
  * @param {string} [options.format='tiles'] - 格式。
@@ -40,6 +41,7 @@ export var TiandituTileLayer = WMTSLayer.extend({
         attribution: Attributions.Tianditu.attribution,
         url: "http://t{s}.tianditu.com/{layer}_{proj}/wmts?",
         zoomOffset: 1,
+        key: "",
         dpi: 96,
         style: "default",
         format: "tiles",
@@ -56,6 +58,9 @@ export var TiandituTileLayer = WMTSLayer.extend({
     },
     onAdd: function (map) {
         this.options.tilematrixSet = map.options.crs.code === "EPSG:4326" ? "c" : "w";
+        if (this.options.key) {
+            this._url = `${this._url}tk=${this.options.key}`;
+        }
         this._url = this._url.replace("{layer}", this.options.layer).replace("{proj}", this.options.tilematrixSet);
         WMTSLayer.prototype.onAdd.call(this, map);
     }
