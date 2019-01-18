@@ -115,7 +115,10 @@ let zh = {
     'msg_dataflowservicesubscribed':'已订阅该数据流服务。',
     'msg_subscribesucceeded':'数据流服务订阅成功。',
     'msg_crsunsupport':'不支持当前地图的坐标系',
-    'msg_tilematrixsetunsupport':'不支持传入的TileMatrixSet'
+    'msg_tilematrixsetunsupport':'不支持传入的TileMatrixSet',
+    'msg_jsonResolveFiled': 'json格式解析失败！',
+    'msg_requestContentFiled': '通过iportal请求数据失败！',
+    'msg_getdatafailed': '获取数据失败！'
 };
 export { zh };
 SuperMap.Lang["zh-CN"] = zh;

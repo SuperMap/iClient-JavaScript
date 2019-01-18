@@ -113,7 +113,10 @@ let en = {
     'msg_dataflowservicesubscribed':'The data stream service has been subscribed to.',
     'msg_subscribesucceeded':'The data stream service subscription was successful.',
     'msg_crsunsupport':'Does not support the coordinate system of the current map',
-    'msg_tilematrixsetunsupport':'Incoming TileMatrixSet is not supported'
+    'msg_tilematrixsetunsupport':'Incoming TileMatrixSet is not supported',
+    'msg_jsonResolveFiled': 'JSON format parsing failure！',
+    'msg_requestContentFiled': 'Failed to request data through iportal!',
+    'msg_getdatafailed': 'Failed to get data!'
 
 };
 export { en };

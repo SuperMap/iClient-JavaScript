@@ -12,22 +12,31 @@ import {
     GetFeaturesBySQLService,
     QueryBySQLParameters,
     QueryOption,
+    Lang,
     QueryBySQLService,
     DataFormat
 } from '@supermap/iclient-common';
-import { FileReaderUtil } from '../util/FileReaderUtil'
+import {
+    FileReaderUtil
+} from '../util/FileReaderUtil'
+import {
+    Events
+} from '../../commontypes/Events';
 /**
  * @class SuperMap.Widgets.ChartModel
  * @classdesc 图表微件数据模型
  * @private
  * @param {Object} datasets - 数据来源。
  * @category Widgets Chart
+ * @fires SuperMap.Widgets.ChartModel#getdatafailed
  */
 
 export class ChartModel {
 
     constructor(datasets) {
         this.datasets = datasets;
+        this.EVENT_TYPES = ["getdatafailed"];
+        this.events = new Events(this, null, this.EVENT_TYPES);
     }
     /**
      * @private
@@ -52,8 +61,9 @@ export class ChartModel {
                     result: me.datasetsInfo
                 });
             }
-        }).catch(function (err) {
-            console.log(err);
+        }).catch(function (error) {
+            console.log(error);
+            me._fireFailedEvent(error);
         });
     }
 
@@ -81,7 +91,7 @@ export class ChartModel {
         getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(datasetsInfo.dataUrl, {
             eventListeners: {
                 "processCompleted": success,
-                "processFailed": function () { }
+                "processFailed": function () {}
             }
         });
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
@@ -99,7 +109,7 @@ export class ChartModel {
         let queryParam, queryBySQLParams, queryBySQLService;
         let params = {
             name: datasetsInfo.mapName
-        }
+        };
         Object.assign(params, this.datasets.queryInfo);
         queryParam = new SuperMap.FilterParameter(params);
         queryBySQLParams = new SuperMap.QueryBySQLParameters({
@@ -109,7 +119,7 @@ export class ChartModel {
         queryBySQLService = new SuperMap.QueryBySQLService(datasetsInfo.dataUrl, {
             eventListeners: {
                 "processCompleted": success,
-                "processFailed": function () { }
+                "processFailed": function () {}
             }
         });
         queryBySQLService.processAsync(queryBySQLParams);
@@ -136,35 +146,43 @@ export class ChartModel {
      * */
     getServiceInfo(url, success) {
         let me = this;
-        // let url = `http://192.168.12.230:8092/web/datas/${dataId}`;+'?token='+ this.datasets.token
-        FetchRequest.get(url , null, {
+        FetchRequest.get(url, null, {
             withCredentials: this.datasets.withCredentials
         }).then(response => {
             return response.json()
         }).then(data => {
+            if (data.succeed === false) {
+                //请求失败
+                me._fireFailedEvent(data);
+                return;
+            }
+            // 是否有rest服务
             if (data.dataItemServices && data.dataItemServices.length > 0) {
-                let dataItemServices = data.dataItemServices, resultData;
+                let dataItemServices = data.dataItemServices,
+                    resultData;
 
                 dataItemServices.forEach(item => {
-                    if(item.serviceType === 'RESTDATA' && item.serviceStatus ==='PUBLISHED'){
+                    // 如果有restdata并且发布成功，就请求restdata服务
+                    // 如果有restmap并且发布成功，就请求restmap服务
+                    // 其他情况就请求iportal/content.json
+                    if (item.serviceType === 'RESTDATA' && item.serviceStatus === 'PUBLISHED') {
                         resultData = item;
-                    }else if(item.serviceType === 'RESTMAP' && item.serviceStatus ==='PUBLISHED'){
+                    } else if (item.serviceType === 'RESTMAP' && item.serviceStatus === 'PUBLISHED') {
                         resultData = item;
-                    }else{
+                    } else {
                         me.getDatafromContent(url, success);
-                        console.log('发布的服务失败了！');
                         return;
                     }
                 })
-                 // 如果有服务，获取数据源和数据集
-                 me.getDatafromRest(resultData.serviceType, resultData.address, success)
+                // 如果有服务，获取数据源和数据集, 然后请求rest服务
+                me.getDatafromRest(resultData.serviceType, resultData.address, success)
             } else {
                 me.getDatafromContent(url, success);
-                console.log('没有发布成服务！通过iportal请求数据！');
-                return ;
+                return;
             }
-        }).catch(err => {
-            console.log(err);
+        }).catch(error => {
+            console.log(error);
+            me._fireFailedEvent(error);
         })
     }
     /**
@@ -175,49 +193,52 @@ export class ChartModel {
      * @param {Callbacks} success - getdatachart。
      */
     getDatafromContent(url, success) {
-        // 获取 dataId
-        let results = {result: {}};
-        // let url = `http://192.168.12.230:8092/web/datas/${dataId}/content.json?pageSize=9999999&currentPage=1`;
+        // 成功回调传入的results
+        let results = {
+                result: {}
+            },
+            me = this;
         url += '/content.json?pageSize=9999999&currentPage=1',
-        // 获取图层数据
-        FetchRequest.get(url, null, {
-            withCredentials: this.datasets.withCredentials
-        }).then(response => {
-            return response.json()
-        }).then(data => {
-            if (data.succeed === false) {
-                //请求失败
-                console.log('iportal请求失败',data.error.errorMsg);
-                return;
-            }
-            if (data.type) {
-                if (data.type === "JSON" || data.type === "GEOJSON") {
-                    // 将字符串转换成json
-                    data.content = JSON.parse(data.content.trim());
-                    // 如果是json文件 data.content = {type:'fco', features},格式不固定
-                    if (!(data.content.features)) {
-                        //json格式解析失败
-                        console.log('json格式解析失败');
-                        return;
-                    }
-                    let features = this._formatGeoJSON(data.content);
-                    results.result.features = {
-                        type: data.content.type,
-                        features
-                    };
-
-                } else if (data.type === 'EXCEL' || data.type === 'CSV') {
-                    let features = this._excelData2Feature(data.content);
-                    results.result.features = {
-                        type: 'FeatureCollection',
-                        features
-                    };
+            // 获取图层数据
+            FetchRequest.get(url, null, {
+                withCredentials: this.datasets.withCredentials
+            }).then(response => {
+                return response.json()
+            }).then(data => {
+                if (data.succeed === false) {
+                    //请求失败
+                    me._fireFailedEvent(data);
+                    return;
                 }
-                success(results, 'content');
-            }
-        }, this).catch(err => {
-            console.log(err);
-        });
+                if (data.type) {
+                    if (data.type === "JSON" || data.type === "GEOJSON") {
+                        // 将字符串转换成json
+                        data.content = JSON.parse(data.content.trim());
+                        // 如果是json文件 data.content = {type:'fco', features},格式不固定
+                        if (!(data.content.features)) {
+                            //json格式解析失败
+                            console.log(Lang.i18n('msg_jsonResolveFiled'));
+                            return;
+                        }
+                        let features = this._formatGeoJSON(data.content);
+                        results.result.features = {
+                            type: data.content.type,
+                            features
+                        };
+
+                    } else if (data.type === 'EXCEL' || data.type === 'CSV') {
+                        let features = this._excelData2Feature(data.content);
+                        results.result.features = {
+                            type: 'FeatureCollection',
+                            features
+                        };
+                    }
+                    success(results, 'content');
+                }
+            }, this).catch(error => {
+                console.log(error);
+                me._fireFailedEvent(error);
+            });
     }
 
     /**
@@ -225,17 +246,18 @@ export class ChartModel {
      * @function SuperMap.Widgets.ChartModel.prototype._getDataSource
      * @description 获取数据源名和数据集名。
      * @param {string} serviceType 服务类型
-	 * @param {string} address 地址
+     * @param {string} address 地址
      * @param {Callbacks} success - getdatachart。
      * @return{array} [数据源名:数据集名]
      * @return{string} 图层名
      */
     getDatafromRest(serviceType, address, success) {
         let me = this,
-        withCredentials = this.datasets.withCredentials;
+            withCredentials = this.datasets.withCredentials;
         if (serviceType === 'RESTDATA') {
             let url = `${address}/data/datasources`,
                 sourceName, datasetName;
+            // 请求获取数据源名
             FetchRequest.get(url, null, {
                 withCredentials
             }).then(response => {
@@ -243,24 +265,27 @@ export class ChartModel {
             }).then(data => {
                 sourceName = data.datasourceNames[0];
                 url = `${address}/data/datasources/${sourceName}/datasets`;
+                // 请求获取数据集名
                 FetchRequest.get(url, null, {
                     withCredentials
                 }).then(response => {
                     return response.json()
                 }).then(data => {
                     datasetName = data.datasetNames[0];
+                    // 请求restdata服务
                     me.getDatafromRestData(`${address}/data`, [sourceName + ':' + datasetName], success);
                     return [sourceName + ':' + datasetName]
-                }).catch(function(error) {
-                    console.log('request failed', error)
+                }).catch(function (error) {
+                    me._fireFailedEvent(error);
                 })
-            }).catch(function(error) {
-                console.log('request failed', error)
+            }).catch(function (error) {
+                me._fireFailedEvent(error);
             });
         } else {
             // 如果是地图服务
             let url = `${address}/maps`,
                 mapName, layerName, path;
+            // 请求获取地图名
             FetchRequest.get(url, null, {
                 withCredentials
             }).then(response => {
@@ -269,24 +294,26 @@ export class ChartModel {
                 mapName = data[0].name;
                 path = data[0].path;
                 url = url = `${address}/maps/${mapName}/layers`;
+                // 请求获取图层名
                 FetchRequest.get(url, null, {
                     withCredentials
                 }).then(response => {
                     return response.json()
                 }).then(data => {
                     layerName = data[0].subLayers.layers[0].caption;
+                    // 请求restmap服务
                     me.getDatafromRestMap(layerName, path, success)
                     return layerName;
-                }).catch(function(error) {
-                    console.log('request failed', error)
+                }).catch(function (error) {
+                    me._fireFailedEvent(error);
                 })
-            }).catch(function(error) {
-                console.log('request failed', error)
+            }).catch(function (error) {
+                me._fireFailedEvent(error);
             });
 
         }
     }
-    
+
     /**
      * @private
      * @function SuperMap.Widgets.ChartModel.prototype.getDatafromRestData
@@ -296,12 +323,14 @@ export class ChartModel {
      * @param {Callbacks} success - getdatachart。
      */
     getDatafromRestData(url, dataSource, success) {
+        let me = this;
         this.datasets.queryInfo.attributeFilter = this.datasets.queryInfo.attributeFilter || 'SmID>0';
         this._getFeatureBySQL(url, dataSource, this.datasets.queryInfo, (results) => {
             // 此时的features已经处理成geojson了
             success(results, 'RESTDATA');
-        }, (err) => {
-            console.log(err)
+        }, (error) => {
+            console.log(error);
+            me._fireFailedEvent(error);
         });
     }
 
@@ -314,12 +343,14 @@ export class ChartModel {
      * @param {Callbacks} success - getdatachart。
      */
     getDatafromRestMap(dataSource, path, success) {
+        let me = this;
         this.datasets.queryInfo.attributeFilter = this.datasets.queryInfo.attributeFilter || 'smid=1';
         this._queryFeatureBySQL(path, dataSource, this.datasets.queryInfo, null, null, (results) => {
             // let features = result.result.recordsets[0].features;
             success(results, 'RESTMAP');
-        }, (e) => {
-            console.log(e)
+        }, (error) => {
+            console.log(error);
+            me._fireFailedEvent(error);
         })
     }
 
@@ -399,9 +430,6 @@ export class ChartModel {
     _queryBySQL(url, params, callback, resultFormat) {
         var me = this;
         var queryBySQLService = new QueryBySQLService(url, {
-            // proxy: me.options.proxy,
-            // withCredentials,
-            // serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -438,7 +466,7 @@ export class ChartModel {
 
     /**
      * @private
-     * 将 csv 和 xls 文件内容转换成 geojson
+     * @description 将 csv 和 xls 文件内容转换成 geojson
      * @function SuperMap.Widgets.ChartModel.prototype._excelData2Feature
      * @param content  文件内容
      * @param layerInfo  图层信息
@@ -446,7 +474,6 @@ export class ChartModel {
      */
     _excelData2Feature(dataContent) {
         let fieldCaptions = dataContent.colTitles;
-        // let fileCode = layerInfo.projection;
         //位置属性处理
         let xfieldIndex = -1,
             yfieldIndex = -1;
@@ -486,5 +513,25 @@ export class ChartModel {
             features.push(feature);
         }
         return features;
+    }
+    /**
+     * @private
+     * @description 请求数据失败的事件
+     * @function SuperMap.Widgets.ChartModel.prototype._fireFailedEvent
+     * @param {object} error  错误信息
+     */
+    _fireFailedEvent(error) {
+        let errorData = error ? {
+            error,
+            message: Lang.i18n('msg_getdatafailed')
+        } : {
+            message: Lang.i18n('msg_getdatafailed')
+        };
+        /**
+         * @event SuperMap.Widgets.Chart#getdatafailed
+         * @description 监听到获取数据失败事件后触发
+         * @property {Object} error  - 事件对象。
+         */
+        this.events.triggerEvent("getdatafailed", errorData);
     }
 }

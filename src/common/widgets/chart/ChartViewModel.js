@@ -3,6 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from '../../SuperMap';
 import { ChartModel } from "./ChartModel";
+import { Events } from '../../commontypes/Events';
 
 /**
  * @class SuperMap.Widgets.ChartViewModel
@@ -19,6 +20,7 @@ import { ChartModel } from "./ChartModel";
  * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
  * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
+ * @fires SuperMap.Widgets.ChartViewModel#getdatafailed
  */
 
 export class ChartViewModel {
@@ -35,6 +37,8 @@ export class ChartViewModel {
         };
         this.chartType = options.type || "bar";
         this._initXYField(options.chartOptions);
+        this.EVENT_TYPES = ["getdatafailed"];
+        this.events = new Events(this, null, this.EVENT_TYPES);
     }
 
     /**
@@ -76,6 +80,14 @@ export class ChartViewModel {
             }else if(this.datasets.type === 'iPortal'){
                 this.chartModel.getDataInfoByIptl(this._getDataInfoSuccess.bind(this));
             }
+            /**
+             * @event SuperMap.Widgets.ChartViewModel#getdatafailed
+             * @description 监听到获取数据失败事件后触发
+             * @property {Object} error  - 事件对象。
+             */
+            this.chartModel.events.on({"getdatafailed":  (error) => {
+                this.events.triggerEvent("getdatafailed", error)
+            }});
         }
     }
 

@@ -4,6 +4,7 @@
 import {SuperMap} from '../../SuperMap';
 import echarts from "echarts";
 import { ChartViewModel } from "./ChartViewModel";
+import { MessageBox } from "../messagebox/MessageBox";
 
 /**
  * @class SuperMap.Widgets.Chart
@@ -58,8 +59,12 @@ export class ChartView {
      * @private
      */
     _fillDataToView() {
+        let messageboxs = new MessageBox();
         //iclient9 绑定createChart事件成功回调
         this.viewModel.getDatasetInfo(this._createChart.bind(this));
+        this.viewModel.events.on({"getdatafailed":  (error) => {
+            messageboxs.showView(error.message);
+        }});
     }
 
     /**
