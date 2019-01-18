@@ -1,0 +1,83 @@
+<!--********************************************************************
+* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_webMap_Vue"></title>
+    <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+    <script type="text/javascript" include='mapbox-gl-enhance' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id='app' style="margin:0 auto;width: 100%;height: 100%">
+        <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+        <webmap server-id='1649097980' :web-map-options="webMapOptions" @add-layers-succeed="addLayersSucceeded"></webmap>
+    </div>
+    <script>
+
+        var webMapComponent = {
+            props: {
+                serverId: {
+                    type: String,
+                    required: true
+                },
+                webMapOptions: {
+                    type: Object
+                }
+            },
+            template: `<div v-if="!webMapOptions.target" id="map"></div>`,
+            mounted() {
+                var webmap = this.initializeWebMap();
+                this.webmap = webmap;
+                this.registerEvents(webmap);
+            },
+            methods: {
+                initializeWebMap() {
+                    var webmap = new mapboxgl.supermap.WebMap(this.serverId, this.webMapOptions);
+                    return webmap;
+                },
+                registerEvents(webmap) {
+                    var _this = this;
+                    webmap.on("getmapfailed", function (e) {
+                        _this.$emit("get-map-failed", e);
+                    });
+                    webmap.on("getwmtsfailed", function (e) {
+                        _this.$emit("get-wmts-failed", e);
+                    });
+                    webmap.on("getlayersfailed", function (e) {
+                        _this.$emit("get-layers-failed", e);
+                    });
+                    webmap.on("getfeaturesfailed", function (e) {
+                        _this.$emit("get-features-failed", e);
+                    });
+                    webmap.on("addlayerssucceeded", function (e) {
+                        _this.$emit("add-layers-succeed", e);
+                    });
+                },
+                beforeDestroy() {
+                    this.webmap = null;
+                }
+            }
+        }
+
+        Vue.component('webmap', webMapComponent);
+
+        new Vue({
+            el: '#app',
+            data: {
+                webMapOptions: {
+                    target: 'map',
+                    server: 'http://support.supermap.com.cn:8092'
+                },
+            },
+            methods: {
+                addLayersSucceeded(e) {
+                    return e.layers;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

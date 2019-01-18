@@ -470,7 +470,8 @@ window.examplesResources = {
         "title_ChinaEarthquakeHeat": '中国地震数据',
         "title_ChinaEarthquakeHeatWGS84": '中国地震数据_WGS84',
         "title_ChinaEarthquakeHeatClient": '中国地震数据（Classic）_WGS84',
-
+        "title_webMap_Vue": 'WebMap(Vue)',
+        
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
         "text_address": "地址　　　",

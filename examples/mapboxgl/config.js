@@ -292,44 +292,44 @@ var exampleConfig = {
     "iPortal": {
         name: "iPortal",
         name_en: "iPortal",
-        version: "9.1.1",
+        version: "10.x.x",
         content: {
             "ip_map": {
                 name: "地图",
                 name_en: "iPortal Web map",
-                version: "9.1.1",
+                version: "10.x.x",
                 content: [{
                     name: "分段专题图",
                     name_en: "Range",
-                    version: "9.1.1",
+                    version: "10.x.x",
                     thumbnail: "iPortalWebmap_range.png",
                     fileName: "iPortalWebmap_range"
                 },
                 {
                     name: "单值专题图",
                     name_en: "Unique",
-                    version: "9.1.1",
+                    version: "10.x.x",
                     thumbnail: "iPortalWebmap_unique.png",
                     fileName: "iPortalWebmap_unique"
                 },
                 {
                     name: "标签专题图",
                     name_en: "Label",
-                    version: "9.1.1",
+                    version: "10.x.x",
                     thumbnail: "iPortalWebmap_label.png",
                     fileName: "iPortalWebmap_label"
                 },
                 {
                     name: "热力图",
                     name_en: "Heat map",
-                    version: "9.1.1",
+                    version: "10.x.x",
                     thumbnail: "iPortalWebmap_heat.png",
                     fileName: "iPortalWebmap_heat"
                 },
                 {
                     name: "点样式",
                     name_en: "Point style",
-                    version: "9.1.1",
+                    version: "10.x.x",
                     thumbnail: "iPortalWebmap_unicode.png",
                     fileName: "iPortalWebmap_unicode"
                 }]
@@ -1062,6 +1062,17 @@ var exampleConfig = {
                         fileName: "widgets_chart_iptl"
                     } 
                 ]
+            },
+            "widgetsAdvanced": {
+                name: "扩展",
+                name_en: "Advanced",
+                content: [{
+                    name: "WebMap(Vue)",
+                    name_en: "WebMap(Vue)",
+                    version: "10.X.X",
+                    thumbnail: "iPortalWebmap_unique.png",
+                    fileName: "iportalWebMap_vue"
+                }]
             }
         }
     },

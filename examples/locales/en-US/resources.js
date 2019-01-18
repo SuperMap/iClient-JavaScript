@@ -522,7 +522,7 @@ window.examplesResources = {
         "title_ChinaEarthquakeHeat": 'China Earthquake',
         "title_ChinaEarthquakeHeatWGS84": 'China Earthquake WGS84',
         "title_ChinaEarthquakeHeatClient": 'China Earthquake(Classic) WGS84',
-
+        "title_webMap_Vue": 'WebMap(Vue)',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",
