@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.*/
 // http://mrl.nyu.edu/~perlin/noise/
 
 var ImprovedNoise = function () {

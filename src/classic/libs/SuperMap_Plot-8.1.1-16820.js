@@ -3,7 +3,7 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 /*!
  * 
  *          iclient-plot-classic.(http://iclient.supermap.io)
- *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
+ *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: undefined
  *          version: v9.1.1
  *         

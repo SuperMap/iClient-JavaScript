@@ -2,7 +2,7 @@
  * 
  *     ol-mapbox-style
  *     Copyright 2016-present Boundless Spatial
- *     Copyright© 2000-2018 SuperMap Software Co. Ltd
+ *     Copyright© 2000-2019 SuperMap Software Co. Ltd
  *     github: https://github.com/boundlessgeo/ol-mapbox-style
  *     github: https://github.com/SuperMap/ol-mapbox-style
  *     license: BSD 2-Clause "Simplified" License
