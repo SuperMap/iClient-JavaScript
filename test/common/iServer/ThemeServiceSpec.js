@@ -1,36 +1,36 @@
-﻿import {ThemeService} from '../../../src/common/iServer/ThemeService';
-import {ThemeParameters} from '../../../src/common/iServer/ThemeParameters';
-import {ThemeDotDensity} from '../../../src/common/iServer/ThemeDotDensity';
-import {ThemeGraduatedSymbol} from '../../../src/common/iServer/ThemeGraduatedSymbol';
-import {ThemeGraduatedSymbolStyle} from '../../../src/common/iServer/ThemeGraduatedSymbolStyle';
-import {ThemeGraph} from '../../../src/common/iServer/ThemeGraph';
-import {ThemeGraphItem} from '../../../src/common/iServer/ThemeGraphItem';
-import {ThemeGraphAxes} from '../../../src/common/iServer/ThemeGraphAxes';
-import {ThemeGraphSize} from '../../../src/common/iServer/ThemeGraphSize';
-import {ThemeGraphText} from '../../../src/common/iServer/ThemeGraphText';
-import {ThemeLabelItem} from '../../../src/common/iServer/ThemeLabelItem';
-import {ThemeLabel} from '../../../src/common/iServer/ThemeLabel';
-import {LabelThemeCell} from '../../../src/common/iServer/LabelThemeCell';
-import {LabelSymbolCell} from '../../../src/common/iServer/LabelSymbolCell';
-import {ThemeLabelBackground} from '../../../src/common/iServer/ThemeLabelBackground';
-import {ThemeRangeItem} from '../../../src/common/iServer/ThemeRangeItem';
-import {ThemeRange} from '../../../src/common/iServer/ThemeRange';
-import {ThemeUniqueItem} from '../../../src/common/iServer/ThemeUniqueItem';
-import {ThemeUnique} from '../../../src/common/iServer/ThemeUnique';
-import {ThemeLabelText} from '../../../src/common/iServer/ThemeLabelText';
-import {ServerStyle} from '../../../src/common/iServer/ServerStyle';
-import {ServerColor} from '../../../src/common/iServer/ServerColor';
-import {ServerTextStyle} from '../../../src/common/iServer/ServerTextStyle';
-import {ThemeFlow} from '../../../src/common/iServer/ThemeFlow';
-import {ThemeOffset} from '../../../src/common/iServer/ThemeOffset';
-import {JoinItem} from '../../../src/common/iServer/JoinItem';
-import {ThemeMemoryData} from '../../../src/common/iServer/ThemeMemoryData';
-import {RangeMode} from '../../../src/common/REST';
-import {LabelOverLengthMode} from '../../../src/common/REST';
-import {GraduatedMode} from '../../../src/common/REST';
-import {ThemeGraphType} from '../../../src/common/REST';
-import {JoinType} from '../../../src/common/REST';
-import {LabelBackShape} from '../../../src/common/REST';
+﻿import { ThemeService } from '../../../src/common/iServer/ThemeService';
+import { ThemeParameters } from '../../../src/common/iServer/ThemeParameters';
+import { ThemeDotDensity } from '../../../src/common/iServer/ThemeDotDensity';
+import { ThemeGraduatedSymbol } from '../../../src/common/iServer/ThemeGraduatedSymbol';
+import { ThemeGraduatedSymbolStyle } from '../../../src/common/iServer/ThemeGraduatedSymbolStyle';
+import { ThemeGraph } from '../../../src/common/iServer/ThemeGraph';
+import { ThemeGraphItem } from '../../../src/common/iServer/ThemeGraphItem';
+import { ThemeGraphAxes } from '../../../src/common/iServer/ThemeGraphAxes';
+import { ThemeGraphSize } from '../../../src/common/iServer/ThemeGraphSize';
+import { ThemeGraphText } from '../../../src/common/iServer/ThemeGraphText';
+import { ThemeLabelItem } from '../../../src/common/iServer/ThemeLabelItem';
+import { ThemeLabel } from '../../../src/common/iServer/ThemeLabel';
+import { LabelThemeCell } from '../../../src/common/iServer/LabelThemeCell';
+import { LabelSymbolCell } from '../../../src/common/iServer/LabelSymbolCell';
+import { ThemeLabelBackground } from '../../../src/common/iServer/ThemeLabelBackground';
+import { ThemeRangeItem } from '../../../src/common/iServer/ThemeRangeItem';
+import { ThemeRange } from '../../../src/common/iServer/ThemeRange';
+import { ThemeUniqueItem } from '../../../src/common/iServer/ThemeUniqueItem';
+import { ThemeUnique } from '../../../src/common/iServer/ThemeUnique';
+import { ThemeLabelText } from '../../../src/common/iServer/ThemeLabelText';
+import { ServerStyle } from '../../../src/common/iServer/ServerStyle';
+import { ServerColor } from '../../../src/common/iServer/ServerColor';
+import { ServerTextStyle } from '../../../src/common/iServer/ServerTextStyle';
+import { ThemeFlow } from '../../../src/common/iServer/ThemeFlow';
+import { ThemeOffset } from '../../../src/common/iServer/ThemeOffset';
+import { JoinItem } from '../../../src/common/iServer/JoinItem';
+import { ThemeMemoryData } from '../../../src/common/iServer/ThemeMemoryData';
+import { RangeMode } from '../../../src/common/REST';
+import { LabelOverLengthMode } from '../../../src/common/REST';
+import { GraduatedMode } from '../../../src/common/REST';
+import { ThemeGraphType } from '../../../src/common/REST';
+import { JoinType } from '../../../src/common/REST';
+import { LabelBackShape } from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var mapServiceURL = GlobeParameter.mapServiceURL,
@@ -116,13 +116,16 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].type).toBe("UGC");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.items.length).toEqual(3);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -145,7 +148,7 @@ describe('ThemeService', () => {
             }
         }, 4000);
     });
-
+    
     it('processAsync_Range_1', (done) => {
         var themeService = initThemeService_RegisterListener();
         var themeRange = new ThemeRange({
@@ -191,7 +194,10 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.items.length).toEqual(2);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
@@ -218,7 +224,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     it('processAsync_Range_UrlLarge', (done) => {
         var themeService = initThemeService();
         var themeRange = new ThemeRange({
@@ -237,7 +243,7 @@ describe('ThemeService', () => {
         style1.lineColor = new ServerColor();
         style1.lineColor = style1.fillForeColor;
         themeRangeIteme1.style = style1;
-
+    
         var themeRangeIteme2 = new ThemeRangeItem();
         themeRangeIteme2.start = 59973;
         themeRangeIteme2.end = 1097234;
@@ -249,7 +255,7 @@ describe('ThemeService', () => {
         style2.lineColor = new ServerColor();
         style2.lineColor = style2.fillForeColor;
         themeRangeIteme2.style = style2;
-
+    
         var themeRangeIteme3 = new ThemeRangeItem();
         themeRangeIteme3.start = 1097234;
         themeRangeIteme3.end = 5245515;
@@ -261,7 +267,7 @@ describe('ThemeService', () => {
         style3.lineColor = new ServerColor();
         style3.lineColor = style3.fillForeColor;
         themeRangeIteme3.style = style3;
-
+    
         var themeRangeIteme4 = new ThemeRangeItem();
         themeRangeIteme4.start = 5245515;
         themeRangeIteme4.end = 17250390;
@@ -273,7 +279,7 @@ describe('ThemeService', () => {
         style4.lineColor = new ServerColor();
         style4.lineColor = style4.fillForeColor;
         themeRangeIteme4.style = style4;
-
+    
         var themeRangeIteme5 = new ThemeRangeItem();
         themeRangeIteme5.start = 17250390;
         themeRangeIteme5.end = 894608700;
@@ -285,7 +291,7 @@ describe('ThemeService', () => {
         style5.lineColor = new ServerColor();
         style5.lineColor = style5.fillForeColor;
         themeRangeIteme5.style = style5;
-
+    
         var themeRangeIteme6 = new ThemeRangeItem();
         themeRangeIteme6.start = 894608700;
         themeRangeIteme6.end = 1.84467E+19;
@@ -297,7 +303,7 @@ describe('ThemeService', () => {
         style6.lineColor = new ServerColor();
         style6.lineColor = style6.fillForeColor;
         themeRangeIteme6.style = style6;
-
+    
         themeRange.items = [themeRangeIteme1, themeRangeIteme2, themeRangeIteme3, themeRangeIteme4, themeRangeIteme5, themeRangeIteme6];
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("Countries"),
@@ -308,13 +314,16 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.items.length).toEqual(6);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -337,7 +346,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     it('processAsync_Graph', (done) => {
         var themeService = initThemeService();
         var themeGraph = new ThemeGraph({
@@ -381,13 +390,16 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.items.length).toEqual(2);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -410,7 +422,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     it('processAsync_JoinItem', (done) => {
         var themeService = initThemeService_RegisterListener();
         var joinItem = new JoinItem({
@@ -475,12 +487,15 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.items.length).toEqual(3);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -503,7 +518,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     it('processAsync_Unique', (done) => {
         var themeService = initThemeService();
         var themeUnique = new ThemeUnique({
@@ -550,7 +565,7 @@ describe('ThemeService', () => {
         //南美洲默认风格
         themeUnique.items = [themeUniqueItem1, themeUniqueItem2, themeUniqueItem3, themeUniqueItem4];
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-
+    
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -560,12 +575,15 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.items.length).toEqual(4);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -588,7 +606,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     it('processAsync_Unique_0', (done) => {
         var themeService = initThemeService();
         var themeUnique = new ThemeUnique({
@@ -643,7 +661,7 @@ describe('ThemeService', () => {
         //南美洲默认风格
         themeUnique.items = new Array(themeUniqueItem1, themeUniqueItem2, themeUniqueItem3, themeUniqueItem4);
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-
+    
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("OceanLabelP_E"),
             dataSourceNames: new Array("World"),
@@ -653,12 +671,15 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.items.length).toEqual(4);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -681,7 +702,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     //统一风格标签专题图
     it('processAsync_Label_uniformStyle', (done) => {
         var themeService = initThemeService();
@@ -707,9 +728,9 @@ describe('ThemeService', () => {
             })
         });
         themeLabel.text = text;
-
+    
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-
+    
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -719,12 +740,15 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.items).toBeNull();
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -747,7 +771,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     //分段标签专题图
     it('processAsync_Label_range_1', (done) => {
         var themeService = initThemeService();
@@ -813,7 +837,7 @@ describe('ThemeService', () => {
         });
         themeLabel.items = new Array(themeLabelItem1, themeLabelItem2, themeLabelItem3, themeLabelItem4);
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-
+    
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -823,12 +847,16 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.type).toBe( "LABEL");
+            expect(paramsObj[0].subLayers.layers[0].theme.alongLineDirection).toBe("LEFT_BOTTOM_TO_RIGHT_TOP");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -851,7 +879,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     //分段标签专题图
     it('processAsync_Label_range_2', (done) => {
         var themeService = initThemeService();
@@ -868,7 +896,7 @@ describe('ThemeService', () => {
         style1.sizeFixed = true;
         style1.bold = true;
         themeLabelIteme1.style = style1;
-
+    
         var themeLabelIteme2 = new ThemeLabelItem();
         themeLabelIteme2.start = 59973;
         themeLabelIteme2.end = 1097234;
@@ -882,7 +910,7 @@ describe('ThemeService', () => {
         style2.sizeFixed = true;
         style2.bold = true;
         themeLabelIteme2.style = style2;
-
+    
         var themeLabelIteme3 = new ThemeLabelItem();
         themeLabelIteme3.start = 1097234;
         themeLabelIteme3.end = 5245515;
@@ -896,7 +924,7 @@ describe('ThemeService', () => {
         style3.sizeFixed = true;
         style3.bold = true;
         themeLabelIteme3.style = style3;
-
+    
         var themeLabelIteme4 = new ThemeLabelItem();
         themeLabelIteme4.start = 5245515;
         themeLabelIteme4.end = 17250390;
@@ -910,7 +938,7 @@ describe('ThemeService', () => {
         style4.sizeFixed = true;
         style4.bold = true;
         themeLabelIteme4.style = style4;
-
+    
         var themeLabelIteme5 = new ThemeLabelItem();
         themeLabelIteme5.start = 17250390;
         themeLabelIteme5.end = 894608700;
@@ -924,7 +952,7 @@ describe('ThemeService', () => {
         style5.sizeFixed = true;
         style5.bold = true;
         themeLabelIteme5.style = style5;
-
+    
         var themeLabelIteme6 = new ThemeLabelItem();
         themeLabelIteme6.start = 894608700;
         themeLabelIteme6.end = 1.84467E+19;
@@ -938,7 +966,7 @@ describe('ThemeService', () => {
         style6.sizeFixed = true;
         style6.bold = true;
         themeLabelIteme6.style = style6;
-
+    
         //创建标签专题图对象，ThemeLabel 必设 labelExpression，如果要分段则 rangeExpression 和 items 也必须设置；每个子项将以子项中的风格进行显示，未分段的标签使用默认风格。
         var themeLabel = new ThemeLabel();
         themeLabel.labelExpression = "Capital";
@@ -955,12 +983,16 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.type).toBe( "LABEL");
+            expect(paramsObj[0].subLayers.layers[0].theme.alongLineDirection).toBe("LEFT_BOTTOM_TO_RIGHT_TOP");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -983,7 +1015,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     //矩阵标签专题图
     it('processAsync_Label_matrixCells', (done) => {
         var themeService = initThemeService(),
@@ -1009,7 +1041,7 @@ describe('ThemeService', () => {
                 })
             }),
             themeLabel = new ThemeLabel();
-
+    
         labelThemeOfThemeCell.text = text;
         var labelSymbolCell = new LabelSymbolCell({symbolIDField: "60"});
         labelSymbolCell.style = new ServerStyle({markerSize: 5});
@@ -1018,7 +1050,7 @@ describe('ThemeService', () => {
         //var matrixCells = new Array(new Array(labelSymbolCell, labelThemeCell));
         themeLabel.matrixCells = matrixCells;
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-
+    
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -1028,12 +1060,16 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.type).toBe( "LABEL");
+            expect(paramsObj[0].subLayers.layers[0].theme.alongLineDirection).toBe("LEFT_BOTTOM_TO_RIGHT_TOP");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -1056,7 +1092,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     //使用内存数据制作统一风格标签专题图
     it('processAsync_Label__WithMemortData', (done) => {
         var themeService = initThemeService();
@@ -1087,7 +1123,7 @@ describe('ThemeService', () => {
         });
         themeLabel.text = text;
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-
+    
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -1097,12 +1133,16 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.type).toBe( "LABEL");
+            expect(paramsObj[0].subLayers.layers[0].theme.alongLineDirection).toBe("LEFT_BOTTOM_TO_RIGHT_TOP");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -1125,7 +1165,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     //使用内存数据制作范围分段专题图
     it('processAsync_Range_withMemoryData', (done) => {
         var themeService = initThemeService();
@@ -1167,13 +1207,13 @@ describe('ThemeService', () => {
                 end: 15028139690
             });
         themeRange.items = new Array(themeRangeItem1, themeRangeItem2, themeRangeItem3);
-
+    
         var srcData = new Array(1128139689, 17827520, 33796870);
         var targetData = new Array(2, 17827520, 33796870);
         var themeMemoryData = new ThemeMemoryData(srcData, targetData);
         themeRange.memoryData = themeMemoryData;
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-
+    
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -1183,12 +1223,15 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.type).toBe("RANGE");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -1211,7 +1254,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     //点密度专题图
     it('processAsync_DotDensity_style', (done) => {
         var themeService = initThemeService();
@@ -1227,7 +1270,7 @@ describe('ThemeService', () => {
             lineWidth: 0.1
         });
         themeDotDensity.style = style1;
-
+    
         var themeParameters = new ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -1237,13 +1280,16 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.type).toBe("DOTDENSITY");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
         themeService.processAsync(themeParameters);
-
+    
         setTimeout(() => {
             try {
                 var themeResult = themeEventArgsSystem.result;
@@ -1266,7 +1312,7 @@ describe('ThemeService', () => {
             }
         }, 2000);
     });
-
+    
     //等级符号专题图
     it('processAsync_GraduatedSymbol', (done) => {
         var themeService = initThemeService();
@@ -1302,11 +1348,15 @@ describe('ThemeService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'dataSourceName': 'World'");
+            console.log(params);
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].name).toBe("World Map");
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].subLayers.layers[0].theme.type).toBe("GRADUATEDSYMBOL");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_99b6f193020345299d393ad187479086","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_99b6f193020345299d393ad187479086.json"}`));
         });
-        themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
+        themeService.events.on({ "processCompleted": themeCompleted, "processFailed": themeFailed });
         themeService.processAsync(themeParameters);
 
         setTimeout(() => {
@@ -1316,50 +1366,6 @@ describe('ThemeService', () => {
                 expect(themeResult.succeed).toBeTruthy();
                 expect(themeResult.newResourceID).not.toBeNull();
                 expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        }, 2000);
-    });
-
-    it('processAsync_data', (done) => {
-        var themeService = initThemeService();
-        var themeRange = new ThemeRange({
-            rangeExpression: "POP_1994",
-            rangeParameter: 3,
-            rangeMode: RangeMode.CUSTOMINTERVAL
-        });
-        themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
-        var themeParameters = new ThemeParameters({
-            joinItems: null,
-            themes: new Array(themeRange)
-        });
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe("POST");
-            expect(testUrl).toBe(themeURL + "/tempLayersSet.json?");
-            expect(params).toContain("'rangeParameter':3");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_93b0a3946d6b48e68778706bbf19d33d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_93b0a3946d6b48e68778706bbf19d33d.json"}`));
-        });
-        themeService.processAsync(themeParameters);
-
-        setTimeout(() => {
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                /*expect(themeResult.succeed).toBeTruthy();
-                 expect(themeResult.newResourceID).not.toBeNull();
-                 expect(themeResult.newResourceLocation).not.toBeNull();*/
                 themeService.destroy();
                 expect(themeService.EVENT_TYPES == null).toBeTruthy();
                 expect(themeService.events == null).toBeTruthy();
