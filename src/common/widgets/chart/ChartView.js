@@ -33,7 +33,7 @@ import {
  * @typedef {Object} SuperMap.Widgets.Chart.Datasets  - 数据来源
  * @property {string} [type = 'iServer'] - 服务类型 iServer, iPortal。
  * @property {string} url - 服务url地址。
- * @property {boolean} [withCredentials = false]- 设置请求是否带cookie
+ * @property {boolean} [withCredentials = false] - 设置请求是否带cookie
  * @property {SuperMap.FilterParameter} queryInfo - 查询条件
  */
 export class ChartView {
