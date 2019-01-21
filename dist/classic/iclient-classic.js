@@ -79218,9 +79218,11 @@ var ChartView = exports.ChartView = function () {
             var messageboxs = new _MessageBox.MessageBox();
             //iclient9 绑定createChart事件成功回调
             this.viewModel.getDatasetInfo(this._createChart.bind(this));
-            this.viewModel.events.on({ "getdatafailed": function getdatafailed(error) {
+            this.viewModel.events.on({
+                "getdatafailed": function getdatafailed(error) {
                     messageboxs.showView(error.message);
-                } });
+                }
+            });
         }
 
         /**
@@ -79267,9 +79269,11 @@ var ChartView = exports.ChartView = function () {
     }, {
         key: "changeType",
         value: function changeType(type) {
-            this.chartType = type;
-            var newOptions = this.viewModel.changeType(type);
-            this._updateChart(newOptions);
+            if (this.chartType !== type) {
+                this.chartType = type;
+                var newOptions = this.viewModel.changeType(type);
+                this._updateChart(newOptions);
+            }
         }
 
         /**
@@ -79301,7 +79305,9 @@ var ChartView = exports.ChartView = function () {
     }, {
         key: "_createChart",
         value: function _createChart(data) {
-            this.echart = _echarts2.default.init(document.getElementById(this.domID), null, { renderer: "canvas" });
+            this.echart = _echarts2.default.init(document.getElementById(this.domID), null, {
+                renderer: "canvas"
+            });
             var options = this.viewModel._createChartOptions(data);
             this.echart.setOption(options);
             if (this.addChart) {

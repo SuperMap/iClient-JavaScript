@@ -1,10 +1,16 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
+import {
+    SuperMap
+} from '../../SuperMap';
 import echarts from "echarts";
-import { ChartViewModel } from "./ChartViewModel";
-import { MessageBox } from "../messagebox/MessageBox";
+import {
+    ChartViewModel
+} from "./ChartViewModel";
+import {
+    MessageBox
+} from "../messagebox/MessageBox";
 
 /**
  * @class SuperMap.Widgets.Chart
@@ -62,9 +68,11 @@ export class ChartView {
         let messageboxs = new MessageBox();
         //iclient9 绑定createChart事件成功回调
         this.viewModel.getDatasetInfo(this._createChart.bind(this));
-        this.viewModel.events.on({"getdatafailed":  (error) => {
-            messageboxs.showView(error.message);
-        }});
+        this.viewModel.events.on({
+            "getdatafailed": (error) => {
+                messageboxs.showView(error.message);
+            }
+        });
     }
 
     /**
@@ -99,11 +107,13 @@ export class ChartView {
      * @param {string} type - 图表类型
      */
     changeType(type) {
-        this.chartType = type;
-        let newOptions = this.viewModel.changeType(type);
-        this._updateChart(newOptions);
+        if (this.chartType !== type) {
+            this.chartType = type;
+            let newOptions = this.viewModel.changeType(type);
+            this._updateChart(newOptions);
+        }
     }
-    
+
     /**
      * @function SuperMap.Widgets.Chart.prototype.updateData
      * @description 更新图表数据
@@ -112,9 +122,9 @@ export class ChartView {
      */
     updateData(datasets, chartOption) {
         let me = this;
-        this.viewModel.updateData(datasets, chartOption, function(options) {
+        this.viewModel.updateData(datasets, chartOption, function (options) {
             me._updateChart(options);
-            if(me.addChart) {
+            if (me.addChart) {
                 me.addChart();
             }
         });
@@ -128,13 +138,14 @@ export class ChartView {
      */
     _createChart(data) {
         this.echart = echarts.init(
-            document.getElementById(this.domID), 
-            null,
-            { renderer: "canvas"}
+            document.getElementById(this.domID),
+            null, {
+                renderer: "canvas"
+            }
         )
         let options = this.viewModel._createChartOptions(data);
         this.echart.setOption(options);
-        if(this.addChart) {
+        if (this.addChart) {
             this.addChart();
         }
     }
@@ -146,7 +157,7 @@ export class ChartView {
      * @param {Object} options - 图表参数
      */
     _updateChart(options) {
-        if(this.echart) {
+        if (this.echart) {
             this.echart.clear();
             this.echart.setOption(options);
         }

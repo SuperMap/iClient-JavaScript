@@ -63444,9 +63444,11 @@ class ChartView_ChartView {
         let messageboxs = new MessageBox_MessageBox();
         //iclient9 绑定createChart事件成功回调
         this.viewModel.getDatasetInfo(this._createChart.bind(this));
-        this.viewModel.events.on({"getdatafailed":  (error) => {
-            messageboxs.showView(error.message);
-        }});
+        this.viewModel.events.on({
+            "getdatafailed": (error) => {
+                messageboxs.showView(error.message);
+            }
+        });
     }
 
     /**
@@ -63481,11 +63483,13 @@ class ChartView_ChartView {
      * @param {string} type - 图表类型
      */
     changeType(type) {
-        this.chartType = type;
-        let newOptions = this.viewModel.changeType(type);
-        this._updateChart(newOptions);
+        if (this.chartType !== type) {
+            this.chartType = type;
+            let newOptions = this.viewModel.changeType(type);
+            this._updateChart(newOptions);
+        }
     }
-    
+
     /**
      * @function SuperMap.Widgets.Chart.prototype.updateData
      * @description 更新图表数据
@@ -63494,9 +63498,9 @@ class ChartView_ChartView {
      */
     updateData(datasets, chartOption) {
         let me = this;
-        this.viewModel.updateData(datasets, chartOption, function(options) {
+        this.viewModel.updateData(datasets, chartOption, function (options) {
             me._updateChart(options);
-            if(me.addChart) {
+            if (me.addChart) {
                 me.addChart();
             }
         });
@@ -63510,13 +63514,14 @@ class ChartView_ChartView {
      */
     _createChart(data) {
         this.echart = external_function_try_return_echarts_catch_e_return_default.a.init(
-            document.getElementById(this.domID), 
-            null,
-            { renderer: "canvas"}
+            document.getElementById(this.domID),
+            null, {
+                renderer: "canvas"
+            }
         )
         let options = this.viewModel._createChartOptions(data);
         this.echart.setOption(options);
-        if(this.addChart) {
+        if (this.addChart) {
             this.addChart();
         }
     }
@@ -63528,7 +63533,7 @@ class ChartView_ChartView {
      * @param {Object} options - 图表参数
      */
     _updateChart(options) {
-        if(this.echart) {
+        if (this.echart) {
             this.echart.clear();
             this.echart.setOption(options);
         }
