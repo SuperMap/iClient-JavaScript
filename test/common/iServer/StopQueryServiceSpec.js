@@ -2,16 +2,9 @@
 import {StopQueryParameters} from '../../../src/common/iServer/StopQueryParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-var trafficTransferURL = GlobeParameter.trafficTransferURL;
 var stopQueryServiceEventArgsSystem = null, serviceFailedEventArgsSystem = null;
-var succeed = (event) => {
-    stopQueryServiceEventArgsSystem = event;
-};
-var failed = (event) => {
-    serviceFailedEventArgsSystem = event;
-};
-var initStopQueryService = () => {
-    return new StopQueryService(trafficTransferURL, {
+var initStopQueryService = (url,succeed,failed) => {
+    return new StopQueryService(url, {
         eventListeners: {
             processCompleted: succeed,
             processFailed: failed
@@ -31,34 +24,24 @@ describe('StopQueryService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync_noParams', (done) => {
-        var stopQueryService = initStopQueryService();
+    it('processAsync_noParams', () => {
+        var trafficTransferURL = GlobeParameter.trafficTransferURL;
+        var flag=false;
+        var succeed = (event) => {
+            flag=true;
+        };
+        var failed = (event) => {
+            flag=true;
+        };
+        var stopQueryService = initStopQueryService(trafficTransferURL,succeed,failed);
         stopQueryService.processAsync();
-        setTimeout(() => {
-            try {
-                expect((stopQueryService.processAsync()) === undefined).toBeTruthy();
-                stopQueryService.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("StopQueryService_" + exception.name + ":" + exception.message);
-                stopQueryService.destroy();
-                done();
-            }
-        }, 2000);
+        expect(flag).toBeFalsy();
     });
 
     it('success:processAsync_returnPosition', (done) => {
-        var stopQueryService = initStopQueryService();
-        var stopQueryServiceParams = new StopQueryParameters({
-            keyWord: '人民',
-            returnPosition: true
-        });
-        spyOn(FetchRequest, 'get').and.callFake(() => {
-            return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":{"x":5308.614037099708,"y":-3935.573639156803}}]`));
-        });
-        stopQueryService.processAsync(stopQueryServiceParams);
-        setTimeout(() => {
+        var trafficTransferURL = GlobeParameter.trafficTransferURL;
+        var succeed = (event) => {
+            stopQueryServiceEventArgsSystem = event;
             try {
                 expect(stopQueryServiceEventArgsSystem.result).not.toBeNull();
                 expect(stopQueryServiceEventArgsSystem.result[0].position).not.toBeNull();
@@ -74,20 +57,26 @@ describe('StopQueryService', () => {
                 stopQueryServiceParams.destroy();
                 done();
             }
-        }, 2000);
+        };
+        var failed = (event) => {
+            serviceFailedEventArgsSystem = event;
+        };
+        var stopQueryService = initStopQueryService(trafficTransferURL,succeed,failed);
+        var stopQueryServiceParams = new StopQueryParameters({
+            keyWord: '人民',
+            returnPosition: true
+        });
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民.json?");
+            return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":{"x":5308.614037099708,"y":-3935.573639156803}}]`));
+        });
+        stopQueryService.processAsync(stopQueryServiceParams);
     });
 
     it('success:processAsync_returnPosition:false', (done) => {
-        var stopQueryService = initStopQueryService();
-        var stopQueryServiceParams = new StopQueryParameters({
-            keyWord: '人民',
-            returnPosition: false
-        });
-        spyOn(FetchRequest, 'get').and.callFake(() => {
-            return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":null}]`));
-        });
-        stopQueryService.processAsync(stopQueryServiceParams);
-        setTimeout(() => {
+        var trafficTransferURL = GlobeParameter.trafficTransferURL;
+        var succeed = (event) => {
+            stopQueryServiceEventArgsSystem = event;
             try {
                 var result = stopQueryServiceEventArgsSystem.result;
                 expect(result).not.toBeNull();
@@ -103,6 +92,20 @@ describe('StopQueryService', () => {
                 stopQueryServiceParams.destroy();
                 done();
             }
-        }, 2000);
+        };
+        var failed = (event) => {
+            serviceFailedEventArgsSystem = event;
+
+        };
+        var stopQueryService = initStopQueryService(trafficTransferURL,succeed,failed);
+        var stopQueryServiceParams = new StopQueryParameters({
+            keyWord: '人民',
+            returnPosition: false
+        });
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民.json?");
+            return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":null}]`));
+        });
+        stopQueryService.processAsync(stopQueryServiceParams);
     })
 });

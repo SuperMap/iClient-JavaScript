@@ -2,23 +2,15 @@ import {SetLayersInfoService} from '../../../src/common/iServer/SetLayersInfoSer
 import '../../resources/LayersInfo';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
-var url = "http://supermap:8090/iserver/services/map-world/rest/maps/World";
 var setLayersFailedEventArgsSystem = null, setLayersEventArgsSystem = null;
-var setLayersInfoCompleted = (setLayersInfoArgs) => {
-    setLayersEventArgsSystem = setLayersInfoArgs;
-};
-var setLayersFailed = (serviceFailedEventArgs) => {
-    setLayersFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var options = {
-    eventListeners: {
-        "processCompleted": setLayersInfoCompleted,
-        'processFailed': setLayersFailed
-    },
-    isTempLayers: false
-};
-var initSetLayersInfoService = () => {
-    return new SetLayersInfoService(url, options);
+var initSetLayersInfoService = (url,setLayersFailed,setLayersInfoCompleted) => {
+    return new SetLayersInfoService(url, {
+        eventListeners: {
+            "processCompleted": setLayersInfoCompleted,
+            'processFailed': setLayersFailed
+        },
+        isTempLayers: false
+    });
 };
 
 describe('SetLayersInfoService', () => {
@@ -36,18 +28,11 @@ describe('SetLayersInfoService', () => {
 
     //新建临时图层
     it('setNewTempLayer', (done) => {
+        var setLayersFailedEventArgsSystem = null, setLayersEventArgsSystem = null;
+        var url = "http://supermap:8090/iserver/services/map-world/rest/maps/World";
         var layers = layersInfo;
-        var setLayersInfoService = initSetLayersInfoService();
-        expect(setLayersInfoService).not.toBeNull();
-        expect(setLayersInfoService.url).toEqual(url);
-        spyOn(FetchRequest, 'post').and.callFake((testUrl,options) => {
-            expect(testUrl).toBe(url+"/tempLayersSet.json?");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json"}`));
-        });
-        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
-        setLayersInfoService.processAsync(layers);
-        setTimeout(() => {
+        var setLayersInfoCompleted = (setLayersInfoArgs) => {
+            setLayersEventArgsSystem = setLayersInfoArgs;
             try {
                 expect(setLayersEventArgsSystem.type).toEqual("processCompleted");
                 var serviceResult = setLayersEventArgsSystem.result;
@@ -65,11 +50,39 @@ describe('SetLayersInfoService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000);
+        };
+        var setLayersFailed = (serviceFailedEventArgs) => {
+            setLayersFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var setLayersInfoService = initSetLayersInfoService(url,setLayersFailed,setLayersInfoCompleted);
+        expect(setLayersInfoService).not.toBeNull();
+        expect(setLayersInfoService.url).toEqual(url);
+        spyOn(FetchRequest, 'post').and.callFake((testUrl,params) => {
+            expect(testUrl).toBe(url+"/tempLayersSet.json?");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].subLayers.layers[0].datasetInfo.dataSourceName).toBe("World");
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json"}`));
+        });
+        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
+        setLayersInfoService.processAsync(layers);
     });
 
     //修改临时图层的信息 isTempLayers=true
     it('setLayersInfo_isTempLayer', (done) => {
+        var setLayersFailedEventArgsSystem = null, setLayersEventArgsSystem = null;
+        var url = "http://supermap:8090/iserver/services/map-world/rest/maps/World";
+        var setLayersInfoCompleted = (setLayersInfoArgs) => {
+            setLayersEventArgsSystem = setLayersInfoArgs;
+            expect(setLayersEventArgsSystem.type).toEqual("processCompleted");
+            var serviceResult = setLayersEventArgsSystem.result;
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.succeed).toBeTruthy();
+            setLayersInfoService.destroy();
+            done();
+        };
+        var setLayersFailed = (serviceFailedEventArgs) => {
+            setLayersFailedEventArgsSystem = serviceFailedEventArgs;
+        };
         var setLayersInfoService = new SetLayersInfoService(url, {
             eventListeners: {
                 "processCompleted": setLayersInfoCompleted,
@@ -81,37 +94,29 @@ describe('SetLayersInfoService', () => {
         var layers = layersInfo;
         layers.description = "test";
         setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
-        spyOn(FetchRequest, 'put').and.callFake((testUrl) => {
-            expect(testUrl).toBe(url+"/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_1c0bda07fde943a4a5f3f3d4eb44235d.json?");
-            expect(options).not.toBeNull();
+        var setLayersInfoService = initSetLayersInfoService(url,setLayersFailed,setLayersInfoCompleted);
+        spyOn(FetchRequest, 'post').and.callFake((testUrl,params) => {
+            expect(testUrl).toBe(url+"/tempLayersSet.json?");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect( paramsObj[0].name).toBe("World");
+            expect( paramsObj[0].subLayers.layers[0].ugcLayerType).toBe("VECTOR");
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         setLayersInfoService.processAsync(layers);
-        setTimeout(() => {
-            expect(setLayersEventArgsSystem.type).toEqual("processCompleted");
-            var serviceResult = setLayersEventArgsSystem.result;
-            expect(serviceResult).not.toBeNull();
-            expect(serviceResult.succeed).toBeTruthy();
-            setLayersInfoService.destroy();
-            done();
-        }, 1000)
     });
 
     //失败事件
     it('failedEvent', (done) => {
+        var setLayersFailedEventArgsSystem = null, setLayersEventArgsSystem = null;
+        var url = "http://supermap:8090/iserver/services/map-world/rest/maps/World";
         var wrongLayerInfo = layerInfo;
-        var setLayersInfoService = new SetLayersInfoService(url, options);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe('POST');
-            expect(testUrl).toBe(url + "/tempLayersSet.json?");
-            expect(options).not.toBeNull();
-            var escapedJson = "{\"succeed\":false,\"error\":{\"code\":500,\"errorMsg\":\"Index:0不在（0，-1）范围之内。\"}}";
-            return Promise.resolve(new Response(escapedJson));
-        });
-        setLayersInfoService.events.on({"processFailed": setLayersFailed});
-        setLayersInfoService.processAsync(wrongLayerInfo);
-        setTimeout(() => {
+        var setLayersInfoCompleted = (setLayersInfoArgs) => {
+            setLayersEventArgsSystem = setLayersInfoArgs;
+        };
+        var setLayersFailed = (serviceFailedEventArgs) => {
+            setLayersFailedEventArgsSystem = serviceFailedEventArgs;
             expect(setLayersEventArgsSystem).toBeNull();
             expect(setLayersFailedEventArgsSystem).not.toBeNull();
             expect(setLayersFailedEventArgsSystem.type).toEqual("processFailed");
@@ -119,6 +124,18 @@ describe('SetLayersInfoService', () => {
             expect(setLayersFailedEventArgsSystem.error.errorMsg).toBe("Index:0不在（0，-1）范围之内。");
             setLayersInfoService.destroy();
             done();
-        }, 1000)
+        };
+        var setLayersInfoService = initSetLayersInfoService(url,setLayersFailed,setLayersInfoCompleted);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(url + "/tempLayersSet.json?");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj[0].datasetInfo.dataSourceName).toBe("World");
+            expect(paramsObj[0].datasetInfo.name).toBe("continent_T");
+            var escapedJson = "{\"succeed\":false,\"error\":{\"code\":500,\"errorMsg\":\"Index:0不在（0，-1）范围之内。\"}}";
+            return Promise.resolve(new Response(escapedJson));
+        });
+        setLayersInfoService.events.on({"processFailed": setLayersFailed});
+        setLayersInfoService.processAsync(wrongLayerInfo);
     });
 });

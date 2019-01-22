@@ -1,15 +1,10 @@
 import {UpdateTurnNodeWeightService} from '../../../src/common/iServer/UpdateTurnNodeWeightService';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import {SuperMap} from "@supermap/iclient-common";
 
-var networkAnalystURL = GlobeParameter.networkAnalystURL;
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
-var updateTurnNodeWeightFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var updateTurnNodeWeightCompleted = (serviceCompletedEventArgs) => {
-    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-};
-var initUpdateTurnNodeWeightService_RegisterListener = () => {
-    return new UpdateTurnNodeWeightService(networkAnalystURL,
+var initUpdateTurnNodeWeightService_RegisterListener = (url,updateTurnNodeWeightFailed,updateTurnNodeWeightCompleted) => {
+    return new UpdateTurnNodeWeightService(url,
         {
             eventListeners: {
                 'processFailed': updateTurnNodeWeightFailed,
@@ -30,16 +25,20 @@ describe('UpdateTurnNodeWeightService', () => {
     });
 
     it('processAsync', (done) => {
-        var myUpdateTurnNodeWeightService = initUpdateTurnNodeWeightService_RegisterListener();
-        expect(myUpdateTurnNodeWeightService).not.toBeNull();
-        myUpdateTurnNodeWeightService.processAsync();
-        setTimeout(() => {
+        var networkAnalystURL = GlobeParameter.networkAnalystURL;
+        var myUpdateTurnNodeWeightService;
+        var updateTurnNodeWeightFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var updateTurnNodeWeightCompleted = (serviceCompletedEventArgs) => {
+            serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
             try {
                 expect(typeof(myUpdateTurnNodeWeightService.processAsync()) === "undefined").toBeTruthy();
                 myUpdateTurnNodeWeightService.destroy();
                 expect(myUpdateTurnNodeWeightService.EVENT_TYPES).toBeNull();
                 expect(myUpdateTurnNodeWeightService.events).toBeNull();
                 expect(myUpdateTurnNodeWeightService.eventListeners).toBeNull();
+                expect(serviceCompletedEventArgsSystem).not.toBeNull();
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
@@ -47,6 +46,21 @@ describe('UpdateTurnNodeWeightService', () => {
                 myUpdateTurnNodeWeightService.destroy();
                 done();
             }
-        }, 2000)
+        };
+        var updateTurnNodeWeightParam = new SuperMap.UpdateTurnNodeWeightParameters({
+           nodeId:"106",
+           fromEdgeId:"6508",
+           toEdgeId:"6504",
+           weightField:"TurnCost",
+           turnNodeWeight:"50"
+        });
+        myUpdateTurnNodeWeightService = initUpdateTurnNodeWeightService_RegisterListener(networkAnalystURL,updateTurnNodeWeightFailed,updateTurnNodeWeightCompleted);
+        expect(myUpdateTurnNodeWeightService).not.toBeNull();
+        spyOn(FetchRequest, 'put').and.callFake((testUrl,params) => {
+            expect(testUrl).toBe(networkAnalystURL+"/turnnodeweight/106/fromedge/6508/toedge/6504/weightfield/TurnCost.json?");
+            expect(params).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
+        myUpdateTurnNodeWeightService.processAsync(updateTurnNodeWeightParam);
     })
 });

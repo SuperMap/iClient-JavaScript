@@ -4,15 +4,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var routeLocatorEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
-var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
-var routeLocatorCompleted = (routeLocatorEventArgs) => {
-    routeLocatorEventArgsSystem = routeLocatorEventArgs;
-};
-var routeLocatorFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var initRouteLocatorService = () => {
-    return new RouteLocatorService(spatialAnalystURL,
+var initRouteLocatorService = (url,routeLocatorFailed,routeLocatorCompleted) => {
+    return new RouteLocatorService(url,
         {
             eventListeners: {
                 "processCompleted": routeLocatorCompleted,
@@ -21,13 +14,12 @@ var initRouteLocatorService = () => {
         }
     );
 };
-
 describe('RouteLocatorService', () => {
     var originalTimeout;
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        routeLocatorEventArgsSystem = null,
+        routeLocatorEventArgsSystem = null;
             serviceFailedEventArgsSystem = null;
     });
     afterEach(() => {
@@ -35,6 +27,31 @@ describe('RouteLocatorService', () => {
     });
 
     it('processAsync_RouteLocatorPoint', (done) => {
+        var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
+        var routeLocatorCompleted = (routeLocatorEventArgs) => {
+            routeLocatorEventArgsSystem = routeLocatorEventArgs;
+            try {
+                var routeLocatorResult = routeLocatorEventArgsSystem.result;
+                expect(routeLocatorResult).not.toBeNull();
+                expect(routeLocatorResult.succeed).toBeTruthy();
+                expect(routeLocatorResult.resultGeometry).not.toBeNull();
+                routeLocatorService.destroy();
+                expect(routeLocatorService.EVENT_TYPES == null).toBeTruthy();
+                expect(routeLocatorService.events == null).toBeTruthy();
+                expect(routeLocatorService.eventListeners == null).toBeTruthy();
+                routeLocatorParameters_point.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("RouteLocatorService_" + exception.name + ":" + exception.message);
+                routeLocatorService.destroy();
+                routeLocatorParameters_point.destroy();
+                done();
+            }
+        };
+        var routeLocatorFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
         var routeLocatorParameters_point = new RouteLocatorParameters({
             "sourceRoute": {
                 "type": "LINEM",
@@ -67,38 +84,43 @@ describe('RouteLocatorService', () => {
             "offset": 3,
             "isIgnoreGap": true
         });
-        var routeLocatorService = initRouteLocatorService();
+        var routeLocatorService = initRouteLocatorService(spatialAnalystURL,routeLocatorFailed,routeLocatorCompleted);
         spyOn(FetchRequest, 'post').and.callFake((url, params, options) => {
             expect(url).toBe(spatialAnalystURL + "/geometry/routelocator.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"POINT\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.type).toBe("POINT");
+            expect(paramsObj.sourceRoute.type).toBe("LINEM");
+            expect(paramsObj.sourceRoute.points.length).toEqual(4);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"image":null,"resultGeometry":{"center":{"x":3807.299793262419,"y":-6677.2841893047325},"parts":[1],"style":null,"prjCoordSys":null,"id":0,"type":"POINT","partTopo":null,"points":[{"x":3807.299793262419,"y":-6677.2841893047325}]},"succeed":true,"message":null}`));
         });
         routeLocatorService.processAsync(routeLocatorParameters_point);
-        setTimeout(() => {
+    });
+
+    it('processAsync_RouteLocatorLine', (done) => {
+        var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
+        var routeLocatorCompleted = (routeLocatorEventArgs) => {
+            routeLocatorEventArgsSystem = routeLocatorEventArgs;
             try {
                 var routeLocatorResult = routeLocatorEventArgsSystem.result;
                 expect(routeLocatorResult).not.toBeNull();
                 expect(routeLocatorResult.succeed).toBeTruthy();
                 expect(routeLocatorResult.resultGeometry).not.toBeNull();
                 routeLocatorService.destroy();
-                expect(routeLocatorService.EVENT_TYPES == null).toBeTruthy();
-                expect(routeLocatorService.events == null).toBeTruthy();
-                expect(routeLocatorService.eventListeners == null).toBeTruthy();
-                routeLocatorParameters_point.destroy();
+                routeLocatorParameters_line.destroy();
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("RouteLocatorService_" + exception.name + ":" + exception.message);
                 routeLocatorService.destroy();
-                routeLocatorParameters_point.destroy();
+                routeLocatorParameters_line.destroy();
                 done();
             }
-        }, 2000);
-    });
-
-    it('processAsync_RouteLocatorLine', (done) => {
+        };
+        var routeLocatorFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
         var routeLocatorParameters_line = new RouteLocatorParameters({
             "sourceRoute": {
                 "type": "LINEM",
@@ -131,32 +153,17 @@ describe('RouteLocatorService', () => {
             "endMeasure": 240,
             "isIgnoreGap": true
         });
-        var routeLocatorService = initRouteLocatorService();
-        spyOn(FetchRequest, 'post').and.callFake((url, params, options) => {
+        var routeLocatorService = initRouteLocatorService(spatialAnalystURL,routeLocatorFailed,routeLocatorCompleted);
+        spyOn(FetchRequest, 'post').and.callFake((url, params) => {
             expect(url).toBe(spatialAnalystURL + "/geometry/routelocator.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'type':\"LINE\"");
-            expect(options).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.type).toBe("LINE");
+            expect(paramsObj.sourceRoute.type).toBe("LINEM");
+            expect(paramsObj.sourceRoute.points.length).toEqual(4);
             return Promise.resolve(new Response(`{"image":null,"resultGeometry":{"center":{"x":3617.806369901496,"y":-6670.830929417594},"parts":[3],"style":null,"prjCoordSys":null,"id":0,"type":"LINE","partTopo":null,"points":[{"x":3667.3776818100096,"y":-6671.734168881392},{"x":3617.806369901496,"y":-6670.830929417594},{"x":3582.922419754957,"y":-6691.249636357378}]},"succeed":true,"message":null}`));
         });
         routeLocatorService.processAsync(routeLocatorParameters_line);
-        setTimeout(() => {
-            try {
-                var routeLocatorResult = routeLocatorEventArgsSystem.result;
-                expect(routeLocatorResult).not.toBeNull();
-                expect(routeLocatorResult.succeed).toBeTruthy();
-                expect(routeLocatorResult.resultGeometry).not.toBeNull();
-                routeLocatorService.destroy();
-                routeLocatorParameters_line.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("RouteLocatorService_" + exception.name + ":" + exception.message);
-                routeLocatorService.destroy();
-                routeLocatorParameters_line.destroy();
-                done();
-            }
-        }, 2000);
     });
 });
 

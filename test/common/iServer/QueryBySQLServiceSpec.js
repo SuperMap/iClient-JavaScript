@@ -5,7 +5,14 @@ import { GeometryType } from '../../../src/common/REST';
 import { QueryOption } from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
+var initQueryBySQLService = (url,QueryBySQLFailed,QueryBySQLCompleted) => {
+    return new QueryBySQLService(url,{
+        eventListeners: {
+            'processFailed': QueryBySQLFailed,
+            'processCompleted': QueryBySQLCompleted
+        }
+    });
+};
 describe('testQueryBySQLService_processAsync', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -17,7 +24,8 @@ describe('testQueryBySQLService_processAsync', () => {
     });
 
     it('constructor, destroy', () => {
-        var queryBySQLService = new QueryBySQLService(worldMapURL);
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
+        var queryBySQLService = initQueryBySQLService(worldMapURL);
         expect(queryBySQLService).not.toBeNull();
         expect(queryBySQLService.url).toEqual(worldMapURL + "/queryResults.json?");
         queryBySQLService.destroy();
@@ -29,43 +37,12 @@ describe('testQueryBySQLService_processAsync', () => {
     //不直接返回查询结果
     it('processAsync_returnContent:false', (done) => {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
         };
         var QueryBySQLCompleted = (queryEventArgs) => {
             serviceSuccessEventArgs = queryEventArgs;
-        };
-        var options = {
-            eventListeners: {
-                'processFailed': QueryBySQLFailed,
-                'processCompleted': QueryBySQLCompleted
-            }
-        };
-        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
-        var queryBySQLParameters = new QueryBySQLParameters({
-            customParams: null,
-            expectCount: 100,
-            networkType: GeometryType.POINT,
-            queryOption: QueryOption.ATTRIBUTE,
-            queryParams: new Array(new FilterParameter({
-                attributeFilter: "SmID>0",
-                name: "Countries@World"
-            })),
-            returnContent: false
-        });
-        queryBySQLParameters.startRecord = 0;
-        queryBySQLParameters.holdTime = 10;
-        queryBySQLParameters.returnCustomResult = false;
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'name':\"Countries@World\"");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6.json"}`));
-        });
-        queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(() => {
             try {
                 var queryResult = serviceSuccessEventArgs.result;
                 expect(queryResult).not.toBeNull();
@@ -87,25 +64,65 @@ describe('testQueryBySQLService_processAsync', () => {
                 serviceSuccessEventArgs = null;
                 done();
             }
-        }, 2000)
+        };
+        var queryBySQLService = initQueryBySQLService(worldMapURL,QueryBySQLFailed,QueryBySQLCompleted);
+        var queryBySQLParameters = new QueryBySQLParameters({
+            customParams: null,
+            expectCount: 100,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
+            queryParams: new Array(new FilterParameter({
+                attributeFilter: "SmID>0",
+                name: "Countries@World"
+            })),
+            returnContent: false
+        });
+        queryBySQLParameters.startRecord = 0;
+        queryBySQLParameters.holdTime = 10;
+        queryBySQLParameters.returnCustomResult = false;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.expectCount).toEqual(100);
+            expect(paramsObj.queryParameters.networkType).toBe("POINT");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6.json"}`));
+        });
+        queryBySQLService.processAsync(queryBySQLParameters);
     });
 
     //直接返回查询结果
     it('processAsync_returnContent:true', (done) => {
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
         var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
         };
         var QueryBySQLCompleted = (queryEventArgs) => {
             serviceSuccessEventArgs = queryEventArgs;
-        };
-        var options = {
-            eventListeners: {
-                'processFailed': QueryBySQLFailed,
-                'processCompleted': QueryBySQLCompleted
+            try {
+                var queryResult = serviceSuccessEventArgs.result.recordsets[0].features;
+                expect(queryResult).not.toBeNull();
+                expect(queryResult.type).toBe("FeatureCollection");
+                expect(queryResult.features).not.toBeNull();
+                queryBySQLService.destroy();
+                queryBySQLParameters.destroy();
+                queryFailedEventArgs = null;
+                serviceSuccessEventArgs = null;
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("QueryBySQLService_" + exception.name + ":" + exception.message);
+                queryBySQLService.destroy();
+                queryBySQLParameters.destroy();
+                queryFailedEventArgs = null;
+                serviceSuccessEventArgs = null;
+                done();
             }
         };
-        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
+        var queryBySQLService = initQueryBySQLService(worldMapURL,QueryBySQLFailed,QueryBySQLCompleted);
         var queryBySQLParameters = new QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
@@ -129,77 +146,27 @@ describe('testQueryBySQLService_processAsync', () => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'name':\"Countries@World\"");
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.expectCount).toEqual(100);
+            expect(paramsObj.queryParameters.networkType).toBe("POINT");
+            expect(paramsObj.queryParameters.queryParams.length).toEqual(2);
+            expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("SmID%26lt;3");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryBySQLService.events.on({'processCompleted': QueryBySQLCompleted});
         queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(() => {
-            try {
-                var queryResult = serviceSuccessEventArgs.result.recordsets[0].features;
-                expect(queryResult).not.toBeNull();
-                expect(queryResult.type).toBe("FeatureCollection");
-                expect(queryResult.features).not.toBeNull();
-                queryBySQLService.destroy();
-                queryBySQLParameters.destroy();
-                queryFailedEventArgs = null;
-                serviceSuccessEventArgs = null;
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("QueryBySQLService_" + exception.name + ":" + exception.message);
-                queryBySQLService.destroy();
-                queryBySQLParameters.destroy();
-                queryFailedEventArgs = null;
-                serviceSuccessEventArgs = null;
-                done();
-            }
-        }, 4000)
     });
 
     //返回bounds信息
     it('processAsync_returnCustomResult', (done) => {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
         };
         var QueryBySQLCompleted = (queryEventArgs) => {
             serviceSuccessEventArgs = queryEventArgs;
-        };
-        var options = {
-            eventListeners: {
-                'processFailed': QueryBySQLFailed,
-                'processCompleted': QueryBySQLCompleted
-            }
-        };
-        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
-        var queryBySQLParameters = new QueryBySQLParameters({
-            customParams: null,
-            expectCount: 100,
-            networkType: GeometryType.POINT,
-            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
-            queryParams: new Array(new FilterParameter({
-                attributeFilter: "SmID=50",
-                name: "Countries@World",
-                fields: null
-            })),
-            returnContent: false
-        });
-        queryBySQLParameters.startRecord = 0;
-        queryBySQLParameters.holdTime = 10;
-        queryBySQLParameters.returnCustomResult = true;
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
-            expect(params).not.toBeNull();
-            expect(params).toContain("attributeFilter':\"SmID=50\"");
-            expect(params).toContain("'name':\"Countries@World\"");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_4fbe0a1122a947978a94aaf1f7a3bd2e","succeed":true,"customResult":{"top":33.17113494873047,"left":9.31138801574707,"bottom":19.499065399169922,"leftBottom":{"x":9.31138801574707,"y":19.499065399169922},"right":25.15166473388672,"rightTop":{"x":25.15166473388672,"y":33.17113494873047}},"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_4fbe0a1122a947978a94aaf1f7a3bd2e.json"}`));
-        });
-        queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(() => {
             try {
                 var queryResult = serviceSuccessEventArgs.result;
                 expect(queryResult).not.toBeNull();
@@ -222,43 +189,41 @@ describe('testQueryBySQLService_processAsync', () => {
                 serviceSuccessEventArgs = null;
                 done();
             }
-        }, 2000)
-    });
-
-    it('processAsync_noParams', (done) => {
-        var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
-        var QueryBySQLFailed = (serviceFailedEventArgs) => {
-            queryFailedEventArgs = serviceFailedEventArgs;
         };
-        var QueryBySQLCompleted = (queryEventArgs) => {
-            serviceSuccessEventArgs = queryEventArgs;
-        };
-        var options = {
-            eventListeners: {
-                'processFailed': QueryBySQLFailed,
-                'processCompleted': QueryBySQLCompleted
-            }
-        };
-        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
+        var queryBySQLService = initQueryBySQLService(worldMapURL,QueryBySQLFailed,QueryBySQLCompleted);
         var queryBySQLParameters = new QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
             networkType: GeometryType.POINT,
             queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
-            queryParams: new Array()
+            queryParams: new Array(new FilterParameter({
+                attributeFilter: "SmID=50",
+                name: "Countries@World",
+                fields: null
+            })),
+            returnContent: false
         });
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+        queryBySQLParameters.startRecord = 0;
+        queryBySQLParameters.holdTime = 10;
+        queryBySQLParameters.returnCustomResult = true;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnCustomResult=true");
             expect(params).not.toBeNull();
-            expect(params).toContain("'holdTime':10");
-            expect(params).toContain("'networkType':\"POINT\"");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.expectCount).toEqual(100);
+            expect(paramsObj.queryParameters.networkType).toBe("POINT");
+            expect(paramsObj.queryParameters.queryParams[0].name).toBe("Countries@World");
+            return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_4fbe0a1122a947978a94aaf1f7a3bd2e","succeed":true,"customResult":{"top":33.17113494873047,"left":9.31138801574707,"bottom":19.499065399169922,"leftBottom":{"x":9.31138801574707,"y":19.499065399169922},"right":25.15166473388672,"rightTop":{"x":25.15166473388672,"y":33.17113494873047}},"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_4fbe0a1122a947978a94aaf1f7a3bd2e.json"}`));
         });
-        queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
         queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(() => {
+    });
+
+    it('processAsync_noParams', (done) => {
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
+        var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
+        var QueryBySQLFailed = (serviceFailedEventArgs) => {
+            queryFailedEventArgs = serviceFailedEventArgs;
             try {
                 expect(queryFailedEventArgs).not.toBeNull();
                 expect(queryFailedEventArgs.error).not.toBeNull();
@@ -278,47 +243,39 @@ describe('testQueryBySQLService_processAsync', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        };
+        var QueryBySQLCompleted = (queryEventArgs) => {
+            serviceSuccessEventArgs = queryEventArgs;
+
+        };
+        var queryBySQLService = initQueryBySQLService(worldMapURL,QueryBySQLFailed,QueryBySQLCompleted);
+        var queryBySQLParameters = new QueryBySQLParameters({
+            customParams: null,
+            expectCount: 100,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
+            queryParams: new Array()
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.expectCount).toEqual(100);
+            expect(paramsObj.queryParameters.networkType).toBe("POINT");
+            expect(paramsObj.queryParameters.queryOption).toBe("ATTRIBUTEANDGEOMETRY");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
+        });
+        queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
+        queryBySQLService.processAsync(queryBySQLParameters);
     });
 
     //查询目标图层不存在情况
     it('processAsync_LayerNotExist', (done) => {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
-        };
-        var QueryBySQLCompleted = (queryEventArgs) => {
-            serviceSuccessEventArgs = queryEventArgs;
-        };
-        var options = {
-            eventListeners: {
-                'processFailed': QueryBySQLFailed,
-                'processCompleted': QueryBySQLCompleted
-            }
-        };
-        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
-        var queryBySQLParameters = new QueryBySQLParameters({
-            customParams: null,
-            expectCount: 100,
-            networkType: GeometryType.POINT,
-            queryOption: QueryOption.ATTRIBUTE,
-            queryParams: new Array(new FilterParameter({
-                attributeFilter: "SmID>0",
-                name: "notExist"
-            })),
-            returnContent: false
-        });
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe("POST");
-            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'attributeFilter':\"SmID%26gt;0\"");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(notExist)"}}`));
-        });
-        queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
-        queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(() => {
             try {
                 expect(serviceSuccessEventArgs).toBeNull();
                 expect(queryFailedEventArgs).not.toBeNull();
@@ -340,51 +297,45 @@ describe('testQueryBySQLService_processAsync', () => {
                 serviceSuccessEventArgs = null;
                 done();
             }
-        }, 2000);
+        };
+        var QueryBySQLCompleted = (queryEventArgs) => {
+            serviceSuccessEventArgs = queryEventArgs;
+        };
+        var queryBySQLService = initQueryBySQLService(worldMapURL,QueryBySQLFailed,QueryBySQLCompleted);
+        var queryBySQLParameters = new QueryBySQLParameters({
+            customParams: null,
+            expectCount: 100,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
+            queryParams: new Array(new FilterParameter({
+                attributeFilter: "SmID>0",
+                name: "notExist"
+            })),
+            returnContent: false
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(worldMapURL + "/queryResults.json?");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.expectCount).toEqual(100);
+            expect(paramsObj.queryParameters.networkType).toBe("POINT");
+            expect(paramsObj.queryParameters.queryOption).toBe("ATTRIBUTE");
+            return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"查询目标图层不存在。(notExist)"}}`));
+        });
+        queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
+        queryBySQLService.processAsync(queryBySQLParameters);
     });
 
     //测试字段别名 #20
     it('processAsync_returnFeatureWithFieldCaption:true_#20', (done) => {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
+        var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
         };
         var QueryBySQLCompleted = (queryEventArgs) => {
             serviceSuccessEventArgs = queryEventArgs;
-        };
-        var options = {
-            eventListeners: {
-                'processFailed': QueryBySQLFailed,
-                'processCompleted': QueryBySQLCompleted
-            }
-        };
-        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
-        var queryBySQLParameters = new QueryBySQLParameters({
-            customParams: null,
-            expectCount: 2,
-            networkType: GeometryType.POINT,
-            queryOption: QueryOption.ATTRIBUTE,
-            queryParams: new Array(new FilterParameter({
-                attributeFilter: "SmID>0",
-                name: "Countries@World"
-            })),
-            returnFeatureWithFieldCaption:true,
-            returnContent: true
-        });
-        queryBySQLParameters.startRecord = 0;
-        queryBySQLParameters.holdTime = 10;
-        queryBySQLParameters.returnCustomResult = false;
-
-        spyOn(FetchRequest, 'post').and.callFake((url, params, options) => {
-            expect(url).toBe(worldMapURL + "/queryResults.json?returnContent=true");
-            expect(params).not.toBeNull();
-            expect(params).toContain("'name':\"Countries@World\"");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
-        });
-
-        queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(() => {
             try {
                 var queryResult = serviceSuccessEventArgs.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
@@ -407,6 +358,33 @@ describe('testQueryBySQLService_processAsync', () => {
                 serviceSuccessEventArgs = null;
                 done();
             }
-        }, 4000)
+        };
+        var queryBySQLService = initQueryBySQLService(worldMapURL,QueryBySQLFailed,QueryBySQLCompleted);
+        var queryBySQLParameters = new QueryBySQLParameters({
+            customParams: null,
+            expectCount: 2,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
+            queryParams: new Array(new FilterParameter({
+                attributeFilter: "SmID>0",
+                name: "Countries@World"
+            })),
+            returnFeatureWithFieldCaption:true,
+            returnContent: true
+        });
+        queryBySQLParameters.startRecord = 0;
+        queryBySQLParameters.holdTime = 10;
+        queryBySQLParameters.returnCustomResult = false;
+
+        spyOn(FetchRequest, 'post').and.callFake((url, params) => {
+            expect(url).toBe(worldMapURL + "/queryResults.json?returnContent=true");
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+            expect(paramsObj.queryParameters.expectCount).toEqual(2);
+            expect(paramsObj.queryParameters.networkType).toBe("POINT");
+            expect(paramsObj.queryParameters.queryParams[0].name).toBe("Countries@World");
+            return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
+        });
+        queryBySQLService.processAsync(queryBySQLParameters);
     });
 });

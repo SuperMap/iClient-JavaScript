@@ -1,16 +1,10 @@
 import {TilesetsService} from '../../../src/common/iServer/TilesetsService';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
-var tileSetsURL = "http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图";
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
-var analyzeFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var analyzeCompleted = (analyseCompletedEventArgs) => {
-    serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
-};
-var initTilesetsService_Register = () => {
-    return new TilesetsService(tileSetsURL,
+
+var initTilesetsService_Register = (url,analyzeCompleted,analyzeFailed) => {
+    return new TilesetsService(url,
         {
             eventListeners: {
                 "processCompleted": analyzeCompleted,
@@ -18,7 +12,6 @@ var initTilesetsService_Register = () => {
             }
         });
 };
-
 describe('TilesetsService', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -30,7 +23,14 @@ describe('TilesetsService', () => {
     });
 
     it('constructor, destroy', () => {
-        var tilesetsService = initTilesetsService_Register();
+        var tileSetsURL = "http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图";
+        var analyzeFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var analyzeCompleted = (analyseCompletedEventArgs) => {
+            serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
+        };
+        var tilesetsService = initTilesetsService_Register(tileSetsURL,analyzeCompleted,analyzeFailed);
         tilesetsService.events.on({"processCompleted": analyzeCompleted});
         expect(tilesetsService.url).toEqual(tileSetsURL);
         expect(tilesetsService.CLASS_NAME).toBe("SuperMap.TilesetsService");
@@ -42,15 +42,12 @@ describe('TilesetsService', () => {
 
     //成功事件
     it('processAsync_success', (done) => {
-        var tilesetsService = initTilesetsService_Register();
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe('GET');
-            expect(testUrl).toBe(tileSetsURL + "/tilesets.json?");
-            expect(options).not.toBeNull();
-            return Promise.resolve(new Response(tilesetsEscapedJson));
-        });
-        tilesetsService.processAsync();
-        setTimeout(() => {
+        var tileSetsURL = "http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图";
+        var analyzeFailed = (serviceFailedEventArgs) => {
+            serviceFailedEventArgsSystem = serviceFailedEventArgs;
+        };
+        var analyzeCompleted = (analyseCompletedEventArgs) => {
+            serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
             expect(serviceCompletedEventArgsSystem.type).toBe("processCompleted");
             var analyseResult = serviceCompletedEventArgsSystem.result;
             expect(analyseResult).not.toBeNull();
@@ -68,6 +65,13 @@ describe('TilesetsService', () => {
             expect(analyseResult[0].metaData.tileWidth).toEqual(256);
             tilesetsService.destroy();
             done();
-        }, 1500);
+        };
+        var tilesetsService = initTilesetsService_Register(tileSetsURL,analyzeCompleted,analyzeFailed);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+            expect(method).toBe('GET');
+            expect(testUrl).toBe(tileSetsURL + "/tilesets.json?");
+            return Promise.resolve(new Response(tilesetsEscapedJson));
+        });
+        tilesetsService.processAsync();
     });
 });

@@ -4,22 +4,14 @@ import {FetchRequest} from "@supermap/iclient-common";
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
 var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
-var succeed = (event) => {
-    analystEventArgsSystem = event;
+var initTransferPathService = (url,succeed,failed) => {
+    return new TransferPathService(trafficTransferURL, {
+        eventListeners: {
+            "processCompleted": succeed,
+            "processFailed": failed
+        }
+    });
 };
-var failed = (event) => {
-    serviceFailedEventArgsSystem = event;
-};
-var options = {
-    eventListeners: {
-        "processCompleted": succeed,
-        "processFailed": failed
-    }
-};
-var initTransferPathService = () => {
-    return new TransferPathService(trafficTransferURL, options);
-};
-
 describe('TransferPathService', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -48,20 +40,8 @@ describe('TransferPathService', () => {
     });
 
     it('success:processAsync', (done) => {
-        var service = initTransferPathService();
-        var params = new TransferPathParameters({
-            transferLines: [
-                {"lineID": 27, "startStopIndex": 3, "endStopIndex": 4},
-                {"lineID": 12, "startStopIndex": 5, "endStopIndex": 9}
-            ],
-            points: [175, 164]
-        });
-        spyOn(FetchRequest, 'commit').and.callFake((method) => {
-            expect(method).toBe("GET");
-            return Promise.resolve(new Response(JSON.stringify(transferPathServiceResult)));
-        });
-        service.processAsync(params);
-        setTimeout(() => {
+        var succeed = (event) => {
+            analystEventArgsSystem = event;
             try {
                 var result = analystEventArgsSystem.result;
                 expect(result).not.toBeNull();
@@ -81,6 +61,23 @@ describe('TransferPathService', () => {
                 params.destroy();
                 done();
             }
-        }, 1500);
+        };
+        var failed = (event) => {
+            serviceFailedEventArgsSystem = event;
+        };
+        var service = initTransferPathService(trafficTransferURL,succeed,failed);
+        var params = new TransferPathParameters({
+            transferLines: [
+                {"lineID": 27, "startStopIndex": 3, "endStopIndex": 4},
+                {"lineID": 12, "startStopIndex": 5, "endStopIndex": 9}
+            ],
+            points: [175, 164]
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(trafficTransferURL+"/path.json?");
+            return Promise.resolve(new Response(JSON.stringify(transferPathServiceResult)));
+        });
+        service.processAsync(params);
     })
 });
