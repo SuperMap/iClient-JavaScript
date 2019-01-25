@@ -21,8 +21,26 @@
 
         ], allOverlays: true
     });
-    tiandituLayer = new SuperMap.Layer.Tianditu();
-    tianMarkerLayer = new SuperMap.Layer.Tianditu();
+    tiandituLayer = new SuperMap.Layer.WMTS({
+        name: "vec",
+        url: "http://t0.tianditu.com/vec_c/wmts?tk=1d109683f4d84198e37a38c442d68311",
+        layer: "vec",
+        style: "default",
+        matrixSet: "c",
+        format: "tiles",
+        opacity: 1,
+        requestEncoding: "KVP"
+    });
+    tianMarkerLayer = new SuperMap.Layer.WMTS({
+        name: "vec",
+        url: "http://t0.tianditu.com/cva_c/wmts?tk=1d109683f4d84198e37a38c442d68311",
+        layer: "cva",
+        style: "default",
+        matrixSet: "c",
+        format: "tiles",
+        opacity: 1,
+        requestEncoding: "KVP"
+    });
     tianMarkerLayer.layerType = "cva";
     tianMarkerLayer.isLabel = true;
     map.addControl(new SuperMap.Control.MousePosition());
