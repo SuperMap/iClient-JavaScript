@@ -72,30 +72,17 @@ describe('openlayers_MapboxStyles', () => {
     it('getStyleFunction', (done) => {
         var style;
         mapboxStyles = new MapboxStyles(stylesOptions);
-        setTimeout(() => {
+        mapboxStyles.on("styleloaded", () => {
             style = mapboxStyles.getStyleFunction();
             expect(style).not.toBeNull();
             done();
-        }, 2000);
+        })
     });
 
     it('getStyleFunction,setSelectedId', (done) => {
-        var style;
         mapboxStyles = new MapboxStyles(stylesOptions);
-        var feature = new ol.Feature({
-            geometry: new ol.geom.Polygon([
-                [
-                    [0, 0],
-                    [-10, 30],
-                    [-30, 0],
-                    [0, 0]
-                ]
-            ]),
-            layer: "Military_R@California"
-        });
-        feature.setId(1);
         mapboxStyles.on("styleloaded", () => {
-            var style =  mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
+            var style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
             expect(style[0].getFill().getColor()).not.toBeNull();
             var color = ol.color.asArray(style[0].getFill().getColor());
@@ -110,16 +97,16 @@ describe('openlayers_MapboxStyles', () => {
                 "id": "Military_R@California#26",
                 "maxzoom": 17,
             });
-            style =  mapboxStyles.getStyleFunction()(feature, 2.388657133911758/2);
+            style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758 / 2);
             expect(style).not.toBeNull();
             expect(style[0].getFill().getColor()).not.toBeNull();
-            // color = ol.color.asArray(style[0].getFill().getColor());
-            // expect(color[0]).toBeCloseTo(249);
-            // expect(color[1]).toBeCloseTo(0);
-            // expect(color[2]).toBeCloseTo(0);
-            // expect(color[3]).toBeCloseTo(0.9);
+            color = ol.color.asArray(style[0].getFill().getColor());
+            expect(color[0]).toBeCloseTo(249);
+            expect(color[1]).toBeCloseTo(0);
+            expect(color[2]).toBeCloseTo(0);
+            expect(color[3]).toBeCloseTo(0.9);
             mapboxStyles.setSelectedId(1, "Military_R@California");
-            style =  mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
+            style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
             expect(style[0].getFill().getColor()).not.toBeNull();
             color = ol.color.asArray(style[0].getFill().getColor());
@@ -129,27 +116,43 @@ describe('openlayers_MapboxStyles', () => {
             expect(color[3]).toBeCloseTo(1);
             done();
         })
+        var feature = new ol.Feature({
+            geometry: new ol.geom.Polygon([
+                [
+                    [0, 0],
+                    [-10, 30],
+                    [-30, 0],
+                    [0, 0]
+                ]
+            ]),
+            layer: "Military_R@California"
+        });
+        feature.setId(1);
+
 
     });
 
     it('getStylesBySourceLayer', (done) => {
-        var layer;
         mapboxStyles = new MapboxStyles(stylesOptions);
-        setTimeout(() => {
-            layer = mapboxStyles.getStylesBySourceLayer("Military_R@California");
-            expect(layer).not.toBeNull();
-            expect(layer[0].paint).not.toBeNull();
-            expect(layer[0].paint["fill-color"]).toBe("rgba(249,224,219,0.90)");
-            vectorstylesEscapedJson.layers[2].paint["fill-color"] = "rgba(255,0,0,0)";
-            delete vectorstylesEscapedJson.sprite;
-            delete vectorstylesEscapedJson.glyphs;
-            mapboxStyles.setStyle(vectorstylesEscapedJson);
-            layer = mapboxStyles.getStylesBySourceLayer("Military_R@California");
-            expect(layer).not.toBeNull();
-            expect(layer[0].paint).not.toBeNull();
-            expect(layer[0].paint["fill-color"]).toBe("rgba(255,0,0,0)");
-            done();
-        }, 2000);
+        mapboxStyles.once("styleloaded", () => {
+            try {
+                var layer = mapboxStyles.getStylesBySourceLayer("Military_R@California");
+                expect(layer).not.toBeNull();
+                expect(layer[0].paint).not.toBeNull();
+                expect(layer[0].paint["fill-color"]).toBe("rgba(249,224,219,0.90)");
+                vectorstylesEscapedJson.layers[2].paint["fill-color"] = "rgba(255,0,0,0)";
+                mapboxStyles.setStyle(vectorstylesEscapedJson);
+                layer = mapboxStyles.getStylesBySourceLayer("Military_R@California");
+                expect(layer).not.toBeNull();
+                expect(layer[0].paint).not.toBeNull();
+                expect(layer[0].paint["fill-color"]).toBe("rgba(255,0,0,0)");
+                done();
+            } catch (e) {
+                console.log("'getStylesBySourceLayer'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
     });
 
     it('init_StyleObject', (done) => {
@@ -159,11 +162,17 @@ describe('openlayers_MapboxStyles', () => {
             map: map,
             source: 'California'
         });
-        setTimeout(() => {
-            style = mapboxStyles.getStyleFunction();
-            expect(style).not.toBeNull();
-            done();
-        }, 2000);
+        mapboxStyles.on("styleloaded", () => {
+            try {
+                style = mapboxStyles.getStyleFunction();
+                expect(style).not.toBeNull();
+                done();
+            } catch (e) {
+                console.log("'init_StyleObject'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
     });
 
     it('init_StyleUrl', (done) => {
@@ -173,11 +182,17 @@ describe('openlayers_MapboxStyles', () => {
             map: map,
             source: 'California'
         });
-        setTimeout(() => {
-            style = mapboxStyles.getStyleFunction();
-            expect(style).not.toBeNull();
-            done();
-        }, 2000);
+        mapboxStyles.on("styleloaded", () => {
+            try {
+                style = mapboxStyles.getStyleFunction();
+                expect(style).not.toBeNull();
+                done();
+            } catch (e) {
+                console.log("'init_StyleUrl'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
     });
 
 })

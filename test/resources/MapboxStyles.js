@@ -8,7 +8,7 @@ var  vectorstylesEscapedJson={
         }
     },
     "name": "California",
-    "sprite": "http://iclsvr.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tilefeature/mvtsprites/sprite@2x",
+    "sprite": "../../base/resources/img/sprite@2x",
     "layers": [
         {
             "paint": {
