@@ -128,6 +128,12 @@
         if (inArray(includes, 'shapefile')) {
             inputScript("https://unpkg.com/shapefile@0.6.6/dist/shapefile.js");
         }
+
+        if (inArray(includes, 'iclient9-mapboxgl-widgets-vue')) {
+            inputCSS("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.css");
+            inputScript("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.js");
+        }
+        
     }
 
     load();

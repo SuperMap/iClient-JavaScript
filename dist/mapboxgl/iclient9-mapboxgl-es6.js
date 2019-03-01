@@ -38534,6 +38534,7 @@ class Color_Color {
 // CONCATENATED MODULE: ./src/common/util/ColorsPickerUtil.js
 
 
+
 var ColorsPickerUtil_ColorRender = new Color_Color();
 // let "http://www.qzu.zj.cn": "#bd10e0"
 // 					"www.qzct.net": "#7ed321" = new SuperMap.LevelRenderer.Tool.Color();
@@ -38697,8 +38698,11 @@ class ColorsPickerUtil_ColorsPickerUtil  {
         return ret;
     }
 }
+SuperMap.ColorsPickerUtil = ColorsPickerUtil_ColorsPickerUtil;
+
 // CONCATENATED MODULE: ./src/common/util/ArrayStatistic.js
-class ArrayStatistic {
+
+class ArrayStatistic_ArrayStatistic {
 
     // geostatsInstance: null,
 
@@ -38895,6 +38899,7 @@ class ArrayStatistic {
     }
 
 }
+SuperMap.ArrayStatistic = ArrayStatistic_ArrayStatistic;
 // CONCATENATED MODULE: ./src/common/util/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -76921,8 +76926,8 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
             features.forEach(item => {
                 weight.push(item.weight);
             })
-            let max = ArrayStatistic.getMax(weight);
-            let min = ArrayStatistic.getMin(weight);
+            let max = ArrayStatistic_ArrayStatistic.getMax(weight);
+            let min = ArrayStatistic_ArrayStatistic.getMin(weight);
             paint["heatmap-weight"] = ["interpolate", ["linear"], ["get", 'weight'], min, 0, max, 1];
         }
 
@@ -76974,7 +76979,7 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
             attributes = feature.properties;
             attributes && parseFloat(attributes[field]) && values.push(parseFloat(attributes[field]));
         });
-        this.fieldMaxValue[field] = ArrayStatistic.getArrayStatistic(values, 'Maximum');
+        this.fieldMaxValue[field] = ArrayStatistic_ArrayStatistic.getArrayStatistic(values, 'Maximum');
     }
 
     /**
@@ -77098,7 +77103,7 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
             }
         }, this);
 
-        let segements = ArrayStatistic.getArraySegments(values, themeSetting.segmentMethod, segmentCount);
+        let segements = ArrayStatistic_ArrayStatistic.getArraySegments(values, themeSetting.segmentMethod, segmentCount);
         if (segements) {
             let itemNum = segmentCount;
             if (attributes && segements[0] === segements[attributes.length - 1]) {
@@ -77698,7 +77703,7 @@ external_mapboxgl_default.a.supermap.WebMap = WebMap_WebMap;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FetchRequest", function() { return FetchRequest_FetchRequest; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorsPickerUtil", function() { return ColorsPickerUtil_ColorsPickerUtil; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ArrayStatistic", function() { return ArrayStatistic; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ArrayStatistic", function() { return ArrayStatistic_ArrayStatistic; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AreaSolarRadiationParameters", function() { return AreaSolarRadiationParameters_AreaSolarRadiationParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationParameter", function() { return AggregationParameter_AggregationParameter; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggQueryBuilderParameter", function() { return AggQueryBuilderParameter_AggQueryBuilderParameter; });

@@ -1,4 +1,7 @@
 import {Color} from '../overlay/levelRenderer/Color';
+import {
+    SuperMap
+} from '../SuperMap';
 
 var ColorRender = new Color();
 // let "http://www.qzu.zj.cn": "#bd10e0"
@@ -163,3 +166,4 @@ export class ColorsPickerUtil  {
         return ret;
     }
 }
+SuperMap.ColorsPickerUtil = ColorsPickerUtil;

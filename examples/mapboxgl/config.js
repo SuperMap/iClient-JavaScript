@@ -1060,19 +1060,65 @@ var exampleConfig = {
                         version: "10.X.X",
                         thumbnail: "widgets_chart_iptl.png",
                         fileName: "widgets_chart_iptl"
-                    } 
+                    }
                 ]
             },
             "widgetsAdvanced": {
-                name: "扩展",
-                name_en: "Advanced",
-                content: [{
-                    name: "WebMap(Vue)",
-                    name_en: "WebMap(Vue)",
-                    version: "10.X.X",
-                    thumbnail: "iPortalWebmap_unique.png",
-                    fileName: "iportalWebMap_vue"
-                }]
+                name: "Vue",
+                name_en: "Vue",
+                content: [
+                    {
+                        name: "地图微件(Vue)",
+                        name_en: "map_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_map_vue.png",
+                        fileName: "widgets_map_vue"
+                    } ,{
+                        name: "webmap微件(Vue)",
+                        name_en: "webmap_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_webmap_vue.png",
+                        fileName: "widgets_webmap_vue"
+                    } ,
+                    // {
+                    //     name: "图表微件(Vue)",
+                    //     name_en: "chart_widget_vue",
+                    //     version: "10.X.X",
+                    //     thumbnail: "widgets_chart_vue.png",
+                    //     fileName: "widgets_chart_vue"
+                    // } ,
+                    {
+                        name: "图层列表微件(Vue)",
+                        name_en: "layerList_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_layerList_vue.png",
+                        fileName: "widgets_layerList_vue"
+                    } ,{
+                        name: "鹰眼微件(Vue)",
+                        name_en: "minimap_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_minimap_vue.png",
+                        fileName: "widgets_minimap_vue"
+                    } ,{
+                        name: "平移微件(Vue)",
+                        name_en: "pan_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_pan_vue.png",
+                        fileName: "widgets_pan_vue"
+                    } ,{
+                        name: "比例尺微件(Vue)",
+                        name_en: "scale_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_scale_vue.png",
+                        fileName: "widgets_scale_vue"
+                    } ,{
+                        name: "缩放微件(Vue)",
+                        name_en: "zoom_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_zoom_vue.png",
+                        fileName: "widgets_zoom_vue"
+                    } 
+                ]
             }
         }
     },
@@ -1121,6 +1167,6 @@ var exampleIconConfig = {
     "viz": "fa-map",
     "GTC": "fa-globe",
     "widgets": "fa-window-restore",
-    'multiCoordSys': "fa-globe",
+    'multiCoordSys': "fa-globe"
 };
 window.mapboxglExampleConfig = exampleConfig;
