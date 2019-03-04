@@ -1064,8 +1064,8 @@ var exampleConfig = {
                 ]
             },
             "widgetsAdvanced": {
-                name: "Vue",
-                name_en: "Vue",
+                name: "for Vue",
+                name_en: "for Vue",
                 content: [
                     {
                         name: "地图微件(Vue)",
@@ -1080,13 +1080,13 @@ var exampleConfig = {
                         thumbnail: "widgets_webmap_vue.png",
                         fileName: "widgets_webmap_vue"
                     } ,
-                    // {
-                    //     name: "图表微件(Vue)",
-                    //     name_en: "chart_widget_vue",
-                    //     version: "10.X.X",
-                    //     thumbnail: "widgets_chart_vue.png",
-                    //     fileName: "widgets_chart_vue"
-                    // } ,
+                    {
+                        name: "图表微件(Vue)",
+                        name_en: "chart_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_chart_vue.png",
+                        fileName: "widgets_chart_vue"
+                    } ,
                     {
                         name: "图层列表微件(Vue)",
                         name_en: "layerList_widget_vue",

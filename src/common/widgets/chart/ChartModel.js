@@ -175,7 +175,7 @@ export class ChartModel {
                     }
                 })
                 // 如果有服务，获取数据源和数据集, 然后请求rest服务
-                me.getDatafromRest(resultData.serviceType, resultData.address, success)
+                resultData && me.getDatafromRest(resultData.serviceType, resultData.address, success)
             } else {
                 me.getDatafromContent(url, success);
                 return;

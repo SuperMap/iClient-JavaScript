@@ -8,6 +8,7 @@
   <meta charset="UTF-8">
   <title data-i18n='resources.title_widgetsMap_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+  <script include="iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
     #main {
       margin: 0 auto;
@@ -21,10 +22,9 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
   <div id="main">
     <!-- 地图组件：sm-map  props: map-options, access-token-->
-    <sm-map :map-options="mapOptions" access-token="pk.eyJ1IjoicGhlZ21hbiIsImEiOiJjaWdzdDJsMnkwNWx5dXhtMTdpMmFyczNrIn0.bcydH5kWOsWRL_eBfR_dtw"></sm-map>
+    <sm-map :map-options="mapOptions"></sm-map>
   </div>
   
-  <script include="iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <script>
     new Vue({
       el: '#main',

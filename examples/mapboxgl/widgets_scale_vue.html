@@ -8,6 +8,7 @@
   <meta charset="UTF-8">
   <title data-i18n='resources.title_widgetsScale_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+  <script include="iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
      #main{
         margin: 0 auto;
@@ -21,11 +22,10 @@
   <div id="main">
     <sm-web-map :web-map-options="{server: 'http://support.supermap.com.cn:8092/'}" map-id="1649097980">
       <!-- 比例尺组件：sm-scale -->
-      <sm-scale position="bottom-left"></sm-scale>
+      <sm-scale></sm-scale>
     </sm-web-map>
   </div>
   
-  <script include="iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <script>
     new Vue({
       el: '#main'
