@@ -8,6 +8,7 @@ import './openlayers/core/MapExtendSpec.js';
 
 /*openlayers -- mapping*/
 import './openlayers/mapping/ImageSuperMapRestSpec.js';
+import './openlayers/mapping/TileSuperMapRestSpec.js';
 import './openlayers/mapping/WebMapSpec.js';
 
 /*openlayers -- overlay*/

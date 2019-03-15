@@ -444,6 +444,7 @@ window.examplesResources = {
         "title_mvtVectorLayer_mapboxStyle_4326": "OSM Style(MVT WGS84)",
         "title_mvtVectorLayer_mapboxStyle_lineStyle": "LineStyle Edit",
         "title_mvtVectorLayer_mapboxStyle_landuse": "Land Use",
+        "title_mvtVectorLayer_overlay": "MVT Overlay",
         "title_onlineSecurity": "Examples of Online SecurityManager",
         "title_onlineWebMap": "Be a backpacker in 2014",
         "title_osmBuildings": "Buildings Stereoscopic Effect of OpenLayers",

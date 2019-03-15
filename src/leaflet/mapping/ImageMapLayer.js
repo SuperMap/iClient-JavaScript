@@ -185,6 +185,9 @@ export var ImageMapLayer = Layer.extend({
         if (this.options.tileProxy) {
             imageUrl = this.options.tileProxy + encodeURIComponent(imageUrl);
         }
+        if (!this.options.cacheEnabled) {
+            imageUrl += "&_t=" + new Date().getTime();
+        }
         return imageUrl;
 
     },

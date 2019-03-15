@@ -170,4 +170,22 @@ describe('leaflet_ImageMapLayer', () => {
         expect(format).toBe("gif");
     });
 
+    it('getImageUrl', () => {
+        imageLayer = imageMapLayer(url).addTo(map);
+        expect(imageLayer.getImageUrl()).not.toBeNull();
+        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?&redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");
+
+        var tempOptions = {
+            cacheEnabled: false
+        };
+        var imageLayer = imageMapLayer(url, tempOptions).addTo(map);
+        expect(imageLayer).not.toBeNull();
+        expect(imageLayer.options.cacheEnabled).toBe(false);
+        var coords = L.point(1, 4);
+        var imageUrl = imageLayer.getImageUrl(coords);
+        var imageUrlArray = imageUrl.split('?');
+        expect(imageUrlArray[0]).toBe(url + '/image.png');
+        expect(imageUrlArray[1]).toContain("&_t=")
+    });
+
 });

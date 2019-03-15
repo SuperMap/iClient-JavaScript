@@ -424,6 +424,14 @@ var exampleConfig = {
                         version: "9.1.0",
                         thumbnail: "mvtVectorTile_landuse.png",
                         fileName: "mvtVectorTile_landuse"
+                    },
+                    {
+                        name: "矢量瓦片叠加",
+                        name_en: "MVT overlay",
+                        localIgnore: true,
+                        version: "10.x.x",
+                        thumbnail: "mvtVectorTile_overlay.png",
+                        fileName: "mvtVectorTile_overlay"
                     }
                 ]
             },

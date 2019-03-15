@@ -108,5 +108,18 @@ describe('leaflet_TiledMapLayer', () => {
         var tiledMapLayerObject = tiledMapLayer(options);
         expect(tiledMapLayerObject.options.cacheEnabled).toBe(true);
     });
+    it("getTileUrl, cacheEnableFalse", () => {
+        var tempOptions = {
+            cacheEnabled: false
+        };
+        var tiledMapLayerObject = tiledMapLayer(url, tempOptions).addTo(map);
+        expect(tiledMapLayerObject).not.toBeNull();
+        expect(tiledMapLayerObject.options.cacheEnabled).toBe(false);
+        var coords = L.point(1, 4);
+        var tileUrl = tiledMapLayerObject.getTileUrl(coords);
+        var tileUrlArray = tileUrl.split('?');
+        expect(tileUrlArray[0]).toBe(url + '/tileImage.png');
+        expect(tileUrlArray[1]).toContain("&_t=")
+    });
 
 });

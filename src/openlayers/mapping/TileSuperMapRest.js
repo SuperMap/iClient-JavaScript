@@ -206,7 +206,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
 
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
-                if (me.extent) {
+                if (options.extent) {
                     me.tileGrid = TileSuperMapRest.createTileGrid(options.extent);
                     if (me.resolutions) {
                         me.tileGrid.resolutions = me.resolutions;

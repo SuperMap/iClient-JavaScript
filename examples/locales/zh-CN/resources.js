@@ -387,6 +387,7 @@ window.examplesResources = {
         "title_mvtVectorLayer_mapboxStyle_4326": "风格动态切换",
         "title_mvtVectorLayer_mapboxStyle_lineStyle": "线样式编辑",
         "title_mvtVectorLayer_mapboxStyle_landuse": "土地利用",
+        "title_mvtVectorLayer_overlay": "矢量瓦片叠加",
         "title_onlineSecurity": "Online SecurityManager使用示例",
         "title_onlineWebMap": "2014当了一回背包客",
         "title_osmBuildings": "openlayers 建筑立体效果",

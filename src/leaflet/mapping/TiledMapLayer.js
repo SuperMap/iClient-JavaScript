@@ -106,6 +106,9 @@ export var TiledMapLayer = L.TileLayer.extend({
         if (this.options.tileProxy) {
             tileUrl = this.options.tileProxy + encodeURIComponent(tileUrl);
         }
+        if (!this.options.cacheEnabled) {
+            tileUrl += "&_t=" + new Date().getTime();
+        }
         return tileUrl;
     },
 
