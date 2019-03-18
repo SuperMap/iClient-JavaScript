@@ -214,7 +214,6 @@
     });
     L.supermap.tiledMapLayer(url).addTo(map);
     var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
-    plottingLayer.spatialAnalystUrl=host+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
     plottingLayer.addTo(map);
     var drawControl = L.supermap.plotting.drawControl(plottingLayer);
     drawControl.addTo(map);
@@ -226,16 +225,17 @@
     var plotting = L.supermap.plotting.getControl(map, serverUrl);
 
     map.on('contextmenu', function (event) {
-        if(editControl.getSelectedFeatures().length == 0){
-            return;
+        drawControl.handler.disable();
+
+        if(editControl.canPaste()){
+            var contentMe = document.getElementById("contentMe");
+            contentMe.style.top = event.originalEvent.clientY + "px";
+            contentMe.style.left = event.originalEvent.clientX + "px";
+            contentMe.style.display = "block";
+            document.getElementById("paste").onclick = function(){
+                editControl.paste(event.latlng);
+            };
         }
-        var contentMe = document.getElementById("contentMe");
-        contentMe.style.top = event.originalEvent.clientY + "px";
-        contentMe.style.left = event.originalEvent.clientX + "px";
-        contentMe.style.display = "block";
-        document.getElementById("paste").onclick = function(){
-            editControl.paste(event.latlng);
-        };
     }).on('mousemove', function (event) {
         contentMe.style.display = "none";
     });
@@ -492,6 +492,13 @@
             editControl.deleteSelectedFeatures();
         }
     }
+
+    // document.oncontextmenu = function (event) {
+    //     var event = event || window.event;
+    //     if(event.button == 2){
+    //         drawControl.handler.disable();
+    //     }
+    // }
 
 </script>
 </body>
