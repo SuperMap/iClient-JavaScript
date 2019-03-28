@@ -714,7 +714,7 @@ export class WebMap extends mapboxgl.Evented {
      */
     _addLabelLayer(layerInfo, features) {
         let labelStyle = layerInfo.labelStyle;
-        
+
         this.map.addLayer({
             "id": layerInfo.layerID + 'label',
             "type": "symbol",
@@ -731,7 +731,7 @@ export class WebMap extends mapboxgl.Evented {
             "layout": {
                 "text-field": `{${labelStyle.labelField}}`,
                 'text-size': parseFloat(labelStyle.fontSize) || 12,
-                'text-offset': labelStyle.offsetX ? [labelStyle.offsetX / 10 || 0, labelStyle.offsetY / 10 || 0] : [0,-1.5],
+                'text-offset': labelStyle.offsetX ? [labelStyle.offsetX / 10 || 0, labelStyle.offsetY / 10 || 0] : [0, -1.5],
                 'text-font': ["DIN Offc Pro Italic", "Arial Unicode MS Regular"],
                 'visibility': layerInfo.visible
             }
@@ -1715,6 +1715,7 @@ export class WebMap extends mapboxgl.Evented {
                     allFeatures[i].properties.lat = coordinate[1];
                 }
             }
+            features.properties['index'] = i + '';
             features.push(feature);
         }
         return features;
