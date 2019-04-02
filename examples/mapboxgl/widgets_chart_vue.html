@@ -11,44 +11,112 @@
   <!-- <script include="echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script> -->
   <script include="echarts,iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
-     #main{
-        margin: 0 auto;
-        width: 100%;
-        height: 100%;
+    #main {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
     }
   </style>
 </head>
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
   <div id="main">
-    <sm-web-map :web-map-options="{server: 'http://support.supermap.com.cn:8092/'}" map-id="1649097980">
-      <!-- 图表组件：sm-chart  props: datasets chart-options-->
-      <sm-chart :datasets="datasets" :chart-options="chartOptions" ref="chart"></sm-chart>
-    </sm-web-map>
+    <sm-web-map :web-map-options="{server: 'http://support.supermap.com.cn:8092/'}" map-id="1649097980"></sm-web-map>
+    <sm-chart :style="chartStyle" icon-class="" :datasets="datasets" :chart-options="chartOptions" ref="chart1111"></sm-chart>
+    <sm-chart :style="chartStyle1" icon-class="" chart-type="line" :datasets="datasets" :chart-options="chartOptions1" ref="chart1"></sm-chart>
+    <sm-chart :style="chartStyle2" icon-class="" chart-type="scatter" :datasets="datasets" :chart-options="chartOptions2" ref="chart2"></sm-chart>
+
   </div>
 
- 
+
   <script>
     new Vue({
       el: '#main',
       data() {
         return {
+          chartStyle: {
+            width: "400px",
+            height: "300px",
+            position: "absolute",
+            bottom: "10px",
+            right: "10px"
+          },
+          chartStyle1: {
+            width: "400px",
+            height: "300px",
+            position: "absolute",
+            bottom: "10px",
+            right: "420px"
+          },
+          chartStyle2: {
+            width: "400px",
+            height: "300px",
+            position: "absolute",
+            bottom: "10px",
+            right: "830px"
+          },
           // datasets和chartOptions都是sm-chart组件的props
           datasets: {
             type: "iPortal", //iServer iPortal
             url: "http://support.supermap.com.cn:8092/web/datas/1920557079",
-            queryInfo: { attributeFilter: "SmID > 0" }
-          },
-          chartOptions: [
-            {
-              xAxis: { field: "SmID", name: "SmID" },
-              yAxis: { field: "同比增速%", name: "同比增速%" }
+            queryInfo: {
+              maxFeatures: 20
             }
-          ],
+          },
+          chartOptions: {
+            padding: {
+              top: 30,
+              bottom: 40,
+              left: 80,
+              right: 30
+            },
+            xFieldStatistical: true,
+            xAxisLabelRotate: true,
+            yAxisLabelRotate: false,
+            legendPosition: "top",
+            xAxisMaxCount: 20,
+            xAxisName: "",
+            yAxisName: "",
+            xAxis: "机场",
+            yAxis: ["2017起降架次（架次）", "2016起降架次（架次）"]
+          },
+          chartOptions2: {
+            padding: {
+              top: 30,
+              bottom: 40,
+              left: 50,
+              right: 40
+            },
+            xFieldStatistical: true,
+            xAxisLabelRotate: true,
+            yAxisLabelRotate: false,
+            legendPosition: "top",
+            xAxisMaxCount: 20,
+            xAxisName: "机场",
+            yAxisName: "同比增速%",
+            xAxis: "机场",
+            yAxis: ["同比增速%"]
+          },
+          chartOptions1: {
+            padding: {
+              top: 30,
+              bottom: 40,
+              left: 90,
+              right: 30
+            },
+            xFieldStatistical: true,
+            xAxisLabelRotate: true,
+            yAxisLabelRotate: false,
+            legendPosition: "top",
+            xAxisMaxCount: 20,
+            xAxisName: "",
+            yAxisName: "",
+            xAxis: "机场",
+            yAxis: ["2017旅客吞吐量（人次）", "2016旅客吞吐量（人次）"]
+          }
         };
       }
     })
-
   </script>
 </body>
 

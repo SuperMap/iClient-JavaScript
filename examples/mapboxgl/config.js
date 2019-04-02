@@ -1125,7 +1125,44 @@ var exampleConfig = {
                         version: "10.X.X",
                         thumbnail: "widgets_zoom_vue.png",
                         fileName: "widgets_zoom_vue"
+                    } ,{
+                        name: "图例微件(Vue)",
+                        name_en: "legend_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_legend_vue.png",
+                        fileName: "widgets_legend_vue"
+                    } ,{
+                        name: "基础微件(Vue)",
+                        name_en: "basic_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_basic_vue.png",
+                        fileName: "widgets_basic_vue"
+                    } ,{
+                        name: "量算微件(Vue)",
+                        name_en: "measure_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_measure_vue.png",
+                        fileName: "widgets_measure_vue"
+                    } ,{
+                        name: "查询微件(Vue)",
+                        name_en: "query_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_query_vue.png",
+                        fileName: "widgets_query_vue"
+                    } ,{
+                        name: "搜索微件(Vue)",
+                        name_en: "search_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_search_vue.png",
+                        fileName: "widgets_search_vue"
+                    } ,{
+                        name: "主题切换(Vue)",
+                        name_en: "theme_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_theme_vue.png",
+                        fileName: "widgets_theme_vue"
                     } 
+                    
                 ]
             }
         }

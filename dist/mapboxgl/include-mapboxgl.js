@@ -69,7 +69,8 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.min.js");
+            inputScript("https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.js");
+            inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.js");
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
         }
         if (inArray(includes, 'three')) {
@@ -128,7 +129,10 @@
         if (inArray(includes, 'shapefile')) {
             inputScript("https://unpkg.com/shapefile@0.6.6/dist/shapefile.js");
         }
-
+        if (inArray(includes, 'element')) {
+            inputCSS("https://unpkg.com/element-ui/lib/theme-chalk/index.css");
+            inputScript("https://unpkg.com/element-ui/lib/index.js");
+        }
         if (inArray(includes, 'iclient9-mapboxgl-widgets-vue')) {
             inputCSS("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.css");
             inputScript("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.js");

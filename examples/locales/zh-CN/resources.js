@@ -479,6 +479,12 @@ window.examplesResources = {
         "title_widgetsScale_Vue": '比例尺微件（Vue）',
         "title_widgetsWebmap_Vue": 'webmap微件（Vue）',
         "title_widgetsZoom_Vue": '缩放微件（Vue）',
+        "title_widgetsLegend_Vue": '图例微件（Vue）',
+        "title_widgetsBasic_Vue": '基础微件（Vue）',
+        "title_widgetsMeasure_Vue": '量算微件（Vue）',
+        "title_widgetsQuery_Vue": '查询微件（Vue）',
+        "title_widgetsSearch_Vue": '搜索微件（Vue）',
+        "title_widgetsTheme_Vue": '主题切换',
         
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
@@ -1311,7 +1317,6 @@ window.examplesResources = {
         "btn_symbolEqualWidthHeight":"等宽高",
         "btn_symbolLevelDistribution":"横向均匀分布",
         "btn_symbolVerticalDistribution":"纵向均匀分布",
-
 
         "msg_addPath": "请生成路径，用于缓冲区分析",
         "msg_bufferAnalyst": "请先做缓冲区分析，以得到查询的范围",
