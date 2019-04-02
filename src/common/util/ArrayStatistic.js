@@ -1,6 +1,7 @@
 import {
     SuperMap
 } from '../SuperMap';
+
 export class ArrayStatistic {
 
     // geostatsInstance: null,
