@@ -1161,6 +1161,12 @@ var exampleConfig = {
                         version: "10.X.X",
                         thumbnail: "widgets_theme_vue.png",
                         fileName: "widgets_theme_vue"
+                    } ,{
+                        name: "土地利用示例",
+                        name_en: "demo_widget_vue",
+                        version: "10.X.X",
+                        thumbnail: "widgets_demo_vue.png",
+                        fileName: "widgets_demo_vue"
                     } 
                     
                 ]

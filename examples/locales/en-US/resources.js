@@ -537,6 +537,7 @@ window.examplesResources = {
         "title_widgetsQuery_Vue": 'Query Widget(Vue）',
         "title_widgetsSearch_Vue": 'Search Widget(Vue）',
         "title_widgetsTheme_Vue": 'Theme Widget',
+        "title_widgetsDemo_Vue": 'Landuse demo',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",

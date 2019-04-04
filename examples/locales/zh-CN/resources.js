@@ -485,6 +485,7 @@ window.examplesResources = {
         "title_widgetsQuery_Vue": '查询微件（Vue）',
         "title_widgetsSearch_Vue": '搜索微件（Vue）',
         "title_widgetsTheme_Vue": '主题切换',
+        "title_widgetsDemo_Vue": '土地利用示例',
         
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
