@@ -27,7 +27,7 @@
       height: 100%;
     }
 
-    #chart1 {
+    .sm-chart .sm-card__content {
       width: 400px;
       height: 300px;
       position: absolute;
@@ -96,7 +96,7 @@
         style="float:right;width:100%">
       </sm-time-text>
     </div>
-    <sm-chart id="chart1" :datasets="datasets" :chart-options="chartOptions" ref="chart"></sm-chart>
+    <sm-chart :datasets="datasets" :chart-options="chartOptions" ref="chart"></sm-chart>
   </div>
 
   <script>

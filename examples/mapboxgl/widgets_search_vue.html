@@ -23,7 +23,7 @@
     <sm-web-map :web-map-options="{server: 'http://support.supermap.com.cn:8092/'}" map-id="1649097980">
       <!-- 搜索组件: sm-search -->
       <!-- 支持的数据：layer-names address-match  rest-map rest-data online-local-search-->
-      <sm-search position="top-right" :layer-names="layerNames" :address-match="addressMatch"
+      <sm-search position="top-left" :layer-names="layerNames" :address-match="addressMatch"
         :rest-map-search="restMapSearch"
         :online-local-search='onlineLocalSearch'></sm-search>
     </sm-web-map>
@@ -38,15 +38,13 @@
           layerNames: ["UNIQUE-民航数-0"],
           addressMatch: [
             new SuperMap.Widgets.commontypes.AddressMatchParameter({
-              url: host + "/iserver/services/addressmatch-Address/restjsr/v1/address",
-              name: "Address Match Search"
+              url: host + "/iserver/services/addressmatch-Address/restjsr/v1/address"
             })
           ],
           restMapSearch: [
             new SuperMap.Widgets.commontypes.RestMapParameter({
               url: host + "/iserver/services/map-world/rest/maps/World",
               layerName: "Capitals@World.1",
-              name: "Capitals"
             })
           ],
           onlineLocalSearch: {

@@ -11503,6 +11503,8 @@ body .mapboxgl-ctrl {
     font-size: 15px;
     padding: 8px 20px;
     border: none; }
+  .sm-legend .sm-card__content {
+    box-shadow: unset; }
   .sm-legend .el-card__body {
     padding: 0px; }
   .sm-legend__table {
@@ -11827,22 +11829,22 @@ body .mapboxgl-ctrl {
     .sm-card__icon.is-top-left {
       top: 0;
       left: 0; }
-      .sm-card__widget-icon.is-auto-rotate {
+      .sm-card__icon.is-top-left .sm-card__widget-icon.is-auto-rotate {
         transform: rotate(45deg); }
     .sm-card__icon.is-bottom-left {
       top: 0;
       left: 0; }
-      .sm-card__widget-icon.is-auto-rotate {
+      .sm-card__icon.is-bottom-left .sm-card__widget-icon.is-auto-rotate {
         transform: rotate(45deg); }
     .sm-card__icon.is-top-right {
       top: 0;
       right: 0; }
-      .sm-card__widget-icon.is-auto-rotate {
+      .sm-card__icon.is-top-right .sm-card__widget-icon.is-auto-rotate {
         transform: rotate(135deg); }
     .sm-card__icon.is-bottom-right {
       top: 0;
       right: 0; }
-      .sm-card__widget-icon.is-auto-rotate {
+      .sm-card__icon.is-bottom-right .sm-card__widget-icon.is-auto-rotate {
         transform: rotate(135deg); }
   .sm-card__header {
     padding: 5px 0px 5px 10px;
@@ -11858,6 +11860,7 @@ body .mapboxgl-ctrl {
     font-weight: 700; }
   .sm-card__content {
     width: 280px;
+    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
     background: rgba(27, 24, 24, 0.8);
     transition: all 0.5s;
     position: relative; }
@@ -22878,6 +22881,8 @@ body .mapboxgl-ctrl {
     font-size: 15px;
     padding: 8px 20px;
     border: none; }
+  .sm-legend .sm-card__content {
+    box-shadow: unset; }
   .sm-legend .el-card__body {
     padding: 0px; }
   .sm-legend__table {
@@ -23202,22 +23207,22 @@ body .mapboxgl-ctrl {
     .sm-card__icon.is-top-left {
       top: 0;
       left: 0; }
-      .sm-card__widget-icon.is-auto-rotate {
+      .sm-card__icon.is-top-left .sm-card__widget-icon.is-auto-rotate {
         transform: rotate(45deg); }
     .sm-card__icon.is-bottom-left {
       top: 0;
       left: 0; }
-      .sm-card__widget-icon.is-auto-rotate {
+      .sm-card__icon.is-bottom-left .sm-card__widget-icon.is-auto-rotate {
         transform: rotate(45deg); }
     .sm-card__icon.is-top-right {
       top: 0;
       right: 0; }
-      .sm-card__widget-icon.is-auto-rotate {
+      .sm-card__icon.is-top-right .sm-card__widget-icon.is-auto-rotate {
         transform: rotate(135deg); }
     .sm-card__icon.is-bottom-right {
       top: 0;
       right: 0; }
-      .sm-card__widget-icon.is-auto-rotate {
+      .sm-card__icon.is-bottom-right .sm-card__widget-icon.is-auto-rotate {
         transform: rotate(135deg); }
   .sm-card__header {
     padding: 5px 0px 5px 10px;
@@ -23233,6 +23238,7 @@ body .mapboxgl-ctrl {
     font-weight: 700; }
   .sm-card__content {
     width: 280px;
+    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
     background: #FFFFFF;
     transition: all 0.5s;
     position: relative; }
