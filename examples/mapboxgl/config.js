@@ -1051,6 +1051,7 @@ var exampleConfig = {
     "widgets": {
         name: "微件",
         name_en: "Widgets",
+        localIgnore: true,
         content: {
             // "widgetsSuperMap": {
             //     name: "基础",
