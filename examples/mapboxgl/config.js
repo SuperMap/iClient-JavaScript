@@ -1051,26 +1051,27 @@ var exampleConfig = {
     "widgets": {
         name: "微件",
         name_en: "Widgets",
+        localIgnore: true,
         content: {
-            "widgetsSuperMap": {
-                name: "基础",
-                name_en: "Basic",
-                content: [
-                    {
-                        name: "图表_iServer",
-                        name_en: "chart_iServer",
-                        version: "10.X.X",
-                        thumbnail: "widgets_chart_isvr.png",
-                        fileName: "widgets_chart_isvr"
-                    },{
-                        name: "图表_iPortal",
-                        name_en: "chart_iPortal",
-                        version: "10.X.X",
-                        thumbnail: "widgets_chart_iptl.png",
-                        fileName: "widgets_chart_iptl"
-                    }
-                ]
-            },
+            // "widgetsSuperMap": {
+            //     name: "基础",
+            //     name_en: "Basic",
+            //     content: [
+            //         {
+            //             name: "图表_iServer",
+            //             name_en: "chart_iServer",
+            //             version: "9.1.2",
+            //             thumbnail: "widgets_chart_isvr.png",
+            //             fileName: "widgets_chart_isvr"
+            //         },{
+            //             name: "图表_iPortal",
+            //             name_en: "chart_iPortal",
+            //             version: "9.1.2",
+            //             thumbnail: "widgets_chart_iptl.png",
+            //             fileName: "widgets_chart_iptl"
+            //         }
+            //     ]
+            // },
             "widgetsAdvanced": {
                 name: "for Vue",
                 name_en: "for Vue",
@@ -1078,54 +1079,97 @@ var exampleConfig = {
                     {
                         name: "地图微件(Vue)",
                         name_en: "map_widget_vue",
-                        version: "10.X.X",
+                        version: "9.1.2",
                         thumbnail: "widgets_map_vue.png",
                         fileName: "widgets_map_vue"
                     } ,{
                         name: "webmap微件(Vue)",
                         name_en: "webmap_widget_vue",
-                        version: "10.X.X",
+                        version: "9.1.2",
                         thumbnail: "widgets_webmap_vue.png",
                         fileName: "widgets_webmap_vue"
                     } ,
                     {
                         name: "图表微件(Vue)",
                         name_en: "chart_widget_vue",
-                        version: "10.X.X",
+                        version: "9.1.2",
                         thumbnail: "widgets_chart_vue.png",
                         fileName: "widgets_chart_vue"
                     } ,
                     {
                         name: "图层列表微件(Vue)",
                         name_en: "layerList_widget_vue",
-                        version: "10.X.X",
+                        version: "9.1.2",
                         thumbnail: "widgets_layerList_vue.png",
                         fileName: "widgets_layerList_vue"
                     } ,{
                         name: "鹰眼微件(Vue)",
                         name_en: "minimap_widget_vue",
-                        version: "10.X.X",
+                        version: "9.1.2",
                         thumbnail: "widgets_minimap_vue.png",
                         fileName: "widgets_minimap_vue"
                     } ,{
                         name: "平移微件(Vue)",
                         name_en: "pan_widget_vue",
-                        version: "10.X.X",
+                        version: "9.1.2",
                         thumbnail: "widgets_pan_vue.png",
                         fileName: "widgets_pan_vue"
                     } ,{
                         name: "比例尺微件(Vue)",
                         name_en: "scale_widget_vue",
-                        version: "10.X.X",
+                        version: "9.1.2",
                         thumbnail: "widgets_scale_vue.png",
                         fileName: "widgets_scale_vue"
                     } ,{
                         name: "缩放微件(Vue)",
                         name_en: "zoom_widget_vue",
-                        version: "10.X.X",
+                        version: "9.1.2",
                         thumbnail: "widgets_zoom_vue.png",
                         fileName: "widgets_zoom_vue"
+                    } ,{
+                        name: "图例微件(Vue)",
+                        name_en: "legend_widget_vue",
+                        version: "9.1.2",
+                        thumbnail: "widgets_legend_vue.png",
+                        fileName: "widgets_legend_vue"
+                    } ,{
+                        name: "基础微件(Vue)",
+                        name_en: "basic_widget_vue",
+                        version: "9.1.2",
+                        thumbnail: "widgets_basic_vue.png",
+                        fileName: "widgets_basic_vue"
+                    } ,{
+                        name: "量算微件(Vue)",
+                        name_en: "measure_widget_vue",
+                        version: "9.1.2",
+                        thumbnail: "widgets_measure_vue.png",
+                        fileName: "widgets_measure_vue"
+                    } ,{
+                        name: "查询微件(Vue)",
+                        name_en: "query_widget_vue",
+                        version: "9.1.2",
+                        thumbnail: "widgets_query_vue.png",
+                        fileName: "widgets_query_vue"
+                    } ,{
+                        name: "搜索微件(Vue)",
+                        name_en: "search_widget_vue",
+                        version: "9.1.2",
+                        thumbnail: "widgets_search_vue.png",
+                        fileName: "widgets_search_vue"
+                    } ,{
+                        name: "主题切换(Vue)",
+                        name_en: "theme_widget_vue",
+                        version: "9.1.2",
+                        thumbnail: "widgets_theme_vue.png",
+                        fileName: "widgets_theme_vue"
+                    } ,{
+                        name: "土地利用示例",
+                        name_en: "demo_widget_vue",
+                        version: "9.1.2",
+                        thumbnail: "widgets_demo_vue.png",
+                        fileName: "widgets_demo_vue"
                     } 
+                    
                 ]
             }
         }

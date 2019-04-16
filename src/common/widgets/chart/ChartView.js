@@ -15,7 +15,7 @@ import {
 /**
  * @class SuperMap.Widgets.Chart
  * @classdesc 图表微件
- * @version 10.X.X
+ * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。

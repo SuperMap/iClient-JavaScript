@@ -16,7 +16,10 @@
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
-        units: 'm'
+        units: 'm',
+        getPointResolution:function(resolution, point){
+            return resolution
+        }
     });
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
@@ -35,6 +38,7 @@
             source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
         });
         map.addLayer(layer);
+        map.addControl(new ol.supermap.control.ScaleLine());
     });
 
 </script>

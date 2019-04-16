@@ -35,7 +35,7 @@ module.exports = function (config) {
             './resources/img/**.png',
             /***classic的源码***/
             /*由于除了classic其他都不依赖于8c,所以classic 的引入放在最后，以免被common覆盖*/
-            {pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-16820.js', include: false},
+            {pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17216.js', include: false},
             {pattern: '../src/classic/libs/Lang/*.js', include: false},
             {pattern: '../src/classic/theme/default/*.css', include: false},
             /**测试文件**/
@@ -77,7 +77,7 @@ module.exports = function (config) {
         preprocessors: {
             '../node_modules/whatwg-fetch-importable/whatwgFetch.js': ['browserify'],
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
-            '../src/classic/libs/SuperMap_Basic-8.1.1-16820.js': ['browserify'],
+            '../src/classic/libs/SuperMap_Basic-8.1.1-17216.js': ['browserify'],
             '../src/classic/libs/Lang/*.js': ['browserify'],
             '../src/classic/**/!(index).js': ['browserify'],
             './classic/**/*Spec.js': ['browserify'],

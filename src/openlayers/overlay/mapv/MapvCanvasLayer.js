@@ -36,6 +36,7 @@ export class MapvCanvasLayer {
         canvas.className = "mapvClass";
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = me.devicePixelRatio = global$2.devicePixelRatio;
+        this.devicePixelRatio = devicePixelRatio;
         canvas.width = parseInt(me.width) * devicePixelRatio;
         canvas.height = parseInt(me.height) * devicePixelRatio;
         if (me.context == '2d') {
@@ -43,6 +44,9 @@ export class MapvCanvasLayer {
         }
         canvas.style.width = me.width + "px";
         canvas.style.height = me.height + "px";
+        if (this.context == 'webgl') {
+            this.canvas.getContext(this.context).viewport(0, 0, canvas.width, canvas.height)
+        }
     }
 
     /**
@@ -60,15 +64,19 @@ export class MapvCanvasLayer {
      * @description 调整地图大小。
      */
     resize(mapWidth, mapHeight) {
+        console.log("resize");
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
-        this.canvas.width = mapWidth  * devicePixelRatio;
-        this.canvas.height = mapHeight  * devicePixelRatio;
+        this.canvas.width = mapWidth * devicePixelRatio;
+        this.canvas.height = mapHeight * devicePixelRatio;
         if (this.context == '2d') {
             this.canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         this.canvas.style.width = mapWidth + "px";
         this.canvas.style.height = mapHeight + "px";
+        if (this.context == 'webgl') {
+            this.canvas.getContext(this.context).viewport(0, 0, this.canvas.width, this.canvas.height)
+        }
     }
 
     /**

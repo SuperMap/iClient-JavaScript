@@ -32,6 +32,7 @@ var typeLinks = {
     "ol.layer.Layer": olapi + "ol.layer.Layer.html",
     "ol.FeatureStyleFunction": olapi + "ol.html#.FeatureStyleFunction",
     "ol.StyleFunction": olapi + "ol.html#.StyleFunction",
+    "ol.control.ScaleLine": olapi + "ol.control.ScaleLine",
    
 
     //leaflet

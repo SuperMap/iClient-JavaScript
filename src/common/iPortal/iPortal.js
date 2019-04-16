@@ -1,13 +1,13 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {IPortalServicesQueryParam} from './iPortalServicesQueryParam';
-import {IPortalMapsQueryParam} from './iPortalMapsQueryParam';
-import {FetchRequest} from '../util/FetchRequest';
-import {IPortalService} from './iPortalService';
-import {IPortalMap} from './iPortalMap';
-import {IPortalServiceBase} from './iPortalServiceBase';
+import { SuperMap } from '../SuperMap';
+import { IPortalServicesQueryParam } from './iPortalServicesQueryParam';
+import { IPortalMapsQueryParam } from './iPortalMapsQueryParam';
+import { FetchRequest } from '../util/FetchRequest';
+import { IPortalService } from './iPortalService';
+import { IPortalMap } from './iPortalMap';
+import { IPortalServiceBase } from './iPortalServiceBase';
 
 /**
  * @class SuperMap.iPortal
@@ -15,13 +15,14 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @category iPortal/Online
  * @extends {SuperMap.iPortalServiceBase}
  * @param {string} iportalUrl - 地址。
- *
  */
 export class IPortal extends IPortalServiceBase {
 
-    constructor(iportalUrl) {
-        super(iportalUrl);
+    constructor(iportalUrl, options) {
+        super(iportalUrl,options);
         this.iportalUrl = iportalUrl;
+        options = options || {};
+        this.withCredentials = options.withCredentials || false;
     }
 
     /**
@@ -62,7 +63,7 @@ export class IPortal extends IPortalServiceBase {
      */
     deleteServices(ids) {
         var serviceUrl = this.iportalUrl + "/web/services";
-        return this.request("DELETE", serviceUrl, {ids: ids});
+        return this.request("DELETE", serviceUrl, { ids: ids });
     }
 
     /**
@@ -75,7 +76,12 @@ export class IPortal extends IPortalServiceBase {
         if (!(queryParams instanceof IPortalMapsQueryParam)) {
             return null;
         }
-        var mapsUrl = this.iportalUrl + "/web/maps";
+        let mapsUrl;
+        if (this.withCredentials) {
+            mapsUrl = this.iportalUrl + "/web/mycontent/maps";
+        } else {
+            mapsUrl = this.iportalUrl + "/web/maps";
+        }
         return this.request("GET", mapsUrl, queryParams).then(function (result) {
             var mapRetult = {};
             var maps = [];
