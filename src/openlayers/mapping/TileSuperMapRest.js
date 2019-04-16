@@ -232,7 +232,8 @@ export class TileSuperMapRest extends ol.source.TileImage {
             if (unit === 'degrees') {
                 unit = Unit.DEGREE;
             }
-            if (unit === 'm') {
+            //通过wkt方式自定义坐标系的时候，是meter
+            if (unit === 'm' || unit === 'meter') {
                 unit = Unit.METER;
             }
             var scale = Util.resolutionToScale(resolution, dpi, unit);

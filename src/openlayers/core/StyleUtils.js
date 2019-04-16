@@ -428,7 +428,7 @@ export class StyleUtils {
         var str = style.strokeDashstyle || style.lineDash;
         switch (str) {
             case 'solid':
-                return [];
+                return [0];
             case 'dot':
                 return [1, 4 * w];
             case 'dash':
@@ -641,7 +641,7 @@ export class StyleUtils {
                 });
             }
             olStyle.setImage(newImage);
-        } else if (type === "LINE" || type === "LINESTRING") {
+        } else if (type === "LINE" || type === "LINESTRING" || type === 'MULTILINESTRING' || type === 'LINEARRING') {
             newStroke = new ol.style.Stroke({
                 width: strokeWidth || ZERO,
                 color: strokeColorArray,
@@ -650,7 +650,7 @@ export class StyleUtils {
             });
             olStyle.setStroke(newStroke);
         } else if(type === 'POLYGON' ||
-            type === 'MULTIPOLYGON'){
+            type === 'MULTIPOLYGON' || type === 'REGION'){
             newFill = new ol.style.Fill({
                 color: fillColorArray
             });
@@ -930,6 +930,175 @@ export class StyleUtils {
         } catch(e) {
             return;
         }
+    }
+
+    /**
+     * @function ol.supermap.StyleUtils.getMarkerDefaultStyle 获取默认标注图层feature的样式
+     * @param featureType {String} feature的类型
+     * @param server {String}  当前地图前缀
+     * @returns {Object} style对象
+     */
+    static getMarkerDefaultStyle(featureType, server) {
+        let style;
+        switch (featureType) {
+            case 'POINT':
+                style = {
+                    src: `${server}apps/dataviz/static/imgs/markers/mark_red.png`,
+                    scale: 1,
+                    anchor: [0.5, 1]
+                };
+                break;
+            case 'LINE':
+            case 'LINESTRING':
+            case 'MULTILINESTRING':
+                style = {
+                    strokeColor: '#3498db',
+                    strokeOpacity: 1,
+                    strokeWidth: 5,
+                    lineCap: 'round',
+                    lineDash: 'solid'
+                };
+                break;
+            case 'REGION':
+            case 'POLYGON':
+            case 'MULTIPOLYGON':
+                style = {
+                    fillColor: '#1abd9c',
+                    fillOpacity: 1,
+                    strokeColor: '#3498db',
+                    strokeOpacity: 1,
+                    strokeWidth: 3,
+                    lineCap: 'round',
+                    lineDash: 'solid'
+                };
+                break;
+        }
+        return style;
+    }
+
+    /**
+     * @function ol.supermap.StyleUtils.getOpenlayerStyle 获取专题图对应的openlayers格式的style
+     * @param styleParams {String} 样式参数
+     * @param featureType {String} feature类型
+     * @returns {Object} style对象
+     */
+    static getOpenlayersStyle(styleParams, featureType) {
+        let style;
+        if(styleParams.type === "BASIC_POINT") {
+            style = this.toOpenLayersStyle(styleParams, featureType);
+        } else if(styleParams.type === "SYMBOL_POINT") {
+            style = this.getSymbolStyle(styleParams);
+        } else if(styleParams.type === "SVG_POINT"){
+            style = this.getSVGStyle(styleParams);
+        } else if (styleParams.type === 'IMAGE_POINT') {
+            style = this.getImageStyle(styleParams);
+        }
+        return style;
+    }
+
+    /**
+     * @function ol.supermap.StyleUtils.getSymbolStyle 获取符号样式
+     * @param {object} parameters - 样式参数
+     * @returns {Object} style对象
+     */
+    static getSymbolStyle(parameters) {
+        let text = '';
+        if (parameters.unicode) {
+            text = String.fromCharCode(parseInt(parameters.unicode.replace(/^&#x/, ''), 16));
+        }
+        // 填充色 + 透明度
+        let fillColor = StyleUtils.hexToRgb(parameters.fillColor);
+        fillColor.push(parameters.fillOpacity);
+        // 边框充色 + 透明度
+        let strokeColor = StyleUtils.hexToRgb(parameters.strokeColor);
+        strokeColor.push(parameters.strokeOpacity);
+
+        return new ol.style.Style({
+            text: new ol.style.Text({
+                text: text,
+                font: parameters.fontSize + " " + "supermapol-icons",
+                placement: 'point',
+                textAlign: 'center',
+                fill: new ol.style.Fill({
+                    color: fillColor
+                }),
+                backgroundFill: new ol.style.Fill({
+                    color: [0, 0, 0, 0]
+                }),
+                stroke: new ol.style.Stroke({
+                    width: parameters.strokeWidth || 0.000001,
+                    color: strokeColor
+                })
+            })
+        });
+    }
+    /**
+     * @function ol.supermap.StyleUtils.getSVGStyle 获取svg的样式
+     * @param {object} styleParams - 样式参数
+     * @returns {Object} style对象
+     */
+    static getSVGStyle(styleParams) {
+        let style, that = this;
+        if(!that.svgDiv) {
+            that.svgDiv = document.createElement('div');
+            document.body.appendChild(that.svgDiv);
+        }
+        StyleUtils.getCanvasFromSVG(styleParams.url, that.svgDiv, function (canvas) {
+            style = new ol.style.Style({
+                image: new ol.style.Icon({
+                    img:  that.setColorToCanvas(canvas,styleParams),
+                    scale: styleParams.radius/canvas.width,
+                    imgSize: [canvas.width, canvas.height],
+                    anchor : [0.5, 0.5],
+                    opacity: styleParams.fillOpacity
+                })
+            });
+        });
+        return style;
+    }
+    
+    /**
+     * @function ol.supermap.StyleUtils.setColorToCanvas 将颜色，透明度等样式设置到canvas上
+     * @param {object} canvas - 渲染的canvas对象
+     * @param {object} parameters - 样式参数
+     * @returns {Object} style对象
+     */
+    static setColorToCanvas(canvas, parameters) {
+        let context = canvas.getContext('2d');
+        let fillColor = StyleUtils.hexToRgb(parameters.fillColor);
+        fillColor && fillColor.push(parameters.fillOpacity);
+        let strokeColor = StyleUtils.hexToRgb(parameters.strokeColor);
+        strokeColor && strokeColor.push(parameters.strokeOpacity);
+        context.fillStyle = StyleUtils.formatRGB(fillColor);
+        context.fill();
+        context.strokeStyle = StyleUtils.formatRGB(strokeColor);
+        context.lineWidth = parameters.strokeWidth;
+        context.stroke();
+        return canvas;
+    }
+    /**
+     * @function ol.supermap.StyleUtils.getImageStyle 获取图片样式
+     * @param {object} styleParams - 样式参数
+     * @returns {Object} style对象
+     */
+    static getImageStyle(styleParams) {
+        let size = styleParams.imageInfo.size,
+            scale = 2 * styleParams.radius / size.w;
+        let imageInfo = styleParams.imageInfo;
+        let imgDom = imageInfo.img;
+        if (!imgDom || !imgDom.src) {
+            imgDom = new Image();
+            //要组装成完整的url
+            imgDom.src = imageInfo.url;
+        }
+        return new ol.style.Style({
+            image: new ol.style.Icon({
+                img: imgDom,
+                scale,
+                imgSize: [size.w, size.h],
+                anchor : [0.5, 0.5]
+            })
+        });
     }
 
 }
