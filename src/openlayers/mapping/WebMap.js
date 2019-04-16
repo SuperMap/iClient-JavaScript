@@ -1974,7 +1974,7 @@ export class WebMap extends ol.Observable {
     createDataflowLayer(layerInfo, layerIndex) {
         let layerStyle = layerInfo.pointStyle, style;
         //获取样式
-        style = StyleUtils.getOpenlayerStyle(layerStyle, layerInfo.featureType);
+        style = StyleUtils.getOpenlayersStyle(layerStyle, layerInfo.featureType);
 
         let source = new ol.source.Vector({
             wrapX: false
@@ -2395,7 +2395,7 @@ export class WebMap extends ol.Observable {
                 radius = customSettings[i] && customSettings[i].radius ? customSettings[i].radius : radius;
                 // 转化成 ol 样式
                 style.radius = radius;
-                let olStyle = StyleUtils.getOpenlayerStyle(style, featureType);
+                let olStyle = StyleUtils.getOpenlayersStyle(style, featureType);
                 styleGroup.push({ olStyle: olStyle, radius, start, end });
             }
             return styleGroup;
