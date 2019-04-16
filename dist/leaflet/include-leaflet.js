@@ -90,11 +90,11 @@
             inputCSS("../../dist/leaflet/iclient9-leaflet.min.css");
         }
         if (inArray(includes, 'iclient9-plot-leaflet')) {
-            inputCSS("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.1/iclient9-plot-leaflet.css");
+            inputCSS("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.2/iclient9-plot-leaflet.css");
             if (supportES6()) {
-                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.1/iclient9-plot-leaflet-es6.min.js");
+                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.2/iclient9-plot-leaflet-es6.min.js");
             } else {
-                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.1/iclient9-plot-leaflet.min.js");
+                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/9.1.2/iclient9-plot-leaflet.min.js");
             }
         }
         if (inArray(includes, 'leaflet.heat')) {
