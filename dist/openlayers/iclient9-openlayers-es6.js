@@ -3,7 +3,7 @@
  *          iclient9-openlayers.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.1
+ *          version: v9.1.2
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -63162,7 +63162,7 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
 /**
  * @class SuperMap.Widgets.Chart
  * @classdesc 图表微件
- * @version 10.X.X
+ * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
@@ -67538,8 +67538,6 @@ var MapExtend = function () {
         }
         return this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
     }
-    // ol.control.ScaleLine.prototype.renderDefault = ol.control.ScaleLine.render;
-    // ol.control.ScaleLine.prototype.getUnitsDefault = ol.control.ScaleLine.prototype.getUnits;
 }();
 // CONCATENATED MODULE: ./src/openlayers/core/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.

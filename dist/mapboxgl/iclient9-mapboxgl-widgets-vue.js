@@ -1,3 +1,11 @@
+/*!
+ * 
+ *          iclient9-mapboxgl-widgets-vue.(http://iclient.supermap.io)
+ *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
+ *          license: Apache-2.0
+ *          version: v9.1.2
+ *         
+ */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("vue"), require("./libs/mapboxgl/mapbox-gl-enhance.js"), require("./libs/iclient-mapboxgl/iclient9-mapboxgl.min"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));

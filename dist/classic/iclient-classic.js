@@ -3,7 +3,7 @@
  *          iclient-classic.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.1
+ *          version: v9.1.2
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -11068,6 +11083,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 从服务器获取一个token,在此之前要注册服务器信息。
+         * @function SuperMap.SecurityManager.generateToken
          * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
          * @param {SuperMap.TokenServiceParameter} tokenParam - token 申请参数。
          * @returns {Promise} 返回包含 token 信息的 Promise 对象。
@@ -11085,6 +11101,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 注册安全服务器相关信息。
+         * @function SuperMap.SecurityManager.registerServers
          * @param {SuperMap.ServerInfo} serverInfos - 服务器信息。
          */
 
@@ -11103,6 +11120,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 服务请求都会自动带上这个 token。
+         * @function SuperMap.SecurityManager.registerToken
          * @param {string} url -服务器域名+端口：如http://localhost:8090。
          * @param {string} token - token
          */
@@ -11120,6 +11138,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 注册 key,ids 为数组(存在一个 key 对应多个服务)。
+         * @function SuperMap.SecurityManager.registerKey
          * @param {Array} ids - 可以是服务 id 数组或者 url 地址数组或者 webAPI 类型数组。
          * @param {string} key - key
          */
@@ -11141,6 +11160,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 获取服务器信息。
+         * @function SuperMap.SecurityManager.getServerInfo
          * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
          * @returns {SuperMap.ServerInfo} 服务器信息。
          */
@@ -11154,6 +11174,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 根据 Url 获取token。
+         * @function SuperMap.SecurityManager.getToken
          * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
          * @returns {string} token
          */
@@ -11171,6 +11192,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 根据 Url 获取 key。
+         * @function SuperMap.SecurityManager.getKey
          * @param {string} id - id
          * @returns {string} key
          */
@@ -11185,6 +11207,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iServer 登录验证。
+         * @function SuperMap.SecurityManager.loginiServer
          * @param {string} url - iServer 首页地址，如：http://localhost:8090/iserver。
          * @param {string} username - 用户名。
          * @param {string} password - 密码。
@@ -11215,6 +11238,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iServer登出。
+         * @function SuperMap.SecurityManager.logoutiServer
          * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
          * @returns {Promise} 是否登出成功。
          */
@@ -11240,6 +11264,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description Online 登录验证。
+         * @function SuperMap.SecurityManager.loginOnline
          * @param {string} callbackLocation - 跳转位置。
          * @param {boolean} [newTab=true] - 是否新窗口打开。
          */
@@ -11253,7 +11278,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iPortal登录验证。
-         * @param {string} url - iportal 首页地址。
+         * @function SuperMap.SecurityManager.loginiPortal
+         * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
          * @param {string} username - 用户名。
          * @param {string} password - 密码。
          * @returns {Promise} 返回包含 iPortal 登录请求结果的 Promise 对象。
@@ -11282,7 +11308,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iPortal 登出。
-         * @param {string} url - iportal 首页地址。
+         * @function SuperMap.SecurityManager.logoutiPortal
+         * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
          * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
          */
 
@@ -11308,6 +11335,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iManager 登录验证。
+         * @function SuperMap.SecurityManager.loginManager
          * @param {string} url - iManager 地址。地址参数为 iManager 首页地址，如： http://localhost:8390/imanager。
          * @param {Object} [loginInfoParams] - iManager 登录参数。
          * @param {string} loginInfoParams.userName - 用户名。
@@ -11350,6 +11378,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 清空全部验证信息。
+         * @function SuperMap.SecurityManager.destroyAllCredentials
          */
 
     }, {
@@ -11362,6 +11391,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 清空令牌信息。
+         * @function SuperMap.SecurityManager.destroyToken
+         * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
          */
 
     }, {
@@ -11379,16 +11410,18 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 清空服务授权码。
+         * @function SuperMap.SecurityManager.destroyKey
+         * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
          */
 
     }, {
         key: 'destroyKey',
-        value: function destroyKey(id) {
-            if (!id) {
+        value: function destroyKey(url) {
+            if (!url) {
                 return;
             }
             this.keys = this.keys || {};
-            var key = this._getUrlRestString(id) || id;
+            var key = this._getUrlRestString(url) || url;
             if (this.keys[key]) {
                 delete this.keys[key];
             }
@@ -19890,14 +19923,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc iPortal 服务基类（有权限限制的类需要实现此类）。
  * @category iPortal/Online
  * @param {string} url - iPortal 服务地址。
+ * @param {Object} options - 可选参数。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  */
 var IPortalServiceBase = exports.IPortalServiceBase = function () {
-    function IPortalServiceBase(url) {
+    function IPortalServiceBase(url, options) {
         _classCallCheck(this, IPortalServiceBase);
 
+        options = options || {};
         this.serviceUrl = url;
         this.serverType = _REST.ServerType.iPortal;
         this.CLASS_NAME = "SuperMap.iPortalServiceBase";
+        this.withCredentials = options.withCredentials || false;
     }
 
     /**
@@ -19912,7 +19949,9 @@ var IPortalServiceBase = exports.IPortalServiceBase = function () {
 
     _createClass(IPortalServiceBase, [{
         key: 'request',
-        value: function request(method, url, param, requestOptions) {
+        value: function request(method, url, param) {
+            var requestOptions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : { withCredentials: this.withCredentials };
+
             url = this.createCredentialUrl(url);
             return _FetchRequest.FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
                 return response.json();
@@ -66133,8 +66172,11 @@ exports.ThemeStyle = _ThemeStyle.ThemeStyle;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.ArrayStatistic = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66380,6 +66422,8 @@ var ArrayStatistic = exports.ArrayStatistic = function () {
     return ArrayStatistic;
 }();
 
+_SuperMap.SuperMap.ArrayStatistic = ArrayStatistic;
+
 /***/ }),
 /* 297 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -66395,6 +66439,8 @@ exports.ColorsPickerUtil = undefined;
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _Color = __webpack_require__(59);
+
+var _SuperMap = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66414,7 +66460,7 @@ var ColorsPickerUtil = exports.ColorsPickerUtil = function () {
     }
 
     _createClass(ColorsPickerUtil, null, [{
-        key: "createCanvas",
+        key: 'createCanvas',
 
         /**
          * 创建DOM canvas
@@ -66444,7 +66490,7 @@ var ColorsPickerUtil = exports.ColorsPickerUtil = function () {
          */
 
     }, {
-        key: "getLinearGradient",
+        key: 'getLinearGradient',
         value: function getLinearGradient(x0, y0, x1, y1, colorList) {
             if (!this._ctx) {
                 this._ctx = this.getContext();
@@ -66469,7 +66515,7 @@ var ColorsPickerUtil = exports.ColorsPickerUtil = function () {
          */
 
     }, {
-        key: "getContext",
+        key: 'getContext',
         value: function getContext() {
             if (!this._ctx) {
                 this._ctx = document.createElement('canvas').getContext('2d');
@@ -66491,7 +66537,7 @@ var ColorsPickerUtil = exports.ColorsPickerUtil = function () {
          */
 
     }, {
-        key: "getStepColors",
+        key: 'getStepColors',
         value: function getStepColors(start, end, step) {
             start = ColorRender.toRGBA(start);
             end = ColorRender.toRGBA(end);
@@ -66534,7 +66580,7 @@ var ColorsPickerUtil = exports.ColorsPickerUtil = function () {
          */
 
     }, {
-        key: "getGradientColors",
+        key: 'getGradientColors',
         value: function getGradientColors(colors, total, themeType) {
             var ret = [],
                 step;
@@ -66582,6 +66628,8 @@ var ColorsPickerUtil = exports.ColorsPickerUtil = function () {
 
     return ColorsPickerUtil;
 }();
+
+_SuperMap.SuperMap.ColorsPickerUtil = ColorsPickerUtil;
 
 /***/ }),
 /* 298 */
@@ -76822,17 +76870,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category iPortal/Online
  * @extends {SuperMap.iPortalServiceBase}
  * @param {string} iportalUrl - 地址。
- *
  */
 var IPortal = exports.IPortal = function (_IPortalServiceBase) {
     _inherits(IPortal, _IPortalServiceBase);
 
-    function IPortal(iportalUrl) {
+    function IPortal(iportalUrl, options) {
         _classCallCheck(this, IPortal);
 
-        var _this = _possibleConstructorReturn(this, (IPortal.__proto__ || Object.getPrototypeOf(IPortal)).call(this, iportalUrl));
+        var _this = _possibleConstructorReturn(this, (IPortal.__proto__ || Object.getPrototypeOf(IPortal)).call(this, iportalUrl, options));
 
         _this.iportalUrl = iportalUrl;
+        options = options || {};
+        _this.withCredentials = options.withCredentials || false;
         return _this;
     }
 
@@ -76900,7 +76949,12 @@ var IPortal = exports.IPortal = function (_IPortalServiceBase) {
             if (!(queryParams instanceof _iPortalMapsQueryParam.IPortalMapsQueryParam)) {
                 return null;
             }
-            var mapsUrl = this.iportalUrl + "/web/maps";
+            var mapsUrl = void 0;
+            if (this.withCredentials) {
+                mapsUrl = this.iportalUrl + "/web/mycontent/maps";
+            } else {
+                mapsUrl = this.iportalUrl + "/web/maps";
+            }
             return this.request("GET", mapsUrl, queryParams).then(function (result) {
                 var mapRetult = {};
                 var maps = [];
@@ -78715,7 +78769,7 @@ var ChartModel = exports.ChartModel = function () {
                         }
                     });
                     // 如果有服务，获取数据源和数据集, 然后请求rest服务
-                    me.getDatafromRest(resultData.serviceType, resultData.address, success);
+                    resultData && me.getDatafromRest(resultData.serviceType, resultData.address, success);
                 } else {
                     me.getDatafromContent(url, success);
                     return;
@@ -79157,7 +79211,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Widgets.Chart
  * @classdesc 图表微件
- * @version 10.X.X
+ * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。

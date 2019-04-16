@@ -1216,13 +1216,13 @@ var exampleConfig = {
                 {
                     name: "图表_iServer",
                     name_en: "chart_iServer",
-                    version: "10.X.X",
+                    version: "9.1.2",
                     thumbnail: "widgets_chart_isvr.png",
                     fileName: "widgets_chart_isvr"
                 },{
                     name: "图表_iPortal",
                     name_en: "chart_iPortal",
-                    version: "10.X.X",
+                    version: "9.1.2",
                     thumbnail: "widgets_chart_iptl.png",
                     fileName: "widgets_chart_iptl"
                 } 
