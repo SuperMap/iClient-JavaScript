@@ -2,26 +2,17 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import {
-    SuperMap
-} from '../../SuperMap';
-import {
-    FetchRequest,
-    FilterParameter,
-    GetFeaturesBySQLParameters,
-    GetFeaturesBySQLService,
-    QueryBySQLParameters,
-    QueryOption,
-    Lang,
-    QueryBySQLService,
-    DataFormat
-} from '@supermap/iclient-common';
-import {
-    FileReaderUtil
-} from '../util/FileReaderUtil'
-import {
-    Events
-} from '../../commontypes/Events';
+import { SuperMap } from "../../SuperMap";
+import { FetchRequest } from "../../util/FetchRequest";
+import { GetFeaturesBySQLParameters } from "../../iServer/GetFeaturesBySQLParameters";
+import { FilterParameter } from "../../iServer/FilterParameter";
+import { GetFeaturesBySQLService } from "../../iServer/GetFeaturesBySQLService";
+import { QueryBySQLParameters } from "../../iServer/QueryBySQLParameters";
+import { QueryBySQLService } from "../../iServer/QueryBySQLService";
+import { DataFormat,QueryOption } from "../../REST";
+import { Lang } from "../../lang/Lang";
+import { FileReaderUtil } from "../util/FileReaderUtil";
+import { Events } from "../../commontypes/Events";
 /**
  * @class SuperMap.Widgets.ChartModel
  * @classdesc 图表微件数据模型

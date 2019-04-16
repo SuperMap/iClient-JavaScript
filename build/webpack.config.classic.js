@@ -18,7 +18,10 @@ module.exports = {
     //其它解决方案配置
     resolve: configBase.resolve,
     externals: Object.assign({}, configBase.externals, {
-        'xlsx': "function(){try{return XLSX}catch(e){return {}}}()"
+        'xlsx': "function(){try{return XLSX}catch(e){return {}}}()",
+        'canvg': "function(){try{return canvg}catch(e){return {}}}()",
+        'jsonsql': "function(){try{return jsonsql}catch(e){return {}}}()",
+        'xml-js': "function(){try{return convert}catch(e){return {}}}()"
     }),
     module: {
         rules: (function () {
