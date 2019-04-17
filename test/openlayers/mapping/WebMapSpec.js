@@ -406,7 +406,7 @@ describe('openlayers_WebMap', () => {
             done();
         }, 1000)
     });
-    it('createThemeLayer_Vector_SVG', (done) => {
+    xit('createThemeLayer_Vector_SVG', (done) => {
         let options = {
             server: server,
             successCallback: function () {},
