@@ -9,7 +9,7 @@ import './openlayers/core/MapExtendSpec.js';
 /*openlayers -- mapping*/
 import './openlayers/mapping/ImageSuperMapRestSpec.js';
 import './openlayers/mapping/TileSuperMapRestSpec.js';
-// import './openlayers/mapping/WebMapSpec.js';
+import './openlayers/mapping/WebMapSpec.js';
 
 /*openlayers -- overlay*/
 import './openlayers/overlay/DataFlowSpec.js';
