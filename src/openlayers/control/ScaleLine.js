@@ -28,16 +28,17 @@ export class ScaleLine extends ol.control.ScaleLine {
 
     constructor(options) {
         options = options || {};
+        //需在super之前定义render，真正的调用是在初始化完成后
         options.render = function (mapEvent) {
             var frameState = mapEvent.frameState;
             if (!frameState) {
-                this.viewState_ = null;
+                this.viewState_ = null; //NOSONAR
             } else {
-                this.viewState_ = frameState.viewState;
+                this.viewState_ = frameState.viewState; //NOSONAR
             }
-            this.updateElementRepair();
+            this.updateElementRepair(); //NOSONAR
         }
-        super(options)
+        super(options);
     }
 
     updateElementRepair() {

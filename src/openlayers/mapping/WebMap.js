@@ -2100,7 +2100,9 @@ export class WebMap extends ol.Observable {
             if(directionField && directionField !== "未设置" || directionField !== "None") {
                 let value, image;
                 value = feature.attributes[directionField];
-                if(value > 360 || value < 0) return null;
+                if(value > 360 || value < 0){ 
+                    return null
+                };
                 if(styleType === "SYMBOL_POINT") {
                     image = layerStyle.getText();
                 } else {
@@ -2359,7 +2361,9 @@ export class WebMap extends ol.Observable {
             let attributes = feature.attributes,
                 value = attributes[themeField];
             // 过滤掉空值和非数值
-            if (value == null || !Util.isNumber(value)) return;
+            if (value == null || !Util.isNumber(value)) {
+                return;
+            }
             values.push(Number(value));
         });
         try {
