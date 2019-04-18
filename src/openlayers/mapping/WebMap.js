@@ -867,6 +867,9 @@ export class WebMap extends ol.Observable {
                     if((layer.layerType === "MARKER") || (dataSource && (!dataSource.accessType || dataSource.accessType === 'DIRECT'))) {
                         //原来二进制文件
                         let url = `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
+                        if(that.credentialValue) {
+                            url = `${url}&${that.credentialKey}=${that.credentialValue}`;
+                        }
                         FetchRequest.get(url, null, {
                             withCredentials: this.withCredentials
                         }).then(function (response) {

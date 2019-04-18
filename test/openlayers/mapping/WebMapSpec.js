@@ -12,6 +12,7 @@ import {
 import {
     Util
 } from '../../../src/openlayers/core/Util';
+import {StyleUtils} from "../../../src/openlayers/core/StyleUtils";
 
 describe('openlayers_WebMap', () => {
     var originalTimeout, testDiv, webMap;
@@ -424,6 +425,7 @@ describe('openlayers_WebMap', () => {
         });
         spyOn(options, 'successCallback');
         var datavizWebmap = new WebMap(id, options);
+        spyOn(datavizWebmap, 'createGraphicLayer');
 
         setTimeout(() => {
             expect(datavizWebmap.server).toBe(server);
@@ -433,9 +435,9 @@ describe('openlayers_WebMap', () => {
 
             expect(datavizWebmap.mapParams.title).toBe("无标题");
             expect(datavizWebmap.mapParams.description).toBe('');
+            expect(datavizWebmap.createGraphicLayer).toHaveBeenCalled();
             expect(options.successCallback).toHaveBeenCalled();
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
-            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(1)');
             done();
         }, 1000)
     });
@@ -457,6 +459,7 @@ describe('openlayers_WebMap', () => {
             return Promise.resolve();
         });
         spyOn(options, 'successCallback');
+
         var datavizWebmap = new WebMap(id, options);
 
         setTimeout(() => {
