@@ -38,7 +38,7 @@ export class ScaleLine extends ol.control.ScaleLine {
             }
             this.updateElementRepair(); //NOSONAR
         }
-        super(options);
+        super(options); //NOSONAR
     }
 
     updateElementRepair() {
