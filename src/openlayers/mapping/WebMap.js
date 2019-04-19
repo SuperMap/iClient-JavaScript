@@ -212,11 +212,23 @@ export class WebMap extends ol.Observable {
             this.mapParams.extent = extent;
             this.mapParams.projection = projection;
         }
+
+        // 计算当前最大分辨率
+        let maxResolution;
+        if(extent && extent.length === 4){
+            let width = extent[2] - extent[0];
+            let height = extent[3] - extent[1];
+            let maxResolution1 = width/256;
+            let maxResolution2 = height/256;
+            maxResolution = Math.max(maxResolution1, maxResolution2);
+        }
+        
         this.map.setView(new ol.View({
             zoom,
             center,
             projection,
-            extent
+            extent,
+            maxResolution
         }));
     }
     /**
