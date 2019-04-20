@@ -55,7 +55,7 @@
         });
         dataFlowLayer.addTo(map);
 
-        //模拟实时数据
+        //模拟实时数据 start
         //查询expectCount个线数据，每两秒将expectCount个点通过dataFlowService广播给iSevrer的dataflow服务,模拟expectCount个小汽车的移动轨迹
         //该测试数据有21331个数据
         var expectCount = 10000;
@@ -121,6 +121,7 @@
             dataFlowBroadcast.broadcast(features);
             count += 2;
         }
+        //模拟实时数据 end
     </script>
 </body>
 

@@ -77,5 +77,26 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         map.addLayer(vectorLayer);
 
     });
+    it('initialize_styleObject_nullSource', (done) => {
+        var format = new ol.format.MVT({
+            featureClass: ol.Feature
+        });
+        vectorLayer = new ol.layer.VectorTile({
+            //设置避让参数
+            declutter: true,
+            source: new VectorTileSuperMapRest({
+                style: vectorstylesEscapedJson,
+                projection: 'EPSG:4326',
+                format: format
+            })
+        });
+        spyOn(vectorLayer.getSource(), 'tileUrlFunction').and.callThrough();
+        setTimeout(() => {
+            expect(vectorLayer.getSource()._tileUrl).toContain("California");
+            expect(vectorLayer.getSource().tileUrlFunction.calls.count()).toEqual(4)
+            done();
+        }, 2000);
+        map.addLayer(vectorLayer);
 
+    });
 });

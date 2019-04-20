@@ -175,6 +175,26 @@ describe('openlayers_MapboxStyles', () => {
         });
     });
 
+    it('init_StyleObject_nullSource', (done) => {
+        var style;
+        mapboxStyles = new MapboxStyles({
+            style: vectorstylesEscapedJson,
+            map: map
+        });
+        mapboxStyles.on("styleloaded", () => {
+            try {
+                style = mapboxStyles.getStyleFunction();
+                expect(style).not.toBeNull();
+                expect(mapboxStyles.source).toEqual('California');
+                done();
+            } catch (e) {
+                console.log("'init_StyleObject_nullSource'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
+
     it('init_StyleUrl', (done) => {
         var style;
         mapboxStyles = new MapboxStyles({

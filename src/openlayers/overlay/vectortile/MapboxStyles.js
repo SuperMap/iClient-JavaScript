@@ -25,9 +25,10 @@ import {
  * @param {(Object|string|undefined)} [options.style] - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。与 options.url 互斥，优先级高于 options.url。
  * @param {Array.<number>} [options.resolutions] - 地图分辨率数组，用于映射 zoom 值。通常情況与地图的 {@link ol.View} 的分辨率一致。</br>
  * 默认值为：[78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564, 1222.99245256282,611.49622628141,305.748113140705,152.8740565703525, 76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032, 4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395, 0.29858214173896974,0.14929107086948487,0.07464553543474244]。
- * @param {(string|Array.<string>)} [options.source] - Mapbox Style 'source'的 key 值或者 'layer' 的 ID 数组。
+ * @param {(string|Array.<string>|undefined)} [options.source] - Mapbox Style 'source'的 key 值或者 'layer' 的 ID 数组。
  * 当配置 'source' 的 key 值时，source 为该值的 layer 会被加载；
  * 当配置为 'layer' 的 ID 数组时，指定的 layer 会被加载，注意被指定的 layer 需要有相同的 source。
+ * 当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
  * @param {ol.StyleFunction} [options.selectedStyle] -选中样式Function。
  * @example
@@ -186,6 +187,9 @@ export class MapboxStyles extends ol.Observable {
         }
     }
     _resolve() {
+        if(!this.source){
+            this.source = Object.keys(this._mbStyle.sources)[0];
+        }
         if (this._mbStyle.sprite) {
             const spriteScale = window.devicePixelRatio >= 1.5 ? 0.5 : 1;
             const sizeFactor = spriteScale == 0.5 ? '@2x' : '';

@@ -17384,7 +17384,7 @@ SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService_ComputeWeightMa
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
  * @param {function} options.onEachFeature - 设置每个数据加载popup等。
- * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} options.geometry - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} options.excludeField - -排除字段。
  */
 class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBase {
@@ -17401,8 +17401,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
         super(url, options);
 
         /**
-         * @member {Array.<Object>} SuperMap.DataFlowService.prototype.geometry
-         * @description 设置增添的几何要素对象数组。
+         * @member {GeoJSONObject} SuperMap.DataFlowService.prototype.geometry
+         * @description 指定几何范围，该范围内的要素才能被订阅。
          */
         this.geometry = null;
 
@@ -17507,7 +17507,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
     /**
      * @function SuperMap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      * @returns {this} this
      */
     setGeometry(geometry) {
@@ -61712,10 +61712,6 @@ SuperMap.Widgets.MessageBox = MessageBox;
 var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(9);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
 
-// EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
-var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(6);
-var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
-
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -61821,6 +61817,10 @@ let Lang = {
 
 SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
+
+// EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(6);
+var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -62045,6 +62045,13 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
 
 
 
@@ -72791,7 +72798,7 @@ external_mapboxgl_default.a.supermap.ChartService = ChartService_ChartService;
  * })
  * @param {string} url - 与客户端交互的实时数据服务地址。
  * @param {Object} options - 加载实时数据可选参数。
- * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketConnected
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketError
@@ -72911,7 +72918,7 @@ class services_DataFlowService_DataFlowService extends ServiceBase_ServiceBase {
     /**
      * @function mapboxgl.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

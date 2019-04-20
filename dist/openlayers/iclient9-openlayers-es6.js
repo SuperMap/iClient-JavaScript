@@ -17378,7 +17378,7 @@ SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService_ComputeWeightMa
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
  * @param {function} options.onEachFeature - 设置每个数据加载popup等。
- * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} options.geometry - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} options.excludeField - -排除字段。
  */
 class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBase {
@@ -17395,8 +17395,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
         super(url, options);
 
         /**
-         * @member {Array.<Object>} SuperMap.DataFlowService.prototype.geometry
-         * @description 设置增添的几何要素对象数组。
+         * @member {GeoJSONObject} SuperMap.DataFlowService.prototype.geometry
+         * @description 指定几何范围，该范围内的要素才能被订阅。
          */
         this.geometry = null;
 
@@ -17501,7 +17501,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
     /**
      * @function SuperMap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      * @returns {this} this
      */
     setGeometry(geometry) {
@@ -61706,10 +61706,6 @@ SuperMap.Widgets.MessageBox = MessageBox;
 var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(8);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
 
-// EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
-var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(5);
-var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
-
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -61815,6 +61811,10 @@ let Lang = {
 
 SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
+
+// EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(5);
+var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -62039,6 +62039,13 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
 
 
 
@@ -65552,16 +65559,17 @@ class ScaleLine_ScaleLine extends external_ol_default.a.control.ScaleLine {
 
     constructor(options) {
         options = options || {};
+        //需在super之前定义render，真正的调用是在初始化完成后
         options.render = function (mapEvent) {
             var frameState = mapEvent.frameState;
             if (!frameState) {
-                this.viewState_ = null;
+                this.viewState_ = null; //NOSONAR
             } else {
-                this.viewState_ = frameState.viewState;
+                this.viewState_ = frameState.viewState; //NOSONAR
             }
-            this.updateElementRepair();
+            this.updateElementRepair(); //NOSONAR
         }
-        super(options)
+        super(options); //NOSONAR
     }
 
     updateElementRepair() {
@@ -65684,6 +65692,7 @@ class ScaleLine_ScaleLine extends external_ol_default.a.control.ScaleLine {
 }
 
 external_ol_default.a.supermap.control.ScaleLine = ScaleLine_ScaleLine;
+
 // CONCATENATED MODULE: ./src/openlayers/control/Logo.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -68907,11 +68916,23 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             this.mapParams.extent = extent;
             this.mapParams.projection = projection;
         }
+
+        // 计算当前最大分辨率
+        let maxResolution;
+        if(extent && extent.length === 4){
+            let width = extent[2] - extent[0];
+            let height = extent[3] - extent[1];
+            let maxResolution1 = width/256;
+            let maxResolution2 = height/256;
+            maxResolution = Math.max(maxResolution1, maxResolution2);
+        }
+        
         this.map.setView(new external_ol_default.a.View({
             zoom,
             center,
             projection,
-            extent
+            extent,
+            maxResolution
         }));
     }
     /**
@@ -69562,6 +69583,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     if((layer.layerType === "MARKER") || (dataSource && (!dataSource.accessType || dataSource.accessType === 'DIRECT'))) {
                         //原来二进制文件
                         let url = `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
+                        if(that.credentialValue) {
+                            url = `${url}&${that.credentialKey}=${that.credentialValue}`;
+                        }
                         FetchRequest.get(url, null, {
                             withCredentials: this.withCredentials
                         }).then(function (response) {
@@ -70795,7 +70819,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             if(directionField && directionField !== "未设置" || directionField !== "None") {
                 let value, image;
                 value = feature.attributes[directionField];
-                if(value > 360 || value < 0) return null;
+                if(value > 360 || value < 0){ 
+                    return null
+                }
                 if(styleType === "SYMBOL_POINT") {
                     image = layerStyle.getText();
                 } else {
@@ -71054,7 +71080,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let attributes = feature.attributes,
                 value = attributes[themeField];
             // 过滤掉空值和非数值
-            if (value == null || !core_Util_Util.isNumber(value)) return;
+            if (value == null || !core_Util_Util.isNumber(value)) {
+                return;
+            }
             values.push(Number(value));
         });
         try {
@@ -71222,7 +71250,7 @@ external_ol_default.a.supermap.WebMap = WebMap_WebMap;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  */
 class services_DataFlowService_DataFlowService extends ServiceBase_ServiceBase {
@@ -71289,7 +71317,7 @@ class services_DataFlowService_DataFlowService extends ServiceBase_ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -71328,40 +71356,49 @@ external_ol_default.a.supermap.DataFlowService = services_DataFlowService_DataFl
 /**
  * @class ol.source.DataFlow
  * @category  iServer DataFlow
- * @classdesc 数据流图层源。
+ * @classdesc 数据流图层源。订阅SuperMap iServer 数据流服务,并将订阅得到的数据根据 `options.idField` 自动更新。与 {@link ol.layer.Vector} 结合使用可以实现SuperMap iServer 数据流上图、根据`options.idField`自动更新。
  * @param {Object} opt_options - 参数。
+ * @param {string} opt_options.ws - SuperMap iServer 数据流服务地址，例如：http://localhost:8090/iserver/services/dataflowTest/dataflow。
  * @param {string} [opt_options.idField = 'id'] - 要素属性中表示唯一标识的字段。
- * @param {Array.<Object>} [opt_options.geometry] - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} [opt_options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [opt_options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {Object} [opt_options.excludeField] - 排除字段
  * @extends {ol.source.Vector}
+ * @example
+ * var source = new ol.source.DataFlow({
+ *   ws: urlDataFlow,
+ *   idField:"objectId"
+ * });
+ * var layer = new ol.layer.Vector({
+ *    source: source,
+ * });
+ *
  */
 class DataFlow_DataFlow extends external_ol_default.a.source.Vector {
-
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};
         super(options);
-        this.idField = options.idField || 'id';
+        this.idField = options.idField || "id";
         this.dataService = new services_DataFlowService_DataFlowService(options.ws, {
             geometry: options.geometry,
             prjCoordSys: options.prjCoordSys,
             excludeField: options.excludeField
         }).initSubscribe();
         var me = this;
-        me.dataService.on('subscribeSocketConnected', function (e) {
+        me.dataService.on("subscribeSocketConnected", function(e) {
             me.dispatchEvent({
                 type: "subscribeSucceeded",
                 value: e
-            })
+            });
         });
-        me.dataService.on('messageSucceeded', function (msg) {
+        me.dataService.on("messageSucceeded", function(msg) {
             me._onMessageSuccessed(msg);
         });
-        me.dataService.on('setFilterParamSucceeded', function (msg) {
+        me.dataService.on("setFilterParamSucceeded", function(msg) {
             me.dispatchEvent({
                 type: "setFilterParamSucceeded",
                 value: msg
-            })
+            });
         });
         this.featureCache = {};
     }
@@ -71402,7 +71439,7 @@ class DataFlow_DataFlow extends external_ol_default.a.source.Vector {
     _onMessageSuccessed(msg) {
         //this.clear();
 
-        var feature = (new external_ol_default.a.format.GeoJSON()).readFeature(msg.value.featureResult);
+        var feature = new external_ol_default.a.format.GeoJSON().readFeature(msg.value.featureResult);
 
         var geoID = feature.get(this.idField);
         if (geoID !== undefined && this.featureCache[geoID]) {
@@ -71419,12 +71456,11 @@ class DataFlow_DataFlow extends external_ol_default.a.source.Vector {
                 source: this,
                 data: feature
             }
-        })
-
-
+        });
     }
 }
 external_ol_default.a.source.DataFlow = DataFlow_DataFlow;
+
 // CONCATENATED MODULE: ./src/openlayers/overlay/theme/ThemeFeature.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -76819,7 +76855,7 @@ external_ol_default.a.supermap = external_ol_default.a.supermap || {};
  * @param {Object} options - 参数。
  * @param {(string|undefined)} options.url - SuperMap iServer 地图服务地址。
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 `ol.format.MVT ` 且 `options.source` 不为空时有效，优先级高于 `options.url`。
- * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时必填。
+ * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时有效。当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {string} [options.crossOrigin = 'anonymous'] - 跨域模式。
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
@@ -76827,23 +76863,21 @@ external_ol_default.a.supermap = external_ol_default.a.supermap || {};
  * @extends {ol.source.VectorTile}
  */
 class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.a.source.VectorTile {
-
     constructor(options) {
         if (options.url === undefined && options.style === undefined) {
             console.error("one of 'options.style' or 'options.style' is required");
-        }
-        if(options.style && !options.source){
-            console.error("when 'options.style' is configured, 'options.source' must be provided");
         }
         var zRegEx = /\{z\}/g;
         var xRegEx = /\{x\}/g;
         var yRegEx = /\{y\}/g;
         var dashYRegEx = /\{-y\}/g;
         options.crossOrigin = 'anonymous';
-        options.attributions = options.attributions ||
+        options.attributions =
+            options.attributions ||
             new external_ol_default.a.Attribution({
-                html: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-            })
+                html:
+                    "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+            });
 
         super({
             attributions: options.attributions,
@@ -76852,12 +76886,12 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
             logo: options.logo,
             overlaps: options.overlaps,
             projection: options.projection,
-            state: (options.format instanceof external_ol_default.a.format.MVT && options.style && options.source && Object.prototype.toString.call(options.style) == "[object String]") ? "loading" : options.state,
+            state: options.format instanceof external_ol_default.a.format.MVT && options.style && Object.prototype.toString.call(options.style) == '[object String]' ? 'loading' : options.state,
             tileClass: options.tileClass,
             tileGrid: options.tileGrid,
             tilePixelRatio: options.tilePixelRatio,
-            tileUrlFunction: (options.format instanceof external_ol_default.a.format.MVT && options.style && options.source) ? zxyTileUrlFunction : tileUrlFunction,
-            tileLoadFunction: (options.format instanceof external_ol_default.a.format.MVT) ? undefined : tileLoadFunction,
+            tileUrlFunction: options.format instanceof external_ol_default.a.format.MVT && options.style ? zxyTileUrlFunction : tileUrlFunction,
+            tileLoadFunction: options.format instanceof external_ol_default.a.format.MVT ? undefined : tileLoadFunction,
             url: options.url,
             urls: options.urls,
             wrapX: options.wrapX !== undefined ? options.wrapX : false
@@ -76865,21 +76899,20 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
 
         var me = this;
         me._tileType = options.tileType || 'ScaleXY';
-        if (options.format instanceof external_ol_default.a.format.MVT && options.style && options.source) {
-            if (Object.prototype.toString.call(options.style) == "[object String]") {
-                FetchRequest.get(options.style).then(response =>
-                    response.json()).then(mbStyle => {
-                    this._fillByStyleJSON(mbStyle, options.source);
-                    this.setState("ready");
-                });
+        if (options.format instanceof external_ol_default.a.format.MVT && options.style) {
+            if (Object.prototype.toString.call(options.style) == '[object String]') {
+                FetchRequest.get(options.style)
+                    .then(response => response.json())
+                    .then(mbStyle => {
+                        this._fillByStyleJSON(mbStyle, options.source);
+                        this.setState('ready');
+                    });
             } else {
-                this._fillByStyleJSON(options.style, options.source)
+                this._fillByStyleJSON(options.style, options.source);
             }
-
         } else {
             this._fillByRestMapOptions(options.url, options);
         }
-
 
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
@@ -76891,12 +76924,10 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
             var x = tileCoord[1];
             var y = -tileCoord[2] - 1;
             if (me.tileType === 'ZXY') {
-                params = "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&x=" + x + "&y=" + y + "&z=" + z;
-
+                params = '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&x=' + x + '&y=' + y + '&z=' + z;
             } else if (me.tileType === 'ViewBounds') {
-                var tileExtent = me.tileGrid.getTileCoordExtent(
-                    tileCoord);
-                params = "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + tileExtent[0] + "," + tileExtent[1] + "," + tileExtent[2] + "," + tileExtent[3];
+                var tileExtent = me.tileGrid.getTileCoordExtent(tileCoord);
+                params = '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&viewBounds=' + tileExtent[0] + ',' + tileExtent[1] + ',' + tileExtent[2] + ',' + tileExtent[3];
             } else {
                 var origin = me.tileGrid.getOrigin(z);
                 var resolution = me.tileGrid.getResolution(z);
@@ -76910,7 +76941,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
                 }
 
                 var scale = core_Util_Util.resolutionToScale(resolution, dpi, unit);
-                params = "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
+                params = '&x=' + x + '&y=' + y + '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&scale=' + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + '}';
             }
             return me._tileUrl + encodeURI(params);
         }
@@ -76919,13 +76950,14 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
             if (!tileCoord) {
                 return undefined;
             } else {
-                return me._tileUrl.replace(zRegEx, tileCoord[0].toString())
+                return me._tileUrl
+                    .replace(zRegEx, tileCoord[0].toString())
                     .replace(xRegEx, tileCoord[1].toString())
-                    .replace(yRegEx, function () {
+                    .replace(yRegEx, function() {
                         var y = -tileCoord[2] - 1;
                         return y.toString();
                     })
-                    .replace(dashYRegEx, function () {
+                    .replace(dashYRegEx, function() {
                         var z = tileCoord[0];
                         var range = me.tileGrid.getFullTileRange(z);
                         var y = range.getHeight() + tileCoord[2];
@@ -76941,60 +76973,67 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
          * @param {string} tileUrl - 瓦片地址。
          */
         function tileLoadFunction(tile, tileUrl) {
-            var regWidth = new RegExp("(^|\\?|&)" + 'width' + "=([^&]*)(\\s|&|$)");
-            var regHeight = new RegExp("(^|\\?|&)" + 'height' + "=([^&]*)(\\s|&|$)");
+            var regWidth = new RegExp('(^|\\?|&)' + 'width' + '=([^&]*)(\\s|&|$)');
+            var regHeight = new RegExp('(^|\\?|&)' + 'height' + '=([^&]*)(\\s|&|$)');
             var width = Number(tileUrl.match(regWidth)[2]);
             var height = Number(tileUrl.match(regHeight)[2]);
 
-            tile.setLoader(function () {
-                FetchRequest.get(tileUrl).then(function (response) {
-                    if (tile.getFormat() instanceof external_ol_default.a.format.GeoJSON) {
-                        return response.json();
-                    }
-                }).then(function (tileFeatureJson) {
-                    var features = [];
-                    if (tile.getFormat() instanceof external_ol_default.a.format.GeoJSON) {
-                        tileFeatureJson.recordsets.map(function (recordset) {
-                            recordset.features.map(function (feature) {
-                                var points = [];
-                                var startIndex = 0;
-                                for (var i = 0; i < feature.geometry.parts.length; i++) {
-                                    var partPointsLength = feature.geometry.parts[i] * 2;
-                                    for (var j = 0, index = startIndex; j < partPointsLength; j += 2, index += 2) {
-                                        points.push(new Point_Point(feature.geometry.points[index], feature.geometry.points[index + 1]));
+            tile.setLoader(function() {
+                FetchRequest.get(tileUrl)
+                    .then(function(response) {
+                        if (tile.getFormat() instanceof external_ol_default.a.format.GeoJSON) {
+                            return response.json();
+                        }
+                    })
+                    .then(function(tileFeatureJson) {
+                        var features = [];
+                        if (tile.getFormat() instanceof external_ol_default.a.format.GeoJSON) {
+                            tileFeatureJson.recordsets.map(function(recordset) {
+                                recordset.features.map(function(feature) {
+                                    var points = [];
+                                    var startIndex = 0;
+                                    for (var i = 0; i < feature.geometry.parts.length; i++) {
+                                        var partPointsLength = feature.geometry.parts[i] * 2;
+                                        for (var j = 0, index = startIndex; j < partPointsLength; j += 2, index += 2) {
+                                            points.push(new Point_Point(feature.geometry.points[index], feature.geometry.points[index + 1]));
+                                        }
+                                        startIndex += partPointsLength;
                                     }
-                                    startIndex += partPointsLength;
-                                }
-                                feature.geometry.points = points;
-                                return feature;
+                                    feature.geometry.points = points;
+                                    return feature;
+                                });
+                                return recordset;
                             });
-                            return recordset;
-                        });
-                        tileFeatureJson.recordsets.map(function (recordset) {
-                            recordset.features.map(function (feature) {
-                                feature.layerName = recordset.layerName;
-                                feature.type = feature.geometry.type;
-                                features.push(feature);
-                                return feature;
+                            tileFeatureJson.recordsets.map(function(recordset) {
+                                recordset.features.map(function(feature) {
+                                    feature.layerName = recordset.layerName;
+                                    feature.type = feature.geometry.type;
+                                    features.push(feature);
+                                    return feature;
+                                });
+                                return recordset;
                             });
-                            return recordset;
-                        });
-                        features = tile.getFormat().readFeatures(core_Util_Util.toGeoJSON(features));
-                    }
-                    tile.setFeatures(features);
-                    tile.setExtent([0, 0, width, height]);
-                    tile.setProjection(new external_ol_default.a.proj.Projection({
-                        code: 'TILE_PIXELS',
-                        units: 'tile-pixels'
-                    }));
-                });
+                            features = tile.getFormat().readFeatures(core_Util_Util.toGeoJSON(features));
+                        }
+                        tile.setFeatures(features);
+                        tile.setExtent([0, 0, width, height]);
+                        tile.setProjection(
+                            new external_ol_default.a.proj.Projection({
+                                code: 'TILE_PIXELS',
+                                units: 'tile-pixels'
+                            })
+                        );
+                    });
             });
         }
     }
     _fillByStyleJSON(style, source) {
+        if (!source) {
+            source = Object.keys(style.sources)[0];
+        }
         if (style.sources && style.sources[source]) {
             //ToDo 支持多个tiles地址
-            this._tileUrl = style.sources[source].tiles[0]
+            this._tileUrl = style.sources[source].tiles[0];
         }
         if (style.metadata && style.metadata.indexbounds) {
             const indexbounds = style.metadata.indexbounds;
@@ -77002,7 +77041,6 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
             const defaultResolutions = [];
             for (let index = 0; index < 30; index++) {
                 defaultResolutions.push(max / 512 / Math.pow(2, index));
-
             }
             this.tileGrid = new external_ol_default.a.tilegrid.TileGrid({
                 extent: style.metadata.indexbounds,
@@ -77022,62 +77060,62 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
 
         function appendCredential(url, serverType) {
             var newUrl = url,
-                credential, value;
+                credential,
+                value;
             switch (serverType) {
                 case ServerType.IPORTAL:
                     value = SecurityManager_SecurityManager.getToken(url);
-                    credential = value ? new Credential(value, "token") : null;
+                    credential = value ? new Credential(value, 'token') : null;
                     if (!credential) {
                         value = SecurityManager_SecurityManager.getKey(url);
-                        credential = value ? new Credential(value, "key") : null;
+                        credential = value ? new Credential(value, 'key') : null;
                     }
                     break;
                 case ServerType.ONLINE:
                     value = SecurityManager_SecurityManager.getKey(url);
-                    credential = value ? new Credential(value, "key") : null;
+                    credential = value ? new Credential(value, 'key') : null;
                     break;
                 default:
                     //iserver or others
                     value = SecurityManager_SecurityManager.getToken(url);
-                    credential = value ? new Credential(value, "token") : null;
+                    credential = value ? new Credential(value, 'token') : null;
                     break;
             }
             if (credential) {
-                newUrl += "&" + credential.getUrlParameters();
+                newUrl += '&' + credential.getUrlParameters();
             }
             return newUrl;
         }
 
         var returnAttributes = true;
         if (options.returnAttributes !== undefined) {
-            returnAttributes = options.returnAttributes
+            returnAttributes = options.returnAttributes;
         }
-        var params = "";
-        params += "&returnAttributes=" + returnAttributes;
+        var params = '';
+        params += '&returnAttributes=' + returnAttributes;
         if (options._cache !== undefined) {
-            params += "&_cache=" + options._cache;
+            params += '&_cache=' + options._cache;
         }
         if (options.layersID !== undefined) {
-            params += "&layersID=" + options.layersID;
+            params += '&layersID=' + options.layersID;
         }
         if (options.layerNames !== undefined) {
-            params += "&layerNames=" + options.layerNames;
+            params += '&layerNames=' + options.layerNames;
         }
         if (options.expands !== undefined) {
-            params += "&expands=" + options.expands;
+            params += '&expands=' + options.expands;
         }
         if (options.compressTolerance !== undefined) {
-            params += "&compressTolerance=" + options.compressTolerance;
+            params += '&compressTolerance=' + options.compressTolerance;
         }
         if (options.coordinateType !== undefined) {
-            params += "&coordinateType=" + options.coordinateType;
+            params += '&coordinateType=' + options.coordinateType;
         }
         if (options.returnCutEdges !== undefined) {
-            params += "&returnCutEdges=" + options.returnCutEdges;
+            params += '&returnCutEdges=' + options.returnCutEdges;
         }
         this._tileUrl += encodeURI(params);
     }
-
 
     /**
      * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
@@ -77095,8 +77133,8 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
         function getResolutions() {
             var level = 17;
             var dpi = 96;
-            var width = (extent[2] - extent[0]);
-            var height = (extent[3] - extent[1]);
+            var width = extent[2] - extent[0];
+            var height = extent[3] - extent[1];
             var tileSize = width >= height ? width : height;
             var maxReolution;
             if (tileSize === width) {
@@ -77143,9 +77181,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
             var len = resolutions.length;
             scales = [len];
             for (var i = 0; i < len; i++) {
-                scales[i] = Util_Util.getScaleFromResolutionDpi(
-                    resolutions[i], dpi, units, datumAxis
-                );
+                scales[i] = Util_Util.getScaleFromResolutionDpi(resolutions[i], dpi, units, datumAxis);
             }
 
             function _resolutionsFromScales(scales) {
@@ -77156,8 +77192,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
                 len = scales.length;
                 resolutions = [len];
                 for (var i = 0; i < len; i++) {
-                    resolutions[i] = Util_Util.getResolutionFromScaleDpi(
-                        scales[i], dpi, units, datumAxis);
+                    resolutions[i] = Util_Util.getResolutionFromScaleDpi(scales[i], dpi, units, datumAxis);
                 }
                 return resolutions;
             }
@@ -77175,6 +77210,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
 }
 
 external_ol_default.a.source.VectorTileSuperMapRest = VectorTileSuperMapRest_VectorTileSuperMapRest;
+
 // CONCATENATED MODULE: ./src/openlayers/overlay/HeatMap.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -78135,9 +78171,10 @@ window.olExtends = olExtends;
  * @param {(Object|string|undefined)} [options.style] - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。与 options.url 互斥，优先级高于 options.url。
  * @param {Array.<number>} [options.resolutions] - 地图分辨率数组，用于映射 zoom 值。通常情況与地图的 {@link ol.View} 的分辨率一致。</br>
  * 默认值为：[78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564, 1222.99245256282,611.49622628141,305.748113140705,152.8740565703525, 76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032, 4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395, 0.29858214173896974,0.14929107086948487,0.07464553543474244]。
- * @param {(string|Array.<string>)} [options.source] - Mapbox Style 'source'的 key 值或者 'layer' 的 ID 数组。
+ * @param {(string|Array.<string>|undefined)} [options.source] - Mapbox Style 'source'的 key 值或者 'layer' 的 ID 数组。
  * 当配置 'source' 的 key 值时，source 为该值的 layer 会被加载；
  * 当配置为 'layer' 的 ID 数组时，指定的 layer 会被加载，注意被指定的 layer 需要有相同的 source。
+ * 当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
  * @param {ol.StyleFunction} [options.selectedStyle] -选中样式Function。
  * @example
@@ -78296,6 +78333,9 @@ class MapboxStyles_MapboxStyles extends external_ol_default.a.Observable {
         }
     }
     _resolve() {
+        if(!this.source){
+            this.source = Object.keys(this._mbStyle.sources)[0];
+        }
         if (this._mbStyle.sprite) {
             const spriteScale = window.devicePixelRatio >= 1.5 ? 0.5 : 1;
             const sizeFactor = spriteScale == 0.5 ? '@2x' : '';

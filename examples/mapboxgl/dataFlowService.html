@@ -77,7 +77,7 @@
             query();
         });
 
-        //模拟实时数据
+        //模拟实时数据 start
         //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
         function query() {
             var param = new SuperMap.QueryBySQLParameters({
@@ -156,6 +156,7 @@
                 .setHTML(feature.properties.time)
                 .addTo(map);
         }
+        //模拟实时数据 end
     </script>
 
 </body>

@@ -46,7 +46,7 @@
                 };
             }
             //geometry:{coordinates:[[[116.381741960923,39.8765100055449],[116.414681699817,39.8765100055449],[116.414681699817,39.8415115329708],[116.381741960923, 39.8415115329708],[116.381741960923,39.8765100055449]]],type:"Polygon"},
-            // excludeField:["id"]
+            //excludeField:["id"]
         });
         dataFlowLayer.on('dataupdated', function (result) {
             var feature = result.data;
@@ -58,7 +58,8 @@
         })
         dataFlowLayer.addTo(map);
 
-        //模拟实时数据
+        
+        //模拟实时数据  start
         //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
         query();
         var timer, featureResult, dataFlowBroadcast;
@@ -103,6 +104,7 @@
             dataFlowBroadcast.broadcast(feature);
             count += 3;
         }
+        //模拟实时数据  end
     </script>
 </body>
 

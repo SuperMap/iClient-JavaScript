@@ -20375,7 +20375,7 @@ SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService_ComputeWeightMa
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
  * @param {function} options.onEachFeature - 设置每个数据加载popup等。
- * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} options.geometry - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} options.excludeField - -排除字段。
  */
 class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBase {
@@ -20392,8 +20392,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
         super(url, options);
 
         /**
-         * @member {Array.<Object>} SuperMap.DataFlowService.prototype.geometry
-         * @description 设置增添的几何要素对象数组。
+         * @member {GeoJSONObject} SuperMap.DataFlowService.prototype.geometry
+         * @description 指定几何范围，该范围内的要素才能被订阅。
          */
         this.geometry = null;
 
@@ -20498,7 +20498,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
     /**
      * @function SuperMap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      * @returns {this} this
      */
     setGeometry(geometry) {
@@ -64703,10 +64703,6 @@ SuperMap.Widgets.MessageBox = MessageBox;
 var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(2);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
 
-// EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
-var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(24);
-var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
-
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64812,6 +64808,10 @@ let Lang = {
 
 SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
+
+// EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(24);
+var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -65036,6 +65036,13 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil;
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
 
 
 
@@ -75454,7 +75461,7 @@ external_L_default.a.supermap.webmap = webMap;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {Function} [options.style] - 设置数据加载样式。
  * @param {Function} [options.onEachFeature] -  设置每个数据加载 popup 等。
- * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @fires L.supermap.dataFlowService#broadcastSocketConnected
  * @fires L.supermap.dataFlowService#broadcastSocketError
@@ -75567,7 +75574,7 @@ var services_DataFlowService_DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.setGeometry
      * @description 设置添加的 GeoJSON 几何要素数据。
-     * @param {Array.<GeoJSONObject>} geometry - 设置增添的 GeoJSON 几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
     setGeometry: function (geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -76464,14 +76471,14 @@ var NormalRenderer = external_L_default.a.GeoJSON.extend({
 
 /**
  * @class L.supermap.dataFlowLayer
- * @classdesc 数据流图层源。
+ * @classdesc 数据流图层源。订阅SuperMap iServer 数据流服务并上图。订阅得到的数据会根据 `options.idField` 自动更新。
  * @category  iServer DataFlow
  * @extends {L.LayerGroup}
- * @param {string} url - 数据流图层服务地址。
+ * @param {string} url - SuperMap iServer 数据流服务地址，例如：http://localhost:8090/iserver/services/dataflowTest/dataflow。
  * @param {Object} options - 设置图层参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。
  'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制数据流。'mapv' 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。
- * @param {GeoJSONObject} [options.geometry] - GeoJSON 几何对象。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。

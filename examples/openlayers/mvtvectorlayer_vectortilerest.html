@@ -63,7 +63,7 @@
         });
         var style = new ol.supermap.MapboxStyles({
             style: styleURL,
-            source: 'China_4326',
+            // source: 'China_4326',
             map: map
         })
         style.on('styleloaded', function () {
@@ -72,7 +72,7 @@
                 source: new ol.source.VectorTileSuperMapRest({
                     style: styleURL,
                     projection: 'EPSG:4326',
-                    source: 'China_4326',
+                    // source: 'China_4326',
                     format: format
                 }),
                 style: style.getStyleFunction()

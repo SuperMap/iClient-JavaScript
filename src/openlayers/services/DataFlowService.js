@@ -20,7 +20,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  */
 export class DataFlowService extends ServiceBase {
@@ -87,7 +87,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

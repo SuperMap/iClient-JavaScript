@@ -15,7 +15,7 @@ import {SecurityManager} from '../security/SecurityManager';
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
  * @param {function} options.onEachFeature - 设置每个数据加载popup等。
- * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} options.geometry - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} options.excludeField - -排除字段。
  */
 export class DataFlowService extends CommonServiceBase {
@@ -32,8 +32,8 @@ export class DataFlowService extends CommonServiceBase {
         super(url, options);
 
         /**
-         * @member {Array.<Object>} SuperMap.DataFlowService.prototype.geometry
-         * @description 设置增添的几何要素对象数组。
+         * @member {GeoJSONObject} SuperMap.DataFlowService.prototype.geometry
+         * @description 指定几何范围，该范围内的要素才能被订阅。
          */
         this.geometry = null;
 
@@ -138,7 +138,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      * @returns {this} this
      */
     setGeometry(geometry) {

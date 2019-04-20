@@ -18,7 +18,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * })
  * @param {string} url - 与客户端交互的实时数据服务地址。
  * @param {Object} options - 加载实时数据可选参数。
- * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketConnected
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketError
@@ -138,7 +138,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);
