@@ -269,7 +269,7 @@ export class MapVRenderer extends BaseLayer {
                 }
                 var pixel = {
                     x: offset.x - topLeftPX.x,
-                    y: offset.y - topLeftPX.x
+                    y: offset.y - topLeftPX.y
                 };
                 return [pixel.x, pixel.y];
             }
