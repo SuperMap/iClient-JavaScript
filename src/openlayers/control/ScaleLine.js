@@ -9,6 +9,7 @@ ol.supermap.control = ol.supermap.control || {};
 /**
  * @class ol.supermap.control.ScaleLine
  * @category  Control
+ * @version 9.1.2
  * @classdesc 比例尺控件。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
@@ -25,7 +26,10 @@ ol.supermap.control = ol.supermap.control || {};
  *      map.addControl(control)
  */
 export class ScaleLine extends ol.control.ScaleLine {
-
+    /**
+     * @constructs
+     * @version 9.1.2
+    */
     constructor(options) {
         options = options || {};
         //需在super之前定义render，真正的调用是在初始化完成后

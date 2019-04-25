@@ -292,44 +292,44 @@ var exampleConfig = {
     "iPortal": {
         name: "iPortal",
         name_en: "iPortal",
-        version: "10.x.x",
+        version: "9.1.2",
         content: {
             "ip_map": {
                 name: "地图",
                 name_en: "iPortal Web map",
-                version: "10.x.x",
+                version: "9.1.2",
                 content: [{
                     name: "分段专题图",
                     name_en: "Range",
-                    version: "10.x.x",
+                    version: "9.1.2",
                     thumbnail: "iPortalWebmap_range.png",
                     fileName: "iPortalWebmap_range"
                 },
                 {
                     name: "单值专题图",
                     name_en: "Unique",
-                    version: "10.x.x",
+                    version: "9.1.2",
                     thumbnail: "iPortalWebmap_unique.png",
                     fileName: "iPortalWebmap_unique"
                 },
                 {
                     name: "标签专题图",
                     name_en: "Label",
-                    version: "10.x.x",
+                    version: "9.1.2",
                     thumbnail: "iPortalWebmap_label.png",
                     fileName: "iPortalWebmap_label"
                 },
                 {
                     name: "热力图",
                     name_en: "Heat map",
-                    version: "10.x.x",
+                    version: "9.1.2",
                     thumbnail: "iPortalWebmap_heat.png",
                     fileName: "iPortalWebmap_heat"
                 },
                 {
                     name: "点样式",
                     name_en: "Point style",
-                    version: "10.x.x",
+                    version: "9.1.2",
                     thumbnail: "iPortalWebmap_unicode.png",
                     fileName: "iPortalWebmap_unicode"
                 }]
@@ -429,7 +429,7 @@ var exampleConfig = {
                         name: "矢量瓦片叠加",
                         name_en: "MVT overlay",
                         localIgnore: true,
-                        version: "10.x.x",
+                        version: "9.1.2",
                         thumbnail: "mvtVectorTile_overlay.png",
                         fileName: "mvtVectorTile_overlay"
                     }
