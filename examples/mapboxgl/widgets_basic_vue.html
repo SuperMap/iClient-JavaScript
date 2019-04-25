@@ -33,6 +33,14 @@
       left: 10px;
       z-index: 1000;
     }
+    .sm-progress-wrap {
+      height: 100px;
+    }
+    .sm-progress-wrap, .sm-liquidFill {
+      width: 115px;
+      display: inline-block;
+      vertical-align: middle;
+    }
   </style>
 </head>
 
@@ -42,24 +50,27 @@
     <sm-web-map :web-map-options="webOptions" map-id="1649097980" ref="map"></sm-web-map>
     <el-card class="box-card">
       <!-- 图标微件 -->
-      <sm-icon class-name="location" size="18px" background='unset' text-color='rgb(63, 177, 227)'>
+      <sm-icon class-name="location" size="18px" text-color='rgb(63, 177, 227)'>
       </sm-icon>
       <!-- 文本微件 -->
       <sm-text title="点击图上点切换显示机场数据" :font-style='{ fontSize: "14px"}' text-color="#333">
       </sm-text>
       <sm-text title="机场" :font-style='{ fontSize: "12px",fontWeight: "bolder"}' text-color="rgb(51,51,51)">
       </sm-text>
-      <sm-text :title="name" :font-style='{ fontSize: "18px", lineHeight: "18px", color:"#73b9ac", fontWeight: "700" }'>
+      <sm-text :title="name" :font-style='{ fontSize: "18px", color:"#73b9ac", fontWeight: "700" }'>
       </sm-text>
       <!-- 指标微件 -->
-      <sm-indicator title="2017旅客吞吐量" unit="人次" :num="passengerNumber" font-size="18px"></sm-indicator>
-      <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber" font-size="18px"></sm-indicator>
+      <sm-indicator title="2017旅客吞吐量" unit="人次" :num="passengerNumber"></sm-indicator>
+      <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber"></sm-indicator>
       <sm-text title="同比增速" :font-style='{ fontSize: "12px",fontWeight: "bolder"}' text-color="rgb(51,51,51)"></sm-text>
       <!-- 水球微件 -->
-      <sm-liquid-fill :value="speedIncreaseValue" :wave-count="3" wave-animation="true" style="float:left">
+      <sm-liquid-fill :value="speedIncreaseValue" :wave-count="3" :wave-animation="true">
       </sm-liquid-fill>
       <!-- 进度条微件 -->
-      <sm-progress type="circle" circle-width="100" :percentage="speedIncrease" style="float:right"></sm-progress>
+      <div class="sm-progress-wrap">
+        <sm-progress type="circle" :percentage="speedIncrease">
+        </sm-progress>
+      </div>
       <!-- 时间微件 -->
       <sm-time-text :font-style='{ fontSize: "12px"}' text-color="#333" time-type="date+second" style="float:right">
       </sm-time-text>

@@ -25,6 +25,7 @@
         overflow: auto;
       }
     }
+
     @media screen and (max-height: 640px) {
       #main {
         overflow: auto;
@@ -110,12 +111,16 @@
             </el-col>
             <el-col :md="18" :sm="16" :xs="16" class="resource-chart">
               <el-col :md="12" :sm="12" :xs="12">
-                <sm-progress id='progress5' color="#2ec7c9" percentage="30" stroke-width="10" type="circle">
-                </sm-progress>
+                <div class="sm-progress-wrap">
+                  <sm-progress id='progress5' color="#2ec7c9" percentage="30" stroke-width="10" type="circle">
+                  </sm-progress>
+                </div>
               </el-col>
               <el-col :md="12" :sm="12" :xs="12">
-                <sm-progress id='progress6' color="#b6a2de" percentage="50" stroke-width="10" type="circle">
-                </sm-progress>
+                <div class="sm-progress-wrap">
+                  <sm-progress id='progress6' color="#b6a2de" percentage="50" stroke-width="10" type="circle">
+                  </sm-progress>
+                </div>
               </el-col>
             </el-col>
           </el-row>
@@ -125,12 +130,16 @@
             </el-col>
             <el-col :md="18" :sm="16" :xs="16" class="resource-chart">
               <el-col :md="12" :sm="12" :xs="12">
-                <sm-progress id='progress7' color="#5ab1ef" percentage="20" stroke-width="10" type="circle">
-                </sm-progress>
+                <div class="sm-progress-wrap">
+                  <sm-progress id='progress7' color="#5ab1ef" percentage="20" stroke-width="10" type="circle">
+                  </sm-progress>
+                </div>
               </el-col>
               <el-col :md="12" :sm="12" :xs="12">
-                <sm-progress id='progress8' color="#ffb980" percentage="80" stroke-width="10" type="circle">
-                </sm-progress>
+                <div class="sm-progress-wrap">
+                  <sm-progress id='progress8' color="#ffb980" percentage="80" stroke-width="10" type="circle">
+                  </sm-progress>
+                </div>
               </el-col>
             </el-col>
           </el-row>
@@ -276,7 +285,7 @@
 
     .control-wrap .block-title,
     .resource-wrap .block-title {
-      margin-bottom: 1.85vh;
+      /* margin-bottom: 1.2vh; */
       padding-top: 2.78vh;
     }
 
@@ -313,7 +322,7 @@
       margin-right: 0;
     }
 
-    .resource-wrap .resource-chart .el-col {
+    .resource-wrap .resource-chart .sm-progress-wrap {
       height: 12.96vh;
     }
 

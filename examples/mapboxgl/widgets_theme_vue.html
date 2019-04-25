@@ -51,6 +51,13 @@
       background: #fff;
       z-index: 1000;
     }
+    .sm-progress-wrap {
+      height: 100px;
+    }
+    .sm-progress-wrap, .sm-liquidFill {
+      width: 130px;
+      display: inline-block;
+    }
   </style>
 </head>
 
@@ -66,29 +73,31 @@
     </el-radio-group>
     <div class="box-card">
       <!-- 图标微件 -->
-      <sm-icon class-name="location" size="18px" background='unset' style="float:left">
+      <sm-icon class-name="location" size="18px">
       </sm-icon>
       <!-- 文本微件 -->
       <sm-text title="点击图上点切换显示机场数据" :font-style='{ fontSize: "14px"}' text-color="#333"></sm-text>
       <sm-text title="机场" :font-style='{ fontSize: "12px",fontWeight: "bolder"}' text-color="rgb(51,51,51)"
         style="width: 280px">
       </sm-text>
-      <sm-text :title="name" :font-style='{ fontSize: "18px", lineHeight: "18px", color:"#73b9ac", fontWeight: "700" }'
+      <sm-text :title="name" :font-style='{ fontSize: "18px", color:"#73b9ac", fontWeight: "700" }'
         style="width: 100%">
       </sm-text>
       <!-- 指标微件 -->
-      <sm-indicator title="2017旅客吞吐量" unit="人次" :num="passengerNumber" font-size="18px" style="width: 100%">
+      <sm-indicator title="2017旅客吞吐量" unit="人次" :num="passengerNumber" style="width: 100%">
       </sm-indicator>
-      <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber" font-size="18px" style="width: 100%"></sm-indicator>
+      <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber" style="width: 100%"></sm-indicator>
       <sm-text title="同比增速" :font-style='{ fontSize: "12px",fontWeight: "bolder"}' text-color="rgb(51,51,51)"></sm-text>
 
       <div :style="divStyle">
         <!-- 水球微件 -->
-        <sm-liquid-fill :value="speedIncreaseValue" :wave-count="3" wave-animation="true" style="float:left;">
+        <sm-liquid-fill :value="speedIncreaseValue" :wave-count="3" :wave-animation="true">
         </sm-liquid-fill>
         <!-- 进度条微件 -->
-        <sm-progress type="circle" circle-width="100" :percentage="speedIncrease" style="margin-left:110px;">
-        </sm-progress>
+        <div class="sm-progress-wrap">
+          <sm-progress type="circle" circle-width="100" :percentage="speedIncrease">
+          </sm-progress>
+        </div>
       </div>
 
       <!-- 时间微件 -->

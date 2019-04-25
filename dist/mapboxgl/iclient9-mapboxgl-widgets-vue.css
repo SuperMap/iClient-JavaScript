@@ -11710,7 +11710,9 @@ body .mapboxgl-ctrl {
     font-size: 16px; }
 
 .sm-text {
-  background: rgba(27, 24, 24, 0.8); }
+  background: rgba(27, 24, 24, 0.8);
+  line-height: 1.5;
+  padding: 4px; }
 
 .sm-time-text {
   background: rgba(27, 24, 24, 0.8);
@@ -11835,7 +11837,10 @@ body .mapboxgl-ctrl {
       transform-origin: top right; }
 
 .sm-liquidFill {
-  height: 140px; }
+  height: 100px; }
+
+.sm-progress {
+  text-align: center; }
 
 @charset "UTF-8";
 /* Element Chalk Variables */
@@ -23070,7 +23075,9 @@ body .mapboxgl-ctrl {
     font-size: 16px; }
 
 .sm-text {
-  background: #FFFFFF; }
+  background: #FFFFFF;
+  line-height: 1.5;
+  padding: 4px; }
 
 .sm-time-text {
   background: #FFFFFF;
@@ -23195,5 +23202,8 @@ body .mapboxgl-ctrl {
       transform-origin: top right; }
 
 .sm-liquidFill {
-  height: 140px; }
+  height: 100px; }
+
+.sm-progress {
+  text-align: center; }
 
