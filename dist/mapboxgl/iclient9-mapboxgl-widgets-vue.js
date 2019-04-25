@@ -42828,12 +42828,12 @@ var TimeText_component = normalizeComponent(
 )
 
 /* harmony default export */ var TimeText = (TimeText_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=template&id=3499b000&
-var Progressvue_type_template_id_3499b000_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-progress"},[_c('el-progress',{attrs:{"percentage":parseFloat(_vm.percentage),"type":_vm.type,"stroke-width":parseFloat(_vm.strokeWidth),"show-text":_vm.showText,"width":_vm.type==='circle'?parseFloat(_vm.circleWidth):null,"color":_vm.curColor,"status":_vm.status}})],1)}
-var Progressvue_type_template_id_3499b000_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=template&id=e8528960&
+var Progressvue_type_template_id_e8528960_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-progress"},[_c('el-progress',{attrs:{"percentage":parseFloat(_vm.percentage),"type":_vm.type,"stroke-width":parseFloat(_vm.strokeWidth),"show-text":_vm.showText,"width":_vm.type==='circle'?parseFloat(_vm.circleWidth):null,"color":_vm.curColor,"status":_vm.status}})],1)}
+var Progressvue_type_template_id_e8528960_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Progress.vue?vue&type=template&id=3499b000&
+// CONCATENATED MODULE: ./src/view/components/Progress.vue?vue&type=template&id=e8528960&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=script&lang=js&
 //
@@ -42903,9 +42903,9 @@ var Progressvue_type_template_id_3499b000_staticRenderFns = []
     var _this = this;
 
     this.curColor = this.color || this.getColor(0);
-    this.circleWidth = this.$parent.$el.offsetWidth * 0.5;
+    this.circleWidth = Math.min(this.$parent.$el.offsetWidth, this.$parent.$el.offsetHeight);
     window.addEventListener('resize', function () {
-      _this.circleWidth = _this.$parent.$el.offsetWidth * 0.5;
+      _this.circleWidth = Math.min(_this.$parent.$el.offsetWidth, _this.$parent.$el.offsetHeight);
     });
   }
 });
@@ -42921,8 +42921,8 @@ var Progressvue_type_template_id_3499b000_staticRenderFns = []
 
 var Progress_component = normalizeComponent(
   components_Progressvue_type_script_lang_js_,
-  Progressvue_type_template_id_3499b000_render,
-  Progressvue_type_template_id_3499b000_staticRenderFns,
+  Progressvue_type_template_id_e8528960_render,
+  Progressvue_type_template_id_e8528960_staticRenderFns,
   false,
   null,
   null,
@@ -43009,22 +43009,17 @@ var Icon_component = normalizeComponent(
 )
 
 /* harmony default export */ var Icon = (Icon_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LiquidFill.vue?vue&type=template&id=570ba3ea&
-var LiquidFillvue_type_template_id_570ba3ea_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"liquid-fill"},[_c('div',{ref:"chart",staticClass:"chart",style:({width: _vm.size, height: _vm.size, margin: '0 auto'}),attrs:{"id":"chart"}})])}
-var LiquidFillvue_type_template_id_570ba3ea_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LiquidFill.vue?vue&type=template&id=511ce336&
+var LiquidFillvue_type_template_id_511ce336_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"chart",staticClass:"sm-liquidFill",attrs:{"id":"chart"}})}
+var LiquidFillvue_type_template_id_511ce336_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/LiquidFill.vue?vue&type=template&id=570ba3ea&
+// CONCATENATED MODULE: ./src/view/components/LiquidFill.vue?vue&type=template&id=511ce336&
 
 // EXTERNAL MODULE: external "echarts-liquidfill"
 var external_echarts_liquidfill_ = __webpack_require__("hQXD");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LiquidFill.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
 //
 //
 //
@@ -43114,7 +43109,9 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
     });
     this.chart = external_echarts_default.a.init(this.$refs.chart);
     this.updateChart();
-    this.size = this.$el.offsetWidth * 0.75 + 'px';
+    this.chart.on('finished', function () {
+      _this.chart.resize();
+    });
     this.$on("themeStyle", function () {
       _this.waveColorData = _this.getColor(0);
       _this.labelColorData = _this.getTextColor;
@@ -43124,11 +43121,7 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
       _this.updateChart(true);
     });
     addEventListener('resize', function () {
-      _this.size = _this.$el.offsetWidth * 0.75 + 'px';
-
-      _this.$nextTick(function () {
-        this.chart.resize();
-      });
+      _this.chart.resize();
     });
   },
   methods: {
@@ -43187,8 +43180,8 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
 
 var LiquidFill_component = normalizeComponent(
   components_LiquidFillvue_type_script_lang_js_,
-  LiquidFillvue_type_template_id_570ba3ea_render,
-  LiquidFillvue_type_template_id_570ba3ea_staticRenderFns,
+  LiquidFillvue_type_template_id_511ce336_render,
+  LiquidFillvue_type_template_id_511ce336_staticRenderFns,
   false,
   null,
   null,

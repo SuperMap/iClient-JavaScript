@@ -11834,6 +11834,9 @@ body .mapboxgl-ctrl {
     .sm-card__content.is-top-right {
       transform-origin: top right; }
 
+.sm-liquidFill {
+  height: 140px; }
+
 @charset "UTF-8";
 /* Element Chalk Variables */
 /* Transition
@@ -23190,4 +23193,7 @@ body .mapboxgl-ctrl {
       transform-origin: top right; }
     .sm-card__content.is-top-right {
       transform-origin: top right; }
+
+.sm-liquidFill {
+  height: 140px; }
 

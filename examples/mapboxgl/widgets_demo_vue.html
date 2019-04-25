@@ -20,7 +20,12 @@
       box-sizing: border-box;
     }
 
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: 992px) {
+      #main {
+        overflow: auto;
+      }
+    }
+    @media screen and (max-height: 640px) {
       #main {
         overflow: auto;
       }
@@ -275,8 +280,8 @@
       padding-top: 2.78vh;
     }
 
-    .control-wrap .control-title .liquid-fill {
-      min-height: 12.96vh;
+    .control-wrap .control-title .sm-liquidFill {
+      height: 13.89vh;
     }
 
     .control-wrap .control-title .sm-text,
@@ -306,6 +311,10 @@
     .resource-wrap .resource-item .sm-indicator .sm-indicator__content {
       margin-bottom: 0;
       margin-right: 0;
+    }
+
+    .resource-wrap .resource-chart .el-col {
+      height: 12.96vh;
     }
 
     .resource-wrap .resource-chart .sm-progress {
