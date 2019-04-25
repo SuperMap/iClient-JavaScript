@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -761,7 +746,7 @@ SuperMap.mixin = function (...mixins) {
  * @category BaseTypes Util
  * @description 字符串操作的一系列常用扩展函数。
  */
-var StringExt = SuperMap.String = {
+var BaseTypes_StringExt = SuperMap.String = {
 
     /**
      * @function SuperMap.String.startsWith
@@ -942,7 +927,7 @@ var StringExt = SuperMap.String = {
  * @category BaseTypes Util
  * @description 数值操作的一系列常用扩展函数。
  */
-var NumberExt = SuperMap.Number = {
+var BaseTypes_NumberExt = SuperMap.Number = {
 
     /**
      * @member {string} [SuperMap.Number.decimalSeparator='.']
@@ -1030,7 +1015,7 @@ if (!Number.prototype.limitSigDigs) {
      *           如果传入值 为 null、0、或者是负数, 返回值 0。
      */
     Number.prototype.limitSigDigs = function (sig) {
-        return NumberExt.limitSigDigs(this, sig);
+        return BaseTypes_NumberExt.limitSigDigs(this, sig);
     };
 }
 
@@ -1041,7 +1026,7 @@ if (!Number.prototype.limitSigDigs) {
  * @category BaseTypes Util
  * @description 函数操作的一系列常用扩展函数。
  */
-var FunctionExt = SuperMap.Function = {
+var BaseTypes_FunctionExt = SuperMap.Function = {
     /**
      * @function SuperMap.Function.bind
      * @description 绑定函数到对象。方便创建 this 的作用域。
@@ -1114,7 +1099,7 @@ var FunctionExt = SuperMap.Function = {
  * @category BaseTypes Util
  * @description 数组操作的一系列常用扩展函数。
  */
-var ArrayExt = SuperMap.Array = {
+var BaseTypes_ArrayExt = SuperMap.Array = {
 
     /**
      * @function SuperMap.Array.filter
@@ -1156,7 +1141,7 @@ var ArrayExt = SuperMap.Array = {
 
 
 
-var Util = SuperMap.Util = SuperMap.Util || {};
+var Util_Util = SuperMap.Util = SuperMap.Util || {};
 /**
  * @name Util
  * @memberOf SuperMap
@@ -2241,7 +2226,7 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
  * @namespace
  * @description 事件处理函数.
  */
-var Event = SuperMap.Event = {
+var Event_Event = SuperMap.Event = {
 
     /**
      * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
@@ -2412,7 +2397,7 @@ var Event = SuperMap.Event = {
      * @param {boolean} [useCapture=false] - 是否捕获。
      */
     observe: function (elementParam, name, observer, useCapture) {
-        var element = Util.getElement(elementParam);
+        var element = Util_Util.getElement(elementParam);
         useCapture = useCapture || false;
 
         if (name === 'keypress' &&
@@ -2432,7 +2417,7 @@ var Event = SuperMap.Event = {
             if (element.id) {
                 idPrefix = element.id + "_" + idPrefix;
             }
-            element._eventCacheID = Util.createUniqueID(idPrefix);
+            element._eventCacheID = Util_Util.createUniqueID(idPrefix);
         }
 
         var cacheID = element._eventCacheID;
@@ -2466,7 +2451,7 @@ var Event = SuperMap.Event = {
      * @param {(HTMLElement|string)} elementParam - 
      */
     stopObservingElement: function (elementParam) {
-        var element = Util.getElement(elementParam);
+        var element = Util_Util.getElement(elementParam);
         var cacheID = element._eventCacheID;
 
         this._removeElementObservers(SuperMap.Event.observers[cacheID]);
@@ -2499,7 +2484,7 @@ var Event = SuperMap.Event = {
     stopObserving: function (elementParam, name, observer, useCapture) {
         useCapture = useCapture || false;
 
-        var element = Util.getElement(elementParam);
+        var element = Util_Util.getElement(elementParam);
         var cacheID = element._eventCacheID;
 
         if (name === 'keypress') {
@@ -2565,7 +2550,7 @@ var Event = SuperMap.Event = {
 
     CLASS_NAME: "SuperMap.Event"
 };
-SuperMap.Event = Event;
+SuperMap.Event = Event_Event;
 /* prevent memory leaks in IE */
 SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 
@@ -2714,7 +2699,7 @@ class Events_Events {
          */
         this.clearMouseListener = null;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
 
         if (eventTypes != null) {
             for (var i = 0, len = eventTypes.length; i < len; i++) {
@@ -2741,9 +2726,9 @@ class Events_Events {
         }
         this.extensions = null;
         if (this.element) {
-            Event.stopObservingElement(this.element);
+            Event_Event.stopObservingElement(this.element);
             if (this.element.hasScrollEvent) {
-                Event.stopObserving(
+                Event_Event.stopObserving(
                     window, "scroll", this.clearMouseListener
                 );
             }
@@ -2776,16 +2761,16 @@ class Events_Events {
      */
     attachToElement(element) {
         if (this.element) {
-            Event.stopObservingElement(this.element);
+            Event_Event.stopObservingElement(this.element);
         } else {
             // keep a bound copy of handleBrowserEvent() so that we can
             // pass the same function to both Event.observe() and .stopObserving()
-            this.eventHandler = FunctionExt.bindAsEventListener(
+            this.eventHandler = BaseTypes_FunctionExt.bindAsEventListener(
                 this.handleBrowserEvent, this
             );
 
             // to be used with observe and stopObserving
-            this.clearMouseListener = FunctionExt.bind(
+            this.clearMouseListener = BaseTypes_FunctionExt.bind(
                 this.clearMouseCache, this
             );
         }
@@ -2798,10 +2783,10 @@ class Events_Events {
             this.addEventType(eventType);
 
             // use Prototype to register the event cross-browser
-            Event.observe(element, eventType, this.eventHandler);
+            Event_Event.observe(element, eventType, this.eventHandler);
         }
         // disable dragstart in IE so that mousedown/move/up works normally
-        Event.observe(element, "dragstart", Event.stop);
+        Event_Event.observe(element, "dragstart", Event_Event.stop);
     }
 
 
@@ -2852,7 +2837,7 @@ class Events_Events {
             this.extensions[type] = new Events_Events[type](this);
         }
         if ((func != null) &&
-            (Util.indexOf(this.eventTypes, type) !== -1)) {
+            (Util_Util.indexOf(this.eventTypes, type) !== -1)) {
 
             if (obj == null) {
                 obj = this.object;
@@ -2994,7 +2979,7 @@ class Events_Events {
         }
         // don't fall through to other DOM elements
         if (!this.fallThrough) {
-            Event.stop(evt, true);
+            Event_Event.stop(evt, true);
         }
         return continueChain;
     }
@@ -3056,12 +3041,12 @@ class Events_Events {
         if (!this.includeXY) {
             this.clearMouseCache();
         } else if (!this.element.hasScrollEvent) {
-            Event.observe(window, "scroll", this.clearMouseListener);
+            Event_Event.observe(window, "scroll", this.clearMouseListener);
             this.element.hasScrollEvent = true;
         }
 
         if (!this.element.scrolls) {
-            var viewportElement = Util.getViewportElement();
+            var viewportElement = Util_Util.getViewportElement();
             this.element.scrolls = [
                 viewportElement.scrollLeft,
                 viewportElement.scrollTop
@@ -3076,7 +3061,7 @@ class Events_Events {
         }
 
         if (!this.element.offsets) {
-            this.element.offsets = Util.pagePosition(this.element);
+            this.element.offsets = Util_Util.pagePosition(this.element);
         }
 
         return new Pixel_Pixel(
@@ -3189,7 +3174,7 @@ class ElasticSearch_ElasticSearch {
          * 相当于调用 SuperMap.Events.on(eventListeners)。
          */
         this.eventListeners = null;
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
         if (this.eventListeners instanceof Object) {
             this.events.on(this.eventListeners);
         }
@@ -3743,7 +3728,7 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(6);
+var fetch_ie8_fetch = __webpack_require__(6);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(1);
@@ -3765,7 +3750,7 @@ const FetchRequest_fetch = window.fetch;
  * @description 设置是否支持跨域。
  * @param {boolean} cors - 是否支持跨域。
  */
-var setCORS = SuperMap.setCORS = function (cors) {
+var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
@@ -3773,7 +3758,7 @@ var setCORS = SuperMap.setCORS = function (cors) {
  * @description 是否支持跨域。
  * @returns {boolean} 是否支持跨域。
  */
-var isCORS = SuperMap.isCORS = function () {
+var FetchRequest_isCORS = SuperMap.isCORS = function () {
     if (SuperMap.CORS != undefined) {
         return SuperMap.CORS;
     }
@@ -3784,7 +3769,7 @@ var isCORS = SuperMap.isCORS = function () {
  * @description 设置请求超时时间。
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
  */
-var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
+var FetchRequest_setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
     return SuperMap.RequestTimeout = timeout;
 }
 /**
@@ -3792,10 +3777,10 @@ var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
  * @description 获取请求超时时间。
  * @returns {number} 请求超时时间。
  */
-var getRequestTimeout = SuperMap.getRequestTimeout = function () {
+var FetchRequest_getRequestTimeout = SuperMap.getRequestTimeout = function () {
     return SuperMap.RequestTimeout || 45000;
 }
-var FetchRequest = SuperMap.FetchRequest = {
+var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -3812,13 +3797,13 @@ var FetchRequest = SuperMap.FetchRequest = {
         }
     },
     supportDirectRequest: function (url, options) {
-        return Util.isInTheSameDomain(url) || isCORS() || options.proxy
+        return Util_Util.isInTheSameDomain(url) || FetchRequest_isCORS() || options.proxy
     },
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
         url = this._processUrl(url, options);
-        url = Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -3839,7 +3824,7 @@ var FetchRequest = SuperMap.FetchRequest = {
         options = options || {};
         var type = 'DELETE';
         url = this._processUrl(url, options);
-        url = Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -3948,7 +3933,7 @@ var FetchRequest = SuperMap.FetchRequest = {
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
                 credentials: options.withCredentials ? 'include' : 'omit',
                 mode: 'cors',
-                timeout: getRequestTimeout()
+                timeout: FetchRequest_getRequestTimeout()
             }).then(function (response) {
                 return response;
             }));
@@ -3959,7 +3944,7 @@ var FetchRequest = SuperMap.FetchRequest = {
             headers: options.headers,
             credentials: options.withCredentials ? 'include' : 'omit',
             mode: 'cors',
-            timeout: getRequestTimeout()
+            timeout: FetchRequest_getRequestTimeout()
         }).then(function (response) {
             return response;
         });
@@ -4204,7 +4189,7 @@ class SecurityManager_SecurityManager {
         if (!serverInfo) {
             return;
         }
-        return FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
+        return FetchRequest_FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
             return response.text();
         });
     }
@@ -4216,7 +4201,7 @@ class SecurityManager_SecurityManager {
      */
     static registerServers(serverInfos) {
         this.servers = this.servers || {};
-        if (!Util.isArray(serverInfos)) {
+        if (!Util_Util.isArray(serverInfos)) {
             serverInfos = [serverInfos];
         }
         for (var i = 0; i < serverInfos.length; i++) {
@@ -4252,7 +4237,7 @@ class SecurityManager_SecurityManager {
             return;
         }
 
-        ids = (Util.isArray(ids)) ? ids : [ids];
+        ids = (Util_Util.isArray(ids)) ? ids : [ids];
         for (var i = 0; i < ids.length; i++) {
             var id = this._getUrlRestString(ids[0]) || ids[0];
             this.keys[id] = key;
@@ -4320,7 +4305,7 @@ class SecurityManager_SecurityManager {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
         };
-        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -4342,7 +4327,7 @@ class SecurityManager_SecurityManager {
             },
             withoutFormatSuffix: true
         };
-        return FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -4383,7 +4368,7 @@ class SecurityManager_SecurityManager {
             },
             withCredentials: true
         };
-        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -4406,7 +4391,7 @@ class SecurityManager_SecurityManager {
             withCredentials: true,
             withoutFormatSuffix: true
         };
-        return FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -4426,7 +4411,7 @@ class SecurityManager_SecurityManager {
      * @returns {Promise} 返回包含 iManager 登录请求结果的 Promise 对象。
      */
     static loginManager(url, loginInfoParams, options) {
-        if (!Util.isInTheSameDomain(url)) {
+        if (!Util_Util.isInTheSameDomain(url)) {
             var isNewTab = options ? options.isNewTab : true;
             this._open(url, isNewTab);
             return;
@@ -4446,7 +4431,7 @@ class SecurityManager_SecurityManager {
             }
         };
         var me = this;
-        return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest_FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
             response.text().then(function (result) {
                 me.imanagerToken = result;
                 return result;
@@ -4551,7 +4536,7 @@ SuperMap.SecurityManager = SecurityManager_SecurityManager;
  * @description 服务请求返回结果数据类型
  * @type {string}
  */
-var DataFormat = SuperMap.DataFormat = {
+var REST_DataFormat = SuperMap.DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
@@ -4565,7 +4550,7 @@ var DataFormat = SuperMap.DataFormat = {
  * @description 服务器类型
  * @type {string}
  */
-var ServerType = SuperMap.ServerType = {
+var REST_ServerType = SuperMap.ServerType = {
     /** ISERVER */
     ISERVER: "ISERVER",
     /** IPORTAL */
@@ -4581,7 +4566,7 @@ var ServerType = SuperMap.ServerType = {
  * @description 几何对象枚举,定义了一系列几何对象类型。
  * @type {string}
  */
-var GeometryType = SuperMap.GeometryType = {
+var REST_GeometryType = SuperMap.GeometryType = {
     /** LINE */
     LINE: "LINE",
     /** LINEM */
@@ -4615,7 +4600,7 @@ var GeometryType = SuperMap.GeometryType = {
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @type {string}
  */
-var QueryOption = SuperMap.QueryOption = {
+var REST_QueryOption = SuperMap.QueryOption = {
     /** 属性 */
     ATTRIBUTE: "ATTRIBUTE",
     /** 属性和几何对象 */
@@ -4632,7 +4617,7 @@ var QueryOption = SuperMap.QueryOption = {
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
  * @type {string}
  */
-var JoinType = SuperMap.JoinType = {
+var REST_JoinType = SuperMap.JoinType = {
     /** INNERJOIN */
     INNERJOIN: "INNERJOIN",
     /** LEFTJOIN */
@@ -4647,7 +4632,7 @@ var JoinType = SuperMap.JoinType = {
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
  * @type {string}
  */
-var SpatialQueryMode = SuperMap.SpatialQueryMode = {
+var REST_SpatialQueryMode = SuperMap.SpatialQueryMode = {
     /** 包含空间查询模式 */
     CONTAIN: "CONTAIN",
     /** 交叉空间查询模式 */
@@ -4675,7 +4660,7 @@ var SpatialQueryMode = SuperMap.SpatialQueryMode = {
  * 该类定义了数据集对象间的空间关系类型常量。
  * @type {string}
  */
-var SpatialRelationType = SuperMap.SpatialRelationType = {
+var REST_SpatialRelationType = SuperMap.SpatialRelationType = {
     /** 包含关系 */
     CONTAIN: "CONTAIN",
     /** 相交关系 */
@@ -4692,7 +4677,7 @@ var SpatialRelationType = SuperMap.SpatialRelationType = {
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
  */
-var MeasureMode = SuperMap.MeasureMode = {
+var REST_MeasureMode = SuperMap.MeasureMode = {
     /** 距离测量 */
     DISTANCE: "DISTANCE",
     /** 面积测量 */
@@ -4707,7 +4692,7 @@ var MeasureMode = SuperMap.MeasureMode = {
  * 该类定义了一系列距离单位类型。
  * @type {string}
  */
-var Unit = SuperMap.Unit = {
+var REST_Unit = SuperMap.Unit = {
     /**  米 */
     METER: "METER",
     /**  千米 */
@@ -4744,7 +4729,7 @@ var Unit = SuperMap.Unit = {
  * 该类定义了一系列缓冲距离单位类型。
  * @type {string}
  */
-var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
+var REST_BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
     /**  厘米 */
     CENTIMETER: "CENTIMETER",
     /**  分米 */
@@ -4772,7 +4757,7 @@ var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
  * @description  数据源引擎类型枚举。
  * @type {string}
  */
-var EngineType = SuperMap.EngineType = {
+var REST_EngineType = SuperMap.EngineType = {
     /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
     IMAGEPLUGINS: "IMAGEPLUGINS",
     /**  OGC 引擎类型，针对于 Web 数据源，Web 引擎，目前支持的类型有 WMS，WFS，WCS。 */
@@ -4794,7 +4779,7 @@ var EngineType = SuperMap.EngineType = {
  * @description  统计专题图文本显示格式枚举。
  * @type {string}
  */
-var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
+var REST_ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
     /**  标题。以各子项的标题来进行标注。 */
     CAPTION: "CAPTION",
     /**  标题 + 百分数。以各子项的标题和所占的百分比来进行标注。 */
@@ -4815,7 +4800,7 @@ var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
  * @description  统计专题图类型枚举。
  * @type {string}
  */
-var ThemeGraphType = SuperMap.ThemeGraphType = {
+var REST_ThemeGraphType = SuperMap.ThemeGraphType = {
     /**  面积图。 */
     AREA: "AREA",
     /**  柱状图。 */
@@ -4851,7 +4836,7 @@ var ThemeGraphType = SuperMap.ThemeGraphType = {
  * @description  统计专题图坐标轴文本显示模式。
  * @type {string}
  */
-var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
+var REST_GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
     /**  显示全部文本。 */
     ALL: "ALL",
     /**  不显示。 */
@@ -4868,7 +4853,7 @@ var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
  *
  * @type {string}
  */
-var GraduatedMode = SuperMap.GraduatedMode = {
+var REST_GraduatedMode = SuperMap.GraduatedMode = {
     /**  常量分级模式。 */
     CONSTANT: "CONSTANT",
     /** 对数分级模式。 */
@@ -4884,7 +4869,7 @@ var GraduatedMode = SuperMap.GraduatedMode = {
  * @description  范围分段专题图分段方式枚举。
  * @type {string}
  */
-var RangeMode = SuperMap.RangeMode = {
+var REST_RangeMode = SuperMap.RangeMode = {
     /**  自定义分段法。 */
     CUSTOMINTERVAL: "CUSTOMINTERVAL",
     /**  等距离分段法。 */
@@ -4906,7 +4891,7 @@ var RangeMode = SuperMap.RangeMode = {
  * @description  专题图类型枚举。
  * @type {string}
  */
-var ThemeType = SuperMap.ThemeType = {
+var REST_ThemeType = SuperMap.ThemeType = {
     /** 点密度专题图。 */
     DOTDENSITY: "DOTDENSITY",
     /** 等级符号专题图。 */
@@ -4928,7 +4913,7 @@ var ThemeType = SuperMap.ThemeType = {
  * @description  渐变颜色枚举。
  * @type {string}
  */
-var ColorGradientType = SuperMap.ColorGradientType = {
+var REST_ColorGradientType = SuperMap.ColorGradientType = {
     /** 黑白渐变色。 */
     BLACK_WHITE: "BLACKWHITE",
     /** 蓝黑渐变色。 */
@@ -4992,7 +4977,7 @@ var ColorGradientType = SuperMap.ColorGradientType = {
  * @description  文本对齐枚举。
  * @type {string}
  */
-var TextAlignment = SuperMap.TextAlignment = {
+var REST_TextAlignment = SuperMap.TextAlignment = {
     /** 左上角对齐。 */
     TOPLEFT: "TOPLEFT",
     /** 顶部居中对齐。 */
@@ -5025,7 +5010,7 @@ var TextAlignment = SuperMap.TextAlignment = {
  * @description  渐变填充风格的渐变类型枚举。
  * @type {string}
  */
-var FillGradientMode = SuperMap.FillGradientMode = {
+var REST_FillGradientMode = SuperMap.FillGradientMode = {
     /** 无渐变。 */
     NONE: "NONE",
     /** 线性渐变填充。 */
@@ -5045,7 +5030,7 @@ var FillGradientMode = SuperMap.FillGradientMode = {
  * @description  标签沿线标注方向枚举。
  * @type {string}
  */
-var AlongLineDirection = SuperMap.AlongLineDirection = {
+var REST_AlongLineDirection = SuperMap.AlongLineDirection = {
     /** 沿线的法线方向放置标签。 */
     NORMAL: "ALONG_LINE_NORMAL",
     /** 从下到上，从左到右放置。 */
@@ -5065,7 +5050,7 @@ var AlongLineDirection = SuperMap.AlongLineDirection = {
  * @description  标签专题图中标签背景的形状枚举。
  * @type {string}
  */
-var LabelBackShape = SuperMap.LabelBackShape = {
+var REST_LabelBackShape = SuperMap.LabelBackShape = {
     /** 菱形背景，即标签背景的形状为菱形。 */
     DIAMOND: "DIAMOND",
     /** 椭圆形背景，即标签背景的行状为椭圆形。 */
@@ -5089,7 +5074,7 @@ var LabelBackShape = SuperMap.LabelBackShape = {
  * @description  标签专题图中超长标签的处理模式枚举。
  * @type {string}
  */
-var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
+var REST_LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
     /** 换行显示。 */
     NEWLINE: "NEWLINE",
     /** 对超长标签不进行处理。 */
@@ -5106,7 +5091,7 @@ var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
  * 在行驶引导子项中使用。
  * @type {string}
  */
-var DirectionType = SuperMap.DirectionType = {
+var REST_DirectionType = SuperMap.DirectionType = {
     /** 东。 */
     EAST: "EAST",
     /** 无方向。 */
@@ -5128,7 +5113,7 @@ var DirectionType = SuperMap.DirectionType = {
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
  * @type {string}
  */
-var SideType = SuperMap.SideType = {
+var REST_SideType = SuperMap.SideType = {
     /** 路的左侧。 */
     LEFT: "LEFT",
     /** 在路上（即路的中间）。 */
@@ -5148,7 +5133,7 @@ var SideType = SuperMap.SideType = {
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @type {string}
  */
-var SupplyCenterType = SuperMap.SupplyCenterType = {
+var REST_SupplyCenterType = SuperMap.SupplyCenterType = {
     /** 固定中心点。 */
     FIXEDCENTER: "FIXEDCENTER",
     /** 非中心点。 */
@@ -5165,7 +5150,7 @@ var SupplyCenterType = SuperMap.SupplyCenterType = {
  * 用在行驶引导子项类中，表示转弯的方向。
  * @type {string}
  */
-var TurnType = SuperMap.TurnType = {
+var REST_TurnType = SuperMap.TurnType = {
     /** 向前直行。 */
     AHEAD: "AHEAD",
     /** 掉头。 */
@@ -5187,7 +5172,7 @@ var TurnType = SuperMap.TurnType = {
  * @description  缓冲区分析BufferEnd类型。
  * @type {string}
  */
-var BufferEndType = SuperMap.BufferEndType = {
+var REST_BufferEndType = SuperMap.BufferEndType = {
     /** FLAT */
     FLAT: "FLAT",
     /** ROUND */
@@ -5200,7 +5185,7 @@ var BufferEndType = SuperMap.BufferEndType = {
  * @description  叠加分析类型枚举。
  * @type {string}
  */
-var OverlayOperationType = SuperMap.OverlayOperationType = {
+var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
     /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。。 */
@@ -5224,7 +5209,7 @@ var OverlayOperationType = SuperMap.OverlayOperationType = {
  * @description  分布式分析输出类型枚举。
  * @type {string}
  */
-var OutputType = SuperMap.OutputType = {
+var REST_OutputType = SuperMap.OutputType = {
     /** INDEXEDHDFS */
     INDEXEDHDFS: "INDEXEDHDFS",
     /** UDB */
@@ -5243,7 +5228,7 @@ var OutputType = SuperMap.OutputType = {
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
  * @type {string}
  */
-var SmoothMethod = SuperMap.SmoothMethod = {
+var REST_SmoothMethod = SuperMap.SmoothMethod = {
     /** B 样条法。 */
     BSPLINE: "BSPLINE",
     /** 磨角法。 */
@@ -5257,7 +5242,7 @@ var SmoothMethod = SuperMap.SmoothMethod = {
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
  * @type {string}
  */
-var SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
+var REST_SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
     /** 等值线提取。 */
     ISOLINE: "ISOLINE",
     /** 等值面提取。 */
@@ -5271,7 +5256,7 @@ var SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @type {string}
  */
-var DataReturnMode = SuperMap.DataReturnMode = {
+var REST_DataReturnMode = SuperMap.DataReturnMode = {
     /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
     DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
     /** 只返回数据集标识（数据集名称@数据源名称）。 */
@@ -5287,7 +5272,7 @@ var DataReturnMode = SuperMap.DataReturnMode = {
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var EditType = SuperMap.EditType = {
+var REST_EditType = SuperMap.EditType = {
     /** 增加操作。 */
     ADD: "add",
     /** 修改操作。 */
@@ -5304,7 +5289,7 @@ var EditType = SuperMap.EditType = {
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var TransferTactic = SuperMap.TransferTactic = {
+var REST_TransferTactic = SuperMap.TransferTactic = {
     /** 时间短。 */
     LESS_TIME: "LESS_TIME",
     /** 少换乘。 */
@@ -5323,7 +5308,7 @@ var TransferTactic = SuperMap.TransferTactic = {
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
  * @type {string}
  */
-var TransferPreference = SuperMap.TransferPreference = {
+var REST_TransferPreference = SuperMap.TransferPreference = {
     /** 公交汽车优先。 */
     BUS: "BUS",
     /** 地铁优先。 */
@@ -5341,7 +5326,7 @@ var TransferPreference = SuperMap.TransferPreference = {
  * @description  地图背景格网类型枚举。
  * @type {string}
  */
-var GridType = SuperMap.GridType = {
+var REST_GridType = SuperMap.GridType = {
     /** 十字叉丝。 */
     CROSS: "CROSS",
     /** 网格线。 */
@@ -5361,7 +5346,7 @@ var GridType = SuperMap.GridType = {
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
  * @type {string}
  */
-var ColorSpaceType = SuperMap.ColorSpaceType = {
+var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
     /** 该类型主要在印刷系统使用。 */
     CMYK: "CMYK",
     /** 该类型主要在显示系统中使用。 */
@@ -5374,7 +5359,7 @@ var ColorSpaceType = SuperMap.ColorSpaceType = {
  * @description  图层类型。
  * @type {string}
  */
-var LayerType = SuperMap.LayerType = {
+var REST_LayerType = SuperMap.LayerType = {
     /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。。 */
     UGC: "UGC",
     /** WMS 图层。 */
@@ -5392,7 +5377,7 @@ var LayerType = SuperMap.LayerType = {
  * @description  UGC图层类型。
  * @type {string}
  */
-var UGCLayerType = SuperMap.UGCLayerType = {
+var REST_UGCLayerType = SuperMap.UGCLayerType = {
     /** 专题图层。 */
     THEME: "THEME",
     /** 矢量图层。 */
@@ -5410,7 +5395,7 @@ var UGCLayerType = SuperMap.UGCLayerType = {
  * @description  字段统计方法类型。
  * @type {string}
  */
-var StatisticMode = SuperMap.StatisticMode = {
+var REST_StatisticMode = SuperMap.StatisticMode = {
     /** 统计所选字段的平均值。 */
     AVERAGE: "AVERAGE",
     /** 统计所选字段的最大值。 */
@@ -5432,7 +5417,7 @@ var StatisticMode = SuperMap.StatisticMode = {
  * @description  栅格与影像数据存储的像素格式枚举。
  * @type {string}
  */
-var PixelFormat = SuperMap.PixelFormat = {
+var REST_PixelFormat = SuperMap.PixelFormat = {
     /** 每个像元用16个比特(即2个字节)表示。 */
     BIT16: "BIT16",
     /** 每个像元用32个比特(即4个字节)表示。 */
@@ -5462,7 +5447,7 @@ var PixelFormat = SuperMap.PixelFormat = {
  * @description  内插时使用的样本点的查找方式枚举
  * @type {string}
  */
-var SearchMode = SuperMap.SearchMode = {
+var REST_SearchMode = SuperMap.SearchMode = {
     /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
     KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
     /** 使用 KDTREE 的定长方式查找参与内插分析的点。 */
@@ -5480,7 +5465,7 @@ var SearchMode = SuperMap.SearchMode = {
  * @description  插值分析的算法的类型
  * @type {string}
  */
-var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
+var REST_InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
     /** 普通克吕金插值法。 */
     KRIGING: "KRIGING",
     /** 简单克吕金插值法。 */
@@ -5496,7 +5481,7 @@ var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
  * @type {string}
  */
-var VariogramMode = SuperMap.VariogramMode = {
+var REST_VariogramMode = SuperMap.VariogramMode = {
     /** 指数函数。 */
     EXPONENTIAL: "EXPONENTIAL",
     /** 高斯函数。 */
@@ -5512,7 +5497,7 @@ var VariogramMode = SuperMap.VariogramMode = {
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
  * @type {string}
  */
-var Exponent = SuperMap.Exponent = {
+var REST_Exponent = SuperMap.Exponent = {
     /** 阶数为1。 */
     EXP1: "EXP1",
     /** 阶数为2。 */
@@ -5526,7 +5511,7 @@ var Exponent = SuperMap.Exponent = {
  * @description token申请的客户端标识类型
  * @type {string}
  */
-var ClientType = SuperMap.ClientType = {
+var REST_ClientType = SuperMap.ClientType = {
     /** 指定的 IP 地址。 */
     IP: "IP",
     /** 指定的 URL。 */
@@ -5548,7 +5533,7 @@ var ClientType = SuperMap.ClientType = {
  * @description 客户端专题图图表类型
  * @type {string}
  */
-var ChartType = SuperMap.ChartType = {
+var REST_ChartType = SuperMap.ChartType = {
     /** 柱状图。 */
     BAR: "Bar",
     /** 三维柱状图。 */
@@ -5572,7 +5557,7 @@ var ChartType = SuperMap.ChartType = {
  * @description  裁剪分析模式
  * @type {string}
  */
-var ClipAnalystMode = SuperMap.ClipAnalystMode = {
+var REST_ClipAnalystMode = SuperMap.ClipAnalystMode = {
     /** CLIP。 */
     CLIP: "clip",
     /** INTERSECT。 */
@@ -5585,7 +5570,7 @@ var ClipAnalystMode = SuperMap.ClipAnalystMode = {
  * @description 分布式分析面积单位
  * @type {string}
  */
-var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
+var REST_AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
     /** 平方米。 */
     "SQUAREMETER": "SquareMeter",
     /** 平方千米。 */
@@ -5610,7 +5595,7 @@ var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
  * @description 分布式分析单位
  * @type {string}
  */
-var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
+var REST_AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
     /** 米。 */
     "METER": "Meter",
     /** 千米。 */
@@ -5630,7 +5615,7 @@ var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
  * @description 分布式分析统计模式
  * @type {string}
  */
-var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
+var REST_StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
     /** 统计所选字段的最大值。 */
     "MAX": "max",
     /** 统计所选字段的最小值。 */
@@ -5651,7 +5636,7 @@ var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
  * @description 分布式分析聚合类型
  * @type {string}
  */
-var SummaryType = SuperMap.SummaryType = {
+var REST_SummaryType = SuperMap.SummaryType = {
     /** 格网聚合。 */
     "SUMMARYMESH": "SUMMARYMESH",
     /** 多边形聚合。 */
@@ -5664,7 +5649,7 @@ var SummaryType = SuperMap.SummaryType = {
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
  * @type {string}
  */
-var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
+var REST_TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
     /** 面内无重叠，用于对面数据进行拓扑检查。 */
     REGIONNOOVERLAP: "REGIONNOOVERLAP",
     /** 面与面无重叠，用于对面数据进行拓扑检查。 */
@@ -5688,7 +5673,7 @@ var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
  * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
  * @type {string}
  */
-var AggregationType = SuperMap.AggregationType = {
+var REST_AggregationType = SuperMap.AggregationType = {
     /** 格网聚合类型。 */
     GEOHASH_GRID: "geohash_grid",
     /** 过滤聚合类型。 */
@@ -5702,7 +5687,7 @@ var AggregationType = SuperMap.AggregationType = {
  * @description  聚合查询中filter查询枚举类
  * @type {string}
  */
-var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
+var REST_AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
     /** 范围查询。 */
     GEO_BOUNDING_BOX: "geo_bounding_box"
 }
@@ -5714,7 +5699,7 @@ var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
  * @description feature 查询方式。
  * @type {string}
  */
-var GetFeatureMode = SuperMap.GetFeatureMode = {
+var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
     /** 通过几何对象的缓冲区来获取要素。 */
@@ -5841,7 +5826,7 @@ class DatasourceConnectionInfo_DatasourceConnectionInfo {
         this.user = null;
 
         if (options) {
-            Util.extend(this, options);
+            Util_Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DatasourceConnectionInfo";
@@ -5896,7 +5881,7 @@ class OutputSetting_OutputSetting {
          * @member {SuperMap.OutputType} SuperMap.OutputSetting.prototype.type
          * @description 分布式分析的输出类型。
          */
-        this.type = OutputType.UDB;
+        this.type = REST_OutputType.UDB;
 
         /**
          * @member {string} [SuperMap.OutputSetting.prototype.datasetName='analystResult']
@@ -5916,7 +5901,7 @@ class OutputSetting_OutputSetting {
          */
         this.outputPath = "";
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OutputSetting";
     }
 
@@ -5977,7 +5962,7 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.RangeMode} [SuperMap.MappingParameters.prototype.RangeMode=SuperMap.RangeMode.EQUALINTERVAL]
          * @description 专题图分段模式。
          */
-        this.rangeMode = RangeMode.EQUALINTERVAL;
+        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} [SuperMap.MappingParameters.prototype.rangeCount]
@@ -5989,9 +5974,9 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.ColorGradientType} [SuperMap.MappingParameters.prototype.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED]
          * @description 专题图颜色渐变模式。
          */
-        this.colorGradientType = ColorGradientType.YELLOW_RED;
+        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.MappingParameters";
     }
 
@@ -6097,19 +6082,19 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = AnalystSizeUnit.METER;
+        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.radiusUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 搜索半径单位。
          */
-        this.radiusUnit = AnalystSizeUnit.METER;
+        this.radiusUnit = REST_AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystAreaUnit} [SuperMap.KernelDensityJobParameter.prototype.areaUnit=SuperMap.AnalystAreaUnit.SQUAREMILE]
          * @description 面积单位。
          */
-        this.areaUnit = AnalystAreaUnit.SQUAREMILE;
+        this.areaUnit = REST_AnalystAreaUnit.SQUAREMILE;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.KernelDensityJobParameter.prototype.output
@@ -6123,7 +6108,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          */
         this.mappingParameters = null;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
     }
@@ -6236,7 +6221,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          * @member {SuperMap.SpatialQueryMode} [SuperMap.SingleObjectQueryJobsParameter.prototype.mode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式 。
          */
-        this.mode = SpatialQueryMode.CONTAIN;
+        this.mode = REST_SpatialQueryMode.CONTAIN;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SingleObjectQueryJobsParameter.prototype.output]
@@ -6250,7 +6235,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
     }
@@ -6364,7 +6349,7 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
     }
 
@@ -6483,7 +6468,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.StatisticAnalystMode} [SuperMap.SummaryMeshJobParameter.prototype.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE]
          * @description 统计模式。
          */
-        this.statisticModes = StatisticAnalystMode.AVERAGE;
+        this.statisticModes = REST_StatisticAnalystMode.AVERAGE;
 
         /**
          * @member {number} SuperMap.SummaryMeshJobParameter.prototype.fields
@@ -6495,7 +6480,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.SummaryType} [SuperMap.SummaryMeshJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 聚合类型。
          */
-        this.type = SummaryType.SUMMARYMESH;
+        this.type = REST_SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SummaryMeshJobParameter.prototype.output]
@@ -6509,7 +6494,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          */
         this.mappingParameters = null;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryMeshJobParameter";
     }
@@ -6704,13 +6689,13 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = AnalystSizeUnit.METER;
+        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.SummaryType} [SuperMap.SummaryRegionJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 汇总类型。
          */
-        this.type = SummaryType.SUMMARYMESH;
+        this.type = REST_SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.SummaryRegionJobParameter.prototype.output
@@ -6724,7 +6709,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          */
         this.mappingParameters = null;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
     }
@@ -6874,7 +6859,7 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
         */
         this.mappingParameters = null;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
     }
 
@@ -6984,7 +6969,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 缓冲距离单位。
          */
-        this.distanceUnit = AnalystSizeUnit.METER;
+        this.distanceUnit = REST_AnalystSizeUnit.METER;
 
         /**
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
@@ -7007,7 +6992,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
         if (!options) {
             return this;
         }
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.BuffersAnalystJobsParameter";
     }
@@ -7118,7 +7103,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
          * @member {SuperMap.TopologyValidatorRule} [SuperMap.TopologyValidatorJobsParameter.prototype.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP]
          * @description 拓扑检查模式。
          */
-        this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
+        this.rule = REST_TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
@@ -7132,7 +7117,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TopologyValidatorJobsParameter";
     }
@@ -7254,7 +7239,7 @@ class GeoCodingParameter_GeoCodingParameter {
          * @description 最大返回结果数。
          */
         this.maxReturn = null;
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
     }
 
     /**
@@ -7353,7 +7338,7 @@ class GeoDecodingParameter_GeoDecodingParameter {
          * @description 查询半径。
          */
         this.geoDecodingRadius = null;
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
     }
 
     /**
@@ -7398,12 +7383,12 @@ var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(0);
  * @param {Mapv.DataSet} dataSet - 待渲染的数据集，数据所属坐标系要求与 map 保持一致。
  * @param {Object} options - 渲染的参数。
  */
-var MapVBaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
+var MapVRenderer_MapVBaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
 
-class MapVRenderer_MapVRenderer extends MapVBaseLayer {
+class MapVRenderer_MapVRenderer extends MapVRenderer_MapVBaseLayer {
     constructor(map, layer, dataSet, options) {
         super(map, dataSet, options);
-        if (!MapVBaseLayer) {
+        if (!MapVRenderer_MapVBaseLayer) {
             return this;
         }
 
@@ -7983,7 +7968,7 @@ SuperMap_SuperMap.Layer.MapVLayer = MapVLayer_MapVLayer;
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
  */
-class Credential {
+class Credential_Credential {
 
 
     constructor(value, name) {
@@ -8058,8 +8043,8 @@ class Credential {
  *
  */
 
-Credential.CREDENTIAL = null;
-SuperMap.Credential = Credential;
+Credential_Credential.CREDENTIAL = null;
+SuperMap.Credential = Credential_Credential;
 
 // CONCATENATED MODULE: ./src/common/format/Format.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -8093,7 +8078,7 @@ class Format_Format {
          */
         this.keepData = false;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
         this.options = options;
 
         this.CLASS_NAME = "SuperMap.Format";
@@ -8497,7 +8482,7 @@ class CommonServiceBase_CommonServiceBase {
 
         this.withCredentials = false;
 
-        if (Util.isArray(url)) {
+        if (Util_Util.isArray(url)) {
             me.urls = url;
             me.length = url.length;
             me.totalTimes = me.length;
@@ -8512,18 +8497,18 @@ class CommonServiceBase_CommonServiceBase {
             me.url = url;
         }
 
-        if (Util.isArray(url) && !me.isServiceSupportPolling()) {
+        if (Util_Util.isArray(url) && !me.isServiceSupportPolling()) {
             me.url = url[0];
             me.totalTimes = 1;
         }
 
-        me.serverType = me.serverType || ServerType.ISERVER;
+        me.serverType = me.serverType || REST_ServerType.ISERVER;
 
         options = options || {};
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
 
-        me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
+        me.isInTheSameDomain = Util_Util.isInTheSameDomain(me.url);
 
         me.events = new Events_Events(me, null, me.EVENT_TYPES, true);
         if (me.eventListeners instanceof Object) {
@@ -8539,7 +8524,7 @@ class CommonServiceBase_CommonServiceBase {
      */
     destroy() {
         let me = this;
-        if (Util.isArray(me.urls)) {
+        if (Util_Util.isArray(me.urls)) {
             me.urls = null;
             me.index = null;
             me.length = null;
@@ -8617,22 +8602,22 @@ class CommonServiceBase_CommonServiceBase {
         let keyUrl = url,
             credential, value;
         switch (this.serverType) {
-            case ServerType.IPORTAL:
+            case REST_ServerType.IPORTAL:
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential(value, "token") : null;
+                credential = value ? new Credential_Credential(value, "token") : null;
                 if (!credential) {
                     value = SecurityManager_SecurityManager.getKey(keyUrl);
-                    credential = value ? new Credential(value, "key") : null;
+                    credential = value ? new Credential_Credential(value, "key") : null;
                 }
                 break;
-            case ServerType.ONLINE:
+            case REST_ServerType.ONLINE:
                 value = SecurityManager_SecurityManager.getKey(keyUrl);
-                credential = value ? new Credential(value, "key") : null;
+                credential = value ? new Credential_Credential(value, "key") : null;
                 break;
             default:
                 //iServer or others
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential(value, "token") : null;
+                credential = value ? new Credential_Credential(value, "token") : null;
                 break;
         }
         return credential;
@@ -8678,7 +8663,7 @@ class CommonServiceBase_CommonServiceBase {
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
         me.options.url = url;
-        me.options.isInTheSameDomain = Util.isInTheSameDomain(url);
+        me.options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
         me._commit(me.options);
     }
 
@@ -8728,7 +8713,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
-        result = Util.transformResult(result);
+        result = Util_Util.transformResult(result);
         this.events.triggerEvent("processCompleted", {
             result: result
         });
@@ -8740,7 +8725,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessFailed(result) {
-        result = Util.transformResult(result);
+        result = Util_Util.transformResult(result);
         let error = result.error || result;
         this.events.triggerEvent("processFailed", {
             error: error
@@ -8750,12 +8735,12 @@ class CommonServiceBase_CommonServiceBase {
     _commit(options) {
         if (options.method === "POST" || options.method === "PUT") {
             if (options.params) {
-                options.url = Util.urlAppend(options.url,
-                    Util.getParameterString(options.params || {}));
+                options.url = Util_Util.urlAppend(options.url,
+                    Util_Util.getParameterString(options.params || {}));
             }
             options.params = options.data;
         }
-        FetchRequest.commit(options.method, options.url, options.params, {
+        FetchRequest_FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withCredentials: options.withCredentials,
             timeout: options.async ? 0 : null,
@@ -8785,15 +8770,15 @@ class CommonServiceBase_CommonServiceBase {
                 }
             }
             if (result.error) {
-                var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+                var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
                 failure(result);
             } else {
                 result.succeed = result.succeed == undefined ? true : result.succeed;
-                var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
+                var success = (options.scope) ? BaseTypes_FunctionExt.bind(options.success, options.scope) : options.success;
                 success(result);
             }
         }).catch(function (e) {
-            var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+            var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
             failure(e);
         })
     }
@@ -8880,7 +8865,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 
     processAsync(url, params) {
         var me = this;
-        FetchRequest.get(url, params,{proxy: me.proxy}).then(function (response) {
+        FetchRequest_FetchRequest.get(url, params,{proxy: me.proxy}).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -9036,7 +9021,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      */
     getJobs(url) {
         var me = this;
-        FetchRequest.get(me._processUrl(url), null, {
+        FetchRequest_FetchRequest.get(me._processUrl(url), null, {
             proxy: me.proxy
         }).then(function (response) {
             return response.json();
@@ -9074,7 +9059,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
             withCredentials: me.withCredentials,
             isInTheSameDomain: me.isInTheSameDomain
         };
-        FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+        FetchRequest_FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
@@ -9090,12 +9075,12 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
     }
 
     serviceProcessCompleted(result, seconds) {
-        result = Util.transformResult(result);
+        result = Util_Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest.get(me._processUrl(result.newResourceLocation), {
+                FetchRequest_FetchRequest.get(me._processUrl(result.newResourceLocation), {
                         _t: new Date().getTime()
                     })
                     .then(function (response) {
@@ -9443,7 +9428,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          * @member {SuperMap.ClipAnalystMode} [SuperMap.VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
          * @description 裁剪分析模式 。
          */
-        this.mode = ClipAnalystMode.CLIP;
+        this.mode = REST_ClipAnalystMode.CLIP;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.VectorClipJobsParameter.prototype.output
@@ -9457,7 +9442,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util.extend(this, options);
+        Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
     }
@@ -10625,7 +10610,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
     }
 
     _processParams(params) {
