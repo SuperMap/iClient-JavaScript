@@ -1,5 +1,5 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.*/
-var host = window.isLocal ? window.server : "http://iclsvr.supermap.io";
+var host = window.isLocal ? window.server : "http://iclient.supermap.io";
 
 var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
     "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +

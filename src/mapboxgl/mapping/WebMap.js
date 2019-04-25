@@ -123,7 +123,7 @@ export class WebMap extends mapboxgl.Evented {
             style: {
                 'version': 8,
                 'sources': {},
-                // "glyphs": 'http://iclsvr.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf',
+                // "glyphs": 'http://iclient.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf',
                 'layers': []
             },
             crs: this.baseProjection,

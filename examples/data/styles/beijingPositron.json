@@ -4,11 +4,11 @@
     "sources": {
         "vector-tiles": {
             "type": "vector",
-            "tiles": ["http://iclsvr.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+            "tiles": ["http://iclient.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
         }
     },
     "sprite": "http://iclient.supermap.io/web/styles/street/sprite",
-    "glyphs": "http://iclsvr.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+    "glyphs": "http://iclient.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
     "layers": [{
             "id": "background",
             "type": "background",
