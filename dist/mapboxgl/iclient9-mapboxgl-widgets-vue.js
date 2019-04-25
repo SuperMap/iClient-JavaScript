@@ -1,21 +1,13 @@
-/*!
- * 
- *          iclient9-mapboxgl-widgets-vue.(http://iclient.supermap.io)
- *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
- *          license: Apache-2.0
- *          version: v9.1.2
- *         
- */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("vue"), require("./libs/mapboxgl/mapbox-gl-enhance.js"), require("./libs/iclient-mapboxgl/iclient9-mapboxgl.min"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));
+		module.exports = factory(require("./libs/iclient-mapboxgl/iclient9-mapboxgl.min"), require("vue"), require("./libs/mapboxgl/mapbox-gl-enhance.js"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));
 	else if(typeof define === 'function' && define.amd)
-		define(["vue", "./libs/mapboxgl/mapbox-gl-enhance.js", "./libs/iclient-mapboxgl/iclient9-mapboxgl.min", "echarts", "@mapbox/mapbox-gl-draw", "echarts-liquidfill"], factory);
+		define(["./libs/iclient-mapboxgl/iclient9-mapboxgl.min", "vue", "./libs/mapboxgl/mapbox-gl-enhance.js", "echarts", "@mapbox/mapbox-gl-draw", "echarts-liquidfill"], factory);
 	else if(typeof exports === 'object')
-		exports["Widgets"] = factory(require("vue"), require("./libs/mapboxgl/mapbox-gl-enhance.js"), require("./libs/iclient-mapboxgl/iclient9-mapboxgl.min"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));
+		exports["Widgets"] = factory(require("./libs/iclient-mapboxgl/iclient9-mapboxgl.min"), require("vue"), require("./libs/mapboxgl/mapbox-gl-enhance.js"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Widgets"] = factory(root["Vue"], root["mapboxgl"], root["SuperMap"], root["echarts"], root["MapboxDraw"], root["echarts-liquidfill"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_j5W7__, __WEBPACK_EXTERNAL_MODULE_MkUS__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Widgets"] = factory(root["SuperMap"], root["Vue"], root["mapboxgl"], root["echarts"], root["MapboxDraw"], root["echarts-liquidfill"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_MkUS__, __WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_j5W7__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1374,7 +1366,7 @@ exports.default = {
 /***/ "0XuU":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__("43KI").Transform
+module.exports = __webpack_require__("J78i")
 
 
 /***/ }),
@@ -1466,7 +1458,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 94);
+/******/ 	return __webpack_require__(__webpack_require__.s = 101);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1573,28 +1565,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 23:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("VIiR");
-
-/***/ }),
-
-/***/ 3:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("0BDH");
-
-/***/ }),
-
-/***/ 4:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("gSIQ");
-
-/***/ }),
-
-/***/ 94:
+/***/ 101:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1871,6 +1842,27 @@ collapse_item.install = function (Vue) {
 
 /* harmony default export */ var packages_collapse_item = __webpack_exports__["default"] = (collapse_item);
 
+/***/ }),
+
+/***/ 23:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("VIiR");
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("0BDH");
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("gSIQ");
+
 /***/ })
 
 /******/ });
@@ -1914,9 +1906,9 @@ var EE = __webpack_require__("+qE3").EventEmitter;
 var inherits = __webpack_require__("P7XM");
 
 inherits(Stream, EE);
-Stream.Readable = __webpack_require__("43KI");
-Stream.Writable = __webpack_require__("LGOv");
-Stream.Duplex = __webpack_require__("CWBI");
+Stream.Readable = __webpack_require__("ac9z");
+Stream.Writable = __webpack_require__("TuX4");
+Stream.Duplex = __webpack_require__("P+34");
 Stream.Transform = __webpack_require__("0XuU");
 Stream.PassThrough = __webpack_require__("wq4j");
 
@@ -2506,13 +2498,6 @@ if (typeof(window) != 'undefined') window.Query = Query;
 
 /***/ }),
 
-/***/ 2:
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-
 /***/ "26Y8":
 /***/ (function(module) {
 
@@ -2767,67 +2752,24 @@ var substr = 'ab'.substr(-1) === 'b'
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process, global) {// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// A bit simpler than readable streams.
+/* WEBPACK VAR INJECTION */(function(process) {// A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
 // the drain event emission and buffering.
 
 
 
-/*<replacement>*/
-
-var pna = __webpack_require__("lm0R");
-/*</replacement>*/
-
 module.exports = Writable;
 
-/* <replacement> */
-function WriteReq(chunk, encoding, cb) {
-  this.chunk = chunk;
-  this.encoding = encoding;
-  this.callback = cb;
-  this.next = null;
-}
-
-// It seems a linked list but it is not
-// there will be only 2 of these for each stream
-function CorkedRequest(state) {
-  var _this = this;
-
-  this.next = null;
-  this.entry = null;
-  this.finish = function () {
-    onCorkedFinish(_this, state);
-  };
-}
-/* </replacement> */
-
 /*<replacement>*/
-var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : pna.nextTick;
+var processNextTick = __webpack_require__("lm0R");
 /*</replacement>*/
 
 /*<replacement>*/
-var Duplex;
+var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : processNextTick;
+/*</replacement>*/
+
+/*<replacement>*/
+var Buffer = __webpack_require__("tjlA").Buffer;
 /*</replacement>*/
 
 Writable.WritableState = WritableState;
@@ -2844,62 +2786,51 @@ var internalUtil = {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__("QpuX");
+var Stream;
+(function () {
+  try {
+    Stream = __webpack_require__("1IWx");
+  } catch (_) {} finally {
+    if (!Stream) Stream = __webpack_require__("+qE3").EventEmitter;
+  }
+})();
 /*</replacement>*/
 
-/*<replacement>*/
-
-var Buffer = __webpack_require__("hwdV").Buffer;
-var OurUint8Array = global.Uint8Array || function () {};
-function _uint8ArrayToBuffer(chunk) {
-  return Buffer.from(chunk);
-}
-function _isUint8Array(obj) {
-  return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
-}
-
-/*</replacement>*/
-
-var destroyImpl = __webpack_require__("RoFp");
+var Buffer = __webpack_require__("tjlA").Buffer;
 
 util.inherits(Writable, Stream);
 
 function nop() {}
 
+function WriteReq(chunk, encoding, cb) {
+  this.chunk = chunk;
+  this.encoding = encoding;
+  this.callback = cb;
+  this.next = null;
+}
+
+var Duplex;
 function WritableState(options, stream) {
   Duplex = Duplex || __webpack_require__("sZro");
 
   options = options || {};
 
-  // Duplex streams are both readable and writable, but share
-  // the same options object.
-  // However, some cases require setting options to different
-  // values for the readable and the writable sides of the duplex stream.
-  // These options can be provided separately as readableXXX and writableXXX.
-  var isDuplex = stream instanceof Duplex;
-
   // object stream flag to indicate whether or not this stream
   // contains buffers or objects.
   this.objectMode = !!options.objectMode;
 
-  if (isDuplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
+  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
 
   // the point at which write() starts returning false
   // Note: 0 is a valid value, means that we always return false if
   // the entire buffer is not flushed immediately on write()
   var hwm = options.highWaterMark;
-  var writableHwm = options.writableHighWaterMark;
   var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-
-  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (writableHwm || writableHwm === 0)) this.highWaterMark = writableHwm;else this.highWaterMark = defaultHwm;
+  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
 
   // cast to ints.
-  this.highWaterMark = Math.floor(this.highWaterMark);
+  this.highWaterMark = ~ ~this.highWaterMark;
 
-  // if _final has been called
-  this.finalCalled = false;
-
-  // drain event flag.
   this.needDrain = false;
   // at the start of calling end()
   this.ending = false;
@@ -2907,9 +2838,6 @@ function WritableState(options, stream) {
   this.ended = false;
   // when 'finish' is emitted
   this.finished = false;
-
-  // has it been destroyed
-  this.destroyed = false;
 
   // should we decode strings into buffers before passing to _write?
   // this is here so that some node-core streams can optimize string
@@ -2972,12 +2900,13 @@ function WritableState(options, stream) {
   // count buffered requests
   this.bufferedRequestCount = 0;
 
-  // allocate the first CorkedRequest, there is always
-  // one allocated and free to use, and we maintain at most two
+  // create the two objects needed to store the corked requests
+  // they are not a linked list, as no new elements are inserted in there
   this.corkedRequestsFree = new CorkedRequest(this);
+  this.corkedRequestsFree.next = new CorkedRequest(this);
 }
 
-WritableState.prototype.getBuffer = function getBuffer() {
+WritableState.prototype.getBuffer = function writableStateGetBuffer() {
   var current = this.bufferedRequest;
   var out = [];
   while (current) {
@@ -2992,43 +2921,18 @@ WritableState.prototype.getBuffer = function getBuffer() {
     Object.defineProperty(WritableState.prototype, 'buffer', {
       get: internalUtil.deprecate(function () {
         return this.getBuffer();
-      }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.', 'DEP0003')
+      }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.')
     });
   } catch (_) {}
 })();
 
-// Test _writableState for inheritance to account for Duplex streams,
-// whose prototype chain only points to Readable.
-var realHasInstance;
-if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.prototype[Symbol.hasInstance] === 'function') {
-  realHasInstance = Function.prototype[Symbol.hasInstance];
-  Object.defineProperty(Writable, Symbol.hasInstance, {
-    value: function (object) {
-      if (realHasInstance.call(this, object)) return true;
-      if (this !== Writable) return false;
-
-      return object && object._writableState instanceof WritableState;
-    }
-  });
-} else {
-  realHasInstance = function (object) {
-    return object instanceof this;
-  };
-}
-
+var Duplex;
 function Writable(options) {
   Duplex = Duplex || __webpack_require__("sZro");
 
-  // Writable ctor is applied to Duplexes, too.
-  // `realHasInstance` is necessary because using plain `instanceof`
-  // would return false, as no `_writableState` property is attached.
-
-  // Trying to use the custom `instanceof` for Writable here will also break the
-  // Node.js LazyTransform implementation, which has a non-trivial getter for
-  // `_writableState` that would lead to infinite recursion.
-  if (!realHasInstance.call(Writable, this) && !(this instanceof Duplex)) {
-    return new Writable(options);
-  }
+  // Writable ctor is applied to Duplexes, though they're not
+  // instanceof Writable, they're instanceof Readable.
+  if (!(this instanceof Writable) && !(this instanceof Duplex)) return new Writable(options);
 
   this._writableState = new WritableState(options, this);
 
@@ -3039,10 +2943,6 @@ function Writable(options) {
     if (typeof options.write === 'function') this._write = options.write;
 
     if (typeof options.writev === 'function') this._writev = options.writev;
-
-    if (typeof options.destroy === 'function') this._destroy = options.destroy;
-
-    if (typeof options.final === 'function') this._final = options.final;
   }
 
   Stream.call(this);
@@ -3050,31 +2950,28 @@ function Writable(options) {
 
 // Otherwise people can pipe Writable streams, which is just wrong.
 Writable.prototype.pipe = function () {
-  this.emit('error', new Error('Cannot pipe, not readable'));
+  this.emit('error', new Error('Cannot pipe. Not readable.'));
 };
 
 function writeAfterEnd(stream, cb) {
   var er = new Error('write after end');
   // TODO: defer error events consistently everywhere, not just the cb
   stream.emit('error', er);
-  pna.nextTick(cb, er);
+  processNextTick(cb, er);
 }
 
-// Checks that a user-supplied chunk is valid, especially for the particular
-// mode the stream is in. Currently this means that `null` is never accepted
-// and undefined/non-string values are only allowed in object mode.
+// If we get something that is not a buffer, string, null, or undefined,
+// and we're not in objectMode, then that's an error.
+// Otherwise stream chunks are all considered to be of length=1, and the
+// watermarks determine how many objects to keep in the buffer, rather than
+// how many bytes or characters.
 function validChunk(stream, state, chunk, cb) {
   var valid = true;
-  var er = false;
 
-  if (chunk === null) {
-    er = new TypeError('May not write null values to stream');
-  } else if (typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {
-    er = new TypeError('Invalid non-string/buffer chunk');
-  }
-  if (er) {
+  if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
+    var er = new TypeError('Invalid non-string/buffer chunk');
     stream.emit('error', er);
-    pna.nextTick(cb, er);
+    processNextTick(cb, er);
     valid = false;
   }
   return valid;
@@ -3083,24 +2980,19 @@ function validChunk(stream, state, chunk, cb) {
 Writable.prototype.write = function (chunk, encoding, cb) {
   var state = this._writableState;
   var ret = false;
-  var isBuf = !state.objectMode && _isUint8Array(chunk);
-
-  if (isBuf && !Buffer.isBuffer(chunk)) {
-    chunk = _uint8ArrayToBuffer(chunk);
-  }
 
   if (typeof encoding === 'function') {
     cb = encoding;
     encoding = null;
   }
 
-  if (isBuf) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;
+  if (Buffer.isBuffer(chunk)) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;
 
   if (typeof cb !== 'function') cb = nop;
 
-  if (state.ended) writeAfterEnd(this, cb);else if (isBuf || validChunk(this, state, chunk, cb)) {
+  if (state.ended) writeAfterEnd(this, cb);else if (validChunk(this, state, chunk, cb)) {
     state.pendingcb++;
-    ret = writeOrBuffer(this, state, isBuf, chunk, encoding, cb);
+    ret = writeOrBuffer(this, state, chunk, encoding, cb);
   }
 
   return ret;
@@ -3127,38 +3019,22 @@ Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
   if (typeof encoding === 'string') encoding = encoding.toLowerCase();
   if (!(['hex', 'utf8', 'utf-8', 'ascii', 'binary', 'base64', 'ucs2', 'ucs-2', 'utf16le', 'utf-16le', 'raw'].indexOf((encoding + '').toLowerCase()) > -1)) throw new TypeError('Unknown encoding: ' + encoding);
   this._writableState.defaultEncoding = encoding;
-  return this;
 };
 
 function decodeChunk(state, chunk, encoding) {
   if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {
-    chunk = Buffer.from(chunk, encoding);
+    chunk = new Buffer(chunk, encoding);
   }
   return chunk;
 }
 
-Object.defineProperty(Writable.prototype, 'writableHighWaterMark', {
-  // making it explicit this property is not enumerable
-  // because otherwise some prototype manipulation in
-  // userland will fail
-  enumerable: false,
-  get: function () {
-    return this._writableState.highWaterMark;
-  }
-});
-
 // if we're already writing something, then just put this
 // in the queue, and wait our turn.  Otherwise, call _write
 // If we return false, then we need a drain event, so set that flag.
-function writeOrBuffer(stream, state, isBuf, chunk, encoding, cb) {
-  if (!isBuf) {
-    var newChunk = decodeChunk(state, chunk, encoding);
-    if (chunk !== newChunk) {
-      isBuf = true;
-      encoding = 'buffer';
-      chunk = newChunk;
-    }
-  }
+function writeOrBuffer(stream, state, chunk, encoding, cb) {
+  chunk = decodeChunk(state, chunk, encoding);
+
+  if (Buffer.isBuffer(chunk)) encoding = 'buffer';
   var len = state.objectMode ? 1 : chunk.length;
 
   state.length += len;
@@ -3169,13 +3045,7 @@ function writeOrBuffer(stream, state, isBuf, chunk, encoding, cb) {
 
   if (state.writing || state.corked) {
     var last = state.lastBufferedRequest;
-    state.lastBufferedRequest = {
-      chunk: chunk,
-      encoding: encoding,
-      isBuf: isBuf,
-      callback: cb,
-      next: null
-    };
+    state.lastBufferedRequest = new WriteReq(chunk, encoding, cb);
     if (last) {
       last.next = state.lastBufferedRequest;
     } else {
@@ -3200,26 +3070,10 @@ function doWrite(stream, state, writev, len, chunk, encoding, cb) {
 
 function onwriteError(stream, state, sync, er, cb) {
   --state.pendingcb;
+  if (sync) processNextTick(cb, er);else cb(er);
 
-  if (sync) {
-    // defer the callback if we are being called synchronously
-    // to avoid piling up things on the stack
-    pna.nextTick(cb, er);
-    // this can emit finish, and it will always happen
-    // after error
-    pna.nextTick(finishMaybe, stream, state);
-    stream._writableState.errorEmitted = true;
-    stream.emit('error', er);
-  } else {
-    // the caller expect this to happen before if
-    // it is async
-    cb(er);
-    stream._writableState.errorEmitted = true;
-    stream.emit('error', er);
-    // this can emit finish, but finish must
-    // always follow error
-    finishMaybe(stream, state);
-  }
+  stream._writableState.errorEmitted = true;
+  stream.emit('error', er);
 }
 
 function onwriteStateUpdate(state) {
@@ -3249,8 +3103,8 @@ function onwrite(stream, er) {
       asyncWrite(afterWrite, stream, state, finished, cb);
       /*</replacement>*/
     } else {
-      afterWrite(stream, state, finished, cb);
-    }
+        afterWrite(stream, state, finished, cb);
+      }
   }
 }
 
@@ -3284,28 +3138,20 @@ function clearBuffer(stream, state) {
     holder.entry = entry;
 
     var count = 0;
-    var allBuffers = true;
     while (entry) {
       buffer[count] = entry;
-      if (!entry.isBuf) allBuffers = false;
       entry = entry.next;
       count += 1;
     }
-    buffer.allBuffers = allBuffers;
 
     doWrite(stream, state, true, state.length, buffer, '', holder.finish);
 
-    // doWrite is almost always async, defer these to save a bit of time
+    // doWrite is always async, defer these to save a bit of time
     // as the hot path ends with doWrite
     state.pendingcb++;
     state.lastBufferedRequest = null;
-    if (holder.next) {
-      state.corkedRequestsFree = holder.next;
-      holder.next = null;
-    } else {
-      state.corkedRequestsFree = new CorkedRequest(state);
-    }
-    state.bufferedRequestCount = 0;
+    state.corkedRequestsFree = holder.next;
+    holder.next = null;
   } else {
     // Slow case, write chunks one-by-one
     while (entry) {
@@ -3316,7 +3162,6 @@ function clearBuffer(stream, state) {
 
       doWrite(stream, state, false, len, chunk, encoding, cb);
       entry = entry.next;
-      state.bufferedRequestCount--;
       // if we didn't call the onwrite immediately, then
       // it means that we need to wait until it does.
       // also, that means that the chunk and cb are currently
@@ -3329,12 +3174,13 @@ function clearBuffer(stream, state) {
     if (entry === null) state.lastBufferedRequest = null;
   }
 
+  state.bufferedRequestCount = 0;
   state.bufferedRequest = entry;
   state.bufferProcessing = false;
 }
 
 Writable.prototype._write = function (chunk, encoding, cb) {
-  cb(new Error('_write() is not implemented'));
+  cb(new Error('not implemented'));
 };
 
 Writable.prototype._writev = null;
@@ -3366,37 +3212,23 @@ Writable.prototype.end = function (chunk, encoding, cb) {
 function needFinish(state) {
   return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;
 }
-function callFinal(stream, state) {
-  stream._final(function (err) {
-    state.pendingcb--;
-    if (err) {
-      stream.emit('error', err);
-    }
+
+function prefinish(stream, state) {
+  if (!state.prefinished) {
     state.prefinished = true;
     stream.emit('prefinish');
-    finishMaybe(stream, state);
-  });
-}
-function prefinish(stream, state) {
-  if (!state.prefinished && !state.finalCalled) {
-    if (typeof stream._final === 'function') {
-      state.pendingcb++;
-      state.finalCalled = true;
-      pna.nextTick(callFinal, stream, state);
-    } else {
-      state.prefinished = true;
-      stream.emit('prefinish');
-    }
   }
 }
 
 function finishMaybe(stream, state) {
   var need = needFinish(state);
   if (need) {
-    prefinish(stream, state);
     if (state.pendingcb === 0) {
+      prefinish(stream, state);
       state.finished = true;
       stream.emit('finish');
+    } else {
+      prefinish(stream, state);
     }
   }
   return need;
@@ -3406,55 +3238,37 @@ function endWritable(stream, state, cb) {
   state.ending = true;
   finishMaybe(stream, state);
   if (cb) {
-    if (state.finished) pna.nextTick(cb);else stream.once('finish', cb);
+    if (state.finished) processNextTick(cb);else stream.once('finish', cb);
   }
   state.ended = true;
   stream.writable = false;
 }
 
-function onCorkedFinish(corkReq, state, err) {
-  var entry = corkReq.entry;
-  corkReq.entry = null;
-  while (entry) {
-    var cb = entry.callback;
-    state.pendingcb--;
-    cb(err);
-    entry = entry.next;
-  }
-  if (state.corkedRequestsFree) {
-    state.corkedRequestsFree.next = corkReq;
-  } else {
-    state.corkedRequestsFree = corkReq;
-  }
+// It seems a linked list but it is not
+// there will be only 2 of these for each stream
+function CorkedRequest(state) {
+  var _this = this;
+
+  this.next = null;
+  this.entry = null;
+
+  this.finish = function (err) {
+    var entry = _this.entry;
+    _this.entry = null;
+    while (entry) {
+      var cb = entry.callback;
+      state.pendingcb--;
+      cb(err);
+      entry = entry.next;
+    }
+    if (state.corkedRequestsFree) {
+      state.corkedRequestsFree.next = _this;
+    } else {
+      state.corkedRequestsFree = _this;
+    }
+  };
 }
-
-Object.defineProperty(Writable.prototype, 'destroyed', {
-  get: function () {
-    if (this._writableState === undefined) {
-      return false;
-    }
-    return this._writableState.destroyed;
-  },
-  set: function (value) {
-    // we ignore the value if the stream
-    // has not been initialized yet
-    if (!this._writableState) {
-      return;
-    }
-
-    // backward compatibility, the user is explicitly
-    // managing destroyed
-    this._writableState.destroyed = value;
-  }
-});
-
-Writable.prototype.destroy = destroyImpl.destroy;
-Writable.prototype._undestroy = destroyImpl.undestroy;
-Writable.prototype._destroy = function (err, cb) {
-  this.end();
-  cb(err);
-};
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB"), __webpack_require__("yLpj")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
 
 /***/ }),
 
@@ -3545,7 +3359,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 80);
+/******/ 	return __webpack_require__(__webpack_require__.s = 77);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -3659,7 +3473,7 @@ module.exports = __webpack_require__("0BDH");
 
 /***/ }),
 
-/***/ 80:
+/***/ 77:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4079,20 +3893,6 @@ src_checkbox.install = function (Vue) {
 /***/ })
 
 /******/ });
-
-/***/ }),
-
-/***/ "43KI":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("rXFu");
-exports.Stream = exports;
-exports.Readable = exports;
-exports.Writable = __webpack_require__("3BRs");
-exports.Duplex = __webpack_require__("sZro");
-exports.Transform = __webpack_require__("J78i");
-exports.PassThrough = __webpack_require__("eA/Y");
-
 
 /***/ }),
 
@@ -4670,7 +4470,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 96);
+/******/ 	return __webpack_require__(__webpack_require__.s = 73);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -4784,7 +4584,7 @@ module.exports = __webpack_require__("WST1");
 
 /***/ }),
 
-/***/ 20:
+/***/ 21:
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("EvI9");
@@ -4826,14 +4626,7 @@ module.exports = __webpack_require__("EvI9");
 
 /***/ }),
 
-/***/ 9:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("8606");
-
-/***/ }),
-
-/***/ 96:
+/***/ 73:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4991,7 +4784,7 @@ var input_ = __webpack_require__(9);
 var input_default = /*#__PURE__*/__webpack_require__.n(input_);
 
 // EXTERNAL MODULE: external "element-ui/lib/mixins/focus"
-var focus_ = __webpack_require__(20);
+var focus_ = __webpack_require__(21);
 var focus_default = /*#__PURE__*/__webpack_require__.n(focus_);
 
 // EXTERNAL MODULE: ./src/directives/repeat-click.js
@@ -5302,6 +5095,13 @@ input_number.install = function (Vue) {
 
 /* harmony default export */ var packages_input_number = __webpack_exports__["default"] = (input_number);
 
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("8606");
+
 /***/ })
 
 /******/ });
@@ -5440,7 +5240,9 @@ exports.default = {
     },
 
     showPopper: function showPopper(val) {
-      if (this.disabled) return;
+      if (this.disabled) {
+        return;
+      }
       val ? this.updatePopper() : this.destroyPopper();
       this.$emit('input', val);
     }
@@ -5662,7 +5464,7 @@ module.exports =
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "element-ui/lib/checkbox"
-var checkbox_ = __webpack_require__(17);
+var checkbox_ = __webpack_require__(16);
 var checkbox_default = /*#__PURE__*/__webpack_require__.n(checkbox_);
 
 // EXTERNAL MODULE: external "element-ui/lib/tag"
@@ -6061,16 +5863,15 @@ var parseMinWidth = function parseMinWidth(minWidth) {
       if (!renderCell) {
         renderCell = table_column_DEFAULT_RENDER_CELL;
       }
-      var children = [_self.renderTreeCell(data), renderCell(h, data)];
 
       return _self.showOverflowTooltip || _self.showTooltipWhenOverflow ? h(
         'div',
         { 'class': 'cell el-tooltip', style: { width: (data.column.realWidth || data.column.width) - 1 + 'px' } },
-        [children]
+        [renderCell(h, data)]
       ) : h(
         'div',
         { 'class': 'cell' },
-        [children]
+        [renderCell(h, data)]
       );
     };
   },
@@ -6166,38 +5967,6 @@ var parseMinWidth = function parseMinWidth(minWidth) {
     }
   },
 
-  methods: {
-    renderTreeCell: function renderTreeCell(data) {
-      var h = this.$createElement;
-
-      if (!data.treeNode) return null;
-      var ele = [];
-      ele.push(h('span', { 'class': 'el-table__indent', style: { 'padding-left': data.treeNode.indent + 'px' } }));
-      if (data.treeNode.hasChildren) {
-        ele.push(h(
-          'div',
-          { 'class': ['el-table__expand-icon', data.treeNode.expanded ? 'el-table__expand-icon--expanded' : ''],
-            on: {
-              'click': this.handleTreeExpandIconClick.bind(this, data)
-            }
-          },
-          [h('i', { 'class': 'el-icon el-icon-arrow-right' })]
-        ));
-      } else {
-        ele.push(h('span', { 'class': 'el-table__placeholder' }));
-      }
-      return ele;
-    },
-    handleTreeExpandIconClick: function handleTreeExpandIconClick(data, e) {
-      e.stopPropagation();
-      if (data.store.states.lazy && !data.treeNode.loaded) {
-        data.store.loadData(data.row, data.treeNode);
-      } else {
-        data.store.toggleTreeExpansion(data.treeNode.rowKey);
-      }
-    }
-  },
-
   mounted: function mounted() {
     var _this2 = this;
 
@@ -6236,7 +6005,7 @@ table_column.install = function (Vue) {
 
 /***/ }),
 
-/***/ 17:
+/***/ 16:
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("3Nwd");
@@ -6379,7 +6148,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 102);
+/******/ 	return __webpack_require__(__webpack_require__.s = 82);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -6486,7 +6255,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 102:
+/***/ 82:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6741,7 +6510,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 67);
+/******/ 	return __webpack_require__(__webpack_require__.s = 61);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -6862,7 +6631,7 @@ module.exports = __webpack_require__("0BDH");
 
 /***/ }),
 
-/***/ 67:
+/***/ 61:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6931,9 +6700,11 @@ var render = function() {
                         autocomplete: _vm.autoComplete || _vm.autocomplete,
                         "aria-label": _vm.label
                       },
+                      domProps: { value: _vm.nativeInputValue },
                       on: {
-                        compositionstart: _vm.handleCompositionStart,
-                        compositionend: _vm.handleCompositionEnd,
+                        compositionstart: _vm.handleComposition,
+                        compositionupdate: _vm.handleComposition,
+                        compositionend: _vm.handleComposition,
                         input: _vm.handleInput,
                         focus: _vm.handleFocus,
                         blur: _vm.handleBlur,
@@ -7031,9 +6802,11 @@ var render = function() {
                   autocomplete: _vm.autoComplete || _vm.autocomplete,
                   "aria-label": _vm.label
                 },
+                domProps: { value: _vm.nativeInputValue },
                 on: {
-                  compositionstart: _vm.handleCompositionStart,
-                  compositionend: _vm.handleCompositionEnd,
+                  compositionstart: _vm.handleComposition,
+                  compositionupdate: _vm.handleComposition,
+                  compositionend: _vm.handleComposition,
                   input: _vm.handleInput,
                   focus: _vm.handleFocus,
                   blur: _vm.handleBlur,
@@ -7240,6 +7013,10 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -7269,7 +7046,7 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
       textareaCalcStyle: {},
       hovering: false,
       focused: false,
-      isComposing: false,
+      isOnComposition: false,
       passwordVisible: false
     };
   },
@@ -7347,7 +7124,7 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
       return this.disabled || (this.elForm || {}).disabled;
     },
     nativeInputValue: function nativeInputValue() {
-      return this.value === null || this.value === undefined ? '' : String(this.value);
+      return this.value === null || this.value === undefined ? '' : this.value;
     },
     showClear: function showClear() {
       return this.clearable && !this.inputDisabled && !this.readonly && this.nativeInputValue && (this.focused || this.hovering);
@@ -7363,13 +7140,6 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
       if (this.validateEvent) {
         this.dispatch('ElFormItem', 'el.form.change', [val]);
       }
-    },
-
-    // native input value is set explicitly
-    // do not use v-model / :value in template
-    // see: https://github.com/ElemeFE/element/issues/14521
-    nativeInputValue: function nativeInputValue() {
-      this.setNativeInputValue();
     }
   },
 
@@ -7418,27 +7188,23 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
 
       this.textareaCalcStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows);
     },
-    setNativeInputValue: function setNativeInputValue() {
-      var input = this.getInput();
-      if (!input) return;
-      if (input.value === this.nativeInputValue) return;
-      input.value = this.nativeInputValue;
-    },
     handleFocus: function handleFocus(event) {
       this.focused = true;
       this.$emit('focus', event);
     },
-    handleCompositionStart: function handleCompositionStart() {
-      this.isComposing = true;
-    },
-    handleCompositionEnd: function handleCompositionEnd(event) {
-      this.isComposing = false;
-      this.handleInput(event);
+    handleComposition: function handleComposition(event) {
+      if (event.type === 'compositionstart') {
+        this.isOnComposition = true;
+      }
+      if (event.type === 'compositionend') {
+        this.isOnComposition = false;
+        this.handleInput(event);
+      }
     },
     handleInput: function handleInput(event) {
-      // should not emit input during composition
-      // see: https://github.com/ElemeFE/element/issues/10516
-      if (this.isComposing) return;
+      var _this = this;
+
+      if (this.isOnComposition) return;
 
       // hack for https://github.com/ElemeFE/element/issues/8548
       // should remove the following line when we don't support IE
@@ -7446,9 +7212,12 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
 
       this.$emit('input', event.target.value);
 
-      // ensure native input value is controlled
+      // set input's value, in case parent refuses the change
       // see: https://github.com/ElemeFE/element/issues/12850
-      this.$nextTick(this.setNativeInputValue);
+      this.$nextTick(function () {
+        var input = _this.getInput();
+        input.value = _this.value;
+      });
     },
     handleChange: function handleChange(event) {
       this.$emit('change', event.target.value);
@@ -7498,7 +7267,6 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
     this.$on('inputSelect', this.select);
   },
   mounted: function mounted() {
-    this.setNativeInputValue();
     this.resizeTextarea();
     this.updateIconOffset();
   },
@@ -7867,6 +7635,13 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "9Plv":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "9SnE":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7954,7 +7729,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 64);
+/******/ 	return __webpack_require__(__webpack_require__.s = 67);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -8068,7 +7843,7 @@ module.exports = __webpack_require__("UShQ");
 
 /***/ }),
 
-/***/ 21:
+/***/ 20:
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("Qfgm");
@@ -8082,7 +7857,7 @@ module.exports = __webpack_require__("i7/w");
 
 /***/ }),
 
-/***/ 64:
+/***/ 67:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8298,7 +8073,7 @@ component.options.__file = "packages/message/src/main.vue"
 var popup_ = __webpack_require__(13);
 
 // EXTERNAL MODULE: external "element-ui/lib/utils/vdom"
-var vdom_ = __webpack_require__(21);
+var vdom_ = __webpack_require__(20);
 
 // CONCATENATED MODULE: ./packages/message/src/main.js
 
@@ -8645,14 +8420,6 @@ module.exports = function(xml, userOptions) {
 
 /***/ }),
 
-/***/ "CWBI":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("sZro");
-
-
-/***/ }),
-
 /***/ "CeSn":
 /***/ (function(module, exports) {
 
@@ -8825,6 +8592,163 @@ module.exports = toNumber;
 
 /***/ }),
 
+/***/ "D2yo":
+/***/ (function(module, exports) {
+
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/dist/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 115);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 115:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// CONCATENATED MODULE: ./packages/row/src/row.js
+/* harmony default export */ var row = ({
+  name: 'ElRow',
+
+  componentName: 'ElRow',
+
+  props: {
+    tag: {
+      type: String,
+      default: 'div'
+    },
+    gutter: Number,
+    type: String,
+    justify: {
+      type: String,
+      default: 'start'
+    },
+    align: {
+      type: String,
+      default: 'top'
+    }
+  },
+
+  computed: {
+    style: function style() {
+      var ret = {};
+
+      if (this.gutter) {
+        ret.marginLeft = '-' + this.gutter / 2 + 'px';
+        ret.marginRight = ret.marginLeft;
+      }
+
+      return ret;
+    }
+  },
+
+  render: function render(h) {
+    return h(this.tag, {
+      class: ['el-row', this.justify !== 'start' ? 'is-justify-' + this.justify : '', this.align !== 'top' ? 'is-align-' + this.align : '', { 'el-row--flex': this.type === 'flex' }],
+      style: this.style
+    }, this.$slots.default);
+  }
+});
+// CONCATENATED MODULE: ./packages/row/index.js
+
+
+/* istanbul ignore next */
+row.install = function (Vue) {
+  Vue.component(row.name, row);
+};
+
+/* harmony default export */ var packages_row = __webpack_exports__["default"] = (row);
+
+/***/ })
+
+/******/ });
+
+/***/ }),
+
 /***/ "D7fx":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8976,12 +8900,12 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 111);
+/******/ 	return __webpack_require__(__webpack_require__.s = 112);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 111:
+/***/ 112:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10620,27 +10544,6 @@ main.install = function (Vue) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -10696,28 +10599,37 @@ util.inherits = __webpack_require__("P7XM");
 
 util.inherits(Transform, Duplex);
 
-function afterTransform(er, data) {
-  var ts = this._transformState;
+function TransformState(stream) {
+  this.afterTransform = function (er, data) {
+    return afterTransform(stream, er, data);
+  };
+
+  this.needTransform = false;
+  this.transforming = false;
+  this.writecb = null;
+  this.writechunk = null;
+  this.writeencoding = null;
+}
+
+function afterTransform(stream, er, data) {
+  var ts = stream._transformState;
   ts.transforming = false;
 
   var cb = ts.writecb;
 
-  if (!cb) {
-    return this.emit('error', new Error('write callback called multiple times'));
-  }
+  if (!cb) return stream.emit('error', new Error('no writecb in Transform class'));
 
   ts.writechunk = null;
   ts.writecb = null;
 
-  if (data != null) // single equals check for both `null` and `undefined`
-    this.push(data);
+  if (data !== null && data !== undefined) stream.push(data);
 
   cb(er);
 
-  var rs = this._readableState;
+  var rs = stream._readableState;
   rs.reading = false;
   if (rs.needReadable || rs.length < rs.highWaterMark) {
-    this._read(rs.highWaterMark);
+    stream._read(rs.highWaterMark);
   }
 }
 
@@ -10726,14 +10638,10 @@ function Transform(options) {
 
   Duplex.call(this, options);
 
-  this._transformState = {
-    afterTransform: afterTransform.bind(this),
-    needTransform: false,
-    transforming: false,
-    writecb: null,
-    writechunk: null,
-    writeencoding: null
-  };
+  this._transformState = new TransformState(this);
+
+  // when the writable side finishes, then flush out anything remaining.
+  var stream = this;
 
   // start out asking for a readable event once data is transformed.
   this._readableState.needReadable = true;
@@ -10749,20 +10657,11 @@ function Transform(options) {
     if (typeof options.flush === 'function') this._flush = options.flush;
   }
 
-  // When the writable side finishes, then flush out anything remaining.
-  this.on('prefinish', prefinish);
-}
-
-function prefinish() {
-  var _this = this;
-
-  if (typeof this._flush === 'function') {
-    this._flush(function (er, data) {
-      done(_this, er, data);
-    });
-  } else {
-    done(this, null, null);
-  }
+  this.once('prefinish', function () {
+    if (typeof this._flush === 'function') this._flush(function (er) {
+      done(stream, er);
+    });else done(stream);
+  });
 }
 
 Transform.prototype.push = function (chunk, encoding) {
@@ -10781,7 +10680,7 @@ Transform.prototype.push = function (chunk, encoding) {
 // an error, then that'll put the hurt on the whole operation.  If you
 // never call cb(), then you'll never get another chunk.
 Transform.prototype._transform = function (chunk, encoding, cb) {
-  throw new Error('_transform() is not implemented');
+  throw new Error('not implemented');
 };
 
 Transform.prototype._write = function (chunk, encoding, cb) {
@@ -10811,26 +10710,17 @@ Transform.prototype._read = function (n) {
   }
 };
 
-Transform.prototype._destroy = function (err, cb) {
-  var _this2 = this;
-
-  Duplex.prototype._destroy.call(this, err, function (err2) {
-    cb(err2);
-    _this2.emit('close');
-  });
-};
-
-function done(stream, er, data) {
+function done(stream, er) {
   if (er) return stream.emit('error', er);
-
-  if (data != null) // single equals check for both `null` and `undefined`
-    stream.push(data);
 
   // if there's nothing in the write buffer, then that means
   // that nothing more will ever be provided
-  if (stream._writableState.length) throw new Error('Calling transform done when ws.length != 0');
+  var ws = stream._writableState;
+  var ts = stream._transformState;
 
-  if (stream._transformState.transforming) throw new Error('Calling transform done when still transforming');
+  if (ws.length) throw new Error('calling transform done when ws.length != 0');
+
+  if (ts.transforming) throw new Error('calling transform done when still transforming');
 
   return stream.push(null);
 }
@@ -11017,6 +10907,9 @@ var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce_);
 // EXTERNAL MODULE: external "element-ui/lib/utils/dom"
 var dom_ = __webpack_require__(2);
 
+// EXTERNAL MODULE: external "element-ui/lib/utils/vdom"
+var vdom_ = __webpack_require__(20);
+
 // EXTERNAL MODULE: external "element-ui/lib/utils/util"
 var util_ = __webpack_require__(4);
 
@@ -11025,6 +10918,7 @@ var external_vue_ = __webpack_require__(6);
 var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
 
 // CONCATENATED MODULE: ./packages/tooltip/src/main.js
+
 
 
 
@@ -11080,10 +10974,15 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
 
   data: function data() {
     return {
-      tooltipId: 'el-tooltip-' + Object(util_["generateId"])(),
       timeoutPending: null,
       focusing: false
     };
+  },
+
+  computed: {
+    tooltipId: function tooltipId() {
+      return 'el-tooltip-' + Object(util_["generateId"])();
+    }
   },
   beforeCreate: function beforeCreate() {
     var _this = this;
@@ -11143,13 +11042,16 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
       );
     }
 
-    var firstElement = this.getFirstElement();
-    if (!firstElement) return null;
+    if (!this.$slots.default || !this.$slots.default.length) return this.$slots.default;
 
-    var data = firstElement.data = firstElement.data || {};
-    data.staticClass = this.addTooltipClass(data.staticClass);
+    var vnode = Object(vdom_["getFirstComponentChild"])(this.$slots.default);
 
-    return firstElement;
+    if (!vnode) return vnode;
+
+    var data = vnode.data = vnode.data || {};
+    data.staticClass = this.concatClass(data.staticClass, 'el-tooltip');
+
+    return vnode;
   },
   mounted: function mounted() {
     var _this3 = this;
@@ -11174,14 +11076,6 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
       });
       Object(dom_["on"])(this.referenceElm, 'blur', this.handleBlur);
       Object(dom_["on"])(this.referenceElm, 'click', this.removeFocusing);
-    }
-    // fix issue https://github.com/ElemeFE/element/issues/14424
-    if (this.value && this.popperVM) {
-      this.popperVM.$nextTick(function () {
-        if (_this3.value) {
-          _this3.updatePopper();
-        }
-      });
     }
   },
 
@@ -11214,12 +11108,9 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
     removeFocusing: function removeFocusing() {
       this.focusing = false;
     },
-    addTooltipClass: function addTooltipClass(prev) {
-      if (!prev) {
-        return 'el-tooltip';
-      } else {
-        return 'el-tooltip ' + prev.replace('el-tooltip', '');
-      }
+    concatClass: function concatClass(a, b) {
+      if (a && a.indexOf(b) > -1) return a;
+      return a ? b ? a + ' ' + b : a : b || '';
     },
     handleShowPopper: function handleShowPopper() {
       var _this4 = this;
@@ -11254,17 +11145,6 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
         clearTimeout(this.timeoutPending);
       }
       this.expectedState = expectedState;
-    },
-    getFirstElement: function getFirstElement() {
-      var slots = this.$slots.default;
-      if (!Array.isArray(slots)) return null;
-      var element = null;
-      for (var index = 0; index < slots.length; index++) {
-        if (slots[index] && slots[index].tag) {
-          element = slots[index];
-        };
-      }
-      return element;
     }
   },
 
@@ -11303,6 +11183,13 @@ module.exports = __webpack_require__("DhVD");
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("WST1");
+
+/***/ }),
+
+/***/ 20:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("Qfgm");
 
 /***/ }),
 
@@ -11373,14 +11260,6 @@ function scrollIntoView(container, selected) {
     container.scrollTop = bottom - container.clientHeight;
   }
 }
-
-/***/ }),
-
-/***/ "LGOv":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("3BRs");
-
 
 /***/ }),
 
@@ -11647,7 +11526,7 @@ module.exports = _objectSpread;
       typeof Buffer.isBuffer === 'function' &&
       Buffer.isBuffer(data)) {
       if (!this._decoder) {
-        var SD = __webpack_require__("fXKp").StringDecoder
+        var SD = __webpack_require__("qiJe").StringDecoder
         this._decoder = new SD('utf8')
       }
       data = this._decoder.write(data)
@@ -13142,13 +13021,6 @@ function rad(num) {
 
 /***/ }),
 
-/***/ "OiGj":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
 /***/ "Onz0":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13261,6 +13133,14 @@ function objectToString(o) {
 }
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("tjlA").Buffer))
+
+/***/ }),
+
+/***/ "P+34":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("sZro")
+
 
 /***/ }),
 
@@ -13652,6 +13532,7 @@ exports.__esModule = true;
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.isVNode = isVNode;
+exports.getFirstComponentChild = getFirstComponentChild;
 
 var _util = __webpack_require__("gSIQ");
 
@@ -13659,13 +13540,11 @@ function isVNode(node) {
   return node !== null && (typeof node === 'undefined' ? 'undefined' : _typeof(node)) === 'object' && (0, _util.hasOwn)(node, 'componentOptions');
 };
 
-/***/ }),
-
-/***/ "QpuX":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("+qE3").EventEmitter;
-
+function getFirstComponentChild(children) {
+  return children && children.filter(function (c) {
+    return c && c.tag;
+  })[0];
+};
 
 /***/ }),
 
@@ -14296,87 +14175,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "RoFp":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/*<replacement>*/
-
-var pna = __webpack_require__("lm0R");
-/*</replacement>*/
-
-// undocumented cb() API, needed for core, not for public API
-function destroy(err, cb) {
-  var _this = this;
-
-  var readableDestroyed = this._readableState && this._readableState.destroyed;
-  var writableDestroyed = this._writableState && this._writableState.destroyed;
-
-  if (readableDestroyed || writableDestroyed) {
-    if (cb) {
-      cb(err);
-    } else if (err && (!this._writableState || !this._writableState.errorEmitted)) {
-      pna.nextTick(emitErrorNT, this, err);
-    }
-    return this;
-  }
-
-  // we set destroyed to true before firing error callbacks in order
-  // to make it re-entrance safe in case destroy() is called within callbacks
-
-  if (this._readableState) {
-    this._readableState.destroyed = true;
-  }
-
-  // if this is a duplex stream mark the writable part as destroyed as well
-  if (this._writableState) {
-    this._writableState.destroyed = true;
-  }
-
-  this._destroy(err || null, function (err) {
-    if (!cb && err) {
-      pna.nextTick(emitErrorNT, _this, err);
-      if (_this._writableState) {
-        _this._writableState.errorEmitted = true;
-      }
-    } else if (cb) {
-      cb(err);
-    }
-  });
-
-  return this;
-}
-
-function undestroy() {
-  if (this._readableState) {
-    this._readableState.destroyed = false;
-    this._readableState.reading = false;
-    this._readableState.ended = false;
-    this._readableState.endEmitted = false;
-  }
-
-  if (this._writableState) {
-    this._writableState.destroyed = false;
-    this._writableState.ended = false;
-    this._writableState.ending = false;
-    this._writableState.finished = false;
-    this._writableState.errorEmitted = false;
-  }
-}
-
-function emitErrorNT(self, err) {
-  self.emit('error', err);
-}
-
-module.exports = {
-  destroy: destroy,
-  undestroy: undestroy
-};
-
-/***/ }),
-
 /***/ "SJdT":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14832,7 +14630,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 53);
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -15006,13 +14804,13 @@ module.exports = __webpack_require__("QBBo");
 module.exports = __webpack_require__("FOnU");
 
 /***/ }),
-/* 20 */
+/* 20 */,
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("EvI9");
 
 /***/ }),
-/* 21 */,
 /* 22 */,
 /* 23 */,
 /* 24 */,
@@ -15295,8 +15093,7 @@ module.exports = __webpack_require__("05c+");
 /* 49 */,
 /* 50 */,
 /* 51 */,
-/* 52 */,
-/* 53 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15774,7 +15571,7 @@ var emitter_ = __webpack_require__(3);
 var emitter_default = /*#__PURE__*/__webpack_require__.n(emitter_);
 
 // EXTERNAL MODULE: external "element-ui/lib/mixins/focus"
-var focus_ = __webpack_require__(20);
+var focus_ = __webpack_require__(21);
 var focus_default = /*#__PURE__*/__webpack_require__.n(focus_);
 
 // EXTERNAL MODULE: external "element-ui/lib/mixins/locale"
@@ -16906,6 +16703,14 @@ src_select.install = function (Vue) {
 
 /***/ }),
 
+/***/ "TuX4":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("3BRs")
+
+
+/***/ }),
+
 /***/ "UShQ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17880,92 +17685,6 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
 };
 
-
-/***/ }),
-
-/***/ "Xhqo":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Buffer = __webpack_require__("hwdV").Buffer;
-var util = __webpack_require__(2);
-
-function copyBuffer(src, target, offset) {
-  src.copy(target, offset);
-}
-
-module.exports = function () {
-  function BufferList() {
-    _classCallCheck(this, BufferList);
-
-    this.head = null;
-    this.tail = null;
-    this.length = 0;
-  }
-
-  BufferList.prototype.push = function push(v) {
-    var entry = { data: v, next: null };
-    if (this.length > 0) this.tail.next = entry;else this.head = entry;
-    this.tail = entry;
-    ++this.length;
-  };
-
-  BufferList.prototype.unshift = function unshift(v) {
-    var entry = { data: v, next: this.head };
-    if (this.length === 0) this.tail = entry;
-    this.head = entry;
-    ++this.length;
-  };
-
-  BufferList.prototype.shift = function shift() {
-    if (this.length === 0) return;
-    var ret = this.head.data;
-    if (this.length === 1) this.head = this.tail = null;else this.head = this.head.next;
-    --this.length;
-    return ret;
-  };
-
-  BufferList.prototype.clear = function clear() {
-    this.head = this.tail = null;
-    this.length = 0;
-  };
-
-  BufferList.prototype.join = function join(s) {
-    if (this.length === 0) return '';
-    var p = this.head;
-    var ret = '' + p.data;
-    while (p = p.next) {
-      ret += s + p.data;
-    }return ret;
-  };
-
-  BufferList.prototype.concat = function concat(n) {
-    if (this.length === 0) return Buffer.alloc(0);
-    if (this.length === 1) return this.head.data;
-    var ret = Buffer.allocUnsafe(n >>> 0);
-    var p = this.head;
-    var i = 0;
-    while (p) {
-      copyBuffer(p.data, ret, i);
-      i += p.data.length;
-      p = p.next;
-    }
-    return ret;
-  };
-
-  return BufferList;
-}();
-
-if (util && util.inspect && util.inspect.custom) {
-  module.exports.prototype[util.inspect.custom] = function () {
-    var obj = util.inspect({ length: this.length });
-    return this.constructor.name + ' ' + obj;
-  };
-}
 
 /***/ }),
 
@@ -19349,6 +19068,25 @@ exports.default = {
     }
   }
 };
+
+/***/ }),
+
+/***/ "ac9z":
+/***/ (function(module, exports, __webpack_require__) {
+
+var Stream = (function (){
+  try {
+    return __webpack_require__("1IWx"); // hack to fix a circular dependency issue when used with browserify
+  } catch(_){}
+}());
+exports = module.exports = __webpack_require__("rXFu");
+exports.Stream = Stream || exports;
+exports.Readable = exports;
+exports.Writable = __webpack_require__("3BRs");
+exports.Duplex = __webpack_require__("sZro");
+exports.Transform = __webpack_require__("J78i");
+exports.PassThrough = __webpack_require__("eA/Y");
+
 
 /***/ }),
 
@@ -21471,27 +21209,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_dz_5__;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -21518,6 +21235,13 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
+
+/***/ }),
+
+/***/ "eg8l":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -21707,7 +21431,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 88);
+/******/ 	return __webpack_require__(__webpack_require__.s = 79);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -21821,7 +21545,7 @@ module.exports = __webpack_require__("0BDH");
 
 /***/ }),
 
-/***/ 88:
+/***/ 79:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21935,309 +21659,6 @@ checkbox_group.install = function (Vue) {
 /***/ })
 
 /******/ });
-
-/***/ }),
-
-/***/ "fXKp":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-/*<replacement>*/
-
-var Buffer = __webpack_require__("hwdV").Buffer;
-/*</replacement>*/
-
-var isEncoding = Buffer.isEncoding || function (encoding) {
-  encoding = '' + encoding;
-  switch (encoding && encoding.toLowerCase()) {
-    case 'hex':case 'utf8':case 'utf-8':case 'ascii':case 'binary':case 'base64':case 'ucs2':case 'ucs-2':case 'utf16le':case 'utf-16le':case 'raw':
-      return true;
-    default:
-      return false;
-  }
-};
-
-function _normalizeEncoding(enc) {
-  if (!enc) return 'utf8';
-  var retried;
-  while (true) {
-    switch (enc) {
-      case 'utf8':
-      case 'utf-8':
-        return 'utf8';
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return 'utf16le';
-      case 'latin1':
-      case 'binary':
-        return 'latin1';
-      case 'base64':
-      case 'ascii':
-      case 'hex':
-        return enc;
-      default:
-        if (retried) return; // undefined
-        enc = ('' + enc).toLowerCase();
-        retried = true;
-    }
-  }
-};
-
-// Do not cache `Buffer.isEncoding` when checking encoding names as some
-// modules monkey-patch it to support additional encodings
-function normalizeEncoding(enc) {
-  var nenc = _normalizeEncoding(enc);
-  if (typeof nenc !== 'string' && (Buffer.isEncoding === isEncoding || !isEncoding(enc))) throw new Error('Unknown encoding: ' + enc);
-  return nenc || enc;
-}
-
-// StringDecoder provides an interface for efficiently splitting a series of
-// buffers into a series of JS strings without breaking apart multi-byte
-// characters.
-exports.StringDecoder = StringDecoder;
-function StringDecoder(encoding) {
-  this.encoding = normalizeEncoding(encoding);
-  var nb;
-  switch (this.encoding) {
-    case 'utf16le':
-      this.text = utf16Text;
-      this.end = utf16End;
-      nb = 4;
-      break;
-    case 'utf8':
-      this.fillLast = utf8FillLast;
-      nb = 4;
-      break;
-    case 'base64':
-      this.text = base64Text;
-      this.end = base64End;
-      nb = 3;
-      break;
-    default:
-      this.write = simpleWrite;
-      this.end = simpleEnd;
-      return;
-  }
-  this.lastNeed = 0;
-  this.lastTotal = 0;
-  this.lastChar = Buffer.allocUnsafe(nb);
-}
-
-StringDecoder.prototype.write = function (buf) {
-  if (buf.length === 0) return '';
-  var r;
-  var i;
-  if (this.lastNeed) {
-    r = this.fillLast(buf);
-    if (r === undefined) return '';
-    i = this.lastNeed;
-    this.lastNeed = 0;
-  } else {
-    i = 0;
-  }
-  if (i < buf.length) return r ? r + this.text(buf, i) : this.text(buf, i);
-  return r || '';
-};
-
-StringDecoder.prototype.end = utf8End;
-
-// Returns only complete characters in a Buffer
-StringDecoder.prototype.text = utf8Text;
-
-// Attempts to complete a partial non-UTF-8 character using bytes from a Buffer
-StringDecoder.prototype.fillLast = function (buf) {
-  if (this.lastNeed <= buf.length) {
-    buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);
-    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
-  }
-  buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);
-  this.lastNeed -= buf.length;
-};
-
-// Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a
-// continuation byte. If an invalid byte is detected, -2 is returned.
-function utf8CheckByte(byte) {
-  if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;
-  return byte >> 6 === 0x02 ? -1 : -2;
-}
-
-// Checks at most 3 bytes at the end of a Buffer in order to detect an
-// incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)
-// needed to complete the UTF-8 character (if applicable) are returned.
-function utf8CheckIncomplete(self, buf, i) {
-  var j = buf.length - 1;
-  if (j < i) return 0;
-  var nb = utf8CheckByte(buf[j]);
-  if (nb >= 0) {
-    if (nb > 0) self.lastNeed = nb - 1;
-    return nb;
-  }
-  if (--j < i || nb === -2) return 0;
-  nb = utf8CheckByte(buf[j]);
-  if (nb >= 0) {
-    if (nb > 0) self.lastNeed = nb - 2;
-    return nb;
-  }
-  if (--j < i || nb === -2) return 0;
-  nb = utf8CheckByte(buf[j]);
-  if (nb >= 0) {
-    if (nb > 0) {
-      if (nb === 2) nb = 0;else self.lastNeed = nb - 3;
-    }
-    return nb;
-  }
-  return 0;
-}
-
-// Validates as many continuation bytes for a multi-byte UTF-8 character as
-// needed or are available. If we see a non-continuation byte where we expect
-// one, we "replace" the validated continuation bytes we've seen so far with
-// a single UTF-8 replacement character ('\ufffd'), to match v8's UTF-8 decoding
-// behavior. The continuation byte check is included three times in the case
-// where all of the continuation bytes for a character exist in the same buffer.
-// It is also done this way as a slight performance increase instead of using a
-// loop.
-function utf8CheckExtraBytes(self, buf, p) {
-  if ((buf[0] & 0xC0) !== 0x80) {
-    self.lastNeed = 0;
-    return '\ufffd';
-  }
-  if (self.lastNeed > 1 && buf.length > 1) {
-    if ((buf[1] & 0xC0) !== 0x80) {
-      self.lastNeed = 1;
-      return '\ufffd';
-    }
-    if (self.lastNeed > 2 && buf.length > 2) {
-      if ((buf[2] & 0xC0) !== 0x80) {
-        self.lastNeed = 2;
-        return '\ufffd';
-      }
-    }
-  }
-}
-
-// Attempts to complete a multi-byte UTF-8 character using bytes from a Buffer.
-function utf8FillLast(buf) {
-  var p = this.lastTotal - this.lastNeed;
-  var r = utf8CheckExtraBytes(this, buf, p);
-  if (r !== undefined) return r;
-  if (this.lastNeed <= buf.length) {
-    buf.copy(this.lastChar, p, 0, this.lastNeed);
-    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
-  }
-  buf.copy(this.lastChar, p, 0, buf.length);
-  this.lastNeed -= buf.length;
-}
-
-// Returns all complete UTF-8 characters in a Buffer. If the Buffer ended on a
-// partial character, the character's bytes are buffered until the required
-// number of bytes are available.
-function utf8Text(buf, i) {
-  var total = utf8CheckIncomplete(this, buf, i);
-  if (!this.lastNeed) return buf.toString('utf8', i);
-  this.lastTotal = total;
-  var end = buf.length - (total - this.lastNeed);
-  buf.copy(this.lastChar, 0, end);
-  return buf.toString('utf8', i, end);
-}
-
-// For UTF-8, a replacement character is added when ending on a partial
-// character.
-function utf8End(buf) {
-  var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) return r + '\ufffd';
-  return r;
-}
-
-// UTF-16LE typically needs two bytes per character, but even if we have an even
-// number of bytes available, we need to check if we end on a leading/high
-// surrogate. In that case, we need to wait for the next two bytes in order to
-// decode the last character properly.
-function utf16Text(buf, i) {
-  if ((buf.length - i) % 2 === 0) {
-    var r = buf.toString('utf16le', i);
-    if (r) {
-      var c = r.charCodeAt(r.length - 1);
-      if (c >= 0xD800 && c <= 0xDBFF) {
-        this.lastNeed = 2;
-        this.lastTotal = 4;
-        this.lastChar[0] = buf[buf.length - 2];
-        this.lastChar[1] = buf[buf.length - 1];
-        return r.slice(0, -1);
-      }
-    }
-    return r;
-  }
-  this.lastNeed = 1;
-  this.lastTotal = 2;
-  this.lastChar[0] = buf[buf.length - 1];
-  return buf.toString('utf16le', i, buf.length - 1);
-}
-
-// For UTF-16LE we do not explicitly append special replacement characters if we
-// end on a partial character, we simply let v8 handle that.
-function utf16End(buf) {
-  var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) {
-    var end = this.lastTotal - this.lastNeed;
-    return r + this.lastChar.toString('utf16le', 0, end);
-  }
-  return r;
-}
-
-function base64Text(buf, i) {
-  var n = (buf.length - i) % 3;
-  if (n === 0) return buf.toString('base64', i);
-  this.lastNeed = 3 - n;
-  this.lastTotal = 3;
-  if (n === 1) {
-    this.lastChar[0] = buf[buf.length - 1];
-  } else {
-    this.lastChar[0] = buf[buf.length - 2];
-    this.lastChar[1] = buf[buf.length - 1];
-  }
-  return buf.toString('base64', i, buf.length - n);
-}
-
-function base64End(buf) {
-  var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) return r + this.lastChar.toString('base64', 0, 3 - this.lastNeed);
-  return r;
-}
-
-// Pass bytes on through for single-byte encodings (e.g. ascii, latin1, hex)
-function simpleWrite(buf) {
-  return buf.toString(this.encoding);
-}
-
-function simpleEnd(buf) {
-  return buf && buf.length ? this.write(buf) : '';
-}
 
 /***/ }),
 
@@ -22925,7 +22346,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 110);
+/******/ 	return __webpack_require__(__webpack_require__.s = 111);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -23032,7 +22453,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 110:
+/***/ 111:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23765,17 +23186,6 @@ module.exports = __webpack_require__("f03z");
 
 /***/ }),
 
-/***/ "iueX":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Query_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("OiGj");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Query_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Query_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Query_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
 /***/ "j3ZU":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24243,9 +23653,9 @@ module.exports = _defineProperty;
 if (!process.version ||
     process.version.indexOf('v0.') === 0 ||
     process.version.indexOf('v1.') === 0 && process.version.indexOf('v1.8.') !== 0) {
-  module.exports = { nextTick: nextTick };
+  module.exports = nextTick;
 } else {
-  module.exports = process
+  module.exports = process.nextTick;
 }
 
 function nextTick(fn, arg1, arg2, arg3) {
@@ -24281,7 +23691,6 @@ function nextTick(fn, arg1, arg2, arg3) {
     });
   }
 }
-
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
 
@@ -24752,7 +24161,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 84);
+/******/ 	return __webpack_require__(__webpack_require__.s = 94);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -24859,7 +24268,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 84:
+/***/ 94:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24964,6 +24373,309 @@ main.install = function (Vue) {
 /***/ })
 
 /******/ });
+
+/***/ }),
+
+/***/ "qiJe":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+/*<replacement>*/
+
+var Buffer = __webpack_require__("hwdV").Buffer;
+/*</replacement>*/
+
+var isEncoding = Buffer.isEncoding || function (encoding) {
+  encoding = '' + encoding;
+  switch (encoding && encoding.toLowerCase()) {
+    case 'hex':case 'utf8':case 'utf-8':case 'ascii':case 'binary':case 'base64':case 'ucs2':case 'ucs-2':case 'utf16le':case 'utf-16le':case 'raw':
+      return true;
+    default:
+      return false;
+  }
+};
+
+function _normalizeEncoding(enc) {
+  if (!enc) return 'utf8';
+  var retried;
+  while (true) {
+    switch (enc) {
+      case 'utf8':
+      case 'utf-8':
+        return 'utf8';
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return 'utf16le';
+      case 'latin1':
+      case 'binary':
+        return 'latin1';
+      case 'base64':
+      case 'ascii':
+      case 'hex':
+        return enc;
+      default:
+        if (retried) return; // undefined
+        enc = ('' + enc).toLowerCase();
+        retried = true;
+    }
+  }
+};
+
+// Do not cache `Buffer.isEncoding` when checking encoding names as some
+// modules monkey-patch it to support additional encodings
+function normalizeEncoding(enc) {
+  var nenc = _normalizeEncoding(enc);
+  if (typeof nenc !== 'string' && (Buffer.isEncoding === isEncoding || !isEncoding(enc))) throw new Error('Unknown encoding: ' + enc);
+  return nenc || enc;
+}
+
+// StringDecoder provides an interface for efficiently splitting a series of
+// buffers into a series of JS strings without breaking apart multi-byte
+// characters.
+exports.StringDecoder = StringDecoder;
+function StringDecoder(encoding) {
+  this.encoding = normalizeEncoding(encoding);
+  var nb;
+  switch (this.encoding) {
+    case 'utf16le':
+      this.text = utf16Text;
+      this.end = utf16End;
+      nb = 4;
+      break;
+    case 'utf8':
+      this.fillLast = utf8FillLast;
+      nb = 4;
+      break;
+    case 'base64':
+      this.text = base64Text;
+      this.end = base64End;
+      nb = 3;
+      break;
+    default:
+      this.write = simpleWrite;
+      this.end = simpleEnd;
+      return;
+  }
+  this.lastNeed = 0;
+  this.lastTotal = 0;
+  this.lastChar = Buffer.allocUnsafe(nb);
+}
+
+StringDecoder.prototype.write = function (buf) {
+  if (buf.length === 0) return '';
+  var r;
+  var i;
+  if (this.lastNeed) {
+    r = this.fillLast(buf);
+    if (r === undefined) return '';
+    i = this.lastNeed;
+    this.lastNeed = 0;
+  } else {
+    i = 0;
+  }
+  if (i < buf.length) return r ? r + this.text(buf, i) : this.text(buf, i);
+  return r || '';
+};
+
+StringDecoder.prototype.end = utf8End;
+
+// Returns only complete characters in a Buffer
+StringDecoder.prototype.text = utf8Text;
+
+// Attempts to complete a partial non-UTF-8 character using bytes from a Buffer
+StringDecoder.prototype.fillLast = function (buf) {
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);
+  this.lastNeed -= buf.length;
+};
+
+// Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a
+// continuation byte. If an invalid byte is detected, -2 is returned.
+function utf8CheckByte(byte) {
+  if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;
+  return byte >> 6 === 0x02 ? -1 : -2;
+}
+
+// Checks at most 3 bytes at the end of a Buffer in order to detect an
+// incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)
+// needed to complete the UTF-8 character (if applicable) are returned.
+function utf8CheckIncomplete(self, buf, i) {
+  var j = buf.length - 1;
+  if (j < i) return 0;
+  var nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 1;
+    return nb;
+  }
+  if (--j < i || nb === -2) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 2;
+    return nb;
+  }
+  if (--j < i || nb === -2) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) {
+      if (nb === 2) nb = 0;else self.lastNeed = nb - 3;
+    }
+    return nb;
+  }
+  return 0;
+}
+
+// Validates as many continuation bytes for a multi-byte UTF-8 character as
+// needed or are available. If we see a non-continuation byte where we expect
+// one, we "replace" the validated continuation bytes we've seen so far with
+// a single UTF-8 replacement character ('\ufffd'), to match v8's UTF-8 decoding
+// behavior. The continuation byte check is included three times in the case
+// where all of the continuation bytes for a character exist in the same buffer.
+// It is also done this way as a slight performance increase instead of using a
+// loop.
+function utf8CheckExtraBytes(self, buf, p) {
+  if ((buf[0] & 0xC0) !== 0x80) {
+    self.lastNeed = 0;
+    return '\ufffd';
+  }
+  if (self.lastNeed > 1 && buf.length > 1) {
+    if ((buf[1] & 0xC0) !== 0x80) {
+      self.lastNeed = 1;
+      return '\ufffd';
+    }
+    if (self.lastNeed > 2 && buf.length > 2) {
+      if ((buf[2] & 0xC0) !== 0x80) {
+        self.lastNeed = 2;
+        return '\ufffd';
+      }
+    }
+  }
+}
+
+// Attempts to complete a multi-byte UTF-8 character using bytes from a Buffer.
+function utf8FillLast(buf) {
+  var p = this.lastTotal - this.lastNeed;
+  var r = utf8CheckExtraBytes(this, buf, p);
+  if (r !== undefined) return r;
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, p, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, p, 0, buf.length);
+  this.lastNeed -= buf.length;
+}
+
+// Returns all complete UTF-8 characters in a Buffer. If the Buffer ended on a
+// partial character, the character's bytes are buffered until the required
+// number of bytes are available.
+function utf8Text(buf, i) {
+  var total = utf8CheckIncomplete(this, buf, i);
+  if (!this.lastNeed) return buf.toString('utf8', i);
+  this.lastTotal = total;
+  var end = buf.length - (total - this.lastNeed);
+  buf.copy(this.lastChar, 0, end);
+  return buf.toString('utf8', i, end);
+}
+
+// For UTF-8, a replacement character is added when ending on a partial
+// character.
+function utf8End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + '\ufffd';
+  return r;
+}
+
+// UTF-16LE typically needs two bytes per character, but even if we have an even
+// number of bytes available, we need to check if we end on a leading/high
+// surrogate. In that case, we need to wait for the next two bytes in order to
+// decode the last character properly.
+function utf16Text(buf, i) {
+  if ((buf.length - i) % 2 === 0) {
+    var r = buf.toString('utf16le', i);
+    if (r) {
+      var c = r.charCodeAt(r.length - 1);
+      if (c >= 0xD800 && c <= 0xDBFF) {
+        this.lastNeed = 2;
+        this.lastTotal = 4;
+        this.lastChar[0] = buf[buf.length - 2];
+        this.lastChar[1] = buf[buf.length - 1];
+        return r.slice(0, -1);
+      }
+    }
+    return r;
+  }
+  this.lastNeed = 1;
+  this.lastTotal = 2;
+  this.lastChar[0] = buf[buf.length - 1];
+  return buf.toString('utf16le', i, buf.length - 1);
+}
+
+// For UTF-16LE we do not explicitly append special replacement characters if we
+// end on a partial character, we simply let v8 handle that.
+function utf16End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) {
+    var end = this.lastTotal - this.lastNeed;
+    return r + this.lastChar.toString('utf16le', 0, end);
+  }
+  return r;
+}
+
+function base64Text(buf, i) {
+  var n = (buf.length - i) % 3;
+  if (n === 0) return buf.toString('base64', i);
+  this.lastNeed = 3 - n;
+  this.lastTotal = 3;
+  if (n === 1) {
+    this.lastChar[0] = buf[buf.length - 1];
+  } else {
+    this.lastChar[0] = buf[buf.length - 2];
+    this.lastChar[1] = buf[buf.length - 1];
+  }
+  return buf.toString('base64', i, buf.length - n);
+}
+
+function base64End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + this.lastChar.toString('base64', 0, 3 - this.lastNeed);
+  return r;
+}
+
+// Pass bytes on through for single-byte encodings (e.g. ascii, latin1, hex)
+function simpleWrite(buf) {
+  return buf.toString(this.encoding);
+}
+
+function simpleEnd(buf) {
+  return buf && buf.length ? this.write(buf) : '';
+}
 
 /***/ }),
 
@@ -25229,13 +24941,13 @@ module.exports = __webpack_require__("DhVD");
 module.exports = __webpack_require__("QBBo");
 
 /***/ }),
-/* 16 */,
-/* 17 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("3Nwd");
 
 /***/ }),
+/* 17 */,
 /* 18 */,
 /* 19 */,
 /* 20 */,
@@ -25739,7 +25451,7 @@ render._withStripped = true
 // CONCATENATED MODULE: ./packages/table/src/table.vue?vue&type=template&id=493fe34e&
 
 // EXTERNAL MODULE: external "element-ui/lib/checkbox"
-var checkbox_ = __webpack_require__(17);
+var checkbox_ = __webpack_require__(16);
 var checkbox_default = /*#__PURE__*/__webpack_require__.n(checkbox_);
 
 // EXTERNAL MODULE: external "throttle-debounce/debounce"
@@ -25929,41 +25641,7 @@ var table_store_sortData = function sortData(data, states) {
   if (!sortingColumn || typeof sortingColumn.sortable === 'string') {
     return data;
   }
-  if (Object.keys(states.treeData).length === 0) {
-    return util_orderBy(data, states.sortProp, states.sortOrder, sortingColumn.sortMethod, sortingColumn.sortBy);
-  }
-  // 存在嵌套类型的数据
-  var rowKey = states.rowKey;
-  var filteredData = [];
-  var treeDataMap = {};
-  var index = 0;
-  while (index < data.length) {
-    var cur = data[index];
-    var key = cur[rowKey];
-    var treeNode = states.treeData[key];
-    filteredData.push(cur);
-    index++;
-    if (!treeNode) {
-      continue;
-    }
-    treeDataMap[key] = [];
-    while (index < data.length) {
-      cur = data[index];
-      treeNode = states.treeData[cur[rowKey]];
-      index++;
-      if (treeNode && treeNode.level !== 0) {
-        treeDataMap[key].push(cur);
-      } else {
-        filteredData.push(cur);
-        break;
-      }
-    }
-  }
-  var sortedData = util_orderBy(filteredData, states.sortProp, states.sortOrder, sortingColumn.sortMethod, sortingColumn.sortBy);
-  return sortedData.reduce(function (prev, current) {
-    var treeNodes = treeDataMap[current[rowKey]] || [];
-    return prev.concat(current, treeNodes);
-  }, []);
+  return util_orderBy(data, states.sortProp, states.sortOrder, sortingColumn.sortMethod, sortingColumn.sortBy);
 };
 
 var table_store_getKeysMap = function getKeysMap(array, rowKey) {
@@ -26065,11 +25743,7 @@ var table_store_TableStore = function TableStore(table) {
     filters: {},
     expandRows: [],
     defaultExpandAll: false,
-    selectOnIndeterminate: false,
-    treeData: {},
-    indent: 16,
-    lazy: false,
-    lazyTreeNodeMap: {}
+    selectOnIndeterminate: false
   };
 
   this._toggleAllSelection = debounce_default()(10, function (states) {
@@ -26657,75 +26331,6 @@ table_store_TableStore.prototype.commit = function (name) {
   }
 };
 
-table_store_TableStore.prototype.toggleTreeExpansion = function (rowKey) {
-  var treeData = this.states.treeData;
-
-  var node = treeData[rowKey];
-  if (!node) return;
-  if (typeof node.expanded !== 'boolean') {
-    throw new Error('a leaf must have expanded property');
-  }
-  node.expanded = !node.expanded;
-
-  var _traverse = null;
-  if (node.expanded) {
-    _traverse = function traverse(children, parent) {
-      if (children && parent.expanded) {
-        children.forEach(function (key) {
-          treeData[key].display = true;
-          _traverse(treeData[key].children, treeData[key]);
-        });
-      }
-    };
-    node.children.forEach(function (key) {
-      treeData[key].display = true;
-      _traverse(treeData[key].children, treeData[key]);
-    });
-  } else {
-    var traverse = function traverse(children) {
-      if (!children) return;
-      children.forEach(function (key) {
-        treeData[key].display = false;
-        traverse(treeData[key].children);
-      });
-    };
-    traverse(node.children);
-  }
-};
-
-table_store_TableStore.prototype.loadData = function (row, treeNode) {
-  var _this5 = this;
-
-  var table = this.table;
-  var parentRowKey = treeNode.rowKey;
-  if (table.lazy && table.load) {
-    table.load(row, treeNode, function (data) {
-      if (!Array.isArray(data)) {
-        throw new Error('data must be an array');
-      }
-      var treeData = _this5.states.treeData;
-      data.forEach(function (item) {
-        var rowKey = table.getRowKey(item);
-        var parent = treeData[parentRowKey];
-        parent.loaded = true;
-        parent.children.push(rowKey);
-        var child = {
-          display: true,
-          level: parent.level + 1
-        };
-        if (item.hasChildren) {
-          child.expanded = false;
-          child.hasChildren = true;
-          child.children = [];
-        }
-        external_vue_default.a.set(treeData, rowKey, child);
-        external_vue_default.a.set(_this5.states.lazyTreeNodeMap, rowKey, item);
-      });
-      _this5.toggleTreeExpansion(parentRowKey);
-    });
-  }
-};
-
 /* harmony default export */ var table_store = (table_store_TableStore);
 // EXTERNAL MODULE: external "element-ui/lib/utils/scrollbar-width"
 var scrollbar_width_ = __webpack_require__(34);
@@ -27107,29 +26712,6 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
     var columnsHidden = this.columns.map(function (column, index) {
       return _this.isColumnHidden(index);
     });
-    var rows = this.data;
-    if (this.store.states.lazy && Object.keys(this.store.states.lazyTreeNodeMap).length) {
-      rows = rows.reduce(function (prev, item) {
-        prev.push(item);
-        var rowKey = _this.store.table.getRowKey(item);
-        var parent = _this.store.states.treeData[rowKey];
-        if (parent && parent.children) {
-          var tmp = [];
-          var traverse = function traverse(children) {
-            if (!children) return;
-            children.forEach(function (key) {
-              tmp.push(_this.store.states.lazyTreeNodeMap[key]);
-              if (_this.store.states.treeData[key]) {
-                traverse(_this.store.states.treeData[key].children);
-              }
-            });
-          };
-          traverse(parent.children);
-          prev = prev.concat(tmp);
-        }
-        return prev;
-      }, []);
-    }
     return h(
       'table',
       {
@@ -27142,23 +26724,12 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
         return h('col', {
           attrs: { name: column.id }
         });
-      })]), h('tbody', [this._l(rows, function (row, $index) {
-        var rowKey = _this.table.rowKey ? _this.getKeyOfRow(row, $index) : $index;
-        var treeNode = _this.treeData[rowKey];
-        var rowClasses = _this.getRowClass(row, $index);
-        if (treeNode) {
-          rowClasses.push('el-table__row--level-' + treeNode.level);
-        }
-        var tr = h(
+      })]), h('tbody', [this._l(this.data, function (row, $index) {
+        return [h(
           'tr',
           {
-            directives: [{
-              name: 'show',
-              value: treeNode ? treeNode.display : true
-            }],
-
             style: _this.rowStyle ? _this.getRowStyle(row, $index) : null,
-            key: rowKey,
+            key: _this.table.rowKey ? _this.getKeyOfRow(row, $index) : $index,
             on: {
               'dblclick': function dblclick($event) {
                 return _this.handleDoubleClick($event, row);
@@ -27177,7 +26748,7 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
               }
             },
 
-            'class': rowClasses },
+            'class': [_this.getRowClass(row, $index)] },
           [_this._l(_this.columns, function (column, cellIndex) {
             var _getSpan = _this.getSpan(row, column, $index, cellIndex),
                 rowspan = _getSpan.rowspan,
@@ -27186,23 +26757,6 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
             if (!rowspan || !colspan) {
               return '';
             } else {
-              var data = {
-                store: _this.store,
-                _self: _this.context || _this.table.$vnode.context,
-                row: row,
-                column: column,
-                $index: $index
-              };
-              if (cellIndex === _this.firstDefaultColumnIndex && treeNode) {
-                data.treeNode = {
-                  hasChildren: treeNode.hasChildren || treeNode.children && treeNode.children.length,
-                  expanded: treeNode.expanded,
-                  indent: treeNode.level * _this.treeIndent,
-                  level: treeNode.level,
-                  loaded: treeNode.loaded,
-                  rowKey: rowKey
-                };
-              }
               return h(
                 'td',
                 {
@@ -27218,22 +26772,23 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
                     'mouseleave': _this.handleCellMouseLeave
                   }
                 },
-                [column.renderCell.call(_this._renderProxy, h, data, columnsHidden[cellIndex])]
+                [column.renderCell.call(_this._renderProxy, h, {
+                  row: row,
+                  column: column,
+                  $index: $index,
+                  store: _this.store,
+                  _self: _this.context || _this.table.$vnode.context
+                }, columnsHidden[cellIndex])]
               );
             }
           })]
-        );
-        if (_this.store.isRowExpanded(row)) {
-          return [tr, h('tr', [h(
-            'td',
-            {
-              attrs: { colspan: _this.columns.length },
-              'class': 'el-table__expanded-cell' },
-            [_this.table.renderExpanded ? _this.table.renderExpanded(h, { row: row, $index: $index, store: _this.store }) : '']
-          )])];
-        } else {
-          return tr;
-        }
+        ), _this.store.isRowExpanded(row) ? h('tr', [h(
+          'td',
+          {
+            attrs: { colspan: _this.columns.length },
+            'class': 'el-table__expanded-cell' },
+          [_this.table.renderExpanded ? _this.table.renderExpanded(h, { row: row, $index: $index, store: _this.store }) : '']
+        )]) : ''];
       }).concat(h('el-tooltip', {
         attrs: { effect: this.table.tooltipEffect, placement: 'top', content: this.tooltipContent },
         ref: 'tooltip' }))])]
@@ -27247,9 +26802,6 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
     },
     data: function data() {
       return this.store.states.data;
-    },
-    treeData: function treeData() {
-      return this.store.states.treeData;
     },
     columnsCount: function columnsCount() {
       return this.store.states.columns.length;
@@ -27268,17 +26820,6 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
     },
     columns: function columns() {
       return this.store.states.columns;
-    },
-    firstDefaultColumnIndex: function firstDefaultColumnIndex() {
-      for (var index = 0; index < this.columns.length; index++) {
-        if (this.columns[index].type === 'default') {
-          return index;
-        }
-      }
-      return 0;
-    },
-    treeIndent: function treeIndent() {
-      return this.store.states.indent;
     }
   },
 
@@ -27375,7 +26916,7 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
         classes.push('expanded');
       }
 
-      return classes;
+      return classes.join(' ');
     },
     getCellStyle: function getCellStyle(rowIndex, columnIndex, row, column) {
       var cellStyle = this.table.cellStyle;
@@ -28547,7 +28088,7 @@ var convertToRows = function convertToRows(originColumns) {
                 colspan: column.colSpan,
                 rowspan: column.rowSpan
               },
-              'class': _this.getRowClasses(column, cellIndex) },
+              'class': [column.id, column.headerAlign, column.className || '', _this.isCellHidden(cellIndex, _this.columns, column) ? 'is-hidden' : '', !column.children ? 'is-leaf' : '', column.labelClassName] },
             [h(
               'div',
               { 'class': ['cell', column.labelClassName] },
@@ -28625,19 +28166,6 @@ var convertToRows = function convertToRows(originColumns) {
       } else {
         return index < this.leftFixedCount || index >= this.columnsCount - this.rightFixedCount;
       }
-    },
-    getRowClasses: function getRowClasses(column, cellIndex) {
-      var classes = [column.id, column.align, column.labelClassName];
-      if (column.className) {
-        classes.push(column.className);
-      }
-      if (this.isCellHidden(cellIndex, this.columns, column)) {
-        classes.push('is-hidden');
-      }
-      if (!column.children) {
-        classes.push('is-leaf');
-      }
-      return classes;
     }
   }
 });
@@ -28869,26 +28397,6 @@ var convertToRows = function convertToRows(originColumns) {
 
 
 
-
-var flattenData = function flattenData(data) {
-  if (!data) return data;
-  var newData = [];
-  var flatten = function flatten(arr) {
-    arr.forEach(function (item) {
-      newData.push(item);
-      if (Array.isArray(item.children)) {
-        flatten(item.children);
-      }
-    });
-  };
-  flatten(data);
-  if (data.length === newData.length) {
-    return data;
-  } else {
-    return newData;
-  }
-};
-
 var tableIdSeed = 1;
 
 /* harmony default export */ var tablevue_type_script_lang_js_ = ({
@@ -28975,16 +28483,7 @@ var tableIdSeed = 1;
     selectOnIndeterminate: {
       type: Boolean,
       default: true
-    },
-
-    indent: {
-      type: Number,
-      default: 16
-    },
-
-    lazy: Boolean,
-
-    load: Function
+    }
   },
 
   components: {
@@ -29117,64 +28616,15 @@ var tableIdSeed = 1;
     },
     toggleAllSelection: function toggleAllSelection() {
       this.store.commit('toggleAllSelection');
-    },
-    getRowKey: function getRowKey(row) {
-      var rowKey = getRowIdentity(row, this.store.states.rowKey);
-      if (!rowKey) {
-        throw new Error('if there\'s nested data, rowKey is required.');
-      }
-      return rowKey;
-    },
-    getTableTreeData: function getTableTreeData(data) {
-      var _this = this;
-
-      var treeData = {};
-      var traverse = function traverse(children, parentData, level) {
-        children.forEach(function (item) {
-          var rowKey = _this.getRowKey(item);
-          treeData[rowKey] = {
-            display: false,
-            level: level
-          };
-          parentData.children.push(rowKey);
-          if (Array.isArray(item.children) && item.children.length) {
-            treeData[rowKey].children = [];
-            treeData[rowKey].expanded = false;
-            traverse(item.children, treeData[rowKey], level + 1);
-          }
-        });
-      };
-      if (data) {
-        data.forEach(function (item) {
-          var containChildren = Array.isArray(item.children) && item.children.length;
-          if (!(containChildren || item.hasChildren)) return;
-          var rowKey = _this.getRowKey(item);
-          var treeNode = {
-            level: 0,
-            expanded: false,
-            display: true,
-            children: []
-          };
-          if (containChildren) {
-            treeData[rowKey] = treeNode;
-            traverse(item.children, treeData[rowKey], 1);
-          } else if (item.hasChildren && _this.lazy) {
-            treeNode.hasChildren = true;
-            treeNode.loaded = false;
-            treeData[rowKey] = treeNode;
-          }
-        });
-      }
-      return treeData;
     }
   },
 
   created: function created() {
-    var _this2 = this;
+    var _this = this;
 
     this.tableId = 'el-table_' + tableIdSeed++;
     this.debouncedUpdateLayout = debounce_default()(50, function () {
-      return _this2.doLayout();
+      return _this.doLayout();
     });
   },
 
@@ -29291,14 +28741,12 @@ var tableIdSeed = 1;
     data: {
       immediate: true,
       handler: function handler(value) {
-        var _this3 = this;
+        var _this2 = this;
 
-        this.store.states.treeData = this.getTableTreeData(value);
-        value = flattenData(value);
         this.store.commit('setData', value);
         if (this.$ready) {
           this.$nextTick(function () {
-            _this3.doLayout();
+            _this2.doLayout();
           });
         }
       }
@@ -29318,7 +28766,7 @@ var tableIdSeed = 1;
     if (this.resizeListener) Object(resize_event_["removeResizeListener"])(this.$el, this.resizeListener);
   },
   mounted: function mounted() {
-    var _this4 = this;
+    var _this3 = this;
 
     this.bindEvents();
     this.store.updateColumns();
@@ -29332,7 +28780,7 @@ var tableIdSeed = 1;
     // init filters
     this.store.states.columns.forEach(function (column) {
       if (column.filteredValue && column.filteredValue.length) {
-        _this4.store.commit('filterChange', {
+        _this3.store.commit('filterChange', {
           column: column,
           values: column.filteredValue,
           silent: true
@@ -29346,9 +28794,7 @@ var tableIdSeed = 1;
     var store = new table_store(this, {
       rowKey: this.rowKey,
       defaultExpandAll: this.defaultExpandAll,
-      selectOnIndeterminate: this.selectOnIndeterminate,
-      indent: this.indent,
-      lazy: this.lazy
+      selectOnIndeterminate: this.selectOnIndeterminate
     });
     var layout = new table_layout({
       store: store,
@@ -29416,70 +28862,44 @@ src_table.install = function (Vue) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-/*<replacement>*/
-
-var pna = __webpack_require__("lm0R");
-/*</replacement>*/
+/* WEBPACK VAR INJECTION */(function(process) {
 
 module.exports = Readable;
+
+/*<replacement>*/
+var processNextTick = __webpack_require__("lm0R");
+/*</replacement>*/
 
 /*<replacement>*/
 var isArray = __webpack_require__("49sm");
 /*</replacement>*/
 
 /*<replacement>*/
-var Duplex;
+var Buffer = __webpack_require__("tjlA").Buffer;
 /*</replacement>*/
 
 Readable.ReadableState = ReadableState;
 
-/*<replacement>*/
-var EE = __webpack_require__("+qE3").EventEmitter;
+var EE = __webpack_require__("+qE3");
 
+/*<replacement>*/
 var EElistenerCount = function (emitter, type) {
   return emitter.listeners(type).length;
 };
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__("QpuX");
+var Stream;
+(function () {
+  try {
+    Stream = __webpack_require__("1IWx");
+  } catch (_) {} finally {
+    if (!Stream) Stream = __webpack_require__("+qE3").EventEmitter;
+  }
+})();
 /*</replacement>*/
 
-/*<replacement>*/
-
-var Buffer = __webpack_require__("hwdV").Buffer;
-var OurUint8Array = global.Uint8Array || function () {};
-function _uint8ArrayToBuffer(chunk) {
-  return Buffer.from(chunk);
-}
-function _isUint8Array(obj) {
-  return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
-}
-
-/*</replacement>*/
+var Buffer = __webpack_require__("tjlA").Buffer;
 
 /*<replacement>*/
 var util = __webpack_require__("Onz0");
@@ -29488,7 +28908,7 @@ util.inherits = __webpack_require__("P7XM");
 
 /*<replacement>*/
 var debugUtil = __webpack_require__(1);
-var debug = void 0;
+var debug = undefined;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
 } else {
@@ -29496,59 +28916,32 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-var BufferList = __webpack_require__("Xhqo");
-var destroyImpl = __webpack_require__("RoFp");
 var StringDecoder;
 
 util.inherits(Readable, Stream);
 
-var kProxyEvents = ['error', 'close', 'destroy', 'pause', 'resume'];
-
-function prependListener(emitter, event, fn) {
-  // Sadly this is not cacheable as some libraries bundle their own
-  // event emitter implementation with them.
-  if (typeof emitter.prependListener === 'function') return emitter.prependListener(event, fn);
-
-  // This is a hack to make sure that our error handler is attached before any
-  // userland ones.  NEVER DO THIS. This is here only because this code needs
-  // to continue to work with older versions of Node.js that do not include
-  // the prependListener() method. The goal is to eventually remove this hack.
-  if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
-}
-
+var Duplex;
 function ReadableState(options, stream) {
   Duplex = Duplex || __webpack_require__("sZro");
 
   options = options || {};
 
-  // Duplex streams are both readable and writable, but share
-  // the same options object.
-  // However, some cases require setting options to different
-  // values for the readable and the writable sides of the duplex stream.
-  // These options can be provided separately as readableXXX and writableXXX.
-  var isDuplex = stream instanceof Duplex;
-
   // object stream flag. Used to make read(n) ignore n and to
   // make all the buffer merging and length checks go away
   this.objectMode = !!options.objectMode;
 
-  if (isDuplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
+  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
 
   // the point at which it stops calling _read() to fill the buffer
   // Note: 0 is a valid value, means "don't call _read preemptively ever"
   var hwm = options.highWaterMark;
-  var readableHwm = options.readableHighWaterMark;
   var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-
-  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (readableHwm || readableHwm === 0)) this.highWaterMark = readableHwm;else this.highWaterMark = defaultHwm;
+  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
 
   // cast to ints.
-  this.highWaterMark = Math.floor(this.highWaterMark);
+  this.highWaterMark = ~ ~this.highWaterMark;
 
-  // A linked list is used to store data chunks instead of an array because the
-  // linked list can remove elements from the beginning faster than
-  // array.shift()
-  this.buffer = new BufferList();
+  this.buffer = [];
   this.length = 0;
   this.pipes = null;
   this.pipesCount = 0;
@@ -29557,10 +28950,10 @@ function ReadableState(options, stream) {
   this.endEmitted = false;
   this.reading = false;
 
-  // a flag to be able to tell if the event 'readable'/'data' is emitted
-  // immediately, or on a later tick.  We set this to true at first, because
-  // any actions that shouldn't happen until "later" should generally also
-  // not happen before the first read call.
+  // a flag to be able to tell if the onwrite cb is called immediately,
+  // or on a later tick.  We set this to true at first, because any
+  // actions that shouldn't happen until "later" should generally also
+  // not happen before the first write call.
   this.sync = true;
 
   // whenever we return null, then we set a flag to say
@@ -29570,13 +28963,14 @@ function ReadableState(options, stream) {
   this.readableListening = false;
   this.resumeScheduled = false;
 
-  // has it been destroyed
-  this.destroyed = false;
-
   // Crypto is kind of old and crusty.  Historically, its default string
   // encoding is 'binary' so we have to make this configurable.
   // Everything else in the universe uses 'utf8', though.
   this.defaultEncoding = options.defaultEncoding || 'utf8';
+
+  // when piping, we only care about 'readable' events that happen
+  // after read()ing all the bytes and not getting any pushback.
+  this.ranOut = false;
 
   // the number of writers that are awaiting a drain event in .pipe()s
   this.awaitDrain = 0;
@@ -29587,12 +28981,13 @@ function ReadableState(options, stream) {
   this.decoder = null;
   this.encoding = null;
   if (options.encoding) {
-    if (!StringDecoder) StringDecoder = __webpack_require__("fXKp").StringDecoder;
+    if (!StringDecoder) StringDecoder = __webpack_require__("qiJe").StringDecoder;
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
 }
 
+var Duplex;
 function Readable(options) {
   Duplex = Duplex || __webpack_require__("sZro");
 
@@ -29603,41 +28998,10 @@ function Readable(options) {
   // legacy
   this.readable = true;
 
-  if (options) {
-    if (typeof options.read === 'function') this._read = options.read;
-
-    if (typeof options.destroy === 'function') this._destroy = options.destroy;
-  }
+  if (options && typeof options.read === 'function') this._read = options.read;
 
   Stream.call(this);
 }
-
-Object.defineProperty(Readable.prototype, 'destroyed', {
-  get: function () {
-    if (this._readableState === undefined) {
-      return false;
-    }
-    return this._readableState.destroyed;
-  },
-  set: function (value) {
-    // we ignore the value if the stream
-    // has not been initialized yet
-    if (!this._readableState) {
-      return;
-    }
-
-    // backward compatibility, the user is explicitly
-    // managing destroyed
-    this._readableState.destroyed = value;
-  }
-});
-
-Readable.prototype.destroy = destroyImpl.destroy;
-Readable.prototype._undestroy = destroyImpl.undestroy;
-Readable.prototype._destroy = function (err, cb) {
-  this.push(null);
-  cb(err);
-};
 
 // Manually shove something into the read() buffer.
 // This returns true if the highWaterMark has not been hit yet,
@@ -29645,85 +29009,74 @@ Readable.prototype._destroy = function (err, cb) {
 // write() some more.
 Readable.prototype.push = function (chunk, encoding) {
   var state = this._readableState;
-  var skipChunkCheck;
 
-  if (!state.objectMode) {
-    if (typeof chunk === 'string') {
-      encoding = encoding || state.defaultEncoding;
-      if (encoding !== state.encoding) {
-        chunk = Buffer.from(chunk, encoding);
-        encoding = '';
-      }
-      skipChunkCheck = true;
+  if (!state.objectMode && typeof chunk === 'string') {
+    encoding = encoding || state.defaultEncoding;
+    if (encoding !== state.encoding) {
+      chunk = new Buffer(chunk, encoding);
+      encoding = '';
     }
-  } else {
-    skipChunkCheck = true;
   }
 
-  return readableAddChunk(this, chunk, encoding, false, skipChunkCheck);
+  return readableAddChunk(this, state, chunk, encoding, false);
 };
 
 // Unshift should *always* be something directly out of read()
 Readable.prototype.unshift = function (chunk) {
-  return readableAddChunk(this, chunk, null, true, false);
+  var state = this._readableState;
+  return readableAddChunk(this, state, chunk, '', true);
 };
 
-function readableAddChunk(stream, chunk, encoding, addToFront, skipChunkCheck) {
-  var state = stream._readableState;
-  if (chunk === null) {
+Readable.prototype.isPaused = function () {
+  return this._readableState.flowing === false;
+};
+
+function readableAddChunk(stream, state, chunk, encoding, addToFront) {
+  var er = chunkInvalid(state, chunk);
+  if (er) {
+    stream.emit('error', er);
+  } else if (chunk === null) {
     state.reading = false;
     onEofChunk(stream, state);
-  } else {
-    var er;
-    if (!skipChunkCheck) er = chunkInvalid(state, chunk);
-    if (er) {
-      stream.emit('error', er);
-    } else if (state.objectMode || chunk && chunk.length > 0) {
-      if (typeof chunk !== 'string' && !state.objectMode && Object.getPrototypeOf(chunk) !== Buffer.prototype) {
-        chunk = _uint8ArrayToBuffer(chunk);
+  } else if (state.objectMode || chunk && chunk.length > 0) {
+    if (state.ended && !addToFront) {
+      var e = new Error('stream.push() after EOF');
+      stream.emit('error', e);
+    } else if (state.endEmitted && addToFront) {
+      var e = new Error('stream.unshift() after end event');
+      stream.emit('error', e);
+    } else {
+      var skipAdd;
+      if (state.decoder && !addToFront && !encoding) {
+        chunk = state.decoder.write(chunk);
+        skipAdd = !state.objectMode && chunk.length === 0;
       }
 
-      if (addToFront) {
-        if (state.endEmitted) stream.emit('error', new Error('stream.unshift() after end event'));else addChunk(stream, state, chunk, true);
-      } else if (state.ended) {
-        stream.emit('error', new Error('stream.push() after EOF'));
-      } else {
-        state.reading = false;
-        if (state.decoder && !encoding) {
-          chunk = state.decoder.write(chunk);
-          if (state.objectMode || chunk.length !== 0) addChunk(stream, state, chunk, false);else maybeReadMore(stream, state);
+      if (!addToFront) state.reading = false;
+
+      // Don't add to the buffer if we've decoded to an empty string chunk and
+      // we're not in object mode
+      if (!skipAdd) {
+        // if we want the data now, just emit it.
+        if (state.flowing && state.length === 0 && !state.sync) {
+          stream.emit('data', chunk);
+          stream.read(0);
         } else {
-          addChunk(stream, state, chunk, false);
+          // update the buffer info.
+          state.length += state.objectMode ? 1 : chunk.length;
+          if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);
+
+          if (state.needReadable) emitReadable(stream);
         }
       }
-    } else if (!addToFront) {
-      state.reading = false;
+
+      maybeReadMore(stream, state);
     }
+  } else if (!addToFront) {
+    state.reading = false;
   }
 
   return needMoreData(state);
-}
-
-function addChunk(stream, state, chunk, addToFront) {
-  if (state.flowing && state.length === 0 && !state.sync) {
-    stream.emit('data', chunk);
-    stream.read(0);
-  } else {
-    // update the buffer info.
-    state.length += state.objectMode ? 1 : chunk.length;
-    if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);
-
-    if (state.needReadable) emitReadable(stream);
-  }
-  maybeReadMore(stream, state);
-}
-
-function chunkInvalid(state, chunk) {
-  var er;
-  if (!_isUint8Array(chunk) && typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {
-    er = new TypeError('Invalid non-string/buffer chunk');
-  }
-  return er;
 }
 
 // if it's past the high water mark, we can push in some more.
@@ -29737,13 +29090,9 @@ function needMoreData(state) {
   return !state.ended && (state.needReadable || state.length < state.highWaterMark || state.length === 0);
 }
 
-Readable.prototype.isPaused = function () {
-  return this._readableState.flowing === false;
-};
-
 // backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
-  if (!StringDecoder) StringDecoder = __webpack_require__("fXKp").StringDecoder;
+  if (!StringDecoder) StringDecoder = __webpack_require__("qiJe").StringDecoder;
   this._readableState.decoder = new StringDecoder(enc);
   this._readableState.encoding = enc;
   return this;
@@ -29755,8 +29104,7 @@ function computeNewHighWaterMark(n) {
   if (n >= MAX_HWM) {
     n = MAX_HWM;
   } else {
-    // Get the next highest power of 2 to prevent increasing hwm excessively in
-    // tiny amounts
+    // Get the next highest power of 2
     n--;
     n |= n >>> 1;
     n |= n >>> 2;
@@ -29768,34 +29116,44 @@ function computeNewHighWaterMark(n) {
   return n;
 }
 
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
 function howMuchToRead(n, state) {
-  if (n <= 0 || state.length === 0 && state.ended) return 0;
-  if (state.objectMode) return 1;
-  if (n !== n) {
-    // Only flow one buffer at a time
-    if (state.flowing && state.length) return state.buffer.head.data.length;else return state.length;
+  if (state.length === 0 && state.ended) return 0;
+
+  if (state.objectMode) return n === 0 ? 0 : 1;
+
+  if (n === null || isNaN(n)) {
+    // only flow one buffer at a time
+    if (state.flowing && state.buffer.length) return state.buffer[0].length;else return state.length;
   }
-  // If we're asking for more than the current hwm, then raise the hwm.
+
+  if (n <= 0) return 0;
+
+  // If we're asking for more than the target buffer level,
+  // then raise the water mark.  Bump up to the next highest
+  // power of 2, to prevent increasing it excessively in tiny
+  // amounts.
   if (n > state.highWaterMark) state.highWaterMark = computeNewHighWaterMark(n);
-  if (n <= state.length) return n;
-  // Don't have enough
-  if (!state.ended) {
-    state.needReadable = true;
-    return 0;
+
+  // don't have that much.  return null, unless we've ended.
+  if (n > state.length) {
+    if (!state.ended) {
+      state.needReadable = true;
+      return 0;
+    } else {
+      return state.length;
+    }
   }
-  return state.length;
+
+  return n;
 }
 
 // you can override either this method, or the async _read(n) below.
 Readable.prototype.read = function (n) {
   debug('read', n);
-  n = parseInt(n, 10);
   var state = this._readableState;
   var nOrig = n;
 
-  if (n !== 0) state.emittedReadable = false;
+  if (typeof n !== 'number' || n > 0) state.emittedReadable = false;
 
   // if we're doing read(0) to trigger a readable event, but we
   // already have a bunch of data in the buffer, then just trigger
@@ -29851,7 +29209,9 @@ Readable.prototype.read = function (n) {
   if (state.ended || state.reading) {
     doRead = false;
     debug('reading or ended', doRead);
-  } else if (doRead) {
+  }
+
+  if (doRead) {
     debug('do read');
     state.reading = true;
     state.sync = true;
@@ -29860,10 +29220,11 @@ Readable.prototype.read = function (n) {
     // call internal read method
     this._read(state.highWaterMark);
     state.sync = false;
-    // If _read pushed data synchronously, then `reading` will be false,
-    // and we need to re-evaluate how much data we can return to the user.
-    if (!state.reading) n = howMuchToRead(nOrig, state);
   }
+
+  // If _read pushed data synchronously, then `reading` will be false,
+  // and we need to re-evaluate how much data we can return to the user.
+  if (doRead && !state.reading) n = howMuchToRead(nOrig, state);
 
   var ret;
   if (n > 0) ret = fromList(n, state);else ret = null;
@@ -29871,23 +29232,29 @@ Readable.prototype.read = function (n) {
   if (ret === null) {
     state.needReadable = true;
     n = 0;
-  } else {
-    state.length -= n;
   }
 
-  if (state.length === 0) {
-    // If we have nothing in the buffer, then we want to know
-    // as soon as we *do* get something into the buffer.
-    if (!state.ended) state.needReadable = true;
+  state.length -= n;
 
-    // If we tried to read() past the EOF, then emit end on the next tick.
-    if (nOrig !== n && state.ended) endReadable(this);
-  }
+  // If we have nothing in the buffer, then we want to know
+  // as soon as we *do* get something into the buffer.
+  if (state.length === 0 && !state.ended) state.needReadable = true;
+
+  // If we tried to read() past the EOF, then emit end on the next tick.
+  if (nOrig !== n && state.ended && state.length === 0) endReadable(this);
 
   if (ret !== null) this.emit('data', ret);
 
   return ret;
 };
+
+function chunkInvalid(state, chunk) {
+  var er = null;
+  if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
+    er = new TypeError('Invalid non-string/buffer chunk');
+  }
+  return er;
+}
 
 function onEofChunk(stream, state) {
   if (state.ended) return;
@@ -29913,7 +29280,7 @@ function emitReadable(stream) {
   if (!state.emittedReadable) {
     debug('emitReadable', state.flowing);
     state.emittedReadable = true;
-    if (state.sync) pna.nextTick(emitReadable_, stream);else emitReadable_(stream);
+    if (state.sync) processNextTick(emitReadable_, stream);else emitReadable_(stream);
   }
 }
 
@@ -29932,7 +29299,7 @@ function emitReadable_(stream) {
 function maybeReadMore(stream, state) {
   if (!state.readingMore) {
     state.readingMore = true;
-    pna.nextTick(maybeReadMore_, stream, state);
+    processNextTick(maybeReadMore_, stream, state);
   }
 }
 
@@ -29953,7 +29320,7 @@ function maybeReadMore_(stream, state) {
 // for virtual (non-string, non-buffer) streams, "length" is somewhat
 // arbitrary, and perhaps not very meaningful.
 Readable.prototype._read = function (n) {
-  this.emit('error', new Error('_read() is not implemented'));
+  this.emit('error', new Error('not implemented'));
 };
 
 Readable.prototype.pipe = function (dest, pipeOpts) {
@@ -29976,17 +29343,14 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
 
   var doEnd = (!pipeOpts || pipeOpts.end !== false) && dest !== process.stdout && dest !== process.stderr;
 
-  var endFn = doEnd ? onend : unpipe;
-  if (state.endEmitted) pna.nextTick(endFn);else src.once('end', endFn);
+  var endFn = doEnd ? onend : cleanup;
+  if (state.endEmitted) processNextTick(endFn);else src.once('end', endFn);
 
   dest.on('unpipe', onunpipe);
-  function onunpipe(readable, unpipeInfo) {
+  function onunpipe(readable) {
     debug('onunpipe');
     if (readable === src) {
-      if (unpipeInfo && unpipeInfo.hasUnpiped === false) {
-        unpipeInfo.hasUnpiped = true;
-        cleanup();
-      }
+      cleanup();
     }
   }
 
@@ -30012,7 +29376,7 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
     dest.removeListener('error', onerror);
     dest.removeListener('unpipe', onunpipe);
     src.removeListener('end', onend);
-    src.removeListener('end', unpipe);
+    src.removeListener('end', cleanup);
     src.removeListener('data', ondata);
 
     cleanedUp = true;
@@ -30025,25 +29389,17 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
     if (state.awaitDrain && (!dest._writableState || dest._writableState.needDrain)) ondrain();
   }
 
-  // If the user pushes more data while we're writing to dest then we'll end up
-  // in ondata again. However, we only want to increase awaitDrain once because
-  // dest will only emit one 'drain' event for the multiple writes.
-  // => Introduce a guard on increasing awaitDrain.
-  var increasedAwaitDrain = false;
   src.on('data', ondata);
   function ondata(chunk) {
     debug('ondata');
-    increasedAwaitDrain = false;
     var ret = dest.write(chunk);
-    if (false === ret && !increasedAwaitDrain) {
+    if (false === ret) {
       // If the user unpiped during `dest.write()`, it is possible
       // to get stuck in a permanently paused state if that write
       // also returned false.
-      // => Check whether `dest` is still a piping destination.
-      if ((state.pipesCount === 1 && state.pipes === dest || state.pipesCount > 1 && indexOf(state.pipes, dest) !== -1) && !cleanedUp) {
+      if (state.pipesCount === 1 && state.pipes[0] === dest && src.listenerCount('data') === 1 && !cleanedUp) {
         debug('false write response, pause', src._readableState.awaitDrain);
         src._readableState.awaitDrain++;
-        increasedAwaitDrain = true;
       }
       src.pause();
     }
@@ -30057,9 +29413,9 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
     dest.removeListener('error', onerror);
     if (EElistenerCount(dest, 'error') === 0) dest.emit('error', er);
   }
-
-  // Make sure our error handler is attached before userland ones.
-  prependListener(dest, 'error', onerror);
+  // This is a brutally ugly hack to make sure that our error handler
+  // is attached before any userland ones.  NEVER DO THIS.
+  if (!dest._events || !dest._events.error) dest.on('error', onerror);else if (isArray(dest._events.error)) dest._events.error.unshift(onerror);else dest._events.error = [onerror, dest._events.error];
 
   // Both close and finish should trigger unpipe, but only once.
   function onclose() {
@@ -30105,7 +29461,6 @@ function pipeOnDrain(src) {
 
 Readable.prototype.unpipe = function (dest) {
   var state = this._readableState;
-  var unpipeInfo = { hasUnpiped: false };
 
   // if we're not piping anywhere, then do nothing.
   if (state.pipesCount === 0) return this;
@@ -30121,7 +29476,7 @@ Readable.prototype.unpipe = function (dest) {
     state.pipes = null;
     state.pipesCount = 0;
     state.flowing = false;
-    if (dest) dest.emit('unpipe', this, unpipeInfo);
+    if (dest) dest.emit('unpipe', this);
     return this;
   }
 
@@ -30135,20 +29490,20 @@ Readable.prototype.unpipe = function (dest) {
     state.pipesCount = 0;
     state.flowing = false;
 
-    for (var i = 0; i < len; i++) {
-      dests[i].emit('unpipe', this, unpipeInfo);
+    for (var _i = 0; _i < len; _i++) {
+      dests[_i].emit('unpipe', this);
     }return this;
   }
 
   // try to find the right one.
-  var index = indexOf(state.pipes, dest);
-  if (index === -1) return this;
+  var i = indexOf(state.pipes, dest);
+  if (i === -1) return this;
 
-  state.pipes.splice(index, 1);
+  state.pipes.splice(i, 1);
   state.pipesCount -= 1;
   if (state.pipesCount === 1) state.pipes = state.pipes[0];
 
-  dest.emit('unpipe', this, unpipeInfo);
+  dest.emit('unpipe', this);
 
   return this;
 };
@@ -30158,18 +29513,22 @@ Readable.prototype.unpipe = function (dest) {
 Readable.prototype.on = function (ev, fn) {
   var res = Stream.prototype.on.call(this, ev, fn);
 
-  if (ev === 'data') {
-    // Start flowing on next tick if stream isn't explicitly paused
-    if (this._readableState.flowing !== false) this.resume();
-  } else if (ev === 'readable') {
+  // If listening to data, and it has not explicitly been paused,
+  // then call resume to start the flow of data on the next tick.
+  if (ev === 'data' && false !== this._readableState.flowing) {
+    this.resume();
+  }
+
+  if (ev === 'readable' && !this._readableState.endEmitted) {
     var state = this._readableState;
-    if (!state.endEmitted && !state.readableListening) {
-      state.readableListening = state.needReadable = true;
+    if (!state.readableListening) {
+      state.readableListening = true;
       state.emittedReadable = false;
+      state.needReadable = true;
       if (!state.reading) {
-        pna.nextTick(nReadingNextTick, this);
+        processNextTick(nReadingNextTick, this);
       } else if (state.length) {
-        emitReadable(this);
+        emitReadable(this, state);
       }
     }
   }
@@ -30198,7 +29557,7 @@ Readable.prototype.resume = function () {
 function resume(stream, state) {
   if (!state.resumeScheduled) {
     state.resumeScheduled = true;
-    pna.nextTick(resume_, stream, state);
+    processNextTick(resume_, stream, state);
   }
 }
 
@@ -30209,7 +29568,6 @@ function resume_(stream, state) {
   }
 
   state.resumeScheduled = false;
-  state.awaitDrain = 0;
   stream.emit('resume');
   flow(stream);
   if (state.flowing && !state.reading) stream.read(0);
@@ -30228,26 +29586,29 @@ Readable.prototype.pause = function () {
 function flow(stream) {
   var state = stream._readableState;
   debug('flow', state.flowing);
-  while (state.flowing && stream.read() !== null) {}
+  if (state.flowing) {
+    do {
+      var chunk = stream.read();
+    } while (null !== chunk && state.flowing);
+  }
 }
 
 // wrap an old-style stream as the async data source.
 // This is *not* part of the readable stream interface.
 // It is an ugly unfortunate mess of history.
 Readable.prototype.wrap = function (stream) {
-  var _this = this;
-
   var state = this._readableState;
   var paused = false;
 
+  var self = this;
   stream.on('end', function () {
     debug('wrapped end');
     if (state.decoder && !state.ended) {
       var chunk = state.decoder.end();
-      if (chunk && chunk.length) _this.push(chunk);
+      if (chunk && chunk.length) self.push(chunk);
     }
 
-    _this.push(null);
+    self.push(null);
   });
 
   stream.on('data', function (chunk) {
@@ -30257,7 +29618,7 @@ Readable.prototype.wrap = function (stream) {
     // don't skip over falsy values in objectMode
     if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;
 
-    var ret = _this.push(chunk);
+    var ret = self.push(chunk);
     if (!ret) {
       paused = true;
       stream.pause();
@@ -30277,13 +29638,14 @@ Readable.prototype.wrap = function (stream) {
   }
 
   // proxy certain important events.
-  for (var n = 0; n < kProxyEvents.length; n++) {
-    stream.on(kProxyEvents[n], this.emit.bind(this, kProxyEvents[n]));
-  }
+  var events = ['error', 'close', 'destroy', 'pause', 'resume'];
+  forEach(events, function (ev) {
+    stream.on(ev, self.emit.bind(self, ev));
+  });
 
   // when we try to consume some more bytes, simply unpause the
   // underlying stream.
-  this._read = function (n) {
+  self._read = function (n) {
     debug('wrapped _read', n);
     if (paused) {
       paused = false;
@@ -30291,119 +29653,58 @@ Readable.prototype.wrap = function (stream) {
     }
   };
 
-  return this;
+  return self;
 };
-
-Object.defineProperty(Readable.prototype, 'readableHighWaterMark', {
-  // making it explicit this property is not enumerable
-  // because otherwise some prototype manipulation in
-  // userland will fail
-  enumerable: false,
-  get: function () {
-    return this._readableState.highWaterMark;
-  }
-});
 
 // exposed for testing purposes only.
 Readable._fromList = fromList;
 
 // Pluck off n bytes from an array of buffers.
 // Length is the combined lengths of all the buffers in the list.
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
 function fromList(n, state) {
-  // nothing buffered
-  if (state.length === 0) return null;
-
+  var list = state.buffer;
+  var length = state.length;
+  var stringMode = !!state.decoder;
+  var objectMode = !!state.objectMode;
   var ret;
-  if (state.objectMode) ret = state.buffer.shift();else if (!n || n >= state.length) {
-    // read it all, truncate the list
-    if (state.decoder) ret = state.buffer.join('');else if (state.buffer.length === 1) ret = state.buffer.head.data;else ret = state.buffer.concat(state.length);
-    state.buffer.clear();
+
+  // nothing in the list, definitely empty.
+  if (list.length === 0) return null;
+
+  if (length === 0) ret = null;else if (objectMode) ret = list.shift();else if (!n || n >= length) {
+    // read it all, truncate the array.
+    if (stringMode) ret = list.join('');else if (list.length === 1) ret = list[0];else ret = Buffer.concat(list, length);
+    list.length = 0;
   } else {
-    // read part of list
-    ret = fromListPartial(n, state.buffer, state.decoder);
-  }
+    // read just some of it.
+    if (n < list[0].length) {
+      // just take a part of the first list item.
+      // slice is the same for buffers and strings.
+      var buf = list[0];
+      ret = buf.slice(0, n);
+      list[0] = buf.slice(n);
+    } else if (n === list[0].length) {
+      // first list is a perfect match
+      ret = list.shift();
+    } else {
+      // complex case.
+      // we have enough to cover it, but it spans past the first buffer.
+      if (stringMode) ret = '';else ret = new Buffer(n);
 
-  return ret;
-}
+      var c = 0;
+      for (var i = 0, l = list.length; i < l && c < n; i++) {
+        var buf = list[0];
+        var cpy = Math.min(n - c, buf.length);
 
-// Extracts only enough buffered data to satisfy the amount requested.
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
-function fromListPartial(n, list, hasStrings) {
-  var ret;
-  if (n < list.head.data.length) {
-    // slice is the same for buffers and strings
-    ret = list.head.data.slice(0, n);
-    list.head.data = list.head.data.slice(n);
-  } else if (n === list.head.data.length) {
-    // first chunk is a perfect match
-    ret = list.shift();
-  } else {
-    // result spans more than one buffer
-    ret = hasStrings ? copyFromBufferString(n, list) : copyFromBuffer(n, list);
-  }
-  return ret;
-}
+        if (stringMode) ret += buf.slice(0, cpy);else buf.copy(ret, c, 0, cpy);
 
-// Copies a specified amount of characters from the list of buffered data
-// chunks.
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
-function copyFromBufferString(n, list) {
-  var p = list.head;
-  var c = 1;
-  var ret = p.data;
-  n -= ret.length;
-  while (p = p.next) {
-    var str = p.data;
-    var nb = n > str.length ? str.length : n;
-    if (nb === str.length) ret += str;else ret += str.slice(0, n);
-    n -= nb;
-    if (n === 0) {
-      if (nb === str.length) {
-        ++c;
-        if (p.next) list.head = p.next;else list.head = list.tail = null;
-      } else {
-        list.head = p;
-        p.data = str.slice(nb);
+        if (cpy < buf.length) list[0] = buf.slice(cpy);else list.shift();
+
+        c += cpy;
       }
-      break;
     }
-    ++c;
   }
-  list.length -= c;
-  return ret;
-}
 
-// Copies a specified amount of bytes from the list of buffered data chunks.
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
-function copyFromBuffer(n, list) {
-  var ret = Buffer.allocUnsafe(n);
-  var p = list.head;
-  var c = 1;
-  p.data.copy(ret);
-  n -= p.data.length;
-  while (p = p.next) {
-    var buf = p.data;
-    var nb = n > buf.length ? buf.length : n;
-    buf.copy(ret, ret.length - n, 0, nb);
-    n -= nb;
-    if (n === 0) {
-      if (nb === buf.length) {
-        ++c;
-        if (p.next) list.head = p.next;else list.head = list.tail = null;
-      } else {
-        list.head = p;
-        p.data = buf.slice(nb);
-      }
-      break;
-    }
-    ++c;
-  }
-  list.length -= c;
   return ret;
 }
 
@@ -30412,11 +29713,11 @@ function endReadable(stream) {
 
   // If we get here before consuming all the bytes, then that is a
   // bug in node.  Should never happen.
-  if (state.length > 0) throw new Error('"endReadable()" called on non-empty stream');
+  if (state.length > 0) throw new Error('endReadable called on non-empty stream');
 
   if (!state.endEmitted) {
     state.ended = true;
-    pna.nextTick(endReadableNT, state, stream);
+    processNextTick(endReadableNT, state, stream);
   }
 }
 
@@ -30429,13 +29730,19 @@ function endReadableNT(state, stream) {
   }
 }
 
+function forEach(xs, f) {
+  for (var i = 0, l = xs.length; i < l; i++) {
+    f(xs[i], i);
+  }
+}
+
 function indexOf(xs, x) {
   for (var i = 0, l = xs.length; i < l; i++) {
     if (xs[i] === x) return i;
   }
   return -1;
 }
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("8oxB")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
 
 /***/ }),
 
@@ -30450,27 +29757,6 @@ function indexOf(xs, x) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -30480,10 +29766,6 @@ function indexOf(xs, x) {
 
 /*<replacement>*/
 
-var pna = __webpack_require__("lm0R");
-/*</replacement>*/
-
-/*<replacement>*/
 var objectKeys = Object.keys || function (obj) {
   var keys = [];
   for (var key in obj) {
@@ -30495,6 +29777,10 @@ var objectKeys = Object.keys || function (obj) {
 module.exports = Duplex;
 
 /*<replacement>*/
+var processNextTick = __webpack_require__("lm0R");
+/*</replacement>*/
+
+/*<replacement>*/
 var util = __webpack_require__("Onz0");
 util.inherits = __webpack_require__("P7XM");
 /*</replacement>*/
@@ -30504,13 +29790,10 @@ var Writable = __webpack_require__("3BRs");
 
 util.inherits(Duplex, Readable);
 
-{
-  // avoid scope creep, the keys array can then be collected
-  var keys = objectKeys(Writable.prototype);
-  for (var v = 0; v < keys.length; v++) {
-    var method = keys[v];
-    if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
-  }
+var keys = objectKeys(Writable.prototype);
+for (var v = 0; v < keys.length; v++) {
+  var method = keys[v];
+  if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
 }
 
 function Duplex(options) {
@@ -30529,16 +29812,6 @@ function Duplex(options) {
   this.once('end', onend);
 }
 
-Object.defineProperty(Duplex.prototype, 'writableHighWaterMark', {
-  // making it explicit this property is not enumerable
-  // because otherwise some prototype manipulation in
-  // userland will fail
-  enumerable: false,
-  get: function () {
-    return this._writableState.highWaterMark;
-  }
-});
-
 // the no-half-open enforcer
 function onend() {
   // if we allow half-open state, or if the writable side ended,
@@ -30547,40 +29820,18 @@ function onend() {
 
   // no more data can be written.
   // But allow more writes to happen in this tick.
-  pna.nextTick(onEndNT, this);
+  processNextTick(onEndNT, this);
 }
 
 function onEndNT(self) {
   self.end();
 }
 
-Object.defineProperty(Duplex.prototype, 'destroyed', {
-  get: function () {
-    if (this._readableState === undefined || this._writableState === undefined) {
-      return false;
-    }
-    return this._readableState.destroyed && this._writableState.destroyed;
-  },
-  set: function (value) {
-    // we ignore the value if the stream
-    // has not been initialized yet
-    if (this._readableState === undefined || this._writableState === undefined) {
-      return;
-    }
-
-    // backward compatibility, the user is explicitly
-    // managing destroyed
-    this._readableState.destroyed = value;
-    this._writableState.destroyed = value;
+function forEach(xs, f) {
+  for (var i = 0, l = xs.length; i < l; i++) {
+    f(xs[i], i);
   }
-});
-
-Duplex.prototype._destroy = function (err, cb) {
-  this.push(null);
-  this.end();
-
-  pna.nextTick(cb, err);
-};
+}
 
 /***/ }),
 
@@ -32072,6 +31323,20 @@ var message = __webpack_require__("D7fx");
 var lib_message = __webpack_require__("9SnE");
 var lib_message_default = /*#__PURE__*/__webpack_require__.n(lib_message);
 
+// EXTERNAL MODULE: ./node_modules/element-ui/lib/theme-chalk/col.css
+var col = __webpack_require__("9Plv");
+
+// EXTERNAL MODULE: ./node_modules/element-ui/lib/col.js
+var lib_col = __webpack_require__("wsxZ");
+var lib_col_default = /*#__PURE__*/__webpack_require__.n(lib_col);
+
+// EXTERNAL MODULE: ./node_modules/element-ui/lib/theme-chalk/row.css
+var theme_chalk_row = __webpack_require__("eg8l");
+
+// EXTERNAL MODULE: ./node_modules/element-ui/lib/row.js
+var lib_row = __webpack_require__("D2yo");
+var lib_row_default = /*#__PURE__*/__webpack_require__.n(lib_row);
+
 // EXTERNAL MODULE: ./node_modules/element-ui/lib/theme-chalk/progress.css
 var progress = __webpack_require__("azA5");
 
@@ -32206,29 +31471,11 @@ var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread);
 
 // CONCATENATED MODULE: ./node_modules/vue-i18n/dist/vue-i18n.esm.js
 /*!
- * vue-i18n v8.10.0 
+ * vue-i18n v8.9.0 
  * (c) 2019 kazuya kawaguchi
  * Released under the MIT License.
  */
 /*  */
-
-/**
- * constants
- */
-
-var numberFormatKeys = [
-  'style',
-  'currency',
-  'currencyDisplay',
-  'useGrouping',
-  'minimumIntegerDigits',
-  'minimumFractionDigits',
-  'maximumFractionDigits',
-  'minimumSignificantDigits',
-  'maximumSignificantDigits',
-  'localeMatcher',
-  'formatMatcher'
-];
 
 /**
  * utilities
@@ -32508,7 +31755,7 @@ var mixin = {
 
 /*  */
 
-var interpolationComponent = {
+var vue_i18n_esm_component = {
   name: 'i18n',
   functional: true,
   props: {
@@ -32581,78 +31828,6 @@ var interpolationComponent = {
     });
 
     return h(props.tag, data, i18n.i(path, locale, params))
-  }
-};
-
-/*  */
-
-var numberComponent = {
-  name: 'i18n-n',
-  functional: true,
-  props: {
-    tag: {
-      type: String,
-      default: 'span'
-    },
-    value: {
-      type: Number,
-      required: true
-    },
-    format: {
-      type: [String, Object]
-    },
-    locale: {
-      type: String
-    }
-  },
-  render: function render (h, ref) {
-    var props = ref.props;
-    var parent = ref.parent;
-    var data = ref.data;
-
-    var i18n = parent.$i18n;
-
-    if (!i18n) {
-      if (false) {}
-      return null
-    }
-
-    var key = null;
-    var options = null;
-
-    if (typeof props.format === 'string') {
-      key = props.format;
-    } else if (isObject(props.format)) {
-      if (props.format.key) {
-        key = props.format.key;
-      }
-
-      // Filter out number format options only
-      options = Object.keys(props.format).reduce(function (acc, prop) {
-        var obj;
-
-        if (numberFormatKeys.includes(prop)) {
-          return Object.assign({}, acc, ( obj = {}, obj[prop] = props.format[prop], obj ))
-        }
-        return acc
-      }, null);
-    }
-
-    var locale = props.locale || i18n.locale;
-    var parts = i18n._ntp(props.value, locale, key, options);
-
-    var values = parts.map(function (part, index) {
-      var obj;
-
-      var slot = data.scopedSlots && data.scopedSlots[part.type];
-      return slot ? slot(( obj = {}, obj[part.type] = part.value, obj.index = index, obj.parts = parts, obj )) : part.value
-    });
-
-    return h(props.tag, {
-      attrs: data.attrs,
-      'class': data['class'],
-      staticClass: data.staticClass
-    }, values)
   }
 };
 
@@ -32789,8 +31964,7 @@ function vue_i18n_esm_install (_Vue) {
   extend(vue_i18n_esm_Vue);
   vue_i18n_esm_Vue.mixin(mixin);
   vue_i18n_esm_Vue.directive('t', { bind: bind, update: update, unbind: unbind });
-  vue_i18n_esm_Vue.component(interpolationComponent.name, interpolationComponent);
-  vue_i18n_esm_Vue.component(numberComponent.name, numberComponent);
+  vue_i18n_esm_Vue.component(vue_i18n_esm_component.name, vue_i18n_esm_component);
 
   // use simple mergeStrategies to prevent i18n instance lose '__proto__'
   var strats = vue_i18n_esm_Vue.config.optionMergeStrategies;
@@ -33025,6 +32199,7 @@ function getPathCharType (ch) {
     case 0x2D: // -
       return 'ident'
 
+    case 0x20: // Space
     case 0x09: // Tab
     case 0x0A: // Newline
     case 0x0D: // Return
@@ -33203,6 +32378,19 @@ I18nPath.prototype.getPathValue = function getPathValue (obj, path) {
 
 
 
+var numberFormatKeys = [
+  'style',
+  'currency',
+  'currencyDisplay',
+  'useGrouping',
+  'minimumIntegerDigits',
+  'minimumFractionDigits',
+  'maximumFractionDigits',
+  'minimumSignificantDigits',
+  'maximumSignificantDigits',
+  'localeMatcher',
+  'formatMatcher'
+];
 var linkKeyMatcher = /(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))/g;
 var linkKeyPrefixMatcher = /^@(?:\.([a-z]+))?:/;
 var bracketsMatcher = /[()]/g;
@@ -33424,6 +32612,8 @@ VueI18n.prototype._link = function _link (
   values,
   visitedLinkStack
 ) {
+    var this$1 = this;
+
   var ret = str;
 
   // Match all the links within the local
@@ -33451,24 +32641,24 @@ VueI18n.prototype._link = function _link (
     visitedLinkStack.push(linkPlaceholder);
 
     // Translate the link
-    var translated = this._interpolate(
+    var translated = this$1._interpolate(
       locale, message, linkPlaceholder, host,
       interpolateMode === 'raw' ? 'string' : interpolateMode,
       interpolateMode === 'raw' ? undefined : values,
       visitedLinkStack
     );
 
-    if (this._isFallbackRoot(translated)) {
+    if (this$1._isFallbackRoot(translated)) {
       if (false) {}
       /* istanbul ignore if */
-      if (!this._root) { throw Error('unexpected error') }
-      var root = this._root.$i18n;
+      if (!this$1._root) { throw Error('unexpected error') }
+      var root = this$1._root.$i18n;
       translated = root._translate(
         root._getMessages(), root.locale, root.fallbackLocale,
         linkPlaceholder, host, interpolateMode, values
       );
     }
-    translated = this._warnDefault(
+    translated = this$1._warnDefault(
       locale, linkPlaceholder, translated, host,
       Array.isArray(values) ? values : [values]
     );
@@ -33772,7 +32962,7 @@ VueI18n.prototype.mergeNumberFormat = function mergeNumberFormat (locale, format
   this._vm.$set(this._vm.numberFormats, locale, merge(this._vm.numberFormats[locale] || {}, format));
 };
 
-VueI18n.prototype._getNumberFormatter = function _getNumberFormatter (
+VueI18n.prototype._localizeNumber = function _localizeNumber (
   value,
   locale,
   fallback,
@@ -33806,7 +32996,7 @@ VueI18n.prototype._getNumberFormatter = function _getNumberFormatter (
         formatter = this._numberFormatters[id] = new Intl.NumberFormat(_locale, format);
       }
     }
-    return formatter
+    return formatter.format(value)
   }
 };
 
@@ -33822,8 +33012,8 @@ VueI18n.prototype._n = function _n (value, locale, key, options) {
     return nf.format(value)
   }
 
-  var formatter = this._getNumberFormatter(value, locale, this.fallbackLocale, this._getNumberFormats(), key, options);
-  var ret = formatter && formatter.format(value);
+  var ret =
+    this._localizeNumber(value, locale, this.fallbackLocale, this._getNumberFormats(), key, options);
   if (this._isFallbackRoot(ret)) {
     if (false) {}
     /* istanbul ignore if */
@@ -33875,30 +33065,6 @@ VueI18n.prototype.n = function n (value) {
   return this._n(value, locale, key, options)
 };
 
-VueI18n.prototype._ntp = function _ntp (value, locale, key, options) {
-  /* istanbul ignore if */
-  if (!VueI18n.availabilities.numberFormat) {
-    if (false) {}
-    return []
-  }
-
-  if (!key) {
-    var nf = !options ? new Intl.NumberFormat(locale) : new Intl.NumberFormat(locale, options);
-    return nf.formatToParts(value)
-  }
-
-  var formatter = this._getNumberFormatter(value, locale, this.fallbackLocale, this._getNumberFormats(), key, options);
-  var ret = formatter && formatter.formatToParts(value);
-  if (this._isFallbackRoot(ret)) {
-    if (false) {}
-    /* istanbul ignore if */
-    if (!this._root) { throw Error('unexpected error') }
-    return this._root.$i18n._ntp(value, locale, key, options)
-  } else {
-    return ret || []
-  }
-};
-
 Object.defineProperties( VueI18n.prototype, prototypeAccessors );
 
 var availabilities;
@@ -33918,7 +33084,7 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = vue_i18n_esm_install;
-VueI18n.version = '8.10.0';
+VueI18n.version = '8.9.0';
 
 /* harmony default export */ var vue_i18n_esm = (VueI18n);
 
@@ -33988,7 +33154,10 @@ var en_default = /*#__PURE__*/__webpack_require__.n(en);
     resultAlreadyExists: 'The current query result already exists!',
     querying: 'In the query',
     attribute: 'Attribute',
-    attributeValue: 'Attribute Value'
+    attributeValue: 'Attribute Value',
+    noResults: 'The result of the query is empty!',
+    queryFailed: 'Query failed!',
+    seviceNotSupport: 'This service does not support queries!'
   }
 }));
 // EXTERNAL MODULE: ./node_modules/element-ui/lib/locale/lang/zh-CN.js
@@ -34006,17 +33175,17 @@ var zh_CN_default = /*#__PURE__*/__webpack_require__.n(zh_CN);
   info: {},
   error: {},
   commontypes: {
-    restData: "SuperMap Rest 数据服务",
-    restMap: "SuperMap Rest 地图服务",
-    addressMatch: "SuperMap 地址匹配服务",
-    iportalData: "SuperMap iPortal 数据",
-    onlineLocalSearch: "SuperMap Online 本地搜索"
+    restData: 'SuperMap Rest 数据服务',
+    restMap: 'SuperMap Rest 地图服务',
+    addressMatch: 'SuperMap 地址匹配服务',
+    iportalData: 'SuperMap iPortal 数据',
+    onlineLocalSearch: 'SuperMap Online 本地搜索'
   },
   //微件
   zoom: {},
   chart: {},
   layerList: {
-    title: "图层"
+    title: '图层'
   },
   miniMap: {},
   pan: {},
@@ -34047,8 +33216,8 @@ var zh_CN_default = /*#__PURE__*/__webpack_require__.n(zh_CN);
   },
   map: {},
   search: {
-    noResult: "查询结果为空！",
-    noKey: "搜索关键字不能为空，请输入搜索条件。",
+    noResult: '查询结果为空！',
+    noKey: '搜索关键字不能为空，请输入搜索条件。',
     inputPlaceHolder: '查找地址或地点',
     attribute: '属性',
     attributeValue: '属性值'
@@ -34066,7 +33235,10 @@ var zh_CN_default = /*#__PURE__*/__webpack_require__.n(zh_CN);
     resultAlreadyExists: '当前查询结果已经存在!',
     querying: '查询中',
     attribute: '属性',
-    attributeValue: '属性值'
+    attributeValue: '属性值',
+    noResults: '查询结果为空！',
+    queryFailed: '查询失败!',
+    seviceNotSupport: '此服务不支持查询！'
   }
 }));
 // EXTERNAL MODULE: ./node_modules/lodash.clonedeep/index.js
@@ -38493,12 +37665,12 @@ var LayerList_component = normalizeComponent(
 )
 
 /* harmony default export */ var LayerList = (LayerList_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Chart.vue?vue&type=template&id=dcfdb216&
-var Chartvue_type_template_id_dcfdb216_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"id":(!_vm.iconClass&&!_vm.headerName)&&'chart'}},[_c('div',{attrs:{"id":(_vm.iconClass||_vm.headerName)&&'chart'}})])}
-var Chartvue_type_template_id_dcfdb216_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Chart.vue?vue&type=template&id=60d8fe5d&
+var Chartvue_type_template_id_60d8fe5d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"id":(!_vm.iconClass&&!_vm.headerName)&&'chart'}},[_c('div',{attrs:{"id":(_vm.iconClass||_vm.headerName)&&'chart'}})])}
+var Chartvue_type_template_id_60d8fe5d_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=template&id=dcfdb216&
+// CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=template&id=60d8fe5d&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__("lSNA");
@@ -39727,10 +38899,17 @@ function (_WidgetViewModel) {
 
     if (this.iconClass && icon) {
       icon.style.visibility = "hidden";
-      this.viewModel.on("chartinitsucceeded", function () {
-        icon.style.visibility = "visible";
-      });
     }
+
+    this.viewModel.on("chartinitsucceeded", function () {
+      if (_this.iconClass && icon) {
+        icon.style.visibility = "visible";
+      }
+
+      window.addEventListener('resize', function () {
+        _this.viewModel.resize();
+      });
+    });
   }
 });
 // CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=script&lang=js&
@@ -39745,8 +38924,8 @@ function (_WidgetViewModel) {
 
 var Chart_component = normalizeComponent(
   components_Chartvue_type_script_lang_js_,
-  Chartvue_type_template_id_dcfdb216_render,
-  Chartvue_type_template_id_dcfdb216_staticRenderFns,
+  Chartvue_type_template_id_60d8fe5d_render,
+  Chartvue_type_template_id_60d8fe5d_staticRenderFns,
   false,
   null,
   null,
@@ -40290,12 +39469,12 @@ var MiniMap_component = normalizeComponent(
 )
 
 /* harmony default export */ var MiniMap = (MiniMap_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Measure.vue?vue&type=template&id=c87a5f6a&
-var Measurevue_type_template_id_c87a5f6a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{key:group.mode,class:{'sm-measure__modeIcon': true, 'sm-measure__iconActive': _vm.activeMode === group.mode},style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-measure__unit sm-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
-var Measurevue_type_template_id_c87a5f6a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Measure.vue?vue&type=template&id=4348e28e&
+var Measurevue_type_template_id_4348e28e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{key:group.mode,class:{'sm-measure__modeIcon': true, 'sm-measure__iconActive': _vm.activeMode === group.mode},style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-measure__unit sm-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
+var Measurevue_type_template_id_4348e28e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Measure.vue?vue&type=template&id=c87a5f6a&
+// CONCATENATED MODULE: ./src/view/components/Measure.vue?vue&type=template&id=4348e28e&
 
 // EXTERNAL MODULE: external {"root":"MapboxDraw","commonjs":"@mapbox/mapbox-gl-draw","commonjs2":"@mapbox/mapbox-gl-draw","amd":"@mapbox/mapbox-gl-draw"}
 var mapbox_gl_draw_ = __webpack_require__("dz+5");
@@ -40365,6 +39544,7 @@ function (_WidgetViewModel) {
 
     _this._addDrawControl();
 
+    _this.isEditing = true;
     return _this;
   } //开启绘制
 
@@ -40378,26 +39558,26 @@ function (_WidgetViewModel) {
 
       this.mode = mode;
       this.activeMode = mode;
-      this.activeUnit = activeUnit; // 绘画线或面
+      this.activeUnit = activeUnit;
+      this.isEditing = true; // 绘画线或面
 
       this.draw.changeMode(mode);
       this.measureNodeDistanceBind = this._measureNodeDistance.bind(this);
-      this.map.on('click', this.measureNodeDistanceBind);
+      this.map.on('mousedown', this.measureNodeDistanceBind);
     }
   }, {
     key: "closeDraw",
     value: function closeDraw() {
+      this.isEditing = false;
       this.ids = null;
 
       this._initDraw();
 
-      this._resetEvent(); // this.map.off('click', this.measureNodeDistanceBind);
-      //this.mode = mode;
-
+      this._resetEvent();
 
       this.activeMode = null;
       this.draw.trash();
-      this.map.off('click', this.continueDrawBind);
+      this.map.off('mousedown', this.continueDrawBind);
     }
   }, {
     key: "updateUnit",
@@ -40537,6 +39717,23 @@ function (_WidgetViewModel) {
       });
       this.map.addLayer(this.draw);
       this.map.on('draw.create', this._finishDraw.bind(this));
+      this.map.on('draw.modechange', this._resetDraw.bind(this));
+    }
+  }, {
+    key: "_resetDraw",
+    value: function _resetDraw(e) {
+      if (this.isEditing) {
+        this.map.off('mousemove', this.popupFollowMouseBind);
+        this.ids = this.draw.getSelectedIds();
+        this.draw.changeMode(this.mode);
+        this.continueDrawBind = this._continueDraw.bind(this);
+        this.map.on('mousedown', this.continueDrawBind);
+        this.measureNodeDistanceBind = this._measureNodeDistance.bind(this);
+        this.map.on('mousedown', this.measureNodeDistanceBind);
+        this.fire('measure-finished', {
+          result: this._getFormatResult(this.result)
+        });
+      }
     }
   }, {
     key: "_initDraw",
@@ -40562,19 +39759,17 @@ function (_WidgetViewModel) {
 
       this._resetEvent(false);
 
-      this.map.off('click', this.continueDrawBind);
+      this.map.off('mousedown', this.continueDrawBind);
     } // 绘画结束后计算最后的结果
 
   }, {
     key: "_finishDraw",
     value: function _finishDraw(e) {
-      var _this2 = this;
-
-      this.map.off('click', this.measureNodeDistanceBind);
+      this.time = null;
+      this.map.off('mousedown', this.measureNodeDistanceBind);
 
       switch (this.activeMode) {
         case 'draw_line_string':
-          //this.result = length(e.features[0], this.activeUnit);
           var tempLength = length_default()(e.features[0], 'kilometers');
           this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
 
@@ -40583,7 +39778,6 @@ function (_WidgetViewModel) {
           break;
 
         case 'draw_polygon':
-          //this.result = area(e.features[0]);
           var tempArea = area_default()(e.features[0]);
           this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
 
@@ -40595,19 +39789,6 @@ function (_WidgetViewModel) {
       this.fire('measure-finished', {
         result: this._getFormatResult(this.result)
       });
-      setTimeout(function () {
-        _this2.ids = _this2.draw.getSelectedIds();
-
-        _this2.draw.changeMode(_this2.mode);
-
-        _this2.continueDrawBind = _this2._continueDraw.bind(_this2);
-
-        _this2.map.on('click', _this2.continueDrawBind);
-
-        _this2.measureNodeDistanceBind = _this2._measureNodeDistance.bind(_this2);
-
-        _this2.map.on('click', _this2.measureNodeDistanceBind);
-      }, 0);
     } // 绘画每个点显示tip，同时监听鼠标move事件
 
   }, {
@@ -40669,13 +39850,11 @@ function (_WidgetViewModel) {
 
       switch (this.activeMode) {
         case 'draw_line_string':
-          //this.result = length(feature, this.activeUnit);
           var tempLength = length_default()(feature, 'kilometers');
           this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
           break;
 
         case 'draw_polygon':
-          //this.result = area(feature);
           var tempArea = area_default()(feature);
           this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
           break;
@@ -40685,7 +39864,7 @@ function (_WidgetViewModel) {
 
       if (this.activeMode === 'draw_line_string') {
         uniti18n = src_lang.t("measure.".concat(this.activeUnit));
-      } else if (this.activeMode === "draw_polygon") {
+      } else if (this.activeMode === 'draw_polygon') {
         uniti18n = src_lang.t("measure.square".concat(this.activeUnit));
       }
 
@@ -40717,7 +39896,6 @@ function (_WidgetViewModel) {
             coordinates: this.measureNodes
           }
         }; //修改单位！！！！
-        //let calcValue = length(line, this.activeUnit);
 
         var tempLength = length_default()(line, 'kilometers');
         var calcValue = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
@@ -40725,7 +39903,7 @@ function (_WidgetViewModel) {
 
         if (this.activeMode === 'draw_line_string') {
           uniti18n = src_lang.t("measure.".concat(this.activeUnit));
-        } else if (this.activeMode === "draw_polygon") {
+        } else if (this.activeMode === 'draw_polygon') {
           uniti18n = src_lang.t("measure.square".concat(this.activeUnit));
         }
 
@@ -40751,7 +39929,7 @@ function (_WidgetViewModel) {
       var feature = arguments.length > 3 ? arguments[3] : undefined;
       this.isOpenMoveEvent = true;
       this.map.off('mousemove', this.popupFollowMouseBind);
-      isOffEvent && this.map.off('click', this.measureNodeDistanceBind);
+      isOffEvent && this.map.off('mousedown', this.measureNodeDistanceBind);
 
       if (isResetHoverTip) {
         // 如果是测量长度，销毁实时计算生成的popup
@@ -40857,18 +40035,18 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
 
 
 /* harmony default export */ var Measurevue_type_script_lang_js_ = ({
-  name: 'SmMeasure',
+  name: "SmMeasure",
   relativeMap: true,
   extends: Widget,
   mixins: [Theme],
   props: {
     iconClass: {
       type: String,
-      default: 'smwidgets-icons-measure'
+      default: "smwidgets-icons-measure"
     },
     headerName: {
       type: String,
-      default: '量算'
+      default: "量算"
     },
     showUnitSelect: {
       // 配置单位选择框是否显示，若不显示，则显示对应的默认单位
@@ -40878,49 +40056,49 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
     distanceDefaultUnit: {
       // 距离默认单位
       type: String,
-      default: 'kilometers'
+      default: "kilometers"
     },
     areaDefaultUnit: {
       // 面积默认单位
       type: String,
-      default: 'kilometers'
+      default: "kilometers"
     }
   },
   data: function data() {
     var unitOptions = {
       draw_line_string: {
-        kilometers: this.$t('measure.kilometers'),
-        miles: this.$t('measure.miles'),
-        meters: this.$t('measure.meters'),
-        feet: this.$t('measure.feet'),
-        yards: this.$t('measure.yards')
+        kilometers: this.$t("measure.kilometers"),
+        miles: this.$t("measure.miles"),
+        meters: this.$t("measure.meters"),
+        feet: this.$t("measure.feet"),
+        yards: this.$t("measure.yards")
       },
       draw_polygon: {
-        kilometers: this.$t('measure.squarekilometers'),
-        miles: this.$t('measure.squaremiles'),
-        meters: this.$t('measure.squaremeters'),
-        feet: this.$t('measure.squarefeet'),
-        yards: this.$t('measure.squareyards')
+        kilometers: this.$t("measure.squarekilometers"),
+        miles: this.$t("measure.squaremiles"),
+        meters: this.$t("measure.squaremeters"),
+        feet: this.$t("measure.squarefeet"),
+        yards: this.$t("measure.squareyards")
       }
     };
     return {
       unitOptions: unitOptions,
       modeGroups: [{
-        mode: 'draw_line_string',
-        title: this.$t('measure.distance'),
-        iconClass: 'smwidgets-icons-line-layer'
+        mode: "draw_line_string",
+        title: this.$t("measure.distance"),
+        iconClass: "smwidgets-icons-line-layer"
       }, {
-        mode: 'draw_polygon',
-        title: this.$t('measure.area'),
-        iconClass: 'smwidgets-icons-polygon-layer'
+        mode: "draw_polygon",
+        title: this.$t("measure.area"),
+        iconClass: "smwidgets-icons-polygon-layer"
       }],
-      activeMode: '',
-      result: '',
+      activeMode: "",
+      result: "",
       activeDistanceUnit: this.distanceDefaultUnit,
       activeAreaUnit: this.areaDefaultUnit,
       modeUnitMap: {
-        'draw_line_string': 'activeDistanceUnit',
-        'draw_polygon': 'activeAreaUnit'
+        draw_line_string: "activeDistanceUnit",
+        draw_polygon: "activeAreaUnit"
       }
     };
   },
@@ -40941,7 +40119,7 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
         return "".concat(this.result, " ").concat(this.getUnitLabel);
       }
 
-      return '';
+      return "";
     },
     getUnitLabel: function getUnitLabel() {
       var units = this.getUnitOptions;
@@ -40950,10 +40128,10 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
       return label;
     },
     getAreaSelect: function getAreaSelect() {
-      return this.activeMode === 'draw_polygon' && this.showUnitSelect;
+      return this.activeMode === "draw_polygon" && this.showUnitSelect;
     },
     getDistanceSelect: function getDistanceSelect() {
-      return this.activeMode === 'draw_line_string' && this.showUnitSelect;
+      return this.activeMode === "draw_line_string" && this.showUnitSelect;
     }
   },
   mounted: function mounted() {
@@ -40966,15 +40144,15 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
       map: this.map
     }); //控制显示结果的显示
 
-    this.viewModel.on('measure-finished', function (_ref) {
+    this.viewModel.on("measure-finished", function (_ref) {
       var result = _ref.result;
       _this.result = result;
     });
-    this.viewModel.on('measure-start', function (_ref2) {
+    this.viewModel.on("measure-start", function (_ref2) {
       var result = _ref2.result;
-      _this.result = '';
+      _this.result = "";
     });
-    this.viewModel.on('update-unit', function (_ref3) {
+    this.viewModel.on("update-unit", function (_ref3) {
       var result = _ref3.result;
       _this.result = result;
     });
@@ -40984,7 +40162,7 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
   },
   methods: {
     changeSelectInputStyle: function changeSelectInputStyle() {
-      var selectDom = this.$el.querySelector('.el-input__inner');
+      var selectDom = this.$el.querySelector(".el-input__inner");
 
       if (selectDom) {
         selectDom.style.borderColor = this.getTextColor;
@@ -40993,10 +40171,10 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
       }
     },
     changeChosenStyle: function changeChosenStyle(visible) {
-      var chosenOption = this.$el.querySelector('.el-select-dropdown__item.selected');
+      var chosenOption = this.$el.querySelector(".el-select-dropdown__item.selected");
 
       if (chosenOption) {
-        chosenOption.style.color = visible ? this.getColorStyle(0).color : '#606266';
+        chosenOption.style.color = visible ? this.getColorStyle(0).color : "#606266";
       }
     },
     // 切换量算模式
@@ -41004,12 +40182,14 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
       var modeUnitKey = this.modeUnitMap[mode];
       var activeUnit = this[modeUnitKey];
 
-      if (this.activeMode !== mode) {
-        this.viewModel.openDraw(mode, activeUnit);
-        this.activeMode = mode;
-      } else {
-        this.viewModel.closeDraw();
-        this.activeMode = null;
+      if (this.map.loaded()) {
+        if (this.activeMode !== mode) {
+          this.viewModel.openDraw(mode, activeUnit);
+          this.activeMode = mode;
+        } else {
+          this.viewModel.closeDraw();
+          this.activeMode = null;
+        }
       }
     },
     updateUnit: function updateUnit(unit) {
@@ -41029,8 +40209,8 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
 
 var Measure_component = normalizeComponent(
   components_Measurevue_type_script_lang_js_,
-  Measurevue_type_template_id_c87a5f6a_render,
-  Measurevue_type_template_id_c87a5f6a_staticRenderFns,
+  Measurevue_type_template_id_4348e28e_render,
+  Measurevue_type_template_id_4348e28e_staticRenderFns,
   false,
   null,
   null,
@@ -42430,12 +41610,12 @@ var Legend_component = normalizeComponent(
 )
 
 /* harmony default export */ var Legend = (Legend_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Query.vue?vue&type=template&id=eaecc9f4&
-var Queryvue_type_template_id_eaecc9f4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-query__job-info-panel"},[(jobInfo.name)?_c('div',{staticClass:"sm-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"smwidgets-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-query__job-info-name"},[_vm._v(_vm._s(jobInfo.name))]),_vm._v(" "),_c('div',{staticClass:"smwidgets-icons-legend-unfold"})]):_vm._e(),_vm._v(" "),(jobInfo.attributeFilter)?_c('div',{staticClass:"sm-query__job-info-body hidden"},[_c('div',{staticClass:"sm-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('el-select',{staticClass:"sm-query__el-select",attrs:{"size":"mini","popper-append-to-body":false},on:{"visible-change":_vm.changeChosenStyle},model:{value:(_vm.value),callback:function ($$v) {_vm.value=$$v},expression:"value"}},_vm._l((_vm.selectOptions),function(item){return _c('el-option',{key:item.value,attrs:{"label":item.label,"value":item.value}})}))],1),_vm._v(" "),_c('div',{staticClass:"sm-query__query-button"},[_c('el-button',{staticClass:"sm-query__el-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"mini"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo,_vm.value)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult),expression:"!queryResult"}],staticClass:"sm-query__no-result"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),(_vm.queryResult)?_c('span',{staticClass:"sm-query__result-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(_vm.queryResult.name))]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])])])}
-var Queryvue_type_template_id_eaecc9f4_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Query.vue?vue&type=template&id=7622a6c1&
+var Queryvue_type_template_id_7622a6c1_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-query__job-info-panel"},[(jobInfo.name)?_c('div',{staticClass:"sm-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"smwidgets-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-query__job-info-name"},[_vm._v(_vm._s(jobInfo.name))]),_vm._v(" "),_c('div',{staticClass:"smwidgets-icons-legend-unfold"})]):_vm._e(),_vm._v(" "),(jobInfo.attributeFilter)?_c('div',{staticClass:"sm-query__job-info-body hidden"},[_c('div',{staticClass:"sm-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('el-select',{staticClass:"sm-query__el-select",attrs:{"size":"mini","popper-append-to-body":false},on:{"visible-change":_vm.changeChosenStyle},model:{value:(_vm.value),callback:function ($$v) {_vm.value=$$v},expression:"value"}},_vm._l((_vm.selectOptions),function(item){return _c('el-option',{key:item.value,attrs:{"label":item.label,"value":item.value}})}))],1),_vm._v(" "),_c('div',{staticClass:"sm-query__query-button"},[_c('el-button',{staticClass:"sm-query__el-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"mini"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo,_vm.value)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult),expression:"!queryResult"}],staticClass:"sm-query__no-result"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),(_vm.queryResult)?_c('span',{staticClass:"sm-query__result-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(_vm.queryResult.name))]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])])])}
+var Queryvue_type_template_id_7622a6c1_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Query.vue?vue&type=template&id=eaecc9f4&
+// CONCATENATED MODULE: ./src/view/components/Query.vue?vue&type=template&id=7622a6c1&
 
 // CONCATENATED MODULE: ./src/view/commontypes/iPortalDataParameter.js
 
@@ -42491,6 +41671,7 @@ var RestMapParameter_RestMapParameter = function RestMapParameter(options) {
 
 
 
+
 /**
  * @class QueryViewModel
  * @classdesc Query ViewModel
@@ -42522,9 +41703,9 @@ function (_WidgetViewModel) {
   createClass_default()(QueryViewModel, [{
     key: "query",
     value: function query(queryParameter, queryBounds) {
+      this.queryParameter = queryParameter;
       this.strokeLayerID && this.map.removeLayer(this.strokeLayerID);
       this.layerID && this.map.removeLayer(this.layerID);
-      this.layerID = queryParameter.name + new Date().getTime();
       this.queryBounds = queryBounds;
 
       if (queryBounds === 'currentMapBounds') {
@@ -42581,9 +41762,7 @@ function (_WidgetViewModel) {
 
       if (this.bounds) {
         var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
-          queryParameter: {
-            attributeFilter: restDataParameter.attributeFilter
-          },
+          attributeFilter: restDataParameter.attributeFilter,
           datasetNames: restDataParameter.dataName,
           bounds: this.bounds,
           fromIndex: 0,
@@ -42609,8 +41788,10 @@ function (_WidgetViewModel) {
   }, {
     key: "_mapQuerySucceed",
     value: function _mapQuerySucceed(serviceResult, restMapParameter) {
-      if (serviceResult.result) {
-        var resultFeatures = serviceResult.result.recordsets[0].features.features;
+      var result = serviceResult.result;
+
+      if (result && result.totalCount !== 0) {
+        var resultFeatures = result.recordsets[0].features.features;
         resultFeatures.length > 0 && (this.queryResult = {
           name: restMapParameter.name,
           result: resultFeatures
@@ -42620,15 +41801,23 @@ function (_WidgetViewModel) {
           originalresult: serviceResult,
           result: this.queryResult
         });
+      } else if (result && result.totalCount === 0) {
+        this.fire('queryfailed', {
+          message: src_lang.t("query.noResults")
+        });
       } else {
-        this.fire('queryfailed');
+        this.fire('queryfailed', {
+          message: src_lang.t("query.queryFailed")
+        });
       }
     }
   }, {
     key: "_dataQuerySucceed",
     value: function _dataQuerySucceed(serviceResult, restDataParameter) {
-      if (serviceResult.result) {
-        var resultFeatures = serviceResult.result.features.features;
+      var result = serviceResult.result;
+
+      if (result && result.totalCount !== 0) {
+        var resultFeatures = result.features.features;
         resultFeatures.length > 0 && (this.queryResult = {
           name: restDataParameter.name,
           result: resultFeatures
@@ -42637,8 +41826,14 @@ function (_WidgetViewModel) {
         this.fire('querysucceeded', {
           result: this.queryResult
         });
+      } else if (result && result.totalCount === 0) {
+        this.fire('queryfailed', {
+          message: src_lang.t("query.noResults")
+        });
       } else {
-        this.fire('queryfailed');
+        this.fire('queryfailed', {
+          message: src_lang.t("query.queryFailed")
+        });
       }
     }
   }, {
@@ -42664,28 +41859,30 @@ function (_WidgetViewModel) {
           var dataItemServices = data.dataItemServices,
               resultData;
           dataItemServices.forEach(function (item) {
-            if (item.serviceType === "RESTDATA" && item.serviceStatus === "PUBLISHED") {
+            if (item.serviceType === 'RESTDATA' && item.serviceStatus === 'PUBLISHED') {
               resultData = item;
-            } else if (item.serviceType === "RESTMAP" && item.serviceStatus === "PUBLISHED") {
+            } else if (item.serviceType === 'RESTMAP' && item.serviceStatus === 'PUBLISHED') {
               resultData = item;
             } else {
-              _this4.fire('queryfailed');
+              _this4.fire('queryfailed', {
+                message: src_lang.t("query.seviceNotSupport")
+              });
 
-              console.log('此服务不支持查询！');
               return;
             }
           }, _this4); // 如果有服务，获取数据源和数据集, 然后请求rest服务
 
           _this4._getDatafromRest(resultData.serviceType, resultData.address, iportalDataParameter);
         } else {
-          _this4.fire('queryfailed');
+          _this4.fire('queryfailed', {
+            message: src_lang.t("query.seviceNotSupport")
+          });
 
-          console.log('此服务不支持查询！');
           return;
         }
       }).catch(function (error) {
-        _this4.fire("searchfailed", {
-          error: error
+        _this4.fire('queryfailed', {
+          message: error
         });
 
         console.log(error);
@@ -42724,12 +41921,16 @@ function (_WidgetViewModel) {
               attributeFilter: iportalDataParameter.attributeFilter
             });
           }).catch(function (error) {
-            _this5.fire('queryfailed');
+            _this5.fire('queryfailed', {
+              message: error
+            });
 
             console.log(error);
           });
         }).catch(function (error) {
-          _this5.fire('queryfailed');
+          _this5.fire('queryfailed', {
+            message: error
+          });
 
           console.log(error);
         });
@@ -42764,12 +41965,16 @@ function (_WidgetViewModel) {
 
             return layerName;
           }).catch(function (error) {
-            _this5.fire('queryfailed');
+            _this5.fire('queryfailed', {
+              message: error
+            });
 
             console.log(error);
           });
         }).catch(function (error) {
-          _this5.fire('queryfailed');
+          _this5.fire('queryfailed', {
+            message: error
+          });
 
           console.log(error);
         });
@@ -42778,12 +41983,13 @@ function (_WidgetViewModel) {
   }, {
     key: "addResultLayer",
     value: function addResultLayer() {
+      this.layerID = this.queryParameter.name + new Date().getTime();
       var type = this.queryResult.result[0].geometry.type;
       var source = {
-        'type': 'geojson',
-        'data': {
-          "type": "FeatureCollection",
-          "features": this.queryResult.result
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: this.queryResult.result
         }
       };
 
@@ -42792,7 +41998,7 @@ function (_WidgetViewModel) {
   }, {
     key: "getFilterFeature",
     value: function getFilterFeature(filter) {
-      var filterValue = filter.split("：")[1].trim();
+      var filterValue = filter.split('：')[1].trim();
       var features = this.queryResult.result;
       var feature;
 
@@ -42817,7 +42023,7 @@ function (_WidgetViewModel) {
           coordinates;
       var geometry = feature.geometry;
 
-      if (geometry.type === "MultiPolygon" || geometry.type === "Polygon" || geometry.type === 'LineString') {
+      if (geometry.type === 'MultiPolygon' || geometry.type === 'Polygon' || geometry.type === 'LineString' || geometry.type === 'MultiLineString') {
         coordinates = center_default()(feature).geometry.coordinates;
       } else {
         coordinates = geometry.coordinates;
@@ -42859,39 +42065,40 @@ function (_WidgetViewModel) {
     key: "_addOverlayToMap",
     value: function _addOverlayToMap(type, source, layerID) {
       var mbglStyle = {
-        "circle": this.options.circleStyle || {
+        circle: this.options.circleStyle || {
           'circle-color': '#409eff',
           'circle-opacity': 0.6,
-          "circle-radius": 8,
-          "circle-stroke-width": 2,
-          "circle-stroke-color": '#409eff',
-          "circle-stroke-opacity": 1
+          'circle-radius': 8,
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#409eff',
+          'circle-stroke-opacity': 1
         },
-        "line": this.options.lineStyle || {
+        line: this.options.lineStyle || {
           'line-width': 3,
-          "line-color": '#409eff',
-          "line-opacity": 1
+          'line-color': '#409eff',
+          'line-opacity': 1
         },
-        "fill": this.options.fillStyle || {
-          "fill-color": '#409eff',
-          "fill-opacity": 0.6,
-          "fill-outline-color": '#409eff'
+        fill: this.options.fillStyle || {
+          'fill-color': '#409eff',
+          'fill-opacity': 0.6,
+          'fill-outline-color': '#409eff'
         }
       };
       var mbglTypeMap = {
-        "Point": 'circle',
-        "LineString": "line",
-        "Polygon": "fill",
-        'MultiPolygon': 'fill'
+        Point: 'circle',
+        LineString: 'line',
+        MultiLineString: 'line',
+        Polygon: 'fill',
+        MultiPolygon: 'fill'
       };
       type = mbglTypeMap[type];
 
       if (type === 'circle' || type === 'line' || type === 'fill') {
         this.map.addLayer({
-          "id": layerID,
-          "type": type,
-          "source": source,
-          "paint": mbglStyle[type]
+          id: layerID,
+          type: type,
+          source: source,
+          paint: mbglStyle[type]
         });
       }
 
@@ -42899,14 +42106,14 @@ function (_WidgetViewModel) {
         this.strokeLayerID = layerID + '-StrokeLine';
         var lineStyle = {
           'line-width': 3,
-          "line-color": '#409eff',
-          "line-opacity": 1
+          'line-color': '#409eff',
+          'line-opacity': 1
         };
         this.map.addLayer({
-          "id": this.strokeLayerID,
-          "type": 'line',
-          "source": source,
-          "paint": lineStyle
+          id: this.strokeLayerID,
+          type: 'line',
+          source: source,
+          paint: lineStyle
         });
       }
     }
@@ -43279,6 +42486,20 @@ var validators = function validators(value, propType) {
 
         _this2.jobButton.classList.remove('disabled');
       });
+      this.viewModel.on('queryfailed', function (e) {
+        _this2.$el.querySelector('.sm-query__no-result').classList.remove('hidden');
+
+        _this2.$message({
+          showClose: true,
+          message: e.message,
+          type: 'warning',
+          duration: 1000
+        });
+
+        _this2.loadingInstance.close();
+
+        _this2.jobButton.classList.remove('disabled');
+      });
     },
     addPopupToFeature: function addPopupToFeature() {
       var _this3 = this;
@@ -43318,42 +42539,6 @@ var validators = function validators(value, propType) {
         });
       }
     },
-    hidenContainer: function hidenContainer(e) {
-      this.isHidden = true; // this.$el.style.width = '30px';
-      // this.$el.style.height = '30px';
-
-      this.$el.style.background = 'unset';
-      this.$el.querySelector('.sm-query__header').classList.add('hidden-header');
-
-      for (var i = 1; i < this.$el.children.length; i++) {
-        this.$el.children[i].style.transform = 'scale(0)';
-        this.$el.children[i].style.display = 'none';
-      }
-
-      var children = e.target.parentNode.children;
-
-      for (var _i = 1; _i < children.length; _i++) {
-        children[_i].style.display = 'none';
-      }
-    },
-    displayContainer: function displayContainer(e) {
-      if (this.isHidden) {
-        this.isHidden = false;
-        this.$el.style.background = '#fff';
-        this.$el.querySelector('.sm-query__header').classList.remove('hidden-header');
-
-        for (var i = 1; i < this.$el.children.length; i++) {
-          this.$el.children[i].style.display = 'block';
-          this.$el.children[i].style.transform = 'scale(1)';
-        }
-
-        var children = e.target.parentNode.children;
-
-        for (var _i2 = 1; _i2 < children.length; _i2++) {
-          children[_i2].style.display = 'inline-block';
-        }
-      }
-    },
     changeHoverStyle: function changeHoverStyle(e) {
       var target = e.target;
       target.style.color = this.getColorStyle(0).color;
@@ -43366,11 +42551,7 @@ var validators = function validators(value, propType) {
 });
 // CONCATENATED MODULE: ./src/view/components/Query.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_Queryvue_type_script_lang_js_ = (Queryvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/view/components/Query.vue?vue&type=style&index=0&lang=css&
-var Queryvue_type_style_index_0_lang_css_ = __webpack_require__("iueX");
-
 // CONCATENATED MODULE: ./src/view/components/Query.vue
-
 
 
 
@@ -43380,8 +42561,8 @@ var Queryvue_type_style_index_0_lang_css_ = __webpack_require__("iueX");
 
 var Query_component = normalizeComponent(
   components_Queryvue_type_script_lang_js_,
-  Queryvue_type_template_id_eaecc9f4_render,
-  Queryvue_type_template_id_eaecc9f4_staticRenderFns,
+  Queryvue_type_template_id_7622a6c1_render,
+  Queryvue_type_template_id_7622a6c1_staticRenderFns,
   false,
   null,
   null,
@@ -43390,12 +42571,12 @@ var Query_component = normalizeComponent(
 )
 
 /* harmony default export */ var Query = (Query_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Indicator.vue?vue&type=template&id=d1a923f0&
-var Indicatorvue_type_template_id_d1a923f0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-indicator",style:([_vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-indicator__head"},[_c('span',{staticClass:"sm-indicator__title",style:([_vm.unit_titleStyle,_vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.title))])]),_vm._v(" "),_c('div',{staticClass:"sm-indicator__content"},[_c('span',{staticClass:"sm-indicator__num",style:([_vm.numStyle, _vm.indicatorStyle])},[_vm._v(_vm._s(_vm.numberSymbol))]),_vm._v(" "),_c('span',{staticClass:"sm-indicator__unit",style:([_vm.unit_titleStyle,_vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.unit))])])])}
-var Indicatorvue_type_template_id_d1a923f0_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Indicator.vue?vue&type=template&id=11644833&
+var Indicatorvue_type_template_id_11644833_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-indicator",style:([_vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-indicator__head"},[_c('span',{staticClass:"sm-indicator__title",style:([_vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.title))])]),_vm._v(" "),_c('div',{staticClass:"sm-indicator__content"},[_c('span',{staticClass:"sm-indicator__num",style:([_vm.indicatorStyle])},[_vm._v(_vm._s(_vm.numberSymbol))]),_vm._v(" "),_c('span',{staticClass:"sm-indicator__unit",style:([_vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.unit))])])])}
+var Indicatorvue_type_template_id_11644833_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Indicator.vue?vue&type=template&id=d1a923f0&
+// CONCATENATED MODULE: ./src/view/components/Indicator.vue?vue&type=template&id=11644833&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Indicator.vue?vue&type=script&lang=js&
 //
@@ -43428,9 +42609,6 @@ var Indicatorvue_type_template_id_d1a923f0_staticRenderFns = []
     indicatorColor: {
       type: String
     },
-    fontSize: {
-      type: [String, Number]
-    },
     num: {
       type: [Number, String],
       default: 0
@@ -43445,16 +42623,6 @@ var Indicatorvue_type_template_id_d1a923f0_staticRenderFns = []
       }
 
       return numberSymbol;
-    },
-    numStyle: function numStyle() {
-      return {
-        fontSize: this.fontSize + "px"
-      };
-    },
-    unit_titleStyle: function unit_titleStyle() {
-      return {
-        fontSize: parseInt(this.fontSize) * 0.66 + "px"
-      };
     },
     indicatorStyle: function indicatorStyle() {
       return this.indicatorColor && {
@@ -43503,8 +42671,8 @@ var Indicatorvue_type_template_id_d1a923f0_staticRenderFns = []
 
 var Indicator_component = normalizeComponent(
   components_Indicatorvue_type_script_lang_js_,
-  Indicatorvue_type_template_id_d1a923f0_render,
-  Indicatorvue_type_template_id_d1a923f0_staticRenderFns,
+  Indicatorvue_type_template_id_11644833_render,
+  Indicatorvue_type_template_id_11644833_staticRenderFns,
   false,
   null,
   null,
@@ -43513,23 +42681,14 @@ var Indicator_component = normalizeComponent(
 )
 
 /* harmony default export */ var Indicator = (Indicator_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Text.vue?vue&type=template&id=3209a304&
-var Textvue_type_template_id_3209a304_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-text",style:(_vm.getBackgroundStyle)},[_c('el-input',{ref:"textareaInfo",style:([_vm.formatFontStyle, _vm.getTextColorStyle]),attrs:{"type":"textarea","autosize":""},model:{value:(_vm.title),callback:function ($$v) {_vm.title=$$v},expression:"title"}})],1)}
-var Textvue_type_template_id_3209a304_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Text.vue?vue&type=template&id=3ac2fa2c&
+var Textvue_type_template_id_3ac2fa2c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-text",style:([_vm.getBackgroundStyle, _vm.formatFontStyle, _vm.getTextColorStyle])},[_c('span',[_vm._v(_vm._s(_vm.title))])])}
+var Textvue_type_template_id_3ac2fa2c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Text.vue?vue&type=template&id=3209a304&
+// CONCATENATED MODULE: ./src/view/components/Text.vue?vue&type=template&id=3ac2fa2c&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Text.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -43539,7 +42698,7 @@ var Textvue_type_template_id_3209a304_staticRenderFns = []
 
 
 /* harmony default export */ var Textvue_type_script_lang_js_ = ({
-  name: "SmText",
+  name: 'SmText',
   extends: Widget,
   mixins: [Theme],
   props: {
@@ -43553,16 +42712,11 @@ var Textvue_type_template_id_3209a304_staticRenderFns = []
   computed: {
     formatFontStyle: function formatFontStyle() {
       var fontStyle = JSON.parse(JSON.stringify(this.fontStyle));
-      fontStyle.fontSize && (fontStyle.fontSize = parseFloat(fontStyle.fontSize) + "px");
-      fontStyle.lineHeight && (fontStyle.lineHeight = parseFloat(fontStyle.lineHeight) + "px");
-      fontStyle.textIndent && (fontStyle.textIndent = parseFloat(fontStyle.textIndent) + "px");
+      fontStyle.fontSize && (fontStyle.fontSize = parseFloat(fontStyle.fontSize) + 'px');
+      fontStyle.lineHeight && (fontStyle.lineHeight = parseFloat(fontStyle.lineHeight) + 'px');
+      fontStyle.textIndent && (fontStyle.textIndent = parseFloat(fontStyle.textIndent) + 'px');
       return fontStyle;
     }
-  },
-  loaded: function loaded() {
-    this.$nextTick(function () {
-      this.$refs.textareaInfo.resizeTextarea();
-    });
   }
 });
 // CONCATENATED MODULE: ./src/view/components/Text.vue?vue&type=script&lang=js&
@@ -43577,8 +42731,8 @@ var Textvue_type_template_id_3209a304_staticRenderFns = []
 
 var Text_component = normalizeComponent(
   components_Textvue_type_script_lang_js_,
-  Textvue_type_template_id_3209a304_render,
-  Textvue_type_template_id_3209a304_staticRenderFns,
+  Textvue_type_template_id_3ac2fa2c_render,
+  Textvue_type_template_id_3ac2fa2c_staticRenderFns,
   false,
   null,
   null,
@@ -43674,12 +42828,12 @@ var TimeText_component = normalizeComponent(
 )
 
 /* harmony default export */ var TimeText = (TimeText_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=template&id=c4544982&
-var Progressvue_type_template_id_c4544982_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-progress"},[_c('el-progress',{attrs:{"percentage":parseFloat(_vm.percentage),"type":_vm.type,"stroke-width":parseFloat(_vm.strokeWidth),"show-text":_vm.showText,"width":_vm.type==='circle'?parseFloat(_vm.circleWidth):null,"color":_vm.curColor,"status":_vm.status}})],1)}
-var Progressvue_type_template_id_c4544982_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=template&id=3499b000&
+var Progressvue_type_template_id_3499b000_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-progress"},[_c('el-progress',{attrs:{"percentage":parseFloat(_vm.percentage),"type":_vm.type,"stroke-width":parseFloat(_vm.strokeWidth),"show-text":_vm.showText,"width":_vm.type==='circle'?parseFloat(_vm.circleWidth):null,"color":_vm.curColor,"status":_vm.status}})],1)}
+var Progressvue_type_template_id_3499b000_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Progress.vue?vue&type=template&id=c4544982&
+// CONCATENATED MODULE: ./src/view/components/Progress.vue?vue&type=template&id=3499b000&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=script&lang=js&
 //
@@ -43722,10 +42876,6 @@ var Progressvue_type_template_id_c4544982_staticRenderFns = []
     color: {
       type: String
     },
-    circleWidth: {
-      type: [Number, String],
-      default: 126
-    },
     showText: {
       type: Boolean,
       default: true
@@ -43733,7 +42883,8 @@ var Progressvue_type_template_id_c4544982_staticRenderFns = []
   },
   data: function data() {
     return {
-      curColor: ""
+      curColor: "",
+      circleWidth: 126
     };
   },
   watch: {
@@ -43749,7 +42900,13 @@ var Progressvue_type_template_id_c4544982_staticRenderFns = []
     }
   },
   loaded: function loaded() {
+    var _this = this;
+
     this.curColor = this.color || this.getColor(0);
+    this.circleWidth = this.$parent.$el.offsetWidth * 0.5;
+    window.addEventListener('resize', function () {
+      _this.circleWidth = _this.$parent.$el.offsetWidth * 0.5;
+    });
   }
 });
 // CONCATENATED MODULE: ./src/view/components/Progress.vue?vue&type=script&lang=js&
@@ -43764,8 +42921,8 @@ var Progressvue_type_template_id_c4544982_staticRenderFns = []
 
 var Progress_component = normalizeComponent(
   components_Progressvue_type_script_lang_js_,
-  Progressvue_type_template_id_c4544982_render,
-  Progressvue_type_template_id_c4544982_staticRenderFns,
+  Progressvue_type_template_id_3499b000_render,
+  Progressvue_type_template_id_3499b000_staticRenderFns,
   false,
   null,
   null,
@@ -43852,18 +43009,17 @@ var Icon_component = normalizeComponent(
 )
 
 /* harmony default export */ var Icon = (Icon_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LiquidFill.vue?vue&type=template&id=4dda9f8e&
-var LiquidFillvue_type_template_id_4dda9f8e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"liquid-fill",style:({width:((this.size) + "px"),height:((this.size) + "px")})},[_c('div',{ref:"chart",staticClass:"chart",style:({width:((this.size) + "px"),height:((this.size) + "px")}),attrs:{"id":"chart"}})])}
-var LiquidFillvue_type_template_id_4dda9f8e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LiquidFill.vue?vue&type=template&id=570ba3ea&
+var LiquidFillvue_type_template_id_570ba3ea_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"liquid-fill"},[_c('div',{ref:"chart",staticClass:"chart",style:({width: _vm.size, height: _vm.size, margin: '0 auto'}),attrs:{"id":"chart"}})])}
+var LiquidFillvue_type_template_id_570ba3ea_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/LiquidFill.vue?vue&type=template&id=4dda9f8e&
+// CONCATENATED MODULE: ./src/view/components/LiquidFill.vue?vue&type=template&id=570ba3ea&
 
 // EXTERNAL MODULE: external "echarts-liquidfill"
 var external_echarts_liquidfill_ = __webpack_require__("hQXD");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LiquidFill.vue?vue&type=script&lang=js&
-//
 //
 //
 //
@@ -43894,11 +43050,6 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
     waveCount: {
       type: Number,
       default: 1
-    },
-    //水球大小
-    size: {
-      type: Number,
-      default: 100
     },
     //字体
     fontSize: {
@@ -43937,14 +43088,11 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
       waveColorData: "",
       labelColorData: "",
       borderColorData: "",
-      backgroundColorData: ""
+      backgroundColorData: "",
+      size: '140px'
     };
   },
   computed: {
-    //根据传入的size计算得到标注的字体大小
-    calcFontSize: function calcFontSize() {
-      return (this.size / 4).toFixed(2);
-    },
     //根据波浪数渲染数据
     calcData: function calcData() {
       var data = [];
@@ -43961,16 +43109,12 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
 
     Object.keys(this.$props).forEach(function (watchItem) {
       _this.$watch(watchItem, function () {
-        //需要筛选继承的那些props
-        if (watchItem === 'size') {
-          _this.updateChart(false, true);
-        }
-
         _this.updateChart();
       });
     });
     this.chart = external_echarts_default.a.init(this.$refs.chart);
     this.updateChart();
+    this.size = this.$el.offsetWidth * 0.75 + 'px';
     this.$on("themeStyle", function () {
       _this.waveColorData = _this.getColor(0);
       _this.labelColorData = _this.getTextColor;
@@ -43979,21 +43123,23 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
 
       _this.updateChart(true);
     });
+    addEventListener('resize', function () {
+      _this.size = _this.$el.offsetWidth * 0.75 + 'px';
+
+      _this.$nextTick(function () {
+        this.chart.resize();
+      });
+    });
   },
   methods: {
     updateChart: function updateChart() {
       var propsUpdate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      var changeSize = arguments.length > 1 ? arguments[1] : undefined;
 
       if (!propsUpdate) {
         this.waveColorData = this.waveColor || this.getColor(0);
         this.labelColorData = this.labelColor || this.getTextColor;
         this.borderColorData = this.borderColor || this.waveColorData;
         this.backgroundColorData = this.backgroundColor || this.getBackground;
-      }
-
-      if (changeSize) {
-        this.chart.resize(this.size, this.size);
       }
 
       this.chart.setOption({
@@ -44005,7 +43151,7 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
           radius: "95%",
           data: this.calcData,
           label: {
-            fontSize: this.fontSize || this.calcFontSize,
+            fontSize: this.fontSize,
             color: this.labelColorData,
             insideColor: this.insideLabelColor
           },
@@ -44041,8 +43187,8 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
 
 var LiquidFill_component = normalizeComponent(
   components_LiquidFillvue_type_script_lang_js_,
-  LiquidFillvue_type_template_id_4dda9f8e_render,
-  LiquidFillvue_type_template_id_4dda9f8e_staticRenderFns,
+  LiquidFillvue_type_template_id_570ba3ea_render,
+  LiquidFillvue_type_template_id_570ba3ea_staticRenderFns,
   false,
   null,
   null,
@@ -44145,6 +43291,12 @@ var AddressMatchParameter_AddressMatchParameter = function AddressMatchParameter
 
 
 
+
+
+
+
+
+
 var src_setTheme = function setTheme() {
   var themeStyle = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -44180,6 +43332,8 @@ var src_install = function install(Vue) {
   Vue.use(lib_table_default.a);
   Vue.use(lib_table_column_default.a);
   Vue.use(lib_progress_default.a);
+  Vue.use(lib_row_default.a);
+  Vue.use(lib_col_default.a);
   Vue.prototype.$message = lib_message_default.a;
   Vue.prototype.$loading = lib_loading_default.a;
 
@@ -46156,7 +45310,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 86);
+/******/ 	return __webpack_require__(__webpack_require__.s = 100);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -46263,7 +45417,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 86:
+/***/ 100:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46490,7 +45644,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 72);
+/******/ 	return __webpack_require__(__webpack_require__.s = 91);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -46597,7 +45751,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 72:
+/***/ 91:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46904,7 +46058,7 @@ progress.install = function (Vue) {
 /***/ "wq4j":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__("43KI").PassThrough
+module.exports = __webpack_require__("eA/Y")
 
 
 /***/ }),
@@ -46917,6 +46071,188 @@ module.exports = __webpack_require__("43KI").PassThrough
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_9_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_ref_9_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TablePopup_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_9_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_ref_9_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TablePopup_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_9_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_ref_9_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TablePopup_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "wsxZ":
+/***/ (function(module, exports) {
+
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/dist/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 116);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 116:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// CONCATENATED MODULE: ./packages/col/src/col.js
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/* harmony default export */ var col = ({
+  name: 'ElCol',
+
+  props: {
+    span: {
+      type: Number,
+      default: 24
+    },
+    tag: {
+      type: String,
+      default: 'div'
+    },
+    offset: Number,
+    pull: Number,
+    push: Number,
+    xs: [Number, Object],
+    sm: [Number, Object],
+    md: [Number, Object],
+    lg: [Number, Object],
+    xl: [Number, Object]
+  },
+
+  computed: {
+    gutter: function gutter() {
+      var parent = this.$parent;
+      while (parent && parent.$options.componentName !== 'ElRow') {
+        parent = parent.$parent;
+      }
+      return parent ? parent.gutter : 0;
+    }
+  },
+  render: function render(h) {
+    var _this = this;
+
+    var classList = [];
+    var style = {};
+
+    if (this.gutter) {
+      style.paddingLeft = this.gutter / 2 + 'px';
+      style.paddingRight = style.paddingLeft;
+    }
+
+    ['span', 'offset', 'pull', 'push'].forEach(function (prop) {
+      if (_this[prop] || _this[prop] === 0) {
+        classList.push(prop !== 'span' ? 'el-col-' + prop + '-' + _this[prop] : 'el-col-' + _this[prop]);
+      }
+    });
+
+    ['xs', 'sm', 'md', 'lg', 'xl'].forEach(function (size) {
+      if (typeof _this[size] === 'number') {
+        classList.push('el-col-' + size + '-' + _this[size]);
+      } else if (_typeof(_this[size]) === 'object') {
+        var props = _this[size];
+        Object.keys(props).forEach(function (prop) {
+          classList.push(prop !== 'span' ? 'el-col-' + size + '-' + prop + '-' + props[prop] : 'el-col-' + size + '-' + props[prop]);
+        });
+      }
+    });
+
+    return h(this.tag, {
+      class: ['el-col', classList],
+      style: style
+    }, this.$slots.default);
+  }
+});
+// CONCATENATED MODULE: ./packages/col/index.js
+
+
+/* istanbul ignore next */
+col.install = function (Vue) {
+  Vue.component(col.name, col);
+};
+
+/* harmony default export */ var packages_col = __webpack_exports__["default"] = (col);
+
+/***/ })
+
+/******/ });
 
 /***/ }),
 
