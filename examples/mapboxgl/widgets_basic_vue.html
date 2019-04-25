@@ -32,6 +32,7 @@
       top: 10px;
       left: 10px;
       z-index: 1000;
+      overflow: hidden;
     }
     .sm-progress-wrap {
       height: 100px;
@@ -50,7 +51,7 @@
     <sm-web-map :web-map-options="webOptions" map-id="1649097980" ref="map"></sm-web-map>
     <el-card class="box-card">
       <!-- 图标微件 -->
-      <sm-icon class-name="location" size="18px" text-color='rgb(63, 177, 227)'>
+      <sm-icon class-name="location" size="18px" text-color='rgb(63, 177, 227)' :style="{float: 'left'}">
       </sm-icon>
       <!-- 文本微件 -->
       <sm-text title="点击图上点切换显示机场数据" :font-style='{ fontSize: "14px"}' text-color="#333">

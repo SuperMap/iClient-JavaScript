@@ -41,6 +41,7 @@
       top: 10px;
       right: 10px;
       z-index: 1000;
+      overflow: hidden;
     }
 
     .radio-group {
@@ -73,7 +74,7 @@
     </el-radio-group>
     <div class="box-card">
       <!-- 图标微件 -->
-      <sm-icon class-name="location" size="18px">
+      <sm-icon class-name="location" background="unset" size="18px" :style="{float: 'left'}">
       </sm-icon>
       <!-- 文本微件 -->
       <sm-text title="点击图上点切换显示机场数据" :font-style='{ fontSize: "14px"}' text-color="#333"></sm-text>
@@ -89,7 +90,7 @@
       <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber" style="width: 100%"></sm-indicator>
       <sm-text title="同比增速" :font-style='{ fontSize: "12px",fontWeight: "bolder"}' text-color="rgb(51,51,51)"></sm-text>
 
-      <div :style="divStyle">
+      <div  :style="divStyle">
         <!-- 水球微件 -->
         <sm-liquid-fill :value="speedIncreaseValue" :wave-count="3" :wave-animation="true">
         </sm-liquid-fill>
