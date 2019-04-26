@@ -87,7 +87,7 @@
             });
             map.on('click', 'queryDatas', function (e) {
                 new mapboxgl.Popup()
-                    .setLngLat(e.features[0].geometry.center)
+                    .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.SMID + "<br>" + resources.text_country + "：" + e.features[0].properties.COUNTRY)
                     .addTo(map);
             });
