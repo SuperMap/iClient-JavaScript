@@ -229,7 +229,8 @@ export class TileSuperMapRest extends ol.source.TileImage {
             var resolution = me.tileGrid.getResolution(z);
             var dpi = 96;
             var unit = projection.getUnits() || Unit.DEGREE;
-            if (unit === 'degrees') {
+            // OGC WKT 解析出单位是 degree
+            if (unit === 'degrees' || unit === 'degree') {
                 unit = Unit.DEGREE;
             }
             //通过wkt方式自定义坐标系的时候，是meter
