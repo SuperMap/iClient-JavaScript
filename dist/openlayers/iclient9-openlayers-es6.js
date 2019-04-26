@@ -65501,6 +65501,7 @@ external_ol_default.a.supermap.control = external_ol_default.a.supermap.control 
 /**
  * @class ol.supermap.control.ScaleLine
  * @category  Control
+ * @version 9.1.2
  * @classdesc 比例尺控件。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
@@ -65517,7 +65518,10 @@ external_ol_default.a.supermap.control = external_ol_default.a.supermap.control 
  *      map.addControl(control)
  */
 class ScaleLine_ScaleLine extends external_ol_default.a.control.ScaleLine {
-
+    /**
+     * @constructs
+     * @version 9.1.2
+    */
     constructor(options) {
         options = options || {};
         //需在super之前定义render，真正的调用是在初始化完成后
@@ -68470,7 +68474,8 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
             var resolution = me.tileGrid.getResolution(z);
             var dpi = 96;
             var unit = projection.getUnits() || REST_Unit.DEGREE;
-            if (unit === 'degrees') {
+            // OGC WKT 解析出单位是 degree
+            if (unit === 'degrees' || unit === 'degree') {
                 unit = REST_Unit.DEGREE;
             }
             //通过wkt方式自定义坐标系的时候，是meter

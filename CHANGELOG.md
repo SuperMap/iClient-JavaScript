@@ -1,4 +1,82 @@
 # next release #
+# 9.1.2 (2019-04-26) #
+
+## 新特性
+
+### iClient for MapboxGL 新增微件（for vue）
+
+- iClient for MapboxGL 新增 WebMap 地图微件，图表微件，图例微件，图层列表微件，量算微件，查询/搜索微件，进度条等基础微件，支持多种主题（可一键切换风格）
+
+![whatsNewMapboxGlWidgets](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
+ 
+## API changes
+
+### for Leaflet
+
+- 互联网地图 - 天地图
+  - `L.supermap.tiandituTileLayer` 新增 `options.key` 参数，支持传入天地图服务密钥。
+
+### for OpenLayers
+
+- 互联网地图 - 天地图
+  - `ol.source.Tianditu` 新增 `options.key` 参数，支持传入天地图服务密钥。
+- 控件 - 基础控件 - 比例尺控件
+  - 新增 `ol.supermap.control.ScaleLine` 类，修复了 OpenLayers V4.6.5 版本 WGS84 坐标系 数值错误问题。
+- iPortal  
+  - `ol.supermap.WebMap` 新增支持数据流图层，等级符号专题图图层。
+  - `ol.supermap.MapboxStyles` 的 `options.source` 参数为可选参数，不传时为 `style` 中的第一个 `source`。
+  - `ol.source.VectorTileSuperMapRest` 的 `options.source` 参数为可选参数，不传时为 `style` 中的第一个 `source`。
+
+### for MapboxGL
+
+- iPortal - 地图
+  - 新增 `mapboxgl.supermap.WebMap` 类，支持加载 iPortal WebMap 图层。 
+
+## Fixed
+
+### for Leaflet
+- 修复 `SuperMap.Widgets.Chart` 的 `type` 参数解析错误的问题
+- 修复 `L.supermap.mapVLayer` 动态图层移除后可能出现的空值问题
+- 修复 `L.supermap.mapVLayer` 地图缩放，图层位置偏差问题
+- 修复 `L.supermap.echartsLayer` 同时加载两个 EchartsLayer 图层时，图层互相影响问题 
+- 修复 `SuperMap.REST.ClipParameter` 的 `clipRegion` 参数解析错误的问题
+
+
+### for OpenLayers
+
+- 修复 `SuperMap.Widgets.Chart` 的 `type` 参数解析错误的问题
+- 修复 `ol.supermap.WebMap` 专题图字段过滤错误问题
+- 修复 `ol.supermap.WebMap` 加载小范围底图时，内存耗尽问题
+- 修复 `ol.source.Mapv`  webgl 绘制模式时，在浏览器缩放比例非100%时，要素偏移的问题
+- 修复 `SuperMap.REST.ClipParameter` 的 `clipRegion` 参数解析错误的问题
+
+
+### for MapboxGL
+
+- 修复 `SuperMap.Widgets.Chart` 的 `type` 参数解析错误的问题
+- 修复 `SuperMap.REST.ClipParameter` 的 `clipRegion` 参数解析错误的问题
+
+
+### Classic
+
+- 修复 `SuperMap.Geometry.GeoText` 不能拖动问题
+- 修复 `SuperMap.REST.ClipParameter` 的 `clipRegion` 参数解析错误的问题
+- 修复 `SuperMap.Layer.TiledDynamicRESTLayer` 的 `origin` 在 IE 浏览器出图错误问题
+- 修复加载谷歌地图失败问题
+- 修复加载天地图失败问题
+
+## Examples
+
+### for Leaflet
+
+  - 新增 “微件 - 基础 - 图表_iServer” 示例
+  - 新增 “微件 - 基础 - 图表_iPortal” 示例
+
+### for MapboxGL
+
+  - 新增 “iPortal - 地图” 分类及相关示例
+  - 新增 “微件 - for Vue” 分类及相关示例
+  - 新增 “可视化 - 矢量瓦片 - 矢量瓦片叠加” 示例
 
 
 # 9.1.1 (2018-12-27) #
