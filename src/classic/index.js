@@ -16,23 +16,6 @@ export {OutputSetting} from '@supermap/iclient-common/iServer/OutputSetting';
 export {MappingParameters} from '@supermap/iclient-common/iServer/MappingParameters';
 export {GeoCodingParameter} from '@supermap/iclient-common/iServer/GeoCodingParameter';
 export {GeoDecodingParameter} from '@supermap/iclient-common/iServer/GeoDecodingParameter';
-export { 
-    //widgets
-    FileTypes,
-    FileConfig,
-    FileModel, 
-    MessageBox,
-    CommonContainer,
-    DropDownBox,
-    Select,
-    AttributesPopContainer,
-    PopContainer,
-    IndexTabsPageContainer,
-    CityTabsPage,
-    NavTabsPage,
-    PaginationContainer,
-    widgetsUtil,
-    FileReaderUtil} from '@supermap/iclient-common/widgets';
 export * from './overlay';
 export * from './services';
 export {SuperMap} from './SuperMap';

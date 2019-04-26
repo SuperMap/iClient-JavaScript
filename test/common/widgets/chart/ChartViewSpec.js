@@ -37,7 +37,6 @@ describe('ChartView', () => {
         expect(chartView.domID).toBe("chart");
         expect(chartView.chartType).toBe("line");
     });
-
     it('onAdd', () => {
         let addChart = function () { }
         chartView.onAdd(addChart);
@@ -102,6 +101,14 @@ describe('ChartView', () => {
         }
         chartView._updateChart(option);
         expect(chartView.echart).not.toBeNull();
+    });
+    it('getFeatures', () => {
+      var features = chartView.getFeatures();
+      expect(features).not.toBeNull();
+    });
+    it('getStyle', () => {
+      var style = chartView.getStyle();
+      expect(style).not.toBeNull();
     });
    
 });

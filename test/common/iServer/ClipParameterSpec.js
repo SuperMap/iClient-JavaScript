@@ -42,9 +42,7 @@ describe('ClipParameter', () => {
         var json = parameter.toJSON();
         expect(json).not.toBeNull();
         expect(json).toContain("'clipDatasetName':\"testDataset\"");
-        parameter.isClipInRegion = false;
-        var json1 = parameter.toJSON();
-        expect(json1).toBeNull();
+        expect(json).toContain("'parts':[5]");
         parameter.destroy();
     });
 });

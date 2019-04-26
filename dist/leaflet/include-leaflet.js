@@ -50,7 +50,7 @@
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'leaflet')) {
             inputCSS("https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css");
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js");
+            inputScript("https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet-src.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
@@ -62,13 +62,13 @@
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.min.js");
         }
         if (inArray(includes, 'd3')) {
-            inputScript("http://iclient.supermap.io/web/libs/d3/5.5.0/d3.min.js");
+            inputScript("http://iclient.supermap.io/web/libs/d3/5.5.0/d3.js");
         }
         if (inArray(includes, 'd3-hexbin')) {
             inputScript("https://d3js.org/d3-hexbin.v0.2.min.js");
         }
         if (inArray(includes, 'd3Layer')) {
-            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.min.js");
+            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.js");
         }
         if (inArray(includes, 'elasticsearch')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/elasticsearch/15.0.0/elasticsearch.min.js");

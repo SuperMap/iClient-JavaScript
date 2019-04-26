@@ -8,71 +8,191 @@
   <meta charset="UTF-8">
   <title data-i18n='resources.title_widgetsDemo_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-  <script include="echarts,iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script include="echarts,iclient9-mapboxgl-widgets-vue,element"
+    src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
     #main {
       margin: 0 auto;
       width: 100%;
-      height: 100%;
+      height: 100vh;
+      overflow: hidden;
+      padding-left: 2.08vw;
+      box-sizing: border-box;
     }
-    
-    #contentText {
+
+    @media screen and (max-width: 992px) {
+      #main {
+        overflow: auto;
+      }
+    }
+
+    @media screen and (max-height: 640px) {
+      #main {
+        overflow: auto;
+      }
+    }
+
+    /* #contentText {
       position: absolute;
       width: 490px;
       height: 130px;
       top: 180px;
       left: 60px;
-    }
+    } */
   </style>
 </head>
 
-<body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<body style="margin: 0;background: #fff;">
   <div id="main">
-    <sm-text id="titleText" :font-style='titleFontStyle' text-color="#5AB1EF" title="国土空间规划实时监测评估预警"></sm-text>
-    <sm-time-text id='timeText' :font-style='{"fontSize": "20","fontFamily": "微软雅黑"}' text-color="#B7B2B2"
-      time-type="date+second+week"></sm-time-text>
-    <sm-text id="monitoringText" :font-style='categoryFontStyle' title="监测情况"></sm-text>
-    <sm-text id="contentText"
-      :font-style='{"fontFamily": "微软雅黑","fontSize": "18","fontWeight": "bolder","lineHeight": "30","textAlign": "left"}'
-      text-color="#807B7B"
-      title="截止2018年底，国土空间整体开发强度为2.5%，三类空间比例为50%:30%:20%。耕地保有量为300万亩，城镇建设用地规模为300km²，森林覆盖率达到64%，水功能水质达标率为80%，生态环境治理良好。">
-    </sm-text>
-    <sm-text id="sanxianText" :font-style='categoryFontStyle' title="三线管控"></sm-text>
-    <sm-text id="ecologyText" :font-style='textFontStyle' title="生态空间"></sm-text>
-    <sm-text id="townText" :font-style='textFontStyle' title="城镇空间"></sm-text>
-    <sm-text id="farmText" :font-style='textFontStyle' title="农业空间"></sm-text>
-    <sm-liquid-fill id="liquidFill1" value="0.32" size="140" wave-count="2" wave-animation="true" wave-color="#2EC7C9">
-    </sm-liquid-fill>
-    <sm-liquid-fill id="liquidFill2" value="0.48" size="140" wave-count="2" wave-animation="true" wave-color="#ffb980">
-    </sm-liquid-fill>
-    <sm-liquid-fill id="liquidFill3" value="0.17" size="140" wave-count="3" wave-animation="true" wave-color="#d87a80">
-    </sm-liquid-fill>
-    <sm-text id="naturalText" :font-style='categoryFontStyle' title="自然资源"></sm-text>
-    <sm-indicator id='woodlandIndicator' title="林地保有量" unit="km²" num="300" font-size="26"></sm-indicator>
-    <sm-indicator id='farmlandIndicator' title="耕地地保有量" unit="万亩" num="300" font-size="26"></sm-indicator>
-    <sm-text id="yearText1" :font-style='textFontStyle' title="2017年"></sm-text>
-    <sm-text id="yearText2" :font-style='textFontStyle' title="2018年"></sm-text>
-    <sm-icon id="icon1" class-name="location" size="18" color="red"></sm-icon>
-    <sm-text id="ecologicalText" :font-style='categoryFontStyle' title="生态环境"></sm-text>
-    <sm-progress id='progress5' circle-width="100" color="#2ec7c9" percentage="30" stroke-width="10" type="circle">
-    </sm-progress>
-    <sm-progress id='progress6' circle-width="100" color="#b6a2de" percentage="50" stroke-width="10" type="circle">
-    </sm-progress>
-    <sm-progress id='progress7' circle-width="100" color="#5ab1ef" percentage="20" stroke-width="10" type="circle">
-    </sm-progress>
-    <sm-progress id='progress8' circle-width="100" color="#ffb980" percentage="80" stroke-width="10" type="circle">
-    </sm-progress>
-    <sm-progress id='progress1' color="#2ec7c9" percentage="80" stroke-width="10" type="line"></sm-progress>
-    <sm-progress id='progress2' color="#ffb980" percentage="40" stroke-width="10" type="line"></sm-progress>
-    <sm-progress id='progress3' color="#b6a2de" percentage="60" stroke-width="10" type="line"></sm-progress>
-    <sm-progress id='progress4' color="#5ab1ef" percentage="20" stroke-width="10" type="line"></sm-progress>
-    <sm-text id="developmentText" :font-style='categoryFontStyle' title="开发利用"></sm-text>
-    <sm-icon id="icon2" class-name="location" size="18" color="#2EC7C9"></sm-icon>
-    <sm-chart :style="chartStyle" icon-class="" :datasets="datasets" :chart-options="chartOptions"></sm-chart>
-    <sm-web-map :web-map-options="{server: 'http://support.supermap.com.cn:8092'}" map-id="213343819">
-      <sm-zoom></sm-zoom>
-      <sm-scale position="bottom-left"></sm-scale>
-    </sm-web-map>
+    <el-row>
+      <el-col :md="8" class="left-container">
+        <el-row class="title-text-wrap">
+          <sm-text id="titleText" :font-style='titleFontStyle' text-color="#5AB1EF" title="国土空间规划实时监测评估预警"></sm-text>
+        </el-row>
+
+        <el-row class="time-text-wrap">
+          <sm-time-text id='timeText' :font-style='{"fontFamily": "微软雅黑"}' text-color="#B7B2B2"
+            time-type="date+second+week"></sm-time-text>
+        </el-row>
+
+        <el-row class="monitor-wrap">
+          <el-row class="block-title">
+            <sm-text id="monitoringText" :font-style='categoryFontStyle' title="监测情况"></sm-text>
+          </el-row>
+          <el-row class="monitor-text">
+            <sm-text id="contentText" :font-style='{"fontFamily": "微软雅黑","fontWeight": "bolder","textAlign": "left"}'
+              text-color="#807B7B"
+              title="截止2018年底，国土空间整体开发强度为2.5%，三类空间比例为50%:30%:20%。耕地保有量为300万亩，城镇建设用地规模为300km²，森林覆盖率达到64%，水功能水质达标率为80%，生态环境治理良好。">
+            </sm-text>
+          </el-row>
+        </el-row>
+
+        <el-row class="control-wrap">
+          <el-row class="block-title">
+            <sm-text id="sanxianText" :font-style='categoryFontStyle' title="三线管控"></sm-text>
+          </el-row>
+          <el-row type="flex" justify="space-around">
+            <el-col :md="8" :sm="6" :xs="6" class="control-title">
+              <sm-text id="ecologyText" :font-style='textFontStyle' title="生态空间"></sm-text>
+              <sm-liquid-fill id="liquidFill1" :value="0.32" :font-size="18" :wave-count="2" :wave-animation="true"
+                wave-color="#2EC7C9">
+              </sm-liquid-fill>
+            </el-col>
+            <el-col :md="8" :sm="6" :xs="6" class="control-title">
+              <sm-text id="townText" :font-style='textFontStyle' title="城镇空间"></sm-text>
+              <sm-liquid-fill id="liquidFill2" :value="0.48" :font-size="18" :wave-count="2" :wave-animation="true"
+                wave-color="#ffb980">
+              </sm-liquid-fill>
+            </el-col>
+            <el-col :md="8" :sm="6" :xs="6" class="control-title">
+              <sm-text id="farmText" :font-style='textFontStyle' title="农业空间"></sm-text>
+              <sm-liquid-fill id="liquidFill3" :value="0.17" :font-size="18" :wave-count="3" :wave-animation="true"
+                wave-color="#d87a80">
+              </sm-liquid-fill>
+            </el-col>
+          </el-row>
+        </el-row>
+
+        <el-row class="resource-wrap">
+          <el-row class="block-title">
+            <sm-text id="naturalText" :font-style='categoryFontStyle' title="自然资源"></sm-text>
+          </el-row>
+          <el-row type="flex" justify="end" class="resource-year">
+            <el-col :md="9" :sm="8" :xs="8">
+              <sm-text id="yearText1" :font-style='textFontStyle' title="2017年"></sm-text>
+            </el-col>
+            <el-col :md="9" :sm="8" :xs="8">
+              <sm-text id="yearText2" :font-style='textFontStyle' title="2018年"></sm-text>
+            </el-col>
+          </el-row>
+          <el-row type="flex" align="middle" class="resource-item">
+            <el-col :md="6" :sm="8" :xs="8">
+              <sm-indicator id='woodlandIndicator' title="林地保有量" unit="km²" num="300" font-size="26"></sm-indicator>
+            </el-col>
+            <el-col :md="18" :sm="16" :xs="16" class="resource-chart">
+              <el-col :md="12" :sm="12" :xs="12">
+                <div class="sm-progress-wrap">
+                  <sm-progress id='progress5' color="#2ec7c9" percentage="30" stroke-width="10" type="circle">
+                  </sm-progress>
+                </div>
+              </el-col>
+              <el-col :md="12" :sm="12" :xs="12">
+                <div class="sm-progress-wrap">
+                  <sm-progress id='progress6' color="#b6a2de" percentage="50" stroke-width="10" type="circle">
+                  </sm-progress>
+                </div>
+              </el-col>
+            </el-col>
+          </el-row>
+          <el-row type="flex" align="middle" class="resource-item">
+            <el-col :md="6" :sm="8" :xs="8">
+              <sm-indicator id='farmlandIndicator' title="耕地地保有量" unit="万亩" num="300" font-size="26"></sm-indicator>
+            </el-col>
+            <el-col :md="18" :sm="16" :xs="16" class="resource-chart">
+              <el-col :md="12" :sm="12" :xs="12">
+                <div class="sm-progress-wrap">
+                  <sm-progress id='progress7' color="#5ab1ef" percentage="20" stroke-width="10" type="circle">
+                  </sm-progress>
+                </div>
+              </el-col>
+              <el-col :md="12" :sm="12" :xs="12">
+                <div class="sm-progress-wrap">
+                  <sm-progress id='progress8' color="#ffb980" percentage="80" stroke-width="10" type="circle">
+                  </sm-progress>
+                </div>
+              </el-col>
+            </el-col>
+          </el-row>
+        </el-row>
+      </el-col>
+
+      <el-col :md="16">
+        <el-row>
+          <div class="map-wrap">
+            <sm-web-map :web-map-options="{server: 'http://support.supermap.com.cn:8092'}" map-id="213343819">
+              <sm-zoom></sm-zoom>
+              <sm-scale position="bottom-left"></sm-scale>
+            </sm-web-map>
+          </div>
+        </el-row>
+
+        <el-row>
+          <el-col :md="12" :xs="24" class="environment-wrap">
+            <el-row class="environment-title block-title">
+              <sm-icon id="icon1" class-name="location" size="18" color="red"></sm-icon>
+              <sm-text id="ecologicalText" :font-style='categoryFontStyle' title="生态环境"></sm-text>
+            </el-row>
+            <el-row class="environment-progress-holder">
+              <el-col :md="24" :xs="24">
+                <sm-progress id='progress1' color="#2ec7c9" percentage="80" stroke-width="10" type="line"></sm-progress>
+              </el-col>
+              <el-col :md="24" :xs="24">
+                <sm-progress id='progress2' color="#ffb980" percentage="40" stroke-width="10" type="line"></sm-progress>
+              </el-col>
+              <el-col :md="24" :xs="24">
+                <sm-progress id='progress3' color="#b6a2de" percentage="60" stroke-width="10" type="line"></sm-progress>
+              </el-col>
+              <el-col :md="24" :xs="24">
+                <sm-progress id='progress4' color="#5ab1ef" percentage="20" stroke-width="10" type="line"></sm-progress>
+              </el-col>
+            </el-row>
+          </el-col>
+
+          <el-col :md="12" :xs="24" class="chart-wrap">
+            <el-row class="chart-title block-title">
+              <sm-icon id="icon2" class-name="location" size="18" color="#2EC7C9"></sm-icon>
+              <sm-text id="developmentText" :font-style='categoryFontStyle' title="开发利用"></sm-text>
+            </el-row>
+            <el-row>
+              <el-col :md="24" :xs="24">
+                <sm-chart icon-class="" :datasets="datasets" :chart-options="chartOptions">
+                </sm-chart>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
   </div>
 
   <script>
@@ -108,258 +228,145 @@
           },
           titleFontStyle: {
             "fontFamily": "微软雅黑",
-            "fontSize": "28",
             "fontWeight": "bolder",
-            "lineHeight": "28",
             "textAlign": "center"
           },
           categoryFontStyle: {
             "fontFamily": "微软雅黑",
-            "fontSize": "20",
             "fontWeight": "bolder",
-            "lineHeight": "20",
-            "textAlign": "center"
+            "textAlign": "left"
           },
           textFontStyle: {
             "fontFamily": "微软雅黑",
-            "fontSize": "16",
             "fontWeight": "bolder",
-            "lineHeight": "16",
             "textAlign": "center"
-          },
-          chartStyle: {
-            width: "656px",
-            height: "260px",
-            position: "absolute",
-            top: "676px",
-            left: "1240px"
           }
         };
       }
     })
   </script>
   <style>
-    #titleText {
-      position: absolute;
-      width: 562px;
-      height: 40px;
-      top: 36px;
-      left: 14px;
+    .left-container {
+      padding-top: 2.2vh;
+      padding-right: 1.2vw;
     }
 
-    #timeText {
-      position: absolute;
-      height: 40px;
-      left: 94px;
-      top: 78px;
-      width: 397px
+    .map-wrap {
+      height: 63vh;
     }
 
-    #monitoringText {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 142px;
-      left: 4px;
-    }
-    #sanxianText {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 330px;
-      left: 4px;
+    .title-text-wrap .sm-text {
+      font-size: 1.66vw;
+      line-height: 1.5;
     }
 
-    #ecologyText {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 380px;
-      left: 40px;
+    .time-text-wrap .sm-time-text {
+      margin: 0 auto;
+      font-size: 1.04vw;
     }
 
-    #townText {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 380px;
-      left: 210px;
+    .block-title .sm-text {
+      font-size: 1.15vw;
+      line-height: 1.5;
     }
 
-    #farmText {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 380px;
-      left: 384px;
+    .monitor-wrap {
+      margin: 0.93vh 0;
     }
 
-    #liquidFill1 {
-      position: absolute;
-      width: 140px;
-      height: 140px;
-      top: 410px;
-      left: 230px;
+    .monitor-wrap .block-title {
+      margin-bottom: 1.85vh;
     }
 
-    #liquidFill2 {
-      position: absolute;
-      width: 140px;
-      height: 140px;
-      top: 410px;
-      left: 60px;
+    .monitor-wrap .monitor-text .sm-text {
+      font-size: 0.94vw;
+      line-height: 1.5;
     }
 
-    #liquidFill3 {
-      position: absolute;
-      width: 140px;
-      height: 140px;
-      top: 410px;
-      left: 400px;
+    .control-wrap .block-title,
+    .resource-wrap .block-title {
+      /* margin-bottom: 1.2vh; */
+      padding-top: 2.78vh;
     }
 
-    #naturalText {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 600px;
-      left: 2px;
+    .control-wrap .control-title .sm-liquidFill {
+      height: 13.89vh;
     }
 
-    #woodlandIndicator {
-      position: absolute;
-      width: 138px;
-      height: 94px;
-      top: 680px;
-      left: 56px;
+    .control-wrap .control-title .sm-text,
+    .resource-wrap .resource-year .sm-text {
+      margin-bottom: 0.93vh;
+      font-size: 0.94vw;
     }
 
-    #farmlandIndicator {
-      position: absolute;
-      width: 138px;
-      height: 94px;
-      top: 820px;
-      left: 56px;
+    .resource-wrap .resource-item {
+      margin-bottom: 3.20vh;
     }
 
-    #yearText1 {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 634px;
-      left: 220px;
+    .resource-wrap .resource-item:last-of-type {
+      margin-bottom: 0;
     }
 
-    #yearText2 {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 634px;
-      left: 364px;
+    .resource-wrap .resource-item .sm-indicator .sm-indicator__title,
+    .resource-wrap .resource-item .sm-indicator .sm-indicator__unit {
+      font-size: 0.94vw;
+      line-height: 1.5;
     }
 
-    #progress5 {
-      position: absolute;
-      width: 100px;
-      height: 104px;
-      top: 816px;
-      left: 252px;
+    .resource-wrap .resource-item .sm-indicator .sm-indicator__num {
+      font-size: 1.35vw;
     }
 
-    #progress6 {
-      position: absolute;
-      width: 100px;
-      height: 104px;
-      top: 682px;
-      left: 252px;
+    .resource-wrap .resource-item .sm-indicator .sm-indicator__content {
+      margin-bottom: 0;
+      margin-right: 0;
     }
 
-    #progress7 {
-      position: absolute;
-      width: 100px;
-      height: 104px;
-      top: 682px;
-      left: 406px;
+    .resource-wrap .resource-chart .sm-progress-wrap {
+      height: 12.96vh;
     }
 
-    #progress8 {
-      position: absolute;
-      width: 100px;
-      height: 104px;
-      top: 816px;
-      left: 406px;
+    .resource-wrap .resource-chart .sm-progress {
+      text-align: center;
     }
 
-    #icon1 {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      top: 654px;
-      left: 596px;
+    .environment-wrap {
+      padding-right: 6.77vw;
     }
 
-    #ecologicalText {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 650px;
-      left: 588px;
+    .environment-wrap .environment-title .sm-icon,
+    .environment-wrap .environment-title .sm-text,
+    .chart-wrap .chart-title .sm-icon,
+    .chart-wrap .chart-title .sm-text {
+      display: inline-block;
+      vertical-align: middle;
     }
 
-    #progress1 {
-      position: absolute;
-      width: 494px;
-      height: 30px;
-      top: 714px;
-      left: 600px;
+    .environment-wrap .environment-title,
+    .chart-wrap .chart-title {
+      padding-top: 0.93vh;
     }
 
-    #progress2 {
-      position: absolute;
-      width: 494px;
-      height: 30px;
-      top: 754px;
-      left: 600px;
+    .environment-wrap .environment-title {
+      margin-bottom: 2.78vh;
     }
 
-    #progress3 {
-      position: absolute;
-      width: 494px;
-      height: 30px;
-      top: 794px;
-      left: 600px;
+    .environment-wrap,
+    .environment-progress-holder .el-col {
+      margin-bottom: 3.70vh;
     }
 
-    #progress4 {
-      position: absolute;
-      width: 494px;
-      height: 30px;
-      top: 834px;
-      left: 600px;
+    .environment-wrap,
+    .environment-progress-holder .el-col:last-child {
+      margin-bottom: 0;
     }
 
-    #icon2 {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      top: 654px;
-      left: 1214px;
+    .chart-wrap .chart-title {
+      margin-bottom: 1.39vh;
     }
 
-    #developmentText {
-      position: absolute;
-      width: 164px;
-      height: 34px;
-      top: 650px;
-      left: 1200px;
-    }
-
-    #map {
-      position: absolute;
-      width: 1330px;
-      height: 640px;
-      top: 0px;
-      left: 586px;
+    .chart-wrap .sm-chart {
+      height: 30vh;
     }
   </style>
 </body>

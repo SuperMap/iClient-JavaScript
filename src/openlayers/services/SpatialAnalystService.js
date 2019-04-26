@@ -427,6 +427,9 @@ export class SpatialAnalystService extends ServiceBase {
         if (params.extractParameter && params.extractParameter.clipRegion) {
             params.extractParameter.clipRegion = this.convertGeometry(params.extractParameter.clipRegion);
         }
+        if (params.clipParam && params.clipParam.clipRegion) {
+            params.clipParam.clipRegion = this.convertGeometry(params.clipParam.clipRegion);
+        }
         //支持格式：Vector Layers; GeoJson
         if (params.sourceGeometry) {
             var SRID = null;

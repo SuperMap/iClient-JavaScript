@@ -31,8 +31,8 @@
         }),
         projection: 'EPSG:4326'
     });
-    zoomControl = new ol.control.ScaleLine();
-    map.addControl(zoomControl);
+    var scaleControl = new ol.control.ScaleLine();
+    map.addControl(scaleControl);
     map.addLayer(layer);
 </script>
 </body>

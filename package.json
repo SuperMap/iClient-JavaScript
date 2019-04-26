@@ -103,7 +103,7 @@
     "url-loader": "^1.0.1",
     "watchify": "^3.9.0",
     "webpack": "4.1.1",
-    "webpack-cli": "^2.0.12",
+    "webpack-cli": "2.0.12",
     "webpack-dev-middleware": "^3.2.0",
     "webpack-node-externals": "^1.6.0",
     "leaflet.pm": "^0.25.0"

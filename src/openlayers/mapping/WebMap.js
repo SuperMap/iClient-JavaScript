@@ -2117,7 +2117,7 @@ export class WebMap extends ol.Observable {
                 value = feature.attributes[directionField];
                 if(value > 360 || value < 0){ 
                     return null
-                };
+                }
                 if(styleType === "SYMBOL_POINT") {
                     image = layerStyle.getText();
                 } else {
