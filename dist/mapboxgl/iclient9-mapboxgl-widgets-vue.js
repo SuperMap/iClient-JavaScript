@@ -1,10 +1,3 @@
-/*!
- * 
- *          iclient9-mapboxgl-widgets-vue.(http://iclient.supermap.io)
- *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
- *          license: Apache-2.0
- *         
- */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("./libs/iclient-mapboxgl/iclient9-mapboxgl.min"), require("vue"), require("./libs/mapboxgl/mapbox-gl-enhance.js"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));
@@ -42835,12 +42828,12 @@ var TimeText_component = normalizeComponent(
 )
 
 /* harmony default export */ var TimeText = (TimeText_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=template&id=7e314806&
-var Progressvue_type_template_id_7e314806_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-progress"},[_c('el-progress',{attrs:{"percentage":parseFloat(_vm.percentage),"type":_vm.type,"stroke-width":parseFloat(_vm.strokeWidth),"show-text":_vm.showText,"width":_vm.type==='circle'?parseFloat(_vm.circleWidth):null,"color":_vm.curColor,"status":_vm.status}})],1)}
-var Progressvue_type_template_id_7e314806_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=template&id=76978697&
+var Progressvue_type_template_id_76978697_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-progress"},[_c('el-progress',{attrs:{"percentage":parseFloat(_vm.percentage),"type":_vm.type,"stroke-width":parseFloat(_vm.strokeWidth),"show-text":_vm.showText,"width":_vm.type==='circle'?parseFloat(_vm.circleWidth):null,"color":_vm.curColor,"status":_vm.status}})],1)}
+var Progressvue_type_template_id_76978697_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Progress.vue?vue&type=template&id=7e314806&
+// CONCATENATED MODULE: ./src/view/components/Progress.vue?vue&type=template&id=76978697&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=script&lang=js&
 //
@@ -42904,12 +42897,21 @@ var Progressvue_type_template_id_7e314806_staticRenderFns = []
       handler: function handler() {
         this.curColor = this.getColor(0);
       }
+    },
+    textColorsData: {
+      handler: function handler() {
+        if (this.progressTextNode) {
+          this.progressTextNode.style.color = this.getTextColor;
+        }
+      }
     }
   },
   loaded: function loaded() {
     var _this = this;
 
     this.curColor = this.color || this.getColor(0);
+    this.progressTextNode = this.$el.querySelector('.el-progress__text');
+    this.progressTextNode.style.color = this.getTextColor;
     this.$nextTick(function () {
       this.circleWidth = Math.min(this.$el.parentNode.offsetWidth, this.$el.parentNode.offsetHeight);
     });
@@ -42930,8 +42932,8 @@ var Progressvue_type_template_id_7e314806_staticRenderFns = []
 
 var Progress_component = normalizeComponent(
   components_Progressvue_type_script_lang_js_,
-  Progressvue_type_template_id_7e314806_render,
-  Progressvue_type_template_id_7e314806_staticRenderFns,
+  Progressvue_type_template_id_76978697_render,
+  Progressvue_type_template_id_76978697_staticRenderFns,
   false,
   null,
   null,
