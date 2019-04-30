@@ -2,6 +2,9 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import ol from 'openlayers';
+import proj4 from "proj4";
+window.proj4 = proj4;
+window.Proj4js = proj4;
 import {
     FetchRequest,
     SecurityManager,
@@ -153,6 +156,17 @@ export class WebMap extends ol.Observable {
                 return;
             }
             that.baseProjection = mapInfo.projection;
+
+            // 多坐标系支持
+            if(proj4) ol.proj.setProj4(proj4);
+            if(that.addProjctionFromWKT(mapInfo.projection)){
+                mapInfo.projection = that.baseProjection = that.getEpsgInfoFromWKT(mapInfo.projection);
+            }else{
+                // 不支持的坐标系
+                that.errorCallback && that.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${mapInfo.projection}`}, 'getMapFaild', that.map);
+                return;
+            }
+
             that.mapParams = {
                 title: mapInfo.title,
                 description: mapInfo.description
@@ -207,7 +221,7 @@ export class WebMap extends ol.Observable {
             center = [0, 0];
         }
         //与DV一致用底图的默认范围，不用存储的范围。否则会导致地图拖不动
-        extent = options.baseLayer.extent;
+        this.baseLayerExtent = extent = options.baseLayer.extent;
         if(this.mapParams) {
             this.mapParams.extent = extent;
             this.mapParams.projection = projection;
@@ -215,7 +229,7 @@ export class WebMap extends ol.Observable {
 
         // 计算当前最大分辨率
         let maxResolution;
-        if(extent && extent.length === 4){
+        if(options.baseLayer.layerType === "TILE" && extent && extent.length === 4){
             let width = extent[2] - extent[0];
             let height = extent[3] - extent[1];
             let maxResolution1 = width/256;
@@ -508,12 +522,13 @@ export class WebMap extends ol.Observable {
         if (credential) {
             SecurityManager[`register${keyfix}`](keyParams, credential);
         }
+        // extent: isBaseLayer ? layerInfo.extent : ol.proj.transformExtent(layerInfo.extent, layerInfo.projection, this.baseProjection),
         let source = new ol.source.TileSuperMapRest({
             transparent: true,
             url: layerInfo.url,
             wrapX: false,
             serverType: serverType,
-            extent: isBaseLayer ? layerInfo.extent : ol.proj.transformExtent(layerInfo.extent, layerInfo.projection, this.baseProjection),
+            extent: this.baseLayerExtent,
             prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] },
  
             tileProxy: this.tileProxy
@@ -630,7 +645,11 @@ export class WebMap extends ol.Observable {
         let that = this, 
         url = layerInfo.url.trim();
         if(layerInfo.layerType  === "TILE"){
-            url += ".json";
+           // 直接使用动态投影方式请求数据
+           let projection = {
+            epsgCode: that.baseProjection.split(":")[1]
+        }
+        url += `.json?prjCoordSys=${JSON.stringify(projection)}`;
         }else{
             url += (url.indexOf('?') > -1 ? '&SERVICE=WMS&REQUEST=GetCapabilities' : '?SERVICE=WMS&REQUEST=GetCapabilities');
         }
@@ -2510,6 +2529,55 @@ export class WebMap extends ol.Observable {
             })
         });
     }
+
+    /**
+     * 通过wkt参数扩展支持多坐标系
+     * 
+     * @param {String} wkt 字符串
+     * @returns {Boolean} 坐标系是否添加成功
+     */
+    addProjctionFromWKT(wkt){
+        if(typeof(wkt) !== 'string'){
+            //参数类型错误
+            return false;
+        }else{
+            if(wkt === "EPSG:4326" || wkt === "EPSG:3857"){
+                return true;
+            }else{
+                let epsgCode = this.getEpsgInfoFromWKT(wkt);
+                if(epsgCode){
+                    proj4.defs(epsgCode, wkt);
+                    return true;
+                }else{
+                    // 参数类型非wkt标准
+                    return false;
+                }
+            }
+        }  
+    }
+
+    /**
+     * 通过wkt参数获取坐标信息
+     * 
+     * @param {String} wkt 字符串
+     * @returns {String} epsg 如："EPSG:4326"
+     */
+    getEpsgInfoFromWKT(wkt){
+        if(typeof(wkt) !== 'string'){
+            return false;
+        }else if(wkt.indexOf("EPSG") === 0){
+            return wkt;
+        }else{
+            let lastAuthority = wkt.lastIndexOf("AUTHORITY") + 10,
+            endString = wkt.indexOf("]",lastAuthority)-1;
+            if(lastAuthority >0 && endString >0){
+                return `EPSG:${wkt.substring(lastAuthority, endString).split(",")[1].substr(1)}`;
+            }else{
+                return false;
+            }
+        }
+    }
+
 }
 
 ol.supermap.WebMap = WebMap;
