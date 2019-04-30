@@ -3,8 +3,6 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import ol from 'openlayers';
 import proj4 from "proj4";
-window.proj4 = proj4;
-window.Proj4js = proj4;
 import {
     FetchRequest,
     SecurityManager,
@@ -20,6 +18,8 @@ import {
 } from '../core/StyleUtils';
 import jsonsql from 'jsonsql';
 
+window.proj4 = proj4;
+window.Proj4js = proj4;
 ol.supermap = ol.supermap || {};
 //数据转换工具
 const transformTools = new ol.format.GeoJSON();
@@ -156,7 +156,9 @@ export class WebMap extends ol.Observable {
             that.baseProjection = mapInfo.projection;
 
             // 多坐标系支持
-            if(proj4) ol.proj.setProj4(proj4);
+            if(proj4){
+                ol.proj.setProj4(proj4);
+            } 
             if(that.addProjctionFromWKT(mapInfo.projection)){
                 mapInfo.projection = that.baseProjection = that.getEpsgInfoFromWKT(mapInfo.projection);
             }else{
