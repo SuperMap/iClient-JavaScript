@@ -21,6 +21,7 @@
     "@supermap/iclient-common": "9.1.2",
     "proj4": "2.3.15",
     "jsonsql": "0.2.5",
-    "xlsx": "0.12.13"
+    "xlsx": "0.12.13",
+    "canvg": "1.5.3"
   }
 }

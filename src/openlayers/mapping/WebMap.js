@@ -9,7 +9,8 @@ import {
     FetchRequest,
     SecurityManager,
     ColorsPickerUtil,
-    ArrayStatistic
+    ArrayStatistic,
+    Events
 } from '@supermap/iclient-common';
 import {
     Util
@@ -17,9 +18,6 @@ import {
 import {
     StyleUtils
 } from '../core/StyleUtils';
-import {
-    Events
-} from '../../common/commontypes/Events';
 import jsonsql from 'jsonsql';
 
 ol.supermap = ol.supermap || {};
