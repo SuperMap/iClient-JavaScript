@@ -280,14 +280,15 @@
         $.ajaxSetup({
             async: false
         });
-        flightIdens.map(function (ident, key) {
-            var svgUrl = "data:image/svg+xml;utf8,";
+        var count = flightIdens.length;
+        
             $.get('../data/plane.svg', function (svg) {
-                $(svg).children('svg').children('path').attr('fill', colors[key]);
-                svgUrl += $(svg).children('svg')[0].outerHTML;
-                var img = new Image();
-                img.src = svgUrl;
-                planes[ident] = {color: colors[key], img: img};
+                flightIdens.map(function (ident, key) {
+                    $(svg).children('svg').css("fill",colors[key]);
+                    var svgUrl= "data:image/svg+xml;utf8,"+$(svg).children('svg')[0].outerHTML;
+                    var img = new Image();
+                    img.src = svgUrl;
+                    planes[ident] = {color: colors[key], img: img};
             });
         });
         return planes;

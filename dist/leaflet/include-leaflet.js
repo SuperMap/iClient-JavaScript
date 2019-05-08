@@ -50,7 +50,7 @@
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'leaflet')) {
             inputCSS("https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css");
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet-src.js");
+            inputScript("https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
