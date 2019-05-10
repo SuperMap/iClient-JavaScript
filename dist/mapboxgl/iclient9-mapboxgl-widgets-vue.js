@@ -38156,12 +38156,12 @@ var light = __webpack_require__("26Y8");
 
 
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/WebMap.vue?vue&type=template&id=563e5e86&
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/WebMap.vue?vue&type=template&id=32c0a465&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl)?_c('Pan',{attrs:{"position":_vm.panPosition}}):_vm._e(),_vm._v(" "),(_vm.scaleControl)?_c('Scale',{attrs:{"position":_vm.scalePosition}}):_vm._e(),_vm._v(" "),(_vm.zoomControl)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomWithSlide,"position":_vm.zoomPosition}}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/WebMap.vue?vue&type=template&id=563e5e86&
+// CONCATENATED MODULE: ./src/view/components/WebMap.vue?vue&type=template&id=32c0a465&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/classCallCheck.js
 var classCallCheck = __webpack_require__("lwsE");
@@ -41928,6 +41928,10 @@ var Zoom_component = normalizeComponent(
 
       this.viewModel.on("addlayerssucceeded", function (e) {
         mapEvent.$emit("initMap-".concat(_this.target), e.map, _this.viewModel);
+
+        _this.$emit("load", {
+          map: e.map
+        });
       });
     }
   }
@@ -43680,12 +43684,12 @@ var Chart_component = normalizeComponent(
 )
 
 /* harmony default export */ var Chart = (Chart_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=template&id=29303d6e&
-var Mapvue_type_template_id_29303d6e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-map",attrs:{"id":_vm.target}},[_vm._t("default")],2)}
-var Mapvue_type_template_id_29303d6e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=template&id=28312dde&
+var Mapvue_type_template_id_28312dde_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-map",attrs:{"id":_vm.target}},[_vm._t("default")],2)}
+var Mapvue_type_template_id_28312dde_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=template&id=29303d6e&
+// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=template&id=28312dde&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=script&lang=js&
 //
@@ -43735,7 +43739,7 @@ var Mapvue_type_template_id_29303d6e_staticRenderFns = []
       map.on("load", function () {
         mapEvent.$emit("initMap-".concat(_this.target), map);
 
-        _this.$emit("map-loaded", {
+        _this.$emit("load", {
           map: map
         });
       });
@@ -43754,8 +43758,8 @@ var Mapvue_type_template_id_29303d6e_staticRenderFns = []
 
 var Map_component = normalizeComponent(
   components_Mapvue_type_script_lang_js_,
-  Mapvue_type_template_id_29303d6e_render,
-  Mapvue_type_template_id_29303d6e_staticRenderFns,
+  Mapvue_type_template_id_28312dde_render,
+  Mapvue_type_template_id_28312dde_staticRenderFns,
   false,
   null,
   null,
