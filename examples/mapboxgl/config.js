@@ -1077,99 +1077,134 @@ var exampleConfig = {
                 name_en: "for Vue",
                 content: [
                     {
-                        name: "地图微件(Vue)",
-                        name_en: "map_widget_vue",
+                        name: "地图",
+                        name_en: "Map",
                         version: "9.1.2",
                         thumbnail: "widgets_map_vue.png",
                         fileName: "widgets_map_vue"
                     } ,{
-                        name: "webmap微件(Vue)",
-                        name_en: "webmap_widget_vue",
+                        name: "Web Map",
+                        name_en: "Web Map",
                         version: "9.1.2",
                         thumbnail: "widgets_webmap_vue.png",
                         fileName: "widgets_webmap_vue"
                     } ,
                     {
-                        name: "图表微件(Vue)",
-                        name_en: "chart_widget_vue",
+                        name: "图表",
+                        name_en: "Chart",
                         version: "9.1.2",
                         thumbnail: "widgets_chart_vue.png",
                         fileName: "widgets_chart_vue"
                     } ,
                     {
-                        name: "图层列表微件(Vue)",
-                        name_en: "layerList_widget_vue",
+                        name: "图层",
+                        name_en: "LayerList",
                         version: "9.1.2",
                         thumbnail: "widgets_layerList_vue.png",
                         fileName: "widgets_layerList_vue"
                     } ,{
-                        name: "鹰眼微件(Vue)",
-                        name_en: "minimap_widget_vue",
+                        name: "鹰眼",
+                        name_en: "Minimap",
                         version: "9.1.2",
                         thumbnail: "widgets_minimap_vue.png",
                         fileName: "widgets_minimap_vue"
                     } ,{
-                        name: "平移微件(Vue)",
-                        name_en: "pan_widget_vue",
+                        name: "平移",
+                        name_en: "Pan",
                         version: "9.1.2",
                         thumbnail: "widgets_pan_vue.png",
                         fileName: "widgets_pan_vue"
                     } ,{
-                        name: "比例尺微件(Vue)",
-                        name_en: "scale_widget_vue",
+                        name: "比例尺",
+                        name_en: "Scale",
                         version: "9.1.2",
                         thumbnail: "widgets_scale_vue.png",
                         fileName: "widgets_scale_vue"
                     } ,{
-                        name: "缩放微件(Vue)",
-                        name_en: "zoom_widget_vue",
+                        name: "缩放",
+                        name_en: "Zoom",
                         version: "9.1.2",
                         thumbnail: "widgets_zoom_vue.png",
                         fileName: "widgets_zoom_vue"
                     } ,{
-                        name: "图例微件(Vue)",
-                        name_en: "legend_widget_vue",
+                        name: "图例",
+                        name_en: "Legend",
                         version: "9.1.2",
                         thumbnail: "widgets_legend_vue.png",
                         fileName: "widgets_legend_vue"
                     } ,{
-                        name: "基础微件(Vue)",
-                        name_en: "basic_widget_vue",
+                        name: "基础微件",
+                        name_en: "Basic Widget",
                         version: "9.1.2",
                         thumbnail: "widgets_basic_vue.png",
                         fileName: "widgets_basic_vue"
                     } ,{
-                        name: "量算微件(Vue)",
-                        name_en: "measure_widget_vue",
+                        name: "量算",
+                        name_en: "Measure",
                         version: "9.1.2",
                         thumbnail: "widgets_measure_vue.png",
                         fileName: "widgets_measure_vue"
                     } ,{
-                        name: "查询微件(Vue)",
-                        name_en: "query_widget_vue",
+                        name: "查询",
+                        name_en: "Query",
                         version: "9.1.2",
                         thumbnail: "widgets_query_vue.png",
                         fileName: "widgets_query_vue"
                     } ,{
-                        name: "搜索微件(Vue)",
-                        name_en: "search_widget_vue",
+                        name: "搜索",
+                        name_en: "Search",
                         version: "9.1.2",
                         thumbnail: "widgets_search_vue.png",
                         fileName: "widgets_search_vue"
                     } ,{
-                        name: "主题切换(Vue)",
-                        name_en: "theme_widget_vue",
+                        name: "主题切换",
+                        name_en: "Theme switching",
                         version: "9.1.2",
                         thumbnail: "widgets_theme_vue.png",
                         fileName: "widgets_theme_vue"
                     } ,{
                         name: "土地利用示例",
-                        name_en: "demo_widget_vue",
+                        name_en: "Land use example",
                         version: "9.1.2",
                         thumbnail: "widgets_demo_vue.png",
                         fileName: "widgets_demo_vue"
+                    } ,{
+                      name: "栅格图层",
+                      name_en: "Raster layer",
+                      version: "9.1.2",
+                      thumbnail: "widgets_map_vue.png",
+                      fileName: "widgets_raster_vue"
+                    } ,{
+                      name: "矢量瓦片图层",
+                      name_en: "Vector tile layer",
+                      version: "9.1.2",
+                      thumbnail: "widgets_vector_tile_vue.png",
+                      fileName: "widgets_vector_tile_vue"
+                    } ,{
+                      name: "点聚合图层",
+                      name_en: "Cluster layer",
+                      version: "9.1.2",
+                      thumbnail: "widgets_cluster_vue.png",
+                      fileName: "widgets_cluster_vue"
+                    } ,{
+                      name: "MapV 图层",
+                      name_en: "MapV layer",
+                      version: "9.1.2",
+                      thumbnail: "mapvPolylineTime.gif",
+                      fileName: "widgets_mapv_vue"
+                    } ,{
+                      name: "Echarts 图层",
+                      name_en: "Echarts layer",
+                      version: "9.1.2",
+                      thumbnail: "echarts_ChangchunPublicTransportNetwork.gif",
+                      fileName: "widgets_echarts_vue"
+                    } ,{
+                      name: "DeckGL 图层",
+                      name_en: "DeckGL layer",
+                      version: "9.1.2",
+                      thumbnail: "widgets_deckgl_vue.png",
+                      fileName: "widgets_deckgl_vue"
                     } 
-                    
                 ]
             }
         }

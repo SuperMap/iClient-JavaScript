@@ -538,6 +538,12 @@ window.examplesResources = {
         "title_widgetsSearch_Vue": 'Search Widget(Vue）',
         "title_widgetsTheme_Vue": 'Theme Widget',
         "title_widgetsDemo_Vue": 'Landuse demo',
+        "title_widgetsCluster_Vue": 'Cluster Layer Widget(Vue)',
+        "title_widgetsEcharts_Vue": 'Echarts Layer Widget(Vue)',
+        "title_widgetsRaster_Vue": 'Raster Layer Widget(Vue)',
+        "title_widgetsMapV_Vue": 'MapV Layer Widget(Vue)',
+        "title_widgetsDeckGL_Vue": 'DeckGL Layer Widget(Vue)',
+        "title_widgetsVectorTile_Vue": 'Vector Tile Layer Widget(Vue)',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",
@@ -1198,7 +1204,8 @@ window.examplesResources = {
         'text_spatialAnalysisLayerName':"China's historical earthquake data above level 5",
         'text_symbolEqualSize':"Equal large",
         'text_symbolDistribution':"Uniform distribution",
-
+        'text_myRasterLayer':"My Raster Layer",
+        
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",
         "btn_mathExpression": "Start calculation",

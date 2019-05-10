@@ -1,20 +1,13 @@
-/*!	
- * 	
- *          iclient9-mapboxgl-widgets-vue.(http://iclient.supermap.io)	
- *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd	
- *          license: Apache-2.0	
- *         	
- */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("./libs/iclient-mapboxgl/iclient9-mapboxgl.min"), require("vue"), require("./libs/mapboxgl/mapbox-gl-enhance.js"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));
+		module.exports = factory(require("vue"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));
 	else if(typeof define === 'function' && define.amd)
-		define(["./libs/iclient-mapboxgl/iclient9-mapboxgl.min", "vue", "./libs/mapboxgl/mapbox-gl-enhance.js", "echarts", "@mapbox/mapbox-gl-draw", "echarts-liquidfill"], factory);
+		define(["vue", "echarts", "@mapbox/mapbox-gl-draw", "echarts-liquidfill"], factory);
 	else if(typeof exports === 'object')
-		exports["Widgets"] = factory(require("./libs/iclient-mapboxgl/iclient9-mapboxgl.min"), require("vue"), require("./libs/mapboxgl/mapbox-gl-enhance.js"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));
+		exports["Widgets"] = factory(require("vue"), require("echarts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Widgets"] = factory(root["SuperMap"], root["Vue"], root["mapboxgl"], root["echarts"], root["MapboxDraw"], root["echarts-liquidfill"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE_MkUS__, __WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_j5W7__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Widgets"] = factory(root["Vue"], root["echarts"], root["MapboxDraw"], root["echarts-liquidfill"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1373,7 +1366,7 @@ exports.default = {
 /***/ "0XuU":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__("J78i")
+module.exports = __webpack_require__("43KI").Transform
 
 
 /***/ }),
@@ -1883,6 +1876,747 @@ module.exports = __webpack_require__("gSIQ");
 
 /***/ }),
 
+/***/ "1+Cv":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @module helpers
+ */
+/**
+ * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
+ *
+ * @memberof helpers
+ * @type {number}
+ */
+exports.earthRadius = 6371008.8;
+/**
+ * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.factors = {
+    centimeters: exports.earthRadius * 100,
+    centimetres: exports.earthRadius * 100,
+    degrees: exports.earthRadius / 111325,
+    feet: exports.earthRadius * 3.28084,
+    inches: exports.earthRadius * 39.370,
+    kilometers: exports.earthRadius / 1000,
+    kilometres: exports.earthRadius / 1000,
+    meters: exports.earthRadius,
+    metres: exports.earthRadius,
+    miles: exports.earthRadius / 1609.344,
+    millimeters: exports.earthRadius * 1000,
+    millimetres: exports.earthRadius * 1000,
+    nauticalmiles: exports.earthRadius / 1852,
+    radians: 1,
+    yards: exports.earthRadius / 1.0936,
+};
+/**
+ * Units of measurement factors based on 1 meter.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.unitsFactors = {
+    centimeters: 100,
+    centimetres: 100,
+    degrees: 1 / 111325,
+    feet: 3.28084,
+    inches: 39.370,
+    kilometers: 1 / 1000,
+    kilometres: 1 / 1000,
+    meters: 1,
+    metres: 1,
+    miles: 1 / 1609.344,
+    millimeters: 1000,
+    millimetres: 1000,
+    nauticalmiles: 1 / 1852,
+    radians: 1 / exports.earthRadius,
+    yards: 1 / 1.0936,
+};
+/**
+ * Area of measurement factors based on 1 square meter.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.areaFactors = {
+    acres: 0.000247105,
+    centimeters: 10000,
+    centimetres: 10000,
+    feet: 10.763910417,
+    inches: 1550.003100006,
+    kilometers: 0.000001,
+    kilometres: 0.000001,
+    meters: 1,
+    metres: 1,
+    miles: 3.86e-7,
+    millimeters: 1000000,
+    millimetres: 1000000,
+    yards: 1.195990046,
+};
+/**
+ * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
+ *
+ * @name feature
+ * @param {Geometry} geometry input geometry
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature} a GeoJSON Feature
+ * @example
+ * var geometry = {
+ *   "type": "Point",
+ *   "coordinates": [110, 50]
+ * };
+ *
+ * var feature = turf.feature(geometry);
+ *
+ * //=feature
+ */
+function feature(geom, properties, options) {
+    if (options === void 0) { options = {}; }
+    var feat = { type: "Feature" };
+    if (options.id === 0 || options.id) {
+        feat.id = options.id;
+    }
+    if (options.bbox) {
+        feat.bbox = options.bbox;
+    }
+    feat.properties = properties || {};
+    feat.geometry = geom;
+    return feat;
+}
+exports.feature = feature;
+/**
+ * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
+ * For GeometryCollection type use `helpers.geometryCollection`
+ *
+ * @name geometry
+ * @param {string} type Geometry Type
+ * @param {Array<any>} coordinates Coordinates
+ * @param {Object} [options={}] Optional Parameters
+ * @returns {Geometry} a GeoJSON Geometry
+ * @example
+ * var type = "Point";
+ * var coordinates = [110, 50];
+ * var geometry = turf.geometry(type, coordinates);
+ * // => geometry
+ */
+function geometry(type, coordinates, options) {
+    if (options === void 0) { options = {}; }
+    switch (type) {
+        case "Point": return point(coordinates).geometry;
+        case "LineString": return lineString(coordinates).geometry;
+        case "Polygon": return polygon(coordinates).geometry;
+        case "MultiPoint": return multiPoint(coordinates).geometry;
+        case "MultiLineString": return multiLineString(coordinates).geometry;
+        case "MultiPolygon": return multiPolygon(coordinates).geometry;
+        default: throw new Error(type + " is invalid");
+    }
+}
+exports.geometry = geometry;
+/**
+ * Creates a {@link Point} {@link Feature} from a Position.
+ *
+ * @name point
+ * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<Point>} a Point feature
+ * @example
+ * var point = turf.point([-75.343, 39.984]);
+ *
+ * //=point
+ */
+function point(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "Point",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.point = point;
+/**
+ * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
+ *
+ * @name points
+ * @param {Array<Array<number>>} coordinates an array of Points
+ * @param {Object} [properties={}] Translate these properties to each Feature
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
+ * associated with the FeatureCollection
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<Point>} Point Feature
+ * @example
+ * var points = turf.points([
+ *   [-75, 39],
+ *   [-80, 45],
+ *   [-78, 50]
+ * ]);
+ *
+ * //=points
+ */
+function points(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return point(coords, properties);
+    }), options);
+}
+exports.points = points;
+/**
+ * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
+ *
+ * @name polygon
+ * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<Polygon>} Polygon Feature
+ * @example
+ * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
+ *
+ * //=polygon
+ */
+function polygon(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
+        var ring = coordinates_1[_i];
+        if (ring.length < 4) {
+            throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
+        }
+        for (var j = 0; j < ring[ring.length - 1].length; j++) {
+            // Check if first point of Polygon contains two numbers
+            if (ring[ring.length - 1][j] !== ring[0][j]) {
+                throw new Error("First and last Position are not equivalent.");
+            }
+        }
+    }
+    var geom = {
+        type: "Polygon",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.polygon = polygon;
+/**
+ * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
+ *
+ * @name polygons
+ * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
+ * @example
+ * var polygons = turf.polygons([
+ *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
+ *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
+ * ]);
+ *
+ * //=polygons
+ */
+function polygons(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return polygon(coords, properties);
+    }), options);
+}
+exports.polygons = polygons;
+/**
+ * Creates a {@link LineString} {@link Feature} from an Array of Positions.
+ *
+ * @name lineString
+ * @param {Array<Array<number>>} coordinates an array of Positions
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<LineString>} LineString Feature
+ * @example
+ * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
+ * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
+ *
+ * //=linestring1
+ * //=linestring2
+ */
+function lineString(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    if (coordinates.length < 2) {
+        throw new Error("coordinates must be an array of two or more positions");
+    }
+    var geom = {
+        type: "LineString",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.lineString = lineString;
+/**
+ * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
+ *
+ * @name lineStrings
+ * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
+ * associated with the FeatureCollection
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<LineString>} LineString FeatureCollection
+ * @example
+ * var linestrings = turf.lineStrings([
+ *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
+ *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
+ * ]);
+ *
+ * //=linestrings
+ */
+function lineStrings(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return lineString(coords, properties);
+    }), options);
+}
+exports.lineStrings = lineStrings;
+/**
+ * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
+ *
+ * @name featureCollection
+ * @param {Feature[]} features input features
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {FeatureCollection} FeatureCollection of Features
+ * @example
+ * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
+ * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
+ * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
+ *
+ * var collection = turf.featureCollection([
+ *   locationA,
+ *   locationB,
+ *   locationC
+ * ]);
+ *
+ * //=collection
+ */
+function featureCollection(features, options) {
+    if (options === void 0) { options = {}; }
+    var fc = { type: "FeatureCollection" };
+    if (options.id) {
+        fc.id = options.id;
+    }
+    if (options.bbox) {
+        fc.bbox = options.bbox;
+    }
+    fc.features = features;
+    return fc;
+}
+exports.featureCollection = featureCollection;
+/**
+ * Creates a {@link Feature<MultiLineString>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiLineString
+ * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiLineString>} a MultiLineString feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
+ *
+ * //=multiLine
+ */
+function multiLineString(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiLineString",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiLineString = multiLineString;
+/**
+ * Creates a {@link Feature<MultiPoint>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiPoint
+ * @param {Array<Array<number>>} coordinates an array of Positions
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiPoint>} a MultiPoint feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiPt = turf.multiPoint([[0,0],[10,10]]);
+ *
+ * //=multiPt
+ */
+function multiPoint(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiPoint",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiPoint = multiPoint;
+/**
+ * Creates a {@link Feature<MultiPolygon>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiPolygon
+ * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiPolygon>} a multipolygon feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
+ *
+ * //=multiPoly
+ *
+ */
+function multiPolygon(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiPolygon",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiPolygon = multiPolygon;
+/**
+ * Creates a {@link Feature<GeometryCollection>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name geometryCollection
+ * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
+ * @example
+ * var pt = turf.geometry("Point", [100, 0]);
+ * var line = turf.geometry("LineString", [[101, 0], [102, 1]]);
+ * var collection = turf.geometryCollection([pt, line]);
+ *
+ * // => collection
+ */
+function geometryCollection(geometries, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "GeometryCollection",
+        geometries: geometries,
+    };
+    return feature(geom, properties, options);
+}
+exports.geometryCollection = geometryCollection;
+/**
+ * Round number to precision
+ *
+ * @param {number} num Number
+ * @param {number} [precision=0] Precision
+ * @returns {number} rounded number
+ * @example
+ * turf.round(120.4321)
+ * //=120
+ *
+ * turf.round(120.4321, 2)
+ * //=120.43
+ */
+function round(num, precision) {
+    if (precision === void 0) { precision = 0; }
+    if (precision && !(precision >= 0)) {
+        throw new Error("precision must be a positive number");
+    }
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(num * multiplier) / multiplier;
+}
+exports.round = round;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @name radiansToLength
+ * @param {number} radians in radians across the sphere
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} distance
+ */
+function radiansToLength(radians, units) {
+    if (units === void 0) { units = "kilometers"; }
+    var factor = exports.factors[units];
+    if (!factor) {
+        throw new Error(units + " units is invalid");
+    }
+    return radians * factor;
+}
+exports.radiansToLength = radiansToLength;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @name lengthToRadians
+ * @param {number} distance in real units
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} radians
+ */
+function lengthToRadians(distance, units) {
+    if (units === void 0) { units = "kilometers"; }
+    var factor = exports.factors[units];
+    if (!factor) {
+        throw new Error(units + " units is invalid");
+    }
+    return distance / factor;
+}
+exports.lengthToRadians = lengthToRadians;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
+ *
+ * @name lengthToDegrees
+ * @param {number} distance in real units
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} degrees
+ */
+function lengthToDegrees(distance, units) {
+    return radiansToDegrees(lengthToRadians(distance, units));
+}
+exports.lengthToDegrees = lengthToDegrees;
+/**
+ * Converts any bearing angle from the north line direction (positive clockwise)
+ * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
+ *
+ * @name bearingToAzimuth
+ * @param {number} bearing angle, between -180 and +180 degrees
+ * @returns {number} angle between 0 and 360 degrees
+ */
+function bearingToAzimuth(bearing) {
+    var angle = bearing % 360;
+    if (angle < 0) {
+        angle += 360;
+    }
+    return angle;
+}
+exports.bearingToAzimuth = bearingToAzimuth;
+/**
+ * Converts an angle in radians to degrees
+ *
+ * @name radiansToDegrees
+ * @param {number} radians angle in radians
+ * @returns {number} degrees between 0 and 360 degrees
+ */
+function radiansToDegrees(radians) {
+    var degrees = radians % (2 * Math.PI);
+    return degrees * 180 / Math.PI;
+}
+exports.radiansToDegrees = radiansToDegrees;
+/**
+ * Converts an angle in degrees to radians
+ *
+ * @name degreesToRadians
+ * @param {number} degrees angle between 0 and 360 degrees
+ * @returns {number} angle in radians
+ */
+function degreesToRadians(degrees) {
+    var radians = degrees % 360;
+    return radians * Math.PI / 180;
+}
+exports.degreesToRadians = degreesToRadians;
+/**
+ * Converts a length to the requested unit.
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @param {number} length to be converted
+ * @param {Units} [originalUnit="kilometers"] of the length
+ * @param {Units} [finalUnit="kilometers"] returned unit
+ * @returns {number} the converted length
+ */
+function convertLength(length, originalUnit, finalUnit) {
+    if (originalUnit === void 0) { originalUnit = "kilometers"; }
+    if (finalUnit === void 0) { finalUnit = "kilometers"; }
+    if (!(length >= 0)) {
+        throw new Error("length must be a positive number");
+    }
+    return radiansToLength(lengthToRadians(length, originalUnit), finalUnit);
+}
+exports.convertLength = convertLength;
+/**
+ * Converts a area to the requested unit.
+ * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
+ * @param {number} area to be converted
+ * @param {Units} [originalUnit="meters"] of the distance
+ * @param {Units} [finalUnit="kilometers"] returned unit
+ * @returns {number} the converted distance
+ */
+function convertArea(area, originalUnit, finalUnit) {
+    if (originalUnit === void 0) { originalUnit = "meters"; }
+    if (finalUnit === void 0) { finalUnit = "kilometers"; }
+    if (!(area >= 0)) {
+        throw new Error("area must be a positive number");
+    }
+    var startFactor = exports.areaFactors[originalUnit];
+    if (!startFactor) {
+        throw new Error("invalid original units");
+    }
+    var finalFactor = exports.areaFactors[finalUnit];
+    if (!finalFactor) {
+        throw new Error("invalid final units");
+    }
+    return (area / startFactor) * finalFactor;
+}
+exports.convertArea = convertArea;
+/**
+ * isNumber
+ *
+ * @param {*} num Number to validate
+ * @returns {boolean} true/false
+ * @example
+ * turf.isNumber(123)
+ * //=true
+ * turf.isNumber('foo')
+ * //=false
+ */
+function isNumber(num) {
+    return !isNaN(num) && num !== null && !Array.isArray(num) && !/^\s*$/.test(num);
+}
+exports.isNumber = isNumber;
+/**
+ * isObject
+ *
+ * @param {*} input variable to validate
+ * @returns {boolean} true/false
+ * @example
+ * turf.isObject({elevation: 10})
+ * //=true
+ * turf.isObject('foo')
+ * //=false
+ */
+function isObject(input) {
+    return (!!input) && (input.constructor === Object);
+}
+exports.isObject = isObject;
+/**
+ * Validate BBox
+ *
+ * @private
+ * @param {Array<number>} bbox BBox to validate
+ * @returns {void}
+ * @throws Error if BBox is not valid
+ * @example
+ * validateBBox([-180, -40, 110, 50])
+ * //=OK
+ * validateBBox([-180, -40])
+ * //=Error
+ * validateBBox('Foo')
+ * //=Error
+ * validateBBox(5)
+ * //=Error
+ * validateBBox(null)
+ * //=Error
+ * validateBBox(undefined)
+ * //=Error
+ */
+function validateBBox(bbox) {
+    if (!bbox) {
+        throw new Error("bbox is required");
+    }
+    if (!Array.isArray(bbox)) {
+        throw new Error("bbox must be an Array");
+    }
+    if (bbox.length !== 4 && bbox.length !== 6) {
+        throw new Error("bbox must be an Array of 4 or 6 numbers");
+    }
+    bbox.forEach(function (num) {
+        if (!isNumber(num)) {
+            throw new Error("bbox must only contain numbers");
+        }
+    });
+}
+exports.validateBBox = validateBBox;
+/**
+ * Validate Id
+ *
+ * @private
+ * @param {string|number} id Id to validate
+ * @returns {void}
+ * @throws Error if Id is not valid
+ * @example
+ * validateId([-180, -40, 110, 50])
+ * //=Error
+ * validateId([-180, -40])
+ * //=Error
+ * validateId('Foo')
+ * //=OK
+ * validateId(5)
+ * //=OK
+ * validateId(null)
+ * //=Error
+ * validateId(undefined)
+ * //=Error
+ */
+function validateId(id) {
+    if (!id) {
+        throw new Error("id is required");
+    }
+    if (["string", "number"].indexOf(typeof id) === -1) {
+        throw new Error("id must be a number or a string");
+    }
+}
+exports.validateId = validateId;
+// Deprecated methods
+function radians2degrees() {
+    throw new Error("method has been renamed to `radiansToDegrees`");
+}
+exports.radians2degrees = radians2degrees;
+function degrees2radians() {
+    throw new Error("method has been renamed to `degreesToRadians`");
+}
+exports.degrees2radians = degrees2radians;
+function distanceToDegrees() {
+    throw new Error("method has been renamed to `lengthToDegrees`");
+}
+exports.distanceToDegrees = distanceToDegrees;
+function distanceToRadians() {
+    throw new Error("method has been renamed to `lengthToRadians`");
+}
+exports.distanceToRadians = distanceToRadians;
+function radiansToDistance() {
+    throw new Error("method has been renamed to `radiansToLength`");
+}
+exports.radiansToDistance = radiansToDistance;
+function bearingToAngle() {
+    throw new Error("method has been renamed to `bearingToAzimuth`");
+}
+exports.bearingToAngle = bearingToAngle;
+function convertDistance() {
+    throw new Error("method has been renamed to `convertLength`");
+}
+exports.convertDistance = convertDistance;
+
+
+/***/ }),
+
 /***/ "1IWx":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1913,9 +2647,9 @@ var EE = __webpack_require__("+qE3").EventEmitter;
 var inherits = __webpack_require__("P7XM");
 
 inherits(Stream, EE);
-Stream.Readable = __webpack_require__("ac9z");
-Stream.Writable = __webpack_require__("TuX4");
-Stream.Duplex = __webpack_require__("P+34");
+Stream.Readable = __webpack_require__("43KI");
+Stream.Writable = __webpack_require__("LGOv");
+Stream.Duplex = __webpack_require__("CWBI");
 Stream.Transform = __webpack_require__("0XuU");
 Stream.PassThrough = __webpack_require__("wq4j");
 
@@ -2505,10 +3239,758 @@ if (typeof(window) != 'undefined') window.Query = Query;
 
 /***/ }),
 
+/***/ 2:
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+
 /***/ "26Y8":
 /***/ (function(module) {
 
 module.exports = {"textColor":"#333","background":"rgba(255, 255, 255,0.6)","colorGroup":["#3fb1e3","#6be6c1","#626c91","#a0a7e6","#c4ebad","#96dee8"]};
+
+/***/ }),
+
+/***/ "2hnc":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @module helpers
+ */
+/**
+ * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
+ *
+ * @memberof helpers
+ * @type {number}
+ */
+exports.earthRadius = 6371008.8;
+/**
+ * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.factors = {
+    centimeters: exports.earthRadius * 100,
+    centimetres: exports.earthRadius * 100,
+    degrees: exports.earthRadius / 111325,
+    feet: exports.earthRadius * 3.28084,
+    inches: exports.earthRadius * 39.370,
+    kilometers: exports.earthRadius / 1000,
+    kilometres: exports.earthRadius / 1000,
+    meters: exports.earthRadius,
+    metres: exports.earthRadius,
+    miles: exports.earthRadius / 1609.344,
+    millimeters: exports.earthRadius * 1000,
+    millimetres: exports.earthRadius * 1000,
+    nauticalmiles: exports.earthRadius / 1852,
+    radians: 1,
+    yards: exports.earthRadius / 1.0936,
+};
+/**
+ * Units of measurement factors based on 1 meter.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.unitsFactors = {
+    centimeters: 100,
+    centimetres: 100,
+    degrees: 1 / 111325,
+    feet: 3.28084,
+    inches: 39.370,
+    kilometers: 1 / 1000,
+    kilometres: 1 / 1000,
+    meters: 1,
+    metres: 1,
+    miles: 1 / 1609.344,
+    millimeters: 1000,
+    millimetres: 1000,
+    nauticalmiles: 1 / 1852,
+    radians: 1 / exports.earthRadius,
+    yards: 1 / 1.0936,
+};
+/**
+ * Area of measurement factors based on 1 square meter.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.areaFactors = {
+    acres: 0.000247105,
+    centimeters: 10000,
+    centimetres: 10000,
+    feet: 10.763910417,
+    inches: 1550.003100006,
+    kilometers: 0.000001,
+    kilometres: 0.000001,
+    meters: 1,
+    metres: 1,
+    miles: 3.86e-7,
+    millimeters: 1000000,
+    millimetres: 1000000,
+    yards: 1.195990046,
+};
+/**
+ * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
+ *
+ * @name feature
+ * @param {Geometry} geometry input geometry
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature} a GeoJSON Feature
+ * @example
+ * var geometry = {
+ *   "type": "Point",
+ *   "coordinates": [110, 50]
+ * };
+ *
+ * var feature = turf.feature(geometry);
+ *
+ * //=feature
+ */
+function feature(geom, properties, options) {
+    if (options === void 0) { options = {}; }
+    var feat = { type: "Feature" };
+    if (options.id === 0 || options.id) {
+        feat.id = options.id;
+    }
+    if (options.bbox) {
+        feat.bbox = options.bbox;
+    }
+    feat.properties = properties || {};
+    feat.geometry = geom;
+    return feat;
+}
+exports.feature = feature;
+/**
+ * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
+ * For GeometryCollection type use `helpers.geometryCollection`
+ *
+ * @name geometry
+ * @param {string} type Geometry Type
+ * @param {Array<any>} coordinates Coordinates
+ * @param {Object} [options={}] Optional Parameters
+ * @returns {Geometry} a GeoJSON Geometry
+ * @example
+ * var type = "Point";
+ * var coordinates = [110, 50];
+ * var geometry = turf.geometry(type, coordinates);
+ * // => geometry
+ */
+function geometry(type, coordinates, options) {
+    if (options === void 0) { options = {}; }
+    switch (type) {
+        case "Point": return point(coordinates).geometry;
+        case "LineString": return lineString(coordinates).geometry;
+        case "Polygon": return polygon(coordinates).geometry;
+        case "MultiPoint": return multiPoint(coordinates).geometry;
+        case "MultiLineString": return multiLineString(coordinates).geometry;
+        case "MultiPolygon": return multiPolygon(coordinates).geometry;
+        default: throw new Error(type + " is invalid");
+    }
+}
+exports.geometry = geometry;
+/**
+ * Creates a {@link Point} {@link Feature} from a Position.
+ *
+ * @name point
+ * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<Point>} a Point feature
+ * @example
+ * var point = turf.point([-75.343, 39.984]);
+ *
+ * //=point
+ */
+function point(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "Point",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.point = point;
+/**
+ * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
+ *
+ * @name points
+ * @param {Array<Array<number>>} coordinates an array of Points
+ * @param {Object} [properties={}] Translate these properties to each Feature
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
+ * associated with the FeatureCollection
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<Point>} Point Feature
+ * @example
+ * var points = turf.points([
+ *   [-75, 39],
+ *   [-80, 45],
+ *   [-78, 50]
+ * ]);
+ *
+ * //=points
+ */
+function points(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return point(coords, properties);
+    }), options);
+}
+exports.points = points;
+/**
+ * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
+ *
+ * @name polygon
+ * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<Polygon>} Polygon Feature
+ * @example
+ * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
+ *
+ * //=polygon
+ */
+function polygon(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
+        var ring = coordinates_1[_i];
+        if (ring.length < 4) {
+            throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
+        }
+        for (var j = 0; j < ring[ring.length - 1].length; j++) {
+            // Check if first point of Polygon contains two numbers
+            if (ring[ring.length - 1][j] !== ring[0][j]) {
+                throw new Error("First and last Position are not equivalent.");
+            }
+        }
+    }
+    var geom = {
+        type: "Polygon",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.polygon = polygon;
+/**
+ * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
+ *
+ * @name polygons
+ * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
+ * @example
+ * var polygons = turf.polygons([
+ *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
+ *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
+ * ]);
+ *
+ * //=polygons
+ */
+function polygons(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return polygon(coords, properties);
+    }), options);
+}
+exports.polygons = polygons;
+/**
+ * Creates a {@link LineString} {@link Feature} from an Array of Positions.
+ *
+ * @name lineString
+ * @param {Array<Array<number>>} coordinates an array of Positions
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<LineString>} LineString Feature
+ * @example
+ * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
+ * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
+ *
+ * //=linestring1
+ * //=linestring2
+ */
+function lineString(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    if (coordinates.length < 2) {
+        throw new Error("coordinates must be an array of two or more positions");
+    }
+    var geom = {
+        type: "LineString",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.lineString = lineString;
+/**
+ * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
+ *
+ * @name lineStrings
+ * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
+ * associated with the FeatureCollection
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<LineString>} LineString FeatureCollection
+ * @example
+ * var linestrings = turf.lineStrings([
+ *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
+ *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
+ * ]);
+ *
+ * //=linestrings
+ */
+function lineStrings(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return lineString(coords, properties);
+    }), options);
+}
+exports.lineStrings = lineStrings;
+/**
+ * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
+ *
+ * @name featureCollection
+ * @param {Feature[]} features input features
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {FeatureCollection} FeatureCollection of Features
+ * @example
+ * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
+ * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
+ * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
+ *
+ * var collection = turf.featureCollection([
+ *   locationA,
+ *   locationB,
+ *   locationC
+ * ]);
+ *
+ * //=collection
+ */
+function featureCollection(features, options) {
+    if (options === void 0) { options = {}; }
+    var fc = { type: "FeatureCollection" };
+    if (options.id) {
+        fc.id = options.id;
+    }
+    if (options.bbox) {
+        fc.bbox = options.bbox;
+    }
+    fc.features = features;
+    return fc;
+}
+exports.featureCollection = featureCollection;
+/**
+ * Creates a {@link Feature<MultiLineString>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiLineString
+ * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiLineString>} a MultiLineString feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
+ *
+ * //=multiLine
+ */
+function multiLineString(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiLineString",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiLineString = multiLineString;
+/**
+ * Creates a {@link Feature<MultiPoint>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiPoint
+ * @param {Array<Array<number>>} coordinates an array of Positions
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiPoint>} a MultiPoint feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiPt = turf.multiPoint([[0,0],[10,10]]);
+ *
+ * //=multiPt
+ */
+function multiPoint(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiPoint",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiPoint = multiPoint;
+/**
+ * Creates a {@link Feature<MultiPolygon>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiPolygon
+ * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiPolygon>} a multipolygon feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
+ *
+ * //=multiPoly
+ *
+ */
+function multiPolygon(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiPolygon",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiPolygon = multiPolygon;
+/**
+ * Creates a {@link Feature<GeometryCollection>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name geometryCollection
+ * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
+ * @example
+ * var pt = turf.geometry("Point", [100, 0]);
+ * var line = turf.geometry("LineString", [[101, 0], [102, 1]]);
+ * var collection = turf.geometryCollection([pt, line]);
+ *
+ * // => collection
+ */
+function geometryCollection(geometries, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "GeometryCollection",
+        geometries: geometries,
+    };
+    return feature(geom, properties, options);
+}
+exports.geometryCollection = geometryCollection;
+/**
+ * Round number to precision
+ *
+ * @param {number} num Number
+ * @param {number} [precision=0] Precision
+ * @returns {number} rounded number
+ * @example
+ * turf.round(120.4321)
+ * //=120
+ *
+ * turf.round(120.4321, 2)
+ * //=120.43
+ */
+function round(num, precision) {
+    if (precision === void 0) { precision = 0; }
+    if (precision && !(precision >= 0)) {
+        throw new Error("precision must be a positive number");
+    }
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(num * multiplier) / multiplier;
+}
+exports.round = round;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @name radiansToLength
+ * @param {number} radians in radians across the sphere
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} distance
+ */
+function radiansToLength(radians, units) {
+    if (units === void 0) { units = "kilometers"; }
+    var factor = exports.factors[units];
+    if (!factor) {
+        throw new Error(units + " units is invalid");
+    }
+    return radians * factor;
+}
+exports.radiansToLength = radiansToLength;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @name lengthToRadians
+ * @param {number} distance in real units
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} radians
+ */
+function lengthToRadians(distance, units) {
+    if (units === void 0) { units = "kilometers"; }
+    var factor = exports.factors[units];
+    if (!factor) {
+        throw new Error(units + " units is invalid");
+    }
+    return distance / factor;
+}
+exports.lengthToRadians = lengthToRadians;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
+ *
+ * @name lengthToDegrees
+ * @param {number} distance in real units
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} degrees
+ */
+function lengthToDegrees(distance, units) {
+    return radiansToDegrees(lengthToRadians(distance, units));
+}
+exports.lengthToDegrees = lengthToDegrees;
+/**
+ * Converts any bearing angle from the north line direction (positive clockwise)
+ * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
+ *
+ * @name bearingToAzimuth
+ * @param {number} bearing angle, between -180 and +180 degrees
+ * @returns {number} angle between 0 and 360 degrees
+ */
+function bearingToAzimuth(bearing) {
+    var angle = bearing % 360;
+    if (angle < 0) {
+        angle += 360;
+    }
+    return angle;
+}
+exports.bearingToAzimuth = bearingToAzimuth;
+/**
+ * Converts an angle in radians to degrees
+ *
+ * @name radiansToDegrees
+ * @param {number} radians angle in radians
+ * @returns {number} degrees between 0 and 360 degrees
+ */
+function radiansToDegrees(radians) {
+    var degrees = radians % (2 * Math.PI);
+    return degrees * 180 / Math.PI;
+}
+exports.radiansToDegrees = radiansToDegrees;
+/**
+ * Converts an angle in degrees to radians
+ *
+ * @name degreesToRadians
+ * @param {number} degrees angle between 0 and 360 degrees
+ * @returns {number} angle in radians
+ */
+function degreesToRadians(degrees) {
+    var radians = degrees % 360;
+    return radians * Math.PI / 180;
+}
+exports.degreesToRadians = degreesToRadians;
+/**
+ * Converts a length to the requested unit.
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @param {number} length to be converted
+ * @param {Units} [originalUnit="kilometers"] of the length
+ * @param {Units} [finalUnit="kilometers"] returned unit
+ * @returns {number} the converted length
+ */
+function convertLength(length, originalUnit, finalUnit) {
+    if (originalUnit === void 0) { originalUnit = "kilometers"; }
+    if (finalUnit === void 0) { finalUnit = "kilometers"; }
+    if (!(length >= 0)) {
+        throw new Error("length must be a positive number");
+    }
+    return radiansToLength(lengthToRadians(length, originalUnit), finalUnit);
+}
+exports.convertLength = convertLength;
+/**
+ * Converts a area to the requested unit.
+ * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
+ * @param {number} area to be converted
+ * @param {Units} [originalUnit="meters"] of the distance
+ * @param {Units} [finalUnit="kilometers"] returned unit
+ * @returns {number} the converted distance
+ */
+function convertArea(area, originalUnit, finalUnit) {
+    if (originalUnit === void 0) { originalUnit = "meters"; }
+    if (finalUnit === void 0) { finalUnit = "kilometers"; }
+    if (!(area >= 0)) {
+        throw new Error("area must be a positive number");
+    }
+    var startFactor = exports.areaFactors[originalUnit];
+    if (!startFactor) {
+        throw new Error("invalid original units");
+    }
+    var finalFactor = exports.areaFactors[finalUnit];
+    if (!finalFactor) {
+        throw new Error("invalid final units");
+    }
+    return (area / startFactor) * finalFactor;
+}
+exports.convertArea = convertArea;
+/**
+ * isNumber
+ *
+ * @param {*} num Number to validate
+ * @returns {boolean} true/false
+ * @example
+ * turf.isNumber(123)
+ * //=true
+ * turf.isNumber('foo')
+ * //=false
+ */
+function isNumber(num) {
+    return !isNaN(num) && num !== null && !Array.isArray(num) && !/^\s*$/.test(num);
+}
+exports.isNumber = isNumber;
+/**
+ * isObject
+ *
+ * @param {*} input variable to validate
+ * @returns {boolean} true/false
+ * @example
+ * turf.isObject({elevation: 10})
+ * //=true
+ * turf.isObject('foo')
+ * //=false
+ */
+function isObject(input) {
+    return (!!input) && (input.constructor === Object);
+}
+exports.isObject = isObject;
+/**
+ * Validate BBox
+ *
+ * @private
+ * @param {Array<number>} bbox BBox to validate
+ * @returns {void}
+ * @throws Error if BBox is not valid
+ * @example
+ * validateBBox([-180, -40, 110, 50])
+ * //=OK
+ * validateBBox([-180, -40])
+ * //=Error
+ * validateBBox('Foo')
+ * //=Error
+ * validateBBox(5)
+ * //=Error
+ * validateBBox(null)
+ * //=Error
+ * validateBBox(undefined)
+ * //=Error
+ */
+function validateBBox(bbox) {
+    if (!bbox) {
+        throw new Error("bbox is required");
+    }
+    if (!Array.isArray(bbox)) {
+        throw new Error("bbox must be an Array");
+    }
+    if (bbox.length !== 4 && bbox.length !== 6) {
+        throw new Error("bbox must be an Array of 4 or 6 numbers");
+    }
+    bbox.forEach(function (num) {
+        if (!isNumber(num)) {
+            throw new Error("bbox must only contain numbers");
+        }
+    });
+}
+exports.validateBBox = validateBBox;
+/**
+ * Validate Id
+ *
+ * @private
+ * @param {string|number} id Id to validate
+ * @returns {void}
+ * @throws Error if Id is not valid
+ * @example
+ * validateId([-180, -40, 110, 50])
+ * //=Error
+ * validateId([-180, -40])
+ * //=Error
+ * validateId('Foo')
+ * //=OK
+ * validateId(5)
+ * //=OK
+ * validateId(null)
+ * //=Error
+ * validateId(undefined)
+ * //=Error
+ */
+function validateId(id) {
+    if (!id) {
+        throw new Error("id is required");
+    }
+    if (["string", "number"].indexOf(typeof id) === -1) {
+        throw new Error("id must be a number or a string");
+    }
+}
+exports.validateId = validateId;
+// Deprecated methods
+function radians2degrees() {
+    throw new Error("method has been renamed to `radiansToDegrees`");
+}
+exports.radians2degrees = radians2degrees;
+function degrees2radians() {
+    throw new Error("method has been renamed to `degreesToRadians`");
+}
+exports.degrees2radians = degrees2radians;
+function distanceToDegrees() {
+    throw new Error("method has been renamed to `lengthToDegrees`");
+}
+exports.distanceToDegrees = distanceToDegrees;
+function distanceToRadians() {
+    throw new Error("method has been renamed to `lengthToRadians`");
+}
+exports.distanceToRadians = distanceToRadians;
+function radiansToDistance() {
+    throw new Error("method has been renamed to `radiansToLength`");
+}
+exports.radiansToDistance = radiansToDistance;
+function bearingToAngle() {
+    throw new Error("method has been renamed to `bearingToAzimuth`");
+}
+exports.bearingToAngle = bearingToAngle;
+function convertDistance() {
+    throw new Error("method has been renamed to `convertLength`");
+}
+exports.convertDistance = convertDistance;
+
 
 /***/ }),
 
@@ -2759,24 +4241,67 @@ var substr = 'ab'.substr(-1) === 'b'
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {// A bit simpler than readable streams.
+/* WEBPACK VAR INJECTION */(function(process, global) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
 // the drain event emission and buffering.
 
 
 
+/*<replacement>*/
+
+var pna = __webpack_require__("lm0R");
+/*</replacement>*/
+
 module.exports = Writable;
 
+/* <replacement> */
+function WriteReq(chunk, encoding, cb) {
+  this.chunk = chunk;
+  this.encoding = encoding;
+  this.callback = cb;
+  this.next = null;
+}
+
+// It seems a linked list but it is not
+// there will be only 2 of these for each stream
+function CorkedRequest(state) {
+  var _this = this;
+
+  this.next = null;
+  this.entry = null;
+  this.finish = function () {
+    onCorkedFinish(_this, state);
+  };
+}
+/* </replacement> */
+
 /*<replacement>*/
-var processNextTick = __webpack_require__("lm0R");
+var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : pna.nextTick;
 /*</replacement>*/
 
 /*<replacement>*/
-var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : processNextTick;
-/*</replacement>*/
-
-/*<replacement>*/
-var Buffer = __webpack_require__("tjlA").Buffer;
+var Duplex;
 /*</replacement>*/
 
 Writable.WritableState = WritableState;
@@ -2793,51 +4318,62 @@ var internalUtil = {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream;
-(function () {
-  try {
-    Stream = __webpack_require__("1IWx");
-  } catch (_) {} finally {
-    if (!Stream) Stream = __webpack_require__("+qE3").EventEmitter;
-  }
-})();
+var Stream = __webpack_require__("QpuX");
 /*</replacement>*/
 
-var Buffer = __webpack_require__("tjlA").Buffer;
+/*<replacement>*/
+
+var Buffer = __webpack_require__("hwdV").Buffer;
+var OurUint8Array = global.Uint8Array || function () {};
+function _uint8ArrayToBuffer(chunk) {
+  return Buffer.from(chunk);
+}
+function _isUint8Array(obj) {
+  return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
+}
+
+/*</replacement>*/
+
+var destroyImpl = __webpack_require__("RoFp");
 
 util.inherits(Writable, Stream);
 
 function nop() {}
 
-function WriteReq(chunk, encoding, cb) {
-  this.chunk = chunk;
-  this.encoding = encoding;
-  this.callback = cb;
-  this.next = null;
-}
-
-var Duplex;
 function WritableState(options, stream) {
   Duplex = Duplex || __webpack_require__("sZro");
 
   options = options || {};
 
+  // Duplex streams are both readable and writable, but share
+  // the same options object.
+  // However, some cases require setting options to different
+  // values for the readable and the writable sides of the duplex stream.
+  // These options can be provided separately as readableXXX and writableXXX.
+  var isDuplex = stream instanceof Duplex;
+
   // object stream flag to indicate whether or not this stream
   // contains buffers or objects.
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
+  if (isDuplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
 
   // the point at which write() starts returning false
   // Note: 0 is a valid value, means that we always return false if
   // the entire buffer is not flushed immediately on write()
   var hwm = options.highWaterMark;
+  var writableHwm = options.writableHighWaterMark;
   var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
+
+  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (writableHwm || writableHwm === 0)) this.highWaterMark = writableHwm;else this.highWaterMark = defaultHwm;
 
   // cast to ints.
-  this.highWaterMark = ~ ~this.highWaterMark;
+  this.highWaterMark = Math.floor(this.highWaterMark);
 
+  // if _final has been called
+  this.finalCalled = false;
+
+  // drain event flag.
   this.needDrain = false;
   // at the start of calling end()
   this.ending = false;
@@ -2845,6 +4381,9 @@ function WritableState(options, stream) {
   this.ended = false;
   // when 'finish' is emitted
   this.finished = false;
+
+  // has it been destroyed
+  this.destroyed = false;
 
   // should we decode strings into buffers before passing to _write?
   // this is here so that some node-core streams can optimize string
@@ -2907,13 +4446,12 @@ function WritableState(options, stream) {
   // count buffered requests
   this.bufferedRequestCount = 0;
 
-  // create the two objects needed to store the corked requests
-  // they are not a linked list, as no new elements are inserted in there
+  // allocate the first CorkedRequest, there is always
+  // one allocated and free to use, and we maintain at most two
   this.corkedRequestsFree = new CorkedRequest(this);
-  this.corkedRequestsFree.next = new CorkedRequest(this);
 }
 
-WritableState.prototype.getBuffer = function writableStateGetBuffer() {
+WritableState.prototype.getBuffer = function getBuffer() {
   var current = this.bufferedRequest;
   var out = [];
   while (current) {
@@ -2928,18 +4466,43 @@ WritableState.prototype.getBuffer = function writableStateGetBuffer() {
     Object.defineProperty(WritableState.prototype, 'buffer', {
       get: internalUtil.deprecate(function () {
         return this.getBuffer();
-      }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.')
+      }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.', 'DEP0003')
     });
   } catch (_) {}
 })();
 
-var Duplex;
+// Test _writableState for inheritance to account for Duplex streams,
+// whose prototype chain only points to Readable.
+var realHasInstance;
+if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.prototype[Symbol.hasInstance] === 'function') {
+  realHasInstance = Function.prototype[Symbol.hasInstance];
+  Object.defineProperty(Writable, Symbol.hasInstance, {
+    value: function (object) {
+      if (realHasInstance.call(this, object)) return true;
+      if (this !== Writable) return false;
+
+      return object && object._writableState instanceof WritableState;
+    }
+  });
+} else {
+  realHasInstance = function (object) {
+    return object instanceof this;
+  };
+}
+
 function Writable(options) {
   Duplex = Duplex || __webpack_require__("sZro");
 
-  // Writable ctor is applied to Duplexes, though they're not
-  // instanceof Writable, they're instanceof Readable.
-  if (!(this instanceof Writable) && !(this instanceof Duplex)) return new Writable(options);
+  // Writable ctor is applied to Duplexes, too.
+  // `realHasInstance` is necessary because using plain `instanceof`
+  // would return false, as no `_writableState` property is attached.
+
+  // Trying to use the custom `instanceof` for Writable here will also break the
+  // Node.js LazyTransform implementation, which has a non-trivial getter for
+  // `_writableState` that would lead to infinite recursion.
+  if (!realHasInstance.call(Writable, this) && !(this instanceof Duplex)) {
+    return new Writable(options);
+  }
 
   this._writableState = new WritableState(options, this);
 
@@ -2950,6 +4513,10 @@ function Writable(options) {
     if (typeof options.write === 'function') this._write = options.write;
 
     if (typeof options.writev === 'function') this._writev = options.writev;
+
+    if (typeof options.destroy === 'function') this._destroy = options.destroy;
+
+    if (typeof options.final === 'function') this._final = options.final;
   }
 
   Stream.call(this);
@@ -2957,28 +4524,31 @@ function Writable(options) {
 
 // Otherwise people can pipe Writable streams, which is just wrong.
 Writable.prototype.pipe = function () {
-  this.emit('error', new Error('Cannot pipe. Not readable.'));
+  this.emit('error', new Error('Cannot pipe, not readable'));
 };
 
 function writeAfterEnd(stream, cb) {
   var er = new Error('write after end');
   // TODO: defer error events consistently everywhere, not just the cb
   stream.emit('error', er);
-  processNextTick(cb, er);
+  pna.nextTick(cb, er);
 }
 
-// If we get something that is not a buffer, string, null, or undefined,
-// and we're not in objectMode, then that's an error.
-// Otherwise stream chunks are all considered to be of length=1, and the
-// watermarks determine how many objects to keep in the buffer, rather than
-// how many bytes or characters.
+// Checks that a user-supplied chunk is valid, especially for the particular
+// mode the stream is in. Currently this means that `null` is never accepted
+// and undefined/non-string values are only allowed in object mode.
 function validChunk(stream, state, chunk, cb) {
   var valid = true;
+  var er = false;
 
-  if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
-    var er = new TypeError('Invalid non-string/buffer chunk');
+  if (chunk === null) {
+    er = new TypeError('May not write null values to stream');
+  } else if (typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {
+    er = new TypeError('Invalid non-string/buffer chunk');
+  }
+  if (er) {
     stream.emit('error', er);
-    processNextTick(cb, er);
+    pna.nextTick(cb, er);
     valid = false;
   }
   return valid;
@@ -2987,19 +4557,24 @@ function validChunk(stream, state, chunk, cb) {
 Writable.prototype.write = function (chunk, encoding, cb) {
   var state = this._writableState;
   var ret = false;
+  var isBuf = !state.objectMode && _isUint8Array(chunk);
+
+  if (isBuf && !Buffer.isBuffer(chunk)) {
+    chunk = _uint8ArrayToBuffer(chunk);
+  }
 
   if (typeof encoding === 'function') {
     cb = encoding;
     encoding = null;
   }
 
-  if (Buffer.isBuffer(chunk)) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;
+  if (isBuf) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;
 
   if (typeof cb !== 'function') cb = nop;
 
-  if (state.ended) writeAfterEnd(this, cb);else if (validChunk(this, state, chunk, cb)) {
+  if (state.ended) writeAfterEnd(this, cb);else if (isBuf || validChunk(this, state, chunk, cb)) {
     state.pendingcb++;
-    ret = writeOrBuffer(this, state, chunk, encoding, cb);
+    ret = writeOrBuffer(this, state, isBuf, chunk, encoding, cb);
   }
 
   return ret;
@@ -3026,22 +4601,38 @@ Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
   if (typeof encoding === 'string') encoding = encoding.toLowerCase();
   if (!(['hex', 'utf8', 'utf-8', 'ascii', 'binary', 'base64', 'ucs2', 'ucs-2', 'utf16le', 'utf-16le', 'raw'].indexOf((encoding + '').toLowerCase()) > -1)) throw new TypeError('Unknown encoding: ' + encoding);
   this._writableState.defaultEncoding = encoding;
+  return this;
 };
 
 function decodeChunk(state, chunk, encoding) {
   if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {
-    chunk = new Buffer(chunk, encoding);
+    chunk = Buffer.from(chunk, encoding);
   }
   return chunk;
 }
 
+Object.defineProperty(Writable.prototype, 'writableHighWaterMark', {
+  // making it explicit this property is not enumerable
+  // because otherwise some prototype manipulation in
+  // userland will fail
+  enumerable: false,
+  get: function () {
+    return this._writableState.highWaterMark;
+  }
+});
+
 // if we're already writing something, then just put this
 // in the queue, and wait our turn.  Otherwise, call _write
 // If we return false, then we need a drain event, so set that flag.
-function writeOrBuffer(stream, state, chunk, encoding, cb) {
-  chunk = decodeChunk(state, chunk, encoding);
-
-  if (Buffer.isBuffer(chunk)) encoding = 'buffer';
+function writeOrBuffer(stream, state, isBuf, chunk, encoding, cb) {
+  if (!isBuf) {
+    var newChunk = decodeChunk(state, chunk, encoding);
+    if (chunk !== newChunk) {
+      isBuf = true;
+      encoding = 'buffer';
+      chunk = newChunk;
+    }
+  }
   var len = state.objectMode ? 1 : chunk.length;
 
   state.length += len;
@@ -3052,7 +4643,13 @@ function writeOrBuffer(stream, state, chunk, encoding, cb) {
 
   if (state.writing || state.corked) {
     var last = state.lastBufferedRequest;
-    state.lastBufferedRequest = new WriteReq(chunk, encoding, cb);
+    state.lastBufferedRequest = {
+      chunk: chunk,
+      encoding: encoding,
+      isBuf: isBuf,
+      callback: cb,
+      next: null
+    };
     if (last) {
       last.next = state.lastBufferedRequest;
     } else {
@@ -3077,10 +4674,26 @@ function doWrite(stream, state, writev, len, chunk, encoding, cb) {
 
 function onwriteError(stream, state, sync, er, cb) {
   --state.pendingcb;
-  if (sync) processNextTick(cb, er);else cb(er);
 
-  stream._writableState.errorEmitted = true;
-  stream.emit('error', er);
+  if (sync) {
+    // defer the callback if we are being called synchronously
+    // to avoid piling up things on the stack
+    pna.nextTick(cb, er);
+    // this can emit finish, and it will always happen
+    // after error
+    pna.nextTick(finishMaybe, stream, state);
+    stream._writableState.errorEmitted = true;
+    stream.emit('error', er);
+  } else {
+    // the caller expect this to happen before if
+    // it is async
+    cb(er);
+    stream._writableState.errorEmitted = true;
+    stream.emit('error', er);
+    // this can emit finish, but finish must
+    // always follow error
+    finishMaybe(stream, state);
+  }
 }
 
 function onwriteStateUpdate(state) {
@@ -3110,8 +4723,8 @@ function onwrite(stream, er) {
       asyncWrite(afterWrite, stream, state, finished, cb);
       /*</replacement>*/
     } else {
-        afterWrite(stream, state, finished, cb);
-      }
+      afterWrite(stream, state, finished, cb);
+    }
   }
 }
 
@@ -3145,20 +4758,28 @@ function clearBuffer(stream, state) {
     holder.entry = entry;
 
     var count = 0;
+    var allBuffers = true;
     while (entry) {
       buffer[count] = entry;
+      if (!entry.isBuf) allBuffers = false;
       entry = entry.next;
       count += 1;
     }
+    buffer.allBuffers = allBuffers;
 
     doWrite(stream, state, true, state.length, buffer, '', holder.finish);
 
-    // doWrite is always async, defer these to save a bit of time
+    // doWrite is almost always async, defer these to save a bit of time
     // as the hot path ends with doWrite
     state.pendingcb++;
     state.lastBufferedRequest = null;
-    state.corkedRequestsFree = holder.next;
-    holder.next = null;
+    if (holder.next) {
+      state.corkedRequestsFree = holder.next;
+      holder.next = null;
+    } else {
+      state.corkedRequestsFree = new CorkedRequest(state);
+    }
+    state.bufferedRequestCount = 0;
   } else {
     // Slow case, write chunks one-by-one
     while (entry) {
@@ -3169,6 +4790,7 @@ function clearBuffer(stream, state) {
 
       doWrite(stream, state, false, len, chunk, encoding, cb);
       entry = entry.next;
+      state.bufferedRequestCount--;
       // if we didn't call the onwrite immediately, then
       // it means that we need to wait until it does.
       // also, that means that the chunk and cb are currently
@@ -3181,13 +4803,12 @@ function clearBuffer(stream, state) {
     if (entry === null) state.lastBufferedRequest = null;
   }
 
-  state.bufferedRequestCount = 0;
   state.bufferedRequest = entry;
   state.bufferProcessing = false;
 }
 
 Writable.prototype._write = function (chunk, encoding, cb) {
-  cb(new Error('not implemented'));
+  cb(new Error('_write() is not implemented'));
 };
 
 Writable.prototype._writev = null;
@@ -3219,23 +4840,37 @@ Writable.prototype.end = function (chunk, encoding, cb) {
 function needFinish(state) {
   return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;
 }
-
-function prefinish(stream, state) {
-  if (!state.prefinished) {
+function callFinal(stream, state) {
+  stream._final(function (err) {
+    state.pendingcb--;
+    if (err) {
+      stream.emit('error', err);
+    }
     state.prefinished = true;
     stream.emit('prefinish');
+    finishMaybe(stream, state);
+  });
+}
+function prefinish(stream, state) {
+  if (!state.prefinished && !state.finalCalled) {
+    if (typeof stream._final === 'function') {
+      state.pendingcb++;
+      state.finalCalled = true;
+      pna.nextTick(callFinal, stream, state);
+    } else {
+      state.prefinished = true;
+      stream.emit('prefinish');
+    }
   }
 }
 
 function finishMaybe(stream, state) {
   var need = needFinish(state);
   if (need) {
+    prefinish(stream, state);
     if (state.pendingcb === 0) {
-      prefinish(stream, state);
       state.finished = true;
       stream.emit('finish');
-    } else {
-      prefinish(stream, state);
     }
   }
   return need;
@@ -3245,37 +4880,55 @@ function endWritable(stream, state, cb) {
   state.ending = true;
   finishMaybe(stream, state);
   if (cb) {
-    if (state.finished) processNextTick(cb);else stream.once('finish', cb);
+    if (state.finished) pna.nextTick(cb);else stream.once('finish', cb);
   }
   state.ended = true;
   stream.writable = false;
 }
 
-// It seems a linked list but it is not
-// there will be only 2 of these for each stream
-function CorkedRequest(state) {
-  var _this = this;
-
-  this.next = null;
-  this.entry = null;
-
-  this.finish = function (err) {
-    var entry = _this.entry;
-    _this.entry = null;
-    while (entry) {
-      var cb = entry.callback;
-      state.pendingcb--;
-      cb(err);
-      entry = entry.next;
-    }
-    if (state.corkedRequestsFree) {
-      state.corkedRequestsFree.next = _this;
-    } else {
-      state.corkedRequestsFree = _this;
-    }
-  };
+function onCorkedFinish(corkReq, state, err) {
+  var entry = corkReq.entry;
+  corkReq.entry = null;
+  while (entry) {
+    var cb = entry.callback;
+    state.pendingcb--;
+    cb(err);
+    entry = entry.next;
+  }
+  if (state.corkedRequestsFree) {
+    state.corkedRequestsFree.next = corkReq;
+  } else {
+    state.corkedRequestsFree = corkReq;
+  }
 }
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
+
+Object.defineProperty(Writable.prototype, 'destroyed', {
+  get: function () {
+    if (this._writableState === undefined) {
+      return false;
+    }
+    return this._writableState.destroyed;
+  },
+  set: function (value) {
+    // we ignore the value if the stream
+    // has not been initialized yet
+    if (!this._writableState) {
+      return;
+    }
+
+    // backward compatibility, the user is explicitly
+    // managing destroyed
+    this._writableState.destroyed = value;
+  }
+});
+
+Writable.prototype.destroy = destroyImpl.destroy;
+Writable.prototype._undestroy = destroyImpl.undestroy;
+Writable.prototype._destroy = function (err, cb) {
+  this.end();
+  cb(err);
+};
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB"), __webpack_require__("yLpj")))
 
 /***/ }),
 
@@ -3900,6 +5553,20 @@ src_checkbox.install = function (Vue) {
 /***/ })
 
 /******/ });
+
+/***/ }),
+
+/***/ "43KI":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("rXFu");
+exports.Stream = exports;
+exports.Readable = exports;
+exports.Writable = __webpack_require__("3BRs");
+exports.Duplex = __webpack_require__("sZro");
+exports.Transform = __webpack_require__("J78i");
+exports.PassThrough = __webpack_require__("eA/Y");
+
 
 /***/ }),
 
@@ -5369,6 +7036,1146 @@ exports.default = {
     this.$options.beforeDestroy[0].call(this);
   }
 };
+
+/***/ }),
+
+/***/ "6mXm":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var helpers = __webpack_require__("2hnc");
+
+/**
+ * Callback for coordEach
+ *
+ * @callback coordEachCallback
+ * @param {Array<number>} currentCoord The current coordinate being processed.
+ * @param {number} coordIndex The current index of the coordinate being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ * @param {number} geometryIndex The current index of the Geometry being processed.
+ */
+
+/**
+ * Iterate over coordinates in any GeoJSON object, similar to Array.forEach()
+ *
+ * @name coordEach
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentCoord, coordIndex, featureIndex, multiFeatureIndex)
+ * @param {boolean} [excludeWrapCoord=false] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
+ * @returns {void}
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {"foo": "bar"}),
+ *   turf.point([36, 53], {"hello": "world"})
+ * ]);
+ *
+ * turf.coordEach(features, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
+ *   //=currentCoord
+ *   //=coordIndex
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ * });
+ */
+function coordEach(geojson, callback, excludeWrapCoord) {
+    // Handles null Geometry -- Skips this GeoJSON
+    if (geojson === null) return;
+    var j, k, l, geometry, stopG, coords,
+        geometryMaybeCollection,
+        wrapShrink = 0,
+        coordIndex = 0,
+        isGeometryCollection,
+        type = geojson.type,
+        isFeatureCollection = type === 'FeatureCollection',
+        isFeature = type === 'Feature',
+        stop = isFeatureCollection ? geojson.features.length : 1;
+
+    // This logic may look a little weird. The reason why it is that way
+    // is because it's trying to be fast. GeoJSON supports multiple kinds
+    // of objects at its root: FeatureCollection, Features, Geometries.
+    // This function has the responsibility of handling all of them, and that
+    // means that some of the `for` loops you see below actually just don't apply
+    // to certain inputs. For instance, if you give this just a
+    // Point geometry, then both loops are short-circuited and all we do
+    // is gradually rename the input until it's called 'geometry'.
+    //
+    // This also aims to allocate as few resources as possible: just a
+    // few numbers and booleans, rather than any temporary arrays as would
+    // be required with the normalization approach.
+    for (var featureIndex = 0; featureIndex < stop; featureIndex++) {
+        geometryMaybeCollection = (isFeatureCollection ? geojson.features[featureIndex].geometry :
+            (isFeature ? geojson.geometry : geojson));
+        isGeometryCollection = (geometryMaybeCollection) ? geometryMaybeCollection.type === 'GeometryCollection' : false;
+        stopG = isGeometryCollection ? geometryMaybeCollection.geometries.length : 1;
+
+        for (var geomIndex = 0; geomIndex < stopG; geomIndex++) {
+            var multiFeatureIndex = 0;
+            var geometryIndex = 0;
+            geometry = isGeometryCollection ?
+                geometryMaybeCollection.geometries[geomIndex] : geometryMaybeCollection;
+
+            // Handles null Geometry -- Skips this geometry
+            if (geometry === null) continue;
+            coords = geometry.coordinates;
+            var geomType = geometry.type;
+
+            wrapShrink = (excludeWrapCoord && (geomType === 'Polygon' || geomType === 'MultiPolygon')) ? 1 : 0;
+
+            switch (geomType) {
+            case null:
+                break;
+            case 'Point':
+                if (callback(coords, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+                coordIndex++;
+                multiFeatureIndex++;
+                break;
+            case 'LineString':
+            case 'MultiPoint':
+                for (j = 0; j < coords.length; j++) {
+                    if (callback(coords[j], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+                    coordIndex++;
+                    if (geomType === 'MultiPoint') multiFeatureIndex++;
+                }
+                if (geomType === 'LineString') multiFeatureIndex++;
+                break;
+            case 'Polygon':
+            case 'MultiLineString':
+                for (j = 0; j < coords.length; j++) {
+                    for (k = 0; k < coords[j].length - wrapShrink; k++) {
+                        if (callback(coords[j][k], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+                        coordIndex++;
+                    }
+                    if (geomType === 'MultiLineString') multiFeatureIndex++;
+                    if (geomType === 'Polygon') geometryIndex++;
+                }
+                if (geomType === 'Polygon') multiFeatureIndex++;
+                break;
+            case 'MultiPolygon':
+                for (j = 0; j < coords.length; j++) {
+                    geometryIndex = 0;
+                    for (k = 0; k < coords[j].length; k++) {
+                        for (l = 0; l < coords[j][k].length - wrapShrink; l++) {
+                            if (callback(coords[j][k][l], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+                            coordIndex++;
+                        }
+                        geometryIndex++;
+                    }
+                    multiFeatureIndex++;
+                }
+                break;
+            case 'GeometryCollection':
+                for (j = 0; j < geometry.geometries.length; j++)
+                    if (coordEach(geometry.geometries[j], callback, excludeWrapCoord) === false) return false;
+                break;
+            default:
+                throw new Error('Unknown Geometry Type');
+            }
+        }
+    }
+}
+
+/**
+ * Callback for coordReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback coordReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Array<number>} currentCoord The current coordinate being processed.
+ * @param {number} coordIndex The current index of the coordinate being processed.
+ * Starts at index 0, if an initialValue is provided, and at index 1 otherwise.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ * @param {number} geometryIndex The current index of the Geometry being processed.
+ */
+
+/**
+ * Reduce coordinates in any GeoJSON object, similar to Array.reduce()
+ *
+ * @name coordReduce
+ * @param {FeatureCollection|Geometry|Feature} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentCoord, coordIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @param {boolean} [excludeWrapCoord=false] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {"foo": "bar"}),
+ *   turf.point([36, 53], {"hello": "world"})
+ * ]);
+ *
+ * turf.coordReduce(features, function (previousValue, currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
+ *   //=previousValue
+ *   //=currentCoord
+ *   //=coordIndex
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ *   return currentCoord;
+ * });
+ */
+function coordReduce(geojson, callback, initialValue, excludeWrapCoord) {
+    var previousValue = initialValue;
+    coordEach(geojson, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
+        if (coordIndex === 0 && initialValue === undefined) previousValue = currentCoord;
+        else previousValue = callback(previousValue, currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex);
+    }, excludeWrapCoord);
+    return previousValue;
+}
+
+/**
+ * Callback for propEach
+ *
+ * @callback propEachCallback
+ * @param {Object} currentProperties The current Properties being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ */
+
+/**
+ * Iterate over properties in any GeoJSON object, similar to Array.forEach()
+ *
+ * @name propEach
+ * @param {FeatureCollection|Feature} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentProperties, featureIndex)
+ * @returns {void}
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.propEach(features, function (currentProperties, featureIndex) {
+ *   //=currentProperties
+ *   //=featureIndex
+ * });
+ */
+function propEach(geojson, callback) {
+    var i;
+    switch (geojson.type) {
+    case 'FeatureCollection':
+        for (i = 0; i < geojson.features.length; i++) {
+            if (callback(geojson.features[i].properties, i) === false) break;
+        }
+        break;
+    case 'Feature':
+        callback(geojson.properties, 0);
+        break;
+    }
+}
+
+
+/**
+ * Callback for propReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback propReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {*} currentProperties The current Properties being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ */
+
+/**
+ * Reduce properties in any GeoJSON object into a single value,
+ * similar to how Array.reduce works. However, in this case we lazily run
+ * the reduction, so an array of all properties is unnecessary.
+ *
+ * @name propReduce
+ * @param {FeatureCollection|Feature} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentProperties, featureIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.propReduce(features, function (previousValue, currentProperties, featureIndex) {
+ *   //=previousValue
+ *   //=currentProperties
+ *   //=featureIndex
+ *   return currentProperties
+ * });
+ */
+function propReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    propEach(geojson, function (currentProperties, featureIndex) {
+        if (featureIndex === 0 && initialValue === undefined) previousValue = currentProperties;
+        else previousValue = callback(previousValue, currentProperties, featureIndex);
+    });
+    return previousValue;
+}
+
+/**
+ * Callback for featureEach
+ *
+ * @callback featureEachCallback
+ * @param {Feature<any>} currentFeature The current Feature being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ */
+
+/**
+ * Iterate over features in any GeoJSON object, similar to
+ * Array.forEach.
+ *
+ * @name featureEach
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentFeature, featureIndex)
+ * @returns {void}
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {foo: 'bar'}),
+ *   turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.featureEach(features, function (currentFeature, featureIndex) {
+ *   //=currentFeature
+ *   //=featureIndex
+ * });
+ */
+function featureEach(geojson, callback) {
+    if (geojson.type === 'Feature') {
+        callback(geojson, 0);
+    } else if (geojson.type === 'FeatureCollection') {
+        for (var i = 0; i < geojson.features.length; i++) {
+            if (callback(geojson.features[i], i) === false) break;
+        }
+    }
+}
+
+/**
+ * Callback for featureReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback featureReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Feature} currentFeature The current Feature being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ */
+
+/**
+ * Reduce features in any GeoJSON object, similar to Array.reduce().
+ *
+ * @name featureReduce
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentFeature, featureIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {"foo": "bar"}),
+ *   turf.point([36, 53], {"hello": "world"})
+ * ]);
+ *
+ * turf.featureReduce(features, function (previousValue, currentFeature, featureIndex) {
+ *   //=previousValue
+ *   //=currentFeature
+ *   //=featureIndex
+ *   return currentFeature
+ * });
+ */
+function featureReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    featureEach(geojson, function (currentFeature, featureIndex) {
+        if (featureIndex === 0 && initialValue === undefined) previousValue = currentFeature;
+        else previousValue = callback(previousValue, currentFeature, featureIndex);
+    });
+    return previousValue;
+}
+
+/**
+ * Get all coordinates from any GeoJSON object.
+ *
+ * @name coordAll
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @returns {Array<Array<number>>} coordinate position array
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {foo: 'bar'}),
+ *   turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * var coords = turf.coordAll(features);
+ * //= [[26, 37], [36, 53]]
+ */
+function coordAll(geojson) {
+    var coords = [];
+    coordEach(geojson, function (coord) {
+        coords.push(coord);
+    });
+    return coords;
+}
+
+/**
+ * Callback for geomEach
+ *
+ * @callback geomEachCallback
+ * @param {Geometry} currentGeometry The current Geometry being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {Object} featureProperties The current Feature Properties being processed.
+ * @param {Array<number>} featureBBox The current Feature BBox being processed.
+ * @param {number|string} featureId The current Feature Id being processed.
+ */
+
+/**
+ * Iterate over each geometry in any GeoJSON object, similar to Array.forEach()
+ *
+ * @name geomEach
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentGeometry, featureIndex, featureProperties, featureBBox, featureId)
+ * @returns {void}
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.geomEach(features, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
+ *   //=currentGeometry
+ *   //=featureIndex
+ *   //=featureProperties
+ *   //=featureBBox
+ *   //=featureId
+ * });
+ */
+function geomEach(geojson, callback) {
+    var i, j, g, geometry, stopG,
+        geometryMaybeCollection,
+        isGeometryCollection,
+        featureProperties,
+        featureBBox,
+        featureId,
+        featureIndex = 0,
+        isFeatureCollection = geojson.type === 'FeatureCollection',
+        isFeature = geojson.type === 'Feature',
+        stop = isFeatureCollection ? geojson.features.length : 1;
+
+    // This logic may look a little weird. The reason why it is that way
+    // is because it's trying to be fast. GeoJSON supports multiple kinds
+    // of objects at its root: FeatureCollection, Features, Geometries.
+    // This function has the responsibility of handling all of them, and that
+    // means that some of the `for` loops you see below actually just don't apply
+    // to certain inputs. For instance, if you give this just a
+    // Point geometry, then both loops are short-circuited and all we do
+    // is gradually rename the input until it's called 'geometry'.
+    //
+    // This also aims to allocate as few resources as possible: just a
+    // few numbers and booleans, rather than any temporary arrays as would
+    // be required with the normalization approach.
+    for (i = 0; i < stop; i++) {
+
+        geometryMaybeCollection = (isFeatureCollection ? geojson.features[i].geometry :
+            (isFeature ? geojson.geometry : geojson));
+        featureProperties = (isFeatureCollection ? geojson.features[i].properties :
+            (isFeature ? geojson.properties : {}));
+        featureBBox = (isFeatureCollection ? geojson.features[i].bbox :
+            (isFeature ? geojson.bbox : undefined));
+        featureId = (isFeatureCollection ? geojson.features[i].id :
+            (isFeature ? geojson.id : undefined));
+        isGeometryCollection = (geometryMaybeCollection) ? geometryMaybeCollection.type === 'GeometryCollection' : false;
+        stopG = isGeometryCollection ? geometryMaybeCollection.geometries.length : 1;
+
+        for (g = 0; g < stopG; g++) {
+            geometry = isGeometryCollection ?
+                geometryMaybeCollection.geometries[g] : geometryMaybeCollection;
+
+            // Handle null Geometry
+            if (geometry === null) {
+                if (callback(null, featureIndex, featureProperties, featureBBox, featureId) === false) return false;
+                continue;
+            }
+            switch (geometry.type) {
+            case 'Point':
+            case 'LineString':
+            case 'MultiPoint':
+            case 'Polygon':
+            case 'MultiLineString':
+            case 'MultiPolygon': {
+                if (callback(geometry, featureIndex, featureProperties, featureBBox, featureId) === false) return false;
+                break;
+            }
+            case 'GeometryCollection': {
+                for (j = 0; j < geometry.geometries.length; j++) {
+                    if (callback(geometry.geometries[j], featureIndex, featureProperties, featureBBox, featureId) === false) return false;
+                }
+                break;
+            }
+            default:
+                throw new Error('Unknown Geometry Type');
+            }
+        }
+        // Only increase `featureIndex` per each feature
+        featureIndex++;
+    }
+}
+
+/**
+ * Callback for geomReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback geomReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Geometry} currentGeometry The current Geometry being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {Object} featureProperties The current Feature Properties being processed.
+ * @param {Array<number>} featureBBox The current Feature BBox being processed.
+ * @param {number|string} featureId The current Feature Id being processed.
+ */
+
+/**
+ * Reduce geometry in any GeoJSON object, similar to Array.reduce().
+ *
+ * @name geomReduce
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.geomReduce(features, function (previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
+ *   //=previousValue
+ *   //=currentGeometry
+ *   //=featureIndex
+ *   //=featureProperties
+ *   //=featureBBox
+ *   //=featureId
+ *   return currentGeometry
+ * });
+ */
+function geomReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    geomEach(geojson, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
+        if (featureIndex === 0 && initialValue === undefined) previousValue = currentGeometry;
+        else previousValue = callback(previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId);
+    });
+    return previousValue;
+}
+
+/**
+ * Callback for flattenEach
+ *
+ * @callback flattenEachCallback
+ * @param {Feature} currentFeature The current flattened feature being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ */
+
+/**
+ * Iterate over flattened features in any GeoJSON object, similar to
+ * Array.forEach.
+ *
+ * @name flattenEach
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentFeature, featureIndex, multiFeatureIndex)
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.multiPoint([[40, 30], [36, 53]], {hello: 'world'})
+ * ]);
+ *
+ * turf.flattenEach(features, function (currentFeature, featureIndex, multiFeatureIndex) {
+ *   //=currentFeature
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ * });
+ */
+function flattenEach(geojson, callback) {
+    geomEach(geojson, function (geometry, featureIndex, properties, bbox, id) {
+        // Callback for single geometry
+        var type = (geometry === null) ? null : geometry.type;
+        switch (type) {
+        case null:
+        case 'Point':
+        case 'LineString':
+        case 'Polygon':
+            if (callback(helpers.feature(geometry, properties, {bbox: bbox, id: id}), featureIndex, 0) === false) return false;
+            return;
+        }
+
+        var geomType;
+
+        // Callback for multi-geometry
+        switch (type) {
+        case 'MultiPoint':
+            geomType = 'Point';
+            break;
+        case 'MultiLineString':
+            geomType = 'LineString';
+            break;
+        case 'MultiPolygon':
+            geomType = 'Polygon';
+            break;
+        }
+
+        for (var multiFeatureIndex = 0; multiFeatureIndex < geometry.coordinates.length; multiFeatureIndex++) {
+            var coordinate = geometry.coordinates[multiFeatureIndex];
+            var geom = {
+                type: geomType,
+                coordinates: coordinate
+            };
+            if (callback(helpers.feature(geom, properties), featureIndex, multiFeatureIndex) === false) return false;
+        }
+    });
+}
+
+/**
+ * Callback for flattenReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback flattenReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Feature} currentFeature The current Feature being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ */
+
+/**
+ * Reduce flattened features in any GeoJSON object, similar to Array.reduce().
+ *
+ * @name flattenReduce
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentFeature, featureIndex, multiFeatureIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.multiPoint([[40, 30], [36, 53]], {hello: 'world'})
+ * ]);
+ *
+ * turf.flattenReduce(features, function (previousValue, currentFeature, featureIndex, multiFeatureIndex) {
+ *   //=previousValue
+ *   //=currentFeature
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   return currentFeature
+ * });
+ */
+function flattenReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    flattenEach(geojson, function (currentFeature, featureIndex, multiFeatureIndex) {
+        if (featureIndex === 0 && multiFeatureIndex === 0 && initialValue === undefined) previousValue = currentFeature;
+        else previousValue = callback(previousValue, currentFeature, featureIndex, multiFeatureIndex);
+    });
+    return previousValue;
+}
+
+/**
+ * Callback for segmentEach
+ *
+ * @callback segmentEachCallback
+ * @param {Feature<LineString>} currentSegment The current Segment being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ * @param {number} geometryIndex The current index of the Geometry being processed.
+ * @param {number} segmentIndex The current index of the Segment being processed.
+ * @returns {void}
+ */
+
+/**
+ * Iterate over 2-vertex line segment in any GeoJSON object, similar to Array.forEach()
+ * (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
+ *
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON
+ * @param {Function} callback a method that takes (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex)
+ * @returns {void}
+ * @example
+ * var polygon = turf.polygon([[[-50, 5], [-40, -10], [-50, -10], [-40, 5], [-50, 5]]]);
+ *
+ * // Iterate over GeoJSON by 2-vertex segments
+ * turf.segmentEach(polygon, function (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
+ *   //=currentSegment
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ *   //=segmentIndex
+ * });
+ *
+ * // Calculate the total number of segments
+ * var total = 0;
+ * turf.segmentEach(polygon, function () {
+ *     total++;
+ * });
+ */
+function segmentEach(geojson, callback) {
+    flattenEach(geojson, function (feature, featureIndex, multiFeatureIndex) {
+        var segmentIndex = 0;
+
+        // Exclude null Geometries
+        if (!feature.geometry) return;
+        // (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
+        var type = feature.geometry.type;
+        if (type === 'Point' || type === 'MultiPoint') return;
+
+        // Generate 2-vertex line segments
+        var previousCoords;
+        var previousFeatureIndex = 0;
+        var previousMultiIndex = 0;
+        var prevGeomIndex = 0;
+        if (coordEach(feature, function (currentCoord, coordIndex, featureIndexCoord, multiPartIndexCoord, geometryIndex) {
+            // Simulating a meta.coordReduce() since `reduce` operations cannot be stopped by returning `false`
+            if (previousCoords === undefined || featureIndex > previousFeatureIndex || multiPartIndexCoord > previousMultiIndex || geometryIndex > prevGeomIndex) {
+                previousCoords = currentCoord;
+                previousFeatureIndex = featureIndex;
+                previousMultiIndex = multiPartIndexCoord;
+                prevGeomIndex = geometryIndex;
+                segmentIndex = 0;
+                return;
+            }
+            var currentSegment = helpers.lineString([previousCoords, currentCoord], feature.properties);
+            if (callback(currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) === false) return false;
+            segmentIndex++;
+            previousCoords = currentCoord;
+        }) === false) return false;
+    });
+}
+
+/**
+ * Callback for segmentReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback segmentReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Feature<LineString>} currentSegment The current Segment being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ * @param {number} geometryIndex The current index of the Geometry being processed.
+ * @param {number} segmentIndex The current index of the Segment being processed.
+ */
+
+/**
+ * Reduce 2-vertex line segment in any GeoJSON object, similar to Array.reduce()
+ * (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
+ *
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON
+ * @param {Function} callback a method that takes (previousValue, currentSegment, currentIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {void}
+ * @example
+ * var polygon = turf.polygon([[[-50, 5], [-40, -10], [-50, -10], [-40, 5], [-50, 5]]]);
+ *
+ * // Iterate over GeoJSON by 2-vertex segments
+ * turf.segmentReduce(polygon, function (previousSegment, currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
+ *   //= previousSegment
+ *   //= currentSegment
+ *   //= featureIndex
+ *   //= multiFeatureIndex
+ *   //= geometryIndex
+ *   //= segmentInex
+ *   return currentSegment
+ * });
+ *
+ * // Calculate the total number of segments
+ * var initialValue = 0
+ * var total = turf.segmentReduce(polygon, function (previousValue) {
+ *     previousValue++;
+ *     return previousValue;
+ * }, initialValue);
+ */
+function segmentReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    var started = false;
+    segmentEach(geojson, function (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
+        if (started === false && initialValue === undefined) previousValue = currentSegment;
+        else previousValue = callback(previousValue, currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex);
+        started = true;
+    });
+    return previousValue;
+}
+
+/**
+ * Callback for lineEach
+ *
+ * @callback lineEachCallback
+ * @param {Feature<LineString>} currentLine The current LineString|LinearRing being processed
+ * @param {number} featureIndex The current index of the Feature being processed
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed
+ * @param {number} geometryIndex The current index of the Geometry being processed
+ */
+
+/**
+ * Iterate over line or ring coordinates in LineString, Polygon, MultiLineString, MultiPolygon Features or Geometries,
+ * similar to Array.forEach.
+ *
+ * @name lineEach
+ * @param {Geometry|Feature<LineString|Polygon|MultiLineString|MultiPolygon>} geojson object
+ * @param {Function} callback a method that takes (currentLine, featureIndex, multiFeatureIndex, geometryIndex)
+ * @example
+ * var multiLine = turf.multiLineString([
+ *   [[26, 37], [35, 45]],
+ *   [[36, 53], [38, 50], [41, 55]]
+ * ]);
+ *
+ * turf.lineEach(multiLine, function (currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
+ *   //=currentLine
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ * });
+ */
+function lineEach(geojson, callback) {
+    // validation
+    if (!geojson) throw new Error('geojson is required');
+
+    flattenEach(geojson, function (feature, featureIndex, multiFeatureIndex) {
+        if (feature.geometry === null) return;
+        var type = feature.geometry.type;
+        var coords = feature.geometry.coordinates;
+        switch (type) {
+        case 'LineString':
+            if (callback(feature, featureIndex, multiFeatureIndex, 0, 0) === false) return false;
+            break;
+        case 'Polygon':
+            for (var geometryIndex = 0; geometryIndex < coords.length; geometryIndex++) {
+                if (callback(helpers.lineString(coords[geometryIndex], feature.properties), featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+            }
+            break;
+        }
+    });
+}
+
+/**
+ * Callback for lineReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback lineReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Feature<LineString>} currentLine The current LineString|LinearRing being processed.
+ * @param {number} featureIndex The current index of the Feature being processed
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed
+ * @param {number} geometryIndex The current index of the Geometry being processed
+ */
+
+/**
+ * Reduce features in any GeoJSON object, similar to Array.reduce().
+ *
+ * @name lineReduce
+ * @param {Geometry|Feature<LineString|Polygon|MultiLineString|MultiPolygon>} geojson object
+ * @param {Function} callback a method that takes (previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var multiPoly = turf.multiPolygon([
+ *   turf.polygon([[[12,48],[2,41],[24,38],[12,48]], [[9,44],[13,41],[13,45],[9,44]]]),
+ *   turf.polygon([[[5, 5], [0, 0], [2, 2], [4, 4], [5, 5]]])
+ * ]);
+ *
+ * turf.lineReduce(multiPoly, function (previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
+ *   //=previousValue
+ *   //=currentLine
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ *   return currentLine
+ * });
+ */
+function lineReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    lineEach(geojson, function (currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
+        if (featureIndex === 0 && initialValue === undefined) previousValue = currentLine;
+        else previousValue = callback(previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex);
+    });
+    return previousValue;
+}
+
+/**
+ * Finds a particular 2-vertex LineString Segment from a GeoJSON using `@turf/meta` indexes.
+ *
+ * Negative indexes are permitted.
+ * Point & MultiPoint will always return null.
+ *
+ * @param {FeatureCollection|Feature|Geometry} geojson Any GeoJSON Feature or Geometry
+ * @param {Object} [options={}] Optional parameters
+ * @param {number} [options.featureIndex=0] Feature Index
+ * @param {number} [options.multiFeatureIndex=0] Multi-Feature Index
+ * @param {number} [options.geometryIndex=0] Geometry Index
+ * @param {number} [options.segmentIndex=0] Segment Index
+ * @param {Object} [options.properties={}] Translate Properties to output LineString
+ * @param {BBox} [options.bbox={}] Translate BBox to output LineString
+ * @param {number|string} [options.id={}] Translate Id to output LineString
+ * @returns {Feature<LineString>} 2-vertex GeoJSON Feature LineString
+ * @example
+ * var multiLine = turf.multiLineString([
+ *     [[10, 10], [50, 30], [30, 40]],
+ *     [[-10, -10], [-50, -30], [-30, -40]]
+ * ]);
+ *
+ * // First Segment (defaults are 0)
+ * turf.findSegment(multiLine);
+ * // => Feature<LineString<[[10, 10], [50, 30]]>>
+ *
+ * // First Segment of 2nd Multi Feature
+ * turf.findSegment(multiLine, {multiFeatureIndex: 1});
+ * // => Feature<LineString<[[-10, -10], [-50, -30]]>>
+ *
+ * // Last Segment of Last Multi Feature
+ * turf.findSegment(multiLine, {multiFeatureIndex: -1, segmentIndex: -1});
+ * // => Feature<LineString<[[-50, -30], [-30, -40]]>>
+ */
+function findSegment(geojson, options) {
+    // Optional Parameters
+    options = options || {};
+    if (!helpers.isObject(options)) throw new Error('options is invalid');
+    var featureIndex = options.featureIndex || 0;
+    var multiFeatureIndex = options.multiFeatureIndex || 0;
+    var geometryIndex = options.geometryIndex || 0;
+    var segmentIndex = options.segmentIndex || 0;
+
+    // Find FeatureIndex
+    var properties = options.properties;
+    var geometry;
+
+    switch (geojson.type) {
+    case 'FeatureCollection':
+        if (featureIndex < 0) featureIndex = geojson.features.length + featureIndex;
+        properties = properties || geojson.features[featureIndex].properties;
+        geometry = geojson.features[featureIndex].geometry;
+        break;
+    case 'Feature':
+        properties = properties || geojson.properties;
+        geometry = geojson.geometry;
+        break;
+    case 'Point':
+    case 'MultiPoint':
+        return null;
+    case 'LineString':
+    case 'Polygon':
+    case 'MultiLineString':
+    case 'MultiPolygon':
+        geometry = geojson;
+        break;
+    default:
+        throw new Error('geojson is invalid');
+    }
+
+    // Find SegmentIndex
+    if (geometry === null) return null;
+    var coords = geometry.coordinates;
+    switch (geometry.type) {
+    case 'Point':
+    case 'MultiPoint':
+        return null;
+    case 'LineString':
+        if (segmentIndex < 0) segmentIndex = coords.length + segmentIndex - 1;
+        return helpers.lineString([coords[segmentIndex], coords[segmentIndex + 1]], properties, options);
+    case 'Polygon':
+        if (geometryIndex < 0) geometryIndex = coords.length + geometryIndex;
+        if (segmentIndex < 0) segmentIndex = coords[geometryIndex].length + segmentIndex - 1;
+        return helpers.lineString([coords[geometryIndex][segmentIndex], coords[geometryIndex][segmentIndex + 1]], properties, options);
+    case 'MultiLineString':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        if (segmentIndex < 0) segmentIndex = coords[multiFeatureIndex].length + segmentIndex - 1;
+        return helpers.lineString([coords[multiFeatureIndex][segmentIndex], coords[multiFeatureIndex][segmentIndex + 1]], properties, options);
+    case 'MultiPolygon':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        if (geometryIndex < 0) geometryIndex = coords[multiFeatureIndex].length + geometryIndex;
+        if (segmentIndex < 0) segmentIndex = coords[multiFeatureIndex][geometryIndex].length - segmentIndex - 1;
+        return helpers.lineString([coords[multiFeatureIndex][geometryIndex][segmentIndex], coords[multiFeatureIndex][geometryIndex][segmentIndex + 1]], properties, options);
+    }
+    throw new Error('geojson is invalid');
+}
+
+/**
+ * Finds a particular Point from a GeoJSON using `@turf/meta` indexes.
+ *
+ * Negative indexes are permitted.
+ *
+ * @param {FeatureCollection|Feature|Geometry} geojson Any GeoJSON Feature or Geometry
+ * @param {Object} [options={}] Optional parameters
+ * @param {number} [options.featureIndex=0] Feature Index
+ * @param {number} [options.multiFeatureIndex=0] Multi-Feature Index
+ * @param {number} [options.geometryIndex=0] Geometry Index
+ * @param {number} [options.coordIndex=0] Coord Index
+ * @param {Object} [options.properties={}] Translate Properties to output Point
+ * @param {BBox} [options.bbox={}] Translate BBox to output Point
+ * @param {number|string} [options.id={}] Translate Id to output Point
+ * @returns {Feature<Point>} 2-vertex GeoJSON Feature Point
+ * @example
+ * var multiLine = turf.multiLineString([
+ *     [[10, 10], [50, 30], [30, 40]],
+ *     [[-10, -10], [-50, -30], [-30, -40]]
+ * ]);
+ *
+ * // First Segment (defaults are 0)
+ * turf.findPoint(multiLine);
+ * // => Feature<Point<[10, 10]>>
+ *
+ * // First Segment of the 2nd Multi-Feature
+ * turf.findPoint(multiLine, {multiFeatureIndex: 1});
+ * // => Feature<Point<[-10, -10]>>
+ *
+ * // Last Segment of last Multi-Feature
+ * turf.findPoint(multiLine, {multiFeatureIndex: -1, coordIndex: -1});
+ * // => Feature<Point<[-30, -40]>>
+ */
+function findPoint(geojson, options) {
+    // Optional Parameters
+    options = options || {};
+    if (!helpers.isObject(options)) throw new Error('options is invalid');
+    var featureIndex = options.featureIndex || 0;
+    var multiFeatureIndex = options.multiFeatureIndex || 0;
+    var geometryIndex = options.geometryIndex || 0;
+    var coordIndex = options.coordIndex || 0;
+
+    // Find FeatureIndex
+    var properties = options.properties;
+    var geometry;
+
+    switch (geojson.type) {
+    case 'FeatureCollection':
+        if (featureIndex < 0) featureIndex = geojson.features.length + featureIndex;
+        properties = properties || geojson.features[featureIndex].properties;
+        geometry = geojson.features[featureIndex].geometry;
+        break;
+    case 'Feature':
+        properties = properties || geojson.properties;
+        geometry = geojson.geometry;
+        break;
+    case 'Point':
+    case 'MultiPoint':
+        return null;
+    case 'LineString':
+    case 'Polygon':
+    case 'MultiLineString':
+    case 'MultiPolygon':
+        geometry = geojson;
+        break;
+    default:
+        throw new Error('geojson is invalid');
+    }
+
+    // Find Coord Index
+    if (geometry === null) return null;
+    var coords = geometry.coordinates;
+    switch (geometry.type) {
+    case 'Point':
+        return helpers.point(coords, properties, options);
+    case 'MultiPoint':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        return helpers.point(coords[multiFeatureIndex], properties, options);
+    case 'LineString':
+        if (coordIndex < 0) coordIndex = coords.length + coordIndex;
+        return helpers.point(coords[coordIndex], properties, options);
+    case 'Polygon':
+        if (geometryIndex < 0) geometryIndex = coords.length + geometryIndex;
+        if (coordIndex < 0) coordIndex = coords[geometryIndex].length + coordIndex;
+        return helpers.point(coords[geometryIndex][coordIndex], properties, options);
+    case 'MultiLineString':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        if (coordIndex < 0) coordIndex = coords[multiFeatureIndex].length + coordIndex;
+        return helpers.point(coords[multiFeatureIndex][coordIndex], properties, options);
+    case 'MultiPolygon':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        if (geometryIndex < 0) geometryIndex = coords[multiFeatureIndex].length + geometryIndex;
+        if (coordIndex < 0) coordIndex = coords[multiFeatureIndex][geometryIndex].length - coordIndex;
+        return helpers.point(coords[multiFeatureIndex][geometryIndex][coordIndex], properties, options);
+    }
+    throw new Error('geojson is invalid');
+}
+
+exports.coordEach = coordEach;
+exports.coordReduce = coordReduce;
+exports.propEach = propEach;
+exports.propReduce = propReduce;
+exports.featureEach = featureEach;
+exports.featureReduce = featureReduce;
+exports.coordAll = coordAll;
+exports.geomEach = geomEach;
+exports.geomReduce = geomReduce;
+exports.flattenEach = flattenEach;
+exports.flattenReduce = flattenReduce;
+exports.segmentEach = segmentEach;
+exports.segmentReduce = segmentReduce;
+exports.lineEach = lineEach;
+exports.lineReduce = lineReduce;
+exports.findSegment = findSegment;
+exports.findPoint = findPoint;
+
 
 /***/ }),
 
@@ -8165,13 +10972,183 @@ main_Message.closeAll = function () {
 
 /***/ }),
 
+/***/ "9csQ":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to generate unique IDs. */
+var idCounter = 0;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var Symbol = root.Symbol;
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = Symbol ? Symbol.prototype : undefined,
+    symbolToString = symbolProto ? symbolProto.toString : undefined;
+
+/**
+ * The base implementation of `_.toString` which doesn't convert nullish
+ * values to empty strings.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  // Exit early for strings to avoid a performance hit in some environments.
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return symbolToString ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to a string. An empty string is returned for `null`
+ * and `undefined` values. The sign of `-0` is preserved.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ * @example
+ *
+ * _.toString(null);
+ * // => ''
+ *
+ * _.toString(-0);
+ * // => '-0'
+ *
+ * _.toString([1, 2, 3]);
+ * // => '1,2,3'
+ */
+function toString(value) {
+  return value == null ? '' : baseToString(value);
+}
+
+/**
+ * Generates a unique ID. If `prefix` is given, the ID is appended to it.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Util
+ * @param {string} [prefix=''] The value to prefix the ID with.
+ * @returns {string} Returns the unique ID.
+ * @example
+ *
+ * _.uniqueId('contact_');
+ * // => 'contact_104'
+ *
+ * _.uniqueId();
+ * // => '105'
+ */
+function uniqueId(prefix) {
+  var id = ++idCounter;
+  return toString(prefix) + id;
+}
+
+module.exports = uniqueId;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj")))
+
+/***/ }),
+
 /***/ "AKIq":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var helpers_1 = __webpack_require__("/rf6");
+var helpers_1 = __webpack_require__("1+Cv");
 /**
  * Unwrap a coordinate from a Point Feature, Geometry or a single coordinate.
  *
@@ -8424,6 +11401,14 @@ module.exports = function(xml, userOptions) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "CWBI":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("sZro");
+
 
 /***/ }),
 
@@ -9252,6 +12237,1146 @@ module.exports = __webpack_require__("gSIQ");
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_Fk5u__;
+
+/***/ }),
+
+/***/ "G/qV":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var helpers = __webpack_require__("ktfA");
+
+/**
+ * Callback for coordEach
+ *
+ * @callback coordEachCallback
+ * @param {Array<number>} currentCoord The current coordinate being processed.
+ * @param {number} coordIndex The current index of the coordinate being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ * @param {number} geometryIndex The current index of the Geometry being processed.
+ */
+
+/**
+ * Iterate over coordinates in any GeoJSON object, similar to Array.forEach()
+ *
+ * @name coordEach
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentCoord, coordIndex, featureIndex, multiFeatureIndex)
+ * @param {boolean} [excludeWrapCoord=false] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
+ * @returns {void}
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {"foo": "bar"}),
+ *   turf.point([36, 53], {"hello": "world"})
+ * ]);
+ *
+ * turf.coordEach(features, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
+ *   //=currentCoord
+ *   //=coordIndex
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ * });
+ */
+function coordEach(geojson, callback, excludeWrapCoord) {
+    // Handles null Geometry -- Skips this GeoJSON
+    if (geojson === null) return;
+    var j, k, l, geometry, stopG, coords,
+        geometryMaybeCollection,
+        wrapShrink = 0,
+        coordIndex = 0,
+        isGeometryCollection,
+        type = geojson.type,
+        isFeatureCollection = type === 'FeatureCollection',
+        isFeature = type === 'Feature',
+        stop = isFeatureCollection ? geojson.features.length : 1;
+
+    // This logic may look a little weird. The reason why it is that way
+    // is because it's trying to be fast. GeoJSON supports multiple kinds
+    // of objects at its root: FeatureCollection, Features, Geometries.
+    // This function has the responsibility of handling all of them, and that
+    // means that some of the `for` loops you see below actually just don't apply
+    // to certain inputs. For instance, if you give this just a
+    // Point geometry, then both loops are short-circuited and all we do
+    // is gradually rename the input until it's called 'geometry'.
+    //
+    // This also aims to allocate as few resources as possible: just a
+    // few numbers and booleans, rather than any temporary arrays as would
+    // be required with the normalization approach.
+    for (var featureIndex = 0; featureIndex < stop; featureIndex++) {
+        geometryMaybeCollection = (isFeatureCollection ? geojson.features[featureIndex].geometry :
+            (isFeature ? geojson.geometry : geojson));
+        isGeometryCollection = (geometryMaybeCollection) ? geometryMaybeCollection.type === 'GeometryCollection' : false;
+        stopG = isGeometryCollection ? geometryMaybeCollection.geometries.length : 1;
+
+        for (var geomIndex = 0; geomIndex < stopG; geomIndex++) {
+            var multiFeatureIndex = 0;
+            var geometryIndex = 0;
+            geometry = isGeometryCollection ?
+                geometryMaybeCollection.geometries[geomIndex] : geometryMaybeCollection;
+
+            // Handles null Geometry -- Skips this geometry
+            if (geometry === null) continue;
+            coords = geometry.coordinates;
+            var geomType = geometry.type;
+
+            wrapShrink = (excludeWrapCoord && (geomType === 'Polygon' || geomType === 'MultiPolygon')) ? 1 : 0;
+
+            switch (geomType) {
+            case null:
+                break;
+            case 'Point':
+                if (callback(coords, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+                coordIndex++;
+                multiFeatureIndex++;
+                break;
+            case 'LineString':
+            case 'MultiPoint':
+                for (j = 0; j < coords.length; j++) {
+                    if (callback(coords[j], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+                    coordIndex++;
+                    if (geomType === 'MultiPoint') multiFeatureIndex++;
+                }
+                if (geomType === 'LineString') multiFeatureIndex++;
+                break;
+            case 'Polygon':
+            case 'MultiLineString':
+                for (j = 0; j < coords.length; j++) {
+                    for (k = 0; k < coords[j].length - wrapShrink; k++) {
+                        if (callback(coords[j][k], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+                        coordIndex++;
+                    }
+                    if (geomType === 'MultiLineString') multiFeatureIndex++;
+                    if (geomType === 'Polygon') geometryIndex++;
+                }
+                if (geomType === 'Polygon') multiFeatureIndex++;
+                break;
+            case 'MultiPolygon':
+                for (j = 0; j < coords.length; j++) {
+                    geometryIndex = 0;
+                    for (k = 0; k < coords[j].length; k++) {
+                        for (l = 0; l < coords[j][k].length - wrapShrink; l++) {
+                            if (callback(coords[j][k][l], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+                            coordIndex++;
+                        }
+                        geometryIndex++;
+                    }
+                    multiFeatureIndex++;
+                }
+                break;
+            case 'GeometryCollection':
+                for (j = 0; j < geometry.geometries.length; j++)
+                    if (coordEach(geometry.geometries[j], callback, excludeWrapCoord) === false) return false;
+                break;
+            default:
+                throw new Error('Unknown Geometry Type');
+            }
+        }
+    }
+}
+
+/**
+ * Callback for coordReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback coordReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Array<number>} currentCoord The current coordinate being processed.
+ * @param {number} coordIndex The current index of the coordinate being processed.
+ * Starts at index 0, if an initialValue is provided, and at index 1 otherwise.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ * @param {number} geometryIndex The current index of the Geometry being processed.
+ */
+
+/**
+ * Reduce coordinates in any GeoJSON object, similar to Array.reduce()
+ *
+ * @name coordReduce
+ * @param {FeatureCollection|Geometry|Feature} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentCoord, coordIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @param {boolean} [excludeWrapCoord=false] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {"foo": "bar"}),
+ *   turf.point([36, 53], {"hello": "world"})
+ * ]);
+ *
+ * turf.coordReduce(features, function (previousValue, currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
+ *   //=previousValue
+ *   //=currentCoord
+ *   //=coordIndex
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ *   return currentCoord;
+ * });
+ */
+function coordReduce(geojson, callback, initialValue, excludeWrapCoord) {
+    var previousValue = initialValue;
+    coordEach(geojson, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
+        if (coordIndex === 0 && initialValue === undefined) previousValue = currentCoord;
+        else previousValue = callback(previousValue, currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex);
+    }, excludeWrapCoord);
+    return previousValue;
+}
+
+/**
+ * Callback for propEach
+ *
+ * @callback propEachCallback
+ * @param {Object} currentProperties The current Properties being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ */
+
+/**
+ * Iterate over properties in any GeoJSON object, similar to Array.forEach()
+ *
+ * @name propEach
+ * @param {FeatureCollection|Feature} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentProperties, featureIndex)
+ * @returns {void}
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.propEach(features, function (currentProperties, featureIndex) {
+ *   //=currentProperties
+ *   //=featureIndex
+ * });
+ */
+function propEach(geojson, callback) {
+    var i;
+    switch (geojson.type) {
+    case 'FeatureCollection':
+        for (i = 0; i < geojson.features.length; i++) {
+            if (callback(geojson.features[i].properties, i) === false) break;
+        }
+        break;
+    case 'Feature':
+        callback(geojson.properties, 0);
+        break;
+    }
+}
+
+
+/**
+ * Callback for propReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback propReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {*} currentProperties The current Properties being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ */
+
+/**
+ * Reduce properties in any GeoJSON object into a single value,
+ * similar to how Array.reduce works. However, in this case we lazily run
+ * the reduction, so an array of all properties is unnecessary.
+ *
+ * @name propReduce
+ * @param {FeatureCollection|Feature} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentProperties, featureIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.propReduce(features, function (previousValue, currentProperties, featureIndex) {
+ *   //=previousValue
+ *   //=currentProperties
+ *   //=featureIndex
+ *   return currentProperties
+ * });
+ */
+function propReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    propEach(geojson, function (currentProperties, featureIndex) {
+        if (featureIndex === 0 && initialValue === undefined) previousValue = currentProperties;
+        else previousValue = callback(previousValue, currentProperties, featureIndex);
+    });
+    return previousValue;
+}
+
+/**
+ * Callback for featureEach
+ *
+ * @callback featureEachCallback
+ * @param {Feature<any>} currentFeature The current Feature being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ */
+
+/**
+ * Iterate over features in any GeoJSON object, similar to
+ * Array.forEach.
+ *
+ * @name featureEach
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentFeature, featureIndex)
+ * @returns {void}
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {foo: 'bar'}),
+ *   turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.featureEach(features, function (currentFeature, featureIndex) {
+ *   //=currentFeature
+ *   //=featureIndex
+ * });
+ */
+function featureEach(geojson, callback) {
+    if (geojson.type === 'Feature') {
+        callback(geojson, 0);
+    } else if (geojson.type === 'FeatureCollection') {
+        for (var i = 0; i < geojson.features.length; i++) {
+            if (callback(geojson.features[i], i) === false) break;
+        }
+    }
+}
+
+/**
+ * Callback for featureReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback featureReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Feature} currentFeature The current Feature being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ */
+
+/**
+ * Reduce features in any GeoJSON object, similar to Array.reduce().
+ *
+ * @name featureReduce
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentFeature, featureIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {"foo": "bar"}),
+ *   turf.point([36, 53], {"hello": "world"})
+ * ]);
+ *
+ * turf.featureReduce(features, function (previousValue, currentFeature, featureIndex) {
+ *   //=previousValue
+ *   //=currentFeature
+ *   //=featureIndex
+ *   return currentFeature
+ * });
+ */
+function featureReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    featureEach(geojson, function (currentFeature, featureIndex) {
+        if (featureIndex === 0 && initialValue === undefined) previousValue = currentFeature;
+        else previousValue = callback(previousValue, currentFeature, featureIndex);
+    });
+    return previousValue;
+}
+
+/**
+ * Get all coordinates from any GeoJSON object.
+ *
+ * @name coordAll
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @returns {Array<Array<number>>} coordinate position array
+ * @example
+ * var features = turf.featureCollection([
+ *   turf.point([26, 37], {foo: 'bar'}),
+ *   turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * var coords = turf.coordAll(features);
+ * //= [[26, 37], [36, 53]]
+ */
+function coordAll(geojson) {
+    var coords = [];
+    coordEach(geojson, function (coord) {
+        coords.push(coord);
+    });
+    return coords;
+}
+
+/**
+ * Callback for geomEach
+ *
+ * @callback geomEachCallback
+ * @param {Geometry} currentGeometry The current Geometry being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {Object} featureProperties The current Feature Properties being processed.
+ * @param {Array<number>} featureBBox The current Feature BBox being processed.
+ * @param {number|string} featureId The current Feature Id being processed.
+ */
+
+/**
+ * Iterate over each geometry in any GeoJSON object, similar to Array.forEach()
+ *
+ * @name geomEach
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentGeometry, featureIndex, featureProperties, featureBBox, featureId)
+ * @returns {void}
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.geomEach(features, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
+ *   //=currentGeometry
+ *   //=featureIndex
+ *   //=featureProperties
+ *   //=featureBBox
+ *   //=featureId
+ * });
+ */
+function geomEach(geojson, callback) {
+    var i, j, g, geometry, stopG,
+        geometryMaybeCollection,
+        isGeometryCollection,
+        featureProperties,
+        featureBBox,
+        featureId,
+        featureIndex = 0,
+        isFeatureCollection = geojson.type === 'FeatureCollection',
+        isFeature = geojson.type === 'Feature',
+        stop = isFeatureCollection ? geojson.features.length : 1;
+
+    // This logic may look a little weird. The reason why it is that way
+    // is because it's trying to be fast. GeoJSON supports multiple kinds
+    // of objects at its root: FeatureCollection, Features, Geometries.
+    // This function has the responsibility of handling all of them, and that
+    // means that some of the `for` loops you see below actually just don't apply
+    // to certain inputs. For instance, if you give this just a
+    // Point geometry, then both loops are short-circuited and all we do
+    // is gradually rename the input until it's called 'geometry'.
+    //
+    // This also aims to allocate as few resources as possible: just a
+    // few numbers and booleans, rather than any temporary arrays as would
+    // be required with the normalization approach.
+    for (i = 0; i < stop; i++) {
+
+        geometryMaybeCollection = (isFeatureCollection ? geojson.features[i].geometry :
+            (isFeature ? geojson.geometry : geojson));
+        featureProperties = (isFeatureCollection ? geojson.features[i].properties :
+            (isFeature ? geojson.properties : {}));
+        featureBBox = (isFeatureCollection ? geojson.features[i].bbox :
+            (isFeature ? geojson.bbox : undefined));
+        featureId = (isFeatureCollection ? geojson.features[i].id :
+            (isFeature ? geojson.id : undefined));
+        isGeometryCollection = (geometryMaybeCollection) ? geometryMaybeCollection.type === 'GeometryCollection' : false;
+        stopG = isGeometryCollection ? geometryMaybeCollection.geometries.length : 1;
+
+        for (g = 0; g < stopG; g++) {
+            geometry = isGeometryCollection ?
+                geometryMaybeCollection.geometries[g] : geometryMaybeCollection;
+
+            // Handle null Geometry
+            if (geometry === null) {
+                if (callback(null, featureIndex, featureProperties, featureBBox, featureId) === false) return false;
+                continue;
+            }
+            switch (geometry.type) {
+            case 'Point':
+            case 'LineString':
+            case 'MultiPoint':
+            case 'Polygon':
+            case 'MultiLineString':
+            case 'MultiPolygon': {
+                if (callback(geometry, featureIndex, featureProperties, featureBBox, featureId) === false) return false;
+                break;
+            }
+            case 'GeometryCollection': {
+                for (j = 0; j < geometry.geometries.length; j++) {
+                    if (callback(geometry.geometries[j], featureIndex, featureProperties, featureBBox, featureId) === false) return false;
+                }
+                break;
+            }
+            default:
+                throw new Error('Unknown Geometry Type');
+            }
+        }
+        // Only increase `featureIndex` per each feature
+        featureIndex++;
+    }
+}
+
+/**
+ * Callback for geomReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback geomReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Geometry} currentGeometry The current Geometry being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {Object} featureProperties The current Feature Properties being processed.
+ * @param {Array<number>} featureBBox The current Feature BBox being processed.
+ * @param {number|string} featureId The current Feature Id being processed.
+ */
+
+/**
+ * Reduce geometry in any GeoJSON object, similar to Array.reduce().
+ *
+ * @name geomReduce
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.point([36, 53], {hello: 'world'})
+ * ]);
+ *
+ * turf.geomReduce(features, function (previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
+ *   //=previousValue
+ *   //=currentGeometry
+ *   //=featureIndex
+ *   //=featureProperties
+ *   //=featureBBox
+ *   //=featureId
+ *   return currentGeometry
+ * });
+ */
+function geomReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    geomEach(geojson, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
+        if (featureIndex === 0 && initialValue === undefined) previousValue = currentGeometry;
+        else previousValue = callback(previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId);
+    });
+    return previousValue;
+}
+
+/**
+ * Callback for flattenEach
+ *
+ * @callback flattenEachCallback
+ * @param {Feature} currentFeature The current flattened feature being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ */
+
+/**
+ * Iterate over flattened features in any GeoJSON object, similar to
+ * Array.forEach.
+ *
+ * @name flattenEach
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (currentFeature, featureIndex, multiFeatureIndex)
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.multiPoint([[40, 30], [36, 53]], {hello: 'world'})
+ * ]);
+ *
+ * turf.flattenEach(features, function (currentFeature, featureIndex, multiFeatureIndex) {
+ *   //=currentFeature
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ * });
+ */
+function flattenEach(geojson, callback) {
+    geomEach(geojson, function (geometry, featureIndex, properties, bbox, id) {
+        // Callback for single geometry
+        var type = (geometry === null) ? null : geometry.type;
+        switch (type) {
+        case null:
+        case 'Point':
+        case 'LineString':
+        case 'Polygon':
+            if (callback(helpers.feature(geometry, properties, {bbox: bbox, id: id}), featureIndex, 0) === false) return false;
+            return;
+        }
+
+        var geomType;
+
+        // Callback for multi-geometry
+        switch (type) {
+        case 'MultiPoint':
+            geomType = 'Point';
+            break;
+        case 'MultiLineString':
+            geomType = 'LineString';
+            break;
+        case 'MultiPolygon':
+            geomType = 'Polygon';
+            break;
+        }
+
+        for (var multiFeatureIndex = 0; multiFeatureIndex < geometry.coordinates.length; multiFeatureIndex++) {
+            var coordinate = geometry.coordinates[multiFeatureIndex];
+            var geom = {
+                type: geomType,
+                coordinates: coordinate
+            };
+            if (callback(helpers.feature(geom, properties), featureIndex, multiFeatureIndex) === false) return false;
+        }
+    });
+}
+
+/**
+ * Callback for flattenReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback flattenReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Feature} currentFeature The current Feature being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ */
+
+/**
+ * Reduce flattened features in any GeoJSON object, similar to Array.reduce().
+ *
+ * @name flattenReduce
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
+ * @param {Function} callback a method that takes (previousValue, currentFeature, featureIndex, multiFeatureIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var features = turf.featureCollection([
+ *     turf.point([26, 37], {foo: 'bar'}),
+ *     turf.multiPoint([[40, 30], [36, 53]], {hello: 'world'})
+ * ]);
+ *
+ * turf.flattenReduce(features, function (previousValue, currentFeature, featureIndex, multiFeatureIndex) {
+ *   //=previousValue
+ *   //=currentFeature
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   return currentFeature
+ * });
+ */
+function flattenReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    flattenEach(geojson, function (currentFeature, featureIndex, multiFeatureIndex) {
+        if (featureIndex === 0 && multiFeatureIndex === 0 && initialValue === undefined) previousValue = currentFeature;
+        else previousValue = callback(previousValue, currentFeature, featureIndex, multiFeatureIndex);
+    });
+    return previousValue;
+}
+
+/**
+ * Callback for segmentEach
+ *
+ * @callback segmentEachCallback
+ * @param {Feature<LineString>} currentSegment The current Segment being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ * @param {number} geometryIndex The current index of the Geometry being processed.
+ * @param {number} segmentIndex The current index of the Segment being processed.
+ * @returns {void}
+ */
+
+/**
+ * Iterate over 2-vertex line segment in any GeoJSON object, similar to Array.forEach()
+ * (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
+ *
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON
+ * @param {Function} callback a method that takes (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex)
+ * @returns {void}
+ * @example
+ * var polygon = turf.polygon([[[-50, 5], [-40, -10], [-50, -10], [-40, 5], [-50, 5]]]);
+ *
+ * // Iterate over GeoJSON by 2-vertex segments
+ * turf.segmentEach(polygon, function (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
+ *   //=currentSegment
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ *   //=segmentIndex
+ * });
+ *
+ * // Calculate the total number of segments
+ * var total = 0;
+ * turf.segmentEach(polygon, function () {
+ *     total++;
+ * });
+ */
+function segmentEach(geojson, callback) {
+    flattenEach(geojson, function (feature, featureIndex, multiFeatureIndex) {
+        var segmentIndex = 0;
+
+        // Exclude null Geometries
+        if (!feature.geometry) return;
+        // (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
+        var type = feature.geometry.type;
+        if (type === 'Point' || type === 'MultiPoint') return;
+
+        // Generate 2-vertex line segments
+        var previousCoords;
+        var previousFeatureIndex = 0;
+        var previousMultiIndex = 0;
+        var prevGeomIndex = 0;
+        if (coordEach(feature, function (currentCoord, coordIndex, featureIndexCoord, multiPartIndexCoord, geometryIndex) {
+            // Simulating a meta.coordReduce() since `reduce` operations cannot be stopped by returning `false`
+            if (previousCoords === undefined || featureIndex > previousFeatureIndex || multiPartIndexCoord > previousMultiIndex || geometryIndex > prevGeomIndex) {
+                previousCoords = currentCoord;
+                previousFeatureIndex = featureIndex;
+                previousMultiIndex = multiPartIndexCoord;
+                prevGeomIndex = geometryIndex;
+                segmentIndex = 0;
+                return;
+            }
+            var currentSegment = helpers.lineString([previousCoords, currentCoord], feature.properties);
+            if (callback(currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) === false) return false;
+            segmentIndex++;
+            previousCoords = currentCoord;
+        }) === false) return false;
+    });
+}
+
+/**
+ * Callback for segmentReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback segmentReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Feature<LineString>} currentSegment The current Segment being processed.
+ * @param {number} featureIndex The current index of the Feature being processed.
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
+ * @param {number} geometryIndex The current index of the Geometry being processed.
+ * @param {number} segmentIndex The current index of the Segment being processed.
+ */
+
+/**
+ * Reduce 2-vertex line segment in any GeoJSON object, similar to Array.reduce()
+ * (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
+ *
+ * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON
+ * @param {Function} callback a method that takes (previousValue, currentSegment, currentIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {void}
+ * @example
+ * var polygon = turf.polygon([[[-50, 5], [-40, -10], [-50, -10], [-40, 5], [-50, 5]]]);
+ *
+ * // Iterate over GeoJSON by 2-vertex segments
+ * turf.segmentReduce(polygon, function (previousSegment, currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
+ *   //= previousSegment
+ *   //= currentSegment
+ *   //= featureIndex
+ *   //= multiFeatureIndex
+ *   //= geometryIndex
+ *   //= segmentInex
+ *   return currentSegment
+ * });
+ *
+ * // Calculate the total number of segments
+ * var initialValue = 0
+ * var total = turf.segmentReduce(polygon, function (previousValue) {
+ *     previousValue++;
+ *     return previousValue;
+ * }, initialValue);
+ */
+function segmentReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    var started = false;
+    segmentEach(geojson, function (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
+        if (started === false && initialValue === undefined) previousValue = currentSegment;
+        else previousValue = callback(previousValue, currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex);
+        started = true;
+    });
+    return previousValue;
+}
+
+/**
+ * Callback for lineEach
+ *
+ * @callback lineEachCallback
+ * @param {Feature<LineString>} currentLine The current LineString|LinearRing being processed
+ * @param {number} featureIndex The current index of the Feature being processed
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed
+ * @param {number} geometryIndex The current index of the Geometry being processed
+ */
+
+/**
+ * Iterate over line or ring coordinates in LineString, Polygon, MultiLineString, MultiPolygon Features or Geometries,
+ * similar to Array.forEach.
+ *
+ * @name lineEach
+ * @param {Geometry|Feature<LineString|Polygon|MultiLineString|MultiPolygon>} geojson object
+ * @param {Function} callback a method that takes (currentLine, featureIndex, multiFeatureIndex, geometryIndex)
+ * @example
+ * var multiLine = turf.multiLineString([
+ *   [[26, 37], [35, 45]],
+ *   [[36, 53], [38, 50], [41, 55]]
+ * ]);
+ *
+ * turf.lineEach(multiLine, function (currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
+ *   //=currentLine
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ * });
+ */
+function lineEach(geojson, callback) {
+    // validation
+    if (!geojson) throw new Error('geojson is required');
+
+    flattenEach(geojson, function (feature, featureIndex, multiFeatureIndex) {
+        if (feature.geometry === null) return;
+        var type = feature.geometry.type;
+        var coords = feature.geometry.coordinates;
+        switch (type) {
+        case 'LineString':
+            if (callback(feature, featureIndex, multiFeatureIndex, 0, 0) === false) return false;
+            break;
+        case 'Polygon':
+            for (var geometryIndex = 0; geometryIndex < coords.length; geometryIndex++) {
+                if (callback(helpers.lineString(coords[geometryIndex], feature.properties), featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
+            }
+            break;
+        }
+    });
+}
+
+/**
+ * Callback for lineReduce
+ *
+ * The first time the callback function is called, the values provided as arguments depend
+ * on whether the reduce method has an initialValue argument.
+ *
+ * If an initialValue is provided to the reduce method:
+ *  - The previousValue argument is initialValue.
+ *  - The currentValue argument is the value of the first element present in the array.
+ *
+ * If an initialValue is not provided:
+ *  - The previousValue argument is the value of the first element present in the array.
+ *  - The currentValue argument is the value of the second element present in the array.
+ *
+ * @callback lineReduceCallback
+ * @param {*} previousValue The accumulated value previously returned in the last invocation
+ * of the callback, or initialValue, if supplied.
+ * @param {Feature<LineString>} currentLine The current LineString|LinearRing being processed.
+ * @param {number} featureIndex The current index of the Feature being processed
+ * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed
+ * @param {number} geometryIndex The current index of the Geometry being processed
+ */
+
+/**
+ * Reduce features in any GeoJSON object, similar to Array.reduce().
+ *
+ * @name lineReduce
+ * @param {Geometry|Feature<LineString|Polygon|MultiLineString|MultiPolygon>} geojson object
+ * @param {Function} callback a method that takes (previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex)
+ * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
+ * @returns {*} The value that results from the reduction.
+ * @example
+ * var multiPoly = turf.multiPolygon([
+ *   turf.polygon([[[12,48],[2,41],[24,38],[12,48]], [[9,44],[13,41],[13,45],[9,44]]]),
+ *   turf.polygon([[[5, 5], [0, 0], [2, 2], [4, 4], [5, 5]]])
+ * ]);
+ *
+ * turf.lineReduce(multiPoly, function (previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
+ *   //=previousValue
+ *   //=currentLine
+ *   //=featureIndex
+ *   //=multiFeatureIndex
+ *   //=geometryIndex
+ *   return currentLine
+ * });
+ */
+function lineReduce(geojson, callback, initialValue) {
+    var previousValue = initialValue;
+    lineEach(geojson, function (currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
+        if (featureIndex === 0 && initialValue === undefined) previousValue = currentLine;
+        else previousValue = callback(previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex);
+    });
+    return previousValue;
+}
+
+/**
+ * Finds a particular 2-vertex LineString Segment from a GeoJSON using `@turf/meta` indexes.
+ *
+ * Negative indexes are permitted.
+ * Point & MultiPoint will always return null.
+ *
+ * @param {FeatureCollection|Feature|Geometry} geojson Any GeoJSON Feature or Geometry
+ * @param {Object} [options={}] Optional parameters
+ * @param {number} [options.featureIndex=0] Feature Index
+ * @param {number} [options.multiFeatureIndex=0] Multi-Feature Index
+ * @param {number} [options.geometryIndex=0] Geometry Index
+ * @param {number} [options.segmentIndex=0] Segment Index
+ * @param {Object} [options.properties={}] Translate Properties to output LineString
+ * @param {BBox} [options.bbox={}] Translate BBox to output LineString
+ * @param {number|string} [options.id={}] Translate Id to output LineString
+ * @returns {Feature<LineString>} 2-vertex GeoJSON Feature LineString
+ * @example
+ * var multiLine = turf.multiLineString([
+ *     [[10, 10], [50, 30], [30, 40]],
+ *     [[-10, -10], [-50, -30], [-30, -40]]
+ * ]);
+ *
+ * // First Segment (defaults are 0)
+ * turf.findSegment(multiLine);
+ * // => Feature<LineString<[[10, 10], [50, 30]]>>
+ *
+ * // First Segment of 2nd Multi Feature
+ * turf.findSegment(multiLine, {multiFeatureIndex: 1});
+ * // => Feature<LineString<[[-10, -10], [-50, -30]]>>
+ *
+ * // Last Segment of Last Multi Feature
+ * turf.findSegment(multiLine, {multiFeatureIndex: -1, segmentIndex: -1});
+ * // => Feature<LineString<[[-50, -30], [-30, -40]]>>
+ */
+function findSegment(geojson, options) {
+    // Optional Parameters
+    options = options || {};
+    if (!helpers.isObject(options)) throw new Error('options is invalid');
+    var featureIndex = options.featureIndex || 0;
+    var multiFeatureIndex = options.multiFeatureIndex || 0;
+    var geometryIndex = options.geometryIndex || 0;
+    var segmentIndex = options.segmentIndex || 0;
+
+    // Find FeatureIndex
+    var properties = options.properties;
+    var geometry;
+
+    switch (geojson.type) {
+    case 'FeatureCollection':
+        if (featureIndex < 0) featureIndex = geojson.features.length + featureIndex;
+        properties = properties || geojson.features[featureIndex].properties;
+        geometry = geojson.features[featureIndex].geometry;
+        break;
+    case 'Feature':
+        properties = properties || geojson.properties;
+        geometry = geojson.geometry;
+        break;
+    case 'Point':
+    case 'MultiPoint':
+        return null;
+    case 'LineString':
+    case 'Polygon':
+    case 'MultiLineString':
+    case 'MultiPolygon':
+        geometry = geojson;
+        break;
+    default:
+        throw new Error('geojson is invalid');
+    }
+
+    // Find SegmentIndex
+    if (geometry === null) return null;
+    var coords = geometry.coordinates;
+    switch (geometry.type) {
+    case 'Point':
+    case 'MultiPoint':
+        return null;
+    case 'LineString':
+        if (segmentIndex < 0) segmentIndex = coords.length + segmentIndex - 1;
+        return helpers.lineString([coords[segmentIndex], coords[segmentIndex + 1]], properties, options);
+    case 'Polygon':
+        if (geometryIndex < 0) geometryIndex = coords.length + geometryIndex;
+        if (segmentIndex < 0) segmentIndex = coords[geometryIndex].length + segmentIndex - 1;
+        return helpers.lineString([coords[geometryIndex][segmentIndex], coords[geometryIndex][segmentIndex + 1]], properties, options);
+    case 'MultiLineString':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        if (segmentIndex < 0) segmentIndex = coords[multiFeatureIndex].length + segmentIndex - 1;
+        return helpers.lineString([coords[multiFeatureIndex][segmentIndex], coords[multiFeatureIndex][segmentIndex + 1]], properties, options);
+    case 'MultiPolygon':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        if (geometryIndex < 0) geometryIndex = coords[multiFeatureIndex].length + geometryIndex;
+        if (segmentIndex < 0) segmentIndex = coords[multiFeatureIndex][geometryIndex].length - segmentIndex - 1;
+        return helpers.lineString([coords[multiFeatureIndex][geometryIndex][segmentIndex], coords[multiFeatureIndex][geometryIndex][segmentIndex + 1]], properties, options);
+    }
+    throw new Error('geojson is invalid');
+}
+
+/**
+ * Finds a particular Point from a GeoJSON using `@turf/meta` indexes.
+ *
+ * Negative indexes are permitted.
+ *
+ * @param {FeatureCollection|Feature|Geometry} geojson Any GeoJSON Feature or Geometry
+ * @param {Object} [options={}] Optional parameters
+ * @param {number} [options.featureIndex=0] Feature Index
+ * @param {number} [options.multiFeatureIndex=0] Multi-Feature Index
+ * @param {number} [options.geometryIndex=0] Geometry Index
+ * @param {number} [options.coordIndex=0] Coord Index
+ * @param {Object} [options.properties={}] Translate Properties to output Point
+ * @param {BBox} [options.bbox={}] Translate BBox to output Point
+ * @param {number|string} [options.id={}] Translate Id to output Point
+ * @returns {Feature<Point>} 2-vertex GeoJSON Feature Point
+ * @example
+ * var multiLine = turf.multiLineString([
+ *     [[10, 10], [50, 30], [30, 40]],
+ *     [[-10, -10], [-50, -30], [-30, -40]]
+ * ]);
+ *
+ * // First Segment (defaults are 0)
+ * turf.findPoint(multiLine);
+ * // => Feature<Point<[10, 10]>>
+ *
+ * // First Segment of the 2nd Multi-Feature
+ * turf.findPoint(multiLine, {multiFeatureIndex: 1});
+ * // => Feature<Point<[-10, -10]>>
+ *
+ * // Last Segment of last Multi-Feature
+ * turf.findPoint(multiLine, {multiFeatureIndex: -1, coordIndex: -1});
+ * // => Feature<Point<[-30, -40]>>
+ */
+function findPoint(geojson, options) {
+    // Optional Parameters
+    options = options || {};
+    if (!helpers.isObject(options)) throw new Error('options is invalid');
+    var featureIndex = options.featureIndex || 0;
+    var multiFeatureIndex = options.multiFeatureIndex || 0;
+    var geometryIndex = options.geometryIndex || 0;
+    var coordIndex = options.coordIndex || 0;
+
+    // Find FeatureIndex
+    var properties = options.properties;
+    var geometry;
+
+    switch (geojson.type) {
+    case 'FeatureCollection':
+        if (featureIndex < 0) featureIndex = geojson.features.length + featureIndex;
+        properties = properties || geojson.features[featureIndex].properties;
+        geometry = geojson.features[featureIndex].geometry;
+        break;
+    case 'Feature':
+        properties = properties || geojson.properties;
+        geometry = geojson.geometry;
+        break;
+    case 'Point':
+    case 'MultiPoint':
+        return null;
+    case 'LineString':
+    case 'Polygon':
+    case 'MultiLineString':
+    case 'MultiPolygon':
+        geometry = geojson;
+        break;
+    default:
+        throw new Error('geojson is invalid');
+    }
+
+    // Find Coord Index
+    if (geometry === null) return null;
+    var coords = geometry.coordinates;
+    switch (geometry.type) {
+    case 'Point':
+        return helpers.point(coords, properties, options);
+    case 'MultiPoint':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        return helpers.point(coords[multiFeatureIndex], properties, options);
+    case 'LineString':
+        if (coordIndex < 0) coordIndex = coords.length + coordIndex;
+        return helpers.point(coords[coordIndex], properties, options);
+    case 'Polygon':
+        if (geometryIndex < 0) geometryIndex = coords.length + geometryIndex;
+        if (coordIndex < 0) coordIndex = coords[geometryIndex].length + coordIndex;
+        return helpers.point(coords[geometryIndex][coordIndex], properties, options);
+    case 'MultiLineString':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        if (coordIndex < 0) coordIndex = coords[multiFeatureIndex].length + coordIndex;
+        return helpers.point(coords[multiFeatureIndex][coordIndex], properties, options);
+    case 'MultiPolygon':
+        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
+        if (geometryIndex < 0) geometryIndex = coords[multiFeatureIndex].length + geometryIndex;
+        if (coordIndex < 0) coordIndex = coords[multiFeatureIndex][geometryIndex].length - coordIndex;
+        return helpers.point(coords[multiFeatureIndex][geometryIndex][coordIndex], properties, options);
+    }
+    throw new Error('geojson is invalid');
+}
+
+exports.coordEach = coordEach;
+exports.coordReduce = coordReduce;
+exports.propEach = propEach;
+exports.propReduce = propReduce;
+exports.featureEach = featureEach;
+exports.featureReduce = featureReduce;
+exports.coordAll = coordAll;
+exports.geomEach = geomEach;
+exports.geomReduce = geomReduce;
+exports.flattenEach = flattenEach;
+exports.flattenReduce = flattenReduce;
+exports.segmentEach = segmentEach;
+exports.segmentReduce = segmentReduce;
+exports.lineEach = lineEach;
+exports.lineReduce = lineReduce;
+exports.findSegment = findSegment;
+exports.findPoint = findPoint;
+
 
 /***/ }),
 
@@ -10551,6 +14676,27 @@ main.install = function (Vue) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -10606,37 +14752,28 @@ util.inherits = __webpack_require__("P7XM");
 
 util.inherits(Transform, Duplex);
 
-function TransformState(stream) {
-  this.afterTransform = function (er, data) {
-    return afterTransform(stream, er, data);
-  };
-
-  this.needTransform = false;
-  this.transforming = false;
-  this.writecb = null;
-  this.writechunk = null;
-  this.writeencoding = null;
-}
-
-function afterTransform(stream, er, data) {
-  var ts = stream._transformState;
+function afterTransform(er, data) {
+  var ts = this._transformState;
   ts.transforming = false;
 
   var cb = ts.writecb;
 
-  if (!cb) return stream.emit('error', new Error('no writecb in Transform class'));
+  if (!cb) {
+    return this.emit('error', new Error('write callback called multiple times'));
+  }
 
   ts.writechunk = null;
   ts.writecb = null;
 
-  if (data !== null && data !== undefined) stream.push(data);
+  if (data != null) // single equals check for both `null` and `undefined`
+    this.push(data);
 
   cb(er);
 
-  var rs = stream._readableState;
+  var rs = this._readableState;
   rs.reading = false;
   if (rs.needReadable || rs.length < rs.highWaterMark) {
-    stream._read(rs.highWaterMark);
+    this._read(rs.highWaterMark);
   }
 }
 
@@ -10645,10 +14782,14 @@ function Transform(options) {
 
   Duplex.call(this, options);
 
-  this._transformState = new TransformState(this);
-
-  // when the writable side finishes, then flush out anything remaining.
-  var stream = this;
+  this._transformState = {
+    afterTransform: afterTransform.bind(this),
+    needTransform: false,
+    transforming: false,
+    writecb: null,
+    writechunk: null,
+    writeencoding: null
+  };
 
   // start out asking for a readable event once data is transformed.
   this._readableState.needReadable = true;
@@ -10664,11 +14805,20 @@ function Transform(options) {
     if (typeof options.flush === 'function') this._flush = options.flush;
   }
 
-  this.once('prefinish', function () {
-    if (typeof this._flush === 'function') this._flush(function (er) {
-      done(stream, er);
-    });else done(stream);
-  });
+  // When the writable side finishes, then flush out anything remaining.
+  this.on('prefinish', prefinish);
+}
+
+function prefinish() {
+  var _this = this;
+
+  if (typeof this._flush === 'function') {
+    this._flush(function (er, data) {
+      done(_this, er, data);
+    });
+  } else {
+    done(this, null, null);
+  }
 }
 
 Transform.prototype.push = function (chunk, encoding) {
@@ -10687,7 +14837,7 @@ Transform.prototype.push = function (chunk, encoding) {
 // an error, then that'll put the hurt on the whole operation.  If you
 // never call cb(), then you'll never get another chunk.
 Transform.prototype._transform = function (chunk, encoding, cb) {
-  throw new Error('not implemented');
+  throw new Error('_transform() is not implemented');
 };
 
 Transform.prototype._write = function (chunk, encoding, cb) {
@@ -10717,17 +14867,26 @@ Transform.prototype._read = function (n) {
   }
 };
 
-function done(stream, er) {
+Transform.prototype._destroy = function (err, cb) {
+  var _this2 = this;
+
+  Duplex.prototype._destroy.call(this, err, function (err2) {
+    cb(err2);
+    _this2.emit('close');
+  });
+};
+
+function done(stream, er, data) {
   if (er) return stream.emit('error', er);
+
+  if (data != null) // single equals check for both `null` and `undefined`
+    stream.push(data);
 
   // if there's nothing in the write buffer, then that means
   // that nothing more will ever be provided
-  var ws = stream._writableState;
-  var ts = stream._transformState;
+  if (stream._writableState.length) throw new Error('Calling transform done when ws.length != 0');
 
-  if (ws.length) throw new Error('calling transform done when ws.length != 0');
-
-  if (ts.transforming) throw new Error('calling transform done when still transforming');
+  if (stream._transformState.transforming) throw new Error('Calling transform done when still transforming');
 
   return stream.push(null);
 }
@@ -11270,6 +15429,14 @@ function scrollIntoView(container, selected) {
 
 /***/ }),
 
+/***/ "LGOv":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("3BRs");
+
+
+/***/ }),
+
 /***/ "MVZn":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11533,7 +15700,7 @@ module.exports = _objectSpread;
       typeof Buffer.isBuffer === 'function' &&
       Buffer.isBuffer(data)) {
       if (!this._decoder) {
-        var SD = __webpack_require__("qiJe").StringDecoder
+        var SD = __webpack_require__("fXKp").StringDecoder
         this._decoder = new SD('utf8')
       }
       data = this._decoder.write(data)
@@ -12878,10 +17045,744 @@ module.exports = {"textColor":"#fff","background":"rgb(0, 0, 0,0.6)","colorGroup
 
 /***/ }),
 
-/***/ "MkUS":
-/***/ (function(module, exports) {
+/***/ "NP9J":
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_MkUS__;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @module helpers
+ */
+/**
+ * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
+ *
+ * @memberof helpers
+ * @type {number}
+ */
+exports.earthRadius = 6371008.8;
+/**
+ * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.factors = {
+    centimeters: exports.earthRadius * 100,
+    centimetres: exports.earthRadius * 100,
+    degrees: exports.earthRadius / 111325,
+    feet: exports.earthRadius * 3.28084,
+    inches: exports.earthRadius * 39.370,
+    kilometers: exports.earthRadius / 1000,
+    kilometres: exports.earthRadius / 1000,
+    meters: exports.earthRadius,
+    metres: exports.earthRadius,
+    miles: exports.earthRadius / 1609.344,
+    millimeters: exports.earthRadius * 1000,
+    millimetres: exports.earthRadius * 1000,
+    nauticalmiles: exports.earthRadius / 1852,
+    radians: 1,
+    yards: exports.earthRadius / 1.0936,
+};
+/**
+ * Units of measurement factors based on 1 meter.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.unitsFactors = {
+    centimeters: 100,
+    centimetres: 100,
+    degrees: 1 / 111325,
+    feet: 3.28084,
+    inches: 39.370,
+    kilometers: 1 / 1000,
+    kilometres: 1 / 1000,
+    meters: 1,
+    metres: 1,
+    miles: 1 / 1609.344,
+    millimeters: 1000,
+    millimetres: 1000,
+    nauticalmiles: 1 / 1852,
+    radians: 1 / exports.earthRadius,
+    yards: 1 / 1.0936,
+};
+/**
+ * Area of measurement factors based on 1 square meter.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.areaFactors = {
+    acres: 0.000247105,
+    centimeters: 10000,
+    centimetres: 10000,
+    feet: 10.763910417,
+    inches: 1550.003100006,
+    kilometers: 0.000001,
+    kilometres: 0.000001,
+    meters: 1,
+    metres: 1,
+    miles: 3.86e-7,
+    millimeters: 1000000,
+    millimetres: 1000000,
+    yards: 1.195990046,
+};
+/**
+ * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
+ *
+ * @name feature
+ * @param {Geometry} geometry input geometry
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature} a GeoJSON Feature
+ * @example
+ * var geometry = {
+ *   "type": "Point",
+ *   "coordinates": [110, 50]
+ * };
+ *
+ * var feature = turf.feature(geometry);
+ *
+ * //=feature
+ */
+function feature(geom, properties, options) {
+    if (options === void 0) { options = {}; }
+    var feat = { type: "Feature" };
+    if (options.id === 0 || options.id) {
+        feat.id = options.id;
+    }
+    if (options.bbox) {
+        feat.bbox = options.bbox;
+    }
+    feat.properties = properties || {};
+    feat.geometry = geom;
+    return feat;
+}
+exports.feature = feature;
+/**
+ * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
+ * For GeometryCollection type use `helpers.geometryCollection`
+ *
+ * @name geometry
+ * @param {string} type Geometry Type
+ * @param {Array<any>} coordinates Coordinates
+ * @param {Object} [options={}] Optional Parameters
+ * @returns {Geometry} a GeoJSON Geometry
+ * @example
+ * var type = "Point";
+ * var coordinates = [110, 50];
+ * var geometry = turf.geometry(type, coordinates);
+ * // => geometry
+ */
+function geometry(type, coordinates, options) {
+    if (options === void 0) { options = {}; }
+    switch (type) {
+        case "Point": return point(coordinates).geometry;
+        case "LineString": return lineString(coordinates).geometry;
+        case "Polygon": return polygon(coordinates).geometry;
+        case "MultiPoint": return multiPoint(coordinates).geometry;
+        case "MultiLineString": return multiLineString(coordinates).geometry;
+        case "MultiPolygon": return multiPolygon(coordinates).geometry;
+        default: throw new Error(type + " is invalid");
+    }
+}
+exports.geometry = geometry;
+/**
+ * Creates a {@link Point} {@link Feature} from a Position.
+ *
+ * @name point
+ * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<Point>} a Point feature
+ * @example
+ * var point = turf.point([-75.343, 39.984]);
+ *
+ * //=point
+ */
+function point(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "Point",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.point = point;
+/**
+ * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
+ *
+ * @name points
+ * @param {Array<Array<number>>} coordinates an array of Points
+ * @param {Object} [properties={}] Translate these properties to each Feature
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
+ * associated with the FeatureCollection
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<Point>} Point Feature
+ * @example
+ * var points = turf.points([
+ *   [-75, 39],
+ *   [-80, 45],
+ *   [-78, 50]
+ * ]);
+ *
+ * //=points
+ */
+function points(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return point(coords, properties);
+    }), options);
+}
+exports.points = points;
+/**
+ * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
+ *
+ * @name polygon
+ * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<Polygon>} Polygon Feature
+ * @example
+ * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
+ *
+ * //=polygon
+ */
+function polygon(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
+        var ring = coordinates_1[_i];
+        if (ring.length < 4) {
+            throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
+        }
+        for (var j = 0; j < ring[ring.length - 1].length; j++) {
+            // Check if first point of Polygon contains two numbers
+            if (ring[ring.length - 1][j] !== ring[0][j]) {
+                throw new Error("First and last Position are not equivalent.");
+            }
+        }
+    }
+    var geom = {
+        type: "Polygon",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.polygon = polygon;
+/**
+ * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
+ *
+ * @name polygons
+ * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
+ * @example
+ * var polygons = turf.polygons([
+ *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
+ *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
+ * ]);
+ *
+ * //=polygons
+ */
+function polygons(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return polygon(coords, properties);
+    }), options);
+}
+exports.polygons = polygons;
+/**
+ * Creates a {@link LineString} {@link Feature} from an Array of Positions.
+ *
+ * @name lineString
+ * @param {Array<Array<number>>} coordinates an array of Positions
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<LineString>} LineString Feature
+ * @example
+ * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
+ * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
+ *
+ * //=linestring1
+ * //=linestring2
+ */
+function lineString(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    if (coordinates.length < 2) {
+        throw new Error("coordinates must be an array of two or more positions");
+    }
+    var geom = {
+        type: "LineString",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.lineString = lineString;
+/**
+ * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
+ *
+ * @name lineStrings
+ * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
+ * associated with the FeatureCollection
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<LineString>} LineString FeatureCollection
+ * @example
+ * var linestrings = turf.lineStrings([
+ *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
+ *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
+ * ]);
+ *
+ * //=linestrings
+ */
+function lineStrings(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return lineString(coords, properties);
+    }), options);
+}
+exports.lineStrings = lineStrings;
+/**
+ * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
+ *
+ * @name featureCollection
+ * @param {Feature[]} features input features
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {FeatureCollection} FeatureCollection of Features
+ * @example
+ * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
+ * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
+ * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
+ *
+ * var collection = turf.featureCollection([
+ *   locationA,
+ *   locationB,
+ *   locationC
+ * ]);
+ *
+ * //=collection
+ */
+function featureCollection(features, options) {
+    if (options === void 0) { options = {}; }
+    var fc = { type: "FeatureCollection" };
+    if (options.id) {
+        fc.id = options.id;
+    }
+    if (options.bbox) {
+        fc.bbox = options.bbox;
+    }
+    fc.features = features;
+    return fc;
+}
+exports.featureCollection = featureCollection;
+/**
+ * Creates a {@link Feature<MultiLineString>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiLineString
+ * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiLineString>} a MultiLineString feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
+ *
+ * //=multiLine
+ */
+function multiLineString(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiLineString",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiLineString = multiLineString;
+/**
+ * Creates a {@link Feature<MultiPoint>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiPoint
+ * @param {Array<Array<number>>} coordinates an array of Positions
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiPoint>} a MultiPoint feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiPt = turf.multiPoint([[0,0],[10,10]]);
+ *
+ * //=multiPt
+ */
+function multiPoint(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiPoint",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiPoint = multiPoint;
+/**
+ * Creates a {@link Feature<MultiPolygon>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiPolygon
+ * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiPolygon>} a multipolygon feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
+ *
+ * //=multiPoly
+ *
+ */
+function multiPolygon(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiPolygon",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiPolygon = multiPolygon;
+/**
+ * Creates a {@link Feature<GeometryCollection>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name geometryCollection
+ * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
+ * @example
+ * var pt = turf.geometry("Point", [100, 0]);
+ * var line = turf.geometry("LineString", [[101, 0], [102, 1]]);
+ * var collection = turf.geometryCollection([pt, line]);
+ *
+ * // => collection
+ */
+function geometryCollection(geometries, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "GeometryCollection",
+        geometries: geometries,
+    };
+    return feature(geom, properties, options);
+}
+exports.geometryCollection = geometryCollection;
+/**
+ * Round number to precision
+ *
+ * @param {number} num Number
+ * @param {number} [precision=0] Precision
+ * @returns {number} rounded number
+ * @example
+ * turf.round(120.4321)
+ * //=120
+ *
+ * turf.round(120.4321, 2)
+ * //=120.43
+ */
+function round(num, precision) {
+    if (precision === void 0) { precision = 0; }
+    if (precision && !(precision >= 0)) {
+        throw new Error("precision must be a positive number");
+    }
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(num * multiplier) / multiplier;
+}
+exports.round = round;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @name radiansToLength
+ * @param {number} radians in radians across the sphere
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} distance
+ */
+function radiansToLength(radians, units) {
+    if (units === void 0) { units = "kilometers"; }
+    var factor = exports.factors[units];
+    if (!factor) {
+        throw new Error(units + " units is invalid");
+    }
+    return radians * factor;
+}
+exports.radiansToLength = radiansToLength;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @name lengthToRadians
+ * @param {number} distance in real units
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} radians
+ */
+function lengthToRadians(distance, units) {
+    if (units === void 0) { units = "kilometers"; }
+    var factor = exports.factors[units];
+    if (!factor) {
+        throw new Error(units + " units is invalid");
+    }
+    return distance / factor;
+}
+exports.lengthToRadians = lengthToRadians;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
+ *
+ * @name lengthToDegrees
+ * @param {number} distance in real units
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} degrees
+ */
+function lengthToDegrees(distance, units) {
+    return radiansToDegrees(lengthToRadians(distance, units));
+}
+exports.lengthToDegrees = lengthToDegrees;
+/**
+ * Converts any bearing angle from the north line direction (positive clockwise)
+ * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
+ *
+ * @name bearingToAzimuth
+ * @param {number} bearing angle, between -180 and +180 degrees
+ * @returns {number} angle between 0 and 360 degrees
+ */
+function bearingToAzimuth(bearing) {
+    var angle = bearing % 360;
+    if (angle < 0) {
+        angle += 360;
+    }
+    return angle;
+}
+exports.bearingToAzimuth = bearingToAzimuth;
+/**
+ * Converts an angle in radians to degrees
+ *
+ * @name radiansToDegrees
+ * @param {number} radians angle in radians
+ * @returns {number} degrees between 0 and 360 degrees
+ */
+function radiansToDegrees(radians) {
+    var degrees = radians % (2 * Math.PI);
+    return degrees * 180 / Math.PI;
+}
+exports.radiansToDegrees = radiansToDegrees;
+/**
+ * Converts an angle in degrees to radians
+ *
+ * @name degreesToRadians
+ * @param {number} degrees angle between 0 and 360 degrees
+ * @returns {number} angle in radians
+ */
+function degreesToRadians(degrees) {
+    var radians = degrees % 360;
+    return radians * Math.PI / 180;
+}
+exports.degreesToRadians = degreesToRadians;
+/**
+ * Converts a length to the requested unit.
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @param {number} length to be converted
+ * @param {Units} [originalUnit="kilometers"] of the length
+ * @param {Units} [finalUnit="kilometers"] returned unit
+ * @returns {number} the converted length
+ */
+function convertLength(length, originalUnit, finalUnit) {
+    if (originalUnit === void 0) { originalUnit = "kilometers"; }
+    if (finalUnit === void 0) { finalUnit = "kilometers"; }
+    if (!(length >= 0)) {
+        throw new Error("length must be a positive number");
+    }
+    return radiansToLength(lengthToRadians(length, originalUnit), finalUnit);
+}
+exports.convertLength = convertLength;
+/**
+ * Converts a area to the requested unit.
+ * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
+ * @param {number} area to be converted
+ * @param {Units} [originalUnit="meters"] of the distance
+ * @param {Units} [finalUnit="kilometers"] returned unit
+ * @returns {number} the converted distance
+ */
+function convertArea(area, originalUnit, finalUnit) {
+    if (originalUnit === void 0) { originalUnit = "meters"; }
+    if (finalUnit === void 0) { finalUnit = "kilometers"; }
+    if (!(area >= 0)) {
+        throw new Error("area must be a positive number");
+    }
+    var startFactor = exports.areaFactors[originalUnit];
+    if (!startFactor) {
+        throw new Error("invalid original units");
+    }
+    var finalFactor = exports.areaFactors[finalUnit];
+    if (!finalFactor) {
+        throw new Error("invalid final units");
+    }
+    return (area / startFactor) * finalFactor;
+}
+exports.convertArea = convertArea;
+/**
+ * isNumber
+ *
+ * @param {*} num Number to validate
+ * @returns {boolean} true/false
+ * @example
+ * turf.isNumber(123)
+ * //=true
+ * turf.isNumber('foo')
+ * //=false
+ */
+function isNumber(num) {
+    return !isNaN(num) && num !== null && !Array.isArray(num) && !/^\s*$/.test(num);
+}
+exports.isNumber = isNumber;
+/**
+ * isObject
+ *
+ * @param {*} input variable to validate
+ * @returns {boolean} true/false
+ * @example
+ * turf.isObject({elevation: 10})
+ * //=true
+ * turf.isObject('foo')
+ * //=false
+ */
+function isObject(input) {
+    return (!!input) && (input.constructor === Object);
+}
+exports.isObject = isObject;
+/**
+ * Validate BBox
+ *
+ * @private
+ * @param {Array<number>} bbox BBox to validate
+ * @returns {void}
+ * @throws Error if BBox is not valid
+ * @example
+ * validateBBox([-180, -40, 110, 50])
+ * //=OK
+ * validateBBox([-180, -40])
+ * //=Error
+ * validateBBox('Foo')
+ * //=Error
+ * validateBBox(5)
+ * //=Error
+ * validateBBox(null)
+ * //=Error
+ * validateBBox(undefined)
+ * //=Error
+ */
+function validateBBox(bbox) {
+    if (!bbox) {
+        throw new Error("bbox is required");
+    }
+    if (!Array.isArray(bbox)) {
+        throw new Error("bbox must be an Array");
+    }
+    if (bbox.length !== 4 && bbox.length !== 6) {
+        throw new Error("bbox must be an Array of 4 or 6 numbers");
+    }
+    bbox.forEach(function (num) {
+        if (!isNumber(num)) {
+            throw new Error("bbox must only contain numbers");
+        }
+    });
+}
+exports.validateBBox = validateBBox;
+/**
+ * Validate Id
+ *
+ * @private
+ * @param {string|number} id Id to validate
+ * @returns {void}
+ * @throws Error if Id is not valid
+ * @example
+ * validateId([-180, -40, 110, 50])
+ * //=Error
+ * validateId([-180, -40])
+ * //=Error
+ * validateId('Foo')
+ * //=OK
+ * validateId(5)
+ * //=OK
+ * validateId(null)
+ * //=Error
+ * validateId(undefined)
+ * //=Error
+ */
+function validateId(id) {
+    if (!id) {
+        throw new Error("id is required");
+    }
+    if (["string", "number"].indexOf(typeof id) === -1) {
+        throw new Error("id must be a number or a string");
+    }
+}
+exports.validateId = validateId;
+// Deprecated methods
+function radians2degrees() {
+    throw new Error("method has been renamed to `radiansToDegrees`");
+}
+exports.radians2degrees = radians2degrees;
+function degrees2radians() {
+    throw new Error("method has been renamed to `degreesToRadians`");
+}
+exports.degrees2radians = degrees2radians;
+function distanceToDegrees() {
+    throw new Error("method has been renamed to `lengthToDegrees`");
+}
+exports.distanceToDegrees = distanceToDegrees;
+function distanceToRadians() {
+    throw new Error("method has been renamed to `lengthToRadians`");
+}
+exports.distanceToRadians = distanceToRadians;
+function radiansToDistance() {
+    throw new Error("method has been renamed to `radiansToLength`");
+}
+exports.radiansToDistance = radiansToDistance;
+function bearingToAngle() {
+    throw new Error("method has been renamed to `bearingToAzimuth`");
+}
+exports.bearingToAngle = bearingToAngle;
+function convertDistance() {
+    throw new Error("method has been renamed to `convertLength`");
+}
+exports.convertDistance = convertDistance;
+
 
 /***/ }),
 
@@ -12905,7 +17806,7 @@ module.exports = _getPrototypeOf;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var meta_1 = __webpack_require__("cWyK");
+var meta_1 = __webpack_require__("G/qV");
 // Note: change RADIUS => earthRadius
 var RADIUS = 6378137;
 /**
@@ -13140,14 +18041,6 @@ function objectToString(o) {
 }
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("tjlA").Buffer))
-
-/***/ }),
-
-/***/ "P+34":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("sZro")
-
 
 /***/ }),
 
@@ -13552,6 +18445,14 @@ function getFirstComponentChild(children) {
     return c && c.tag;
   })[0];
 };
+
+/***/ }),
+
+/***/ "QpuX":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("+qE3").EventEmitter;
+
 
 /***/ }),
 
@@ -14179,6 +19080,87 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "RoFp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*<replacement>*/
+
+var pna = __webpack_require__("lm0R");
+/*</replacement>*/
+
+// undocumented cb() API, needed for core, not for public API
+function destroy(err, cb) {
+  var _this = this;
+
+  var readableDestroyed = this._readableState && this._readableState.destroyed;
+  var writableDestroyed = this._writableState && this._writableState.destroyed;
+
+  if (readableDestroyed || writableDestroyed) {
+    if (cb) {
+      cb(err);
+    } else if (err && (!this._writableState || !this._writableState.errorEmitted)) {
+      pna.nextTick(emitErrorNT, this, err);
+    }
+    return this;
+  }
+
+  // we set destroyed to true before firing error callbacks in order
+  // to make it re-entrance safe in case destroy() is called within callbacks
+
+  if (this._readableState) {
+    this._readableState.destroyed = true;
+  }
+
+  // if this is a duplex stream mark the writable part as destroyed as well
+  if (this._writableState) {
+    this._writableState.destroyed = true;
+  }
+
+  this._destroy(err || null, function (err) {
+    if (!cb && err) {
+      pna.nextTick(emitErrorNT, _this, err);
+      if (_this._writableState) {
+        _this._writableState.errorEmitted = true;
+      }
+    } else if (cb) {
+      cb(err);
+    }
+  });
+
+  return this;
+}
+
+function undestroy() {
+  if (this._readableState) {
+    this._readableState.destroyed = false;
+    this._readableState.reading = false;
+    this._readableState.ended = false;
+    this._readableState.endEmitted = false;
+  }
+
+  if (this._writableState) {
+    this._writableState.destroyed = false;
+    this._writableState.ended = false;
+    this._writableState.ending = false;
+    this._writableState.finished = false;
+    this._writableState.errorEmitted = false;
+  }
+}
+
+function emitErrorNT(self, err) {
+  self.emit('error', err);
+}
+
+module.exports = {
+  destroy: destroy,
+  undestroy: undestroy
+};
 
 /***/ }),
 
@@ -16710,14 +21692,6 @@ src_select.install = function (Vue) {
 
 /***/ }),
 
-/***/ "TuX4":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("3BRs")
-
-
-/***/ }),
-
 /***/ "UShQ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17695,6 +22669,92 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
 /***/ }),
 
+/***/ "Xhqo":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Buffer = __webpack_require__("hwdV").Buffer;
+var util = __webpack_require__(2);
+
+function copyBuffer(src, target, offset) {
+  src.copy(target, offset);
+}
+
+module.exports = function () {
+  function BufferList() {
+    _classCallCheck(this, BufferList);
+
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  BufferList.prototype.push = function push(v) {
+    var entry = { data: v, next: null };
+    if (this.length > 0) this.tail.next = entry;else this.head = entry;
+    this.tail = entry;
+    ++this.length;
+  };
+
+  BufferList.prototype.unshift = function unshift(v) {
+    var entry = { data: v, next: this.head };
+    if (this.length === 0) this.tail = entry;
+    this.head = entry;
+    ++this.length;
+  };
+
+  BufferList.prototype.shift = function shift() {
+    if (this.length === 0) return;
+    var ret = this.head.data;
+    if (this.length === 1) this.head = this.tail = null;else this.head = this.head.next;
+    --this.length;
+    return ret;
+  };
+
+  BufferList.prototype.clear = function clear() {
+    this.head = this.tail = null;
+    this.length = 0;
+  };
+
+  BufferList.prototype.join = function join(s) {
+    if (this.length === 0) return '';
+    var p = this.head;
+    var ret = '' + p.data;
+    while (p = p.next) {
+      ret += s + p.data;
+    }return ret;
+  };
+
+  BufferList.prototype.concat = function concat(n) {
+    if (this.length === 0) return Buffer.alloc(0);
+    if (this.length === 1) return this.head.data;
+    var ret = Buffer.allocUnsafe(n >>> 0);
+    var p = this.head;
+    var i = 0;
+    while (p) {
+      copyBuffer(p.data, ret, i);
+      i += p.data.length;
+      p = p.next;
+    }
+    return ret;
+  };
+
+  return BufferList;
+}();
+
+if (util && util.inspect && util.inspect.custom) {
+  module.exports.prototype[util.inspect.custom] = function () {
+    var obj = util.inspect({ length: this.length });
+    return this.constructor.name + ' ' + obj;
+  };
+}
+
+/***/ }),
+
 /***/ "Xrjk":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17705,7 +22765,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var distance_1 = __importDefault(__webpack_require__("j3ZU"));
-var meta_1 = __webpack_require__("cWyK");
+var meta_1 = __webpack_require__("6mXm");
 /**
  * Takes a {@link GeoJSON} and measures its length in the specified units, {@link (Multi)Point}'s distance are ignored.
  *
@@ -19075,25 +24135,6 @@ exports.default = {
     }
   }
 };
-
-/***/ }),
-
-/***/ "ac9z":
-/***/ (function(module, exports, __webpack_require__) {
-
-var Stream = (function (){
-  try {
-    return __webpack_require__("1IWx"); // hack to fix a circular dependency issue when used with browserify
-  } catch(_){}
-}());
-exports = module.exports = __webpack_require__("rXFu");
-exports.Stream = Stream || exports;
-exports.Readable = exports;
-exports.Writable = __webpack_require__("3BRs");
-exports.Duplex = __webpack_require__("sZro");
-exports.Transform = __webpack_require__("J78i");
-exports.PassThrough = __webpack_require__("eA/Y");
-
 
 /***/ }),
 
@@ -21216,6 +26257,27 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_dz_5__;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -21666,6 +26728,309 @@ checkbox_group.install = function (Vue) {
 /***/ })
 
 /******/ });
+
+/***/ }),
+
+/***/ "fXKp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+/*<replacement>*/
+
+var Buffer = __webpack_require__("hwdV").Buffer;
+/*</replacement>*/
+
+var isEncoding = Buffer.isEncoding || function (encoding) {
+  encoding = '' + encoding;
+  switch (encoding && encoding.toLowerCase()) {
+    case 'hex':case 'utf8':case 'utf-8':case 'ascii':case 'binary':case 'base64':case 'ucs2':case 'ucs-2':case 'utf16le':case 'utf-16le':case 'raw':
+      return true;
+    default:
+      return false;
+  }
+};
+
+function _normalizeEncoding(enc) {
+  if (!enc) return 'utf8';
+  var retried;
+  while (true) {
+    switch (enc) {
+      case 'utf8':
+      case 'utf-8':
+        return 'utf8';
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return 'utf16le';
+      case 'latin1':
+      case 'binary':
+        return 'latin1';
+      case 'base64':
+      case 'ascii':
+      case 'hex':
+        return enc;
+      default:
+        if (retried) return; // undefined
+        enc = ('' + enc).toLowerCase();
+        retried = true;
+    }
+  }
+};
+
+// Do not cache `Buffer.isEncoding` when checking encoding names as some
+// modules monkey-patch it to support additional encodings
+function normalizeEncoding(enc) {
+  var nenc = _normalizeEncoding(enc);
+  if (typeof nenc !== 'string' && (Buffer.isEncoding === isEncoding || !isEncoding(enc))) throw new Error('Unknown encoding: ' + enc);
+  return nenc || enc;
+}
+
+// StringDecoder provides an interface for efficiently splitting a series of
+// buffers into a series of JS strings without breaking apart multi-byte
+// characters.
+exports.StringDecoder = StringDecoder;
+function StringDecoder(encoding) {
+  this.encoding = normalizeEncoding(encoding);
+  var nb;
+  switch (this.encoding) {
+    case 'utf16le':
+      this.text = utf16Text;
+      this.end = utf16End;
+      nb = 4;
+      break;
+    case 'utf8':
+      this.fillLast = utf8FillLast;
+      nb = 4;
+      break;
+    case 'base64':
+      this.text = base64Text;
+      this.end = base64End;
+      nb = 3;
+      break;
+    default:
+      this.write = simpleWrite;
+      this.end = simpleEnd;
+      return;
+  }
+  this.lastNeed = 0;
+  this.lastTotal = 0;
+  this.lastChar = Buffer.allocUnsafe(nb);
+}
+
+StringDecoder.prototype.write = function (buf) {
+  if (buf.length === 0) return '';
+  var r;
+  var i;
+  if (this.lastNeed) {
+    r = this.fillLast(buf);
+    if (r === undefined) return '';
+    i = this.lastNeed;
+    this.lastNeed = 0;
+  } else {
+    i = 0;
+  }
+  if (i < buf.length) return r ? r + this.text(buf, i) : this.text(buf, i);
+  return r || '';
+};
+
+StringDecoder.prototype.end = utf8End;
+
+// Returns only complete characters in a Buffer
+StringDecoder.prototype.text = utf8Text;
+
+// Attempts to complete a partial non-UTF-8 character using bytes from a Buffer
+StringDecoder.prototype.fillLast = function (buf) {
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);
+  this.lastNeed -= buf.length;
+};
+
+// Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a
+// continuation byte. If an invalid byte is detected, -2 is returned.
+function utf8CheckByte(byte) {
+  if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;
+  return byte >> 6 === 0x02 ? -1 : -2;
+}
+
+// Checks at most 3 bytes at the end of a Buffer in order to detect an
+// incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)
+// needed to complete the UTF-8 character (if applicable) are returned.
+function utf8CheckIncomplete(self, buf, i) {
+  var j = buf.length - 1;
+  if (j < i) return 0;
+  var nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 1;
+    return nb;
+  }
+  if (--j < i || nb === -2) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 2;
+    return nb;
+  }
+  if (--j < i || nb === -2) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) {
+      if (nb === 2) nb = 0;else self.lastNeed = nb - 3;
+    }
+    return nb;
+  }
+  return 0;
+}
+
+// Validates as many continuation bytes for a multi-byte UTF-8 character as
+// needed or are available. If we see a non-continuation byte where we expect
+// one, we "replace" the validated continuation bytes we've seen so far with
+// a single UTF-8 replacement character ('\ufffd'), to match v8's UTF-8 decoding
+// behavior. The continuation byte check is included three times in the case
+// where all of the continuation bytes for a character exist in the same buffer.
+// It is also done this way as a slight performance increase instead of using a
+// loop.
+function utf8CheckExtraBytes(self, buf, p) {
+  if ((buf[0] & 0xC0) !== 0x80) {
+    self.lastNeed = 0;
+    return '\ufffd';
+  }
+  if (self.lastNeed > 1 && buf.length > 1) {
+    if ((buf[1] & 0xC0) !== 0x80) {
+      self.lastNeed = 1;
+      return '\ufffd';
+    }
+    if (self.lastNeed > 2 && buf.length > 2) {
+      if ((buf[2] & 0xC0) !== 0x80) {
+        self.lastNeed = 2;
+        return '\ufffd';
+      }
+    }
+  }
+}
+
+// Attempts to complete a multi-byte UTF-8 character using bytes from a Buffer.
+function utf8FillLast(buf) {
+  var p = this.lastTotal - this.lastNeed;
+  var r = utf8CheckExtraBytes(this, buf, p);
+  if (r !== undefined) return r;
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, p, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, p, 0, buf.length);
+  this.lastNeed -= buf.length;
+}
+
+// Returns all complete UTF-8 characters in a Buffer. If the Buffer ended on a
+// partial character, the character's bytes are buffered until the required
+// number of bytes are available.
+function utf8Text(buf, i) {
+  var total = utf8CheckIncomplete(this, buf, i);
+  if (!this.lastNeed) return buf.toString('utf8', i);
+  this.lastTotal = total;
+  var end = buf.length - (total - this.lastNeed);
+  buf.copy(this.lastChar, 0, end);
+  return buf.toString('utf8', i, end);
+}
+
+// For UTF-8, a replacement character is added when ending on a partial
+// character.
+function utf8End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + '\ufffd';
+  return r;
+}
+
+// UTF-16LE typically needs two bytes per character, but even if we have an even
+// number of bytes available, we need to check if we end on a leading/high
+// surrogate. In that case, we need to wait for the next two bytes in order to
+// decode the last character properly.
+function utf16Text(buf, i) {
+  if ((buf.length - i) % 2 === 0) {
+    var r = buf.toString('utf16le', i);
+    if (r) {
+      var c = r.charCodeAt(r.length - 1);
+      if (c >= 0xD800 && c <= 0xDBFF) {
+        this.lastNeed = 2;
+        this.lastTotal = 4;
+        this.lastChar[0] = buf[buf.length - 2];
+        this.lastChar[1] = buf[buf.length - 1];
+        return r.slice(0, -1);
+      }
+    }
+    return r;
+  }
+  this.lastNeed = 1;
+  this.lastTotal = 2;
+  this.lastChar[0] = buf[buf.length - 1];
+  return buf.toString('utf16le', i, buf.length - 1);
+}
+
+// For UTF-16LE we do not explicitly append special replacement characters if we
+// end on a partial character, we simply let v8 handle that.
+function utf16End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) {
+    var end = this.lastTotal - this.lastNeed;
+    return r + this.lastChar.toString('utf16le', 0, end);
+  }
+  return r;
+}
+
+function base64Text(buf, i) {
+  var n = (buf.length - i) % 3;
+  if (n === 0) return buf.toString('base64', i);
+  this.lastNeed = 3 - n;
+  this.lastTotal = 3;
+  if (n === 1) {
+    this.lastChar[0] = buf[buf.length - 1];
+  } else {
+    this.lastChar[0] = buf[buf.length - 2];
+    this.lastChar[1] = buf[buf.length - 1];
+  }
+  return buf.toString('base64', i, buf.length - n);
+}
+
+function base64End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + this.lastChar.toString('base64', 0, 3 - this.lastNeed);
+  return r;
+}
+
+// Pass bytes on through for single-byte encodings (e.g. ascii, latin1, hex)
+function simpleWrite(buf) {
+  return buf.toString(this.encoding);
+}
+
+function simpleEnd(buf) {
+  return buf && buf.length ? this.write(buf) : '';
+}
 
 /***/ }),
 
@@ -23200,7 +28565,7 @@ module.exports = __webpack_require__("f03z");
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var invariant_1 = __webpack_require__("AKIq");
-var helpers_1 = __webpack_require__("/rf6");
+var helpers_1 = __webpack_require__("NP9J");
 //http://en.wikipedia.org/wiki/Haversine_formula
 //http://www.movable-type.co.uk/scripts/latlong.html
 /**
@@ -23239,13 +28604,6 @@ function distance(from, to, options) {
 }
 exports.default = distance;
 
-
-/***/ }),
-
-/***/ "j5W7":
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_j5W7__;
 
 /***/ }),
 
@@ -23629,6 +28987,747 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 /***/ }),
 
+/***/ "ktfA":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @module helpers
+ */
+/**
+ * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
+ *
+ * @memberof helpers
+ * @type {number}
+ */
+exports.earthRadius = 6371008.8;
+/**
+ * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.factors = {
+    centimeters: exports.earthRadius * 100,
+    centimetres: exports.earthRadius * 100,
+    degrees: exports.earthRadius / 111325,
+    feet: exports.earthRadius * 3.28084,
+    inches: exports.earthRadius * 39.370,
+    kilometers: exports.earthRadius / 1000,
+    kilometres: exports.earthRadius / 1000,
+    meters: exports.earthRadius,
+    metres: exports.earthRadius,
+    miles: exports.earthRadius / 1609.344,
+    millimeters: exports.earthRadius * 1000,
+    millimetres: exports.earthRadius * 1000,
+    nauticalmiles: exports.earthRadius / 1852,
+    radians: 1,
+    yards: exports.earthRadius / 1.0936,
+};
+/**
+ * Units of measurement factors based on 1 meter.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.unitsFactors = {
+    centimeters: 100,
+    centimetres: 100,
+    degrees: 1 / 111325,
+    feet: 3.28084,
+    inches: 39.370,
+    kilometers: 1 / 1000,
+    kilometres: 1 / 1000,
+    meters: 1,
+    metres: 1,
+    miles: 1 / 1609.344,
+    millimeters: 1000,
+    millimetres: 1000,
+    nauticalmiles: 1 / 1852,
+    radians: 1 / exports.earthRadius,
+    yards: 1 / 1.0936,
+};
+/**
+ * Area of measurement factors based on 1 square meter.
+ *
+ * @memberof helpers
+ * @type {Object}
+ */
+exports.areaFactors = {
+    acres: 0.000247105,
+    centimeters: 10000,
+    centimetres: 10000,
+    feet: 10.763910417,
+    inches: 1550.003100006,
+    kilometers: 0.000001,
+    kilometres: 0.000001,
+    meters: 1,
+    metres: 1,
+    miles: 3.86e-7,
+    millimeters: 1000000,
+    millimetres: 1000000,
+    yards: 1.195990046,
+};
+/**
+ * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
+ *
+ * @name feature
+ * @param {Geometry} geometry input geometry
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature} a GeoJSON Feature
+ * @example
+ * var geometry = {
+ *   "type": "Point",
+ *   "coordinates": [110, 50]
+ * };
+ *
+ * var feature = turf.feature(geometry);
+ *
+ * //=feature
+ */
+function feature(geom, properties, options) {
+    if (options === void 0) { options = {}; }
+    var feat = { type: "Feature" };
+    if (options.id === 0 || options.id) {
+        feat.id = options.id;
+    }
+    if (options.bbox) {
+        feat.bbox = options.bbox;
+    }
+    feat.properties = properties || {};
+    feat.geometry = geom;
+    return feat;
+}
+exports.feature = feature;
+/**
+ * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
+ * For GeometryCollection type use `helpers.geometryCollection`
+ *
+ * @name geometry
+ * @param {string} type Geometry Type
+ * @param {Array<any>} coordinates Coordinates
+ * @param {Object} [options={}] Optional Parameters
+ * @returns {Geometry} a GeoJSON Geometry
+ * @example
+ * var type = "Point";
+ * var coordinates = [110, 50];
+ * var geometry = turf.geometry(type, coordinates);
+ * // => geometry
+ */
+function geometry(type, coordinates, options) {
+    if (options === void 0) { options = {}; }
+    switch (type) {
+        case "Point": return point(coordinates).geometry;
+        case "LineString": return lineString(coordinates).geometry;
+        case "Polygon": return polygon(coordinates).geometry;
+        case "MultiPoint": return multiPoint(coordinates).geometry;
+        case "MultiLineString": return multiLineString(coordinates).geometry;
+        case "MultiPolygon": return multiPolygon(coordinates).geometry;
+        default: throw new Error(type + " is invalid");
+    }
+}
+exports.geometry = geometry;
+/**
+ * Creates a {@link Point} {@link Feature} from a Position.
+ *
+ * @name point
+ * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<Point>} a Point feature
+ * @example
+ * var point = turf.point([-75.343, 39.984]);
+ *
+ * //=point
+ */
+function point(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "Point",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.point = point;
+/**
+ * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
+ *
+ * @name points
+ * @param {Array<Array<number>>} coordinates an array of Points
+ * @param {Object} [properties={}] Translate these properties to each Feature
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
+ * associated with the FeatureCollection
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<Point>} Point Feature
+ * @example
+ * var points = turf.points([
+ *   [-75, 39],
+ *   [-80, 45],
+ *   [-78, 50]
+ * ]);
+ *
+ * //=points
+ */
+function points(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return point(coords, properties);
+    }), options);
+}
+exports.points = points;
+/**
+ * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
+ *
+ * @name polygon
+ * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<Polygon>} Polygon Feature
+ * @example
+ * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
+ *
+ * //=polygon
+ */
+function polygon(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
+        var ring = coordinates_1[_i];
+        if (ring.length < 4) {
+            throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
+        }
+        for (var j = 0; j < ring[ring.length - 1].length; j++) {
+            // Check if first point of Polygon contains two numbers
+            if (ring[ring.length - 1][j] !== ring[0][j]) {
+                throw new Error("First and last Position are not equivalent.");
+            }
+        }
+    }
+    var geom = {
+        type: "Polygon",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.polygon = polygon;
+/**
+ * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
+ *
+ * @name polygons
+ * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
+ * @example
+ * var polygons = turf.polygons([
+ *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
+ *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
+ * ]);
+ *
+ * //=polygons
+ */
+function polygons(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return polygon(coords, properties);
+    }), options);
+}
+exports.polygons = polygons;
+/**
+ * Creates a {@link LineString} {@link Feature} from an Array of Positions.
+ *
+ * @name lineString
+ * @param {Array<Array<number>>} coordinates an array of Positions
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<LineString>} LineString Feature
+ * @example
+ * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
+ * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
+ *
+ * //=linestring1
+ * //=linestring2
+ */
+function lineString(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    if (coordinates.length < 2) {
+        throw new Error("coordinates must be an array of two or more positions");
+    }
+    var geom = {
+        type: "LineString",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.lineString = lineString;
+/**
+ * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
+ *
+ * @name lineStrings
+ * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
+ * associated with the FeatureCollection
+ * @param {string|number} [options.id] Identifier associated with the FeatureCollection
+ * @returns {FeatureCollection<LineString>} LineString FeatureCollection
+ * @example
+ * var linestrings = turf.lineStrings([
+ *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
+ *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
+ * ]);
+ *
+ * //=linestrings
+ */
+function lineStrings(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    return featureCollection(coordinates.map(function (coords) {
+        return lineString(coords, properties);
+    }), options);
+}
+exports.lineStrings = lineStrings;
+/**
+ * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
+ *
+ * @name featureCollection
+ * @param {Feature[]} features input features
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {FeatureCollection} FeatureCollection of Features
+ * @example
+ * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
+ * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
+ * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
+ *
+ * var collection = turf.featureCollection([
+ *   locationA,
+ *   locationB,
+ *   locationC
+ * ]);
+ *
+ * //=collection
+ */
+function featureCollection(features, options) {
+    if (options === void 0) { options = {}; }
+    var fc = { type: "FeatureCollection" };
+    if (options.id) {
+        fc.id = options.id;
+    }
+    if (options.bbox) {
+        fc.bbox = options.bbox;
+    }
+    fc.features = features;
+    return fc;
+}
+exports.featureCollection = featureCollection;
+/**
+ * Creates a {@link Feature<MultiLineString>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiLineString
+ * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiLineString>} a MultiLineString feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
+ *
+ * //=multiLine
+ */
+function multiLineString(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiLineString",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiLineString = multiLineString;
+/**
+ * Creates a {@link Feature<MultiPoint>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiPoint
+ * @param {Array<Array<number>>} coordinates an array of Positions
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiPoint>} a MultiPoint feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiPt = turf.multiPoint([[0,0],[10,10]]);
+ *
+ * //=multiPt
+ */
+function multiPoint(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiPoint",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiPoint = multiPoint;
+/**
+ * Creates a {@link Feature<MultiPolygon>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name multiPolygon
+ * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<MultiPolygon>} a multipolygon feature
+ * @throws {Error} if no coordinates are passed
+ * @example
+ * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
+ *
+ * //=multiPoly
+ *
+ */
+function multiPolygon(coordinates, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "MultiPolygon",
+        coordinates: coordinates,
+    };
+    return feature(geom, properties, options);
+}
+exports.multiPolygon = multiPolygon;
+/**
+ * Creates a {@link Feature<GeometryCollection>} based on a
+ * coordinate array. Properties can be added optionally.
+ *
+ * @name geometryCollection
+ * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
+ * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+ * @param {Object} [options={}] Optional Parameters
+ * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+ * @param {string|number} [options.id] Identifier associated with the Feature
+ * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
+ * @example
+ * var pt = turf.geometry("Point", [100, 0]);
+ * var line = turf.geometry("LineString", [[101, 0], [102, 1]]);
+ * var collection = turf.geometryCollection([pt, line]);
+ *
+ * // => collection
+ */
+function geometryCollection(geometries, properties, options) {
+    if (options === void 0) { options = {}; }
+    var geom = {
+        type: "GeometryCollection",
+        geometries: geometries,
+    };
+    return feature(geom, properties, options);
+}
+exports.geometryCollection = geometryCollection;
+/**
+ * Round number to precision
+ *
+ * @param {number} num Number
+ * @param {number} [precision=0] Precision
+ * @returns {number} rounded number
+ * @example
+ * turf.round(120.4321)
+ * //=120
+ *
+ * turf.round(120.4321, 2)
+ * //=120.43
+ */
+function round(num, precision) {
+    if (precision === void 0) { precision = 0; }
+    if (precision && !(precision >= 0)) {
+        throw new Error("precision must be a positive number");
+    }
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(num * multiplier) / multiplier;
+}
+exports.round = round;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @name radiansToLength
+ * @param {number} radians in radians across the sphere
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} distance
+ */
+function radiansToLength(radians, units) {
+    if (units === void 0) { units = "kilometers"; }
+    var factor = exports.factors[units];
+    if (!factor) {
+        throw new Error(units + " units is invalid");
+    }
+    return radians * factor;
+}
+exports.radiansToLength = radiansToLength;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @name lengthToRadians
+ * @param {number} distance in real units
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} radians
+ */
+function lengthToRadians(distance, units) {
+    if (units === void 0) { units = "kilometers"; }
+    var factor = exports.factors[units];
+    if (!factor) {
+        throw new Error(units + " units is invalid");
+    }
+    return distance / factor;
+}
+exports.lengthToRadians = lengthToRadians;
+/**
+ * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
+ *
+ * @name lengthToDegrees
+ * @param {number} distance in real units
+ * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
+ * meters, kilometres, kilometers.
+ * @returns {number} degrees
+ */
+function lengthToDegrees(distance, units) {
+    return radiansToDegrees(lengthToRadians(distance, units));
+}
+exports.lengthToDegrees = lengthToDegrees;
+/**
+ * Converts any bearing angle from the north line direction (positive clockwise)
+ * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
+ *
+ * @name bearingToAzimuth
+ * @param {number} bearing angle, between -180 and +180 degrees
+ * @returns {number} angle between 0 and 360 degrees
+ */
+function bearingToAzimuth(bearing) {
+    var angle = bearing % 360;
+    if (angle < 0) {
+        angle += 360;
+    }
+    return angle;
+}
+exports.bearingToAzimuth = bearingToAzimuth;
+/**
+ * Converts an angle in radians to degrees
+ *
+ * @name radiansToDegrees
+ * @param {number} radians angle in radians
+ * @returns {number} degrees between 0 and 360 degrees
+ */
+function radiansToDegrees(radians) {
+    var degrees = radians % (2 * Math.PI);
+    return degrees * 180 / Math.PI;
+}
+exports.radiansToDegrees = radiansToDegrees;
+/**
+ * Converts an angle in degrees to radians
+ *
+ * @name degreesToRadians
+ * @param {number} degrees angle between 0 and 360 degrees
+ * @returns {number} angle in radians
+ */
+function degreesToRadians(degrees) {
+    var radians = degrees % 360;
+    return radians * Math.PI / 180;
+}
+exports.degreesToRadians = degreesToRadians;
+/**
+ * Converts a length to the requested unit.
+ * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+ *
+ * @param {number} length to be converted
+ * @param {Units} [originalUnit="kilometers"] of the length
+ * @param {Units} [finalUnit="kilometers"] returned unit
+ * @returns {number} the converted length
+ */
+function convertLength(length, originalUnit, finalUnit) {
+    if (originalUnit === void 0) { originalUnit = "kilometers"; }
+    if (finalUnit === void 0) { finalUnit = "kilometers"; }
+    if (!(length >= 0)) {
+        throw new Error("length must be a positive number");
+    }
+    return radiansToLength(lengthToRadians(length, originalUnit), finalUnit);
+}
+exports.convertLength = convertLength;
+/**
+ * Converts a area to the requested unit.
+ * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
+ * @param {number} area to be converted
+ * @param {Units} [originalUnit="meters"] of the distance
+ * @param {Units} [finalUnit="kilometers"] returned unit
+ * @returns {number} the converted distance
+ */
+function convertArea(area, originalUnit, finalUnit) {
+    if (originalUnit === void 0) { originalUnit = "meters"; }
+    if (finalUnit === void 0) { finalUnit = "kilometers"; }
+    if (!(area >= 0)) {
+        throw new Error("area must be a positive number");
+    }
+    var startFactor = exports.areaFactors[originalUnit];
+    if (!startFactor) {
+        throw new Error("invalid original units");
+    }
+    var finalFactor = exports.areaFactors[finalUnit];
+    if (!finalFactor) {
+        throw new Error("invalid final units");
+    }
+    return (area / startFactor) * finalFactor;
+}
+exports.convertArea = convertArea;
+/**
+ * isNumber
+ *
+ * @param {*} num Number to validate
+ * @returns {boolean} true/false
+ * @example
+ * turf.isNumber(123)
+ * //=true
+ * turf.isNumber('foo')
+ * //=false
+ */
+function isNumber(num) {
+    return !isNaN(num) && num !== null && !Array.isArray(num) && !/^\s*$/.test(num);
+}
+exports.isNumber = isNumber;
+/**
+ * isObject
+ *
+ * @param {*} input variable to validate
+ * @returns {boolean} true/false
+ * @example
+ * turf.isObject({elevation: 10})
+ * //=true
+ * turf.isObject('foo')
+ * //=false
+ */
+function isObject(input) {
+    return (!!input) && (input.constructor === Object);
+}
+exports.isObject = isObject;
+/**
+ * Validate BBox
+ *
+ * @private
+ * @param {Array<number>} bbox BBox to validate
+ * @returns {void}
+ * @throws Error if BBox is not valid
+ * @example
+ * validateBBox([-180, -40, 110, 50])
+ * //=OK
+ * validateBBox([-180, -40])
+ * //=Error
+ * validateBBox('Foo')
+ * //=Error
+ * validateBBox(5)
+ * //=Error
+ * validateBBox(null)
+ * //=Error
+ * validateBBox(undefined)
+ * //=Error
+ */
+function validateBBox(bbox) {
+    if (!bbox) {
+        throw new Error("bbox is required");
+    }
+    if (!Array.isArray(bbox)) {
+        throw new Error("bbox must be an Array");
+    }
+    if (bbox.length !== 4 && bbox.length !== 6) {
+        throw new Error("bbox must be an Array of 4 or 6 numbers");
+    }
+    bbox.forEach(function (num) {
+        if (!isNumber(num)) {
+            throw new Error("bbox must only contain numbers");
+        }
+    });
+}
+exports.validateBBox = validateBBox;
+/**
+ * Validate Id
+ *
+ * @private
+ * @param {string|number} id Id to validate
+ * @returns {void}
+ * @throws Error if Id is not valid
+ * @example
+ * validateId([-180, -40, 110, 50])
+ * //=Error
+ * validateId([-180, -40])
+ * //=Error
+ * validateId('Foo')
+ * //=OK
+ * validateId(5)
+ * //=OK
+ * validateId(null)
+ * //=Error
+ * validateId(undefined)
+ * //=Error
+ */
+function validateId(id) {
+    if (!id) {
+        throw new Error("id is required");
+    }
+    if (["string", "number"].indexOf(typeof id) === -1) {
+        throw new Error("id must be a number or a string");
+    }
+}
+exports.validateId = validateId;
+// Deprecated methods
+function radians2degrees() {
+    throw new Error("method has been renamed to `radiansToDegrees`");
+}
+exports.radians2degrees = radians2degrees;
+function degrees2radians() {
+    throw new Error("method has been renamed to `degreesToRadians`");
+}
+exports.degrees2radians = degrees2radians;
+function distanceToDegrees() {
+    throw new Error("method has been renamed to `lengthToDegrees`");
+}
+exports.distanceToDegrees = distanceToDegrees;
+function distanceToRadians() {
+    throw new Error("method has been renamed to `lengthToRadians`");
+}
+exports.distanceToRadians = distanceToRadians;
+function radiansToDistance() {
+    throw new Error("method has been renamed to `radiansToLength`");
+}
+exports.radiansToDistance = radiansToDistance;
+function bearingToAngle() {
+    throw new Error("method has been renamed to `bearingToAzimuth`");
+}
+exports.bearingToAngle = bearingToAngle;
+function convertDistance() {
+    throw new Error("method has been renamed to `convertLength`");
+}
+exports.convertDistance = convertDistance;
+
+
+/***/ }),
+
 /***/ "lSNA":
 /***/ (function(module, exports) {
 
@@ -23660,9 +29759,9 @@ module.exports = _defineProperty;
 if (!process.version ||
     process.version.indexOf('v0.') === 0 ||
     process.version.indexOf('v1.') === 0 && process.version.indexOf('v1.8.') !== 0) {
-  module.exports = nextTick;
+  module.exports = { nextTick: nextTick };
 } else {
-  module.exports = process.nextTick;
+  module.exports = process
 }
 
 function nextTick(fn, arg1, arg2, arg3) {
@@ -23698,6 +29797,7 @@ function nextTick(fn, arg1, arg2, arg3) {
     });
   }
 }
+
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
 
@@ -24380,309 +30480,6 @@ main.install = function (Vue) {
 /***/ })
 
 /******/ });
-
-/***/ }),
-
-/***/ "qiJe":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-/*<replacement>*/
-
-var Buffer = __webpack_require__("hwdV").Buffer;
-/*</replacement>*/
-
-var isEncoding = Buffer.isEncoding || function (encoding) {
-  encoding = '' + encoding;
-  switch (encoding && encoding.toLowerCase()) {
-    case 'hex':case 'utf8':case 'utf-8':case 'ascii':case 'binary':case 'base64':case 'ucs2':case 'ucs-2':case 'utf16le':case 'utf-16le':case 'raw':
-      return true;
-    default:
-      return false;
-  }
-};
-
-function _normalizeEncoding(enc) {
-  if (!enc) return 'utf8';
-  var retried;
-  while (true) {
-    switch (enc) {
-      case 'utf8':
-      case 'utf-8':
-        return 'utf8';
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return 'utf16le';
-      case 'latin1':
-      case 'binary':
-        return 'latin1';
-      case 'base64':
-      case 'ascii':
-      case 'hex':
-        return enc;
-      default:
-        if (retried) return; // undefined
-        enc = ('' + enc).toLowerCase();
-        retried = true;
-    }
-  }
-};
-
-// Do not cache `Buffer.isEncoding` when checking encoding names as some
-// modules monkey-patch it to support additional encodings
-function normalizeEncoding(enc) {
-  var nenc = _normalizeEncoding(enc);
-  if (typeof nenc !== 'string' && (Buffer.isEncoding === isEncoding || !isEncoding(enc))) throw new Error('Unknown encoding: ' + enc);
-  return nenc || enc;
-}
-
-// StringDecoder provides an interface for efficiently splitting a series of
-// buffers into a series of JS strings without breaking apart multi-byte
-// characters.
-exports.StringDecoder = StringDecoder;
-function StringDecoder(encoding) {
-  this.encoding = normalizeEncoding(encoding);
-  var nb;
-  switch (this.encoding) {
-    case 'utf16le':
-      this.text = utf16Text;
-      this.end = utf16End;
-      nb = 4;
-      break;
-    case 'utf8':
-      this.fillLast = utf8FillLast;
-      nb = 4;
-      break;
-    case 'base64':
-      this.text = base64Text;
-      this.end = base64End;
-      nb = 3;
-      break;
-    default:
-      this.write = simpleWrite;
-      this.end = simpleEnd;
-      return;
-  }
-  this.lastNeed = 0;
-  this.lastTotal = 0;
-  this.lastChar = Buffer.allocUnsafe(nb);
-}
-
-StringDecoder.prototype.write = function (buf) {
-  if (buf.length === 0) return '';
-  var r;
-  var i;
-  if (this.lastNeed) {
-    r = this.fillLast(buf);
-    if (r === undefined) return '';
-    i = this.lastNeed;
-    this.lastNeed = 0;
-  } else {
-    i = 0;
-  }
-  if (i < buf.length) return r ? r + this.text(buf, i) : this.text(buf, i);
-  return r || '';
-};
-
-StringDecoder.prototype.end = utf8End;
-
-// Returns only complete characters in a Buffer
-StringDecoder.prototype.text = utf8Text;
-
-// Attempts to complete a partial non-UTF-8 character using bytes from a Buffer
-StringDecoder.prototype.fillLast = function (buf) {
-  if (this.lastNeed <= buf.length) {
-    buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);
-    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
-  }
-  buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);
-  this.lastNeed -= buf.length;
-};
-
-// Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a
-// continuation byte. If an invalid byte is detected, -2 is returned.
-function utf8CheckByte(byte) {
-  if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;
-  return byte >> 6 === 0x02 ? -1 : -2;
-}
-
-// Checks at most 3 bytes at the end of a Buffer in order to detect an
-// incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)
-// needed to complete the UTF-8 character (if applicable) are returned.
-function utf8CheckIncomplete(self, buf, i) {
-  var j = buf.length - 1;
-  if (j < i) return 0;
-  var nb = utf8CheckByte(buf[j]);
-  if (nb >= 0) {
-    if (nb > 0) self.lastNeed = nb - 1;
-    return nb;
-  }
-  if (--j < i || nb === -2) return 0;
-  nb = utf8CheckByte(buf[j]);
-  if (nb >= 0) {
-    if (nb > 0) self.lastNeed = nb - 2;
-    return nb;
-  }
-  if (--j < i || nb === -2) return 0;
-  nb = utf8CheckByte(buf[j]);
-  if (nb >= 0) {
-    if (nb > 0) {
-      if (nb === 2) nb = 0;else self.lastNeed = nb - 3;
-    }
-    return nb;
-  }
-  return 0;
-}
-
-// Validates as many continuation bytes for a multi-byte UTF-8 character as
-// needed or are available. If we see a non-continuation byte where we expect
-// one, we "replace" the validated continuation bytes we've seen so far with
-// a single UTF-8 replacement character ('\ufffd'), to match v8's UTF-8 decoding
-// behavior. The continuation byte check is included three times in the case
-// where all of the continuation bytes for a character exist in the same buffer.
-// It is also done this way as a slight performance increase instead of using a
-// loop.
-function utf8CheckExtraBytes(self, buf, p) {
-  if ((buf[0] & 0xC0) !== 0x80) {
-    self.lastNeed = 0;
-    return '\ufffd';
-  }
-  if (self.lastNeed > 1 && buf.length > 1) {
-    if ((buf[1] & 0xC0) !== 0x80) {
-      self.lastNeed = 1;
-      return '\ufffd';
-    }
-    if (self.lastNeed > 2 && buf.length > 2) {
-      if ((buf[2] & 0xC0) !== 0x80) {
-        self.lastNeed = 2;
-        return '\ufffd';
-      }
-    }
-  }
-}
-
-// Attempts to complete a multi-byte UTF-8 character using bytes from a Buffer.
-function utf8FillLast(buf) {
-  var p = this.lastTotal - this.lastNeed;
-  var r = utf8CheckExtraBytes(this, buf, p);
-  if (r !== undefined) return r;
-  if (this.lastNeed <= buf.length) {
-    buf.copy(this.lastChar, p, 0, this.lastNeed);
-    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
-  }
-  buf.copy(this.lastChar, p, 0, buf.length);
-  this.lastNeed -= buf.length;
-}
-
-// Returns all complete UTF-8 characters in a Buffer. If the Buffer ended on a
-// partial character, the character's bytes are buffered until the required
-// number of bytes are available.
-function utf8Text(buf, i) {
-  var total = utf8CheckIncomplete(this, buf, i);
-  if (!this.lastNeed) return buf.toString('utf8', i);
-  this.lastTotal = total;
-  var end = buf.length - (total - this.lastNeed);
-  buf.copy(this.lastChar, 0, end);
-  return buf.toString('utf8', i, end);
-}
-
-// For UTF-8, a replacement character is added when ending on a partial
-// character.
-function utf8End(buf) {
-  var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) return r + '\ufffd';
-  return r;
-}
-
-// UTF-16LE typically needs two bytes per character, but even if we have an even
-// number of bytes available, we need to check if we end on a leading/high
-// surrogate. In that case, we need to wait for the next two bytes in order to
-// decode the last character properly.
-function utf16Text(buf, i) {
-  if ((buf.length - i) % 2 === 0) {
-    var r = buf.toString('utf16le', i);
-    if (r) {
-      var c = r.charCodeAt(r.length - 1);
-      if (c >= 0xD800 && c <= 0xDBFF) {
-        this.lastNeed = 2;
-        this.lastTotal = 4;
-        this.lastChar[0] = buf[buf.length - 2];
-        this.lastChar[1] = buf[buf.length - 1];
-        return r.slice(0, -1);
-      }
-    }
-    return r;
-  }
-  this.lastNeed = 1;
-  this.lastTotal = 2;
-  this.lastChar[0] = buf[buf.length - 1];
-  return buf.toString('utf16le', i, buf.length - 1);
-}
-
-// For UTF-16LE we do not explicitly append special replacement characters if we
-// end on a partial character, we simply let v8 handle that.
-function utf16End(buf) {
-  var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) {
-    var end = this.lastTotal - this.lastNeed;
-    return r + this.lastChar.toString('utf16le', 0, end);
-  }
-  return r;
-}
-
-function base64Text(buf, i) {
-  var n = (buf.length - i) % 3;
-  if (n === 0) return buf.toString('base64', i);
-  this.lastNeed = 3 - n;
-  this.lastTotal = 3;
-  if (n === 1) {
-    this.lastChar[0] = buf[buf.length - 1];
-  } else {
-    this.lastChar[0] = buf[buf.length - 2];
-    this.lastChar[1] = buf[buf.length - 1];
-  }
-  return buf.toString('base64', i, buf.length - n);
-}
-
-function base64End(buf) {
-  var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) return r + this.lastChar.toString('base64', 0, 3 - this.lastNeed);
-  return r;
-}
-
-// Pass bytes on through for single-byte encodings (e.g. ascii, latin1, hex)
-function simpleWrite(buf) {
-  return buf.toString(this.encoding);
-}
-
-function simpleEnd(buf) {
-  return buf && buf.length ? this.write(buf) : '';
-}
 
 /***/ }),
 
@@ -28869,44 +34666,70 @@ src_table.install = function (Vue) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
+/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-module.exports = Readable;
+
 
 /*<replacement>*/
-var processNextTick = __webpack_require__("lm0R");
+
+var pna = __webpack_require__("lm0R");
 /*</replacement>*/
+
+module.exports = Readable;
 
 /*<replacement>*/
 var isArray = __webpack_require__("49sm");
 /*</replacement>*/
 
 /*<replacement>*/
-var Buffer = __webpack_require__("tjlA").Buffer;
+var Duplex;
 /*</replacement>*/
 
 Readable.ReadableState = ReadableState;
 
-var EE = __webpack_require__("+qE3");
-
 /*<replacement>*/
+var EE = __webpack_require__("+qE3").EventEmitter;
+
 var EElistenerCount = function (emitter, type) {
   return emitter.listeners(type).length;
 };
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream;
-(function () {
-  try {
-    Stream = __webpack_require__("1IWx");
-  } catch (_) {} finally {
-    if (!Stream) Stream = __webpack_require__("+qE3").EventEmitter;
-  }
-})();
+var Stream = __webpack_require__("QpuX");
 /*</replacement>*/
 
-var Buffer = __webpack_require__("tjlA").Buffer;
+/*<replacement>*/
+
+var Buffer = __webpack_require__("hwdV").Buffer;
+var OurUint8Array = global.Uint8Array || function () {};
+function _uint8ArrayToBuffer(chunk) {
+  return Buffer.from(chunk);
+}
+function _isUint8Array(obj) {
+  return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
+}
+
+/*</replacement>*/
 
 /*<replacement>*/
 var util = __webpack_require__("Onz0");
@@ -28915,7 +34738,7 @@ util.inherits = __webpack_require__("P7XM");
 
 /*<replacement>*/
 var debugUtil = __webpack_require__(1);
-var debug = undefined;
+var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
 } else {
@@ -28923,32 +34746,59 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
+var BufferList = __webpack_require__("Xhqo");
+var destroyImpl = __webpack_require__("RoFp");
 var StringDecoder;
 
 util.inherits(Readable, Stream);
 
-var Duplex;
+var kProxyEvents = ['error', 'close', 'destroy', 'pause', 'resume'];
+
+function prependListener(emitter, event, fn) {
+  // Sadly this is not cacheable as some libraries bundle their own
+  // event emitter implementation with them.
+  if (typeof emitter.prependListener === 'function') return emitter.prependListener(event, fn);
+
+  // This is a hack to make sure that our error handler is attached before any
+  // userland ones.  NEVER DO THIS. This is here only because this code needs
+  // to continue to work with older versions of Node.js that do not include
+  // the prependListener() method. The goal is to eventually remove this hack.
+  if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
+}
+
 function ReadableState(options, stream) {
   Duplex = Duplex || __webpack_require__("sZro");
 
   options = options || {};
 
+  // Duplex streams are both readable and writable, but share
+  // the same options object.
+  // However, some cases require setting options to different
+  // values for the readable and the writable sides of the duplex stream.
+  // These options can be provided separately as readableXXX and writableXXX.
+  var isDuplex = stream instanceof Duplex;
+
   // object stream flag. Used to make read(n) ignore n and to
   // make all the buffer merging and length checks go away
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
+  if (isDuplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
 
   // the point at which it stops calling _read() to fill the buffer
   // Note: 0 is a valid value, means "don't call _read preemptively ever"
   var hwm = options.highWaterMark;
+  var readableHwm = options.readableHighWaterMark;
   var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
+
+  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (readableHwm || readableHwm === 0)) this.highWaterMark = readableHwm;else this.highWaterMark = defaultHwm;
 
   // cast to ints.
-  this.highWaterMark = ~ ~this.highWaterMark;
+  this.highWaterMark = Math.floor(this.highWaterMark);
 
-  this.buffer = [];
+  // A linked list is used to store data chunks instead of an array because the
+  // linked list can remove elements from the beginning faster than
+  // array.shift()
+  this.buffer = new BufferList();
   this.length = 0;
   this.pipes = null;
   this.pipesCount = 0;
@@ -28957,10 +34807,10 @@ function ReadableState(options, stream) {
   this.endEmitted = false;
   this.reading = false;
 
-  // a flag to be able to tell if the onwrite cb is called immediately,
-  // or on a later tick.  We set this to true at first, because any
-  // actions that shouldn't happen until "later" should generally also
-  // not happen before the first write call.
+  // a flag to be able to tell if the event 'readable'/'data' is emitted
+  // immediately, or on a later tick.  We set this to true at first, because
+  // any actions that shouldn't happen until "later" should generally also
+  // not happen before the first read call.
   this.sync = true;
 
   // whenever we return null, then we set a flag to say
@@ -28970,14 +34820,13 @@ function ReadableState(options, stream) {
   this.readableListening = false;
   this.resumeScheduled = false;
 
+  // has it been destroyed
+  this.destroyed = false;
+
   // Crypto is kind of old and crusty.  Historically, its default string
   // encoding is 'binary' so we have to make this configurable.
   // Everything else in the universe uses 'utf8', though.
   this.defaultEncoding = options.defaultEncoding || 'utf8';
-
-  // when piping, we only care about 'readable' events that happen
-  // after read()ing all the bytes and not getting any pushback.
-  this.ranOut = false;
 
   // the number of writers that are awaiting a drain event in .pipe()s
   this.awaitDrain = 0;
@@ -28988,13 +34837,12 @@ function ReadableState(options, stream) {
   this.decoder = null;
   this.encoding = null;
   if (options.encoding) {
-    if (!StringDecoder) StringDecoder = __webpack_require__("qiJe").StringDecoder;
+    if (!StringDecoder) StringDecoder = __webpack_require__("fXKp").StringDecoder;
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
 }
 
-var Duplex;
 function Readable(options) {
   Duplex = Duplex || __webpack_require__("sZro");
 
@@ -29005,10 +34853,41 @@ function Readable(options) {
   // legacy
   this.readable = true;
 
-  if (options && typeof options.read === 'function') this._read = options.read;
+  if (options) {
+    if (typeof options.read === 'function') this._read = options.read;
+
+    if (typeof options.destroy === 'function') this._destroy = options.destroy;
+  }
 
   Stream.call(this);
 }
+
+Object.defineProperty(Readable.prototype, 'destroyed', {
+  get: function () {
+    if (this._readableState === undefined) {
+      return false;
+    }
+    return this._readableState.destroyed;
+  },
+  set: function (value) {
+    // we ignore the value if the stream
+    // has not been initialized yet
+    if (!this._readableState) {
+      return;
+    }
+
+    // backward compatibility, the user is explicitly
+    // managing destroyed
+    this._readableState.destroyed = value;
+  }
+});
+
+Readable.prototype.destroy = destroyImpl.destroy;
+Readable.prototype._undestroy = destroyImpl.undestroy;
+Readable.prototype._destroy = function (err, cb) {
+  this.push(null);
+  cb(err);
+};
 
 // Manually shove something into the read() buffer.
 // This returns true if the highWaterMark has not been hit yet,
@@ -29016,74 +34895,85 @@ function Readable(options) {
 // write() some more.
 Readable.prototype.push = function (chunk, encoding) {
   var state = this._readableState;
+  var skipChunkCheck;
 
-  if (!state.objectMode && typeof chunk === 'string') {
-    encoding = encoding || state.defaultEncoding;
-    if (encoding !== state.encoding) {
-      chunk = new Buffer(chunk, encoding);
-      encoding = '';
+  if (!state.objectMode) {
+    if (typeof chunk === 'string') {
+      encoding = encoding || state.defaultEncoding;
+      if (encoding !== state.encoding) {
+        chunk = Buffer.from(chunk, encoding);
+        encoding = '';
+      }
+      skipChunkCheck = true;
     }
+  } else {
+    skipChunkCheck = true;
   }
 
-  return readableAddChunk(this, state, chunk, encoding, false);
+  return readableAddChunk(this, chunk, encoding, false, skipChunkCheck);
 };
 
 // Unshift should *always* be something directly out of read()
 Readable.prototype.unshift = function (chunk) {
-  var state = this._readableState;
-  return readableAddChunk(this, state, chunk, '', true);
+  return readableAddChunk(this, chunk, null, true, false);
 };
 
-Readable.prototype.isPaused = function () {
-  return this._readableState.flowing === false;
-};
-
-function readableAddChunk(stream, state, chunk, encoding, addToFront) {
-  var er = chunkInvalid(state, chunk);
-  if (er) {
-    stream.emit('error', er);
-  } else if (chunk === null) {
+function readableAddChunk(stream, chunk, encoding, addToFront, skipChunkCheck) {
+  var state = stream._readableState;
+  if (chunk === null) {
     state.reading = false;
     onEofChunk(stream, state);
-  } else if (state.objectMode || chunk && chunk.length > 0) {
-    if (state.ended && !addToFront) {
-      var e = new Error('stream.push() after EOF');
-      stream.emit('error', e);
-    } else if (state.endEmitted && addToFront) {
-      var e = new Error('stream.unshift() after end event');
-      stream.emit('error', e);
-    } else {
-      var skipAdd;
-      if (state.decoder && !addToFront && !encoding) {
-        chunk = state.decoder.write(chunk);
-        skipAdd = !state.objectMode && chunk.length === 0;
+  } else {
+    var er;
+    if (!skipChunkCheck) er = chunkInvalid(state, chunk);
+    if (er) {
+      stream.emit('error', er);
+    } else if (state.objectMode || chunk && chunk.length > 0) {
+      if (typeof chunk !== 'string' && !state.objectMode && Object.getPrototypeOf(chunk) !== Buffer.prototype) {
+        chunk = _uint8ArrayToBuffer(chunk);
       }
 
-      if (!addToFront) state.reading = false;
-
-      // Don't add to the buffer if we've decoded to an empty string chunk and
-      // we're not in object mode
-      if (!skipAdd) {
-        // if we want the data now, just emit it.
-        if (state.flowing && state.length === 0 && !state.sync) {
-          stream.emit('data', chunk);
-          stream.read(0);
+      if (addToFront) {
+        if (state.endEmitted) stream.emit('error', new Error('stream.unshift() after end event'));else addChunk(stream, state, chunk, true);
+      } else if (state.ended) {
+        stream.emit('error', new Error('stream.push() after EOF'));
+      } else {
+        state.reading = false;
+        if (state.decoder && !encoding) {
+          chunk = state.decoder.write(chunk);
+          if (state.objectMode || chunk.length !== 0) addChunk(stream, state, chunk, false);else maybeReadMore(stream, state);
         } else {
-          // update the buffer info.
-          state.length += state.objectMode ? 1 : chunk.length;
-          if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);
-
-          if (state.needReadable) emitReadable(stream);
+          addChunk(stream, state, chunk, false);
         }
       }
-
-      maybeReadMore(stream, state);
+    } else if (!addToFront) {
+      state.reading = false;
     }
-  } else if (!addToFront) {
-    state.reading = false;
   }
 
   return needMoreData(state);
+}
+
+function addChunk(stream, state, chunk, addToFront) {
+  if (state.flowing && state.length === 0 && !state.sync) {
+    stream.emit('data', chunk);
+    stream.read(0);
+  } else {
+    // update the buffer info.
+    state.length += state.objectMode ? 1 : chunk.length;
+    if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);
+
+    if (state.needReadable) emitReadable(stream);
+  }
+  maybeReadMore(stream, state);
+}
+
+function chunkInvalid(state, chunk) {
+  var er;
+  if (!_isUint8Array(chunk) && typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {
+    er = new TypeError('Invalid non-string/buffer chunk');
+  }
+  return er;
 }
 
 // if it's past the high water mark, we can push in some more.
@@ -29097,9 +34987,13 @@ function needMoreData(state) {
   return !state.ended && (state.needReadable || state.length < state.highWaterMark || state.length === 0);
 }
 
+Readable.prototype.isPaused = function () {
+  return this._readableState.flowing === false;
+};
+
 // backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
-  if (!StringDecoder) StringDecoder = __webpack_require__("qiJe").StringDecoder;
+  if (!StringDecoder) StringDecoder = __webpack_require__("fXKp").StringDecoder;
   this._readableState.decoder = new StringDecoder(enc);
   this._readableState.encoding = enc;
   return this;
@@ -29111,7 +35005,8 @@ function computeNewHighWaterMark(n) {
   if (n >= MAX_HWM) {
     n = MAX_HWM;
   } else {
-    // Get the next highest power of 2
+    // Get the next highest power of 2 to prevent increasing hwm excessively in
+    // tiny amounts
     n--;
     n |= n >>> 1;
     n |= n >>> 2;
@@ -29123,44 +35018,34 @@ function computeNewHighWaterMark(n) {
   return n;
 }
 
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
 function howMuchToRead(n, state) {
-  if (state.length === 0 && state.ended) return 0;
-
-  if (state.objectMode) return n === 0 ? 0 : 1;
-
-  if (n === null || isNaN(n)) {
-    // only flow one buffer at a time
-    if (state.flowing && state.buffer.length) return state.buffer[0].length;else return state.length;
+  if (n <= 0 || state.length === 0 && state.ended) return 0;
+  if (state.objectMode) return 1;
+  if (n !== n) {
+    // Only flow one buffer at a time
+    if (state.flowing && state.length) return state.buffer.head.data.length;else return state.length;
   }
-
-  if (n <= 0) return 0;
-
-  // If we're asking for more than the target buffer level,
-  // then raise the water mark.  Bump up to the next highest
-  // power of 2, to prevent increasing it excessively in tiny
-  // amounts.
+  // If we're asking for more than the current hwm, then raise the hwm.
   if (n > state.highWaterMark) state.highWaterMark = computeNewHighWaterMark(n);
-
-  // don't have that much.  return null, unless we've ended.
-  if (n > state.length) {
-    if (!state.ended) {
-      state.needReadable = true;
-      return 0;
-    } else {
-      return state.length;
-    }
+  if (n <= state.length) return n;
+  // Don't have enough
+  if (!state.ended) {
+    state.needReadable = true;
+    return 0;
   }
-
-  return n;
+  return state.length;
 }
 
 // you can override either this method, or the async _read(n) below.
 Readable.prototype.read = function (n) {
   debug('read', n);
+  n = parseInt(n, 10);
   var state = this._readableState;
   var nOrig = n;
 
-  if (typeof n !== 'number' || n > 0) state.emittedReadable = false;
+  if (n !== 0) state.emittedReadable = false;
 
   // if we're doing read(0) to trigger a readable event, but we
   // already have a bunch of data in the buffer, then just trigger
@@ -29216,9 +35101,7 @@ Readable.prototype.read = function (n) {
   if (state.ended || state.reading) {
     doRead = false;
     debug('reading or ended', doRead);
-  }
-
-  if (doRead) {
+  } else if (doRead) {
     debug('do read');
     state.reading = true;
     state.sync = true;
@@ -29227,11 +35110,10 @@ Readable.prototype.read = function (n) {
     // call internal read method
     this._read(state.highWaterMark);
     state.sync = false;
+    // If _read pushed data synchronously, then `reading` will be false,
+    // and we need to re-evaluate how much data we can return to the user.
+    if (!state.reading) n = howMuchToRead(nOrig, state);
   }
-
-  // If _read pushed data synchronously, then `reading` will be false,
-  // and we need to re-evaluate how much data we can return to the user.
-  if (doRead && !state.reading) n = howMuchToRead(nOrig, state);
 
   var ret;
   if (n > 0) ret = fromList(n, state);else ret = null;
@@ -29239,29 +35121,23 @@ Readable.prototype.read = function (n) {
   if (ret === null) {
     state.needReadable = true;
     n = 0;
+  } else {
+    state.length -= n;
   }
 
-  state.length -= n;
+  if (state.length === 0) {
+    // If we have nothing in the buffer, then we want to know
+    // as soon as we *do* get something into the buffer.
+    if (!state.ended) state.needReadable = true;
 
-  // If we have nothing in the buffer, then we want to know
-  // as soon as we *do* get something into the buffer.
-  if (state.length === 0 && !state.ended) state.needReadable = true;
-
-  // If we tried to read() past the EOF, then emit end on the next tick.
-  if (nOrig !== n && state.ended && state.length === 0) endReadable(this);
+    // If we tried to read() past the EOF, then emit end on the next tick.
+    if (nOrig !== n && state.ended) endReadable(this);
+  }
 
   if (ret !== null) this.emit('data', ret);
 
   return ret;
 };
-
-function chunkInvalid(state, chunk) {
-  var er = null;
-  if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
-    er = new TypeError('Invalid non-string/buffer chunk');
-  }
-  return er;
-}
 
 function onEofChunk(stream, state) {
   if (state.ended) return;
@@ -29287,7 +35163,7 @@ function emitReadable(stream) {
   if (!state.emittedReadable) {
     debug('emitReadable', state.flowing);
     state.emittedReadable = true;
-    if (state.sync) processNextTick(emitReadable_, stream);else emitReadable_(stream);
+    if (state.sync) pna.nextTick(emitReadable_, stream);else emitReadable_(stream);
   }
 }
 
@@ -29306,7 +35182,7 @@ function emitReadable_(stream) {
 function maybeReadMore(stream, state) {
   if (!state.readingMore) {
     state.readingMore = true;
-    processNextTick(maybeReadMore_, stream, state);
+    pna.nextTick(maybeReadMore_, stream, state);
   }
 }
 
@@ -29327,7 +35203,7 @@ function maybeReadMore_(stream, state) {
 // for virtual (non-string, non-buffer) streams, "length" is somewhat
 // arbitrary, and perhaps not very meaningful.
 Readable.prototype._read = function (n) {
-  this.emit('error', new Error('not implemented'));
+  this.emit('error', new Error('_read() is not implemented'));
 };
 
 Readable.prototype.pipe = function (dest, pipeOpts) {
@@ -29350,14 +35226,17 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
 
   var doEnd = (!pipeOpts || pipeOpts.end !== false) && dest !== process.stdout && dest !== process.stderr;
 
-  var endFn = doEnd ? onend : cleanup;
-  if (state.endEmitted) processNextTick(endFn);else src.once('end', endFn);
+  var endFn = doEnd ? onend : unpipe;
+  if (state.endEmitted) pna.nextTick(endFn);else src.once('end', endFn);
 
   dest.on('unpipe', onunpipe);
-  function onunpipe(readable) {
+  function onunpipe(readable, unpipeInfo) {
     debug('onunpipe');
     if (readable === src) {
-      cleanup();
+      if (unpipeInfo && unpipeInfo.hasUnpiped === false) {
+        unpipeInfo.hasUnpiped = true;
+        cleanup();
+      }
     }
   }
 
@@ -29383,7 +35262,7 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
     dest.removeListener('error', onerror);
     dest.removeListener('unpipe', onunpipe);
     src.removeListener('end', onend);
-    src.removeListener('end', cleanup);
+    src.removeListener('end', unpipe);
     src.removeListener('data', ondata);
 
     cleanedUp = true;
@@ -29396,17 +35275,25 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
     if (state.awaitDrain && (!dest._writableState || dest._writableState.needDrain)) ondrain();
   }
 
+  // If the user pushes more data while we're writing to dest then we'll end up
+  // in ondata again. However, we only want to increase awaitDrain once because
+  // dest will only emit one 'drain' event for the multiple writes.
+  // => Introduce a guard on increasing awaitDrain.
+  var increasedAwaitDrain = false;
   src.on('data', ondata);
   function ondata(chunk) {
     debug('ondata');
+    increasedAwaitDrain = false;
     var ret = dest.write(chunk);
-    if (false === ret) {
+    if (false === ret && !increasedAwaitDrain) {
       // If the user unpiped during `dest.write()`, it is possible
       // to get stuck in a permanently paused state if that write
       // also returned false.
-      if (state.pipesCount === 1 && state.pipes[0] === dest && src.listenerCount('data') === 1 && !cleanedUp) {
+      // => Check whether `dest` is still a piping destination.
+      if ((state.pipesCount === 1 && state.pipes === dest || state.pipesCount > 1 && indexOf(state.pipes, dest) !== -1) && !cleanedUp) {
         debug('false write response, pause', src._readableState.awaitDrain);
         src._readableState.awaitDrain++;
+        increasedAwaitDrain = true;
       }
       src.pause();
     }
@@ -29420,9 +35307,9 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
     dest.removeListener('error', onerror);
     if (EElistenerCount(dest, 'error') === 0) dest.emit('error', er);
   }
-  // This is a brutally ugly hack to make sure that our error handler
-  // is attached before any userland ones.  NEVER DO THIS.
-  if (!dest._events || !dest._events.error) dest.on('error', onerror);else if (isArray(dest._events.error)) dest._events.error.unshift(onerror);else dest._events.error = [onerror, dest._events.error];
+
+  // Make sure our error handler is attached before userland ones.
+  prependListener(dest, 'error', onerror);
 
   // Both close and finish should trigger unpipe, but only once.
   function onclose() {
@@ -29468,6 +35355,7 @@ function pipeOnDrain(src) {
 
 Readable.prototype.unpipe = function (dest) {
   var state = this._readableState;
+  var unpipeInfo = { hasUnpiped: false };
 
   // if we're not piping anywhere, then do nothing.
   if (state.pipesCount === 0) return this;
@@ -29483,7 +35371,7 @@ Readable.prototype.unpipe = function (dest) {
     state.pipes = null;
     state.pipesCount = 0;
     state.flowing = false;
-    if (dest) dest.emit('unpipe', this);
+    if (dest) dest.emit('unpipe', this, unpipeInfo);
     return this;
   }
 
@@ -29497,20 +35385,20 @@ Readable.prototype.unpipe = function (dest) {
     state.pipesCount = 0;
     state.flowing = false;
 
-    for (var _i = 0; _i < len; _i++) {
-      dests[_i].emit('unpipe', this);
+    for (var i = 0; i < len; i++) {
+      dests[i].emit('unpipe', this, unpipeInfo);
     }return this;
   }
 
   // try to find the right one.
-  var i = indexOf(state.pipes, dest);
-  if (i === -1) return this;
+  var index = indexOf(state.pipes, dest);
+  if (index === -1) return this;
 
-  state.pipes.splice(i, 1);
+  state.pipes.splice(index, 1);
   state.pipesCount -= 1;
   if (state.pipesCount === 1) state.pipes = state.pipes[0];
 
-  dest.emit('unpipe', this);
+  dest.emit('unpipe', this, unpipeInfo);
 
   return this;
 };
@@ -29520,22 +35408,18 @@ Readable.prototype.unpipe = function (dest) {
 Readable.prototype.on = function (ev, fn) {
   var res = Stream.prototype.on.call(this, ev, fn);
 
-  // If listening to data, and it has not explicitly been paused,
-  // then call resume to start the flow of data on the next tick.
-  if (ev === 'data' && false !== this._readableState.flowing) {
-    this.resume();
-  }
-
-  if (ev === 'readable' && !this._readableState.endEmitted) {
+  if (ev === 'data') {
+    // Start flowing on next tick if stream isn't explicitly paused
+    if (this._readableState.flowing !== false) this.resume();
+  } else if (ev === 'readable') {
     var state = this._readableState;
-    if (!state.readableListening) {
-      state.readableListening = true;
+    if (!state.endEmitted && !state.readableListening) {
+      state.readableListening = state.needReadable = true;
       state.emittedReadable = false;
-      state.needReadable = true;
       if (!state.reading) {
-        processNextTick(nReadingNextTick, this);
+        pna.nextTick(nReadingNextTick, this);
       } else if (state.length) {
-        emitReadable(this, state);
+        emitReadable(this);
       }
     }
   }
@@ -29564,7 +35448,7 @@ Readable.prototype.resume = function () {
 function resume(stream, state) {
   if (!state.resumeScheduled) {
     state.resumeScheduled = true;
-    processNextTick(resume_, stream, state);
+    pna.nextTick(resume_, stream, state);
   }
 }
 
@@ -29575,6 +35459,7 @@ function resume_(stream, state) {
   }
 
   state.resumeScheduled = false;
+  state.awaitDrain = 0;
   stream.emit('resume');
   flow(stream);
   if (state.flowing && !state.reading) stream.read(0);
@@ -29593,29 +35478,26 @@ Readable.prototype.pause = function () {
 function flow(stream) {
   var state = stream._readableState;
   debug('flow', state.flowing);
-  if (state.flowing) {
-    do {
-      var chunk = stream.read();
-    } while (null !== chunk && state.flowing);
-  }
+  while (state.flowing && stream.read() !== null) {}
 }
 
 // wrap an old-style stream as the async data source.
 // This is *not* part of the readable stream interface.
 // It is an ugly unfortunate mess of history.
 Readable.prototype.wrap = function (stream) {
+  var _this = this;
+
   var state = this._readableState;
   var paused = false;
 
-  var self = this;
   stream.on('end', function () {
     debug('wrapped end');
     if (state.decoder && !state.ended) {
       var chunk = state.decoder.end();
-      if (chunk && chunk.length) self.push(chunk);
+      if (chunk && chunk.length) _this.push(chunk);
     }
 
-    self.push(null);
+    _this.push(null);
   });
 
   stream.on('data', function (chunk) {
@@ -29625,7 +35507,7 @@ Readable.prototype.wrap = function (stream) {
     // don't skip over falsy values in objectMode
     if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;
 
-    var ret = self.push(chunk);
+    var ret = _this.push(chunk);
     if (!ret) {
       paused = true;
       stream.pause();
@@ -29645,14 +35527,13 @@ Readable.prototype.wrap = function (stream) {
   }
 
   // proxy certain important events.
-  var events = ['error', 'close', 'destroy', 'pause', 'resume'];
-  forEach(events, function (ev) {
-    stream.on(ev, self.emit.bind(self, ev));
-  });
+  for (var n = 0; n < kProxyEvents.length; n++) {
+    stream.on(kProxyEvents[n], this.emit.bind(this, kProxyEvents[n]));
+  }
 
   // when we try to consume some more bytes, simply unpause the
   // underlying stream.
-  self._read = function (n) {
+  this._read = function (n) {
     debug('wrapped _read', n);
     if (paused) {
       paused = false;
@@ -29660,58 +35541,119 @@ Readable.prototype.wrap = function (stream) {
     }
   };
 
-  return self;
+  return this;
 };
+
+Object.defineProperty(Readable.prototype, 'readableHighWaterMark', {
+  // making it explicit this property is not enumerable
+  // because otherwise some prototype manipulation in
+  // userland will fail
+  enumerable: false,
+  get: function () {
+    return this._readableState.highWaterMark;
+  }
+});
 
 // exposed for testing purposes only.
 Readable._fromList = fromList;
 
 // Pluck off n bytes from an array of buffers.
 // Length is the combined lengths of all the buffers in the list.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
 function fromList(n, state) {
-  var list = state.buffer;
-  var length = state.length;
-  var stringMode = !!state.decoder;
-  var objectMode = !!state.objectMode;
+  // nothing buffered
+  if (state.length === 0) return null;
+
   var ret;
-
-  // nothing in the list, definitely empty.
-  if (list.length === 0) return null;
-
-  if (length === 0) ret = null;else if (objectMode) ret = list.shift();else if (!n || n >= length) {
-    // read it all, truncate the array.
-    if (stringMode) ret = list.join('');else if (list.length === 1) ret = list[0];else ret = Buffer.concat(list, length);
-    list.length = 0;
+  if (state.objectMode) ret = state.buffer.shift();else if (!n || n >= state.length) {
+    // read it all, truncate the list
+    if (state.decoder) ret = state.buffer.join('');else if (state.buffer.length === 1) ret = state.buffer.head.data;else ret = state.buffer.concat(state.length);
+    state.buffer.clear();
   } else {
-    // read just some of it.
-    if (n < list[0].length) {
-      // just take a part of the first list item.
-      // slice is the same for buffers and strings.
-      var buf = list[0];
-      ret = buf.slice(0, n);
-      list[0] = buf.slice(n);
-    } else if (n === list[0].length) {
-      // first list is a perfect match
-      ret = list.shift();
-    } else {
-      // complex case.
-      // we have enough to cover it, but it spans past the first buffer.
-      if (stringMode) ret = '';else ret = new Buffer(n);
-
-      var c = 0;
-      for (var i = 0, l = list.length; i < l && c < n; i++) {
-        var buf = list[0];
-        var cpy = Math.min(n - c, buf.length);
-
-        if (stringMode) ret += buf.slice(0, cpy);else buf.copy(ret, c, 0, cpy);
-
-        if (cpy < buf.length) list[0] = buf.slice(cpy);else list.shift();
-
-        c += cpy;
-      }
-    }
+    // read part of list
+    ret = fromListPartial(n, state.buffer, state.decoder);
   }
 
+  return ret;
+}
+
+// Extracts only enough buffered data to satisfy the amount requested.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function fromListPartial(n, list, hasStrings) {
+  var ret;
+  if (n < list.head.data.length) {
+    // slice is the same for buffers and strings
+    ret = list.head.data.slice(0, n);
+    list.head.data = list.head.data.slice(n);
+  } else if (n === list.head.data.length) {
+    // first chunk is a perfect match
+    ret = list.shift();
+  } else {
+    // result spans more than one buffer
+    ret = hasStrings ? copyFromBufferString(n, list) : copyFromBuffer(n, list);
+  }
+  return ret;
+}
+
+// Copies a specified amount of characters from the list of buffered data
+// chunks.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function copyFromBufferString(n, list) {
+  var p = list.head;
+  var c = 1;
+  var ret = p.data;
+  n -= ret.length;
+  while (p = p.next) {
+    var str = p.data;
+    var nb = n > str.length ? str.length : n;
+    if (nb === str.length) ret += str;else ret += str.slice(0, n);
+    n -= nb;
+    if (n === 0) {
+      if (nb === str.length) {
+        ++c;
+        if (p.next) list.head = p.next;else list.head = list.tail = null;
+      } else {
+        list.head = p;
+        p.data = str.slice(nb);
+      }
+      break;
+    }
+    ++c;
+  }
+  list.length -= c;
+  return ret;
+}
+
+// Copies a specified amount of bytes from the list of buffered data chunks.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function copyFromBuffer(n, list) {
+  var ret = Buffer.allocUnsafe(n);
+  var p = list.head;
+  var c = 1;
+  p.data.copy(ret);
+  n -= p.data.length;
+  while (p = p.next) {
+    var buf = p.data;
+    var nb = n > buf.length ? buf.length : n;
+    buf.copy(ret, ret.length - n, 0, nb);
+    n -= nb;
+    if (n === 0) {
+      if (nb === buf.length) {
+        ++c;
+        if (p.next) list.head = p.next;else list.head = list.tail = null;
+      } else {
+        list.head = p;
+        p.data = buf.slice(nb);
+      }
+      break;
+    }
+    ++c;
+  }
+  list.length -= c;
   return ret;
 }
 
@@ -29720,11 +35662,11 @@ function endReadable(stream) {
 
   // If we get here before consuming all the bytes, then that is a
   // bug in node.  Should never happen.
-  if (state.length > 0) throw new Error('endReadable called on non-empty stream');
+  if (state.length > 0) throw new Error('"endReadable()" called on non-empty stream');
 
   if (!state.endEmitted) {
     state.ended = true;
-    processNextTick(endReadableNT, state, stream);
+    pna.nextTick(endReadableNT, state, stream);
   }
 }
 
@@ -29737,19 +35679,13 @@ function endReadableNT(state, stream) {
   }
 }
 
-function forEach(xs, f) {
-  for (var i = 0, l = xs.length; i < l; i++) {
-    f(xs[i], i);
-  }
-}
-
 function indexOf(xs, x) {
   for (var i = 0, l = xs.length; i < l; i++) {
     if (xs[i] === x) return i;
   }
   return -1;
 }
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("8oxB")))
 
 /***/ }),
 
@@ -29764,6 +35700,27 @@ function indexOf(xs, x) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -29773,6 +35730,10 @@ function indexOf(xs, x) {
 
 /*<replacement>*/
 
+var pna = __webpack_require__("lm0R");
+/*</replacement>*/
+
+/*<replacement>*/
 var objectKeys = Object.keys || function (obj) {
   var keys = [];
   for (var key in obj) {
@@ -29784,10 +35745,6 @@ var objectKeys = Object.keys || function (obj) {
 module.exports = Duplex;
 
 /*<replacement>*/
-var processNextTick = __webpack_require__("lm0R");
-/*</replacement>*/
-
-/*<replacement>*/
 var util = __webpack_require__("Onz0");
 util.inherits = __webpack_require__("P7XM");
 /*</replacement>*/
@@ -29797,10 +35754,13 @@ var Writable = __webpack_require__("3BRs");
 
 util.inherits(Duplex, Readable);
 
-var keys = objectKeys(Writable.prototype);
-for (var v = 0; v < keys.length; v++) {
-  var method = keys[v];
-  if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
+{
+  // avoid scope creep, the keys array can then be collected
+  var keys = objectKeys(Writable.prototype);
+  for (var v = 0; v < keys.length; v++) {
+    var method = keys[v];
+    if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
+  }
 }
 
 function Duplex(options) {
@@ -29819,6 +35779,16 @@ function Duplex(options) {
   this.once('end', onend);
 }
 
+Object.defineProperty(Duplex.prototype, 'writableHighWaterMark', {
+  // making it explicit this property is not enumerable
+  // because otherwise some prototype manipulation in
+  // userland will fail
+  enumerable: false,
+  get: function () {
+    return this._writableState.highWaterMark;
+  }
+});
+
 // the no-half-open enforcer
 function onend() {
   // if we allow half-open state, or if the writable side ended,
@@ -29827,18 +35797,40 @@ function onend() {
 
   // no more data can be written.
   // But allow more writes to happen in this tick.
-  processNextTick(onEndNT, this);
+  pna.nextTick(onEndNT, this);
 }
 
 function onEndNT(self) {
   self.end();
 }
 
-function forEach(xs, f) {
-  for (var i = 0, l = xs.length; i < l; i++) {
-    f(xs[i], i);
+Object.defineProperty(Duplex.prototype, 'destroyed', {
+  get: function () {
+    if (this._readableState === undefined || this._writableState === undefined) {
+      return false;
+    }
+    return this._readableState.destroyed && this._writableState.destroyed;
+  },
+  set: function (value) {
+    // we ignore the value if the stream
+    // has not been initialized yet
+    if (this._readableState === undefined || this._writableState === undefined) {
+      return;
+    }
+
+    // backward compatibility, the user is explicitly
+    // managing destroyed
+    this._readableState.destroyed = value;
+    this._writableState.destroyed = value;
   }
-}
+});
+
+Duplex.prototype._destroy = function (err, cb) {
+  this.push(null);
+  this.end();
+
+  pna.nextTick(cb, err);
+};
 
 /***/ }),
 
@@ -29961,1233 +35953,6 @@ exports.default = {
 
 /***/ }),
 
-/***/ "t4IK":
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
-* geostats() is a tiny and standalone javascript library for classification 
-* Project page - https://github.com/simogeo/geostats
-* Copyright (c) 2011 Simon Georget, http://www.empreinte-urbaine.eu
-* Licensed under the MIT license
-*/
-
-
-(function (definition) {
-    // This file will function properly as a <script> tag, or a module
-    // using CommonJS and NodeJS or RequireJS module formats.
-
-    // CommonJS
-    if (true) {
-        module.exports = definition();
-
-    // RequireJS
-    } else {}
-
-})(function () {
-
-var isInt = function(n) {
-   return typeof n === 'number' && parseFloat(n) == parseInt(n, 10) && !isNaN(n);
-} // 6 characters
-
-var _t = function(str) {
-	return str;
-};
-
-//taking from http://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric
-var isNumber = function(n) {
-	  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-
-
-//indexOf polyfill
-// from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
-if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function (searchElement, fromIndex) {
-      if ( this === undefined || this === null ) {
-        throw new TypeError( '"this" is null or not defined' );
-      }
-
-      var length = this.length >>> 0; // Hack to convert object.length to a UInt32
-
-      fromIndex = +fromIndex || 0;
-
-      if (Math.abs(fromIndex) === Infinity) {
-        fromIndex = 0;
-      }
-
-      if (fromIndex < 0) {
-        fromIndex += length;
-        if (fromIndex < 0) {
-          fromIndex = 0;
-        }
-      }
-
-      for (;fromIndex < length; fromIndex++) {
-        if (this[fromIndex] === searchElement) {
-          return fromIndex;
-        }
-      }
-
-      return -1;
-    };
-  }
-
-var geostats = function(a) {
-
-	this.objectID = '';
-	this.separator = ' - ';
-	this.legendSeparator = this.separator;
-	this.method  = '';
-	this.precision = 0;
-	this.precisionflag = 'auto';
-	this.roundlength 	= 2; // Number of decimals, round values
-	this.is_uniqueValues = false;
-	this.debug =  false;
-	this.silent = false;
-	
-	this.bounds  = Array();
-	this.ranges  = Array();
-	this.inner_ranges  = null;
-	this.colors  = Array();
-	this.counter = Array();
-	
-	// statistics information
-	this.stat_sorted	= null;
-	this.stat_mean 		= null;
-	this.stat_median 	= null;
-	this.stat_sum 		= null;
-	this.stat_max 		= null;
-	this.stat_min 		= null;
-	this.stat_pop 		= null;
-	this.stat_variance	= null;
-	this.stat_stddev	= null;
-	this.stat_cov		= null;
-
-	
-	/**
-	 * logging method
-	 */
-	this.log = function(msg, force) {
-	
-		if(this.debug == true || force != null)
-			console.log(this.objectID + "(object id) :: " + msg);
-		
-	};
-	
-	/**
-	 * Set bounds
-	 */
-	this.setBounds = function(a) {
-		
-		this.log('Setting bounds (' + a.length + ') : ' + a.join());
-	
-		this.bounds = Array() // init empty array to prevent bug when calling classification after another with less items (sample getQuantile(6) and getQuantile(4))
-		
-		this.bounds = a;
-		//this.bounds = this.decimalFormat(a);
-		
-	};
-	
-	/**
-	 * Set a new serie
-	 */
-	this.setSerie = function(a) {
-		
-		this.log('Setting serie (' + a.length + ') : ' + a.join());
-	
-		this.serie = Array() // init empty array to prevent bug when calling classification after another with less items (sample getQuantile(6) and getQuantile(4))
-		this.serie = a;
-		
-		//reset statistics after changing serie
-	    this.resetStatistics();
-	    
-		this.setPrecision();
-		
-	};
-	
-	/**
-	 * Set colors
-	 */
-	this.setColors = function(colors) {
-		
-		this.log('Setting color ramp (' + colors.length + ') : '  + colors.join());
-		
-		this.colors = colors;
-		
-	};
-	
-	/**
-	 * Get feature count
-	 * With bounds array(0, 0.75, 1.5, 2.25, 3); 
-	 * should populate this.counter with 5 keys
-	 * and increment counters for each key
-	 */
-	this.doCount = function() {
-
-		if (this._nodata())
-			return;
-		
-
-		var tmp = this.sorted();
-		
-		this.counter = new Array();
-		
-		// we init counter with 0 value
-		for(i = 0; i < this.bounds.length -1; i++) {
-			this.counter[i]= 0;
-		}
-		
-		for(j=0; j < tmp.length; j++) {
-			
-			// get current class for value to increment the counter
-			var cclass = this.getClass(tmp[j]);
-			this.counter[cclass]++;
-
-		}
-
-	};
-	
-	/**
-	 * Set decimal precision according to user input
-	 * or automatcally determined according
-	 * to the given serie.
-	 */
-	this.setPrecision = function(decimals) {
-		
-		// only when called from user
-		if(typeof decimals !== "undefined") {
-			this.precisionflag = 'manual';
-			this.precision = decimals;
-		}
-		
-		// we calculate the maximal decimal length on given serie
-		if(this.precisionflag == 'auto') {
-			
-			for (var i = 0; i < this.serie.length; i++) {
-				
-				// check if the given value is a number and a float
-				if (!isNaN((this.serie[i]+"")) && (this.serie[i]+"").toString().indexOf('.') != -1) {
-					var precision = (this.serie[i] + "").split(".")[1].length;
-				} else {
-					var precision = 0;
-				}
-				
-				if(precision > this.precision) {
-					this.precision = precision;
-				}
-				
-			}
-			
-		}
-		if(this.precision > 20) {
-			// prevent "Uncaught RangeError: toFixed() digits argument must be between 0 and 20" bug. See https://github.com/simogeo/geostats/issues/34
-			this.log('this.precision value (' + this.precision + ') is greater than max value. Automatic set-up to 20 to prevent "Uncaught RangeError: toFixed()" when calling decimalFormat() method.');
-			this.precision = 20;
-		}
-
-		this.log('Calling setPrecision(). Mode : ' + this.precisionflag + ' - Decimals : '+ this.precision);
-		
-		this.serie = this.decimalFormat(this.serie);
-		
-	};
-	
-	/**
-	 * Format array numbers regarding to precision
-	 */
-	this.decimalFormat = function(a) {
-		
-		var b = new Array();
-		
-		for (var i = 0; i < a.length; i++) {
-			// check if the given value is a number
-			if (isNumber(a[i])) {
-				b[i] = parseFloat(parseFloat(a[i]).toFixed(this.precision));
-			} else {
-				b[i] = a[i];
-			}
-		}
-		
-		return b;
-	}
-	
-	/**
-	 * Transform a bounds array to a range array the following array : array(0,
-	 * 0.75, 1.5, 2.25, 3); becomes : array('0-0.75', '0.75-1.5', '1.5-2.25',
-	 * '2.25-3');
-	 */
-	this.setRanges = function() {
-	
-		this.ranges = Array(); // init empty array to prevent bug when calling classification after another with less items (sample getQuantile(6) and getQuantile(4))
-		
-		for (i = 0; i < (this.bounds.length - 1); i++) {
-			this.ranges[i] = this.bounds[i] + this.separator + this.bounds[i + 1];
-		}
-	};
-
-	/** return min value */
-	this.min = function() {
-		
-		if (this._nodata())
-			return;
-		
-		this.stat_min = this.serie[0];
-		
-		for (i = 0; i < this.pop(); i++) {
-			if (this.serie[i] < this.stat_min) {
-				this.stat_min = this.serie[i];
-			}
-		}
-
-		return this.stat_min;
-	};
-
-	/** return max value */
-	this.max = function() {
-		
-		if (this._nodata())
-			return;
-		
-		this.stat_max = this.serie[0];
-		for (i = 0; i < this.pop(); i++) {
-			if (this.serie[i] > this.stat_max) {
-				this.stat_max = this.serie[i];
-			}
-		}
-		
-		return this.stat_max;
-	};
-
-	/** return sum value */
-	this.sum = function() {
-		
-		if (this._nodata())
-			return;
-		
-		if (this.stat_sum  == null) {
-			
-			this.stat_sum = 0;
-			for (i = 0; i < this.pop(); i++) {
-				this.stat_sum += parseFloat(this.serie[i]);
-			}
-			
-		}
-		
-		return this.stat_sum;
-	};
-
-	/** return population number */
-	this.pop = function() {
-		
-		if (this._nodata())
-			return;
-		
-		if (this.stat_pop  == null) {
-			
-			this.stat_pop = this.serie.length;
-			
-		}
-		
-		return this.stat_pop;
-	};
-
-	/** return mean value */
-	this.mean = function() {
-		
-		if (this._nodata())
-			return;
-
-		if (this.stat_mean  == null) {
-			
-			this.stat_mean = parseFloat(this.sum() / this.pop());
-			
-		}
-		
-		return this.stat_mean;
-	};
-
-	/** return median value */
-	this.median = function() {
-		
-		if (this._nodata())
-			return;
-		
-		if (this.stat_median  == null) {
-			
-			this.stat_median = 0;
-			var tmp = this.sorted();
-			
-			// serie pop is odd
-			if (tmp.length % 2) {
-				this.stat_median = parseFloat(tmp[(Math.ceil(tmp.length / 2) - 1)]);
-				
-			// serie pop is even
-			} else {
-				this.stat_median = ( parseFloat(tmp[((tmp.length / 2) - 1)]) + parseFloat(tmp[(tmp.length / 2)]) ) / 2;
-			}
-			
-		}
-		
-		return this.stat_median;
-	};
-
-	/** return variance value */
-	this.variance = function() {
-		
-		round = (typeof round === "undefined") ? true : false;
-		
-		if (this._nodata())
-			return;
-		
-		if (this.stat_variance  == null) {
-
-			var tmp = 0, serie_mean = this.mean();
-			for (var i = 0; i < this.pop(); i++) {
-				tmp += Math.pow( (this.serie[i] - serie_mean), 2 );
-			}
-
-			this.stat_variance =  tmp / this.pop();
-			
-			if(round == true) {
-				this.stat_variance = Math.round(this.stat_variance * Math.pow(10,this.roundlength) )/ Math.pow(10,this.roundlength);
-			}
-			
-		}
-		
-		return this.stat_variance;
-	};
-	
-	/** return standard deviation value */
-	this.stddev = function(round) {
-		
-		round = (typeof round === "undefined") ? true : false;
-		
-		if (this._nodata())
-			return;
-		
-		if (this.stat_stddev  == null) {
-			
-			this.stat_stddev = Math.sqrt(this.variance());
-			
-			if(round == true) {
-				this.stat_stddev = Math.round(this.stat_stddev * Math.pow(10,this.roundlength) )/ Math.pow(10,this.roundlength);
-			}
-			
-		}
-		
-		return this.stat_stddev;
-	};
-	
-	/** coefficient of variation - measure of dispersion */
-	this.cov = function(round) {
-		
-		round = (typeof round === "undefined") ? true : false;
-		
-		if (this._nodata())
-			return;
-		
-		if (this.stat_cov  == null) {
-			
-			this.stat_cov = this.stddev() / this.mean();
-			
-			if(round == true) {
-				this.stat_cov = Math.round(this.stat_cov * Math.pow(10,this.roundlength) )/ Math.pow(10,this.roundlength);
-			}
-			
-		}
-		
-		return this.stat_cov;
-	};
-	
-	/** reset all attributes after setting a new serie */
-	this.resetStatistics = function() {
-	    this.stat_sorted    = null;
-	    this.stat_mean  = null;
-	    this.stat_median    = null;
-	    this.stat_sum       = null;
-	    this.stat_max       = null;
-	    this.stat_min       = null;
-	    this.stat_pop       = null;
-	    this.stat_variance  = null;
-	    this.stat_stddev    = null;
-	    this.stat_cov       = null;
-	}
-	
-	/** data test */
-	this._nodata = function() {
-		if (this.serie.length == 0) {
-			
-			if(this.silent) this.log("[silent mode] Error. You should first enter a serie!", true);
-			else throw new TypeError("Error. You should first enter a serie!");
-			return 1;
-		} else
-			return 0;
-		
-	};
-	
-	/** check if the serie contains negative value */
-	this._hasNegativeValue = function() {
-		
-		for (i = 0; i < this.serie.length; i++) {
-	    	if(this.serie[i] < 0)
-	    		return true;
-	    }
-
-		return false;
-	};
-	
-	/** check if the serie contains zero value */
-	this._hasZeroValue = function() {
-		
-		for (i = 0; i < this.serie.length; i++) {
-	    	if(parseFloat(this.serie[i]) === 0)
-	    		return true;
-	    }
-
-		return false;
-	};
-
-	/** return sorted values (as array) */
-	this.sorted = function() {
-		
-		if (this.stat_sorted  == null) {
-			
-			if(this.is_uniqueValues == false) {
-				this.stat_sorted = this.serie.sort(function(a, b) {
-					return a - b;
-				});
-			} else {
-				this.stat_sorted = this.serie.sort(function(a,b){
-					var nameA=a.toString().toLowerCase(), nameB=b.toString().toLowerCase();
-				    if(nameA < nameB) return -1;
-				    if(nameA > nameB) return 1;
-				    return 0;
-				})
-			}
-		}
-		
-		return this.stat_sorted;
-		
-	};
-
-	/** return all info */
-	this.info = function() {
-		
-		if (this._nodata())
-			return;
-		
-		var content = '';
-		content += _t('Population') + ' : ' + this.pop() + ' - [' + _t('Min')
-				+ ' : ' + this.min() + ' | ' + _t('Max') + ' : ' + this.max()
-				+ ']' + "\n";
-		content += _t('Mean') + ' : ' + this.mean() + ' - ' + _t('Median')	+ ' : ' + this.median() + "\n";
-		content += _t('Variance') + ' : ' + this.variance() + ' - ' + _t('Standard deviation')	+ ' : ' + this.stddev()  
-				+ ' - ' + _t('Coefficient of variation')	+ ' : ' + this.cov() + "\n";
-
-		return content;
-	};
-	
-	/**
-	 * Set Manual classification Return an array with bounds : ie array(0,
-	 * 0.75, 1.5, 2.25, 3);
-	 * Set ranges and prepare data for displaying legend
-	 * 
-	 */
-	this.setClassManually = function(array) {
-
-		if (this._nodata())
-	        return;
-
-	    if(array[0] !== this.min() || array[array.length-1] !== this.max()) {
-	    	if(this.silent) this.log("[silent mode] " + t('Given bounds may not be correct! please check your input.\nMin value : ' + this.min() + ' / Max value : ' + this.max()), true);
-			else throw new TypeError(_t('Given bounds may not be correct! please check your input.\nMin value : ' + this.min() + ' / Max value : ' + this.max()));
-	    	return; 
-	    }
-
-	    this.setBounds(array);
-	    this.setRanges();
-	    
-	    // we specify the classification method
-	    this.method = _t('manual classification') + ' (' + (array.length -1) + ' ' + _t('classes') + ')';
-
-	    return this.bounds;
-	};
-
-	/**
-	 * Equal intervals classification Return an array with bounds : ie array(0,
-	 * 0.75, 1.5, 2.25, 3);
-	 */
-	this.getClassEqInterval = function(nbClass, forceMin, forceMax) {
-
-		if (this._nodata())
-	        return;
-
-		var tmpMin = (typeof forceMin === "undefined") ? this.min() : forceMin;
-		var tmpMax = (typeof forceMax === "undefined") ? this.max() : forceMax;
-		
-	    var a = Array();
-	    var val = tmpMin;
-	    var interval = (tmpMax - tmpMin) / nbClass;
-
-	    for (i = 0; i <= nbClass; i++) {
-	        a[i] = val;
-	        val += interval;
-	    }
-
-	    //-> Fix last bound to Max of values
-	    a[nbClass] = tmpMax;
-
-	    this.setBounds(a);
-	    this.setRanges();
-	    
-	    // we specify the classification method
-	    this.method = _t('eq. intervals') + ' (' + nbClass + ' ' + _t('classes') + ')';
-
-	    return this.bounds;
-	};
-	
-
-	this.getQuantiles = function(nbClass) {
-		var tmp = this.sorted();
-		var quantiles = [];
-
-		var step = this.pop() / nbClass;
-		for (var i = 1; i < nbClass; i++) {
-			var qidx = Math.round(i*step+0.49);
-			quantiles.push(tmp[qidx-1]); // zero-based
-		}
-
-		return quantiles;
-	};
-
-	/**
-	 * Quantile classification Return an array with bounds : ie array(0, 0.75,
-	 * 1.5, 2.25, 3);
-	 */
-	this.getClassQuantile = function(nbClass) {
-
-		if (this._nodata())
-			return;
-
-		var tmp = this.sorted();
-		var bounds = this.getQuantiles(nbClass);
-		bounds.unshift(tmp[0]);
-
-		if (bounds[tmp.length - 1] !== tmp[tmp.length - 1])
-			bounds.push(tmp[tmp.length - 1]);
-
-		this.setBounds(bounds);
-		this.setRanges();
-
-		// we specify the classification method
-		this.method = _t('quantile') + ' (' + nbClass + ' ' + _t('classes') + ')';
-
-		return this.bounds;
-
-	};
-	
-	/**
-	 * Standard Deviation classification
-	 * Return an array with bounds : ie array(0,
-	 * 0.75, 1.5, 2.25, 3);
-	 */
-	this.getClassStdDeviation = function(nbClass, matchBounds) {
-
-		if (this._nodata())
-	        return;
-
-	    var tmpMax = this.max();
-	    var tmpMin = this.min();
-	    
-	    var a = Array();
-	    
-	    // number of classes is odd
-	    if(nbClass % 2 == 1) {
-
-	    	// Euclidean division to get the inferior bound
-	    	var infBound = Math.floor(nbClass / 2);
-	    	
-	    	var supBound = infBound + 1;
-	    	
-	    	// we set the central bounds
-	    	a[infBound] = this.mean() - ( this.stddev() / 2);
-	    	a[supBound] = this.mean() + ( this.stddev() / 2);
-	    	
-	    	// Values < to infBound, except first one
-	    	for (i = infBound - 1; i > 0; i--) {
-	    		var val = a[i+1] - this.stddev();
-		        a[i] = val;
-		    }
-	    	
-	    	// Values > to supBound, except last one
-	    	for (i = supBound + 1; i < nbClass; i++) {
-	    		var val = a[i-1] + this.stddev();
-		        a[i] = val;
-		    }
-	    	
-	    	// number of classes is even
-	    } else {
-	    	
-	    	var meanBound = nbClass / 2;
-	    	
-	    	// we get the mean value
-	    	a[meanBound] = this.mean();
-	    	
-	    	// Values < to the mean, except first one
-	    	for (i = meanBound - 1; i > 0; i--) {
-	    		var val = a[i+1] - this.stddev();
-		        a[i] = val;
-		    }
-	    	
-	    	// Values > to the mean, except last one
-	    	for (i = meanBound + 1; i < nbClass; i++) {
-	    		var val = a[i-1] + this.stddev();
-		        a[i] = val;
-		    }
-	    }
-	    
-	    
-	    // we finally set the first value
-	    // do we excatly match min value or not ? 
-	    a[0] = (typeof matchBounds === "undefined") ? a[1]-this.stddev() : this.min();
-    	
-    	// we finally set the last value
-	    // do we excatly match max value or not ? 
-    	a[nbClass] = (typeof matchBounds === "undefined") ? a[nbClass-1]+this.stddev() : this.max();
-
-	    this.setBounds(a);
-	    this.setRanges();
-	    
-	    // we specify the classification method
-	    this.method = _t('std deviation') + ' (' + nbClass + ' ' + _t('classes')+ ')'; 
-	    
-	    return this.bounds;
-	};
-	
-	
-	/**
-	 * Geometric Progression classification 
-	 * http://en.wikipedia.org/wiki/Geometric_progression
-	 * Return an array with bounds : ie array(0,
-	 * 0.75, 1.5, 2.25, 3);
-	 */
-	this.getClassGeometricProgression = function(nbClass) {
-
-		if (this._nodata())
-	        return;
-
-	    if(this._hasNegativeValue() || this._hasZeroValue()) {
-	    	if(this.silent) this.log("[silent mode] " + _t('geometric progression can\'t be applied with a serie containing negative or zero values.'), true);
-			else throw new TypeError(_t('geometric progression can\'t be applied with a serie containing negative or zero values.'));
-	    	return;
-	    }
-	    
-	    var a = Array();
-	    var tmpMin = this.min();
-	    var tmpMax = this.max();
-	    
-	    var logMax = Math.log(tmpMax) / Math.LN10; // max decimal logarithm (or base 10)
-	    var logMin = Math.log(tmpMin) / Math.LN10;; // min decimal logarithm (or base 10)
-	    
-	    var interval = (logMax - logMin) / nbClass;
-	    
-	    // we compute log bounds
-	    for (i = 0; i < nbClass; i++) {
-	    	if(i == 0) {
-	    		a[i] = logMin;
-	    	} else {
-	    		a[i] = a[i-1] + interval;
-	    	}
-	    }
-	    
-	    // we compute antilog
-	    a = a.map(function(x) { return Math.pow(10, x); });
-	    
-	    // and we finally add max value
-	    a.push(this.max());
-	    
-	    this.setBounds(a);
-	    this.setRanges();
-	    
-	    // we specify the classification method
-	    this.method = _t('geometric progression') + ' (' + nbClass + ' ' + _t('classes') + ')';
-
-	    return this.bounds;
-	};
-	
-	/**
-	 * Arithmetic Progression classification 
-	 * http://en.wikipedia.org/wiki/Arithmetic_progression
-	 * Return an array with bounds : ie array(0,
-	 * 0.75, 1.5, 2.25, 3);
-	 */
-	this.getClassArithmeticProgression = function(nbClass) {
-
-		if (this._nodata())
-	        return;
-	    
-	    var denominator = 0;
-	    
-	    // we compute the (french) "Raison"
-	    for (i = 1; i <= nbClass; i++) {
-	        denominator += i;
-	    }
-
-	    var a = Array();
-	    var tmpMin = this.min();
-	    var tmpMax = this.max();
-	    
-	    var interval = (tmpMax - tmpMin) / denominator;
-
-	    for (i = 0; i <= nbClass; i++) {
-	    	if(i == 0) {
-	    		a[i] = tmpMin;
-	    	} else {
-	    		a[i] = a[i-1] + (i * interval);
-	    	}
-	    }
-
-	    this.setBounds(a);
-	    this.setRanges();
-	    
-	    // we specify the classification method
-	    this.method = _t('arithmetic progression') + ' (' + nbClass + ' ' + _t('classes') + ')';
-
-	    return this.bounds;
-	};
-	
-	/**
-	 * Credits : Doug Curl (javascript) and Daniel J Lewis (python implementation)
-	 * http://www.arcgis.com/home/item.html?id=0b633ff2f40d412995b8be377211c47b
-	 * http://danieljlewis.org/2010/06/07/jenks-natural-breaks-algorithm-in-python/
-	 */
-	this.getClassJenks = function(nbClass) {
-	
-		if (this._nodata())
-			return;
-		
-		dataList = this.sorted();
-
-		// now iterate through the datalist:
-		// determine mat1 and mat2
-		// really not sure how these 2 different arrays are set - the code for
-		// each seems the same!
-		// but the effect are 2 different arrays: mat1 and mat2
-		var mat1 = []
-		for ( var x = 0, xl = dataList.length + 1; x < xl; x++) {
-			var temp = []
-			for ( var j = 0, jl = nbClass + 1; j < jl; j++) {
-				temp.push(0)
-			}
-			mat1.push(temp)
-		}
-
-		var mat2 = []
-		for ( var i = 0, il = dataList.length + 1; i < il; i++) {
-			var temp2 = []
-			for ( var c = 0, cl = nbClass + 1; c < cl; c++) {
-				temp2.push(0)
-			}
-			mat2.push(temp2)
-		}
-
-		// absolutely no idea what this does - best I can tell, it sets the 1st
-		// group in the
-		// mat1 and mat2 arrays to 1 and 0 respectively
-		for ( var y = 1, yl = nbClass + 1; y < yl; y++) {
-			mat1[0][y] = 1
-			mat2[0][y] = 0
-			for ( var t = 1, tl = dataList.length + 1; t < tl; t++) {
-				mat2[t][y] = Infinity
-			}
-			var v = 0.0
-		}
-
-		// and this part - I'm a little clueless on - but it works
-		// pretty sure it iterates across the entire dataset and compares each
-		// value to
-		// one another to and adjust the indices until you meet the rules:
-		// minimum deviation
-		// within a class and maximum separation between classes
-		for ( var l = 2, ll = dataList.length + 1; l < ll; l++) {
-			var s1 = 0.0
-			var s2 = 0.0
-			var w = 0.0
-			for ( var m = 1, ml = l + 1; m < ml; m++) {
-				var i3 = l - m + 1
-				var val = parseFloat(dataList[i3 - 1])
-				s2 += val * val
-				s1 += val
-				w += 1
-				v = s2 - (s1 * s1) / w
-				var i4 = i3 - 1
-				if (i4 != 0) {
-					for ( var p = 2, pl = nbClass + 1; p < pl; p++) {
-						if (mat2[l][p] >= (v + mat2[i4][p - 1])) {
-							mat1[l][p] = i3
-							mat2[l][p] = v + mat2[i4][p - 1]
-						}
-					}
-				}
-			}
-			mat1[l][1] = 1
-			mat2[l][1] = v
-		}
-
-		var k = dataList.length
-		var kclass = []
-
-		// fill the kclass (classification) array with zeros:
-		for (i = 0; i <= nbClass; i++) {
-			kclass.push(0);
-		}
-
-		// this is the last number in the array:
-		kclass[nbClass] = parseFloat(dataList[dataList.length - 1])
-		// this is the first number - can set to zero, but want to set to lowest
-		// to use for legend:
-		kclass[0] = parseFloat(dataList[0])
-		var countNum = nbClass
-		while (countNum >= 2) {
-			var id = parseInt((mat1[k][countNum]) - 2)
-			kclass[countNum - 1] = dataList[id]
-			k = parseInt((mat1[k][countNum] - 1))
-			// spits out the rank and value of the break values:
-			// console.log("id="+id,"rank = " + String(mat1[k][countNum]),"val =
-			// " + String(dataList[id]))
-			// count down:
-			countNum -= 1
-		}
-		// check to see if the 0 and 1 in the array are the same - if so, set 0
-		// to 0:
-		if (kclass[0] == kclass[1]) {
-			kclass[0] = 0
-		}
-
-		this.setBounds(kclass);
-		this.setRanges();
-
-		
-		this.method = _t('Jenks') + ' (' + nbClass + ' ' + _t('classes') + ')';
-		
-		return this.bounds; //array of breaks
-	}
-	
-	
-	/**
-	 * Quantile classification Return an array with bounds : ie array(0, 0.75,
-	 * 1.5, 2.25, 3);
-	 */
-	this.getClassUniqueValues = function() {
-
-		if (this._nodata())
-			return;
-		
-		this.is_uniqueValues = true;
-		
-		var tmp = this.sorted(); // display in alphabetical order
-
-		var a = Array();
-
-		for (i = 0; i < this.pop(); i++) {
-			if(a.indexOf(tmp[i]) === -1)
-				a.push(tmp[i]);
-		}
-		
-		this.bounds = a;
-		
-		// we specify the classification method
-		this.method = _t('unique values');
-		
-		return a;
-
-	};
-	
-	
-	/**
-	 * Return the class of a given value.
-	 * For example value : 6
-	 * and bounds array = (0, 4, 8, 12);
-	 * Return 2
-	 */
-	this.getClass = function(value) {
-
-		for(i = 0; i < this.bounds.length; i++) {
-			
-			
-			if(this.is_uniqueValues == true) {
-				if(value == this.bounds[i])
-					return i;
-			} else {
-				// parseFloat() is necessary
-				if(parseFloat(value) <= this.bounds[i + 1]) {
-					return i;
-				}
-			}
-		}
-		
-		return _t("Unable to get value's class.");
-		
-	};
-
-	/**
-	 * Return the ranges array : array('0-0.75', '0.75-1.5', '1.5-2.25',
-	 * '2.25-3');
-	 */
-	this.getRanges = function() {
-		
-		return this.ranges;
-		
-	};
-
-	/**
-	 * Returns the number/index of this.ranges that value falls into
-	 */
-	this.getRangeNum = function(value) {
-		
-		var bounds, i;
-
-		for (i = 0; i < this.ranges.length; i++) {
-			bounds = this.ranges[i].split(/ - /);
-			if (value <= parseFloat(bounds[1])) {
-				return i;
-			}
-		}
-	}
-	
-	/*
-	 * Compute inner ranges based on serie. 
-	 * Produce discontinous ranges used for legend - return an array similar to : 
-	 * array('0.00-0.74', '0.98-1.52', '1.78-2.25', '2.99-3.14');
-	 * If inner ranges already computed, return array values.
-	 */
-	this.getInnerRanges = function() {
-		
-		// if already computed, we return the result
-		if(this.inner_ranges != null)
-			return this.inner_ranges;
-
-		
-		var a = new Array();
-		var tmp = this.sorted();
-		
-		var cnt = 1; // bounds array counter
-		
-		for (i = 0; i < tmp.length; i++) {
-			
-			if(i == 0) var range_firstvalue = tmp[i]; // we init first range value
-			
-			if(parseFloat(tmp[i]) > parseFloat(this.bounds[cnt])) {
-				
-				a[cnt - 1] = '' + range_firstvalue + this.separator + tmp[i-1];
-				
-				var range_firstvalue =  tmp[i];
-				
-				cnt++;
-
-			}
-			
-			// we reach the last range, we finally complete manually
-			// and return the array
-			if(cnt == (this.bounds.length - 1)) {
-				// we set the last value
-				a[cnt - 1] = '' + range_firstvalue + this.separator + tmp[tmp.length-1];
-				
-				this.inner_ranges = a;
-				return this.inner_ranges;
-			}
-			
-
-		}
-		
-	};
-	
-	this.getSortedlist = function() {
-		
-		return this.sorted().join(', ');
-		
-	};
-	
-	/**
-	 * Return an html legend
-	 * colors : specify an array of color (hexadecimal values)
-	 * legend :  specify a text input for the legend. By default, just displays 'legend'
-	 * counter : if not null, display counter value
-	 * callback : if not null, callback function applied on legend boundaries
-	 * mode : 	null, 'default', 'distinct', 'discontinuous' : 
-	 * 			- if mode is null, will display legend as 'default mode'
-	 * 			- 'default' : displays ranges like in ranges array (continuous values), sample :  29.26 - 378.80 / 378.80 - 2762.25 /  2762.25 - 6884.84
-	 * 			- 'distinct' : Add + 1 according to decimal precision to distinguish classes (discrete values), sample :  29.26 - 378.80 / 378.81 - 2762.25 /  2762.26 - 6884.84 
-	 * 			- 'discontinuous' : indicates the range of data actually falling in each class , sample :  29.26 - 225.43 / 852.12 - 2762.20 /  3001.25 - 6884.84 / not implemented yet
-	 * order : 	null, 'ASC', 'DESC'
-	 */
-	this.getHtmlLegend = function(colors, legend, counter, callback, mode, order) {
-		
-		var cnt= '';
-		var elements = new Array();
-		
-		this.doCount(); // we do count, even if not displayed
-		
-		if(colors != null) {
-			ccolors = colors;
-		}
-		else {
-			ccolors = this.colors;
-		}
-		
-		if(legend != null) {
-			lg = legend;
-		}
-		else {
-			lg =  'Legend';
-		}
-		
-		if(counter != null) {
-			getcounter = true;
-		}
-		else {
-			getcounter = false;
-		}
-		
-		if(callback != null) {
-			fn = callback;
-		}
-		else {
-			fn = function(o) {return o;};
-		}
-		if(mode == null) {
-			mode = 'default';
-		}
-		if(mode == 'discontinuous') {
-			this.getInnerRanges();
-			// check if some classes are not populated / equivalent of in_array function
-			if(this.counter.indexOf(0) !== -1) {
-		    	if(this.silent) this.log("[silent mode] " + _t("Geostats cannot apply 'discontinuous' mode to the getHtmlLegend() method because some classes are not populated.\nPlease switch to 'default' or 'distinct' modes. Exit!"), true);
-				else throw new TypeError(_t("Geostats cannot apply 'discontinuous' mode to the getHtmlLegend() method because some classes are not populated.\nPlease switch to 'default' or 'distinct' modes. Exit!"));
-				return;
-			}
-
-		}
-		if(order !== 'DESC') order = 'ASC';
-		
-		if(ccolors.length < this.ranges.length) {
-			if(this.silent) this.log("[silent mode] " + _t('The number of colors should fit the number of ranges. Exit!'), true);
-			else throw new TypeError(_t('The number of colors should fit the number of ranges. Exit!'));
-			return;
-		}
-		
-		if(this.is_uniqueValues == false) {
-			
-			for (i = 0; i < (this.ranges.length); i++) {
-				if(getcounter===true) {
-					cnt = ' <span class="geostats-legend-counter">(' + this.counter[i] + ')</span>';
-				}
-				//console.log("Ranges : " + this.ranges[i]);
-				
-				// default mode 
-				var tmp = this.ranges[i].split(this.separator);
-					
-				var start_value = parseFloat(tmp[0]).toFixed(this.precision);
-				var end_value = parseFloat(tmp[1]).toFixed(this.precision);
-					
-				
-				// if mode == 'distinct' and we are not working on the first value
-				if(mode == 'distinct' && i != 0) {
-
-					if(isInt(start_value)) {
-						start_value = parseInt(start_value) + 1;
-						// format to float if necessary
-						if(this.precisionflag == 'manual' && this.precision != 0) start_value = parseFloat(start_value).toFixed(this.precision);
-					} else {
-
-						start_value = parseFloat(start_value) + (1 / Math.pow(10,this.precision));
-						// strangely the formula above return sometimes long decimal values, 
-						// the following instruction fix it
-						start_value = parseFloat(start_value).toFixed(this.precision);
-					}
-				}
-				
-				// if mode == 'discontinuous'
-				if(mode == 'discontinuous') {
-										
-					var tmp = this.inner_ranges[i].split(this.separator);
-					// console.log("Ranges : " + this.inner_ranges[i]);
-					
-					var start_value = parseFloat(tmp[0]).toFixed(this.precision);
-					var end_value = parseFloat(tmp[1]).toFixed(this.precision);
-					
-				}
-				
-				// we apply callback function
-				var el = fn(start_value) + this.legendSeparator + fn(end_value);
-					
-				var block = '<div><div class="geostats-legend-block" style="background-color:' + ccolors[i] + '"></div> ' + el + cnt + '</div>';
-				elements.push(block);
-			}
-			
-		} else {
-			
-			// only if classification is done on unique values
-			for (i = 0; i < (this.bounds.length); i++) {
-				if(getcounter===true) {
-					cnt = ' <span class="geostats-legend-counter">(' + this.counter[i] + ')</span>';
-				}
-				var el = fn(this.bounds[i]);
-				var block = '<div><div class="geostats-legend-block" style="background-color:' + ccolors[i] + '"></div> ' + el + cnt + '</div>';
-
-				elements.push(block);
-			}
-			
-		}
-		
-		// do we reverse the return legend ?
-		if(order === 'DESC') elements.reverse(); 
-		
-		// finally we create HTML and return it
-		var content  = '<div class="geostats-legend"><div class="geostats-legend-title">' + _t(lg) + '</div>';
-		for (i = 0; i < (elements.length); i++) {
-			content += elements[i];
-		}
-		content += '</div>';
-    
-		return content;
-	};
-
-	
-	
-	// object constructor
-	// At the end of script. If not setPrecision() method is not known
-	
-	// we create an object identifier for debugging
-	this.objectID = new Date().getUTCMilliseconds();
-	this.log('Creating new geostats object');
-	
-	if(typeof a !== 'undefined' && a.length > 0) {
-		this.serie = a;
-		this.setPrecision();
-		this.log('Setting serie (' + a.length + ') : ' + a.join());
-	} else {
-		this.serie = Array();
-
-	};
-	
-	// creating aliases on classification function for backward compatibility
-	this.getJenks = this.getClassJenks;
-	this.getGeometricProgression = this.getClassGeometricProgression;
-	this.getEqInterval = this.getClassEqInterval;
-	this.getQuantile = this.getClassQuantile;
-	this.getStdDeviation = this.getClassStdDeviation;
-	this.getUniqueValues = this.getClassUniqueValues;
-	this.getArithmeticProgression = this.getClassArithmeticProgression;
-
-};
-
-window.geostats = geostats;
-return geostats;
-});
-
-/***/ }),
-
 /***/ "t9FE":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31306,6 +36071,15 @@ __webpack_require__.d(components_namespaceObject, "TimeText", function() { retur
 __webpack_require__.d(components_namespaceObject, "Progress", function() { return Progress; });
 __webpack_require__.d(components_namespaceObject, "Icon", function() { return Icon; });
 __webpack_require__.d(components_namespaceObject, "LiquidFill", function() { return LiquidFill; });
+__webpack_require__.d(components_namespaceObject, "WebScene", function() { return WebScene; });
+__webpack_require__.d(components_namespaceObject, "RasterLayer", function() { return RasterLayer; });
+__webpack_require__.d(components_namespaceObject, "VectorTileLayer", function() { return VectorTileLayer; });
+__webpack_require__.d(components_namespaceObject, "MapvLayer", function() { return MapvLayer; });
+__webpack_require__.d(components_namespaceObject, "DeckglLayer", function() { return DeckglLayer; });
+__webpack_require__.d(components_namespaceObject, "DataFlowLayer", function() { return DataFlowLayer; });
+__webpack_require__.d(components_namespaceObject, "EchartsLayer", function() { return components_EchartsLayer; });
+__webpack_require__.d(components_namespaceObject, "HeatmapLayer", function() { return HeatmapLayer; });
+__webpack_require__.d(components_namespaceObject, "ClusterLayer", function() { return ClusterLayer; });
 var commontypes_namespaceObject = {};
 __webpack_require__.r(commontypes_namespaceObject);
 __webpack_require__.d(commontypes_namespaceObject, "AddressMatchParameter", function() { return AddressMatchParameter_AddressMatchParameter; });
@@ -31478,7 +36252,7 @@ var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread);
 
 // CONCATENATED MODULE: ./node_modules/vue-i18n/dist/vue-i18n.esm.js
 /*!
- * vue-i18n v8.9.0 
+ * vue-i18n v8.8.2 
  * (c) 2019 kazuya kawaguchi
  * Released under the MIT License.
  */
@@ -32451,7 +37225,7 @@ var VueI18n = function VueI18n (options) {
 
   this._exist = function (message, key) {
     if (!message || !key) { return false }
-    if (!isNull(this$1._path.getPathValue(message, key))) { return true }
+    if (this$1._path.getPathValue(message, key)) { return true }
     // fallback for flat key
     if (message[key]) { return true }
     return false
@@ -32466,7 +37240,7 @@ var VueI18n = function VueI18n (options) {
   });
 };
 
-var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },availableLocales: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true } };
+var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true } };
 
 VueI18n.prototype._initVM = function _initVM (data) {
   var silent = vue_i18n_esm_Vue.config.silent;
@@ -32514,7 +37288,6 @@ prototypeAccessors.vm.get = function () { return this._vm };
 prototypeAccessors.messages.get = function () { return looseClone(this._getMessages()) };
 prototypeAccessors.dateTimeFormats.get = function () { return looseClone(this._getDateTimeFormats()) };
 prototypeAccessors.numberFormats.get = function () { return looseClone(this._getNumberFormats()) };
-prototypeAccessors.availableLocales.get = function () { return Object.keys(this.messages).sort() };
 
 prototypeAccessors.locale.get = function () { return this._vm.locale };
 prototypeAccessors.locale.set = function (locale) {
@@ -33091,7 +37864,7 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = vue_i18n_esm_install;
-VueI18n.version = '8.9.0';
+VueI18n.version = '8.8.2';
 
 /* harmony default export */ var vue_i18n_esm = (VueI18n);
 
@@ -33382,12 +38155,12 @@ var light = __webpack_require__("26Y8");
 
 
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/WebMap.vue?vue&type=template&id=1d2ebd04&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl)?_c('Pan',{attrs:{"position":_vm.panPosition}}):_vm._e(),_vm._v(" "),(_vm.scaleControl)?_c('Scale',{attrs:{"position":_vm.scalePosition}}):_vm._e(),_vm._v(" "),(_vm.zoomControl)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomWithSlide,"position":_vm.zoomPosition}}):_vm._e()],2)}
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/WebMap.vue?vue&type=template&id=563e5e86&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl)?_c('Pan',{attrs:{"position":_vm.panPosition}}):_vm._e(),_vm._v(" "),(_vm.scaleControl)?_c('Scale',{attrs:{"position":_vm.scalePosition}}):_vm._e(),_vm._v(" "),(_vm.zoomControl)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomWithSlide,"position":_vm.zoomPosition}}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/WebMap.vue?vue&type=template&id=1d2ebd04&
+// CONCATENATED MODULE: ./src/view/components/WebMap.vue?vue&type=template&id=563e5e86&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/classCallCheck.js
 var classCallCheck = __webpack_require__("lwsE");
@@ -33409,10 +38182,6 @@ var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf);
 var inherits = __webpack_require__("7W2i");
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
-// EXTERNAL MODULE: external {"root":"mapboxgl","commonjs":"./libs/mapboxgl/mapbox-gl-enhance.js","commonjs2":"./libs/mapboxgl/mapbox-gl-enhance.js","amd":"./libs/mapboxgl/mapbox-gl-enhance.js"}
-var mapbox_gl_enhance_js_ = __webpack_require__("j5W7");
-var mapbox_gl_enhance_js_default = /*#__PURE__*/__webpack_require__.n(mapbox_gl_enhance_js_);
-
 // CONCATENATED MODULE: ./src/viewmodel/WidgetViewModel.js
 
 
@@ -33423,7 +38192,6 @@ var mapbox_gl_enhance_js_default = /*#__PURE__*/__webpack_require__.n(mapbox_gl_
  * @class WidgetViewModel
  * @description widget viewModel 基类。
  */
-
 var WidgetViewModel_WidgetViewModel =
 /*#__PURE__*/
 function (_mapboxgl$Evented) {
@@ -33440,7 +38208,7 @@ function (_mapboxgl$Evented) {
   }
 
   return WidgetViewModel;
-}(mapbox_gl_enhance_js_default.a.Evented);
+}(mapboxgl.Evented);
 
 
 // CONCATENATED MODULE: ./src/model/WidgetModel.js
@@ -33640,12 +38408,6 @@ function (_WidgetModel) {
 }(model_WidgetModel);
 
 /* harmony default export */ var model_SourceListModel = (SourceListModel_SourceListModel);
-// EXTERNAL MODULE: external {"root":"SuperMap","commonjs":"./libs/iclient-mapboxgl/iclient9-mapboxgl.min","commonjs2":"./libs/iclient-mapboxgl/iclient9-mapboxgl.min","amd":"./libs/iclient-mapboxgl/iclient9-mapboxgl.min"}
-var iclient9_mapboxgl_min_ = __webpack_require__("MkUS");
-
-// EXTERNAL MODULE: ./libs/geostats/geostats.js
-var geostats = __webpack_require__("t4IK");
-
 // EXTERNAL MODULE: ./node_modules/xml-js/lib/index.js
 var lib = __webpack_require__("xRo1");
 var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
@@ -33668,8 +38430,6 @@ var jsonsql_default = /*#__PURE__*/__webpack_require__.n(jsonsql);
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
 
 
 
@@ -35923,21 +40683,211 @@ function (_WidgetViewModel) {
 }(WidgetViewModel_WidgetViewModel);
 
 
-// CONCATENATED MODULE: ./src/view/mixin/Control.js
-/* harmony default export */ var Control = ({
+// CONCATENATED MODULE: ./src/view/mixin/vm-updater.js
+/* harmony default export */ var vm_updater = ({
+  viewModelProps: null,
+  //微件需要监听的props
+  mounted: function mounted() {
+    // 为vm层的props绑定监听，更新vm层的视图变化
+    if (this.$options.viewModelProps) {
+      this.watchViewModelOptions(this.$options.viewModelProps);
+    }
+  },
+  methods: {
+    // 微件设置vm实例
+    setViewModel: function setViewModel(viewModel) {
+      this.viewModel = viewModel;
+    },
+    // 给vm的props绑定监听
+    watchViewModelOptions: function watchViewModelOptions(viewModelProps) {
+      var _this = this;
+
+      // 给每个vm层的props绑定监听，然后操作vm层的视图变化,必须在vue实例化的时候调用
+      // viewModelProps(微件props的名字) ['chartType', 'datasets'],调用的方法名字setXxx,eg:setChartType
+      viewModelProps.map(function (item) {
+        _this.$watch(item, function (newVal, oldVal) {
+          var setFun = "set" + item.replace(item[0], item[0].toUpperCase()); // 子组件的viewModel
+
+          this.viewModel && this.viewModel[setFun](newVal);
+        }, {
+          deep: true
+        });
+      });
+    },
+    // 图表的重绘和地图等的重绘方法，需要在vm中写resize
+    resize: function resize() {
+      if (this.viewModel && this.viewModel.resize) {
+        this.viewModel.resize();
+        return;
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Pan.vue?vue&type=template&id=12a5f254&
+var Panvue_type_template_id_12a5f254_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:['sm-widget-pan', _vm.panImgClass, _vm.mapboxglClass]},[_c('div',{staticClass:"sm-widget-pan__center",on:{"click":_vm.panToCenter}}),_vm._v(" "),_c('div',{staticClass:"sm-widget-pan__icon is-left",on:{"click":_vm.panToLeft,"mouseleave":_vm.setPanImg,"mouseenter":_vm.setPanWestImg}}),_vm._v(" "),_c('div',{staticClass:"sm-widget-pan__icon is-right",on:{"click":_vm.panToRight,"mouseleave":_vm.setPanImg,"mouseenter":_vm.setPanEastImg}}),_vm._v(" "),_c('div',{staticClass:"sm-widget-pan__icon is-top",on:{"click":_vm.panToTop,"mouseleave":_vm.setPanImg,"mouseenter":_vm.setPanNorthImg}}),_vm._v(" "),_c('div',{staticClass:"sm-widget-pan__icon is-bottom",on:{"click":_vm.panToBottom,"mouseleave":_vm.setPanImg,"mouseenter":_vm.setPanSouthImg}})])}
+var Panvue_type_template_id_12a5f254_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/view/components/Pan.vue?vue&type=template&id=12a5f254&
+
+// CONCATENATED MODULE: ./src/viewmodel/PanViewModel.js
+
+
+
+
+
+
+/**
+ * @class PanViewModel
+ * @description pan viewModel（平移控件vm层）.
+ * @param {Object} map - 地图对象。
+ * @extends WidgetViewModel
+ */
+
+var PanViewModel_PanViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(PanViewModel, _WidgetViewModel);
+
+  function PanViewModel(map) {
+    var _this;
+
+    classCallCheck_default()(this, PanViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(PanViewModel).call(this));
+    _this.map = map || null;
+    return _this;
+  }
+  /**
+   * @function PanViewModel.prototype.panTo
+   * @description 地图平移至目标位置。
+   * @param {Object} lnglat - 目标位置：坐标经纬度
+   */
+
+
+  createClass_default()(PanViewModel, [{
+    key: "panTo",
+    value: function panTo(lnglat) {
+      this.map.panTo(lnglat);
+    }
+    /**
+     * @function PanViewModel.prototype.panBy
+     * @description 地图平移至目标位置。
+     * @param {Array} point - 目标位置（px）
+     */
+
+  }, {
+    key: "panBy",
+    value: function panBy(point) {
+      // Represents a point with `x` and `y` coordinates in pixels. [200, 300]
+      this.map.panBy(point);
+    }
+  }]);
+
+  return PanViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./src/view/mixin/map-getter.js
+// 新创建一个vue实例实时监听获得map对象
+
+
+function callHook(vm, hook, map) {
+  var options = vm.constructor.options;
+  options.mixins && options.mixins.forEach(function (mixin) {
+    mixin[hook] && mixin[hook].call(vm, vm.$options.name, map);
+  });
+  options[hook] && options[hook].call(vm, map); // 调用子组件的生命周期
+}
+
+/* harmony default export */ var map_getter = ({
+  props: {
+    mapTarget: {
+      type: String
+    }
+  },
+  computed: {
+    getMapTarget: function getMapTarget() {
+      return this.mapTarget || this.$parent.target || mapEvent.firstMapTarget;
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    /**
+     * 便于区分存在多个map时，子组件对应的map的渲染；
+     * map 和 webmap  的 props 属性是 target 其他组件都叫 mapTarget
+     * 如果子组件包裹在 map 组件里面，若没有传 mapTarget, 则 targetName 直接取父元素的target 的值
+     * 如果子组件和 map 同层级，且没有设置 mapTarget 时，则默认渲染到第一个 map 上
+     *
+     */
+    var targetName = this.getMapTarget || mapEvent.firstMapTarget;
+
+    if (mapEvent.$options.getMap(targetName)) {
+      this.loadMap(targetName);
+    } else {
+      mapEvent.$on("initMap-".concat(targetName), function (map, webmap) {
+        mapEvent.$options.setMap(targetName, map);
+        webmap && mapEvent.$options.setWebMap(targetName, webmap); // 每个继承的组件各自对map操作的统一函数名
+
+        _this.loadMap(targetName);
+      });
+    }
+  },
+  loaded: function loaded() {//微件生命周期方法(挂载后调用)，子类实现【组件主要业务逻辑写在这个生命周期里】
+  },
+  methods: {
+    loadMap: function loadMap(targetName) {
+      var _this2 = this;
+
+      this.map = mapEvent.$options.getMap(targetName);
+      this.webmap = mapEvent.$options.getWebMap(targetName);
+      callHook(this, 'loaded'); // 控制与map组件同级的组件的显示加载
+
+      this.$nextTick(function () {
+        _this2.$emit('loaded');
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/view/mixin/control.js
+
+/* harmony default export */ var control = ({
   props: {
     position: {
       type: String,
-      default: "top-left",
+      default: 'top-left',
       validator: function validator(value) {
-        return ["top-left", "top-right", "bottom-left", "bottom-right"].includes(value);
+        return ['top-left', 'top-right', 'bottom-left', 'bottom-right'].includes(value);
       }
     }
   },
   watch: {
     position: function position() {
-      this.removeControl(this.map);
-      this.addControl(this.map);
+      this.remove(this.map);
+      this.addTo(this.map);
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.parentIsWebMapOrMap = ['smwebmap', 'smmap'].includes(this.$parent.$options.name && this.$parent.$options.name.toLowerCase());
+    this.filterDelayLoad = !['smwebmap', 'smmap', 'smminimap'].includes(this.$options.name && this.$options.name.toLowerCase());
+
+    if (this.$el && this.parentIsWebMapOrMap && this.filterDelayLoad) {
+      this.isShow = false;
+      this.$el.style && (this.$el.style.display = 'none');
+      var targetName = this.$parent.target || mapEvent.firstMapTarget;
+      mapEvent.$on("initMap-".concat(targetName), function (map) {
+        _this.addTo(map);
+
+        _this.isShow = true;
+        _this.$el.style && (_this.$el.style.display = 'block');
+
+        if (_this.$options.name.toLowerCase() === 'smchart') {
+          _this.viewModel.resize();
+        }
+      });
     }
   },
   methods: {
@@ -35952,190 +40902,121 @@ function (_WidgetViewModel) {
         }
       };
     },
-    addControl: function addControl(map) {
+    addTo: function addTo(map) {
+      this.map = map;
       map.addControl(this.control(), this.position);
-      this.$el.classList.add("mapboxgl-ctrl");
+      this.$el.classList.add('mapboxgl-ctrl');
     },
-    removeControl: function removeControl(map) {
+    remove: function remove(map) {
       map.removeControl(this.control());
     }
   }
 });
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Card.vue?vue&type=template&id=5e445608&
-var Cardvue_type_template_id_5e445608_render = function () {
-var _obj, _obj$1, _obj$2;
-var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-card"},[(_vm.iconClass)?_c('div',{class:( _obj = {}, _obj['sm-card__icon'] = true, _obj['is-'+_vm.position] = true, _obj[("is-click-" + (_vm.isShow?'out':'in'))] = true, _obj['is-header'] = _vm.headerName, _obj ),style:([_vm.getBackgroundStyle, _vm.getTextColorStyle]),on:{"click":_vm.iconClicked}},[_c('div',{class:( _obj$1 = {}, _obj$1[_vm.iconClass] = true, _obj$1['is-auto-rotate'] = _vm.autoRotate, _obj$1['sm-card__widget-icon'] = true, _obj$1 ),style:([_vm.iconStyle])})]):_vm._e(),_vm._v(" "),_c('transition',{attrs:{"name":"sm-zoom-in"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],class:( _obj$2 = {}, _obj$2['sm-card__content'] = true, _obj$2['is-header'] = _vm.headerName, _obj$2['is-'+_vm.position] = true, _obj$2['is-icon'] = _vm.iconClass, _obj$2 ),style:([_vm.getCardStyle])},[(_vm.headerName)?_c('div',{staticClass:"sm-card__header",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('span',{staticClass:"sm-card__header-name"},[_vm._v(_vm._s(_vm.headerName))])]):_vm._e(),_vm._v(" "),_vm._t("default")],2)])],1)}
-var Cardvue_type_template_id_5e445608_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Pan.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
-// CONCATENATED MODULE: ./src/view/components/Card.vue?vue&type=template&id=5e445608&
 
-// CONCATENATED MODULE: ./src/view/mixin/Theme.js
-
-/* harmony default export */ var Theme = ({
-  props: {
-    background: {
-      type: String,
-      default: "rgba(255,255,255,0.6)"
-    },
-    textColor: {
-      type: String,
-      default: '#333'
-    }
-  },
-  watch: {
-    background: function background(newValue) {
-      this.backgroundData = newValue;
-    },
-    textColor: function textColor(newValue) {
-      this.textColorsData = newValue;
-    }
-  },
+/* harmony default export */ var Panvue_type_script_lang_js_ = ({
+  name: "SmPan",
+  mixins: [map_getter, control],
   data: function data() {
     return {
-      backgroundData: this.background,
-      textColorsData: this.textColor,
-      colorGroupsData: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8']
+      center: null,
+      panImgClass: "sm-widget-pan--default",
+      mapboxglClass: ""
     };
   },
-  mounted: function mounted() {
-    var _this = this;
-
-    mapEvent.$on('change-theme', function (themeStyle) {
-      _this.backgroundData = themeStyle.background;
-      _this.textColorsData = themeStyle.textColor;
-      _this.colorGroupsData = themeStyle.colorGroup;
-
-      _this.$emit('themeStyle'); //this.themeStyle = Object.assign({}, this.themeStyle, themeStyle)
-
-    });
-  },
-  computed: {
-    getBackgroundStyle: function getBackgroundStyle() {
-      return {
-        background: this.backgroundData
-      };
-    },
-    getTextColorStyle: function getTextColorStyle() {
-      return {
-        color: this.textColorsData
-      };
-    },
-    getBackground: function getBackground() {
-      return this.backgroundData;
-    },
-    getTextColor: function getTextColor() {
-      return this.textColorsData;
+  props: {
+    panLength: {
+      type: Number,
+      default: 200
     }
   },
   methods: {
-    getColorStyle: function getColorStyle(index) {
-      return {
-        color: this.colorGroupsData[index]
-      };
+    panToCenter: function panToCenter() {
+      this.lnglat = this.center;
+      this.panTo(this.lnglat);
     },
-    getColor: function getColor(index) {
-      return this.colorGroupsData[index];
+    panToLeft: function panToLeft() {
+      // this.lnglat.lng -= this.panLength;
+      // this.panTo(this.lnglat);
+      this.panBy([-this.panLength, 0]);
+    },
+    panToRight: function panToRight() {
+      // this.lnglat.lng += this.panLength;
+      // this.panTo(this.lnglat);
+      this.panBy([this.panLength, 0]);
+    },
+    panToTop: function panToTop() {
+      // this.lnglat.lat -= this.panLength;
+      // this.panTo(this.lnglat);
+      this.panBy([0, -this.panLength]);
+    },
+    panToBottom: function panToBottom() {
+      // this.lnglat.lat += this.panLength;
+      // this.panTo(this.lnglat);
+      this.panBy([0, this.panLength]);
+    },
+    panTo: function panTo(lnglat) {
+      this.panViewModel.panTo(lnglat);
+    },
+    panBy: function panBy(point) {
+      this.panViewModel.panBy(point);
+    },
+    setPanImg: function setPanImg() {
+      this.panImgClass = "sm-widget-pan--default";
+    },
+    setPanWestImg: function setPanWestImg() {
+      this.panImgClass = "sm-widget-pan--west";
+    },
+    setPanEastImg: function setPanEastImg() {
+      this.panImgClass = "sm-widget-pan--east";
+    },
+    setPanNorthImg: function setPanNorthImg() {
+      this.panImgClass = "sm-widget-pan--north";
+    },
+    setPanSouthImg: function setPanSouthImg() {
+      this.panImgClass = "sm-widget-pan--south";
     }
+  },
+  loaded: function loaded() {
+    this.parentIsWebMapOrMap && (this.mapboxglClass = "mapboxgl-ctrl");
+    this.panViewModel = new PanViewModel_PanViewModel(this.map);
+    this.center = this.map.getCenter();
+    this.lnglat = this.center;
   }
 });
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Card.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ var Cardvue_type_script_lang_js_ = ({
-  name: 'SmCard',
-  mixins: [Theme],
-  props: {
-    iconPosition: {
-      type: String,
-      default: 'top-left'
-    },
-    iconClass: {
-      type: String
-    },
-    autoRotate: {
-      type: Boolean,
-      default: false
-    },
-    headerName: {
-      type: String
-    },
-    collapsed: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data: function data() {
-    return {
-      isShow: true,
-      transform: null
-    };
-  },
-  methods: {
-    iconClicked: function iconClicked() {
-      this.autoRotate && (this.transform = this.rotateDeg[this.position][!this.isShow ? 1 : 0]);
-      this.isShow = !this.isShow;
-    }
-  },
-  computed: {
-    getCardStyle: function getCardStyle() {
-      var style = {
-        background: 'transparent'
-      };
-      return !this.iconClass && !this.headerName ? style : this.getBackgroundStyle;
-    },
-    iconStyle: function iconStyle() {
-      return {
-        transform: this.transform
-      };
-    },
-    position: function position() {
-      var isControl = this.$parent.$parent && ['smwebmap', 'smmap'].includes(this.$parent.$parent.$options.name && this.$parent.$parent.$options.name.toLowerCase());
-
-      if (this.headerName && !isControl) {
-        return 'top-left';
-      } else {
-        return this.iconPosition;
-      }
-    },
-    rotateDeg: function rotateDeg() {
-      return {
-        'top-right': ['rotate(-45deg)', 'rotate(135deg)'],
-        'top-left': ['rotate(-135deg)', 'rotate(45deg)'],
-        'bottom-left': ['rotate(-135deg)', 'rotate(45deg)'],
-        'bottom-right': ['rotate(-45deg)', 'rotate(135deg)']
-      };
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/view/components/Card.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_Cardvue_type_script_lang_js_ = (Cardvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/Pan.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_Panvue_type_script_lang_js_ = (Panvue_type_script_lang_js_); 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
@@ -36231,377 +41112,6 @@ function normalizeComponent (
   }
 }
 
-// CONCATENATED MODULE: ./src/view/components/Card.vue
-
-
-
-
-
-/* normalize component */
-
-var Card_component = normalizeComponent(
-  components_Cardvue_type_script_lang_js_,
-  Cardvue_type_template_id_5e445608_render,
-  Cardvue_type_template_id_5e445608_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var Card = (Card_component.exports);
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Widget.vue?vue&type=script&lang=js&
-// 新创建一个vue实例实时监听获得map对象
-
-
-
-
-function callHook(vm, hook, map) {
-  var options = vm.constructor.options;
-  options.extends && options.extends[hook].call(vm, vm.$options.name, map); // 调用基类组件的生命周期F
-
-  options[hook] && options[hook].call(vm, map); // 调用子组件的生命周期
-}
-
-/* harmony default export */ var Widgetvue_type_script_lang_js_ = ({
-  name: "Widget",
-  mixins: [Control],
-  components: {
-    "sm-card": Card
-  },
-  relativeMap: false,
-  viewModelProps: null,
-  //微件需要监听的props
-  props: {
-    mapTarget: {
-      type: String
-    },
-    iconClass: {
-      type: String
-    },
-    autoRotate: {
-      type: Boolean,
-      default: false
-    },
-    headerName: {
-      type: String
-    },
-    collapsed: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data: function data() {
-    return {
-      isShow: true
-    };
-  },
-  created: function created() {
-    callHook(this, "load");
-  },
-  computed: {
-    getMapTarget: function getMapTarget() {
-      return this.mapTarget || this.$parent.target || mapEvent.firstMapTarget;
-    }
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    this.filterDelayLoad = !["smwebmap", "smmap", "smminimap"].includes(this.$options.name && this.$options.name.toLowerCase()); // 每个继承的组件各自对map操作的统一函数名
-
-    this.parentIsWebMapOrMap = ["smwebmap", "smmap"].includes(this.$parent.$options.name && this.$parent.$options.name.toLowerCase());
-    /**
-     * 便于区分存在多个map时，子组件对应的map的渲染；
-     * map 和 webmap的props属性是target 其他组件都叫mapTarget
-     * 如果子组件包裹在 map 组件里面，若没有传 mapTarget, 则targetName直接取父元素的target的值
-     * 如果子组件和 map 同层级，且没有设置 mapTarget 时，则默认渲染到第一个map上
-     *
-     */
-
-    var targetName = this.getMapTarget || mapEvent.firstMapTarget;
-
-    if (!this.$options.relativeMap && !this.parentIsWebMapOrMap) {
-      callHook(this, "loaded");
-      this.$emit("loaded");
-    } else {
-      this.$el && this.filterDelayLoad && (this.isShow = false);
-      this.$el && this.filterDelayLoad && (this.$el.style.display = 'none');
-
-      if (mapEvent.$options.getMap(targetName)) {
-        this.loadMap(targetName);
-      } else {
-        mapEvent.$on("initMap-".concat(targetName), function (map, webmap) {
-          mapEvent.$options.setMap(targetName, map);
-          webmap && mapEvent.$options.setWebMap(targetName, webmap); // 每个继承的组件各自对map操作的统一函数名
-
-          _this.loadMap(targetName);
-        });
-      }
-    } // 为vm层的props绑定监听，更新vm层的视图变化
-
-
-    if (this.$options.viewModelProps) {
-      this.watchViewModelOptions(this.$options.viewModelProps);
-    }
-  },
-  updated: function updated() {
-    callHook(this, "update");
-  },
-  destroyed: function destroyed() {
-    callHook(this, "unload");
-  },
-  load: function load() {//微件生命周期方法(挂载前调用)，子类实现
-  },
-  loaded: function loaded() {//微件生命周期方法(挂载后调用)，子类实现【组件主要业务逻辑写在这个生命周期里】
-  },
-  update: function update() {//微件生命周期方法(更新时调用)，子类实现
-  },
-  unload: function unload() {//微件生命周期方法(挂载后调用)，子类实现【组件主要业务逻辑写在这个生命周期里】
-  },
-  methods: {
-    getTheme: function getTheme() {
-      return this.theme;
-    },
-    loadMap: function loadMap(targetName) {
-      var _this2 = this;
-
-      this.map = mapEvent.$options.getMap(targetName);
-      this.webmap = mapEvent.$options.getWebMap(targetName);
-      this.parentIsWebMapOrMap && this.addControl(this.map);
-      callHook(this, "loaded"); // 控制与map组件同级的组件的显示加载
-
-      this.$el && this.filterDelayLoad && (this.isShow = true);
-      this.$nextTick(function () {
-        _this2.$emit("loaded");
-      });
-      this.$el && this.filterDelayLoad && (this.$el.style.display = 'block');
-    },
-    // 微件设置vm实例
-    setViewModel: function setViewModel(viewModel) {
-      this.viewModel = viewModel;
-    },
-    // 给vm的props绑定监听
-    watchViewModelOptions: function watchViewModelOptions(viewModelProps) {
-      var _this3 = this;
-
-      // 给每个vm层的props绑定监听，然后操作vm层的视图变化,必须在vue实例化的时候调用
-      // viewModelProps(微件props的名字) ['chartType', 'datasets'],调用的方法名字setXxx,eg:setChartType
-      viewModelProps.map(function (item) {
-        _this3.$watch(item, function (newVal, oldVal) {
-          var setFun = "set" + item.replace(item[0], item[0].toUpperCase()); // 子组件的viewModel
-
-          this.viewModel && this.viewModel[setFun](newVal);
-        }, {
-          deep: true
-        });
-      });
-    },
-    // 图表的重绘和地图等的重绘方法，需要在vm中写resize
-    resize: function resize() {
-      if (this.viewModel && this.viewModel.resize) {
-        this.viewModel.resize();
-        return;
-      } else if (this.liquidChart) {
-        this.liquidChart.resize();
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/view/components/Widget.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_Widgetvue_type_script_lang_js_ = (Widgetvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/view/components/Widget.vue
-var Widget_render, Widget_staticRenderFns
-
-
-
-
-/* normalize component */
-
-var Widget_component = normalizeComponent(
-  components_Widgetvue_type_script_lang_js_,
-  Widget_render,
-  Widget_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var Widget = (Widget_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Pan.vue?vue&type=template&id=7b2c5ab6&
-var Panvue_type_template_id_7b2c5ab6_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:['sm-pan', _vm.panImgClass, _vm.mapboxglClass]},[_c('div',{staticClass:"sm-pan__center",on:{"click":_vm.panToCenter}}),_vm._v(" "),_c('div',{staticClass:"sm-pan__icon is-left",on:{"click":_vm.panToLeft,"mouseleave":_vm.setPanImg,"mouseenter":_vm.setPanWestImg}}),_vm._v(" "),_c('div',{staticClass:"sm-pan__icon is-right",on:{"click":_vm.panToRight,"mouseleave":_vm.setPanImg,"mouseenter":_vm.setPanEastImg}}),_vm._v(" "),_c('div',{staticClass:"sm-pan__icon is-top",on:{"click":_vm.panToTop,"mouseleave":_vm.setPanImg,"mouseenter":_vm.setPanNorthImg}}),_vm._v(" "),_c('div',{staticClass:"sm-pan__icon is-bottom",on:{"click":_vm.panToBottom,"mouseleave":_vm.setPanImg,"mouseenter":_vm.setPanSouthImg}})])}
-var Panvue_type_template_id_7b2c5ab6_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/view/components/Pan.vue?vue&type=template&id=7b2c5ab6&
-
-// CONCATENATED MODULE: ./src/viewmodel/PanViewModel.js
-
-
-
-
-
-
-/**
- * @class PanViewModel
- * @description pan viewModel（平移控件vm层）.
- * @param {Object} map - 地图对象。
- * @extends WidgetViewModel
- */
-
-var PanViewModel_PanViewModel =
-/*#__PURE__*/
-function (_WidgetViewModel) {
-  inherits_default()(PanViewModel, _WidgetViewModel);
-
-  function PanViewModel(map) {
-    var _this;
-
-    classCallCheck_default()(this, PanViewModel);
-
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(PanViewModel).call(this));
-    _this.map = map || null;
-    return _this;
-  }
-  /**
-   * @function PanViewModel.prototype.panTo
-   * @description 地图平移至目标位置。
-   * @param {Object} lnglat - 目标位置：坐标经纬度
-   */
-
-
-  createClass_default()(PanViewModel, [{
-    key: "panTo",
-    value: function panTo(lnglat) {
-      this.map.panTo(lnglat);
-    }
-    /**
-     * @function PanViewModel.prototype.panBy
-     * @description 地图平移至目标位置。
-     * @param {Array} point - 目标位置（px）
-     */
-
-  }, {
-    key: "panBy",
-    value: function panBy(point) {
-      // Represents a point with `x` and `y` coordinates in pixels. [200, 300]
-      this.map.panBy(point);
-    }
-  }]);
-
-  return PanViewModel;
-}(WidgetViewModel_WidgetViewModel);
-
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Pan.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ var Panvue_type_script_lang_js_ = ({
-  name: "SmPan",
-  relativeMap: true,
-  extends: Widget,
-  data: function data() {
-    return {
-      center: null,
-      panImgClass: "sm-pan--default",
-      mapboxglClass: ""
-    };
-  },
-  props: {
-    panLength: {
-      type: Number,
-      default: 200
-    }
-  },
-  methods: {
-    panToCenter: function panToCenter() {
-      this.lnglat = this.center;
-      this.panTo(this.lnglat);
-    },
-    panToLeft: function panToLeft() {
-      // this.lnglat.lng -= this.panLength;
-      // this.panTo(this.lnglat);
-      this.panBy([-this.panLength, 0]);
-    },
-    panToRight: function panToRight() {
-      // this.lnglat.lng += this.panLength;
-      // this.panTo(this.lnglat);
-      this.panBy([this.panLength, 0]);
-    },
-    panToTop: function panToTop() {
-      // this.lnglat.lat -= this.panLength;
-      // this.panTo(this.lnglat);
-      this.panBy([0, -this.panLength]);
-    },
-    panToBottom: function panToBottom() {
-      // this.lnglat.lat += this.panLength;
-      // this.panTo(this.lnglat);
-      this.panBy([0, this.panLength]);
-    },
-    panTo: function panTo(lnglat) {
-      this.panViewModel.panTo(lnglat);
-    },
-    panBy: function panBy(point) {
-      this.panViewModel.panBy(point);
-    },
-    setPanImg: function setPanImg() {
-      this.panImgClass = "sm-pan--default";
-    },
-    setPanWestImg: function setPanWestImg() {
-      this.panImgClass = "sm-pan--west";
-    },
-    setPanEastImg: function setPanEastImg() {
-      this.panImgClass = "sm-pan--east";
-    },
-    setPanNorthImg: function setPanNorthImg() {
-      this.panImgClass = "sm-pan--north";
-    },
-    setPanSouthImg: function setPanSouthImg() {
-      this.panImgClass = "sm-pan--south";
-    }
-  },
-  loaded: function loaded() {
-    this.parentIsWebMapOrMap && (this.mapboxglClass = "mapboxgl-ctrl");
-    this.panViewModel = new PanViewModel_PanViewModel(this.map);
-    this.center = this.map.getCenter();
-    this.lnglat = this.center;
-  }
-});
-// CONCATENATED MODULE: ./src/view/components/Pan.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_Panvue_type_script_lang_js_ = (Panvue_type_script_lang_js_); 
 // CONCATENATED MODULE: ./src/view/components/Pan.vue
 
 
@@ -36612,8 +41122,8 @@ function (_WidgetViewModel) {
 
 var Pan_component = normalizeComponent(
   components_Panvue_type_script_lang_js_,
-  Panvue_type_template_id_7b2c5ab6_render,
-  Panvue_type_template_id_7b2c5ab6_staticRenderFns,
+  Panvue_type_template_id_12a5f254_render,
+  Panvue_type_template_id_12a5f254_staticRenderFns,
   false,
   null,
   null,
@@ -36622,13 +41132,82 @@ var Pan_component = normalizeComponent(
 )
 
 /* harmony default export */ var Pan = (Pan_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Scale.vue?vue&type=template&id=27630086&
-var Scalevue_type_template_id_27630086_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-scale",style:([_vm.scaleStyle, _vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.content))])}
-var Scalevue_type_template_id_27630086_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Scale.vue?vue&type=template&id=1189ed98&
+var Scalevue_type_template_id_1189ed98_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-scale",style:([_vm.scaleStyle, _vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.content))])}
+var Scalevue_type_template_id_1189ed98_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Scale.vue?vue&type=template&id=27630086&
+// CONCATENATED MODULE: ./src/view/components/Scale.vue?vue&type=template&id=1189ed98&
 
+// CONCATENATED MODULE: ./src/view/mixin/theme.js
+
+/* harmony default export */ var mixin_theme = ({
+  props: {
+    background: {
+      type: String,
+      default: "rgba(255,255,255,0.6)"
+    },
+    textColor: {
+      type: String,
+      default: '#333'
+    }
+  },
+  watch: {
+    background: function background(newValue) {
+      this.backgroundData = newValue;
+    },
+    textColor: function textColor(newValue) {
+      this.textColorsData = newValue;
+    }
+  },
+  data: function data() {
+    return {
+      backgroundData: this.background,
+      textColorsData: this.textColor,
+      colorGroupsData: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8']
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    mapEvent.$on('change-theme', function (themeStyle) {
+      _this.backgroundData = themeStyle.background;
+      _this.textColorsData = themeStyle.textColor;
+      _this.colorGroupsData = themeStyle.colorGroup;
+
+      _this.$emit('themeStyle'); //this.themeStyle = Object.assign({}, this.themeStyle, themeStyle)
+
+    });
+  },
+  computed: {
+    getBackgroundStyle: function getBackgroundStyle() {
+      return {
+        background: this.backgroundData
+      };
+    },
+    getTextColorStyle: function getTextColorStyle() {
+      return {
+        color: this.textColorsData
+      };
+    },
+    getBackground: function getBackground() {
+      return this.backgroundData;
+    },
+    getTextColor: function getTextColor() {
+      return this.textColorsData;
+    }
+  },
+  methods: {
+    getColorStyle: function getColorStyle(index) {
+      return {
+        color: this.colorGroupsData[index]
+      };
+    },
+    getColor: function getColor(index) {
+      return this.colorGroupsData[index];
+    }
+  }
+});
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/assertThisInitialized.js
 var assertThisInitialized = __webpack_require__("PJYZ");
 var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized);
@@ -36779,9 +41358,7 @@ function (_WidgetViewModel) {
 
 /* harmony default export */ var Scalevue_type_script_lang_js_ = ({
   name: "SmScale",
-  extends: Widget,
-  relativeMap: true,
-  mixins: [Theme],
+  mixins: [map_getter, mixin_theme],
   props: {
     unit: {
       type: String,
@@ -36841,8 +41418,8 @@ function (_WidgetViewModel) {
 
 var Scale_component = normalizeComponent(
   components_Scalevue_type_script_lang_js_,
-  Scalevue_type_template_id_27630086_render,
-  Scalevue_type_template_id_27630086_staticRenderFns,
+  Scalevue_type_template_id_1189ed98_render,
+  Scalevue_type_template_id_1189ed98_staticRenderFns,
   false,
   null,
   null,
@@ -36851,12 +41428,12 @@ var Scale_component = normalizeComponent(
 )
 
 /* harmony default export */ var Scale = (Scale_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Zoom.vue?vue&type=template&id=afa06388&
-var Zoomvue_type_template_id_afa06388_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-zoom"},[_c('div',{staticClass:"sm-zoom__buttons",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('el-button',{staticClass:"sm-zoom__button",style:(_vm.activeZoomMode === 'zoomInBtn' ? [_vm.getColorStyle(0), _vm.activieBgColor] : ''),attrs:{"icon":"el-icon-plus"},on:{"click":_vm.zoomIn}}),_vm._v(" "),_c('el-button',{staticClass:"sm-zoom__button",style:(_vm.activeZoomMode === 'zoomOutBtn' ? [_vm.getColorStyle(0), _vm.activieBgColor] : ''),attrs:{"icon":"el-icon-minus"},on:{"click":_vm.zoomOut}})],1),_vm._v(" "),(_vm.showZoomSlider)?_c('el-slider',{staticClass:"sm-zoom__slider",style:(_vm.getColorStyle(0)),attrs:{"min":_vm.min,"max":_vm.max,"vertical":"","height":"200px"},on:{"change":_vm.sliderChange},model:{value:(_vm.zoomPosition),callback:function ($$v) {_vm.zoomPosition=$$v},expression:"zoomPosition"}}):_vm._e()],1)}
-var Zoomvue_type_template_id_afa06388_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Zoom.vue?vue&type=template&id=580ecd36&
+var Zoomvue_type_template_id_580ecd36_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-zoom"},[_c('div',{staticClass:"sm-widget-zoom__buttons",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('el-button',{staticClass:"sm-widget-zoom__button",style:(_vm.activeZoomMode === 'zoomInBtn' ? [_vm.getColorStyle(0), _vm.activieBgColor] : ''),attrs:{"icon":"el-icon-plus"},on:{"click":_vm.zoomIn}}),_vm._v(" "),_c('el-button',{staticClass:"sm-widget-zoom__button",style:(_vm.activeZoomMode === 'zoomOutBtn' ? [_vm.getColorStyle(0), _vm.activieBgColor] : ''),attrs:{"icon":"el-icon-minus"},on:{"click":_vm.zoomOut}})],1),_vm._v(" "),(_vm.showZoomSlider)?_c('el-slider',{staticClass:"sm-widget-zoom__slider",style:(_vm.getColorStyle(0)),attrs:{"min":_vm.min,"max":_vm.max,"vertical":"","height":"200px"},on:{"change":_vm.sliderChange},model:{value:(_vm.zoomPosition),callback:function ($$v) {_vm.zoomPosition=$$v},expression:"zoomPosition"}}):_vm._e()],1)}
+var Zoomvue_type_template_id_580ecd36_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Zoom.vue?vue&type=template&id=afa06388&
+// CONCATENATED MODULE: ./src/view/components/Zoom.vue?vue&type=template&id=580ecd36&
 
 // CONCATENATED MODULE: ./src/viewmodel/ZoomViewModel.js
 
@@ -37132,17 +41709,16 @@ var hexToRgba = function hexToRgba(hex, opacity) {
 
 
 
+
 /* harmony default export */ var Zoomvue_type_script_lang_js_ = ({
-  name: 'SmZoom',
-  relativeMap: true,
-  extends: Widget,
-  mixins: [Theme],
+  name: "SmZoom",
+  mixins: [map_getter, control, mixin_theme],
   data: function data() {
     return {
       zoomPosition: 0,
       min: 0,
       max: 22,
-      activeZoomMode: ''
+      activeZoomMode: ""
     };
   },
   props: {
@@ -37171,7 +41747,7 @@ var hexToRgba = function hexToRgba(hex, opacity) {
       this.setZoom(this.zoomPosition);
     },
     zoomIn: function zoomIn(e) {
-      this.activeZoomMode = 'zoomInBtn';
+      this.activeZoomMode = "zoomInBtn";
 
       if (Math.round(this.zoomPosition) < this.max) {
         // slider的默认步长为1
@@ -37181,7 +41757,7 @@ var hexToRgba = function hexToRgba(hex, opacity) {
       }
     },
     zoomOut: function zoomOut(e) {
-      this.activeZoomMode = 'zoomOutBtn';
+      this.activeZoomMode = "zoomOutBtn";
 
       if (Math.round(this.zoomPosition) > this.min) {
         this.zoomPosition -= 1; // 地图缩小一级
@@ -37202,8 +41778,8 @@ var hexToRgba = function hexToRgba(hex, opacity) {
       return this.ZoomViewModel.setZoom(zoom);
     },
     changeSliderStyle: function changeSliderStyle() {
-      var sliderBar = document.querySelector('.el-slider__bar');
-      var sliderBtn = document.querySelector('.el-slider__button');
+      var sliderBar = document.querySelector(".el-slider__bar");
+      var sliderBtn = document.querySelector(".el-slider__button");
       sliderBar && (sliderBar.style.backgroundColor = this.getColorStyle(0).color);
       sliderBtn && (sliderBtn.style.borderColor = this.getColorStyle(0).color);
     }
@@ -37237,8 +41813,8 @@ var hexToRgba = function hexToRgba(hex, opacity) {
 
 var Zoom_component = normalizeComponent(
   components_Zoomvue_type_script_lang_js_,
-  Zoomvue_type_template_id_afa06388_render,
-  Zoomvue_type_template_id_afa06388_staticRenderFns,
+  Zoomvue_type_template_id_580ecd36_render,
+  Zoomvue_type_template_id_580ecd36_staticRenderFns,
   false,
   null,
   null,
@@ -37265,9 +41841,8 @@ var Zoom_component = normalizeComponent(
 
 /* harmony default export */ var WebMapvue_type_script_lang_js_ = ({
   name: "SmWebMap",
-  relativeMap: true,
-  extends: Widget,
   viewModelProps: ["mapId", "webMapOptions", "mapOptions"],
+  mixins: [vm_updater],
   components: {
     Pan: Pan,
     Scale: Scale,
@@ -37373,13 +41948,174 @@ var WebMap_component = normalizeComponent(
 )
 
 /* harmony default export */ var WebMap = (WebMap_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LayerList.vue?vue&type=template&id=527f43ae&
-var LayerListvue_type_template_id_527f43ae_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-layer-list",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('el-card',{staticClass:"sm-layer-list__el-card",style:([_vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-layer-list__content"},_vm._l((_vm.sourceList),function(sourceValue,sourceKey,index){return _c('el-collapse',{key:index,staticClass:"sm-layer-list__collapse",on:{"change":_vm.handleCollapseChange}},[(typeof sourceValue.sourceLayerList === 'object')?_c('el-collapse-item',{staticClass:"sm-layer-list__collapseitem",style:([_vm.getTextColorStyle])},[_c('template',{slot:"title"},[_c('div',{style:(sourceValue.visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle())},[_c('i',{staticClass:"el-icon-view",style:(sourceValue.visibility === 'visible' ? _vm.getColorStyle(0) : _vm.getDisabledStyle(false)),on:{"click":function($event){$event.stopPropagation();_vm.toggleLayerGroupVisibility(sourceKey,sourceValue.visibility)}}}),_vm._v(" "),_c('span',[_vm._v(_vm._s(sourceKey))])])]),_vm._v(" "),_vm._l((sourceValue.sourceLayerList),function(sourcelayerValue,sourcelayerKey,index){return _c('el-checkbox',{key:index,attrs:{"value":_vm._f("isVisible")(sourcelayerValue[0].visibility)},on:{"change":function($event){_vm.toggleVisibility(sourcelayerKey,sourceKey,sourcelayerValue[0].visibility)}}},[_vm._v(_vm._s(sourcelayerKey))])})],2):_c('el-card',{staticClass:"sm-layer-list__elcarditem",style:([_vm.getTextColorStyle])},[_c('i',{class:['el-icon-view', sourceValue.visibility === 'visible' ? 'visible':'none'],style:(sourceValue.visibility === 'visible' ? _vm.getColorStyle(0) : _vm.getDisabledStyle(false)),on:{"click":function($event){$event.stopPropagation();_vm.toggleLayerGroupVisibility(sourceKey,sourceValue.visibility)}}}),_vm._v(" "),_c('div',{staticClass:"sm-layer-list__layergroupname add-ellipsis",style:(sourceValue.visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle())},[_vm._v(_vm._s(sourceKey))])])],1)}))])],1)}
-var LayerListvue_type_template_id_527f43ae_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LayerList.vue?vue&type=template&id=8512db04&
+var LayerListvue_type_template_id_8512db04_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-layer-list",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('el-card',{staticClass:"sm-widget-layer-list__el-card",style:([_vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-widget-layer-list__content"},_vm._l((_vm.sourceList),function(sourceValue,sourceKey,index){return _c('el-collapse',{key:index,staticClass:"sm-widget-layer-list__collapse",on:{"change":_vm.handleCollapseChange}},[(typeof sourceValue.sourceLayerList === 'object')?_c('el-collapse-item',{staticClass:"sm-widget-layer-list__collapseitem",style:([_vm.getTextColorStyle])},[_c('template',{slot:"title"},[_c('div',{style:(sourceValue.visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle())},[_c('i',{staticClass:"el-icon-view",style:(sourceValue.visibility === 'visible' ? _vm.getColorStyle(0) : _vm.getDisabledStyle(false)),on:{"click":function($event){$event.stopPropagation();_vm.toggleLayerGroupVisibility(sourceKey,sourceValue.visibility)}}}),_vm._v(" "),_c('span',[_vm._v(_vm._s(sourceKey))])])]),_vm._v(" "),_vm._l((sourceValue.sourceLayerList),function(sourcelayerValue,sourcelayerKey,index){return _c('el-checkbox',{key:index,attrs:{"value":_vm._f("isVisible")(sourcelayerValue[0].visibility)},on:{"change":function($event){_vm.toggleVisibility(sourcelayerKey,sourceKey,sourcelayerValue[0].visibility)}}},[_vm._v(_vm._s(sourcelayerKey))])})],2):_c('el-card',{staticClass:"sm-widget-layer-list__elcarditem",style:([_vm.getTextColorStyle])},[_c('i',{class:['el-icon-view', sourceValue.visibility === 'visible' ? 'visible':'none'],style:(sourceValue.visibility === 'visible' ? _vm.getColorStyle(0) : _vm.getDisabledStyle(false)),on:{"click":function($event){$event.stopPropagation();_vm.toggleLayerGroupVisibility(sourceKey,sourceValue.visibility)}}}),_vm._v(" "),_c('div',{staticClass:"sm-widget-layer-list__layergroupname add-ellipsis",style:(sourceValue.visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle())},[_vm._v(_vm._s(sourceKey))])])],1)}))])],1)}
+var LayerListvue_type_template_id_8512db04_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/LayerList.vue?vue&type=template&id=527f43ae&
+// CONCATENATED MODULE: ./src/view/components/LayerList.vue?vue&type=template&id=8512db04&
 
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Card.vue?vue&type=template&id=4119236e&
+var Cardvue_type_template_id_4119236e_render = function () {
+var _obj, _obj$1, _obj$2;
+var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-card"},[(_vm.iconClass)?_c('div',{class:( _obj = {}, _obj['sm-widget-card__icon'] = true, _obj['is-'+_vm.position] = true, _obj[("is-click-" + (_vm.isShow?'out':'in'))] = true, _obj['is-header'] = _vm.headerName, _obj ),style:([_vm.getBackgroundStyle, _vm.getTextColorStyle]),on:{"click":_vm.iconClicked}},[_c('div',{class:( _obj$1 = {}, _obj$1[_vm.iconClass] = true, _obj$1['is-auto-rotate'] = _vm.autoRotate, _obj$1['sm-widget-card__widget-icon'] = true, _obj$1 ),style:([_vm.iconStyle])})]):_vm._e(),_vm._v(" "),_c('transition',{attrs:{"name":"sm-widget-zoom-in"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],class:( _obj$2 = {}, _obj$2['sm-widget-card__content'] = true, _obj$2['is-header'] = _vm.headerName, _obj$2['is-'+_vm.position] = true, _obj$2['is-icon'] = _vm.iconClass, _obj$2 ),style:([_vm.getCardStyle])},[(_vm.headerName)?_c('div',{staticClass:"sm-widget-card__header",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('span',{staticClass:"sm-widget-card__header-name"},[_vm._v(_vm._s(_vm.headerName))])]):_vm._e(),_vm._v(" "),_vm._t("default")],2)])],1)}
+var Cardvue_type_template_id_4119236e_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/view/components/Card.vue?vue&type=template&id=4119236e&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Card.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ var Cardvue_type_script_lang_js_ = ({
+  name: 'SmCard',
+  mixins: [mixin_theme],
+  props: {
+    iconPosition: {
+      type: String,
+      default: 'top-left'
+    },
+    iconClass: {
+      type: String
+    },
+    autoRotate: {
+      type: Boolean,
+      default: false
+    },
+    headerName: {
+      type: String
+    },
+    collapsed: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data: function data() {
+    return {
+      isShow: true,
+      transform: null
+    };
+  },
+  methods: {
+    iconClicked: function iconClicked() {
+      this.autoRotate && (this.transform = this.rotateDeg[this.position][!this.isShow ? 1 : 0]);
+      this.isShow = !this.isShow;
+    }
+  },
+  computed: {
+    getCardStyle: function getCardStyle() {
+      var style = {
+        background: 'transparent'
+      };
+      return !this.iconClass && !this.headerName ? style : this.getBackgroundStyle;
+    },
+    iconStyle: function iconStyle() {
+      return {
+        transform: this.transform
+      };
+    },
+    position: function position() {
+      var isControl = this.$parent.$parent && ['smwebmap', 'smmap'].includes(this.$parent.$parent.$options.name && this.$parent.$parent.$options.name.toLowerCase());
+
+      if (this.headerName && !isControl) {
+        return 'top-left';
+      } else {
+        return this.iconPosition;
+      }
+    },
+    rotateDeg: function rotateDeg() {
+      return {
+        'top-right': ['rotate(-45deg)', 'rotate(135deg)'],
+        'top-left': ['rotate(-135deg)', 'rotate(45deg)'],
+        'bottom-left': ['rotate(-135deg)', 'rotate(45deg)'],
+        'bottom-right': ['rotate(-45deg)', 'rotate(135deg)']
+      };
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/view/components/Card.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_Cardvue_type_script_lang_js_ = (Cardvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/Card.vue
+
+
+
+
+
+/* normalize component */
+
+var Card_component = normalizeComponent(
+  components_Cardvue_type_script_lang_js_,
+  Cardvue_type_template_id_4119236e_render,
+  Cardvue_type_template_id_4119236e_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var Card = (Card_component.exports);
+// CONCATENATED MODULE: ./src/view/mixin/card.js
+
+/* harmony default export */ var mixin_card = ({
+  components: {
+    'sm-card': Card
+  },
+  data: function data() {
+    return {
+      isShow: true
+    };
+  },
+  props: {
+    position: {
+      type: String,
+      default: 'top-left',
+      validator: function validator(value) {
+        return ['top-left', 'top-right', 'bottom-left', 'bottom-right'].includes(value);
+      }
+    },
+    iconClass: {
+      type: String
+    },
+    autoRotate: {
+      type: Boolean,
+      default: false
+    },
+    headerName: {
+      type: String
+    },
+    collapsed: {
+      type: Boolean,
+      default: false
+    }
+  }
+});
 // CONCATENATED MODULE: ./src/viewmodel/layerListViewModel.js
 
 
@@ -37553,32 +42289,29 @@ function (_WidgetViewModel) {
 //
 //
 //
-//
-//
-//
-//
+
+
 
 
 
 /* harmony default export */ var LayerListvue_type_script_lang_js_ = ({
-  name: 'SmLayerList',
-  relativeMap: true,
-  mixins: [Theme],
+  name: "SmLayerList",
+  mixins: [map_getter, control, mixin_theme, mixin_card],
   props: {
     iconClass: {
       type: String,
-      default: 'smwidgets-icons-layer-style'
+      default: "smwidgets-icons-layer-style"
     },
     headerName: {
       type: String,
-      default: '图层'
+      default: "图层"
     }
   },
   data: function data() {
     return {
       sourceList: {},
       disabledStyle: {
-        color: '#c0c4cc'
+        color: "#c0c4cc"
       }
     };
   },
@@ -37592,19 +42325,19 @@ function (_WidgetViewModel) {
     changCheckStyle: function changCheckStyle() {
       var _this = this;
 
-      var checkBoxsList = this.$el.querySelectorAll('.el-checkbox__input');
+      var checkBoxsList = this.$el.querySelectorAll(".el-checkbox__input");
       checkBoxsList.forEach(function (item) {
         var childrens = item.childNodes;
         var checkbox = childrens[0];
         var label = item.parentNode.childNodes[1];
 
-        if (item.classList.contains('is-checked')) {
+        if (item.classList.contains("is-checked")) {
           checkbox.style.borderColor = _this.getColorStyle(0).color;
           checkbox.style.backgroundColor = _this.getColorStyle(0).color;
           label.style.color = _this.getColorStyle(0).color;
         } else {
-          checkbox.style.borderColor = '#DCDFE6';
-          checkbox.style.backgroundColor = '#fff';
+          checkbox.style.borderColor = "#DCDFE6";
+          checkbox.style.backgroundColor = "#fff";
           label.style.color = _this.getTextColor;
         }
       });
@@ -37629,23 +42362,22 @@ function (_WidgetViewModel) {
     getDisabledStyle: function getDisabledStyle() {
       var isText = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       return {
-        color: '#c0c4cc'
+        color: "#c0c4cc"
       };
     }
   },
   filters: {
     isVisible: function isVisible(visibility) {
-      return visibility === 'visible' ? true : false;
+      return visibility === "visible" ? true : false;
     }
   },
-  extends: Widget,
   loaded: function loaded() {
     var _this3 = this;
 
-    !this.parentIsWebMapOrMap && this.$el.classList.add('layer-list-container');
+    !this.parentIsWebMapOrMap && this.$el.classList.add("layer-list-container");
     this.layerListViewModel = new layerListViewModel(this.map);
     this.sourceList = this.layerListViewModel.initLayerList();
-    this.layerListViewModel.on('layersUpdated', function () {
+    this.layerListViewModel.on("layersUpdated", function () {
       _this3.sourceList = _this3.layerListViewModel.initLayerList();
     });
   }
@@ -37662,8 +42394,8 @@ function (_WidgetViewModel) {
 
 var LayerList_component = normalizeComponent(
   components_LayerListvue_type_script_lang_js_,
-  LayerListvue_type_template_id_527f43ae_render,
-  LayerListvue_type_template_id_527f43ae_staticRenderFns,
+  LayerListvue_type_template_id_8512db04_render,
+  LayerListvue_type_template_id_8512db04_staticRenderFns,
   false,
   null,
   null,
@@ -37672,12 +42404,12 @@ var LayerList_component = normalizeComponent(
 )
 
 /* harmony default export */ var LayerList = (LayerList_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Chart.vue?vue&type=template&id=60d8fe5d&
-var Chartvue_type_template_id_60d8fe5d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"id":(!_vm.iconClass&&!_vm.headerName)&&'chart'}},[_c('div',{attrs:{"id":(_vm.iconClass||_vm.headerName)&&'chart'}})])}
-var Chartvue_type_template_id_60d8fe5d_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Chart.vue?vue&type=template&id=a463f200&
+var Chartvue_type_template_id_a463f200_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"id":(!_vm.iconClass&&!_vm.headerName)&&'chart'}},[_c('div',{attrs:{"id":(_vm.iconClass||_vm.headerName)&&'chart'}})])}
+var Chartvue_type_template_id_a463f200_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=template&id=60d8fe5d&
+// CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=template&id=a463f200&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__("lSNA");
@@ -37688,7 +42420,6 @@ var external_echarts_ = __webpack_require__("Fk5u");
 var external_echarts_default = /*#__PURE__*/__webpack_require__.n(external_echarts_);
 
 // CONCATENATED MODULE: ./src/utils/iServerRestService.js
-
 
 
 
@@ -37955,7 +42686,7 @@ function (_mapboxgl$Evented) {
   }]);
 
   return iServerRestService;
-}(mapbox_gl_enhance_js_default.a.Evented);
+}(mapboxgl.Evented);
 
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/readOnlyError.js
@@ -37963,7 +42694,6 @@ var readOnlyError = __webpack_require__("2mBW");
 var readOnlyError_default = /*#__PURE__*/__webpack_require__.n(readOnlyError);
 
 // CONCATENATED MODULE: ./src/utils/iPortalDataService.js
-
 
 
 
@@ -38257,7 +42987,7 @@ function (_mapboxgl$Evented) {
   }]);
 
   return iPortalDataService;
-}(mapbox_gl_enhance_js_default.a.Evented);
+}(mapboxgl.Evented);
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.tonumber/index.js
@@ -38265,7 +42995,6 @@ var lodash_tonumber = __webpack_require__("CeSn");
 var lodash_tonumber_default = /*#__PURE__*/__webpack_require__.n(lodash_tonumber);
 
 // CONCATENATED MODULE: ./src/viewmodel/ChartViewModel.js
-
 
 
 
@@ -38372,7 +43101,7 @@ function (_WidgetViewModel) {
   }, {
     key: "resize",
     value: function resize() {
-      this.echart.resize();
+      this.echart && this.echart.resize();
     } // 获取当前的echart
 
   }, {
@@ -38830,11 +43559,12 @@ function (_WidgetViewModel) {
 
 
 
+
+
 /* harmony default export */ var Chartvue_type_script_lang_js_ = ({
   name: "SmChart",
   viewModelProps: ["chartType", "datasets", "chartOptions"],
-  extends: Widget,
-  mixins: [Theme],
+  mixins: [control, mixin_theme, mixin_card, vm_updater],
   props: {
     iconClass: {
       type: String,
@@ -38889,34 +43619,37 @@ function (_WidgetViewModel) {
     },
     getFeatures: function getFeatures() {
       this.viewModel && this.viewModel.getFeatures();
-    }
-  },
-  loaded: function loaded() {
-    var _this = this;
+    },
+    initializeChart: function initializeChart() {
+      var _this = this;
 
-    this.viewModel = new ChartViewModel_ChartViewModel(this.$el.querySelector('#chart') || this.$el, lodash_clonedeep_default()(this.options));
-    this.$on("themeStyle", function () {
-      _this.chartOptions.colorGradient = _this.colorGroupsData;
-      _this.chartOptions.backgroundColor = _this.backgroundData;
-      _this.chartOptions.axisColor = _this.textColorsData;
+      this.viewModel = new ChartViewModel_ChartViewModel(this.$el.querySelector("#chart") || this.$el, lodash_clonedeep_default()(this.options));
+      this.$on("themeStyle", function () {
+        _this.chartOptions.colorGradient = _this.colorGroupsData;
+        _this.chartOptions.backgroundColor = _this.backgroundData;
+        _this.chartOptions.axisColor = _this.textColorsData;
 
-      _this.viewModel.setChartOptions(_this.chartOptions);
-    });
-    var icon = this.$el.children[0];
+        _this.viewModel.setChartOptions(_this.chartOptions);
+      });
+      var icon = this.$el.children[0];
 
-    if (this.iconClass && icon) {
-      icon.style.visibility = "hidden";
-    }
-
-    this.viewModel.on("chartinitsucceeded", function () {
-      if (_this.iconClass && icon) {
-        icon.style.visibility = "visible";
+      if (this.iconClass && icon) {
+        icon.style.visibility = "hidden";
       }
 
-      window.addEventListener('resize', function () {
-        _this.viewModel.resize();
+      this.viewModel.on("chartinitsucceeded", function () {
+        if (_this.iconClass && icon) {
+          icon.style.visibility = "visible";
+        }
+
+        window.addEventListener("resize", function () {
+          _this.viewModel.resize();
+        });
       });
-    });
+    }
+  },
+  mounted: function mounted() {
+    this.initializeChart();
   }
 });
 // CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=script&lang=js&
@@ -38931,8 +43664,8 @@ function (_WidgetViewModel) {
 
 var Chart_component = normalizeComponent(
   components_Chartvue_type_script_lang_js_,
-  Chartvue_type_template_id_60d8fe5d_render,
-  Chartvue_type_template_id_60d8fe5d_staticRenderFns,
+  Chartvue_type_template_id_a463f200_render,
+  Chartvue_type_template_id_a463f200_staticRenderFns,
   false,
   null,
   null,
@@ -38941,12 +43674,12 @@ var Chart_component = normalizeComponent(
 )
 
 /* harmony default export */ var Chart = (Chart_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=template&id=2ca2f39d&
-var Mapvue_type_template_id_2ca2f39d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-map",attrs:{"id":_vm.target}},[_vm._t("default")],2)}
-var Mapvue_type_template_id_2ca2f39d_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=template&id=537d3642&
+var Mapvue_type_template_id_537d3642_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-map",attrs:{"id":_vm.target}},[_vm._t("default")],2)}
+var Mapvue_type_template_id_537d3642_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=template&id=2ca2f39d&
+// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=template&id=537d3642&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=script&lang=js&
 //
@@ -38956,12 +43689,8 @@ var Mapvue_type_template_id_2ca2f39d_staticRenderFns = []
 //
 //
 
-
-
 /* harmony default export */ var Mapvue_type_script_lang_js_ = ({
   name: "SmMap",
-  relativeMap: true,
-  extends: Widget,
   props: {
     target: {
       type: String,
@@ -38991,7 +43720,7 @@ var Mapvue_type_template_id_2ca2f39d_staticRenderFns = []
   methods: {
     initializeMap: function initializeMap() {
       this.mapOptions.container = this.target;
-      this.map = new mapbox_gl_enhance_js_default.a.Map(this.mapOptions);
+      this.map = new mapboxgl.Map(this.mapOptions);
       return this.map;
     },
     registerEvents: function registerEvents(map) {
@@ -38999,6 +43728,10 @@ var Mapvue_type_template_id_2ca2f39d_staticRenderFns = []
 
       map.on("load", function () {
         mapEvent.$emit("initMap-".concat(_this.target), map);
+
+        _this.$emit("map-loaded", {
+          map: map
+        });
       });
     }
   }
@@ -39015,8 +43748,8 @@ var Mapvue_type_template_id_2ca2f39d_staticRenderFns = []
 
 var Map_component = normalizeComponent(
   components_Mapvue_type_script_lang_js_,
-  Mapvue_type_template_id_2ca2f39d_render,
-  Mapvue_type_template_id_2ca2f39d_staticRenderFns,
+  Mapvue_type_template_id_537d3642_render,
+  Mapvue_type_template_id_537d3642_staticRenderFns,
   false,
   null,
   null,
@@ -39025,12 +43758,12 @@ var Map_component = normalizeComponent(
 )
 
 /* harmony default export */ var Map = (Map_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/MiniMap.vue?vue&type=template&id=076453b1&
-var MiniMapvue_type_template_id_076453b1_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"id":(!_vm.iconClass&&!_vm.headerName)&&'miniMap'}},[_c('div',{attrs:{"id":(_vm.iconClass||_vm.headerName)&&'miniMap'}})])}
-var MiniMapvue_type_template_id_076453b1_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/MiniMap.vue?vue&type=template&id=c6a3682a&
+var MiniMapvue_type_template_id_c6a3682a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed,"id":(!_vm.iconClass&&!_vm.headerName)&&'miniMap'}},[_c('div',{attrs:{"id":(_vm.iconClass||_vm.headerName)&&'miniMap'}})])}
+var MiniMapvue_type_template_id_c6a3682a_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/MiniMap.vue?vue&type=template&id=076453b1&
+// CONCATENATED MODULE: ./src/view/components/MiniMap.vue?vue&type=template&id=c6a3682a&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__("cDf5");
@@ -39070,13 +43803,13 @@ function (_WidgetViewModel) {
 
     _this2 = possibleConstructorReturn_default()(this, getPrototypeOf_default()(MiniMapViewModel).call(this));
     _this2.options = {
-      id: "mapboxgl-minimap",
+      id: 'mapboxgl-minimap',
       zoomAdjust: null,
-      bounds: "parent",
-      lineColor: "#08F",
+      bounds: 'parent',
+      lineColor: '#08F',
       lineWidth: 1,
       lineOpacity: 1,
-      fillColor: "#F80",
+      fillColor: '#F80',
       fillOpacity: 0.25,
       dragPan: false,
       scrollZoom: false,
@@ -39117,7 +43850,7 @@ function (_WidgetViewModel) {
         renderWorldCopies: false
       });
 
-      this._miniMap.on("load", function () {
+      this._miniMap.on('load', function () {
         _this3.fire('minimapinitialized', {
           miniMap: _this3._miniMap
         });
@@ -39131,24 +43864,24 @@ function (_WidgetViewModel) {
       var opts = this.options;
       var parentMap = this._parentMap;
       var miniMap = this._miniMap;
-      var interactions = ["dragPan", "scrollZoom", "boxZoom", "dragRotate", "keyboard", "doubleClickZoom", "touchZoomRotate"];
+      var interactions = ['dragPan', 'scrollZoom', 'boxZoom', 'dragRotate', 'keyboard', 'doubleClickZoom', 'touchZoomRotate'];
       interactions.forEach(function (i) {
         if (opts[i] !== true) {
           miniMap[i].disable();
         }
       });
 
-      if (typeof opts.zoomAdjust === "function") {
+      if (typeof opts.zoomAdjust === 'function') {
         this.options.zoomAdjust = opts.zoomAdjust.bind(this);
       } else if (opts.zoomAdjust === null) {
         this.options.zoomAdjust = this._zoomAdjust.bind(this);
       }
 
-      if (opts.bounds === "parent") {
+      if (opts.bounds === 'parent') {
         opts.bounds = parentMap.getBounds();
       }
 
-      if (typeof_default()(opts.bounds) === "object") {
+      if (typeof_default()(opts.bounds) === 'object') {
         miniMap.fitBounds(opts.bounds, {
           duration: 50
         });
@@ -39162,16 +43895,16 @@ function (_WidgetViewModel) {
 
       this._update();
 
-      parentMap.on("move", this._update.bind(this));
+      parentMap.on('move', this._update.bind(this));
       parentMap.on('styledata', this._setStyle.bind(this));
-      miniMap.on("mousemove", this._mouseMove.bind(this));
-      miniMap.on("mousedown", this._mouseDown.bind(this));
-      miniMap.on("mouseup", this._mouseUp.bind(this));
+      miniMap.on('mousemove', this._mouseMove.bind(this));
+      miniMap.on('mousedown', this._mouseDown.bind(this));
+      miniMap.on('mouseup', this._mouseUp.bind(this));
       this._miniMapCanvas = miniMap.getCanvasContainer();
 
-      this._miniMapCanvas.addEventListener("wheel", this._preventDefault);
+      this._miniMapCanvas.addEventListener('wheel', this._preventDefault);
 
-      this._miniMapCanvas.addEventListener("mousewheel", this._preventDefault);
+      this._miniMapCanvas.addEventListener('mousewheel', this._preventDefault);
     }
   }, {
     key: "_mouseDown",
@@ -39198,12 +43931,12 @@ function (_WidgetViewModel) {
       this._ticking = false;
       var miniMap = this._miniMap;
       var features = miniMap.queryRenderedFeatures(e.point, {
-        layers: ["trackingRectFill"]
+        layers: ['trackingRectFill']
       });
 
       if (!(this._isCursorOverFeature && features.length > 0)) {
         this._isCursorOverFeature = features.length > 0;
-        this._miniMapCanvas.style.cursor = this._isCursorOverFeature ? "move" : "";
+        this._miniMapCanvas.style.cursor = this._isCursorOverFeature ? 'move' : '';
       }
 
       if (this._isDragging) {
@@ -39250,15 +43983,20 @@ function (_WidgetViewModel) {
       var source = this._trackingRect;
       var data = source._data;
       var bounds = data.properties.bounds;
-      bounds._ne.lat -= offset[1];
-      bounds._ne.lng -= offset[0];
-      bounds._sw.lat -= offset[1];
-      bounds._sw.lng -= offset[0];
 
-      this._convertBoundsToPoints(bounds);
+      if (bounds) {
+        bounds._ne.lat -= offset[1];
+        bounds._ne.lng -= offset[0];
+        bounds._sw.lat -= offset[1];
+        bounds._sw.lng -= offset[0];
 
-      source.setData(data);
-      return bounds;
+        this._convertBoundsToPoints(bounds);
+
+        source.setData(data);
+        return bounds;
+      }
+
+      return;
     }
   }, {
     key: "_setTrackingRectBounds",
@@ -39301,7 +44039,7 @@ function (_WidgetViewModel) {
 
       this._setTrackingRectBounds(parentBounds);
 
-      if (typeof this.options.zoomAdjust === "function") {
+      if (typeof this.options.zoomAdjust === 'function') {
         this.options.zoomAdjust();
       }
       /**
@@ -39361,44 +44099,44 @@ function (_WidgetViewModel) {
     value: function _addRectLayers() {
       var opts = this.options;
 
-      this._miniMap.addSource("trackingRect", {
-        "type": "geojson",
-        "data": {
-          "type": "Feature",
-          "properties": {
-            "name": "trackingRect"
+      this._miniMap.addSource('trackingRect', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {
+            name: 'trackingRect'
           },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": this._trackingRectCoordinates
+          geometry: {
+            type: 'Polygon',
+            coordinates: this._trackingRectCoordinates
           }
         }
       });
 
       this._miniMap.addLayer({
-        "id": "trackingRectOutline",
-        "type": "line",
-        "source": "trackingRect",
-        "layout": {},
-        "paint": {
-          "line-color": opts.lineColor,
-          "line-width": opts.lineWidth,
-          "line-opacity": opts.lineOpacity
+        id: 'trackingRectOutline',
+        type: 'line',
+        source: 'trackingRect',
+        layout: {},
+        paint: {
+          'line-color': opts.lineColor,
+          'line-width': opts.lineWidth,
+          'line-opacity': opts.lineOpacity
         }
       });
 
       this._miniMap.addLayer({
-        "id": "trackingRectFill",
-        "type": "fill",
-        "source": "trackingRect",
-        "layout": {},
-        "paint": {
-          "fill-color": opts.fillColor,
-          "fill-opacity": opts.fillOpacity
+        id: 'trackingRectFill',
+        type: 'fill',
+        source: 'trackingRect',
+        layout: {},
+        paint: {
+          'fill-color': opts.fillColor,
+          'fill-opacity': opts.fillOpacity
         }
       });
 
-      this._trackingRect = this._miniMap.getSource("trackingRect");
+      this._trackingRect = this._miniMap.getSource('trackingRect');
     }
   }]);
 
@@ -39426,10 +44164,10 @@ function (_WidgetViewModel) {
 
 
 
+
 /* harmony default export */ var MiniMapvue_type_script_lang_js_ = ({
   name: "SmMiniMap",
-  extends: Widget,
-  relativeMap: true,
+  mixins: [map_getter, control, mixin_card],
   props: {
     iconClass: {
       type: String,
@@ -39447,7 +44185,7 @@ function (_WidgetViewModel) {
   loaded: function loaded() {
     var _this = this;
 
-    this.$el.classList.add("sm-minimap");
+    this.$el.classList.add("sm-widget-minimap");
     this.viewModel = new MiniMapViewModel_MiniMapViewModel(this.$el.querySelector("#miniMap") || this.$el, this.map);
     this.iconClass && this.icon && this.viewModel.on("minimapinitialized", function () {
       _this.icon.style.visibility = "visible";
@@ -39466,8 +44204,8 @@ function (_WidgetViewModel) {
 
 var MiniMap_component = normalizeComponent(
   components_MiniMapvue_type_script_lang_js_,
-  MiniMapvue_type_template_id_076453b1_render,
-  MiniMapvue_type_template_id_076453b1_staticRenderFns,
+  MiniMapvue_type_template_id_c6a3682a_render,
+  MiniMapvue_type_template_id_c6a3682a_staticRenderFns,
   false,
   null,
   null,
@@ -39476,12 +44214,12 @@ var MiniMap_component = normalizeComponent(
 )
 
 /* harmony default export */ var MiniMap = (MiniMap_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Measure.vue?vue&type=template&id=4348e28e&
-var Measurevue_type_template_id_4348e28e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{key:group.mode,class:{'sm-measure__modeIcon': true, 'sm-measure__iconActive': _vm.activeMode === group.mode},style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-measure__unit sm-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
-var Measurevue_type_template_id_4348e28e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Measure.vue?vue&type=template&id=abddb720&
+var Measurevue_type_template_id_abddb720_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-widget-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-widget-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{key:group.mode,class:{'sm-widget-measure__modeIcon': true, 'sm-widget-measure__iconActive': _vm.activeMode === group.mode},style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-widget-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-widget-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-widget-measure__unit sm-widget-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-widget-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-widget-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-widget-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
+var Measurevue_type_template_id_abddb720_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Measure.vue?vue&type=template&id=4348e28e&
+// CONCATENATED MODULE: ./src/view/components/Measure.vue?vue&type=template&id=abddb720&
 
 // EXTERNAL MODULE: external {"root":"MapboxDraw","commonjs":"@mapbox/mapbox-gl-draw","commonjs2":"@mapbox/mapbox-gl-draw","amd":"@mapbox/mapbox-gl-draw"}
 var mapbox_gl_draw_ = __webpack_require__("dz+5");
@@ -39507,7 +44245,6 @@ var reservedDecimal = function reservedDecimal(val, precise) {
   return Number(val).toFixed(precise);
 };
 // CONCATENATED MODULE: ./src/viewmodel/MeasureViewModel.js
-
 
 
 
@@ -39839,7 +44576,7 @@ function (_WidgetViewModel) {
       var popup = this.tipHoverDiv; // 实时显示popup只需要一个，如果没有再生成新popup
 
       if (!popup) {
-        popup = new mapbox_gl_enhance_js_default.a.Popup({
+        popup = new mapboxgl.Popup({
           closeButton: false,
           closeOnClick: false
         });
@@ -39889,7 +44626,7 @@ function (_WidgetViewModel) {
           _e$lngLat3 = e.lngLat,
           lng = _e$lngLat3.lng,
           lat = _e$lngLat3.lat;
-      var popup = new mapbox_gl_enhance_js_default.a.Popup({
+      var popup = new mapboxgl.Popup({
         closeButton: false,
         closeOnClick: false
       });
@@ -40041,11 +44778,11 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
 
 
 
+
+
 /* harmony default export */ var Measurevue_type_script_lang_js_ = ({
   name: "SmMeasure",
-  relativeMap: true,
-  extends: Widget,
-  mixins: [Theme],
+  mixins: [map_getter, control, mixin_theme, mixin_card],
   props: {
     iconClass: {
       type: String,
@@ -40216,8 +44953,8 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
 
 var Measure_component = normalizeComponent(
   components_Measurevue_type_script_lang_js_,
-  Measurevue_type_template_id_4348e28e_render,
-  Measurevue_type_template_id_4348e28e_staticRenderFns,
+  Measurevue_type_template_id_abddb720_render,
+  Measurevue_type_template_id_abddb720_staticRenderFns,
   false,
   null,
   null,
@@ -40226,15 +44963,14 @@ var Measure_component = normalizeComponent(
 )
 
 /* harmony default export */ var Measure = (Measure_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Search.vue?vue&type=template&id=700743c0&
-var Searchvue_type_template_id_700743c0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-search",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-search__input"},[_c('el-input',{staticClass:"sm-search__el-input",attrs:{"placeholder":_vm.$t('search.inputPlaceHolder'),"clearable":""},on:{"clear":_vm.inputValueCleared},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('div',{staticClass:"el-input__icon el-icon-search",style:(_vm.getColorStyle(0)),attrs:{"slot":"prefix"},on:{"click":_vm.searchButtonClicked},slot:"prefix"})])],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getlength),expression:"getlength"}],staticClass:"sm-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-search__panel"},[(result.source)?_c('span',{staticClass:"sm-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,index){return _c('li',{key:index,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])}))])}
-var Searchvue_type_template_id_700743c0_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Search.vue?vue&type=template&id=0d239761&
+var Searchvue_type_template_id_0d239761_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-search",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-widget-search__input"},[_c('el-input',{staticClass:"sm-widget-search__el-input",attrs:{"placeholder":_vm.$t('search.inputPlaceHolder'),"clearable":""},on:{"clear":_vm.inputValueCleared},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('div',{staticClass:"el-input__icon el-icon-search",style:(_vm.getColorStyle(0)),attrs:{"slot":"prefix"},on:{"click":_vm.searchButtonClicked},slot:"prefix"})])],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getlength),expression:"getlength"}],staticClass:"sm-widget-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-widget-search__panel"},[(result.source)?_c('span',{staticClass:"sm-widget-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-widget-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,index){return _c('li',{key:index,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])}))])}
+var Searchvue_type_template_id_0d239761_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Search.vue?vue&type=template&id=700743c0&
+// CONCATENATED MODULE: ./src/view/components/Search.vue?vue&type=template&id=0d239761&
 
 // CONCATENATED MODULE: ./src/viewmodel/SearchViewModel.js
-
 
 
 
@@ -41027,6 +45763,7 @@ var TablePopup_component = normalizeComponent(
 
 
 
+
  // import iPortalDataParameter from "../commontypes/iPortalDataParameter";
 // import RestDataParameter from "../commontypes/RestDataParameter";
 // import RestMapParameter from "../commontypes/RestMapParameter";
@@ -41044,9 +45781,7 @@ var TablePopup_component = normalizeComponent(
 
 /* harmony default export */ var Searchvue_type_script_lang_js_ = ({
   name: "SmSearch",
-  extends: Widget,
-  relativeMap: true,
-  mixins: [Theme],
+  mixins: [control, map_getter, mixin_theme],
   props: {
     maxReturn: {
       type: [Number, String],
@@ -41110,7 +45845,7 @@ var TablePopup_component = normalizeComponent(
   },
   updated: function updated() {
     this.changeSearchInputStyle();
-    var results = this.$el.querySelectorAll('.sm-search__panel li');
+    var results = this.$el.querySelectorAll(".sm-widget-search__panel li");
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
@@ -41137,7 +45872,7 @@ var TablePopup_component = normalizeComponent(
   },
   methods: {
     changeSearchInputStyle: function changeSearchInputStyle() {
-      var serachInput = this.$el.querySelector('.el-input__inner');
+      var serachInput = this.$el.querySelector(".el-input__inner");
       serachInput.style.backgroundColor = this.getBackground;
       serachInput.style.color = this.getTextColor;
     },
@@ -41279,8 +46014,8 @@ var TablePopup_component = normalizeComponent(
 
 var Search_component = normalizeComponent(
   components_Searchvue_type_script_lang_js_,
-  Searchvue_type_template_id_700743c0_render,
-  Searchvue_type_template_id_700743c0_staticRenderFns,
+  Searchvue_type_template_id_0d239761_render,
+  Searchvue_type_template_id_0d239761_staticRenderFns,
   false,
   null,
   null,
@@ -41289,12 +46024,12 @@ var Search_component = normalizeComponent(
 )
 
 /* harmony default export */ var Search = (Search_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Legend.vue?vue&type=template&id=27d12562&
-var Legendvue_type_template_id_27d12562_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-legend",style:([_vm.noBorder]),attrs:{"icon-class":_vm.mode === 'simple' ? '' : _vm.iconClass,"icon-position":_vm.position,"header-name":_vm.mode === 'simple' ? '' : _vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('el-card',{style:([_vm.mode !== 'simple' ? [_vm.getBackgroundStyle, _vm.getTextColorStyle, {border: 0, borderRadius: 0}] : {border: 0, borderRadius: 0, background: 'transparent'} ])},[((_vm.mode === 'panel' || (_vm.layerNames.length > 1 && _vm.mode !== 'simple')))?_c('el-collapse',{staticClass:"sm-legend__table",model:{value:(_vm.activeLegend),callback:function ($$v) {_vm.activeLegend=$$v},expression:"activeLegend"}},_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('el-collapse-item',{key:index,attrs:{"name":index+1}},[_c('template',{slot:"title"},[_c('div',{staticClass:"sm-legend__title",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))])]),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',[_c('ul',{staticClass:"sm-legend__point"},_vm._l((layerValue.styleGroup),function(item,index){return _c('li',{key:index,staticClass:"sm-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-legend__field-value"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',[_c('div',{staticClass:"sm-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})},[_c('span',{staticClass:"sm-legend__top"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n              "+_vm._s(_vm.$t("legend.top"))+"\n            ")]),_vm._v(" "),_c('span',{staticClass:"sm-legend__bottom"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n              "+_vm._s(_vm.$t("legend.bottom"))+"\n            ")])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',[_c('div',{staticClass:"sm-legend__range"},_vm._l((layerValue.styleGroup),function(item,index){return _c('div',{key:index,staticClass:"sm-legend__range-item",style:({background:item.color})},[_c('span',{staticClass:"add-ellipsis"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n                "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n              ")])])}))]):_vm._e()],2)})):(_vm.mode === 'simple' || _vm.layerNames.length === 1)?_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('div',{key:index,staticClass:"sm-legend__noBorder"},[(_vm.isShowTitle)?_c('div',{staticClass:"sm-legend__title",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))]):_vm._e(),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',[_c('ul',{staticClass:"sm-legend__point"},_vm._l((layerValue.styleGroup),function(item,index){return _c('li',{key:index,staticClass:"sm-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-legend__field-value"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',[_c('div',{staticClass:"sm-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})},[_c('span',{staticClass:"sm-legend__top"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n            "+_vm._s(_vm.$t("legend.top"))+"\n          ")]),_vm._v(" "),_c('span',{staticClass:"sm-legend__bottom"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n            "+_vm._s(_vm.$t("legend.bottom"))+"\n          ")])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',[_c('div',{staticClass:"sm-legend__range"},_vm._l((layerValue.styleGroup),function(item,index){return _c('div',{key:index,staticClass:"sm-legend__range-item",style:({background:item.color})},[_c('span',{staticClass:"add-ellipsis"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n              "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n            ")])])}))]):_vm._e()])}):_vm._e()],2)],1)}
-var Legendvue_type_template_id_27d12562_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Legend.vue?vue&type=template&id=5322c200&
+var Legendvue_type_template_id_5322c200_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-legend",style:([_vm.noBorder]),attrs:{"icon-class":_vm.mode === 'simple' ? '' : _vm.iconClass,"icon-position":_vm.position,"header-name":_vm.mode === 'simple' ? '' : _vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('el-card',{style:([_vm.mode !== 'simple' ? [_vm.getBackgroundStyle, _vm.getTextColorStyle, {border: 0, borderRadius: 0}] : {border: 0, borderRadius: 0, background: 'transparent'} ])},[((_vm.mode === 'panel' || (_vm.layerNames.length > 1 && _vm.mode !== 'simple')))?_c('el-collapse',{staticClass:"sm-widget-legend__table",model:{value:(_vm.activeLegend),callback:function ($$v) {_vm.activeLegend=$$v},expression:"activeLegend"}},_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('el-collapse-item',{key:index,attrs:{"name":index+1}},[_c('template',{slot:"title"},[_c('div',{staticClass:"sm-widget-legend__title",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))])]),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-widget-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',[_c('ul',{staticClass:"sm-widget-legend__point"},_vm._l((layerValue.styleGroup),function(item,index){return _c('li',{key:index,staticClass:"sm-widget-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-widget-legend__field-value"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',[_c('div',{staticClass:"sm-widget-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})},[_c('span',{staticClass:"sm-widget-legend__top"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n              "+_vm._s(_vm.$t("legend.top"))+"\n            ")]),_vm._v(" "),_c('span',{staticClass:"sm-widget-legend__bottom"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n              "+_vm._s(_vm.$t("legend.bottom"))+"\n            ")])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',[_c('div',{staticClass:"sm-widget-legend__range"},_vm._l((layerValue.styleGroup),function(item,index){return _c('div',{key:index,staticClass:"sm-widget-legend__range-item",style:({background:item.color})},[_c('span',{staticClass:"add-ellipsis"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n                "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n              ")])])}))]):_vm._e()],2)})):(_vm.mode === 'simple' || _vm.layerNames.length === 1)?_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('div',{key:index,staticClass:"sm-widget-legend__noBorder"},[(_vm.isShowTitle)?_c('div',{staticClass:"sm-widget-legend__title",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))]):_vm._e(),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-widget-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',[_c('ul',{staticClass:"sm-widget-legend__point"},_vm._l((layerValue.styleGroup),function(item,index){return _c('li',{key:index,staticClass:"sm-widget-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-widget-legend__field-value"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',[_c('div',{staticClass:"sm-widget-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})},[_c('span',{staticClass:"sm-widget-legend__top"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n            "+_vm._s(_vm.$t("legend.top"))+"\n          ")]),_vm._v(" "),_c('span',{staticClass:"sm-widget-legend__bottom"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n            "+_vm._s(_vm.$t("legend.bottom"))+"\n          ")])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',[_c('div',{staticClass:"sm-widget-legend__range"},_vm._l((layerValue.styleGroup),function(item,index){return _c('div',{key:index,staticClass:"sm-widget-legend__range-item",style:({background:item.color})},[_c('span',{staticClass:"add-ellipsis"},[_c('i',{staticClass:"el-icon-caret-left"}),_vm._v("\n              "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n            ")])])}))]):_vm._e()])}):_vm._e()],2)],1)}
+var Legendvue_type_template_id_5322c200_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Legend.vue?vue&type=template&id=27d12562&
+// CONCATENATED MODULE: ./src/view/components/Legend.vue?vue&type=template&id=5322c200&
 
 // CONCATENATED MODULE: ./src/viewmodel/LegendViewModel.js
 
@@ -41490,24 +46225,14 @@ function (_WidgetViewModel) {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
 
 
 
 /* harmony default export */ var Legendvue_type_script_lang_js_ = ({
   name: "SmLegend",
-  mixins: [Theme],
-  relativeMap: true,
+  mixins: [map_getter, control, mixin_theme, mixin_card],
   props: {
     iconClass: {
       type: String,
@@ -41566,7 +46291,7 @@ function (_WidgetViewModel) {
         _this.$set(_this.legendList, layer, style);
       }
     });
-    var cardContent = this.$el.querySelector(".sm-card__content");
+    var cardContent = this.$el.querySelector(".sm-widget-card__content");
     cardContent.style.width = "200px";
   },
   filters: {
@@ -41592,8 +46317,7 @@ function (_WidgetViewModel) {
         };
       }
     }
-  },
-  extends: Widget
+  }
 });
 // CONCATENATED MODULE: ./src/view/components/Legend.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_Legendvue_type_script_lang_js_ = (Legendvue_type_script_lang_js_); 
@@ -41607,8 +46331,8 @@ function (_WidgetViewModel) {
 
 var Legend_component = normalizeComponent(
   components_Legendvue_type_script_lang_js_,
-  Legendvue_type_template_id_27d12562_render,
-  Legendvue_type_template_id_27d12562_staticRenderFns,
+  Legendvue_type_template_id_5322c200_render,
+  Legendvue_type_template_id_5322c200_staticRenderFns,
   false,
   null,
   null,
@@ -41617,12 +46341,12 @@ var Legend_component = normalizeComponent(
 )
 
 /* harmony default export */ var Legend = (Legend_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Query.vue?vue&type=template&id=7622a6c1&
-var Queryvue_type_template_id_7622a6c1_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-query__job-info-panel"},[(jobInfo.name)?_c('div',{staticClass:"sm-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"smwidgets-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-query__job-info-name"},[_vm._v(_vm._s(jobInfo.name))]),_vm._v(" "),_c('div',{staticClass:"smwidgets-icons-legend-unfold"})]):_vm._e(),_vm._v(" "),(jobInfo.attributeFilter)?_c('div',{staticClass:"sm-query__job-info-body hidden"},[_c('div',{staticClass:"sm-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('el-select',{staticClass:"sm-query__el-select",attrs:{"size":"mini","popper-append-to-body":false},on:{"visible-change":_vm.changeChosenStyle},model:{value:(_vm.value),callback:function ($$v) {_vm.value=$$v},expression:"value"}},_vm._l((_vm.selectOptions),function(item){return _c('el-option',{key:item.value,attrs:{"label":item.label,"value":item.value}})}))],1),_vm._v(" "),_c('div',{staticClass:"sm-query__query-button"},[_c('el-button',{staticClass:"sm-query__el-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"mini"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo,_vm.value)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult),expression:"!queryResult"}],staticClass:"sm-query__no-result"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),(_vm.queryResult)?_c('span',{staticClass:"sm-query__result-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(_vm.queryResult.name))]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])])])}
-var Queryvue_type_template_id_7622a6c1_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Query.vue?vue&type=template&id=6e2dcfd2&
+var Queryvue_type_template_id_6e2dcfd2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-widget-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-widget-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-widget-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-widget-query__job-info-panel"},[(jobInfo.name)?_c('div',{staticClass:"sm-widget-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"smwidgets-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-widget-query__job-info-name"},[_vm._v(_vm._s(jobInfo.name))]),_vm._v(" "),_c('div',{staticClass:"smwidgets-icons-legend-unfold"})]):_vm._e(),_vm._v(" "),(jobInfo.attributeFilter)?_c('div',{staticClass:"sm-widget-query__job-info-body hidden"},[_c('div',{staticClass:"sm-widget-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('el-select',{staticClass:"sm-widget-query__el-select",attrs:{"size":"mini","popper-append-to-body":false},on:{"visible-change":_vm.changeChosenStyle},model:{value:(_vm.value),callback:function ($$v) {_vm.value=$$v},expression:"value"}},_vm._l((_vm.selectOptions),function(item){return _c('el-option',{key:item.value,attrs:{"label":item.label,"value":item.value}})}))],1),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__query-button"},[_c('el-button',{staticClass:"sm-widget-query__el-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"mini"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo,_vm.value)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult),expression:"!queryResult"}],staticClass:"sm-widget-query__no-result"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),(_vm.queryResult)?_c('span',{staticClass:"sm-widget-query__result-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(_vm.queryResult.name))]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-widget-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])])])}
+var Queryvue_type_template_id_6e2dcfd2_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Query.vue?vue&type=template&id=7622a6c1&
+// CONCATENATED MODULE: ./src/view/components/Query.vue?vue&type=template&id=6e2dcfd2&
 
 // CONCATENATED MODULE: ./src/view/commontypes/iPortalDataParameter.js
 
@@ -41666,8 +46390,6 @@ var RestMapParameter_RestMapParameter = function RestMapParameter(options) {
 
 
 // CONCATENATED MODULE: ./src/viewmodel/QueryViewModel.js
-
-
 
 
 
@@ -41744,7 +46466,7 @@ function (_WidgetViewModel) {
           startRecord: 0,
           expectCount: this.maxReturn
         });
-        new mapbox_gl_enhance_js_default.a.supermap.QueryService(restMapParameter.url).queryByBounds(param, function (serviceResult) {
+        new mapboxgl.supermap.QueryService(restMapParameter.url).queryByBounds(param, function (serviceResult) {
           _this2._mapQuerySucceed(serviceResult, restMapParameter);
         });
       } else {
@@ -41757,7 +46479,7 @@ function (_WidgetViewModel) {
           expectCount: this.maxReturn
         });
 
-        new mapbox_gl_enhance_js_default.a.supermap.QueryService(restMapParameter.url).queryBySQL(_param, function (serviceResult) {
+        new mapboxgl.supermap.QueryService(restMapParameter.url).queryBySQL(_param, function (serviceResult) {
           _this2._mapQuerySucceed(serviceResult, restMapParameter);
         });
       }
@@ -41775,7 +46497,7 @@ function (_WidgetViewModel) {
           fromIndex: 0,
           toIndex: this.maxReturn - 1
         });
-        new mapbox_gl_enhance_js_default.a.supermap.FeatureService(restDataParameter.url).getFeaturesByBounds(boundsParam, function (serviceResult) {
+        new mapboxgl.supermap.FeatureService(restDataParameter.url).getFeaturesByBounds(boundsParam, function (serviceResult) {
           _this3._dataQuerySucceed(serviceResult, restDataParameter);
         });
       } else {
@@ -41787,7 +46509,7 @@ function (_WidgetViewModel) {
           fromIndex: 0,
           toIndex: this.maxReturn - 1
         });
-        new mapbox_gl_enhance_js_default.a.supermap.FeatureService(restDataParameter.url).getFeaturesBySQL(param, function (serviceResult) {
+        new mapboxgl.supermap.FeatureService(restDataParameter.url).getFeaturesBySQL(param, function (serviceResult) {
           _this3._dataQuerySucceed(serviceResult, restDataParameter);
         });
       }
@@ -42066,7 +46788,7 @@ function (_WidgetViewModel) {
   }, {
     key: "addPopup",
     value: function addPopup(coordinates, el) {
-      return new mapbox_gl_enhance_js_default.a.Popup().setLngLat(coordinates).setHTML(el.innerHTML).addTo(this.map);
+      return new mapboxgl.Popup().setLngLat(coordinates).setHTML(el.innerHTML).addTo(this.map);
     }
   }, {
     key: "_addOverlayToMap",
@@ -42234,6 +46956,12 @@ var dataServiceQueryViewModel = function dataServiceQueryViewModel(dataserviceUr
 //
 //
 //
+//
+//
+//
+//
+
+
 
 
 
@@ -42254,34 +46982,32 @@ var validators = function validators(value, propType) {
 };
 
 /* harmony default export */ var Queryvue_type_script_lang_js_ = ({
-  name: 'SmQuery',
-  relativeMap: true,
-  extends: Widget,
-  mixins: [Theme],
+  name: "SmQuery",
+  mixins: [map_getter, control, mixin_theme, mixin_card],
   data: function data() {
     return {
       isHidden: false,
       message: null,
-      value: 'mapBounds',
+      value: "mapBounds",
       selectOptions: [{
-        label: this.$t('query.currentMapBounds'),
-        value: 'currentMapBounds'
+        label: this.$t("query.currentMapBounds"),
+        value: "currentMapBounds"
       }, {
-        label: this.$t('query.mapBounds'),
-        value: 'mapBounds'
+        label: this.$t("query.mapBounds"),
+        value: "mapBounds"
       }],
       queryResult: null,
-      activeTab: 'job'
+      activeTab: "job"
     };
   },
   props: {
     iconClass: {
       type: String,
-      default: 'smwidgets-icons-search'
+      default: "smwidgets-icons-search"
     },
     headerName: {
       type: String,
-      default: '查询'
+      default: "查询"
     },
     maxReturn: {
       type: Number,
@@ -42321,7 +47047,7 @@ var validators = function validators(value, propType) {
 
       var jobInfos = [];
       Object.keys(this.$props).forEach(function (key) {
-        if (key === 'iportalData' || key === 'restData' || key === 'restMap') {
+        if (key === "iportalData" || key === "restData" || key === "restMap") {
           _this.$props[key] && _this.$props[key].forEach(function (item) {
             item.name && jobInfos.push(item);
           }, _this);
@@ -42332,16 +47058,16 @@ var validators = function validators(value, propType) {
   },
   loaded: function loaded() {
     this.viewModel = new QueryViewModel_QueryViewModel(this.map, this.$props);
-    this.resultButton = this.$el.querySelector('.sm-query__result-button');
-    this.jobButton = this.$el.querySelector('.sm-query__job-button');
-    this.resultInfoContainer = this.$el.querySelector('.sm-query__result-info');
-    this.jobInfoContainer = this.$el.querySelector('.sm-query__job-info');
+    this.resultButton = this.$el.querySelector(".sm-widget-query__result-button");
+    this.jobButton = this.$el.querySelector(".sm-widget-query__job-button");
+    this.resultInfoContainer = this.$el.querySelector(".sm-widget-query__result-info");
+    this.jobInfoContainer = this.$el.querySelector(".sm-widget-query__job-info");
     this.registerEvents();
   },
   updated: function updated() {
     this.changeSelectInputStyle();
     this.changeLoadingStyle();
-    var results = this.$el.querySelectorAll('.sm-query__result-body li');
+    var results = this.$el.querySelectorAll(".sm-widget-query__result-body li");
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
@@ -42373,8 +47099,8 @@ var validators = function validators(value, propType) {
       if (this.jobInfo === jobInfo && this.selectValue === value) {
         this.$message({
           showClose: true,
-          message: this.$t('query.resultAlreadyExists'),
-          type: 'warning',
+          message: this.$t("query.resultAlreadyExists"),
+          type: "warning",
           duration: 1000
         });
         return;
@@ -42385,20 +47111,20 @@ var validators = function validators(value, propType) {
       this.loadingInstance = this.$loading.service({
         target: this.resultInfoContainer,
         fullscreen: false,
-        text: this.$t('query.querying'),
-        background: 'transparent'
+        text: this.$t("query.querying"),
+        background: "transparent"
       });
-      this.jobButton.classList.add('disabled');
+      this.jobButton.classList.add("disabled");
       this.resultButtonClicked();
-      this.$el.querySelector('.sm-query__no-result').classList.add('hidden');
+      this.$el.querySelector(".sm-widget-query__no-result").classList.add("hidden");
       this.jobInfo = jobInfo;
       this.selectValue = value;
       this.query(this.jobInfo, this.selectValue);
       this.changeLoadingStyle();
     },
     changeLoadingStyle: function changeLoadingStyle() {
-      var spinDom = this.$el.querySelector('.sm-query__result-info .path');
-      var loadingText = this.$el.querySelector('.sm-query__result-info .el-loading-text');
+      var spinDom = this.$el.querySelector(".sm-widget-query__result-info .path");
+      var loadingText = this.$el.querySelector(".sm-widget-query__result-info .el-loading-text");
       spinDom && (spinDom.style.stroke = this.getColorStyle(0).color);
       loadingText && (loadingText.style.color = this.getColorStyle(0).color);
     },
@@ -42406,24 +47132,24 @@ var validators = function validators(value, propType) {
       this.viewModel.query(parameter, bounds);
     },
     jobButtonClicked: function jobButtonClicked() {
-      this.activeTab = 'job';
-      this.resultButton.classList.remove('is-active');
-      this.jobButton.classList.add('is-active');
-      this.jobInfoContainer.classList.remove('hidden');
-      this.resultInfoContainer.classList.add('hidden');
+      this.activeTab = "job";
+      this.resultButton.classList.remove("is-active");
+      this.jobButton.classList.add("is-active");
+      this.jobInfoContainer.classList.remove("hidden");
+      this.resultInfoContainer.classList.add("hidden");
     },
     resultButtonClicked: function resultButtonClicked() {
-      this.activeTab = 'result';
-      this.jobButton.classList.remove('is-active');
-      this.resultButton.classList.add('is-active');
-      this.resultInfoContainer.classList.remove('hidden');
-      this.jobInfoContainer.classList.add('hidden');
+      this.activeTab = "result";
+      this.jobButton.classList.remove("is-active");
+      this.resultButton.classList.add("is-active");
+      this.resultInfoContainer.classList.remove("hidden");
+      this.jobInfoContainer.classList.add("hidden");
     },
     jobInfoClicked: function jobInfoClicked(e) {
       var className = e.target.className;
       var parentNode;
 
-      if (className === 'smwidgets-icons-preview' || className === 'sm-query__job-info-name' || className === 'smwidgets-icons-legend-unfold') {
+      if (className === "smwidgets-icons-preview" || className === "sm-widget-query__job-info-name" || className === "smwidgets-icons-legend-unfold") {
         parentNode = e.target.parentNode.parentNode;
         e.stopPropagation();
       } else {
@@ -42431,36 +47157,36 @@ var validators = function validators(value, propType) {
         e.preventDefault();
       }
 
-      var classList = parentNode.querySelector('.sm-query__job-info-body').classList;
-      var foldIcon = parentNode.querySelector('.sm-query__job-info-header').children[2];
+      var classList = parentNode.querySelector(".sm-widget-query__job-info-body").classList;
+      var foldIcon = parentNode.querySelector(".sm-widget-query__job-info-header").children[2];
 
-      if (classList.contains('hidden')) {
-        classList.remove('hidden');
-        foldIcon.classList.add('smwidgets-icons-legend-fold');
-        foldIcon.classList.remove('smwidgets-icons-legend-unfold');
+      if (classList.contains("hidden")) {
+        classList.remove("hidden");
+        foldIcon.classList.add("smwidgets-icons-legend-fold");
+        foldIcon.classList.remove("smwidgets-icons-legend-unfold");
         this.chosenPanelNode = parentNode;
         this.changeSelectInputStyle();
       } else {
-        classList.add('hidden');
-        foldIcon.classList.add('smwidgets-icons-legend-unfold');
-        foldIcon.classList.remove('smwidgets-icons-legend-fold');
+        classList.add("hidden");
+        foldIcon.classList.add("smwidgets-icons-legend-unfold");
+        foldIcon.classList.remove("smwidgets-icons-legend-fold");
         this.chosenPanelNode = null;
       }
     },
     changeSelectInputStyle: function changeSelectInputStyle() {
-      var selectDom = this.chosenPanelNode && this.chosenPanelNode.querySelector('.el-input__inner');
+      var selectDom = this.chosenPanelNode && this.chosenPanelNode.querySelector(".el-input__inner");
 
       if (selectDom) {
         selectDom.style.borderColor = this.getTextColor;
         selectDom.style.color = this.getTextColor;
-        selectDom.style.backgroundColor = 'transparent';
+        selectDom.style.backgroundColor = "transparent";
       }
     },
     changeChosenStyle: function changeChosenStyle(visible) {
-      var chosenOption = this.chosenPanelNode && this.chosenPanelNode.querySelector('.el-select-dropdown__item.selected');
+      var chosenOption = this.chosenPanelNode && this.chosenPanelNode.querySelector(".el-select-dropdown__item.selected");
 
       if (chosenOption) {
-        chosenOption.style.color = visible ? this.getColorStyle(0).color : '#606266';
+        chosenOption.style.color = visible ? this.getColorStyle(0).color : "#606266";
       }
     },
     changeChosenResultStyle: function changeChosenResultStyle(e) {
@@ -42480,8 +47206,8 @@ var validators = function validators(value, propType) {
     registerEvents: function registerEvents() {
       var _this2 = this;
 
-      this.viewModel.on('querysucceeded', function (e) {
-        _this2.$el.querySelector('.sm-query__no-result').classList.remove('hidden');
+      this.viewModel.on("querysucceeded", function (e) {
+        _this2.$el.querySelector(".sm-widget-query__no-result").classList.remove("hidden");
 
         _this2.queryResult = e.result;
 
@@ -42491,27 +47217,27 @@ var validators = function validators(value, propType) {
 
         _this2.loadingInstance.close();
 
-        _this2.jobButton.classList.remove('disabled');
+        _this2.jobButton.classList.remove("disabled");
       });
-      this.viewModel.on('queryfailed', function (e) {
-        _this2.$el.querySelector('.sm-query__no-result').classList.remove('hidden');
+      this.viewModel.on("queryfailed", function (e) {
+        _this2.$el.querySelector(".sm-widget-query__no-result").classList.remove("hidden");
 
         _this2.$message({
           showClose: true,
           message: e.message,
-          type: 'warning',
+          type: "warning",
           duration: 1000
         });
 
         _this2.loadingInstance.close();
 
-        _this2.jobButton.classList.remove('disabled');
+        _this2.jobButton.classList.remove("disabled");
       });
     },
     addPopupToFeature: function addPopupToFeature() {
       var _this3 = this;
 
-      this.viewModel.on('getfeatureinfosucceeded', function (e) {
+      this.viewModel.on("getfeatureinfosucceeded", function (e) {
         var featuerInfo = e.featureInfo;
 
         _this3.addPopup(featuerInfo);
@@ -42526,12 +47252,12 @@ var validators = function validators(value, propType) {
       if (featuerInfo.info.length >= 1) {
         var state = {
           columns: [{
-            label: this.$t('query.attribute'),
-            prop: 'attribute',
+            label: this.$t("query.attribute"),
+            prop: "attribute",
             width: 80
           }, {
-            label: this.$t('query.attributeValue'),
-            prop: 'attributeValue',
+            label: this.$t("query.attributeValue"),
+            prop: "attributeValue",
             minWidth: 100
           }],
           data: featuerInfo.info
@@ -42568,8 +47294,8 @@ var validators = function validators(value, propType) {
 
 var Query_component = normalizeComponent(
   components_Queryvue_type_script_lang_js_,
-  Queryvue_type_template_id_7622a6c1_render,
-  Queryvue_type_template_id_7622a6c1_staticRenderFns,
+  Queryvue_type_template_id_6e2dcfd2_render,
+  Queryvue_type_template_id_6e2dcfd2_staticRenderFns,
   false,
   null,
   null,
@@ -42578,12 +47304,12 @@ var Query_component = normalizeComponent(
 )
 
 /* harmony default export */ var Query = (Query_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Indicator.vue?vue&type=template&id=11644833&
-var Indicatorvue_type_template_id_11644833_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-indicator",style:([_vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-indicator__head"},[_c('span',{staticClass:"sm-indicator__title",style:([_vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.title))])]),_vm._v(" "),_c('div',{staticClass:"sm-indicator__content"},[_c('span',{staticClass:"sm-indicator__num",style:([_vm.indicatorStyle])},[_vm._v(_vm._s(_vm.numberSymbol))]),_vm._v(" "),_c('span',{staticClass:"sm-indicator__unit",style:([_vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.unit))])])])}
-var Indicatorvue_type_template_id_11644833_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Indicator.vue?vue&type=template&id=cd06e6cc&
+var Indicatorvue_type_template_id_cd06e6cc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-indicator",style:([_vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-widget-indicator__head"},[_c('span',{staticClass:"sm-widget-indicator__title",style:([_vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.title))])]),_vm._v(" "),_c('div',{staticClass:"sm-widget-indicator__content"},[_c('span',{staticClass:"sm-widget-indicator__num",style:([_vm.indicatorStyle])},[_vm._v(_vm._s(_vm.numberSymbol))]),_vm._v(" "),_c('span',{staticClass:"sm-widget-indicator__unit",style:([_vm.getTextColorStyle])},[_vm._v(_vm._s(_vm.unit))])])])}
+var Indicatorvue_type_template_id_cd06e6cc_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Indicator.vue?vue&type=template&id=11644833&
+// CONCATENATED MODULE: ./src/view/components/Indicator.vue?vue&type=template&id=cd06e6cc&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Indicator.vue?vue&type=script&lang=js&
 //
@@ -42602,8 +47328,7 @@ var Indicatorvue_type_template_id_11644833_staticRenderFns = []
 
 /* harmony default export */ var Indicatorvue_type_script_lang_js_ = ({
   name: "SmIndicator",
-  extends: Widget,
-  mixins: [Theme],
+  mixins: [control, mixin_theme],
   props: {
     title: {
       type: String,
@@ -42678,8 +47403,8 @@ var Indicatorvue_type_template_id_11644833_staticRenderFns = []
 
 var Indicator_component = normalizeComponent(
   components_Indicatorvue_type_script_lang_js_,
-  Indicatorvue_type_template_id_11644833_render,
-  Indicatorvue_type_template_id_11644833_staticRenderFns,
+  Indicatorvue_type_template_id_cd06e6cc_render,
+  Indicatorvue_type_template_id_cd06e6cc_staticRenderFns,
   false,
   null,
   null,
@@ -42688,12 +47413,12 @@ var Indicator_component = normalizeComponent(
 )
 
 /* harmony default export */ var Indicator = (Indicator_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Text.vue?vue&type=template&id=3ac2fa2c&
-var Textvue_type_template_id_3ac2fa2c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-text",style:([_vm.getBackgroundStyle, _vm.formatFontStyle, _vm.getTextColorStyle])},[_c('span',[_vm._v(_vm._s(_vm.title))])])}
-var Textvue_type_template_id_3ac2fa2c_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Text.vue?vue&type=template&id=9aa241d4&
+var Textvue_type_template_id_9aa241d4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-text",style:([_vm.getBackgroundStyle, _vm.formatFontStyle, _vm.getTextColorStyle])},[_c('span',[_vm._v(_vm._s(_vm.title))])])}
+var Textvue_type_template_id_9aa241d4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Text.vue?vue&type=template&id=3ac2fa2c&
+// CONCATENATED MODULE: ./src/view/components/Text.vue?vue&type=template&id=9aa241d4&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Text.vue?vue&type=script&lang=js&
 //
@@ -42705,9 +47430,8 @@ var Textvue_type_template_id_3ac2fa2c_staticRenderFns = []
 
 
 /* harmony default export */ var Textvue_type_script_lang_js_ = ({
-  name: 'SmText',
-  extends: Widget,
-  mixins: [Theme],
+  name: "SmText",
+  mixins: [control, mixin_theme],
   props: {
     fontStyle: {
       type: Object
@@ -42719,9 +47443,9 @@ var Textvue_type_template_id_3ac2fa2c_staticRenderFns = []
   computed: {
     formatFontStyle: function formatFontStyle() {
       var fontStyle = JSON.parse(JSON.stringify(this.fontStyle));
-      fontStyle.fontSize && (fontStyle.fontSize = parseFloat(fontStyle.fontSize) + 'px');
-      fontStyle.lineHeight && (fontStyle.lineHeight = parseFloat(fontStyle.lineHeight) + 'px');
-      fontStyle.textIndent && (fontStyle.textIndent = parseFloat(fontStyle.textIndent) + 'px');
+      fontStyle.fontSize && (fontStyle.fontSize = parseFloat(fontStyle.fontSize) + "px");
+      fontStyle.lineHeight && (fontStyle.lineHeight = parseFloat(fontStyle.lineHeight) + "px");
+      fontStyle.textIndent && (fontStyle.textIndent = parseFloat(fontStyle.textIndent) + "px");
       return fontStyle;
     }
   }
@@ -42738,8 +47462,8 @@ var Textvue_type_template_id_3ac2fa2c_staticRenderFns = []
 
 var Text_component = normalizeComponent(
   components_Textvue_type_script_lang_js_,
-  Textvue_type_template_id_3ac2fa2c_render,
-  Textvue_type_template_id_3ac2fa2c_staticRenderFns,
+  Textvue_type_template_id_9aa241d4_render,
+  Textvue_type_template_id_9aa241d4_staticRenderFns,
   false,
   null,
   null,
@@ -42748,12 +47472,12 @@ var Text_component = normalizeComponent(
 )
 
 /* harmony default export */ var Text = (Text_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/TimeText.vue?vue&type=template&id=f8745ace&
-var TimeTextvue_type_template_id_f8745ace_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-time-text",style:([_vm.timeParam, _vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('span',[_vm._v(_vm._s(_vm.time))])])}
-var TimeTextvue_type_template_id_f8745ace_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/TimeText.vue?vue&type=template&id=c2099190&
+var TimeTextvue_type_template_id_c2099190_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-time-text",style:([_vm.timeParam, _vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('span',[_vm._v(_vm._s(_vm.time))])])}
+var TimeTextvue_type_template_id_c2099190_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/TimeText.vue?vue&type=template&id=f8745ace&
+// CONCATENATED MODULE: ./src/view/components/TimeText.vue?vue&type=template&id=c2099190&
 
 // EXTERNAL MODULE: ./node_modules/path-browserify/index.js
 var path_browserify = __webpack_require__("33yf");
@@ -42771,8 +47495,7 @@ var path_browserify = __webpack_require__("33yf");
 
 /* harmony default export */ var TimeTextvue_type_script_lang_js_ = ({
   name: "SmTimeText",
-  extends: Widget,
-  mixins: [Theme],
+  mixins: [control, mixin_theme],
   data: function data() {
     return {
       time: "",
@@ -42825,8 +47548,8 @@ var path_browserify = __webpack_require__("33yf");
 
 var TimeText_component = normalizeComponent(
   components_TimeTextvue_type_script_lang_js_,
-  TimeTextvue_type_template_id_f8745ace_render,
-  TimeTextvue_type_template_id_f8745ace_staticRenderFns,
+  TimeTextvue_type_template_id_c2099190_render,
+  TimeTextvue_type_template_id_c2099190_staticRenderFns,
   false,
   null,
   null,
@@ -42835,16 +47558,14 @@ var TimeText_component = normalizeComponent(
 )
 
 /* harmony default export */ var TimeText = (TimeText_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=template&id=76978697&
-var Progressvue_type_template_id_76978697_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-progress"},[_c('el-progress',{attrs:{"percentage":parseFloat(_vm.percentage),"type":_vm.type,"stroke-width":parseFloat(_vm.strokeWidth),"show-text":_vm.showText,"width":_vm.type==='circle'?parseFloat(_vm.circleWidth):null,"color":_vm.curColor,"status":_vm.status}})],1)}
-var Progressvue_type_template_id_76978697_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=template&id=9423bf7c&
+var Progressvue_type_template_id_9423bf7c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-progress"},[_c('el-progress',{attrs:{"percentage":parseFloat(_vm.percentage),"type":_vm.type,"stroke-width":parseFloat(_vm.strokeWidth),"show-text":_vm.showText,"width":_vm.type==='circle'?parseFloat(_vm.circleWidth):null,"color":_vm.curColor,"status":_vm.status}})],1)}
+var Progressvue_type_template_id_9423bf7c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Progress.vue?vue&type=template&id=76978697&
+// CONCATENATED MODULE: ./src/view/components/Progress.vue?vue&type=template&id=9423bf7c&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Progress.vue?vue&type=script&lang=js&
-//
-//
 //
 //
 //
@@ -42862,8 +47583,7 @@ var Progressvue_type_template_id_76978697_staticRenderFns = []
 
 /* harmony default export */ var Progressvue_type_script_lang_js_ = ({
   name: "SmProgress",
-  extends: Widget,
-  mixins: [Theme],
+  mixins: [control, mixin_theme],
   props: {
     percentage: {
       type: [Number, String],
@@ -42917,12 +47637,12 @@ var Progressvue_type_template_id_76978697_staticRenderFns = []
     var _this = this;
 
     this.curColor = this.color || this.getColor(0);
-    this.progressTextNode = this.$el.querySelector('.el-progress__text');
+    this.progressTextNode = this.$el.querySelector(".el-progress__text");
     this.progressTextNode.style.color = this.getTextColor;
     this.$nextTick(function () {
-      this.circleWidth = Math.min(this.$el.parentNode.offsetWidth, this.$el.parentNode.offsetHeight);
+      _this.circleWidth = Math.min(_this.$el.parentNode.offsetWidth, _this.$el.parentNode.offsetHeight);
     });
-    window.addEventListener('resize', function () {
+    window.addEventListener("resize", function () {
       _this.circleWidth = Math.min(_this.$el.parentNode.offsetWidth, _this.$el.parentNode.offsetHeight);
     });
   }
@@ -42939,8 +47659,8 @@ var Progressvue_type_template_id_76978697_staticRenderFns = []
 
 var Progress_component = normalizeComponent(
   components_Progressvue_type_script_lang_js_,
-  Progressvue_type_template_id_76978697_render,
-  Progressvue_type_template_id_76978697_staticRenderFns,
+  Progressvue_type_template_id_9423bf7c_render,
+  Progressvue_type_template_id_9423bf7c_staticRenderFns,
   false,
   null,
   null,
@@ -42949,12 +47669,12 @@ var Progress_component = normalizeComponent(
 )
 
 /* harmony default export */ var Progress = (Progress_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Icon.vue?vue&type=template&id=dbe1a258&
-var Iconvue_type_template_id_dbe1a258_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-icon"},[_c('i',{class:'el-icon-'+_vm.className,style:([_vm.iconStyle, _vm.iconBackground, _vm.iconColor])})])}
-var Iconvue_type_template_id_dbe1a258_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Icon.vue?vue&type=template&id=5bc8cd7f&
+var Iconvue_type_template_id_5bc8cd7f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-icon"},[_c('i',{class:'el-icon-'+_vm.className,style:([_vm.iconStyle, _vm.iconBackground, _vm.iconColor])})])}
+var Iconvue_type_template_id_5bc8cd7f_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Icon.vue?vue&type=template&id=dbe1a258&
+// CONCATENATED MODULE: ./src/view/components/Icon.vue?vue&type=template&id=5bc8cd7f&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Icon.vue?vue&type=script&lang=js&
 //
@@ -42966,8 +47686,7 @@ var Iconvue_type_template_id_dbe1a258_staticRenderFns = []
 
 /* harmony default export */ var Iconvue_type_script_lang_js_ = ({
   name: "SmIcon",
-  extends: Widget,
-  mixins: [Theme],
+  mixins: [control, mixin_theme],
   props: {
     className: {
       type: String,
@@ -43017,8 +47736,8 @@ var Iconvue_type_template_id_dbe1a258_staticRenderFns = []
 
 var Icon_component = normalizeComponent(
   components_Iconvue_type_script_lang_js_,
-  Iconvue_type_template_id_dbe1a258_render,
-  Iconvue_type_template_id_dbe1a258_staticRenderFns,
+  Iconvue_type_template_id_5bc8cd7f_render,
+  Iconvue_type_template_id_5bc8cd7f_staticRenderFns,
   false,
   null,
   null,
@@ -43027,21 +47746,17 @@ var Icon_component = normalizeComponent(
 )
 
 /* harmony default export */ var Icon = (Icon_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LiquidFill.vue?vue&type=template&id=c6232d14&
-var LiquidFillvue_type_template_id_c6232d14_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"chart",staticClass:"sm-liquidFill",attrs:{"id":"chart"}})}
-var LiquidFillvue_type_template_id_c6232d14_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LiquidFill.vue?vue&type=template&id=3990d435&
+var LiquidFillvue_type_template_id_3990d435_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"chart",staticClass:"sm-widget-liquidFill",attrs:{"id":"chart"}})}
+var LiquidFillvue_type_template_id_3990d435_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/LiquidFill.vue?vue&type=template&id=c6232d14&
+// CONCATENATED MODULE: ./src/view/components/LiquidFill.vue?vue&type=template&id=3990d435&
 
 // EXTERNAL MODULE: external "echarts-liquidfill"
 var external_echarts_liquidfill_ = __webpack_require__("hQXD");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LiquidFill.vue?vue&type=script&lang=js&
-//
-//
-//
-//
 //
 //
 //
@@ -43051,8 +47766,7 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
 
 /* harmony default export */ var LiquidFillvue_type_script_lang_js_ = ({
   name: "SmLiquidFill",
-  extends: Widget,
-  mixins: [Theme],
+  mixins: [control, mixin_theme],
   props: {
     //百分比的值
     value: {
@@ -43102,7 +47816,7 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
       labelColorData: "",
       borderColorData: "",
       backgroundColorData: "",
-      size: '140px'
+      size: "140px"
     };
   },
   computed: {
@@ -43117,32 +47831,38 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
       return data;
     }
   },
-  loaded: function loaded() {
-    var _this = this;
-
-    Object.keys(this.$props).forEach(function (watchItem) {
-      _this.$watch(watchItem, function () {
-        _this.updateChart();
-      });
-    });
-    this.chart = external_echarts_default.a.init(this.$refs.chart);
-    this.updateChart();
-    this.chart.on('finished', function () {
-      _this.chart.resize();
-    });
-    this.$on("themeStyle", function () {
-      _this.waveColorData = _this.getColor(0);
-      _this.labelColorData = _this.getTextColor;
-      _this.borderColorData = _this.getColor(0);
-      _this.backgroundColorData = _this.getBackground;
-
-      _this.updateChart(true);
-    });
-    addEventListener('resize', function () {
-      _this.chart.resize();
-    });
+  mounted: function mounted() {
+    this.initializeChart();
   },
   methods: {
+    resize: function resize() {
+      this.chart && this.chart.resize();
+    },
+    initializeChart: function initializeChart() {
+      var _this = this;
+
+      Object.keys(this.$props).forEach(function (watchItem) {
+        _this.$watch(watchItem, function () {
+          _this.updateChart();
+        });
+      });
+      this.chart = external_echarts_default.a.init(this.$refs.chart);
+      this.updateChart(); // this.chart.on("finished", () => {
+      //   this.chart.resize();
+      // });
+
+      this.$on("themeStyle", function () {
+        _this.waveColorData = _this.getColor(0);
+        _this.labelColorData = _this.getTextColor;
+        _this.borderColorData = _this.getColor(0);
+        _this.backgroundColorData = _this.getBackground;
+
+        _this.updateChart(true);
+      });
+      window.addEventListener("resize", function () {
+        _this.chart.resize();
+      });
+    },
     updateChart: function updateChart() {
       var propsUpdate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
@@ -43198,8 +47918,8 @@ var external_echarts_liquidfill_ = __webpack_require__("hQXD");
 
 var LiquidFill_component = normalizeComponent(
   components_LiquidFillvue_type_script_lang_js_,
-  LiquidFillvue_type_template_id_c6232d14_render,
-  LiquidFillvue_type_template_id_c6232d14_staticRenderFns,
+  LiquidFillvue_type_template_id_3990d435_render,
+  LiquidFillvue_type_template_id_3990d435_staticRenderFns,
   false,
   null,
   null,
@@ -43208,7 +47928,1489 @@ var LiquidFill_component = normalizeComponent(
 )
 
 /* harmony default export */ var LiquidFill = (LiquidFill_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/WebScene.vue?vue&type=template&id=0f826005&
+var WebScenevue_type_template_id_0f826005_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-web-scene"},[_c('div',{staticClass:"sm-widget-web-scene__wrap",attrs:{"id":_vm.sceneId}})])}
+var WebScenevue_type_template_id_0f826005_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/view/components/WebScene.vue?vue&type=template&id=0f826005&
+
+// CONCATENATED MODULE: ./src/viewmodel/WebSceneViewModel.js
+
+
+
+
+
+
+/**
+ * @class WebSceneViewModel
+ * @description Scene viewModel.
+ * @extends WidgetViewModel
+ */
+
+var WebSceneViewModel_WebSceneViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(WebSceneViewModel, _WidgetViewModel);
+
+  function WebSceneViewModel(target, serviceUrl, scanEffect, navigation) {
+    var _this;
+
+    classCallCheck_default()(this, WebSceneViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(WebSceneViewModel).call(this));
+    _this.scanEffect = scanEffect || {};
+    _this.serviceUrl = serviceUrl;
+    _this.sceneId = target;
+    _this.navigation = navigation || true;
+
+    if (_this.serviceUrl.indexOf('iserver') >= 0) {
+      _this.sceneUrl = _this.serviceUrl;
+
+      _this.createScene();
+    } else {
+      _this.getSceneInfo();
+    }
+
+    return _this;
+  }
+
+  createClass_default()(WebSceneViewModel, [{
+    key: "getSceneInfo",
+    value: function getSceneInfo() {
+      var _this2 = this;
+
+      SuperMap.FetchRequest.get(this.serviceUrl + '.json').then(function (response) {
+        return response.json();
+      }).then(function (result) {
+        console.log(result);
+        var thumbnail = result.thumbnail,
+            name = result.name,
+            url = result.url,
+            id = result.id;
+        _this2.sceneInfo = {
+          thumbnail: thumbnail,
+          name: name,
+          url: url,
+          id: id
+        }; // 检查是否公开or私有
+
+        _this2.sceneUrl = url;
+
+        _this2.checkPrivate(result);
+      });
+    }
+  }, {
+    key: "checkPrivate",
+    value: function checkPrivate(result) {
+      var authorizeSetting = result.authorizeSetting,
+          url = result.url,
+          content = result.content;
+
+      if (!url) {
+        this.sceneUrl = JSON.parse(content).layers[0].url;
+      }
+
+      var isPublic = false; // 默认私有
+
+      authorizeSetting.map(function (item) {
+        if (item.entityType === 'USER' && item.entityName === 'GUEST') {
+          isPublic = true;
+        }
+      });
+
+      if (!isPublic) {
+        this.fire('sceneisprivate');
+        return;
+      }
+
+      this.createScene();
+    }
+  }, {
+    key: "getSceneParam",
+    value: function getSceneParam() {
+      var style = {
+        height: '1080px',
+        width: '1920px',
+        left: '0px',
+        top: '0px'
+      };
+      return {
+        type: 'Scene',
+        nls: 'scene',
+        title: this.sceneInfo && this.sceneInfo.name || 'Scene',
+        id: new Date().getTime(),
+        sceneUrl: this.sceneUrl,
+        position: null,
+        fullScreen: true,
+        scanEffect: {
+          status: this.scanEffect.status || false,
+          //是否为开启状态
+          type: this.scanEffect.type || this.scanEffect.status && 'circle' || 'noScan',
+          centerPostion: null,
+          _period: this.scanEffect.period || 2000,
+          speed: this.scanEffect.speed || 500,
+          color: null
+        },
+        style: style
+      };
+    }
+  }, {
+    key: "createScene",
+    value: function createScene() {
+      var _this3 = this;
+
+      var sceneParam = this.getSceneParam();
+      var sceneUrl = sceneParam.sceneUrl;
+      sceneUrl = sceneUrl.slice(0, sceneUrl.indexOf('/rest/realspace') + 15);
+      this.sceneViewer = new Cesium.Viewer(this.sceneId, {
+        infobox: false,
+        navigation: this.navigation
+      });
+      this.fire('createsceneviewersucceeded');
+      this.scene = this.sceneViewer.scene;
+      this.scene.fxaa = true;
+      this.scene.skyAtmosphere.show = false;
+      var scene = this.scene;
+      var promise = scene.open(sceneUrl);
+      Cesium.when.all(promise, function () {
+        var sc = scene.camera;
+        scene.camera.setView({
+          //设置三维笛卡尔坐标点
+          destination: Cesium.Cartesian3(sc.position.x, sc.position.y, sc.position.z),
+          orientation: {
+            heading: sc.heading,
+            pitch: sc.pitch,
+            roll: sc.roll
+          }
+        }); //捕获三维场景上的鼠标事件，用于高亮场景组件
+
+        var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+        handler.setInputAction(function (e) {
+          sceneParam.positopn = new Cesium.Cartesian3(sc.position.x, sc.position.y, sc.position.z);
+          _this3.heightLight = true;
+
+          if (sceneParam.scanEffect.status) {
+            // 获取鼠标屏幕坐标,并将其转化成笛卡尔坐标
+            var position = e.position;
+            var last = scene.pickPosition(position);
+            _this3.scene.scanEffect.centerPostion = last; // 设置扫描中心点
+
+            sceneParam.scanEffect.centerPostion = last;
+            _this3.tooltipIsVisable = true; //关闭悬浮提示
+          }
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK); //恢复状态时，恢复扫描效果,加赞三维场景比较卡，所以延迟2秒后再加载光线效果
+
+        if (sceneParam.scanEffect.status) {
+          setTimeout(function () {
+            _this3.startScan(sceneParam.scanEffect.type);
+          }, 3000);
+        }
+
+        _this3.sceneParam = sceneParam;
+      });
+    }
+  }, {
+    key: "startScan",
+    value: function startScan(type) {
+      var sc = this.scene.camera;
+      this.scene.scanEffect.show = false;
+      this.scene.scanEffect.mode = type === 'line' ? Cesium.ScanEffectMode.LINE : Cesium.ScanEffectMode.CIRCLE;
+
+      if (this.sceneParam.scanEffect.centerPostion) {
+        this.scene.scanEffect.centerPostion = this.sceneParam.scanEffect.centerPostion;
+      } else {
+        this.sceneParam.scanEffect.centerPostion = new Cesium.Cartesian3(sc.position.x, sc.position.y, sc.position.z);
+        this.scene.scanEffect.centerPostion = new Cesium.Cartesian3(sc.position.x, sc.position.y, sc.position.z);
+      }
+
+      this.scene.scanEffect.color = Cesium.Color.CORNFLOWERBLUE;
+      this.scene.scanEffect._period = this.sceneParam.scanEffect._period;
+      this.scene.scanEffect.speed = this.sceneParam.scanEffect.speed;
+      this.scene.scanEffect.show = true;
+    }
+  }]);
+
+  return WebSceneViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/WebScene.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ var WebScenevue_type_script_lang_js_ = ({
+  name: "SmWebScene",
+  data: function data() {
+    return {
+      tooltipIsVisable: true
+    };
+  },
+  props: {
+    sceneUrl: {
+      type: String,
+      required: true
+    },
+    scanEffect: {
+      type: Object
+    },
+    navigation: {
+      type: Boolean,
+      default: true
+    }
+  },
+  computed: {
+    sceneId: function sceneId() {
+      return "scene" + parseInt(Math.random() * 100);
+    }
+  },
+  mounted: function mounted() {
+    this.createdScene();
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.sceneViewer = null;
+  },
+  methods: {
+    // 创建场景
+    createdScene: function createdScene() {
+      var _this = this;
+
+      this.sceneViewModel = new WebSceneViewModel_WebSceneViewModel(this.sceneId, this.sceneUrl, this.scanEffect, this.navigation);
+      this.sceneViewModel.on("createsceneviewersucceeded", function () {
+        _this.sceneViewer = _this.sceneViewModel.sceneViewer;
+      });
+      this.sceneViewModel.on('sceneisprivate', function () {
+        _this.$message.closeAll();
+
+        _this.$message({
+          showClose: true,
+          message: "当前服务并未公开",
+          type: 'error',
+          duration: 1000
+        });
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/view/components/WebScene.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_WebScenevue_type_script_lang_js_ = (WebScenevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/WebScene.vue
+
+
+
+
+
+/* normalize component */
+
+var WebScene_component = normalizeComponent(
+  components_WebScenevue_type_script_lang_js_,
+  WebScenevue_type_template_id_0f826005_render,
+  WebScenevue_type_template_id_0f826005_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var WebScene = (WebScene_component.exports);
+// EXTERNAL MODULE: ./node_modules/lodash.uniqueid/index.js
+var lodash_uniqueid = __webpack_require__("9csQ");
+var lodash_uniqueid_default = /*#__PURE__*/__webpack_require__.n(lodash_uniqueid);
+
+// CONCATENATED MODULE: ./src/view/mixin/layer.js
+
+/* harmony default export */ var mixin_layer = ({
+  name: 'LayerMixin',
+  props: {
+    layerId: {
+      type: String,
+      default: function _default() {
+        var defaultLayerId = lodash_uniqueid_default()("".concat(this.$options.name.toLowerCase(), "-"));
+        return defaultLayerId;
+      }
+    }
+  },
+  methods: {
+    move: function move(beforeId) {
+      this.map.moveLayer(this.layerId, beforeId);
+    },
+    remove: function remove() {
+      var layerId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.layerId;
+      this.map.removeLayer(layerId);
+    },
+    setLayoutProperty: function setLayoutProperty() {
+      var layerId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.layerId;
+      var name = arguments.length > 1 ? arguments[1] : undefined;
+      var value = arguments.length > 2 ? arguments[2] : undefined;
+      this.map.setLayoutProperty(layerId, name, value);
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/viewmodel/RasterLayerViewModel.js
+
+
+
+
+
+
+
+var RasterLayerViewModel_RasterLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(RasterLayerViewModel, _WidgetViewModel);
+
+  function RasterLayerViewModel(map, rasterLayerOptions) {
+    var _this;
+
+    classCallCheck_default()(this, RasterLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(RasterLayerViewModel).call(this, map));
+    var name = rasterLayerOptions.name,
+        tileSize = rasterLayerOptions.tileSize,
+        mapUrl = rasterLayerOptions.mapUrl,
+        tiles = rasterLayerOptions.tiles,
+        bounds = rasterLayerOptions.bounds,
+        _rasterLayerOptions$m = rasterLayerOptions.minZoom,
+        minZoom = _rasterLayerOptions$m === void 0 ? 0 : _rasterLayerOptions$m,
+        _rasterLayerOptions$m2 = rasterLayerOptions.maxZoom,
+        maxZoom = _rasterLayerOptions$m2 === void 0 ? 22 : _rasterLayerOptions$m2,
+        attribution = rasterLayerOptions.attribution,
+        _rasterLayerOptions$s = rasterLayerOptions.scheme,
+        scheme = _rasterLayerOptions$s === void 0 ? "xyz" : _rasterLayerOptions$s,
+        _rasterLayerOptions$v = rasterLayerOptions.visible,
+        visible = _rasterLayerOptions$v === void 0 ? true : _rasterLayerOptions$v,
+        _rasterLayerOptions$o = rasterLayerOptions.opacity,
+        opacity = _rasterLayerOptions$o === void 0 ? 1 : _rasterLayerOptions$o,
+        before = rasterLayerOptions.before;
+    _this.name = name;
+    _this.tileSize = tileSize;
+    _this.mapUrl = mapUrl;
+    _this.tiles = tiles;
+    _this.bounds = bounds;
+    _this.minZoom = minZoom;
+    _this.maxZoom = maxZoom;
+    _this.attribution = attribution;
+    _this.scheme = scheme;
+    _this.opacity = opacity;
+    _this.visibility = visible ? "visible" : "none";
+    _this.before = before; //enhance扩展，传iserver标识是iserver rest map
+
+    _this.rasterSource = "";
+
+    _this._init();
+
+    return _this;
+  }
+
+  createClass_default()(RasterLayerViewModel, [{
+    key: "_init",
+    value: function _init() {
+      if (this.mapUrl) {
+        this._addRestMapLayer();
+      } else {
+        this._addLayer();
+      }
+    }
+  }, {
+    key: "_addRestMapLayer",
+    value: function _addRestMapLayer() {
+      var _this2 = this;
+
+      var service = new mapboxgl.supermap.MapService(this.mapUrl);
+      service.getMapInfo(function (mapObj) {
+        if (!_this2.name) {
+          _this2.name = mapObj.name;
+        }
+
+        if (!_this2.tileSize && mapObj.viewer) {
+          _this2.tileSize = mapObj.viewer.width;
+        }
+
+        var bounds = mapObj.bounds;
+
+        if (!_this2.bounds && bounds) {
+          _this2.bounds = [bounds.left, bounds.bottom, bounds.right, bottom.top];
+        }
+
+        _this2.rasterSource = "iserver";
+        _this2.tiles = [_this2.mapUrl];
+
+        _this2._addLayer(mapObj);
+      });
+    }
+  }, {
+    key: "_addLayer",
+    value: function _addLayer() {
+      this.map.addLayer({
+        id: this.name || "raster-layer-".concat(new Date().getTime()),
+        type: "raster",
+        layout: {
+          visibility: this.visibility
+        },
+        paint: {
+          "raster-opacity": this.opacity
+        },
+        source: {
+          bounds: this.bounds || [-180, -85.051129, 180, 85.051129],
+          type: "raster",
+          tileSize: this.tileSize || 256,
+          tiles: this.tiles,
+          rasterSource: this.rasterSource,
+          minzoom: this.minZoom,
+          maxzoom: this.maxZoom,
+          scheme: this.scheme
+        }
+      }, this.before);
+    }
+  }]);
+
+  return RasterLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/RasterLayer.vue?vue&type=script&lang=js&
+
+
+
+/* harmony default export */ var RasterLayervue_type_script_lang_js_ = ({
+  name: "SmRasterLayer",
+  mixins: [map_getter, mixin_layer],
+  props: {
+    name: {
+      type: String
+    },
+    tileSize: {
+      type: Number
+    },
+    mapUrl: {
+      type: String
+    },
+    tiles: {
+      type: Array
+    },
+    bounds: {
+      type: Array
+    },
+    minZoom: {
+      type: Number,
+      default: 0
+    },
+    maxZoom: {
+      type: Number,
+      default: 22
+    },
+    attribution: {
+      type: String
+    },
+    scheme: {
+      type: String,
+      default: "xyz",
+      validator: function validator(scheme) {
+        return ["xyz", "tms"].indexOf(scheme) !== -1;
+      }
+    },
+    visible: {
+      type: Boolean,
+      default: true
+    },
+    opacity: {
+      type: Number,
+      default: 1,
+      validator: function validator(opacity) {
+        return opacity >= 0 && opacity <= 1;
+      }
+    },
+    before: {
+      type: String
+    }
+  },
+  loaded: function loaded() {
+    this.viewModel = new RasterLayerViewModel_RasterLayerViewModel(this.map, this.$props);
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/RasterLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_RasterLayervue_type_script_lang_js_ = (RasterLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/RasterLayer.vue
+var RasterLayer_render, RasterLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var RasterLayer_component = normalizeComponent(
+  components_RasterLayervue_type_script_lang_js_,
+  RasterLayer_render,
+  RasterLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var RasterLayer = (RasterLayer_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/VectorTileLayer.vue?vue&type=script&lang=js&
+
+
+/* harmony default export */ var VectorTileLayervue_type_script_lang_js_ = ({
+  name: "SmVectorTileLayer",
+  mixins: [map_getter, mixin_layer],
+  props: {
+    styleOptions: {
+      type: [String, Object]
+    },
+    before: {
+      type: String
+    }
+  },
+  loaded: function loaded() {
+    if (this.map.addStyle) {
+      this.map.addStyle(this.styleOptions, this.before);
+    }
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/VectorTileLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_VectorTileLayervue_type_script_lang_js_ = (VectorTileLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/VectorTileLayer.vue
+var VectorTileLayer_render, VectorTileLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var VectorTileLayer_component = normalizeComponent(
+  components_VectorTileLayervue_type_script_lang_js_,
+  VectorTileLayer_render,
+  VectorTileLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var VectorTileLayer = (VectorTileLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/MapvLayerViewModel.js
+
+
+
+
+
+
+
+
+var MapvLayerViewModel_MapvLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(MapvLayerViewModel, _WidgetViewModel);
+
+  function MapvLayerViewModel(map, mapvProps) {
+    var _this;
+
+    classCallCheck_default()(this, MapvLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(MapvLayerViewModel).call(this, map));
+    var dataSet = mapvProps.dataSet,
+        mapvOptions = mapvProps.mapvOptions,
+        layerId = mapvProps.layerId;
+    _this.dataSet = dataSet;
+    _this.mapvOptions = mapvOptions.layerId ? mapvOptions : objectSpread_default()({}, mapvOptions, {
+      layerId: layerId
+    });
+
+    _this._init();
+
+    return _this;
+  }
+
+  createClass_default()(MapvLayerViewModel, [{
+    key: "_init",
+    value: function _init() {
+      if (this.dataSet && this.mapvOptions) {
+        this._addMapvLayer();
+      }
+    }
+  }, {
+    key: "_addMapvLayer",
+    value: function _addMapvLayer() {
+      var mapVLayer = new mapboxgl.supermap.MapvLayer("", this.dataSet, this.mapvOptions);
+      this.map.addLayer(mapVLayer);
+    }
+  }]);
+
+  return MapvLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/MapvLayer.vue?vue&type=script&lang=js&
+
+
+
+/* harmony default export */ var MapvLayervue_type_script_lang_js_ = ({
+  name: "SmMapvLayer",
+  mixins: [map_getter, mixin_layer],
+  props: {
+    dataSet: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    mapvOptions: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    }
+  },
+  loaded: function loaded() {
+    this.viewModel = new MapvLayerViewModel_MapvLayerViewModel(this.map, this.$props);
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/MapvLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_MapvLayervue_type_script_lang_js_ = (MapvLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/MapvLayer.vue
+var MapvLayer_render, MapvLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var MapvLayer_component = normalizeComponent(
+  components_MapvLayervue_type_script_lang_js_,
+  MapvLayer_render,
+  MapvLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var MapvLayer = (MapvLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/DeckglLayerViewModel.js
+
+
+
+
+
+
+
+var DeckglLayerViewModel_DeckglLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(DeckglLayerViewModel, _WidgetViewModel);
+
+  function DeckglLayerViewModel(map, deckglProps) {
+    var _this;
+
+    classCallCheck_default()(this, DeckglLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(DeckglLayerViewModel).call(this, map));
+    var layerTypeId = deckglProps.layerTypeId,
+        deckglOptions = deckglProps.deckglOptions,
+        layerId = deckglProps.layerId;
+    _this.layerTypeId = layerTypeId;
+    deckglOptions.data = deckglOptions.data;
+    deckglOptions.layerId = deckglOptions.layerId || layerId;
+    _this.deckglOptions = deckglOptions;
+
+    _this._init();
+
+    return _this;
+  }
+
+  createClass_default()(DeckglLayerViewModel, [{
+    key: "_init",
+    value: function _init() {
+      if (this.layerTypeId && this.deckglOptions) {
+        this._addDeckglLayer();
+      }
+    }
+  }, {
+    key: "_addDeckglLayer",
+    value: function _addDeckglLayer() {
+      var deckglLayer = new mapboxgl.supermap.DeckglLayer(this.layerTypeId, this.deckglOptions);
+      this.map.addLayer(deckglLayer);
+    }
+  }]);
+
+  return DeckglLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/DeckglLayer.vue?vue&type=script&lang=js&
+
+
+
+var LAYER_TYPE_ID_LIST = ['scatter-plot', 'path-layer', 'polygon-layer', 'arc-layer', 'hexagon-layer', 'screen-grid-layer'];
+/* harmony default export */ var DeckglLayervue_type_script_lang_js_ = ({
+  name: 'SmDeckglLayer',
+  mixins: [map_getter, mixin_layer],
+  props: {
+    layerTypeId: {
+      type: String,
+      required: true,
+      validator: function validator(layerTypeId) {
+        var matchIndex = LAYER_TYPE_ID_LIST.findIndex(function (item) {
+          return item === layerTypeId;
+        });
+        return matchIndex > -1;
+      }
+    },
+    deckglOptions: {
+      type: Object,
+      default: function _default() {
+        return {
+          data: []
+        };
+      }
+    }
+  },
+  loaded: function loaded() {
+    var _this = this;
+
+    var matchIndex = LAYER_TYPE_ID_LIST.findIndex(function (item) {
+      return item === _this.layerTypeId;
+    });
+
+    if (matchIndex > -1) {
+      this.viewModel = new DeckglLayerViewModel_DeckglLayerViewModel(this.map, this.$props);
+    }
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/DeckglLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_DeckglLayervue_type_script_lang_js_ = (DeckglLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/DeckglLayer.vue
+var DeckglLayer_render, DeckglLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var DeckglLayer_component = normalizeComponent(
+  components_DeckglLayervue_type_script_lang_js_,
+  DeckglLayer_render,
+  DeckglLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var DeckglLayer = (DeckglLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/DataFlowLayerViewModel.js
+
+
+
+
+
+
+
+/**
+ * @class DataFlowLayerViewModel
+ * @param {mapboxgl.map} map - mapboxgl map 对象。
+ * @param {String} dataFlowUrl - 数据流服务地址。
+ * @param {Object} options - 加载实时数据可选参数。
+ * @param {GeoJSONObject} [options.layerId] - 图层 ID。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {Object} [options.excludeField] - 排除字段。
+ * @param {Object} [options.styleOptions] - style OPtion
+ */
+
+var DataFlowLayerViewModel_DataFlowLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(DataFlowLayerViewModel, _WidgetViewModel);
+
+  function DataFlowLayerViewModel(map, dataFlowUrl, options) {
+    var _this;
+
+    classCallCheck_default()(this, DataFlowLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(DataFlowLayerViewModel).call(this));
+
+    if (!dataFlowUrl) {
+      throw new Error('dataFlowUrl is requierd');
+    }
+
+    if (!map) {
+      throw new Error('map is requierd');
+    }
+
+    _this.options = options || {};
+    _this.map = map;
+    _this.dataFlowUrl = dataFlowUrl;
+    _this.sourceID = options.layerId || 'dataFlow' + new Date().getTime();
+
+    if (_this.options.registerToken) {
+      SuperMap.SecurityManager.registerToken(_this.dataFlowUrl, _this.options.registerToken);
+    }
+
+    _this._initializeDataFlow();
+
+    return _this;
+  }
+  /**
+   * @function DataFlowLayerViewModel.setExcludeField
+   * @description 设置唯一字段。
+   * @param {string} excludeField - 唯一字段。
+   */
+
+
+  createClass_default()(DataFlowLayerViewModel, [{
+    key: "setExcludeField",
+    value: function setExcludeField(excludeField) {
+      this.dataService.setExcludeField(excludeField);
+      this.options.excludeField = excludeField;
+      return this;
+    }
+    /**
+     * @function DataFlowLayerViewModel.setGeometry
+     * @description 设置集合要素。
+     * @param {GeoJSONObject} geometry - 待设置的 GeoJSON 几何要素对象。
+     */
+
+  }, {
+    key: "setGeometry",
+    value: function setGeometry(geometry) {
+      this.dataService.setGeometry(geometry);
+      this.options.geometry = geometry;
+      return this;
+    }
+  }, {
+    key: "_initializeDataFlow",
+    value: function _initializeDataFlow() {
+      var _this2 = this;
+
+      var dataService = new mapboxgl.supermap.DataFlowService(this.dataFlowUrl, {
+        geometry: this.options.geometry,
+        excludeField: this.options.excludeField
+      }).initSubscribe();
+      dataService.on('subscribeSocketConnected', function (e) {
+        /**
+         * @event subscribeSocketConnected
+         * @description 初始化成功后触发。
+         * @property {Object} e  - 事件对象。
+         */
+        _this2.fire('subscribesucceeded', e);
+      });
+      dataService.on('subscribeSocketError', function (e) {
+        /**
+         * @event subscribefailed
+         * @description 初始化失败后触发。
+         * @property {Object} e  - 事件对象。
+         */
+        _this2.fire('subscribefailed', e);
+      });
+      dataService.on('messageSucceeded', function (msg) {
+        _this2._addLayer(msg);
+      });
+      this.dataService = dataService;
+    }
+  }, {
+    key: "_addLayer",
+    value: function _addLayer(msg) {
+      if (!msg.featureResult) {
+        return;
+      }
+
+      var feature = msg.featureResult;
+      var type = feature.geometry.type;
+
+      if (!this.map.getSource(this.sourceID)) {
+        this.map.addSource(this.sourceID, {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [feature]
+          }
+        });
+
+        if (type === 'Point') {
+          this.map.addLayer({
+            id: this.sourceID,
+            type: 'circle',
+            paint: {
+              'circle-radius': 6,
+              'circle-color': 'red'
+            },
+            source: this.sourceID
+          });
+        } else if (type === 'MultiPolygon' || type === 'Polygon') {
+          this.map.addLayer({
+            id: this.sourceID,
+            type: 'fill',
+            paint: {
+              'fill-color': 'red',
+              'fill-opacity': 1
+            },
+            source: this.sourceID
+          });
+        } else if (type === 'LineString' || type === 'Line' || type === 'MultiLineString') {
+          this.map.addLayer({
+            id: this.sourceID,
+            type: 'line',
+            paint: {
+              'line-width': 5,
+              'line-color': 'red',
+              'line-opacity': 1
+            },
+            source: this.sourceID
+          });
+        }
+      } else {
+        // update layer
+        var features = lodash_clonedeep_default()(this.map.getSource(this.sourceID)._data.features);
+        var has = false;
+        features.map(function (item, index) {
+          if (item.properties.id === feature.properties.id) {
+            has = true;
+            features[index] = feature;
+            return;
+          }
+        });
+
+        if (!has) {
+          features.push(feature);
+        }
+
+        this.map.getSource(this.sourceID).setData({
+          type: 'FeatureCollection',
+          features: features
+        });
+        /**
+         * @event dataupdated
+         */
+
+        this.fire('dataupdated', {
+          data: feature,
+          map: this.map
+        });
+      }
+    }
+  }]);
+
+  return DataFlowLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/DataFlowLayer.vue?vue&type=script&lang=js&
+
+
+
+/* harmony default export */ var DataFlowLayervue_type_script_lang_js_ = ({
+  name: "SmDataFlowLayer",
+  mixins: [map_getter, mixin_layer],
+  props: {
+    dataFlowUrl: {
+      type: String,
+      required: true
+    },
+    registerToken: {
+      type: String
+    },
+    geometry: {
+      type: Object
+    },
+    excludeField: {
+      type: Object
+    }
+  },
+  loaded: function loaded() {
+    var _this$$props = this.$props,
+        layerId = _this$$props.layerId,
+        geometry = _this$$props.geometry,
+        excludeField = _this$$props.excludeField,
+        registerToken = _this$$props.registerToken;
+    this.dataFlowLayerViewModel = new DataFlowLayerViewModel_DataFlowLayerViewModel(this.map, this.dataFlowUrl, {
+      layerId: layerId,
+      geometry: geometry,
+      excludeField: excludeField,
+      registerToken: registerToken
+    });
+    this.registerEvents();
+  },
+  methods: {
+    registerEvents: function registerEvents() {
+      var _this = this;
+
+      this.dataFlowLayerViewModel.on("subscribefailed", function (e) {
+        _this.$message({
+          showClose: true,
+          message: "数据订阅失败！",
+          type: "error",
+          duration: 1000
+        });
+
+        console.log(e);
+      });
+    }
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/DataFlowLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_DataFlowLayervue_type_script_lang_js_ = (DataFlowLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/DataFlowLayer.vue
+var DataFlowLayer_render, DataFlowLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var DataFlowLayer_component = normalizeComponent(
+  components_DataFlowLayervue_type_script_lang_js_,
+  DataFlowLayer_render,
+  DataFlowLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var DataFlowLayer = (DataFlowLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/EchatsLayerViewModel.js
+
+
+
+
+
+
+/**
+ * @class EchatsLayerViewModel
+ * @param {mapboxgl.map} map - mapboxgl map 对象。
+ * @param {String} echartsOptions - EchartsLayer options。
+ */
+
+var EchatsLayerViewModel_EchatsLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(EchatsLayerViewModel, _WidgetViewModel);
+
+  function EchatsLayerViewModel(map, echartsOptions) {
+    var _this;
+
+    classCallCheck_default()(this, EchatsLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(EchatsLayerViewModel).call(this));
+
+    if (!echartsOptions) {
+      throw new Error('echartsOptions is requierd');
+    }
+
+    if (!map) {
+      throw new Error('map is requierd');
+    }
+
+    _this.map = map;
+    _this.echartsOptions = echartsOptions;
+
+    _this._initializeEchartsLayer();
+
+    return _this;
+  }
+
+  createClass_default()(EchatsLayerViewModel, [{
+    key: "_initializeEchartsLayer",
+    value: function _initializeEchartsLayer() {
+      var echartslayer = new EchartsLayer(this.map);
+      echartslayer.chart.setOption(this.echartsOptions);
+      /**
+       * @event echartslayeraddsucceeded
+       * @property {Object} layer  - Echarts Layer.
+       */
+
+      this.fire('echartslayeraddsucceeded', {
+        layer: echartslayer
+      });
+      this.echartslayer = echartslayer;
+    }
+  }]);
+
+  return EchatsLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/EchartsLayer.vue?vue&type=script&lang=js&
+
+
+/* harmony default export */ var EchartsLayervue_type_script_lang_js_ = ({
+  name: "SmEchartsLayer",
+  mixins: [map_getter],
+  props: {
+    echartsOptions: {
+      type: Object,
+      required: true,
+      validator: function validator(value) {
+        return JSON.stringify(value) !== "{}";
+      }
+    }
+  },
+  loaded: function loaded() {
+    this.viewModel = new EchatsLayerViewModel_EchatsLayerViewModel(this.map, this.echartsOptions);
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/EchartsLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_EchartsLayervue_type_script_lang_js_ = (EchartsLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/EchartsLayer.vue
+var EchartsLayer_render, EchartsLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var EchartsLayer_component = normalizeComponent(
+  components_EchartsLayervue_type_script_lang_js_,
+  EchartsLayer_render,
+  EchartsLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var components_EchartsLayer = (EchartsLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/HeatmapLayerViewModel.js
+
+
+
+
+
+
+/**
+ * @class HeatMapLayerViewModel
+ * @param {mapboxgl.map} map - mapboxgl map 对象。
+ * @param {String} data - 热力图数据。
+ * @param {String} paint - mapboxgl paint 对象。
+ * @param {Object} options - 可选参数。
+ * @param {Object} [options.layerId] - 图层名。
+ */
+
+var HeatmapLayerViewModel_HeatMapLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(HeatMapLayerViewModel, _WidgetViewModel);
+
+  function HeatMapLayerViewModel(map, data, paint, options) {
+    var _this;
+
+    classCallCheck_default()(this, HeatMapLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(HeatMapLayerViewModel).call(this));
+
+    if (!map) {
+      throw new Error('map is requierd');
+    }
+
+    options = options || {};
+    _this.map = map;
+    _this.data = data;
+    _this.paint = paint;
+    _this.layerId = options.layerId || 'heatmap' + new Date().getTime();
+
+    _this._initializeHeatMapLayer();
+
+    return _this;
+  }
+
+  createClass_default()(HeatMapLayerViewModel, [{
+    key: "_initializeHeatMapLayer",
+    value: function _initializeHeatMapLayer() {
+      this.map.addSource(this.layerId, {
+        type: 'geojson',
+        data: this.data
+      });
+      this.map.addLayer({
+        id: this.layerId,
+        type: 'heatmap',
+        source: this.layerId,
+        maxzoom: 9,
+        paint: this.paint || {
+          'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1, 9, 3],
+          'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'], 0, 'rgba(33,102,172,0)', 0.2, 'rgb(103,169,207)', 0.4, 'rgb(209,229,240)', 0.6, 'rgb(253,219,199)', 0.8, 'rgb(239,138,98)', 1, 'rgb(178,24,43)'],
+          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 9, 20],
+          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 1, 9, 0]
+        }
+      });
+      this.fire('heatmaplayeraddsucceeded', {
+        map: this.map
+      });
+    }
+  }]);
+
+  return HeatMapLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/HeatmapLayer.vue?vue&type=script&lang=js&
+
+
+
+/* harmony default export */ var HeatmapLayervue_type_script_lang_js_ = ({
+  name: "SmHeatmapLayer",
+  mixins: [map_getter, mixin_layer],
+  props: {
+    data: {
+      type: Object,
+      required: true
+    },
+    paint: {
+      type: Object
+    }
+  },
+  loaded: function loaded() {
+    this.viewModel = new HeatmapLayerViewModel_HeatMapLayerViewModel(this.map, this.data, this.paint, {
+      layerId: this.layerId
+    });
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/HeatmapLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_HeatmapLayervue_type_script_lang_js_ = (HeatmapLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/HeatmapLayer.vue
+var HeatmapLayer_render, HeatmapLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var HeatmapLayer_component = normalizeComponent(
+  components_HeatmapLayervue_type_script_lang_js_,
+  HeatmapLayer_render,
+  HeatmapLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var HeatmapLayer = (HeatmapLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/ClusterLayerViewModel.js
+
+
+
+
+
+
+/**
+ * @class ClusterLayerViewModel
+ * @param {mapboxgl.map} map - mapboxgl map 对象。
+ * @param {Object} data - Cluster layer data。
+ * @param {Object} options - 可选参数。
+ * @param {String} [options.layerId] - 图层 ID。
+ * @param {Object} [options.clusterPointPaint] - 聚合点的 Paint 对象。
+ * @param {Object} [options.clusterPointTextLayout] -  聚合点的文本 layout 对象
+ * @param {Object} [options.unclusteredPointPaint] - 未聚合的点的 Paint 对象。
+ * @param {number} [options.clusterRadius=50] - 图层聚合点半径。
+ * @param {number} [options.clusterMaxZoom=14] - 图层最大显示级别。
+ */
+
+var ClusterLayerViewModel_ClusterLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(ClusterLayerViewModel, _WidgetViewModel);
+
+  function ClusterLayerViewModel(map, data, options) {
+    var _this;
+
+    classCallCheck_default()(this, ClusterLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(ClusterLayerViewModel).call(this));
+    _this.options = options || {};
+
+    if (!map) {
+      throw new Error('map is requierd');
+    }
+
+    if (!data) {
+      throw new Error('data is requierd');
+    }
+
+    _this.map = map;
+    _this.data = data;
+    _this.layerId = options.layerId || 'clusterLayer' + new Date().getTime();
+
+    _this._initializeClusterLayer();
+
+    return _this;
+  }
+
+  createClass_default()(ClusterLayerViewModel, [{
+    key: "_initializeClusterLayer",
+    value: function _initializeClusterLayer() {
+      var _this2 = this;
+
+      this.map.addSource(this.layerId, {
+        type: 'geojson',
+        data: this.data,
+        cluster: true,
+        clusterMaxZoom: this.options.clusterMaxZoom || 14,
+        clusterRadius: this.options.clusterRadius || 50
+      });
+      this.map.addLayer({
+        id: this.layerId,
+        type: 'circle',
+        source: this.layerId,
+        filter: ['has', 'point_count'],
+        paint: this.options.clusterPointPaint || {
+          'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 100, '#f1f075', 750, '#f28cb1'],
+          'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
+        }
+      }); // 聚合点文本 layer
+
+      this.map.addLayer({
+        id: 'count_' + this.layerId,
+        type: 'symbol',
+        source: this.layerId,
+        filter: ['has', 'point_count'],
+        layout: this.options.clusterPointTextLayout || {
+          'text-field': '{point_count_abbreviated}',
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 12
+        }
+      }); // 未聚合点 layer
+
+      this.map.addLayer({
+        id: 'unclustered_point' + this.layerId,
+        type: 'circle',
+        source: this.layerId,
+        filter: ['!', ['has', 'point_count']],
+        paint: this.options.unclusteredPointPaint || {
+          'circle-color': '#11b4da',
+          'circle-radius': 4,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#fff'
+        }
+      });
+      /**
+       * @event addcusterlayersucceeded
+       * @description 添加点聚合图层成功后触发。
+       * @property {Object} map - mapboxgl map 对象。
+       */
+
+      this.fire('addcusterlayersucceeded', {
+        map: this.map
+      });
+      this.map.on('click', this.layerId, function (e) {
+        var features = _this2.map.queryRenderedFeatures(e.point, {
+          layers: [_this2.layerId]
+        });
+
+        var clusterId = features[0].properties.cluster_id;
+
+        _this2.map.getSource(_this2.layerId).getClusterExpansionZoom(clusterId, function (err, zoom) {
+          if (err) return;
+
+          _this2.map.easeTo({
+            center: features[0].geometry.coordinates,
+            zoom: zoom
+          });
+        });
+      });
+      this.map.on('mouseenter', this.layerId, function () {
+        _this2.map.getCanvas().style.cursor = 'pointer';
+      });
+      this.map.on('mouseleave', this.layerId, function () {
+        _this2.map.getCanvas().style.cursor = '';
+      });
+    }
+  }]);
+
+  return ClusterLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/ClusterLayer.vue?vue&type=script&lang=js&
+
+
+
+
+/* harmony default export */ var ClusterLayervue_type_script_lang_js_ = ({
+  name: "SmClusterLayer",
+  mixins: [map_getter, mixin_layer],
+  props: {
+    data: {
+      type: Object,
+      required: true
+    },
+    clusterRadius: {
+      type: Number,
+      default: 50
+    },
+    clusterMaxZoom: {
+      type: Number,
+      default: 14
+    },
+    clusterPointPaint: {
+      type: Object
+    },
+    clusterPointTextLayout: {
+      type: Object
+    },
+    unclusteredPointPaint: {
+      type: Object
+    }
+  },
+  loaded: function loaded() {
+    var options = JSON.parse(JSON.stringify(this.$props));
+    delete options.data;
+    this.viewModel = new ClusterLayerViewModel_ClusterLayerViewModel(this.map, this.data, objectSpread_default()({}, options));
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/ClusterLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_ClusterLayervue_type_script_lang_js_ = (ClusterLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/ClusterLayer.vue
+var ClusterLayer_render, ClusterLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var ClusterLayer_component = normalizeComponent(
+  components_ClusterLayervue_type_script_lang_js_,
+  ClusterLayer_render,
+  ClusterLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ClusterLayer = (ClusterLayer_component.exports);
 // CONCATENATED MODULE: ./src/view/components/index.js
+
+
+
+
+
+
+
+
+
 
 
 
@@ -46069,7 +52271,7 @@ progress.install = function (Vue) {
 /***/ "wq4j":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__("eA/Y")
+module.exports = __webpack_require__("43KI").PassThrough
 
 
 /***/ }),

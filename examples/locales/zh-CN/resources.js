@@ -486,6 +486,12 @@ window.examplesResources = {
         "title_widgetsSearch_Vue": '搜索微件（Vue）',
         "title_widgetsTheme_Vue": '主题切换',
         "title_widgetsDemo_Vue": '土地利用示例',
+        "title_widgetsCluster_Vue": '点聚合图层微件（Vue）',
+        "title_widgetsEcharts_Vue": 'Echarts 图层微件（Vue）',
+        "title_widgetsRaster_Vue": '栅格图层微件（Vue）',
+        "title_widgetsMapV_Vue": 'MapV 图层微件（Vue）',
+        "title_widgetsDeckGL_Vue": 'DeckGL 图层微件（Vue）',
+        "title_widgetsVectorTile_Vue": '矢量瓦片图层微件（Vue）',
         
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
@@ -1146,6 +1152,7 @@ window.examplesResources = {
         'text_spatialAnalysisLayerName':"中国历史5级以上地震数据",
         'text_symbolEqualSize':"等大",
         'text_symbolDistribution':"均匀分布",
+        'text_myRasterLayer':"我的栅格图层",
 
 
         "btn_overlayAnalyst": "叠加分析",
