@@ -36080,6 +36080,7 @@ __webpack_require__.d(components_namespaceObject, "DataFlowLayer", function() { 
 __webpack_require__.d(components_namespaceObject, "EchartsLayer", function() { return components_EchartsLayer; });
 __webpack_require__.d(components_namespaceObject, "HeatmapLayer", function() { return HeatmapLayer; });
 __webpack_require__.d(components_namespaceObject, "ClusterLayer", function() { return ClusterLayer; });
+__webpack_require__.d(components_namespaceObject, "ThemeLayer", function() { return ThemeLayer; });
 var commontypes_namespaceObject = {};
 __webpack_require__.r(commontypes_namespaceObject);
 __webpack_require__.d(commontypes_namespaceObject, "AddressMatchParameter", function() { return AddressMatchParameter_AddressMatchParameter; });
@@ -40874,15 +40875,20 @@ function callHook(vm, hook, map) {
     this.parentIsWebMapOrMap = ['smwebmap', 'smmap'].includes(this.$parent.$options.name && this.$parent.$options.name.toLowerCase());
     this.filterDelayLoad = !['smwebmap', 'smmap', 'smminimap'].includes(this.$options.name && this.$options.name.toLowerCase());
 
-    if (this.$el && this.parentIsWebMapOrMap && this.filterDelayLoad) {
-      this.isShow = false;
-      this.$el.style && (this.$el.style.display = 'none');
+    if (this.$el && this.parentIsWebMapOrMap) {
+      if (this.filterDelayLoad) {
+        this.isShow = false;
+        this.$el.style && (this.$el.style.display = 'none');
+      }
+
       var targetName = this.$parent.target || mapEvent.firstMapTarget;
       mapEvent.$on("initMap-".concat(targetName), function (map) {
         _this.addTo(map);
 
-        _this.isShow = true;
-        _this.$el.style && (_this.$el.style.display = 'block');
+        if (_this.filterDelayLoad) {
+          _this.isShow = true;
+          _this.$el.style && (_this.$el.style.display = 'block');
+        }
 
         if (_this.$options.name.toLowerCase() === 'smchart') {
           _this.viewModel.resize();
@@ -43674,12 +43680,12 @@ var Chart_component = normalizeComponent(
 )
 
 /* harmony default export */ var Chart = (Chart_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=template&id=537d3642&
-var Mapvue_type_template_id_537d3642_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-map",attrs:{"id":_vm.target}},[_vm._t("default")],2)}
-var Mapvue_type_template_id_537d3642_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=template&id=29303d6e&
+var Mapvue_type_template_id_29303d6e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-map",attrs:{"id":_vm.target}},[_vm._t("default")],2)}
+var Mapvue_type_template_id_29303d6e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=template&id=537d3642&
+// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=template&id=29303d6e&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=script&lang=js&
 //
@@ -43748,8 +43754,8 @@ var Mapvue_type_template_id_537d3642_staticRenderFns = []
 
 var Map_component = normalizeComponent(
   components_Mapvue_type_script_lang_js_,
-  Mapvue_type_template_id_537d3642_render,
-  Mapvue_type_template_id_537d3642_staticRenderFns,
+  Mapvue_type_template_id_29303d6e_render,
+  Mapvue_type_template_id_29303d6e_staticRenderFns,
   false,
   null,
   null,
@@ -48622,7 +48628,7 @@ function (_WidgetViewModel) {
         deckglOptions = deckglProps.deckglOptions,
         layerId = deckglProps.layerId;
     _this.layerTypeId = layerTypeId;
-    deckglOptions.data = deckglOptions.data;
+    deckglOptions.data = deckglOptions.data || [];
     deckglOptions.layerId = deckglOptions.layerId || layerId;
     _this.deckglOptions = deckglOptions;
 
@@ -49401,7 +49407,124 @@ var ClusterLayer_component = normalizeComponent(
 )
 
 /* harmony default export */ var ClusterLayer = (ClusterLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/ThemeLayerViewModel.js
+
+
+
+
+
+
+
+var ThemeLayerViewModel_ThemeLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(ThemeLayerViewModel, _WidgetViewModel);
+
+  function ThemeLayerViewModel(map, themeProps) {
+    var _this;
+
+    classCallCheck_default()(this, ThemeLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(ThemeLayerViewModel).call(this, map));
+    var dataUrl = themeProps.dataUrl,
+        themeParameters = themeProps.themeParameters,
+        tileUrl = themeProps.tileUrl,
+        layerId = themeProps.layerId;
+    _this.dataUrl = dataUrl;
+    _this.themeParameters = themeParameters;
+    _this.tileUrl = tileUrl;
+    _this.layerId = layerId;
+
+    _this._init();
+
+    return _this;
+  }
+
+  createClass_default()(ThemeLayerViewModel, [{
+    key: "_init",
+    value: function _init() {
+      var _this2 = this;
+
+      new mapboxgl.supermap.ThemeService(this.dataUrl).getThemeInfo(this.themeParameters, function (serviceResult) {
+        var result = serviceResult.result;
+
+        if (result && result.newResourceID) {
+          var sourceName = _this2.layerId || 'theme';
+
+          _this2.map.addSource(sourceName, {
+            type: 'raster',
+            tiles: [_this2.tileUrl + result.newResourceID],
+            tileSize: 256
+          });
+
+          _this2.map.addLayer({
+            id: _this2.layerId || 'themeLayer',
+            type: 'raster',
+            source: sourceName
+          });
+        }
+      });
+    }
+  }]);
+
+  return ThemeLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/ThemeLayer.vue?vue&type=script&lang=js&
+
+
+
+/* harmony default export */ var ThemeLayervue_type_script_lang_js_ = ({
+  name: 'SmThemeLayer',
+  mixins: [map_getter, mixin_layer],
+  props: {
+    dataUrl: {
+      type: String,
+      required: true
+    },
+    tileUrl: {
+      type: String,
+      required: true
+    },
+    themeParameters: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    }
+  },
+  loaded: function loaded() {
+    if (this.dataUrl && this.tileUrl) {
+      this.viewModel = new ThemeLayerViewModel_ThemeLayerViewModel(this.map, this.$props);
+    }
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/ThemeLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_ThemeLayervue_type_script_lang_js_ = (ThemeLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/ThemeLayer.vue
+var ThemeLayer_render, ThemeLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var ThemeLayer_component = normalizeComponent(
+  components_ThemeLayervue_type_script_lang_js_,
+  ThemeLayer_render,
+  ThemeLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ThemeLayer = (ThemeLayer_component.exports);
 // CONCATENATED MODULE: ./src/view/components/index.js
+
 
 
 
