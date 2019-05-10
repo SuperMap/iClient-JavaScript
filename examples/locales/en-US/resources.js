@@ -544,6 +544,7 @@ window.examplesResources = {
         "title_widgetsMapV_Vue": 'MapV Layer Widget(Vue)',
         "title_widgetsDeckGL_Vue": 'DeckGL Layer Widget(Vue)',
         "title_widgetsVectorTile_Vue": 'Vector Tile Layer Widget(Vue)',
+        "title_widgetsHeatmap_Vue": 'Heatmap Layer Widget(Vue)',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",

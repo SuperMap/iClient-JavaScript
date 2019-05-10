@@ -1187,6 +1187,12 @@ var exampleConfig = {
                       thumbnail: "widgets_cluster_vue.png",
                       fileName: "widgets_cluster_vue"
                     } ,{
+                      name: "热力图图层",
+                      name_en: "Heatmap layer",
+                      version: "9.1.2",
+                      thumbnail: "widgets_heatmap_vue.png",
+                      fileName: "widgets_heatmap_vue"
+                    } ,{
                       name: "MapV 图层",
                       name_en: "MapV layer",
                       version: "9.1.2",

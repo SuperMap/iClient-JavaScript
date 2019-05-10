@@ -492,6 +492,7 @@ window.examplesResources = {
         "title_widgetsMapV_Vue": 'MapV 图层微件（Vue）',
         "title_widgetsDeckGL_Vue": 'DeckGL 图层微件（Vue）',
         "title_widgetsVectorTile_Vue": '矢量瓦片图层微件（Vue）',
+        "title_widgetsHeatmap_Vue": '热力图图层微件（Vue）',
         
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
