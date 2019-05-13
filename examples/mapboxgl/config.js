@@ -1187,6 +1187,12 @@ var exampleConfig = {
                       thumbnail: "widgets_cluster_vue.png",
                       fileName: "widgets_cluster_vue"
                     } ,{
+                      name: "图表专题图",
+                      name_en: "Statistical chart",
+                      version: "9.1.2",
+                      thumbnail: "widgets_graph_theme_layer_vue.png",
+                      fileName: "widgets_graph_theme_layer_vue"
+                    } ,{
                       name: "热力图图层",
                       name_en: "Heatmap layer",
                       version: "9.1.2",
@@ -1210,7 +1216,7 @@ var exampleConfig = {
                       version: "9.1.2",
                       thumbnail: "widgets_deckgl_vue.png",
                       fileName: "widgets_deckgl_vue"
-                    } 
+                    }
                 ]
             }
         }
