@@ -28,6 +28,7 @@ import {
  * @param {Object} options - 服务所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 export class NetworkAnalyst3DService extends ServiceBase {
@@ -48,6 +49,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
         var facilityAnalystSinks3DService = new FacilityAnalystSinks3DService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -70,6 +72,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
         var facilityAnalystSources3DService = new FacilityAnalystSources3DService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -93,6 +96,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
         var facilityAnalystTraceup3DService = new FacilityAnalystTraceup3DService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -115,6 +119,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
         var facilityAnalystTracedown3DService = new FacilityAnalystTracedown3DService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -137,6 +142,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
         var facilityAnalystUpstream3DService = new FacilityAnalystUpstream3DService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

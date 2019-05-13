@@ -36,6 +36,7 @@ import {ServiceBase} from './ServiceBase';
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class NetworkAnalystService extends ServiceBase {
 
@@ -54,6 +55,7 @@ export class NetworkAnalystService extends ServiceBase {
         var burstPipelineAnalystService = new BurstPipelineAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75,6 +77,7 @@ export class NetworkAnalystService extends ServiceBase {
         var computeWeightMatrixService = new ComputeWeightMatrixService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -97,6 +100,7 @@ export class NetworkAnalystService extends ServiceBase {
         var findClosestFacilitiesService = new FindClosestFacilitiesService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -120,6 +124,7 @@ export class NetworkAnalystService extends ServiceBase {
         var facilityAnalystStreamService = new FacilityAnalystStreamService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -143,6 +148,7 @@ export class NetworkAnalystService extends ServiceBase {
         var findLocationService = new FindLocationService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -166,6 +172,7 @@ export class NetworkAnalystService extends ServiceBase {
         var findPathService = new FindPathService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -189,6 +196,7 @@ export class NetworkAnalystService extends ServiceBase {
         var findTSPPathsService = new FindTSPPathsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -212,6 +220,7 @@ export class NetworkAnalystService extends ServiceBase {
         var findMTSPPathsService = new FindMTSPPathsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -235,6 +244,7 @@ export class NetworkAnalystService extends ServiceBase {
         var findServiceAreasService = new FindServiceAreasService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -257,6 +267,7 @@ export class NetworkAnalystService extends ServiceBase {
         var updateEdgeWeightService = new UpdateEdgeWeightService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -278,6 +289,7 @@ export class NetworkAnalystService extends ServiceBase {
         var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

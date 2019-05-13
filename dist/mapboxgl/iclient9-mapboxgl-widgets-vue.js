@@ -36080,7 +36080,11 @@ __webpack_require__.d(components_namespaceObject, "DataFlowLayer", function() { 
 __webpack_require__.d(components_namespaceObject, "EchartsLayer", function() { return components_EchartsLayer; });
 __webpack_require__.d(components_namespaceObject, "HeatmapLayer", function() { return HeatmapLayer; });
 __webpack_require__.d(components_namespaceObject, "ClusterLayer", function() { return ClusterLayer; });
-__webpack_require__.d(components_namespaceObject, "ThemeLayer", function() { return ThemeLayer; });
+__webpack_require__.d(components_namespaceObject, "RanksymbolThemeLayer", function() { return RanksymbolThemeLayer; });
+__webpack_require__.d(components_namespaceObject, "LabelThemeLayer", function() { return LabelThemeLayer; });
+__webpack_require__.d(components_namespaceObject, "RangeThemeLayer", function() { return RangeThemeLayer; });
+__webpack_require__.d(components_namespaceObject, "UniqueThemeLayer", function() { return UniqueThemeLayer; });
+__webpack_require__.d(components_namespaceObject, "GraphThemeLayer", function() { return GraphThemeLayer; });
 var commontypes_namespaceObject = {};
 __webpack_require__.r(commontypes_namespaceObject);
 __webpack_require__.d(commontypes_namespaceObject, "AddressMatchParameter", function() { return AddressMatchParameter_AddressMatchParameter; });
@@ -49411,7 +49415,7 @@ var ClusterLayer_component = normalizeComponent(
 )
 
 /* harmony default export */ var ClusterLayer = (ClusterLayer_component.exports);
-// CONCATENATED MODULE: ./src/viewmodel/ThemeLayerViewModel.js
+// CONCATENATED MODULE: ./src/viewmodel/RanksymbolThemeLayerViewModel.js
 
 
 
@@ -49419,106 +49423,97 @@ var ClusterLayer_component = normalizeComponent(
 
 
 
-var ThemeLayerViewModel_ThemeLayerViewModel =
+var RanksymbolThemeLayerViewModel_RanksymbolThemeLayerViewModel =
 /*#__PURE__*/
 function (_WidgetViewModel) {
-  inherits_default()(ThemeLayerViewModel, _WidgetViewModel);
+  inherits_default()(RanksymbolThemeLayerViewModel, _WidgetViewModel);
 
-  function ThemeLayerViewModel(map, themeProps) {
+  function RanksymbolThemeLayerViewModel(map, themeProps) {
     var _this;
 
-    classCallCheck_default()(this, ThemeLayerViewModel);
+    classCallCheck_default()(this, RanksymbolThemeLayerViewModel);
 
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(ThemeLayerViewModel).call(this, map));
-    var dataUrl = themeProps.dataUrl,
-        themeParameters = themeProps.themeParameters,
-        tileUrl = themeProps.tileUrl,
-        layerId = themeProps.layerId;
-    _this.dataUrl = dataUrl;
-    _this.themeParameters = themeParameters;
-    _this.tileUrl = tileUrl;
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(RanksymbolThemeLayerViewModel).call(this, map));
+    var layerName = themeProps.layerName,
+        themeLayerOptions = themeProps.themeLayerOptions,
+        symbolType = themeProps.symbolType,
+        layerId = themeProps.layerId,
+        layerFeatures = themeProps.layerFeatures;
+    _this.map = map;
+    _this.layerName = layerName || layerId;
+    _this.symbolType = symbolType || 'Circle';
+    _this.themeLayerOptions = themeLayerOptions;
     _this.layerId = layerId;
+    _this.layerFeatures = layerFeatures || [];
 
     _this._init();
 
     return _this;
   }
 
-  createClass_default()(ThemeLayerViewModel, [{
+  createClass_default()(RanksymbolThemeLayerViewModel, [{
     key: "_init",
     value: function _init() {
-      var _this2 = this;
-
-      new mapboxgl.supermap.ThemeService(this.dataUrl).getThemeInfo(this.themeParameters, function (serviceResult) {
-        var result = serviceResult.result;
-
-        if (result && result.newResourceID) {
-          var sourceName = _this2.layerId || 'theme';
-
-          _this2.map.addSource(sourceName, {
-            type: 'raster',
-            tiles: [_this2.tileUrl + result.newResourceID],
-            tileSize: 256
-          });
-
-          _this2.map.addLayer({
-            id: _this2.layerId || 'themeLayer',
-            type: 'raster',
-            source: sourceName
-          });
-        }
-      });
+      this.themeLayer = new mapboxgl.supermap.RankSymbolThemeLayer(this.layerName, this.symbolType, this.themeLayerOptions);
+      this.map.addLayer(this.themeLayer);
+      this.themeLayer.addFeatures(this.layerFeatures);
     }
   }]);
 
-  return ThemeLayerViewModel;
+  return RanksymbolThemeLayerViewModel;
 }(WidgetViewModel_WidgetViewModel);
 
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/ThemeLayer.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/RanksymbolThemeLayer.vue?vue&type=script&lang=js&
 
 
 
-/* harmony default export */ var ThemeLayervue_type_script_lang_js_ = ({
-  name: 'SmThemeLayer',
+/* harmony default export */ var RanksymbolThemeLayervue_type_script_lang_js_ = ({
+  name: 'SmRanksymbolThemeLayer',
   mixins: [map_getter, mixin_layer],
   props: {
-    dataUrl: {
+    symbolType: {
       type: String,
       required: true
     },
-    tileUrl: {
+    layerName: {
       type: String,
       required: true
     },
-    themeParameters: {
+    themeLayerOptions: {
       type: Object,
       default: function _default() {
         return {};
       }
+    },
+    addLayerSucceededCallback: {
+      type: Function
+    },
+    layerFeatures: {
+      type: Array,
+      required: true
     }
   },
   loaded: function loaded() {
-    if (this.dataUrl && this.tileUrl) {
-      this.viewModel = new ThemeLayerViewModel_ThemeLayerViewModel(this.map, this.$props);
-    }
+    this.viewModel = new RanksymbolThemeLayerViewModel_RanksymbolThemeLayerViewModel(this.map, this.$props);
+    this.addLayerSucceededCallback && this.addLayerSucceededCallback(this.viewModel.themeLayer, this.map);
   },
   render: function render() {}
 });
-// CONCATENATED MODULE: ./src/view/components/ThemeLayer.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_ThemeLayervue_type_script_lang_js_ = (ThemeLayervue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/view/components/ThemeLayer.vue
-var ThemeLayer_render, ThemeLayer_staticRenderFns
+// CONCATENATED MODULE: ./src/view/components/RanksymbolThemeLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_RanksymbolThemeLayervue_type_script_lang_js_ = (RanksymbolThemeLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/RanksymbolThemeLayer.vue
+var RanksymbolThemeLayer_render, RanksymbolThemeLayer_staticRenderFns
 
 
 
 
 /* normalize component */
 
-var ThemeLayer_component = normalizeComponent(
-  components_ThemeLayervue_type_script_lang_js_,
-  ThemeLayer_render,
-  ThemeLayer_staticRenderFns,
+var RanksymbolThemeLayer_component = normalizeComponent(
+  components_RanksymbolThemeLayervue_type_script_lang_js_,
+  RanksymbolThemeLayer_render,
+  RanksymbolThemeLayer_staticRenderFns,
   false,
   null,
   null,
@@ -49526,8 +49521,425 @@ var ThemeLayer_component = normalizeComponent(
   
 )
 
-/* harmony default export */ var ThemeLayer = (ThemeLayer_component.exports);
+/* harmony default export */ var RanksymbolThemeLayer = (RanksymbolThemeLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/LabelThemeLayerViewModel.js
+
+
+
+
+
+
+
+var LabelThemeLayerViewModel_LabelThemeLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(LabelThemeLayerViewModel, _WidgetViewModel);
+
+  function LabelThemeLayerViewModel(map, themeProps) {
+    var _this;
+
+    classCallCheck_default()(this, LabelThemeLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(LabelThemeLayerViewModel).call(this, map));
+    var layerName = themeProps.layerName,
+        themeLayerOptions = themeProps.themeLayerOptions,
+        layerId = themeProps.layerId,
+        layerFeatures = themeProps.layerFeatures;
+    _this.map = map;
+    _this.layerName = layerName || layerId;
+    _this.themeLayerOptions = themeLayerOptions;
+    _this.layerId = layerId;
+    _this.layerFeatures = layerFeatures || [];
+
+    _this._init();
+
+    return _this;
+  }
+
+  createClass_default()(LabelThemeLayerViewModel, [{
+    key: "_init",
+    value: function _init() {
+      this.themeLayer = new mapboxgl.supermap.LabelThemeLayer(this.layerName, this.themeLayerOptions);
+      this.map.addLayer(this.themeLayer);
+      this.themeLayer.addFeatures(this.layerFeatures);
+    }
+  }]);
+
+  return LabelThemeLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/LabelThemeLayer.vue?vue&type=script&lang=js&
+
+
+
+/* harmony default export */ var LabelThemeLayervue_type_script_lang_js_ = ({
+  name: 'SmLabelThemeLayer',
+  mixins: [map_getter, mixin_layer],
+  props: {
+    layerName: {
+      type: String,
+      required: true
+    },
+    themeLayerOptions: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    addLayerSucceededCallback: {
+      type: Function
+    },
+    layerFeatures: {
+      type: Array,
+      required: true
+    }
+  },
+  loaded: function loaded() {
+    this.viewModel = new LabelThemeLayerViewModel_LabelThemeLayerViewModel(this.map, this.$props);
+    this.addLayerSucceededCallback && this.addLayerSucceededCallback(this.viewModel.themeLayer, this.map);
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/LabelThemeLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_LabelThemeLayervue_type_script_lang_js_ = (LabelThemeLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/LabelThemeLayer.vue
+var LabelThemeLayer_render, LabelThemeLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var LabelThemeLayer_component = normalizeComponent(
+  components_LabelThemeLayervue_type_script_lang_js_,
+  LabelThemeLayer_render,
+  LabelThemeLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var LabelThemeLayer = (LabelThemeLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/RangeThemeLayerViewModel.js
+
+
+
+
+
+
+
+var RangeThemeLayerViewModel_RangeThemeLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(RangeThemeLayerViewModel, _WidgetViewModel);
+
+  function RangeThemeLayerViewModel(map, themeProps) {
+    var _this;
+
+    classCallCheck_default()(this, RangeThemeLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(RangeThemeLayerViewModel).call(this, map));
+    var layerName = themeProps.layerName,
+        themeLayerOptions = themeProps.themeLayerOptions,
+        layerId = themeProps.layerId,
+        layerFeatures = themeProps.layerFeatures;
+    _this.map = map;
+    _this.layerName = layerName || layerId;
+    _this.themeLayerOptions = themeLayerOptions;
+    _this.layerId = layerId;
+    _this.layerFeatures = layerFeatures || [];
+
+    _this._init();
+
+    return _this;
+  }
+
+  createClass_default()(RangeThemeLayerViewModel, [{
+    key: "_init",
+    value: function _init() {
+      this.themeLayer = new mapboxgl.supermap.RangeThemeLayer(this.layerName, this.themeLayerOptions);
+      this.map.addLayer(this.themeLayer);
+      this.themeLayer.addFeatures(this.layerFeatures);
+    }
+  }]);
+
+  return RangeThemeLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/RangeThemeLayer.vue?vue&type=script&lang=js&
+
+
+
+/* harmony default export */ var RangeThemeLayervue_type_script_lang_js_ = ({
+  name: 'SmRangeThemeLayer',
+  mixins: [map_getter, mixin_layer],
+  props: {
+    layerName: {
+      type: String,
+      required: true
+    },
+    themeLayerOptions: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    addLayerSucceededCallback: {
+      type: Function
+    },
+    layerFeatures: {
+      type: Array,
+      required: true
+    }
+  },
+  loaded: function loaded() {
+    this.viewModel = new RangeThemeLayerViewModel_RangeThemeLayerViewModel(this.map, this.$props);
+    this.addLayerSucceededCallback && this.addLayerSucceededCallback(this.viewModel.themeLayer, this.map);
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/RangeThemeLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_RangeThemeLayervue_type_script_lang_js_ = (RangeThemeLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/RangeThemeLayer.vue
+var RangeThemeLayer_render, RangeThemeLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var RangeThemeLayer_component = normalizeComponent(
+  components_RangeThemeLayervue_type_script_lang_js_,
+  RangeThemeLayer_render,
+  RangeThemeLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var RangeThemeLayer = (RangeThemeLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/UniqueThemeLayerViewModel.js
+
+
+
+
+
+
+
+var UniqueThemeLayerViewModel_UniqueThemeLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(UniqueThemeLayerViewModel, _WidgetViewModel);
+
+  function UniqueThemeLayerViewModel(map, themeProps) {
+    var _this;
+
+    classCallCheck_default()(this, UniqueThemeLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(UniqueThemeLayerViewModel).call(this, map));
+    var layerName = themeProps.layerName,
+        themeLayerOptions = themeProps.themeLayerOptions,
+        layerId = themeProps.layerId,
+        layerFeatures = themeProps.layerFeatures;
+    _this.map = map;
+    _this.layerName = layerName || layerId;
+    _this.themeLayerOptions = themeLayerOptions;
+    _this.layerId = layerId;
+    _this.layerFeatures = layerFeatures || [];
+
+    _this._init();
+
+    return _this;
+  }
+
+  createClass_default()(UniqueThemeLayerViewModel, [{
+    key: "_init",
+    value: function _init() {
+      this.themeLayer = new mapboxgl.supermap.UniqueThemeLayer(this.layerName, this.themeLayerOptions);
+      this.map.addLayer(this.themeLayer);
+      this.themeLayer.addFeatures(this.layerFeatures);
+    }
+  }]);
+
+  return UniqueThemeLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/UniqueThemeLayer.vue?vue&type=script&lang=js&
+
+
+
+/* harmony default export */ var UniqueThemeLayervue_type_script_lang_js_ = ({
+  name: 'SmUniqueThemeLayer',
+  mixins: [map_getter, mixin_layer],
+  props: {
+    layerName: {
+      type: String,
+      required: true
+    },
+    themeLayerOptions: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    addLayerSucceededCallback: {
+      type: Function
+    },
+    layerFeatures: {
+      type: Array,
+      required: true
+    }
+  },
+  loaded: function loaded() {
+    this.viewModel = new UniqueThemeLayerViewModel_UniqueThemeLayerViewModel(this.map, this.$props);
+    this.addLayerSucceededCallback && this.addLayerSucceededCallback(this.viewModel.themeLayer, this.map);
+  },
+  update: function update() {
+    console.log(this.layerFeatures);
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/UniqueThemeLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_UniqueThemeLayervue_type_script_lang_js_ = (UniqueThemeLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/UniqueThemeLayer.vue
+var UniqueThemeLayer_render, UniqueThemeLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var UniqueThemeLayer_component = normalizeComponent(
+  components_UniqueThemeLayervue_type_script_lang_js_,
+  UniqueThemeLayer_render,
+  UniqueThemeLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var UniqueThemeLayer = (UniqueThemeLayer_component.exports);
+// CONCATENATED MODULE: ./src/viewmodel/GraphThemeLayerViewModel.js
+
+
+
+
+
+
+
+var GraphThemeLayerViewModel_GraphThemeLayerViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(GraphThemeLayerViewModel, _WidgetViewModel);
+
+  function GraphThemeLayerViewModel(map, themeProps) {
+    var _this;
+
+    classCallCheck_default()(this, GraphThemeLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(GraphThemeLayerViewModel).call(this, map));
+    var layerName = themeProps.layerName,
+        themeLayerOptions = themeProps.themeLayerOptions,
+        chartsType = themeProps.chartsType,
+        layerId = themeProps.layerId,
+        layerFeatures = themeProps.layerFeatures;
+    _this.map = map;
+    _this.layerName = layerName || layerId;
+    _this.chartsType = chartsType || 'Bar';
+    _this.themeLayerOptions = themeLayerOptions;
+    _this.layerId = layerId;
+    _this.layerFeatures = layerFeatures || {};
+
+    _this._init();
+
+    return _this;
+  }
+
+  createClass_default()(GraphThemeLayerViewModel, [{
+    key: "_init",
+    value: function _init() {
+      this.themeLayer = new mapboxgl.supermap.GraphThemeLayer(this.layerName, this.chartsType, this.themeLayerOptions);
+      this.map.addLayer(this.themeLayer);
+      this.themeLayer.addFeatures(this.layerFeatures);
+    }
+  }]);
+
+  return GraphThemeLayerViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/GraphThemeLayer.vue?vue&type=script&lang=js&
+
+
+
+/* harmony default export */ var GraphThemeLayervue_type_script_lang_js_ = ({
+  name: 'SmGraphThemeLayer',
+  mixins: [map_getter, mixin_layer],
+  props: {
+    chartsType: {
+      type: String,
+      required: true
+    },
+    layerName: {
+      type: String,
+      required: true
+    },
+    themeLayerOptions: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    addLayerSucceededCallback: {
+      type: Function
+    },
+    layerFeatures: {
+      type: Object,
+      required: true
+    }
+  },
+  loaded: function loaded() {
+    this.viewModel = new GraphThemeLayerViewModel_GraphThemeLayerViewModel(this.map, this.$props);
+    this.addLayerSucceededCallback && this.addLayerSucceededCallback(this.viewModel.themeLayer, this.map);
+  },
+  render: function render() {}
+});
+// CONCATENATED MODULE: ./src/view/components/GraphThemeLayer.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_GraphThemeLayervue_type_script_lang_js_ = (GraphThemeLayervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/GraphThemeLayer.vue
+var GraphThemeLayer_render, GraphThemeLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var GraphThemeLayer_component = normalizeComponent(
+  components_GraphThemeLayervue_type_script_lang_js_,
+  GraphThemeLayer_render,
+  GraphThemeLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var GraphThemeLayer = (GraphThemeLayer_component.exports);
 // CONCATENATED MODULE: ./src/view/components/index.js
+
+
+
+
 
 
 

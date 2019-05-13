@@ -15,6 +15,7 @@ import {MapService as CommonMapService, TilesetsService} from '@supermap/iclient
  * @param {Object} options - 地图服务信息相关参数。 
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @example
  * new mapboxgl.supermap.MapService(url)
@@ -39,6 +40,7 @@ export class MapService extends ServiceBase {
         var getMapStatusService = new CommonMapService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -60,6 +62,7 @@ export class MapService extends ServiceBase {
         var tilesetsService = new TilesetsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

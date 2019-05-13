@@ -28,6 +28,7 @@ import {GeoJSON} from '../format/GeoJSON';
  *                       如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class FindLocationService extends NetworkAnalystServiceBase {
 

@@ -28,6 +28,7 @@ import {
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export var LayerInfoService = ServiceBase.extend({
 
@@ -45,6 +46,7 @@ export var LayerInfoService = ServiceBase.extend({
         var getLayersInfoService = new GetLayersInfoService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -77,6 +79,7 @@ export var LayerInfoService = ServiceBase.extend({
         var setLayerInfoService = new SetLayerInfoService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -108,6 +111,7 @@ export var LayerInfoService = ServiceBase.extend({
         var setLayersInfoService = new SetLayersInfoService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -135,6 +139,7 @@ export var LayerInfoService = ServiceBase.extend({
         var setLayerStatusService = new SetLayerStatusService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,

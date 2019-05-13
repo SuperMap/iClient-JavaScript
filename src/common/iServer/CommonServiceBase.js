@@ -39,6 +39,7 @@ import {
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class CommonServiceBase {
 
@@ -76,6 +77,8 @@ export class CommonServiceBase {
         this.isInTheSameDomain = null;
 
         this.withCredentials = false;
+        
+        
 
         if (Util.isArray(url)) {
             me.urls = url;
@@ -96,11 +99,11 @@ export class CommonServiceBase {
             me.url = url[0];
             me.totalTimes = 1;
         }
-
+        
         me.serverType = me.serverType || ServerType.ISERVER;
 
         options = options || {};
-
+        this.crossOrigin = options.crossOrigin;
         Util.extend(this, options);
 
         me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
@@ -154,12 +157,15 @@ export class CommonServiceBase {
      * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。
      * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
      * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+     * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+     * 
      */
     request(options) {
         let me = this;
         options.url = options.url || me.url;
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
+        options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
         options.isInTheSameDomain = me.isInTheSameDomain;
         //为url添加安全认证信息片段
         let credential = this.getCredential(options.url);
@@ -338,6 +344,7 @@ export class CommonServiceBase {
         FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withCredentials: options.withCredentials,
+            crossOrigin: options.crossOrigin,
             timeout: options.async ? 0 : null,
             proxy: options.proxy
         }).then(function (response) {

@@ -3797,7 +3797,13 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
         }
     },
     supportDirectRequest: function (url, options) {
-        return Util_Util.isInTheSameDomain(url) || FetchRequest_isCORS() || options.proxy
+        if(Util_Util.isInTheSameDomain(url)){
+          return Util_Util.isInTheSameDomain(url)
+        }if(options.crossOrigin != undefined){
+          return options.crossOrigin;
+        }else{
+          return FetchRequest_isCORS() || options.proxy
+        }
     },
     get: function (url, params, options) {
         options = options || {};
@@ -8444,6 +8450,7 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class CommonServiceBase_CommonServiceBase {
 
@@ -8481,6 +8488,8 @@ class CommonServiceBase_CommonServiceBase {
         this.isInTheSameDomain = null;
 
         this.withCredentials = false;
+        
+        
 
         if (Util_Util.isArray(url)) {
             me.urls = url;
@@ -8501,11 +8510,11 @@ class CommonServiceBase_CommonServiceBase {
             me.url = url[0];
             me.totalTimes = 1;
         }
-
+        
         me.serverType = me.serverType || REST_ServerType.ISERVER;
 
         options = options || {};
-
+        this.crossOrigin = options.crossOrigin;
         Util_Util.extend(this, options);
 
         me.isInTheSameDomain = Util_Util.isInTheSameDomain(me.url);
@@ -8559,12 +8568,15 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。
      * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
      * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+     * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+     * 
      */
     request(options) {
         let me = this;
         options.url = options.url || me.url;
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
+        options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
         options.isInTheSameDomain = me.isInTheSameDomain;
         //为url添加安全认证信息片段
         let credential = this.getCredential(options.url);
@@ -8743,6 +8755,7 @@ class CommonServiceBase_CommonServiceBase {
         FetchRequest_FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withCredentials: options.withCredentials,
+            crossOrigin: options.crossOrigin,
             timeout: options.async ? 0 : null,
             proxy: options.proxy
         }).then(function (response) {
@@ -8816,11 +8829,13 @@ SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.options = options || {}
         this.CLASS_NAME = "SuperMap.AddressMatchService";
     }
 
@@ -8865,7 +8880,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 
     processAsync(url, params) {
         var me = this;
-        FetchRequest_FetchRequest.get(url, params,{proxy: me.proxy}).then(function (response) {
+        FetchRequest_FetchRequest.get(url, params,{crossOrigin:me.crossOrigin, proxy: me.proxy}).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -8913,6 +8928,7 @@ SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class services_AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
 
@@ -8932,6 +8948,7 @@ class services_AddressMatchService_AddressMatchService extends CommonServiceBase
         var addressMatchService = new AddressMatchService_AddressMatchService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin: me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -8953,6 +8970,7 @@ class services_AddressMatchService_AddressMatchService extends CommonServiceBase
         var addressMatchService = new AddressMatchService_AddressMatchService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin: me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -8987,6 +9005,7 @@ SuperMap_SuperMap.REST.AddressMatchService = services_AddressMatchService_Addres
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_CommonServiceBase {
 
@@ -9057,6 +9076,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             isInTheSameDomain: me.isInTheSameDomain
         };
         FetchRequest_FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
@@ -9146,6 +9166,7 @@ SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url -核密度分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class KernelDensityJobsService_KernelDensityJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9208,6 +9229,7 @@ SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsSe
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 单对象空间查询分析服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class SingleObjectQueryJobsService_SingleObjectQueryJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9269,10 +9291,11 @@ SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService_SingleObjec
  * @param {string} url -点聚合分析任务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
- * @param {Object} options.eventListeners - 听器对象。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class SummaryMeshJobsService_SummaryMeshJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9334,6 +9357,7 @@ SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 区域汇总分析服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class SummaryRegionJobsService_SummaryRegionJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9512,6 +9536,7 @@ SuperMap.VectorClipJobsParameter = VectorClipJobsParameter_VectorClipJobsParamet
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url -矢量裁剪分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9573,10 +9598,11 @@ SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
  * @param {string} url - 叠加分析任务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。
- * @param {Object} options.eventListeners - 听器对象。
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class OverlayGeoJobsService_OverlayGeoJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9637,6 +9663,7 @@ SuperMap.OverlayGeoJobsService = OverlayGeoJobsService_OverlayGeoJobsService;
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class BuffersAnalystJobsService_BuffersAnalystJobsService extends ProcessingServiceBase_ProcessingServiceBase {
     constructor(url, options) {
@@ -9696,6 +9723,7 @@ SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService_BuffersAnalystJob
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 拓扑检查分析服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class TopologyValidatorJobsService_TopologyValidatorJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9757,6 +9785,7 @@ SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService_TopologyVal
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 汇总统计分析服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class SummaryAttributesJobsService_SummaryAttributesJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9833,6 +9862,7 @@ SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttr
  * })
  * @param {string} url - 分布式分析服务地址。
  * @param {Object} options - 可选参数。
+ * @param {boolean} [options.crossOrigin] - 请求是否跨域。
  */
 class ProcessingService_ProcessingService extends CommonServiceBase_CommonServiceBase {
 
@@ -9861,6 +9891,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -9885,6 +9916,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -9909,6 +9941,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -9944,6 +9977,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -9968,6 +10002,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -9992,6 +10027,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -10027,6 +10063,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10051,6 +10088,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10077,6 +10115,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -10112,6 +10151,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10136,6 +10176,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10160,6 +10201,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -10195,6 +10237,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var vectorClipJobsService = new VectorClipJobsService_VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10219,6 +10262,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var vectorClipJobsService = new VectorClipJobsService_VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10245,6 +10289,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var vectorClipJobsService = new VectorClipJobsService_VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10281,6 +10326,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var overlayGeoJobsService = new OverlayGeoJobsService_OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10305,6 +10351,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var overlayGeoJobsService = new OverlayGeoJobsService_OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10330,6 +10377,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var overlayGeoJobsService = new OverlayGeoJobsService_OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10366,6 +10414,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var buffersAnalystJobsService = new BuffersAnalystJobsService_BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10390,6 +10439,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var buffersAnalystJobsService = new BuffersAnalystJobsService_BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10415,6 +10465,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var buffersAnalystJobsService = new BuffersAnalystJobsService_BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10451,6 +10502,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var topologyValidatorJobsService = new TopologyValidatorJobsService_TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10475,6 +10527,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var topologyValidatorJobsService = new TopologyValidatorJobsService_TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10500,6 +10553,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var topologyValidatorJobsService = new TopologyValidatorJobsService_TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10536,6 +10590,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var summaryAttributesJobsService = new SummaryAttributesJobsService_SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10560,6 +10615,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var summaryAttributesJobsService = new SummaryAttributesJobsService_SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10585,6 +10641,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var summaryAttributesJobsService = new SummaryAttributesJobsService_SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,

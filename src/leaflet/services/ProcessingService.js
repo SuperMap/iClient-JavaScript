@@ -33,6 +33,7 @@ import {
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export var ProcessingService = ServiceBase.extend({
 
@@ -63,6 +64,7 @@ export var ProcessingService = ServiceBase.extend({
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -87,6 +89,7 @@ export var ProcessingService = ServiceBase.extend({
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -113,6 +116,7 @@ export var ProcessingService = ServiceBase.extend({
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -149,6 +153,7 @@ export var ProcessingService = ServiceBase.extend({
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -173,6 +178,7 @@ export var ProcessingService = ServiceBase.extend({
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -199,6 +205,7 @@ export var ProcessingService = ServiceBase.extend({
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -235,6 +242,7 @@ export var ProcessingService = ServiceBase.extend({
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -259,6 +267,7 @@ export var ProcessingService = ServiceBase.extend({
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -285,6 +294,7 @@ export var ProcessingService = ServiceBase.extend({
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -321,6 +331,7 @@ export var ProcessingService = ServiceBase.extend({
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -345,6 +356,7 @@ export var ProcessingService = ServiceBase.extend({
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -371,6 +383,7 @@ export var ProcessingService = ServiceBase.extend({
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -407,6 +420,7 @@ export var ProcessingService = ServiceBase.extend({
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -431,6 +445,7 @@ export var ProcessingService = ServiceBase.extend({
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -457,6 +472,7 @@ export var ProcessingService = ServiceBase.extend({
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -493,6 +509,7 @@ export var ProcessingService = ServiceBase.extend({
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -517,6 +534,7 @@ export var ProcessingService = ServiceBase.extend({
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -543,6 +561,7 @@ export var ProcessingService = ServiceBase.extend({
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -579,6 +598,7 @@ export var ProcessingService = ServiceBase.extend({
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -603,6 +623,7 @@ export var ProcessingService = ServiceBase.extend({
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -629,6 +650,7 @@ export var ProcessingService = ServiceBase.extend({
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -665,6 +687,7 @@ export var ProcessingService = ServiceBase.extend({
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -689,6 +712,7 @@ export var ProcessingService = ServiceBase.extend({
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -715,6 +739,7 @@ export var ProcessingService = ServiceBase.extend({
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -751,6 +776,7 @@ export var ProcessingService = ServiceBase.extend({
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -775,6 +801,7 @@ export var ProcessingService = ServiceBase.extend({
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -801,6 +828,7 @@ export var ProcessingService = ServiceBase.extend({
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

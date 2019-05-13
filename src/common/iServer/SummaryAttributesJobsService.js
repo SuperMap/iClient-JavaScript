@@ -12,6 +12,7 @@ import {SummaryAttributesJobsParameter} from './SummaryAttributesJobsParameter';
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 汇总统计分析服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class SummaryAttributesJobsService extends ProcessingServiceBase {
 

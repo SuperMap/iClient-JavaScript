@@ -27,6 +27,7 @@ import {SummaryAttributesJobsService} from '@supermap/iclient-common/iServer/Sum
  * })
  * @param {string} url - 分布式分析服务地址。
  * @param {Object} options - 可选参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class ProcessingService extends CommonServiceBase {
 
@@ -55,6 +56,7 @@ export class ProcessingService extends CommonServiceBase {
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -79,6 +81,7 @@ export class ProcessingService extends CommonServiceBase {
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -103,6 +106,7 @@ export class ProcessingService extends CommonServiceBase {
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -138,6 +142,7 @@ export class ProcessingService extends CommonServiceBase {
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -162,6 +167,7 @@ export class ProcessingService extends CommonServiceBase {
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -186,6 +192,7 @@ export class ProcessingService extends CommonServiceBase {
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -221,6 +228,7 @@ export class ProcessingService extends CommonServiceBase {
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -245,6 +253,7 @@ export class ProcessingService extends CommonServiceBase {
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -271,6 +280,7 @@ export class ProcessingService extends CommonServiceBase {
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -306,6 +316,7 @@ export class ProcessingService extends CommonServiceBase {
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -330,6 +341,7 @@ export class ProcessingService extends CommonServiceBase {
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -354,6 +366,7 @@ export class ProcessingService extends CommonServiceBase {
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -389,6 +402,7 @@ export class ProcessingService extends CommonServiceBase {
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -413,6 +427,7 @@ export class ProcessingService extends CommonServiceBase {
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -439,6 +454,7 @@ export class ProcessingService extends CommonServiceBase {
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -475,6 +491,7 @@ export class ProcessingService extends CommonServiceBase {
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -499,6 +516,7 @@ export class ProcessingService extends CommonServiceBase {
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -524,6 +542,7 @@ export class ProcessingService extends CommonServiceBase {
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -560,6 +579,7 @@ export class ProcessingService extends CommonServiceBase {
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -584,6 +604,7 @@ export class ProcessingService extends CommonServiceBase {
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -609,6 +630,7 @@ export class ProcessingService extends CommonServiceBase {
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -645,6 +667,7 @@ export class ProcessingService extends CommonServiceBase {
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -669,6 +692,7 @@ export class ProcessingService extends CommonServiceBase {
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -694,6 +718,7 @@ export class ProcessingService extends CommonServiceBase {
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -730,6 +755,7 @@ export class ProcessingService extends CommonServiceBase {
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -754,6 +780,7 @@ export class ProcessingService extends CommonServiceBase {
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -779,6 +806,7 @@ export class ProcessingService extends CommonServiceBase {
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.proxy,
             withCredentials: me.withCredentials,
+            crossOrigin:me.crossOrigin,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,

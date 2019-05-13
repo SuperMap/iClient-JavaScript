@@ -14,16 +14,16 @@ import {
 const fetch = window.fetch;
 /**
  * @function SuperMap.setCORS
- * @description 设置是否支持跨域。
- * @param {boolean} cors - 是否支持跨域。
+ * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
+ * @param {boolean} cors - 是否允许跨域请求。
  */
 export var setCORS = SuperMap.setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
  * @function SuperMap.isCORS
- * @description 是否支持跨域。
- * @returns {boolean} 是否支持跨域。
+ * @description 是是否允许跨域请求。
+ * @returns {boolean} 是否允许跨域请求。
  */
 export var isCORS = SuperMap.isCORS = function () {
     if (SuperMap.CORS != undefined) {
@@ -64,7 +64,13 @@ export var FetchRequest = SuperMap.FetchRequest = {
         }
     },
     supportDirectRequest: function (url, options) {
-        return Util.isInTheSameDomain(url) || isCORS() || options.proxy
+        if(Util.isInTheSameDomain(url)){
+          return true;
+        }if(options.crossOrigin != undefined){
+          return options.crossOrigin;
+        }else{
+          return isCORS() || options.proxy
+        }
     },
     get: function (url, params, options) {
         options = options || {};

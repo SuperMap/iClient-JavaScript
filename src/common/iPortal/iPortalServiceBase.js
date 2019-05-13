@@ -14,6 +14,7 @@ import { FetchRequest } from '../util/FetchRequest';
  * @param {string} url - iPortal 服务地址。
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class IPortalServiceBase {
 
@@ -23,6 +24,7 @@ export class IPortalServiceBase {
         this.serverType = ServerType.iPortal;
         this.CLASS_NAME = "SuperMap.iPortalServiceBase";
         this.withCredentials = options.withCredentials || false;
+        this.crossOrigin = options.crossOrigin
     }
 
     /**
@@ -35,7 +37,7 @@ export class IPortalServiceBase {
      * @returns {Promise} 返回包含请求结果的 Promise 对象。
      */
 
-    request(method, url, param, requestOptions = { withCredentials: this.withCredentials }) {
+    request(method, url, param, requestOptions = {crossOrigin: this.crossOrigin, withCredentials: this.withCredentials }) {
         url = this.createCredentialUrl(url);
         return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();

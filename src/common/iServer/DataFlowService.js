@@ -14,9 +14,10 @@ import {SecurityManager} from '../security/SecurityManager';
  * @param {string} url - 数据流服务地址
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
- * @param {function} options.onEachFeature - 设置每个数据加载popup等。
- * @param {GeoJSONObject} options.geometry - 指定几何范围，该范围内的要素才能被订阅。
- * @param {Object} options.excludeField - -排除字段。
+ * @param {function} [options.onEachFeature] - 设置每个数据加载popup等。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {Object} [options.excludeField] - -排除字段。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class DataFlowService extends CommonServiceBase {
 

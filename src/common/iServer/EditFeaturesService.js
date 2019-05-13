@@ -17,8 +17,9 @@ import {EditFeaturesParameters} from './EditFeaturesParameters';
  * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.ServerType} serverType - 服务器类型，iServer|iPortal|Online。
- * @param {SuperMap.DataFormat} format -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.DataFormat} [format] -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example
  * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
  *     "processCompleted": editFeatureCompleted,

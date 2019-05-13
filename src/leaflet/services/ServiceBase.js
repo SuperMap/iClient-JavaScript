@@ -12,6 +12,7 @@ import L from "leaflet";
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @fires L.supermap.ServiceBase#initialized
  * @fires L.supermap.ServiceBase#destroy
  * @extends {L.Evented}
@@ -25,7 +26,8 @@ export var ServiceBase = L.Evented.extend({
         //服务来源 iServer|iPortal|online
         serverType: null,
 
-        withCredentials: false
+        withCredentials: false,
+        crossOrigin: null
     },
 
     initialize: function (url, options) {

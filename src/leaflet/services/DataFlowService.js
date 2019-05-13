@@ -18,6 +18,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @param {Function} [options.onEachFeature] -  设置每个数据加载 popup 等。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @fires L.supermap.dataFlowService#broadcastSocketConnected
  * @fires L.supermap.dataFlowService#broadcastSocketError
  * @fires L.supermap.dataFlowService#broadcastFailed

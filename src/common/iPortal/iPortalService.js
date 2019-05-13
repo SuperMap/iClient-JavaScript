@@ -12,14 +12,15 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @extends {SuperMap.iPortalServiceBase}
  * @param {string} seviceUrl - 服务地址。
  * @param {Object} params - 服务请求参数。
- *
+ * @param {boolean} [params.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [params.crossOrigin] - 请求是否携带 cookie。 * 
  */
 export class IPortalService extends IPortalServiceBase {
 
 
 
     constructor(serviceUrl, params) {
-        super(serviceUrl);
+        super(serviceUrl, params);
         params = params || {};
         this.addedMapNames = null;
         this.addedSceneNames = null;

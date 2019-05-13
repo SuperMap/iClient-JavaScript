@@ -33,6 +33,7 @@ import {
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {ol.supermap.ServiceBase}
  */
 export class FeatureService extends ServiceBase {
@@ -53,6 +54,7 @@ export class FeatureService extends ServiceBase {
         var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -76,6 +78,7 @@ export class FeatureService extends ServiceBase {
         var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -98,6 +101,7 @@ export class FeatureService extends ServiceBase {
         var getFeatureService = new GetFeaturesByBufferService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -120,6 +124,7 @@ export class FeatureService extends ServiceBase {
         var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -143,6 +148,7 @@ export class FeatureService extends ServiceBase {
         var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -172,6 +178,7 @@ export class FeatureService extends ServiceBase {
         var editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,

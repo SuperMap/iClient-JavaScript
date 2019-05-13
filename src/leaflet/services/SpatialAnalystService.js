@@ -40,6 +40,7 @@ import {
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {L.supermap.ServiceBase}
  */
 export var SpatialAnalystService = ServiceBase.extend({
@@ -59,6 +60,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var areaSolarRadiationService = new AreaSolarRadiationService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -82,6 +84,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var bufferAnalystService = new BufferAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -105,6 +108,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var densityAnalystService = new DensityAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -128,6 +132,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var generateSpatialDataService = new GenerateSpatialDataService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -151,6 +156,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var geoRelationAnalystService = new GeoRelationAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -174,6 +180,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var interpolationAnalystService = new InterpolationAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -197,6 +204,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var mathExpressionAnalysisService = new MathExpressionAnalysisService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -220,6 +228,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var overlayAnalystService = new OverlayAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -242,7 +251,8 @@ export var SpatialAnalystService = ServiceBase.extend({
         var me = this;
         var routeCalculateMeasureService = new RouteCalculateMeasureService(me.url, {
             proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
+            withCredentials: me.options.withCredentials, 
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -266,6 +276,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var routeLocatorService = new RouteLocatorService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -289,6 +300,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var surfaceAnalystService = new SurfaceAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -312,6 +324,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -335,6 +348,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         var thiessenAnalystService = new ThiessenAnalystService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

@@ -13,11 +13,13 @@ import {GeoDecodingParameter} from './GeoDecodingParameter';
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class AddressMatchService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.options = options || {}
         this.CLASS_NAME = "SuperMap.AddressMatchService";
     }
 
@@ -62,7 +64,7 @@ export class AddressMatchService extends CommonServiceBase {
 
     processAsync(url, params) {
         var me = this;
-        FetchRequest.get(url, params,{proxy: me.proxy}).then(function (response) {
+        FetchRequest.get(url, params,{crossOrigin:me.crossOrigin, proxy: me.proxy}).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {

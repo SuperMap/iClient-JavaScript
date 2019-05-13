@@ -23,6 +23,7 @@ import {
  * @param {Object} options - 服务交互时所需的可选参数。 
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @example
  * new mapboxgl.supermap.QueryService(url)
@@ -48,6 +49,7 @@ export class QueryService extends ServiceBase {
         var queryService = new QueryByBoundsService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73,6 +75,7 @@ export class QueryService extends ServiceBase {
         var queryByDistanceService = new QueryByDistanceService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -97,6 +100,7 @@ export class QueryService extends ServiceBase {
         var queryBySQLService = new QueryBySQLService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -121,6 +125,7 @@ export class QueryService extends ServiceBase {
         var queryByGeometryService = new QueryByGeometryService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

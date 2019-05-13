@@ -13,6 +13,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * @classdesc 空间分析服务基类。
  * @param {string} url - 地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.CommonServiceBase}
  */
 export class SpatialAnalystBase extends CommonServiceBase {

@@ -29,6 +29,7 @@ import {GeoJSON} from '../format/GeoJSON';
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 互服务时所需可选参数。如：
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class FindMTSPPathsService extends NetworkAnalystServiceBase {
 

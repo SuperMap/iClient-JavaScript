@@ -13,8 +13,9 @@ import {GetGridCellInfosParameters} from './GetGridCellInfosParameters';
  * @param {string} url - 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
- * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
+ * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {

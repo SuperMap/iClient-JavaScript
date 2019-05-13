@@ -12,10 +12,11 @@ import {SummaryMeshJobParameter} from './SummaryMeshJobParameter';
  * @param {string} url -点聚合分析任务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
- * @param {Object} options.eventListeners - 听器对象。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class SummaryMeshJobsService extends ProcessingServiceBase {
 

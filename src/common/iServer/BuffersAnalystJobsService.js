@@ -12,6 +12,7 @@ import {BuffersAnalystJobsParameter} from './BuffersAnalystJobsParameter';
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 export class BuffersAnalystJobsService extends ProcessingServiceBase {
     constructor(url, options) {

@@ -20,6 +20,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @param {Object} options - 加载实时数据可选参数。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketConnected
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketError
  * @fires mapboxgl.supermap.DataFlowService#broadcastFailed

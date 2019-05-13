@@ -15,6 +15,7 @@ import {TransferSolutionParameters} from './TransferSolutionParameters';
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * (start code)

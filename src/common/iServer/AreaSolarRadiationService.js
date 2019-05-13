@@ -13,6 +13,7 @@ import {Util} from '../commontypes/Util';
  * @param {string} url - 服务的访问地址。如：</br>http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst。</br>
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
