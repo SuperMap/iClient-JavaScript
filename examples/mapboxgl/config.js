@@ -1187,12 +1187,36 @@ var exampleConfig = {
                       thumbnail: "widgets_cluster_vue.png",
                       fileName: "widgets_cluster_vue"
                     } ,{
-                      name: "图表专题图",
-                      name_en: "Statistical chart",
-                      version: "9.1.2",
-                      thumbnail: "widgets_graph_theme_layer_vue.png",
-                      fileName: "widgets_graph_theme_layer_vue"
-                    } ,{
+                        name: "单值专题图",
+                        name_en: "Unique Theme layer",
+                        version: "9.1.2",
+                        thumbnail: "widgets_uniquetheme_vue.png",
+                        fileName: "widgets_uniquetheme_vue"
+                      } ,{
+                        name: "分段专题图",
+                        name_en: "Range Theme layer",
+                        version: "9.1.2",
+                        thumbnail: "widgets_rangetheme_vue.png",
+                        fileName: "widgets_rangetheme_vue"
+                      } ,{
+                        name: "等级符号专题图",
+                        name_en: "RanSymbol Theme layer",
+                        version: "9.1.2",
+                        thumbnail: "widgets_ranksymboltheme_vue.png",
+                        fileName: "widgets_ranksymboltheme_vue"
+                      } ,{
+                        name: "标签专题图",
+                        name_en: "Label Theme layer",
+                        version: "9.1.2",
+                        thumbnail: "widgets_labeltheme_vue.png",
+                        fileName: "widgets_labeltheme_vue"
+                      } ,{
+                        name: "图表专题图",
+                        name_en: "Statistical chart",
+                        version: "9.1.2",
+                        thumbnail: "widgets_graph_theme_layer_vue.png",
+                        fileName: "widgets_graph_theme_layer_vue"
+                      } ,{
                       name: "热力图图层",
                       name_en: "Heatmap layer",
                       version: "9.1.2",

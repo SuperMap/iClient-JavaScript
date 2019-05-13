@@ -546,6 +546,10 @@ window.examplesResources = {
         "title_widgetsVectorTile_Vue": 'Vector Tile Layer Widget(Vue)',
         "title_widgetsHeatmap_Vue": 'Heatmap Layer Widget(Vue)',
         "title_widgetsGraphThemeLayer_Vue": 'Statistical Thematic Chart Widget(Vue)',
+        "title_widgetsUniqueTheme_Vue": 'UniqueTheme Layer Widget(Vue)',
+        "title_widgetsRangeTheme_Vue": 'RangeTheme Layer Widget(Vue)',
+        "title_widgetsRankSymbolTheme_Vue": 'RankSymbolTheme Layer Widget(Vue)',
+        "title_widgetsLabelTheme_Vue": 'LabelTheme Layer Widget(Vue)',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",
@@ -1207,7 +1211,7 @@ window.examplesResources = {
         'text_symbolEqualSize':"Equal large",
         'text_symbolDistribution':"Uniform distribution",
         'text_myRasterLayer':"My Raster Layer",
-        
+
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",
         "btn_mathExpression": "Start calculation",

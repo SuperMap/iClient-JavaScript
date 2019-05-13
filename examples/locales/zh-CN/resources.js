@@ -494,7 +494,11 @@ window.examplesResources = {
         "title_widgetsVectorTile_Vue": '矢量瓦片图层微件（Vue）',
         "title_widgetsHeatmap_Vue": '热力图图层微件（Vue）',
         "title_widgetsGraphThemeLayer_Vue": '图表专题图微件（Vue）',
-        
+        "title_widgetsUniqueTheme_Vue": '单值专题图图层微件（Vue）',
+        "title_widgetsRangeTheme_Vue": '分段专题图图层微件（Vue）',
+        "title_widgetsRankSymbolTheme_Vue": '等级符号专题图图层微件（Vue）',
+        "title_widgetsLabelTheme_Vue": '标签专题图图层微件（Vue）',
+
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
         "text_address": "地址　　　",
