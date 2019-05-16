@@ -1240,6 +1240,12 @@ var exampleConfig = {
                       version: "9.1.2",
                       thumbnail: "widgets_deckgl_vue.png",
                       fileName: "widgets_deckgl_vue"
+                    },{
+                      name: "打开文件",
+                      name_en: "Open File",
+                      version: "9.1.2",
+                      thumbnail: "widgets_openfile_vue.png",
+                      fileName: "widgets_openfile_vue"
                     }
                 ]
             }

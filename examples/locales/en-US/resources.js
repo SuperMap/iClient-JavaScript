@@ -525,6 +525,7 @@ window.examplesResources = {
         "title_ChinaEarthquakeHeatClient": 'China Earthquake(Classic) WGS84',
         "title_widgetsChart_Vue": 'Chart Widget(Vue）',
         "title_widgetsLayerList_Vue": 'LayerList Widget(Vue)',
+        "title_widgetsOpenFile_Vue":'OpenFile Widget(Vue)',
         "title_widgetsMap_Vue": 'Map Widget(Vue）',
         "title_widgetsMiniMap_Vue": 'MiniMap Widget(Vue）',
         "title_widgetsPan_Vue": 'Pan Widget(Vue）',

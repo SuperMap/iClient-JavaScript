@@ -473,6 +473,7 @@ window.examplesResources = {
         "title_ChinaEarthquakeHeatClient": '中国地震数据（Classic）_WGS84',
         "title_widgetsChart_Vue": '图表微件（Vue）',
         "title_widgetsLayerList_Vue": '图层列表微件（Vue）',
+        "title_widgetsOpenFile_Vue":'打开文件微件（Vue）',
         "title_widgetsMap_Vue": '地图微件（Vue）',
         "title_widgetsMiniMap_Vue": '鹰眼微件（Vue）',
         "title_widgetsPan_Vue": '平移微件（Vue）',
