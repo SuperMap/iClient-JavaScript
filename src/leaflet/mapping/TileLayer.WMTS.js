@@ -93,7 +93,11 @@ export var WMTSLayer = L.TileLayer.extend({
         }
 
         if (this.options.requestEncoding === 'KVP') {
-            url += L.Util.getParamString(obj, url);
+           var params = [];
+            for (var i in obj) {
+                params.push(i + '=' + obj[i]);
+            }
+            url += "?"+params.join('&');
         } else if (this.options.requestEncoding === 'REST') {
             var params = "/" + obj.layer + "/" + obj.style + "/" + obj.tilematrixSet + "/" + obj.tilematrix + "/" + obj.tilerow + "/" + obj.tilecol + this.formatSuffix;
             url += params;
