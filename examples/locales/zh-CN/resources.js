@@ -499,6 +499,7 @@ window.examplesResources = {
         "title_widgetsRangeTheme_Vue": '分段专题图图层微件（Vue）',
         "title_widgetsRankSymbolTheme_Vue": '等级符号专题图图层微件（Vue）',
         "title_widgetsLabelTheme_Vue": '标签专题图图层微件（Vue）',
+        "title_widgetsDataFlow_Vue": '数据流图层微件（Vue）',
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",

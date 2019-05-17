@@ -551,6 +551,7 @@ window.examplesResources = {
         "title_widgetsRangeTheme_Vue": 'RangeTheme Layer Widget(Vue)',
         "title_widgetsRankSymbolTheme_Vue": 'RankSymbolTheme Layer Widget(Vue)',
         "title_widgetsLabelTheme_Vue": 'LabelTheme Layer Widget(Vue)',
+        "title_widgetsDataFlow_Vue": 'Data FLow Layer Widget(Vue)',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",

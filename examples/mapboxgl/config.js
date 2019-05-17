@@ -1171,81 +1171,87 @@ var exampleConfig = {
                     } ,{
                       name: "栅格图层",
                       name_en: "Raster layer",
-                      version: "9.1.2",
+                      version: "10.x.x",
                       thumbnail: "widgets_map_vue.png",
                       fileName: "widgets_raster_vue"
                     } ,{
                       name: "矢量瓦片图层",
                       name_en: "Vector tile layer",
-                      version: "9.1.2",
+                      version: "10.x.x",
                       thumbnail: "widgets_vector_tile_vue.png",
                       fileName: "widgets_vector_tile_vue"
                     } ,{
                       name: "点聚合图层",
                       name_en: "Cluster layer",
-                      version: "9.1.2",
+                      version: "10.x.x",
                       thumbnail: "widgets_cluster_vue.png",
                       fileName: "widgets_cluster_vue"
                     } ,{
                         name: "单值专题图",
                         name_en: "Unique Theme layer",
-                        version: "9.1.2",
+                        version: "10.x.x",
                         thumbnail: "widgets_uniquetheme_vue.png",
                         fileName: "widgets_uniquetheme_vue"
                       } ,{
                         name: "分段专题图",
                         name_en: "Range Theme layer",
-                        version: "9.1.2",
+                        version: "10.x.x",
                         thumbnail: "widgets_rangetheme_vue.png",
                         fileName: "widgets_rangetheme_vue"
                       } ,{
                         name: "等级符号专题图",
                         name_en: "RanSymbol Theme layer",
-                        version: "9.1.2",
+                        version: "10.x.x",
                         thumbnail: "widgets_ranksymboltheme_vue.png",
                         fileName: "widgets_ranksymboltheme_vue"
                       } ,{
                         name: "标签专题图",
                         name_en: "Label Theme layer",
-                        version: "9.1.2",
+                        version: "10.x.x",
                         thumbnail: "widgets_labeltheme_vue.png",
                         fileName: "widgets_labeltheme_vue"
                       } ,{
                         name: "图表专题图",
                         name_en: "Statistical chart",
-                        version: "9.1.2",
+                        version: "10.x.x",
                         thumbnail: "widgets_graph_theme_layer_vue.png",
                         fileName: "widgets_graph_theme_layer_vue"
                       } ,{
                       name: "热力图图层",
                       name_en: "Heatmap layer",
-                      version: "9.1.2",
+                      version: "10.x.x",
                       thumbnail: "widgets_heatmap_vue.png",
                       fileName: "widgets_heatmap_vue"
                     } ,{
                       name: "MapV 图层",
                       name_en: "MapV layer",
-                      version: "9.1.2",
+                      version: "10.x.x",
                       thumbnail: "mapvPolylineTime.gif",
                       fileName: "widgets_mapv_vue"
                     } ,{
                       name: "Echarts 图层",
                       name_en: "Echarts layer",
-                      version: "9.1.2",
+                      version: "10.x.x",
                       thumbnail: "echarts_ChangchunPublicTransportNetwork.gif",
                       fileName: "widgets_echarts_vue"
                     } ,{
                       name: "DeckGL 图层",
                       name_en: "DeckGL layer",
-                      version: "9.1.2",
+                      version: "10.x.x",
                       thumbnail: "widgets_deckgl_vue.png",
                       fileName: "widgets_deckgl_vue"
-                    },{
+                    } ,{
                       name: "打开文件",
                       name_en: "Open File",
-                      version: "9.1.2",
+                      version: "10.x.x",
                       thumbnail: "widgets_openfile_vue.png",
                       fileName: "widgets_openfile_vue"
+                    } ,{
+                      name: "数据流图层",
+                      name_en: "Data Flow Layer",
+                      version: "10.x.x",
+                      thumbnail: "widgets_dataflow_vue.gif",
+                      fileName: "widgets_dataflow_vue"
                     }
                 ]
             }
