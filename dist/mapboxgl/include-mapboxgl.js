@@ -142,8 +142,9 @@
             inputCSS("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.css");
             inputScript("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.js");
         }
-       
-        
+        if (inArray(includes, 'xlsx')) {
+            inputScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.12.13/xlsx.core.min.js");
+        }
     }
 
     load();
