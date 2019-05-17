@@ -69,9 +69,14 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.js");
-            inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.js");
+            inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.js");
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
+        }
+        if (inArray(includes, 'echarts-vue')) {
+          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.js");
+          inputScript("https://cdn.jsdelivr.net/npm/vue-echarts@4.0.2");
+          inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.js");
+          inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
         }
         if (inArray(includes, 'three')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/92/three.min.js");
@@ -137,6 +142,7 @@
             inputCSS("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.css");
             inputScript("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.js");
         }
+       
         
     }
 

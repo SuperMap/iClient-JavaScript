@@ -1088,14 +1088,31 @@ var exampleConfig = {
                         version: "9.1.2",
                         thumbnail: "widgets_webmap_vue.png",
                         fileName: "widgets_webmap_vue"
-                    } ,
-                    {
+                    } ,{
                         name: "图表",
                         name_en: "Chart",
                         version: "9.1.2",
                         thumbnail: "widgets_chart_vue.png",
                         fileName: "widgets_chart_vue"
-                    } ,
+                    } ,{
+                      name: "图表-饼图",
+                      name_en: "Chart(pie)",
+                      version: "9.1.2",
+                      thumbnail: "widgets_chart_vue(pie).png",
+                      fileName: "widgets_pie_chart_vue"
+                  } ,{
+                    name: "图表-雷达图",
+                    name_en: "Chart(radar)",
+                    version: "9.1.2",
+                    thumbnail: "widgets_chart_vue(radar).png",
+                    fileName: "widgets_radar_chart_vue"
+                  } ,{
+                    name: "图表-仪表盘",
+                    name_en: "Chart(gauge)",
+                    version: "9.1.2",
+                    thumbnail: "widgets_chart_vue(gauge).png",
+                    fileName: "widgets_gauge_chart_vue"
+                  } ,
                     {
                         name: "图层",
                         name_en: "LayerList",

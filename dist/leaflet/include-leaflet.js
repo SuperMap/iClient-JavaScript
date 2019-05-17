@@ -59,7 +59,7 @@
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.min.js");
+          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.js");
         }
         if (inArray(includes, 'd3')) {
             inputScript("http://iclient.supermap.io/web/libs/d3/5.5.0/d3.js");

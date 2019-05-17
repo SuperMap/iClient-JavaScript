@@ -11778,16 +11778,16 @@ var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 const FetchRequest_fetch = window.fetch;
 /**
  * @function SuperMap.setCORS
- * @description 设置是否支持跨域。
- * @param {boolean} cors - 是否支持跨域。
+ * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
+ * @param {boolean} cors - 是否允许跨域请求。
  */
 var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
  * @function SuperMap.isCORS
- * @description 是否支持跨域。
- * @returns {boolean} 是否支持跨域。
+ * @description 是是否允许跨域请求。
+ * @returns {boolean} 是否允许跨域请求。
  */
 var FetchRequest_isCORS = SuperMap.isCORS = function () {
     if (SuperMap.CORS != undefined) {
@@ -11829,7 +11829,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
     },
     supportDirectRequest: function (url, options) {
         if(Util_Util.isInTheSameDomain(url)){
-          return Util_Util.isInTheSameDomain(url)
+          return true;
         }if(options.crossOrigin != undefined){
           return options.crossOrigin;
         }else{
@@ -12575,7 +12575,7 @@ SuperMap.SecurityManager = SecurityManager_SecurityManager;
  * @category iManager
  * @param {string} url - iManager 首页地址，如：http://localhost:8390/imanager。
  * @param {Object} options - 服务参数。
- * @param {boolean} [options.crossOrigin] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class iManagerServiceBase_IManagerServiceBase {
 
@@ -12867,7 +12867,7 @@ SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
  * @param {string} url - iPortal 服务地址。
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class iPortalServiceBase_IPortalServiceBase {
 
@@ -13307,7 +13307,7 @@ SuperMap.iPortal = iPortal_IPortal;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class CommonServiceBase_CommonServiceBase {
 
@@ -13425,7 +13425,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。
      * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
      * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
-     * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+     * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
      * 
      */
     request(options) {
@@ -13875,7 +13875,7 @@ SuperMap.GeoDecodingParameter = GeoDecodingParameter_GeoDecodingParameter;
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
 
@@ -14245,7 +14245,7 @@ SuperMap.AreaSolarRadiationParameters = AreaSolarRadiationParameters_AreaSolarRa
  * @classdesc 空间分析服务基类。
  * @param {string} url - 地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.CommonServiceBase}
  */
 class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServiceBase {
@@ -14349,7 +14349,7 @@ SuperMap.SpatialAnalystBase = SpatialAnalystBase_SpatialAnalystBase;
  * @param {string} url - 服务的访问地址。如：</br>http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst。</br>
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -15425,7 +15425,7 @@ SuperMap.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters_Geome
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -15815,7 +15815,7 @@ SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalys
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_CommonServiceBase {
 
@@ -15976,7 +15976,7 @@ SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class BuffersAnalystJobsService_BuffersAnalystJobsService extends ProcessingServiceBase_ProcessingServiceBase {
     constructor(url, options) {
@@ -16107,7 +16107,7 @@ SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters_BurstPi
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 网络分析服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceBase_CommonServiceBase {
 
@@ -16178,7 +16178,7 @@ SuperMap.NetworkAnalystServiceBase = NetworkAnalystServiceBase_NetworkAnalystSer
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class BurstPipelineAnalystService_BurstPipelineAnalystService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -16262,7 +16262,7 @@ SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService_BurstPipeline
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为"ISERVER","GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class ChartFeatureInfoSpecsService_ChartFeatureInfoSpecsService extends CommonServiceBase_CommonServiceBase {
 
@@ -16684,7 +16684,7 @@ SuperMap.QueryParameters = QueryParameters_QueryParameters;
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example
  * 下面示例显示了如何进行海图属性查询：
  * var nameArray = ["GB4X0000_52000"];
@@ -17283,7 +17283,7 @@ SuperMap.ComputeWeightMatrixParameters = ComputeWeightMatrixParameters_ComputeWe
  *                       例如："http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class ComputeWeightMatrixService_ComputeWeightMatrixService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -17379,7 +17379,7 @@ SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService_ComputeWeightMa
  * @param {function} [options.onEachFeature] - 设置每个数据加载popup等。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - -排除字段。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBase {
 
@@ -18533,7 +18533,7 @@ SuperMap.DensityKernelAnalystParameters = DensityKernelAnalystParameters_Density
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example  例如：
  *  var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
@@ -18749,7 +18749,7 @@ SuperMap.EditFeaturesParameters = EditFeaturesParameters_EditFeaturesParameters;
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} [format] -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example
  * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
  *     "processCompleted": editFeatureCompleted,
@@ -18989,7 +18989,7 @@ SuperMap.FacilityAnalystSinks3DParameters = FacilityAnalystSinks3DParameters_Fac
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。<br>
  * @param {Object} options - 参数。<br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FacilityAnalystSinks3DService_FacilityAnalystSinks3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19102,7 +19102,7 @@ SuperMap.FacilityAnalystSources3DParameters = FacilityAnalystSources3DParameters
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FacilityAnalystSources3DService_FacilityAnalystSources3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19243,7 +19243,7 @@ SuperMap.FacilityAnalystStreamParameters = FacilityAnalystStreamParameters_Facil
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FacilityAnalystStreamService_FacilityAnalystStreamService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -19371,7 +19371,7 @@ SuperMap.FacilityAnalystTracedown3DParameters = FacilityAnalystTracedown3DParame
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FacilityAnalystTracedown3DService_FacilityAnalystTracedown3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19475,7 +19475,7 @@ SuperMap.FacilityAnalystTraceup3DParameters = FacilityAnalystTraceup3DParameters
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FacilityAnalystTraceup3DService_FacilityAnalystTraceup3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19594,7 +19594,7 @@ SuperMap.FacilityAnalystUpstream3DParameters = FacilityAnalystUpstream3DParamete
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FacilityAnalystUpstream3DService_FacilityAnalystUpstream3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19820,7 +19820,7 @@ SuperMap.FieldStatisticsParameters = FieldStatisticsParameters_FieldStatisticsPa
  * @param {string} options.dataset - 数据集名称。
  * @param {string} options.field - 查询统计的目标字段名称。
  * @param {SuperMap.StatisticMode} options.statisticMode - 字段查询统计的方法类型。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example
  * var myService = new SuperMap.FieldStatisticService(url, {eventListeners: {
  *     "processCompleted": fieldStatisticCompleted,
@@ -20039,7 +20039,7 @@ SuperMap.FindClosestFacilitiesParameters = FindClosestFacilitiesParameters_FindC
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FindClosestFacilitiesService_FindClosestFacilitiesService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -20272,7 +20272,7 @@ SuperMap.FindLocationParameters = FindLocationParameters_FindLocationParameters;
  *                       如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FindLocationService_FindLocationService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -20481,7 +20481,7 @@ SuperMap.FindMTSPPathsParameters = FindMTSPPathsParameters_FindMTSPPathsParamete
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 互服务时所需可选参数。如：
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FindMTSPPathsService_FindMTSPPathsService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -20703,7 +20703,7 @@ SuperMap.FindPathParameters = FindPathParameters_FindPathParameters;
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FindPathService_FindPathService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -20936,7 +20936,7 @@ SuperMap.FindServiceAreasParameters = FindServiceAreasParameters_FindServiceArea
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 互服务时所需可选参数。如：
  * @param {Object} options.eventListeners - 需要被注册的监听器对象
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FindServiceAreasService_FindServiceAreasService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -21153,7 +21153,7 @@ SuperMap.FindTSPPathsParameters = FindTSPPathsParameters_FindTSPPathsParameters;
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class FindTSPPathsService_FindTSPPathsService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -21413,7 +21413,7 @@ SuperMap.GenerateSpatialDataParameters = GenerateSpatialDataParameters_GenerateS
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 实例化该类如下例所示：
  * (start code)
@@ -22003,7 +22003,7 @@ SuperMap.GeoRelationAnalystParameters = GeoRelationAnalystParameters_GeoRelation
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 实例化该类如下例所示：
  * (start code)
@@ -22334,7 +22334,7 @@ SuperMap.GetFeaturesByBoundsParameters = GetFeaturesByBoundsParameters_GetFeatur
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。 
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example
  * var myService = new SuperMap.GetFeaturesServiceBase(url, {
  *     eventListeners: {
@@ -22493,7 +22493,7 @@ SuperMap.GetFeaturesServiceBase = GetFeaturesServiceBase_GetFeaturesServiceBase;
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example
  * var myGetFeaturesByBoundsService = new SuperMa.GetFeaturesByBoundsService(url, {
  *     eventListeners: {
@@ -22673,7 +22673,7 @@ SuperMap.GetFeaturesByBufferParameters = GetFeaturesByBufferParameters_GetFeatur
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.GetFeaturesServiceBase}
  * @example
  * var myGetFeaturesByBufferService = new SuperMap.GetFeaturesByBufferService(url, {
@@ -22867,7 +22867,7 @@ SuperMap.GetFeaturesByGeometryParameters = GetFeaturesByGeometryParameters_GetFe
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.GetFeaturesServiceBase}
  * @example
  * var myService = new SuperMap.GetFeaturesByGeometryService(url, {
@@ -23021,7 +23021,7 @@ SuperMap.GetFeaturesByIDsParameters = GetFeaturesByIDsParameters_GetFeaturesByID
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.GetFeaturesServiceBase}
  * @example
  * var myGetFeaturesByIDsService = new SuperMap.GetFeaturesByIDsService(url, {
@@ -23165,7 +23165,7 @@ SuperMap.GetFeaturesBySQLParameters = GetFeaturesBySQLParameters_GetFeaturesBySQ
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.GetFeaturesServiceBase}
  * @example
  * var myGetFeaturesBySQLService = new SuperMap.GetFeaturesBySQLService(url, {
@@ -23227,7 +23227,7 @@ SuperMap.GetFeaturesBySQLService = GetFeaturesBySQLService_GetFeaturesBySQLServi
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string}options.datasource - 要查询的数据集所在的数据源名称。</br>
  * @param {string}options.dataset - 要查询的数据集名称。</br>
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myService = new SuperMap.GetFieldsService(url, {eventListeners: {
@@ -23381,7 +23381,7 @@ SuperMap.GetGridCellInfosParameters = GetGridCellInfosParameters_GetGridCellInfo
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
@@ -27479,7 +27479,7 @@ SuperMap.Vector = iServer_Vector_Vector;
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
  */
 class GetLayersInfoService_GetLayersInfoService extends CommonServiceBase_CommonServiceBase {
@@ -28297,7 +28297,7 @@ SuperMap.InterpolationKrigingAnalystParameters = InterpolationKrigingAnalystPara
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -28577,7 +28577,7 @@ SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobP
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url -核密度分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class KernelDensityJobsService_KernelDensityJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -28996,7 +28996,7 @@ SuperMap.LayerStatus = LayerStatus_LayerStatus;
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class MapService_MapService extends CommonServiceBase_CommonServiceBase {
 
@@ -29238,7 +29238,7 @@ SuperMap.MathExpressionAnalysisParameters = MathExpressionAnalysisParameters_Mat
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -29402,7 +29402,7 @@ SuperMap.MeasureParameters = MeasureParameters_MeasureParameters;
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {MeasureMode} options.measureMode - 量算模式，包括距离量算模式和面积量算模式。
  */
 class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase {
@@ -29511,7 +29511,7 @@ SuperMap.MeasureService = MeasureService_MeasureService;
  * @param {string} url - 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * (start code)
@@ -29735,7 +29735,7 @@ SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class OverlayGeoJobsService_OverlayGeoJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -29871,7 +29871,7 @@ SuperMap.QueryByBoundsParameters = QueryByBoundsParameters_QueryByBoundsParamete
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example
  * var myService = new SuperMap.QueryService(url, {
  *     eventListeners: {
@@ -30058,7 +30058,7 @@ SuperMap.QueryService = QueryService_QueryService;
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class QueryByBoundsService_QueryByBoundsService extends QueryService_QueryService {
 
@@ -30231,7 +30231,7 @@ SuperMap.QueryByDistanceParameters = QueryByDistanceParameters_QueryByDistancePa
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class QueryByDistanceService_QueryByDistanceService extends QueryService_QueryService {
 
@@ -30386,7 +30386,7 @@ SuperMap.QueryByGeometryParameters = QueryByGeometryParameters_QueryByGeometryPa
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class QueryByGeometryService_QueryByGeometryService extends QueryService_QueryService {
 
@@ -30529,7 +30529,7 @@ SuperMap.QueryBySQLParameters = QueryBySQLParameters_QueryBySQLParameters;
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class QueryBySQLService_QueryBySQLService extends QueryService_QueryService {
 
@@ -30667,7 +30667,7 @@ SuperMap.RouteCalculateMeasureParameters = RouteCalculateMeasureParameters_Route
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example 实例化该类如下例所示：
  * (start code)
  * var parameters = new SuperMap.RouteCalculateMeasureParameters({
@@ -30924,7 +30924,7 @@ SuperMap.RouteLocatorParameters = RouteLocatorParameters_RouteLocatorParameters;
  * @param {string} url -服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example 实例化该类如下例所示：
  * (start code)
  * var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
@@ -31225,7 +31225,7 @@ SuperMap.SetLayerInfoParameters = SetLayerInfoParameters_SetLayerInfoParameters;
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class SetLayerInfoService_SetLayerInfoService extends CommonServiceBase_CommonServiceBase {
 
@@ -31355,7 +31355,7 @@ SuperMap.SetLayersInfoParameters = SetLayersInfoParameters_SetLayersInfoParamete
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class SetLayersInfoService_SetLayersInfoService extends CommonServiceBase_CommonServiceBase {
 
@@ -31567,7 +31567,7 @@ SuperMap.SetLayerStatusParameters = SetLayerStatusParameters_SetLayerStatusParam
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_CommonServiceBase {
 
@@ -31830,7 +31830,7 @@ SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleO
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 单对象空间查询分析服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class SingleObjectQueryJobsService_SingleObjectQueryJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -31943,7 +31943,7 @@ SuperMap.StopQueryParameters = StopQueryParameters_StopQueryParameters;
  * 例如：</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example 例如：
  * (start code)
  * var myService = new SuperMap.StopQueryService(url, {eventListeners: {
@@ -32128,7 +32128,7 @@ SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_Summary
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 汇总统计分析服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class SummaryAttributesJobsService_SummaryAttributesJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -32367,7 +32367,7 @@ SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParamet
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class SummaryMeshJobsService_SummaryMeshJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -32643,7 +32643,7 @@ SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobP
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 区域汇总分析服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class SummaryRegionJobsService_SummaryRegionJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -32800,7 +32800,7 @@ SuperMap.SupplyCenter = SupplyCenter_SupplyCenter;
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -32999,7 +32999,7 @@ SuperMap.TerrainCurvatureCalculationParameters = TerrainCurvatureCalculationPara
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example 例如：
  * (start code)
  * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
@@ -33757,7 +33757,7 @@ SuperMap.ThemeParameters = ThemeParameters_ThemeParameters;
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class ThemeService_ThemeService extends CommonServiceBase_CommonServiceBase {
 
@@ -33895,7 +33895,7 @@ SuperMap.ThemeService = ThemeService_ThemeService;
  * 如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -33992,7 +33992,7 @@ SuperMap.ThiessenAnalystService = ThiessenAnalystService_ThiessenAnalystService;
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @example
  * var myOverlayAnalystService = new SuperMap.REST.GeometryBatchAnalystService(url, {
  *     eventListeners: {
@@ -34129,7 +34129,7 @@ SuperMap.GeometryBatchAnalystService = GeometryBatchAnalystService_GeometryBatch
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class TilesetsService_TilesetsService extends CommonServiceBase_CommonServiceBase {
 
@@ -34300,7 +34300,7 @@ SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter_Topolog
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 拓扑检查分析服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class TopologyValidatorJobsService_TopologyValidatorJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -34556,7 +34556,7 @@ SuperMap.TransferPathParameters = TransferPathParameters_TransferPathParameters;
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class TransferPathService_TransferPathService extends CommonServiceBase_CommonServiceBase {
 
@@ -34757,7 +34757,7 @@ SuperMap.TransferSolutionParameters = TransferSolutionParameters_TransferSolutio
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * (start code)
@@ -34938,7 +34938,7 @@ SuperMap.UpdateEdgeWeightParameters = UpdateEdgeWeightParameters_UpdateEdgeWeigh
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class UpdateEdgeWeightService_UpdateEdgeWeightService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -35123,7 +35123,7 @@ SuperMap.UpdateTurnNodeWeightParameters = UpdateTurnNodeWeightParameters_UpdateT
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class UpdateTurnNodeWeightService_UpdateTurnNodeWeightService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -35344,7 +35344,7 @@ SuperMap.VectorClipJobsParameter = VectorClipJobsParameter_VectorClipJobsParamet
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url -矢量裁剪分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -35989,7 +35989,7 @@ var OnlineResources_FilterField = SuperMap.FilterField = {
  * @classdesc Online 服务基类（使用 key 作为权限限制的类需要实现此类）。
  * @category iPortal/Online
  * @param {Object} options - 服务参数。
- * @param {boolean} [options.crossOrigin] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 class OnlineServiceBase_OnlineServiceBase {
 
@@ -72623,7 +72623,7 @@ external_mapboxgl_default.a.supermap.map.setPaintProperty = MapExtend_setPaintPr
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @fires mapboxgl.supermap.ServiceBase#initialized
  */
 class ServiceBase_ServiceBase extends external_mapboxgl_default.a.Evented {
@@ -72664,7 +72664,7 @@ external_mapboxgl_default.a.supermap.ServiceBase = ServiceBase_ServiceBase;
  * @param {Object} options - 交互时所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
@@ -72744,7 +72744,7 @@ external_mapboxgl_default.a.supermap.AddressMatchService = services_AddressMatch
  * @param {Object} options - 交互时所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class ChartService_ChartService extends ServiceBase_ServiceBase {
@@ -72862,7 +72862,7 @@ external_mapboxgl_default.a.supermap.ChartService = ChartService_ChartService;
  * @param {Object} options - 加载实时数据可选参数。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketConnected
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketError
  * @fires mapboxgl.supermap.DataFlowService#broadcastFailed
@@ -73035,7 +73035,7 @@ external_mapboxgl_default.a.supermap.DataFlowService = services_DataFlowService_
  * @param {Object} options - 创建要素数据集服务类可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class FeatureService_FeatureService extends ServiceBase_ServiceBase {
@@ -73274,7 +73274,7 @@ external_mapboxgl_default.a.supermap.FeatureService = FeatureService_FeatureServ
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
@@ -73392,7 +73392,7 @@ external_mapboxgl_default.a.supermap.FieldService = FieldService_FieldService;
  * @param {Object} options - 服务所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class GridCellInfosService_GridCellInfosService extends ServiceBase_ServiceBase {
@@ -73450,7 +73450,7 @@ external_mapboxgl_default.a.supermap.GridCellInfosService = GridCellInfosService
  * @param {Object} options - 服务所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class LayerInfoService_LayerInfoService extends ServiceBase_ServiceBase {
@@ -73588,7 +73588,7 @@ external_mapboxgl_default.a.supermap.LayerInfoService = LayerInfoService_LayerIn
  * @param {Object} options - 地图服务信息相关参数。 
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @example
  * new mapboxgl.supermap.MapService(url)
@@ -73666,7 +73666,7 @@ external_mapboxgl_default.a.supermap.MapService = services_MapService_MapService
  * @param {Object} options - 交互服务时所需可选参数。 
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {SuperMap.MeasureMode} [options.measureMode=SuperMap.MeasureMode.DISTANCE] - 量算模式，包括距离量算模式和面积量算模式。
  */
@@ -73759,7 +73759,7 @@ external_mapboxgl_default.a.supermap.MeasureService = services_MeasureService_Me
  * @param {Object} options - 服务所需可选参数。 
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBase {
@@ -74128,7 +74128,7 @@ external_mapboxgl_default.a.supermap.NetworkAnalystService = NetworkAnalystServi
  * @param {Object} options - 服务所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class NetworkAnalyst3DService_NetworkAnalyst3DService extends ServiceBase_ServiceBase {
@@ -74279,7 +74279,7 @@ external_mapboxgl_default.a.supermap.NetworkAnalyst3DService = NetworkAnalyst3DS
  * @param {Object} options - 交互服务时所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
@@ -75140,7 +75140,7 @@ external_mapboxgl_default.a.supermap.ProcessingService = ProcessingService_Proce
  * @param {Object} options - 服务交互时所需的可选参数。 
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @example
  * new mapboxgl.supermap.QueryService(url)
@@ -75333,7 +75333,7 @@ external_mapboxgl_default.a.supermap.QueryService = services_QueryService_QueryS
  * @param {Object} options - 交互服务时所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBase {
@@ -75831,7 +75831,7 @@ external_mapboxgl_default.a.supermap.SpatialAnalystService = SpatialAnalystServi
  * @param {Object} options - 交互服务时所需可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class services_ThemeService_ThemeService extends ServiceBase_ServiceBase {
@@ -75888,7 +75888,7 @@ external_mapboxgl_default.a.supermap.ThemeService = services_ThemeService_ThemeS
  * @param {Object} option - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class TrafficTransferAnalystService_TrafficTransferAnalystService extends ServiceBase_ServiceBase {

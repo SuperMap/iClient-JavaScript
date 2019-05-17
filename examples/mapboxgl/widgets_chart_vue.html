@@ -8,8 +8,7 @@
   <meta charset="UTF-8">
   <title data-i18n='resources.title_widgetsChart_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-  <!-- <script include="echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script> -->
-  <script include="echarts,iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script include="echarts-vue,iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
     #main {
       margin: 0 auto;
@@ -21,11 +20,22 @@
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
   <div id="main">
-    <sm-web-map :web-map-options="{server: 'http://support.supermap.com.cn:8092/'}" map-id="1649097980"></sm-web-map>
-    <sm-chart :style="chartStyle" icon-class="" :datasets="datasets" :chart-options="chartOptions"></sm-chart>
-    <sm-chart :style="chartStyle1" icon-class="" chart-type="line" :datasets="datasets" :chart-options="chartOptions1"></sm-chart>
-    <sm-chart :style="chartStyle2" icon-class="" chart-type="scatter" :datasets="datasets" :chart-options="chartOptions2"></sm-chart>
-
+  <sm-web-map :web-map-options="{server: 'http://support.supermap.com.cn:8092/'}" map-id="1649097980"></sm-web-map>
+  <sm-chart 
+    icon-class=""  
+    :style="chartStyle" 
+    :options="echartOption"
+  ></sm-chart>
+  <sm-chart 
+    icon-class=""  
+    :style="chartStyle1" 
+    :options="echartOption1"
+  ></sm-chart>
+  <sm-chart 
+    icon-class=""  
+    :style="chartStyle2" 
+    :options="echartOption2"
+  ></sm-chart>
   </div>
 
 
@@ -55,66 +65,95 @@
             bottom: "10px",
             right: "830px"
           },
-          // datasets和chartOptions都是sm-chart组件的props
-          datasets: {
+          echartOption:{},
+          echartOption1:{},
+          echartOption2:{}
+          
+        };
+      },
+      mounted(){
+          // datasets和dataOptions，echartOptions都是sm-chart组件的props
+         let datasets = {
             type: "iPortal", //iServer iPortal
             url: "http://support.supermap.com.cn:8092/web/datas/1920557079",
             queryInfo: {
               maxFeatures: 20
             }
           },
-          chartOptions: {
-            padding: {
+          // echarts中涉及到超图数据series和坐标轴的字段的配置
+          dataOptions = [
+            {
+              seriesType: "bar", //图表类型
+              isStastic: true, //是否统计, 默认不统计
+              isStack: true, //是否堆叠, 默认不堆叠
+              xField: "机场", //x坐标轴数据字段
+              yField: "2016起降架次（架次）" //统计的数据，legned默认名字
+            },
+            {
+              seriesType: "bar",
+              isStastic: true,
+              isStack: true,
+              xField: "机场",
+              yField: "2017起降架次（架次）",
+            }
+          ],
+          dataOptions1 = [
+            {
+              seriesType: "line", //图表类型
+              isStastic: true, //是否统计, 默认不统计
+              isStack: true, //是否堆叠, 默认不堆叠
+              xField: "机场", //x坐标轴数据字段
+              yField: "2016旅客吞吐量（人次）" //统计的数据，legned默认名字
+            },
+            {
+              seriesType: "line",
+              isStastic: true,
+              isStack: true,
+              xField: "机场",
+              yField: "2017旅客吞吐量（人次）"
+            }
+          ],
+          dataOptions2 = [
+            {
+              seriesType: "scatter", //图表类型
+              isStastic: true, //是否统计, 默认不统计
+              isStack: false, //是否堆叠, 默认不堆叠
+              xField: "机场", //x坐标轴数据字段
+              yField: "同比增速%" //统计的数据，legned默认名字
+            }
+          ],
+          // 和echarts一样的配置
+          echartOptions = {
+            legend: {data: ['2016起降架次（架次）', '2017起降架次（架次）']}, //与legendName || yField数据一致
+            tooltip: {formatter: "{b0}: {c0}"},
+            grid:{ 
               top: 30,
-              bottom: 40,
-              left: 80,
+              bottom: 60,
+              left: 60,
               right: 30
-            },
-            xFieldStatistical: true,
-            xAxisLabelRotate: true,
-            yAxisLabelRotate: false,
-            legendPosition: "top",
-            xAxisMaxCount: 20,
-            xAxisName: "",
-            yAxisName: "",
-            xAxis: "机场",
-            yAxis: ["2017起降架次（架次）", "2016起降架次（架次）"]
+            }
           },
-          chartOptions2: {
-            padding: {
+          echartOptions1 = {
+            legend: {data: ['2016旅客吞吐量（人次）', '2017旅客吞吐量（人次）']}, //与legendName || yField数据一致
+            tooltip: {formatter: "{b0}: {c0}"},
+            grid:{ 
               top: 30,
-              bottom: 40,
-              left: 50,
-              right: 40
-            },
-            xFieldStatistical: true,
-            xAxisLabelRotate: true,
-            yAxisLabelRotate: false,
-            legendPosition: "top",
-            xAxisMaxCount: 20,
-            xAxisName: "机场",
-            yAxisName: "同比增速%",
-            xAxis: "机场",
-            yAxis: ["同比增速%"]
-          },
-          chartOptions1: {
-            padding: {
-              top: 30,
-              bottom: 40,
-              left: 90,
+              bottom: 60,
+              left: 60,
               right: 30
-            },
-            xFieldStatistical: true,
-            xAxisLabelRotate: true,
-            yAxisLabelRotate: false,
-            legendPosition: "top",
-            xAxisMaxCount: 20,
-            xAxisName: "",
-            yAxisName: "",
-            xAxis: "机场",
-            yAxis: ["2017旅客吞吐量（人次）", "2016旅客吞吐量（人次）"]
-          }
-        };
+            }
+          },
+          echartOptions2 = {
+            legend: {data: ['同比增速%']},//与legendName || yField数据一致
+            tooltip: {formatter: "{b0}: {c0}"},
+          };
+          let EchartsDataService = SuperMap.Widgets.utils.EchartsDataService;
+          let echartsDataService = new EchartsDataService();
+          echartsDataService.getDataOption(datasets, dataOptions).then(data => {
+            this.echartOption = Object.assign(data, echartOptions);
+            this.echartOption1  = Object.assign(echartsDataService.formatChartData(dataOptions1), echartOptions1);
+            this.echartOption2  = Object.assign(echartsDataService.formatChartData(dataOptions2), echartOptions2);
+        });
       }
     })
   </script>
