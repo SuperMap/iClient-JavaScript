@@ -1172,7 +1172,7 @@ var exampleConfig = {
                       name: "栅格图层",
                       name_en: "Raster layer",
                       version: "10.x.x",
-                      thumbnail: "widgets_map_vue.png",
+                      thumbnail: "widgets_rasterLayer_vue.png",
                       fileName: "widgets_raster_vue"
                     } ,{
                       name: "矢量瓦片图层",
@@ -1226,13 +1226,13 @@ var exampleConfig = {
                       name: "MapV 图层",
                       name_en: "MapV layer",
                       version: "10.x.x",
-                      thumbnail: "mapvPolylineTime.gif",
+                      thumbnail: "widgets_mapv_vue.gif",
                       fileName: "widgets_mapv_vue"
                     } ,{
                       name: "Echarts 图层",
                       name_en: "Echarts layer",
                       version: "10.x.x",
-                      thumbnail: "echarts_ChangchunPublicTransportNetwork.gif",
+                      thumbnail: "widgets_echartsLayer_vue.gif",
                       fileName: "widgets_echarts_vue"
                     } ,{
                       name: "DeckGL 图层",
