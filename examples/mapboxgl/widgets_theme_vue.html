@@ -66,7 +66,7 @@
 <body>
   <div id="main">
     <!-- WebMap微件 -->
-    <sm-web-map :web-map-options="webOptions" map-id="1649097980" ref="map"></sm-web-map>
+    <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="1649097980" ref="map"></sm-web-map>
     <!-- 切换主题按钮组 -->
     <el-radio-group class="radio-group" v-model="theme" @change="changeTheme">
       <el-radio-button label="light">浅色主题</el-radio-button>
@@ -116,9 +116,6 @@
       data() {
         return {
           theme: "light",
-          webOptions: {
-            server: 'http://support.supermap.com.cn:8092/'
-          },
           name: "北京/首都",
           passengerNumber: 95786296,
           goodsNumber: 94393454,

@@ -20,7 +20,7 @@
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
   <div id="main">
-    <sm-web-map :web-map-options="{server: 'http://support.supermap.com.cn:8092/'}" map-id="750216161">
+    <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="750216161">
       <!-- 图例组件: sm-legend -->
       <sm-legend :layer-names="['RANGE-民航数据CSV-0']" position="bottom-left"></sm-legend>
     </sm-web-map>

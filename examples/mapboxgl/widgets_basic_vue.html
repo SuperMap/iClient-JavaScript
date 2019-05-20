@@ -49,7 +49,7 @@
 <body>
 
   <div id="main">
-    <sm-web-map :web-map-options="webOptions" map-id="1649097980" ref="map"></sm-web-map>
+    <sm-web-map server-url="http://support.supermap.com.cn:8092/" map-id="1649097980" ref="map"></sm-web-map>
     <el-card class="box-card">
       <!-- 图标微件 -->
       <sm-icon class-name="location" size="18px" text-color='rgb(63, 177, 227)' :style="{float: 'left'}">
@@ -84,9 +84,6 @@
       el: '#main',
       data() {
         return {
-          webOptions: {
-            server: 'http://support.supermap.com.cn:8092/'
-          },
           name: "北京/首都",
           passengerNumber: 95786296,
           goodsNumber: 94393454,

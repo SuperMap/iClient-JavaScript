@@ -71,6 +71,7 @@
         if (inArray(includes, 'echarts')) {
             inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.js");
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
+            inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.js");
         }
         if (inArray(includes, 'echarts-vue')) {
           inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.js");
