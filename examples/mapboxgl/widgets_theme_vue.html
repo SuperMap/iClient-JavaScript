@@ -8,7 +8,7 @@
   <meta charset="UTF-8">
   <title data-i18n='resources.title_widgetsTheme_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-  <script include="element,echarts,iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js">
+  <script include="element,echarts-vue,iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js">
   </script>
   <style>
     body {
@@ -66,7 +66,7 @@
 <body>
   <div id="main">
     <!-- WebMap微件 -->
-    <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="1649097980" ref="map"></sm-web-map>
+    <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="1649097980" ref="map" @load.once='load'></sm-web-map>
     <!-- 切换主题按钮组 -->
     <el-radio-group class="radio-group" v-model="theme" @change="changeTheme">
       <el-radio-button label="light">浅色主题</el-radio-button>
@@ -176,20 +176,13 @@
               ]
             })
           }
-
-        }
-      },
-      mounted() {
-        var vm = this;
-        //为地图绑定事件，点击点要素刷新微件显示值
-        this.$refs['map'] && this.$refs['map'].$once('loaded', function () {
-          var me = this;
-          this.map && this.map.on("click", function (e) {
-            var bbox = [
-              [e.point.x - 2, e.point.y - 2],
-              [e.point.x + 2, e.point.y + 2]
-            ];
-            var features = me.map.queryRenderedFeatures(bbox);
+        },
+        load(obj) {
+          var vm = this;
+          map = obj.map;
+          map.on('click', function(e) {
+            var bbox = [[e.point.x - 2, e.point.y - 2], [e.point.x + 2, e.point.y + 2]];
+            var features = map.queryRenderedFeatures(bbox);
             if (features.length > 0) {
               var properties = features[0].properties;
               vm.name = properties['机场'];
@@ -197,9 +190,8 @@
               vm.goodsNumber = properties['2017货邮吞吐量（吨）'] || 0;
               vm.speedIncrease = properties['同比增速%'] || 0;
             }
-          })
-
-        });
+          });
+        }
       }
     })
   </script>

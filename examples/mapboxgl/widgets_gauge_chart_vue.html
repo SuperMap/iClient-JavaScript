@@ -17,6 +17,9 @@
                 width: 100%;
                 height: 100%;
             }
+            .sm-widget-chart .sm-widget-card__content{
+              height: 300px;
+            }
         </style>
     </head>
 
@@ -24,7 +27,12 @@
         <div id="main">
             <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="1649097980">
             </sm-web-map>
-            <sm-chart :style="chartStyle" icon-class="" :options="echartOption" ref="smChart"></sm-chart>
+            <sm-chart 
+            icon-class="" 
+            :style="chartStyle" 
+            :dataset="dataset" 
+            :dataset-options="datasetOptions"
+            ></sm-chart>
         </div>
 
         <script>
@@ -33,39 +41,27 @@
                 data() {
                     return {
                         chartStyle: {
-                            width: "400px",
-                            height: "300px",
                             position: "absolute",
                             bottom: "10px",
                             right: "10px"
                         },
-
-                        // 和echarts一样的配置
-                        echartOption: {}
-                    };
-                },
-                mounted() {
-                    let datasets = {
-                            type: "iPortal", //iServer iPortal
-                            url: "http://support.supermap.com.cn:8092/web/datas/1920557079",
+                        dataset: {
+                            type: "iServer", //iServer iPortal
+                            url: "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R",
                             queryInfo: {
-                                maxFeatures: 1
+                                maxFeatures: 1,
+                                 attributeFilter: "SmID = 2"
                             }
                         },
-                        dataOptions = [
+                        datasetOptions: [
                             {
                                 seriesType: "gauge", //图表类型
                                 isStastic: true, //是否统计, 默认不统计
-                                xField: "机场", //x坐标轴数据字段
-                                yField: "同比增速%" //统计的数据，legned默认名字
+                                xField: "LANDTYPE", //x坐标轴数据字段
+                                yField: "AREA" //统计的数据，legned默认名字
                             }
-                        ];
-
-                    let EchartsDataService = SuperMap.Widgets.utils.EchartsDataService;
-                    this.echartsDataService = new EchartsDataService();
-                    this.echartsDataService.getDataOption(datasets, dataOptions).then(data => {
-                        this.echartOption = data;
-                    });
+                        ]
+                    };
                 }
             });
         </script>

@@ -1466,7 +1466,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 101);
+/******/ 	return __webpack_require__(__webpack_require__.s = 88);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1573,7 +1573,28 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 101:
+/***/ 23:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("VIiR");
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("0BDH");
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("gSIQ");
+
+/***/ }),
+
+/***/ 88:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1850,27 +1871,6 @@ collapse_item.install = function (Vue) {
 
 /* harmony default export */ var packages_collapse_item = __webpack_exports__["default"] = (collapse_item);
 
-/***/ }),
-
-/***/ 23:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("VIiR");
-
-/***/ }),
-
-/***/ 3:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("0BDH");
-
-/***/ }),
-
-/***/ 4:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("gSIQ");
-
 /***/ })
 
 /******/ });
@@ -1881,747 +1881,6 @@ module.exports = __webpack_require__("gSIQ");
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-
-/***/ "1+Cv":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @module helpers
- */
-/**
- * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
- *
- * @memberof helpers
- * @type {number}
- */
-exports.earthRadius = 6371008.8;
-/**
- * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.factors = {
-    centimeters: exports.earthRadius * 100,
-    centimetres: exports.earthRadius * 100,
-    degrees: exports.earthRadius / 111325,
-    feet: exports.earthRadius * 3.28084,
-    inches: exports.earthRadius * 39.370,
-    kilometers: exports.earthRadius / 1000,
-    kilometres: exports.earthRadius / 1000,
-    meters: exports.earthRadius,
-    metres: exports.earthRadius,
-    miles: exports.earthRadius / 1609.344,
-    millimeters: exports.earthRadius * 1000,
-    millimetres: exports.earthRadius * 1000,
-    nauticalmiles: exports.earthRadius / 1852,
-    radians: 1,
-    yards: exports.earthRadius / 1.0936,
-};
-/**
- * Units of measurement factors based on 1 meter.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.unitsFactors = {
-    centimeters: 100,
-    centimetres: 100,
-    degrees: 1 / 111325,
-    feet: 3.28084,
-    inches: 39.370,
-    kilometers: 1 / 1000,
-    kilometres: 1 / 1000,
-    meters: 1,
-    metres: 1,
-    miles: 1 / 1609.344,
-    millimeters: 1000,
-    millimetres: 1000,
-    nauticalmiles: 1 / 1852,
-    radians: 1 / exports.earthRadius,
-    yards: 1 / 1.0936,
-};
-/**
- * Area of measurement factors based on 1 square meter.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.areaFactors = {
-    acres: 0.000247105,
-    centimeters: 10000,
-    centimetres: 10000,
-    feet: 10.763910417,
-    inches: 1550.003100006,
-    kilometers: 0.000001,
-    kilometres: 0.000001,
-    meters: 1,
-    metres: 1,
-    miles: 3.86e-7,
-    millimeters: 1000000,
-    millimetres: 1000000,
-    yards: 1.195990046,
-};
-/**
- * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
- *
- * @name feature
- * @param {Geometry} geometry input geometry
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature} a GeoJSON Feature
- * @example
- * var geometry = {
- *   "type": "Point",
- *   "coordinates": [110, 50]
- * };
- *
- * var feature = turf.feature(geometry);
- *
- * //=feature
- */
-function feature(geom, properties, options) {
-    if (options === void 0) { options = {}; }
-    var feat = { type: "Feature" };
-    if (options.id === 0 || options.id) {
-        feat.id = options.id;
-    }
-    if (options.bbox) {
-        feat.bbox = options.bbox;
-    }
-    feat.properties = properties || {};
-    feat.geometry = geom;
-    return feat;
-}
-exports.feature = feature;
-/**
- * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
- * For GeometryCollection type use `helpers.geometryCollection`
- *
- * @name geometry
- * @param {string} type Geometry Type
- * @param {Array<any>} coordinates Coordinates
- * @param {Object} [options={}] Optional Parameters
- * @returns {Geometry} a GeoJSON Geometry
- * @example
- * var type = "Point";
- * var coordinates = [110, 50];
- * var geometry = turf.geometry(type, coordinates);
- * // => geometry
- */
-function geometry(type, coordinates, options) {
-    if (options === void 0) { options = {}; }
-    switch (type) {
-        case "Point": return point(coordinates).geometry;
-        case "LineString": return lineString(coordinates).geometry;
-        case "Polygon": return polygon(coordinates).geometry;
-        case "MultiPoint": return multiPoint(coordinates).geometry;
-        case "MultiLineString": return multiLineString(coordinates).geometry;
-        case "MultiPolygon": return multiPolygon(coordinates).geometry;
-        default: throw new Error(type + " is invalid");
-    }
-}
-exports.geometry = geometry;
-/**
- * Creates a {@link Point} {@link Feature} from a Position.
- *
- * @name point
- * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Point>} a Point feature
- * @example
- * var point = turf.point([-75.343, 39.984]);
- *
- * //=point
- */
-function point(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "Point",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.point = point;
-/**
- * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
- *
- * @name points
- * @param {Array<Array<number>>} coordinates an array of Points
- * @param {Object} [properties={}] Translate these properties to each Feature
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
- * associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Point>} Point Feature
- * @example
- * var points = turf.points([
- *   [-75, 39],
- *   [-80, 45],
- *   [-78, 50]
- * ]);
- *
- * //=points
- */
-function points(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return point(coords, properties);
-    }), options);
-}
-exports.points = points;
-/**
- * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
- *
- * @name polygon
- * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Polygon>} Polygon Feature
- * @example
- * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
- *
- * //=polygon
- */
-function polygon(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
-        var ring = coordinates_1[_i];
-        if (ring.length < 4) {
-            throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
-        }
-        for (var j = 0; j < ring[ring.length - 1].length; j++) {
-            // Check if first point of Polygon contains two numbers
-            if (ring[ring.length - 1][j] !== ring[0][j]) {
-                throw new Error("First and last Position are not equivalent.");
-            }
-        }
-    }
-    var geom = {
-        type: "Polygon",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.polygon = polygon;
-/**
- * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
- *
- * @name polygons
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
- * @example
- * var polygons = turf.polygons([
- *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
- *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
- * ]);
- *
- * //=polygons
- */
-function polygons(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return polygon(coords, properties);
-    }), options);
-}
-exports.polygons = polygons;
-/**
- * Creates a {@link LineString} {@link Feature} from an Array of Positions.
- *
- * @name lineString
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<LineString>} LineString Feature
- * @example
- * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
- * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
- *
- * //=linestring1
- * //=linestring2
- */
-function lineString(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    if (coordinates.length < 2) {
-        throw new Error("coordinates must be an array of two or more positions");
-    }
-    var geom = {
-        type: "LineString",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.lineString = lineString;
-/**
- * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
- *
- * @name lineStrings
- * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
- * associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<LineString>} LineString FeatureCollection
- * @example
- * var linestrings = turf.lineStrings([
- *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
- *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
- * ]);
- *
- * //=linestrings
- */
-function lineStrings(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return lineString(coords, properties);
-    }), options);
-}
-exports.lineStrings = lineStrings;
-/**
- * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
- *
- * @name featureCollection
- * @param {Feature[]} features input features
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {FeatureCollection} FeatureCollection of Features
- * @example
- * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
- * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
- * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
- *
- * var collection = turf.featureCollection([
- *   locationA,
- *   locationB,
- *   locationC
- * ]);
- *
- * //=collection
- */
-function featureCollection(features, options) {
-    if (options === void 0) { options = {}; }
-    var fc = { type: "FeatureCollection" };
-    if (options.id) {
-        fc.id = options.id;
-    }
-    if (options.bbox) {
-        fc.bbox = options.bbox;
-    }
-    fc.features = features;
-    return fc;
-}
-exports.featureCollection = featureCollection;
-/**
- * Creates a {@link Feature<MultiLineString>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiLineString
- * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiLineString>} a MultiLineString feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
- *
- * //=multiLine
- */
-function multiLineString(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiLineString",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiLineString = multiLineString;
-/**
- * Creates a {@link Feature<MultiPoint>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPoint
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPoint>} a MultiPoint feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPt = turf.multiPoint([[0,0],[10,10]]);
- *
- * //=multiPt
- */
-function multiPoint(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiPoint",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiPoint = multiPoint;
-/**
- * Creates a {@link Feature<MultiPolygon>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPolygon
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPolygon>} a multipolygon feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
- *
- * //=multiPoly
- *
- */
-function multiPolygon(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiPolygon",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiPolygon = multiPolygon;
-/**
- * Creates a {@link Feature<GeometryCollection>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name geometryCollection
- * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
- * @example
- * var pt = turf.geometry("Point", [100, 0]);
- * var line = turf.geometry("LineString", [[101, 0], [102, 1]]);
- * var collection = turf.geometryCollection([pt, line]);
- *
- * // => collection
- */
-function geometryCollection(geometries, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "GeometryCollection",
-        geometries: geometries,
-    };
-    return feature(geom, properties, options);
-}
-exports.geometryCollection = geometryCollection;
-/**
- * Round number to precision
- *
- * @param {number} num Number
- * @param {number} [precision=0] Precision
- * @returns {number} rounded number
- * @example
- * turf.round(120.4321)
- * //=120
- *
- * turf.round(120.4321, 2)
- * //=120.43
- */
-function round(num, precision) {
-    if (precision === void 0) { precision = 0; }
-    if (precision && !(precision >= 0)) {
-        throw new Error("precision must be a positive number");
-    }
-    var multiplier = Math.pow(10, precision || 0);
-    return Math.round(num * multiplier) / multiplier;
-}
-exports.round = round;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name radiansToLength
- * @param {number} radians in radians across the sphere
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} distance
- */
-function radiansToLength(radians, units) {
-    if (units === void 0) { units = "kilometers"; }
-    var factor = exports.factors[units];
-    if (!factor) {
-        throw new Error(units + " units is invalid");
-    }
-    return radians * factor;
-}
-exports.radiansToLength = radiansToLength;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name lengthToRadians
- * @param {number} distance in real units
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} radians
- */
-function lengthToRadians(distance, units) {
-    if (units === void 0) { units = "kilometers"; }
-    var factor = exports.factors[units];
-    if (!factor) {
-        throw new Error(units + " units is invalid");
-    }
-    return distance / factor;
-}
-exports.lengthToRadians = lengthToRadians;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
- *
- * @name lengthToDegrees
- * @param {number} distance in real units
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} degrees
- */
-function lengthToDegrees(distance, units) {
-    return radiansToDegrees(lengthToRadians(distance, units));
-}
-exports.lengthToDegrees = lengthToDegrees;
-/**
- * Converts any bearing angle from the north line direction (positive clockwise)
- * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
- *
- * @name bearingToAzimuth
- * @param {number} bearing angle, between -180 and +180 degrees
- * @returns {number} angle between 0 and 360 degrees
- */
-function bearingToAzimuth(bearing) {
-    var angle = bearing % 360;
-    if (angle < 0) {
-        angle += 360;
-    }
-    return angle;
-}
-exports.bearingToAzimuth = bearingToAzimuth;
-/**
- * Converts an angle in radians to degrees
- *
- * @name radiansToDegrees
- * @param {number} radians angle in radians
- * @returns {number} degrees between 0 and 360 degrees
- */
-function radiansToDegrees(radians) {
-    var degrees = radians % (2 * Math.PI);
-    return degrees * 180 / Math.PI;
-}
-exports.radiansToDegrees = radiansToDegrees;
-/**
- * Converts an angle in degrees to radians
- *
- * @name degreesToRadians
- * @param {number} degrees angle between 0 and 360 degrees
- * @returns {number} angle in radians
- */
-function degreesToRadians(degrees) {
-    var radians = degrees % 360;
-    return radians * Math.PI / 180;
-}
-exports.degreesToRadians = degreesToRadians;
-/**
- * Converts a length to the requested unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @param {number} length to be converted
- * @param {Units} [originalUnit="kilometers"] of the length
- * @param {Units} [finalUnit="kilometers"] returned unit
- * @returns {number} the converted length
- */
-function convertLength(length, originalUnit, finalUnit) {
-    if (originalUnit === void 0) { originalUnit = "kilometers"; }
-    if (finalUnit === void 0) { finalUnit = "kilometers"; }
-    if (!(length >= 0)) {
-        throw new Error("length must be a positive number");
-    }
-    return radiansToLength(lengthToRadians(length, originalUnit), finalUnit);
-}
-exports.convertLength = convertLength;
-/**
- * Converts a area to the requested unit.
- * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
- * @param {number} area to be converted
- * @param {Units} [originalUnit="meters"] of the distance
- * @param {Units} [finalUnit="kilometers"] returned unit
- * @returns {number} the converted distance
- */
-function convertArea(area, originalUnit, finalUnit) {
-    if (originalUnit === void 0) { originalUnit = "meters"; }
-    if (finalUnit === void 0) { finalUnit = "kilometers"; }
-    if (!(area >= 0)) {
-        throw new Error("area must be a positive number");
-    }
-    var startFactor = exports.areaFactors[originalUnit];
-    if (!startFactor) {
-        throw new Error("invalid original units");
-    }
-    var finalFactor = exports.areaFactors[finalUnit];
-    if (!finalFactor) {
-        throw new Error("invalid final units");
-    }
-    return (area / startFactor) * finalFactor;
-}
-exports.convertArea = convertArea;
-/**
- * isNumber
- *
- * @param {*} num Number to validate
- * @returns {boolean} true/false
- * @example
- * turf.isNumber(123)
- * //=true
- * turf.isNumber('foo')
- * //=false
- */
-function isNumber(num) {
-    return !isNaN(num) && num !== null && !Array.isArray(num) && !/^\s*$/.test(num);
-}
-exports.isNumber = isNumber;
-/**
- * isObject
- *
- * @param {*} input variable to validate
- * @returns {boolean} true/false
- * @example
- * turf.isObject({elevation: 10})
- * //=true
- * turf.isObject('foo')
- * //=false
- */
-function isObject(input) {
-    return (!!input) && (input.constructor === Object);
-}
-exports.isObject = isObject;
-/**
- * Validate BBox
- *
- * @private
- * @param {Array<number>} bbox BBox to validate
- * @returns {void}
- * @throws Error if BBox is not valid
- * @example
- * validateBBox([-180, -40, 110, 50])
- * //=OK
- * validateBBox([-180, -40])
- * //=Error
- * validateBBox('Foo')
- * //=Error
- * validateBBox(5)
- * //=Error
- * validateBBox(null)
- * //=Error
- * validateBBox(undefined)
- * //=Error
- */
-function validateBBox(bbox) {
-    if (!bbox) {
-        throw new Error("bbox is required");
-    }
-    if (!Array.isArray(bbox)) {
-        throw new Error("bbox must be an Array");
-    }
-    if (bbox.length !== 4 && bbox.length !== 6) {
-        throw new Error("bbox must be an Array of 4 or 6 numbers");
-    }
-    bbox.forEach(function (num) {
-        if (!isNumber(num)) {
-            throw new Error("bbox must only contain numbers");
-        }
-    });
-}
-exports.validateBBox = validateBBox;
-/**
- * Validate Id
- *
- * @private
- * @param {string|number} id Id to validate
- * @returns {void}
- * @throws Error if Id is not valid
- * @example
- * validateId([-180, -40, 110, 50])
- * //=Error
- * validateId([-180, -40])
- * //=Error
- * validateId('Foo')
- * //=OK
- * validateId(5)
- * //=OK
- * validateId(null)
- * //=Error
- * validateId(undefined)
- * //=Error
- */
-function validateId(id) {
-    if (!id) {
-        throw new Error("id is required");
-    }
-    if (["string", "number"].indexOf(typeof id) === -1) {
-        throw new Error("id must be a number or a string");
-    }
-}
-exports.validateId = validateId;
-// Deprecated methods
-function radians2degrees() {
-    throw new Error("method has been renamed to `radiansToDegrees`");
-}
-exports.radians2degrees = radians2degrees;
-function degrees2radians() {
-    throw new Error("method has been renamed to `degreesToRadians`");
-}
-exports.degrees2radians = degrees2radians;
-function distanceToDegrees() {
-    throw new Error("method has been renamed to `lengthToDegrees`");
-}
-exports.distanceToDegrees = distanceToDegrees;
-function distanceToRadians() {
-    throw new Error("method has been renamed to `lengthToRadians`");
-}
-exports.distanceToRadians = distanceToRadians;
-function radiansToDistance() {
-    throw new Error("method has been renamed to `radiansToLength`");
-}
-exports.radiansToDistance = radiansToDistance;
-function bearingToAngle() {
-    throw new Error("method has been renamed to `bearingToAzimuth`");
-}
-exports.bearingToAngle = bearingToAngle;
-function convertDistance() {
-    throw new Error("method has been renamed to `convertLength`");
-}
-exports.convertDistance = convertDistance;
-
 
 /***/ }),
 
@@ -3258,747 +2517,6 @@ if (typeof(window) != 'undefined') window.Query = Query;
 /***/ (function(module) {
 
 module.exports = {"textColor":"#333","background":"rgba(255, 255, 255,0.6)","colorGroup":["#3fb1e3","#6be6c1","#626c91","#a0a7e6","#c4ebad","#96dee8"]};
-
-/***/ }),
-
-/***/ "2hnc":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @module helpers
- */
-/**
- * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
- *
- * @memberof helpers
- * @type {number}
- */
-exports.earthRadius = 6371008.8;
-/**
- * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.factors = {
-    centimeters: exports.earthRadius * 100,
-    centimetres: exports.earthRadius * 100,
-    degrees: exports.earthRadius / 111325,
-    feet: exports.earthRadius * 3.28084,
-    inches: exports.earthRadius * 39.370,
-    kilometers: exports.earthRadius / 1000,
-    kilometres: exports.earthRadius / 1000,
-    meters: exports.earthRadius,
-    metres: exports.earthRadius,
-    miles: exports.earthRadius / 1609.344,
-    millimeters: exports.earthRadius * 1000,
-    millimetres: exports.earthRadius * 1000,
-    nauticalmiles: exports.earthRadius / 1852,
-    radians: 1,
-    yards: exports.earthRadius / 1.0936,
-};
-/**
- * Units of measurement factors based on 1 meter.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.unitsFactors = {
-    centimeters: 100,
-    centimetres: 100,
-    degrees: 1 / 111325,
-    feet: 3.28084,
-    inches: 39.370,
-    kilometers: 1 / 1000,
-    kilometres: 1 / 1000,
-    meters: 1,
-    metres: 1,
-    miles: 1 / 1609.344,
-    millimeters: 1000,
-    millimetres: 1000,
-    nauticalmiles: 1 / 1852,
-    radians: 1 / exports.earthRadius,
-    yards: 1 / 1.0936,
-};
-/**
- * Area of measurement factors based on 1 square meter.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.areaFactors = {
-    acres: 0.000247105,
-    centimeters: 10000,
-    centimetres: 10000,
-    feet: 10.763910417,
-    inches: 1550.003100006,
-    kilometers: 0.000001,
-    kilometres: 0.000001,
-    meters: 1,
-    metres: 1,
-    miles: 3.86e-7,
-    millimeters: 1000000,
-    millimetres: 1000000,
-    yards: 1.195990046,
-};
-/**
- * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
- *
- * @name feature
- * @param {Geometry} geometry input geometry
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature} a GeoJSON Feature
- * @example
- * var geometry = {
- *   "type": "Point",
- *   "coordinates": [110, 50]
- * };
- *
- * var feature = turf.feature(geometry);
- *
- * //=feature
- */
-function feature(geom, properties, options) {
-    if (options === void 0) { options = {}; }
-    var feat = { type: "Feature" };
-    if (options.id === 0 || options.id) {
-        feat.id = options.id;
-    }
-    if (options.bbox) {
-        feat.bbox = options.bbox;
-    }
-    feat.properties = properties || {};
-    feat.geometry = geom;
-    return feat;
-}
-exports.feature = feature;
-/**
- * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
- * For GeometryCollection type use `helpers.geometryCollection`
- *
- * @name geometry
- * @param {string} type Geometry Type
- * @param {Array<any>} coordinates Coordinates
- * @param {Object} [options={}] Optional Parameters
- * @returns {Geometry} a GeoJSON Geometry
- * @example
- * var type = "Point";
- * var coordinates = [110, 50];
- * var geometry = turf.geometry(type, coordinates);
- * // => geometry
- */
-function geometry(type, coordinates, options) {
-    if (options === void 0) { options = {}; }
-    switch (type) {
-        case "Point": return point(coordinates).geometry;
-        case "LineString": return lineString(coordinates).geometry;
-        case "Polygon": return polygon(coordinates).geometry;
-        case "MultiPoint": return multiPoint(coordinates).geometry;
-        case "MultiLineString": return multiLineString(coordinates).geometry;
-        case "MultiPolygon": return multiPolygon(coordinates).geometry;
-        default: throw new Error(type + " is invalid");
-    }
-}
-exports.geometry = geometry;
-/**
- * Creates a {@link Point} {@link Feature} from a Position.
- *
- * @name point
- * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Point>} a Point feature
- * @example
- * var point = turf.point([-75.343, 39.984]);
- *
- * //=point
- */
-function point(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "Point",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.point = point;
-/**
- * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
- *
- * @name points
- * @param {Array<Array<number>>} coordinates an array of Points
- * @param {Object} [properties={}] Translate these properties to each Feature
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
- * associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Point>} Point Feature
- * @example
- * var points = turf.points([
- *   [-75, 39],
- *   [-80, 45],
- *   [-78, 50]
- * ]);
- *
- * //=points
- */
-function points(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return point(coords, properties);
-    }), options);
-}
-exports.points = points;
-/**
- * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
- *
- * @name polygon
- * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Polygon>} Polygon Feature
- * @example
- * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
- *
- * //=polygon
- */
-function polygon(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
-        var ring = coordinates_1[_i];
-        if (ring.length < 4) {
-            throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
-        }
-        for (var j = 0; j < ring[ring.length - 1].length; j++) {
-            // Check if first point of Polygon contains two numbers
-            if (ring[ring.length - 1][j] !== ring[0][j]) {
-                throw new Error("First and last Position are not equivalent.");
-            }
-        }
-    }
-    var geom = {
-        type: "Polygon",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.polygon = polygon;
-/**
- * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
- *
- * @name polygons
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
- * @example
- * var polygons = turf.polygons([
- *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
- *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
- * ]);
- *
- * //=polygons
- */
-function polygons(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return polygon(coords, properties);
-    }), options);
-}
-exports.polygons = polygons;
-/**
- * Creates a {@link LineString} {@link Feature} from an Array of Positions.
- *
- * @name lineString
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<LineString>} LineString Feature
- * @example
- * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
- * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
- *
- * //=linestring1
- * //=linestring2
- */
-function lineString(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    if (coordinates.length < 2) {
-        throw new Error("coordinates must be an array of two or more positions");
-    }
-    var geom = {
-        type: "LineString",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.lineString = lineString;
-/**
- * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
- *
- * @name lineStrings
- * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
- * associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<LineString>} LineString FeatureCollection
- * @example
- * var linestrings = turf.lineStrings([
- *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
- *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
- * ]);
- *
- * //=linestrings
- */
-function lineStrings(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return lineString(coords, properties);
-    }), options);
-}
-exports.lineStrings = lineStrings;
-/**
- * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
- *
- * @name featureCollection
- * @param {Feature[]} features input features
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {FeatureCollection} FeatureCollection of Features
- * @example
- * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
- * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
- * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
- *
- * var collection = turf.featureCollection([
- *   locationA,
- *   locationB,
- *   locationC
- * ]);
- *
- * //=collection
- */
-function featureCollection(features, options) {
-    if (options === void 0) { options = {}; }
-    var fc = { type: "FeatureCollection" };
-    if (options.id) {
-        fc.id = options.id;
-    }
-    if (options.bbox) {
-        fc.bbox = options.bbox;
-    }
-    fc.features = features;
-    return fc;
-}
-exports.featureCollection = featureCollection;
-/**
- * Creates a {@link Feature<MultiLineString>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiLineString
- * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiLineString>} a MultiLineString feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
- *
- * //=multiLine
- */
-function multiLineString(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiLineString",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiLineString = multiLineString;
-/**
- * Creates a {@link Feature<MultiPoint>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPoint
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPoint>} a MultiPoint feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPt = turf.multiPoint([[0,0],[10,10]]);
- *
- * //=multiPt
- */
-function multiPoint(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiPoint",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiPoint = multiPoint;
-/**
- * Creates a {@link Feature<MultiPolygon>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPolygon
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPolygon>} a multipolygon feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
- *
- * //=multiPoly
- *
- */
-function multiPolygon(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiPolygon",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiPolygon = multiPolygon;
-/**
- * Creates a {@link Feature<GeometryCollection>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name geometryCollection
- * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
- * @example
- * var pt = turf.geometry("Point", [100, 0]);
- * var line = turf.geometry("LineString", [[101, 0], [102, 1]]);
- * var collection = turf.geometryCollection([pt, line]);
- *
- * // => collection
- */
-function geometryCollection(geometries, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "GeometryCollection",
-        geometries: geometries,
-    };
-    return feature(geom, properties, options);
-}
-exports.geometryCollection = geometryCollection;
-/**
- * Round number to precision
- *
- * @param {number} num Number
- * @param {number} [precision=0] Precision
- * @returns {number} rounded number
- * @example
- * turf.round(120.4321)
- * //=120
- *
- * turf.round(120.4321, 2)
- * //=120.43
- */
-function round(num, precision) {
-    if (precision === void 0) { precision = 0; }
-    if (precision && !(precision >= 0)) {
-        throw new Error("precision must be a positive number");
-    }
-    var multiplier = Math.pow(10, precision || 0);
-    return Math.round(num * multiplier) / multiplier;
-}
-exports.round = round;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name radiansToLength
- * @param {number} radians in radians across the sphere
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} distance
- */
-function radiansToLength(radians, units) {
-    if (units === void 0) { units = "kilometers"; }
-    var factor = exports.factors[units];
-    if (!factor) {
-        throw new Error(units + " units is invalid");
-    }
-    return radians * factor;
-}
-exports.radiansToLength = radiansToLength;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name lengthToRadians
- * @param {number} distance in real units
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} radians
- */
-function lengthToRadians(distance, units) {
-    if (units === void 0) { units = "kilometers"; }
-    var factor = exports.factors[units];
-    if (!factor) {
-        throw new Error(units + " units is invalid");
-    }
-    return distance / factor;
-}
-exports.lengthToRadians = lengthToRadians;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
- *
- * @name lengthToDegrees
- * @param {number} distance in real units
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} degrees
- */
-function lengthToDegrees(distance, units) {
-    return radiansToDegrees(lengthToRadians(distance, units));
-}
-exports.lengthToDegrees = lengthToDegrees;
-/**
- * Converts any bearing angle from the north line direction (positive clockwise)
- * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
- *
- * @name bearingToAzimuth
- * @param {number} bearing angle, between -180 and +180 degrees
- * @returns {number} angle between 0 and 360 degrees
- */
-function bearingToAzimuth(bearing) {
-    var angle = bearing % 360;
-    if (angle < 0) {
-        angle += 360;
-    }
-    return angle;
-}
-exports.bearingToAzimuth = bearingToAzimuth;
-/**
- * Converts an angle in radians to degrees
- *
- * @name radiansToDegrees
- * @param {number} radians angle in radians
- * @returns {number} degrees between 0 and 360 degrees
- */
-function radiansToDegrees(radians) {
-    var degrees = radians % (2 * Math.PI);
-    return degrees * 180 / Math.PI;
-}
-exports.radiansToDegrees = radiansToDegrees;
-/**
- * Converts an angle in degrees to radians
- *
- * @name degreesToRadians
- * @param {number} degrees angle between 0 and 360 degrees
- * @returns {number} angle in radians
- */
-function degreesToRadians(degrees) {
-    var radians = degrees % 360;
-    return radians * Math.PI / 180;
-}
-exports.degreesToRadians = degreesToRadians;
-/**
- * Converts a length to the requested unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @param {number} length to be converted
- * @param {Units} [originalUnit="kilometers"] of the length
- * @param {Units} [finalUnit="kilometers"] returned unit
- * @returns {number} the converted length
- */
-function convertLength(length, originalUnit, finalUnit) {
-    if (originalUnit === void 0) { originalUnit = "kilometers"; }
-    if (finalUnit === void 0) { finalUnit = "kilometers"; }
-    if (!(length >= 0)) {
-        throw new Error("length must be a positive number");
-    }
-    return radiansToLength(lengthToRadians(length, originalUnit), finalUnit);
-}
-exports.convertLength = convertLength;
-/**
- * Converts a area to the requested unit.
- * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
- * @param {number} area to be converted
- * @param {Units} [originalUnit="meters"] of the distance
- * @param {Units} [finalUnit="kilometers"] returned unit
- * @returns {number} the converted distance
- */
-function convertArea(area, originalUnit, finalUnit) {
-    if (originalUnit === void 0) { originalUnit = "meters"; }
-    if (finalUnit === void 0) { finalUnit = "kilometers"; }
-    if (!(area >= 0)) {
-        throw new Error("area must be a positive number");
-    }
-    var startFactor = exports.areaFactors[originalUnit];
-    if (!startFactor) {
-        throw new Error("invalid original units");
-    }
-    var finalFactor = exports.areaFactors[finalUnit];
-    if (!finalFactor) {
-        throw new Error("invalid final units");
-    }
-    return (area / startFactor) * finalFactor;
-}
-exports.convertArea = convertArea;
-/**
- * isNumber
- *
- * @param {*} num Number to validate
- * @returns {boolean} true/false
- * @example
- * turf.isNumber(123)
- * //=true
- * turf.isNumber('foo')
- * //=false
- */
-function isNumber(num) {
-    return !isNaN(num) && num !== null && !Array.isArray(num) && !/^\s*$/.test(num);
-}
-exports.isNumber = isNumber;
-/**
- * isObject
- *
- * @param {*} input variable to validate
- * @returns {boolean} true/false
- * @example
- * turf.isObject({elevation: 10})
- * //=true
- * turf.isObject('foo')
- * //=false
- */
-function isObject(input) {
-    return (!!input) && (input.constructor === Object);
-}
-exports.isObject = isObject;
-/**
- * Validate BBox
- *
- * @private
- * @param {Array<number>} bbox BBox to validate
- * @returns {void}
- * @throws Error if BBox is not valid
- * @example
- * validateBBox([-180, -40, 110, 50])
- * //=OK
- * validateBBox([-180, -40])
- * //=Error
- * validateBBox('Foo')
- * //=Error
- * validateBBox(5)
- * //=Error
- * validateBBox(null)
- * //=Error
- * validateBBox(undefined)
- * //=Error
- */
-function validateBBox(bbox) {
-    if (!bbox) {
-        throw new Error("bbox is required");
-    }
-    if (!Array.isArray(bbox)) {
-        throw new Error("bbox must be an Array");
-    }
-    if (bbox.length !== 4 && bbox.length !== 6) {
-        throw new Error("bbox must be an Array of 4 or 6 numbers");
-    }
-    bbox.forEach(function (num) {
-        if (!isNumber(num)) {
-            throw new Error("bbox must only contain numbers");
-        }
-    });
-}
-exports.validateBBox = validateBBox;
-/**
- * Validate Id
- *
- * @private
- * @param {string|number} id Id to validate
- * @returns {void}
- * @throws Error if Id is not valid
- * @example
- * validateId([-180, -40, 110, 50])
- * //=Error
- * validateId([-180, -40])
- * //=Error
- * validateId('Foo')
- * //=OK
- * validateId(5)
- * //=OK
- * validateId(null)
- * //=Error
- * validateId(undefined)
- * //=Error
- */
-function validateId(id) {
-    if (!id) {
-        throw new Error("id is required");
-    }
-    if (["string", "number"].indexOf(typeof id) === -1) {
-        throw new Error("id must be a number or a string");
-    }
-}
-exports.validateId = validateId;
-// Deprecated methods
-function radians2degrees() {
-    throw new Error("method has been renamed to `radiansToDegrees`");
-}
-exports.radians2degrees = radians2degrees;
-function degrees2radians() {
-    throw new Error("method has been renamed to `degreesToRadians`");
-}
-exports.degrees2radians = degrees2radians;
-function distanceToDegrees() {
-    throw new Error("method has been renamed to `lengthToDegrees`");
-}
-exports.distanceToDegrees = distanceToDegrees;
-function distanceToRadians() {
-    throw new Error("method has been renamed to `lengthToRadians`");
-}
-exports.distanceToRadians = distanceToRadians;
-function radiansToDistance() {
-    throw new Error("method has been renamed to `radiansToLength`");
-}
-exports.radiansToDistance = radiansToDistance;
-function bearingToAngle() {
-    throw new Error("method has been renamed to `bearingToAzimuth`");
-}
-exports.bearingToAngle = bearingToAngle;
-function convertDistance() {
-    throw new Error("method has been renamed to `convertLength`");
-}
-exports.convertDistance = convertDistance;
-
 
 /***/ }),
 
@@ -4784,7 +3302,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 77);
+/******/ 	return __webpack_require__(__webpack_require__.s = 94);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -4898,7 +3416,7 @@ module.exports = __webpack_require__("0BDH");
 
 /***/ }),
 
-/***/ 77:
+/***/ 94:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5916,7 +4434,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 73);
+/******/ 	return __webpack_require__(__webpack_require__.s = 97);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -6030,7 +4548,7 @@ module.exports = __webpack_require__("WST1");
 
 /***/ }),
 
-/***/ 21:
+/***/ 20:
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("EvI9");
@@ -6072,7 +4590,14 @@ module.exports = __webpack_require__("EvI9");
 
 /***/ }),
 
-/***/ 73:
+/***/ 9:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("8606");
+
+/***/ }),
+
+/***/ 97:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6230,7 +4755,7 @@ var input_ = __webpack_require__(9);
 var input_default = /*#__PURE__*/__webpack_require__.n(input_);
 
 // EXTERNAL MODULE: external "element-ui/lib/mixins/focus"
-var focus_ = __webpack_require__(21);
+var focus_ = __webpack_require__(20);
 var focus_default = /*#__PURE__*/__webpack_require__.n(focus_);
 
 // EXTERNAL MODULE: ./src/directives/repeat-click.js
@@ -6541,13 +5066,6 @@ input_number.install = function (Vue) {
 
 /* harmony default export */ var packages_input_number = __webpack_exports__["default"] = (input_number);
 
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("8606");
-
 /***/ })
 
 /******/ });
@@ -6686,9 +5204,7 @@ exports.default = {
     },
 
     showPopper: function showPopper(val) {
-      if (this.disabled) {
-        return;
-      }
+      if (this.disabled) return;
       val ? this.updatePopper() : this.destroyPopper();
       this.$emit('input', val);
     }
@@ -6811,1146 +5327,6 @@ exports.default = {
 
 /***/ }),
 
-/***/ "6mXm":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var helpers = __webpack_require__("2hnc");
-
-/**
- * Callback for coordEach
- *
- * @callback coordEachCallback
- * @param {Array<number>} currentCoord The current coordinate being processed.
- * @param {number} coordIndex The current index of the coordinate being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- * @param {number} geometryIndex The current index of the Geometry being processed.
- */
-
-/**
- * Iterate over coordinates in any GeoJSON object, similar to Array.forEach()
- *
- * @name coordEach
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentCoord, coordIndex, featureIndex, multiFeatureIndex)
- * @param {boolean} [excludeWrapCoord=false] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
- * @returns {void}
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {"foo": "bar"}),
- *   turf.point([36, 53], {"hello": "world"})
- * ]);
- *
- * turf.coordEach(features, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
- *   //=currentCoord
- *   //=coordIndex
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- * });
- */
-function coordEach(geojson, callback, excludeWrapCoord) {
-    // Handles null Geometry -- Skips this GeoJSON
-    if (geojson === null) return;
-    var j, k, l, geometry, stopG, coords,
-        geometryMaybeCollection,
-        wrapShrink = 0,
-        coordIndex = 0,
-        isGeometryCollection,
-        type = geojson.type,
-        isFeatureCollection = type === 'FeatureCollection',
-        isFeature = type === 'Feature',
-        stop = isFeatureCollection ? geojson.features.length : 1;
-
-    // This logic may look a little weird. The reason why it is that way
-    // is because it's trying to be fast. GeoJSON supports multiple kinds
-    // of objects at its root: FeatureCollection, Features, Geometries.
-    // This function has the responsibility of handling all of them, and that
-    // means that some of the `for` loops you see below actually just don't apply
-    // to certain inputs. For instance, if you give this just a
-    // Point geometry, then both loops are short-circuited and all we do
-    // is gradually rename the input until it's called 'geometry'.
-    //
-    // This also aims to allocate as few resources as possible: just a
-    // few numbers and booleans, rather than any temporary arrays as would
-    // be required with the normalization approach.
-    for (var featureIndex = 0; featureIndex < stop; featureIndex++) {
-        geometryMaybeCollection = (isFeatureCollection ? geojson.features[featureIndex].geometry :
-            (isFeature ? geojson.geometry : geojson));
-        isGeometryCollection = (geometryMaybeCollection) ? geometryMaybeCollection.type === 'GeometryCollection' : false;
-        stopG = isGeometryCollection ? geometryMaybeCollection.geometries.length : 1;
-
-        for (var geomIndex = 0; geomIndex < stopG; geomIndex++) {
-            var multiFeatureIndex = 0;
-            var geometryIndex = 0;
-            geometry = isGeometryCollection ?
-                geometryMaybeCollection.geometries[geomIndex] : geometryMaybeCollection;
-
-            // Handles null Geometry -- Skips this geometry
-            if (geometry === null) continue;
-            coords = geometry.coordinates;
-            var geomType = geometry.type;
-
-            wrapShrink = (excludeWrapCoord && (geomType === 'Polygon' || geomType === 'MultiPolygon')) ? 1 : 0;
-
-            switch (geomType) {
-            case null:
-                break;
-            case 'Point':
-                if (callback(coords, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-                coordIndex++;
-                multiFeatureIndex++;
-                break;
-            case 'LineString':
-            case 'MultiPoint':
-                for (j = 0; j < coords.length; j++) {
-                    if (callback(coords[j], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-                    coordIndex++;
-                    if (geomType === 'MultiPoint') multiFeatureIndex++;
-                }
-                if (geomType === 'LineString') multiFeatureIndex++;
-                break;
-            case 'Polygon':
-            case 'MultiLineString':
-                for (j = 0; j < coords.length; j++) {
-                    for (k = 0; k < coords[j].length - wrapShrink; k++) {
-                        if (callback(coords[j][k], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-                        coordIndex++;
-                    }
-                    if (geomType === 'MultiLineString') multiFeatureIndex++;
-                    if (geomType === 'Polygon') geometryIndex++;
-                }
-                if (geomType === 'Polygon') multiFeatureIndex++;
-                break;
-            case 'MultiPolygon':
-                for (j = 0; j < coords.length; j++) {
-                    geometryIndex = 0;
-                    for (k = 0; k < coords[j].length; k++) {
-                        for (l = 0; l < coords[j][k].length - wrapShrink; l++) {
-                            if (callback(coords[j][k][l], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-                            coordIndex++;
-                        }
-                        geometryIndex++;
-                    }
-                    multiFeatureIndex++;
-                }
-                break;
-            case 'GeometryCollection':
-                for (j = 0; j < geometry.geometries.length; j++)
-                    if (coordEach(geometry.geometries[j], callback, excludeWrapCoord) === false) return false;
-                break;
-            default:
-                throw new Error('Unknown Geometry Type');
-            }
-        }
-    }
-}
-
-/**
- * Callback for coordReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback coordReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Array<number>} currentCoord The current coordinate being processed.
- * @param {number} coordIndex The current index of the coordinate being processed.
- * Starts at index 0, if an initialValue is provided, and at index 1 otherwise.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- * @param {number} geometryIndex The current index of the Geometry being processed.
- */
-
-/**
- * Reduce coordinates in any GeoJSON object, similar to Array.reduce()
- *
- * @name coordReduce
- * @param {FeatureCollection|Geometry|Feature} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentCoord, coordIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @param {boolean} [excludeWrapCoord=false] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {"foo": "bar"}),
- *   turf.point([36, 53], {"hello": "world"})
- * ]);
- *
- * turf.coordReduce(features, function (previousValue, currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
- *   //=previousValue
- *   //=currentCoord
- *   //=coordIndex
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- *   return currentCoord;
- * });
- */
-function coordReduce(geojson, callback, initialValue, excludeWrapCoord) {
-    var previousValue = initialValue;
-    coordEach(geojson, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
-        if (coordIndex === 0 && initialValue === undefined) previousValue = currentCoord;
-        else previousValue = callback(previousValue, currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex);
-    }, excludeWrapCoord);
-    return previousValue;
-}
-
-/**
- * Callback for propEach
- *
- * @callback propEachCallback
- * @param {Object} currentProperties The current Properties being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- */
-
-/**
- * Iterate over properties in any GeoJSON object, similar to Array.forEach()
- *
- * @name propEach
- * @param {FeatureCollection|Feature} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentProperties, featureIndex)
- * @returns {void}
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.propEach(features, function (currentProperties, featureIndex) {
- *   //=currentProperties
- *   //=featureIndex
- * });
- */
-function propEach(geojson, callback) {
-    var i;
-    switch (geojson.type) {
-    case 'FeatureCollection':
-        for (i = 0; i < geojson.features.length; i++) {
-            if (callback(geojson.features[i].properties, i) === false) break;
-        }
-        break;
-    case 'Feature':
-        callback(geojson.properties, 0);
-        break;
-    }
-}
-
-
-/**
- * Callback for propReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback propReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {*} currentProperties The current Properties being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- */
-
-/**
- * Reduce properties in any GeoJSON object into a single value,
- * similar to how Array.reduce works. However, in this case we lazily run
- * the reduction, so an array of all properties is unnecessary.
- *
- * @name propReduce
- * @param {FeatureCollection|Feature} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentProperties, featureIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.propReduce(features, function (previousValue, currentProperties, featureIndex) {
- *   //=previousValue
- *   //=currentProperties
- *   //=featureIndex
- *   return currentProperties
- * });
- */
-function propReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    propEach(geojson, function (currentProperties, featureIndex) {
-        if (featureIndex === 0 && initialValue === undefined) previousValue = currentProperties;
-        else previousValue = callback(previousValue, currentProperties, featureIndex);
-    });
-    return previousValue;
-}
-
-/**
- * Callback for featureEach
- *
- * @callback featureEachCallback
- * @param {Feature<any>} currentFeature The current Feature being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- */
-
-/**
- * Iterate over features in any GeoJSON object, similar to
- * Array.forEach.
- *
- * @name featureEach
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentFeature, featureIndex)
- * @returns {void}
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {foo: 'bar'}),
- *   turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.featureEach(features, function (currentFeature, featureIndex) {
- *   //=currentFeature
- *   //=featureIndex
- * });
- */
-function featureEach(geojson, callback) {
-    if (geojson.type === 'Feature') {
-        callback(geojson, 0);
-    } else if (geojson.type === 'FeatureCollection') {
-        for (var i = 0; i < geojson.features.length; i++) {
-            if (callback(geojson.features[i], i) === false) break;
-        }
-    }
-}
-
-/**
- * Callback for featureReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback featureReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Feature} currentFeature The current Feature being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- */
-
-/**
- * Reduce features in any GeoJSON object, similar to Array.reduce().
- *
- * @name featureReduce
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentFeature, featureIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {"foo": "bar"}),
- *   turf.point([36, 53], {"hello": "world"})
- * ]);
- *
- * turf.featureReduce(features, function (previousValue, currentFeature, featureIndex) {
- *   //=previousValue
- *   //=currentFeature
- *   //=featureIndex
- *   return currentFeature
- * });
- */
-function featureReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    featureEach(geojson, function (currentFeature, featureIndex) {
-        if (featureIndex === 0 && initialValue === undefined) previousValue = currentFeature;
-        else previousValue = callback(previousValue, currentFeature, featureIndex);
-    });
-    return previousValue;
-}
-
-/**
- * Get all coordinates from any GeoJSON object.
- *
- * @name coordAll
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @returns {Array<Array<number>>} coordinate position array
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {foo: 'bar'}),
- *   turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * var coords = turf.coordAll(features);
- * //= [[26, 37], [36, 53]]
- */
-function coordAll(geojson) {
-    var coords = [];
-    coordEach(geojson, function (coord) {
-        coords.push(coord);
-    });
-    return coords;
-}
-
-/**
- * Callback for geomEach
- *
- * @callback geomEachCallback
- * @param {Geometry} currentGeometry The current Geometry being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {Object} featureProperties The current Feature Properties being processed.
- * @param {Array<number>} featureBBox The current Feature BBox being processed.
- * @param {number|string} featureId The current Feature Id being processed.
- */
-
-/**
- * Iterate over each geometry in any GeoJSON object, similar to Array.forEach()
- *
- * @name geomEach
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentGeometry, featureIndex, featureProperties, featureBBox, featureId)
- * @returns {void}
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.geomEach(features, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
- *   //=currentGeometry
- *   //=featureIndex
- *   //=featureProperties
- *   //=featureBBox
- *   //=featureId
- * });
- */
-function geomEach(geojson, callback) {
-    var i, j, g, geometry, stopG,
-        geometryMaybeCollection,
-        isGeometryCollection,
-        featureProperties,
-        featureBBox,
-        featureId,
-        featureIndex = 0,
-        isFeatureCollection = geojson.type === 'FeatureCollection',
-        isFeature = geojson.type === 'Feature',
-        stop = isFeatureCollection ? geojson.features.length : 1;
-
-    // This logic may look a little weird. The reason why it is that way
-    // is because it's trying to be fast. GeoJSON supports multiple kinds
-    // of objects at its root: FeatureCollection, Features, Geometries.
-    // This function has the responsibility of handling all of them, and that
-    // means that some of the `for` loops you see below actually just don't apply
-    // to certain inputs. For instance, if you give this just a
-    // Point geometry, then both loops are short-circuited and all we do
-    // is gradually rename the input until it's called 'geometry'.
-    //
-    // This also aims to allocate as few resources as possible: just a
-    // few numbers and booleans, rather than any temporary arrays as would
-    // be required with the normalization approach.
-    for (i = 0; i < stop; i++) {
-
-        geometryMaybeCollection = (isFeatureCollection ? geojson.features[i].geometry :
-            (isFeature ? geojson.geometry : geojson));
-        featureProperties = (isFeatureCollection ? geojson.features[i].properties :
-            (isFeature ? geojson.properties : {}));
-        featureBBox = (isFeatureCollection ? geojson.features[i].bbox :
-            (isFeature ? geojson.bbox : undefined));
-        featureId = (isFeatureCollection ? geojson.features[i].id :
-            (isFeature ? geojson.id : undefined));
-        isGeometryCollection = (geometryMaybeCollection) ? geometryMaybeCollection.type === 'GeometryCollection' : false;
-        stopG = isGeometryCollection ? geometryMaybeCollection.geometries.length : 1;
-
-        for (g = 0; g < stopG; g++) {
-            geometry = isGeometryCollection ?
-                geometryMaybeCollection.geometries[g] : geometryMaybeCollection;
-
-            // Handle null Geometry
-            if (geometry === null) {
-                if (callback(null, featureIndex, featureProperties, featureBBox, featureId) === false) return false;
-                continue;
-            }
-            switch (geometry.type) {
-            case 'Point':
-            case 'LineString':
-            case 'MultiPoint':
-            case 'Polygon':
-            case 'MultiLineString':
-            case 'MultiPolygon': {
-                if (callback(geometry, featureIndex, featureProperties, featureBBox, featureId) === false) return false;
-                break;
-            }
-            case 'GeometryCollection': {
-                for (j = 0; j < geometry.geometries.length; j++) {
-                    if (callback(geometry.geometries[j], featureIndex, featureProperties, featureBBox, featureId) === false) return false;
-                }
-                break;
-            }
-            default:
-                throw new Error('Unknown Geometry Type');
-            }
-        }
-        // Only increase `featureIndex` per each feature
-        featureIndex++;
-    }
-}
-
-/**
- * Callback for geomReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback geomReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Geometry} currentGeometry The current Geometry being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {Object} featureProperties The current Feature Properties being processed.
- * @param {Array<number>} featureBBox The current Feature BBox being processed.
- * @param {number|string} featureId The current Feature Id being processed.
- */
-
-/**
- * Reduce geometry in any GeoJSON object, similar to Array.reduce().
- *
- * @name geomReduce
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.geomReduce(features, function (previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
- *   //=previousValue
- *   //=currentGeometry
- *   //=featureIndex
- *   //=featureProperties
- *   //=featureBBox
- *   //=featureId
- *   return currentGeometry
- * });
- */
-function geomReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    geomEach(geojson, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
-        if (featureIndex === 0 && initialValue === undefined) previousValue = currentGeometry;
-        else previousValue = callback(previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId);
-    });
-    return previousValue;
-}
-
-/**
- * Callback for flattenEach
- *
- * @callback flattenEachCallback
- * @param {Feature} currentFeature The current flattened feature being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- */
-
-/**
- * Iterate over flattened features in any GeoJSON object, similar to
- * Array.forEach.
- *
- * @name flattenEach
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentFeature, featureIndex, multiFeatureIndex)
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.multiPoint([[40, 30], [36, 53]], {hello: 'world'})
- * ]);
- *
- * turf.flattenEach(features, function (currentFeature, featureIndex, multiFeatureIndex) {
- *   //=currentFeature
- *   //=featureIndex
- *   //=multiFeatureIndex
- * });
- */
-function flattenEach(geojson, callback) {
-    geomEach(geojson, function (geometry, featureIndex, properties, bbox, id) {
-        // Callback for single geometry
-        var type = (geometry === null) ? null : geometry.type;
-        switch (type) {
-        case null:
-        case 'Point':
-        case 'LineString':
-        case 'Polygon':
-            if (callback(helpers.feature(geometry, properties, {bbox: bbox, id: id}), featureIndex, 0) === false) return false;
-            return;
-        }
-
-        var geomType;
-
-        // Callback for multi-geometry
-        switch (type) {
-        case 'MultiPoint':
-            geomType = 'Point';
-            break;
-        case 'MultiLineString':
-            geomType = 'LineString';
-            break;
-        case 'MultiPolygon':
-            geomType = 'Polygon';
-            break;
-        }
-
-        for (var multiFeatureIndex = 0; multiFeatureIndex < geometry.coordinates.length; multiFeatureIndex++) {
-            var coordinate = geometry.coordinates[multiFeatureIndex];
-            var geom = {
-                type: geomType,
-                coordinates: coordinate
-            };
-            if (callback(helpers.feature(geom, properties), featureIndex, multiFeatureIndex) === false) return false;
-        }
-    });
-}
-
-/**
- * Callback for flattenReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback flattenReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Feature} currentFeature The current Feature being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- */
-
-/**
- * Reduce flattened features in any GeoJSON object, similar to Array.reduce().
- *
- * @name flattenReduce
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentFeature, featureIndex, multiFeatureIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.multiPoint([[40, 30], [36, 53]], {hello: 'world'})
- * ]);
- *
- * turf.flattenReduce(features, function (previousValue, currentFeature, featureIndex, multiFeatureIndex) {
- *   //=previousValue
- *   //=currentFeature
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   return currentFeature
- * });
- */
-function flattenReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    flattenEach(geojson, function (currentFeature, featureIndex, multiFeatureIndex) {
-        if (featureIndex === 0 && multiFeatureIndex === 0 && initialValue === undefined) previousValue = currentFeature;
-        else previousValue = callback(previousValue, currentFeature, featureIndex, multiFeatureIndex);
-    });
-    return previousValue;
-}
-
-/**
- * Callback for segmentEach
- *
- * @callback segmentEachCallback
- * @param {Feature<LineString>} currentSegment The current Segment being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- * @param {number} geometryIndex The current index of the Geometry being processed.
- * @param {number} segmentIndex The current index of the Segment being processed.
- * @returns {void}
- */
-
-/**
- * Iterate over 2-vertex line segment in any GeoJSON object, similar to Array.forEach()
- * (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
- *
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON
- * @param {Function} callback a method that takes (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex)
- * @returns {void}
- * @example
- * var polygon = turf.polygon([[[-50, 5], [-40, -10], [-50, -10], [-40, 5], [-50, 5]]]);
- *
- * // Iterate over GeoJSON by 2-vertex segments
- * turf.segmentEach(polygon, function (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
- *   //=currentSegment
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- *   //=segmentIndex
- * });
- *
- * // Calculate the total number of segments
- * var total = 0;
- * turf.segmentEach(polygon, function () {
- *     total++;
- * });
- */
-function segmentEach(geojson, callback) {
-    flattenEach(geojson, function (feature, featureIndex, multiFeatureIndex) {
-        var segmentIndex = 0;
-
-        // Exclude null Geometries
-        if (!feature.geometry) return;
-        // (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
-        var type = feature.geometry.type;
-        if (type === 'Point' || type === 'MultiPoint') return;
-
-        // Generate 2-vertex line segments
-        var previousCoords;
-        var previousFeatureIndex = 0;
-        var previousMultiIndex = 0;
-        var prevGeomIndex = 0;
-        if (coordEach(feature, function (currentCoord, coordIndex, featureIndexCoord, multiPartIndexCoord, geometryIndex) {
-            // Simulating a meta.coordReduce() since `reduce` operations cannot be stopped by returning `false`
-            if (previousCoords === undefined || featureIndex > previousFeatureIndex || multiPartIndexCoord > previousMultiIndex || geometryIndex > prevGeomIndex) {
-                previousCoords = currentCoord;
-                previousFeatureIndex = featureIndex;
-                previousMultiIndex = multiPartIndexCoord;
-                prevGeomIndex = geometryIndex;
-                segmentIndex = 0;
-                return;
-            }
-            var currentSegment = helpers.lineString([previousCoords, currentCoord], feature.properties);
-            if (callback(currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) === false) return false;
-            segmentIndex++;
-            previousCoords = currentCoord;
-        }) === false) return false;
-    });
-}
-
-/**
- * Callback for segmentReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback segmentReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Feature<LineString>} currentSegment The current Segment being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- * @param {number} geometryIndex The current index of the Geometry being processed.
- * @param {number} segmentIndex The current index of the Segment being processed.
- */
-
-/**
- * Reduce 2-vertex line segment in any GeoJSON object, similar to Array.reduce()
- * (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
- *
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON
- * @param {Function} callback a method that takes (previousValue, currentSegment, currentIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {void}
- * @example
- * var polygon = turf.polygon([[[-50, 5], [-40, -10], [-50, -10], [-40, 5], [-50, 5]]]);
- *
- * // Iterate over GeoJSON by 2-vertex segments
- * turf.segmentReduce(polygon, function (previousSegment, currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
- *   //= previousSegment
- *   //= currentSegment
- *   //= featureIndex
- *   //= multiFeatureIndex
- *   //= geometryIndex
- *   //= segmentInex
- *   return currentSegment
- * });
- *
- * // Calculate the total number of segments
- * var initialValue = 0
- * var total = turf.segmentReduce(polygon, function (previousValue) {
- *     previousValue++;
- *     return previousValue;
- * }, initialValue);
- */
-function segmentReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    var started = false;
-    segmentEach(geojson, function (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
-        if (started === false && initialValue === undefined) previousValue = currentSegment;
-        else previousValue = callback(previousValue, currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex);
-        started = true;
-    });
-    return previousValue;
-}
-
-/**
- * Callback for lineEach
- *
- * @callback lineEachCallback
- * @param {Feature<LineString>} currentLine The current LineString|LinearRing being processed
- * @param {number} featureIndex The current index of the Feature being processed
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed
- * @param {number} geometryIndex The current index of the Geometry being processed
- */
-
-/**
- * Iterate over line or ring coordinates in LineString, Polygon, MultiLineString, MultiPolygon Features or Geometries,
- * similar to Array.forEach.
- *
- * @name lineEach
- * @param {Geometry|Feature<LineString|Polygon|MultiLineString|MultiPolygon>} geojson object
- * @param {Function} callback a method that takes (currentLine, featureIndex, multiFeatureIndex, geometryIndex)
- * @example
- * var multiLine = turf.multiLineString([
- *   [[26, 37], [35, 45]],
- *   [[36, 53], [38, 50], [41, 55]]
- * ]);
- *
- * turf.lineEach(multiLine, function (currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
- *   //=currentLine
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- * });
- */
-function lineEach(geojson, callback) {
-    // validation
-    if (!geojson) throw new Error('geojson is required');
-
-    flattenEach(geojson, function (feature, featureIndex, multiFeatureIndex) {
-        if (feature.geometry === null) return;
-        var type = feature.geometry.type;
-        var coords = feature.geometry.coordinates;
-        switch (type) {
-        case 'LineString':
-            if (callback(feature, featureIndex, multiFeatureIndex, 0, 0) === false) return false;
-            break;
-        case 'Polygon':
-            for (var geometryIndex = 0; geometryIndex < coords.length; geometryIndex++) {
-                if (callback(helpers.lineString(coords[geometryIndex], feature.properties), featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-            }
-            break;
-        }
-    });
-}
-
-/**
- * Callback for lineReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback lineReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Feature<LineString>} currentLine The current LineString|LinearRing being processed.
- * @param {number} featureIndex The current index of the Feature being processed
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed
- * @param {number} geometryIndex The current index of the Geometry being processed
- */
-
-/**
- * Reduce features in any GeoJSON object, similar to Array.reduce().
- *
- * @name lineReduce
- * @param {Geometry|Feature<LineString|Polygon|MultiLineString|MultiPolygon>} geojson object
- * @param {Function} callback a method that takes (previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var multiPoly = turf.multiPolygon([
- *   turf.polygon([[[12,48],[2,41],[24,38],[12,48]], [[9,44],[13,41],[13,45],[9,44]]]),
- *   turf.polygon([[[5, 5], [0, 0], [2, 2], [4, 4], [5, 5]]])
- * ]);
- *
- * turf.lineReduce(multiPoly, function (previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
- *   //=previousValue
- *   //=currentLine
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- *   return currentLine
- * });
- */
-function lineReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    lineEach(geojson, function (currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
-        if (featureIndex === 0 && initialValue === undefined) previousValue = currentLine;
-        else previousValue = callback(previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex);
-    });
-    return previousValue;
-}
-
-/**
- * Finds a particular 2-vertex LineString Segment from a GeoJSON using `@turf/meta` indexes.
- *
- * Negative indexes are permitted.
- * Point & MultiPoint will always return null.
- *
- * @param {FeatureCollection|Feature|Geometry} geojson Any GeoJSON Feature or Geometry
- * @param {Object} [options={}] Optional parameters
- * @param {number} [options.featureIndex=0] Feature Index
- * @param {number} [options.multiFeatureIndex=0] Multi-Feature Index
- * @param {number} [options.geometryIndex=0] Geometry Index
- * @param {number} [options.segmentIndex=0] Segment Index
- * @param {Object} [options.properties={}] Translate Properties to output LineString
- * @param {BBox} [options.bbox={}] Translate BBox to output LineString
- * @param {number|string} [options.id={}] Translate Id to output LineString
- * @returns {Feature<LineString>} 2-vertex GeoJSON Feature LineString
- * @example
- * var multiLine = turf.multiLineString([
- *     [[10, 10], [50, 30], [30, 40]],
- *     [[-10, -10], [-50, -30], [-30, -40]]
- * ]);
- *
- * // First Segment (defaults are 0)
- * turf.findSegment(multiLine);
- * // => Feature<LineString<[[10, 10], [50, 30]]>>
- *
- * // First Segment of 2nd Multi Feature
- * turf.findSegment(multiLine, {multiFeatureIndex: 1});
- * // => Feature<LineString<[[-10, -10], [-50, -30]]>>
- *
- * // Last Segment of Last Multi Feature
- * turf.findSegment(multiLine, {multiFeatureIndex: -1, segmentIndex: -1});
- * // => Feature<LineString<[[-50, -30], [-30, -40]]>>
- */
-function findSegment(geojson, options) {
-    // Optional Parameters
-    options = options || {};
-    if (!helpers.isObject(options)) throw new Error('options is invalid');
-    var featureIndex = options.featureIndex || 0;
-    var multiFeatureIndex = options.multiFeatureIndex || 0;
-    var geometryIndex = options.geometryIndex || 0;
-    var segmentIndex = options.segmentIndex || 0;
-
-    // Find FeatureIndex
-    var properties = options.properties;
-    var geometry;
-
-    switch (geojson.type) {
-    case 'FeatureCollection':
-        if (featureIndex < 0) featureIndex = geojson.features.length + featureIndex;
-        properties = properties || geojson.features[featureIndex].properties;
-        geometry = geojson.features[featureIndex].geometry;
-        break;
-    case 'Feature':
-        properties = properties || geojson.properties;
-        geometry = geojson.geometry;
-        break;
-    case 'Point':
-    case 'MultiPoint':
-        return null;
-    case 'LineString':
-    case 'Polygon':
-    case 'MultiLineString':
-    case 'MultiPolygon':
-        geometry = geojson;
-        break;
-    default:
-        throw new Error('geojson is invalid');
-    }
-
-    // Find SegmentIndex
-    if (geometry === null) return null;
-    var coords = geometry.coordinates;
-    switch (geometry.type) {
-    case 'Point':
-    case 'MultiPoint':
-        return null;
-    case 'LineString':
-        if (segmentIndex < 0) segmentIndex = coords.length + segmentIndex - 1;
-        return helpers.lineString([coords[segmentIndex], coords[segmentIndex + 1]], properties, options);
-    case 'Polygon':
-        if (geometryIndex < 0) geometryIndex = coords.length + geometryIndex;
-        if (segmentIndex < 0) segmentIndex = coords[geometryIndex].length + segmentIndex - 1;
-        return helpers.lineString([coords[geometryIndex][segmentIndex], coords[geometryIndex][segmentIndex + 1]], properties, options);
-    case 'MultiLineString':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        if (segmentIndex < 0) segmentIndex = coords[multiFeatureIndex].length + segmentIndex - 1;
-        return helpers.lineString([coords[multiFeatureIndex][segmentIndex], coords[multiFeatureIndex][segmentIndex + 1]], properties, options);
-    case 'MultiPolygon':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        if (geometryIndex < 0) geometryIndex = coords[multiFeatureIndex].length + geometryIndex;
-        if (segmentIndex < 0) segmentIndex = coords[multiFeatureIndex][geometryIndex].length - segmentIndex - 1;
-        return helpers.lineString([coords[multiFeatureIndex][geometryIndex][segmentIndex], coords[multiFeatureIndex][geometryIndex][segmentIndex + 1]], properties, options);
-    }
-    throw new Error('geojson is invalid');
-}
-
-/**
- * Finds a particular Point from a GeoJSON using `@turf/meta` indexes.
- *
- * Negative indexes are permitted.
- *
- * @param {FeatureCollection|Feature|Geometry} geojson Any GeoJSON Feature or Geometry
- * @param {Object} [options={}] Optional parameters
- * @param {number} [options.featureIndex=0] Feature Index
- * @param {number} [options.multiFeatureIndex=0] Multi-Feature Index
- * @param {number} [options.geometryIndex=0] Geometry Index
- * @param {number} [options.coordIndex=0] Coord Index
- * @param {Object} [options.properties={}] Translate Properties to output Point
- * @param {BBox} [options.bbox={}] Translate BBox to output Point
- * @param {number|string} [options.id={}] Translate Id to output Point
- * @returns {Feature<Point>} 2-vertex GeoJSON Feature Point
- * @example
- * var multiLine = turf.multiLineString([
- *     [[10, 10], [50, 30], [30, 40]],
- *     [[-10, -10], [-50, -30], [-30, -40]]
- * ]);
- *
- * // First Segment (defaults are 0)
- * turf.findPoint(multiLine);
- * // => Feature<Point<[10, 10]>>
- *
- * // First Segment of the 2nd Multi-Feature
- * turf.findPoint(multiLine, {multiFeatureIndex: 1});
- * // => Feature<Point<[-10, -10]>>
- *
- * // Last Segment of last Multi-Feature
- * turf.findPoint(multiLine, {multiFeatureIndex: -1, coordIndex: -1});
- * // => Feature<Point<[-30, -40]>>
- */
-function findPoint(geojson, options) {
-    // Optional Parameters
-    options = options || {};
-    if (!helpers.isObject(options)) throw new Error('options is invalid');
-    var featureIndex = options.featureIndex || 0;
-    var multiFeatureIndex = options.multiFeatureIndex || 0;
-    var geometryIndex = options.geometryIndex || 0;
-    var coordIndex = options.coordIndex || 0;
-
-    // Find FeatureIndex
-    var properties = options.properties;
-    var geometry;
-
-    switch (geojson.type) {
-    case 'FeatureCollection':
-        if (featureIndex < 0) featureIndex = geojson.features.length + featureIndex;
-        properties = properties || geojson.features[featureIndex].properties;
-        geometry = geojson.features[featureIndex].geometry;
-        break;
-    case 'Feature':
-        properties = properties || geojson.properties;
-        geometry = geojson.geometry;
-        break;
-    case 'Point':
-    case 'MultiPoint':
-        return null;
-    case 'LineString':
-    case 'Polygon':
-    case 'MultiLineString':
-    case 'MultiPolygon':
-        geometry = geojson;
-        break;
-    default:
-        throw new Error('geojson is invalid');
-    }
-
-    // Find Coord Index
-    if (geometry === null) return null;
-    var coords = geometry.coordinates;
-    switch (geometry.type) {
-    case 'Point':
-        return helpers.point(coords, properties, options);
-    case 'MultiPoint':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        return helpers.point(coords[multiFeatureIndex], properties, options);
-    case 'LineString':
-        if (coordIndex < 0) coordIndex = coords.length + coordIndex;
-        return helpers.point(coords[coordIndex], properties, options);
-    case 'Polygon':
-        if (geometryIndex < 0) geometryIndex = coords.length + geometryIndex;
-        if (coordIndex < 0) coordIndex = coords[geometryIndex].length + coordIndex;
-        return helpers.point(coords[geometryIndex][coordIndex], properties, options);
-    case 'MultiLineString':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        if (coordIndex < 0) coordIndex = coords[multiFeatureIndex].length + coordIndex;
-        return helpers.point(coords[multiFeatureIndex][coordIndex], properties, options);
-    case 'MultiPolygon':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        if (geometryIndex < 0) geometryIndex = coords[multiFeatureIndex].length + geometryIndex;
-        if (coordIndex < 0) coordIndex = coords[multiFeatureIndex][geometryIndex].length - coordIndex;
-        return helpers.point(coords[multiFeatureIndex][geometryIndex][coordIndex], properties, options);
-    }
-    throw new Error('geojson is invalid');
-}
-
-exports.coordEach = coordEach;
-exports.coordReduce = coordReduce;
-exports.propEach = propEach;
-exports.propReduce = propReduce;
-exports.featureEach = featureEach;
-exports.featureReduce = featureReduce;
-exports.coordAll = coordAll;
-exports.geomEach = geomEach;
-exports.geomReduce = geomReduce;
-exports.flattenEach = flattenEach;
-exports.flattenReduce = flattenReduce;
-exports.segmentEach = segmentEach;
-exports.segmentReduce = segmentReduce;
-exports.lineEach = lineEach;
-exports.lineReduce = lineReduce;
-exports.findSegment = findSegment;
-exports.findPoint = findPoint;
-
-
-/***/ }),
-
 /***/ "7N9w":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8038,19 +5414,19 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 113);
+/******/ 	return __webpack_require__(__webpack_require__.s = 116);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 113:
+/***/ 116:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "element-ui/lib/checkbox"
-var checkbox_ = __webpack_require__(16);
+var checkbox_ = __webpack_require__(17);
 var checkbox_default = /*#__PURE__*/__webpack_require__.n(checkbox_);
 
 // EXTERNAL MODULE: external "element-ui/lib/tag"
@@ -8449,15 +5825,16 @@ var parseMinWidth = function parseMinWidth(minWidth) {
       if (!renderCell) {
         renderCell = table_column_DEFAULT_RENDER_CELL;
       }
+      var children = [_self.renderTreeCell(data), renderCell(h, data)];
 
       return _self.showOverflowTooltip || _self.showTooltipWhenOverflow ? h(
         'div',
         { 'class': 'cell el-tooltip', style: { width: (data.column.realWidth || data.column.width) - 1 + 'px' } },
-        [renderCell(h, data)]
+        [children]
       ) : h(
         'div',
         { 'class': 'cell' },
-        [renderCell(h, data)]
+        [children]
       );
     };
   },
@@ -8553,6 +5930,38 @@ var parseMinWidth = function parseMinWidth(minWidth) {
     }
   },
 
+  methods: {
+    renderTreeCell: function renderTreeCell(data) {
+      var h = this.$createElement;
+
+      if (!data.treeNode) return null;
+      var ele = [];
+      ele.push(h('span', { 'class': 'el-table__indent', style: { 'padding-left': data.treeNode.indent + 'px' } }));
+      if (data.treeNode.hasChildren) {
+        ele.push(h(
+          'div',
+          { 'class': ['el-table__expand-icon', data.treeNode.expanded ? 'el-table__expand-icon--expanded' : ''],
+            on: {
+              'click': this.handleTreeExpandIconClick.bind(this, data)
+            }
+          },
+          [h('i', { 'class': 'el-icon el-icon-arrow-right' })]
+        ));
+      } else {
+        ele.push(h('span', { 'class': 'el-table__placeholder' }));
+      }
+      return ele;
+    },
+    handleTreeExpandIconClick: function handleTreeExpandIconClick(data, e) {
+      e.stopPropagation();
+      if (data.store.states.lazy && !data.treeNode.loaded) {
+        data.store.loadData(data.row, data.treeNode);
+      } else {
+        data.store.toggleTreeExpansion(data.treeNode.rowKey);
+      }
+    }
+  },
+
   mounted: function mounted() {
     var _this2 = this;
 
@@ -8591,7 +6000,7 @@ table_column.install = function (Vue) {
 
 /***/ }),
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("3Nwd");
@@ -8734,7 +6143,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 82);
+/******/ 	return __webpack_require__(__webpack_require__.s = 104);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -8841,7 +6250,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 82:
+/***/ 104:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9286,11 +6695,9 @@ var render = function() {
                         autocomplete: _vm.autoComplete || _vm.autocomplete,
                         "aria-label": _vm.label
                       },
-                      domProps: { value: _vm.nativeInputValue },
                       on: {
-                        compositionstart: _vm.handleComposition,
-                        compositionupdate: _vm.handleComposition,
-                        compositionend: _vm.handleComposition,
+                        compositionstart: _vm.handleCompositionStart,
+                        compositionend: _vm.handleCompositionEnd,
                         input: _vm.handleInput,
                         focus: _vm.handleFocus,
                         blur: _vm.handleBlur,
@@ -9388,11 +6795,9 @@ var render = function() {
                   autocomplete: _vm.autoComplete || _vm.autocomplete,
                   "aria-label": _vm.label
                 },
-                domProps: { value: _vm.nativeInputValue },
                 on: {
-                  compositionstart: _vm.handleComposition,
-                  compositionupdate: _vm.handleComposition,
-                  compositionend: _vm.handleComposition,
+                  compositionstart: _vm.handleCompositionStart,
+                  compositionend: _vm.handleCompositionEnd,
                   input: _vm.handleInput,
                   focus: _vm.handleFocus,
                   blur: _vm.handleBlur,
@@ -9599,10 +7004,6 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -9632,7 +7033,7 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
       textareaCalcStyle: {},
       hovering: false,
       focused: false,
-      isOnComposition: false,
+      isComposing: false,
       passwordVisible: false
     };
   },
@@ -9710,7 +7111,7 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
       return this.disabled || (this.elForm || {}).disabled;
     },
     nativeInputValue: function nativeInputValue() {
-      return this.value === null || this.value === undefined ? '' : this.value;
+      return this.value === null || this.value === undefined ? '' : String(this.value);
     },
     showClear: function showClear() {
       return this.clearable && !this.inputDisabled && !this.readonly && this.nativeInputValue && (this.focused || this.hovering);
@@ -9726,6 +7127,26 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
       if (this.validateEvent) {
         this.dispatch('ElFormItem', 'el.form.change', [val]);
       }
+    },
+
+    // native input value is set explicitly
+    // do not use v-model / :value in template
+    // see: https://github.com/ElemeFE/element/issues/14521
+    nativeInputValue: function nativeInputValue() {
+      this.setNativeInputValue();
+    },
+
+    // when change between <input> and <textarea>,
+    // update DOM dependent value and styles
+    // https://github.com/ElemeFE/element/issues/14857
+    type: function type() {
+      var _this = this;
+
+      this.$nextTick(function () {
+        _this.setNativeInputValue();
+        _this.resizeTextarea();
+        _this.updateIconOffset();
+      });
     }
   },
 
@@ -9774,23 +7195,27 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
 
       this.textareaCalcStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows);
     },
+    setNativeInputValue: function setNativeInputValue() {
+      var input = this.getInput();
+      if (!input) return;
+      if (input.value === this.nativeInputValue) return;
+      input.value = this.nativeInputValue;
+    },
     handleFocus: function handleFocus(event) {
       this.focused = true;
       this.$emit('focus', event);
     },
-    handleComposition: function handleComposition(event) {
-      if (event.type === 'compositionstart') {
-        this.isOnComposition = true;
-      }
-      if (event.type === 'compositionend') {
-        this.isOnComposition = false;
-        this.handleInput(event);
-      }
+    handleCompositionStart: function handleCompositionStart() {
+      this.isComposing = true;
+    },
+    handleCompositionEnd: function handleCompositionEnd(event) {
+      this.isComposing = false;
+      this.handleInput(event);
     },
     handleInput: function handleInput(event) {
-      var _this = this;
-
-      if (this.isOnComposition) return;
+      // should not emit input during composition
+      // see: https://github.com/ElemeFE/element/issues/10516
+      if (this.isComposing) return;
 
       // hack for https://github.com/ElemeFE/element/issues/8548
       // should remove the following line when we don't support IE
@@ -9798,12 +7223,9 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
 
       this.$emit('input', event.target.value);
 
-      // set input's value, in case parent refuses the change
+      // ensure native input value is controlled
       // see: https://github.com/ElemeFE/element/issues/12850
-      this.$nextTick(function () {
-        var input = _this.getInput();
-        input.value = _this.value;
-      });
+      this.$nextTick(this.setNativeInputValue);
     },
     handleChange: function handleChange(event) {
       this.$emit('change', event.target.value);
@@ -9853,6 +7275,7 @@ var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
     this.$on('inputSelect', this.select);
   },
   mounted: function mounted() {
+    this.setNativeInputValue();
     this.resizeTextarea();
     this.updateIconOffset();
   },
@@ -10315,7 +7738,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 67);
+/******/ 	return __webpack_require__(__webpack_require__.s = 68);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -10429,7 +7852,7 @@ module.exports = __webpack_require__("UShQ");
 
 /***/ }),
 
-/***/ 20:
+/***/ 21:
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("Qfgm");
@@ -10443,7 +7866,7 @@ module.exports = __webpack_require__("i7/w");
 
 /***/ }),
 
-/***/ 67:
+/***/ 68:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10659,7 +8082,7 @@ component.options.__file = "packages/message/src/main.vue"
 var popup_ = __webpack_require__(13);
 
 // EXTERNAL MODULE: external "element-ui/lib/utils/vdom"
-var vdom_ = __webpack_require__(20);
+var vdom_ = __webpack_require__(21);
 
 // CONCATENATED MODULE: ./packages/message/src/main.js
 
@@ -10920,7 +8343,7 @@ module.exports = uniqueId;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var helpers_1 = __webpack_require__("1+Cv");
+var helpers_1 = __webpack_require__("/rf6");
 /**
  * Unwrap a coordinate from a Point Feature, Geometry or a single coordinate.
  *
@@ -11454,12 +8877,12 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 115);
+/******/ 	return __webpack_require__(__webpack_require__.s = 114);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 115:
+/***/ 114:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12034,1146 +9457,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_Fk5u__;
 
 /***/ }),
 
-/***/ "G/qV":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var helpers = __webpack_require__("ktfA");
-
-/**
- * Callback for coordEach
- *
- * @callback coordEachCallback
- * @param {Array<number>} currentCoord The current coordinate being processed.
- * @param {number} coordIndex The current index of the coordinate being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- * @param {number} geometryIndex The current index of the Geometry being processed.
- */
-
-/**
- * Iterate over coordinates in any GeoJSON object, similar to Array.forEach()
- *
- * @name coordEach
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentCoord, coordIndex, featureIndex, multiFeatureIndex)
- * @param {boolean} [excludeWrapCoord=false] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
- * @returns {void}
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {"foo": "bar"}),
- *   turf.point([36, 53], {"hello": "world"})
- * ]);
- *
- * turf.coordEach(features, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
- *   //=currentCoord
- *   //=coordIndex
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- * });
- */
-function coordEach(geojson, callback, excludeWrapCoord) {
-    // Handles null Geometry -- Skips this GeoJSON
-    if (geojson === null) return;
-    var j, k, l, geometry, stopG, coords,
-        geometryMaybeCollection,
-        wrapShrink = 0,
-        coordIndex = 0,
-        isGeometryCollection,
-        type = geojson.type,
-        isFeatureCollection = type === 'FeatureCollection',
-        isFeature = type === 'Feature',
-        stop = isFeatureCollection ? geojson.features.length : 1;
-
-    // This logic may look a little weird. The reason why it is that way
-    // is because it's trying to be fast. GeoJSON supports multiple kinds
-    // of objects at its root: FeatureCollection, Features, Geometries.
-    // This function has the responsibility of handling all of them, and that
-    // means that some of the `for` loops you see below actually just don't apply
-    // to certain inputs. For instance, if you give this just a
-    // Point geometry, then both loops are short-circuited and all we do
-    // is gradually rename the input until it's called 'geometry'.
-    //
-    // This also aims to allocate as few resources as possible: just a
-    // few numbers and booleans, rather than any temporary arrays as would
-    // be required with the normalization approach.
-    for (var featureIndex = 0; featureIndex < stop; featureIndex++) {
-        geometryMaybeCollection = (isFeatureCollection ? geojson.features[featureIndex].geometry :
-            (isFeature ? geojson.geometry : geojson));
-        isGeometryCollection = (geometryMaybeCollection) ? geometryMaybeCollection.type === 'GeometryCollection' : false;
-        stopG = isGeometryCollection ? geometryMaybeCollection.geometries.length : 1;
-
-        for (var geomIndex = 0; geomIndex < stopG; geomIndex++) {
-            var multiFeatureIndex = 0;
-            var geometryIndex = 0;
-            geometry = isGeometryCollection ?
-                geometryMaybeCollection.geometries[geomIndex] : geometryMaybeCollection;
-
-            // Handles null Geometry -- Skips this geometry
-            if (geometry === null) continue;
-            coords = geometry.coordinates;
-            var geomType = geometry.type;
-
-            wrapShrink = (excludeWrapCoord && (geomType === 'Polygon' || geomType === 'MultiPolygon')) ? 1 : 0;
-
-            switch (geomType) {
-            case null:
-                break;
-            case 'Point':
-                if (callback(coords, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-                coordIndex++;
-                multiFeatureIndex++;
-                break;
-            case 'LineString':
-            case 'MultiPoint':
-                for (j = 0; j < coords.length; j++) {
-                    if (callback(coords[j], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-                    coordIndex++;
-                    if (geomType === 'MultiPoint') multiFeatureIndex++;
-                }
-                if (geomType === 'LineString') multiFeatureIndex++;
-                break;
-            case 'Polygon':
-            case 'MultiLineString':
-                for (j = 0; j < coords.length; j++) {
-                    for (k = 0; k < coords[j].length - wrapShrink; k++) {
-                        if (callback(coords[j][k], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-                        coordIndex++;
-                    }
-                    if (geomType === 'MultiLineString') multiFeatureIndex++;
-                    if (geomType === 'Polygon') geometryIndex++;
-                }
-                if (geomType === 'Polygon') multiFeatureIndex++;
-                break;
-            case 'MultiPolygon':
-                for (j = 0; j < coords.length; j++) {
-                    geometryIndex = 0;
-                    for (k = 0; k < coords[j].length; k++) {
-                        for (l = 0; l < coords[j][k].length - wrapShrink; l++) {
-                            if (callback(coords[j][k][l], coordIndex, featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-                            coordIndex++;
-                        }
-                        geometryIndex++;
-                    }
-                    multiFeatureIndex++;
-                }
-                break;
-            case 'GeometryCollection':
-                for (j = 0; j < geometry.geometries.length; j++)
-                    if (coordEach(geometry.geometries[j], callback, excludeWrapCoord) === false) return false;
-                break;
-            default:
-                throw new Error('Unknown Geometry Type');
-            }
-        }
-    }
-}
-
-/**
- * Callback for coordReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback coordReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Array<number>} currentCoord The current coordinate being processed.
- * @param {number} coordIndex The current index of the coordinate being processed.
- * Starts at index 0, if an initialValue is provided, and at index 1 otherwise.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- * @param {number} geometryIndex The current index of the Geometry being processed.
- */
-
-/**
- * Reduce coordinates in any GeoJSON object, similar to Array.reduce()
- *
- * @name coordReduce
- * @param {FeatureCollection|Geometry|Feature} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentCoord, coordIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @param {boolean} [excludeWrapCoord=false] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {"foo": "bar"}),
- *   turf.point([36, 53], {"hello": "world"})
- * ]);
- *
- * turf.coordReduce(features, function (previousValue, currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
- *   //=previousValue
- *   //=currentCoord
- *   //=coordIndex
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- *   return currentCoord;
- * });
- */
-function coordReduce(geojson, callback, initialValue, excludeWrapCoord) {
-    var previousValue = initialValue;
-    coordEach(geojson, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
-        if (coordIndex === 0 && initialValue === undefined) previousValue = currentCoord;
-        else previousValue = callback(previousValue, currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex);
-    }, excludeWrapCoord);
-    return previousValue;
-}
-
-/**
- * Callback for propEach
- *
- * @callback propEachCallback
- * @param {Object} currentProperties The current Properties being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- */
-
-/**
- * Iterate over properties in any GeoJSON object, similar to Array.forEach()
- *
- * @name propEach
- * @param {FeatureCollection|Feature} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentProperties, featureIndex)
- * @returns {void}
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.propEach(features, function (currentProperties, featureIndex) {
- *   //=currentProperties
- *   //=featureIndex
- * });
- */
-function propEach(geojson, callback) {
-    var i;
-    switch (geojson.type) {
-    case 'FeatureCollection':
-        for (i = 0; i < geojson.features.length; i++) {
-            if (callback(geojson.features[i].properties, i) === false) break;
-        }
-        break;
-    case 'Feature':
-        callback(geojson.properties, 0);
-        break;
-    }
-}
-
-
-/**
- * Callback for propReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback propReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {*} currentProperties The current Properties being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- */
-
-/**
- * Reduce properties in any GeoJSON object into a single value,
- * similar to how Array.reduce works. However, in this case we lazily run
- * the reduction, so an array of all properties is unnecessary.
- *
- * @name propReduce
- * @param {FeatureCollection|Feature} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentProperties, featureIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.propReduce(features, function (previousValue, currentProperties, featureIndex) {
- *   //=previousValue
- *   //=currentProperties
- *   //=featureIndex
- *   return currentProperties
- * });
- */
-function propReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    propEach(geojson, function (currentProperties, featureIndex) {
-        if (featureIndex === 0 && initialValue === undefined) previousValue = currentProperties;
-        else previousValue = callback(previousValue, currentProperties, featureIndex);
-    });
-    return previousValue;
-}
-
-/**
- * Callback for featureEach
- *
- * @callback featureEachCallback
- * @param {Feature<any>} currentFeature The current Feature being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- */
-
-/**
- * Iterate over features in any GeoJSON object, similar to
- * Array.forEach.
- *
- * @name featureEach
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentFeature, featureIndex)
- * @returns {void}
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {foo: 'bar'}),
- *   turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.featureEach(features, function (currentFeature, featureIndex) {
- *   //=currentFeature
- *   //=featureIndex
- * });
- */
-function featureEach(geojson, callback) {
-    if (geojson.type === 'Feature') {
-        callback(geojson, 0);
-    } else if (geojson.type === 'FeatureCollection') {
-        for (var i = 0; i < geojson.features.length; i++) {
-            if (callback(geojson.features[i], i) === false) break;
-        }
-    }
-}
-
-/**
- * Callback for featureReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback featureReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Feature} currentFeature The current Feature being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- */
-
-/**
- * Reduce features in any GeoJSON object, similar to Array.reduce().
- *
- * @name featureReduce
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentFeature, featureIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {"foo": "bar"}),
- *   turf.point([36, 53], {"hello": "world"})
- * ]);
- *
- * turf.featureReduce(features, function (previousValue, currentFeature, featureIndex) {
- *   //=previousValue
- *   //=currentFeature
- *   //=featureIndex
- *   return currentFeature
- * });
- */
-function featureReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    featureEach(geojson, function (currentFeature, featureIndex) {
-        if (featureIndex === 0 && initialValue === undefined) previousValue = currentFeature;
-        else previousValue = callback(previousValue, currentFeature, featureIndex);
-    });
-    return previousValue;
-}
-
-/**
- * Get all coordinates from any GeoJSON object.
- *
- * @name coordAll
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @returns {Array<Array<number>>} coordinate position array
- * @example
- * var features = turf.featureCollection([
- *   turf.point([26, 37], {foo: 'bar'}),
- *   turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * var coords = turf.coordAll(features);
- * //= [[26, 37], [36, 53]]
- */
-function coordAll(geojson) {
-    var coords = [];
-    coordEach(geojson, function (coord) {
-        coords.push(coord);
-    });
-    return coords;
-}
-
-/**
- * Callback for geomEach
- *
- * @callback geomEachCallback
- * @param {Geometry} currentGeometry The current Geometry being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {Object} featureProperties The current Feature Properties being processed.
- * @param {Array<number>} featureBBox The current Feature BBox being processed.
- * @param {number|string} featureId The current Feature Id being processed.
- */
-
-/**
- * Iterate over each geometry in any GeoJSON object, similar to Array.forEach()
- *
- * @name geomEach
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentGeometry, featureIndex, featureProperties, featureBBox, featureId)
- * @returns {void}
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.geomEach(features, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
- *   //=currentGeometry
- *   //=featureIndex
- *   //=featureProperties
- *   //=featureBBox
- *   //=featureId
- * });
- */
-function geomEach(geojson, callback) {
-    var i, j, g, geometry, stopG,
-        geometryMaybeCollection,
-        isGeometryCollection,
-        featureProperties,
-        featureBBox,
-        featureId,
-        featureIndex = 0,
-        isFeatureCollection = geojson.type === 'FeatureCollection',
-        isFeature = geojson.type === 'Feature',
-        stop = isFeatureCollection ? geojson.features.length : 1;
-
-    // This logic may look a little weird. The reason why it is that way
-    // is because it's trying to be fast. GeoJSON supports multiple kinds
-    // of objects at its root: FeatureCollection, Features, Geometries.
-    // This function has the responsibility of handling all of them, and that
-    // means that some of the `for` loops you see below actually just don't apply
-    // to certain inputs. For instance, if you give this just a
-    // Point geometry, then both loops are short-circuited and all we do
-    // is gradually rename the input until it's called 'geometry'.
-    //
-    // This also aims to allocate as few resources as possible: just a
-    // few numbers and booleans, rather than any temporary arrays as would
-    // be required with the normalization approach.
-    for (i = 0; i < stop; i++) {
-
-        geometryMaybeCollection = (isFeatureCollection ? geojson.features[i].geometry :
-            (isFeature ? geojson.geometry : geojson));
-        featureProperties = (isFeatureCollection ? geojson.features[i].properties :
-            (isFeature ? geojson.properties : {}));
-        featureBBox = (isFeatureCollection ? geojson.features[i].bbox :
-            (isFeature ? geojson.bbox : undefined));
-        featureId = (isFeatureCollection ? geojson.features[i].id :
-            (isFeature ? geojson.id : undefined));
-        isGeometryCollection = (geometryMaybeCollection) ? geometryMaybeCollection.type === 'GeometryCollection' : false;
-        stopG = isGeometryCollection ? geometryMaybeCollection.geometries.length : 1;
-
-        for (g = 0; g < stopG; g++) {
-            geometry = isGeometryCollection ?
-                geometryMaybeCollection.geometries[g] : geometryMaybeCollection;
-
-            // Handle null Geometry
-            if (geometry === null) {
-                if (callback(null, featureIndex, featureProperties, featureBBox, featureId) === false) return false;
-                continue;
-            }
-            switch (geometry.type) {
-            case 'Point':
-            case 'LineString':
-            case 'MultiPoint':
-            case 'Polygon':
-            case 'MultiLineString':
-            case 'MultiPolygon': {
-                if (callback(geometry, featureIndex, featureProperties, featureBBox, featureId) === false) return false;
-                break;
-            }
-            case 'GeometryCollection': {
-                for (j = 0; j < geometry.geometries.length; j++) {
-                    if (callback(geometry.geometries[j], featureIndex, featureProperties, featureBBox, featureId) === false) return false;
-                }
-                break;
-            }
-            default:
-                throw new Error('Unknown Geometry Type');
-            }
-        }
-        // Only increase `featureIndex` per each feature
-        featureIndex++;
-    }
-}
-
-/**
- * Callback for geomReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback geomReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Geometry} currentGeometry The current Geometry being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {Object} featureProperties The current Feature Properties being processed.
- * @param {Array<number>} featureBBox The current Feature BBox being processed.
- * @param {number|string} featureId The current Feature Id being processed.
- */
-
-/**
- * Reduce geometry in any GeoJSON object, similar to Array.reduce().
- *
- * @name geomReduce
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.point([36, 53], {hello: 'world'})
- * ]);
- *
- * turf.geomReduce(features, function (previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
- *   //=previousValue
- *   //=currentGeometry
- *   //=featureIndex
- *   //=featureProperties
- *   //=featureBBox
- *   //=featureId
- *   return currentGeometry
- * });
- */
-function geomReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    geomEach(geojson, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
-        if (featureIndex === 0 && initialValue === undefined) previousValue = currentGeometry;
-        else previousValue = callback(previousValue, currentGeometry, featureIndex, featureProperties, featureBBox, featureId);
-    });
-    return previousValue;
-}
-
-/**
- * Callback for flattenEach
- *
- * @callback flattenEachCallback
- * @param {Feature} currentFeature The current flattened feature being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- */
-
-/**
- * Iterate over flattened features in any GeoJSON object, similar to
- * Array.forEach.
- *
- * @name flattenEach
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (currentFeature, featureIndex, multiFeatureIndex)
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.multiPoint([[40, 30], [36, 53]], {hello: 'world'})
- * ]);
- *
- * turf.flattenEach(features, function (currentFeature, featureIndex, multiFeatureIndex) {
- *   //=currentFeature
- *   //=featureIndex
- *   //=multiFeatureIndex
- * });
- */
-function flattenEach(geojson, callback) {
-    geomEach(geojson, function (geometry, featureIndex, properties, bbox, id) {
-        // Callback for single geometry
-        var type = (geometry === null) ? null : geometry.type;
-        switch (type) {
-        case null:
-        case 'Point':
-        case 'LineString':
-        case 'Polygon':
-            if (callback(helpers.feature(geometry, properties, {bbox: bbox, id: id}), featureIndex, 0) === false) return false;
-            return;
-        }
-
-        var geomType;
-
-        // Callback for multi-geometry
-        switch (type) {
-        case 'MultiPoint':
-            geomType = 'Point';
-            break;
-        case 'MultiLineString':
-            geomType = 'LineString';
-            break;
-        case 'MultiPolygon':
-            geomType = 'Polygon';
-            break;
-        }
-
-        for (var multiFeatureIndex = 0; multiFeatureIndex < geometry.coordinates.length; multiFeatureIndex++) {
-            var coordinate = geometry.coordinates[multiFeatureIndex];
-            var geom = {
-                type: geomType,
-                coordinates: coordinate
-            };
-            if (callback(helpers.feature(geom, properties), featureIndex, multiFeatureIndex) === false) return false;
-        }
-    });
-}
-
-/**
- * Callback for flattenReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback flattenReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Feature} currentFeature The current Feature being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- */
-
-/**
- * Reduce flattened features in any GeoJSON object, similar to Array.reduce().
- *
- * @name flattenReduce
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON object
- * @param {Function} callback a method that takes (previousValue, currentFeature, featureIndex, multiFeatureIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var features = turf.featureCollection([
- *     turf.point([26, 37], {foo: 'bar'}),
- *     turf.multiPoint([[40, 30], [36, 53]], {hello: 'world'})
- * ]);
- *
- * turf.flattenReduce(features, function (previousValue, currentFeature, featureIndex, multiFeatureIndex) {
- *   //=previousValue
- *   //=currentFeature
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   return currentFeature
- * });
- */
-function flattenReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    flattenEach(geojson, function (currentFeature, featureIndex, multiFeatureIndex) {
-        if (featureIndex === 0 && multiFeatureIndex === 0 && initialValue === undefined) previousValue = currentFeature;
-        else previousValue = callback(previousValue, currentFeature, featureIndex, multiFeatureIndex);
-    });
-    return previousValue;
-}
-
-/**
- * Callback for segmentEach
- *
- * @callback segmentEachCallback
- * @param {Feature<LineString>} currentSegment The current Segment being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- * @param {number} geometryIndex The current index of the Geometry being processed.
- * @param {number} segmentIndex The current index of the Segment being processed.
- * @returns {void}
- */
-
-/**
- * Iterate over 2-vertex line segment in any GeoJSON object, similar to Array.forEach()
- * (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
- *
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON
- * @param {Function} callback a method that takes (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex)
- * @returns {void}
- * @example
- * var polygon = turf.polygon([[[-50, 5], [-40, -10], [-50, -10], [-40, 5], [-50, 5]]]);
- *
- * // Iterate over GeoJSON by 2-vertex segments
- * turf.segmentEach(polygon, function (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
- *   //=currentSegment
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- *   //=segmentIndex
- * });
- *
- * // Calculate the total number of segments
- * var total = 0;
- * turf.segmentEach(polygon, function () {
- *     total++;
- * });
- */
-function segmentEach(geojson, callback) {
-    flattenEach(geojson, function (feature, featureIndex, multiFeatureIndex) {
-        var segmentIndex = 0;
-
-        // Exclude null Geometries
-        if (!feature.geometry) return;
-        // (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
-        var type = feature.geometry.type;
-        if (type === 'Point' || type === 'MultiPoint') return;
-
-        // Generate 2-vertex line segments
-        var previousCoords;
-        var previousFeatureIndex = 0;
-        var previousMultiIndex = 0;
-        var prevGeomIndex = 0;
-        if (coordEach(feature, function (currentCoord, coordIndex, featureIndexCoord, multiPartIndexCoord, geometryIndex) {
-            // Simulating a meta.coordReduce() since `reduce` operations cannot be stopped by returning `false`
-            if (previousCoords === undefined || featureIndex > previousFeatureIndex || multiPartIndexCoord > previousMultiIndex || geometryIndex > prevGeomIndex) {
-                previousCoords = currentCoord;
-                previousFeatureIndex = featureIndex;
-                previousMultiIndex = multiPartIndexCoord;
-                prevGeomIndex = geometryIndex;
-                segmentIndex = 0;
-                return;
-            }
-            var currentSegment = helpers.lineString([previousCoords, currentCoord], feature.properties);
-            if (callback(currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) === false) return false;
-            segmentIndex++;
-            previousCoords = currentCoord;
-        }) === false) return false;
-    });
-}
-
-/**
- * Callback for segmentReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback segmentReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Feature<LineString>} currentSegment The current Segment being processed.
- * @param {number} featureIndex The current index of the Feature being processed.
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed.
- * @param {number} geometryIndex The current index of the Geometry being processed.
- * @param {number} segmentIndex The current index of the Segment being processed.
- */
-
-/**
- * Reduce 2-vertex line segment in any GeoJSON object, similar to Array.reduce()
- * (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
- *
- * @param {FeatureCollection|Feature|Geometry} geojson any GeoJSON
- * @param {Function} callback a method that takes (previousValue, currentSegment, currentIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {void}
- * @example
- * var polygon = turf.polygon([[[-50, 5], [-40, -10], [-50, -10], [-40, 5], [-50, 5]]]);
- *
- * // Iterate over GeoJSON by 2-vertex segments
- * turf.segmentReduce(polygon, function (previousSegment, currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
- *   //= previousSegment
- *   //= currentSegment
- *   //= featureIndex
- *   //= multiFeatureIndex
- *   //= geometryIndex
- *   //= segmentInex
- *   return currentSegment
- * });
- *
- * // Calculate the total number of segments
- * var initialValue = 0
- * var total = turf.segmentReduce(polygon, function (previousValue) {
- *     previousValue++;
- *     return previousValue;
- * }, initialValue);
- */
-function segmentReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    var started = false;
-    segmentEach(geojson, function (currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex) {
-        if (started === false && initialValue === undefined) previousValue = currentSegment;
-        else previousValue = callback(previousValue, currentSegment, featureIndex, multiFeatureIndex, geometryIndex, segmentIndex);
-        started = true;
-    });
-    return previousValue;
-}
-
-/**
- * Callback for lineEach
- *
- * @callback lineEachCallback
- * @param {Feature<LineString>} currentLine The current LineString|LinearRing being processed
- * @param {number} featureIndex The current index of the Feature being processed
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed
- * @param {number} geometryIndex The current index of the Geometry being processed
- */
-
-/**
- * Iterate over line or ring coordinates in LineString, Polygon, MultiLineString, MultiPolygon Features or Geometries,
- * similar to Array.forEach.
- *
- * @name lineEach
- * @param {Geometry|Feature<LineString|Polygon|MultiLineString|MultiPolygon>} geojson object
- * @param {Function} callback a method that takes (currentLine, featureIndex, multiFeatureIndex, geometryIndex)
- * @example
- * var multiLine = turf.multiLineString([
- *   [[26, 37], [35, 45]],
- *   [[36, 53], [38, 50], [41, 55]]
- * ]);
- *
- * turf.lineEach(multiLine, function (currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
- *   //=currentLine
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- * });
- */
-function lineEach(geojson, callback) {
-    // validation
-    if (!geojson) throw new Error('geojson is required');
-
-    flattenEach(geojson, function (feature, featureIndex, multiFeatureIndex) {
-        if (feature.geometry === null) return;
-        var type = feature.geometry.type;
-        var coords = feature.geometry.coordinates;
-        switch (type) {
-        case 'LineString':
-            if (callback(feature, featureIndex, multiFeatureIndex, 0, 0) === false) return false;
-            break;
-        case 'Polygon':
-            for (var geometryIndex = 0; geometryIndex < coords.length; geometryIndex++) {
-                if (callback(helpers.lineString(coords[geometryIndex], feature.properties), featureIndex, multiFeatureIndex, geometryIndex) === false) return false;
-            }
-            break;
-        }
-    });
-}
-
-/**
- * Callback for lineReduce
- *
- * The first time the callback function is called, the values provided as arguments depend
- * on whether the reduce method has an initialValue argument.
- *
- * If an initialValue is provided to the reduce method:
- *  - The previousValue argument is initialValue.
- *  - The currentValue argument is the value of the first element present in the array.
- *
- * If an initialValue is not provided:
- *  - The previousValue argument is the value of the first element present in the array.
- *  - The currentValue argument is the value of the second element present in the array.
- *
- * @callback lineReduceCallback
- * @param {*} previousValue The accumulated value previously returned in the last invocation
- * of the callback, or initialValue, if supplied.
- * @param {Feature<LineString>} currentLine The current LineString|LinearRing being processed.
- * @param {number} featureIndex The current index of the Feature being processed
- * @param {number} multiFeatureIndex The current index of the Multi-Feature being processed
- * @param {number} geometryIndex The current index of the Geometry being processed
- */
-
-/**
- * Reduce features in any GeoJSON object, similar to Array.reduce().
- *
- * @name lineReduce
- * @param {Geometry|Feature<LineString|Polygon|MultiLineString|MultiPolygon>} geojson object
- * @param {Function} callback a method that takes (previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex)
- * @param {*} [initialValue] Value to use as the first argument to the first call of the callback.
- * @returns {*} The value that results from the reduction.
- * @example
- * var multiPoly = turf.multiPolygon([
- *   turf.polygon([[[12,48],[2,41],[24,38],[12,48]], [[9,44],[13,41],[13,45],[9,44]]]),
- *   turf.polygon([[[5, 5], [0, 0], [2, 2], [4, 4], [5, 5]]])
- * ]);
- *
- * turf.lineReduce(multiPoly, function (previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
- *   //=previousValue
- *   //=currentLine
- *   //=featureIndex
- *   //=multiFeatureIndex
- *   //=geometryIndex
- *   return currentLine
- * });
- */
-function lineReduce(geojson, callback, initialValue) {
-    var previousValue = initialValue;
-    lineEach(geojson, function (currentLine, featureIndex, multiFeatureIndex, geometryIndex) {
-        if (featureIndex === 0 && initialValue === undefined) previousValue = currentLine;
-        else previousValue = callback(previousValue, currentLine, featureIndex, multiFeatureIndex, geometryIndex);
-    });
-    return previousValue;
-}
-
-/**
- * Finds a particular 2-vertex LineString Segment from a GeoJSON using `@turf/meta` indexes.
- *
- * Negative indexes are permitted.
- * Point & MultiPoint will always return null.
- *
- * @param {FeatureCollection|Feature|Geometry} geojson Any GeoJSON Feature or Geometry
- * @param {Object} [options={}] Optional parameters
- * @param {number} [options.featureIndex=0] Feature Index
- * @param {number} [options.multiFeatureIndex=0] Multi-Feature Index
- * @param {number} [options.geometryIndex=0] Geometry Index
- * @param {number} [options.segmentIndex=0] Segment Index
- * @param {Object} [options.properties={}] Translate Properties to output LineString
- * @param {BBox} [options.bbox={}] Translate BBox to output LineString
- * @param {number|string} [options.id={}] Translate Id to output LineString
- * @returns {Feature<LineString>} 2-vertex GeoJSON Feature LineString
- * @example
- * var multiLine = turf.multiLineString([
- *     [[10, 10], [50, 30], [30, 40]],
- *     [[-10, -10], [-50, -30], [-30, -40]]
- * ]);
- *
- * // First Segment (defaults are 0)
- * turf.findSegment(multiLine);
- * // => Feature<LineString<[[10, 10], [50, 30]]>>
- *
- * // First Segment of 2nd Multi Feature
- * turf.findSegment(multiLine, {multiFeatureIndex: 1});
- * // => Feature<LineString<[[-10, -10], [-50, -30]]>>
- *
- * // Last Segment of Last Multi Feature
- * turf.findSegment(multiLine, {multiFeatureIndex: -1, segmentIndex: -1});
- * // => Feature<LineString<[[-50, -30], [-30, -40]]>>
- */
-function findSegment(geojson, options) {
-    // Optional Parameters
-    options = options || {};
-    if (!helpers.isObject(options)) throw new Error('options is invalid');
-    var featureIndex = options.featureIndex || 0;
-    var multiFeatureIndex = options.multiFeatureIndex || 0;
-    var geometryIndex = options.geometryIndex || 0;
-    var segmentIndex = options.segmentIndex || 0;
-
-    // Find FeatureIndex
-    var properties = options.properties;
-    var geometry;
-
-    switch (geojson.type) {
-    case 'FeatureCollection':
-        if (featureIndex < 0) featureIndex = geojson.features.length + featureIndex;
-        properties = properties || geojson.features[featureIndex].properties;
-        geometry = geojson.features[featureIndex].geometry;
-        break;
-    case 'Feature':
-        properties = properties || geojson.properties;
-        geometry = geojson.geometry;
-        break;
-    case 'Point':
-    case 'MultiPoint':
-        return null;
-    case 'LineString':
-    case 'Polygon':
-    case 'MultiLineString':
-    case 'MultiPolygon':
-        geometry = geojson;
-        break;
-    default:
-        throw new Error('geojson is invalid');
-    }
-
-    // Find SegmentIndex
-    if (geometry === null) return null;
-    var coords = geometry.coordinates;
-    switch (geometry.type) {
-    case 'Point':
-    case 'MultiPoint':
-        return null;
-    case 'LineString':
-        if (segmentIndex < 0) segmentIndex = coords.length + segmentIndex - 1;
-        return helpers.lineString([coords[segmentIndex], coords[segmentIndex + 1]], properties, options);
-    case 'Polygon':
-        if (geometryIndex < 0) geometryIndex = coords.length + geometryIndex;
-        if (segmentIndex < 0) segmentIndex = coords[geometryIndex].length + segmentIndex - 1;
-        return helpers.lineString([coords[geometryIndex][segmentIndex], coords[geometryIndex][segmentIndex + 1]], properties, options);
-    case 'MultiLineString':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        if (segmentIndex < 0) segmentIndex = coords[multiFeatureIndex].length + segmentIndex - 1;
-        return helpers.lineString([coords[multiFeatureIndex][segmentIndex], coords[multiFeatureIndex][segmentIndex + 1]], properties, options);
-    case 'MultiPolygon':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        if (geometryIndex < 0) geometryIndex = coords[multiFeatureIndex].length + geometryIndex;
-        if (segmentIndex < 0) segmentIndex = coords[multiFeatureIndex][geometryIndex].length - segmentIndex - 1;
-        return helpers.lineString([coords[multiFeatureIndex][geometryIndex][segmentIndex], coords[multiFeatureIndex][geometryIndex][segmentIndex + 1]], properties, options);
-    }
-    throw new Error('geojson is invalid');
-}
-
-/**
- * Finds a particular Point from a GeoJSON using `@turf/meta` indexes.
- *
- * Negative indexes are permitted.
- *
- * @param {FeatureCollection|Feature|Geometry} geojson Any GeoJSON Feature or Geometry
- * @param {Object} [options={}] Optional parameters
- * @param {number} [options.featureIndex=0] Feature Index
- * @param {number} [options.multiFeatureIndex=0] Multi-Feature Index
- * @param {number} [options.geometryIndex=0] Geometry Index
- * @param {number} [options.coordIndex=0] Coord Index
- * @param {Object} [options.properties={}] Translate Properties to output Point
- * @param {BBox} [options.bbox={}] Translate BBox to output Point
- * @param {number|string} [options.id={}] Translate Id to output Point
- * @returns {Feature<Point>} 2-vertex GeoJSON Feature Point
- * @example
- * var multiLine = turf.multiLineString([
- *     [[10, 10], [50, 30], [30, 40]],
- *     [[-10, -10], [-50, -30], [-30, -40]]
- * ]);
- *
- * // First Segment (defaults are 0)
- * turf.findPoint(multiLine);
- * // => Feature<Point<[10, 10]>>
- *
- * // First Segment of the 2nd Multi-Feature
- * turf.findPoint(multiLine, {multiFeatureIndex: 1});
- * // => Feature<Point<[-10, -10]>>
- *
- * // Last Segment of last Multi-Feature
- * turf.findPoint(multiLine, {multiFeatureIndex: -1, coordIndex: -1});
- * // => Feature<Point<[-30, -40]>>
- */
-function findPoint(geojson, options) {
-    // Optional Parameters
-    options = options || {};
-    if (!helpers.isObject(options)) throw new Error('options is invalid');
-    var featureIndex = options.featureIndex || 0;
-    var multiFeatureIndex = options.multiFeatureIndex || 0;
-    var geometryIndex = options.geometryIndex || 0;
-    var coordIndex = options.coordIndex || 0;
-
-    // Find FeatureIndex
-    var properties = options.properties;
-    var geometry;
-
-    switch (geojson.type) {
-    case 'FeatureCollection':
-        if (featureIndex < 0) featureIndex = geojson.features.length + featureIndex;
-        properties = properties || geojson.features[featureIndex].properties;
-        geometry = geojson.features[featureIndex].geometry;
-        break;
-    case 'Feature':
-        properties = properties || geojson.properties;
-        geometry = geojson.geometry;
-        break;
-    case 'Point':
-    case 'MultiPoint':
-        return null;
-    case 'LineString':
-    case 'Polygon':
-    case 'MultiLineString':
-    case 'MultiPolygon':
-        geometry = geojson;
-        break;
-    default:
-        throw new Error('geojson is invalid');
-    }
-
-    // Find Coord Index
-    if (geometry === null) return null;
-    var coords = geometry.coordinates;
-    switch (geometry.type) {
-    case 'Point':
-        return helpers.point(coords, properties, options);
-    case 'MultiPoint':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        return helpers.point(coords[multiFeatureIndex], properties, options);
-    case 'LineString':
-        if (coordIndex < 0) coordIndex = coords.length + coordIndex;
-        return helpers.point(coords[coordIndex], properties, options);
-    case 'Polygon':
-        if (geometryIndex < 0) geometryIndex = coords.length + geometryIndex;
-        if (coordIndex < 0) coordIndex = coords[geometryIndex].length + coordIndex;
-        return helpers.point(coords[geometryIndex][coordIndex], properties, options);
-    case 'MultiLineString':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        if (coordIndex < 0) coordIndex = coords[multiFeatureIndex].length + coordIndex;
-        return helpers.point(coords[multiFeatureIndex][coordIndex], properties, options);
-    case 'MultiPolygon':
-        if (multiFeatureIndex < 0) multiFeatureIndex = coords.length + multiFeatureIndex;
-        if (geometryIndex < 0) geometryIndex = coords[multiFeatureIndex].length + geometryIndex;
-        if (coordIndex < 0) coordIndex = coords[multiFeatureIndex][geometryIndex].length - coordIndex;
-        return helpers.point(coords[multiFeatureIndex][geometryIndex][coordIndex], properties, options);
-    }
-    throw new Error('geojson is invalid');
-}
-
-exports.coordEach = coordEach;
-exports.coordReduce = coordReduce;
-exports.propEach = propEach;
-exports.propReduce = propReduce;
-exports.featureEach = featureEach;
-exports.featureReduce = featureReduce;
-exports.coordAll = coordAll;
-exports.geomEach = geomEach;
-exports.geomReduce = geomReduce;
-exports.flattenEach = flattenEach;
-exports.flattenReduce = flattenReduce;
-exports.segmentEach = segmentEach;
-exports.segmentReduce = segmentReduce;
-exports.lineEach = lineEach;
-exports.lineReduce = lineReduce;
-exports.findSegment = findSegment;
-exports.findPoint = findPoint;
-
-
-/***/ }),
-
 /***/ "GVEf":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13434,7 +9717,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 55);
+/******/ 	return __webpack_require__(__webpack_require__.s = 56);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -13562,7 +9845,7 @@ module.exports = __webpack_require__("5FBR");
 
 /***/ }),
 
-/***/ 55:
+/***/ 56:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14862,12 +11145,12 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 114);
+/******/ 	return __webpack_require__(__webpack_require__.s = 115);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 114:
+/***/ 115:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14884,9 +11167,6 @@ var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce_);
 // EXTERNAL MODULE: external "element-ui/lib/utils/dom"
 var dom_ = __webpack_require__(2);
 
-// EXTERNAL MODULE: external "element-ui/lib/utils/vdom"
-var vdom_ = __webpack_require__(20);
-
 // EXTERNAL MODULE: external "element-ui/lib/utils/util"
 var util_ = __webpack_require__(4);
 
@@ -14895,7 +11175,6 @@ var external_vue_ = __webpack_require__(6);
 var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
 
 // CONCATENATED MODULE: ./packages/tooltip/src/main.js
-
 
 
 
@@ -14951,15 +11230,10 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
 
   data: function data() {
     return {
+      tooltipId: 'el-tooltip-' + Object(util_["generateId"])(),
       timeoutPending: null,
       focusing: false
     };
-  },
-
-  computed: {
-    tooltipId: function tooltipId() {
-      return 'el-tooltip-' + Object(util_["generateId"])();
-    }
   },
   beforeCreate: function beforeCreate() {
     var _this = this;
@@ -15019,16 +11293,13 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
       );
     }
 
-    if (!this.$slots.default || !this.$slots.default.length) return this.$slots.default;
+    var firstElement = this.getFirstElement();
+    if (!firstElement) return null;
 
-    var vnode = Object(vdom_["getFirstComponentChild"])(this.$slots.default);
+    var data = firstElement.data = firstElement.data || {};
+    data.staticClass = this.addTooltipClass(data.staticClass);
 
-    if (!vnode) return vnode;
-
-    var data = vnode.data = vnode.data || {};
-    data.staticClass = this.concatClass(data.staticClass, 'el-tooltip');
-
-    return vnode;
+    return firstElement;
   },
   mounted: function mounted() {
     var _this3 = this;
@@ -15053,6 +11324,14 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
       });
       Object(dom_["on"])(this.referenceElm, 'blur', this.handleBlur);
       Object(dom_["on"])(this.referenceElm, 'click', this.removeFocusing);
+    }
+    // fix issue https://github.com/ElemeFE/element/issues/14424
+    if (this.value && this.popperVM) {
+      this.popperVM.$nextTick(function () {
+        if (_this3.value) {
+          _this3.updatePopper();
+        }
+      });
     }
   },
 
@@ -15085,9 +11364,12 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
     removeFocusing: function removeFocusing() {
       this.focusing = false;
     },
-    concatClass: function concatClass(a, b) {
-      if (a && a.indexOf(b) > -1) return a;
-      return a ? b ? a + ' ' + b : a : b || '';
+    addTooltipClass: function addTooltipClass(prev) {
+      if (!prev) {
+        return 'el-tooltip';
+      } else {
+        return 'el-tooltip ' + prev.replace('el-tooltip', '');
+      }
     },
     handleShowPopper: function handleShowPopper() {
       var _this4 = this;
@@ -15122,6 +11404,17 @@ var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
         clearTimeout(this.timeoutPending);
       }
       this.expectedState = expectedState;
+    },
+    getFirstElement: function getFirstElement() {
+      var slots = this.$slots.default;
+      if (!Array.isArray(slots)) return null;
+      var element = null;
+      for (var index = 0; index < slots.length; index++) {
+        if (slots[index] && slots[index].tag) {
+          element = slots[index];
+        };
+      }
+      return element;
     }
   },
 
@@ -15160,13 +11453,6 @@ module.exports = __webpack_require__("DhVD");
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("WST1");
-
-/***/ }),
-
-/***/ 20:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("Qfgm");
 
 /***/ }),
 
@@ -16856,747 +13142,6 @@ module.exports = {"textColor":"#fff","background":"rgb(0, 0, 0,0.6)","colorGroup
 
 /***/ }),
 
-/***/ "NP9J":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @module helpers
- */
-/**
- * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
- *
- * @memberof helpers
- * @type {number}
- */
-exports.earthRadius = 6371008.8;
-/**
- * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.factors = {
-    centimeters: exports.earthRadius * 100,
-    centimetres: exports.earthRadius * 100,
-    degrees: exports.earthRadius / 111325,
-    feet: exports.earthRadius * 3.28084,
-    inches: exports.earthRadius * 39.370,
-    kilometers: exports.earthRadius / 1000,
-    kilometres: exports.earthRadius / 1000,
-    meters: exports.earthRadius,
-    metres: exports.earthRadius,
-    miles: exports.earthRadius / 1609.344,
-    millimeters: exports.earthRadius * 1000,
-    millimetres: exports.earthRadius * 1000,
-    nauticalmiles: exports.earthRadius / 1852,
-    radians: 1,
-    yards: exports.earthRadius / 1.0936,
-};
-/**
- * Units of measurement factors based on 1 meter.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.unitsFactors = {
-    centimeters: 100,
-    centimetres: 100,
-    degrees: 1 / 111325,
-    feet: 3.28084,
-    inches: 39.370,
-    kilometers: 1 / 1000,
-    kilometres: 1 / 1000,
-    meters: 1,
-    metres: 1,
-    miles: 1 / 1609.344,
-    millimeters: 1000,
-    millimetres: 1000,
-    nauticalmiles: 1 / 1852,
-    radians: 1 / exports.earthRadius,
-    yards: 1 / 1.0936,
-};
-/**
- * Area of measurement factors based on 1 square meter.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.areaFactors = {
-    acres: 0.000247105,
-    centimeters: 10000,
-    centimetres: 10000,
-    feet: 10.763910417,
-    inches: 1550.003100006,
-    kilometers: 0.000001,
-    kilometres: 0.000001,
-    meters: 1,
-    metres: 1,
-    miles: 3.86e-7,
-    millimeters: 1000000,
-    millimetres: 1000000,
-    yards: 1.195990046,
-};
-/**
- * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
- *
- * @name feature
- * @param {Geometry} geometry input geometry
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature} a GeoJSON Feature
- * @example
- * var geometry = {
- *   "type": "Point",
- *   "coordinates": [110, 50]
- * };
- *
- * var feature = turf.feature(geometry);
- *
- * //=feature
- */
-function feature(geom, properties, options) {
-    if (options === void 0) { options = {}; }
-    var feat = { type: "Feature" };
-    if (options.id === 0 || options.id) {
-        feat.id = options.id;
-    }
-    if (options.bbox) {
-        feat.bbox = options.bbox;
-    }
-    feat.properties = properties || {};
-    feat.geometry = geom;
-    return feat;
-}
-exports.feature = feature;
-/**
- * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
- * For GeometryCollection type use `helpers.geometryCollection`
- *
- * @name geometry
- * @param {string} type Geometry Type
- * @param {Array<any>} coordinates Coordinates
- * @param {Object} [options={}] Optional Parameters
- * @returns {Geometry} a GeoJSON Geometry
- * @example
- * var type = "Point";
- * var coordinates = [110, 50];
- * var geometry = turf.geometry(type, coordinates);
- * // => geometry
- */
-function geometry(type, coordinates, options) {
-    if (options === void 0) { options = {}; }
-    switch (type) {
-        case "Point": return point(coordinates).geometry;
-        case "LineString": return lineString(coordinates).geometry;
-        case "Polygon": return polygon(coordinates).geometry;
-        case "MultiPoint": return multiPoint(coordinates).geometry;
-        case "MultiLineString": return multiLineString(coordinates).geometry;
-        case "MultiPolygon": return multiPolygon(coordinates).geometry;
-        default: throw new Error(type + " is invalid");
-    }
-}
-exports.geometry = geometry;
-/**
- * Creates a {@link Point} {@link Feature} from a Position.
- *
- * @name point
- * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Point>} a Point feature
- * @example
- * var point = turf.point([-75.343, 39.984]);
- *
- * //=point
- */
-function point(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "Point",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.point = point;
-/**
- * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
- *
- * @name points
- * @param {Array<Array<number>>} coordinates an array of Points
- * @param {Object} [properties={}] Translate these properties to each Feature
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
- * associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Point>} Point Feature
- * @example
- * var points = turf.points([
- *   [-75, 39],
- *   [-80, 45],
- *   [-78, 50]
- * ]);
- *
- * //=points
- */
-function points(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return point(coords, properties);
-    }), options);
-}
-exports.points = points;
-/**
- * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
- *
- * @name polygon
- * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Polygon>} Polygon Feature
- * @example
- * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
- *
- * //=polygon
- */
-function polygon(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
-        var ring = coordinates_1[_i];
-        if (ring.length < 4) {
-            throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
-        }
-        for (var j = 0; j < ring[ring.length - 1].length; j++) {
-            // Check if first point of Polygon contains two numbers
-            if (ring[ring.length - 1][j] !== ring[0][j]) {
-                throw new Error("First and last Position are not equivalent.");
-            }
-        }
-    }
-    var geom = {
-        type: "Polygon",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.polygon = polygon;
-/**
- * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
- *
- * @name polygons
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
- * @example
- * var polygons = turf.polygons([
- *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
- *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
- * ]);
- *
- * //=polygons
- */
-function polygons(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return polygon(coords, properties);
-    }), options);
-}
-exports.polygons = polygons;
-/**
- * Creates a {@link LineString} {@link Feature} from an Array of Positions.
- *
- * @name lineString
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<LineString>} LineString Feature
- * @example
- * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
- * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
- *
- * //=linestring1
- * //=linestring2
- */
-function lineString(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    if (coordinates.length < 2) {
-        throw new Error("coordinates must be an array of two or more positions");
-    }
-    var geom = {
-        type: "LineString",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.lineString = lineString;
-/**
- * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
- *
- * @name lineStrings
- * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
- * associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<LineString>} LineString FeatureCollection
- * @example
- * var linestrings = turf.lineStrings([
- *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
- *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
- * ]);
- *
- * //=linestrings
- */
-function lineStrings(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return lineString(coords, properties);
-    }), options);
-}
-exports.lineStrings = lineStrings;
-/**
- * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
- *
- * @name featureCollection
- * @param {Feature[]} features input features
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {FeatureCollection} FeatureCollection of Features
- * @example
- * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
- * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
- * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
- *
- * var collection = turf.featureCollection([
- *   locationA,
- *   locationB,
- *   locationC
- * ]);
- *
- * //=collection
- */
-function featureCollection(features, options) {
-    if (options === void 0) { options = {}; }
-    var fc = { type: "FeatureCollection" };
-    if (options.id) {
-        fc.id = options.id;
-    }
-    if (options.bbox) {
-        fc.bbox = options.bbox;
-    }
-    fc.features = features;
-    return fc;
-}
-exports.featureCollection = featureCollection;
-/**
- * Creates a {@link Feature<MultiLineString>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiLineString
- * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiLineString>} a MultiLineString feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
- *
- * //=multiLine
- */
-function multiLineString(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiLineString",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiLineString = multiLineString;
-/**
- * Creates a {@link Feature<MultiPoint>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPoint
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPoint>} a MultiPoint feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPt = turf.multiPoint([[0,0],[10,10]]);
- *
- * //=multiPt
- */
-function multiPoint(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiPoint",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiPoint = multiPoint;
-/**
- * Creates a {@link Feature<MultiPolygon>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPolygon
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPolygon>} a multipolygon feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
- *
- * //=multiPoly
- *
- */
-function multiPolygon(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiPolygon",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiPolygon = multiPolygon;
-/**
- * Creates a {@link Feature<GeometryCollection>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name geometryCollection
- * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
- * @example
- * var pt = turf.geometry("Point", [100, 0]);
- * var line = turf.geometry("LineString", [[101, 0], [102, 1]]);
- * var collection = turf.geometryCollection([pt, line]);
- *
- * // => collection
- */
-function geometryCollection(geometries, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "GeometryCollection",
-        geometries: geometries,
-    };
-    return feature(geom, properties, options);
-}
-exports.geometryCollection = geometryCollection;
-/**
- * Round number to precision
- *
- * @param {number} num Number
- * @param {number} [precision=0] Precision
- * @returns {number} rounded number
- * @example
- * turf.round(120.4321)
- * //=120
- *
- * turf.round(120.4321, 2)
- * //=120.43
- */
-function round(num, precision) {
-    if (precision === void 0) { precision = 0; }
-    if (precision && !(precision >= 0)) {
-        throw new Error("precision must be a positive number");
-    }
-    var multiplier = Math.pow(10, precision || 0);
-    return Math.round(num * multiplier) / multiplier;
-}
-exports.round = round;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name radiansToLength
- * @param {number} radians in radians across the sphere
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} distance
- */
-function radiansToLength(radians, units) {
-    if (units === void 0) { units = "kilometers"; }
-    var factor = exports.factors[units];
-    if (!factor) {
-        throw new Error(units + " units is invalid");
-    }
-    return radians * factor;
-}
-exports.radiansToLength = radiansToLength;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name lengthToRadians
- * @param {number} distance in real units
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} radians
- */
-function lengthToRadians(distance, units) {
-    if (units === void 0) { units = "kilometers"; }
-    var factor = exports.factors[units];
-    if (!factor) {
-        throw new Error(units + " units is invalid");
-    }
-    return distance / factor;
-}
-exports.lengthToRadians = lengthToRadians;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
- *
- * @name lengthToDegrees
- * @param {number} distance in real units
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} degrees
- */
-function lengthToDegrees(distance, units) {
-    return radiansToDegrees(lengthToRadians(distance, units));
-}
-exports.lengthToDegrees = lengthToDegrees;
-/**
- * Converts any bearing angle from the north line direction (positive clockwise)
- * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
- *
- * @name bearingToAzimuth
- * @param {number} bearing angle, between -180 and +180 degrees
- * @returns {number} angle between 0 and 360 degrees
- */
-function bearingToAzimuth(bearing) {
-    var angle = bearing % 360;
-    if (angle < 0) {
-        angle += 360;
-    }
-    return angle;
-}
-exports.bearingToAzimuth = bearingToAzimuth;
-/**
- * Converts an angle in radians to degrees
- *
- * @name radiansToDegrees
- * @param {number} radians angle in radians
- * @returns {number} degrees between 0 and 360 degrees
- */
-function radiansToDegrees(radians) {
-    var degrees = radians % (2 * Math.PI);
-    return degrees * 180 / Math.PI;
-}
-exports.radiansToDegrees = radiansToDegrees;
-/**
- * Converts an angle in degrees to radians
- *
- * @name degreesToRadians
- * @param {number} degrees angle between 0 and 360 degrees
- * @returns {number} angle in radians
- */
-function degreesToRadians(degrees) {
-    var radians = degrees % 360;
-    return radians * Math.PI / 180;
-}
-exports.degreesToRadians = degreesToRadians;
-/**
- * Converts a length to the requested unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @param {number} length to be converted
- * @param {Units} [originalUnit="kilometers"] of the length
- * @param {Units} [finalUnit="kilometers"] returned unit
- * @returns {number} the converted length
- */
-function convertLength(length, originalUnit, finalUnit) {
-    if (originalUnit === void 0) { originalUnit = "kilometers"; }
-    if (finalUnit === void 0) { finalUnit = "kilometers"; }
-    if (!(length >= 0)) {
-        throw new Error("length must be a positive number");
-    }
-    return radiansToLength(lengthToRadians(length, originalUnit), finalUnit);
-}
-exports.convertLength = convertLength;
-/**
- * Converts a area to the requested unit.
- * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
- * @param {number} area to be converted
- * @param {Units} [originalUnit="meters"] of the distance
- * @param {Units} [finalUnit="kilometers"] returned unit
- * @returns {number} the converted distance
- */
-function convertArea(area, originalUnit, finalUnit) {
-    if (originalUnit === void 0) { originalUnit = "meters"; }
-    if (finalUnit === void 0) { finalUnit = "kilometers"; }
-    if (!(area >= 0)) {
-        throw new Error("area must be a positive number");
-    }
-    var startFactor = exports.areaFactors[originalUnit];
-    if (!startFactor) {
-        throw new Error("invalid original units");
-    }
-    var finalFactor = exports.areaFactors[finalUnit];
-    if (!finalFactor) {
-        throw new Error("invalid final units");
-    }
-    return (area / startFactor) * finalFactor;
-}
-exports.convertArea = convertArea;
-/**
- * isNumber
- *
- * @param {*} num Number to validate
- * @returns {boolean} true/false
- * @example
- * turf.isNumber(123)
- * //=true
- * turf.isNumber('foo')
- * //=false
- */
-function isNumber(num) {
-    return !isNaN(num) && num !== null && !Array.isArray(num) && !/^\s*$/.test(num);
-}
-exports.isNumber = isNumber;
-/**
- * isObject
- *
- * @param {*} input variable to validate
- * @returns {boolean} true/false
- * @example
- * turf.isObject({elevation: 10})
- * //=true
- * turf.isObject('foo')
- * //=false
- */
-function isObject(input) {
-    return (!!input) && (input.constructor === Object);
-}
-exports.isObject = isObject;
-/**
- * Validate BBox
- *
- * @private
- * @param {Array<number>} bbox BBox to validate
- * @returns {void}
- * @throws Error if BBox is not valid
- * @example
- * validateBBox([-180, -40, 110, 50])
- * //=OK
- * validateBBox([-180, -40])
- * //=Error
- * validateBBox('Foo')
- * //=Error
- * validateBBox(5)
- * //=Error
- * validateBBox(null)
- * //=Error
- * validateBBox(undefined)
- * //=Error
- */
-function validateBBox(bbox) {
-    if (!bbox) {
-        throw new Error("bbox is required");
-    }
-    if (!Array.isArray(bbox)) {
-        throw new Error("bbox must be an Array");
-    }
-    if (bbox.length !== 4 && bbox.length !== 6) {
-        throw new Error("bbox must be an Array of 4 or 6 numbers");
-    }
-    bbox.forEach(function (num) {
-        if (!isNumber(num)) {
-            throw new Error("bbox must only contain numbers");
-        }
-    });
-}
-exports.validateBBox = validateBBox;
-/**
- * Validate Id
- *
- * @private
- * @param {string|number} id Id to validate
- * @returns {void}
- * @throws Error if Id is not valid
- * @example
- * validateId([-180, -40, 110, 50])
- * //=Error
- * validateId([-180, -40])
- * //=Error
- * validateId('Foo')
- * //=OK
- * validateId(5)
- * //=OK
- * validateId(null)
- * //=Error
- * validateId(undefined)
- * //=Error
- */
-function validateId(id) {
-    if (!id) {
-        throw new Error("id is required");
-    }
-    if (["string", "number"].indexOf(typeof id) === -1) {
-        throw new Error("id must be a number or a string");
-    }
-}
-exports.validateId = validateId;
-// Deprecated methods
-function radians2degrees() {
-    throw new Error("method has been renamed to `radiansToDegrees`");
-}
-exports.radians2degrees = radians2degrees;
-function degrees2radians() {
-    throw new Error("method has been renamed to `degreesToRadians`");
-}
-exports.degrees2radians = degrees2radians;
-function distanceToDegrees() {
-    throw new Error("method has been renamed to `lengthToDegrees`");
-}
-exports.distanceToDegrees = distanceToDegrees;
-function distanceToRadians() {
-    throw new Error("method has been renamed to `lengthToRadians`");
-}
-exports.distanceToRadians = distanceToRadians;
-function radiansToDistance() {
-    throw new Error("method has been renamed to `radiansToLength`");
-}
-exports.radiansToDistance = radiansToDistance;
-function bearingToAngle() {
-    throw new Error("method has been renamed to `bearingToAzimuth`");
-}
-exports.bearingToAngle = bearingToAngle;
-function convertDistance() {
-    throw new Error("method has been renamed to `convertLength`");
-}
-exports.convertDistance = convertDistance;
-
-
-/***/ }),
-
 /***/ "Nsbk":
 /***/ (function(module, exports) {
 
@@ -17617,7 +13162,7 @@ module.exports = _getPrototypeOf;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var meta_1 = __webpack_require__("G/qV");
+var meta_1 = __webpack_require__("cWyK");
 // Note: change RADIUS => earthRadius
 var RADIUS = 6378137;
 /**
@@ -18250,18 +13795,11 @@ exports.__esModule = true;
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.isVNode = isVNode;
-exports.getFirstComponentChild = getFirstComponentChild;
 
 var _util = __webpack_require__("gSIQ");
 
 function isVNode(node) {
   return node !== null && (typeof node === 'undefined' ? 'undefined' : _typeof(node)) === 'object' && (0, _util.hasOwn)(node, 'componentOptions');
-};
-
-function getFirstComponentChild(children) {
-  return children && children.filter(function (c) {
-    return c && c.tag;
-  })[0];
 };
 
 /***/ }),
@@ -19461,7 +14999,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 52);
+/******/ 	return __webpack_require__(__webpack_require__.s = 53);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -19635,13 +15173,13 @@ module.exports = __webpack_require__("QBBo");
 module.exports = __webpack_require__("FOnU");
 
 /***/ }),
-/* 20 */,
-/* 21 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("EvI9");
 
 /***/ }),
+/* 21 */,
 /* 22 */,
 /* 23 */,
 /* 24 */,
@@ -19924,7 +15462,8 @@ module.exports = __webpack_require__("05c+");
 /* 49 */,
 /* 50 */,
 /* 51 */,
-/* 52 */
+/* 52 */,
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20402,7 +15941,7 @@ var emitter_ = __webpack_require__(3);
 var emitter_default = /*#__PURE__*/__webpack_require__.n(emitter_);
 
 // EXTERNAL MODULE: external "element-ui/lib/mixins/focus"
-var focus_ = __webpack_require__(21);
+var focus_ = __webpack_require__(20);
 var focus_default = /*#__PURE__*/__webpack_require__.n(focus_);
 
 // EXTERNAL MODULE: external "element-ui/lib/mixins/locale"
@@ -21366,7 +16905,7 @@ var shared_ = __webpack_require__(33);
     },
     deleteSelected: function deleteSelected(event) {
       event.stopPropagation();
-      var value = this.multiple ? [] : '';
+      var value = this.multiple ? [] : null;
       this.$emit('input', value);
       this.emitChange(value);
       this.visible = false;
@@ -24470,7 +20009,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var distance_1 = __importDefault(__webpack_require__("j3ZU"));
-var meta_1 = __webpack_require__("6mXm");
+var meta_1 = __webpack_require__("cWyK");
 /**
  * Takes a {@link GeoJSON} and measures its length in the specified units, {@link (Multi)Point}'s distance are ignored.
  *
@@ -29446,7 +24985,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 79);
+/******/ 	return __webpack_require__(__webpack_require__.s = 100);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -29553,14 +25092,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports) {
-
-module.exports = __webpack_require__("0BDH");
-
-/***/ }),
-
-/***/ 79:
+/***/ 100:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29670,6 +25202,13 @@ checkbox_group.install = function (Vue) {
 };
 
 /* harmony default export */ var packages_checkbox_group = __webpack_exports__["default"] = (checkbox_group);
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = __webpack_require__("0BDH");
 
 /***/ })
 
@@ -30664,7 +26203,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 111);
+/******/ 	return __webpack_require__(__webpack_require__.s = 110);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -30771,7 +26310,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 111:
+/***/ 110:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31518,7 +27057,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_iizB__;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var invariant_1 = __webpack_require__("AKIq");
-var helpers_1 = __webpack_require__("NP9J");
+var helpers_1 = __webpack_require__("/rf6");
 //http://en.wikipedia.org/wiki/Haversine_formula
 //http://www.movable-type.co.uk/scripts/latlong.html
 /**
@@ -31936,747 +27475,6 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
   buffer[offset + i - d] |= s * 128
 }
-
-
-/***/ }),
-
-/***/ "ktfA":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @module helpers
- */
-/**
- * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
- *
- * @memberof helpers
- * @type {number}
- */
-exports.earthRadius = 6371008.8;
-/**
- * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.factors = {
-    centimeters: exports.earthRadius * 100,
-    centimetres: exports.earthRadius * 100,
-    degrees: exports.earthRadius / 111325,
-    feet: exports.earthRadius * 3.28084,
-    inches: exports.earthRadius * 39.370,
-    kilometers: exports.earthRadius / 1000,
-    kilometres: exports.earthRadius / 1000,
-    meters: exports.earthRadius,
-    metres: exports.earthRadius,
-    miles: exports.earthRadius / 1609.344,
-    millimeters: exports.earthRadius * 1000,
-    millimetres: exports.earthRadius * 1000,
-    nauticalmiles: exports.earthRadius / 1852,
-    radians: 1,
-    yards: exports.earthRadius / 1.0936,
-};
-/**
- * Units of measurement factors based on 1 meter.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.unitsFactors = {
-    centimeters: 100,
-    centimetres: 100,
-    degrees: 1 / 111325,
-    feet: 3.28084,
-    inches: 39.370,
-    kilometers: 1 / 1000,
-    kilometres: 1 / 1000,
-    meters: 1,
-    metres: 1,
-    miles: 1 / 1609.344,
-    millimeters: 1000,
-    millimetres: 1000,
-    nauticalmiles: 1 / 1852,
-    radians: 1 / exports.earthRadius,
-    yards: 1 / 1.0936,
-};
-/**
- * Area of measurement factors based on 1 square meter.
- *
- * @memberof helpers
- * @type {Object}
- */
-exports.areaFactors = {
-    acres: 0.000247105,
-    centimeters: 10000,
-    centimetres: 10000,
-    feet: 10.763910417,
-    inches: 1550.003100006,
-    kilometers: 0.000001,
-    kilometres: 0.000001,
-    meters: 1,
-    metres: 1,
-    miles: 3.86e-7,
-    millimeters: 1000000,
-    millimetres: 1000000,
-    yards: 1.195990046,
-};
-/**
- * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
- *
- * @name feature
- * @param {Geometry} geometry input geometry
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature} a GeoJSON Feature
- * @example
- * var geometry = {
- *   "type": "Point",
- *   "coordinates": [110, 50]
- * };
- *
- * var feature = turf.feature(geometry);
- *
- * //=feature
- */
-function feature(geom, properties, options) {
-    if (options === void 0) { options = {}; }
-    var feat = { type: "Feature" };
-    if (options.id === 0 || options.id) {
-        feat.id = options.id;
-    }
-    if (options.bbox) {
-        feat.bbox = options.bbox;
-    }
-    feat.properties = properties || {};
-    feat.geometry = geom;
-    return feat;
-}
-exports.feature = feature;
-/**
- * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
- * For GeometryCollection type use `helpers.geometryCollection`
- *
- * @name geometry
- * @param {string} type Geometry Type
- * @param {Array<any>} coordinates Coordinates
- * @param {Object} [options={}] Optional Parameters
- * @returns {Geometry} a GeoJSON Geometry
- * @example
- * var type = "Point";
- * var coordinates = [110, 50];
- * var geometry = turf.geometry(type, coordinates);
- * // => geometry
- */
-function geometry(type, coordinates, options) {
-    if (options === void 0) { options = {}; }
-    switch (type) {
-        case "Point": return point(coordinates).geometry;
-        case "LineString": return lineString(coordinates).geometry;
-        case "Polygon": return polygon(coordinates).geometry;
-        case "MultiPoint": return multiPoint(coordinates).geometry;
-        case "MultiLineString": return multiLineString(coordinates).geometry;
-        case "MultiPolygon": return multiPolygon(coordinates).geometry;
-        default: throw new Error(type + " is invalid");
-    }
-}
-exports.geometry = geometry;
-/**
- * Creates a {@link Point} {@link Feature} from a Position.
- *
- * @name point
- * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Point>} a Point feature
- * @example
- * var point = turf.point([-75.343, 39.984]);
- *
- * //=point
- */
-function point(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "Point",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.point = point;
-/**
- * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
- *
- * @name points
- * @param {Array<Array<number>>} coordinates an array of Points
- * @param {Object} [properties={}] Translate these properties to each Feature
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
- * associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Point>} Point Feature
- * @example
- * var points = turf.points([
- *   [-75, 39],
- *   [-80, 45],
- *   [-78, 50]
- * ]);
- *
- * //=points
- */
-function points(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return point(coords, properties);
-    }), options);
-}
-exports.points = points;
-/**
- * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
- *
- * @name polygon
- * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<Polygon>} Polygon Feature
- * @example
- * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
- *
- * //=polygon
- */
-function polygon(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
-        var ring = coordinates_1[_i];
-        if (ring.length < 4) {
-            throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
-        }
-        for (var j = 0; j < ring[ring.length - 1].length; j++) {
-            // Check if first point of Polygon contains two numbers
-            if (ring[ring.length - 1][j] !== ring[0][j]) {
-                throw new Error("First and last Position are not equivalent.");
-            }
-        }
-    }
-    var geom = {
-        type: "Polygon",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.polygon = polygon;
-/**
- * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
- *
- * @name polygons
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
- * @example
- * var polygons = turf.polygons([
- *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
- *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
- * ]);
- *
- * //=polygons
- */
-function polygons(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return polygon(coords, properties);
-    }), options);
-}
-exports.polygons = polygons;
-/**
- * Creates a {@link LineString} {@link Feature} from an Array of Positions.
- *
- * @name lineString
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<LineString>} LineString Feature
- * @example
- * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
- * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
- *
- * //=linestring1
- * //=linestring2
- */
-function lineString(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    if (coordinates.length < 2) {
-        throw new Error("coordinates must be an array of two or more positions");
-    }
-    var geom = {
-        type: "LineString",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.lineString = lineString;
-/**
- * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
- *
- * @name lineStrings
- * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
- * associated with the FeatureCollection
- * @param {string|number} [options.id] Identifier associated with the FeatureCollection
- * @returns {FeatureCollection<LineString>} LineString FeatureCollection
- * @example
- * var linestrings = turf.lineStrings([
- *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
- *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
- * ]);
- *
- * //=linestrings
- */
-function lineStrings(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    return featureCollection(coordinates.map(function (coords) {
-        return lineString(coords, properties);
-    }), options);
-}
-exports.lineStrings = lineStrings;
-/**
- * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
- *
- * @name featureCollection
- * @param {Feature[]} features input features
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {FeatureCollection} FeatureCollection of Features
- * @example
- * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
- * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
- * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
- *
- * var collection = turf.featureCollection([
- *   locationA,
- *   locationB,
- *   locationC
- * ]);
- *
- * //=collection
- */
-function featureCollection(features, options) {
-    if (options === void 0) { options = {}; }
-    var fc = { type: "FeatureCollection" };
-    if (options.id) {
-        fc.id = options.id;
-    }
-    if (options.bbox) {
-        fc.bbox = options.bbox;
-    }
-    fc.features = features;
-    return fc;
-}
-exports.featureCollection = featureCollection;
-/**
- * Creates a {@link Feature<MultiLineString>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiLineString
- * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiLineString>} a MultiLineString feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
- *
- * //=multiLine
- */
-function multiLineString(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiLineString",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiLineString = multiLineString;
-/**
- * Creates a {@link Feature<MultiPoint>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPoint
- * @param {Array<Array<number>>} coordinates an array of Positions
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPoint>} a MultiPoint feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPt = turf.multiPoint([[0,0],[10,10]]);
- *
- * //=multiPt
- */
-function multiPoint(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiPoint",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiPoint = multiPoint;
-/**
- * Creates a {@link Feature<MultiPolygon>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name multiPolygon
- * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<MultiPolygon>} a multipolygon feature
- * @throws {Error} if no coordinates are passed
- * @example
- * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
- *
- * //=multiPoly
- *
- */
-function multiPolygon(coordinates, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "MultiPolygon",
-        coordinates: coordinates,
-    };
-    return feature(geom, properties, options);
-}
-exports.multiPolygon = multiPolygon;
-/**
- * Creates a {@link Feature<GeometryCollection>} based on a
- * coordinate array. Properties can be added optionally.
- *
- * @name geometryCollection
- * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
- * @param {Object} [properties={}] an Object of key-value pairs to add as properties
- * @param {Object} [options={}] Optional Parameters
- * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
- * @param {string|number} [options.id] Identifier associated with the Feature
- * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
- * @example
- * var pt = turf.geometry("Point", [100, 0]);
- * var line = turf.geometry("LineString", [[101, 0], [102, 1]]);
- * var collection = turf.geometryCollection([pt, line]);
- *
- * // => collection
- */
-function geometryCollection(geometries, properties, options) {
-    if (options === void 0) { options = {}; }
-    var geom = {
-        type: "GeometryCollection",
-        geometries: geometries,
-    };
-    return feature(geom, properties, options);
-}
-exports.geometryCollection = geometryCollection;
-/**
- * Round number to precision
- *
- * @param {number} num Number
- * @param {number} [precision=0] Precision
- * @returns {number} rounded number
- * @example
- * turf.round(120.4321)
- * //=120
- *
- * turf.round(120.4321, 2)
- * //=120.43
- */
-function round(num, precision) {
-    if (precision === void 0) { precision = 0; }
-    if (precision && !(precision >= 0)) {
-        throw new Error("precision must be a positive number");
-    }
-    var multiplier = Math.pow(10, precision || 0);
-    return Math.round(num * multiplier) / multiplier;
-}
-exports.round = round;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name radiansToLength
- * @param {number} radians in radians across the sphere
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} distance
- */
-function radiansToLength(radians, units) {
-    if (units === void 0) { units = "kilometers"; }
-    var factor = exports.factors[units];
-    if (!factor) {
-        throw new Error(units + " units is invalid");
-    }
-    return radians * factor;
-}
-exports.radiansToLength = radiansToLength;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @name lengthToRadians
- * @param {number} distance in real units
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} radians
- */
-function lengthToRadians(distance, units) {
-    if (units === void 0) { units = "kilometers"; }
-    var factor = exports.factors[units];
-    if (!factor) {
-        throw new Error(units + " units is invalid");
-    }
-    return distance / factor;
-}
-exports.lengthToRadians = lengthToRadians;
-/**
- * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
- *
- * @name lengthToDegrees
- * @param {number} distance in real units
- * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
- * meters, kilometres, kilometers.
- * @returns {number} degrees
- */
-function lengthToDegrees(distance, units) {
-    return radiansToDegrees(lengthToRadians(distance, units));
-}
-exports.lengthToDegrees = lengthToDegrees;
-/**
- * Converts any bearing angle from the north line direction (positive clockwise)
- * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
- *
- * @name bearingToAzimuth
- * @param {number} bearing angle, between -180 and +180 degrees
- * @returns {number} angle between 0 and 360 degrees
- */
-function bearingToAzimuth(bearing) {
-    var angle = bearing % 360;
-    if (angle < 0) {
-        angle += 360;
-    }
-    return angle;
-}
-exports.bearingToAzimuth = bearingToAzimuth;
-/**
- * Converts an angle in radians to degrees
- *
- * @name radiansToDegrees
- * @param {number} radians angle in radians
- * @returns {number} degrees between 0 and 360 degrees
- */
-function radiansToDegrees(radians) {
-    var degrees = radians % (2 * Math.PI);
-    return degrees * 180 / Math.PI;
-}
-exports.radiansToDegrees = radiansToDegrees;
-/**
- * Converts an angle in degrees to radians
- *
- * @name degreesToRadians
- * @param {number} degrees angle between 0 and 360 degrees
- * @returns {number} angle in radians
- */
-function degreesToRadians(degrees) {
-    var radians = degrees % 360;
-    return radians * Math.PI / 180;
-}
-exports.degreesToRadians = degreesToRadians;
-/**
- * Converts a length to the requested unit.
- * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
- *
- * @param {number} length to be converted
- * @param {Units} [originalUnit="kilometers"] of the length
- * @param {Units} [finalUnit="kilometers"] returned unit
- * @returns {number} the converted length
- */
-function convertLength(length, originalUnit, finalUnit) {
-    if (originalUnit === void 0) { originalUnit = "kilometers"; }
-    if (finalUnit === void 0) { finalUnit = "kilometers"; }
-    if (!(length >= 0)) {
-        throw new Error("length must be a positive number");
-    }
-    return radiansToLength(lengthToRadians(length, originalUnit), finalUnit);
-}
-exports.convertLength = convertLength;
-/**
- * Converts a area to the requested unit.
- * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
- * @param {number} area to be converted
- * @param {Units} [originalUnit="meters"] of the distance
- * @param {Units} [finalUnit="kilometers"] returned unit
- * @returns {number} the converted distance
- */
-function convertArea(area, originalUnit, finalUnit) {
-    if (originalUnit === void 0) { originalUnit = "meters"; }
-    if (finalUnit === void 0) { finalUnit = "kilometers"; }
-    if (!(area >= 0)) {
-        throw new Error("area must be a positive number");
-    }
-    var startFactor = exports.areaFactors[originalUnit];
-    if (!startFactor) {
-        throw new Error("invalid original units");
-    }
-    var finalFactor = exports.areaFactors[finalUnit];
-    if (!finalFactor) {
-        throw new Error("invalid final units");
-    }
-    return (area / startFactor) * finalFactor;
-}
-exports.convertArea = convertArea;
-/**
- * isNumber
- *
- * @param {*} num Number to validate
- * @returns {boolean} true/false
- * @example
- * turf.isNumber(123)
- * //=true
- * turf.isNumber('foo')
- * //=false
- */
-function isNumber(num) {
-    return !isNaN(num) && num !== null && !Array.isArray(num) && !/^\s*$/.test(num);
-}
-exports.isNumber = isNumber;
-/**
- * isObject
- *
- * @param {*} input variable to validate
- * @returns {boolean} true/false
- * @example
- * turf.isObject({elevation: 10})
- * //=true
- * turf.isObject('foo')
- * //=false
- */
-function isObject(input) {
-    return (!!input) && (input.constructor === Object);
-}
-exports.isObject = isObject;
-/**
- * Validate BBox
- *
- * @private
- * @param {Array<number>} bbox BBox to validate
- * @returns {void}
- * @throws Error if BBox is not valid
- * @example
- * validateBBox([-180, -40, 110, 50])
- * //=OK
- * validateBBox([-180, -40])
- * //=Error
- * validateBBox('Foo')
- * //=Error
- * validateBBox(5)
- * //=Error
- * validateBBox(null)
- * //=Error
- * validateBBox(undefined)
- * //=Error
- */
-function validateBBox(bbox) {
-    if (!bbox) {
-        throw new Error("bbox is required");
-    }
-    if (!Array.isArray(bbox)) {
-        throw new Error("bbox must be an Array");
-    }
-    if (bbox.length !== 4 && bbox.length !== 6) {
-        throw new Error("bbox must be an Array of 4 or 6 numbers");
-    }
-    bbox.forEach(function (num) {
-        if (!isNumber(num)) {
-            throw new Error("bbox must only contain numbers");
-        }
-    });
-}
-exports.validateBBox = validateBBox;
-/**
- * Validate Id
- *
- * @private
- * @param {string|number} id Id to validate
- * @returns {void}
- * @throws Error if Id is not valid
- * @example
- * validateId([-180, -40, 110, 50])
- * //=Error
- * validateId([-180, -40])
- * //=Error
- * validateId('Foo')
- * //=OK
- * validateId(5)
- * //=OK
- * validateId(null)
- * //=Error
- * validateId(undefined)
- * //=Error
- */
-function validateId(id) {
-    if (!id) {
-        throw new Error("id is required");
-    }
-    if (["string", "number"].indexOf(typeof id) === -1) {
-        throw new Error("id must be a number or a string");
-    }
-}
-exports.validateId = validateId;
-// Deprecated methods
-function radians2degrees() {
-    throw new Error("method has been renamed to `radiansToDegrees`");
-}
-exports.radians2degrees = radians2degrees;
-function degrees2radians() {
-    throw new Error("method has been renamed to `degreesToRadians`");
-}
-exports.degrees2radians = degrees2radians;
-function distanceToDegrees() {
-    throw new Error("method has been renamed to `lengthToDegrees`");
-}
-exports.distanceToDegrees = distanceToDegrees;
-function distanceToRadians() {
-    throw new Error("method has been renamed to `lengthToRadians`");
-}
-exports.distanceToRadians = distanceToRadians;
-function radiansToDistance() {
-    throw new Error("method has been renamed to `radiansToLength`");
-}
-exports.radiansToDistance = radiansToDistance;
-function bearingToAngle() {
-    throw new Error("method has been renamed to `bearingToAzimuth`");
-}
-exports.bearingToAngle = bearingToAngle;
-function convertDistance() {
-    throw new Error("method has been renamed to `convertLength`");
-}
-exports.convertDistance = convertDistance;
 
 
 /***/ }),
@@ -33228,7 +28026,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 94);
+/******/ 	return __webpack_require__(__webpack_require__.s = 69);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -33335,7 +28133,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 94:
+/***/ 69:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33705,13 +28503,13 @@ module.exports = __webpack_require__("DhVD");
 module.exports = __webpack_require__("QBBo");
 
 /***/ }),
-/* 16 */
+/* 16 */,
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__("3Nwd");
 
 /***/ }),
-/* 17 */,
 /* 18 */,
 /* 19 */,
 /* 20 */,
@@ -34215,7 +29013,7 @@ render._withStripped = true
 // CONCATENATED MODULE: ./packages/table/src/table.vue?vue&type=template&id=493fe34e&
 
 // EXTERNAL MODULE: external "element-ui/lib/checkbox"
-var checkbox_ = __webpack_require__(16);
+var checkbox_ = __webpack_require__(17);
 var checkbox_default = /*#__PURE__*/__webpack_require__.n(checkbox_);
 
 // EXTERNAL MODULE: external "throttle-debounce/debounce"
@@ -34405,7 +29203,41 @@ var table_store_sortData = function sortData(data, states) {
   if (!sortingColumn || typeof sortingColumn.sortable === 'string') {
     return data;
   }
-  return util_orderBy(data, states.sortProp, states.sortOrder, sortingColumn.sortMethod, sortingColumn.sortBy);
+  if (Object.keys(states.treeData).length === 0) {
+    return util_orderBy(data, states.sortProp, states.sortOrder, sortingColumn.sortMethod, sortingColumn.sortBy);
+  }
+  // 存在嵌套类型的数据
+  var rowKey = states.rowKey;
+  var filteredData = [];
+  var treeDataMap = {};
+  var index = 0;
+  while (index < data.length) {
+    var cur = data[index];
+    var key = cur[rowKey];
+    var treeNode = states.treeData[key];
+    filteredData.push(cur);
+    index++;
+    if (!treeNode) {
+      continue;
+    }
+    treeDataMap[key] = [];
+    while (index < data.length) {
+      cur = data[index];
+      treeNode = states.treeData[cur[rowKey]];
+      index++;
+      if (treeNode && treeNode.level !== 0) {
+        treeDataMap[key].push(cur);
+      } else {
+        filteredData.push(cur);
+        break;
+      }
+    }
+  }
+  var sortedData = util_orderBy(filteredData, states.sortProp, states.sortOrder, sortingColumn.sortMethod, sortingColumn.sortBy);
+  return sortedData.reduce(function (prev, current) {
+    var treeNodes = treeDataMap[current[rowKey]] || [];
+    return prev.concat(current, treeNodes);
+  }, []);
 };
 
 var table_store_getKeysMap = function getKeysMap(array, rowKey) {
@@ -34507,7 +29339,11 @@ var table_store_TableStore = function TableStore(table) {
     filters: {},
     expandRows: [],
     defaultExpandAll: false,
-    selectOnIndeterminate: false
+    selectOnIndeterminate: false,
+    treeData: {},
+    indent: 16,
+    lazy: false,
+    lazyTreeNodeMap: {}
   };
 
   this._toggleAllSelection = debounce_default()(10, function (states) {
@@ -35095,6 +29931,75 @@ table_store_TableStore.prototype.commit = function (name) {
   }
 };
 
+table_store_TableStore.prototype.toggleTreeExpansion = function (rowKey) {
+  var treeData = this.states.treeData;
+
+  var node = treeData[rowKey];
+  if (!node) return;
+  if (typeof node.expanded !== 'boolean') {
+    throw new Error('a leaf must have expanded property');
+  }
+  node.expanded = !node.expanded;
+
+  var _traverse = null;
+  if (node.expanded) {
+    _traverse = function traverse(children, parent) {
+      if (children && parent.expanded) {
+        children.forEach(function (key) {
+          treeData[key].display = true;
+          _traverse(treeData[key].children, treeData[key]);
+        });
+      }
+    };
+    node.children.forEach(function (key) {
+      treeData[key].display = true;
+      _traverse(treeData[key].children, treeData[key]);
+    });
+  } else {
+    var traverse = function traverse(children) {
+      if (!children) return;
+      children.forEach(function (key) {
+        treeData[key].display = false;
+        traverse(treeData[key].children);
+      });
+    };
+    traverse(node.children);
+  }
+};
+
+table_store_TableStore.prototype.loadData = function (row, treeNode) {
+  var _this5 = this;
+
+  var table = this.table;
+  var parentRowKey = treeNode.rowKey;
+  if (table.lazy && table.load) {
+    table.load(row, treeNode, function (data) {
+      if (!Array.isArray(data)) {
+        throw new Error('data must be an array');
+      }
+      var treeData = _this5.states.treeData;
+      data.forEach(function (item) {
+        var rowKey = table.getRowKey(item);
+        var parent = treeData[parentRowKey];
+        parent.loaded = true;
+        parent.children.push(rowKey);
+        var child = {
+          display: true,
+          level: parent.level + 1
+        };
+        if (item.hasChildren) {
+          child.expanded = false;
+          child.hasChildren = true;
+          child.children = [];
+        }
+        external_vue_default.a.set(treeData, rowKey, child);
+        external_vue_default.a.set(_this5.states.lazyTreeNodeMap, rowKey, item);
+      });
+      _this5.toggleTreeExpansion(parentRowKey);
+    });
+  }
+};
+
 /* harmony default export */ var table_store = (table_store_TableStore);
 // EXTERNAL MODULE: external "element-ui/lib/utils/scrollbar-width"
 var scrollbar_width_ = __webpack_require__(34);
@@ -35476,6 +30381,29 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
     var columnsHidden = this.columns.map(function (column, index) {
       return _this.isColumnHidden(index);
     });
+    var rows = this.data;
+    if (this.store.states.lazy && Object.keys(this.store.states.lazyTreeNodeMap).length) {
+      rows = rows.reduce(function (prev, item) {
+        prev.push(item);
+        var rowKey = _this.store.table.getRowKey(item);
+        var parent = _this.store.states.treeData[rowKey];
+        if (parent && parent.children) {
+          var tmp = [];
+          var traverse = function traverse(children) {
+            if (!children) return;
+            children.forEach(function (key) {
+              tmp.push(_this.store.states.lazyTreeNodeMap[key]);
+              if (_this.store.states.treeData[key]) {
+                traverse(_this.store.states.treeData[key].children);
+              }
+            });
+          };
+          traverse(parent.children);
+          prev = prev.concat(tmp);
+        }
+        return prev;
+      }, []);
+    }
     return h(
       'table',
       {
@@ -35488,12 +30416,23 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
         return h('col', {
           attrs: { name: column.id }
         });
-      })]), h('tbody', [this._l(this.data, function (row, $index) {
-        return [h(
+      })]), h('tbody', [this._l(rows, function (row, $index) {
+        var rowKey = _this.table.rowKey ? _this.getKeyOfRow(row, $index) : $index;
+        var treeNode = _this.treeData[rowKey];
+        var rowClasses = _this.getRowClass(row, $index);
+        if (treeNode) {
+          rowClasses.push('el-table__row--level-' + treeNode.level);
+        }
+        var tr = h(
           'tr',
           {
+            directives: [{
+              name: 'show',
+              value: treeNode ? treeNode.display : true
+            }],
+
             style: _this.rowStyle ? _this.getRowStyle(row, $index) : null,
-            key: _this.table.rowKey ? _this.getKeyOfRow(row, $index) : $index,
+            key: rowKey,
             on: {
               'dblclick': function dblclick($event) {
                 return _this.handleDoubleClick($event, row);
@@ -35512,7 +30451,7 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
               }
             },
 
-            'class': [_this.getRowClass(row, $index)] },
+            'class': rowClasses },
           [_this._l(_this.columns, function (column, cellIndex) {
             var _getSpan = _this.getSpan(row, column, $index, cellIndex),
                 rowspan = _getSpan.rowspan,
@@ -35521,6 +30460,23 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
             if (!rowspan || !colspan) {
               return '';
             } else {
+              var data = {
+                store: _this.store,
+                _self: _this.context || _this.table.$vnode.context,
+                row: row,
+                column: column,
+                $index: $index
+              };
+              if (cellIndex === _this.firstDefaultColumnIndex && treeNode) {
+                data.treeNode = {
+                  hasChildren: treeNode.hasChildren || treeNode.children && treeNode.children.length,
+                  expanded: treeNode.expanded,
+                  indent: treeNode.level * _this.treeIndent,
+                  level: treeNode.level,
+                  loaded: treeNode.loaded,
+                  rowKey: rowKey
+                };
+              }
               return h(
                 'td',
                 {
@@ -35536,23 +30492,22 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
                     'mouseleave': _this.handleCellMouseLeave
                   }
                 },
-                [column.renderCell.call(_this._renderProxy, h, {
-                  row: row,
-                  column: column,
-                  $index: $index,
-                  store: _this.store,
-                  _self: _this.context || _this.table.$vnode.context
-                }, columnsHidden[cellIndex])]
+                [column.renderCell.call(_this._renderProxy, h, data, columnsHidden[cellIndex])]
               );
             }
           })]
-        ), _this.store.isRowExpanded(row) ? h('tr', [h(
-          'td',
-          {
-            attrs: { colspan: _this.columns.length },
-            'class': 'el-table__expanded-cell' },
-          [_this.table.renderExpanded ? _this.table.renderExpanded(h, { row: row, $index: $index, store: _this.store }) : '']
-        )]) : ''];
+        );
+        if (_this.hasExpandColumn && _this.store.isRowExpanded(row)) {
+          return [tr, h('tr', [h(
+            'td',
+            {
+              attrs: { colspan: _this.columns.length },
+              'class': 'el-table__expanded-cell' },
+            [_this.table.renderExpanded ? _this.table.renderExpanded(h, { row: row, $index: $index, store: _this.store }) : '']
+          )])];
+        } else {
+          return tr;
+        }
       }).concat(h('el-tooltip', {
         attrs: { effect: this.table.tooltipEffect, placement: 'top', content: this.tooltipContent },
         ref: 'tooltip' }))])]
@@ -35566,6 +30521,9 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
     },
     data: function data() {
       return this.store.states.data;
+    },
+    treeData: function treeData() {
+      return this.store.states.treeData;
     },
     columnsCount: function columnsCount() {
       return this.store.states.columns.length;
@@ -35584,6 +30542,23 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
     },
     columns: function columns() {
       return this.store.states.columns;
+    },
+    hasExpandColumn: function hasExpandColumn() {
+      return this.columns.some(function (_ref) {
+        var type = _ref.type;
+        return type === 'expand';
+      });
+    },
+    firstDefaultColumnIndex: function firstDefaultColumnIndex() {
+      for (var index = 0; index < this.columns.length; index++) {
+        if (this.columns[index].type === 'default') {
+          return index;
+        }
+      }
+      return 0;
+    },
+    treeIndent: function treeIndent() {
+      return this.store.states.indent;
     }
   },
 
@@ -35680,7 +30655,7 @@ var table_body_typeof = typeof Symbol === "function" && typeof Symbol.iterator =
         classes.push('expanded');
       }
 
-      return classes.join(' ');
+      return classes;
     },
     getCellStyle: function getCellStyle(rowIndex, columnIndex, row, column) {
       var cellStyle = this.table.cellStyle;
@@ -36852,7 +31827,7 @@ var convertToRows = function convertToRows(originColumns) {
                 colspan: column.colSpan,
                 rowspan: column.rowSpan
               },
-              'class': [column.id, column.headerAlign, column.className || '', _this.isCellHidden(cellIndex, _this.columns, column) ? 'is-hidden' : '', !column.children ? 'is-leaf' : '', column.labelClassName] },
+              'class': _this.getRowClasses(column, cellIndex) },
             [h(
               'div',
               { 'class': ['cell', column.labelClassName] },
@@ -36930,6 +31905,19 @@ var convertToRows = function convertToRows(originColumns) {
       } else {
         return index < this.leftFixedCount || index >= this.columnsCount - this.rightFixedCount;
       }
+    },
+    getRowClasses: function getRowClasses(column, cellIndex) {
+      var classes = [column.id, column.align, column.labelClassName];
+      if (column.className) {
+        classes.push(column.className);
+      }
+      if (this.isCellHidden(cellIndex, this.columns, column)) {
+        classes.push('is-hidden');
+      }
+      if (!column.children) {
+        classes.push('is-leaf');
+      }
+      return classes;
     }
   }
 });
@@ -37161,6 +32149,26 @@ var convertToRows = function convertToRows(originColumns) {
 
 
 
+
+var flattenData = function flattenData(data) {
+  if (!data) return data;
+  var newData = [];
+  var flatten = function flatten(arr) {
+    arr.forEach(function (item) {
+      newData.push(item);
+      if (Array.isArray(item.children)) {
+        flatten(item.children);
+      }
+    });
+  };
+  flatten(data);
+  if (data.length === newData.length) {
+    return data;
+  } else {
+    return newData;
+  }
+};
+
 var tableIdSeed = 1;
 
 /* harmony default export */ var tablevue_type_script_lang_js_ = ({
@@ -37247,7 +32255,16 @@ var tableIdSeed = 1;
     selectOnIndeterminate: {
       type: Boolean,
       default: true
-    }
+    },
+
+    indent: {
+      type: Number,
+      default: 16
+    },
+
+    lazy: Boolean,
+
+    load: Function
   },
 
   components: {
@@ -37380,15 +32397,64 @@ var tableIdSeed = 1;
     },
     toggleAllSelection: function toggleAllSelection() {
       this.store.commit('toggleAllSelection');
+    },
+    getRowKey: function getRowKey(row) {
+      var rowKey = getRowIdentity(row, this.store.states.rowKey);
+      if (!rowKey) {
+        throw new Error('if there\'s nested data, rowKey is required.');
+      }
+      return rowKey;
+    },
+    getTableTreeData: function getTableTreeData(data) {
+      var _this = this;
+
+      var treeData = {};
+      var traverse = function traverse(children, parentData, level) {
+        children.forEach(function (item) {
+          var rowKey = _this.getRowKey(item);
+          treeData[rowKey] = {
+            display: false,
+            level: level
+          };
+          parentData.children.push(rowKey);
+          if (Array.isArray(item.children) && item.children.length) {
+            treeData[rowKey].children = [];
+            treeData[rowKey].expanded = false;
+            traverse(item.children, treeData[rowKey], level + 1);
+          }
+        });
+      };
+      if (data) {
+        data.forEach(function (item) {
+          var containChildren = Array.isArray(item.children) && item.children.length;
+          if (!(containChildren || item.hasChildren)) return;
+          var rowKey = _this.getRowKey(item);
+          var treeNode = {
+            level: 0,
+            expanded: false,
+            display: true,
+            children: []
+          };
+          if (containChildren) {
+            treeData[rowKey] = treeNode;
+            traverse(item.children, treeData[rowKey], 1);
+          } else if (item.hasChildren && _this.lazy) {
+            treeNode.hasChildren = true;
+            treeNode.loaded = false;
+            treeData[rowKey] = treeNode;
+          }
+        });
+      }
+      return treeData;
     }
   },
 
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
     this.tableId = 'el-table_' + tableIdSeed++;
     this.debouncedUpdateLayout = debounce_default()(50, function () {
-      return _this.doLayout();
+      return _this2.doLayout();
     });
   },
 
@@ -37505,12 +32571,14 @@ var tableIdSeed = 1;
     data: {
       immediate: true,
       handler: function handler(value) {
-        var _this2 = this;
+        var _this3 = this;
 
+        this.store.states.treeData = this.getTableTreeData(value);
+        value = flattenData(value);
         this.store.commit('setData', value);
         if (this.$ready) {
           this.$nextTick(function () {
-            _this2.doLayout();
+            _this3.doLayout();
           });
         }
       }
@@ -37530,7 +32598,7 @@ var tableIdSeed = 1;
     if (this.resizeListener) Object(resize_event_["removeResizeListener"])(this.$el, this.resizeListener);
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.bindEvents();
     this.store.updateColumns();
@@ -37544,7 +32612,7 @@ var tableIdSeed = 1;
     // init filters
     this.store.states.columns.forEach(function (column) {
       if (column.filteredValue && column.filteredValue.length) {
-        _this3.store.commit('filterChange', {
+        _this4.store.commit('filterChange', {
           column: column,
           values: column.filteredValue,
           silent: true
@@ -37558,7 +32626,9 @@ var tableIdSeed = 1;
     var store = new table_store(this, {
       rowKey: this.rowKey,
       defaultExpandAll: this.defaultExpandAll,
-      selectOnIndeterminate: this.selectOnIndeterminate
+      selectOnIndeterminate: this.selectOnIndeterminate,
+      indent: this.indent,
+      lazy: this.lazy
     });
     var layout = new table_layout({
       store: store,
@@ -39229,11 +34299,29 @@ var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread);
 
 // CONCATENATED MODULE: ./node_modules/vue-i18n/dist/vue-i18n.esm.js
 /*!
- * vue-i18n v8.8.2 
+ * vue-i18n v8.10.0 
  * (c) 2019 kazuya kawaguchi
  * Released under the MIT License.
  */
 /*  */
+
+/**
+ * constants
+ */
+
+var numberFormatKeys = [
+  'style',
+  'currency',
+  'currencyDisplay',
+  'useGrouping',
+  'minimumIntegerDigits',
+  'minimumFractionDigits',
+  'maximumFractionDigits',
+  'minimumSignificantDigits',
+  'maximumSignificantDigits',
+  'localeMatcher',
+  'formatMatcher'
+];
 
 /**
  * utilities
@@ -39513,7 +34601,7 @@ var mixin = {
 
 /*  */
 
-var vue_i18n_esm_component = {
+var interpolationComponent = {
   name: 'i18n',
   functional: true,
   props: {
@@ -39586,6 +34674,78 @@ var vue_i18n_esm_component = {
     });
 
     return h(props.tag, data, i18n.i(path, locale, params))
+  }
+};
+
+/*  */
+
+var numberComponent = {
+  name: 'i18n-n',
+  functional: true,
+  props: {
+    tag: {
+      type: String,
+      default: 'span'
+    },
+    value: {
+      type: Number,
+      required: true
+    },
+    format: {
+      type: [String, Object]
+    },
+    locale: {
+      type: String
+    }
+  },
+  render: function render (h, ref) {
+    var props = ref.props;
+    var parent = ref.parent;
+    var data = ref.data;
+
+    var i18n = parent.$i18n;
+
+    if (!i18n) {
+      if (false) {}
+      return null
+    }
+
+    var key = null;
+    var options = null;
+
+    if (typeof props.format === 'string') {
+      key = props.format;
+    } else if (isObject(props.format)) {
+      if (props.format.key) {
+        key = props.format.key;
+      }
+
+      // Filter out number format options only
+      options = Object.keys(props.format).reduce(function (acc, prop) {
+        var obj;
+
+        if (numberFormatKeys.includes(prop)) {
+          return Object.assign({}, acc, ( obj = {}, obj[prop] = props.format[prop], obj ))
+        }
+        return acc
+      }, null);
+    }
+
+    var locale = props.locale || i18n.locale;
+    var parts = i18n._ntp(props.value, locale, key, options);
+
+    var values = parts.map(function (part, index) {
+      var obj;
+
+      var slot = data.scopedSlots && data.scopedSlots[part.type];
+      return slot ? slot(( obj = {}, obj[part.type] = part.value, obj.index = index, obj.parts = parts, obj )) : part.value
+    });
+
+    return h(props.tag, {
+      attrs: data.attrs,
+      'class': data['class'],
+      staticClass: data.staticClass
+    }, values)
   }
 };
 
@@ -39722,7 +34882,8 @@ function vue_i18n_esm_install (_Vue) {
   extend(vue_i18n_esm_Vue);
   vue_i18n_esm_Vue.mixin(mixin);
   vue_i18n_esm_Vue.directive('t', { bind: bind, update: update, unbind: unbind });
-  vue_i18n_esm_Vue.component(vue_i18n_esm_component.name, vue_i18n_esm_component);
+  vue_i18n_esm_Vue.component(interpolationComponent.name, interpolationComponent);
+  vue_i18n_esm_Vue.component(numberComponent.name, numberComponent);
 
   // use simple mergeStrategies to prevent i18n instance lose '__proto__'
   var strats = vue_i18n_esm_Vue.config.optionMergeStrategies;
@@ -39957,7 +35118,6 @@ function getPathCharType (ch) {
     case 0x2D: // -
       return 'ident'
 
-    case 0x20: // Space
     case 0x09: // Tab
     case 0x0A: // Newline
     case 0x0D: // Return
@@ -40136,19 +35296,6 @@ I18nPath.prototype.getPathValue = function getPathValue (obj, path) {
 
 
 
-var numberFormatKeys = [
-  'style',
-  'currency',
-  'currencyDisplay',
-  'useGrouping',
-  'minimumIntegerDigits',
-  'minimumFractionDigits',
-  'maximumFractionDigits',
-  'minimumSignificantDigits',
-  'maximumSignificantDigits',
-  'localeMatcher',
-  'formatMatcher'
-];
 var linkKeyMatcher = /(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))/g;
 var linkKeyPrefixMatcher = /^@(?:\.([a-z]+))?:/;
 var bracketsMatcher = /[()]/g;
@@ -40202,7 +35349,7 @@ var VueI18n = function VueI18n (options) {
 
   this._exist = function (message, key) {
     if (!message || !key) { return false }
-    if (this$1._path.getPathValue(message, key)) { return true }
+    if (!isNull(this$1._path.getPathValue(message, key))) { return true }
     // fallback for flat key
     if (message[key]) { return true }
     return false
@@ -40217,7 +35364,7 @@ var VueI18n = function VueI18n (options) {
   });
 };
 
-var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true } };
+var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },availableLocales: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true } };
 
 VueI18n.prototype._initVM = function _initVM (data) {
   var silent = vue_i18n_esm_Vue.config.silent;
@@ -40265,6 +35412,7 @@ prototypeAccessors.vm.get = function () { return this._vm };
 prototypeAccessors.messages.get = function () { return looseClone(this._getMessages()) };
 prototypeAccessors.dateTimeFormats.get = function () { return looseClone(this._getDateTimeFormats()) };
 prototypeAccessors.numberFormats.get = function () { return looseClone(this._getNumberFormats()) };
+prototypeAccessors.availableLocales.get = function () { return Object.keys(this.messages).sort() };
 
 prototypeAccessors.locale.get = function () { return this._vm.locale };
 prototypeAccessors.locale.set = function (locale) {
@@ -40369,8 +35517,6 @@ VueI18n.prototype._link = function _link (
   values,
   visitedLinkStack
 ) {
-    var this$1 = this;
-
   var ret = str;
 
   // Match all the links within the local
@@ -40398,24 +35544,24 @@ VueI18n.prototype._link = function _link (
     visitedLinkStack.push(linkPlaceholder);
 
     // Translate the link
-    var translated = this$1._interpolate(
+    var translated = this._interpolate(
       locale, message, linkPlaceholder, host,
       interpolateMode === 'raw' ? 'string' : interpolateMode,
       interpolateMode === 'raw' ? undefined : values,
       visitedLinkStack
     );
 
-    if (this$1._isFallbackRoot(translated)) {
+    if (this._isFallbackRoot(translated)) {
       if (false) {}
       /* istanbul ignore if */
-      if (!this$1._root) { throw Error('unexpected error') }
-      var root = this$1._root.$i18n;
+      if (!this._root) { throw Error('unexpected error') }
+      var root = this._root.$i18n;
       translated = root._translate(
         root._getMessages(), root.locale, root.fallbackLocale,
         linkPlaceholder, host, interpolateMode, values
       );
     }
-    translated = this$1._warnDefault(
+    translated = this._warnDefault(
       locale, linkPlaceholder, translated, host,
       Array.isArray(values) ? values : [values]
     );
@@ -40719,7 +35865,7 @@ VueI18n.prototype.mergeNumberFormat = function mergeNumberFormat (locale, format
   this._vm.$set(this._vm.numberFormats, locale, merge(this._vm.numberFormats[locale] || {}, format));
 };
 
-VueI18n.prototype._localizeNumber = function _localizeNumber (
+VueI18n.prototype._getNumberFormatter = function _getNumberFormatter (
   value,
   locale,
   fallback,
@@ -40753,7 +35899,7 @@ VueI18n.prototype._localizeNumber = function _localizeNumber (
         formatter = this._numberFormatters[id] = new Intl.NumberFormat(_locale, format);
       }
     }
-    return formatter.format(value)
+    return formatter
   }
 };
 
@@ -40769,8 +35915,8 @@ VueI18n.prototype._n = function _n (value, locale, key, options) {
     return nf.format(value)
   }
 
-  var ret =
-    this._localizeNumber(value, locale, this.fallbackLocale, this._getNumberFormats(), key, options);
+  var formatter = this._getNumberFormatter(value, locale, this.fallbackLocale, this._getNumberFormats(), key, options);
+  var ret = formatter && formatter.format(value);
   if (this._isFallbackRoot(ret)) {
     if (false) {}
     /* istanbul ignore if */
@@ -40822,6 +35968,30 @@ VueI18n.prototype.n = function n (value) {
   return this._n(value, locale, key, options)
 };
 
+VueI18n.prototype._ntp = function _ntp (value, locale, key, options) {
+  /* istanbul ignore if */
+  if (!VueI18n.availabilities.numberFormat) {
+    if (false) {}
+    return []
+  }
+
+  if (!key) {
+    var nf = !options ? new Intl.NumberFormat(locale) : new Intl.NumberFormat(locale, options);
+    return nf.formatToParts(value)
+  }
+
+  var formatter = this._getNumberFormatter(value, locale, this.fallbackLocale, this._getNumberFormats(), key, options);
+  var ret = formatter && formatter.formatToParts(value);
+  if (this._isFallbackRoot(ret)) {
+    if (false) {}
+    /* istanbul ignore if */
+    if (!this._root) { throw Error('unexpected error') }
+    return this._root.$i18n._ntp(value, locale, key, options)
+  } else {
+    return ret || []
+  }
+};
+
 Object.defineProperties( VueI18n.prototype, prototypeAccessors );
 
 var availabilities;
@@ -40841,7 +36011,7 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = vue_i18n_esm_install;
-VueI18n.version = '8.8.2';
+VueI18n.version = '8.10.0';
 
 /* harmony default export */ var vue_i18n_esm = (VueI18n);
 
@@ -45606,12 +40776,12 @@ var LayerList_component = normalizeComponent(
 )
 
 /* harmony default export */ var LayerList = (LayerList_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Chart.vue?vue&type=template&id=c6953a90&
-var Chartvue_type_template_id_c6953a90_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm.options,"autoresize":_vm.autoresize,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme}})],1)}
-var Chartvue_type_template_id_c6953a90_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Chart.vue?vue&type=template&id=b210b2d8&
+var Chartvue_type_template_id_b210b2d8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":(_vm._isRequestData && _vm.echartOptions) || _vm.options,"autoresize":_vm.autoresize,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme}})],1)}
+var Chartvue_type_template_id_b210b2d8_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=template&id=c6953a90&
+// CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=template&id=b210b2d8&
 
 // EXTERNAL MODULE: external "VueECharts"
 var external_VueECharts_ = __webpack_require__("Zni2");
@@ -46102,1543 +41272,9 @@ var chartThemeUtil = function chartThemeUtil() {
 var lodash_uniqueid = __webpack_require__("9csQ");
 var lodash_uniqueid_default = /*#__PURE__*/__webpack_require__.n(lodash_uniqueid);
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Chart.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
- // import 'echarts/lib/chart/bar';
-// import 'echarts/lib/component/tooltip';
-// import 'echarts/lib/component/legend';
-
-
-
-
-
-
-/**
- * @module Chart
- * @category Components
- * @desc Chart微件。对接 iPortal/Online 地图类。目前支持地图坐标系包括：'EPSG:3857'，'EPSG:4326'，'EPSG:4490'，'EPSG:4214'，'EPSG:4610'。
- * @vue-prop {Object} initOptions - 用来初始化 ECharts 实例。
- * @vue-prop {Object} theme - 当前 ECharts 实例使用的主题。
- * @vue-prop {Object} options - ECharts 实例的数据。修改这个 prop 会触发 ECharts 实例的 setOption 方法。如果直接修改 options 绑定的数据而对象引用保持不变，setOption 方法调用时将带有参数 notMerge: false。否则，如果为 options 绑定一个新的对象，setOption 方法调用时则将带有参数 notMerge: true。
- * @vue-prop {Boolean} [autoresize = true] - 这个 prop 用来指定 ECharts 实例在组件根元素尺寸变化时是否需要自动进行重绘。
- * @vue-prop {String} group - 实例的分组，会自动绑定到 ECharts 组件的同名属性上。
- * @vue-prop {Boolean} [manualUpdate = false] - 在性能敏感（数据量很大）的场景下，我们最好对于 options prop 绕过 Vue 的响应式系统。当将 manual-update prop 指定为 true 且不传入 options prop 时，数据将不会被监听。然后，你需要用 ref 获取组件实例以后手动调用 mergeOptions 方法来更新图表。
- * @vue-computed {String} width[只读] - 用来获取 ECharts 实例的当前宽度。
- * @vue-computed {String} height[只读] - 用来获取 ECharts 实例的当前高度。
- * @vue-computed {String} computedOptions[只读] - 用来读取 ECharts 更新内部 options 后的实际数据。
- * @vue-event {Object} legendselectchanged - Emit 。
- */
-// enumerating ECharts events for now
-
-var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'legendscroll', 'datazoom', 'datarangeselected', 'timelinechanged', 'timelineplaychanged', 'restore', 'dataviewchanged', 'magictypechanged', 'geoselectchanged', 'geoselected', 'geounselected', 'pieselectchanged', 'pieselected', 'pieunselected', 'mapselectchanged', 'mapselected', 'mapunselected', 'axisareaselected', 'focusnodeadjacency', 'unfocusnodeadjacency', 'brush', 'brushselected', 'rendered', 'finished', 'click', 'dblclick', 'mouseover', 'mouseout', 'mousemove', 'mousedown', 'mouseup', 'globalout', 'contextmenu'];
-/* harmony default export */ var Chartvue_type_script_lang_js_ = ({
-  name: 'SmChart',
-  components: {
-    'v-chart': external_VueECharts_default.a
-  },
-  mixins: [control, mixin_theme, mixin_card],
-  props: {
-    iconClass: {
-      type: String,
-      default: 'smwidgets-icons-attribute'
-    },
-    options: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    },
-    autoresize: {
-      type: Boolean,
-      default: true
-    },
-    theme: {
-      type: [Object, String]
-    },
-    initOptions: {
-      type: Object
-    },
-    group: {
-      type: String
-    },
-    manualUpdate: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data: function data() {
-    return {
-      chartId: lodash_uniqueid_default()("".concat(this.$options.name.toLowerCase(), "-")),
-      smChart: null,
-      // echarts实例
-      chartTheme: chartThemeUtil()
-    };
-  },
-  computed: {
-    width: function width() {
-      return this.smChart && this.smChart.width;
-    },
-    height: function height() {
-      return this.smChart && this.smChart.height;
-    },
-    computedOptions: function computedOptions() {
-      return this.smChart && this.smChart.computedOptions;
-    },
-    // 内部调用的方法
-    _chartStyle: function _chartStyle() {
-      return {
-        width: '100%',
-        height: this.headerName ? '90%' : '100%'
-      };
-    }
-  },
-  watch: {
-    theme: function theme() {
-      this.chartTheme = null;
-    },
-    // 以下为echart的配置参数
-    width: function width() {
-      return this.smChart && this.smChart.width;
-    },
-    height: function height() {
-      return this.smChart && this.smChart.height;
-    },
-    computedOptions: function computedOptions() {
-      return this.smChart && this.smChart.computedOptions;
-    }
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    // 设置echarts实例
-    var chartId = this.chartId;
-    this.smChart = this.$refs[chartId]; // 派发echart所有事件
-
-    var smChart = this.getEchart();
-    EVENTS.forEach(function (event) {
-      smChart.$on(event, function (params) {
-        _this.$emit(event, params);
-      });
-    }); // 切换主题
-
-    this.$on('themeStyle', function () {
-      _this.chartTheme = chartThemeUtil(_this.backgroundData, _this.textColorsData, _this.colorGroupsData);
-    });
-  },
-  methods: {
-    getEchart: function getEchart() {
-      return this.smChart;
-    },
-    // 以下全是同名调用echart的方法
-    mergeOptions: function mergeOptions(options, notMerge, lazyUpdate) {
-      this._delegateMethod('mergeOptions', options, notMerge, lazyUpdate);
-    },
-    appendData: function appendData(params) {
-      this._delegateMethod('appendData', params);
-    },
-    resize: function resize(options) {
-      this._delegateMethod('resize', options);
-    },
-    dispatchAction: function dispatchAction(payload) {
-      this._delegateMethod('dispatchAction', payload);
-    },
-    convertToPixel: function convertToPixel(finder, value) {
-      return this._delegateMethod('convertToPixel', finder, value);
-    },
-    convertFromPixel: function convertFromPixel(finder, value) {
-      return this._delegateMethod('convertFromPixel', finder, value);
-    },
-    containPixel: function containPixel(finder, value) {
-      return this._delegateMethod('containPixel', finder, value);
-    },
-    showLoading: function showLoading(type, options) {
-      this._delegateMethod('showLoading', type, options);
-    },
-    hideLoading: function hideLoading() {
-      this._delegateMethod('hideLoading');
-    },
-    getDataURL: function getDataURL(options) {
-      return this._delegateMethod('getDataURL', options);
-    },
-    getConnectedDataURL: function getConnectedDataURL(options) {
-      return this._delegateMethod('getConnectedDataURL', options);
-    },
-    clear: function clear() {
-      this._delegateMethod('clear');
-    },
-    dispose: function dispose() {
-      this._delegateMethod('dispose');
-    },
-    // 内部调用的方法
-    _delegateMethod: function _delegateMethod(name) {
-      var _this$smChart;
-
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-
-      return (_this$smChart = this.smChart)[name].apply(_this$smChart, args);
-    }
-  },
-  // echarts所有静态方法
-  connect: function connect(group) {
-    external_VueECharts_default.a && external_VueECharts_default.a.connect(group);
-  },
-  disconnect: function disconnect(group) {
-    external_VueECharts_default.a && external_VueECharts_default.a.disConnect(group);
-  },
-  registerMap: function registerMap(mapName, geoJSON, specialAreas) {
-    external_VueECharts_default.a && external_VueECharts_default.a.registerMap(mapName, geoJSON, specialAreas);
-  },
-  registerTheme: function registerTheme(name, theme) {
-    external_VueECharts_default.a && external_VueECharts_default.a.registerTheme(name, theme);
-  },
-  graphic: external_VueECharts_default.a && external_VueECharts_default.a.graphic
-});
-// CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_Chartvue_type_script_lang_js_ = (Chartvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/view/components/Chart.vue
-
-
-
-
-
-/* normalize component */
-
-var Chart_component = normalizeComponent(
-  components_Chartvue_type_script_lang_js_,
-  Chartvue_type_template_id_c6953a90_render,
-  Chartvue_type_template_id_c6953a90_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var Chart = (Chart_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=template&id=3075b404&
-var Mapvue_type_template_id_3075b404_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-map",attrs:{"id":_vm.target}},[_vm._t("default")],2)}
-var Mapvue_type_template_id_3075b404_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=template&id=3075b404&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ var Mapvue_type_script_lang_js_ = ({
-  name: 'SmMap',
-  props: {
-    target: {
-      type: String,
-      default: 'map'
-    },
-    mapOptions: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    }
-  },
-  computed: {
-    getMapTarget: function getMapTarget() {
-      return this.target;
-    }
-  },
-  created: function created() {
-    if (!mapEvent.firstMapTarget) {
-      mapEvent.firstMapTarget = this.target;
-    }
-  },
-  mounted: function mounted() {
-    var map = this.initializeMap();
-    this.registerEvents(map);
-  },
-  methods: {
-    initializeMap: function initializeMap() {
-      this.mapOptions.container = this.target;
-      this.map = new mapbox_gl_enhance_js_default.a.Map(this.mapOptions);
-      return this.map;
-    },
-    registerEvents: function registerEvents(map) {
-      var _this = this;
-
-      map.on('load', function () {
-        mapEvent.$emit("initMap-".concat(_this.target), map);
-
-        _this.$emit('load', {
-          map: map
-        });
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_Mapvue_type_script_lang_js_ = (Mapvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/view/components/Map.vue
-
-
-
-
-
-/* normalize component */
-
-var Map_component = normalizeComponent(
-  components_Mapvue_type_script_lang_js_,
-  Mapvue_type_template_id_3075b404_render,
-  Mapvue_type_template_id_3075b404_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var Map = (Map_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/MiniMap.vue?vue&type=template&id=8b17b492&
-var MiniMapvue_type_template_id_8b17b492_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{attrs:{"id":(!_vm.iconClass&&!_vm.headerName)&&'miniMap',"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{attrs:{"id":(_vm.iconClass||_vm.headerName)&&'miniMap'}})])}
-var MiniMapvue_type_template_id_8b17b492_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/view/components/MiniMap.vue?vue&type=template&id=8b17b492&
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
-var helpers_typeof = __webpack_require__("cDf5");
-var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
-
-// CONCATENATED MODULE: ./src/viewmodel/MiniMapViewModel.js
-
-
-
-
-
-
-
-
-/**
- * @class MiniMapViewModel
- * @description mini map viewModel.
- * @param {Object} parentMap - 外层 Map。
- * @param {Object} miniMap - 内层 Map。
- * @fires MiniMapViewModel#minimapmousedown
- * @fires MiniMapViewModel#minimapmousemove
- * @fires MiniMapViewModel#minimapmouseup
- * @fires MiniMapViewModel#minimapupdated
- * @extends WidgetViewModel
- */
-
-var MiniMapViewModel_MiniMapViewModel =
-/*#__PURE__*/
-function (_WidgetViewModel) {
-  inherits_default()(MiniMapViewModel, _WidgetViewModel);
-
-  function MiniMapViewModel(container, parentMap) {
-    var _this2;
-
-    classCallCheck_default()(this, MiniMapViewModel);
-
-    _this2 = possibleConstructorReturn_default()(this, getPrototypeOf_default()(MiniMapViewModel).call(this));
-    _this2.options = {
-      id: 'mapboxgl-minimap',
-      zoomAdjust: null,
-      bounds: 'parent',
-      lineColor: '#08F',
-      lineWidth: 1,
-      lineOpacity: 1,
-      fillColor: '#F80',
-      fillOpacity: 0.25,
-      dragPan: false,
-      scrollZoom: false,
-      boxZoom: false,
-      dragRotate: false,
-      keyboard: false,
-      doubleClickZoom: false,
-      touchZoomRotate: false
-    };
-    _this2._container = container;
-    _this2._ticking = false;
-    _this2._lastMouseMoveEvent = null;
-    _this2._parentMap = parentMap;
-    _this2._isDragging = false;
-    _this2._isCursorOverFeature = false;
-    _this2._previousPoint = [0, 0];
-    _this2._currentPoint = [0, 0];
-    _this2._trackingRectCoordinates = [[[], [], [], [], []]];
-
-    _this2.initializeMiniMap();
-
-    return _this2;
-  }
-
-  createClass_default()(MiniMapViewModel, [{
-    key: "initializeMiniMap",
-    value: function initializeMiniMap() {
-      var _this3 = this;
-
-      var _this = this;
-
-      this._miniMap = new mapbox_gl_enhance_js_default.a.Map({
-        attributionControl: false,
-        container: _this._container,
-        style: _this._parentMap.getStyle(),
-        zoom: 1,
-        center: [0, 0],
-        renderWorldCopies: false
-      });
-
-      this._miniMap.on('load', function () {
-        _this3.fire('minimapinitialized', {
-          miniMap: _this3._miniMap
-        });
-
-        _this3.loadMiniMap();
-      });
-    }
-  }, {
-    key: "loadMiniMap",
-    value: function loadMiniMap() {
-      var opts = this.options;
-      var parentMap = this._parentMap;
-      var miniMap = this._miniMap;
-      var interactions = ['dragPan', 'scrollZoom', 'boxZoom', 'dragRotate', 'keyboard', 'doubleClickZoom', 'touchZoomRotate'];
-      interactions.forEach(function (i) {
-        if (opts[i] !== true) {
-          miniMap[i].disable();
-        }
-      });
-
-      if (typeof opts.zoomAdjust === 'function') {
-        this.options.zoomAdjust = opts.zoomAdjust.bind(this);
-      } else if (opts.zoomAdjust === null) {
-        this.options.zoomAdjust = this._zoomAdjust.bind(this);
-      }
-
-      if (opts.bounds === 'parent') {
-        opts.bounds = parentMap.getBounds();
-      }
-
-      if (typeof_default()(opts.bounds) === 'object') {
-        miniMap.fitBounds(opts.bounds, {
-          duration: 50
-        });
-      }
-
-      var bounds = miniMap.getBounds();
-
-      this._convertBoundsToPoints(bounds);
-
-      this._addRectLayers();
-
-      this._update();
-
-      parentMap.on('move', this._update.bind(this));
-      parentMap.on('styledata', this._setStyle.bind(this));
-      miniMap.on('mousemove', this._mouseMove.bind(this));
-      miniMap.on('mousedown', this._mouseDown.bind(this));
-      miniMap.on('mouseup', this._mouseUp.bind(this));
-      this._miniMapCanvas = miniMap.getCanvasContainer();
-
-      this._miniMapCanvas.addEventListener('wheel', this._preventDefault);
-
-      this._miniMapCanvas.addEventListener('mousewheel', this._preventDefault);
-    }
-  }, {
-    key: "_mouseDown",
-    value: function _mouseDown(e) {
-      if (this._isCursorOverFeature) {
-        this._isDragging = true;
-        this._previousPoint = this._currentPoint;
-        this._currentPoint = [e.lngLat.lng, e.lngLat.lat];
-      }
-      /**
-       * @event MiniMapViewModel#minimapmouseuped
-       * @description 鹰眼图按下后触发。
-       * @property {Object} result - 返回的数据。
-       */
-
-
-      this.fire('minimapmousedown', {
-        result: e
-      });
-    }
-  }, {
-    key: "_mouseMove",
-    value: function _mouseMove(e) {
-      this._ticking = false;
-      var miniMap = this._miniMap;
-      var features = miniMap.queryRenderedFeatures(e.point, {
-        layers: ['trackingRectFill']
-      });
-
-      if (!(this._isCursorOverFeature && features.length > 0)) {
-        this._isCursorOverFeature = features.length > 0;
-        this._miniMapCanvas.style.cursor = this._isCursorOverFeature ? 'move' : '';
-      }
-
-      if (this._isDragging) {
-        this._previousPoint = this._currentPoint;
-        this._currentPoint = [e.lngLat.lng, e.lngLat.lat];
-        var offset = [this._previousPoint[0] - this._currentPoint[0], this._previousPoint[1] - this._currentPoint[1]];
-
-        var newBounds = this._moveTrackingRect(offset);
-
-        this._parentMap.fitBounds(newBounds, {
-          duration: 80,
-          noMoveStart: true
-        });
-      }
-      /**
-       * @event MiniMapViewModel#minimapmousemove
-       * @description 鹰眼图移动后触发。
-       * @property {Object} result - 返回的数据。
-       */
-
-
-      this.fire('minimapmousemoved', {
-        result: e
-      });
-    }
-  }, {
-    key: "_mouseUp",
-    value: function _mouseUp(e) {
-      this._isDragging = false;
-      this._ticking = false;
-      /**
-       * @event MiniMapViewModel#minimapmouseup
-       * @description 鹰眼图点击后触发。
-       * @property {Object} result - 返回的数据。
-       */
-
-      this.fire('minimapmouseup', {
-        result: e
-      });
-    }
-  }, {
-    key: "_moveTrackingRect",
-    value: function _moveTrackingRect(offset) {
-      var source = this._trackingRect;
-      var data = source._data;
-      var bounds = data.properties.bounds;
-
-      if (bounds) {
-        bounds._ne.lat -= offset[1];
-        bounds._ne.lng -= offset[0];
-        bounds._sw.lat -= offset[1];
-        bounds._sw.lng -= offset[0];
-
-        this._convertBoundsToPoints(bounds);
-
-        source.setData(data);
-        return bounds;
-      }
-    }
-  }, {
-    key: "_setTrackingRectBounds",
-    value: function _setTrackingRectBounds(bounds) {
-      var source = this._trackingRect;
-      var data = source._data;
-      data.properties.bounds = bounds;
-
-      this._convertBoundsToPoints(bounds);
-
-      source.setData(data);
-    }
-  }, {
-    key: "_convertBoundsToPoints",
-    value: function _convertBoundsToPoints(bounds) {
-      var ne = bounds._ne;
-      var sw = bounds._sw;
-      var trc = this._trackingRectCoordinates;
-      ne = this._handleBounds(ne);
-      sw = this._handleBounds(sw);
-      trc[0][0][0] = ne.lng;
-      trc[0][0][1] = ne.lat;
-      trc[0][1][0] = sw.lng;
-      trc[0][1][1] = ne.lat;
-      trc[0][2][0] = sw.lng;
-      trc[0][2][1] = sw.lat;
-      trc[0][3][0] = ne.lng;
-      trc[0][3][1] = sw.lat;
-      trc[0][4][0] = ne.lng;
-      trc[0][4][1] = ne.lat;
-    }
-  }, {
-    key: "_update",
-    value: function _update(e) {
-      if (this._isDragging) {
-        return;
-      }
-
-      var parentBounds = this._parentMap.getBounds();
-
-      this._setTrackingRectBounds(parentBounds);
-
-      if (typeof this.options.zoomAdjust === 'function') {
-        this.options.zoomAdjust();
-      }
-      /**
-       * @event MiniMapViewModel#minimapmouseuped
-       * @description 鹰眼图更新后触发。
-       * @property {Object} result - 返回的数据。
-       */
-
-
-      this.fire('minimapupdated', {
-        result: e
-      });
-    }
-  }, {
-    key: "_zoomAdjust",
-    value: function _zoomAdjust() {
-      var miniMap = this._miniMap;
-      var parentMap = this._parentMap;
-      var parentZoom = parseFloat(parentMap.getZoom());
-      miniMap.setCenter(parentMap.getCenter());
-      var targetZoom = parentZoom - 5 > 0 ? parentZoom - 5 : 1;
-      miniMap.setZoom(targetZoom);
-    }
-  }, {
-    key: "_preventDefault",
-    value: function _preventDefault(e) {
-      e.preventDefault();
-    }
-  }, {
-    key: "_handleBounds",
-    value: function _handleBounds(latlng) {
-      if (latlng.lng > 180) {
-        latlng.lng = 180;
-      } else if (latlng.lng < -180) {
-        latlng.lng = -180;
-      }
-
-      if (latlng.lat > 90) {
-        latlng.lat = 90;
-      } else if (latlng.lat < -90) {
-        latlng.lat = -90;
-      }
-
-      return latlng;
-    }
-  }, {
-    key: "_setStyle",
-    value: function _setStyle() {
-      this._miniMap.setStyle(this._parentMap.getStyle());
-
-      this._addRectLayers();
-
-      this._update();
-    }
-  }, {
-    key: "_addRectLayers",
-    value: function _addRectLayers() {
-      var opts = this.options;
-
-      this._miniMap.addSource('trackingRect', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {
-            name: 'trackingRect'
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: this._trackingRectCoordinates
-          }
-        }
-      });
-
-      this._miniMap.addLayer({
-        id: 'trackingRectOutline',
-        type: 'line',
-        source: 'trackingRect',
-        layout: {},
-        paint: {
-          'line-color': opts.lineColor,
-          'line-width': opts.lineWidth,
-          'line-opacity': opts.lineOpacity
-        }
-      });
-
-      this._miniMap.addLayer({
-        id: 'trackingRectFill',
-        type: 'fill',
-        source: 'trackingRect',
-        layout: {},
-        paint: {
-          'fill-color': opts.fillColor,
-          'fill-opacity': opts.fillOpacity
-        }
-      });
-
-      this._trackingRect = this._miniMap.getSource('trackingRect');
-    }
-  }]);
-
-  return MiniMapViewModel;
-}(WidgetViewModel_WidgetViewModel);
-
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/MiniMap.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ var MiniMapvue_type_script_lang_js_ = ({
-  name: 'SmMiniMap',
-  mixins: [map_getter, control, mixin_card],
-  props: {
-    iconClass: {
-      type: String,
-      default: 'el-icon-back'
-    },
-    autoRotate: {
-      type: Boolean,
-      default: true
-    }
-  },
-  mounted: function mounted() {
-    this.icon = this.$el.children[0];
-    this.iconClass && this.icon && (this.icon.style.visibility = 'hidden');
-  },
-  loaded: function loaded() {
-    var _this = this;
-
-    this.$el.classList.add('sm-widget-minimap');
-    this.viewModel = new MiniMapViewModel_MiniMapViewModel(this.$el.querySelector('#miniMap') || this.$el, this.map);
-    this.iconClass && this.icon && this.viewModel.on('minimapinitialized', function () {
-      _this.icon.style.visibility = 'visible';
-    });
-  }
-});
-// CONCATENATED MODULE: ./src/view/components/MiniMap.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_MiniMapvue_type_script_lang_js_ = (MiniMapvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/view/components/MiniMap.vue
-
-
-
-
-
-/* normalize component */
-
-var MiniMap_component = normalizeComponent(
-  components_MiniMapvue_type_script_lang_js_,
-  MiniMapvue_type_template_id_8b17b492_render,
-  MiniMapvue_type_template_id_8b17b492_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var MiniMap = (MiniMap_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Measure.vue?vue&type=template&id=456ad884&
-var Measurevue_type_template_id_456ad884_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-widget-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-widget-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{key:group.mode,class:{'sm-widget-measure__modeIcon': true, 'sm-widget-measure__iconActive': _vm.activeMode === group.mode},style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-widget-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-widget-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-widget-measure__unit sm-widget-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-widget-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-widget-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-widget-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
-var Measurevue_type_template_id_456ad884_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/view/components/Measure.vue?vue&type=template&id=456ad884&
-
-// EXTERNAL MODULE: external {"root":"MapboxDraw","commonjs":"@mapbox/mapbox-gl-draw","commonjs2":"@mapbox/mapbox-gl-draw","amd":"@mapbox/mapbox-gl-draw"}
-var mapbox_gl_draw_ = __webpack_require__("dz+5");
-var mapbox_gl_draw_default = /*#__PURE__*/__webpack_require__.n(mapbox_gl_draw_);
-
-// EXTERNAL MODULE: ./node_modules/@turf/length/index.js
-var _turf_length = __webpack_require__("Xrjk");
-var length_default = /*#__PURE__*/__webpack_require__.n(_turf_length);
-
-// EXTERNAL MODULE: ./node_modules/@turf/area/index.js
-var _turf_area = __webpack_require__("O3R+");
-var area_default = /*#__PURE__*/__webpack_require__.n(_turf_area);
-
-// EXTERNAL MODULE: ./node_modules/@turf/center/index.js
-var _turf_center = __webpack_require__("SPBs");
-var center_default = /*#__PURE__*/__webpack_require__.n(_turf_center);
-
-// EXTERNAL MODULE: ./node_modules/@turf/helpers/index.js
-var helpers = __webpack_require__("/rf6");
-
-// CONCATENATED MODULE: ./src/utils/formatter.js
-var reservedDecimal = function reservedDecimal(val, precise) {
-  return Number(val).toFixed(precise);
-}; // 清除数字（字符串型的）的逗号
-
-var clearNumberComma = function clearNumberComma(num) {
-  if (num.replace) {
-    num = num.replace(/,/g, '');
-  }
-
-  return num;
-};
-/* harmony default export */ var formatter = ({
-  reservedDecimal: reservedDecimal,
-  clearNumberComma: clearNumberComma
-});
-// CONCATENATED MODULE: ./src/viewmodel/MeasureViewModel.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @class MeasureViewModel
- * @description 量算 viewModel.
- * @param {Object} webmap - webmap实例对象。
- * @extends WidgetViewModel
- */
-
-var MeasureViewModel_MeasureViewModel =
-/*#__PURE__*/
-function (_WidgetViewModel) {
-  inherits_default()(MeasureViewModel, _WidgetViewModel);
-
-  function MeasureViewModel(options) {
-    var _this;
-
-    classCallCheck_default()(this, MeasureViewModel);
-
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(MeasureViewModel).call(this));
-    _this.tipNodes = []; // 收集测算长度实时生成的popup，以方便后面销毁
-
-    _this.cacheLengthUnitList = []; // 缓存量算长度每个节点的值跟单位，在修改单位时使用
-
-    _this.cachePolygonUnit = {};
-    _this.mode = null;
-    _this.result = '';
-    _this.activeMode = '';
-    _this.map = options.map;
-
-    _this._addDrawControl();
-
-    _this.isEditing = true;
-    return _this;
-  } // 开启绘制
-
-
-  createClass_default()(MeasureViewModel, [{
-    key: "openDraw",
-    value: function openDraw(mode, activeUnit) {
-      this._initDraw();
-
-      this._resetEvent();
-
-      this.mode = mode;
-      this.activeMode = mode;
-      this.activeUnit = activeUnit;
-      this.isEditing = true; // 绘画线或面
-
-      this.draw.changeMode(mode);
-      this.measureNodeDistanceBind = this._measureNodeDistance.bind(this);
-      this.map.on('mousedown', this.measureNodeDistanceBind);
-    }
-  }, {
-    key: "closeDraw",
-    value: function closeDraw() {
-      this.isEditing = false;
-      this.ids = null;
-
-      this._initDraw();
-
-      this._resetEvent();
-
-      this.activeMode = null;
-      this.draw.trash();
-      this.map.off('mousedown', this.continueDrawBind);
-    }
-  }, {
-    key: "updateUnit",
-    value: function updateUnit(unit) {
-      if (this.tipNodes.length !== 0) {
-        for (var i = 1; i < this.tipNodes.length; i++) {
-          var transValue = Object(helpers["convertLength"])(this.cacheLengthUnitList[i - 1].value, this.cacheLengthUnitList[i - 1].unit, unit);
-          transValue = this._getFormatResult(transValue);
-          this.cacheLengthUnitList[i - 1].value = transValue;
-          this.cacheLengthUnitList[i - 1].unit = unit;
-
-          if (this.activeMode === 'draw_line_string') {
-            var uniti18n = src_lang.t("measure.".concat(unit));
-            this.tipNodes[i] && this.tipNodes[i].setText("".concat(transValue, " ").concat(uniti18n));
-          }
-        }
-
-        this.result && (this.result = Object(helpers["convertLength"])(this.result, this.activeUnit, unit));
-      } else if (this.cachePolygonUnit.value && this.cachePolygonUnit.unit) {
-        var _transValue = Object(helpers["convertArea"])(this.cachePolygonUnit.value, this.cachePolygonUnit.unit, unit);
-
-        var _uniti18n = src_lang.t("measure.square".concat(unit));
-
-        this.tipHoverDiv && this.tipHoverDiv.setText("".concat(_transValue, " ").concat(_uniti18n));
-        this.result && (this.result = Object(helpers["convertArea"])(this.result, this.activeUnit, unit));
-      }
-
-      this.result && this.fire('update-unit', {
-        result: this._getFormatResult(this.result)
-      });
-      this.activeUnit = unit;
-    }
-  }, {
-    key: "_addDrawControl",
-    value: function _addDrawControl() {
-      this.draw = new mapbox_gl_draw_default.a({
-        displayControlsDefault: false,
-        controls: {
-          line_string: true,
-          trash: false
-        },
-        styles: [// line stroke
-        {
-          id: 'gl-draw-line',
-          type: 'line',
-          filter: ['all', ['==', '$type', 'LineString'], ['!=', 'mode', 'static']],
-          layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
-          paint: {
-            'line-color': '#D20C0C',
-            'line-dasharray': [0.2, 2],
-            'line-width': 2
-          }
-        }, // polygon fill
-        {
-          id: 'gl-draw-polygon-fill',
-          type: 'fill',
-          filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
-          paint: {
-            'fill-color': '#D20C0C',
-            'fill-outline-color': '#D20C0C',
-            'fill-opacity': 0.1
-          }
-        }, // polygon outline stroke
-        // This doesn't style the first edge of the polygon, which uses the line stroke styling instead
-        {
-          id: 'gl-draw-polygon-stroke-active',
-          type: 'line',
-          filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
-          layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
-          paint: {
-            'line-color': '#D20C0C',
-            'line-dasharray': [0.2, 2],
-            'line-width': 2
-          }
-        }, // vertex point halos
-        {
-          id: 'gl-draw-polygon-and-line-vertex-halo-active',
-          type: 'circle',
-          filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
-          paint: {
-            'circle-radius': 5,
-            'circle-color': '#FFF'
-          }
-        }, // vertex points
-        {
-          id: 'gl-draw-polygon-and-line-vertex-active',
-          type: 'circle',
-          filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
-          paint: {
-            'circle-radius': 3,
-            'circle-color': '#D20C0C'
-          }
-        }, // INACTIVE (static, already drawn)
-        // line stroke
-        {
-          id: 'gl-draw-line-static',
-          type: 'line',
-          filter: ['all', ['==', '$type', 'LineString'], ['==', 'mode', 'static']],
-          layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
-          paint: {
-            'line-color': '#000',
-            'line-width': 3
-          }
-        }, // polygon fill
-        {
-          id: 'gl-draw-polygon-fill-static',
-          type: 'fill',
-          filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
-          paint: {
-            'fill-color': '#000',
-            'fill-outline-color': '#000',
-            'fill-opacity': 0.1
-          }
-        }, // polygon outline
-        {
-          id: 'gl-draw-polygon-stroke-static',
-          type: 'line',
-          filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
-          layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
-          paint: {
-            'line-color': '#000',
-            'line-width': 3
-          }
-        }]
-      });
-      this.map.addLayer(this.draw);
-      this.map.on('draw.create', this._finishDraw.bind(this));
-      this.map.on('draw.modechange', this._resetDraw.bind(this));
-    }
-  }, {
-    key: "_resetDraw",
-    value: function _resetDraw(e) {
-      if (this.isEditing) {
-        this.map.off('mousemove', this.popupFollowMouseBind);
-        this.ids = this.draw.getSelectedIds();
-        this.draw.changeMode(this.mode);
-        this.continueDrawBind = this._continueDraw.bind(this);
-        this.map.on('mousedown', this.continueDrawBind);
-        this.measureNodeDistanceBind = this._measureNodeDistance.bind(this);
-        this.map.on('mousedown', this.measureNodeDistanceBind);
-        this.fire('measure-finished', {
-          result: this._getFormatResult(this.result)
-        });
-      }
-    }
-  }, {
-    key: "_initDraw",
-    value: function _initDraw() {
-      // 根据ids只删除上一次量算的数据
-      this.ids ? this.draw.delete(this.ids) : this.draw.deleteAll();
-      this.measureNodes = []; // 收集测算长度生成每个点的feature数据, 方便后面计算总长度
-
-      this.tipNodes.length && this.tipNodes.map(function (tipNode) {
-        return tipNode.remove();
-      });
-      this.tipNodes = [];
-      this.cacheLengthUnitList = [];
-      this.result = 0;
-      this.fire('measure-start', {
-        result: this._getFormatResult(this.result)
-      });
-    }
-  }, {
-    key: "_continueDraw",
-    value: function _continueDraw(e) {
-      this._initDraw();
-
-      this._resetEvent(false);
-
-      this.map.off('mousedown', this.continueDrawBind);
-    } // 绘画结束后计算最后的结果
-
-  }, {
-    key: "_finishDraw",
-    value: function _finishDraw(e) {
-      this.time = null;
-      this.map.off('mousedown', this.measureNodeDistanceBind);
-
-      switch (this.activeMode) {
-        case 'draw_line_string':
-          var tempLength = length_default()(e.features[0], 'kilometers');
-          this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
-
-          this._resetEvent();
-
-          break;
-
-        case 'draw_polygon':
-          var tempArea = area_default()(e.features[0]);
-          this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
-
-          this._resetEvent(true, false, this.result, e.features[0]);
-
-          break;
-      }
-
-      this.fire('measure-finished', {
-        result: this._getFormatResult(this.result)
-      });
-    } // 绘画每个点显示tip，同时监听鼠标move事件
-
-  }, {
-    key: "_measureNodeDistance",
-    value: function _measureNodeDistance(e) {
-      var _e$lngLat = e.lngLat,
-          lng = _e$lngLat.lng,
-          lat = _e$lngLat.lat;
-      var to = [lng, lat];
-
-      if (this.isOpenMoveEvent) {
-        this.popupFollowMouseBind = this._popupFollowMouse.bind(this);
-        this.map.on('mousemove', this.popupFollowMouseBind);
-        this.isOpenMoveEvent = false;
-      }
-
-      this.measureNodes.push(to);
-
-      if (this.activeMode === 'draw_line_string') {
-        this._renderPopupTip(e);
-      }
-
-      var _this$draw$getAll = this.draw.getAll(),
-          features = _this$draw$getAll.features;
-
-      if (!features.length) {
-        this._resetEvent();
-
-        this.activeMode = null;
-      }
-    }
-  }, {
-    key: "_popupFollowMouse",
-    value: function _popupFollowMouse(e) {
-      var _e$lngLat2 = e.lngLat,
-          lng = _e$lngLat2.lng,
-          lat = _e$lngLat2.lat;
-      var lastPointPos = [lng, lat];
-      var popup = this.tipHoverDiv; // 实时显示popup只需要一个，如果没有再生成新popup
-
-      if (!popup) {
-        popup = new mapbox_gl_enhance_js_default.a.Popup({
-          closeButton: false,
-          closeOnClick: false
-        });
-      }
-
-      popup.setLngLat(lastPointPos);
-      var measureNodeList = [].concat(this.measureNodes, [lastPointPos]);
-      var feature = {
-        type: 'Feature',
-        geometry: {
-          type: "".concat(this.activeMode === 'draw_line_string' ? 'LineString' : 'Polygon'),
-          coordinates: this.activeMode === 'draw_line_string' ? measureNodeList : [measureNodeList]
-        }
-      };
-
-      switch (this.activeMode) {
-        case 'draw_line_string':
-          var tempLength = length_default()(feature, 'kilometers');
-          this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
-          break;
-
-        case 'draw_polygon':
-          var tempArea = area_default()(feature);
-          this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
-          break;
-      }
-
-      var uniti18n;
-
-      if (this.activeMode === 'draw_line_string') {
-        uniti18n = src_lang.t("measure.".concat(this.activeUnit));
-      } else if (this.activeMode === 'draw_polygon') {
-        uniti18n = src_lang.t("measure.square".concat(this.activeUnit));
-      }
-
-      popup.setText("".concat(this._getFormatResult(this.result), " ").concat(uniti18n));
-      popup.addTo(this.map);
-      this.cachePolygonUnit['value'] = this.result;
-      this.cachePolygonUnit['unit'] = this.activeUnit;
-      this.tipHoverDiv = popup;
-    }
-  }, {
-    key: "_renderPopupTip",
-    value: function _renderPopupTip(e) {
-      var _e$lngLat3 = e.lngLat,
-          lng = _e$lngLat3.lng,
-          lat = _e$lngLat3.lat;
-      var popup = new mapbox_gl_enhance_js_default.a.Popup({
-        closeButton: false,
-        closeOnClick: false
-      });
-      popup.setLngLat([lng, lat]);
-
-      if (this.measureNodes.length > 1) {
-        var line = {
-          type: 'Feature',
-          geometry: {
-            type: 'LineString',
-            coordinates: this.measureNodes
-          }
-        }; // 修改单位！！！！
-
-        var tempLength = length_default()(line, 'kilometers');
-        var calcValue = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
-        var uniti18n;
-
-        if (this.activeMode === 'draw_line_string') {
-          uniti18n = src_lang.t("measure.".concat(this.activeUnit));
-        } else if (this.activeMode === 'draw_polygon') {
-          uniti18n = src_lang.t("measure.square".concat(this.activeUnit));
-        }
-
-        var renderText = "".concat(this._getFormatResult(calcValue), " ").concat(uniti18n);
-        this.cacheLengthUnitList.push({
-          value: this._getFormatResult(calcValue),
-          unit: this.activeUnit
-        });
-        popup.setText(renderText);
-      } else {
-        popup.setText('起点');
-      }
-
-      popup && popup.addTo(this.map);
-      this.tipNodes.push(popup);
-    }
-  }, {
-    key: "_resetEvent",
-    value: function _resetEvent() {
-      var isOffEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-      var isResetHoverTip = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-      var result = arguments.length > 2 ? arguments[2] : undefined;
-      var feature = arguments.length > 3 ? arguments[3] : undefined;
-      this.isOpenMoveEvent = true;
-      this.map.off('mousemove', this.popupFollowMouseBind);
-      isOffEvent && this.map.off('mousedown', this.measureNodeDistanceBind);
-
-      if (isResetHoverTip) {
-        // 如果是测量长度，销毁实时计算生成的popup
-        this.tipHoverDiv && this.tipHoverDiv.remove();
-        this.tipHoverDiv = null;
-      } else {
-        // 如果是测量面积，直接利用实时计算生成的popup显示最后结果
-        var centerResult = center_default()(feature);
-        var uniti18n = src_lang.t("measure.square".concat(this.activeUnit));
-        result = this._getFormatResult(result);
-        this.tipHoverDiv.setLngLat(centerResult.geometry.coordinates).setText("".concat(result, " ").concat(uniti18n));
-      }
-    }
-  }, {
-    key: "_getFormatResult",
-    value: function _getFormatResult(result) {
-      return formatter.reservedDecimal(result || this.result, 4);
-    }
-  }]);
-
-  return MeasureViewModel;
-}(WidgetViewModel_WidgetViewModel);
-
-/* harmony default export */ var viewmodel_MeasureViewModel = (MeasureViewModel_MeasureViewModel);
-// EXTERNAL MODULE: ./node_modules/@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css
-var mapbox_gl_draw = __webpack_require__("vdDi");
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Measure.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-
-/* harmony default export */ var Measurevue_type_script_lang_js_ = ({
-  name: 'SmMeasure',
-  mixins: [map_getter, control, mixin_theme, mixin_card],
-  props: {
-    iconClass: {
-      type: String,
-      default: 'smwidgets-icons-measure'
-    },
-    headerName: {
-      type: String,
-      default: '量算'
-    },
-    showUnitSelect: {
-      // 配置单位选择框是否显示，若不显示，则显示对应的默认单位
-      type: Boolean,
-      default: true
-    },
-    distanceDefaultUnit: {
-      // 距离默认单位
-      type: String,
-      default: 'kilometers'
-    },
-    areaDefaultUnit: {
-      // 面积默认单位
-      type: String,
-      default: 'kilometers'
-    }
-  },
-  data: function data() {
-    var unitOptions = {
-      draw_line_string: {
-        kilometers: this.$t('measure.kilometers'),
-        miles: this.$t('measure.miles'),
-        meters: this.$t('measure.meters'),
-        feet: this.$t('measure.feet'),
-        yards: this.$t('measure.yards')
-      },
-      draw_polygon: {
-        kilometers: this.$t('measure.squarekilometers'),
-        miles: this.$t('measure.squaremiles'),
-        meters: this.$t('measure.squaremeters'),
-        feet: this.$t('measure.squarefeet'),
-        yards: this.$t('measure.squareyards')
-      }
-    };
-    return {
-      unitOptions: unitOptions,
-      modeGroups: [{
-        mode: 'draw_line_string',
-        title: this.$t('measure.distance'),
-        iconClass: 'smwidgets-icons-line-layer'
-      }, {
-        mode: 'draw_polygon',
-        title: this.$t('measure.area'),
-        iconClass: 'smwidgets-icons-polygon-layer'
-      }],
-      activeMode: '',
-      result: '',
-      activeDistanceUnit: this.distanceDefaultUnit,
-      activeAreaUnit: this.areaDefaultUnit,
-      modeUnitMap: {
-        draw_line_string: 'activeDistanceUnit',
-        draw_polygon: 'activeAreaUnit'
-      }
-    };
-  },
-  computed: {
-    getUnitOptions: function getUnitOptions() {
-      return this.unitOptions[this.activeMode] || [];
-    },
-    getResult: function getResult() {
-      if (this.result) {
-        return "".concat(this.result, " ").concat(this.getUnitLabel);
-      }
-
-      return '';
-    },
-    getUnitLabel: function getUnitLabel() {
-      var units = this.getUnitOptions;
-      var modeUnitKey = this.modeUnitMap[this.activeMode];
-      var label = units[this[modeUnitKey]];
-      return label;
-    },
-    getAreaSelect: function getAreaSelect() {
-      return this.activeMode === 'draw_polygon' && this.showUnitSelect;
-    },
-    getDistanceSelect: function getDistanceSelect() {
-      return this.activeMode === 'draw_line_string' && this.showUnitSelect;
-    }
-  },
-  watch: {
-    distanceDefaultUnit: function distanceDefaultUnit(newVal) {
-      this.activeDistanceUnit = newVal;
-    },
-    areaDefaultUnit: function areaDefaultUnit(newVal) {
-      this.activeAreaUnit = newVal;
-    }
-  },
-  mounted: function mounted() {
-    this.changeSelectInputStyle();
-  },
-  loaded: function loaded() {
-    var _this = this;
-
-    this.viewModel = new viewmodel_MeasureViewModel({
-      map: this.map
-    }); // 控制显示结果的显示
-
-    this.viewModel.on('measure-finished', function (_ref) {
-      var result = _ref.result;
-      _this.result = result;
-    });
-    this.viewModel.on('measure-start', function (_ref2) {
-      var result = _ref2.result;
-      _this.result = '';
-    });
-    this.viewModel.on('update-unit', function (_ref3) {
-      var result = _ref3.result;
-      _this.result = result;
-    });
-  },
-  updated: function updated() {
-    this.changeSelectInputStyle();
-  },
-  methods: {
-    changeSelectInputStyle: function changeSelectInputStyle() {
-      var selectDom = this.$el.querySelector('.el-input__inner');
-
-      if (selectDom) {
-        selectDom.style.borderColor = this.getTextColor;
-        selectDom.style.color = this.getTextColor;
-        selectDom.style.backgroundColor = this.getBackground;
-      }
-    },
-    changeChosenStyle: function changeChosenStyle(visible) {
-      var chosenOption = this.$el.querySelector('.el-select-dropdown__item.selected');
-
-      if (chosenOption) {
-        chosenOption.style.color = visible ? this.getColorStyle(0).color : '#606266';
-      }
-    },
-    // 切换量算模式
-    changeMeasureMode: function changeMeasureMode(mode) {
-      var modeUnitKey = this.modeUnitMap[mode];
-      var activeUnit = this[modeUnitKey];
-
-      if (this.map.loaded()) {
-        if (this.activeMode !== mode) {
-          this.viewModel.openDraw(mode, activeUnit);
-          this.activeMode = mode;
-        } else {
-          this.viewModel.closeDraw();
-          this.activeMode = null;
-        }
-      }
-    },
-    updateUnit: function updateUnit(unit) {
-      this.viewModel.updateUnit(unit);
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/view/components/Measure.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_Measurevue_type_script_lang_js_ = (Measurevue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/view/components/Measure.vue
-
-
-
-
-
-/* normalize component */
-
-var Measure_component = normalizeComponent(
-  components_Measurevue_type_script_lang_js_,
-  Measurevue_type_template_id_456ad884_render,
-  Measurevue_type_template_id_456ad884_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var Measure = (Measure_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Search.vue?vue&type=template&id=b9ca0da6&
-var Searchvue_type_template_id_b9ca0da6_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-search",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-widget-search__input"},[_c('el-input',{staticClass:"sm-widget-search__el-input",attrs:{"placeholder":_vm.$t('search.inputPlaceHolder'),"clearable":""},on:{"clear":_vm.inputValueCleared},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('div',{staticClass:"el-input__icon el-icon-search",style:(_vm.getColorStyle(0)),attrs:{"slot":"prefix"},on:{"click":_vm.searchButtonClicked},slot:"prefix"})])],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResultLength),expression:"getResultLength"}],staticClass:"sm-widget-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-widget-search__panel"},[(result.source)?_c('span',{staticClass:"sm-widget-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-widget-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,i){return _c('li',{key:i,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])}))])}
-var Searchvue_type_template_id_b9ca0da6_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/view/components/Search.vue?vue&type=template&id=b9ca0da6&
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/toConsumableArray.js
+var toConsumableArray = __webpack_require__("RIqP");
+var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray);
 
 // CONCATENATED MODULE: ./src/utils/iServerRestService.js
 
@@ -48387,6 +42023,2183 @@ function (_mapboxgl$Evented) {
 }(mapbox_gl_enhance_js_default.a.Evented);
 
 
+// EXTERNAL MODULE: ./node_modules/lodash.tonumber/index.js
+var lodash_tonumber = __webpack_require__("CeSn");
+var lodash_tonumber_default = /*#__PURE__*/__webpack_require__.n(lodash_tonumber);
+
+// EXTERNAL MODULE: ./node_modules/lodash.isequal/index.js
+var lodash_isequal = __webpack_require__("XaGS");
+var lodash_isequal_default = /*#__PURE__*/__webpack_require__.n(lodash_isequal);
+
+// EXTERNAL MODULE: ./node_modules/lodash.max/index.js
+var lodash_max = __webpack_require__("w1NJ");
+var lodash_max_default = /*#__PURE__*/__webpack_require__.n(lodash_max);
+
+// CONCATENATED MODULE: ./src/utils/formatter.js
+var reservedDecimal = function reservedDecimal(val, precise) {
+  return Number(val).toFixed(precise);
+}; // 清除数字（字符串型的）的逗号
+
+var clearNumberComma = function clearNumberComma(num) {
+  if (num.replace) {
+    num = num.replace(/,/g, '');
+  }
+
+  return num;
+};
+/* harmony default export */ var formatter = ({
+  reservedDecimal: reservedDecimal,
+  clearNumberComma: clearNumberComma
+});
+// CONCATENATED MODULE: ./src/utils/EchartsDataService.js
+
+
+
+
+
+
+
+
+
+
+/**
+ * @class EchartsDataService
+ * @classdesc 图表微件功能类
+ * @param {Chart-dataset} dataset - 请求的参数
+ * @param {Array.<Chart-datasetOption>} datasetOptions - 数据解析的配置。
+ */
+
+/**
+ * @typedef {Object} Chart-dataset  - 数据来源
+ * @property {string} [type = 'iServer'] - 服务类型 iServer, iPortal。
+ * @property {string} url - 服务url地址。
+ * @property {boolean} [withCredentials = false] - 设置请求是否带cookie
+ * @property {SuperMap.FilterParameter} queryInfo - 查询条件
+ */
+
+/**
+ * @typedef {Object} Chart-datasetOption  - 解析数据的配置
+ * @property {string} seriesType - 图表类型line, bar, scatter, pie, radar, gauge。
+ * @property {boolean} [isStastic = false] - 是否统计数据。
+ * @property {boolean} [isStack = false] - 图表（line, bar, scatter）是否堆叠
+ * @property {string} xField - 数据的字段，坐标值
+ * @property {string} yField - 数据的字段，数据值
+ */
+
+var EchartsDataService_EchartsDataService =
+/*#__PURE__*/
+function () {
+  function EchartsDataService(dataset, datasetOptions) {
+    classCallCheck_default()(this, EchartsDataService);
+
+    // 设置默认值
+    dataset.type = dataset.type || 'iServer'; // 服务类型
+
+    dataset.withCredentials = dataset.withCredentials || false; // 请求认证
+
+    this.dataset = dataset;
+    this.datasetOptions = datasetOptions;
+    this.dataCache = null; // 缓存的是请求后的数据
+
+    this.axisDatas = []; // 坐标data
+
+    this.serieDatas = []; // series data
+
+    this.gridAxis = {}; // 直角坐标系
+
+    this.radarAxis = {}; // 雷达图坐标系
+
+    this.radarMax = 0; // 雷达图坐标最大值
+  }
+  /**
+   * @function EchartsDataService.prototype.getDataOption
+   * @description 获取符合echart data数据格式的数据, 入口函数。
+   * @returns {Object}  带有请求的数据的promise对象
+   */
+
+
+  createClass_default()(EchartsDataService, [{
+    key: "getDataOption",
+    value: function getDataOption() {
+      var _this = this;
+
+      // 设置datasets的默认配置type，withCredentials
+      var promise = new Promise(function (resolve, reject) {
+        // 请求数据，请求成功后，解析数据
+        _this._requestData(_this.dataset).then(function (data) {
+          // 设置this.data
+          _this._setData(data); // 解析数据，生成dataOption
+
+
+          var options = _this.formatChartData(_this.datasetOptions, data);
+
+          resolve(options);
+        }).catch(function (e) {
+          reject(e);
+        });
+      });
+      return promise;
+    }
+    /**
+     * @function EchartsDataService.prototype.formatChartData
+     * @description _requestData方法中返回的数据: 设置数据，转换数据格式。
+     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据
+     * @param {Object} datasetOptions - 数据解析的配置参数
+     * @returns {Object}  符合echart格式的数据
+     */
+
+  }, {
+    key: "formatChartData",
+    value: function formatChartData(datasetOptions) {
+      var _this2 = this;
+
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.dataCache;
+
+      // 清除数据缓存
+      this._clearChartCache(); // 设置datasetOptions
+
+
+      this._setDatasetOptions(datasetOptions); // 生成seriedata
+
+
+      datasetOptions.forEach(function (item) {
+        // 生成YData, XData
+        var fieldData = _this2._fieldsData(data, item); // 解析YData, XData，生成EchartsOption的data
+
+
+        var serieData = _this2._createDataOption(fieldData, item); // 设置坐标
+
+
+        _this2._createAxisData(fieldData, item);
+
+        _this2.serieDatas.push(serieData);
+      });
+      var gridAxis = this.gridAxis;
+      var radarAxis = this.radarAxis;
+      var series = this.serieDatas;
+      return objectSpread_default()({}, gridAxis, radarAxis, {
+        series: series
+      });
+    }
+    /**
+     * @function EchartsDataService.prototype._setDatasetOptions
+     * @private
+     * @description 设置datasetOptions
+     * @param {Array.<Chart-datasetOption>} datasetOptions - 数据解析的配置
+     */
+
+  }, {
+    key: "_setDatasetOptions",
+    value: function _setDatasetOptions(datasetOptions) {
+      this.datasetOptions = datasetOptions;
+    }
+    /**
+     * @function EchartsDataService.prototype._setData
+     * @private
+     * @description 给实例绑定data。
+     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据
+     */
+
+  }, {
+    key: "_setData",
+    value: function _setData(data) {
+      if (data) {
+        this.dataCache = data;
+      }
+    }
+    /**
+     * @function EchartsDataService.prototype._clearChartCache
+     * @private
+     * @description 清除已经生成的chart数据的缓存。
+     */
+
+  }, {
+    key: "_clearChartCache",
+    value: function _clearChartCache() {
+      this.axisDatas = []; // 坐标data
+
+      this.serieDatas = []; // series data
+
+      this.gridAxis = {}; // 直角坐标系
+    }
+    /**
+     * @function EchartsDataService.prototype._requestData
+     * @private
+     * @description 从superMap的iserver,iportal中请求数据(datasets)。
+     * @param {datasets}
+     * @returns {Object}  data的promise
+     */
+
+  }, {
+    key: "_requestData",
+    value: function _requestData(datasets) {
+      var promise = new Promise(function (resolve, reject) {
+        if (datasets) {
+          var superMapService;
+
+          if (datasets.type === 'iServer') {
+            superMapService = new iServerRestService_iServerRestService(datasets.url, datasets.withCredentials);
+          } else if (datasets.type === 'iPortal') {
+            superMapService = new iPortalDataService_iPortalDataService(datasets.url, datasets.withCredentials);
+          }
+
+          superMapService.getData(datasets.queryInfo);
+          superMapService.on('getdatafailed', function (e) {
+            reject(e);
+          });
+          superMapService.on('getdatasucceeded', function (data) {
+            resolve(data);
+          });
+        }
+      });
+      return promise;
+    }
+    /**
+     * @function EchartsDataService.prototype._createSeriesData
+     * @private
+     * @description 生成chart的serie。
+     * @param {Object} fieldData - 解析后的数据{xData,yData}
+     * @param {Chart-datasetOption} datasetOption - 数据解析的配置
+     * @returns {Object}  配置好的serieData
+     */
+
+  }, {
+    key: "_createDataOption",
+    value: function _createDataOption(fieldData, datasetOption) {
+      var chartType = datasetOption.seriesType;
+      var XData = fieldData.xData;
+      var YData = fieldData.yData;
+      var serieData = {
+        type: chartType,
+        name: datasetOption.yField,
+        data: []
+      };
+
+      if (chartType === 'pie') {
+        YData.forEach(function (value, index) {
+          serieData.data.push({
+            value: value,
+            name: XData[index]
+          });
+        });
+      } else if (chartType === 'radar') {
+        var yData = toConsumableArray_default()(YData);
+
+        serieData.data.push({
+          value: toConsumableArray_default()(YData),
+          name: datasetOption.yField
+        }); // 获取雷达图的max最大值
+
+        var maxValue = lodash_max_default()(yData);
+        this.radarMax = Math.max(maxValue, this.radarMax);
+      } else {
+        // line bar scatter gauge
+        serieData.data = toConsumableArray_default()(YData); // 是否堆叠数据（line,bar,scatter）
+
+        if (datasetOption.isStack) {
+          serieData.stack = '0';
+        }
+      }
+
+      return serieData;
+    }
+    /**
+     * @function EchartsDataService.prototype._createSeriesData
+     * @private
+     * @description 生成chart的serie。
+     * @param {Object} fieldData - 解析后的数据{xData,yData}
+     * @param {Chart-datasetOption} datasetOption - 数据解析的配置
+     * @returns {Object}  配置好的坐标data
+     */
+
+  }, {
+    key: "_createAxisData",
+    value: function _createAxisData(fieldData, datasetOption) {
+      var chartType = datasetOption.seriesType;
+      var XData = fieldData.xData;
+      var radarData = [];
+      var axisData;
+
+      if (chartType === 'radar') {
+        var radarMax = this.radarMax;
+        XData.forEach(function (text) {
+          radarData.push({
+            text: text,
+            max: radarMax
+          });
+        });
+        this.radarAxis = {
+          radar: {
+            indicator: radarData
+          }
+        };
+        axisData = this.radarAxis;
+      } else if (chartType === 'bar' || chartType === 'line' || chartType === 'scatter') {
+        var data = toConsumableArray_default()(XData);
+
+        if (!this.gridAxis.xAxis) {
+          this.gridAxis.xAxis = [];
+          this.gridAxis.yAxis = {};
+        }
+
+        if (this.gridAxis.xAxis.length === 0 || !lodash_isequal_default()(data, this.gridAxis.xAxis[0].data)) {
+          this.gridAxis.xAxis.push({
+            data: data
+          });
+        }
+
+        axisData = this.gridAxis;
+      } else {
+        axisData = {};
+      }
+
+      return axisData;
+    }
+    /**
+     * @function EchartsDataService.prototype._fieldsData
+     * @private
+     * @description 将请求回来的数据，转换成适用于chart配置的数据。
+     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据
+     * @param {Chart-datasetOption} datasetOption - 数据解析的配置
+     * @returns {Object}  解析好的Ydata，xdata
+     */
+
+  }, {
+    key: "_fieldsData",
+    value: function _fieldsData(data, datasetOption) {
+      var fieldCaptions, fieldValues, xFieldIndex, yFieldIndex, fieldValueIndex, xData, yData, result;
+      fieldCaptions = data.fieldCaptions; // 所有x字段
+
+      xFieldIndex = fieldCaptions.indexOf(datasetOption.xField); // x字段的下标
+
+      yFieldIndex = fieldCaptions.indexOf(datasetOption.yField); // y字段的下标
+
+      fieldValues = data.fieldValues[yFieldIndex]; // y字段的所有feature值
+      // 该数据是否需要统计,统计的是数组下标
+
+      if (datasetOption.isStastic) {
+        fieldValueIndex = this._getUniqFieldDatas(data, xFieldIndex); // 生成统计后的数据
+
+        xData = this._stasticXData(fieldValueIndex);
+        yData = this._stasticYData(fieldValues, fieldValueIndex);
+      } else {
+        // 如果不是统计图表
+        xData = this._getFieldDatas(data, xFieldIndex);
+        yData = toConsumableArray_default()(fieldValues);
+      }
+
+      result = {
+        xData: xData,
+        yData: yData
+      };
+      return result;
+    }
+    /**
+     * @function EchartsDataService.prototype._stasticXData
+     * @private
+     * @description 统计X字段数据，生成xData。
+     * @param {Object} fieldValueIndex - x字段的统计索引
+     * @returns {Array}  统计后的Xdata、
+     */
+
+  }, {
+    key: "_stasticXData",
+    value: function _stasticXData(fieldValueIndex) {
+      var xData = Object.keys(fieldValueIndex);
+      return xData;
+    }
+    /**
+     * @function EchartsDataService.prototype._stasticYData
+     * @private
+     * @description 统计数据，生成yData。
+     * @param {Object} fieldValues - y字段的所有feature值
+     * @param {Object} fieldValueIndex - x字段的统计索引
+     * @returns {Array}  统计后的Ydata、
+     */
+
+  }, {
+    key: "_stasticYData",
+    value: function _stasticYData(fieldValues, fieldValueIndex) {
+      var yData = []; // 统计Y字段
+
+      for (var key in fieldValueIndex) {
+        var total = 0;
+        fieldValueIndex[key].forEach(function (index) {
+          // 清除字符串型的数字的逗号
+          var num = formatter.clearNumberComma(fieldValues[index]);
+          total += lodash_tonumber_default()(num);
+        });
+        yData.push(total);
+      }
+
+      return yData;
+    }
+    /**
+     * @function EchartsDataService.prototype._getUniqFieldDatas
+     * @private
+     * @description 获取x轴字段要统计的属性值
+     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据的fieldValue
+     * @param {String} fieldIndexs - x字段索引值数组
+     * @returns {Object}  返回x轴字段要统计的属性值，返回值为eg:[fieldIndex：1, statiscIndex:{浇水地：[5,2,5,4], 林地：[5,2,5,4]...}]。
+     */
+
+  }, {
+    key: "_getUniqFieldDatas",
+    value: function _getUniqFieldDatas(data, fieldIndex) {
+      var fieldValues = this._getFieldDatas(data, fieldIndex);
+
+      var uniqFieldValues = {};
+
+      if (fieldValues) {
+        fieldValues.forEach(function (value, index) {
+          if (!uniqFieldValues[value]) {
+            uniqFieldValues[value] = [index];
+          } else {
+            uniqFieldValues[value].push(index);
+          }
+        });
+      }
+
+      return uniqFieldValues;
+    }
+    /**
+     * @function EchartsDataService.prototype._getFieldDatas
+     * @private
+     * @description 。
+     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据的fieldValue
+     * @param {String} fieldIndex - x字段索引值
+     * @returns {Array}  返回的是一个数组[林地， 旱地， 林地，沼泽，旱地...]
+     */
+
+  }, {
+    key: "_getFieldDatas",
+    value: function _getFieldDatas(data, fieldIndex) {
+      // 获取x字段所有值，
+      return data.fieldValues[fieldIndex];
+    }
+  }]);
+
+  return EchartsDataService;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Chart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+/**
+ * @module Chart
+ * @category Components
+ * @desc Chart微件。除了prop: dataset和datasetOptions，其他的所有prop,event,computed, methods都是ECharts的配置，参考https://echarts.baidu.com/api.html#echartsInstance.dispose
+ * @vue-prop {Object} dataset - 用来请求的dataset配置。
+ * @vue-prop {Object} datasetOptions - 和请求dataset数据相关的配置。
+ *
+ * @vue-prop {Object} theme - 当前 ECharts 实例使用的主题。
+ * @vue-prop {Object} initOptions - 用来初始化 ECharts 实例。
+ * @vue-prop {Object} options - ECharts 实例的数据。修改这个 prop 会触发 ECharts 实例的 setOption 方法。如果直接修改 options 绑定的数据而对象引用保持不变，setOption 方法调用时将带有参数 notMerge: false。否则，如果为 options 绑定一个新的对象，setOption 方法调用时则将带有参数 notMerge: true。
+ * @vue-prop {Boolean} [autoresize = true] - 用来指定 ECharts 实例在组件根元素尺寸变化时是否需要自动进行重绘。
+ * @vue-prop {String} group - 实例的分组，会自动绑定到 ECharts 组件的同名属性上。
+ * @vue-prop {Boolean} [manualUpdate = false] - 在性能敏感（数据量很大）的场景下，我们最好对于 options prop 绕过 Vue 的响应式系统。当将 manual-update prop 指定为 true 且不传入 options prop 时，数据将不会被监听。然后，你需要用 ref 获取组件实例以后手动调用 mergeOptions 方法来更新图表。
+ * @vue-computed {String} width - 用来获取 ECharts 实例的当前宽度。
+ * @vue-computed {String} height - 用来获取 ECharts 实例的当前高度。
+ * @vue-computed {String} computedOptions - 用来读取 ECharts 更新内部 options 后的实际数据。
+ * @vue-event {Object} legendselectchanged - 切换图例选中状态后的事件。
+ * @vue-event {Object} legendselected - 图例选中后的事件。
+ * @vue-event {Object} legendunselected - 图例取消选中后的事件。
+ * @vue-event {Object} legendscroll - 图例滚动事件。
+ * @vue-event {Object} datazoom - 数据区域缩放后的事件。
+ * @vue-event {Object} datarangeselected - 视觉映射组件中，range 值改变后触发的事件。
+ * @vue-event {Object} timelinechanged - 时间轴中的时间点改变后的事件。
+ * @vue-event {Object} timelineplaychanged - 时间轴中播放状态的切换事件。
+ * @vue-event {Object} restore - 重置 option 事件。
+ * @vue-event {Object} dataviewchanged - 工具栏中数据视图的修改事件。
+ * @vue-event {Object} magictypechanged - 工具栏中动态类型切换的切换事件。
+ * @vue-event {Object} geoselectchanged - geo 中地图区域切换选中状态的事件。
+ * @vue-event {Object} geoselected - geo 中地图区域选中后的事件。
+ * @vue-event {Object} geounselected - geo 中地图区域取消选中后的事件。
+ * @vue-event {Object} pieselectchanged - series-pie 中饼图扇形切换选中状态的事件。
+ * @vue-event {Object} pieselected - series-pie 中饼图扇形选中后的事件。
+ * @vue-event {Object} pieunselected - series-pie 中饼图扇形取消选中后的事件。
+ * @vue-event {Object} mapselectchanged - series-map 中地图区域切换选中状态的事件。
+ * @vue-event {Object} mapselected - series-map 中地图区域选中后的事件。
+ * @vue-event {Object} mapunselected - series-map 中地图区域取消选中后的事件。
+ * @vue-event {Object} axisareaselected - 平行坐标轴 (Parallel)范围选取事件。
+ * @vue-event {Object} focusnodeadjacency - graph的邻接节点高亮事件。
+ * @vue-event {Object} unfocusnodeadjacency - graph的邻接节点取消高亮事件。
+ * @vue-event {Object} brush - 选框添加事件。即发出 brush action 得到的事件。
+ * @vue-event {Object} brushselected - 对外通知当前选中了什么。
+ * @vue-event {Object} rendered - 渲染结束事件
+ * @vue-event {Object} finished - 渲染完成事件。当渲染动画
+ * @vue-event {Object} click - 鼠标事件.click
+ * @vue-event {Object} dblclick - 鼠标事件.dblclick
+ * @vue-event {Object} mouseover - 鼠标事件.mouseover
+ * @vue-event {Object} mouseout - 鼠标事件.mouseout
+ * @vue-event {Object} mousemove - 鼠标事件.mousemove
+ * @vue-event {Object} mousedown - 鼠标事件.mousedown
+ * @vue-event {Object} mouseup - 鼠标事件.mouseup
+ * @vue-event {Object} globalout - 鼠标事件.globalout
+ * @vue-event {Object} contextmenu - 鼠标事件.contextmenu
+ */
+// 枚举事件类型
+
+var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'legendscroll', 'datazoom', 'datarangeselected', 'timelinechanged', 'timelineplaychanged', 'restore', 'dataviewchanged', 'magictypechanged', 'geoselectchanged', 'geoselected', 'geounselected', 'pieselectchanged', 'pieselected', 'pieunselected', 'mapselectchanged', 'mapselected', 'mapunselected', 'axisareaselected', 'focusnodeadjacency', 'unfocusnodeadjacency', 'brush', 'brushselected', 'rendered', 'finished', 'click', 'dblclick', 'mouseover', 'mouseout', 'mousemove', 'mousedown', 'mouseup', 'globalout', 'contextmenu'];
+/* harmony default export */ var Chartvue_type_script_lang_js_ = ({
+  name: 'SmChart',
+  components: {
+    'v-chart': external_VueECharts_default.a
+  },
+  mixins: [control, mixin_theme, mixin_card],
+  props: {
+    iconClass: {
+      type: String,
+      default: 'smwidgets-icons-attribute'
+    },
+    dataset: {
+      type: Object,
+      default: function _default() {
+        return null;
+      }
+    },
+    datasetOptions: {
+      type: Array,
+      default: function _default() {
+        return null;
+      }
+    },
+    options: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    autoresize: {
+      type: Boolean,
+      default: true
+    },
+    theme: {
+      type: [Object, String]
+    },
+    initOptions: {
+      type: Object
+    },
+    group: {
+      type: String
+    },
+    manualUpdate: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data: function data() {
+    return {
+      chartId: lodash_uniqueid_default()("".concat(this.$options.name.toLowerCase(), "-")),
+      smChart: null,
+      // echarts实例
+      chartTheme: chartThemeUtil(),
+      // 图表的主题
+      echartOptions: {},
+      // 最后生成的echart数据
+      echartsDataService: null,
+      // 请求数据的实例，保存请求回来的数据
+      datasetChange: false,
+      // dataset是否改变
+      dataSeriesCache: {}
+    };
+  },
+  computed: {
+    width: function width() {
+      return this.smChart && this.smChart.width;
+    },
+    height: function height() {
+      return this.smChart && this.smChart.height;
+    },
+    computedOptions: function computedOptions() {
+      return this.smChart && this.smChart.computedOptions;
+    },
+    // 内部调用
+    _chartStyle: function _chartStyle() {
+      return {
+        width: '100%',
+        height: this.headerName ? 'calc(100% - 30px)' : '100%'
+      };
+    },
+    // 是否传入dataset和datasetOptions
+    _isRequestData: function _isRequestData() {
+      return this.dataset && this.datasetOptions;
+    }
+  },
+  watch: {
+    theme: function theme() {
+      this.chartTheme = null;
+    },
+    dataset: function dataset() {
+      this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
+
+      this.datasetChange = true;
+    },
+    datasetOptions: function datasetOptions() {
+      if (!this.datasetChange) {
+        this.echartsDataService && this._changeChartData(this.echartsDataService, this.datasetOptions, this.options);
+      } else {
+        this.datasetChange = false;
+      }
+    },
+    options: function options() {
+      this.echartOptions = Object.assign({}, this.dataSeriesCache, this.options);
+    },
+    // 以下为echart的配置参数
+    width: function width() {
+      return this.smChart && this.smChart.width;
+    },
+    height: function height() {
+      return this.smChart && this.smChart.height;
+    },
+    computedOptions: function computedOptions() {
+      return this.smChart && this.smChart.computedOptions;
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    // 设置echarts实例
+    var chartId = this.chartId;
+    this.smChart = this.$refs[chartId]; // 派发echart所有事件
+
+    var smChart = this._getEchart();
+
+    EVENTS.forEach(function (event) {
+      smChart.$on(event, function (params) {
+        _this.$emit(event, params);
+      });
+    }); // 切换主题
+
+    this.$on('themeStyle', function () {
+      _this.chartTheme = chartThemeUtil(_this.backgroundData, _this.textColorsData, _this.colorGroupsData);
+    }); // 请求数据, 合并echartopiton, 设置echartOptions
+
+    this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
+  },
+  methods: {
+    // 请求数据,设置echartOptions
+    _setEchartOptions: function _setEchartOptions(dataset, datasetOptions, echartOptions) {
+      var _this2 = this;
+
+      this.echartsDataService = new EchartsDataService_EchartsDataService(dataset, datasetOptions);
+      this.echartsDataService.getDataOption().then(function (options) {
+        // 缓存dataSeriesCache，请求后格式化成echart的数据
+        _this2.dataSeriesCache = Object.assign({}, options); // 设置echartOptions
+
+        _this2.echartOptions = Object.assign({}, options, echartOptions);
+      });
+    },
+    // 当datasetUrl不变，datasetOptions改变时
+    _changeChartData: function _changeChartData(echartsDataService, datasetOptions, echartOptions) {
+      var options = echartsDataService.formatChartData(datasetOptions); // 缓存dataSeriesCache，格式化成echart的数据
+
+      this.dataSeriesCache = Object.assign({}, options); // 设置echartOptions
+
+      this.echartOptions = Object.assign({}, options, echartOptions);
+    },
+    // 获取echart实例
+    _getEchart: function _getEchart() {
+      return this.smChart;
+    },
+    // 以下全是同名调用echart的方法
+
+    /**
+     * 提供了一个更贴切的名称来描述 setOption 方法的实际行为。
+     * @param {Object} options - 图表的配置项和数据
+     * @param {Boolean} [notMerge = false] - 可选，是否不跟之前设置的 option 进行合并，默认为 false，即合并
+     * @param {Boolean} [lazyUpdate = false] - 可选，阻止调用 setOption 时抛出事件，默认为 false，即抛出事件
+     */
+    mergeOptions: function mergeOptions(options, notMerge, lazyUpdate) {
+      this._delegateMethod('mergeOptions', options, notMerge, lazyUpdate);
+    },
+
+    /**
+     * 此接口用于，在大数据量（百万以上）的渲染场景，分片加载数据和增量渲染。
+     * @param {Object} params - 数据配置
+     */
+    appendData: function appendData(params) {
+      this._delegateMethod('appendData', params);
+    },
+
+    /**
+     * 此接口用于，改变图表尺寸，在容器大小发生改变时需要手动调用。
+     * @param {Object} [options] - options可缺省。有下面几个可选项：width, height, silent
+     */
+    resize: function resize(options) {
+      this._delegateMethod('resize', options);
+    },
+
+    /**
+     * 此接口用于，触发图表行为。
+     * @param {Object} payload - 参数可以通过batch属性同时触发多个行为。
+     */
+    dispatchAction: function dispatchAction(payload) {
+      this._delegateMethod('dispatchAction', payload);
+    },
+
+    /**
+     * 此接口用于，转换坐标系上的点到像素坐标值。
+     * @param {Object} finder - 用于指示『在哪个坐标系或者系列上判断』。
+     * @param {Array|string} value - 要被转换的值。
+     */
+    convertToPixel: function convertToPixel(finder, value) {
+      return this._delegateMethod('convertToPixel', finder, value);
+    },
+
+    /**
+     * 此接口用于，转换像素坐标值到逻辑坐标系上的点。是 convertToPixel 的逆运算。
+     * @param {Object} finder - 用于指示『在哪个坐标系或者系列上判断』。
+     * @param {Array|string} value - 要被转换的值。
+     */
+    convertFromPixel: function convertFromPixel(finder, value) {
+      return this._delegateMethod('convertFromPixel', finder, value);
+    },
+
+    /**
+     * 此接口用于，判断给定的点是否在指定的坐标系或者系列上。
+     * @param {Object} finder - 用于指示『在哪个坐标系或者系列上判断』。
+     * @param {Array} value - 要被判断的点。
+     */
+    containPixel: function containPixel(finder, value) {
+      return this._delegateMethod('containPixel', finder, value);
+    },
+
+    /**
+     * 此接口用于，显示加载动画效果。可以在加载数据前手动调用该接口显示加载动画，在数据加载完成后调用 hideLoading 隐藏加载动画。
+     * @param {Object} [type] - 可选，加载动画类型，目前只有一种'default'。
+     * @param {Object} [options] - 可选，加载动画配置项，跟type有关。
+     */
+    showLoading: function showLoading(type, options) {
+      this._delegateMethod('showLoading', type, options);
+    },
+
+    /**
+     * 此接口用于，隐藏动画加载效果。
+     */
+    hideLoading: function hideLoading() {
+      this._delegateMethod('hideLoading');
+    },
+
+    /**
+     * 此接口用于，导出图表图片，返回一个 base64 的 URL，可以设置为Image的src。
+     * @param {Object} options - 导出配置
+     */
+    getDataURL: function getDataURL(options) {
+      return this._delegateMethod('getDataURL', options);
+    },
+
+    /**
+     * 此接口用于，导出联动的图表图片，返回一个 base64 的 url，可以设置为Image的src。导出图片中每个图表的相对位置跟容器的相对位置有关。
+     * @param {Object} options - 导出配置
+     */
+    getConnectedDataURL: function getConnectedDataURL(options) {
+      return this._delegateMethod('getConnectedDataURL', options);
+    },
+
+    /**
+     * 此接口用于，清空当前实例，会移除实例中所有的组件和图表。清空后调用 getOption 方法返回一个{}空对象。
+     */
+    clear: function clear() {
+      this._delegateMethod('clear');
+    },
+
+    /**
+     * 此接口用于，销毁实例，销毁后实例无法再被使用。
+     */
+    dispose: function dispose() {
+      this._delegateMethod('dispose');
+    },
+    // 内部调用的方法
+    _delegateMethod: function _delegateMethod(name) {
+      var _this$smChart;
+
+      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      return (_this$smChart = this.smChart)[name].apply(_this$smChart, args);
+    }
+  },
+  // echarts所有静态方法
+
+  /**
+   * @function connect
+   * 多个图表实例实现联动。
+   * @param {string|Array} group - group的id，或者图表实例的数组。
+   */
+  connect: function connect(group) {
+    external_VueECharts_default.a && external_VueECharts_default.a.connect(group);
+  },
+
+  /**
+   * 解除图表实例的联动，如果只需要移除单个实例，可以将通过将该图表实例 group 设为空。
+   * @param {string} group - group的id。
+   */
+  disconnect: function disconnect(group) {
+    external_VueECharts_default.a && external_VueECharts_default.a.disConnect(group);
+  },
+
+  /**
+   * 注册可用的地图，必须在包括 geo 组件或者 map 图表类型的时候才能使用。
+   * @param {string} mapName - 地图名称，在 geo 组件或者 map 图表类型中设置的 map 对应的就是该值。
+   * @param {Object} geoJSON - GeoJson 格式的数据，具体格式见 http://geojson.org/。
+   * @param {Object} [specialAreas] - 可选。将地图中的部分区域缩放到合适的位置，可以使得整个地图的显示更加好看。
+   */
+  registerMap: function registerMap(mapName, geoJSON, specialAreas) {
+    external_VueECharts_default.a && external_VueECharts_default.a.registerMap(mapName, geoJSON, specialAreas);
+  },
+
+  /**
+   * 注册主题，用于初始化实例的时候指定。
+   * @param {string} name - 主题命名。
+   * @param {Object} theme - 主题配置。
+   */
+  registerTheme: function registerTheme(name, theme) {
+    external_VueECharts_default.a && external_VueECharts_default.a.registerTheme(name, theme);
+  },
+
+  /**
+   * @desc 图形相关帮助方法。
+   */
+  graphic: external_VueECharts_default.a && external_VueECharts_default.a.graphic
+});
+// CONCATENATED MODULE: ./src/view/components/Chart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_Chartvue_type_script_lang_js_ = (Chartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/Chart.vue
+
+
+
+
+
+/* normalize component */
+
+var Chart_component = normalizeComponent(
+  components_Chartvue_type_script_lang_js_,
+  Chartvue_type_template_id_b210b2d8_render,
+  Chartvue_type_template_id_b210b2d8_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var Chart = (Chart_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=template&id=3075b404&
+var Mapvue_type_template_id_3075b404_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-map",attrs:{"id":_vm.target}},[_vm._t("default")],2)}
+var Mapvue_type_template_id_3075b404_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=template&id=3075b404&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Map.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ var Mapvue_type_script_lang_js_ = ({
+  name: 'SmMap',
+  props: {
+    target: {
+      type: String,
+      default: 'map'
+    },
+    mapOptions: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    }
+  },
+  computed: {
+    getMapTarget: function getMapTarget() {
+      return this.target;
+    }
+  },
+  created: function created() {
+    if (!mapEvent.firstMapTarget) {
+      mapEvent.firstMapTarget = this.target;
+    }
+  },
+  mounted: function mounted() {
+    var map = this.initializeMap();
+    this.registerEvents(map);
+  },
+  methods: {
+    initializeMap: function initializeMap() {
+      this.mapOptions.container = this.target;
+      this.map = new mapbox_gl_enhance_js_default.a.Map(this.mapOptions);
+      return this.map;
+    },
+    registerEvents: function registerEvents(map) {
+      var _this = this;
+
+      map.on('load', function () {
+        mapEvent.$emit("initMap-".concat(_this.target), map);
+
+        _this.$emit('load', {
+          map: map
+        });
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/view/components/Map.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_Mapvue_type_script_lang_js_ = (Mapvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/Map.vue
+
+
+
+
+
+/* normalize component */
+
+var Map_component = normalizeComponent(
+  components_Mapvue_type_script_lang_js_,
+  Mapvue_type_template_id_3075b404_render,
+  Mapvue_type_template_id_3075b404_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var Map = (Map_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/MiniMap.vue?vue&type=template&id=8b17b492&
+var MiniMapvue_type_template_id_8b17b492_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{attrs:{"id":(!_vm.iconClass&&!_vm.headerName)&&'miniMap',"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{attrs:{"id":(_vm.iconClass||_vm.headerName)&&'miniMap'}})])}
+var MiniMapvue_type_template_id_8b17b492_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/view/components/MiniMap.vue?vue&type=template&id=8b17b492&
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
+var helpers_typeof = __webpack_require__("cDf5");
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
+
+// CONCATENATED MODULE: ./src/viewmodel/MiniMapViewModel.js
+
+
+
+
+
+
+
+
+/**
+ * @class MiniMapViewModel
+ * @description mini map viewModel.
+ * @param {Object} parentMap - 外层 Map。
+ * @param {Object} miniMap - 内层 Map。
+ * @fires MiniMapViewModel#minimapmousedown
+ * @fires MiniMapViewModel#minimapmousemove
+ * @fires MiniMapViewModel#minimapmouseup
+ * @fires MiniMapViewModel#minimapupdated
+ * @extends WidgetViewModel
+ */
+
+var MiniMapViewModel_MiniMapViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(MiniMapViewModel, _WidgetViewModel);
+
+  function MiniMapViewModel(container, parentMap) {
+    var _this2;
+
+    classCallCheck_default()(this, MiniMapViewModel);
+
+    _this2 = possibleConstructorReturn_default()(this, getPrototypeOf_default()(MiniMapViewModel).call(this));
+    _this2.options = {
+      id: 'mapboxgl-minimap',
+      zoomAdjust: null,
+      bounds: 'parent',
+      lineColor: '#08F',
+      lineWidth: 1,
+      lineOpacity: 1,
+      fillColor: '#F80',
+      fillOpacity: 0.25,
+      dragPan: false,
+      scrollZoom: false,
+      boxZoom: false,
+      dragRotate: false,
+      keyboard: false,
+      doubleClickZoom: false,
+      touchZoomRotate: false
+    };
+    _this2._container = container;
+    _this2._ticking = false;
+    _this2._lastMouseMoveEvent = null;
+    _this2._parentMap = parentMap;
+    _this2._isDragging = false;
+    _this2._isCursorOverFeature = false;
+    _this2._previousPoint = [0, 0];
+    _this2._currentPoint = [0, 0];
+    _this2._trackingRectCoordinates = [[[], [], [], [], []]];
+
+    _this2.initializeMiniMap();
+
+    return _this2;
+  }
+
+  createClass_default()(MiniMapViewModel, [{
+    key: "initializeMiniMap",
+    value: function initializeMiniMap() {
+      var _this3 = this;
+
+      var _this = this;
+
+      this._miniMap = new mapbox_gl_enhance_js_default.a.Map({
+        attributionControl: false,
+        container: _this._container,
+        style: _this._parentMap.getStyle(),
+        zoom: 1,
+        center: [0, 0],
+        renderWorldCopies: false
+      });
+
+      this._miniMap.on('load', function () {
+        _this3.fire('minimapinitialized', {
+          miniMap: _this3._miniMap
+        });
+
+        _this3.loadMiniMap();
+      });
+    }
+  }, {
+    key: "loadMiniMap",
+    value: function loadMiniMap() {
+      var opts = this.options;
+      var parentMap = this._parentMap;
+      var miniMap = this._miniMap;
+      var interactions = ['dragPan', 'scrollZoom', 'boxZoom', 'dragRotate', 'keyboard', 'doubleClickZoom', 'touchZoomRotate'];
+      interactions.forEach(function (i) {
+        if (opts[i] !== true) {
+          miniMap[i].disable();
+        }
+      });
+
+      if (typeof opts.zoomAdjust === 'function') {
+        this.options.zoomAdjust = opts.zoomAdjust.bind(this);
+      } else if (opts.zoomAdjust === null) {
+        this.options.zoomAdjust = this._zoomAdjust.bind(this);
+      }
+
+      if (opts.bounds === 'parent') {
+        opts.bounds = parentMap.getBounds();
+      }
+
+      if (typeof_default()(opts.bounds) === 'object') {
+        miniMap.fitBounds(opts.bounds, {
+          duration: 50
+        });
+      }
+
+      var bounds = miniMap.getBounds();
+
+      this._convertBoundsToPoints(bounds);
+
+      this._addRectLayers();
+
+      this._update();
+
+      parentMap.on('move', this._update.bind(this));
+      parentMap.on('styledata', this._setStyle.bind(this));
+      miniMap.on('mousemove', this._mouseMove.bind(this));
+      miniMap.on('mousedown', this._mouseDown.bind(this));
+      miniMap.on('mouseup', this._mouseUp.bind(this));
+      this._miniMapCanvas = miniMap.getCanvasContainer();
+
+      this._miniMapCanvas.addEventListener('wheel', this._preventDefault);
+
+      this._miniMapCanvas.addEventListener('mousewheel', this._preventDefault);
+    }
+  }, {
+    key: "_mouseDown",
+    value: function _mouseDown(e) {
+      if (this._isCursorOverFeature) {
+        this._isDragging = true;
+        this._previousPoint = this._currentPoint;
+        this._currentPoint = [e.lngLat.lng, e.lngLat.lat];
+      }
+      /**
+       * @event MiniMapViewModel#minimapmouseuped
+       * @description 鹰眼图按下后触发。
+       * @property {Object} result - 返回的数据。
+       */
+
+
+      this.fire('minimapmousedown', {
+        result: e
+      });
+    }
+  }, {
+    key: "_mouseMove",
+    value: function _mouseMove(e) {
+      this._ticking = false;
+      var miniMap = this._miniMap;
+      var features = miniMap.queryRenderedFeatures(e.point, {
+        layers: ['trackingRectFill']
+      });
+
+      if (!(this._isCursorOverFeature && features.length > 0)) {
+        this._isCursorOverFeature = features.length > 0;
+        this._miniMapCanvas.style.cursor = this._isCursorOverFeature ? 'move' : '';
+      }
+
+      if (this._isDragging) {
+        this._previousPoint = this._currentPoint;
+        this._currentPoint = [e.lngLat.lng, e.lngLat.lat];
+        var offset = [this._previousPoint[0] - this._currentPoint[0], this._previousPoint[1] - this._currentPoint[1]];
+
+        var newBounds = this._moveTrackingRect(offset);
+
+        this._parentMap.fitBounds(newBounds, {
+          duration: 80,
+          noMoveStart: true
+        });
+      }
+      /**
+       * @event MiniMapViewModel#minimapmousemove
+       * @description 鹰眼图移动后触发。
+       * @property {Object} result - 返回的数据。
+       */
+
+
+      this.fire('minimapmousemoved', {
+        result: e
+      });
+    }
+  }, {
+    key: "_mouseUp",
+    value: function _mouseUp(e) {
+      this._isDragging = false;
+      this._ticking = false;
+      /**
+       * @event MiniMapViewModel#minimapmouseup
+       * @description 鹰眼图点击后触发。
+       * @property {Object} result - 返回的数据。
+       */
+
+      this.fire('minimapmouseup', {
+        result: e
+      });
+    }
+  }, {
+    key: "_moveTrackingRect",
+    value: function _moveTrackingRect(offset) {
+      var source = this._trackingRect;
+      var data = source._data;
+      var bounds = data.properties.bounds;
+
+      if (bounds) {
+        bounds._ne.lat -= offset[1];
+        bounds._ne.lng -= offset[0];
+        bounds._sw.lat -= offset[1];
+        bounds._sw.lng -= offset[0];
+
+        this._convertBoundsToPoints(bounds);
+
+        source.setData(data);
+        return bounds;
+      }
+    }
+  }, {
+    key: "_setTrackingRectBounds",
+    value: function _setTrackingRectBounds(bounds) {
+      var source = this._trackingRect;
+      var data = source._data;
+      data.properties.bounds = bounds;
+
+      this._convertBoundsToPoints(bounds);
+
+      source.setData(data);
+    }
+  }, {
+    key: "_convertBoundsToPoints",
+    value: function _convertBoundsToPoints(bounds) {
+      var ne = bounds._ne;
+      var sw = bounds._sw;
+      var trc = this._trackingRectCoordinates;
+      ne = this._handleBounds(ne);
+      sw = this._handleBounds(sw);
+      trc[0][0][0] = ne.lng;
+      trc[0][0][1] = ne.lat;
+      trc[0][1][0] = sw.lng;
+      trc[0][1][1] = ne.lat;
+      trc[0][2][0] = sw.lng;
+      trc[0][2][1] = sw.lat;
+      trc[0][3][0] = ne.lng;
+      trc[0][3][1] = sw.lat;
+      trc[0][4][0] = ne.lng;
+      trc[0][4][1] = ne.lat;
+    }
+  }, {
+    key: "_update",
+    value: function _update(e) {
+      if (this._isDragging) {
+        return;
+      }
+
+      var parentBounds = this._parentMap.getBounds();
+
+      this._setTrackingRectBounds(parentBounds);
+
+      if (typeof this.options.zoomAdjust === 'function') {
+        this.options.zoomAdjust();
+      }
+      /**
+       * @event MiniMapViewModel#minimapmouseuped
+       * @description 鹰眼图更新后触发。
+       * @property {Object} result - 返回的数据。
+       */
+
+
+      this.fire('minimapupdated', {
+        result: e
+      });
+    }
+  }, {
+    key: "_zoomAdjust",
+    value: function _zoomAdjust() {
+      var miniMap = this._miniMap;
+      var parentMap = this._parentMap;
+      var parentZoom = parseFloat(parentMap.getZoom());
+      miniMap.setCenter(parentMap.getCenter());
+      var targetZoom = parentZoom - 5 > 0 ? parentZoom - 5 : 1;
+      miniMap.setZoom(targetZoom);
+    }
+  }, {
+    key: "_preventDefault",
+    value: function _preventDefault(e) {
+      e.preventDefault();
+    }
+  }, {
+    key: "_handleBounds",
+    value: function _handleBounds(latlng) {
+      if (latlng.lng > 180) {
+        latlng.lng = 180;
+      } else if (latlng.lng < -180) {
+        latlng.lng = -180;
+      }
+
+      if (latlng.lat > 90) {
+        latlng.lat = 90;
+      } else if (latlng.lat < -90) {
+        latlng.lat = -90;
+      }
+
+      return latlng;
+    }
+  }, {
+    key: "_setStyle",
+    value: function _setStyle() {
+      this._miniMap.setStyle(this._parentMap.getStyle());
+
+      this._addRectLayers();
+
+      this._update();
+    }
+  }, {
+    key: "_addRectLayers",
+    value: function _addRectLayers() {
+      var opts = this.options;
+
+      this._miniMap.addSource('trackingRect', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {
+            name: 'trackingRect'
+          },
+          geometry: {
+            type: 'Polygon',
+            coordinates: this._trackingRectCoordinates
+          }
+        }
+      });
+
+      this._miniMap.addLayer({
+        id: 'trackingRectOutline',
+        type: 'line',
+        source: 'trackingRect',
+        layout: {},
+        paint: {
+          'line-color': opts.lineColor,
+          'line-width': opts.lineWidth,
+          'line-opacity': opts.lineOpacity
+        }
+      });
+
+      this._miniMap.addLayer({
+        id: 'trackingRectFill',
+        type: 'fill',
+        source: 'trackingRect',
+        layout: {},
+        paint: {
+          'fill-color': opts.fillColor,
+          'fill-opacity': opts.fillOpacity
+        }
+      });
+
+      this._trackingRect = this._miniMap.getSource('trackingRect');
+    }
+  }]);
+
+  return MiniMapViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/MiniMap.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ var MiniMapvue_type_script_lang_js_ = ({
+  name: 'SmMiniMap',
+  mixins: [map_getter, control, mixin_card],
+  props: {
+    iconClass: {
+      type: String,
+      default: 'el-icon-back'
+    },
+    autoRotate: {
+      type: Boolean,
+      default: true
+    }
+  },
+  mounted: function mounted() {
+    this.icon = this.$el.children[0];
+    this.iconClass && this.icon && (this.icon.style.visibility = 'hidden');
+  },
+  loaded: function loaded() {
+    var _this = this;
+
+    this.$el.classList.add('sm-widget-minimap');
+    this.viewModel = new MiniMapViewModel_MiniMapViewModel(this.$el.querySelector('#miniMap') || this.$el, this.map);
+    this.iconClass && this.icon && this.viewModel.on('minimapinitialized', function () {
+      _this.icon.style.visibility = 'visible';
+    });
+  }
+});
+// CONCATENATED MODULE: ./src/view/components/MiniMap.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_MiniMapvue_type_script_lang_js_ = (MiniMapvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/MiniMap.vue
+
+
+
+
+
+/* normalize component */
+
+var MiniMap_component = normalizeComponent(
+  components_MiniMapvue_type_script_lang_js_,
+  MiniMapvue_type_template_id_8b17b492_render,
+  MiniMapvue_type_template_id_8b17b492_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var MiniMap = (MiniMap_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Measure.vue?vue&type=template&id=456ad884&
+var Measurevue_type_template_id_456ad884_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-widget-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-widget-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{key:group.mode,class:{'sm-widget-measure__modeIcon': true, 'sm-widget-measure__iconActive': _vm.activeMode === group.mode},style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-widget-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('el-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-widget-measure__unit",attrs:{"placeholder":"请选择","size":"mini","popper-append-to-body":false},on:{"change":_vm.updateUnit,"visible-change":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('el-option',{key:index,attrs:{"label":value,"value":key}})})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-widget-measure__unit sm-widget-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-widget-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-widget-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-widget-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
+var Measurevue_type_template_id_456ad884_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/view/components/Measure.vue?vue&type=template&id=456ad884&
+
+// EXTERNAL MODULE: external {"root":"MapboxDraw","commonjs":"@mapbox/mapbox-gl-draw","commonjs2":"@mapbox/mapbox-gl-draw","amd":"@mapbox/mapbox-gl-draw"}
+var mapbox_gl_draw_ = __webpack_require__("dz+5");
+var mapbox_gl_draw_default = /*#__PURE__*/__webpack_require__.n(mapbox_gl_draw_);
+
+// EXTERNAL MODULE: ./node_modules/@turf/length/index.js
+var _turf_length = __webpack_require__("Xrjk");
+var length_default = /*#__PURE__*/__webpack_require__.n(_turf_length);
+
+// EXTERNAL MODULE: ./node_modules/@turf/area/index.js
+var _turf_area = __webpack_require__("O3R+");
+var area_default = /*#__PURE__*/__webpack_require__.n(_turf_area);
+
+// EXTERNAL MODULE: ./node_modules/@turf/center/index.js
+var _turf_center = __webpack_require__("SPBs");
+var center_default = /*#__PURE__*/__webpack_require__.n(_turf_center);
+
+// EXTERNAL MODULE: ./node_modules/@turf/helpers/index.js
+var helpers = __webpack_require__("/rf6");
+
+// CONCATENATED MODULE: ./src/viewmodel/MeasureViewModel.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @class MeasureViewModel
+ * @description 量算 viewModel.
+ * @param {Object} webmap - webmap实例对象。
+ * @extends WidgetViewModel
+ */
+
+var MeasureViewModel_MeasureViewModel =
+/*#__PURE__*/
+function (_WidgetViewModel) {
+  inherits_default()(MeasureViewModel, _WidgetViewModel);
+
+  function MeasureViewModel(options) {
+    var _this;
+
+    classCallCheck_default()(this, MeasureViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(MeasureViewModel).call(this));
+    _this.tipNodes = []; // 收集测算长度实时生成的popup，以方便后面销毁
+
+    _this.cacheLengthUnitList = []; // 缓存量算长度每个节点的值跟单位，在修改单位时使用
+
+    _this.cachePolygonUnit = {};
+    _this.mode = null;
+    _this.result = '';
+    _this.activeMode = '';
+    _this.map = options.map;
+
+    _this._addDrawControl();
+
+    _this.isEditing = true;
+    return _this;
+  } // 开启绘制
+
+
+  createClass_default()(MeasureViewModel, [{
+    key: "openDraw",
+    value: function openDraw(mode, activeUnit) {
+      this._initDraw();
+
+      this._resetEvent();
+
+      this.mode = mode;
+      this.activeMode = mode;
+      this.activeUnit = activeUnit;
+      this.isEditing = true; // 绘画线或面
+
+      this.draw.changeMode(mode);
+      this.measureNodeDistanceBind = this._measureNodeDistance.bind(this);
+      this.map.on('mousedown', this.measureNodeDistanceBind);
+    }
+  }, {
+    key: "closeDraw",
+    value: function closeDraw() {
+      this.isEditing = false;
+      this.ids = null;
+
+      this._initDraw();
+
+      this._resetEvent();
+
+      this.activeMode = null;
+      this.draw.trash();
+      this.map.off('mousedown', this.continueDrawBind);
+    }
+  }, {
+    key: "updateUnit",
+    value: function updateUnit(unit) {
+      if (this.tipNodes.length !== 0) {
+        for (var i = 1; i < this.tipNodes.length; i++) {
+          var transValue = Object(helpers["convertLength"])(this.cacheLengthUnitList[i - 1].value, this.cacheLengthUnitList[i - 1].unit, unit);
+          transValue = this._getFormatResult(transValue);
+          this.cacheLengthUnitList[i - 1].value = transValue;
+          this.cacheLengthUnitList[i - 1].unit = unit;
+
+          if (this.activeMode === 'draw_line_string') {
+            var uniti18n = src_lang.t("measure.".concat(unit));
+            this.tipNodes[i] && this.tipNodes[i].setText("".concat(transValue, " ").concat(uniti18n));
+          }
+        }
+
+        this.result && (this.result = Object(helpers["convertLength"])(this.result, this.activeUnit, unit));
+      } else if (this.cachePolygonUnit.value && this.cachePolygonUnit.unit) {
+        var _transValue = Object(helpers["convertArea"])(this.cachePolygonUnit.value, this.cachePolygonUnit.unit, unit);
+
+        var _uniti18n = src_lang.t("measure.square".concat(unit));
+
+        this.tipHoverDiv && this.tipHoverDiv.setText("".concat(_transValue, " ").concat(_uniti18n));
+        this.result && (this.result = Object(helpers["convertArea"])(this.result, this.activeUnit, unit));
+      }
+
+      this.result && this.fire('update-unit', {
+        result: this._getFormatResult(this.result)
+      });
+      this.activeUnit = unit;
+    }
+  }, {
+    key: "_addDrawControl",
+    value: function _addDrawControl() {
+      this.draw = new mapbox_gl_draw_default.a({
+        displayControlsDefault: false,
+        controls: {
+          line_string: true,
+          trash: false
+        },
+        styles: [// line stroke
+        {
+          id: 'gl-draw-line',
+          type: 'line',
+          filter: ['all', ['==', '$type', 'LineString'], ['!=', 'mode', 'static']],
+          layout: {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          paint: {
+            'line-color': '#D20C0C',
+            'line-dasharray': [0.2, 2],
+            'line-width': 2
+          }
+        }, // polygon fill
+        {
+          id: 'gl-draw-polygon-fill',
+          type: 'fill',
+          filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+          paint: {
+            'fill-color': '#D20C0C',
+            'fill-outline-color': '#D20C0C',
+            'fill-opacity': 0.1
+          }
+        }, // polygon outline stroke
+        // This doesn't style the first edge of the polygon, which uses the line stroke styling instead
+        {
+          id: 'gl-draw-polygon-stroke-active',
+          type: 'line',
+          filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+          layout: {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          paint: {
+            'line-color': '#D20C0C',
+            'line-dasharray': [0.2, 2],
+            'line-width': 2
+          }
+        }, // vertex point halos
+        {
+          id: 'gl-draw-polygon-and-line-vertex-halo-active',
+          type: 'circle',
+          filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+          paint: {
+            'circle-radius': 5,
+            'circle-color': '#FFF'
+          }
+        }, // vertex points
+        {
+          id: 'gl-draw-polygon-and-line-vertex-active',
+          type: 'circle',
+          filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+          paint: {
+            'circle-radius': 3,
+            'circle-color': '#D20C0C'
+          }
+        }, // INACTIVE (static, already drawn)
+        // line stroke
+        {
+          id: 'gl-draw-line-static',
+          type: 'line',
+          filter: ['all', ['==', '$type', 'LineString'], ['==', 'mode', 'static']],
+          layout: {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          paint: {
+            'line-color': '#000',
+            'line-width': 3
+          }
+        }, // polygon fill
+        {
+          id: 'gl-draw-polygon-fill-static',
+          type: 'fill',
+          filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
+          paint: {
+            'fill-color': '#000',
+            'fill-outline-color': '#000',
+            'fill-opacity': 0.1
+          }
+        }, // polygon outline
+        {
+          id: 'gl-draw-polygon-stroke-static',
+          type: 'line',
+          filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
+          layout: {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          paint: {
+            'line-color': '#000',
+            'line-width': 3
+          }
+        }]
+      });
+      this.map.addLayer(this.draw);
+      this.map.on('draw.create', this._finishDraw.bind(this));
+      this.map.on('draw.modechange', this._resetDraw.bind(this));
+    }
+  }, {
+    key: "_resetDraw",
+    value: function _resetDraw(e) {
+      if (this.isEditing) {
+        this.map.off('mousemove', this.popupFollowMouseBind);
+        this.ids = this.draw.getSelectedIds();
+        this.draw.changeMode(this.mode);
+        this.continueDrawBind = this._continueDraw.bind(this);
+        this.map.on('mousedown', this.continueDrawBind);
+        this.measureNodeDistanceBind = this._measureNodeDistance.bind(this);
+        this.map.on('mousedown', this.measureNodeDistanceBind);
+        this.fire('measure-finished', {
+          result: this._getFormatResult(this.result)
+        });
+      }
+    }
+  }, {
+    key: "_initDraw",
+    value: function _initDraw() {
+      // 根据ids只删除上一次量算的数据
+      this.ids ? this.draw.delete(this.ids) : this.draw.deleteAll();
+      this.measureNodes = []; // 收集测算长度生成每个点的feature数据, 方便后面计算总长度
+
+      this.tipNodes.length && this.tipNodes.map(function (tipNode) {
+        return tipNode.remove();
+      });
+      this.tipNodes = [];
+      this.cacheLengthUnitList = [];
+      this.result = 0;
+      this.fire('measure-start', {
+        result: this._getFormatResult(this.result)
+      });
+    }
+  }, {
+    key: "_continueDraw",
+    value: function _continueDraw(e) {
+      this._initDraw();
+
+      this._resetEvent(false);
+
+      this.map.off('mousedown', this.continueDrawBind);
+    } // 绘画结束后计算最后的结果
+
+  }, {
+    key: "_finishDraw",
+    value: function _finishDraw(e) {
+      this.time = null;
+      this.map.off('mousedown', this.measureNodeDistanceBind);
+
+      switch (this.activeMode) {
+        case 'draw_line_string':
+          var tempLength = length_default()(e.features[0], 'kilometers');
+          this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
+
+          this._resetEvent();
+
+          break;
+
+        case 'draw_polygon':
+          var tempArea = area_default()(e.features[0]);
+          this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
+
+          this._resetEvent(true, false, this.result, e.features[0]);
+
+          break;
+      }
+
+      this.fire('measure-finished', {
+        result: this._getFormatResult(this.result)
+      });
+    } // 绘画每个点显示tip，同时监听鼠标move事件
+
+  }, {
+    key: "_measureNodeDistance",
+    value: function _measureNodeDistance(e) {
+      var _e$lngLat = e.lngLat,
+          lng = _e$lngLat.lng,
+          lat = _e$lngLat.lat;
+      var to = [lng, lat];
+
+      if (this.isOpenMoveEvent) {
+        this.popupFollowMouseBind = this._popupFollowMouse.bind(this);
+        this.map.on('mousemove', this.popupFollowMouseBind);
+        this.isOpenMoveEvent = false;
+      }
+
+      this.measureNodes.push(to);
+
+      if (this.activeMode === 'draw_line_string') {
+        this._renderPopupTip(e);
+      }
+
+      var _this$draw$getAll = this.draw.getAll(),
+          features = _this$draw$getAll.features;
+
+      if (!features.length) {
+        this._resetEvent();
+
+        this.activeMode = null;
+      }
+    }
+  }, {
+    key: "_popupFollowMouse",
+    value: function _popupFollowMouse(e) {
+      var _e$lngLat2 = e.lngLat,
+          lng = _e$lngLat2.lng,
+          lat = _e$lngLat2.lat;
+      var lastPointPos = [lng, lat];
+      var popup = this.tipHoverDiv; // 实时显示popup只需要一个，如果没有再生成新popup
+
+      if (!popup) {
+        popup = new mapbox_gl_enhance_js_default.a.Popup({
+          closeButton: false,
+          closeOnClick: false
+        });
+      }
+
+      popup.setLngLat(lastPointPos);
+      var measureNodeList = [].concat(this.measureNodes, [lastPointPos]);
+      var feature = {
+        type: 'Feature',
+        geometry: {
+          type: "".concat(this.activeMode === 'draw_line_string' ? 'LineString' : 'Polygon'),
+          coordinates: this.activeMode === 'draw_line_string' ? measureNodeList : [measureNodeList]
+        }
+      };
+
+      switch (this.activeMode) {
+        case 'draw_line_string':
+          var tempLength = length_default()(feature, 'kilometers');
+          this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
+          break;
+
+        case 'draw_polygon':
+          var tempArea = area_default()(feature);
+          this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
+          break;
+      }
+
+      var uniti18n;
+
+      if (this.activeMode === 'draw_line_string') {
+        uniti18n = src_lang.t("measure.".concat(this.activeUnit));
+      } else if (this.activeMode === 'draw_polygon') {
+        uniti18n = src_lang.t("measure.square".concat(this.activeUnit));
+      }
+
+      popup.setText("".concat(this._getFormatResult(this.result), " ").concat(uniti18n));
+      popup.addTo(this.map);
+      this.cachePolygonUnit['value'] = this.result;
+      this.cachePolygonUnit['unit'] = this.activeUnit;
+      this.tipHoverDiv = popup;
+    }
+  }, {
+    key: "_renderPopupTip",
+    value: function _renderPopupTip(e) {
+      var _e$lngLat3 = e.lngLat,
+          lng = _e$lngLat3.lng,
+          lat = _e$lngLat3.lat;
+      var popup = new mapbox_gl_enhance_js_default.a.Popup({
+        closeButton: false,
+        closeOnClick: false
+      });
+      popup.setLngLat([lng, lat]);
+
+      if (this.measureNodes.length > 1) {
+        var line = {
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: this.measureNodes
+          }
+        }; // 修改单位！！！！
+
+        var tempLength = length_default()(line, 'kilometers');
+        var calcValue = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
+        var uniti18n;
+
+        if (this.activeMode === 'draw_line_string') {
+          uniti18n = src_lang.t("measure.".concat(this.activeUnit));
+        } else if (this.activeMode === 'draw_polygon') {
+          uniti18n = src_lang.t("measure.square".concat(this.activeUnit));
+        }
+
+        var renderText = "".concat(this._getFormatResult(calcValue), " ").concat(uniti18n);
+        this.cacheLengthUnitList.push({
+          value: this._getFormatResult(calcValue),
+          unit: this.activeUnit
+        });
+        popup.setText(renderText);
+      } else {
+        popup.setText('起点');
+      }
+
+      popup && popup.addTo(this.map);
+      this.tipNodes.push(popup);
+    }
+  }, {
+    key: "_resetEvent",
+    value: function _resetEvent() {
+      var isOffEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var isResetHoverTip = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      var result = arguments.length > 2 ? arguments[2] : undefined;
+      var feature = arguments.length > 3 ? arguments[3] : undefined;
+      this.isOpenMoveEvent = true;
+      this.map.off('mousemove', this.popupFollowMouseBind);
+      isOffEvent && this.map.off('mousedown', this.measureNodeDistanceBind);
+
+      if (isResetHoverTip) {
+        // 如果是测量长度，销毁实时计算生成的popup
+        this.tipHoverDiv && this.tipHoverDiv.remove();
+        this.tipHoverDiv = null;
+      } else {
+        // 如果是测量面积，直接利用实时计算生成的popup显示最后结果
+        var centerResult = center_default()(feature);
+        var uniti18n = src_lang.t("measure.square".concat(this.activeUnit));
+        result = this._getFormatResult(result);
+        this.tipHoverDiv.setLngLat(centerResult.geometry.coordinates).setText("".concat(result, " ").concat(uniti18n));
+      }
+    }
+  }, {
+    key: "_getFormatResult",
+    value: function _getFormatResult(result) {
+      return formatter.reservedDecimal(result || this.result, 4);
+    }
+  }]);
+
+  return MeasureViewModel;
+}(WidgetViewModel_WidgetViewModel);
+
+/* harmony default export */ var viewmodel_MeasureViewModel = (MeasureViewModel_MeasureViewModel);
+// EXTERNAL MODULE: ./node_modules/@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css
+var mapbox_gl_draw = __webpack_require__("vdDi");
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Measure.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ var Measurevue_type_script_lang_js_ = ({
+  name: 'SmMeasure',
+  mixins: [map_getter, control, mixin_theme, mixin_card],
+  props: {
+    iconClass: {
+      type: String,
+      default: 'smwidgets-icons-measure'
+    },
+    headerName: {
+      type: String,
+      default: '量算'
+    },
+    showUnitSelect: {
+      // 配置单位选择框是否显示，若不显示，则显示对应的默认单位
+      type: Boolean,
+      default: true
+    },
+    distanceDefaultUnit: {
+      // 距离默认单位
+      type: String,
+      default: 'kilometers'
+    },
+    areaDefaultUnit: {
+      // 面积默认单位
+      type: String,
+      default: 'kilometers'
+    }
+  },
+  data: function data() {
+    var unitOptions = {
+      draw_line_string: {
+        kilometers: this.$t('measure.kilometers'),
+        miles: this.$t('measure.miles'),
+        meters: this.$t('measure.meters'),
+        feet: this.$t('measure.feet'),
+        yards: this.$t('measure.yards')
+      },
+      draw_polygon: {
+        kilometers: this.$t('measure.squarekilometers'),
+        miles: this.$t('measure.squaremiles'),
+        meters: this.$t('measure.squaremeters'),
+        feet: this.$t('measure.squarefeet'),
+        yards: this.$t('measure.squareyards')
+      }
+    };
+    return {
+      unitOptions: unitOptions,
+      modeGroups: [{
+        mode: 'draw_line_string',
+        title: this.$t('measure.distance'),
+        iconClass: 'smwidgets-icons-line-layer'
+      }, {
+        mode: 'draw_polygon',
+        title: this.$t('measure.area'),
+        iconClass: 'smwidgets-icons-polygon-layer'
+      }],
+      activeMode: '',
+      result: '',
+      activeDistanceUnit: this.distanceDefaultUnit,
+      activeAreaUnit: this.areaDefaultUnit,
+      modeUnitMap: {
+        draw_line_string: 'activeDistanceUnit',
+        draw_polygon: 'activeAreaUnit'
+      }
+    };
+  },
+  computed: {
+    getUnitOptions: function getUnitOptions() {
+      return this.unitOptions[this.activeMode] || [];
+    },
+    getResult: function getResult() {
+      if (this.result) {
+        return "".concat(this.result, " ").concat(this.getUnitLabel);
+      }
+
+      return '';
+    },
+    getUnitLabel: function getUnitLabel() {
+      var units = this.getUnitOptions;
+      var modeUnitKey = this.modeUnitMap[this.activeMode];
+      var label = units[this[modeUnitKey]];
+      return label;
+    },
+    getAreaSelect: function getAreaSelect() {
+      return this.activeMode === 'draw_polygon' && this.showUnitSelect;
+    },
+    getDistanceSelect: function getDistanceSelect() {
+      return this.activeMode === 'draw_line_string' && this.showUnitSelect;
+    }
+  },
+  watch: {
+    distanceDefaultUnit: function distanceDefaultUnit(newVal) {
+      this.activeDistanceUnit = newVal;
+    },
+    areaDefaultUnit: function areaDefaultUnit(newVal) {
+      this.activeAreaUnit = newVal;
+    }
+  },
+  mounted: function mounted() {
+    this.changeSelectInputStyle();
+  },
+  loaded: function loaded() {
+    var _this = this;
+
+    this.viewModel = new viewmodel_MeasureViewModel({
+      map: this.map
+    }); // 控制显示结果的显示
+
+    this.viewModel.on('measure-finished', function (_ref) {
+      var result = _ref.result;
+      _this.result = result;
+    });
+    this.viewModel.on('measure-start', function (_ref2) {
+      var result = _ref2.result;
+      _this.result = '';
+    });
+    this.viewModel.on('update-unit', function (_ref3) {
+      var result = _ref3.result;
+      _this.result = result;
+    });
+  },
+  updated: function updated() {
+    this.changeSelectInputStyle();
+  },
+  methods: {
+    changeSelectInputStyle: function changeSelectInputStyle() {
+      var selectDom = this.$el.querySelector('.el-input__inner');
+
+      if (selectDom) {
+        selectDom.style.borderColor = this.getTextColor;
+        selectDom.style.color = this.getTextColor;
+        selectDom.style.backgroundColor = this.getBackground;
+      }
+    },
+    changeChosenStyle: function changeChosenStyle(visible) {
+      var chosenOption = this.$el.querySelector('.el-select-dropdown__item.selected');
+
+      if (chosenOption) {
+        chosenOption.style.color = visible ? this.getColorStyle(0).color : '#606266';
+      }
+    },
+    // 切换量算模式
+    changeMeasureMode: function changeMeasureMode(mode) {
+      var modeUnitKey = this.modeUnitMap[mode];
+      var activeUnit = this[modeUnitKey];
+
+      if (this.map.loaded()) {
+        if (this.activeMode !== mode) {
+          this.viewModel.openDraw(mode, activeUnit);
+          this.activeMode = mode;
+        } else {
+          this.viewModel.closeDraw();
+          this.activeMode = null;
+        }
+      }
+    },
+    updateUnit: function updateUnit(unit) {
+      this.viewModel.updateUnit(unit);
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/view/components/Measure.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_Measurevue_type_script_lang_js_ = (Measurevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/view/components/Measure.vue
+
+
+
+
+
+/* normalize component */
+
+var Measure_component = normalizeComponent(
+  components_Measurevue_type_script_lang_js_,
+  Measurevue_type_template_id_456ad884_render,
+  Measurevue_type_template_id_456ad884_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var Measure = (Measure_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Search.vue?vue&type=template&id=c4eac830&
+var Searchvue_type_template_id_c4eac830_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-widget-search",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-widget-search__input"},[_c('el-input',{staticClass:"sm-widget-search__el-input",attrs:{"placeholder":_vm.$t('search.inputPlaceHolder'),"clearable":""},on:{"clear":_vm.inputValueCleared},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('div',{staticClass:"el-input__icon el-icon-search",style:(_vm.getColorStyle(0)),attrs:{"slot":"prefix"},on:{"click":_vm.searchButtonClicked},slot:"prefix"})])],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResultLength),expression:"getResultLength"}],staticClass:"sm-widget-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-widget-search__panel"},[(result.source)?_c('span',{staticClass:"sm-widget-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-widget-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,i){return _c('li',{key:i,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])}))])}
+var Searchvue_type_template_id_c4eac830_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/view/components/Search.vue?vue&type=template&id=c4eac830&
+
 // CONCATENATED MODULE: ./src/viewmodel/SearchViewModel.js
 
 
@@ -48994,7 +44807,7 @@ var TablePopup_component = normalizeComponent(
 /**
  * @module Search
  * @category Components
- * @desc 搜索微件。
+ * @desc 搜索组件。
  * @vue-prop {String} dataFlowUrl - 数据流服务地址。
  * @vue-prop {(Number|String)} [maxFeatures=8] - 最多可返回的要素数量，最大值为 100。
  * @vue-prop {Array} [layerNames] - 地图图层搜索配置，如：'['UNIQUE-民航数']'。
@@ -49002,7 +44815,7 @@ var TablePopup_component = normalizeComponent(
  * @vue-prop {RestDataParameter} [restData] - iServer 数据服务搜索配置。
  * @vue-prop {iPortalDataParameter} [iportalData] - iPortal 数据搜索配置。
  * @vue-prop {AddressMatchParameter} [addressMatch] - iServer 地址匹配服务搜索配置。
- * @vue-prop {Object} [onlineLocalSearch] - online 本地搜索配置
+ * @vue-prop {Object} [onlineLocalSearch] - online 本地搜索配置。
  * @vue-prop {Boolean} [onlineLocalSearch.enable=true] - 是否开启 online 本地搜索。
  * @vue-computed {Number} getResultLength - 获取结果数据长度。
  */
@@ -49112,6 +44925,10 @@ var TablePopup_component = normalizeComponent(
       var target = e.target;
       target.style.color = this.getTextColor;
     },
+
+    /**
+     * 清除搜索结果。
+     */
     clearResult: function clearResult() {
       this.$message.closeAll();
       this.searchResult = [];
@@ -49136,7 +44953,12 @@ var TablePopup_component = normalizeComponent(
         }
       };
     },
-    search: function search() {
+
+    /**
+     * 开始搜索。
+     * @param {String} searchKey - 搜索关键字。
+     */
+    search: function search(searchKey) {
       this.clearResult();
       var _this$$props = this.$props,
           layerNames = _this$$props.layerNames,
@@ -49147,8 +44969,8 @@ var TablePopup_component = normalizeComponent(
           addressMatch = _this$$props.addressMatch;
 
       if (layerNames && layerNames.length > 0 || onlineLocalSearch.enable || restMap && restMap.length > 0 || restData && restData.length > 0 || iportalData && iportalData.length > 0 || addressMatch && addressMatch.length > 0) {
-        if (this.searchKey) {
-          this.searchTaskId = this.viewModel.search(this.searchKey);
+        if (searchKey || this.searchKey) {
+          this.searchTaskId = this.viewModel.search(searchKey || this.searchKey);
           this.regiterEvents();
           var icon = this.$el.querySelector('.el-input__icon');
           icon.classList.remove('el-icon-search');
@@ -49259,8 +45081,8 @@ var TablePopup_component = normalizeComponent(
 
 var Search_component = normalizeComponent(
   components_Searchvue_type_script_lang_js_,
-  Searchvue_type_template_id_b9ca0da6_render,
-  Searchvue_type_template_id_b9ca0da6_staticRenderFns,
+  Searchvue_type_template_id_c4eac830_render,
+  Searchvue_type_template_id_c4eac830_staticRenderFns,
   false,
   null,
   null,
@@ -49599,12 +45421,12 @@ var Legend_component = normalizeComponent(
 )
 
 /* harmony default export */ var Legend = (Legend_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Query.vue?vue&type=template&id=0a963bfc&
-var Queryvue_type_template_id_0a963bfc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-widget-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-widget-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-widget-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-widget-query__job-info-panel"},[(jobInfo.name)?_c('div',{staticClass:"sm-widget-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"smwidgets-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-widget-query__job-info-name"},[_vm._v(_vm._s(jobInfo.name))]),_vm._v(" "),_c('div',{staticClass:"smwidgets-icons-legend-unfold"})]):_vm._e(),_vm._v(" "),(jobInfo.attributeFilter)?_c('div',{staticClass:"sm-widget-query__job-info-body hidden"},[_c('div',{staticClass:"sm-widget-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('el-select',{staticClass:"sm-widget-query__el-select",attrs:{"size":"mini","popper-append-to-body":false},on:{"visible-change":_vm.changeChosenStyle},model:{value:(_vm.value),callback:function ($$v) {_vm.value=$$v},expression:"value"}},_vm._l((_vm.selectOptions),function(item){return _c('el-option',{key:item.value,attrs:{"label":item.label,"value":item.value}})}))],1),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__query-button"},[_c('el-button',{staticClass:"sm-widget-query__el-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"mini"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo,_vm.value)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult),expression:"!queryResult"}],staticClass:"sm-widget-query__no-result"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),(_vm.queryResult)?_c('span',{staticClass:"sm-widget-query__result-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(_vm.queryResult.name))]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-widget-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])])])}
-var Queryvue_type_template_id_0a963bfc_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Query.vue?vue&type=template&id=20964a1c&
+var Queryvue_type_template_id_20964a1c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-widget-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-widget-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-widget-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-widget-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-widget-query__job-info-panel"},[(jobInfo.name)?_c('div',{staticClass:"sm-widget-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"smwidgets-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-widget-query__job-info-name"},[_vm._v(_vm._s(jobInfo.name))]),_vm._v(" "),_c('div',{staticClass:"smwidgets-icons-legend-unfold"})]):_vm._e(),_vm._v(" "),(jobInfo.attributeFilter)?_c('div',{staticClass:"sm-widget-query__job-info-body hidden"},[_c('div',{staticClass:"sm-widget-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('el-select',{staticClass:"sm-widget-query__el-select",attrs:{"size":"mini","popper-append-to-body":false},on:{"visible-change":_vm.changeChosenStyle},model:{value:(_vm.value),callback:function ($$v) {_vm.value=$$v},expression:"value"}},_vm._l((_vm.selectOptions),function(item){return _c('el-option',{key:item.value,attrs:{"label":item.label,"value":item.value}})}))],1),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__query-button"},[_c('el-button',{staticClass:"sm-widget-query__el-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"mini"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo,_vm.value)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-widget-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult),expression:"!queryResult"}],staticClass:"sm-widget-query__no-result"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),(_vm.queryResult)?_c('span',{staticClass:"sm-widget-query__result-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(_vm.queryResult.name))]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-widget-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])])])}
+var Queryvue_type_template_id_20964a1c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/view/components/Query.vue?vue&type=template&id=0a963bfc&
+// CONCATENATED MODULE: ./src/view/components/Query.vue?vue&type=template&id=20964a1c&
 
 // CONCATENATED MODULE: ./src/view/commontypes/iPortalDataParameter.js
 
@@ -49663,13 +45485,20 @@ var RestMapParameter_RestMapParameter = function RestMapParameter(options) {
 
 /**
  * @class QueryViewModel
- * @classdesc Query ViewModel
+ * @classdesc 查询组件功能类。
+ * @category ViewModel
  * @param {Object} map - map 对象。
  * @param {Object} options - 可选参数。
- * @param {Object} options.circleStyle - 点样式。
- * @param {Object} options.lineStyle - 线样式。
- * @param {Object} options.fillStyle - 面样式。
+ * @param {Object} [options.maxFeatures=200] - 查询最大返回要素个数。
+ * @param {Object} [options.layerStyle] - 查询结果图层样式配置。
+ * @param {Object} [options.layerStyle.line] - 线图层样式配置。
+ * @param {Object} [options.layerStyle.circle] - 点图层样式配置。
+ * @param {Object} [options.layerStyle.fill] - 面图层样式配置。
+ * @param {Object} [options.layerStyle.stokeLine] - 面图层样式配置。
  * @extends WidgetViewModel
+ * @fires QueryViewModel#querysucceeded
+ * @fires QueryViewModel#queryfailed
+ * @fires QueryViewModel#getfeatureinfosucceeded
  */
 
 var QueryViewModel_QueryViewModel =
@@ -49685,16 +45514,24 @@ function (_WidgetViewModel) {
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(QueryViewModel).call(this));
     _this.map = map;
     _this.options = options || {};
-    _this.maxReturn = _this.options.maxReturn || 200;
+    _this.maxFeatures = _this.options.maxFeatures || 200;
+    _this.layerStyle = options.layerStyle || {};
     return _this;
   }
+  /**
+   * @function QueryViewModel.prototype.query
+   * @desc 开始查询。
+   * @param {iPortalDataParameter|RestDataParameter|RestMapParameter} parameter - 查询配置参数。
+   * @param {String} [queryBounds='mapBounds'] - 查询范围，可选值为 mapBounds（地图全图范围），currentMapBounds（当前地图范围）。
+   */
+
 
   createClass_default()(QueryViewModel, [{
     key: "query",
     value: function query(queryParameter, queryBounds) {
       this.queryParameter = queryParameter;
       this.strokeLayerID && this.map.removeLayer(this.strokeLayerID);
-      this.layerID && this.map.removeLayer(this.layerID);
+      this.layerID && this.map.getLayer(this.layerID) && this.map.removeLayer(this.layerID);
       this.queryBounds = queryBounds;
 
       if (queryBounds === 'currentMapBounds') {
@@ -49724,7 +45561,7 @@ function (_WidgetViewModel) {
           },
           bounds: this.bounds,
           startRecord: 0,
-          expectCount: this.maxReturn
+          expectCount: this.maxFeatures
         });
         new mapbox_gl_enhance_js_default.a.supermap.QueryService(restMapParameter.url).queryByBounds(param, function (serviceResult) {
           _this2._mapQuerySucceed(serviceResult, restMapParameter);
@@ -49736,7 +45573,7 @@ function (_WidgetViewModel) {
             attributeFilter: restMapParameter.attributeFilter
           },
           startRecord: 0,
-          expectCount: this.maxReturn
+          expectCount: this.maxFeatures
         });
 
         new mapbox_gl_enhance_js_default.a.supermap.QueryService(restMapParameter.url).queryBySQL(_param, function (serviceResult) {
@@ -49755,7 +45592,7 @@ function (_WidgetViewModel) {
           datasetNames: restDataParameter.dataName,
           bounds: this.bounds,
           fromIndex: 0,
-          toIndex: this.maxReturn - 1
+          toIndex: this.maxFeatures - 1
         });
         new mapbox_gl_enhance_js_default.a.supermap.FeatureService(restDataParameter.url).getFeaturesByBounds(boundsParam, function (serviceResult) {
           _this3._dataQuerySucceed(serviceResult, restDataParameter);
@@ -49767,7 +45604,7 @@ function (_WidgetViewModel) {
           },
           datasetNames: restDataParameter.dataName,
           fromIndex: 0,
-          toIndex: this.maxReturn - 1
+          toIndex: this.maxFeatures - 1
         });
         new mapbox_gl_enhance_js_default.a.supermap.FeatureService(restDataParameter.url).getFeaturesBySQL(param, function (serviceResult) {
           _this3._dataQuerySucceed(serviceResult, restDataParameter);
@@ -49785,12 +45622,24 @@ function (_WidgetViewModel) {
           name: restMapParameter.name,
           result: resultFeatures
         });
-        this.addResultLayer(this.queryResult);
+
+        this._addResultLayer(this.queryResult);
+        /**
+         * @event QueryViewModel#querysucceeded
+         * @description 查询成功后触发。
+         * @property {Object} e  - 事件对象。
+         */
+
+
         this.fire('querysucceeded', {
-          originalresult: serviceResult,
           result: this.queryResult
         });
       } else if (result && result.totalCount === 0) {
+        /**
+         * @event QueryViewModel#queryfailed
+         * @description 查询失败后触发。
+         * @property {Object} e  - 事件对象。
+         */
         this.fire('queryfailed', {
           message: src_lang.t('query.noResults')
         });
@@ -49811,7 +45660,9 @@ function (_WidgetViewModel) {
           name: restDataParameter.name,
           result: resultFeatures
         });
-        this.addResultLayer(this.queryResult);
+
+        this._addResultLayer(this.queryResult);
+
         this.fire('querysucceeded', {
           result: this.queryResult
         });
@@ -49966,8 +45817,8 @@ function (_WidgetViewModel) {
       }
     }
   }, {
-    key: "addResultLayer",
-    value: function addResultLayer() {
+    key: "_addResultLayer",
+    value: function _addResultLayer() {
       this.layerID = this.queryParameter.name + new Date().getTime();
       var type = this.queryResult.result[0].geometry.type;
       var source = {
@@ -49980,18 +45831,24 @@ function (_WidgetViewModel) {
 
       this._addOverlayToMap(type, source, this.layerID);
     }
+    /**
+     * @function QueryViewModel.prototype.getFilterFeature
+     * @desc 获取过滤后的要素。
+     * @param {String|Number} filter - 过滤条件，值应为要素的 properties 中的某个值。
+     * @returns {Object} 要素信息。
+     */
+
   }, {
     key: "getFilterFeature",
     value: function getFilterFeature(filter) {
-      var filterValue = filter.split('：')[1].trim();
       var features = this.queryResult.result;
       var feature;
 
       for (var i = 0; i < features.length; i++) {
         var propertiesValue = features[i].properties.SmID || features[i].properties.SMID;
 
-        if (filterValue === propertiesValue) {
-          feature = this.getFeatrueInfo(features[i]);
+        if (filter === propertiesValue) {
+          feature = this._getFeatrueInfo(features[i]);
           break;
         }
       }
@@ -50002,8 +45859,8 @@ function (_WidgetViewModel) {
       return feature;
     }
   }, {
-    key: "getFeatrueInfo",
-    value: function getFeatrueInfo(feature) {
+    key: "_getFeatrueInfo",
+    value: function _getFeatrueInfo(feature) {
       var featureInfo = {};
       var coordinates;
       var geometry = feature.geometry;
@@ -50026,6 +45883,11 @@ function (_WidgetViewModel) {
 
       return featureInfo;
     }
+    /**
+     * @function QueryViewModel.prototype.getPopupFeature
+     * @desc 获得地图点击位置的要素信息。调用此方法后，需要监听 'getfeatureinfosucceeded' 事件获得要素。
+     */
+
   }, {
     key: "getPopupFeature",
     value: function getPopupFeature() {
@@ -50034,13 +45896,26 @@ function (_WidgetViewModel) {
       this.map.on('click', this.layerID, function (e) {
         var feature = e.features[0];
 
-        var featureInfo = _this6.getFeatrueInfo(feature);
+        var featureInfo = _this6._getFeatrueInfo(feature);
+        /**
+         * @event QueryViewModel#getfeatureinfosucceeded
+         * @description 获取要素信息成功后触发。
+         * @property {Object} e  - 事件对象。
+         */
+
 
         _this6.fire('getfeatureinfosucceeded', {
           featureInfo: featureInfo
         });
       });
     }
+    /**
+     * @function QueryViewModel.prototype.addPopup
+     * @desc 添加弹窗。
+     * @param {Array} coordinates - 弹窗坐标。
+     * @param {HTMLElement} el - 弹窗 DOM 对象。
+     */
+
   }, {
     key: "addPopup",
     value: function addPopup(coordinates, el) {
@@ -50050,7 +45925,7 @@ function (_WidgetViewModel) {
     key: "_addOverlayToMap",
     value: function _addOverlayToMap(type, source, layerID) {
       var mbglStyle = {
-        circle: this.options.circleStyle || {
+        circle: {
           'circle-color': '#409eff',
           'circle-opacity': 0.6,
           'circle-radius': 8,
@@ -50058,12 +45933,12 @@ function (_WidgetViewModel) {
           'circle-stroke-color': '#409eff',
           'circle-stroke-opacity': 1
         },
-        line: this.options.lineStyle || {
+        line: {
           'line-width': 3,
           'line-color': '#409eff',
           'line-opacity': 1
         },
-        fill: this.options.fillStyle || {
+        fill: {
           'fill-color': '#409eff',
           'fill-opacity': 0.6,
           'fill-outline-color': '#409eff'
@@ -50079,17 +45954,20 @@ function (_WidgetViewModel) {
       type = mbglTypeMap[type];
 
       if (type === 'circle' || type === 'line' || type === 'fill') {
+        var layerStyle = this.layerStyle[type];
         this.map.addLayer({
           id: layerID,
           type: type,
           source: source,
-          paint: mbglStyle[type]
+          paint: layerStyle && layerStyle.paint || mbglStyle[type],
+          layout: layerStyle && layerStyle.layout || {}
         });
       }
 
       if (type === 'fill') {
         this.strokeLayerID = layerID + '-StrokeLine';
-        var lineStyle = {
+        var stokeLineStyle = this.layerStyle.stokeLine;
+        var lineStyle = stokeLineStyle && stokeLineStyle.paint || {
           'line-width': 3,
           'line-color': '#409eff',
           'line-opacity': 1
@@ -50098,7 +45976,8 @@ function (_WidgetViewModel) {
           id: this.strokeLayerID,
           type: 'line',
           source: source,
-          paint: lineStyle
+          paint: lineStyle,
+          layout: stokeLineStyle && stokeLineStyle.layout || {}
         });
       }
     }
@@ -50108,9 +45987,6 @@ function (_WidgetViewModel) {
 }(WidgetViewModel_WidgetViewModel);
 
 
-var dataServiceQueryViewModel = function dataServiceQueryViewModel(dataserviceUrl) {
-  return new dataServiceQueryViewModel(dataserviceUrl);
-};
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/view/components/Query.vue?vue&type=script&lang=js&
 //
 //
@@ -50227,6 +46103,7 @@ var dataServiceQueryViewModel = function dataServiceQueryViewModel(dataserviceUr
 
 
 
+
 var validators = function validators(value, propType) {
   var valid = true;
   value.forEach(function (item) {
@@ -50236,6 +46113,23 @@ var validators = function validators(value, propType) {
   });
   return valid;
 };
+/**
+ * @module Query
+ * @category Components
+ * @desc 查询组件。
+ * @vue-prop {String} [iconClass='smwidgets-icons-search'] - 组件 icon 的类名。
+ * @vue-prop {String} [headerName='查询'] - 组件标题名。
+ * @vue-prop {Number} [maxFeatures=200] - 最大返回要素个数。
+ * @vue-prop {RestMapParameter} [restMap] - iServer 地图服务查询配置。
+ * @vue-prop {RestDataParameter} [restData] - iServer 数据服务查询配置。
+ * @vue-prop {iPortalDataParameter} [iportalData] - iPortal 数据查询配置。
+ * @vue-prop {Object} [layerStyle] - 图层样式配置。
+ * @vue-prop {widgets.commontypes.LineStyle} [layerStyle.line] - 线图层样式配置。
+ * @vue-prop {widgets.commontypes.CircleStyle} [layerStyle.circle] - 点图层样式配置。
+ * @vue-prop {widgets.commontypes.FillStyle} [layerStyle.fill] - 面图层样式配置。
+ * @vue-prop {widgets.commontypes.LineStyle} [layerStyle.stokeLine] - 面图层边框样式配置。
+ */
+
 
 /* harmony default export */ var Queryvue_type_script_lang_js_ = ({
   name: 'SmQuery',
@@ -50249,18 +46143,39 @@ var validators = function validators(value, propType) {
       type: String,
       default: '查询'
     },
-    maxReturn: {
+    maxFeatures: {
       type: Number,
       default: 200
     },
-    circleStyle: {
-      type: Object
-    },
-    lineStyle: {
-      type: Object
-    },
-    fillStyle: {
-      type: Object
+    layerStyle: {
+      type: Object,
+      default: function _default() {
+        return {
+          line: new src.commontypes.LineStyle({
+            'line-width': 3,
+            'line-color': '#409eff',
+            'line-opacity': 1
+          }),
+          circle: new src.commontypes.CircleStyle({
+            'circle-color': '#409eff',
+            'circle-opacity': 0.6,
+            'circle-radius': 8,
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#409eff',
+            'circle-stroke-opacity': 1
+          }),
+          fill: new src.commontypes.FillStyle({
+            'fill-color': '#409eff',
+            'fill-opacity': 0.6,
+            'fill-outline-color': '#409eff'
+          }),
+          stokeLine: new src.commontypes.LineStyle({
+            'line-width': 3,
+            'line-color': '#409eff',
+            'line-opacity': 1
+          })
+        };
+      }
     },
     iportalData: {
       type: Array,
@@ -50384,6 +46299,12 @@ var validators = function validators(value, propType) {
       spinDom && (spinDom.style.stroke = this.getColorStyle(0).color);
       loadingText && (loadingText.style.color = this.getColorStyle(0).color);
     },
+
+    /**
+     * 开始查询。
+     * @param {iPortalDataParameter|RestDataParameter|RestMapParameter} parameter - 查询配置参数。
+     * @param {String} [bounds='mapBounds'] - 查询范围，可选值为 mapBounds（地图全图范围），currentMapBounds（当前地图范围）。
+     */
     query: function query(parameter, bounds) {
       this.viewModel.query(parameter, bounds);
     },
@@ -50456,7 +46377,7 @@ var validators = function validators(value, propType) {
     queryResultListClicked: function queryResultListClicked(e) {
       this.popup && this.popup.remove() && (this.popup = null);
       var filter = e.target.innerHTML;
-      var feature = this.viewModel.getFilterFeature(filter);
+      var feature = this.viewModel.getFilterFeature(filter.split('：')[1].trim());
       this.addPopup(feature);
     },
     registerEvents: function registerEvents() {
@@ -50474,6 +46395,14 @@ var validators = function validators(value, propType) {
         _this2.loadingInstance.close();
 
         _this2.jobButton.classList.remove('disabled');
+        /**
+         * @event querySucceeded
+         * @desc 查询成功后触发。
+         * @property {Object} e  - 事件对象。
+         */
+
+
+        _this2.$emit('query-succeeded', e);
       });
       this.viewModel.on('queryfailed', function (e) {
         _this2.$el.querySelector('.sm-widget-query__no-result').classList.remove('hidden');
@@ -50488,6 +46417,14 @@ var validators = function validators(value, propType) {
         _this2.loadingInstance.close();
 
         _this2.jobButton.classList.remove('disabled');
+        /**
+         * @event queryFailed
+         * @desc 查询失败后触发。
+         * @property {Object} e  - 事件对象。
+         */
+
+
+        _this2.$emit('query-failed', e);
       });
     },
     addPopupToFeature: function addPopupToFeature() {
@@ -50550,8 +46487,8 @@ var validators = function validators(value, propType) {
 
 var Query_component = normalizeComponent(
   components_Queryvue_type_script_lang_js_,
-  Queryvue_type_template_id_0a963bfc_render,
-  Queryvue_type_template_id_0a963bfc_staticRenderFns,
+  Queryvue_type_template_id_20964a1c_render,
+  Queryvue_type_template_id_20964a1c_staticRenderFns,
   false,
   null,
   null,
@@ -51992,7 +47929,7 @@ var DeckglLayer_component = normalizeComponent(
 /**
  * @class DataFlowLayerViewModel
  * @category ViewModel
- * @classdesc 数据流图层功能类。
+ * @classdesc 数据流图层组件功能类。
  * @param {mapboxgl.Map} map - mapboxgl map 对象。
  * @param {String} serviceUrl - 数据流服务地址。
  * @param {Object} [options] - 可选参数。
@@ -52200,7 +48137,7 @@ function (_WidgetViewModel) {
 /**
  * @module DataFlowLayer
  * @category Components Layer
- * @desc 数据流图层微件。
+ * @desc 数据流图层组件。
  * @vue-prop {String} serviceUrl - 数据流服务地址。
  * @vue-prop {String} [layerId] - 图层 ID。
  * @vue-prop {GeoJSONObject} [geometry] - 指定几何范围，该范围内的要素才能被订阅。
@@ -54132,452 +50069,6 @@ var HeatMapStyle_HeatMapStyle = function HeatMapStyle() {
 
 
 
-
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/toConsumableArray.js
-var toConsumableArray = __webpack_require__("RIqP");
-var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray);
-
-// EXTERNAL MODULE: ./node_modules/lodash.tonumber/index.js
-var lodash_tonumber = __webpack_require__("CeSn");
-var lodash_tonumber_default = /*#__PURE__*/__webpack_require__.n(lodash_tonumber);
-
-// EXTERNAL MODULE: ./node_modules/lodash.isequal/index.js
-var lodash_isequal = __webpack_require__("XaGS");
-var lodash_isequal_default = /*#__PURE__*/__webpack_require__.n(lodash_isequal);
-
-// EXTERNAL MODULE: ./node_modules/lodash.max/index.js
-var lodash_max = __webpack_require__("w1NJ");
-var lodash_max_default = /*#__PURE__*/__webpack_require__.n(lodash_max);
-
-// CONCATENATED MODULE: ./src/utils/EchartsDataService.js
-
-
-
-
-
-
-
-
-
-
-/**
- * @class EchartsDataService
- * @classdesc 图表微件功能类
- */
-
-var EchartsDataService_EchartsDataService =
-/*#__PURE__*/
-function () {
-  function EchartsDataService() {
-    classCallCheck_default()(this, EchartsDataService);
-
-    this.dataCache = null; // 缓存的是请求后的数据
-
-    this.axisDatas = []; // 坐标data
-
-    this.serieDatas = []; // series data
-
-    this.gridAxis = {}; // 直角坐标系
-
-    this.radarAxis = {}; // 雷达图坐标系
-
-    this.radarMax = 0; // 雷达图坐标最大值
-  }
-  /**
-   * @function EchartsDataService.prototype.getDataOption
-   * @description 获取符合echart data数据格式的数据, 入口函数。
-   * @param {SmChart-datasets} datasets - 请求的参数
-   * @param {Array.<SmChart-dataOption>} dataOptions - 数据解析的配置。
-   * @returns {Object}  promise
-   */
-
-  /**
-   * @typedef {Object} SmChart-datasets  - 数据来源
-   * @property {string} [type = 'iServer'] - 服务类型 iServer, iPortal。
-   * @property {string} url - 服务url地址。
-   * @property {boolean} [withCredentials = false] - 设置请求是否带cookie
-   * @property {SuperMap.FilterParameter} queryInfo - 查询条件
-   */
-
-  /**
-   * @typedef {Object} SmChart-dataOption  - 解析数据的配置
-   * @property {string} seriesType - 图表类型line, bar, scatter, pie, radar, gauge。
-   * @property {boolean} [isStastic = false] - 是否统计数据。
-   * @property {boolean} [isStack = false] - 图表（line, bar, scatter）是否堆叠
-   * @property {string} xField - 数据的字段，坐标值
-   * @property {string} yField - 数据的字段，数据值
-   */
-
-
-  createClass_default()(EchartsDataService, [{
-    key: "getDataOption",
-    value: function getDataOption(datasets, dataOptions) {
-      var _this = this;
-
-      // 设置datasets的默认配置type，withCredentials
-      var promise = new Promise(function (resolve, reject) {
-        // 将datasets的缓存为当前datasets
-        datasets = _this._setDatasets(datasets); // 请求数据，请求成功后，解析数据
-
-        _this._requestData(datasets).then(function (data) {
-          // 设置this.data
-          _this._setData(data); // 解析数据，生成dataOption
-
-
-          var options = _this.formatChartData(dataOptions, data);
-
-          resolve(options);
-        }).catch(function (e) {
-          reject(e);
-        });
-      });
-      return promise;
-    }
-    /**
-     * @function EchartsDataService.prototype.formatChartData
-     * @description _requestData方法中返回的数据: 设置数据，转换数据格式。
-     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据
-     * @param {Object} dataOptions - 数据解析的配置参数
-     * @returns {Object}  配置好的option
-     */
-
-  }, {
-    key: "formatChartData",
-    value: function formatChartData(dataOptions) {
-      var _this2 = this;
-
-      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.dataCache;
-
-      // 清除数据缓存
-      this._clearChartCache(); // 设置series Data
-
-
-      dataOptions.forEach(function (dataOption) {
-        // 生成YData, XData
-        var fieldData = _this2._fieldsData(data, dataOption); // 解析YData, XData，生成EchartsOption的data
-
-
-        var serieData = _this2._createDataOption(fieldData, dataOption); // 设置坐标
-
-
-        _this2._createAxisData(fieldData, dataOption);
-
-        _this2.serieDatas.push(serieData);
-      });
-      var gridAxis = this.gridAxis;
-      var radarAxis = this.radarAxis;
-      var series = this.serieDatas;
-      return objectSpread_default()({}, gridAxis, radarAxis, {
-        series: series
-      });
-    }
-    /**
-     * @function EchartsDataService.prototype._setDatasets
-     * @private
-     * @description 设置datasets的默认参数，type, withCredentials
-     * @param {datasets} datasets - 请求的参数。
-     * @returns {Object}  默认值的datasets
-     */
-
-  }, {
-    key: "_setDatasets",
-    value: function _setDatasets(datasets) {
-      // 设置默认值
-      datasets.type = datasets.type || 'iServer'; // 服务类型
-
-      datasets.withCredentials = datasets.withCredentials || false; // 请求认证
-
-      return datasets;
-    }
-    /**
-     * @function EchartsDataService.prototype._setData
-     * @private
-     * @description 给实例绑定data。
-     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据
-     */
-
-  }, {
-    key: "_setData",
-    value: function _setData(data) {
-      if (data) {
-        this.dataCache = data;
-      }
-    }
-    /**
-     * @function EchartsDataService.prototype._clearChartCache
-     * @private
-     * @description 清除已经生成的chart数据的缓存。
-     */
-
-  }, {
-    key: "_clearChartCache",
-    value: function _clearChartCache() {
-      this.axisDatas = []; // 坐标data
-
-      this.serieDatas = []; // series data
-
-      this.gridAxis = {}; // 直角坐标系
-    }
-    /**
-     * @function EchartsDataService.prototype._requestData
-     * @private
-     * @description 从superMap的iserver,iportal中请求数据(datasets)。
-     * @param {datasets}
-     * @returns {Object}  data的promise
-     */
-
-  }, {
-    key: "_requestData",
-    value: function _requestData(datasets) {
-      var promise = new Promise(function (resolve, reject) {
-        if (datasets) {
-          var superMapService;
-
-          if (datasets.type === 'iServer') {
-            superMapService = new iServerRestService_iServerRestService(datasets.url, datasets.withCredentials);
-          } else if (datasets.type === 'iPortal') {
-            superMapService = new iPortalDataService_iPortalDataService(datasets.url, datasets.withCredentials);
-          }
-
-          superMapService.getData(datasets.queryInfo);
-          superMapService.on('getdatafailed', function (e) {
-            reject(e);
-          });
-          superMapService.on('getdatasucceeded', function (data) {
-            resolve(data);
-          });
-        }
-      });
-      return promise;
-    }
-    /**
-     * @function EchartsDataService.prototype._createSeriesData
-     * @private
-     * @description 生成chart的serie。
-     * @param {Object} fieldData - 解析后的数据{xData,yData}
-     * @param {Object} dataOption - 数据解析的配置
-     * @returns {Object}  配置好的serieData
-     */
-
-  }, {
-    key: "_createDataOption",
-    value: function _createDataOption(fieldData, dataOption) {
-      var chartType = dataOption.seriesType;
-      var XData = fieldData.xData;
-      var YData = fieldData.yData;
-      var serieData = {
-        type: chartType,
-        name: dataOption.yField,
-        data: []
-      };
-
-      if (chartType === 'pie') {
-        YData.forEach(function (value, index) {
-          serieData.data.push({
-            value: value,
-            name: XData[index]
-          });
-        });
-      } else if (chartType === 'radar') {
-        var yData = toConsumableArray_default()(YData);
-
-        serieData.data.push({
-          value: toConsumableArray_default()(YData),
-          name: dataOption.yField
-        }); // 获取雷达图的max最大值
-
-        var maxValue = lodash_max_default()(yData);
-        this.radarMax = Math.max(maxValue, this.radarMax);
-      } else {
-        // line bar scatter gauge
-        serieData.data = toConsumableArray_default()(YData); // 是否堆叠数据（line,bar,scatter）
-
-        if (dataOption.isStack) {
-          serieData.stack = '0';
-        }
-      }
-
-      return serieData;
-    }
-    /**
-     * @function EchartsDataService.prototype._createSeriesData
-     * @private
-     * @description 生成chart的serie。
-     * @param {Object} fieldData - 解析后的数据{xData,yData}
-     * @param {Object} dataOptions - 数据解析的配置
-     * @returns {Object}  配置好的坐标data
-     */
-
-  }, {
-    key: "_createAxisData",
-    value: function _createAxisData(fieldData, dataOption) {
-      var chartType = dataOption.seriesType;
-      var XData = fieldData.xData;
-      var radarData = [];
-      var axisData;
-
-      if (chartType === 'radar') {
-        var radarMax = this.radarMax;
-        XData.forEach(function (text) {
-          radarData.push({
-            text: text,
-            max: radarMax
-          });
-        });
-        this.radarAxis = {
-          radar: {
-            indicator: radarData
-          }
-        };
-        axisData = this.radarAxis;
-      } else if (chartType === 'bar' || chartType === 'line' || chartType === 'scatter') {
-        var data = toConsumableArray_default()(XData);
-
-        if (!this.gridAxis.xAxis) {
-          this.gridAxis.xAxis = [];
-          this.gridAxis.yAxis = {};
-        }
-
-        if (this.gridAxis.xAxis.length === 0 || !lodash_isequal_default()(data, this.gridAxis.xAxis[0].data)) {
-          this.gridAxis.xAxis.push({
-            data: data
-          });
-        }
-
-        axisData = this.gridAxis;
-      } else {
-        axisData = {};
-      }
-
-      return axisData;
-    }
-    /**
-     * @function EchartsDataService.prototype._fieldsData
-     * @private
-     * @description 将请求回来的数据，转换成适用于chart配置的数据。
-     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据
-     * @param {Object} dataOption - 数据解析的配置
-     * @returns {Object}  解析好的Ydata，xdata
-     */
-
-  }, {
-    key: "_fieldsData",
-    value: function _fieldsData(data, dataOption) {
-      var fieldCaptions, fieldValues, xFieldIndex, yFieldIndex, fieldValueIndex, xData, yData, result;
-      fieldCaptions = data.fieldCaptions; // 所有x字段
-
-      xFieldIndex = fieldCaptions.indexOf(dataOption.xField); // x字段的下标
-
-      yFieldIndex = fieldCaptions.indexOf(dataOption.yField); // y字段的下标
-
-      fieldValues = data.fieldValues[yFieldIndex]; // y字段的所有feature值
-      // 该数据是否需要统计,统计的是数组下标
-
-      if (dataOption.isStastic) {
-        fieldValueIndex = this._getUniqFieldDatas(data, xFieldIndex); // 生成统计后的数据
-
-        xData = this._stasticXData(fieldValueIndex);
-        yData = this._stasticYData(fieldValues, fieldValueIndex);
-      } else {
-        // 如果不是统计图表
-        xData = this._getFieldDatas(data, xFieldIndex);
-        yData = toConsumableArray_default()(fieldValues);
-      }
-
-      result = {
-        xData: xData,
-        yData: yData
-      };
-      return result;
-    }
-    /**
-     * @function EchartsDataService.prototype._stasticXData
-     * @private
-     * @description 统计X字段数据，生成xData。
-     * @param {Object} fieldValueIndex - x字段的统计索引
-     * @returns {Array}  统计后的Xdata、
-     */
-
-  }, {
-    key: "_stasticXData",
-    value: function _stasticXData(fieldValueIndex) {
-      var xData = Object.keys(fieldValueIndex);
-      return xData;
-    }
-    /**
-     * @function EchartsDataService.prototype._stasticYData
-     * @private
-     * @description 统计数据，生成yData。
-     * @param {Object} fieldValues - y字段的所有feature值
-     * @param {Object} fieldValueIndex - x字段的统计索引
-     * @returns {Array}  统计后的Ydata、
-     */
-
-  }, {
-    key: "_stasticYData",
-    value: function _stasticYData(fieldValues, fieldValueIndex) {
-      var yData = []; // 统计Y字段
-
-      for (var key in fieldValueIndex) {
-        var total = 0;
-        fieldValueIndex[key].forEach(function (index) {
-          // 清除字符串型的数字的逗号
-          var num = formatter.clearNumberComma(fieldValues[index]);
-          total += lodash_tonumber_default()(num);
-        });
-        yData.push(total);
-      }
-
-      return yData;
-    }
-    /**
-     * @function EchartsDataService.prototype._getUniqFieldDatas
-     * @private
-     * @description 获取x轴字段要统计的属性值
-     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据的fieldValue
-     * @param {String} fieldIndexs - x字段索引值数组
-     * @returns {Object}  返回x轴字段要统计的属性值，返回值为eg:[fieldIndex：1, statiscIndex:{浇水地：[5,2,5,4], 林地：[5,2,5,4]...}]。
-     */
-
-  }, {
-    key: "_getUniqFieldDatas",
-    value: function _getUniqFieldDatas(data, fieldIndex) {
-      var fieldValues = this._getFieldDatas(data, fieldIndex);
-
-      var uniqFieldValues = {};
-
-      if (fieldValues) {
-        fieldValues.forEach(function (value, index) {
-          if (!uniqFieldValues[value]) {
-            uniqFieldValues[value] = [index];
-          } else {
-            uniqFieldValues[value].push(index);
-          }
-        });
-      }
-
-      return uniqFieldValues;
-    }
-    /**
-     * @function EchartsDataService.prototype._getFieldDatas
-     * @private
-     * @description 。
-     * @param {Object} data - 从superMap的iserver,iportal中请求返回的数据的fieldValue
-     * @param {String} fieldIndex - x字段索引值
-     * @returns {Array}  返回的是一个数组[林地， 旱地， 林地，沼泽，旱地...]
-     */
-
-  }, {
-    key: "_getFieldDatas",
-    value: function _getFieldDatas(data, fieldIndex) {
-      // 获取x字段所有值，
-      return data.fieldValues[fieldIndex];
-    }
-  }]);
-
-  return EchartsDataService;
-}();
 
 
 // CONCATENATED MODULE: ./src/utils/index.js
@@ -56829,7 +52320,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 100);
+/******/ 	return __webpack_require__(__webpack_require__.s = 93);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -56936,7 +52427,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 100:
+/***/ 93:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57163,7 +52654,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 91);
+/******/ 	return __webpack_require__(__webpack_require__.s = 74);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -57270,7 +52761,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 91:
+/***/ 74:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57680,12 +53171,12 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 116);
+/******/ 	return __webpack_require__(__webpack_require__.s = 113);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 116:
+/***/ 113:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
