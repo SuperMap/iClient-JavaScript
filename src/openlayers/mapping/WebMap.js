@@ -991,6 +991,10 @@ export class WebMap extends ol.Observable {
                                 that.sendMapToUser(len);
                                 that.errorCallback && that.errorCallback(null, 'getLayerFaild', that.map);
                             }
+                        }).catch(function(error){
+                            that.layerAdded++;
+                            that.sendMapToUser(len);
+                            that.errorCallback && that.errorCallback(error, 'getLayerFaild', that.map);
                         })
                     }
                 } else if (layer.layerType === 'SUPERMAP_REST' || 
@@ -2433,7 +2437,7 @@ export class WebMap extends ol.Observable {
                 radius = customSettings[i] && customSettings[i].radius ? customSettings[i].radius : radius;
                 // 转化成 ol 样式
                 style.radius = radius;
-                let olStyle = StyleUtils.getOpenlayersStyle(style, featureType);
+                let olStyle = StyleUtils.getOpenlayersStyle(style, featureType, true);
                 styleGroup.push({ olStyle: olStyle, radius, start, end });
             }
             return styleGroup;

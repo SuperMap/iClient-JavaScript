@@ -980,14 +980,15 @@ export class StyleUtils {
      * @function ol.supermap.StyleUtils.getOpenlayerStyle 获取专题图对应的openlayers格式的style
      * @param styleParams {String} 样式参数
      * @param featureType {String} feature类型
+     * @param isRank {Boolean} 是否为等级符号
      * @returns {Object} style对象
      */
-    static getOpenlayersStyle(styleParams, featureType) {
+    static getOpenlayersStyle(styleParams, featureType, isRank) {
         let style;
         if(styleParams.type === "BASIC_POINT") {
             style = this.toOpenLayersStyle(styleParams, featureType);
         } else if(styleParams.type === "SYMBOL_POINT") {
-            style = this.getSymbolStyle(styleParams);
+            style = this.getSymbolStyle(styleParams, isRank);
         } else if(styleParams.type === "SVG_POINT"){
             style = this.getSVGStyle(styleParams);
         } else if (styleParams.type === 'IMAGE_POINT') {
@@ -1001,7 +1002,7 @@ export class StyleUtils {
      * @param {object} parameters - 样式参数
      * @returns {Object} style对象
      */
-    static getSymbolStyle(parameters) {
+    static getSymbolStyle(parameters, isRank) {
         let text = '';
         if (parameters.unicode) {
             text = String.fromCharCode(parseInt(parameters.unicode.replace(/^&#x/, ''), 16));
@@ -1013,10 +1014,12 @@ export class StyleUtils {
         let strokeColor = StyleUtils.hexToRgb(parameters.strokeColor);
         strokeColor.push(parameters.strokeOpacity);
 
+        let fontSize = isRank ? 2 * parameters.radius + "px" : parameters.fontSize;  
+
         return new ol.style.Style({
             text: new ol.style.Text({
                 text: text,
-                font: parameters.fontSize + " " + "supermapol-icons",
+                font: fontSize + " supermapol-icons",
                 placement: 'point',
                 textAlign: 'center',
                 fill: new ol.style.Fill({
