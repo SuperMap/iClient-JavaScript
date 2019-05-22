@@ -34,18 +34,9 @@
                         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
                     return {
                         layerStyle: {
-                            line: new SuperMap.Widgets.commontypes.LineStyle({
-                                "line-width": 3,
-                                "line-color": "#3fb1e3"
-                            }),
-                            circle: new SuperMap.Widgets.commontypes.CircleStyle({
-                                "circle-color": "#3fb1e3",
-                                "circle-radius": 6
-                            }),
-                            fill: new SuperMap.Widgets.commontypes.FillStyle({
-                                "fill-color": "#3fb1e3",
-                                "fill-opacity": 0.8
-                            })
+                            line: new SuperMap.Widgets.commontypes.LineStyle(),
+                            circle: new SuperMap.Widgets.commontypes.CircleStyle(),
+                            fill: new SuperMap.Widgets.commontypes.FillStyle()
                         },
                         mapOptions: {
                             container: "map", // container id
