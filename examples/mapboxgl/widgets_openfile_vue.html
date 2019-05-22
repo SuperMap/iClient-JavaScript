@@ -20,7 +20,7 @@
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
             <sm-map :map-options="mapOptions">
-                <sm-open-file :layer-styles="layerStyles"></sm-open-file>
+                <sm-open-file :layer-style="layerStyle"></sm-open-file>
             </sm-map>
         </div>
         <script>
@@ -33,7 +33,7 @@
                         " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
                         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
                     return {
-                        layerStyles: {
+                        layerStyle: {
                             line: new SuperMap.Widgets.commontypes.LineStyle({
                                 "line-width": 3,
                                 "line-color": "#3fb1e3"
