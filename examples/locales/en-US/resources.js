@@ -545,6 +545,7 @@ window.examplesResources = {
         "title_widgetsCluster_Vue": 'Cluster Layer Widget(Vue)',
         "title_widgetsEcharts_Vue": 'Echarts Layer Widget(Vue)',
         "title_widgetsRaster_Vue": 'Raster Layer Widget(Vue)',
+        "title_widgetsGeoJSON_Vue": 'GeoJSON Layer Widget(Vue)',
         "title_widgetsMapV_Vue": 'MapV Layer Widget(Vue)',
         "title_widgetsDeckGL_Vue": 'DeckGL Layer Widget(Vue)',
         "title_widgetsVectorTile_Vue": 'Vector Tile Layer Widget(Vue)',
