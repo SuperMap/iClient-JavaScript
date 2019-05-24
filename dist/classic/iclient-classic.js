@@ -2659,7 +2659,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonServiceBase) {
     _inherits(ProcessingServiceBase, _CommonServiceBase);
@@ -2888,7 +2888,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var CommonServiceBase = exports.CommonServiceBase = function () {
     function CommonServiceBase(url, options) {
@@ -3009,7 +3009,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
          * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。
          * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
          * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
-         * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+         * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
          * 
          */
 
@@ -3313,16 +3313,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var fetch = window.fetch;
 /**
  * @function SuperMap.setCORS
- * @description 设置是否支持跨域。
- * @param {boolean} cors - 是否支持跨域。
+ * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
+ * @param {boolean} cors - 是否允许跨域请求。
  */
 var setCORS = exports.setCORS = _SuperMap.SuperMap.setCORS = function (cors) {
     _SuperMap.SuperMap.CORS = cors;
 };
 /**
  * @function SuperMap.isCORS
- * @description 是否支持跨域。
- * @returns {boolean} 是否支持跨域。
+ * @description 是是否允许跨域请求。
+ * @returns {boolean} 是否允许跨域请求。
  */
 var isCORS = exports.isCORS = _SuperMap.SuperMap.isCORS = function () {
     if (_SuperMap.SuperMap.CORS != undefined) {
@@ -3364,7 +3364,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
     },
     supportDirectRequest: function supportDirectRequest(url, options) {
         if (_Util.Util.isInTheSameDomain(url)) {
-            return _Util.Util.isInTheSameDomain(url);
+            return true;
         }if (options.crossOrigin != undefined) {
             return options.crossOrigin;
         } else {
@@ -7314,7 +7314,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 汇总统计分析服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryAttributesJobsService, _ProcessingServiceBas);
@@ -7420,7 +7420,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 拓扑检查分析服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = function (_ProcessingServiceBas) {
     _inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
@@ -7526,7 +7526,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_ProcessingServiceBas) {
     _inherits(BuffersAnalystJobsService, _ProcessingServiceBas);
@@ -7636,7 +7636,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_ProcessingServiceBas) {
     _inherits(OverlayGeoJobsService, _ProcessingServiceBas);
@@ -7888,7 +7888,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url -矢量裁剪分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var VectorClipJobsService = exports.VectorClipJobsService = function (_ProcessingServiceBas) {
     _inherits(VectorClipJobsService, _ProcessingServiceBas);
@@ -7994,7 +7994,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 区域汇总分析服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryRegionJobsService, _ProcessingServiceBas);
@@ -8104,7 +8104,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryMeshJobsService, _ProcessingServiceBas);
@@ -8210,7 +8210,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url - 单对象空间查询分析服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     _inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
@@ -8316,7 +8316,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends {SuperMap.ProcessingServiceBase}
  * @param {string} url -核密度分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var KernelDensityJobsService = exports.KernelDensityJobsService = function (_ProcessingServiceBas) {
     _inherits(KernelDensityJobsService, _ProcessingServiceBas);
@@ -8445,7 +8445,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * })
  * @param {string} url - 分布式分析服务地址。
  * @param {Object} options - 可选参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var ProcessingService = exports.ProcessingService = function (_CommonServiceBase) {
     _inherits(ProcessingService, _CommonServiceBase);
@@ -9451,7 +9451,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var AddressMatchService = exports.AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
@@ -10156,7 +10156,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {boolean} [options.crossOrigin] - 请求是否跨域。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  */
 var AddressMatchService = exports.AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
