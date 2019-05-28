@@ -336,6 +336,7 @@ export class Util {
             datasetNames: datasetNames,
             fromIndex: 0,
             toIndex: 100000,
+            maxFeatures: 100000,
             returnContent: true
         });
         let options = {
@@ -381,6 +382,40 @@ export class Util {
         });
     }
 
+    /**
+     * @function ol.supermap.Util.getFeatureProperties
+     * @description 从feature中获取properties
+     * @param {array} features 要素数组
+     * @returns {array} 属性
+     */
+    static getFeatureProperties(features) {
+        let properties = [];
+        if (Util.isArray(features) && features.length) {
+            features.forEach(feature => {
+                let property = feature.attributes || feature.get('Properties');
+                property && properties.push(property);
+            });
+        }
+        return properties;
+    }
+
+    /**
+     * @function ol.supermap.Util.isMatchAdministrativeName
+     * @param {string} featureName 原始数据中的地名
+     * @param {string} fieldName 需要匹配的地名
+     * @returns {boolean} 是否匹配
+     */
+    static isMatchAdministrativeName(featureName, fieldName) {
+        if (Util.isString(fieldName)) {
+            let shortName = featureName.substr(0, 2);
+            // 张家口市和张家界市 特殊处理
+            if (shortName === '张家') {
+                shortName = featureName.substr(0, 3);
+            }
+            return !!fieldName.match(new RegExp(shortName));
+        }
+        return false;
+    }
 }
 
 ol.supermap.Util = Util;
