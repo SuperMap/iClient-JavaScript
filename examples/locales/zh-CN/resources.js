@@ -493,6 +493,7 @@ window.examplesResources = {
         "title_widgetsCluster_Vue": '点聚合图层微件（Vue）',
         "title_widgetsEcharts_Vue": 'Echarts 图层微件（Vue）',
         "title_widgetsRaster_Vue": '栅格图层微件（Vue）',
+        "title_widgetsGeoJSON_Vue": 'GeoJSON 图层微件（Vue）',
         "title_widgetsMapV_Vue": 'MapV 图层微件（Vue）',
         "title_widgetsDeckGL_Vue": 'DeckGL 图层微件（Vue）',
         "title_widgetsVectorTile_Vue": '矢量瓦片图层微件（Vue）',
