@@ -5,9 +5,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title data-i18n="resources.title_widgetsDeckGL_Vue"></title>
+		<title data-i18n="resources.title_componentsDeckGL_Vue"></title>
 		<script type="text/javascript" include="vue,jquery,papaparse,widgets" src="../js/include-web.js"></script>
-		<script include="deck,iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+		<script include="deck,iclient9-mapboxgl-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 		<style>
 			#main {
 				margin: 0 auto;
@@ -19,9 +19,9 @@
 
 	<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 		<div id="main">
-			<sm-map :map-options="mapOptions" @load="mapIsLoaded">
-				<sm-deckgl-layer layer-type-id="hexagon-layer" :deckgl-options="deckglOptions"></sm-deckgl-layer>
-			</sm-map>
+			<sm-web-map :map-options="mapOptions" @load="mapIsLoaded">
+				<sm-deckgl-layer layer-type="hexagon-layer" :options="deckglOptions"></sm-deckgl-layer>
+			</sm-web-map>
 		</div>
 		<script>
 			widgets.loader.showLoader('data loading...');

@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title data-i18n="resources.title_widgetsLabelTheme_Vue"></title>
+    <title data-i18n="resources.title_componentsLabelTheme_Vue"></title>
     <style>
         #main {
             margin: 0 auto;
@@ -18,14 +18,14 @@
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
     <div id="main">
-        <sm-map :map-options="mapOptions" @load="mapIsLoaded">
-            <sm-label-theme-layer :theme-layer-options="themeOptions" layer-name="LabelThemeLayer"
-                :layer-features="features" :add-layer-succeeded-callback="themeCallback" v-show="!!features.length">
+        <sm-web-map :map-options="mapOptions" @load="mapIsLoaded">
+            <sm-label-theme-layer :options="themeOptions" layer-name="LabelThemeLayer"
+                :data="features" @load="layerLoaded" v-show="!!features.length">
             </sm-label-theme-layer>
-        </sm-map>
+        </sm-web-map>
     </div>
     <script type="text/javascript" include="vue,bootstrap" src="../js/include-web.js"></script>
-    <script include="iclient9-mapboxgl-widgets-vue,mapbox-gl-enhance"
+    <script include="iclient9-mapboxgl-vue,mapbox-gl-enhance"
         src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript" src="../data/themeLableData.js"></script>
     <script>
@@ -258,7 +258,7 @@
                     var latLng = latLng.split(",");
                     return [parseFloat(latLng[0]), parseFloat(latLng[1])]
                 },
-                themeCallback(themeLayer) {
+                layerLoaded(themeLayer) {
                     themeLayer.on('mousemove', (e) => this.handleMouseOver(themeLayer, e));
                 },
                 handleMouseOver(themeLayer, e) {

@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title data-i18n="resources.title_widgetsRangeTheme_Vue"></title>
+    <title data-i18n="resources.title_componentsRangeTheme_Vue"></title>
     <style>
         #main {
             margin: 0 auto;
@@ -30,11 +30,11 @@
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
     <div id="main">
-        <sm-map :map-options="mapOptions" @load="mapIsLoaded">
-            <sm-range-theme-layer :theme-layer-options="themeOptions" layer-name="RangeThemeLayer"
-                :layer-features="features" :add-layer-succeeded-callback="themeCallback" v-show="!!features.length">
+        <sm-web-map :map-options="mapOptions" @load="mapIsLoaded">
+            <sm-range-theme-layer :options="themeOptions" layer-name="RangeThemeLayer"
+                :data="features" @load="layerLoaded" v-show="!!features.length">
             </sm-range-theme-layer>
-        </sm-map>
+        </sm-web-map>
         <div style="width: 272px;float:right">
             <div id="infoBox" class="panel panel-primary infoPane"
                 style="width:272px;margin-top: 250px;position: absolute;fontSize:14px;display: none;float:right">
@@ -47,7 +47,7 @@
         </div>
     </div>
     <script type="text/javascript" include="widgets,vue,bootstrap" src="../js/include-web.js"></script>
-    <script include="iclient9-mapboxgl-widgets-vue"
+    <script include="iclient9-mapboxgl-vue"
         src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script>
         widgets.loader.showLoader('data loading...');
@@ -172,7 +172,7 @@
                         mapIsLoaded(e) {
                             this.map = e.map;
                         },
-                        themeCallback(themeLayer) {
+                        layerLoaded(themeLayer) {
                             themeLayer.on('mousemove', function (e) {
                                 if (e.target && e.target.refDataID) {
                                     document.getElementById("infoBox").style.display = "block";

@@ -139,9 +139,13 @@
             inputCSS("https://unpkg.com/element-ui/lib/theme-chalk/index.css");
             inputScript("https://unpkg.com/element-ui/lib/index.js");
         }
-        if (inArray(includes, 'iclient9-mapboxgl-widgets-vue')) {
-            inputCSS("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.css");
-            inputScript("../../dist/mapboxgl/iclient9-mapboxgl-widgets-vue.js");
+        if (inArray(includes, 'ant-design-vue')) {
+            inputCSS("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.css");
+            inputScript("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.js");
+        }
+        if (inArray(includes, 'iclient9-mapboxgl-vue')) {
+            inputCSS("../../dist/mapboxgl/iclient9-mapboxgl-vue.css");
+            inputScript("../../dist/mapboxgl/iclient9-mapboxgl-vue.js");
         }
         if (inArray(includes, 'xlsx')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.12.13/xlsx.core.min.js");

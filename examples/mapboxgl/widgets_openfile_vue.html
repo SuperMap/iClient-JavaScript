@@ -5,9 +5,9 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title data-i18n="resources.title_widgetsOpenFile_Vue"></title>
+        <title data-i18n="resources.title_componentsOpenFile_Vue"></title>
         <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-        <script include="xlsx,shapefile,iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+        <script include="xlsx,shapefile,iclient9-mapboxgl-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
         <style>
             #main {
                 margin: 0 auto;
@@ -19,9 +19,9 @@
 
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
-            <sm-map :map-options="mapOptions">
+            <sm-web-map :map-options="mapOptions">
                 <sm-open-file :layer-style="layerStyle"></sm-open-file>
-            </sm-map>
+            </sm-web-map>
         </div>
         <script>
             new Vue({
@@ -34,9 +34,9 @@
                         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
                     return {
                         layerStyle: {
-                            line: new SuperMap.Widgets.commontypes.LineStyle(),
-                            circle: new SuperMap.Widgets.commontypes.CircleStyle(),
-                            fill: new SuperMap.Widgets.commontypes.FillStyle()
+                            line: new SuperMap.Components.commontypes.LineStyle(),
+                            circle: new SuperMap.Components.commontypes.CircleStyle(),
+                            fill: new SuperMap.Components.commontypes.FillStyle()
                         },
                         mapOptions: {
                             container: "map", // container id

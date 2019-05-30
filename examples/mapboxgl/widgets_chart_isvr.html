@@ -125,7 +125,7 @@
             center: [118, 40],
             zoom: 6
         });
-        //图表微件
+        //图表组件
         let options = {
             type: 'bar',
             datasets: {
@@ -148,7 +148,7 @@
                 }
             }]
         }
-        let barChart = new SuperMap.Widgets.Chart("chart", options);
+        let barChart = new SuperMap.Components.Chart("chart", options);
         resultLayer = {
             "id": 'jinjin',
             "type": 'fill',

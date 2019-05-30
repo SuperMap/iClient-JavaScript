@@ -6,9 +6,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title data-i18n='resources.title_widgetsQuery_Vue'></title>
+  <title data-i18n='resources.title_componentsQuery_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-  <script include="iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script include="iclient9-mapboxgl-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
     #main {
       margin: 0 auto;
@@ -34,14 +34,14 @@
         var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
         return {
           restData: [
-            new SuperMap.Widgets.commontypes.RestDataParameter({
+            new SuperMap.Components.commontypes.RestDataParameter({
               url: host + "/iserver/services/data-world/rest/data",
               attributeFilter: "SmID>0",
               dataName: ["World:Countries"],
             })
           ],
           restMap: [
-            new SuperMap.Widgets.commontypes.RestMapParameter({
+            new SuperMap.Components.commontypes.RestMapParameter({
               url: host + "/iserver/services/map-world/rest/maps/World",
               attributeFilter: "SmID>0",
               layerName: "Capitals@World.1",

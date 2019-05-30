@@ -5,9 +5,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title data-i18n="resources.title_widgetsGraphThemeLayer_Vue"></title>
+		<title data-i18n="resources.title_componentsGraphThemeLayer_Vue"></title>
 		<script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-		<script include="iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+		<script include="iclient9-mapboxgl-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 		<script type="text/javascript" src="../data/chinaConsumptionLevel.js"></script>
 		<style>
 			#main {
@@ -22,11 +22,11 @@
 		<div id="main">
 			<sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="676816598">
 				<sm-graph-theme-layer
-					:theme-layer-options="graphThemeLayerOptions"
+					:options="graphThemeLayerOptions"
 					layer-name="pieThemeLayer"
-					:layer-features="graphFeatures"
+					:data="graphFeatures"
 					charts-type="Pie"
-					:add-layer-succeeded-callback="addLayerSucceeded"
+					@load="addLayerSucceeded"
 				></sm-graph-theme-layer>
 			</sm-web-map>
 		</div>

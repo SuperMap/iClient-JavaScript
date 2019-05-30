@@ -5,10 +5,10 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title data-i18n="resources.title_widgetsMapV_Vue"></title>
+		<title data-i18n="resources.title_componentsMapV_Vue"></title>
 		<script type="text/javascript" include="vue,jquery" src="../js/include-web.js"></script>
 		<script
-			include="iclient9-mapboxgl-widgets-vue,proj4,mapv"
+			include="iclient9-mapboxgl-vue,proj4,mapv"
 			src="../../dist/mapboxgl/include-mapboxgl.js"
 		></script>
 		<style>
@@ -22,10 +22,10 @@
 
 	<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 		<div id="main">
-			<sm-map :map-options="mapOptions" @load="addPopup">
-				<sm-mapv-layer :data-set="lineDataSet" :mapv-options="lineMapvOptions"></sm-mapv-layer>
-				<sm-mapv-layer :data-set="ponitDataSet" :mapv-options="pointMapvOptions"></sm-mapv-layer>
-			</sm-map>
+			<sm-web-map :map-options="mapOptions" @load="addPopup">
+				<sm-mapv-layer :data="lineDataSet" :options="lineMapvOptions"></sm-mapv-layer>
+				<sm-mapv-layer :data="ponitDataSet" :options="pointMapvOptions"></sm-mapv-layer>
+			</sm-web-map>
 		</div>
 		<script>
 			$.get('../data/wuhan-car', function(rs) {

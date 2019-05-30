@@ -1170,7 +1170,7 @@ var exampleConfig = {
         }
     },
     "widgets": {
-        name: "微件",
+        name: "组件",
         name_en: "Widgets",
         content: {
             "widgetsSuperMap": {

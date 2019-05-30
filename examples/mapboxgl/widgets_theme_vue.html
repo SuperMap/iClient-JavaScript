@@ -6,9 +6,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title data-i18n='resources.title_widgetsTheme_Vue'></title>
+  <title data-i18n='resources.title_componentsTheme_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-  <script include="element,echarts-vue,iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js">
+  <script include="ant-design-vue,echarts-vue,iclient9-mapboxgl-vue" src="../../dist/mapboxgl/include-mapboxgl.js">
   </script>
   <style>
     body {
@@ -55,7 +55,7 @@
     .sm-progress-wrap {
       height: 110px;
     }
-    .sm-progress-wrap, .sm-widget-liquidFill {
+    .sm-progress-wrap, .sm-component-liquidFill {
       width: 110px;
       height:110px;
       display: inline-block;
@@ -65,49 +65,43 @@
 
 <body>
   <div id="main">
-    <!-- WebMap微件 -->
+    <!-- WebMap组件 -->
     <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="1649097980" ref="map" @load.once='load'></sm-web-map>
     <!-- 切换主题按钮组 -->
-    <el-radio-group class="radio-group" v-model="theme" @change="changeTheme">
-      <el-radio-button label="light">浅色主题</el-radio-button>
-      <el-radio-button label="dark">深色主题</el-radio-button>
-      <el-radio-button label="custom">自定义主题</el-radio-button>
-    </el-radio-group>
+    <a-radio-group class="radio-group" v-model="theme" @change="changeTheme">
+      <a-radio-button value="light">浅色主题</a-radio-button>
+      <a-radio-button value="dark">深色主题</a-radio-button>
+      <a-radio-button value="custom">自定义主题</a-radio-button>
+    </a-radio-group>
     <div class="box-card">
-      <!-- 图标微件 -->
-      <sm-icon class-name="location" background="unset" size="18px" :style="{float: 'left'}">
+      <!-- 图标组件 -->
+      <sm-icon icon-class="marker-layer" background="unset" size="18px" :style="{float: 'left'}">
       </sm-icon>
-      <!-- 文本微件 -->
-      <sm-text title="点击图上点切换显示机场数据" :font-style='{ fontSize: "14px"}' text-color="#333"></sm-text>
-      <sm-text title="机场" :font-style='{ fontSize: "12px",fontWeight: "bolder"}' text-color="rgb(51,51,51)"
+      <!-- 文本组件 -->
+      <sm-text title="点击图上点切换显示机场数据" :font-style='{ fontSize: "14px",display: "block"}' text-color="#333"></sm-text>
+      <sm-text title="机场" :font-style='{ fontSize: "12px",fontWeight: "bolder",display: "block"}' text-color="rgb(51,51,51)"
         style="width: 280px">
       </sm-text>
-      <sm-text :title="name" :font-style='{ fontSize: "18px", color:"#73b9ac", fontWeight: "700" }'
+      <sm-text :title="name" :font-style='{ fontSize: "18px", color:"#73b9ac", fontWeight: "700" ,display: "block"}'
         style="width: 100%">
       </sm-text>
-      <!-- 指标微件 -->
+      <!-- 指标组件 -->
       <sm-indicator title="2017旅客吞吐量" unit="人次" :num="passengerNumber" style="width: 100%">
       </sm-indicator>
       <sm-indicator title="2017货邮吞吐量" unit="吨" :num="goodsNumber" style="width: 100%"></sm-indicator>
-      <sm-text title="同比增速" :font-style='{ fontSize: "12px",fontWeight: "bolder"}' text-color="rgb(51,51,51)"></sm-text>
+      <sm-text title="同比增速" :font-style='{ fontSize: "12px",fontWeight: "bolder",display: "block"}' text-color="rgb(51,51,51)"></sm-text>
 
-      <div  :style="divStyle">
-        <!-- 水球微件 -->
+      <div :style="divStyle">
+        <!-- 水球组件 -->
         <sm-liquid-fill :value="speedIncreaseValue" :wave-count="3" :wave-animation="true">
         </sm-liquid-fill>
-        <!-- 进度条微件 -->
-        <div class="sm-progress-wrap">
-          <sm-progress type="circle" circle-width="100" :percentage="speedIncrease">
-          </sm-progress>
-        </div>
       </div>
 
-      <!-- 时间微件 -->
+      <!-- 时间组件 -->
       <sm-time-text :font-style='{ fontSize: "12px"}' text-color="#333" time-type="date+second"
         style="float:right;width:100%">
       </sm-time-text>
     </div>
-    <sm-chart :datasets="datasets" :chart-options="chartOptions" ref="chart"></sm-chart>
   </div>
 
   <script>
@@ -120,31 +114,6 @@
           passengerNumber: 95786296,
           goodsNumber: 94393454,
           speedIncrease: 35,
-          // datasets和chartOptions都是sm-chart组件的props
-          datasets: {
-            type: "iPortal", //iServer iPortal
-            url: "http://support.supermap.com.cn:8092/web/datas/1920557079",
-            queryInfo: {
-              maxFeatures: 20
-            }
-          },
-          chartOptions: {
-            padding: {
-              top: 30,
-              bottom: 40,
-              left: 80,
-              right: 30
-            },
-            xFieldStatistical: true,
-            xAxisLabelRotate: true,
-            yAxisLabelRotate: false,
-            legendPosition: "top",
-            xAxisMaxCount: 20,
-            xAxisName: "",
-            yAxisName: "",
-            xAxis: "机场",
-            yAxis: ["2017起降架次（架次）", "2016起降架次（架次）"]
-          },
           divStyle: {
             background: "rgba(255, 255, 255, 0.6)"
           }
@@ -156,19 +125,20 @@
         }
       },
       methods: {
-        changeTheme: function (theme) {
+        changeTheme: function (e) {
+          var theme = e.target.value;
           if (theme === "dark") {
             this.divStyle.background = "rgba(0, 0, 0, 0.6)"; //例子中布局div的背景色
-            //切换微件主题为内置主题dark
-            SuperMap.Widgets.setTheme(theme);
+            //切换组件主题为内置主题dark
+            SuperMap.Components.setTheme(theme);
           } else if (theme === "light") {
             this.divStyle.background = "rgba(255, 255, 255, 0.6)"; //例子中布局div的背景色
-            //切换微件主题为内置主题light
-            SuperMap.Widgets.setTheme(theme);
+            //切换组件主题为内置主题light
+            SuperMap.Components.setTheme(theme);
           } else {
             this.divStyle.background = "rgb(91, 92, 110)"; //例子中布局div的背景色
-            //切换微件主题为自定义主题
-            SuperMap.Widgets.setTheme({
+            //切换组件主题为自定义主题
+            SuperMap.Components.setTheme({
               textColor: '#eee',
               background: 'rgb(91, 92, 110)',
               colorGroup: ['rgb(138, 124, 168)', 'rgb(224, 152, 199)', 'rgb(143, 211, 232)',

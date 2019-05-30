@@ -35,7 +35,7 @@
         var sqlurl = host + "/iserver/services/map-world/rest/maps/World";
 
         L.supermap.tiledMapLayer(url).addTo(map);
-        //添加微件：
+        //添加组件：
         var poiSearch = L.supermap.widgets.search({
             isGeoCoding: !window.isLocal,
             perPageDataNum: 8  // 每页显示数据个数

@@ -5,10 +5,10 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title data-i18n="resources.title_widgetsDemo_Vue"></title>
+        <title data-i18n="resources.title_componentsDemo_Vue"></title>
         <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
         <script
-            include="echarts-vue,iclient9-mapboxgl-widgets-vue,element"
+            include="echarts-vue,iclient9-mapboxgl-vue,ant-design-vue"
             src="../../dist/mapboxgl/include-mapboxgl.js"
         ></script>
         <style>
@@ -45,31 +45,31 @@
 
     <body style="margin: 0;background: #fff;">
         <div id="main">
-            <el-row>
-                <el-col :md="8" class="left-container">
-                    <el-row class="title-text-wrap">
+            <a-row>
+                <a-col :md="8" class="left-container">
+                    <a-row class="title-text-wrap">
                         <sm-text
                             id="titleText"
                             :font-style="titleFontStyle"
                             text-color="#5AB1EF"
                             title="国土空间规划实时监测评估预警"
                         ></sm-text>
-                    </el-row>
+                    </a-row>
 
-                    <el-row class="time-text-wrap">
+                    <a-row class="time-text-wrap">
                         <sm-time-text
                             id="timeText"
                             :font-style='{"fontFamily": "微软雅黑"}'
                             text-color="#B7B2B2"
                             time-type="date+second+week"
                         ></sm-time-text>
-                    </el-row>
+                    </a-row>
 
-                    <el-row class="monitor-wrap">
-                        <el-row class="block-title">
+                    <a-row class="monitor-wrap">
+                        <a-row class="block-title">
                             <sm-text id="monitoringText" :font-style="categoryFontStyle" title="监测情况"></sm-text>
-                        </el-row>
-                        <el-row class="monitor-text">
+                        </a-row>
+                        <a-row class="monitor-text">
                             <sm-text
                                 id="contentText"
                                 :font-style='{"fontFamily": "微软雅黑","fontWeight": "bolder","textAlign": "left"}'
@@ -77,15 +77,15 @@
                                 title="截止2018年底，国土空间整体开发强度为2.5%，三类空间比例为50%:30%:20%。耕地保有量为300万亩，城镇建设用地规模为300km²，森林覆盖率达到64%，水功能水质达标率为80%，生态环境治理良好。"
                             >
                             </sm-text>
-                        </el-row>
-                    </el-row>
+                        </a-row>
+                    </a-row>
 
-                    <el-row class="control-wrap">
-                        <el-row class="block-title">
+                    <a-row class="control-wrap">
+                        <a-row class="block-title">
                             <sm-text id="sanxianText" :font-style="categoryFontStyle" title="三线管控"></sm-text>
-                        </el-row>
-                        <el-row type="flex" justify="space-around">
-                            <el-col :md="8" :sm="6" :xs="6" class="control-title">
+                        </a-row>
+                        <a-row type="flex" justify="space-around">
+                            <a-col :md="8" :sm="6" :xs="6" class="control-title">
                                 <sm-text id="ecologyText" :font-style="textFontStyle" title="生态空间"></sm-text>
                                 <sm-liquid-fill
                                     id="liquidFill1"
@@ -96,8 +96,8 @@
                                     wave-color="#2EC7C9"
                                 >
                                 </sm-liquid-fill>
-                            </el-col>
-                            <el-col :md="8" :sm="6" :xs="6" class="control-title">
+                            </a-col>
+                            <a-col :md="8" :sm="6" :xs="6" class="control-title">
                                 <sm-text id="townText" :font-style="textFontStyle" title="城镇空间"></sm-text>
                                 <sm-liquid-fill
                                     id="liquidFill2"
@@ -108,8 +108,8 @@
                                     wave-color="#ffb980"
                                 >
                                 </sm-liquid-fill>
-                            </el-col>
-                            <el-col :md="8" :sm="6" :xs="6" class="control-title">
+                            </a-col>
+                            <a-col :md="8" :sm="6" :xs="6" class="control-title">
                                 <sm-text id="farmText" :font-style="textFontStyle" title="农业空间"></sm-text>
                                 <sm-liquid-fill
                                     id="liquidFill3"
@@ -120,24 +120,24 @@
                                     wave-color="#d87a80"
                                 >
                                 </sm-liquid-fill>
-                            </el-col>
-                        </el-row>
-                    </el-row>
+                            </a-col>
+                        </a-row>
+                    </a-row>
 
-                    <el-row class="resource-wrap">
-                        <el-row class="block-title">
+                    <a-row class="resource-wrap">
+                        <a-row class="block-title">
                             <sm-text id="naturalText" :font-style="categoryFontStyle" title="自然资源"></sm-text>
-                        </el-row>
-                        <el-row type="flex" justify="end" class="resource-year">
-                            <el-col :md="9" :sm="8" :xs="8">
+                        </a-row>
+                        <a-row type="flex" justify="end" class="resource-year">
+                            <a-col :md="9" :sm="8" :xs="8">
                                 <sm-text id="yearText1" :font-style="textFontStyle" title="2017年"></sm-text>
-                            </el-col>
-                            <el-col :md="9" :sm="8" :xs="8">
+                            </a-col>
+                            <a-col :md="9" :sm="8" :xs="8">
                                 <sm-text id="yearText2" :font-style="textFontStyle" title="2018年"></sm-text>
-                            </el-col>
-                        </el-row>
-                        <el-row type="flex" align="middle" class="resource-item">
-                            <el-col :md="6" :sm="8" :xs="8">
+                            </a-col>
+                        </a-row>
+                        <a-row type="flex" align="middle" class="resource-item">
+                            <a-col :md="6" :sm="8" :xs="8">
                                 <sm-indicator
                                     id="woodlandIndicator"
                                     title="林地保有量"
@@ -145,36 +145,38 @@
                                     num="300"
                                     font-size="26"
                                 ></sm-indicator>
-                            </el-col>
-                            <el-col :md="18" :sm="16" :xs="16" class="resource-chart">
-                                <el-col :md="12" :sm="12" :xs="12">
+                            </a-col>
+                            <a-col :md="18" :sm="16" :xs="16" class="resource-chart">
+                                <a-col :md="12" :sm="12" :xs="12">
                                     <div class="sm-progress-wrap">
                                         <sm-progress
                                             id="progress5"
+                                            size="80"
                                             color="#2ec7c9"
-                                            percentage="30"
-                                            stroke-width="10"
+                                            percent="30"
+                                            stroke-width="6"
                                             type="circle"
                                         >
                                         </sm-progress>
                                     </div>
-                                </el-col>
-                                <el-col :md="12" :sm="12" :xs="12">
+                                </a-col>
+                                <a-col :md="12" :sm="12" :xs="12">
                                     <div class="sm-progress-wrap">
                                         <sm-progress
                                             id="progress6"
+                                            size="80"
                                             color="#b6a2de"
-                                            percentage="50"
-                                            stroke-width="10"
+                                            percent="50"
+                                            stroke-width="6"
                                             type="circle"
                                         >
                                         </sm-progress>
                                     </div>
-                                </el-col>
-                            </el-col>
-                        </el-row>
-                        <el-row type="flex" align="middle" class="resource-item">
-                            <el-col :md="6" :sm="8" :xs="8">
+                                </a-col>
+                            </a-col>
+                        </a-row>
+                        <a-row type="flex" align="middle" class="resource-item">
+                            <a-col :md="6" :sm="8" :xs="8">
                                 <sm-indicator
                                     id="farmlandIndicator"
                                     title="耕地地保有量"
@@ -182,39 +184,41 @@
                                     num="300"
                                     font-size="26"
                                 ></sm-indicator>
-                            </el-col>
-                            <el-col :md="18" :sm="16" :xs="16" class="resource-chart">
-                                <el-col :md="12" :sm="12" :xs="12">
+                            </a-col>
+                            <a-col :md="18" :sm="16" :xs="16" class="resource-chart">
+                                <a-col :md="12" :sm="12" :xs="12">
                                     <div class="sm-progress-wrap">
                                         <sm-progress
                                             id="progress7"
+                                            size="80"
                                             color="#5ab1ef"
-                                            percentage="20"
-                                            stroke-width="10"
+                                            percent="20"
+                                            stroke-width="6"
                                             type="circle"
                                         >
                                         </sm-progress>
                                     </div>
-                                </el-col>
-                                <el-col :md="12" :sm="12" :xs="12">
+                                </a-col>
+                                <a-col :md="12" :sm="12" :xs="12">
                                     <div class="sm-progress-wrap">
                                         <sm-progress
                                             id="progress8"
+                                            size="80"
                                             color="#ffb980"
-                                            percentage="80"
-                                            stroke-width="10"
+                                            percent="80"
+                                            stroke-width="6"
                                             type="circle"
                                         >
                                         </sm-progress>
                                     </div>
-                                </el-col>
-                            </el-col>
-                        </el-row>
-                    </el-row>
-                </el-col>
+                                </a-col>
+                            </a-col>
+                        </a-row>
+                    </a-row>
+                </a-col>
 
-                <el-col :md="16">
-                    <el-row>
+                <a-col :md="16">
+                    <a-row>
                         <div class="map-wrap">
                             <sm-web-map
                                 server-url='http://support.supermap.com.cn:8092'
@@ -224,77 +228,77 @@
                                 <sm-scale position="bottom-left"></sm-scale>
                             </sm-web-map>
                         </div>
-                    </el-row>
+                    </a-row>
 
-                    <el-row>
-                        <el-col :md="12" :xs="24" class="environment-wrap">
-                            <el-row class="environment-title block-title">
-                                <sm-icon id="icon1" class-name="location" size="18" color="red"></sm-icon>
+                    <a-row>
+                        <a-col :md="12" :xs="24" class="environment-wrap">
+                            <a-row class="environment-title block-title">
+                                <sm-icon id="icon1" icon-class="marker-layer" size="18" color="red"></sm-icon>
                                 <sm-text id="ecologicalText" :font-style="categoryFontStyle" title="生态环境"></sm-text>
-                            </el-row>
-                            <el-row class="environment-progress-holder">
-                                <el-col :md="24" :xs="24">
+                            </a-row>
+                            <a-row class="environment-progress-holder">
+                                <a-col class='progress-col' :md="24" :xs="24">
                                     <sm-progress
                                         id="progress1"
                                         color="#2ec7c9"
-                                        percentage="80"
+                                        percent="80"
                                         stroke-width="10"
                                         type="line"
                                     ></sm-progress>
-                                </el-col>
-                                <el-col :md="24" :xs="24">
+                                </a-col>
+                                <a-col class='progress-col' :md="24" :xs="24">
                                     <sm-progress
                                         id="progress2"
                                         color="#ffb980"
-                                        percentage="40"
+                                        percent="40"
                                         stroke-width="10"
                                         type="line"
                                     ></sm-progress>
-                                </el-col>
-                                <el-col :md="24" :xs="24">
+                                </a-col>
+                                <a-col class='progress-col' :md="24" :xs="24">
                                     <sm-progress
                                         id="progress3"
                                         color="#b6a2de"
-                                        percentage="60"
+                                        percent="60"
                                         stroke-width="10"
                                         type="line"
                                     ></sm-progress>
-                                </el-col>
-                                <el-col :md="24" :xs="24">
+                                </a-col>
+                                <a-col class='progress-col' :md="24" :xs="24">
                                     <sm-progress
                                         id="progress4"
                                         color="#5ab1ef"
-                                        percentage="20"
+                                        percent="20"
                                         stroke-width="10"
                                         type="line"
                                     ></sm-progress>
-                                </el-col>
-                            </el-row>
-                        </el-col>
+                                </a-col>
+                            </a-row>
+                        </a-col>
 
-                        <el-col :md="12" :xs="24" class="chart-wrap">
-                            <el-row class="chart-title block-title">
-                                <sm-icon id="icon2" class-name="location" size="18" color="#2EC7C9"></sm-icon>
+                        <a-col :md="12" :xs="24" class="chart-wrap">
+                            <a-row class="chart-title block-title">
+                                <sm-icon id="icon2" icon-class="marker-layer" size="18" color="#2EC7C9"></sm-icon>
                                 <sm-text
                                     id="developmentText"
                                     :font-style="categoryFontStyle"
                                     title="开发利用"
                                 ></sm-text>
-                            </el-row>
-                            <el-row>
-                                <el-col :md="24" :xs="24">
+                            </a-row>
+                            <a-row>
+                                <a-col :md="24" :xs="24">
                                     <sm-chart 
                                     icon-class=""
                                     :options="echartOption" 
                                     :dataset="dataset" 
                                     :dataset-options="datasetOptions">
                                   </sm-chart>
-                                </el-col>
-                            </el-row>
-                        </el-col>
-                    </el-row>
-                </el-col>
-            </el-row>
+                                </a-col>
+                            </a-row>
+                        </a-col>
+                    </a-row>
+                </a-col>
+            </a-row>
         </div>
 
         <script>
@@ -333,7 +337,6 @@
                                 right: 30
                             }
                         },
-
                         titleFontStyle: {
                             fontFamily: "微软雅黑",
                             fontWeight: "bolder",
@@ -362,18 +365,24 @@
             .map-wrap {
                 height: 63vh;
             }
-
-            .title-text-wrap .sm-text {
+            #titleText {
+                font-size: 1.8vw;
+            }
+            .title-text-wrap .sm-component-text {
+                display: block;
                 font-size: 1.66vw;
                 line-height: 1.5;
             }
 
-            .time-text-wrap .sm-time-text {
+            .time-text-wrap .sm-component-time-text {
+                text-align: center;
+                display: block;
                 margin: 0 auto;
                 font-size: 1.04vw;
             }
 
-            .block-title .sm-text {
+            .block-title .sm-component-text {
+                display: block;
                 font-size: 1.15vw;
                 line-height: 1.5;
             }
@@ -386,7 +395,8 @@
                 margin-bottom: 1.85vh;
             }
 
-            .monitor-wrap .monitor-text .sm-text {
+            .monitor-wrap .monitor-text .sm-component-text {
+                display: block;
                 font-size: 0.94vw;
                 line-height: 1.5;
             }
@@ -397,12 +407,13 @@
                 padding-top: 2.78vh;
             }
 
-            .control-wrap .control-title .sm-liquidFill {
+            .control-wrap .control-title .sm-component-liquidFill {
                 height: 13.89vh;
             }
 
-            .control-wrap .control-title .sm-text,
-            .resource-wrap .resource-year .sm-text {
+            .control-wrap .control-title .sm-component-text,
+            .resource-wrap .resource-year .sm-component-text {
+                display: block;
                 margin-bottom: 0.93vh;
                 font-size: 0.94vw;
             }
@@ -415,26 +426,26 @@
                 margin-bottom: 0;
             }
 
-            .resource-wrap .resource-item .sm-indicator .sm-indicator__title,
-            .resource-wrap .resource-item .sm-indicator .sm-indicator__unit {
+            .resource-wrap .resource-item .sm-component-indicator .sm-component-indicator__title,
+            .resource-wrap .resource-item .sm-component-indicator .sm-component-indicator__unit {
                 font-size: 0.94vw;
                 line-height: 1.5;
             }
 
-            .resource-wrap .resource-item .sm-indicator .sm-indicator__num {
+            .resource-wrap .resource-item .sm-component-indicator .sm-component-indicator__num {
                 font-size: 1.35vw;
             }
 
-            .resource-wrap .resource-item .sm-indicator .sm-indicator__content {
+            .resource-wrap .resource-item .sm-component-indicator .sm-component-indicator__content {
                 margin-bottom: 0;
                 margin-right: 0;
             }
 
-            .resource-wrap .resource-chart .sm-progress-wrap {
+            .resource-wrap .resource-chart .sm-component-progress-wrap {
                 height: 12.96vh;
             }
 
-            .resource-wrap .resource-chart .sm-progress {
+            .resource-wrap .resource-chart .sm-component-progress {
                 text-align: center;
             }
 
@@ -442,10 +453,10 @@
                 padding-right: 6.77vw;
             }
 
-            .environment-wrap .environment-title .sm-icon,
-            .environment-wrap .environment-title .sm-text,
-            .chart-wrap .chart-title .sm-icon,
-            .chart-wrap .chart-title .sm-text {
+            .environment-wrap .environment-title .sm-component-icon,
+            .environment-wrap .environment-title .sm-component-text,
+            .chart-wrap .chart-title .sm-component-icon,
+            .chart-wrap .chart-title .sm-component-text {
                 display: inline-block;
                 vertical-align: middle;
             }
@@ -460,12 +471,12 @@
             }
 
             .environment-wrap,
-            .environment-progress-holder .el-col {
+            .environment-progress-holder .progress-col{
                 margin-bottom: 3.7vh;
             }
 
             .environment-wrap,
-            .environment-progress-holder .el-col:last-child {
+            .environment-progress-holder .progress-col:last-child {
                 margin-bottom: 0;
             }
 
@@ -476,7 +487,7 @@
             .chart-wrap .sm-chart {
                 height: 30vh;
             }
-            .sm-widget-chart .sm-widget-card__content {
+            .sm-component-chart .sm-component-card__content {
                 box-shadow: 0 0 0 #fff;
                 width: 100%;
                 height: 28vh;

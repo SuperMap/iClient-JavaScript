@@ -6,9 +6,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title data-i18n='resources.title_widgetsSearch_Vue'></title>
+  <title data-i18n='resources.title_componentsSearch_Vue'></title>
   <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-  <script include="iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script include="iclient9-mapboxgl-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <style>
     #main {
       margin: 0 auto;
@@ -37,12 +37,12 @@
         return {
           layerNames: ["UNIQUE-民航数-0"],
           addressMatch: [
-            new SuperMap.Widgets.commontypes.AddressMatchParameter({
+            new SuperMap.Components.commontypes.AddressMatchParameter({
               url: host + "/iserver/services/addressmatch-Address/restjsr/v1/address"
             })
           ],
           restMapSearch: [
-            new SuperMap.Widgets.commontypes.RestMapParameter({
+            new SuperMap.Components.commontypes.RestMapParameter({
               url: host + "/iserver/services/map-world/rest/maps/World",
               layerName: "Capitals@World.1",
             })

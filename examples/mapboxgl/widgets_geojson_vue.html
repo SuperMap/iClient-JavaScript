@@ -5,10 +5,10 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title data-i18n="resources.title_widgetsGeoJSON_Vue"></title>
+        <title data-i18n="resources.title_componentsGeoJSON_Vue"></title>
         <script type="text/javascript" include="vue,jquery,papaparse" src="../js/include-web.js"></script>
         <script
-            include="iclient9-mapboxgl-widgets-vue,mapbox-gl-enhance"
+            include="iclient9-mapboxgl-vue,mapbox-gl-enhance"
             src="../../dist/mapboxgl/include-mapboxgl.js"
         ></script>
         <style>
@@ -22,10 +22,10 @@
 
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
-            <sm-map :map-options="mapOptions">
+            <sm-web-map :map-options="mapOptions">
                 <sm-geojson-layer :layer-style="layerStyle" :data="data"></sm-geojson-layer>
                 <sm-layer-list position="top-left"></sm-layer-list>
-            </sm-map>
+            </sm-web-map>
         </div>
         <script>
             let data;
@@ -41,7 +41,7 @@
                             " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
                         return {
                             data: data,
-                            layerStyle: new SuperMap.Widgets.commontypes.CircleStyle(),
+                            layerStyle: new SuperMap.Components.commontypes.CircleStyle(),
                             mapOptions: {
                                 container: "map", // container id
                                 style: {

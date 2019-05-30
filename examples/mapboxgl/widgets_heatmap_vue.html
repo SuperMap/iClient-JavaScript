@@ -5,9 +5,9 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title data-i18n="resources.title_widgetsHeatmap_Vue"></title>
+        <title data-i18n="resources.title_componentsHeatmap_Vue"></title>
         <script type="text/javascript" include="vue,jquery,papaparse" src="../js/include-web.js"></script>
-        <script include="iclient9-mapboxgl-widgets-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+        <script include="iclient9-mapboxgl-vue" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
         <style>
             #main {
                 margin: 0 auto;
@@ -19,9 +19,9 @@
 
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
-            <sm-map :map-options="mapOptions">
+            <sm-web-map :map-options="mapOptions">
                 <sm-heatmap-layer :data="data" :layer-style="heatMapStyle"></sm-heatmap-layer>
-            </sm-map>
+            </sm-web-map>
         </div>
         <script>
             var heatFeatures = [],
@@ -41,7 +41,7 @@
                         });
                     }
                 }
-                heatMapStyle = new SuperMap.Widgets.commontypes.HeatMapStyle({
+                heatMapStyle = new SuperMap.Components.commontypes.HeatMapStyle({
                     "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 0, 1, 9, 3],
                     "heatmap-color": [
                         "interpolate",

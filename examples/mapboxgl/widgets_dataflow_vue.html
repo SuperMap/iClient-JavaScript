@@ -5,10 +5,10 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title data-i18n="resources.title_widgetsDataFlow_Vue"></title>
+        <title data-i18n="resources.title_componentsDataFlow_Vue"></title>
         <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
         <script
-            include="iclient9-mapboxgl-widgets-vue,mapbox-gl-enhance"
+            include="iclient9-mapboxgl-vue,mapbox-gl-enhance"
             src="../../dist/mapboxgl/include-mapboxgl.js"
         ></script>
         <style>
@@ -22,13 +22,13 @@
 
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
-            <sm-map :map-options="mapOptions">
+            <sm-web-map :map-options="mapOptions">
                 <sm-data-flow-layer
                     :service-url="dataFlowUrl"
                     :layer-style="layerStyle"
                     register-token="0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g.."
                 ></sm-data-flow-layer>
-            </sm-map>
+            </sm-web-map>
         </div>
         <script>
             var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
@@ -82,7 +82,7 @@
                     return {
                         dataFlowUrl: wsHost + "/iserver/services/dataflowTest/dataflow",
                         layerStyle: {
-                            circle: new SuperMap.Widgets.commontypes.CircleStyle({
+                            circle: new SuperMap.Components.commontypes.CircleStyle({
                                 "circle-color": "#3fb1e3",
                                 "circle-radius": 6
                             })
