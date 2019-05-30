@@ -1180,15 +1180,15 @@ var exampleConfig = {
                         name: "地图",
                         name_en: "Map",
                         version: "9.1.2",
-                        thumbnail: "widgets_map_vue.png",
-                        fileName: "widgets_map_vue"
+                        thumbnail: "components_map_vue.png",
+                        fileName: "components_map_vue"
                     },
                     {
                         name: "Web Map",
                         name_en: "Web Map",
                         version: "9.1.2",
-                        thumbnail: "widgets_webmap_vue.png",
-                        fileName: "widgets_webmap_vue"
+                        thumbnail: "components_webmap_vue.png",
+                        fileName: "components_webmap_vue"
                     }
                 ]
             },
@@ -1200,92 +1200,92 @@ var exampleConfig = {
                         name: "栅格图层",
                         name_en: "Raster layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_rasterLayer_vue.png",
-                        fileName: "widgets_raster_vue"
+                        thumbnail: "components_rasterLayer_vue.png",
+                        fileName: "components_raster_vue"
                     },
                     {
                         name: "矢量瓦片图层",
                         name_en: "Vector tile layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_vector_tile_vue.png",
-                        fileName: "widgets_vector_tile_vue"
+                        thumbnail: "components_vector_tile_vue.png",
+                        fileName: "components_vector_tile_vue"
                     },
                     {
                         name: "点聚合图层",
                         name_en: "Cluster layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_cluster_vue.png",
-                        fileName: "widgets_cluster_vue"
+                        thumbnail: "components_cluster_vue.png",
+                        fileName: "components_cluster_vue"
                     },
                     {
                         name: "单值专题图",
                         name_en: "Unique Theme layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_uniquetheme_vue.png",
-                        fileName: "widgets_uniquetheme_vue"
+                        thumbnail: "components_uniquetheme_vue.png",
+                        fileName: "components_uniquetheme_vue"
                     },
                     {
                         name: "分段专题图",
                         name_en: "Range Theme layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_rangetheme_vue.png",
-                        fileName: "widgets_rangetheme_vue"
+                        thumbnail: "components_rangetheme_vue.png",
+                        fileName: "components_rangetheme_vue"
                     },
                     {
                         name: "等级符号专题图",
                         name_en: "RanSymbol Theme layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_ranksymboltheme_vue.png",
-                        fileName: "widgets_ranksymboltheme_vue"
+                        thumbnail: "components_ranksymboltheme_vue.png",
+                        fileName: "components_ranksymboltheme_vue"
                     },
                     {
                         name: "标签专题图",
                         name_en: "Label Theme layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_labeltheme_vue.png",
-                        fileName: "widgets_labeltheme_vue"
+                        thumbnail: "components_labeltheme_vue.png",
+                        fileName: "components_labeltheme_vue"
                     },
                     {
                         name: "图表专题图",
                         name_en: "Statistical chart",
                         version: "10.x.x",
-                        thumbnail: "widgets_graph_theme_layer_vue.png",
-                        fileName: "widgets_graph_theme_layer_vue"
+                        thumbnail: "components_graph_theme_layer_vue.png",
+                        fileName: "components_graph_theme_layer_vue"
                     },
                     {
                         name: "热力图图层",
                         name_en: "Heatmap layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_heatmap_vue.png",
-                        fileName: "widgets_heatmap_vue"
+                        thumbnail: "components_heatmap_vue.png",
+                        fileName: "components_heatmap_vue"
                     },
                     {
                         name: "MapV 图层",
                         name_en: "MapV layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_mapv_vue.gif",
-                        fileName: "widgets_mapv_vue"
+                        thumbnail: "components_mapv_vue.gif",
+                        fileName: "components_mapv_vue"
                     },
                     {
                         name: "Echarts 图层",
                         name_en: "Echarts layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_echartsLayer_vue.gif",
-                        fileName: "widgets_echarts_vue"
+                        thumbnail: "components_echartsLayer_vue.gif",
+                        fileName: "components_echarts_vue"
                     },
                     {
                         name: "DeckGL 图层",
                         name_en: "DeckGL layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_deckgl_vue.png",
-                        fileName: "widgets_deckgl_vue"
+                        thumbnail: "components_deckgl_vue.png",
+                        fileName: "components_deckgl_vue"
                     },
                     {
                         name: "数据流图层",
                         name_en: "Data Flow Layer",
                         version: "10.x.x",
-                        thumbnail: "widgets_dataflow_vue.gif",
-                        fileName: "widgets_dataflow_vue"
+                        thumbnail: "components_dataflow_vue.gif",
+                        fileName: "components_dataflow_vue"
                     }
                 ]
             },
@@ -1297,50 +1297,50 @@ var exampleConfig = {
                         name: "图层列表",
                         name_en: "LayerList",
                         version: "9.1.2",
-                        thumbnail: "widgets_layerList_vue.png",
-                        fileName: "widgets_layerList_vue"
+                        thumbnail: "components_layerList_vue.png",
+                        fileName: "components_layerList_vue"
                     },
                     {
                         name: "鹰眼",
                         name_en: "Minimap",
                         version: "9.1.2",
-                        thumbnail: "widgets_minimap_vue.png",
-                        fileName: "widgets_minimap_vue"
+                        thumbnail: "components_minimap_vue.png",
+                        fileName: "components_minimap_vue"
                     },
                     {
                         name: "平移",
                         name_en: "Pan",
                         version: "9.1.2",
-                        thumbnail: "widgets_pan_vue.png",
-                        fileName: "widgets_pan_vue"
+                        thumbnail: "components_pan_vue.png",
+                        fileName: "components_pan_vue"
                     },
                     {
                         name: "比例尺",
                         name_en: "Scale",
                         version: "9.1.2",
-                        thumbnail: "widgets_scale_vue.png",
-                        fileName: "widgets_scale_vue"
+                        thumbnail: "components_scale_vue.png",
+                        fileName: "components_scale_vue"
                     },
                     {
                         name: "缩放",
                         name_en: "Zoom",
                         version: "9.1.2",
-                        thumbnail: "widgets_zoom_vue.png",
-                        fileName: "widgets_zoom_vue"
+                        thumbnail: "components_zoom_vue.png",
+                        fileName: "components_zoom_vue"
                     },
                     {
                         name: "图例",
                         name_en: "Legend",
                         version: "9.1.2",
-                        thumbnail: "widgets_legend_vue.png",
-                        fileName: "widgets_legend_vue"
+                        thumbnail: "components_legend_vue.png",
+                        fileName: "components_legend_vue"
                     },
                     {
                         name: "量算",
                         name_en: "Measure",
                         version: "9.1.2",
-                        thumbnail: "widgets_measure_vue.png",
-                        fileName: "widgets_measure_vue"
+                        thumbnail: "components_measure_vue.png",
+                        fileName: "components_measure_vue"
                     }
                 ]
             },
@@ -1352,29 +1352,29 @@ var exampleConfig = {
                         name: "图表",
                         name_en: "Chart",
                         version: "9.1.2",
-                        thumbnail: "widgets_chart_vue.png",
-                        fileName: "widgets_chart_vue"
+                        thumbnail: "components_chart_vue.png",
+                        fileName: "components_chart_vue"
                     },
                     {
                         name: "图表-饼图",
                         name_en: "Chart(pie)",
                         version: "9.1.2",
-                        thumbnail: "widgets_chart_vue(pie).png",
-                        fileName: "widgets_pie_chart_vue"
+                        thumbnail: "components_chart_vue(pie).png",
+                        fileName: "components_pie_chart_vue"
                     },
                     {
                         name: "图表-雷达图",
                         name_en: "Chart(radar)",
                         version: "9.1.2",
-                        thumbnail: "widgets_chart_vue(radar).png",
-                        fileName: "widgets_radar_chart_vue"
+                        thumbnail: "components_chart_vue(radar).png",
+                        fileName: "components_radar_chart_vue"
                     },
                     {
                         name: "图表-仪表盘",
                         name_en: "Chart(gauge)",
                         version: "9.1.2",
-                        thumbnail: "widgets_chart_vue(gauge).png",
-                        fileName: "widgets_gauge_chart_vue"
+                        thumbnail: "components_chart_vue(gauge).png",
+                        fileName: "components_gauge_chart_vue"
                     }
                 ]
             },
@@ -1386,43 +1386,43 @@ var exampleConfig = {
                         name: "基础组件",
                         name_en: "Basic Component",
                         version: "9.1.2",
-                        thumbnail: "widgets_basic_vue.png",
-                        fileName: "widgets_basic_vue"
+                        thumbnail: "components_basic_vue.png",
+                        fileName: "components_basic_vue"
                     },
                     {
                         name: "查询",
                         name_en: "Query",
                         version: "9.1.2",
-                        thumbnail: "widgets_query_vue.png",
-                        fileName: "widgets_query_vue"
+                        thumbnail: "components_query_vue.png",
+                        fileName: "components_query_vue"
                     },
                     {
                         name: "搜索",
                         name_en: "Search",
                         version: "9.1.2",
-                        thumbnail: "widgets_search_vue.png",
-                        fileName: "widgets_search_vue"
+                        thumbnail: "components_search_vue.png",
+                        fileName: "components_search_vue"
                     },
                     {
                         name: "主题切换",
                         name_en: "Theme switching",
                         version: "9.1.2",
-                        thumbnail: "widgets_theme_vue.png",
-                        fileName: "widgets_theme_vue"
+                        thumbnail: "components_theme_vue.png",
+                        fileName: "components_theme_vue"
                     },
                     {
                         name: "土地利用示例",
                         name_en: "Land use example",
                         version: "9.1.2",
-                        thumbnail: "widgets_demo_vue.png",
-                        fileName: "widgets_demo_vue"
+                        thumbnail: "components_demo_vue.png",
+                        fileName: "components_demo_vue"
                     },
                     {
                         name: "打开文件",
                         name_en: "Open File",
                         version: "10.x.x",
-                        thumbnail: "widgets_openfile_vue.png",
-                        fileName: "widgets_openfile_vue"
+                        thumbnail: "components_openfile_vue.png",
+                        fileName: "components_openfile_vue"
                     }
                 ]
             }
