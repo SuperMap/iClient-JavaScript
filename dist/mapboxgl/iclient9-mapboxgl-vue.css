@@ -8895,7 +8895,7 @@ body {
   max-height: 500px;
   width: 280px; }
   .sm-component-layer-list .ant-card-body {
-    padding: 10px 15px 22px; }
+    padding: 10px 15px 8px; }
   .sm-component-layer-list__content {
     width: 100%;
     height: 100%; }
@@ -8904,6 +8904,8 @@ body {
     border: none; }
   .sm-component-layer-list__collapse {
     background: transparent; }
+    .sm-component-layer-list__collapse:last-child .sm-component-layer-list__elcarditem {
+      border-bottom: unset; }
     .sm-component-layer-list__collapse .ant-collapse-item.ant-collapse-no-arrow .ant-collapse-header {
       padding: 8px 5px; }
     .sm-component-layer-list__collapse .ant-collapse-header {
@@ -9153,10 +9155,8 @@ body {
     font-size: 15px;
     font-weight: 700; }
   .sm-component-query__body {
-    height: 350px;
     transform-origin: top left;
     transition: all 0.5s;
-    height: 300px;
     background: #ffff;
     padding: 10px 15px;
     overflow-y: auto; }

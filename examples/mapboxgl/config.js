@@ -1177,15 +1177,15 @@ var exampleConfig = {
                 name_en: "Map",
                 content: [
                     {
-                        name: "地图",
-                        name_en: "Map",
+                        name: "iServer 地图",
+                        name_en: "iServer Map",
                         version: "9.1.2",
                         thumbnail: "components_map_vue.png",
                         fileName: "components_map_vue"
                     },
                     {
-                        name: "Web Map",
-                        name_en: "Web Map",
+                        name: "iPortal 地图",
+                        name_en: "iPortal Map",
                         version: "9.1.2",
                         thumbnail: "components_webmap_vue.png",
                         fileName: "components_webmap_vue"
@@ -1248,7 +1248,7 @@ var exampleConfig = {
                     }
                 ]
             },
-            viz: {
+            viz_vue: {
                 name: "可视化",
                 name_en: "Visualization",
                 content: [
