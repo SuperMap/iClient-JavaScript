@@ -52,7 +52,7 @@ window.examplesResources = {
             "others": "其他",
             "3D-WebGL": "3D-WebGL",
             "multiCoordSys": "多坐标系",
-            "VueComponents": "Vue 组件"
+            "vuecomponents": "Vue 组件"
         }
     },
     "footer": {

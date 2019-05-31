@@ -79,7 +79,8 @@ window.examplesResources = {
             "mapping": "Third Party Map",
             "others": "Others",
             "3D-WebGL": "3D-WebGL",
-            "multiCoordSys": "Multiple CRS"
+            "multiCoordSys": "Multiple CRS",
+            "vuecomponents": "Vue Components"
 
         },
         "more": {

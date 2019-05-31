@@ -1167,12 +1167,12 @@ var exampleConfig = {
             }
         }
     },
-    VueComponents: {
+    vuecomponents: {
         name: "Vue 组件",
         name_en: "Vue Components",
         localIgnore: true,
         content: {
-            Map: {
+            map: {
                 name: "地图",
                 name_en: "Map",
                 content: [
@@ -1189,13 +1189,7 @@ var exampleConfig = {
                         version: "9.1.2",
                         thumbnail: "components_webmap_vue.png",
                         fileName: "components_webmap_vue"
-                    }
-                ]
-            },
-            Layers: {
-                name: "图层",
-                name_en: "Layers",
-                content: [
+                    },
                     {
                         name: "栅格图层",
                         name_en: "Raster layer",
@@ -1210,6 +1204,54 @@ var exampleConfig = {
                         thumbnail: "components_vector_tile_vue.png",
                         fileName: "components_vector_tile_vue"
                     },
+                    {
+                        name: "图层列表",
+                        name_en: "LayerList",
+                        version: "9.1.2",
+                        thumbnail: "components_layerList_vue.png",
+                        fileName: "components_layerList_vue"
+                    },
+                    {
+                        name: "鹰眼",
+                        name_en: "Minimap",
+                        version: "9.1.2",
+                        thumbnail: "components_minimap_vue.png",
+                        fileName: "components_minimap_vue"
+                    },
+                    {
+                        name: "平移",
+                        name_en: "Pan",
+                        version: "9.1.2",
+                        thumbnail: "components_pan_vue.png",
+                        fileName: "components_pan_vue"
+                    },
+                    {
+                        name: "比例尺",
+                        name_en: "Scale",
+                        version: "9.1.2",
+                        thumbnail: "components_scale_vue.png",
+                        fileName: "components_scale_vue"
+                    },
+                    {
+                        name: "缩放",
+                        name_en: "Zoom",
+                        version: "9.1.2",
+                        thumbnail: "components_zoom_vue.png",
+                        fileName: "components_zoom_vue"
+                    },
+                    {
+                        name: "图例",
+                        name_en: "Legend",
+                        version: "9.1.2",
+                        thumbnail: "components_legend_vue.png",
+                        fileName: "components_legend_vue"
+                    }
+                ]
+            },
+            viz: {
+                name: "可视化",
+                name_en: "Visualization",
+                content: [
                     {
                         name: "点聚合图层",
                         name_en: "Cluster layer",
@@ -1289,62 +1331,7 @@ var exampleConfig = {
                     }
                 ]
             },
-            Controls: {
-                name: "控件",
-                name_en: "Controls",
-                content: [
-                    {
-                        name: "图层列表",
-                        name_en: "LayerList",
-                        version: "9.1.2",
-                        thumbnail: "components_layerList_vue.png",
-                        fileName: "components_layerList_vue"
-                    },
-                    {
-                        name: "鹰眼",
-                        name_en: "Minimap",
-                        version: "9.1.2",
-                        thumbnail: "components_minimap_vue.png",
-                        fileName: "components_minimap_vue"
-                    },
-                    {
-                        name: "平移",
-                        name_en: "Pan",
-                        version: "9.1.2",
-                        thumbnail: "components_pan_vue.png",
-                        fileName: "components_pan_vue"
-                    },
-                    {
-                        name: "比例尺",
-                        name_en: "Scale",
-                        version: "9.1.2",
-                        thumbnail: "components_scale_vue.png",
-                        fileName: "components_scale_vue"
-                    },
-                    {
-                        name: "缩放",
-                        name_en: "Zoom",
-                        version: "9.1.2",
-                        thumbnail: "components_zoom_vue.png",
-                        fileName: "components_zoom_vue"
-                    },
-                    {
-                        name: "图例",
-                        name_en: "Legend",
-                        version: "9.1.2",
-                        thumbnail: "components_legend_vue.png",
-                        fileName: "components_legend_vue"
-                    },
-                    {
-                        name: "量算",
-                        name_en: "Measure",
-                        version: "9.1.2",
-                        thumbnail: "components_measure_vue.png",
-                        fileName: "components_measure_vue"
-                    }
-                ]
-            },
-            图表: {
+            chart: {
                 name: "图表",
                 name_en: "Chart",
                 content: [
@@ -1378,17 +1365,10 @@ var exampleConfig = {
                     }
                 ]
             },
-            Others: {
-                name: "其他",
-                name_en: "Others",
+            tools: {
+                name: "工具",
+                name_en: "Tools",
                 content: [
-                    {
-                        name: "基础组件",
-                        name_en: "Basic Component",
-                        version: "9.1.2",
-                        thumbnail: "components_basic_vue.png",
-                        fileName: "components_basic_vue"
-                    },
                     {
                         name: "查询",
                         name_en: "Query",
@@ -1404,6 +1384,35 @@ var exampleConfig = {
                         fileName: "components_search_vue"
                     },
                     {
+                        name: "量算",
+                        name_en: "Measure",
+                        version: "9.1.2",
+                        thumbnail: "components_measure_vue.png",
+                        fileName: "components_measure_vue"
+                    },
+                    {
+                        name: "打开文件",
+                        name_en: "Open File",
+                        version: "10.x.x",
+                        thumbnail: "components_openfile_vue.png",
+                        fileName: "components_openfile_vue"
+                    }
+                ]
+            },
+           
+            others: {
+                name: "其他",
+                name_en: "Others",
+                content: [
+                    {
+                        name: "基础组件",
+                        name_en: "Basic Component",
+                        version: "9.1.2",
+                        thumbnail: "components_basic_vue.png",
+                        fileName: "components_basic_vue"
+                    },
+                  
+                    {
                         name: "主题切换",
                         name_en: "Theme switching",
                         version: "9.1.2",
@@ -1416,14 +1425,8 @@ var exampleConfig = {
                         version: "9.1.2",
                         thumbnail: "components_demo_vue.png",
                         fileName: "components_demo_vue"
-                    },
-                    {
-                        name: "打开文件",
-                        name_en: "Open File",
-                        version: "10.x.x",
-                        thumbnail: "components_openfile_vue.png",
-                        fileName: "components_openfile_vue"
                     }
+                   
                 ]
             }
         }
@@ -1460,7 +1463,7 @@ var sideBarIconConfig = {
     viz: "fa-map",
     control: "fa-sliders",
     multiCoordSys: "fa-globe",
-    VueComponents: "fa-window-restore",
+    vuecomponents: "fa-window-restore",
     GTC: "fa-globe"
 };
 
