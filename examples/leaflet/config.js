@@ -1170,7 +1170,7 @@ var exampleConfig = {
         }
     },
     "widgets": {
-        name: "微件",
+        name: "组件",
         name_en: "Widgets",
         content: {
             "widgetsSuperMap": {
@@ -1180,51 +1180,51 @@ var exampleConfig = {
                     name: "打开文件",
                     name_en: "open file widget",
                     version: "9.1.1",
-                    thumbnail: "openFileWidget.png",
-                    fileName: "widgets_openFileWidget"
+                    thumbnail: "components_openFile.png",
+                    fileName: "components_openFile"
                 }, {
                     name: "数据流服务",
                     name_en: "data flow service",
                     version: "9.1.1",
-                    thumbnail: "widgets_dataFlow.png",
-                    fileName: "widgets_dataFlow"
+                    thumbnail: "components_dataFlow.png",
+                    fileName: "components_dataFlow"
                 }, {
                     name: "地址匹配与图层要素查询",
                     name_en: "address match add features search",
                     version: "9.1.1",
-                    thumbnail: "widgets_Search.png",
-                    fileName: "widgets_Search"
+                    thumbnail: "components_Search.png",
+                    fileName: "components_Search"
                 },{
                     name: "客户端计算",
                     name_en: "client computation",
                     version: "9.1.1",
-                    thumbnail: "widgets_clientComputation.png",
-                    fileName: "widgets_clientComputation"
+                    thumbnail: "components_clientComputation.png",
+                    fileName: "components_clientComputation"
                 },{
                     name: "分布式分析",
                     name_en: "distribute analysis",
                     version: "9.1.1",
-                    thumbnail: "widgets_distributedAnalysis.png",
-                    fileName: "widgets_distributedAnalysis"
+                    thumbnail: "components_distributedAnalysis.png",
+                    fileName: "components_distributedAnalysis"
                 },{
                     name: "数据服务查询",
                     name_en: "data service query",
                     version: "9.1.1",
-                    thumbnail: "widgets_dataServiceQuery.png",
-                    fileName: "widgets_dataServiceQuery"
+                    thumbnail: "components_dataServiceQuery.png",
+                    fileName: "components_dataServiceQuery"
                 },
                 {
                     name: "图表_iServer",
                     name_en: "chart_iServer",
                     version: "9.1.2",
-                    thumbnail: "widgets_chart_isvr.png",
-                    fileName: "widgets_chart_isvr"
+                    thumbnail: "components_chart_isvr.png",
+                    fileName: "components_chart_isvr"
                 },{
                     name: "图表_iPortal",
                     name_en: "chart_iPortal",
                     version: "9.1.2",
-                    thumbnail: "widgets_chart_iptl.png",
-                    fileName: "widgets_chart_iptl"
+                    thumbnail: "components_chart_iptl.png",
+                    fileName: "components_chart_iptl"
                 } 
             
             ]
@@ -1236,14 +1236,14 @@ var exampleConfig = {
                     name: "打开文件(React)",
                     name_en: "open file widget(React)",
                     version: "9.1.1",
-                    thumbnail: "openFileWidget_react.png",
-                    fileName: "widgets_openFileWidget_react"
+                    thumbnail: "components_openFile_react.png",
+                    fileName: "components_openFile_react"
                 }, {
                     name: "打开文件(Vue)",
                     name_en: "open file widget(Vue)",
                     version: "9.1.1",
-                    thumbnail: "openFileWidget_vue.png",
-                    fileName: "widgets_openFileWidget_vue"
+                    thumbnail: "components_openFile_vue.png",
+                    fileName: "components_openFile_vue"
                 }]
             }
         }

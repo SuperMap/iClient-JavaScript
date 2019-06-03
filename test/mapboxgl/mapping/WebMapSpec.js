@@ -551,7 +551,7 @@ describe('mapboxgl_WebMap', () => {
 	    }, 1000)
 	});
 
-	it('createThemeLayer_SUPERMAP_MAP_datasource', (done) => {
+	xit('createThemeLayer_SUPERMAP_MAP_datasource', (done) => {
 	    let options = {
 	        server: server
 	    };

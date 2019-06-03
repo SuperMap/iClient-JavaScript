@@ -62,12 +62,13 @@ export var MapExtend = function () {
     mapboxgl.Map.prototype.setLayoutProperty = function (layerID, name, value) {
         if (this.overlayLayersManager[layerID]) {
             if (name === "visibility") {
-                if (value === "block") {
+                if (value === "visible") {
                     value = true;
                 } else {
                     value = false;
                 }
                 setVisibility(this.overlayLayersManager[layerID], value);
+                this.style.fire('data', {dataType: 'style'});
             }
             return this;
         }

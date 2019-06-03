@@ -7,355 +7,414 @@ var identification = {
 };
 
 var exampleConfig = {
-    "iServer": {
+    iServer: {
         name: "iServer",
         name_en: "iServer",
         content: {
-            "map": {
+            map: {
                 name: "地图",
                 name_en: "Map service",
-                content: [{
-                    name: "3857底图",
-                    name_en: "3857 coordinate system",
-                    thumbnail: "mb_TileLayer.png",
-                    fileName: "01_tiledMapLayer"
-                }, {
-                    name: "地图信息",
-                    name_en: "map query service",
-                    thumbnail: "mb_mapService.png",
-                    fileName: "01_mapService"
-
-                }, {
-                    name: "距离测量",
-                    name_en: "distance measurement service",
-                    thumbnail: "mb_measure-distance.png",
-                    fileName: "01_measure_distance"
-                }, {
-                    name: "面积测量",
-                    name_en: "area measurement service",
-                    thumbnail: "mb_measure-area.png",
-                    fileName: "01_measure_area"
-                }, {
-                    name: "范围查询",
-                    name_en: "bounds query",
-                    thumbnail: "mb_mapQueryByBounds.png",
-                    fileName: "01_mapQueryByBounds"
-                }, {
-                    name: "距离查询",
-                    name_en: "distance query",
-                    thumbnail: "mb_mapQueryByDistance.png",
-                    fileName: "01_mapQueryByDistance"
-                }, {
-                    name: "几何查询",
-                    name_en: "geometry query",
-                    thumbnail: "mb_mapQueryByGeometry.png",
-                    fileName: "01_mapQueryByGeometry"
-                }, {
-                    name: "SQL查询",
-                    name_en: "SQL query",
-                    thumbnail: "mb_mapQueryBySQL.png",
-                    fileName: "01_mapQueryBySQL"
-                }]
+                content: [
+                    {
+                        name: "3857底图",
+                        name_en: "3857 coordinate system",
+                        thumbnail: "mb_TileLayer.png",
+                        fileName: "01_tiledMapLayer"
+                    },
+                    {
+                        name: "地图信息",
+                        name_en: "map query service",
+                        thumbnail: "mb_mapService.png",
+                        fileName: "01_mapService"
+                    },
+                    {
+                        name: "距离测量",
+                        name_en: "distance measurement service",
+                        thumbnail: "mb_measure-distance.png",
+                        fileName: "01_measure_distance"
+                    },
+                    {
+                        name: "面积测量",
+                        name_en: "area measurement service",
+                        thumbnail: "mb_measure-area.png",
+                        fileName: "01_measure_area"
+                    },
+                    {
+                        name: "范围查询",
+                        name_en: "bounds query",
+                        thumbnail: "mb_mapQueryByBounds.png",
+                        fileName: "01_mapQueryByBounds"
+                    },
+                    {
+                        name: "距离查询",
+                        name_en: "distance query",
+                        thumbnail: "mb_mapQueryByDistance.png",
+                        fileName: "01_mapQueryByDistance"
+                    },
+                    {
+                        name: "几何查询",
+                        name_en: "geometry query",
+                        thumbnail: "mb_mapQueryByGeometry.png",
+                        fileName: "01_mapQueryByGeometry"
+                    },
+                    {
+                        name: "SQL查询",
+                        name_en: "SQL query",
+                        thumbnail: "mb_mapQueryBySQL.png",
+                        fileName: "01_mapQueryBySQL"
+                    }
+                ]
             },
-            "data": {
+            data: {
                 name: "数据",
                 name_en: "Data service",
-                content: [{
-                    name: "ID查询",
-                    name_en: "ID query",
-                    thumbnail: "mb_getFeatureByIDs.png",
-                    fileName: "02_getFeatureByIDs"
-                }, {
-                    name: "SQL查询",
-                    name_en: "SQL query",
-                    thumbnail: "mb_getFeatureBySQL.png",
-                    fileName: "02_getFeatureBySQL"
-                }, {
-                    name: "范围查询",
-                    name_en: "bounds query",
-                    thumbnail: "mb_getFeatureByBounds.png",
-                    fileName: "02_getFeatureByBounds"
-                }, {
-                    name: "几何查询",
-                    name_en: "geometry query",
-                    thumbnail: "mb_getFeatureByGeometry.png",
-                    fileName: "02_getFeatureByGeometry"
-                }, {
-                    name: "缓冲区查询",
-                    name_en: "buffer query",
-                    thumbnail: "mb_getFeatureByBuffer.png",
-                    fileName: "02_getFeatureByBuffer"
-                }, {
-                    name: "栅格查询",
-                    name_en: "data gridcell query",
-                    thumbnail: "mb_getGridCellInfos.png",
-                    fileName: "02_getGridCellInfos"
-                }, {
-                    name: "字段信息",
-                    name_en: "field service",
-                    thumbnail: "mb_fieldsService.png",
-                    fileName: "02_fieldsService"
-                }, {
-                    name: "字段查询统计",
-                    name_en: "field statistics service",
-                    thumbnail: "mb_fieldStatistics.png",
-                    fileName: "02_fieldStatistics"
-                }, {
-                    name: "地物编辑",
-                    name_en: "data editing",
-                    thumbnail: "mb_editFeatures.png",
-                    fileName: "02_editFeatures"
-                }]
+                content: [
+                    {
+                        name: "ID查询",
+                        name_en: "ID query",
+                        thumbnail: "mb_getFeatureByIDs.png",
+                        fileName: "02_getFeatureByIDs"
+                    },
+                    {
+                        name: "SQL查询",
+                        name_en: "SQL query",
+                        thumbnail: "mb_getFeatureBySQL.png",
+                        fileName: "02_getFeatureBySQL"
+                    },
+                    {
+                        name: "范围查询",
+                        name_en: "bounds query",
+                        thumbnail: "mb_getFeatureByBounds.png",
+                        fileName: "02_getFeatureByBounds"
+                    },
+                    {
+                        name: "几何查询",
+                        name_en: "geometry query",
+                        thumbnail: "mb_getFeatureByGeometry.png",
+                        fileName: "02_getFeatureByGeometry"
+                    },
+                    {
+                        name: "缓冲区查询",
+                        name_en: "buffer query",
+                        thumbnail: "mb_getFeatureByBuffer.png",
+                        fileName: "02_getFeatureByBuffer"
+                    },
+                    {
+                        name: "栅格查询",
+                        name_en: "data gridcell query",
+                        thumbnail: "mb_getGridCellInfos.png",
+                        fileName: "02_getGridCellInfos"
+                    },
+                    {
+                        name: "字段信息",
+                        name_en: "field service",
+                        thumbnail: "mb_fieldsService.png",
+                        fileName: "02_fieldsService"
+                    },
+                    {
+                        name: "字段查询统计",
+                        name_en: "field statistics service",
+                        thumbnail: "mb_fieldStatistics.png",
+                        fileName: "02_fieldStatistics"
+                    },
+                    {
+                        name: "地物编辑",
+                        name_en: "data editing",
+                        thumbnail: "mb_editFeatures.png",
+                        fileName: "02_editFeatures"
+                    }
+                ]
             },
-            "theme": {
+            theme: {
                 name: "专题图",
                 name_en: "Server thematic service",
-                content: [{
-                    name: "点密度专题图",
-                    name_en: "dot density",
-                    thumbnail: "mb_themeDotDensity.png",
-                    fileName: "03_themeDotDensity"
-                }, {
-                    name: "等级符号专题图",
-                    name_en: "graduated symbol",
-                    thumbnail: "mb_themeGraduatedSymbol.png",
-                    fileName: "03_themeGraduatedSymbol"
-                }, {
-                    name: "统计专题图",
-                    name_en: "statistical chart",
-                    thumbnail: "mb_themeGraph.png",
-                    fileName: "03_themeGraph"
-                }, {
-                    name: "标签专题图",
-                    name_en: "label",
-                    thumbnail: "mb_themeLabel.png",
-                    fileName: "03_themeLabel"
-                }, {
-                    name: "分段专题图",
-                    name_en: "range",
-                    thumbnail: "mb_themeRange.png",
-                    fileName: "03_themeRange"
-                }, {
-                    name: "单值专题图",
-                    name_en: "unique",
-                    thumbnail: "mb_themeUnique.png",
-                    fileName: "03_themeUnique"
-                }, {
-                    name: "栅格分段专题图",
-                    name_en: "grid range",
-                    thumbnail: "mb_themeGridRange.png",
-                    fileName: "03_themeGridRange"
-                }, {
-                    name: "栅格单值专题图",
-                    name_en: "grid unique",
-                    thumbnail: "mb_themeGridUnique.png",
-                    fileName: "03_themeGridUnique"
-                }]
+                content: [
+                    {
+                        name: "点密度专题图",
+                        name_en: "dot density",
+                        thumbnail: "mb_themeDotDensity.png",
+                        fileName: "03_themeDotDensity"
+                    },
+                    {
+                        name: "等级符号专题图",
+                        name_en: "graduated symbol",
+                        thumbnail: "mb_themeGraduatedSymbol.png",
+                        fileName: "03_themeGraduatedSymbol"
+                    },
+                    {
+                        name: "统计专题图",
+                        name_en: "statistical chart",
+                        thumbnail: "mb_themeGraph.png",
+                        fileName: "03_themeGraph"
+                    },
+                    {
+                        name: "标签专题图",
+                        name_en: "label",
+                        thumbnail: "mb_themeLabel.png",
+                        fileName: "03_themeLabel"
+                    },
+                    {
+                        name: "分段专题图",
+                        name_en: "range",
+                        thumbnail: "mb_themeRange.png",
+                        fileName: "03_themeRange"
+                    },
+                    {
+                        name: "单值专题图",
+                        name_en: "unique",
+                        thumbnail: "mb_themeUnique.png",
+                        fileName: "03_themeUnique"
+                    },
+                    {
+                        name: "栅格分段专题图",
+                        name_en: "grid range",
+                        thumbnail: "mb_themeGridRange.png",
+                        fileName: "03_themeGridRange"
+                    },
+                    {
+                        name: "栅格单值专题图",
+                        name_en: "grid unique",
+                        thumbnail: "mb_themeGridUnique.png",
+                        fileName: "03_themeGridUnique"
+                    }
+                ]
             },
-            "spatialAnalyst": {
+            spatialAnalyst: {
                 name: "空间分析",
                 name_en: "Spatial analysis service",
-                content: [{
-                    name: "数据集缓冲区分析",
-                    name_en: "buffer",
-                    thumbnail: "mb_bufferAnalystService.png",
-                    fileName: "04_bufferAnalystService"
-                }, {
-                    name: "几何对象缓冲区分析",
-                    name_en: "buffer-geometry",
-                    thumbnail: "mb_bufferAnalystService_geometry.png",
-                    fileName: "04_bufferAnalystService_geometry"
-                }, {
-                    name: "数据集泰森多边形",
-                    name_en: "thiessen-dataset",
-                    thumbnail: "mb_thiessenAnalystService-datasets.png",
-                    fileName: "04_thiessenAnalystService_datasets"
-                }, {
-                    name: "几何泰森多边形",
-                    name_en: "thiessen-geometry",
-                    thumbnail: "mb_thiessenAnalystService-geometry.png",
-                    fileName: "04_thiessenAnalystService_geometry"
-                }, {
-                    name: "叠加分析",
-                    name_en: "overlay",
-                    thumbnail: "mb_overlayAnalystService.png",
-                    fileName: "04_overlayAnalystService"
-                }, {
-                    name: "地形曲率计算",
-                    name_en: "terrain curvature calculation",
-                    thumbnail: "mb_terrainCurvatureCalculationService.png",
-                    fileName: "04_terrainCurvatureCalculationService"
-                }, {
-                    name: "栅格代数运算",
-                    name_en: "math expression",
-                    thumbnail: "mb_mathExpressionAnalysisService.png",
-                    fileName: "04_mathExpressionAnalysisService"
-                }, {
-                    name: "点定里程",
-                    name_en: "route calculate measure",
-                    thumbnail: "mb_routeCalculateMeasureService.png",
-                    fileName: "04_routeCalculateMeasureService"
-                }, {
-                    name: "里程定点",
-                    name_en: "route locator - point",
-                    thumbnail: "mb_routeLocatorService_point.png",
-                    fileName: "04_routeLocatorService_point"
-                }, {
-                    name: "里程定线",
-                    name_en: "route locator - line",
-                    thumbnail: "mb_routeLocatorService_line.png",
-                    fileName: "04_routeLocatorService_line"
-                }, {
-                    name: "几何对象批量空间分析",
-                    name_en: "batchAnalyst_geometry",
-                    thumbnail: "mb_geometryBatchAnalystService.png",
-                    fileName: "04_geometryBatchAnalystService"
-                }, {
-                    name: "几何对象批量叠加分析",
-                    name_en: "overlayBatchAnalyst_geometry",
-                    thumbnail: "mb_geometryOverlayBatchAnalystService.png",
-                    fileName: "04_geometryOverlayBatchAnalystService"
-                }]
+                content: [
+                    {
+                        name: "数据集缓冲区分析",
+                        name_en: "buffer",
+                        thumbnail: "mb_bufferAnalystService.png",
+                        fileName: "04_bufferAnalystService"
+                    },
+                    {
+                        name: "几何对象缓冲区分析",
+                        name_en: "buffer-geometry",
+                        thumbnail: "mb_bufferAnalystService_geometry.png",
+                        fileName: "04_bufferAnalystService_geometry"
+                    },
+                    {
+                        name: "数据集泰森多边形",
+                        name_en: "thiessen-dataset",
+                        thumbnail: "mb_thiessenAnalystService-datasets.png",
+                        fileName: "04_thiessenAnalystService_datasets"
+                    },
+                    {
+                        name: "几何泰森多边形",
+                        name_en: "thiessen-geometry",
+                        thumbnail: "mb_thiessenAnalystService-geometry.png",
+                        fileName: "04_thiessenAnalystService_geometry"
+                    },
+                    {
+                        name: "叠加分析",
+                        name_en: "overlay",
+                        thumbnail: "mb_overlayAnalystService.png",
+                        fileName: "04_overlayAnalystService"
+                    },
+                    {
+                        name: "地形曲率计算",
+                        name_en: "terrain curvature calculation",
+                        thumbnail: "mb_terrainCurvatureCalculationService.png",
+                        fileName: "04_terrainCurvatureCalculationService"
+                    },
+                    {
+                        name: "栅格代数运算",
+                        name_en: "math expression",
+                        thumbnail: "mb_mathExpressionAnalysisService.png",
+                        fileName: "04_mathExpressionAnalysisService"
+                    },
+                    {
+                        name: "点定里程",
+                        name_en: "route calculate measure",
+                        thumbnail: "mb_routeCalculateMeasureService.png",
+                        fileName: "04_routeCalculateMeasureService"
+                    },
+                    {
+                        name: "里程定点",
+                        name_en: "route locator - point",
+                        thumbnail: "mb_routeLocatorService_point.png",
+                        fileName: "04_routeLocatorService_point"
+                    },
+                    {
+                        name: "里程定线",
+                        name_en: "route locator - line",
+                        thumbnail: "mb_routeLocatorService_line.png",
+                        fileName: "04_routeLocatorService_line"
+                    },
+                    {
+                        name: "几何对象批量空间分析",
+                        name_en: "batchAnalyst_geometry",
+                        thumbnail: "mb_geometryBatchAnalystService.png",
+                        fileName: "04_geometryBatchAnalystService"
+                    },
+                    {
+                        name: "几何对象批量叠加分析",
+                        name_en: "overlayBatchAnalyst_geometry",
+                        thumbnail: "mb_geometryOverlayBatchAnalystService.png",
+                        fileName: "04_geometryOverlayBatchAnalystService"
+                    }
+                ]
             },
-            "addressMatch": {
+            addressMatch: {
                 name: "地址匹配",
                 name_en: "Address matching service",
-                content: [{
-                    name: "地址匹配",
-                    name_en: "address match",
-                    thumbnail: "mb_addressService.png",
-                    fileName: "addressMatchService"
-                }]
+                content: [
+                    {
+                        name: "地址匹配",
+                        name_en: "address match",
+                        thumbnail: "mb_addressService.png",
+                        fileName: "addressMatchService"
+                    }
+                ]
             },
-            "dataFlow": {
+            dataFlow: {
                 name: "数据流",
                 name_en: "Data flow service",
-                content: [{
-                    name: "数据流",
-                    name_en: "data flow",
-                    thumbnail: "dataflow.gif",
-                    fileName: "dataFlowService"
-                }]
+                content: [
+                    {
+                        name: "数据流",
+                        name_en: "data flow",
+                        thumbnail: "dataflow.gif",
+                        fileName: "dataFlowService"
+                    }
+                ]
             },
-            "processingService": {
+            processingService: {
                 name: "分布式分析",
                 name_en: "Distributed analysis services",
-                content: [{
-                    name: "密度分析",
-                    name_en: "density",
-                    thumbnail: "mb_kernelDensityJobService.png",
-                    fileName: "kernelDensityJobService"
-                }, {
-                    name: "点聚合分析",
-                    name_en: "mesh summary",
-                    thumbnail: "mb_SummaryMeshJobService.png",
-                    fileName: "SummaryMeshJobService"
-                }, {
-                    name: "单对象查询分析",
-                    name_en: "single object query",
-                    thumbnail: "mb_singleObjectQueryJob.png",
-                    fileName: "singleObjectQueryJobService"
-                }, {
-                    name: "叠加分析",
-                    name_en: "overlay",
-                    thumbnail: "mb_overlayJobService.png",
-                    fileName: "overlayGeoJobService"
-                }, {
-                    name: "缓冲区分析",
-                    name_en: "buffer",
-                    thumbnail: "mb_buffersAnalystJobService.png",
-                    fileName: "buffersAnalystJobService"
-                }, {
-                    name: "区域汇总分析",
-                    name_en: "regional summary",
-                    thumbnail: "mb_SummaryRegionJobService.png",
-                    fileName: "SummaryRegionJobService"
-                }, {
-                    name: "矢量裁剪分析",
-                    name_en: "vector clip",
-                    thumbnail: "mb_vectorClipJob.png",
-                    fileName: "vectorClipJobService"
-                }, {
-                    name: "属性汇总分析",
-                    name_en: "summary attributes",
-                    thumbnail: "mb_summaryAttributes.png",
-                    fileName: "summaryAttributesJobService"
-                }, {
-                    name: "拓扑检查分析",
-                    name_en: "topology validator",
-                    thumbnail: "mb_topologyValidatorJobService.png",
-                    fileName: "topologyValidatorJobService"
-                }]
+                content: [
+                    {
+                        name: "密度分析",
+                        name_en: "density",
+                        thumbnail: "mb_kernelDensityJobService.png",
+                        fileName: "kernelDensityJobService"
+                    },
+                    {
+                        name: "点聚合分析",
+                        name_en: "mesh summary",
+                        thumbnail: "mb_SummaryMeshJobService.png",
+                        fileName: "SummaryMeshJobService"
+                    },
+                    {
+                        name: "单对象查询分析",
+                        name_en: "single object query",
+                        thumbnail: "mb_singleObjectQueryJob.png",
+                        fileName: "singleObjectQueryJobService"
+                    },
+                    {
+                        name: "叠加分析",
+                        name_en: "overlay",
+                        thumbnail: "mb_overlayJobService.png",
+                        fileName: "overlayGeoJobService"
+                    },
+                    {
+                        name: "缓冲区分析",
+                        name_en: "buffer",
+                        thumbnail: "mb_buffersAnalystJobService.png",
+                        fileName: "buffersAnalystJobService"
+                    },
+                    {
+                        name: "区域汇总分析",
+                        name_en: "regional summary",
+                        thumbnail: "mb_SummaryRegionJobService.png",
+                        fileName: "SummaryRegionJobService"
+                    },
+                    {
+                        name: "矢量裁剪分析",
+                        name_en: "vector clip",
+                        thumbnail: "mb_vectorClipJob.png",
+                        fileName: "vectorClipJobService"
+                    },
+                    {
+                        name: "属性汇总分析",
+                        name_en: "summary attributes",
+                        thumbnail: "mb_summaryAttributes.png",
+                        fileName: "summaryAttributesJobService"
+                    },
+                    {
+                        name: "拓扑检查分析",
+                        name_en: "topology validator",
+                        thumbnail: "mb_topologyValidatorJobService.png",
+                        fileName: "topologyValidatorJobService"
+                    }
+                ]
             }
         }
     },
-    "iPortal": {
+    iPortal: {
         name: "iPortal",
         name_en: "iPortal",
         version: "9.1.2",
         content: {
-            "ip_map": {
+            ip_map: {
                 name: "地图",
                 name_en: "iPortal Web map",
                 version: "9.1.2",
-                content: [{
-                    name: "分段专题图",
-                    name_en: "Range",
-                    version: "9.1.2",
-                    thumbnail: "iPortalWebmap_range.png",
-                    fileName: "iPortalWebmap_range"
-                },
-                {
-                    name: "单值专题图",
-                    name_en: "Unique",
-                    version: "9.1.2",
-                    thumbnail: "iPortalWebmap_unique.png",
-                    fileName: "iPortalWebmap_unique"
-                },
-                {
-                    name: "标签专题图",
-                    name_en: "Label",
-                    version: "9.1.2",
-                    thumbnail: "iPortalWebmap_label.png",
-                    fileName: "iPortalWebmap_label"
-                },
-                {
-                    name: "热力图",
-                    name_en: "Heat map",
-                    version: "9.1.2",
-                    thumbnail: "iPortalWebmap_heat.png",
-                    fileName: "iPortalWebmap_heat"
-                },
-                {
-                    name: "点样式",
-                    name_en: "Point style",
-                    version: "9.1.2",
-                    thumbnail: "iPortalWebmap_unicode.png",
-                    fileName: "iPortalWebmap_unicode"
-                }]
+                content: [
+                    {
+                        name: "分段专题图",
+                        name_en: "Range",
+                        version: "9.1.2",
+                        thumbnail: "iPortalWebmap_range.png",
+                        fileName: "iPortalWebmap_range"
+                    },
+                    {
+                        name: "单值专题图",
+                        name_en: "Unique",
+                        version: "9.1.2",
+                        thumbnail: "iPortalWebmap_unique.png",
+                        fileName: "iPortalWebmap_unique"
+                    },
+                    {
+                        name: "标签专题图",
+                        name_en: "Label",
+                        version: "9.1.2",
+                        thumbnail: "iPortalWebmap_label.png",
+                        fileName: "iPortalWebmap_label"
+                    },
+                    {
+                        name: "热力图",
+                        name_en: "Heat map",
+                        version: "9.1.2",
+                        thumbnail: "iPortalWebmap_heat.png",
+                        fileName: "iPortalWebmap_heat"
+                    },
+                    {
+                        name: "点样式",
+                        name_en: "Point style",
+                        version: "9.1.2",
+                        thumbnail: "iPortalWebmap_unicode.png",
+                        fileName: "iPortalWebmap_unicode"
+                    }
+                ]
             }
         }
     },
-    "viz": {
+    viz: {
         name: "可视化",
         name_en: "Visualization",
         content: {
-            "heat": {
+            heat: {
                 name: "热力图",
                 name_en: "Heat map",
                 version: "9.1.0",
-                content: [{
-                    name: "随机点 (Classic)",
-                    name_en: "random points (Classic)",
-                    version: "9.1.0",
-                    thumbnail: "mb_heatMapLayer.png",
-                    fileName: "heatMapLayer"
-                }]
+                content: [
+                    {
+                        name: "随机点 (Classic)",
+                        name_en: "random points (Classic)",
+                        version: "9.1.0",
+                        thumbnail: "mb_heatMapLayer.png",
+                        fileName: "heatMapLayer"
+                    }
+                ]
             },
-            "VectorTileLayer": {
+            VectorTileLayer: {
                 name: "矢量瓦片",
                 name_en: "Vector tile",
-                content: [{
+                content: [
+                    {
                         name: "China",
                         name_en: "China",
                         thumbnail: "mvtVectorTile.png",
@@ -435,33 +494,38 @@ var exampleConfig = {
                     }
                 ]
             },
-            "cluster": {
+            cluster: {
                 name: "聚合",
                 name_en: "Cluster",
                 version: "9.1.1",
-                content: [{
-                    name: "点聚合",
-                    name_en: "Marker cluster",
-                    version: "9.1.1",
-                    thumbnail: "markerCluster_3857.png",
-                    fileName: "markerCluster_3857"
-                }]
+                content: [
+                    {
+                        name: "点聚合",
+                        name_en: "Marker cluster",
+                        version: "9.1.1",
+                        thumbnail: "markerCluster_3857.png",
+                        fileName: "markerCluster_3857"
+                    }
+                ]
             },
-            "graphicLayer": {
+            graphicLayer: {
                 name: "高效率点图层",
                 name_en: "High efficiency point layer",
-                content: [{
-                    name: "纽约出租车145万上车点",
-                    name_en: "points of 1.45 million NYC taxis",
-                    version: "9.1.0",
-                    thumbnail: "mb_graphicLayer.png",
-                    fileName: "graphicLayer"
-                }]
+                content: [
+                    {
+                        name: "纽约出租车145万上车点",
+                        name_en: "points of 1.45 million NYC taxis",
+                        version: "9.1.0",
+                        thumbnail: "mb_graphicLayer.png",
+                        fileName: "graphicLayer"
+                    }
+                ]
             },
-            "ECharts": {
+            ECharts: {
                 name: "ECharts",
                 name_en: "ECharts",
-                content: [{
+                content: [
+                    {
                         name: "全国空气质量图",
                         name_en: "ECharts",
                         thumbnail: "echarts_effectScatter.png",
@@ -533,42 +597,48 @@ var exampleConfig = {
                         name_en: "cell map",
                         thumbnail: "echarts_cellMap.png",
                         fileName: "echarts_cellMap"
-                    }, {
+                    },
+                    {
                         name: "北京道路网络图（130万点数据绘制）",
                         name_en: "Use lines to draw 1.3 millions Beijing streets",
                         localIgnore: true,
                         version: "9.1.0",
                         thumbnail: "mb_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
-                    }, {
+                    },
+                    {
                         name: "纽约出租车上车点分布图（140万点数据绘制）",
                         name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
                         localIgnore: true,
                         version: "9.1.0",
                         thumbnail: "mb_echartScatterMillionsNewYorkTaxi.png",
                         fileName: "echarts_scatterDrawMillionsNewYorkTaxiPoints"
-                    }, {
+                    },
+                    {
                         name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
                         localIgnore: true,
                         version: "9.1.0",
                         thumbnail: "mb_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
-                    }, {
+                    },
+                    {
                         name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
                         localIgnore: true,
                         version: "9.1.0",
                         thumbnail: "mb_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
-                    }, {
+                    },
+                    {
                         name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
                         localIgnore: true,
                         version: "9.1.0",
                         thumbnail: "mb_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
-                    }, {
+                    },
+                    {
                         name: "车辆监控模拟",
                         name_en: "Car Animation",
                         version: "9.1.0",
@@ -577,10 +647,11 @@ var exampleConfig = {
                     }
                 ]
             },
-            "EChartsGL": {
+            EChartsGL: {
                 name: "EChartsGL",
                 name_en: "EChartsGL",
-                content: [{
+                content: [
+                    {
                         name: "上海房价可视化图",
                         name_en: "Shanghai building price",
                         thumbnail: "echartsGL_ShanghaiBuildingPrice.png",
@@ -618,78 +689,90 @@ var exampleConfig = {
                     }
                 ]
             },
-            "DeckGL": {
+            DeckGL: {
                 name: "DeckGL",
                 name_en: "DeckGL",
-                content: [{
-                    name: "路径图",
-                    name_en: "path",
-                    version: "9.1.0",
-                    thumbnail: "mb_deckglLayer_pathLayer.png",
-                    fileName: "deckglLayer_pathLayer"
-                }, {
-                    name: "曲线",
-                    name_en: "arcLine",
-                    version: "9.1.0",
-                    thumbnail: "mb_deckglLayer_arcLayer.png",
-                    fileName: "deckglLayer_arcLayer"
-                }, {
-                    name: "多边形(建筑物)",
-                    name_en: "polygon",
-                    version: "9.1.0",
-                    thumbnail: "mb_deckglLayer_polygonLayer.png",
-                    fileName: "deckglLayer_polygonLayer"
-                }, {
-                    name: "蜂巢图",
-                    name_en: "honeycomb",
-                    version: "9.1.0",
-                    thumbnail: "mb_deckglLayer_hexagonLayer.png",
-                    fileName: "deckglLayer_hexagonLayer"
-                }, {
-                    name: "纽约城市建筑变化图",
-                    name_en: "New York Construction",
-                    localIgnore: true,
-                    version: "9.1.0",
-                    thumbnail: "mb_deckgl_nyBuilding.png",
-                    fileName: "deckglLayer_nyBuilding"
-                }, {
-                    name: "加州地震分布图",
-                    name_en: "California Earthquakes",
-                    version: "9.1.0",
-                    thumbnail: "mb_deckglLayer_scatterPlot.png",
-                    fileName: "deckglLayer_scatterPlot"
-                }, {
-                    name: "纽约城市人口分布图",
-                    name_en: "New york city population",
-                    version: "9.1.0",
-                    thumbnail: "mb_deckglLayer_nyc_census.png",
-                    fileName: "deckglLayer_nyc_census"
-                }, {
-                    name: "旧金山等高线图",
-                    name_en: "San Francisco Elevation Contour",
-                    localIgnore: true,
-                    version: "9.1.0",
-                    thumbnail: "mb_deckglLayer_sfcontour.png",
-                    fileName: "deckglLayer_sfcontour"
-                }, {
-                    name: "旧金山街道树分布密度图",
-                    name_en: "San Francisco Street Tree Map",
-                    version: "9.1.0",
-                    thumbnail: "mb_deckglLayer_sftrees.png",
-                    fileName: "deckglLayer_sftrees"
-                }, {
-                    name: "英国通勤图",
-                    name_en: "Commute Patterns in the UK",
-                    version: "9.1.0",
-                    localIgnore: true,
-                    thumbnail: "mb_deckglLayer_ukcommute.png",
-                    fileName: "deckglLayer_ukcommute"
-                }]
+                content: [
+                    {
+                        name: "路径图",
+                        name_en: "path",
+                        version: "9.1.0",
+                        thumbnail: "mb_deckglLayer_pathLayer.png",
+                        fileName: "deckglLayer_pathLayer"
+                    },
+                    {
+                        name: "曲线",
+                        name_en: "arcLine",
+                        version: "9.1.0",
+                        thumbnail: "mb_deckglLayer_arcLayer.png",
+                        fileName: "deckglLayer_arcLayer"
+                    },
+                    {
+                        name: "多边形(建筑物)",
+                        name_en: "polygon",
+                        version: "9.1.0",
+                        thumbnail: "mb_deckglLayer_polygonLayer.png",
+                        fileName: "deckglLayer_polygonLayer"
+                    },
+                    {
+                        name: "蜂巢图",
+                        name_en: "honeycomb",
+                        version: "9.1.0",
+                        thumbnail: "mb_deckglLayer_hexagonLayer.png",
+                        fileName: "deckglLayer_hexagonLayer"
+                    },
+                    {
+                        name: "纽约城市建筑变化图",
+                        name_en: "New York Construction",
+                        localIgnore: true,
+                        version: "9.1.0",
+                        thumbnail: "mb_deckgl_nyBuilding.png",
+                        fileName: "deckglLayer_nyBuilding"
+                    },
+                    {
+                        name: "加州地震分布图",
+                        name_en: "California Earthquakes",
+                        version: "9.1.0",
+                        thumbnail: "mb_deckglLayer_scatterPlot.png",
+                        fileName: "deckglLayer_scatterPlot"
+                    },
+                    {
+                        name: "纽约城市人口分布图",
+                        name_en: "New york city population",
+                        version: "9.1.0",
+                        thumbnail: "mb_deckglLayer_nyc_census.png",
+                        fileName: "deckglLayer_nyc_census"
+                    },
+                    {
+                        name: "旧金山等高线图",
+                        name_en: "San Francisco Elevation Contour",
+                        localIgnore: true,
+                        version: "9.1.0",
+                        thumbnail: "mb_deckglLayer_sfcontour.png",
+                        fileName: "deckglLayer_sfcontour"
+                    },
+                    {
+                        name: "旧金山街道树分布密度图",
+                        name_en: "San Francisco Street Tree Map",
+                        version: "9.1.0",
+                        thumbnail: "mb_deckglLayer_sftrees.png",
+                        fileName: "deckglLayer_sftrees"
+                    },
+                    {
+                        name: "英国通勤图",
+                        name_en: "Commute Patterns in the UK",
+                        version: "9.1.0",
+                        localIgnore: true,
+                        thumbnail: "mb_deckglLayer_ukcommute.png",
+                        fileName: "deckglLayer_ukcommute"
+                    }
+                ]
             },
-            "MapV": {
+            MapV: {
                 name: "MapV",
                 name_en: "MapV",
-                content: [{
+                content: [
+                    {
                         name: "蜂巢图",
                         name_en: "honeycomb",
                         version: "9.1.0",
@@ -767,39 +850,45 @@ var exampleConfig = {
                     }
                 ]
             },
-            "threejs": {
+            threejs: {
                 name: "threejs",
                 name_en: "threejs",
-                content: [{
-                    name: "建筑模型",
-                    name_en: "buildings",
-                    version: "9.1.0",
-                    thumbnail: "mb_threejs_buildings.png",
-                    fileName: "threejsLayer_buildings"
-                }, {
-                    name: "设施点(mtl+obj格式)",
-                    name_en: "facility(mtl+obj)",
-                    version: "9.1.0",
-                    thumbnail: "mb_threejs_facility.png",
-                    fileName: "threejsLayer_facility"
-                }, {
-                    name: "飞机模型(gltf格式)",
-                    name_en: "airplane(gltf)",
-                    version: "9.1.0",
-                    thumbnail: "mb_threejs_airplane.png",
-                    fileName: "threejsLayer_airplane"
-                }, {
-                    name: "飞鸟模型",
-                    name_en: "bird",
-                    version: "9.1.0",
-                    thumbnail: "mb_threejs_bird.png",
-                    fileName: "threejsLayer_bird"
-                }]
+                content: [
+                    {
+                        name: "建筑模型",
+                        name_en: "buildings",
+                        version: "9.1.0",
+                        thumbnail: "mb_threejs_buildings.png",
+                        fileName: "threejsLayer_buildings"
+                    },
+                    {
+                        name: "设施点(mtl+obj格式)",
+                        name_en: "facility(mtl+obj)",
+                        version: "9.1.0",
+                        thumbnail: "mb_threejs_facility.png",
+                        fileName: "threejsLayer_facility"
+                    },
+                    {
+                        name: "飞机模型(gltf格式)",
+                        name_en: "airplane(gltf)",
+                        version: "9.1.0",
+                        thumbnail: "mb_threejs_airplane.png",
+                        fileName: "threejsLayer_airplane"
+                    },
+                    {
+                        name: "飞鸟模型",
+                        name_en: "bird",
+                        version: "9.1.0",
+                        thumbnail: "mb_threejs_bird.png",
+                        fileName: "threejsLayer_bird"
+                    }
+                ]
             },
-            "Theme2D": {
+            Theme2D: {
                 name: "二维专题图",
                 name_en: "2D thematic layer",
-                content: [{
+                content: [
+                    {
                         name: "单值专题图",
                         name_en: "unique",
                         thumbnail: "uniqueThemeLayer.png",
@@ -831,10 +920,11 @@ var exampleConfig = {
                     }
                 ]
             },
-            "Theme3D": {
+            Theme3D: {
                 name: "三维专题图",
                 name_en: "3D thematic layer",
-                content: [{
+                content: [
+                    {
                         name: "单值专题图",
                         name_en: "unique",
                         thumbnail: "theme_3Dlayer_unique.png",
@@ -850,169 +940,195 @@ var exampleConfig = {
             }
         }
     },
-    "control": {
+    control: {
         name: "控件",
         name_en: "Control",
         content: {
-            "BasicControl": {
+            BasicControl: {
                 name: "基础控件",
                 name_en: "Basic Control",
-                content: [{
-                    name: "导航控件",
-                    name_en: "Navigation Control",
-                    thumbnail: "control_navigationControl.png",
-                    fileName: "control_navigationControl"
-                }, {
-                    name: "比例尺控件",
-                    name_en: "Scale Control",
-                    thumbnail: "control_scaleControl.png",
-                    fileName: "control_scaleControl"
-                }, {
-                    name: "全屏控件",
-                    name_en: "Fullscreen Control",
-                    thumbnail: "control_fullscreenControl.png",
-                    fileName: "control_fullscreenControl"
-                }, {
-                    name: "定位控件",
-                    name_en: "Geolocate Control",
-                    thumbnail: "control_geolocateControl.png",
-                    fileName: "control_geolocateControl"
-                }, {
-                    name: "版权控件",
-                    name_en: "Attribution Control",
-                    thumbnail: "control_attributionControl.png",
-                    fileName: "control_attributionControl"
-                }, {
-                    name: "绘图控件",
-                    name_en: "Draw Control",
-                    thumbnail: "control_drawControl.png",
-                    fileName: "control_drawControl"
-                }, {
-                    name: "卷帘控件",
-                    name_en: "Swipe between maps",
-                    thumbnail: "control_swipeBetweenMaps.png",
-                    fileName: "control_swipeBetweenMaps"
-                }]
+                content: [
+                    {
+                        name: "导航控件",
+                        name_en: "Navigation Control",
+                        thumbnail: "control_navigationControl.png",
+                        fileName: "control_navigationControl"
+                    },
+                    {
+                        name: "比例尺控件",
+                        name_en: "Scale Control",
+                        thumbnail: "control_scaleControl.png",
+                        fileName: "control_scaleControl"
+                    },
+                    {
+                        name: "全屏控件",
+                        name_en: "Fullscreen Control",
+                        thumbnail: "control_fullscreenControl.png",
+                        fileName: "control_fullscreenControl"
+                    },
+                    {
+                        name: "定位控件",
+                        name_en: "Geolocate Control",
+                        thumbnail: "control_geolocateControl.png",
+                        fileName: "control_geolocateControl"
+                    },
+                    {
+                        name: "版权控件",
+                        name_en: "Attribution Control",
+                        thumbnail: "control_attributionControl.png",
+                        fileName: "control_attributionControl"
+                    },
+                    {
+                        name: "绘图控件",
+                        name_en: "Draw Control",
+                        thumbnail: "control_drawControl.png",
+                        fileName: "control_drawControl"
+                    },
+                    {
+                        name: "卷帘控件",
+                        name_en: "Swipe between maps",
+                        thumbnail: "control_swipeBetweenMaps.png",
+                        fileName: "control_swipeBetweenMaps"
+                    }
+                ]
             }
         }
     },
-    "multiCoordSys": {
+    multiCoordSys: {
         name: "多坐标系",
         name_en: "Multiple CRS",
         version: "9.1.1",
         // localIgnore: true,
         content: {
-            "Multi_coordinate_Map": {
+            Multi_coordinate_Map: {
                 name: "地图",
                 name_en: "Map service",
                 version: "9.1.1",
-                content: [{
-                    name: "地图_WGS84",
-                    name_en: "Map WGS84",
-                    version: "9.1.1",
-                    thumbnail: "01_tiledMapLayer_4326.png",
-                    fileName: "01_tiledMapLayer_4326"
-                }, {
-                    name: "地图_China2000",
-                    name_en: "Map China2000",
-                    localIgnore: true,
-                    version: "9.1.1",
-                    thumbnail: "01_tiledMapLayer.png",
-                    fileName: "01_tiledMapLayer_4490"
-                }, {
-                    name: "地图_Beijing54",
-                    name_en: "Map Beijing54",
-                    version: "9.1.1",
-                    localIgnore: true,
-                    thumbnail: "01_tiledMapLayer.png",
-                    fileName: "01_tiledMapLayer_4214"
-                }, {
-                    name: "地图_Xian80",
-                    name_en: "Map Xian80",
-                    localIgnore: true,
-                    version: "9.1.1",
-                    thumbnail: "01_tiledMapLayer.png",
-                    fileName: "01_tiledMapLayer_4610"
-                }, {
-                    name: "绘图控件_WGS84",
-                    name_en: "Draw control WGS84",
-                    version: "9.1.1",
-                    thumbnail: "control_drawControl_4326.png",
-                    fileName: "control_drawControl_4326"
-                }, {
-                    name: "矢量瓦片_WGS84",
-                    name_en: "MVT WGS84",
-                    version: "9.1.1",
-                    thumbnail: "mvt_4326.png",
-                    fileName: "mvtVectorTile_4326"
-                }]
+                content: [
+                    {
+                        name: "地图_WGS84",
+                        name_en: "Map WGS84",
+                        version: "9.1.1",
+                        thumbnail: "01_tiledMapLayer_4326.png",
+                        fileName: "01_tiledMapLayer_4326"
+                    },
+                    {
+                        name: "地图_China2000",
+                        name_en: "Map China2000",
+                        localIgnore: true,
+                        version: "9.1.1",
+                        thumbnail: "01_tiledMapLayer.png",
+                        fileName: "01_tiledMapLayer_4490"
+                    },
+                    {
+                        name: "地图_Beijing54",
+                        name_en: "Map Beijing54",
+                        version: "9.1.1",
+                        localIgnore: true,
+                        thumbnail: "01_tiledMapLayer.png",
+                        fileName: "01_tiledMapLayer_4214"
+                    },
+                    {
+                        name: "地图_Xian80",
+                        name_en: "Map Xian80",
+                        localIgnore: true,
+                        version: "9.1.1",
+                        thumbnail: "01_tiledMapLayer.png",
+                        fileName: "01_tiledMapLayer_4610"
+                    },
+                    {
+                        name: "绘图控件_WGS84",
+                        name_en: "Draw control WGS84",
+                        version: "9.1.1",
+                        thumbnail: "control_drawControl_4326.png",
+                        fileName: "control_drawControl_4326"
+                    },
+                    {
+                        name: "矢量瓦片_WGS84",
+                        name_en: "MVT WGS84",
+                        version: "9.1.1",
+                        thumbnail: "mvt_4326.png",
+                        fileName: "mvtVectorTile_4326"
+                    }
+                ]
             },
-            "Multi_coordinate_cluster": {
+            Multi_coordinate_cluster: {
                 name: "聚合",
                 name_en: "Cluster",
                 version: "9.1.1",
-                content: [{
-                    name: "点聚合_WGS84",
-                    name_en: "Marker Cluster WGS84",
-                    version: "9.1.1",
-                    thumbnail: "markerCluster_4326.png",
-                    fileName: "markerCluster_4326"
-                }]
+                content: [
+                    {
+                        name: "点聚合_WGS84",
+                        name_en: "Marker Cluster WGS84",
+                        version: "9.1.1",
+                        thumbnail: "markerCluster_4326.png",
+                        fileName: "markerCluster_4326"
+                    }
+                ]
             },
-            "Multi_coordinate_DeckGL": {
+            Multi_coordinate_DeckGL: {
                 name: "DeckGL",
                 name_en: "DeckGL",
                 version: "9.1.1",
-                content: [{
-                    name: "路径图_WGS84",
-                    name_en: "Path-layer WGS84",
-                    version: "9.1.1",
-                    thumbnail: "deckglLayer_pathLayer_4326.png",
-                    fileName: "deckglLayer_pathLayer_4326"
-                }]
+                content: [
+                    {
+                        name: "路径图_WGS84",
+                        name_en: "Path-layer WGS84",
+                        version: "9.1.1",
+                        thumbnail: "deckglLayer_pathLayer_4326.png",
+                        fileName: "deckglLayer_pathLayer_4326"
+                    }
+                ]
             },
-            "Multi_coordinate_ECharts": {
+            Multi_coordinate_ECharts: {
                 name: "ECharts",
                 name_en: "ECharts",
                 version: "9.1.1",
-                content: [{
-                    name: "迁徙图_WGS84",
-                    name_en: "Mock migration WGS84",
-                    version: "9.1.1",
-                    thumbnail: "echarts_geoline_4326.png",
-                    fileName: "echarts_geoline_4326"
-                }, {
-                    name: "微博签到图_WGS84",
-                    name_en: "Scatter of Weibo user WGS84",
-                    version: "9.1.1",
-                    thumbnail: "echarts_scatterWeibo_4326.png",
-                    fileName: "echarts_scatterWeibo_4326"
-                }, {
-                    name: "全国铁路网络图（400万点数据绘制）_WGS84",
-                    name_en: "Use lines to draw 4 millions Chinese railways WGS84",
-                    localIgnore: true,
-                    version: "9.1.1",
-                    thumbnail: "echarts_linesDrawMillionsRailwaysNetwork_4326.png",
-                    fileName: "echarts_linesDrawMillionsRailwaysNetwork_4326"
-                }]
+                content: [
+                    {
+                        name: "迁徙图_WGS84",
+                        name_en: "Mock migration WGS84",
+                        version: "9.1.1",
+                        thumbnail: "echarts_geoline_4326.png",
+                        fileName: "echarts_geoline_4326"
+                    },
+                    {
+                        name: "微博签到图_WGS84",
+                        name_en: "Scatter of Weibo user WGS84",
+                        version: "9.1.1",
+                        thumbnail: "echarts_scatterWeibo_4326.png",
+                        fileName: "echarts_scatterWeibo_4326"
+                    },
+                    {
+                        name: "全国铁路网络图（400万点数据绘制）_WGS84",
+                        name_en: "Use lines to draw 4 millions Chinese railways WGS84",
+                        localIgnore: true,
+                        version: "9.1.1",
+                        thumbnail: "echarts_linesDrawMillionsRailwaysNetwork_4326.png",
+                        fileName: "echarts_linesDrawMillionsRailwaysNetwork_4326"
+                    }
+                ]
             },
-            "Multi_coordinate_graphicLayer": {
+            Multi_coordinate_graphicLayer: {
                 name: "高效率点图层",
                 name_en: "High efficiency point layer",
                 version: "9.1.1",
-                content: [{
-                    name: "纽约出租车145万上车点_WGS84",
-                    name_en: "Points of 1.45 million NYC taxis WGS84",
-                    version: "9.1.1",
-                    thumbnail: "graphicLayer_4326.png",
-                    fileName: "graphicLayer_4326"
-                }]
+                content: [
+                    {
+                        name: "纽约出租车145万上车点_WGS84",
+                        name_en: "Points of 1.45 million NYC taxis WGS84",
+                        version: "9.1.1",
+                        thumbnail: "graphicLayer_4326.png",
+                        fileName: "graphicLayer_4326"
+                    }
+                ]
             },
-            "Multi_coordinate_heatMap": {
+            Multi_coordinate_heatMap: {
                 name: "热力图",
                 name_en: "Heat map",
                 version: "9.1.1",
-                content: [{
+                content: [
+                    {
                         name: "地震数据_WGS84",
                         name_en: "Earthquake Data WGS84",
                         version: "9.1.1",
@@ -1028,266 +1144,309 @@ var exampleConfig = {
                     }
                 ]
             },
-            "Multi_coordinate_MapV": {
+            Multi_coordinate_MapV: {
                 name: "MapV",
                 name_en: "MapV",
                 version: "9.1.1",
-                content: [{
-                    name: "通勤图_WGS84",
-                    name_en: "OD WGS84",
-                    version: "9.1.1",
-                    thumbnail: "mapvCsvcar_4326.png",
-                    fileName: "mapvCsvcar_4326"
-                }, {
-                    name: "面_WGS84",
-                    name_en: "Simple polygon WGS84",
-                    version: "9.1.1",
-                    thumbnail: "mapvLayerPolyon_4326.png",
-                    fileName: "mapvLayerPolyon_4326"
-                }]
-            }
-        }
-    },
-    "widgets": {
-        name: "微件",
-        name_en: "Widgets",
-        localIgnore: true,
-        content: {
-            // "widgetsSuperMap": {
-            //     name: "基础",
-            //     name_en: "Basic",
-            //     content: [
-            //         {
-            //             name: "图表_iServer",
-            //             name_en: "chart_iServer",
-            //             version: "9.1.2",
-            //             thumbnail: "widgets_chart_isvr.png",
-            //             fileName: "widgets_chart_isvr"
-            //         },{
-            //             name: "图表_iPortal",
-            //             name_en: "chart_iPortal",
-            //             version: "9.1.2",
-            //             thumbnail: "widgets_chart_iptl.png",
-            //             fileName: "widgets_chart_iptl"
-            //         }
-            //     ]
-            // },
-            "widgetsAdvanced": {
-                name: "for Vue",
-                name_en: "for Vue",
                 content: [
                     {
-                        name: "地图",
-                        name_en: "Map",
-                        version: "9.1.2",
-                        thumbnail: "widgets_map_vue.png",
-                        fileName: "widgets_map_vue"
-                    } ,{
-                        name: "Web Map",
-                        name_en: "Web Map",
-                        version: "9.1.2",
-                        thumbnail: "widgets_webmap_vue.png",
-                        fileName: "widgets_webmap_vue"
-                    } ,{
-                        name: "图表",
-                        name_en: "Chart",
-                        version: "9.1.2",
-                        thumbnail: "widgets_chart_vue.png",
-                        fileName: "widgets_chart_vue"
-                    } ,{
-                      name: "图表-饼图",
-                      name_en: "Chart(pie)",
-                      version: "9.1.2",
-                      thumbnail: "widgets_chart_vue(pie).png",
-                      fileName: "widgets_pie_chart_vue"
-                  } ,{
-                    name: "图表-雷达图",
-                    name_en: "Chart(radar)",
-                    version: "9.1.2",
-                    thumbnail: "widgets_chart_vue(radar).png",
-                    fileName: "widgets_radar_chart_vue"
-                  } ,{
-                    name: "图表-仪表盘",
-                    name_en: "Chart(gauge)",
-                    version: "9.1.2",
-                    thumbnail: "widgets_chart_vue(gauge).png",
-                    fileName: "widgets_gauge_chart_vue"
-                  } ,
+                        name: "通勤图_WGS84",
+                        name_en: "OD WGS84",
+                        version: "9.1.1",
+                        thumbnail: "mapvCsvcar_4326.png",
+                        fileName: "mapvCsvcar_4326"
+                    },
                     {
-                        name: "图层",
-                        name_en: "LayerList",
-                        version: "9.1.2",
-                        thumbnail: "widgets_layerList_vue.png",
-                        fileName: "widgets_layerList_vue"
-                    } ,{
-                        name: "鹰眼",
-                        name_en: "Minimap",
-                        version: "9.1.2",
-                        thumbnail: "widgets_minimap_vue.png",
-                        fileName: "widgets_minimap_vue"
-                    } ,{
-                        name: "平移",
-                        name_en: "Pan",
-                        version: "9.1.2",
-                        thumbnail: "widgets_pan_vue.png",
-                        fileName: "widgets_pan_vue"
-                    } ,{
-                        name: "比例尺",
-                        name_en: "Scale",
-                        version: "9.1.2",
-                        thumbnail: "widgets_scale_vue.png",
-                        fileName: "widgets_scale_vue"
-                    } ,{
-                        name: "缩放",
-                        name_en: "Zoom",
-                        version: "9.1.2",
-                        thumbnail: "widgets_zoom_vue.png",
-                        fileName: "widgets_zoom_vue"
-                    } ,{
-                        name: "图例",
-                        name_en: "Legend",
-                        version: "9.1.2",
-                        thumbnail: "widgets_legend_vue.png",
-                        fileName: "widgets_legend_vue"
-                    } ,{
-                        name: "基础微件",
-                        name_en: "Basic Widget",
-                        version: "9.1.2",
-                        thumbnail: "widgets_basic_vue.png",
-                        fileName: "widgets_basic_vue"
-                    } ,{
-                        name: "量算",
-                        name_en: "Measure",
-                        version: "9.1.2",
-                        thumbnail: "widgets_measure_vue.png",
-                        fileName: "widgets_measure_vue"
-                    } ,{
-                        name: "查询",
-                        name_en: "Query",
-                        version: "9.1.2",
-                        thumbnail: "widgets_query_vue.png",
-                        fileName: "widgets_query_vue"
-                    } ,{
-                        name: "搜索",
-                        name_en: "Search",
-                        version: "9.1.2",
-                        thumbnail: "widgets_search_vue.png",
-                        fileName: "widgets_search_vue"
-                    } ,{
-                        name: "主题切换",
-                        name_en: "Theme switching",
-                        version: "9.1.2",
-                        thumbnail: "widgets_theme_vue.png",
-                        fileName: "widgets_theme_vue"
-                    } ,{
-                        name: "土地利用示例",
-                        name_en: "Land use example",
-                        version: "9.1.2",
-                        thumbnail: "widgets_demo_vue.png",
-                        fileName: "widgets_demo_vue"
-                    } ,{
-                      name: "栅格图层",
-                      name_en: "Raster layer",
-                      version: "10.x.x",
-                      thumbnail: "widgets_rasterLayer_vue.png",
-                      fileName: "widgets_raster_vue"
-                    } ,{
-                      name: "矢量瓦片图层",
-                      name_en: "Vector tile layer",
-                      version: "10.x.x",
-                      thumbnail: "widgets_vector_tile_vue.png",
-                      fileName: "widgets_vector_tile_vue"
-                    } ,{
-                      name: "点聚合图层",
-                      name_en: "Cluster layer",
-                      version: "10.x.x",
-                      thumbnail: "widgets_cluster_vue.png",
-                      fileName: "widgets_cluster_vue"
-                    } ,{
-                        name: "单值专题图",
-                        name_en: "Unique Theme layer",
-                        version: "10.x.x",
-                        thumbnail: "widgets_uniquetheme_vue.png",
-                        fileName: "widgets_uniquetheme_vue"
-                      } ,{
-                        name: "分段专题图",
-                        name_en: "Range Theme layer",
-                        version: "10.x.x",
-                        thumbnail: "widgets_rangetheme_vue.png",
-                        fileName: "widgets_rangetheme_vue"
-                      } ,{
-                        name: "等级符号专题图",
-                        name_en: "RanSymbol Theme layer",
-                        version: "10.x.x",
-                        thumbnail: "widgets_ranksymboltheme_vue.png",
-                        fileName: "widgets_ranksymboltheme_vue"
-                      } ,{
-                        name: "标签专题图",
-                        name_en: "Label Theme layer",
-                        version: "10.x.x",
-                        thumbnail: "widgets_labeltheme_vue.png",
-                        fileName: "widgets_labeltheme_vue"
-                      } ,{
-                        name: "图表专题图",
-                        name_en: "Statistical chart",
-                        version: "10.x.x",
-                        thumbnail: "widgets_graph_theme_layer_vue.png",
-                        fileName: "widgets_graph_theme_layer_vue"
-                      } ,{
-                      name: "热力图图层",
-                      name_en: "Heatmap layer",
-                      version: "10.x.x",
-                      thumbnail: "widgets_heatmap_vue.png",
-                      fileName: "widgets_heatmap_vue"
-                    } ,{
-                      name: "MapV 图层",
-                      name_en: "MapV layer",
-                      version: "10.x.x",
-                      thumbnail: "widgets_mapv_vue.gif",
-                      fileName: "widgets_mapv_vue"
-                    } ,{
-                      name: "Echarts 图层",
-                      name_en: "Echarts layer",
-                      version: "10.x.x",
-                      thumbnail: "widgets_echartsLayer_vue.gif",
-                      fileName: "widgets_echarts_vue"
-                    } ,{
-                      name: "DeckGL 图层",
-                      name_en: "DeckGL layer",
-                      version: "10.x.x",
-                      thumbnail: "widgets_deckgl_vue.png",
-                      fileName: "widgets_deckgl_vue"
-                    } ,{
-                      name: "打开文件",
-                      name_en: "Open File",
-                      version: "10.x.x",
-                      thumbnail: "widgets_openfile_vue.png",
-                      fileName: "widgets_openfile_vue"
-                    } ,{
-                      name: "数据流图层",
-                      name_en: "Data Flow Layer",
-                      version: "10.x.x",
-                      thumbnail: "widgets_dataflow_vue.gif",
-                      fileName: "widgets_dataflow_vue"
+                        name: "面_WGS84",
+                        name_en: "Simple polygon WGS84",
+                        version: "9.1.1",
+                        thumbnail: "mapvLayerPolyon_4326.png",
+                        fileName: "mapvLayerPolyon_4326"
                     }
                 ]
             }
         }
     },
-    "GTC": {
+    vuecomponents: {
+        name: "Vue 组件",
+        name_en: "Vue Components",
+        localIgnore: true,
+        content: {
+            map: {
+                name: "地图",
+                name_en: "Map",
+                content: [
+                    {
+                        name: "iServer 地图",
+                        name_en: "iServer Map",
+                        version: "9.1.2",
+                        thumbnail: "components_map_vue.png",
+                        fileName: "components_map_vue"
+                    },
+                    {
+                        name: "iPortal 地图",
+                        name_en: "iPortal Map",
+                        version: "9.1.2",
+                        thumbnail: "components_webmap_vue.png",
+                        fileName: "components_webmap_vue"
+                    },
+                    {
+                        name: "栅格图层",
+                        name_en: "Raster layer",
+                        version: "10.x.x",
+                        thumbnail: "components_rasterLayer_vue.png",
+                        fileName: "components_raster_vue"
+                    },
+                    {
+                        name: "矢量瓦片图层",
+                        name_en: "Vector tile layer",
+                        version: "10.x.x",
+                        thumbnail: "components_vector_tile_vue.png",
+                        fileName: "components_vector_tile_vue"
+                    },
+                    {
+                        name: "图层列表",
+                        name_en: "LayerList",
+                        version: "9.1.2",
+                        thumbnail: "components_layerList_vue.png",
+                        fileName: "components_layerList_vue"
+                    },
+                    {
+                        name: "鹰眼",
+                        name_en: "Minimap",
+                        version: "9.1.2",
+                        thumbnail: "components_minimap_vue.png",
+                        fileName: "components_minimap_vue"
+                    },
+                    {
+                        name: "平移",
+                        name_en: "Pan",
+                        version: "9.1.2",
+                        thumbnail: "components_pan_vue.png",
+                        fileName: "components_pan_vue"
+                    },
+                    {
+                        name: "比例尺",
+                        name_en: "Scale",
+                        version: "9.1.2",
+                        thumbnail: "components_scale_vue.png",
+                        fileName: "components_scale_vue"
+                    },
+                    {
+                        name: "缩放",
+                        name_en: "Zoom",
+                        version: "9.1.2",
+                        thumbnail: "components_zoom_vue.png",
+                        fileName: "components_zoom_vue"
+                    },
+                    {
+                        name: "图例",
+                        name_en: "Legend",
+                        version: "9.1.2",
+                        thumbnail: "components_legend_vue.png",
+                        fileName: "components_legend_vue"
+                    }
+                ]
+            },
+            viz_vue: {
+                name: "可视化",
+                name_en: "Visualization",
+                content: [
+                    {
+                        name: "点聚合图层",
+                        name_en: "Cluster layer",
+                        version: "10.x.x",
+                        thumbnail: "components_cluster_vue.png",
+                        fileName: "components_cluster_vue"
+                    },
+                    {
+                        name: "单值专题图",
+                        name_en: "Unique Theme layer",
+                        version: "10.x.x",
+                        thumbnail: "components_uniquetheme_vue.png",
+                        fileName: "components_uniquetheme_vue"
+                    },
+                    {
+                        name: "分段专题图",
+                        name_en: "Range Theme layer",
+                        version: "10.x.x",
+                        thumbnail: "components_rangetheme_vue.png",
+                        fileName: "components_rangetheme_vue"
+                    },
+                    {
+                        name: "等级符号专题图",
+                        name_en: "RanSymbol Theme layer",
+                        version: "10.x.x",
+                        thumbnail: "components_ranksymboltheme_vue.png",
+                        fileName: "components_ranksymboltheme_vue"
+                    },
+                    {
+                        name: "标签专题图",
+                        name_en: "Label Theme layer",
+                        version: "10.x.x",
+                        thumbnail: "components_labeltheme_vue.png",
+                        fileName: "components_labeltheme_vue"
+                    },
+                    {
+                        name: "图表专题图",
+                        name_en: "Statistical chart",
+                        version: "10.x.x",
+                        thumbnail: "components_graph_theme_layer_vue.png",
+                        fileName: "components_graph_theme_layer_vue"
+                    },
+                    {
+                        name: "热力图图层",
+                        name_en: "Heatmap layer",
+                        version: "10.x.x",
+                        thumbnail: "components_heatmap_vue.png",
+                        fileName: "components_heatmap_vue"
+                    },
+                    {
+                        name: "MapV 图层",
+                        name_en: "MapV layer",
+                        version: "10.x.x",
+                        thumbnail: "components_mapv_vue.gif",
+                        fileName: "components_mapv_vue"
+                    },
+                    {
+                        name: "Echarts 图层",
+                        name_en: "Echarts layer",
+                        version: "10.x.x",
+                        thumbnail: "components_echartsLayer_vue.gif",
+                        fileName: "components_echarts_vue"
+                    },
+                    {
+                        name: "DeckGL 图层",
+                        name_en: "DeckGL layer",
+                        version: "10.x.x",
+                        thumbnail: "components_deckgl_vue.png",
+                        fileName: "components_deckgl_vue"
+                    },
+                    {
+                        name: "数据流图层",
+                        name_en: "Data Flow Layer",
+                        version: "10.x.x",
+                        thumbnail: "components_dataflow_vue.gif",
+                        fileName: "components_dataflow_vue"
+                    }
+                ]
+            },
+            chart: {
+                name: "图表",
+                name_en: "Chart",
+                content: [
+                    {
+                        name: "图表",
+                        name_en: "Chart",
+                        version: "9.1.2",
+                        thumbnail: "components_chart_vue.png",
+                        fileName: "components_chart_vue"
+                    },
+                    {
+                        name: "图表-饼图",
+                        name_en: "Chart(pie)",
+                        version: "9.1.2",
+                        thumbnail: "components_chart_vue(pie).png",
+                        fileName: "components_pie_chart_vue"
+                    },
+                    {
+                        name: "图表-雷达图",
+                        name_en: "Chart(radar)",
+                        version: "9.1.2",
+                        thumbnail: "components_chart_vue(radar).png",
+                        fileName: "components_radar_chart_vue"
+                    },
+                    {
+                        name: "图表-仪表盘",
+                        name_en: "Chart(gauge)",
+                        version: "9.1.2",
+                        thumbnail: "components_chart_vue(gauge).png",
+                        fileName: "components_gauge_chart_vue"
+                    }
+                ]
+            },
+            tools: {
+                name: "工具",
+                name_en: "Tools",
+                content: [
+                    {
+                        name: "查询",
+                        name_en: "Query",
+                        version: "9.1.2",
+                        thumbnail: "components_query_vue.png",
+                        fileName: "components_query_vue"
+                    },
+                    {
+                        name: "搜索",
+                        name_en: "Search",
+                        version: "9.1.2",
+                        thumbnail: "components_search_vue.png",
+                        fileName: "components_search_vue"
+                    },
+                    {
+                        name: "量算",
+                        name_en: "Measure",
+                        version: "9.1.2",
+                        thumbnail: "components_measure_vue.png",
+                        fileName: "components_measure_vue"
+                    },
+                    {
+                        name: "打开文件",
+                        name_en: "Open File",
+                        version: "10.x.x",
+                        thumbnail: "components_openfile_vue.png",
+                        fileName: "components_openfile_vue"
+                    }
+                ]
+            },
+           
+            others: {
+                name: "其他",
+                name_en: "Others",
+                content: [
+                    {
+                        name: "基础组件",
+                        name_en: "Basic Component",
+                        version: "9.1.2",
+                        thumbnail: "components_basic_vue.png",
+                        fileName: "components_basic_vue"
+                    },
+                  
+                    {
+                        name: "主题切换",
+                        name_en: "Theme switching",
+                        version: "9.1.2",
+                        thumbnail: "components_theme_vue.png",
+                        fileName: "components_theme_vue"
+                    },
+                    {
+                        name: "土地利用示例",
+                        name_en: "Land use example",
+                        version: "9.1.2",
+                        thumbnail: "components_demo_vue.png",
+                        fileName: "components_demo_vue"
+                    }
+                   
+                ]
+            }
+        }
+    },
+    GTC: {
         name: "GTC",
         name_en: "GTC",
         localIgnore: true,
         content: {
-            "GTC2017": {
+            GTC2017: {
                 name: "2017",
                 name_en: "2017",
-                content: [{
-                    name: "GTC2017",
-                    name_en: "GTC2017",
-                    thumbnail: "gtc2017.gif",
-                    fileName: "GTC2017"
-                }]
+                content: [
+                    {
+                        name: "GTC2017",
+                        name_en: "GTC2017",
+                        thumbnail: "gtc2017.gif",
+                        fileName: "GTC2017"
+                    }
+                ]
             }
         }
     }
@@ -1299,13 +1458,13 @@ var exampleConfig = {
  *不分层
  */
 var sideBarIconConfig = {
-    "iServer": "fa-server",
-    "iPortal": "fa-desktop",
-    "viz": "fa-map",
-    "control": "fa-sliders",
-    "multiCoordSys": "fa-globe",
-    "widgets": "fa-window-restore",
-    "GTC": "fa-globe"
+    iServer: "fa-server",
+    iPortal: "fa-desktop",
+    viz: "fa-map",
+    control: "fa-sliders",
+    multiCoordSys: "fa-globe",
+    vuecomponents: "fa-window-restore",
+    GTC: "fa-globe"
 };
 
 /**
@@ -1314,11 +1473,11 @@ var sideBarIconConfig = {
  *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
  */
 var exampleIconConfig = {
-    "iServer": "fa-server",
-    "iPortal": "fa-desktop",
-    "viz": "fa-map",
-    "GTC": "fa-globe",
-    "widgets": "fa-window-restore",
-    'multiCoordSys': "fa-globe"
+    iServer: "fa-server",
+    iPortal: "fa-desktop",
+    viz: "fa-map",
+    GTC: "fa-globe",
+    VueComponents: "fa-window-restore",
+    multiCoordSys: "fa-globe"
 };
 window.mapboxglExampleConfig = exampleConfig;

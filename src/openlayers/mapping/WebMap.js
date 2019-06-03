@@ -16,6 +16,8 @@ import {
 import {
     StyleUtils
 } from '../core/StyleUtils';
+import provincialCenterData from './webmap/config/ProvinceCenter';
+import municipalCenterData from './webmap/config/MunicipalCenter';
 import jsonsql from 'jsonsql';
 
 window.proj4 = proj4;
@@ -23,6 +25,8 @@ window.Proj4js = proj4;
 ol.supermap = ol.supermap || {};
 //数据转换工具
 const transformTools = new ol.format.GeoJSON();
+// 迁徙图最大支持要素数量
+const MAX_MIGRATION_ANIMATION_COUNT = 1000;
 /**
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
@@ -1172,7 +1176,7 @@ export class WebMap extends ol.Observable {
      * @param {number} layersLen - 叠加图层总数
      */
     sendMapToUser(layersLen) {
-        if (this.layerAdded === layersLen) {
+        if (this.layerAdded === layersLen && this.successCallback) {
             this.successCallback(this.map, this.mapParams, this.layers);
         }
     }
@@ -1381,6 +1385,8 @@ export class WebMap extends ol.Observable {
             layer = this.createDataflowHeatLayer(layerInfo);
         } else if(layerInfo.layerType === "RANK_SYMBOL") {
             layer = this.createRankSymbolLayer(layerInfo, features);
+        } else if(layerInfo.layerType === "MIGRATION") {
+            layer = this.createMigrationLayer(layerInfo, features);
         }
         let layerId = Util.newGuid(8);
         if (layer) {
@@ -1388,8 +1394,7 @@ export class WebMap extends ol.Observable {
                 name: layerInfo.name,
                 layerId: layerId
             });
-            layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
-            layer.setVisible(layerInfo.visible);
+            
             //刷新下图层，否则feature样式出不来
             if(layerInfo && layerInfo.style && layerInfo.style.imageInfo) {
                 let img = new Image();
@@ -1398,10 +1403,17 @@ export class WebMap extends ol.Observable {
                     layer.getSource().refresh();
                 };
             }
-    
+            if (layerInfo.layerType === 'MIGRATION') {
+                layer.appendTo(this.map);
+                // 在这里恢复图层可见性状态
+                layer.setVisible(layerInfo.visible);
+            } else {
+                layerInfo.opacity != undefined && layer.setOpacity(layerInfo.opacity);
+                layer.setVisible(layerInfo.visible);
+                this.map.addLayer(layer);
+            }
+            layer.setZIndex(index);
         }
-        layer && this.map.addLayer(layer);
-        layer && layer.setZIndex(index);
         layerInfo.layer = layer;
         layerInfo.layerId = layerId;
         if (layerInfo.labelStyle && layerInfo.labelStyle.labelField && layerInfo.layerType !== "DATAFLOW_POINT_TRACK") {
@@ -2581,7 +2593,265 @@ export class WebMap extends ol.Observable {
             }
         }
     }
+    
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createMigrationLayer
+     * @description 创建迁徙图
+     * @param {Object} layerInfo 图层信息
+     * @param {Array} features 要素数组
+     * @returns {ol.layer} 图层
+     */
+    createMigrationLayer(layerInfo, features) {
+        // 给ol3Echarts上添加设置图层可见性和设置图层层级的方法
+        if (!window.ol3Echarts.prototype.setVisible) {
+            window.ol3Echarts.prototype.setVisible = function(visible) {
+                if (visible) {
+                    let options = this.get('options');
+                    if (options) {
+                      this.setChartOptions(options);
+                      this.unset('options');
+                    }
+                } else {
+                    let options = this.getChartOptions();
+                    this.set('options', options);
+                    this.clear();
+                    this.setChartOptions({});
+                }
+            };
+        }
+        if (!window.ol3Echarts.prototype.setZIndex) {
+            window.ol3Echarts.prototype.setZIndex = function(zIndex) {
+                if (this.$container) {
+                    this.$container.style.zIndex = zIndex;
+                }
+            };
+        }
+        let properties = Util.getFeatureProperties(features);
+        let lineData = this.createLinesData(layerInfo, properties);
+        let pointData = this.createPointsData(lineData, layerInfo, properties);
+        let options = this.createOptions(layerInfo, lineData, pointData);
+        let layer = new window.ol3Echarts(options, {
+            hideOnMoving: true,
+            hideOnZooming: true
+        });
+        layer.type = 'ECHARTS';
+        return layer;
+    }
 
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createOptions
+     * @description 创建echarts的options
+     * @param {Object} layerInfo 图层信息
+     * @param {Array} lineData 线数据
+     * @param {Array} pointData 点数据
+     * @returns {Object} echarts参数
+     */
+    createOptions(layerInfo, lineData, pointData) {
+        let series;
+        let lineSeries = this.createLineSeries(layerInfo, lineData);
+        if (pointData && pointData.length) {
+            let pointSeries = this.createPointSeries(layerInfo, pointData);
+            series = lineSeries.concat(pointSeries);
+        } else {
+            series = lineSeries.slice();
+        }
+        let options = {
+            series
+        }
+        return options;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createLineSeries
+     * @description 创建线系列
+     * @param {Object} layerInfo 图层参数
+     * @param {Array} lineData 线数据
+     * @returns {Object} 线系列
+     */
+    createLineSeries(layerInfo, lineData) {
+        let lineSetting = layerInfo.lineSetting;
+        let animationSetting = layerInfo.animationSetting;
+        let linesSeries = [
+            // 轨迹线样式
+            {
+                name: 'line-series',
+                type: 'lines',
+                zlevel: 1,
+                effect: {
+                    show: animationSetting.show,
+                    constantSpeed: animationSetting.constantSpeed,
+                    trailLength: 0,
+                    symbol: animationSetting.symbol,
+                    symbolSize: animationSetting.symbolSize
+                },
+                lineStyle: {
+                    normal: {
+                        color: lineSetting.color,
+                        type: lineSetting.type,
+                        width: lineSetting.width,
+                        opacity: lineSetting.opacity,
+                        curveness: lineSetting.curveness
+                    }
+                },
+                data: lineData
+            }
+        ];
+
+        if (lineData.length > MAX_MIGRATION_ANIMATION_COUNT) {
+            linesSeries[0].large = true;
+            linesSeries[0].largeThreshold = 100;
+            linesSeries[0].blendMode = 'lighter';
+        }
+
+        return linesSeries;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createPointSeries
+     * @description 创建点系列
+     * @param {Object} layerInfo 图层参数
+     * @param {Array} pointData 点数据
+     * @returns {Object} 点系列
+     */
+    createPointSeries(layerInfo, pointData) {
+        let lineSetting = layerInfo.lineSetting;
+        let animationSetting = layerInfo.animationSetting;
+        let labelSetting = layerInfo.labelSetting;
+        let pointSeries = [{
+            name: 'point-series',
+            coordinateSystem: 'geo',
+            zlevel: 2,
+            label: {
+                normal: {
+                    show: labelSetting.show,
+                    position: 'right',
+                    formatter: '{b}',
+                    color: labelSetting.color,
+                    fontFamily: labelSetting.fontFamily
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: lineSetting.color || labelSetting.color
+                }
+            },
+            data: pointData
+        }]
+
+        if (animationSetting.show) {
+            // 开启动画
+            pointSeries[0].type = 'effectScatter';
+            pointSeries[0].rippleEffect = {
+                brushType: 'stroke'
+            }
+        } else {
+            // 关闭动画
+            pointSeries[0].type = 'scatter';
+        }
+
+        return pointSeries;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createPointsData
+     * @param {Array} lineData 线数据
+     * @param {Object} layerInfo 图层信息
+     * @param {Array} properties 属性
+     * @returns {Array} 点数据
+     */
+    createPointsData(lineData, layerInfo, properties) {
+        let data = [],
+            labelSetting = layerInfo.labelSetting;
+        // 标签隐藏则直接返回
+        if (!labelSetting.show || !lineData.length) {
+            return data;
+        }
+        let fromData = [], toData = [];
+        lineData.forEach((item, idx) => {
+            let coords = item.coords,
+                fromCoord = coords[0],
+                toCoord = coords[1],
+                fromProperty = properties[idx][labelSetting.from],
+                toProperty = properties[idx][labelSetting.to];
+            // 起始字段去重
+            let f = fromData.find(d => {
+                return d.value[0] === fromCoord[0] && d.value[1] === fromCoord[1]
+            });
+            !f && fromData.push({
+                name: fromProperty,
+                value: fromCoord
+            })
+            // 终点字段去重
+            let t = toData.find(d => {
+                return d.value[0] === toCoord[0] && d.value[1] === toCoord[1]
+            });
+            !t && toData.push({
+                name: toProperty,
+                value: toCoord
+            })
+        });
+        data = fromData.concat(toData);
+        return data;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createLinesData
+     * @param {Object} layerInfo 图层信息
+     * @param {Array} properties 属性
+     * @returns {Array} 线数据
+     */
+    createLinesData(layerInfo, properties) {
+        let data = [];
+        if (properties && properties.length) {
+            // 重新获取数据
+            let from = layerInfo.from,
+                to = layerInfo.to,
+                fromCoord, toCoord;
+            if (from.type === 'XY_FIELD' && from['xField'] && from['yField'] && to['xField'] && to['yField']) {
+                properties.forEach(property => {
+                    let fromX = property[from['xField']],
+                        fromY = property[from['yField']],
+                        toX = property[to['xField']],
+                        toY = property[to['yField']];
+                    if (!fromX || !fromY || !toX || !toY) {
+                        return;
+                    }
+
+                    fromCoord = [property[from['xField']], property[from['yField']]];
+                    toCoord = [property[to['xField']], property[to['yField']]];
+                    data.push({
+                        coords: [fromCoord, toCoord]
+                    })
+                });
+            } else if(from.type === 'PLACE_FIELD' && from['field'] && to['field']) {
+                const centerDatas = provincialCenterData.concat(municipalCenterData);
+                
+                properties.forEach(property => {
+                    let fromField = property[from['field']], 
+                        toField = property[to['field']];
+                    fromCoord = centerDatas.find(item => {
+                        return Util.isMatchAdministrativeName(item.name, fromField);
+                    })
+                    toCoord = centerDatas.find(item => {
+                        return Util.isMatchAdministrativeName(item.name, toField);
+                    })
+                    if (!fromCoord || !toCoord) {
+                        return;
+                    }
+                    data.push({
+                        coords: [fromCoord.coord, toCoord.coord]
+                    })
+                });
+            }
+        }
+        return data;
+    }
 }
 
 ol.supermap.WebMap = WebMap;

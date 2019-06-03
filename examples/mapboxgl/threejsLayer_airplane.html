@@ -66,9 +66,15 @@
         pitch: 60,
 
     });
+    map.on('load',function(){console.log('ddddddddddd');
+    // threeLayer = new mapboxgl.supermap.ThreeLayer('three');
+    // map.addLayer(threeLayer);
+        loaderModels();
+})
+
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    loaderModels();
+    // loaderModels();
 
 
     function loaderModels() {
@@ -76,41 +82,54 @@
         //加载gltf格式数据
         loader.load('./js/airplane/airplane.glb', function (gltf) {
             var scene = gltf.scene;
-            scene.rotation.x = -Math.PI / 2;
-            scene.rotation.y = Math.PI / 2;
-            scene.scale.multiplyScalar(150);
-
+            scene.rotation.x = Math.PI / 2;
+            // scene.rotation.y = Math.PI / 2;
             addThreeLayer(scene);
         });
     }
 
     function addThreeLayer(meshes) {
         threeLayer = new mapboxgl.supermap.ThreeLayer('three');
+        // threeLayer
         threeLayer.on("initialized", render);
-        threeLayer.addTo(map);
-
+        console.log(threeLayer);
+        map.addLayer(threeLayer);
         function render() {
+        //     var rotationX = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1, 0, 0), modelTransform.rotateX);
+        // var rotationY = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 1, 0), modelTransform.rotateY);
+        // var rotationZ = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 0, 1), modelTransform.rotateZ);
+
+        // var m = new THREE.Matrix4().fromArray(matrix);
+        // var l = new THREE.Matrix4().makeTranslation(modelTransform.translateX, modelTransform.translateY, modelTransform.translateZ)
+        //     .scale(new THREE.Vector3(modelTransform.scale, -modelTransform.scale, modelTransform.scale))
+        //     .multiply(rotationX)
+        //     .multiply(rotationY)
+        //     .multiply(rotationZ);
+
+        //     threeLayer.getCamera().projectionMatrix.elements = matrix;
+        //     threeLayer.getCamera().projectionMatrix = m.multiply(l);
+        //     console.log('renderrenderrenderrender');
             var renderer = threeLayer.getThreeRenderer(),
                 scene = threeLayer.getScene(),
                 camera = threeLayer.getCamera();
-
             this.light = new THREE.PointLight(0xaaaaaa, 0.5);
             this.light.position.copy(camera.position);
-            scene.add(this.light);
-            scene.add(new THREE.AmbientLight(0xffffff));
+            meshes.add(this.light);
+            meshes.add(new THREE.AmbientLight(0xffffff));
             threeLayer.setPosition(meshes, position);
             //设置飞行高度
-            meshes.translateY(5000);
-            scene.add(meshes);
+            // meshes.translateY(5000);
+            threeLayer.getScene().add(meshes);
+            // threeLayer.render();
 
-            (function animate() {
-                requestAnimationFrame(animate);
-                meshes.position.y -= 60;
-                var center = map.getCenter().toArray();
-                center[1] += 0.00008;
-                map.setCenter(center);
-                renderer.render(scene, camera);
-            })()
+            // (function animate() {
+            //     // requestAnimationFrame(animate);
+            //     meshes.position.y -= 60;
+            //     var center = map.getCenter().toArray();
+            //     center[1] += 0.00008;
+            //     map.setCenter(center);
+            //     // renderer.render(scene, camera);
+            // })()
         }
 
         //均匀光照，与相机位置同步
