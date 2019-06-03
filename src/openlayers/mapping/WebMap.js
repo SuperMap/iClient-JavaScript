@@ -1923,8 +1923,8 @@ export class WebMap extends ol.Observable {
             //保留两位有效数
             for (let key in segements) {
                 let value = segements[key];
-                if (key === 0) {
-                    // 最小的值下舍入
+                if (Number(key) === 0) {
+                    // 最小的值下舍入,要用两个等于号。否则有些值判断不对
                     value = Math.floor(value * 100) / 100;
                 } else {
                     // 其余上舍入
