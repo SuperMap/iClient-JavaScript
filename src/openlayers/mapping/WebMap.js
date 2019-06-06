@@ -335,11 +335,11 @@ export class WebMap extends ol.Observable {
             zIndex: layerInfo.zIndex || 1,
             visible: layerInfo.visible
         });
-        var layerId = Util.newGuid(8);
+        var layerID = Util.newGuid(8);
         if (layerInfo.name) {
             layer.setProperties({
                 name: layerInfo.name,
-                layerId: layerId
+                layerID: layerID
             });
         }
         if (!mapInfo.baseLayer) {
@@ -357,7 +357,7 @@ export class WebMap extends ol.Observable {
 
         //否则没有ID，对不上号
         layerInfo.layer = layer;
-        layerInfo.layerId = layerId;
+        layerInfo.layerID = layerID;
 
         if(isCallBack){
             layer.setZIndex(0); // wmts
@@ -1388,11 +1388,11 @@ export class WebMap extends ol.Observable {
         } else if(layerInfo.layerType === "MIGRATION") {
             layer = this.createMigrationLayer(layerInfo, features);
         }
-        let layerId = Util.newGuid(8);
+        let layerID = Util.newGuid(8);
         if (layer) {
             layerInfo.name && layer.setProperties({
                 name: layerInfo.name,
-                layerId: layerId
+                layerID: layerID
             });
             
             //刷新下图层，否则feature样式出不来
@@ -1415,7 +1415,7 @@ export class WebMap extends ol.Observable {
             layer.setZIndex(index);
         }
         layerInfo.layer = layer;
-        layerInfo.layerId = layerId;
+        layerInfo.layerID = layerID;
         if (layerInfo.labelStyle && layerInfo.labelStyle.labelField && layerInfo.layerType !== "DATAFLOW_POINT_TRACK") {
             //存在标签专题图
             //过滤条件过滤feature
@@ -2030,7 +2030,6 @@ export class WebMap extends ol.Observable {
             wrapX: false
         }), labelLayer, labelSource, pathLayer, pathSource;
         let layer = new ol.layer.Vector({
-            layerID: layerInfo.layerId,
             styleOL: style,
             source: source
         });
@@ -2054,7 +2053,7 @@ export class WebMap extends ol.Observable {
                 that.events.triggerEvent('updateDataflowFeature', {
                     feature: feature,
                     identifyField: layerInfo.identifyField,
-                    layerID: layerInfo.layerId
+                    layerID: layerInfo.layerID
                 });
                 if(layerInfo.filterCondition) {
                     //过滤条件
@@ -2147,19 +2146,23 @@ export class WebMap extends ol.Observable {
         let layerStyle = layer.get('styleOL');
         layer.setStyle(feature => {
             //有转向字段
-            if(directionField && directionField !== "未设置" || directionField !== "None") {
-                let value, image;
+            let value, image;
+            if(directionField !== undefined && directionField !== "未设置" && directionField !== "None") {
                 value = feature.attributes[directionField];
-                if(value > 360 || value < 0){ 
-                    return null
-                }
-                if(styleType === "SYMBOL_POINT") {
-                    image = layerStyle.getText();
-                } else {
-                    image = layerStyle.getImage();
-                }
-                image && image.setRotation(value);
+            } else {
+                value = 0;  
             }
+            if(value > 360 || value < 0) {
+                return null;
+            }
+            if(styleType === "SYMBOL_POINT") {
+                image = layerStyle.getText();
+            } else {
+                image = layerStyle.getImage();
+            }
+            //默认用户使用的是角度，换算成弧度
+            let rotate = (Math.PI * value) / 180;
+            image && image.setRotation(rotate);
             return layerStyle;
         });
     }
