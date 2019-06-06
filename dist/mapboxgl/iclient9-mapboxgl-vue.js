@@ -38427,7 +38427,7 @@ var LayerModel_LayerModel = function LayerModel() {
   this.minzoom = options.minzoom;
   this.source = options.source;
   this.type = options.type;
-  this.visibility = options.visibility;
+  this.visibility = options.visibility || 'visible';
 };
 
 /* harmony default export */ var web_map_LayerModel = (LayerModel_LayerModel);
