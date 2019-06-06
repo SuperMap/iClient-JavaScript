@@ -1169,11 +1169,11 @@ var exampleConfig = {
             }
         }
     },
-    "widgets": {
+    "components": {
         name: "组件",
-        name_en: "Widgets",
+        name_en: "Components",
         content: {
-            "widgetsSuperMap": {
+            "componentsSuperMap": {
                 name: "基础",
                 name_en: "Basic",
                 content: [{
@@ -1229,7 +1229,7 @@ var exampleConfig = {
             
             ]
             },
-            "widgetsAdvanced": {
+            "componentsAdvanced": {
                 name: "扩展",
                 name_en: "Advanced",
                 content: [{
@@ -1334,7 +1334,7 @@ var sideBarIconConfig = {
     "plot": "fa-edit",
     "dynamicPlot": "fa-pencil",
     "control": "fa-sliders",
-    "widgets": "fa-window-restore",
+    "components": "fa-window-restore",
     "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
     "OGC": "fa-globe",
@@ -1355,7 +1355,7 @@ var exampleIconConfig = {
     "plot": "fa-edit",
     "dynamicPlot": "fa-pencil",
     "control": "fa-sliders",
-    "widgets": "fa-window-restore",
+    "components": "fa-window-restore",
     "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
     "OGC": "fa-globe",
