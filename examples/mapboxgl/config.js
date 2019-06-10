@@ -1399,7 +1399,7 @@ var exampleConfig = {
                     }
                 ]
             },
-           
+
             others: {
                 name: "其他",
                 name_en: "Others",
@@ -1411,7 +1411,7 @@ var exampleConfig = {
                         thumbnail: "components_basic_vue.png",
                         fileName: "components_basic_vue"
                     },
-                  
+
                     {
                         name: "主题切换",
                         name_en: "Theme switching",
@@ -1425,8 +1425,15 @@ var exampleConfig = {
                         version: "9.1.2",
                         thumbnail: "components_demo_vue.png",
                         fileName: "components_demo_vue"
+                    },
+                    {
+                        name: "房产项目可视化监控平台示例",
+                        name_en: "Estate project visual monitoring platform example",
+                        version: "9.1.2",
+                        thumbnail: "components_estateMonitoringPlatform_vue.png",
+                        fileName: "components_estateMonitoringPlatform_vue"
                     }
-                   
+
                 ]
             }
         }

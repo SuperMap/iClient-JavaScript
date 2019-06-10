@@ -543,6 +543,7 @@ window.examplesResources = {
         "title_componentsSearch_Vue": 'Search Widget(Vue）',
         "title_componentsTheme_Vue": 'Theme Widget',
         "title_componentsDemo_Vue": 'Landuse demo',
+        "title_componentsEstateMonitoringPlatform_Vue": 'Estate project visual monitoring platform demo',
         "title_componentsCluster_Vue": 'Cluster Layer Widget(Vue)',
         "title_componentsEcharts_Vue": 'Echarts Layer Widget(Vue)',
         "title_componentsRaster_Vue": 'Raster Layer Widget(Vue)',
