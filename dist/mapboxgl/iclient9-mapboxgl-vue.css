@@ -9244,11 +9244,11 @@ body {
     color: #409eff;
     margin: 7px;
     font-weight: bolder; }
-  .sm-component-query__result-loading {
-    position: relative;
-    top: 50%;
-    margin-top: -25%;
-    text-align: center; }
+  .sm-component-query__no-result, .sm-component-query__result-loading {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
   .sm-component-query__result-body > ul {
     list-style: none;
     margin-left: -32px;
