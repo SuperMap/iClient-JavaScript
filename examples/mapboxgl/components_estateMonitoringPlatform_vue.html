@@ -27,12 +27,6 @@
                 overflow: auto;
             }
         }
-
-        @media screen and (max-height: 640px) {
-            #main {
-                overflow: auto;
-            }
-        }
     </style>
 </head>
 
@@ -40,80 +34,55 @@
     <div id="main">
         <a-row id="map-row">
             <a-col :md="6">
-                <sm-time-text timeType="date" :font-style="{fontSize: '0.73vw'}" background="transparent"
-                    text-color="#f2f2f2">
+                <sm-time-text timeType="date">
                 </sm-time-text>
                 <div class="year-plan-wrap">
-                    <sm-text
-                        :font-style="{fontSize: '0.94vw', lineHeight: '1.67vw', textAlign: 'center', fontWeight: 'bolder'}"
-                        background="transparent" text-color="#fff" title="年度计划"></sm-text>
+                    <sm-text :font-style="{lineHeight: '1.67vw'}" title="年度计划"></sm-text>
                     <div class="progress-holder">
                         <div class="progress-item">
-                            <sm-progress type="circle" stroke-color="#15D1F2" text-color="#fff" :percent="55"
-                                :stroke-width="8">
+                            <sm-progress type="circle" :percent="55" :stroke-width="8">
                             </sm-progress>
-                            <sm-text
-                                :font-style="{fontSize: '0.9375vw', lineHeight: '0.9375vw', textAlign: 'center', fontWeight: 'bolder'}"
-                                background="transparent" text-color="#fff" title="销售金额"></sm-text>
+                            <sm-text title="销售金额"></sm-text>
                         </div>
                         <div class="progress-item">
-                            <sm-progress type="circle" :stroke-width="8" stroke-color="#15D1F2" text-color="#fff"
-                                :percent="35">
+                            <sm-progress type="circle" :stroke-width="8" :percent="35">
                             </sm-progress>
-                            <sm-text
-                                :font-style="{fontSize: '0.9375vw', lineHeight: '0.9375vw', textAlign: 'center', fontWeight: 'bolder'}"
-                                text-color="#fff" background="transparent" title="销售回款"></sm-text>
+                            <sm-text title="销售回款"></sm-text>
                         </div>
                         <div class="progress-item">
-                            <sm-progress type="circle" :stroke-width="8" stroke-color="#15D1F2" text-color="#fff"
-                                :percent="60">
+                            <sm-progress type="circle" :stroke-width="8" :percent="60">
                             </sm-progress>
-                            <sm-text
-                                :font-style="{fontSize: '0.9375vw', lineHeight: '0.9375vw', textAlign: 'center', fontWeight: 'bolder'}"
-                                text-color="#fff" background="transparent" title="营业收入"></sm-text>
+                            <sm-text title="营业收入"></sm-text>
                         </div>
                         <div class="progress-item">
-                            <sm-progress type="circle" :stroke-width="8" stroke-color="#15D1F2" text-color="#fff"
-                                :percent="40"></sm-progress>
-                            <sm-text
-                                :font-style="{fontSize: '0.9375vw', lineHeight: '0.9375vw', textAlign: 'center', fontWeight: 'bolder'}"
-                                text-color="#fff" background="transparent" title="净利润"></sm-text>
+                            <sm-progress type="circle" :stroke-width="8" :percent="40"></sm-progress>
+                            <sm-text title="净利润"></sm-text>
                         </div>
                     </div>
                 </div>
             </a-col>
             <a-col :md="12">
-                <sm-text
-                    :font-style="{fontSize: '1.82vw', lineHeight: '2.6vw', textAlign: 'center', fontWeight: 'bolder'}"
-                    background="transparent" text-color="#fff" title="房产项目可视化监控平台"></sm-text>
+                <sm-text :font-style="{fontSize: '1.82vw', lineHeight: '2.6vw'}" title="房产项目可视化监控平台"></sm-text>
                 <div class="indicator-holder">
-                    <sm-indicator title="土地出让金" unit="亿元" num="12320000" text-color="#fff" background="transparent">
+                    <sm-indicator title="土地出让金" unit="亿元" num="12320000">
                     </sm-indicator>
-                    <sm-indicator title="回款金额" unit="元" num="12320000" text-color="#fff" background="transparent">
+                    <sm-indicator title="回款金额" unit="元" num="12320000">
                     </sm-indicator>
-                    <sm-indicator title="净利润" unit="元" num="12320000" text-color="#fff" background="transparent">
+                    <sm-indicator title="净利润" unit="元" num="12320000">
                     </sm-indicator>
                 </div>
             </a-col>
             <a-col :md="6">
-                <sm-text
-                    :font-style="{fontSize: '0.94vw', lineHeight: '1.35vw', textAlign: 'center', fontWeight: 'bolder'}"
-                    background="transparent" text-color="#fff" title="常规项目指标"></sm-text>
+                <sm-text :font-style="{lineHeight: '1.35vw'}" title="常规项目指标"></sm-text>
                 <div class="normal-index-progress-holder">
                     <div class="progress-item">
-                        <sm-progress type="circle" stroke-color="#15D1F2" text-color="#fff" :percent="20"
-                            :stroke-width="10">
+                        <sm-progress type="circle" :percent="20" :stroke-width="10">
                         </sm-progress>
-                        <sm-text
-                            :font-style="{fontSize: '0.9375vw', lineHeight: '0.9375vw', textAlign: 'center', fontWeight: 'bolder'}"
-                            background="transparent" text-color="#fff" title="施工类型"></sm-text>
+                        <sm-text title="施工类型"></sm-text>
                     </div>
                     <div class="progress-item">
-                        <sm-progress type="circle" stroke-color="#15D1F2" text-color="#fff" :percent="60"
-                            :stroke-width="10"> </sm-progress>
-                        <sm-text
-                            :font-style="{fontSize: '0.9375vw', lineHeight: '0.9375vw', textAlign: 'center', fontWeight: 'bolder'}"
-                            background="transparent" text-color="#fff" title="施工总进度"></sm-text>
+                        <sm-progress type="circle" :percent="60" :stroke-width="10"> </sm-progress>
+                        <sm-text title="施工总进度"></sm-text>
                     </div>
                 </div>
             </a-col>
@@ -121,17 +90,13 @@
         <a-row>
             <a-col :md="6">
                 <div class="chart-item">
-                    <sm-text
-                        :font-style="{fontSize: '0.9vw', lineHeight: '1.35vw', textAlign: 'center', fontWeight: 'bolder'}"
-                        background="transparent" text-color="#fff" title="销售金额统计"></sm-text>
-                    <sm-chart icon-class="" :options="saleAmountOption" :color-group="colorGroup">
+                    <sm-text title="销售金额统计"></sm-text>
+                    <sm-chart icon-class="" :options="saleAmountOption">
                     </sm-chart>
                 </div>
                 <div class="chart-item">
-                    <sm-text
-                        :font-style="{fontSize: '0.9vw', lineHeight: '1.35vw', textAlign: 'center', fontWeight: 'bolder'}"
-                        background="transparent" text-color="#fff" title="销售回款趋势"></sm-text>
-                    <sm-chart icon-class="" :options="saleReturnOption" :color-group="colorGroup">
+                    <sm-text title="销售回款趋势"></sm-text>
+                    <sm-chart icon-class="" :options="saleReturnOption">
                     </sm-chart>
                 </div>
             </a-col>
@@ -144,18 +109,13 @@
             </a-col>
             <a-col :md="6">
                 <div class="chart-item">
-                    <sm-text
-                        :font-style="{fontSize: '0.9vw', lineHeight: '1.35vw', textAlign: 'center', fontWeight: 'bolder'}"
-                        background="transparent" text-color="#fff" title="库存指标"></sm-text>
-                    <sm-chart icon-class="" :options="stockIndexOption" :color-group="colorGroup">
+                    <sm-text title="库存指标"></sm-text>
+                    <sm-chart icon-class="" :options="stockIndexOption">
                     </sm-chart>
                 </div>
                 <div class="chart-item">
-                    <sm-text
-                        :font-style="{fontSize: '0.9vw', lineHeight: '1.35vw', textAlign: 'center', fontWeight: 'bolder'}"
-                        background="transparent" text-color="#fff" title="项目价值指标"></sm-text>
-                    <sm-progress type="circle" stroke-color="#20DFCB" text-color="#fff" :percent="80"
-                        :stroke-width="10">
+                    <sm-text title="项目价值指标"></sm-text>
+                    <sm-progress type="circle" :percent="80" :stroke-width="10">
                     </sm-progress>
                 </div>
             </a-col>
@@ -163,27 +123,21 @@
         <a-row>
             <a-col :md="6">
                 <div class="chart-item">
-                    <sm-text
-                        :font-style="{fontSize: '0.9vw', lineHeight: '1.35vw', textAlign: 'center', fontWeight: 'bolder'}"
-                        background="transparent" text-color="#fff" title="项目成本表"></sm-text>
-                    <sm-chart icon-class="" :options="projectCostOption" :color-group="colorGroup">
+                    <sm-text title="项目成本表"></sm-text>
+                    <sm-chart icon-class="" :options="projectCostOption">
                     </sm-chart>
                 </div>
             </a-col>
             <a-col :md="12">
                 <div class="chart-holder">
                     <div class="chart-item">
-                        <sm-text
-                            :font-style="{fontSize: '0.9vw', lineHeight: '1.35vw', textAlign: 'center', fontWeight: 'bolder'}"
-                            background="transparent" text-color="#fff" title="营业收入情况"></sm-text>
-                        <sm-chart icon-class="" :options="revenueOption" :color-group="colorGroup">
+                        <sm-text title="营业收入情况"></sm-text>
+                        <sm-chart icon-class="" :options="revenueOption">
                         </sm-chart>
                     </div>
                     <div class="chart-item">
-                        <sm-text
-                            :font-style="{fontSize: '0.9vw', lineHeight: '1.35vw', textAlign: 'center', fontWeight: 'bolder'}"
-                            background="transparent" text-color="#fff" title="投资盈利情况"></sm-text>
-                        <sm-chart icon-class="" :options="investProfitOption" :color-group="colorGroup">
+                        <sm-text title="投资盈利情况"></sm-text>
+                        <sm-chart icon-class="" :options="investProfitOption">
                         </sm-chart>
                     </div>
 
@@ -191,10 +145,8 @@
             </a-col>
             <a-col :md="6">
                 <div class="chart-item">
-                    <sm-text
-                        :font-style="{fontSize: '0.9vw', lineHeight: '1.35vw', textAlign: 'center', fontWeight: 'bolder'}"
-                        background="transparent" text-color="#fff" title="库存情况"></sm-text>
-                    <sm-chart icon-class="" :options="stockSituationOption" :color-group="colorGroup">
+                    <sm-text title="库存情况"></sm-text>
+                    <sm-chart icon-class="" :options="stockSituationOption">
                     </sm-chart>
                 </div>
             </a-col>
@@ -204,11 +156,6 @@
 
     <script>
         //本示例数据纯属虚构
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-        var attribution =
-            "<a href='https://www.mapbox.com/about/maps/' target='_blank'> Mapbox </a>" +
-            " with <span> <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-            " Map Data <span> <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
         new Vue({
             el: "#main",
             data() {
@@ -247,6 +194,13 @@
                     colorGroup: ["#15D1F2", "#499BFF", "#2C61FF", "#243BCC", "#67A9FF"],
                     ...estatePlatformDatas
                 };
+            },
+            mounted() {
+                SuperMap.Components.setTheme({
+                    background: 'transparent',
+                    textColor: '#fff',
+                    colorGroup: this.colorGroup
+                });
             },
             methods: {
                 changeTheme() {
@@ -292,6 +246,10 @@
     <style>
         #main .sm-component-text {
             display: block;
+            font-weight: bold;
+            text-align: center;
+            font-size: 0.94vw;
+            line-height: 0.94vw;
         }
 
         .ant-row .sm-component-time-text {
