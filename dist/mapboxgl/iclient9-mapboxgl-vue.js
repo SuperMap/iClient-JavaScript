@@ -57747,9 +57747,9 @@ function (_mapboxgl$Evented) {
 
     helpers_classCallCheck_default()(this, LegendViewModel);
 
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(LegendViewModel).call(this, webmap)); // this.webmap = webmap;
-
-    _this.sourceListModel = _this.webmap.getSourceListModel;
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(LegendViewModel).call(this, webmap));
+    _this.webmap = webmap;
+    _this.sourceListModel = _this.webmap ? _this.webmap.getSourceListModel : {};
     return _this;
   }
 
@@ -62625,12 +62625,12 @@ var Chart_component = normalizeComponent(
 )
 
 /* harmony default export */ var Chart = (Chart_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=03ac0973&
-var WebMapvue_type_template_id_03ac0973_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl.show)?_c('Pan',{attrs:{"position":_vm.panControl.position}}):_vm._e(),_vm._v(" "),(_vm.scaleControl.show)?_c('Scale',{attrs:{"position":_vm.scaleControl.position}}):_vm._e(),_vm._v(" "),(_vm.zoomControl.show)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomControl.zoomWithSlider,"position":_vm.zoomControl.position}}):_vm._e()],2)}
-var WebMapvue_type_template_id_03ac0973_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=d23bd548&
+var WebMapvue_type_template_id_d23bd548_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl.show)?_c('Pan',{attrs:{"position":_vm.panControl.position}}):_vm._e(),_vm._v(" "),(_vm.scaleControl.show)?_c('Scale',{attrs:{"position":_vm.scaleControl.position}}):_vm._e(),_vm._v(" "),(_vm.zoomControl.show)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomControl.zoomWithSlider,"position":_vm.zoomControl.position}}):_vm._e()],2)}
+var WebMapvue_type_template_id_d23bd548_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=03ac0973&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=d23bd548&
 
 // CONCATENATED MODULE: ./src/mapboxgl/_utils/geometry-util.js
 var handleMultyPolygon = function handleMultyPolygon(features) {
@@ -65029,6 +65029,7 @@ function (_Mixins) {
       map.on('load', function () {
         map_event.$options.setMap(_this.target, map);
         map_event.$emit("initMap-".concat(_this.target), map);
+        map.resize();
 
         _this.load({
           map: map
@@ -65044,6 +65045,7 @@ function (_Mixins) {
         map_event.$options.setMap(_this2.target, e.map);
         _this2.viewModel && map_event.$options.setWebMap(_this2.target, _this2.viewModel);
         map_event.$emit("initMap-".concat(_this2.target), e.map, _this2.viewModel);
+        e.map.resize();
 
         _this2.load({
           map: e.map
@@ -65154,8 +65156,8 @@ WebMapvue_type_script_lang_ts_SmWebMap = WebMapvue_type_script_lang_ts_decorate(
 
 var WebMap_component = normalizeComponent(
   web_map_WebMapvue_type_script_lang_ts_,
-  WebMapvue_type_template_id_03ac0973_render,
-  WebMapvue_type_template_id_03ac0973_staticRenderFns,
+  WebMapvue_type_template_id_d23bd548_render,
+  WebMapvue_type_template_id_d23bd548_staticRenderFns,
   false,
   null,
   null,
