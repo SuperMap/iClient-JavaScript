@@ -138,7 +138,6 @@
             <a-col :md="12" id="map-col">
                 <div class="map-holder">
                     <sm-web-map :map-options="mapOptions">
-                        <sm-raster-layer v-bind="rasteLayerOptions"></sm-raster-layer>
                         <sm-geojson-layer :data="data" :layer-style="layerStyle"></sm-geojson-layer>
                     </sm-web-map>
                 </div>
@@ -225,9 +224,6 @@
                         },
                         center: [116.47, 39.92], // starting position
                         zoom: 16 // starting zoom
-                    },
-                    rasteLayerOptions: {
-                        mapUrl: host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}',
                     },
                     data: '../data/buildings.json',
                     layerStyle: {
