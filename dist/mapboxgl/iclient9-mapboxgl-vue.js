@@ -8,14 +8,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("echarts"), require("./static/libs/deckgl/deck.gl.min.js"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"), require("shapefile"), require("xlsx"));
+		module.exports = factory(require("vue"), require("echarts"), require("echarts-liquidfill"), require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("@mapbox/mapbox-gl-draw"), require("VueECharts"), require("xlsx"), require("shapefile"));
 	else if(typeof define === 'function' && define.amd)
-		define(["./static/libs/mapboxgl/mapbox-gl-enhance.js", "./static/libs/echarts-layer/EchartsLayer.js", "./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js", "echarts", "./static/libs/deckgl/deck.gl.min.js", "VueECharts", "@mapbox/mapbox-gl-draw", "echarts-liquidfill", "vue", "shapefile", "xlsx"], factory);
+		define(["vue", "echarts", "echarts-liquidfill", "./static/libs/mapboxgl/mapbox-gl-enhance.js", "./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js", "./static/libs/deckgl/deck.gl.min.js", "./static/libs/echarts-layer/EchartsLayer.js", "@mapbox/mapbox-gl-draw", "VueECharts", "xlsx", "shapefile"], factory);
 	else if(typeof exports === 'object')
-		exports["Components"] = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("echarts"), require("./static/libs/deckgl/deck.gl.min.js"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"), require("shapefile"), require("xlsx"));
+		exports["Components"] = factory(require("vue"), require("echarts"), require("echarts-liquidfill"), require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("@mapbox/mapbox-gl-draw"), require("VueECharts"), require("xlsx"), require("shapefile"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["mapboxgl"], root["EchartsLayer"], root["SuperMap"], root["echarts"], root["DeckGL"], root["VueECharts"], root["MapboxDraw"], root["echarts-liquidfill"], root["Vue"], root["shapefile"], root["XLSX"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE__9RVc__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_Rw_c__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE__4v0n__, __WEBPACK_EXTERNAL_MODULE_X1wy__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["Vue"], root["echarts"], root["echarts-liquidfill"], root["mapboxgl"], root["SuperMap"], root["DeckGL"], root["EchartsLayer"], root["MapboxDraw"], root["VueECharts"], root["XLSX"], root["shapefile"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__9RVc__, __WEBPACK_EXTERNAL_MODULE_AEfv__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_X1wy__, __WEBPACK_EXTERNAL_MODULE__4v0n__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2150,6 +2150,13 @@ __webpack_require__("FlQf");
 __webpack_require__("bBy9");
 module.exports = __webpack_require__("zLkG").f('iterator');
 
+
+/***/ }),
+
+/***/ "2Zn6":
+/***/ (function(module) {
+
+module.exports = [{"title":"经典深色","label":"dark","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#dd6b66","#759aa0","#e69d87","#8dc1a9","#ea7e53"]},{"title":"经典浅色","label":"light","textColor":"#333","background":"rgba(255, 255, 255,0.6)","colorGroup":["#3fb1e3","#6be6c1","#626c91","#a0a7e6","#c4ebad"]},{"title":"绿色渐变","label":"green-g","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#064049","#165A65","#1F717F","#3097AB","#9AEAF4"]},{"title":"蓝色渐变","label":"blue-g","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#243BCC","#1C55FF","#0C75FF","#338FFF","#00CDF1"]},{"title":"橙红渐变","label":"red-g","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#770000","#882241","#BE3144","#F05940","#FF8417"]},{"title":"紫色渐变","label":"purple-g","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#2F2AA4","#5432D3","#8B3B86","#9740B1","#7B6CF5"]},{"title":"深蓝黑色","label":"bluedark-dark","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#15D1F2","#499BFF","#2C61FF","#243BCC","#67A9FF"]},{"title":"墨绿黑色","label":"green-dark","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#2D808D","#53A8B6","#7AC2D0","#BCE4E9","#F1FDFF"]},{"title":"浅蓝黑色","label":"blue-dark","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#00E9FF","#BBE7FF","#6AE5C1","#46ABFF","#363EFF"]},{"title":"浅灰黑色","label":"grey-dark","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#52606D","#8894A0","#BACBDB","#D3DDE8","#F2F5F8"]},{"title":"深紫黑色","label":"purple-dark","textColor":"#fff","background":"rgba(0,0,0,0.6)","colorGroup":["#7B6CF6","#5432D3","#241F92","#8B3B86","#E6A5FF"]},{"title":"深蓝白色","label":"blue-light","textColor":"#000","background":"rgba(255,255,255,0.6)","colorGroup":["#243BCC","#2C61FF","#499BFF","#15D1F2","#67A9FF"]},{"title":"深红白色","label":"red-light","textColor":"#000","background":"rgba(255,255,255,0.6)","colorGroup":["#F05940","#BE3144","#882241","#770000","#FF8418"]}];
 
 /***/ }),
 
@@ -6010,6 +6017,13 @@ function baseKeys(object) {
 
 module.exports = baseKeys;
 
+
+/***/ }),
+
+/***/ "AEfv":
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_AEfv__;
 
 /***/ }),
 
@@ -15401,13 +15415,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "R2z6":
-/***/ (function(module) {
-
-module.exports = {"textColor":"#333","background":"rgba(255, 255, 255,0.6)","colorGroup":["#3fb1e3","#6be6c1","#626c91","#a0a7e6","#c4ebad","#96dee8"]};
-
-/***/ }),
-
 /***/ "RIqP":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15592,13 +15599,6 @@ exports.default = {
     });
   }
 };
-
-/***/ }),
-
-/***/ "Rw/c":
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_Rw_c__;
 
 /***/ }),
 
@@ -26974,10 +26974,6 @@ module.exports = getSymbolsIn;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var theme_namespaceObject = {};
-__webpack_require__.r(theme_namespaceObject);
-__webpack_require__.d(theme_namespaceObject, "dark", function() { return dark; });
-__webpack_require__.d(theme_namespaceObject, "light", function() { return light; });
 var _utils_util_namespaceObject = {};
 __webpack_require__.r(_utils_util_namespaceObject);
 __webpack_require__.d(_utils_util_namespaceObject, "getDateTime", function() { return getDateTime; });
@@ -34670,8 +34666,8 @@ function getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset) {
   var diff = [p2.left - p1.left, p2.top - p1.top];
 
   return {
-    left: Math.round(elRegion.left - diff[0] + offset[0] - targetOffset[0]),
-    top: Math.round(elRegion.top - diff[1] + offset[1] - targetOffset[1])
+    left: elRegion.left - diff[0] + offset[0] - targetOffset[0],
+    top: elRegion.top - diff[1] + offset[1] - targetOffset[1]
   };
 }
 
@@ -54296,15 +54292,8 @@ $tc方法：
 日期格式处理（$d）：https://kazupon.github.io/vue-i18n/guide/datetime.html
 数字格式处理（$n）：https://kazupon.github.io/vue-i18n/guide/number.html
 */
-// EXTERNAL MODULE: ./src/common/_utils/style/theme/dark.json
-var dark = __webpack_require__("qEMk");
-
-// EXTERNAL MODULE: ./src/common/_utils/style/theme/light.json
-var light = __webpack_require__("R2z6");
-
-// CONCATENATED MODULE: ./src/common/_utils/style/theme/index.js
-
-
+// EXTERNAL MODULE: ./src/common/_utils/style/theme/theme.json
+var theme_theme = __webpack_require__("2Zn6");
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/icon/Icon.vue?vue&type=template&id=62e40873&
 var Iconvue_type_template_id_62e40873_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-icon"},[(!!_vm.iconClass)?_c('i',{class:'sm-components-icons-' + _vm.iconClass,style:([_vm.iconStyle, _vm.colorStyle]),attrs:{"theme":_vm.theme,"twoToneColor":_vm.twoToneColor,"component":_vm.component}}):_c('a-icon',{style:([_vm.iconStyle, _vm.colorStyle]),attrs:{"type":_vm.type,"theme":_vm.theme,"twoToneColor":_vm.twoToneColor,"component":_vm.component}})],1)}
@@ -54324,6 +54313,12 @@ var staticRenderFns = []
     textColor: {
       type: String,
       default: '#333'
+    },
+    colorGroup: {
+      type: Array,
+      default: function _default() {
+        return ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8'];
+      }
     }
   },
   watch: {
@@ -54332,6 +54327,16 @@ var staticRenderFns = []
     },
     textColor: function textColor(newValue) {
       this.textColorsData = newValue;
+    },
+    colorGroup: function colorGroup(newValue, oldValue) {
+      /**
+       * 以下操作是暂时解决方另一个问题引起的新问题
+       * 起因是data里面在给colorGroupsData赋值时优先取的theme里面的值，
+       * 如果theme里有值的话，就取不到props里colorGroup的值(也是json配置文件里面的初始化会失效)
+       * 但是AB项目在手动把内联样式转化为rem时，为了不影响store里面的propDatas,在转化rem之前总是先深拷贝一份propDatas的值
+       * 所以如果propDatas有里面Object或者Array类型的数据，其引用地址总会改变，即使其里面的值相同
+       */
+      this.colorGroupsData = JSON.stringify(newValue) !== JSON.stringify(oldValue) ? newValue : this.colorGroupsData;
     }
   },
   data: function data() {
@@ -54339,7 +54344,7 @@ var staticRenderFns = []
     return {
       backgroundData: theme && theme.background || this.background,
       textColorsData: theme && theme.textColor || this.textColor,
-      colorGroupsData: theme && theme.colorGroup || ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8']
+      colorGroupsData: theme && theme.colorGroup || this.colorGroup
     };
   },
   mounted: function mounted() {
@@ -55220,6 +55225,9 @@ var TimeText_component = normalizeComponent(
   setMap: function setMap(mapTarget, map) {
     this.mapCache[mapTarget] = map;
   },
+  deleteMap: function deleteMap(mapTarget) {
+    delete this.mapCache[mapTarget];
+  },
   getWebMap: function getWebMap(webmapTarget) {
     return this.webMapCache[webmapTarget];
   },
@@ -55228,6 +55236,9 @@ var TimeText_component = normalizeComponent(
   },
   setWebMap: function setWebMap(webmapTarget, webmap) {
     this.webMapCache[webmapTarget] = webmap;
+  },
+  deleteWebMap: function deleteWebMap(webmapTarget) {
+    delete this.webMapCache[webmapTarget];
   },
   getAllWebMapSource: function getAllWebMapSource() {
     var maps = this.getAllWebMap();
@@ -55796,14 +55807,19 @@ function (_mapboxgl$Evented) {
 
     return _this;
   }
-  /**
-   * @function DataFlowLayerViewModel.prototype.setExcludeField
-   * @description 设置唯一字段。
-   * @param {string} excludeField - 唯一字段。
-   */
-
 
   helpers_createClass_default()(DataFlowLayerViewModel, [{
+    key: "setLaterStyle",
+    value: function setLaterStyle(layerStyle) {
+      this.layerStyle = layerStyle;
+    }
+    /**
+     * @function DataFlowLayerViewModel.prototype.setExcludeField
+     * @description 设置唯一字段。
+     * @param {string} excludeField - 唯一字段。
+     */
+
+  }, {
     key: "setExcludeField",
     value: function setExcludeField(excludeField) {
       this.dataService.setExcludeField(excludeField);
@@ -56035,6 +56051,7 @@ var LineStyle_LineStyle = function LineStyle() {
 /* harmony default export */ var DataFlowLayervue_type_script_lang_js_ = ({
   name: 'SmDataFlowLayer',
   mixins: [map_getter, _mixin_layer],
+  viewModelProps: ['layerStyle'],
   props: {
     serviceUrl: {
       type: String,
@@ -56125,7 +56142,7 @@ var DataFlowLayer_component = normalizeComponent(
 
 /* harmony default export */ var DataFlowLayer = (DataFlowLayer_component.exports);
 // EXTERNAL MODULE: external {"root":"DeckGL","commonjs":"./static/libs/deckgl/deck.gl.min.js","commonjs2":"./static/libs/deckgl/deck.gl.min.js","amd":"./static/libs/deckgl/deck.gl.min.js"}
-var deck_gl_min_js_ = __webpack_require__("Rw/c");
+var deck_gl_min_js_ = __webpack_require__("AEfv");
 
 // CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/deckgl/DeckglLayerViewModel.js
 
@@ -56450,7 +56467,7 @@ function (_mapboxgl$Evented) {
           if (key === 'layout' && this.layerStyle.layout) {
             for (var _i2 = 0, _Object$keys2 = Object.keys(this.layerStyle.layout); _i2 < _Object$keys2.length; _i2++) {
               var _prop = _Object$keys2[_i2];
-              this.map.setPaintProperty(this.layerId, _prop, this.layerStyle.layout[_prop]);
+              this.map.setLayoutProperty(this.layerId, _prop, this.layerStyle.layout[_prop]);
             }
           }
         }
@@ -57476,12 +57493,12 @@ var VectorTileLayer_component = normalizeComponent(
 )
 
 /* harmony default export */ var VectorTileLayer = (VectorTileLayer_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/legend/Legend.vue?vue&type=template&id=088b8686&
-var Legendvue_type_template_id_088b8686_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-legend",style:([_vm.noBorder]),attrs:{"icon-class":_vm.mode === 'simple' ? '' : _vm.iconClass,"icon-position":_vm.position,"header-name":_vm.mode === 'simple' ? '' : _vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('a-card',{style:(_vm.mode !== 'simple' ? [_vm.getBackgroundStyle, _vm.getTextColorStyle, {border: 0, borderRadius: 0}] : [{border: 0, borderRadius: 0, background: 'transparent'}]),attrs:{"bordered":false}},[((_vm.mode === 'panel' || (_vm.layerNames.length > 1 && _vm.mode !== 'simple')) && JSON.stringify(_vm.legendList) !== '{}')?_c('a-collapse',{staticClass:"sm-component-legend__table",model:{value:(_vm.activeLegend),callback:function ($$v) {_vm.activeLegend=$$v},expression:"activeLegend"}},_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('a-collapse-panel',{key:("" + (index+1)),attrs:{"showArrow":false}},[_c('template',{slot:"header"},[_c('div',{staticClass:"header-wrap"},[_c('div',{staticClass:"sm-component-legend__title",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))]),_vm._v(" "),_c('a-icon',{staticClass:"header-arrow",attrs:{"type":"right"}})],1)]),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',{style:([_vm.getTextColorStyle])},[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,i){return _c('li',{key:i,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',{style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})},[_c('span',{staticClass:"sm-component-legend__top"},[_c('i',{staticClass:"c"}),_vm._v("\n              "+_vm._s(_vm.$t("legend.top"))+"\n            ")]),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(_vm.$t("legend.bottom"))+"\n            ")],1)])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',{style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,j){return _c('div',{key:j,staticClass:"sm-component-legend__range-item",style:({background:item.color})},[_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n              ")],1)])}))]):_vm._e()],2)})):(_vm.mode === 'simple' || _vm.layerNames.length === 1)?_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('div',{key:index,staticClass:"sm-component-legend__noBorder",style:([_vm.getTextColorStyle])},[(_vm.isShowTitle)?_c('div',{staticClass:"sm-component-legend__title",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))]):_vm._e(),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,k){return _c('li',{key:k,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})},[_c('span',{staticClass:"sm-component-legend__top"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n            "+_vm._s(_vm.$t("legend.top"))+"\n          ")],1),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n            "+_vm._s(_vm.$t("legend.bottom"))+"\n          ")],1)])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,l){return _c('div',{key:l,staticClass:"sm-component-legend__range-item",style:({background:item.color})},[_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n            ")],1)])}))]):_vm._e()])}):_vm._e()],2)],1)}
-var Legendvue_type_template_id_088b8686_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/legend/Legend.vue?vue&type=template&id=3bd3efe4&
+var Legendvue_type_template_id_3bd3efe4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-legend",style:([_vm.noBorder]),attrs:{"icon-class":_vm.mode === 'simple' ? '' : _vm.iconClass,"icon-position":_vm.position,"header-name":_vm.mode === 'simple' ? '' : _vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('a-card',{style:(_vm.mode !== 'simple' ? [_vm.getBackgroundStyle, _vm.getTextColorStyle, {border: 0, borderRadius: 0}] : [{border: 0, borderRadius: 0, background: 'transparent'}]),attrs:{"bordered":false}},[((_vm.mode === 'panel' || (_vm.layerNames.length > 1 && _vm.mode !== 'simple')) && JSON.stringify(_vm.legendList) !== '{}')?_c('a-collapse',{staticClass:"sm-component-legend__table",model:{value:(_vm.activeLegend),callback:function ($$v) {_vm.activeLegend=$$v},expression:"activeLegend"}},_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('a-collapse-panel',{key:("" + (index+1)),attrs:{"showArrow":false}},[_c('template',{slot:"header"},[_c('div',{staticClass:"header-wrap",style:([_vm.getColorStyle(0)])},[_c('div',{staticClass:"sm-component-legend__title"},[_vm._v(_vm._s(layerValue.layerId))]),_vm._v(" "),_c('a-icon',{staticClass:"header-arrow",attrs:{"type":"right"}})],1)]),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',{style:([_vm.getTextColorStyle])},[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,i){return _c('li',{key:i,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',{style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})},[_c('span',{staticClass:"sm-component-legend__top"},[_c('i',{staticClass:"c"}),_vm._v("\n              "+_vm._s(_vm.$t("legend.top"))+"\n            ")]),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(_vm.$t("legend.bottom"))+"\n            ")],1)])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',{style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,j){return _c('div',{key:j,staticClass:"sm-component-legend__range-item",style:({background:item.color})},[_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n              ")],1)])}))]):_vm._e()],2)})):(_vm.mode === 'simple' || _vm.layerNames.length === 1)?_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('div',{key:index,staticClass:"sm-component-legend__noBorder",style:([_vm.getTextColorStyle])},[(_vm.isShowTitle)?_c('div',{staticClass:"sm-component-legend__title",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))]):_vm._e(),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,k){return _c('li',{key:k,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})},[_c('span',{staticClass:"sm-component-legend__top"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n            "+_vm._s(_vm.$t("legend.top"))+"\n          ")],1),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n            "+_vm._s(_vm.$t("legend.bottom"))+"\n          ")],1)])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,l){return _c('div',{key:l,staticClass:"sm-component-legend__range-item",style:({background:item.color})},[_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n            ")],1)])}))]):_vm._e()])}):_vm._e()],2)],1)}
+var Legendvue_type_template_id_3bd3efe4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/legend/Legend.vue?vue&type=template&id=088b8686&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/legend/Legend.vue?vue&type=template&id=3bd3efe4&
 
 // CONCATENATED MODULE: ./src/mapboxgl/_mixin/control.js
 
@@ -57926,12 +57943,6 @@ function (_mapboxgl$Evented) {
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -57953,14 +57964,6 @@ function (_mapboxgl$Evented) {
     iconClass: {
       type: String,
       default: 'sm-components-icons-layer-style'
-    },
-    autoRotate: {
-      type: Boolean,
-      default: false
-    },
-    collapsed: {
-      type: Boolean,
-      default: false
     },
     layerNames: {
       type: Array,
@@ -58051,8 +58054,8 @@ function (_mapboxgl$Evented) {
 
 var Legend_component = normalizeComponent(
   legend_Legendvue_type_script_lang_js_,
-  Legendvue_type_template_id_088b8686_render,
-  Legendvue_type_template_id_088b8686_staticRenderFns,
+  Legendvue_type_template_id_3bd3efe4_render,
+  Legendvue_type_template_id_3bd3efe4_staticRenderFns,
   false,
   null,
   null,
@@ -59301,12 +59304,12 @@ var Measure_component = normalizeComponent(
 )
 
 /* harmony default export */ var Measure = (Measure_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/mini-map/MiniMap.vue?vue&type=template&id=43a7af01&
-var MiniMapvue_type_template_id_43a7af01_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{attrs:{"id":(!_vm.iconClass&&!_vm.headerName)&&'miniMap',"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{attrs:{"id":(_vm.iconClass||_vm.headerName)&&'miniMap'}})])}
-var MiniMapvue_type_template_id_43a7af01_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/mini-map/MiniMap.vue?vue&type=template&id=6195cc6d&
+var MiniMapvue_type_template_id_6195cc6d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"miniMap",attrs:{"id":"miniMap"}})])}
+var MiniMapvue_type_template_id_6195cc6d_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/mini-map/MiniMap.vue?vue&type=template&id=43a7af01&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/mini-map/MiniMap.vue?vue&type=template&id=6195cc6d&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var runtime_helpers_typeof = __webpack_require__("cDf5");
@@ -59697,7 +59700,6 @@ function (_mapboxgl$Evented) {
 //
 //
 //
-//
 
 
 
@@ -59741,8 +59743,8 @@ function (_mapboxgl$Evented) {
 
 var MiniMap_component = normalizeComponent(
   mini_map_MiniMapvue_type_script_lang_js_,
-  MiniMapvue_type_template_id_43a7af01_render,
-  MiniMapvue_type_template_id_43a7af01_staticRenderFns,
+  MiniMapvue_type_template_id_6195cc6d_render,
+  MiniMapvue_type_template_id_6195cc6d_staticRenderFns,
   false,
   null,
   null,
@@ -60168,12 +60170,12 @@ var Scale_component = normalizeComponent(
 )
 
 /* harmony default export */ var Scale = (Scale_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/zoom/Zoom.vue?vue&type=template&id=7d3e4b30&
-var Zoomvue_type_template_id_7d3e4b30_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-zoom"},[_c('div',{staticClass:"sm-component-zoom__buttons",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('a-button',{staticClass:"sm-component-zoom__button",style:(_vm.activeZoomMode === 'zoomInBtn' ? [_vm.getColorStyle(0), _vm.activieBgColor] : ''),attrs:{"icon":"plus"},on:{"click":_vm.zoomIn}}),_vm._v(" "),_c('a-button',{staticClass:"sm-component-zoom__button",style:(_vm.activeZoomMode === 'zoomOutBtn' ? [_vm.getColorStyle(0), _vm.activieBgColor] : ''),attrs:{"icon":"minus"},on:{"click":_vm.zoomOut}})],1),_vm._v(" "),_c('div',{staticClass:"sm-component-zoom__slider"},[(_vm.showZoomSlider)?_c('a-slider',{style:(_vm.getColorStyle(0)),attrs:{"min":_vm.min,"max":_vm.max,"vertical":""},on:{"change":_vm.sliderChange},model:{value:(_vm.zoomPosition),callback:function ($$v) {_vm.zoomPosition=$$v},expression:"zoomPosition"}}):_vm._e()],1)])}
-var Zoomvue_type_template_id_7d3e4b30_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/zoom/Zoom.vue?vue&type=template&id=15493c9b&
+var Zoomvue_type_template_id_15493c9b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-zoom"},[_c('div',{staticClass:"sm-component-zoom__buttons",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('a-button',{staticClass:"sm-component-zoom__button",style:(_vm.activeZoomMode === 'zoomInBtn' ? [_vm.getColorStyle(0), _vm.activieBgColor] : ''),attrs:{"icon":"plus"},on:{"click":_vm.zoomIn}}),_vm._v(" "),_c('a-button',{staticClass:"sm-component-zoom__button",style:(_vm.activeZoomMode === 'zoomOutBtn' ? [_vm.getColorStyle(0), _vm.activieBgColor] : ''),attrs:{"icon":"minus"},on:{"click":_vm.zoomOut}})],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showZoomSlider),expression:"showZoomSlider"}],staticClass:"sm-component-zoom__slider"},[_c('a-slider',{style:(_vm.getColorStyle(0)),attrs:{"min":_vm.min,"max":_vm.max,"vertical":""},on:{"change":_vm.sliderChange},model:{value:(_vm.zoomPosition),callback:function ($$v) {_vm.zoomPosition=$$v},expression:"zoomPosition"}})],1)])}
+var Zoomvue_type_template_id_15493c9b_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/zoom/Zoom.vue?vue&type=template&id=7d3e4b30&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/zoom/Zoom.vue?vue&type=template&id=15493c9b&
 
 // CONCATENATED MODULE: ./src/mapboxgl/web-map/control/zoom/ZoomViewModel.js
 
@@ -60355,7 +60357,6 @@ function (_mapboxgl$Evented) {
 //
 //
 //
-//
 
 
 
@@ -60468,8 +60469,8 @@ function (_mapboxgl$Evented) {
 
 var Zoom_component = normalizeComponent(
   zoom_Zoomvue_type_script_lang_js_,
-  Zoomvue_type_template_id_7d3e4b30_render,
-  Zoomvue_type_template_id_7d3e4b30_staticRenderFns,
+  Zoomvue_type_template_id_15493c9b_render,
+  Zoomvue_type_template_id_15493c9b_staticRenderFns,
   false,
   null,
   null,
@@ -60478,12 +60479,12 @@ var Zoom_component = normalizeComponent(
 )
 
 /* harmony default export */ var Zoom = (Zoom_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/chart/Chart.vue?vue&type=template&id=12942444&
-var Chartvue_type_template_id_12942444_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":(_vm._isRequestData && _vm.echartOptions) || _vm.options,"autoresize":_vm.autoresize,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme}})],1)}
-var Chartvue_type_template_id_12942444_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/chart/Chart.vue?vue&type=template&id=16b49d62&
+var Chartvue_type_template_id_16b49d62_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"autoresize":_vm.autoresize,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme}})],1)}
+var Chartvue_type_template_id_16b49d62_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/chart/Chart.vue?vue&type=template&id=12942444&
+// CONCATENATED MODULE: ./src/mapboxgl/chart/Chart.vue?vue&type=template&id=16b49d62&
 
 // EXTERNAL MODULE: external "VueECharts"
 var external_VueECharts_ = __webpack_require__("Zni2");
@@ -60982,7 +60983,6 @@ var helpers_toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(helpe
 
 
 
-
 /**
  * @class iServerRestService
  * @classdesc iServer 数据请求类。
@@ -61007,67 +61007,32 @@ function (_mapboxgl$Evented) {
     _this.url = url;
     return _this;
   }
-  /**
-   * @function iServerRestService.prototype.getData
-   * @description 请求数据。
-   * @param {Object} queryInfo - 可选参数。
-   * @param {Object} [queryInfo.maxFeatures] - 最多可返回的要素数量。
-   * @param {Object} [queryInfo.attributeFilter] - 属性过滤条件。
-   * @param {Object} [queryInfo.keyWord] - 筛选关键字。
-   */
-
 
   helpers_createClass_default()(iServerRestService, [{
     key: "getData",
-    value: function getData(queryInfo) {
-      var _this2 = this;
-
+    value: function getData(datasetInfo, queryInfo) {
       if (!this._checkUrl(this.url)) {
         return null;
       }
 
-      SuperMap.FetchRequest.get(this.url).then(function (response) {
-        return response.json();
-      }).then(function (results) {
-        if (results.datasetInfo) {
-          var datasetInfo = {
-            dataSourceName: results.datasetInfo.dataSourceName,
-            datasetName: results.datasetInfo.name,
-            mapName: results.name
-          };
-
-          _this2._getDatasetInfoSucceed(datasetInfo, queryInfo);
-        }
-      }).catch(function (error) {
-        /**
-         * @event iServerRestService#getdatafailed
-         * @description 请求数据失败后触发。
-         * @property {Object} e  - 事件对象。
-         */
-        _this2.fire('getdatafailed', error);
-      });
+      this._getDatasetInfoSucceed(datasetInfo, queryInfo);
     }
+    /**
+     * @function iServerRestService.prototype.getData
+     * @description 请求数据。
+     * @param {Object} queryInfo - 可选参数。
+     * @param {Object} [queryInfo.maxFeatures] - 最多可返回的要素数量。
+     * @param {Object} [queryInfo.attributeFilter] - 属性过滤条件。
+     * @param {Object} [queryInfo.keyWord] - 筛选关键字。
+     */
+
   }, {
     key: "_getDatasetInfoSucceed",
     value: function _getDatasetInfoSucceed(datasetInfo, queryInfo) {
-      var datasetUrl = this.url; // 判断服务为地图服务 或者 数据服务
+      datasetInfo.dataUrl = this.url; // 判断服务为地图服务 或者 数据服务
 
-      var restIndex = datasetUrl.indexOf('rest');
-
-      if (restIndex > 0) {
-        var index = datasetUrl.indexOf('/', restIndex + 5);
-        var type = datasetUrl.substring(restIndex + 5, index);
-
-        if (type === 'maps') {
-          var mapIndex = datasetUrl.indexOf('/', index + 1);
-          var mapName = datasetUrl.substring(index + 1, mapIndex);
-          datasetInfo.dataUrl = datasetUrl.substring(0, restIndex + 4) + '/maps/' + mapName;
-          this.getMapFeatures(datasetInfo, queryInfo);
-        } else if (type === 'data') {
-          datasetInfo.dataUrl = datasetUrl.substring(0, restIndex + 4) + '/data';
-          this.getDataFeatures(datasetInfo, queryInfo);
-        }
-      }
+      this.url.indexOf('/rest/maps') > -1 && this.getMapFeatures(datasetInfo, queryInfo);
+      this.url.indexOf('/rest/data') > -1 && this.getDataFeatures(datasetInfo, queryInfo);
     }
     /**
      * @function iServerRestService.prototype.getMapFeatures
@@ -61084,7 +61049,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "getMapFeatures",
     value: function getMapFeatures(datasetInfo, queryInfo) {
-      var _this3 = this;
+      var _this2 = this;
 
       var dataUrl = datasetInfo.dataUrl,
           mapName = datasetInfo.mapName;
@@ -61092,9 +61057,9 @@ function (_mapboxgl$Evented) {
 
       if (queryInfo.keyWord) {
         this._getRestMapFields(dataUrl, mapName, function (fields) {
-          queryInfo.attributeFilter = _this3._getAttributeFilterByKeywords(fields, queryInfo.keyWord);
+          queryInfo.attributeFilter = _this2._getAttributeFilterByKeywords(fields, queryInfo.keyWord);
 
-          _this3._getMapFeatureBySql(dataUrl, queryInfo);
+          _this2._getMapFeatureBySql(dataUrl, queryInfo);
         });
       } else {
         this._getMapFeatureBySql(dataUrl, queryInfo);
@@ -61116,7 +61081,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "getDataFeatures",
     value: function getDataFeatures(datasetInfo, queryInfo) {
-      var _this4 = this;
+      var _this3 = this;
 
       var datasetName = datasetInfo.datasetName,
           dataSourceName = datasetInfo.dataSourceName,
@@ -61128,9 +61093,9 @@ function (_mapboxgl$Evented) {
         var fieldsUrl = dataUrl + "/datasources/".concat(dataSourceName, "/datasets/").concat(datasetName, "/fields.rjson");
 
         this._getRestDataFields(fieldsUrl, function (fields) {
-          queryInfo.attributeFilter = _this4._getAttributeFilterByKeywords(fields, queryInfo.keyWord);
+          queryInfo.attributeFilter = _this3._getAttributeFilterByKeywords(fields, queryInfo.keyWord);
 
-          _this4._getDataFeaturesBySql(dataUrl, queryInfo);
+          _this3._getDataFeaturesBySql(dataUrl, queryInfo);
         });
       } else {
         this._getDataFeaturesBySql(dataUrl, queryInfo);
@@ -61264,7 +61229,7 @@ function (_mapboxgl$Evented) {
         return response.json();
       }).then(function (results) {
         var fields = results.fieldNames;
-        callBack(fields);
+        callBack(fields, results);
       }).catch(function (error) {
         console.log(error);
       });
@@ -61280,8 +61245,8 @@ function (_mapboxgl$Evented) {
       });
       new mapbox_gl_enhance_js_default.a.supermap.QueryService(url).queryBySQL(param, function (serviceResult) {
         var fields;
-        serviceResult.result && (fields = serviceResult.result.recordsets[0].fields);
-        fields && callBack(fields);
+        serviceResult.result && (fields = serviceResult.result.recordsets[0].fieldCaptions);
+        fields && callBack(fields, serviceResult.result.recordsets[0]);
       });
     }
   }, {
@@ -61400,7 +61365,6 @@ function (_mapboxgl$Evented) {
 
 
 
-
 /**
  * @class iPortalDataService
  * @classdesc iPortal 数据请求类。
@@ -61425,7 +61389,7 @@ function (_mapboxgl$Evented) {
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(iPortalDataService).call(this));
     _this.url = url;
     _this.withCredentials = withCredentials || false;
-    _this.iserverService = new iServerRestService_iServerRestService(url, withCredentials);
+    _this.iserverService = new iServerRestService_iServerRestService(url);
 
     _this.iserverService.on('getdatasucceeded', function (e) {
       /**
@@ -61470,6 +61434,10 @@ function (_mapboxgl$Evented) {
     key: "getData",
     value: function getData(queryInfo) {
       var _this2 = this;
+
+      if (!this.url) {
+        return;
+      }
 
       var datasetUrl = this.url;
       SuperMap.FetchRequest.get(datasetUrl, null, {
@@ -61517,15 +61485,13 @@ function (_mapboxgl$Evented) {
     value: function _getDatafromRest(serviceType, address, queryInfo) {
       var _this3 = this;
 
-      var withCredentials = this.withCredentials;
-
       if (serviceType === 'RESTDATA') {
         var url = "".concat(address, "/data/datasources");
         var dataSourceName;
         var datasetName; // 请求获取数据源名
 
         SuperMap.FetchRequest.get(url, null, {
-          withCredentials: withCredentials
+          withCredentials: false
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
@@ -61533,7 +61499,7 @@ function (_mapboxgl$Evented) {
           url = "".concat(address, "/data/datasources/").concat(dataSourceName, "/datasets"); // 请求获取数据集名
 
           SuperMap.FetchRequest.get(url, null, {
-            withCredentials: withCredentials
+            withCredentials: false
           }).then(function (response) {
             return response.json();
           }).then(function (data) {
@@ -61780,8 +61746,6 @@ function () {
     helpers_classCallCheck_default()(this, EchartsDataService);
 
     // 设置默认值
-    dataset.type = dataset.type || 'iServer'; // 服务类型
-
     dataset.withCredentials = dataset.withCredentials || false; // 请求认证
 
     this.dataset = dataset;
@@ -61792,7 +61756,10 @@ function () {
 
     this.serieDatas = []; // series data
 
-    this.gridAxis = {}; // 直角坐标系
+    this.gridAxis = {
+      xAxis: [],
+      yAxis: {}
+    }; // 直角坐标系
 
     this.radarAxis = {}; // 雷达图坐标系
 
@@ -61861,7 +61828,7 @@ function () {
 
         _this2.serieDatas.push(serieData);
       });
-      var gridAxis = this.gridAxis;
+      var gridAxis = (this.gridAxis.xAxis.length > 0 || JSON.stringify(this.gridAxis.yAxis) !== '{}') && this.gridAxis;
       var radarAxis = this.radarAxis;
       var series = this.serieDatas;
       return objectSpread_default()({}, gridAxis, radarAxis, {
@@ -61907,7 +61874,10 @@ function () {
 
       this.serieDatas = []; // series data
 
-      this.gridAxis = {}; // 直角坐标系
+      this.gridAxis = {
+        xAxis: [],
+        yAxis: {}
+      }; // 直角坐标系
     }
     /**
      * @function EchartsDataService.prototype._requestData
@@ -61921,16 +61891,38 @@ function () {
     key: "_requestData",
     value: function _requestData(datasets) {
       var promise = new Promise(function (resolve, reject) {
-        if (datasets) {
+        if (datasets && datasets.url) {
           var superMapService;
+          var queryInfo = {
+            maxFeatures: datasets.maxFeatures,
+            attributeFilter: datasets.attributeFilter
+          };
 
-          if (datasets.type === 'iServer') {
-            superMapService = new iServerRestService_iServerRestService(datasets.url, datasets.withCredentials);
-          } else if (datasets.type === 'iPortal') {
+          if (datasets.dataName || datasets.layerName) {
+            var datasetInfo;
+            superMapService = new iServerRestService_iServerRestService(datasets.url);
+
+            if (datasets.dataName) {
+              var arr = datasets.dataName[0].split(':');
+              datasetInfo = {
+                datasetName: arr[1],
+                dataSourceName: arr[0],
+                dataUrl: datasets.url
+              };
+            } else {
+              datasetInfo = {
+                mapName: datasets.layerName,
+                dataUrl: datasets.url
+              };
+            }
+
+            superMapService.getData(datasetInfo, queryInfo);
+          } else {
+            queryInfo.withCredentials = datasets.withCredentials;
             superMapService = new iPortalDataService_iPortalDataService(datasets.url, datasets.withCredentials);
+            superMapService.getData(queryInfo);
           }
 
-          superMapService.getData(datasets.queryInfo);
           superMapService.on('getdatafailed', function (e) {
             reject(e);
           });
@@ -62022,7 +62014,7 @@ function () {
         };
         axisData = this.radarAxis;
       } else if (chartType === 'bar' || chartType === 'line' || chartType === 'scatter') {
-        var data = helpers_toConsumableArray_default()(XData);
+        var data = XData && helpers_toConsumableArray_default()(XData);
 
         if (!this.gridAxis.xAxis) {
           this.gridAxis.xAxis = [];
@@ -62113,7 +62105,7 @@ function () {
         var total = 0;
         fieldValueIndex[key].forEach(function (index) {
           // 清除字符串型的数字的逗号
-          var num = clearNumberComma(fieldValues[index]);
+          var num = fieldValues[index] && clearNumberComma(fieldValues[index]);
           total += lodash_tonumber_default()(num);
         });
         yData.push(total);
@@ -62207,9 +62199,11 @@ var lodash_merge_default = /*#__PURE__*/__webpack_require__.n(lodash_merge);
 
 
 
+
 /**
  * @module Chart
- * @category Components
+ * @caimport { isArray } from 'util';
+tegory Components
  * @desc Chart微件。除了prop: dataset和datasetOptions，其他的所有prop,event,computed, methods都是ECharts的配置，参考https://echarts.baidu.com/api.html#echartsInstance.dispose
  * @vue-prop {Object} dataset - 用来请求的dataset配置。
  * @vue-prop {Object} datasetOptions - 和请求dataset数据相关的配置。
@@ -62288,6 +62282,9 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
         return null;
       }
     },
+    colorGroup: {
+      type: Array
+    },
     options: {
       type: Object,
       default: function _default() {
@@ -62345,9 +62342,12 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
         height: this.headerName ? 'calc(100% - 30px)' : '100%'
       };
     },
+    _chartOptions: function _chartOptions() {
+      return this._isRequestData && this.echartOptions || this.options;
+    },
     // 是否传入dataset和datasetOptions
     _isRequestData: function _isRequestData() {
-      return this.dataset && this.datasetOptions;
+      return this.dataset && Object.keys(this.dataset).length > 0 && this.datasetOptions && this.datasetOptions.length > 0;
     }
   },
   watch: {
@@ -62356,23 +62356,40 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
     },
     colorGroup: function colorGroup() {
       if (!this.theme) {
-        this.chartTheme = chartThemeUtil(this.backgroundData, this.textColorsData, this.colorGroupsData);
+        this.chartTheme = chartThemeUtil(this.backgroundData, this.textColorsData, this.colorGroup);
       }
     },
-    dataset: function dataset() {
-      this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
-
-      this.datasetChange = true;
-    },
-    datasetOptions: function datasetOptions() {
-      if (!this.datasetChange) {
-        this.echartsDataService && this._changeChartData(this.echartsDataService, this.datasetOptions, this.options);
-      } else {
-        this.datasetChange = false;
+    dataset: {
+      handler: function handler(newVal, oldVal) {
+        if (!lodash_isequal_default()(newVal, oldVal)) {
+          this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
+          this.datasetChange = true;
+        }
       }
     },
-    options: function options() {
-      this.echartOptions = Object.assign({}, this.dataSeriesCache, this.options);
+    datasetOptions: {
+      handler: function handler(newVal, oldVal) {
+        if (!lodash_isequal_default()(newVal, oldVal)) {
+          if (!this.datasetChange || this.dataset && !this.dataset.url) {
+            !this.echartsDataService && this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
+            this.echartsDataService && this._changeChartData(this.echartsDataService, this.datasetOptions, this.options);
+          } else {
+            this.datasetChange = false;
+          }
+        }
+      }
+    },
+    options: {
+      handler: function handler(newVal, oldVal) {
+        if (!lodash_isequal_default()(newVal, oldVal)) {
+          if (this.dataSeriesCache) {
+            this.echartOptions = this._optionsHandler(this.options, this.dataSeriesCache);
+          } else {
+            this.echartOptions = Object.assign({}, this.options, this.dataSeriesCache);
+          }
+        }
+      },
+      deep: true
     },
     // 以下为echart的配置参数
     width: function width() {
@@ -62385,8 +62402,17 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
       return this.smChart && this.smChart.computedOptions;
     }
   },
-  mounted: function mounted() {
+  created: function created() {
     var _this = this;
+
+    this.chartTheme = chartThemeUtil(this.backgroundData, this.textColorsData, this.colorGroupsData); // 切换主题
+
+    this.$on('themeStyleChanged', function () {
+      _this.chartTheme = chartThemeUtil(_this.backgroundData, _this.textColorsData, _this.colorGroupsData);
+    });
+  },
+  mounted: function mounted() {
+    var _this2 = this;
 
     // 设置echarts实例
     var chartId = this.chartId;
@@ -62396,13 +62422,8 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
 
     EVENTS.forEach(function (event) {
       smChart.$on(event, function (params) {
-        _this.$emit(event, params);
+        _this2.$emit(event, params);
       });
-    });
-    this.chartTheme = chartThemeUtil(this.backgroundData, this.textColorsData, this.colorGroupsData); // 切换主题
-
-    this.$on('themeStyleChanged', function () {
-      _this.chartTheme = chartThemeUtil(_this.backgroundData, _this.textColorsData, _this.colorGroupsData);
     }); // 请求数据, 合并echartopiton, 设置echartOptions
 
     this._isRequestData && this._setEchartOptions(this.dataset, this.datasetOptions, this.options);
@@ -62410,24 +62431,36 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
   methods: {
     // 请求数据,设置echartOptions
     _setEchartOptions: function _setEchartOptions(dataset, datasetOptions, echartOptions) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.echartsDataService = new EchartsDataService_EchartsDataService(dataset, datasetOptions);
       this.echartsDataService.getDataOption().then(function (options) {
         // 缓存dataSeriesCache，请求后格式化成echart的数据
-        _this2.dataSeriesCache = Object.assign({}, options); // 设置echartOptions
+        _this3.dataSeriesCache = Object.assign({}, options); // 设置echartOptions
 
-        if (echartOptions && options.xAxis) {
-          if (echartOptions.length > 0) {
-            _this2.echartOptions = lodash_merge_default()(options, JSON.parse(JSON.stringify(echartOptions)));
-            return;
-          } else {
-            echartOptions.xAxis = Object.assign({}, options.xAxis[0], echartOptions.xAxis);
-          }
-        }
-
-        _this2.echartOptions = lodash_merge_default()(options, JSON.parse(JSON.stringify(echartOptions)));
+        _this3.echartOptions = _this3._optionsHandler(echartOptions, options);
       });
+    },
+    _optionsHandler: function _optionsHandler(options, dataOptions) {
+      if (options && options.xAxis && dataOptions.xAxis) {
+        if (dataOptions.series.length === 0) {
+          options.xAxis = [{}];
+        } else if (!Array.isArray(options.xAxis)) {
+          options.xAxis = [Object.assign({}, options.xAxis, dataOptions.xAxis[0])];
+        }
+      }
+
+      if (options && options.series && dataOptions.series) {
+        if (dataOptions.series.length === 0) {
+          options.series = [];
+        } else {
+          options.series = dataOptions.series.map(function (element, index) {
+            return Object.assign({}, options.series[index] || {}, element);
+          });
+        }
+      }
+
+      return lodash_merge_default()(JSON.parse(JSON.stringify(options)), dataOptions);
     },
     // 当datasetUrl不变，datasetOptions改变时
     _changeChartData: function _changeChartData(echartsDataService, datasetOptions, echartOptions) {
@@ -62435,7 +62468,7 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
 
       this.dataSeriesCache = Object.assign({}, options); // 设置echartOptions
 
-      this.echartOptions = Object.assign({}, options, echartOptions);
+      this.echartOptions = Object.assign({}, echartOptions, options);
     },
     // 获取echart实例
     _getEchart: function _getEchart() {
@@ -62615,8 +62648,8 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
 
 var Chart_component = normalizeComponent(
   chart_Chartvue_type_script_lang_js_,
-  Chartvue_type_template_id_12942444_render,
-  Chartvue_type_template_id_12942444_staticRenderFns,
+  Chartvue_type_template_id_16b49d62_render,
+  Chartvue_type_template_id_16b49d62_staticRenderFns,
   false,
   null,
   null,
@@ -62625,12 +62658,12 @@ var Chart_component = normalizeComponent(
 )
 
 /* harmony default export */ var Chart = (Chart_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=d23bd548&
-var WebMapvue_type_template_id_d23bd548_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl.show)?_c('Pan',{attrs:{"position":_vm.panControl.position}}):_vm._e(),_vm._v(" "),(_vm.scaleControl.show)?_c('Scale',{attrs:{"position":_vm.scaleControl.position}}):_vm._e(),_vm._v(" "),(_vm.zoomControl.show)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomControl.zoomWithSlider,"position":_vm.zoomControl.position}}):_vm._e()],2)}
-var WebMapvue_type_template_id_d23bd548_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=0b28b722&
+var WebMapvue_type_template_id_0b28b722_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl.show)?_c('Pan',{attrs:{"position":_vm.panControl.position}}):_vm._e(),_vm._v(" "),(_vm.scaleControl.show)?_c('Scale',{attrs:{"position":_vm.scaleControl.position}}):_vm._e(),_vm._v(" "),(_vm.zoomControl.show)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomControl.zoomWithSlider,"position":_vm.zoomControl.position}}):_vm._e()],2)}
+var WebMapvue_type_template_id_0b28b722_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=d23bd548&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=0b28b722&
 
 // CONCATENATED MODULE: ./src/mapboxgl/_utils/geometry-util.js
 var handleMultyPolygon = function handleMultyPolygon(features) {
@@ -62705,7 +62738,6 @@ function (_mapboxgl$Evented) {
     _this.withCredentials = options.withCredentials || false;
     _this.target = options.target || 'map';
     _this.excludePortalProxyUrl = options.excludePortalProxyUrl;
-    _this._legendList = {};
 
     _this._createWebMap();
 
@@ -62720,10 +62752,13 @@ function (_mapboxgl$Evented) {
   }, {
     key: "setMapId",
     value: function setMapId(mapId) {
+      var _this2 = this;
+
       this.mapId = mapId;
       this.map && this.map.remove();
-
-      this._createWebMap();
+      setTimeout(function () {
+        _this2._createWebMap();
+      }, 0);
     }
   }, {
     key: "setWebMapOptions",
@@ -62745,8 +62780,11 @@ function (_mapboxgl$Evented) {
     key: "setServerUrl",
     value: function setServerUrl(serverUrl) {
       this.serverUrl = serverUrl;
-
-      this._createWebMap();
+    }
+  }, {
+    key: "setWithCredentials",
+    value: function setWithCredentials(withCredentials) {
+      this.withCredentials = withCredentials;
     }
   }, {
     key: "setMapOptions",
@@ -62761,9 +62799,9 @@ function (_mapboxgl$Evented) {
           pitch = mapOptions.pitch;
 
       if (this.map) {
-        center && this.map.setCenter(center);
+        center && center.length > 0 && this.map.setCenter(center);
         zoom && this.map.setZoom(zoom);
-        maxBounds && this.map.setMaxBounds(maxBounds);
+        maxBounds && maxBounds.length > 0 && this.map.setMaxBounds(maxBounds);
         minZoom && this.map.setMinZoom(minZoom);
         maxZoom && this.map.setMaxZoom(maxZoom);
         renderWorldCopies && this.map.setRenderWorldCopies(renderWorldCopies);
@@ -62774,6 +62812,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_createWebMap",
     value: function _createWebMap() {
+      this._legendList = {};
       var urlArr = this.serverUrl.split('');
 
       if (urlArr[urlArr.length - 1] !== '/') {
@@ -62846,7 +62885,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_getMapInfo",
     value: function _getMapInfo(url) {
-      var _this2 = this;
+      var _this3 = this;
 
       var mapUrl = url.indexOf('.json') === -1 ? "".concat(url, ".json") : url;
       SuperMap.FetchRequest.get(mapUrl, null, {
@@ -62854,8 +62893,8 @@ function (_mapboxgl$Evented) {
       }).then(function (response) {
         return response.json();
       }).then(function (mapInfo) {
-        _this2.baseProjection = mapInfo.projection;
-        _this2.mapParams = {
+        _this3.baseProjection = mapInfo.projection;
+        _this3.mapParams = {
           title: mapInfo.title,
           description: mapInfo.description
         };
@@ -62867,25 +62906,25 @@ function (_mapboxgl$Evented) {
           'EPSG:4326': 'EPSG:4326'
         };
 
-        if (_this2.baseProjection in projectionMap) {
-          _this2._createMap(mapInfo);
+        if (_this3.baseProjection in projectionMap) {
+          _this3._createMap(mapInfo);
 
           var layers = mapInfo.layers;
 
-          _this2.map.on('load', function () {
-            _this2._addBaseMap(mapInfo);
+          _this3.map.on('load', function () {
+            _this3._addBaseMap(mapInfo);
 
             if (!layers || layers.length === 0) {
-              _this2._sendMapToUser(0, 0);
+              _this3._sendMapToUser(0, 0);
             } else {
-              _this2._addLayers(layers);
+              _this3._addLayers(layers);
             }
           });
         } else {
           throw Error('不支持当前地图的坐标系');
         }
       }).catch(function (error) {
-        _this2.fire('getmapinfofailed', {
+        _this3.fire('getmapinfofailed', {
           error: error
         });
       });
@@ -62983,18 +63022,18 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_createWMTSLayer",
     value: function _createWMTSLayer(layerInfo) {
-      var _this3 = this;
+      var _this4 = this;
 
       var wmtsUrl = this._getWMTSUrl(layerInfo);
 
       this._filterWMTSIsMatched(layerInfo, function (isMatched, matchMaxZoom) {
-        isMatched && _this3._addBaselayer([wmtsUrl], 'wmts-layers' + layerInfo.name, 0, matchMaxZoom);
+        isMatched && _this4._addBaselayer([wmtsUrl], 'wmts-layers' + layerInfo.name, 0, matchMaxZoom);
       });
     }
   }, {
     key: "_filterWMTSIsMatched",
     value: function _filterWMTSIsMatched(mapInfo, matchedCallback) {
-      var _this4 = this;
+      var _this5 = this;
 
       var isMatched = false;
       var matchMaxZoom = 22;
@@ -63018,7 +63057,7 @@ function (_mapboxgl$Evented) {
               isMatched = true;
             } else if (tileMatrixSet[i]['WellKnownScaleSet'] && tileMatrixSet[i]['WellKnownScaleSet']['_text'] === 'Custom') {
               var matchedScaleDenominator = [];
-              var defaultCRSScaleDenominators = _this4.map.crs === 'EPSG:3857' ? MB_SCALEDENOMINATOR_3857 : MB_SCALEDENOMINATOR_4326;
+              var defaultCRSScaleDenominators = _this5.map.crs === 'EPSG:3857' ? MB_SCALEDENOMINATOR_3857 : MB_SCALEDENOMINATOR_4326;
 
               for (var j = 0, len = defaultCRSScaleDenominators.length; j < len; j++) {
                 if (!tileMatrixSet[i].TileMatrix[j]) {
@@ -63047,9 +63086,9 @@ function (_mapboxgl$Evented) {
 
         matchedCallback(isMatched, matchMaxZoom);
       }).catch(function (error) {
-        _this4.fire('getwmtsinfofailed', {
+        _this5.fire('getwmtsinfofailed', {
           error: error,
-          map: _this4.map
+          map: _this5.map
         });
       });
     }
@@ -63222,7 +63261,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_addLayers",
     value: function _addLayers(layers) {
-      var _this5 = this;
+      var _this6 = this;
 
       this._layers = layers;
       var features;
@@ -63231,21 +63270,21 @@ function (_mapboxgl$Evented) {
       layers.forEach(function (layer, index) {
         if (layer.dataSource && layer.dataSource.serverId || layer.layerType === 'MARKER') {
           var serverId = layer.dataSource ? layer.dataSource.serverId : layer.serverId;
-          var url = "".concat(_this5.serverUrl, "web/datas/").concat(serverId, "/content.json?pageSize=9999999&currentPage=1");
+          var url = "".concat(_this6.serverUrl, "web/datas/").concat(serverId, "/content.json?pageSize=9999999&currentPage=1");
           serverId && SuperMap.FetchRequest.get(url, null, {
-            withCredentials: _this5.withCredentials
+            withCredentials: _this6.withCredentials
           }).then(function (response) {
             return response.json();
           }).then(function (data) {
             if (data.succeed === false) {
               layerAdded++;
 
-              _this5._sendMapToUser(layerAdded, len);
+              _this6._sendMapToUser(layerAdded, len);
 
-              _this5.fire('getlayerdatasourcefailed', {
+              _this6.fire('getlayerdatasourcefailed', {
                 error: data.error,
                 layer: layer,
-                map: _this5.map
+                map: _this6.map
               });
 
               return;
@@ -63254,64 +63293,64 @@ function (_mapboxgl$Evented) {
             if (data.type) {
               if (data.type === 'JSON' || data.type === 'GEOJSON') {
                 data.content = JSON.parse(data.content.trim());
-                features = _this5._formatGeoJSON(data.content);
+                features = _this6._formatGeoJSON(data.content);
               } else if (data.type === 'EXCEL' || data.type === 'CSV') {
-                features = _this5._excelData2Feature(data.content);
+                features = _this6._excelData2Feature(data.content);
               }
 
-              _this5._addLayer(layer, features, index);
+              _this6._addLayer(layer, features, index);
 
               layerAdded++;
 
-              _this5._sendMapToUser(layerAdded, len);
+              _this6._sendMapToUser(layerAdded, len);
             }
           }).catch(function (error) {
             layerAdded++;
 
-            _this5._sendMapToUser(layerAdded, len);
+            _this6._sendMapToUser(layerAdded, len);
 
-            _this5.fire('getlayerdatasourcefailed', {
+            _this6.fire('getlayerdatasourcefailed', {
               error: error,
               layer: layer,
-              map: _this5.map
+              map: _this6.map
             });
           });
         } else if (layer.layerType === 'SUPERMAP_REST' || layer.layerType === 'TILE' || layer.layerType === 'WMS' || layer.layerType === 'WMTS') {
-          _this5._createBaseLayer(layer);
+          _this6._createBaseLayer(layer);
 
           layerAdded++;
 
-          _this5._sendMapToUser(layerAdded, len);
+          _this6._sendMapToUser(layerAdded, len);
         } else if (layer.dataSource && layer.dataSource.type === 'REST_DATA') {
           var dataSource = layer.dataSource;
 
-          _this5._getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function (result) {
-            features = _this5._parseGeoJsonData2Feature({
+          _this6._getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function (result) {
+            features = _this6._parseGeoJsonData2Feature({
               allDatas: {
                 features: result.result.features.features
               },
               fileCode: layer.projection,
-              featureProjection: _this5.baseProjection
+              featureProjection: _this6.baseProjection
             });
 
-            _this5._addLayer(layer, features, index);
+            _this6._addLayer(layer, features, index);
 
             layerAdded++;
 
-            _this5._sendMapToUser(layerAdded, len);
+            _this6._sendMapToUser(layerAdded, len);
           }, function (err) {
             layerAdded++;
 
-            _this5._sendMapToUser(layerAdded, len);
+            _this6._sendMapToUser(layerAdded, len);
 
-            _this5.fire('getlayerdatasourcefailed', {
+            _this6.fire('getlayerdatasourcefailed', {
               error: err,
               layer: layer,
-              map: _this5.map
+              map: _this6.map
             });
           });
         } else if (layer.dataSource && layer.dataSource.type === 'REST_MAP' && layer.dataSource.url) {
-          _this5._queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, function (result) {
+          _this6._queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, function (result) {
             var recordsets = result && result.result.recordsets;
             var recordset = recordsets && recordsets[0];
             var attributes = recordset.fields;
@@ -63327,27 +63366,27 @@ function (_mapboxgl$Evented) {
                 }
               }
 
-              _this5._getFeatures(fileterAttrs, layer, function (features) {
-                _this5._addLayer(layer, features, index);
+              _this6._getFeatures(fileterAttrs, layer, function (features) {
+                _this6._addLayer(layer, features, index);
 
                 layerAdded++;
 
-                _this5._sendMapToUser(layerAdded, len);
+                _this6._sendMapToUser(layerAdded, len);
               }, function (err) {
                 layerAdded++;
 
-                _this5.fire('getlayerdatasourcefailed', {
+                _this6.fire('getlayerdatasourcefailed', {
                   error: err,
                   layer: layer,
-                  map: _this5.map
+                  map: _this6.map
                 });
               });
             }
           }, function (err) {
-            _this5.fire('getlayerdatasourcefailed', {
+            _this6.fire('getlayerdatasourcefailed', {
               error: err,
               layer: layer,
-              map: _this5.map
+              map: _this6.map
             });
           }, 'smid=1');
         }
@@ -63356,7 +63395,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_getFeatures",
     value: function _getFeatures(fields, layerInfo, resolve, reject) {
-      var _this6 = this;
+      var _this7 = this;
 
       var source = layerInfo.dataSource;
       var fileCode = layerInfo.projection;
@@ -63365,12 +63404,12 @@ function (_mapboxgl$Evented) {
         var recordsets = result.result.recordsets[0];
         var features = recordsets.features.features;
 
-        var featuresObj = _this6._parseGeoJsonData2Feature({
+        var featuresObj = _this7._parseGeoJsonData2Feature({
           allDatas: {
             features: features
           },
           fileCode: fileCode,
-          featureProjection: _this6.baseProjection
+          featureProjection: _this7.baseProjection
         });
 
         resolve(featuresObj);
@@ -63482,7 +63521,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_createGraphicLayer",
     value: function _createGraphicLayer(layerInfo, features) {
-      var _this7 = this;
+      var _this8 = this;
 
       var style = layerInfo.style;
       var layerID = layerInfo.layerID;
@@ -63509,9 +63548,9 @@ function (_mapboxgl$Evented) {
 
           var iconSize = Number.parseFloat((style.radius / image.height).toFixed(2)) * 2;
 
-          _this7.map.addImage('imageIcon', image);
+          _this8.map.addImage('imageIcon', image);
 
-          _this7.map.addLayer({
+          _this8.map.addLayer({
             id: layerID,
             type: 'symbol',
             source: source,
@@ -63532,16 +63571,16 @@ function (_mapboxgl$Evented) {
 
         this._getCanvasFromSVG(svgUrl, this._svgDiv, function (canvas) {
           var imgUrl = canvas.toDataURL('img/png');
-          imgUrl && _this7.map.loadImage(imgUrl, function (error, image) {
+          imgUrl && _this8.map.loadImage(imgUrl, function (error, image) {
             if (error) {
               console.log(error);
             }
 
             var iconSize = Number.parseFloat((style.radius / canvas.width).toFixed(2));
 
-            _this7.map.addImage('imageIcon', image);
+            _this8.map.addImage('imageIcon', image);
 
-            _this7.map.addLayer({
+            _this8.map.addLayer({
               id: layerID,
               type: 'symbol',
               source: source,
@@ -63675,7 +63714,7 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_createMarkerLayer",
     value: function _createMarkerLayer(layerInfo, features) {
-      var _this8 = this;
+      var _this9 = this;
 
       features && features.forEach(function (feature) {
         var geomType = feature.geometry.type.toUpperCase();
@@ -63685,13 +63724,13 @@ function (_mapboxgl$Evented) {
           geomType = 'TEXT';
         }
 
-        var featureInfo = _this8._setFeatureInfo(feature);
+        var featureInfo = _this9._setFeatureInfo(feature);
 
         feature.properties['useStyle'] = defaultStyle;
         feature.properties['featureInfo'] = featureInfo;
 
         if (geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
-          defaultStyle.src = _this8.serverUrl + defaultStyle.src;
+          defaultStyle.src = _this9.serverUrl + defaultStyle.src;
         }
 
         var source = {
@@ -63700,14 +63739,14 @@ function (_mapboxgl$Evented) {
         };
         var index = feature.properties.index;
         var layerID = geomType + '-' + index;
-        geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('svg') <= -1 && _this8.map.loadImage(defaultStyle.src, function (error, image) {
+        geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('svg') <= -1 && _this9.map.loadImage(defaultStyle.src, function (error, image) {
           if (error) {
             console.log(error);
           }
 
-          _this8.map.addImage(index + '', image);
+          _this9.map.addImage(index + '', image);
 
-          _this8.map.addLayer({
+          _this9.map.addLayer({
             id: layerID,
             type: 'symbol',
             source: source,
@@ -63720,21 +63759,21 @@ function (_mapboxgl$Evented) {
         });
 
         if (geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('svg') > -1) {
-          if (!_this8._svgDiv) {
-            _this8._svgDiv = document.createElement('div');
-            document.body.appendChild(_this8._svgDiv);
+          if (!_this9._svgDiv) {
+            _this9._svgDiv = document.createElement('div');
+            document.body.appendChild(_this9._svgDiv);
           }
 
-          _this8._getCanvasFromSVG(defaultStyle.src, _this8._svgDiv, function (canvas) {
+          _this9._getCanvasFromSVG(defaultStyle.src, _this9._svgDiv, function (canvas) {
             var imgUrl = canvas.toDataURL('img/png');
-            imgUrl && _this8.map.loadImage(imgUrl, function (error, image) {
+            imgUrl && _this9.map.loadImage(imgUrl, function (error, image) {
               if (error) {
                 console.log(error);
               }
 
-              _this8.map.addImage(index + '', image);
+              _this9.map.addImage(index + '', image);
 
-              _this8.map.addLayer({
+              _this9.map.addLayer({
                 id: layerID,
                 type: 'symbol',
                 source: source,
@@ -63762,11 +63801,11 @@ function (_mapboxgl$Evented) {
 
           var visible = layerInfo.visible;
           layeStyle.layout.visibility = visible;
-          layeStyle.style = _this8._transformStyleToMapBoxGl(defaultStyle, geomType);
+          layeStyle.style = _this9._transformStyleToMapBoxGl(defaultStyle, geomType);
 
-          _this8._addOverlayToMap(geomType, source, layerID, layeStyle);
+          _this9._addOverlayToMap(geomType, source, layerID, layeStyle);
 
-          geomType === 'POLYGON' && defaultStyle.strokeColor && _this8._addStrokeLineForPoly(defaultStyle, source, layerID + '-strokeLine', visible);
+          geomType === 'POLYGON' && defaultStyle.strokeColor && _this9._addStrokeLineForPoly(defaultStyle, source, layerID + '-strokeLine', visible);
         }
       }, this);
     }
@@ -65136,7 +65175,8 @@ WebMapvue_type_script_lang_ts_decorate([Emit()], WebMapvue_type_script_lang_ts_S
 WebMapvue_type_script_lang_ts_decorate([Emit()], WebMapvue_type_script_lang_ts_SmWebMap.prototype, "getLayerDatasourceFailed", null);
 
 WebMapvue_type_script_lang_ts_SmWebMap = WebMapvue_type_script_lang_ts_decorate([vue_class_component_esm({
-  viewModelProps: ['mapId', 'serverUrl', 'mapOptions'],
+  name: 'SmWebMap',
+  viewModelProps: ['mapId', 'serverUrl', 'mapOptions', 'withCredentials'],
   components: {
     Pan: Pan,
     Scale: Scale,
@@ -65156,8 +65196,8 @@ WebMapvue_type_script_lang_ts_SmWebMap = WebMapvue_type_script_lang_ts_decorate(
 
 var WebMap_component = normalizeComponent(
   web_map_WebMapvue_type_script_lang_ts_,
-  WebMapvue_type_template_id_d23bd548_render,
-  WebMapvue_type_template_id_d23bd548_staticRenderFns,
+  WebMapvue_type_template_id_0b28b722_render,
+  WebMapvue_type_template_id_0b28b722_staticRenderFns,
   false,
   null,
   null,
@@ -65166,12 +65206,12 @@ var WebMap_component = normalizeComponent(
 )
 
 /* harmony default export */ var WebMap = (WebMap_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-scene/WebScene.vue?vue&type=template&id=72804d76&
-var WebScenevue_type_template_id_72804d76_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-scene"},[_c('div',{staticClass:"sm-component-web-scene__wrap",attrs:{"id":_vm.sceneId}})])}
-var WebScenevue_type_template_id_72804d76_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-scene/WebScene.vue?vue&type=template&id=abe2fbaa&
+var WebScenevue_type_template_id_abe2fbaa_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-scene"},[_c('div',{staticClass:"sm-component-web-scene__wrap",attrs:{"id":_vm.sceneId}})])}
+var WebScenevue_type_template_id_abe2fbaa_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-scene/WebScene.vue?vue&type=template&id=72804d76&
+// CONCATENATED MODULE: ./src/mapboxgl/web-scene/WebScene.vue?vue&type=template&id=abe2fbaa&
 
 // CONCATENATED MODULE: ./src/mapboxgl/web-scene/WebSceneViewModel.js
 
@@ -65214,9 +65254,36 @@ function (_mapboxgl$Evented) {
   }
 
   helpers_createClass_default()(WebSceneViewModel, [{
+    key: "setSceneUrl",
+    value: function setSceneUrl(url) {
+      this.serviceUrl = url;
+
+      if (this.serviceUrl.indexOf('iserver') >= 0) {
+        this.sceneUrl = this.serviceUrl;
+        this.createScene();
+      } else {
+        this.getSceneInfo();
+      }
+    }
+  }, {
+    key: "setScanEffect",
+    value: function setScanEffect(scanEffect) {
+      var _this2 = this;
+
+      this.scanEffect = scanEffect;
+
+      if (scanEffect.type === 'noScan') {
+        this.scene && (this.scene.scanEffect.show = false);
+      } else {
+        setTimeout(function () {
+          _this2.startScan(scanEffect.type);
+        }, 100);
+      }
+    }
+  }, {
     key: "getSceneInfo",
     value: function getSceneInfo() {
-      var _this2 = this;
+      var _this3 = this;
 
       SuperMap.FetchRequest.get(this.serviceUrl + '.json').then(function (response) {
         return response.json();
@@ -65225,16 +65292,16 @@ function (_mapboxgl$Evented) {
             name = result.name,
             url = result.url,
             id = result.id;
-        _this2.sceneInfo = {
+        _this3.sceneInfo = {
           thumbnail: thumbnail,
           name: name,
           url: url,
           id: id
         }; // 检查是否公开or私有
 
-        _this2.sceneUrl = url;
+        _this3.sceneUrl = url;
 
-        _this2.checkPrivate(result);
+        _this3.checkPrivate(result);
       });
     }
   }, {
@@ -65295,8 +65362,9 @@ function (_mapboxgl$Evented) {
   }, {
     key: "createScene",
     value: function createScene() {
-      var _this3 = this;
+      var _this4 = this;
 
+      this.scene = null;
       var sceneParam = this.getSceneParam();
       var sceneUrl = sceneParam.sceneUrl;
       sceneUrl = sceneUrl.slice(0, sceneUrl.indexOf('/rest/realspace') + 15);
@@ -65325,26 +65393,25 @@ function (_mapboxgl$Evented) {
         var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
         handler.setInputAction(function (e) {
           sceneParam.positopn = new Cesium.Cartesian3(sc.position.x, sc.position.y, sc.position.z);
-          _this3.heightLight = true;
 
           if (sceneParam.scanEffect.status) {
             // 获取鼠标屏幕坐标,并将其转化成笛卡尔坐标
             var position = e.position;
             var last = scene.pickPosition(position);
-            _this3.scene.scanEffect.centerPostion = last; // 设置扫描中心点
+            _this4.scene.scanEffect.centerPostion = last; // 设置扫描中心点
 
             sceneParam.scanEffect.centerPostion = last;
-            _this3.tooltipIsVisable = true; // 关闭悬浮提示
+            _this4.scanEffect.centerPostion = last;
           }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK); // 恢复状态时，恢复扫描效果,加赞三维场景比较卡，所以延迟2秒后再加载光线效果
 
-        if (sceneParam.scanEffect.status) {
+        if (sceneParam.scanEffect.status && sceneParam.scanEffect.type !== 'noScan') {
           setTimeout(function () {
-            _this3.startScan(sceneParam.scanEffect.type);
+            _this4.startScan(sceneParam.scanEffect.type);
           }, 3000);
         }
 
-        _this3.sceneParam = sceneParam;
+        _this4.sceneParam = sceneParam;
       });
     }
   }, {
@@ -65354,16 +65421,16 @@ function (_mapboxgl$Evented) {
       this.scene.scanEffect.show = false;
       this.scene.scanEffect.mode = type === 'line' ? Cesium.ScanEffectMode.LINE : Cesium.ScanEffectMode.CIRCLE;
 
-      if (this.sceneParam.scanEffect.centerPostion) {
-        this.scene.scanEffect.centerPostion = this.sceneParam.scanEffect.centerPostion;
+      if (this.sceneParam.scanEffect.centerPostion || this.scanEffect.centerPostion) {
+        this.scene.scanEffect.centerPostion = this.scanEffect.centerPostion || this.sceneParam.scanEffect.centerPostion;
       } else {
         this.sceneParam.scanEffect.centerPostion = new Cesium.Cartesian3(sc.position.x, sc.position.y, sc.position.z);
         this.scene.scanEffect.centerPostion = new Cesium.Cartesian3(sc.position.x, sc.position.y, sc.position.z);
       }
 
       this.scene.scanEffect.color = Cesium.Color.CORNFLOWERBLUE;
-      this.scene.scanEffect._period = this.sceneParam.scanEffect._period;
-      this.scene.scanEffect.speed = this.sceneParam.scanEffect.speed;
+      this.scene.scanEffect._period = parseFloat(this.scanEffect.period);
+      this.scene.scanEffect.speed = parseFloat(this.scanEffect.speed);
       this.scene.scanEffect.show = true;
     }
   }]);
@@ -65382,6 +65449,7 @@ function (_mapboxgl$Evented) {
 
 /* harmony default export */ var WebScenevue_type_script_lang_js_ = ({
   name: 'SmWebScene',
+  // viewModelProps: ['sceneUrl', 'scanEffect', 'navigation'],
   props: {
     sceneUrl: {
       type: String,
@@ -65403,6 +65471,14 @@ function (_mapboxgl$Evented) {
   computed: {
     sceneId: function sceneId() {
       return 'scene' + parseInt(Math.random() * 100);
+    }
+  },
+  watch: {
+    sceneUrl: function sceneUrl() {
+      this.sceneViewModel && this.sceneViewModel.setSceneUrl(this.sceneUrl);
+    },
+    scanEffect: function scanEffect() {
+      this.sceneViewModel && this.sceneViewModel.setScanEffect(this.scanEffect);
     }
   },
   mounted: function mounted() {
@@ -65440,8 +65516,8 @@ function (_mapboxgl$Evented) {
 
 var WebScene_component = normalizeComponent(
   web_scene_WebScenevue_type_script_lang_js_,
-  WebScenevue_type_template_id_72804d76_render,
-  WebScenevue_type_template_id_72804d76_staticRenderFns,
+  WebScenevue_type_template_id_abe2fbaa_render,
+  WebScenevue_type_template_id_abe2fbaa_staticRenderFns,
   false,
   null,
   null,
@@ -65450,12 +65526,12 @@ var WebScene_component = normalizeComponent(
 )
 
 /* harmony default export */ var WebScene = (WebScene_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/open-file/OpenFile.vue?vue&type=template&id=6ce92706&
-var OpenFilevue_type_template_id_6ce92706_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:['sm-component-open-file',_vm.mapboxglClass]},[_c('label',{staticClass:"sm-component-open-file__title",attrs:{"for":"input_file"}},[_c('span',[_vm._v(_vm._s(_vm.text))])]),_vm._v(" "),_c('input',{staticClass:"sm-component-open-file__input",attrs:{"id":"input_file","type":"file","accept":_vm.accept},on:{"change":function($event){_vm.fileSelect($event)}}})])}
-var OpenFilevue_type_template_id_6ce92706_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/open-file/OpenFile.vue?vue&type=template&id=6d9cf33e&
+var OpenFilevue_type_template_id_6d9cf33e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:['sm-component-open-file', _vm.mapboxglClass],style:([_vm.fontStyle, { background: _vm.getColor(0) }, _vm.getTextColorStyle])},[_c('label',{staticClass:"sm-component-open-file__title",attrs:{"for":"input_file"}},[_c('span',[_vm._v(_vm._s(_vm.text))])]),_vm._v(" "),_c('input',{staticClass:"sm-component-open-file__input",attrs:{"id":"input_file","type":"file","accept":_vm.accept},on:{"change":function($event){_vm.fileSelect($event)}}})])}
+var OpenFilevue_type_template_id_6d9cf33e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/open-file/OpenFile.vue?vue&type=template&id=6ce92706&
+// CONCATENATED MODULE: ./src/mapboxgl/open-file/OpenFile.vue?vue&type=template&id=6d9cf33e&
 
 // CONCATENATED MODULE: ./src/mapboxgl/open-file/FileTypes.js
 var FileTypes = {
@@ -65839,7 +65915,7 @@ function (_mapboxgl$Evented) {
       var inputDom = fileEventObject.target;
       var file = inputDom.files[0];
       var filePath = inputDom.value;
-      var fileName = file.name;
+      var fileName = file && file.name;
       var fileType = getFileType(fileName); // 文件格式不支持
 
       if (!fileType) {
@@ -65962,10 +66038,6 @@ var bbox_default = /*#__PURE__*/__webpack_require__.n(bbox);
   name: 'SmOpenFile',
   mixins: [_mixin_theme, control, map_getter],
   props: {
-    iconClass: {
-      type: String,
-      default: 'sm-components-icons-layer-style'
-    },
     fitBounds: {
       type: Boolean,
       default: true
@@ -66001,6 +66073,9 @@ var bbox_default = /*#__PURE__*/__webpack_require__.n(bbox);
       default: function _default() {
         return ['.json', '.geojson', '.csv', '.xlsx', '.xls', '.shp', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
       }
+    },
+    fontStyle: {
+      type: Object
     }
   },
   data: function data() {
@@ -66103,8 +66178,8 @@ var bbox_default = /*#__PURE__*/__webpack_require__.n(bbox);
 
 var OpenFile_component = normalizeComponent(
   open_file_OpenFilevue_type_script_lang_js_,
-  OpenFilevue_type_template_id_6ce92706_render,
-  OpenFilevue_type_template_id_6ce92706_staticRenderFns,
+  OpenFilevue_type_template_id_6d9cf33e_render,
+  OpenFilevue_type_template_id_6d9cf33e_staticRenderFns,
   false,
   null,
   null,
@@ -66113,53 +66188,12 @@ var OpenFile_component = normalizeComponent(
 )
 
 /* harmony default export */ var OpenFile = (OpenFile_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/query/Query.vue?vue&type=template&id=5afdc797&
-var Queryvue_type_template_id_5afdc797_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-component-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-component-query__job-info-panel"},[_c('div',{staticClass:"sm-component-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"sm-components-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-component-query__job-info-name"},[_vm._v(_vm._s(jobInfo.queryParameter.name))]),_vm._v(" "),_c('div',{staticClass:"sm-components-icons-legend-unfold"})]),_vm._v(" "),(jobInfo.queryParameter.attributeFilter)?_c('div',{staticClass:"sm-component-query__job-info-body hidden"},[_c('div',{staticClass:"sm-component-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.queryParameter.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('a-select',{staticClass:"sm-component-query__a-select",attrs:{"get-popup-container":_vm.getPopupContainer},on:{"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(jobInfo.spaceFilter),callback:function ($$v) {_vm.$set(jobInfo, "spaceFilter", $$v)},expression:"jobInfo.spaceFilter"}},_vm._l((_vm.selectOptions),function(item){return _c('a-select-option',{key:item.value,attrs:{"value":item.value}},[_vm._v(_vm._s(item.label))])}))],1),_vm._v(" "),_c('div',{staticClass:"sm-component-query__query-button"},[_c('a-button',{staticClass:"sm-component-query__a-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo.queryParameter, jobInfo.spaceFilter)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult && !_vm.isQuery),expression:"!queryResult && !isQuery"}],staticClass:"sm-component-query__no-result hidden"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isQuery && !_vm.queryResult),expression:"isQuery && !queryResult"}],staticClass:"sm-component-query__result-loading"},[_c('a-spin',{attrs:{"tip":_vm.$t('query.querying')}},[_c('a-icon',{staticStyle:{"font-size":"24px"},attrs:{"slot":"indicator","type":"loading","spin":""},slot:"indicator"})],1)],1),_vm._v(" "),(_vm.queryResult)?_c('span',{staticClass:"sm-component-query__result-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(_vm.queryResult.name))]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])])])}
-var Queryvue_type_template_id_5afdc797_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/query/Query.vue?vue&type=template&id=ff4a33fc&
+var Queryvue_type_template_id_ff4a33fc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-component-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-component-query__job-info-panel"},[_c('div',{staticClass:"sm-component-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"sm-components-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-component-query__job-info-name"},[_vm._v(_vm._s(jobInfo.queryParameter.name))]),_vm._v(" "),_c('div',{staticClass:"sm-components-icons-legend-unfold"})]),_vm._v(" "),(jobInfo.queryParameter.attributeFilter)?_c('div',{staticClass:"sm-component-query__job-info-body hidden"},[_c('div',{staticClass:"sm-component-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.queryParameter.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('a-select',{staticClass:"sm-component-query__a-select",attrs:{"get-popup-container":_vm.getPopupContainer},on:{"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(jobInfo.spaceFilter),callback:function ($$v) {_vm.$set(jobInfo, "spaceFilter", $$v)},expression:"jobInfo.spaceFilter"}},_vm._l((_vm.selectOptions),function(item){return _c('a-select-option',{key:item.value,attrs:{"value":item.value}},[_vm._v(_vm._s(item.label))])}))],1),_vm._v(" "),_c('div',{staticClass:"sm-component-query__query-button"},[_c('a-button',{staticClass:"sm-component-query__a-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo.queryParameter, jobInfo.spaceFilter)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult && !_vm.isQuery),expression:"!queryResult && !isQuery"}],staticClass:"sm-component-query__no-result hidden"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isQuery && !_vm.queryResult),expression:"isQuery && !queryResult"}],staticClass:"sm-component-query__result-loading"},[_c('a-spin',{attrs:{"tip":_vm.$t('query.querying')}},[_c('a-icon',{staticStyle:{"font-size":"24px"},attrs:{"slot":"indicator","type":"loading","spin":""},slot:"indicator"})],1)],1),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-header",style:(_vm.getColorStyle(0))},[_c('span',[_vm._v(_vm._s(_vm.queryResult.name))]),_vm._v(" "),_c('span',{staticClass:"sm-components-icons-close",on:{"click":_vm.clearResult}})]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"queryTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
+var Queryvue_type_template_id_ff4a33fc_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/query/Query.vue?vue&type=template&id=5afdc797&
-
-// CONCATENATED MODULE: ./src/common/_types/iPortalDataParameter.js
-
-
-
-var iPortalDataParameter_iPortalDataParameter = function iPortalDataParameter(options) {
-  helpers_classCallCheck_default()(this, iPortalDataParameter);
-
-  this.url = options.url;
-  this.attributeFilter = options.attributeFilter || null;
-  this.name = options.name || _lang.t('commontypes.iportalData');
-};
-
-
-// CONCATENATED MODULE: ./src/common/_types/RestDataParameter.js
-
-
-
-var RestDataParameter_RestDataParameter = function RestDataParameter(options) {
-  helpers_classCallCheck_default()(this, RestDataParameter);
-
-  this.url = options.url;
-  this.dataName = options.dataName;
-  this.attributeFilter = options.attributeFilter || null;
-  this.name = options.name || _lang.t('commontypes.restData');
-};
-
-
-// CONCATENATED MODULE: ./src/common/_types/RestMapParameter.js
-
-
-
-var RestMapParameter_RestMapParameter = function RestMapParameter(options) {
-  helpers_classCallCheck_default()(this, RestMapParameter);
-
-  this.url = options.url;
-  this.layerName = options.layerName;
-  this.attributeFilter = options.attributeFilter || null;
-  this.name = options.name || _lang.t('commontypes.restMap');
-};
-
+// CONCATENATED MODULE: ./src/mapboxgl/query/Query.vue?vue&type=template&id=ff4a33fc&
 
 // CONCATENATED MODULE: ./src/mapboxgl/query/QueryViewModel.js
 
@@ -66167,9 +66201,9 @@ var RestMapParameter_RestMapParameter = function RestMapParameter(options) {
 
 
 
-
-
-
+ // import iPortalDataParameter from '../../common/_types/iPortalDataParameter';
+// import RestDataParameter from '../../common/_types/RestDataParameter';
+// import RestMapParameter from '../../common/_types/RestMapParameter';
 
 
 
@@ -66209,20 +66243,25 @@ function (_mapboxgl$Evented) {
     _this.layerStyle = options.layerStyle || {};
     return _this;
   }
-  /**
-   * @function QueryViewModel.prototype.query
-   * @desc 开始查询。
-   * @param {iPortalDataParameter|RestDataParameter|RestMapParameter} parameter - 查询配置参数。
-   * @param {String} [queryBounds='mapBounds'] - 查询范围，可选值为 mapBounds（地图全图范围），currentMapBounds（当前地图范围）。
-   */
-
 
   helpers_createClass_default()(QueryViewModel, [{
+    key: "clearResultLayer",
+    value: function clearResultLayer() {
+      this.strokeLayerID && this.map.getLayer(this.strokeLayerID) && this.map.removeLayer(this.strokeLayerID);
+      this.layerID && this.map.getLayer(this.layerID) && this.map.removeLayer(this.layerID);
+    }
+    /**
+     * @function QueryViewModel.prototype.query
+     * @desc 开始查询。
+     * @param {iPortalDataParameter|RestDataParameter|RestMapParameter} parameter - 查询配置参数。
+     * @param {String} [queryBounds='mapBounds'] - 查询范围，可选值为 mapBounds（地图全图范围），currentMapBounds（当前地图范围）。
+     */
+
+  }, {
     key: "query",
     value: function query(queryParameter, queryBounds) {
       this.queryParameter = queryParameter;
-      this.strokeLayerID && this.map.removeLayer(this.strokeLayerID);
-      this.layerID && this.map.getLayer(this.layerID) && this.map.removeLayer(this.layerID);
+      this.clearResultLayer();
       this.queryBounds = queryBounds;
 
       if (queryBounds === 'currentMapBounds') {
@@ -66231,13 +66270,22 @@ function (_mapboxgl$Evented) {
 
       this.queryResult = null;
 
-      if (queryParameter instanceof iPortalDataParameter_iPortalDataParameter) {
-        this._queryByIportalData(queryParameter);
-      } else if (queryParameter instanceof RestDataParameter_RestDataParameter) {
-        this._queryByRestData(queryParameter);
-      } else if (queryParameter instanceof RestMapParameter_RestMapParameter) {
-        this._queryByRestMap(queryParameter);
-      }
+      if (queryParameter) {
+        if (queryParameter.dataName) {
+          this._queryByRestData(queryParameter);
+        } else if (queryParameter.layerName) {
+          this._queryByRestMap(queryParameter);
+        } else {
+          this._queryByIportalData(queryParameter);
+        }
+      } // if (queryParameter instanceof iPortalDataParameter) {
+      //   this._queryByIportalData(queryParameter);
+      // } else if (queryParameter instanceof RestDataParameter) {
+      //   this._queryByRestData(queryParameter);
+      // } else if (queryParameter instanceof RestMapParameter) {
+      //   this._queryByRestMap(queryParameter);
+      // }
+
     }
   }, {
     key: "_queryByRestMap",
@@ -66252,7 +66300,7 @@ function (_mapboxgl$Evented) {
           },
           bounds: this.bounds,
           startRecord: 0,
-          expectCount: this.maxFeatures
+          expectCount: restMapParameter.maxFeatures || this.maxFeatures
         });
         new mapbox_gl_enhance_js_default.a.supermap.QueryService(restMapParameter.url).queryByBounds(param, function (serviceResult) {
           _this2._mapQuerySucceed(serviceResult, restMapParameter);
@@ -66264,7 +66312,7 @@ function (_mapboxgl$Evented) {
             attributeFilter: restMapParameter.attributeFilter
           },
           startRecord: 0,
-          expectCount: this.maxFeatures
+          expectCount: restMapParameter.maxFeatures || this.maxFeatures
         });
 
         new mapbox_gl_enhance_js_default.a.supermap.QueryService(restMapParameter.url).queryBySQL(_param, function (serviceResult) {
@@ -66283,7 +66331,7 @@ function (_mapboxgl$Evented) {
           datasetNames: restDataParameter.dataName,
           bounds: this.bounds,
           fromIndex: 0,
-          toIndex: this.maxFeatures - 1
+          toIndex: restDataParameter.maxFeatures - 1 || this.maxFeatures - 1
         });
         new mapbox_gl_enhance_js_default.a.supermap.FeatureService(restDataParameter.url).getFeaturesByBounds(boundsParam, function (serviceResult) {
           _this3._dataQuerySucceed(serviceResult, restDataParameter);
@@ -66295,7 +66343,7 @@ function (_mapboxgl$Evented) {
           },
           datasetNames: restDataParameter.dataName,
           fromIndex: 0,
-          toIndex: this.maxFeatures - 1
+          toIndex: restDataParameter.maxFeatures - 1 || this.maxFeatures - 1
         });
         new mapbox_gl_enhance_js_default.a.supermap.FeatureService(restDataParameter.url).getFeaturesBySQL(param, function (serviceResult) {
           _this3._dataQuerySucceed(serviceResult, restDataParameter);
@@ -66445,7 +66493,8 @@ function (_mapboxgl$Evented) {
               dataName: [sourceName + ':' + datasetName],
               url: "".concat(address, "/data"),
               name: iportalDataParameter.name,
-              attributeFilter: iportalDataParameter.attributeFilter
+              attributeFilter: iportalDataParameter.attributeFilter,
+              maxFeatures: iportalDataParameter.maxFeatures
             });
           }).catch(function (error) {
             _this5.fire('queryfailed', {
@@ -66487,7 +66536,8 @@ function (_mapboxgl$Evented) {
               layerName: layerName,
               url: path,
               name: iportalDataParameter.name,
-              attributeFilter: iportalDataParameter.attributeFilter
+              attributeFilter: iportalDataParameter.attributeFilter,
+              maxFeatures: iportalDataParameter.maxFeatures
             });
 
             return layerName;
@@ -66658,7 +66708,7 @@ function (_mapboxgl$Evented) {
       if (type === 'fill') {
         this.strokeLayerID = layerID + '-StrokeLine';
         var stokeLineStyle = this.layerStyle.stokeLine;
-        var lineStyle = stokeLineStyle && stokeLineStyle.paint || {
+        var lineStyle = stokeLineStyle || {
           'line-width': 3,
           'line-color': '#409eff',
           'line-opacity': 1
@@ -66667,8 +66717,7 @@ function (_mapboxgl$Evented) {
           id: this.strokeLayerID,
           type: 'line',
           source: source,
-          paint: lineStyle,
-          layout: stokeLineStyle && stokeLineStyle.layout || {}
+          paint: lineStyle
         });
       }
     }
@@ -66851,29 +66900,30 @@ var TablePopup_component = normalizeComponent(
 //
 //
 //
+//
+//
+//
 
 
 
 
 
 
+ // import iPortalDataParameter from '../../common/_types/iPortalDataParameter';
+// import RestDataParameter from '../../common/_types/RestDataParameter';
+// import RestMapParameter from '../../common/_types/RestMapParameter';
 
 
+ // let validators = (value, propType) => {
+//   let valid = true;
+//   value.forEach(item => {
+//     if (!(item instanceof propType)) {
+//       valid = false;
+//     }
+//   });
+//   return valid;
+// };
 
-
-
-
-
-
-var validators = function validators(value, propType) {
-  var valid = true;
-  value.forEach(function (item) {
-    if (!(item instanceof propType)) {
-      valid = false;
-    }
-  });
-  return valid;
-};
 /**
  * @module Query
  * @category Components
@@ -66891,9 +66941,11 @@ var validators = function validators(value, propType) {
  * @vue-prop {SuperMap.Components.commontypes.LineStyle} [layerStyle.stokeLine] - 面图层边框样式配置。
  */
 
-
 /* harmony default export */ var Queryvue_type_script_lang_js_ = ({
   name: 'SmQuery',
+  components: {
+    TablePopup: TablePopup
+  },
   mixins: [map_getter, control, _mixin_theme, _mixin_card],
   props: {
     iconClass: {
@@ -66939,22 +66991,22 @@ var validators = function validators(value, propType) {
       }
     },
     iportalData: {
-      type: Array,
-      validator: function validator(value) {
-        return validators(value, iPortalDataParameter_iPortalDataParameter);
-      }
+      type: Array // validator(value) {
+      //   return validators(value, iPortalDataParameter);
+      // }
+
     },
     restData: {
-      type: Array,
-      validator: function validator(value) {
-        return validators(value, RestDataParameter_RestDataParameter);
-      }
+      type: Array // validator(value) {
+      //   return validators(value, RestDataParameter);
+      // }
+
     },
     restMap: {
-      type: Array,
-      validator: function validator(value) {
-        return validators(value, RestMapParameter_RestMapParameter);
-      }
+      type: Array // validator(value) {
+      //   return validators(value, RestMapParameter);
+      // }
+
     }
   },
   data: function data() {
@@ -66971,10 +67023,20 @@ var validators = function validators(value, propType) {
       queryResult: null,
       activeTab: 'job',
       isQuery: false,
-      jobInfos: []
+      jobInfos: [],
+      tablePopupProps: {}
     };
   },
   watch: {
+    iportalData: function iportalData() {
+      this.formatJobInfos();
+    },
+    restData: function restData() {
+      this.formatJobInfos();
+    },
+    restMap: function restMap() {
+      this.formatJobInfos();
+    },
     colorGroupsData: {
       handler: function handler() {
         this.changeSelectInputStyle();
@@ -67008,21 +67070,30 @@ var validators = function validators(value, propType) {
           }
         }
       }
+    },
+    layerStyle: function layerStyle() {
+      this.viewModel && (this.viewModel.layerStyle = this.$props.layerStyle);
     }
   },
-  loaded: function loaded() {
-    this.viewModel = new QueryViewModel_QueryViewModel(this.map, this.$props);
+  mounted: function mounted() {
     this.resultButton = this.$el.querySelector('.sm-component-query__result-button');
     this.jobButton = this.$el.querySelector('.sm-component-query__job-button');
     this.resultInfoContainer = this.$el.querySelector('.sm-component-query__result-info');
     this.jobInfoContainer = this.$el.querySelector('.sm-component-query__job-info');
-    this.registerEvents();
     this.formatJobInfos();
+  },
+  loaded: function loaded() {
+    this.viewModel = new QueryViewModel_QueryViewModel(this.map, this.$props);
+    this.registerEvents();
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.clearResult();
   },
   methods: {
     formatJobInfos: function formatJobInfos() {
       var _this = this;
 
+      this.jobInfos = [];
       Object.keys(this.$props).forEach(function (key) {
         if (key === 'iportalData' || key === 'restData' || key === 'restMap') {
           _this.$props[key] && _this.$props[key].forEach(function (item) {
@@ -67199,7 +67270,6 @@ var validators = function validators(value, propType) {
       var _this6 = this;
 
       this.popup && this.popup.remove() && (this.popup = null);
-      var popup = external_root_Vue_commonjs_vue_commonjs2_vue_amd_vue_default.a.extend(TablePopup);
 
       if (featuerInfo.info.length >= 1) {
         var state = {
@@ -67214,11 +67284,9 @@ var validators = function validators(value, propType) {
           }],
           data: featuerInfo.info
         };
-        var popupContainer = new popup({
-          propsData: objectSpread_default()({}, state)
-        }).$mount();
+        this.tablePopupProps = objectSpread_default()({}, state);
         this.$nextTick(function () {
-          _this6.popup = _this6.viewModel.addPopup(featuerInfo.coordinates, popupContainer.$el);
+          _this6.popup = _this6.viewModel.addPopup(featuerInfo.coordinates, _this6.$refs.queryTablePopup.$el);
         });
       }
     },
@@ -67232,6 +67300,12 @@ var validators = function validators(value, propType) {
     },
     getPopupContainer: function getPopupContainer(triggerNode) {
       return triggerNode.parentNode;
+    },
+    clearResult: function clearResult() {
+      this.queryResult = null;
+      this.popup && this.popup.remove() && (this.popup = null);
+      this.jobInfo = null;
+      this.viewModel.clearResultLayer();
     }
   }
 });
@@ -67247,8 +67321,8 @@ var validators = function validators(value, propType) {
 
 var Query_component = normalizeComponent(
   query_Queryvue_type_script_lang_js_,
-  Queryvue_type_template_id_5afdc797_render,
-  Queryvue_type_template_id_5afdc797_staticRenderFns,
+  Queryvue_type_template_id_ff4a33fc_render,
+  Queryvue_type_template_id_ff4a33fc_staticRenderFns,
   false,
   null,
   null,
@@ -67257,12 +67331,12 @@ var Query_component = normalizeComponent(
 )
 
 /* harmony default export */ var Query = (Query_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/search/Search.vue?vue&type=template&id=386da3c0&
-var Searchvue_type_template_id_386da3c0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-search",style:([_vm.getTextColorStyle, _vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-component-search__input"},[_c('a-input',{staticClass:"sm-component-search__a-input",style:([_vm.getBackgroundStyle]),attrs:{"placeholder":_vm.$t('search.inputPlaceHolder')},on:{"pressEnter":_vm.searchButtonClicked,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('a-icon',{style:(_vm.getColorStyle(0)),attrs:{"slot":"prefix","type":_vm.prefixType},on:{"click":_vm.searchButtonClicked},slot:"prefix"}),_vm._v(" "),_c('a-icon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isHover && _vm.searchKey),expression:"isHover && searchKey"}],style:(_vm.getColorStyle(0)),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.inputValueCleared,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},slot:"suffix"})],1)],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResultLength),expression:"getResultLength"}],staticClass:"sm-component-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-component-search__panel"},[(result.source)?_c('span',{staticClass:"sm-component-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-component-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,i){return _c('li',{key:i,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])}))])}
-var Searchvue_type_template_id_386da3c0_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/search/Search.vue?vue&type=template&id=788347ce&
+var Searchvue_type_template_id_788347ce_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-search",style:([_vm.getTextColorStyle, _vm.getBackgroundStyle]),attrs:{"id":"sm-component-search"}},[_c('div',{staticClass:"sm-component-search__input"},[_c('a-input',{staticClass:"sm-component-search__a-input",style:([_vm.getBackgroundStyle]),attrs:{"placeholder":_vm.$t('search.inputPlaceHolder')},on:{"pressEnter":_vm.searchButtonClicked,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('a-icon',{style:(_vm.getColorStyle(0)),attrs:{"slot":"prefix","type":_vm.prefixType},on:{"click":_vm.searchButtonClicked},slot:"prefix"}),_vm._v(" "),_c('a-icon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isHover && _vm.searchKey),expression:"isHover && searchKey"}],style:(_vm.getColorStyle(0)),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.inputValueCleared,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},slot:"suffix"})],1)],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResultLength),expression:"getResultLength"}],staticClass:"sm-component-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-component-search__panel"},[(result.source)?_c('span',{staticClass:"sm-component-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-component-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,i){return _c('li',{key:i,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])})),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"searchTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
+var Searchvue_type_template_id_788347ce_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/search/Search.vue?vue&type=template&id=386da3c0&
+// CONCATENATED MODULE: ./src/mapboxgl/search/Search.vue?vue&type=template&id=788347ce&
 
 // CONCATENATED MODULE: ./src/mapboxgl/search/SearchViewModel.js
 
@@ -67802,6 +67876,11 @@ function (_mapboxgl$Evented) {
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -67810,8 +67889,7 @@ function (_mapboxgl$Evented) {
 // import RestDataParameter from "../commontypes/RestDataParameter";
 // import RestMapParameter from "../commontypes/RestMapParameter";
 // import AddressMatchParameter from "../commontypes/AddressMatchParameter";
-
- // let validators = (value, propType) => {
+// let validators = (value, propType) => {
 //   let valid = true;
 //   value.forEach(item => {
 //     if (!(item instanceof propType)) {
@@ -67825,7 +67903,6 @@ function (_mapboxgl$Evented) {
  * @module Search
  * @category Components
  * @desc 搜索组件。
- * @vue-prop {String} dataFlowUrl - 数据流服务地址。
  * @vue-prop {(Number|String)} [maxFeatures=8] - 最多可返回的要素数量，最大值为 100。
  * @vue-prop {Array} [layerNames] - 地图图层搜索配置，如：'['UNIQUE-民航数']'。
  * @vue-prop {RestMapParameter} [restMap] - iServer 地图服务搜索配置。
@@ -67839,6 +67916,9 @@ function (_mapboxgl$Evented) {
 
 /* harmony default export */ var Searchvue_type_script_lang_js_ = ({
   name: 'SmSearch',
+  components: {
+    TablePopup: TablePopup
+  },
   mixins: [control, map_getter, _mixin_theme],
   props: {
     maxFeatures: {
@@ -67887,7 +67967,8 @@ function (_mapboxgl$Evented) {
       searchKey: null,
       searchResult: [],
       prefixType: 'search',
-      isHover: false
+      isHover: false,
+      tablePopupProps: {}
     };
   },
   computed: {
@@ -67932,6 +68013,10 @@ function (_mapboxgl$Evented) {
   loaded: function loaded() {
     this.viewModel = new SearchViewModel_SearchViewModel(this.map, this.$props);
     this.oldSearchTaskId = null;
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.$message.destroy();
+    this.marker && this.marker.remove() && (this.marker = null);
   },
   methods: {
     changeSearchInputStyle: function changeSearchInputStyle() {
@@ -68016,11 +68101,9 @@ function (_mapboxgl$Evented) {
           }],
           data: popupData.info
         };
-        var popupContainer = new (external_root_Vue_commonjs_vue_commonjs2_vue_amd_vue_default.a.extend(TablePopup))({
-          propsData: objectSpread_default()({}, state)
-        }).$mount();
+        this.tablePopupProps = objectSpread_default()({}, state);
         this.$nextTick(function () {
-          _this.marker = _this.viewModel.addMarker(popupData.coordinates, popupContainer.$el);
+          _this.marker = _this.viewModel.addMarker(popupData.coordinates, _this.$refs.searchTablePopup.$el);
         });
       }
     },
@@ -68068,8 +68151,8 @@ function (_mapboxgl$Evented) {
 
 var Search_component = normalizeComponent(
   search_Searchvue_type_script_lang_js_,
-  Searchvue_type_template_id_386da3c0_render,
-  Searchvue_type_template_id_386da3c0_staticRenderFns,
+  Searchvue_type_template_id_788347ce_render,
+  Searchvue_type_template_id_788347ce_staticRenderFns,
   false,
   null,
   null,
@@ -68129,6 +68212,51 @@ var AddressMatchParameter_AddressMatchParameter = function AddressMatchParameter
 
   this.url = options.url;
   this.name = options.name || _lang.t('commontypes.addressMatch');
+};
+
+
+// CONCATENATED MODULE: ./src/common/_types/iPortalDataParameter.js
+
+
+
+var iPortalDataParameter_iPortalDataParameter = function iPortalDataParameter(options) {
+  helpers_classCallCheck_default()(this, iPortalDataParameter);
+
+  this.url = options.url;
+  this.attributeFilter = options.attributeFilter || null;
+  this.maxFeatures = options.maxFeatures || 20;
+  this.name = options.name || _lang.t('commontypes.iportalData');
+  this.withCredentials = options.withCredentials || false;
+};
+
+
+// CONCATENATED MODULE: ./src/common/_types/RestDataParameter.js
+
+
+
+var RestDataParameter_RestDataParameter = function RestDataParameter(options) {
+  helpers_classCallCheck_default()(this, RestDataParameter);
+
+  this.url = options.url;
+  this.dataName = options.dataName;
+  this.attributeFilter = options.attributeFilter || null;
+  this.maxFeatures = options.maxFeatures || 20;
+  this.name = options.name || _lang.t('commontypes.restData');
+};
+
+
+// CONCATENATED MODULE: ./src/common/_types/RestMapParameter.js
+
+
+
+var RestMapParameter_RestMapParameter = function RestMapParameter(options) {
+  helpers_classCallCheck_default()(this, RestMapParameter);
+
+  this.url = options.url;
+  this.layerName = options.layerName;
+  this.attributeFilter = options.attributeFilter || null;
+  this.maxFeatures = options.maxFeatures || 20;
+  this.name = options.name || _lang.t('commontypes.restMap');
 };
 
 
@@ -68195,7 +68323,9 @@ var mapboxgl_setTheme = function setTheme() {
   var themeStyle = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   if (typeof themeStyle === 'string') {
-    themeStyle = theme_namespaceObject[themeStyle] || {};
+    themeStyle = theme_theme.filter(function (item) {
+      return item.label === themeStyle;
+    })[0] || {};
   }
 
   global_event.$emit('change-theme', themeStyle);
@@ -68563,13 +68693,6 @@ module.exports = mapCacheHas;
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ "qEMk":
-/***/ (function(module) {
-
-module.exports = {"textColor":"#fff","background":"rgb(0, 0, 0,0.6)","colorGroup":["#dd6b66","#759aa0","#e69d87","#8dc1a9","#ea7e53","#eedd78"]};
 
 /***/ }),
 
