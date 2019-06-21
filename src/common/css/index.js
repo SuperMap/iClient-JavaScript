@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import './supermapol-icons.css';
 
-//微件样式
+//组件样式
 import '../widgets/css/widgets-icon.css';
 import '../widgets/css/Icon.css';
 

@@ -327,40 +327,40 @@
         "name": "控件",
         "name_en": "Control"
     },
-    "Widgets": {
-        "name": "微件",
-        "name_en": "Widgets",
+    "Components": {
+        "name": "组件",
+        "name_en": "Components",
         "content": {
             "Common": {
                 "name": "通用",
                 "name_en": "Common"
             },
             "OpenFile": {
-                "name": "打开本地文件微件",
+                "name": "打开本地文件组件",
                 "name_en": "OpenFile"
             },
             "DataFlow": {
-                "name": "数据流微件",
+                "name": "数据流组件",
                 "name_en": "DataFlow"
             },
             "ClientComputation": {
-                "name": "客户端计算微件",
+                "name": "客户端计算组件",
                 "name_en": "ClientComputation"
             },
             "DistributedAnalysis": {
-                "name": "分布式分析微件",
+                "name": "分布式分析组件",
                 "name_en": "DistributedAnalysis"
             },
             "Search": {
-                "name": "图层查询微件",
+                "name": "图层查询组件",
                 "name_en": "Search"
             },
             "DataServiceQuery": {
-                "name": "数据服务查询微件",
+                "name": "数据服务查询组件",
                 "name_en": "DataServiceQuery"
             },
             "Chart": {
-                "name": "图表微件",
+                "name": "图表组件",
                 "name_en": "Chart"
             }
         }

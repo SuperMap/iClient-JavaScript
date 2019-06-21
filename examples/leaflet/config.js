@@ -1178,7 +1178,7 @@ var exampleConfig = {
                 name_en: "Basic",
                 content: [{
                     name: "打开文件",
-                    name_en: "open file widget",
+                    name_en: "open file component",
                     version: "9.1.1",
                     thumbnail: "components_openFile.png",
                     fileName: "components_openFile"
@@ -1234,13 +1234,13 @@ var exampleConfig = {
                 name_en: "Advanced",
                 content: [{
                     name: "打开文件(React)",
-                    name_en: "open file widget(React)",
+                    name_en: "open file component(React)",
                     version: "9.1.1",
                     thumbnail: "components_openFile_react.png",
                     fileName: "components_openFile_react"
                 }, {
                     name: "打开文件(Vue)",
-                    name_en: "open file widget(Vue)",
+                    name_en: "open file component(Vue)",
                     version: "9.1.1",
                     thumbnail: "components_openFile_vue.png",
                     fileName: "components_openFile_vue"

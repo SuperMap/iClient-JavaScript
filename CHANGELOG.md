@@ -3,9 +3,9 @@
 
 ## 新特性
 
-### iClient for MapboxGL 新增微件（for vue）
+### iClient for MapboxGL 新增组件（for vue）
 
-- iClient for MapboxGL 新增 WebMap 地图微件，图表微件，图例微件，图层列表微件，量算微件，查询/搜索微件，进度条等基础微件，支持多种主题（可一键切换风格）
+- iClient for MapboxGL 新增 WebMap 地图组件，图表组件，图例组件，图层列表组件，量算组件，查询/搜索组件，进度条等基础组件，支持多种主题（可一键切换风格）
 
 ![whatsNewMapboxGlWidgets](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
  
@@ -69,13 +69,13 @@
 
 ### for Leaflet
 
-  - 新增 “微件 - 基础 - 图表_iServer” 示例
-  - 新增 “微件 - 基础 - 图表_iPortal” 示例
+  - 新增 “组件 - 基础 - 图表_iServer” 示例
+  - 新增 “组件 - 基础 - 图表_iPortal” 示例
 
 ### for MapboxGL
 
   - 新增 “iPortal - 地图” 分类及相关示例
-  - 新增 “微件 - for Vue” 分类及相关示例
+  - 新增 “组件 - for Vue” 分类及相关示例
   - 新增 “可视化 - 矢量瓦片 - 矢量瓦片叠加” 示例
 
 
@@ -92,9 +92,9 @@
 
 ![whatsNewMultiCoordinate](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-1.png)
  
-### 新增多款功能微件
+### 新增多款功能组件
 
--	iClient for Leaflet新增：文件打开微件、数据流微件、地址匹配与图层查询微件、客户端计算微件、分布式分析微件、数据服务查询微件
+-	iClient for Leaflet新增：文件打开组件、数据流组件、地址匹配与图层查询组件、客户端计算组件、分布式分析组件、数据服务查询组件
 
 ![whatsNewWidgets](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-2.png)
  
@@ -102,13 +102,13 @@
 
 ### for Leaflet
 
-- 微件
-  - 新增打开文件微件 `L.supermap.widgets.openFile` 及功能类 `L.supermap.widgets.openFileViewModel`
-  - 新增数据流微件 `L.supermap.widgets.dataFlow` 及功能类 `L.supermap.widgets.dataFlowViewModel`
-  - 新增图层查询微件 `L.supermap.widgets.search` 及功能类 `L.supermap.widgets.searchViewModel`
-  - 新增客户端计算微件 `L.supermap.widgets.clientComputation` 及功能类 `L.supermap.widgets.clientComputationViewModel`
-  - 新增分布式分析微件 `L.supermap.widgets.distributedAnalysis` 及功能类 `L.supermap.widgets.distributedAnalysisViewModel`
-  - 新增数据服务查询微件`L.supermap.widgets.dataServiceQuery` 及功能类 `L.supermap.widgets.dataServiceQueryViewModel`
+- 组件
+  - 新增打开文件组件 `L.supermap.widgets.openFile` 及功能类 `L.supermap.widgets.openFileViewModel`
+  - 新增数据流组件 `L.supermap.widgets.dataFlow` 及功能类 `L.supermap.widgets.dataFlowViewModel`
+  - 新增图层查询组件 `L.supermap.widgets.search` 及功能类 `L.supermap.widgets.searchViewModel`
+  - 新增客户端计算组件 `L.supermap.widgets.clientComputation` 及功能类 `L.supermap.widgets.clientComputationViewModel`
+  - 新增分布式分析组件 `L.supermap.widgets.distributedAnalysis` 及功能类 `L.supermap.widgets.distributedAnalysisViewModel`
+  - 新增数据服务查询组件`L.supermap.widgets.dataServiceQuery` 及功能类 `L.supermap.widgets.dataServiceQueryViewModel`
 
 ### for OpenLayers
 
@@ -157,7 +157,7 @@
 
 ### for Leaflet
 
-  - 新增 “微件” 分类及相关示例
+  - 新增 “组件” 分类及相关示例
 
 ### for OpenLayers
 

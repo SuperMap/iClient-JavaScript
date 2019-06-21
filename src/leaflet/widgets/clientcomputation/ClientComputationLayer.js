@@ -13,7 +13,7 @@ import '../../core/Base';
  * @param {string} layerObject.layerName -  图层名。
  * @param {L.GeoJSON} layerObject.layer -  图层。
  * @param {Array.<string>} [layerObject.fields] - 字段数组。
- * @category Widgets ClientComputation
+ * @category Components ClientComputation
  */
 export class ClientComputationLayer{
     constructor(layerObject){

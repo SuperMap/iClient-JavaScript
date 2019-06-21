@@ -5,9 +5,9 @@
 import {FileTypes, FileConfig} from './CommonTypes';
 //组件
 import {FileModel} from './openfile/FileModel';
-//提示框微件
+//提示框组件
 import {MessageBox} from './messagebox/MessageBox';
-//图表微件
+//图表组件
 import {ChartView} from './chart/ChartView';
 import {ChartViewModel} from './chart/ChartViewModel';
 //公用模板：

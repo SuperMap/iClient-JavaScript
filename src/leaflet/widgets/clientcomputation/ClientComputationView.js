@@ -8,17 +8,17 @@ import { CommonContainer, DropDownBox, Select, MessageBox, Lang } from '@superma
 
 /**
  * @class L.supermap.widgets.clientComputation
- * @classdesc 客户端计算微件，用于进行叠加图层的客户端计算。
+ * @classdesc 客户端计算组件，用于进行叠加图层的客户端计算。
  * @version 9.1.1
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.clientComputation#analysissucceeded
  * @fires L.supermap.widgets.clientComputation#analysisfailed
  * @fires L.supermap.widgets.clientComputation#layersremoved
- * @category Widgets ClientComputation
+ * @category Components ClientComputation
  * @extends {L.supermap.widgets.widgetsViewBase}
  */
 export var ClientComputationView = WidgetsViewBase.extend({
@@ -131,7 +131,7 @@ export var ClientComputationView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.clientComputation.prototype._initView
-     * @description 创建客户端计算微件。
+     * @description 创建客户端计算组件。
      * @returns {HTMLElement}
      * @private
      */

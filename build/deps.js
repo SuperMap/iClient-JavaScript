@@ -544,82 +544,82 @@ deps = {
                     "des": "Logo 控件",
                     "des_en": "Logo control"
                 }]
-            },
+            }
         },
 
-        "Widget": {
-            "title": "微件",
-            "description": "微件模块",
-            "description_en": "Widget module",
+        "Components": {
+            "title": "组件",
+            "description": "组件模块",
+            "description_en": "Component module",
 
             "OpenFile": {
-                "name": "打开文件微件",
+                "name": "打开文件组件",
                 "src": [
                     "./src/leaflet/widgets/openfile/OpenFileView.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.widgets.openFile",
-                    "des": "打开文件微件",
-                    "des_en": "Open file widgets"
+                    "des": "打开文件组件",
+                    "des_en": "Open file components"
                 }]
             },
             "ClientComputation ": {
-                "name": "客户端计算微件",
+                "name": "客户端计算组件",
                 "src": [
                     "./src/leaflet/widgets/clientcomputation/ClientComputationView.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.widgets.clientComputation",
-                    "des": "客户端计算微件",
-                    "des_en": "Client computation widget"
+                    "des": "客户端计算组件",
+                    "des_en": "Client computation component"
                 }]
             },
             "DistributedAnalysis": {
-                "name": "分布式分析微件",
+                "name": "分布式分析组件",
                 "src": [
                     "./src/leaflet/widgets/distributedanalysis/DistributedAnalysisView.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.widgets.distributedAnalysis",
-                    "des": "分布式分析微件",
-                    "des_en": "Distributed analysis widget"
+                    "des": "分布式分析组件",
+                    "des_en": "Distributed analysis component"
                 }]
             },
             "Search": {
-                "name": "图层查询微件",
+                "name": "图层查询组件",
                 "src": [
                     "./src/leaflet/widgets/search/SearchView.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.widgets.search",
-                    "des": "图层查询微件",
+                    "des": "图层查询组件",
                     "des_en": "Search"
                 }]
             },
             "DataFlow": {
-                "name": "数据流微件",
+                "name": "数据流组件",
                 "src": [
                     "./src/leaflet/widgets/dataflow/DataFlowView.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.widgets.dataFlow",
-                    "des": "数据流微件",
+                    "des": "数据流组件",
                     "des_en": "Data flow"
                 }]
             },
             "DataServiceQuery": {
-                "name": "数据服务查询微件",
+                "name": "数据服务查询组件",
                 "src": [
                     "./src/leaflet/widgets/dataservicequery/DataServiceQueryView.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.widgets.dataServiceQuery",
-                    "des": "数据服务查询微件",
+                    "des": "数据服务查询组件",
                     "des_en": "Data service query"
                 }]
-            },
+            }
 
-        },
+        }
 
     },
 
@@ -1220,7 +1220,7 @@ deps = {
             "MapV": {
                 "name": "MapV",
                 "src": [
-                    "./src/mapboxgl/overlay/MapvLayer.js",
+                    "./src/mapboxgl/overlay/MapvLayer.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.MapvLayer",

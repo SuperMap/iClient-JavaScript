@@ -8,11 +8,11 @@ import {DataFlowViewModel} from './DataFlowViewModel';
 
 /**
  * @class L.supermap.widgets.dataFlow
- * @classdesc 数据流微件。
+ * @classdesc 数据流组件。
  * @version 9.1.1
- * @category Widgets DataFlow
+ * @category Components DataFlow
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {Function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。<br>
  `function (feature) {
                                                     return {
@@ -33,7 +33,7 @@ export var DataFlowView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.dataFlow.prototype.onAdd
-     * @description 向底图添加微件
+     * @description 向底图添加组件
      * @override
      * @private
      */
@@ -52,7 +52,7 @@ export var DataFlowView = WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.dataFlow.prototype._initView
-     * @description 创建打开本地文件数据微件
+     * @description 创建打开本地文件数据组件
      * @returns {HTMLElement}
      * @private
      * @override

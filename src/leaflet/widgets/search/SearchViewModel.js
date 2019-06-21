@@ -12,9 +12,9 @@ import {
 
 /**
  * @class L.supermap.widgets.searchViewModel
- * @classdesc 图层查询微件功能类。
+ * @classdesc 图层查询组件功能类。
  * @version 9.1.1
- * @category Widgets Search
+ * @category Components Search
  * @param {L.Map} map - Leaflet Map 对象。
  * @param {Object} options - 可选参
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""}，默认为 online 本地搜索服务。
@@ -36,7 +36,7 @@ export var SearchViewModel = L.Evented.extend({
         if (map) {
             /**
              * @member {L.Map} L.supermap.widgets.searchViewModel.prototype.map
-             * @description 当前微件所在的地图。
+             * @description 当前组件所在的地图。
              */
             this.map = map;
         } else {

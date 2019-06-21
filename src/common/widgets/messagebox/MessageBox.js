@@ -6,8 +6,8 @@ import {SuperMap} from '../../SuperMap';
 /**
  * @class SuperMap.Widgets.MessageBox
  * @version 9.1.1
- * @classdesc 微件信息提示框。
- * @category Widgets Common
+ * @classdesc 组件信息提示框。
+ * @category Components Common
  */
 export class MessageBox {
 

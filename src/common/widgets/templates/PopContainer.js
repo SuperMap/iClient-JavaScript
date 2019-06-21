@@ -12,7 +12,7 @@ import {TemplateBase} from './TemplateBase';
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 弹框组件名称。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 export class PopContainer extends TemplateBase {
     constructor(options) {

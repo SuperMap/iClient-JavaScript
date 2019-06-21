@@ -46,7 +46,7 @@ window.examplesResources = {
             "analysis": "分析",
             "clientSpatialAnalyst": "客户端分析",
             "control": "控件",
-            "widgets": "组件",
+            "components": "组件",
             "OGC": "OGC",
             "mapping": "互联网地图",
             "others": "其他",

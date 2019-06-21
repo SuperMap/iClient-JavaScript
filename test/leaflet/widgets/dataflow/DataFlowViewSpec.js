@@ -30,7 +30,7 @@ describe('leaflet_dataflow_DataFlowView', () => {
             maxZoom: 18,
             zoom: 2
         });
-        // 初始化微件
+        // 初始化组件
         dataView = new dataFlowView({
         }).addTo(map);
 

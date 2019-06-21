@@ -14,7 +14,7 @@ import {
 
 /**
  * @class SuperMap.Widgets.Chart
- * @classdesc 图表微件
+ * @classdesc 图表组件
  * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
@@ -27,7 +27,7 @@ import {
  * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
  * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
- * @category Widgets Chart
+ * @category Components Chart
  */
 /**
  * @typedef {Object} SuperMap.Widgets.Chart.Datasets  - 数据来源

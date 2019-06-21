@@ -12,9 +12,9 @@ import {
 
 /**
  * @class L.supermap.widgets.openFileViewModel
- * @classdesc 打开本地文件微件功能类,目前只支持WGS84经纬度坐标。
+ * @classdesc 打开本地文件组件功能类,目前只支持WGS84经纬度坐标。
  * @version 9.1.1
- * @category Widgets OpenFile
+ * @category Components OpenFile
  * @param {L.Map} map - leaflet map 对象。
  * @fires L.supermap.widgets.openFileViewModel#filesizeexceed
  * @fires L.supermap.widgets.openFileViewModel#errorfileformat

@@ -8,9 +8,9 @@ import { GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesByBo
 
 /**
  * @class L.supermap.widgets.dataServiceQueryViewModel
- * @classdesc 数据服务查询微件功能类。
+ * @classdesc 数据服务查询组件功能类。
  * @version 9.1.1
- * @category Widgets DataServiceQuery
+ * @category Components DataServiceQuery
  * @param {string} dataserviceUrl - 数据服务地址。
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceeded
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfailed
