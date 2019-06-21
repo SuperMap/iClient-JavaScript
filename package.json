@@ -93,7 +93,7 @@
     "leaflet.pm": "^0.25.0",
     "mock-socket": "^8.0.5",
     "nightwatch": "^0.9.5",
-    "open": "0.0.5",
+    "open": "^6.0.0",
     "pngjs": "^3.3.0",
     "pre-commit": "^1.2.2",
     "request": "^2.83.0",
