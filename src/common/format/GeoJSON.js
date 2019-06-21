@@ -712,7 +712,7 @@ export class GeoJSON extends JSONFormat {
         }
         var attr = {};
         processFieldsAttributes(feature, attr);
-        var exceptKeys = ["fieldNames", "fieldValues", "geometry"];
+        var exceptKeys = ["fieldNames", "fieldValues", "geometry", "stringID", "ID"];
         for (var key in feature) {
             if (exceptKeys.indexOf(key) > -1) {
                 continue;

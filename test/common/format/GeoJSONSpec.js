@@ -557,6 +557,8 @@ describe('GeoJSON', () => {
 
     it('toGeoJson_Feature_Attribute', () => {
         var obj = {
+            stringID: null,
+            ID: null,
             fieldValues: [
                 "127",
                 "利伯维尔"
@@ -576,13 +578,15 @@ describe('GeoJSON', () => {
             }
         };
 
-        var geoRegionEPS = new GeoJSON().toGeoJSON(obj);
-        expect(geoRegionEPS).not.toBeNull();
-        expect(geoRegionEPS.type).toEqual("Feature");
-        expect(geoRegionEPS.geometry).not.toBeNull();
-        expect(geoRegionEPS.geometry.type).toEqual("Point");
-        expect(geoRegionEPS.geometry.coordinates).not.toBeNull();
-        expect(geoRegionEPS.geometry.coordinates[0]).toEqual(4020.0045221720466);
-        expect(geoRegionEPS.geometry.coordinates[1]).toEqual(-4377.027184298267);
+        var geo = new GeoJSON().toGeoJSON(obj);
+        expect(geo).not.toBeNull();
+        expect(geo.type).toEqual("Feature");
+        expect(geo.properties.hasOwnProperty("stringID")).toBeFalsy();
+        expect(geo.properties.hasOwnProperty("ID")).toBeFalsy();
+        expect(geo.geometry).not.toBeNull();
+        expect(geo.geometry.type).toEqual("Point");
+        expect(geo.geometry.coordinates).not.toBeNull();
+        expect(geo.geometry.coordinates[0]).toEqual(4020.0045221720466);
+        expect(geo.geometry.coordinates[1]).toEqual(-4377.027184298267);
     });
 });

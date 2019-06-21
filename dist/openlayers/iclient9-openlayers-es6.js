@@ -74,7 +74,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 89);
+/******/ 	return __webpack_require__(__webpack_require__.s = 91);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -123,17 +123,17 @@ module.exports = function(eccent, sinphi, cosphi) {
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var proj4 = __webpack_require__(84);
+var proj4 = __webpack_require__(86);
 proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = __webpack_require__(20);
 proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(70);
+proj4.Point = __webpack_require__(72);
 proj4.toPoint = __webpack_require__(28);
 proj4.defs = __webpack_require__(32);
 proj4.transform = __webpack_require__(29);
 proj4.mgrs = __webpack_require__(27);
-proj4.version = __webpack_require__(69).version;
-__webpack_require__(68)(proj4);
+proj4.version = __webpack_require__(71).version;
+__webpack_require__(70)(proj4);
 module.exports = proj4;
 
 /***/ }),
@@ -330,10 +330,10 @@ module.exports = function(destination, source) {
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parseCode = __webpack_require__(83);
+var parseCode = __webpack_require__(85);
 var extend = __webpack_require__(19);
-var projections = __webpack_require__(79);
-var deriveConstants = __webpack_require__(76);
+var projections = __webpack_require__(81);
+var deriveConstants = __webpack_require__(78);
 
 function Projection(srsCode,callback) {
   if (!(this instanceof Projection)) {
@@ -1416,8 +1416,8 @@ var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(72);
-var adjust_axis = __webpack_require__(71);
+var datum_transform = __webpack_require__(74);
+var adjust_axis = __webpack_require__(73);
 var proj = __webpack_require__(20);
 var toPoint = __webpack_require__(28);
 module.exports = function transform(source, dest, point) {
@@ -1719,8 +1719,8 @@ module.exports = function(wkt, self) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(81);
-var units = __webpack_require__(80);
+var PrimeMeridian = __webpack_require__(83);
+var units = __webpack_require__(82);
 
 module.exports = function(defData) {
   var self = {};
@@ -1856,7 +1856,7 @@ module.exports = function(defData) {
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var globals = __webpack_require__(82);
+var globals = __webpack_require__(84);
 var parseProj = __webpack_require__(31);
 var wkt = __webpack_require__(30);
 
@@ -4258,22 +4258,34 @@ function property(path) {
 
 module.exports = remove;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14), __webpack_require__(41)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14), __webpack_require__(43)(module)))
 
 /***/ }),
 /* 34 */
+/***/ (function(module) {
+
+module.exports = [{"name":"克拉玛依市","coord":[85.01486759299489,45.406422237230046]},{"name":"昌吉回族自治州","coord":[88.7154624754753,44.26991024636568]},{"name":"石河子市","coord":[86.0208600035924,44.239045558096805]},{"name":"霍林郭勒市","coord":[114.73479243733115,44.16058374713977]},{"name":"本溪市","coord":[124.64357865201586,41.177197783134275]},{"name":"嘉峪关市","coord":[98.16891560537093,39.76279786284264]},{"name":"莱芜市","coord":[117.65723565456207,36.27916499211527]},{"name":"神农架林区","coord":[110.48296222218153,31.581260143666697]},{"name":"天门市","coord":[113.00615321481195,30.64105781887143]},{"name":"鄂州市","coord":[114.94764081970385,30.325634953844585]},{"name":"潜江市","coord":[112.70703817700621,30.349210666019893]},{"name":"仙桃市","coord":[113.34688900729822,30.315951161935402]},{"name":"萍乡市","coord":[113.88072263074415,27.47193090553213]},{"name":"台湾省","coord":[120.14338943402045,23.596002465926095]},{"name":"东莞市","coord":[113.89443658529342,22.897826158636448]},{"name":"中山市","coord":[113.37118387764659,22.501478858616522]},{"name":"珠海市","coord":[113.21799258934986,22.23782602992192]},{"name":"北海市","coord":[109.18248083043899,21.695773689750148]},{"name":"香港","coord":[114.20689279508653,22.36016760139811]},{"name":"舟山市","coord":[122.22514712841459,30.338633120695956]},{"name":"克孜勒苏柯尔克孜","coord":[74.62910472637343,39.59886016069875]},{"name":"喀什地区","coord":[77.19899922143753,37.85462871211595]},{"name":"阿克苏地区","coord":[81.43930290016381,41.067304799230456]},{"name":"和田地区","coord":[80.69780509160952,36.95287032287055]},{"name":"阿里地区","coord":[82.536487505389,32.69566569631762]},{"name":"日喀则地区","coord":[86.5996831353606,29.54861754814263]},{"name":"那曲地区","coord":[88.32523292667608,33.20600450932715]},{"name":"玉树藏族自治州","coord":[95.2107128446203,33.90320387919257]},{"name":"迪庆藏族自治州","coord":[99.42465312188943,28.052797714348895]},{"name":"怒江傈傈族自治州","coord":[98.85737910439825,26.98345757528851]},{"name":"大理白族自治州","coord":[99.93934374816013,25.684737357453045]},{"name":"德宏傣族景颇族自","coord":[98.13830877778075,24.593421919561205]},{"name":"保山市","coord":[99.19031013453166,24.979380341662]},{"name":"临沧市","coord":[99.62483778975081,24.058807858948214]},{"name":"普洱市","coord":[100.94440267992684,23.44121660743221]},{"name":"西双版纳傣族自治","coord":[100.86105801845994,21.882475641324206]},{"name":"拉萨市","coord":[91.3684790613129,30.14176592960237]},{"name":"山南地区","coord":[92.11665242621062,28.33000201578789]},{"name":"林芝地区","coord":[94.9307847458166,29.125110156601963]},{"name":"昌都地区","coord":[97.33912235873476,30.48520825551814]},{"name":"丽江市","coord":[100.65713436205135,26.96190318191959]},{"name":"攀枝花市","coord":[101.73355913301131,26.714486678752795]},{"name":"凉山彝族自治州","coord":[102.08678551422615,27.683020519860396]},{"name":"楚雄彝族自治州","coord":[101.68264761198458,25.369603845264024]},{"name":"红河哈尼族彝族自","coord":[102.95101719613119,23.624860095239875]},{"name":"文山壮族苗族自治","coord":[104.8708359910614,23.579587266862504]},{"name":"百色市","coord":[106.69546907589859,23.98220841166522]},{"name":"崇左市","coord":[107.3277087317123,22.49769755349952]},{"name":"防城港市","coord":[107.88939931155171,21.94550204069006]},{"name":"南宁市","coord":[108.67078983716917,23.12207641861882]},{"name":"钦州市","coord":[108.8532307305186,22.157690108421384]},{"name":"玉林市","coord":[110.26918466489103,22.391823643610415]},{"name":"湛江市","coord":[109.93033457863683,21.086751055633457]},{"name":"茂名市","coord":[110.80336192333934,22.069184739040775]},{"name":"阳江市","coord":[111.70471342186183,22.108751366417575]},{"name":"江门市","coord":[112.53715618649149,22.297368082806777]},{"name":"广州市","coord":[113.4949302208309,23.28359314707863]},{"name":"清远市","coord":[113.10957368131268,24.334444053233856]},{"name":"肇庆市","coord":[112.11117530204233,23.60241158796112]},{"name":"梧州市","coord":[111.01709510772797,23.518132876753846]},{"name":"贺州市","coord":[111.50423061842756,24.4095096817199]},{"name":"桂林市","coord":[110.44046163393094,25.353966673735407]},{"name":"柳州市","coord":[109.34854449214147,24.972408051485047]},{"name":"河池市","coord":[107.81191841865586,24.649291651298164]},{"name":"黔东南苗族侗族自","coord":[108.39952601614591,26.429286420465576]},{"name":"贵阳市","coord":[106.59784062851153,26.797907456479816]},{"name":"安顺市","coord":[105.76161265300635,25.988644902171018]},{"name":"黔西南布依族苗族","coord":[105.5954078788574,25.404850939549405]},{"name":"曲靖市","coord":[103.9164335632742,25.697243690315265]},{"name":"六盘水市","coord":[104.77723228072432,26.15402255629164]},{"name":"毕节地区","coord":[105.03867422931839,27.077913968069666]},{"name":"昭通市","coord":[104.29730513046874,27.62418247971078]},{"name":"宜宾市","coord":[104.76748901448207,28.553501804266475]},{"name":"乐山市","coord":[103.56027669102787,29.160754519210577]},{"name":"自贡市","coord":[104.63272827056402,29.273152614922402]},{"name":"内江市","coord":[104.82644562304716,29.61272653799929]},{"name":"遵义市","coord":[106.82413636302059,28.191847588570702]},{"name":"达州市","coord":[107.59704170009518,31.32138258839703]},{"name":"遂宁市","coord":[105.48979445433736,30.677687821242678]},{"name":"广安市","coord":[106.56708164098042,30.43500706741521]},{"name":"泸州市","coord":[105.42591761727707,28.50277238478137]},{"name":"资阳市","coord":[104.97995126874034,30.154251886139654]},{"name":"雅安市","coord":[102.69931299964517,29.892630706195035]},{"name":"眉山市","coord":[104.07052881858888,29.894202166560405]},{"name":"甘孜藏族自治州","coord":[100.50721042614238,30.975216556269658]},{"name":"果洛藏族自治州","coord":[99.30775565051923,34.03539865224808]},{"name":"海南藏族自治州","coord":[100.39969108016373,35.90048272566899]},{"name":"黄南藏族自治州","coord":[101.5360706381689,35.10286360841902]},{"name":"赣南藏族自治州","coord":[102.97083885806067,34.326752803339026]},{"name":"陇南市","coord":[105.24780098912132,33.57031117443431]},{"name":"天水市","coord":[105.53503634660417,34.62320421368087]},{"name":"定西市","coord":[104.58787768541339,35.08900966621695]},{"name":"临夏回族自治州","coord":[103.2612870434902,35.591577124455235]},{"name":"西宁市","coord":[101.57680657999033,36.84800271717157]},{"name":"海东地区","coord":[102.30909850729282,36.287400615025646]},{"name":"海北藏族自治州","coord":[100.27122484450717,37.892557516083826]},{"name":"金昌市","coord":[102.02244049169511,38.497330414886164]},{"name":"酒泉市","coord":[95.94486678270127,40.56891536586272]},{"name":"海西蒙古族藏族自","coord":[94.67143298050689,36.022725148503724]},{"name":"巴音郭楞蒙古自治","coord":[88.18116214759745,39.556478810319916]},{"name":"哈密地区","coord":[93.84302392518026,42.95015211178875]},{"name":"叶鲁番地区","coord":[89.82035217277885,42.399368632283505]},{"name":"乌鲁木齐市","coord":[88.00048109561487,43.549986370786]},{"name":"阿勒泰地区","coord":[88.11213933257655,47.05593413019629]},{"name":"博尔塔拉蒙古自治","coord":[82.26402238163408,44.671135542630864]},{"name":"伊犁哈萨克自治州","coord":[82.80778717477179,43.53783381365267]},{"name":"阿拉善盟","coord":[103.29923966842289,40.10955801781495]},{"name":"武威市","coord":[102.73362058791429,37.94211141321436]},{"name":"兰州市","coord":[103.73793563506032,36.27379827886003]},{"name":"中卫市","coord":[105.6943786030716,37.20654236148948]},{"name":"银川市","coord":[106.20022174140034,38.52103167597483]},{"name":"石嘴山市","coord":[106.41544011793628,38.84054137571417]},{"name":"乌海市","coord":[106.8984175998405,39.54616572239788]},{"name":"鄂尔多斯市","coord":[108.43285571424619,39.24036799350715]},{"name":"巴彦淖尔市","coord":[107.45840392808307,41.30159860424196]},{"name":"包头市","coord":[110.46472193224272,41.48017783644221]},{"name":"呼和浩特市","coord":[111.48365173603975,40.498363056149884]},{"name":"乌兰察布市","coord":[112.61568977597707,41.75789561273154]},{"name":"大同市","coord":[113.7107192749083,39.898956799744184]},{"name":"朔州市","coord":[112.65428748167508,39.681772914701924]},{"name":"忻州市","coord":[112.36127575589583,38.88990233614568]},{"name":"榆林市","coord":[109.68473112169593,38.19921027134876]},{"name":"延安市","coord":[109.52425222161318,36.406522726136814]},{"name":"庆阳市","coord":[107.73052193155061,36.183821532624464]},{"name":"固原市","coord":[106.20191575442442,36.11634909496382]},{"name":"白银市","coord":[104.68634478137065,36.51582865625868]},{"name":"宝鸡市","coord":[107.33534779230747,34.3387216485855]},{"name":"汉中市","coord":[107.03534754266246,33.00142998064871]},{"name":"广元市","coord":[105.92928137563939,32.21872447205537]},{"name":"巴中市","coord":[107.03422410306194,31.99874720836291]},{"name":"南充市","coord":[106.32964805032347,31.156657700184095]},{"name":"绵阳市","coord":[104.58949560201106,31.88628780630976]},{"name":"德阳市","coord":[104.41542984932845,31.110558133718676]},{"name":"成都市","coord":[103.8852290010473,30.777258040348634]},{"name":"阿坝藏族羌族自治","coord":[102.26209319552814,32.45725845387284]},{"name":"安康市","coord":[109.14236501848015,32.77467694678074]},{"name":"十堰市","coord":[110.39934083416314,32.376209039347906]},{"name":"襄阳市","coord":[111.97539147094662,31.93399822417465]},{"name":"宜昌市","coord":[111.22204852395754,30.772457669035354]},{"name":"恩施市","coord":[109.42158366502872,30.260366574390105]},{"name":"张家界市","coord":[110.59760006538717,29.330107409240718]},{"name":"吉首市","coord":[109.72176899848378,28.681903937242495]},{"name":"铜仁地区","coord":[108.54247523485463,28.11736237519646]},{"name":"重庆市","coord":[107.86007108564992,30.186253395053196]},{"name":"怀化市","coord":[109.94325166787243,27.43919084801186]},{"name":"益阳市","coord":[112.43060358108062,28.75127294553697]},{"name":"娄底市","coord":[111.41891416951897,27.696312460064604]},{"name":"常德市","coord":[111.72571610131646,29.27189463838195]},{"name":"荆州市","coord":[112.65896596965268,30.05161542755362]},{"name":"荆门市","coord":[112.6586855902184,31.01267124474617]},{"name":"岳阳市","coord":[113.2595036144316,29.106247116930163]},{"name":"长沙市","coord":[113.15415586456598,28.222934680488425]},{"name":"湘潭市","coord":[112.51092596317824,27.69881544105668]},{"name":"株州市","coord":[113.49665538546823,27.03993794610501]},{"name":"衡阳市","coord":[112.48849636578527,26.783613569970782]},{"name":"邵阳市","coord":[110.6723832117475,26.81652287086792]},{"name":"永州市","coord":[111.8565364154186,25.768488267811968]},{"name":"韶关市","coord":[113.53420325850979,24.69848878771937]},{"name":"惠州市","coord":[114.32029589634925,23.25504544231892]},{"name":"佛山市","coord":[112.95925897403649,23.10116677189257]},{"name":"云浮市","coord":[111.78042514904234,22.840400494105687]},{"name":"深圳市","coord":[114.13138648919008,22.649563063468342]},{"name":"汕尾市","coord":[115.57412892884373,23.06989642104901]},{"name":"河源市","coord":[114.89746229844398,23.97971937124767]},{"name":"揭阳市","coord":[116.04290004239446,23.304802704715357]},{"name":"汕头市","coord":[116.7008461897183,23.35898625947344]},{"name":"潮州市","coord":[116.75405548481658,23.854381508863064]},{"name":"梅州市","coord":[116.13719397345734,24.15633544812716]},{"name":"漳州市","coord":[117.38279760543345,24.41111215459575]},{"name":"厦门市","coord":[118.04275971554665,24.675908246507944]},{"name":"龙岩市","coord":[116.69341144552507,25.20284542644492]},{"name":"泉州市","coord":[118.12035864630246,25.22984144365049]},{"name":"莆田市","coord":[118.82439690138142,25.439653480972687]},{"name":"福州市","coord":[119.1608285845262,25.99117532466728]},{"name":"三明市","coord":[117.51188176216434,26.318292906961602]},{"name":"南平市","coord":[118.16153136678187,27.306303151805437]},{"name":"抚州市","coord":[116.3455359885574,27.487043655935366]},{"name":"鹰潭市","coord":[117.01082360702333,28.241253742969946]},{"name":"吉安市","coord":[114.91377151807418,26.957486660664525]},{"name":"赣州市","coord":[115.046455717572,25.81565075681663]},{"name":"郴州市","coord":[113.1544526703492,25.871927095452524]},{"name":"新余市","coord":[114.94161795877827,27.79044654578371]},{"name":"宜春市","coord":[115.04574494880995,28.306428044943356]},{"name":"南昌市","coord":[115.9963824234495,28.664803351584705]},{"name":"九江市","coord":[115.53225905704193,29.362905920276297]},{"name":"上饶市","coord":[117.8595355766598,28.765755150094634]},{"name":"景德镇市","coord":[117.25387030721845,29.33426823662448]},{"name":"黄山市","coord":[117.85476357809696,29.969632034273722]},{"name":"池州市","coord":[117.34517113140791,30.208089337922335]},{"name":"铜陵市","coord":[117.93160431300694,30.926442655001676]},{"name":"安庆市","coord":[116.54307680610799,30.524265461641296]},{"name":"黄石市","coord":[115.02354597728443,29.924060229331015]},{"name":"咸宁市","coord":[114.26967602231792,29.652174021136048]},{"name":"黄冈市","coord":[115.2859016705373,30.65856897065683]},{"name":"武汉市","coord":[114.34552076948799,30.68836237966767]},{"name":"随州市","coord":[113.3850627838818,31.87891659924412]},{"name":"信阳市","coord":[114.81374730587638,32.0309685135914]},{"name":"驻马店市","coord":[114.07756451509235,32.896720987266114]},{"name":"商洛市","coord":[109.82044421310393,33.77403373563189]},{"name":"西安市","coord":[109.11839808451401,34.225257215515896]},{"name":"渭南市","coord":[109.75732444226935,35.025913644359306]},{"name":"铜川市","coord":[108.98695328111377,35.19235092947735]},{"name":"咸阳市","coord":[108.36398776446165,34.84311348287181]},{"name":"三门峡市","coord":[110.80049688104964,34.31818709571671]},{"name":"运城市","coord":[111.1736679525165,35.19010372283576]},{"name":"洛阳市","coord":[111.87577573098216,34.33379926109848]},{"name":"平顶山市","coord":[112.80931281928427,33.759895800153096]},{"name":"漯河市","coord":[113.83505724178012,33.70034266174508]},{"name":"许昌市","coord":[113.78762484088509,34.051835688452435]},{"name":"郑州市","coord":[113.49619951867594,34.61181797865449]},{"name":"焦作市","coord":[113.13404280173008,35.134167097471625]},{"name":"晋城市","coord":[112.7495732073233,35.63186423091449]},{"name":"长治市","coord":[112.85900842873183,36.45872910742828]},{"name":"临汾市","coord":[111.49379787924448,36.22810800777857]},{"name":"太原市","coord":[112.15628804033796,37.91704444063036]},{"name":"吕梁市","coord":[111.31901105774872,37.712740463356496]},{"name":"晋中市","coord":[113.08199599739676,37.36532613794343]},{"name":"邯郸市","coord":[114.41824047234618,36.530119932543315]},{"name":"安阳市","coord":[113.88883283163116,35.7797611183252]},{"name":"鹤壁市","coord":[114.3654094911545,35.75770487428472]},{"name":"新乡市","coord":[113.9184107718167,35.348471214026716]},{"name":"开封市","coord":[114.52801677500626,34.61371216679872]},{"name":"周口市","coord":[114.88509782391864,33.69999759722657]},{"name":"阜阳市","coord":[115.44595951398213,32.98060371610532]},{"name":"淮南市","coord":[116.68941991880993,32.79972275772595]},{"name":"蚌埠市","coord":[117.38594715783302,33.106729536033896]},{"name":"淮北市","coord":[116.69651711889378,33.69527529383458]},{"name":"宿州市","coord":[117.30175405886838,33.943330421260015]},{"name":"亳州市","coord":[116.12410804185097,33.46769392946132]},{"name":"商丘市","coord":[115.59575176872548,34.28339840831147]},{"name":"菏泽市","coord":[115.53631974831816,35.197319393220624]},{"name":"濮阳市","coord":[115.3070485514902,35.775883510964334]},{"name":"聊城市","coord":[115.8870069012884,36.40529594548765]},{"name":"邢台市","coord":[114.74259008644859,37.251396750084155]},{"name":"石家庄市","coord":[114.56923838363613,38.13141710980106]},{"name":"阳泉市","coord":[113.39216149668508,38.09075470547468]},{"name":"保定市","coord":[115.261524468934,39.09118520781398]},{"name":"衡水市","coord":[115.8182936677897,37.715661598187154]},{"name":"德州市","coord":[116.4582273790399,37.19372347888644]},{"name":"沧州市","coord":[116.76192710911863,38.20240042039232]},{"name":"廊坊市","coord":[116.50410772133856,39.27896741763884]},{"name":"天津市","coord":[117.31988934444873,39.37154482470619]},{"name":"北京市","coord":[116.59734730757869,40.237112944270976]},{"name":"张家口市","coord":[115.1823606483226,40.83732566607167]},{"name":"唐山市","coord":[117.8693184261954,39.71862889477249]},{"name":"秦皇岛市","coord":[119.30467355367742,39.990574652162564]},{"name":"承德市","coord":[117.16275671911026,41.36623845548547]},{"name":"葫芦岛市","coord":[119.9342336210531,40.5628822626519]},{"name":"朝阳市","coord":[120.11853493535794,41.471852354885755]},{"name":"赤峰市","coord":[118.50943546234379,43.25452976059767]},{"name":"锦州市","coord":[121.5167549323861,41.45933087433065]},{"name":"营口市","coord":[122.58571915054674,40.42093503997384]},{"name":"丹东市","coord":[124.33549382902183,40.46369290272115]},{"name":"辽阳市","coord":[123.34064798039414,41.152331397771356]},{"name":"盘锦市","coord":[122.06718005354679,41.05573599862555]},{"name":"阜新市","coord":[121.93889757908204,42.27641773244204]},{"name":"鞍山市","coord":[122.78904432242356,40.77781183142038]},{"name":"沈阳市","coord":[122.99508899709724,42.1162195010079]},{"name":"铁岭市","coord":[124.23100515588399,42.72666083611828]},{"name":"扶顺市","coord":[124.46027188217573,41.82955407638859]},{"name":"通辽市","coord":[122.0729370657937,43.90889130864869]},{"name":"兴安盟","coord":[120.79456431092532,45.92003249442161]},{"name":"白城市","coord":[123.10619907715235,45.25475749267784]},{"name":"齐齐哈尔市","coord":[124.5462214659102,47.55395009317394]},{"name":"大兴安岭地区","coord":[124.50992855161529,52.18438447846694]},{"name":"黑河市","coord":[127.14721400335922,49.25080134026901]},{"name":"大庆市","coord":[124.40329830095243,46.401048760966745]},{"name":"绥化市","coord":[126.5214484055605,46.76992452194825]},{"name":"松原市","coord":[124.21244334807682,44.75779381338502]},{"name":"四平市","coord":[124.27839350328821,43.52139065090318]},{"name":"通化市","coord":[125.67392830706305,41.91771808663852]},{"name":"辽源市","coord":[125.33529527643432,42.758340204944986]},{"name":"吉林市","coord":[126.83350281902375,43.60730120049175]},{"name":"长春市","coord":[125.53597875970374,44.24624314701737]},{"name":"白山市","coord":[127.16780160322108,42.093893880305075]},{"name":"哈尔滨市","coord":[127.39125008786029,45.36200668820575]},{"name":"鹤岗市","coord":[130.4703811258197,47.66520688940109]},{"name":"伊春市","coord":[128.91240831703635,47.93833794565277]},{"name":"七台河市","coord":[131.2677920224311,45.945099776108584]},{"name":"鸡西市","coord":[132.38059153660274,45.722934218318535]},{"name":"双鸭山市","coord":[132.3184817002743,46.65813679030265]},{"name":"佳木斯市","coord":[132.26174446608726,47.17569713691394]},{"name":"呼伦贝尔市","coord":[122.3210739998419,50.18176996070858]},{"name":"孝感市","coord":[113.83749892135485,31.11757234692128]},{"name":"贵港市","coord":[110.07354588052804,23.380735604767374]},{"name":"黔南布依族苗族自","coord":[107.30931767543106,26.2976919432269]},{"name":"宁德市","coord":[119.52482556634342,27.013151692716413]},{"name":"温州市","coord":[120.30037042732202,27.8699145504001]},{"name":"台州市","coord":[120.88886782713843,28.670799172772313]},{"name":"丽水市","coord":[119.56796851966463,28.170268394477755]},{"name":"衢州市","coord":[118.79479802644406,28.865874397158763]},{"name":"金华市","coord":[119.99381920686633,29.093455548185744]},{"name":"绍兴市","coord":[120.46546691682343,29.69382513836818]},{"name":"宁波市","coord":[121.42142987830871,29.70001162878972]},{"name":"杭州市","coord":[119.4405685790891,29.87218307296989]},{"name":"宣城市","coord":[118.68748382914703,30.628143499626418]},{"name":"湖州市","coord":[119.98261306633574,30.7945175862809]},{"name":"嘉兴市","coord":[120.83889215988998,30.67538495499343]},{"name":"上海市","coord":[121.37534147322967,31.25628247908459]},{"name":"苏州市","coord":[120.6906182622391,31.381280695137775]},{"name":"无锡市","coord":[120.32182300914366,31.54113306724517]},{"name":"常州市","coord":[119.61953292830165,31.611878565375576]},{"name":"南京市","coord":[118.71890548838064,31.910863187910323]},{"name":"镇江市","coord":[119.42349332902813,31.97942313430778]},{"name":"合肥市","coord":[117.30651975617157,31.79407863049138]},{"name":"六安市","coord":[116.24668220575353,31.820846193819513]},{"name":"滁州市","coord":[117.88422385307969,32.51792621904418]},{"name":"泰州市","coord":[120.03124303305091,32.56503102346783]},{"name":"南通市","coord":[120.85599446760912,32.18496706099728]},{"name":"盐城市","coord":[120.01812490612667,33.54219948734023]},{"name":"淮安市","coord":[119.0749424205415,33.39203631772854]},{"name":"宿迁市","coord":[118.45404943216346,33.666258719120265]},{"name":"徐州市","coord":[117.77482249295966,34.30847766157078]},{"name":"济宁市","coord":[116.74147276546373,35.27488504351119]},{"name":"枣庄市","coord":[117.43359942491492,34.884162021736]},{"name":"连云港市","coord":[119.01553213785074,34.54316517587849]},{"name":"临沂市","coord":[118.31478835349617,35.28173079028279]},{"name":"日照市","coord":[119.14265350444272,35.54479073199592]},{"name":"青岛市","coord":[120.27779044405756,36.3464117375903]},{"name":"威海市","coord":[122.12963327195605,37.13879077904251]},{"name":"烟台市","coord":[120.7689567423966,37.19772002195597]},{"name":"潍坊市","coord":[119.02178548592039,36.49292234053931]},{"name":"淄博市","coord":[117.92936024367185,36.60871347163638]},{"name":"泰安市","coord":[116.93810893944303,36.0423330118612]},{"name":"济南市","coord":[117.34560282551296,36.769574973846304]},{"name":"东营市","coord":[118.4915054457184,37.52194690335787]},{"name":"滨州市","coord":[117.67610299757533,37.4439597758601]},{"name":"昆明市","coord":[102.93100245594789,25.481300763922075]},{"name":"玉溪市","coord":[102.23080854291823,24.156168324611663]},{"name":"塔城地区","coord":[83.60908162840168,45.3721852373893]},{"name":"张掖市","coord":[100.47710030600572,38.704239320458385]},{"name":"南阳市","coord":[112.1400670951149,33.03033276715801]},{"name":"扬州市","coord":[119.48949608990988,32.80956776339646]},{"name":"延边朝鲜族自治州","coord":[129.3577692895626,43.24968794080283]},{"name":"牡丹江市","coord":[129.87240796405672,44.7073040108322]},{"name":"澳门","coord":[113.56289691515346,22.14602596262204]},{"name":"吴忠市","coord":[106.76894508116403,37.72566765880316]},{"name":"来宾市","coord":[109.25592217010114,23.86346274681084]},{"name":"平凉市","coord":[107.0708132782897,35.30329631658711]},{"name":"马鞍山市","coord":[118.27245878467022,31.657727937739004]},{"name":"芜湖市","coord":[118.32992684415504,31.081688223101658]},{"name":"澄迈县","coord":[110.04198076060266,19.694955078668105]},{"name":"保亭黎族苗族自治","coord":[109.6055304964257,18.6101488675304]},{"name":"乐东黎族自治县","coord":[109.04051999525574,18.643137437909203]},{"name":"儋州市","coord":[109.3431358337404,19.550974957403195]},{"name":"定安县","coord":[110.38744429685676,19.47557074114284]},{"name":"屯昌县","coord":[110.00574767630334,19.367175093044388]},{"name":"白沙黎族自治县","coord":[109.36860737761768,19.214416393082217]},{"name":"琼中黎族苗族自治","coord":[109.86691465937548,19.073671135862682]},{"name":"东方市","coord":[108.86903802405428,19.017352815445214]},{"name":"昌江黎族自治县","coord":[108.9686431884767,19.182594167127824]},{"name":"海口市","coord":[110.420654296875,19.806565564640795]},{"name":"济源市","coord":[112.38051465474433,35.07958362422394]},{"name":"五指山市","coord":[109.53595187364496,18.832908264613966]},{"name":"大连市","coord":[121.96662235866603,39.444150542439914]},{"name":"文昌市三沙市","coord":[110.81828537536748,19.756501444162936]},{"name":"三亚市","coord":[109.38424600793707,18.39186315877128]},{"name":"万宁市","coord":[110.28485046979574,18.860240588635115]},{"name":"陵水黎族自治县","coord":[109.95577603229562,18.594712684620465]},{"name":"临高县","coord":[109.71915395436967,19.79420403032508]},{"name":"琼海市","coord":[110.41650700703043,19.22315873149372]}];
+
+/***/ }),
+/* 35 */
+/***/ (function(module) {
+
+module.exports = [{"name":"黑龙江省","coord":[127.64559817675396,48.48668098449708]},{"name":"内蒙古自治区","coord":[118.34519572208615,45.370218276977525]},{"name":"新疆维吾尔自治区","coord":[87.13479065593184,41.75497055053711]},{"name":"吉林省","coord":[126.12985278813787,43.57983207702637]},{"name":"辽宁省","coord":[124.02494773936439,41.105743408203125]},{"name":"甘肃省","coord":[102.87785725633012,37.69582366943361]},{"name":"河北省","coord":[115.66327227481898,39.33383178710938]},{"name":"北京市","coord":[116.62199343603638,40.25053787231445]},{"name":"山西省","coord":[112.45180235808988,37.666561126708984]},{"name":"天津市","coord":[117.35711842642581,39.406789779663086]},{"name":"陕西省","coord":[109.56294003056632,35.64754199981689]},{"name":"宁夏回族自治区","coord":[105.96110877640074,37.3081169128418]},{"name":"青海省","coord":[96.07301048277901,35.44417190551758]},{"name":"山东省","coord":[118.03833752951093,36.29800605773925]},{"name":"西藏自治区","coord":[87.47361520439412,31.6703872680664]},{"name":"河南省","coord":[113.07832397097275,33.87751102447509]},{"name":"江苏省","coord":[119.93926538201052,32.945452690124505]},{"name":"安徽省","coord":[117.15146765881019,32.024482727050774]},{"name":"四川省","coord":[102.28998890142759,30.182161331176758]},{"name":"湖北省","coord":[112.87798261431585,31.157071113586426]},{"name":"重庆市","coord":[107.870126637831,30.188085556030266]},{"name":"上海市","coord":[121.42561166015514,31.276043891906745]},{"name":"浙江省","coord":[119.75337092707514,29.175934791564945]},{"name":"湖南省","coord":[111.52770282777405,27.38110256195069]},{"name":"江西省","coord":[115.51091280655628,27.283511161804206]},{"name":"云南省","coord":[101.27053825991308,25.19783210754396]},{"name":"贵州省","coord":[106.49672346773299,26.92267990112305]},{"name":"福建省","coord":[117.9976766946587,25.939599990844727]},{"name":"广西壮族自治区","coord":[108.98706831086302,23.891559600830078]},{"name":"台湾省","coord":[120.82468432537434,23.602651596069336]},{"name":"香港特别行政区","coord":[114.21036850371561,22.374858856201172]},{"name":"海南省","coord":[109.62792940960824,19.163116455078125]},{"name":"广东省","coord":[113.32127888266032,22.873867034912106]},{"name":"澳门特别行政区","coord":[113.56819996291901,22.160347992976]}];
+
+/***/ }),
+/* 36 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return canvg}catch(e){return {}}}();
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return echarts}catch(e){return {}}}();
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -4989,13 +5001,13 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14)))
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -5232,10 +5244,10 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(88).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(90).setImmediate))
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12760,7 +12772,7 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  */
 class ServerColor_ServerColor {
 
-    constructor(red, green, blue) {
+    constructor(red, green, blue, alpha) {
 
         /**
          * @member {number} [SuperMap.ServerColor.prototype.red=255]
@@ -12780,6 +12792,8 @@ class ServerColor_ServerColor {
          */
         this.blue = blue||0;
 
+        this.alpha = (!alpha && alpha != 0)?255:alpha;
+
         this.CLASS_NAME = "SuperMap.ServerColor";
     }
 
@@ -12792,6 +12806,7 @@ class ServerColor_ServerColor {
         me.red = null;
         me.green = null;
         me.blue = null;
+        me.alpha = null;
     }
 
 
@@ -12823,6 +12838,13 @@ class ServerColor_ServerColor {
             blue = Number(jsonObject.blue);
         }
         color.blue = blue;
+
+        var alpha = 255;
+        if (jsonObject.alpha !== null) {
+            alpha = Number(jsonObject.blue);
+        }
+        color.alpha = alpha;
+        
         return color;
     }
 
@@ -14710,7 +14732,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         }
         var attr = {};
         processFieldsAttributes(feature, attr);
-        var exceptKeys = ["fieldNames", "fieldValues", "geometry"];
+        var exceptKeys = ["fieldNames", "fieldValues", "geometry", "stringID", "ID"];
         for (var key in feature) {
             if (exceptKeys.indexOf(key) > -1) {
                 continue;
@@ -15761,7 +15783,7 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise_polyfill_promise = __webpack_require__(38);
+var promise_polyfill_promise = __webpack_require__(40);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise_polyfill_promise);
 
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
@@ -15772,7 +15794,7 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise_polyfill_promis
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch_ie8_fetch = __webpack_require__(85);
+var fetch_ie8_fetch = __webpack_require__(87);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(24);
@@ -40595,7 +40617,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(37);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(39);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -43024,7 +43046,7 @@ SuperMap.ArrayStatistic = ArrayStatistic_ArrayStatistic;
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(36);
+var lodash_topairs = __webpack_require__(38);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -65777,7 +65799,7 @@ class MessageBox_MessageBox {
 
 SuperMap.Widgets.MessageBox = MessageBox_MessageBox;
 // EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
-var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(35);
+var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(37);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
@@ -70593,6 +70615,7 @@ class core_Util_Util {
             datasetNames: datasetNames,
             fromIndex: 0,
             toIndex: 100000,
+            maxFeatures: 100000,
             returnContent: true
         });
         let options = {
@@ -70638,11 +70661,45 @@ class core_Util_Util {
         });
     }
 
+    /**
+     * @function ol.supermap.Util.getFeatureProperties
+     * @description 从feature中获取properties
+     * @param {array} features 要素数组
+     * @returns {array} 属性
+     */
+    static getFeatureProperties(features) {
+        let properties = [];
+        if (core_Util_Util.isArray(features) && features.length) {
+            features.forEach(feature => {
+                let property = feature.attributes || feature.get('Properties');
+                property && properties.push(property);
+            });
+        }
+        return properties;
+    }
+
+    /**
+     * @function ol.supermap.Util.isMatchAdministrativeName
+     * @param {string} featureName 原始数据中的地名
+     * @param {string} fieldName 需要匹配的地名
+     * @returns {boolean} 是否匹配
+     */
+    static isMatchAdministrativeName(featureName, fieldName) {
+        if (core_Util_Util.isString(fieldName)) {
+            let shortName = featureName.substr(0, 2);
+            // 张家口市和张家界市 特殊处理
+            if (shortName === '张家') {
+                shortName = featureName.substr(0, 3);
+            }
+            return !!fieldName.match(new RegExp(shortName));
+        }
+        return false;
+    }
 }
 
 external_ol_default.a.supermap.Util = core_Util_Util;
 // EXTERNAL MODULE: external "function(){try{return canvg}catch(e){return {}}}()"
-var external_function_try_return_canvg_catch_e_return_ = __webpack_require__(34);
+var external_function_try_return_canvg_catch_e_return_ = __webpack_require__(36);
 var external_function_try_return_canvg_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_canvg_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/openlayers/core/StyleUtils.js
@@ -72798,6 +72855,12 @@ external_ol_default.a.source.TileSuperMapRest = TileSuperMapRest_TileSuperMapRes
 var lib = __webpack_require__(4);
 var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
 
+// EXTERNAL MODULE: ./src/openlayers/mapping/webmap/config/ProvinceCenter.json
+var ProvinceCenter = __webpack_require__(35);
+
+// EXTERNAL MODULE: ./src/openlayers/mapping/webmap/config/MunicipalCenter.json
+var MunicipalCenter = __webpack_require__(34);
+
 // EXTERNAL MODULE: external "function(){try{return jsonsql}catch(e){return {}}}()"
 var external_function_try_return_jsonsql_catch_e_return_ = __webpack_require__(15);
 var external_function_try_return_jsonsql_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_jsonsql_catch_e_return_);
@@ -72813,11 +72876,15 @@ var external_function_try_return_jsonsql_catch_e_return_default = /*#__PURE__*/_
 
 
 
+
+
 window.proj4 = lib_default.a;
 window.Proj4js = lib_default.a;
 external_ol_default.a.supermap = external_ol_default.a.supermap || {};
 //数据转换工具
 const WebMap_transformTools = new external_ol_default.a.format.GeoJSON();
+// 迁徙图最大支持要素数量
+const WebMap_MAX_MIGRATION_ANIMATION_COUNT = 1000;
 /**
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
@@ -73126,11 +73193,11 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             zIndex: layerInfo.zIndex || 1,
             visible: layerInfo.visible
         });
-        var layerId = core_Util_Util.newGuid(8);
+        var layerID = core_Util_Util.newGuid(8);
         if (layerInfo.name) {
             layer.setProperties({
                 name: layerInfo.name,
-                layerId: layerId
+                layerID: layerID
             });
         }
         if (!mapInfo.baseLayer) {
@@ -73148,7 +73215,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
 
         //否则没有ID，对不上号
         layerInfo.layer = layer;
-        layerInfo.layerId = layerId;
+        layerInfo.layerID = layerID;
 
         if(isCallBack){
             layer.setZIndex(0); // wmts
@@ -73967,7 +74034,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {number} layersLen - 叠加图层总数
      */
     sendMapToUser(layersLen) {
-        if (this.layerAdded === layersLen) {
+        if (this.layerAdded === layersLen && this.successCallback) {
             this.successCallback(this.map, this.mapParams, this.layers);
         }
     }
@@ -74176,15 +74243,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             layer = this.createDataflowHeatLayer(layerInfo);
         } else if(layerInfo.layerType === "RANK_SYMBOL") {
             layer = this.createRankSymbolLayer(layerInfo, features);
+        } else if(layerInfo.layerType === "MIGRATION") {
+            layer = this.createMigrationLayer(layerInfo, features);
         }
-        let layerId = core_Util_Util.newGuid(8);
+        let layerID = core_Util_Util.newGuid(8);
         if (layer) {
             layerInfo.name && layer.setProperties({
                 name: layerInfo.name,
-                layerId: layerId
+                layerID: layerID
             });
-            layerInfo.opacity && layer.setOpacity(layerInfo.opacity);
-            layer.setVisible(layerInfo.visible);
+            
             //刷新下图层，否则feature样式出不来
             if(layerInfo && layerInfo.style && layerInfo.style.imageInfo) {
                 let img = new Image();
@@ -74193,12 +74261,19 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     layer.getSource().refresh();
                 };
             }
-    
+            if (layerInfo.layerType === 'MIGRATION') {
+                layer.appendTo(this.map);
+                // 在这里恢复图层可见性状态
+                layer.setVisible(layerInfo.visible);
+            } else {
+                layerInfo.opacity != undefined && layer.setOpacity(layerInfo.opacity);
+                layer.setVisible(layerInfo.visible);
+                this.map.addLayer(layer);
+            }
+            layer.setZIndex(index);
         }
-        layer && this.map.addLayer(layer);
-        layer && layer.setZIndex(index);
         layerInfo.layer = layer;
-        layerInfo.layerId = layerId;
+        layerInfo.layerID = layerID;
         if (layerInfo.labelStyle && layerInfo.labelStyle.labelField && layerInfo.layerType !== "DATAFLOW_POINT_TRACK") {
             //存在标签专题图
             //过滤条件过滤feature
@@ -74718,8 +74793,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             //保留两位有效数
             for (let key in segements) {
                 let value = segements[key];
-                if (key === 0) {
-                    // 最小的值下舍入
+                if (Number(key) === 0) {
+                    // 最小的值下舍入,要用两个等于号。否则有些值判断不对
                     value = Math.floor(value * 100) / 100;
                 } else {
                     // 其余上舍入
@@ -74813,7 +74888,6 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             wrapX: false
         }), labelLayer, labelSource, pathLayer, pathSource;
         let layer = new external_ol_default.a.layer.Vector({
-            layerID: layerInfo.layerId,
             styleOL: style,
             source: source
         });
@@ -74837,7 +74911,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 that.events.triggerEvent('updateDataflowFeature', {
                     feature: feature,
                     identifyField: layerInfo.identifyField,
-                    layerID: layerInfo.layerId
+                    layerID: layerInfo.layerID
                 });
                 if(layerInfo.filterCondition) {
                     //过滤条件
@@ -74930,19 +75004,23 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let layerStyle = layer.get('styleOL');
         layer.setStyle(feature => {
             //有转向字段
-            if(directionField && directionField !== "未设置" || directionField !== "None") {
-                let value, image;
+            let value, image;
+            if(directionField !== undefined && directionField !== "未设置" && directionField !== "None") {
                 value = feature.attributes[directionField];
-                if(value > 360 || value < 0){ 
-                    return null
-                }
-                if(styleType === "SYMBOL_POINT") {
-                    image = layerStyle.getText();
-                } else {
-                    image = layerStyle.getImage();
-                }
-                image && image.setRotation(value);
+            } else {
+                value = 0;  
             }
+            if(value > 360 || value < 0) {
+                return null;
+            }
+            if(styleType === "SYMBOL_POINT") {
+                image = layerStyle.getText();
+            } else {
+                image = layerStyle.getImage();
+            }
+            //默认用户使用的是角度，换算成弧度
+            let rotate = (Math.PI * value) / 180;
+            image && image.setRotation(rotate);
             return layerStyle;
         });
     }
@@ -75376,7 +75454,265 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             }
         }
     }
+    
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createMigrationLayer
+     * @description 创建迁徙图
+     * @param {Object} layerInfo 图层信息
+     * @param {Array} features 要素数组
+     * @returns {ol.layer} 图层
+     */
+    createMigrationLayer(layerInfo, features) {
+        // 给ol3Echarts上添加设置图层可见性和设置图层层级的方法
+        if (!window.ol3Echarts.prototype.setVisible) {
+            window.ol3Echarts.prototype.setVisible = function(visible) {
+                if (visible) {
+                    let options = this.get('options');
+                    if (options) {
+                      this.setChartOptions(options);
+                      this.unset('options');
+                    }
+                } else {
+                    let options = this.getChartOptions();
+                    this.set('options', options);
+                    this.clear();
+                    this.setChartOptions({});
+                }
+            };
+        }
+        if (!window.ol3Echarts.prototype.setZIndex) {
+            window.ol3Echarts.prototype.setZIndex = function(zIndex) {
+                if (this.$container) {
+                    this.$container.style.zIndex = zIndex;
+                }
+            };
+        }
+        let properties = core_Util_Util.getFeatureProperties(features);
+        let lineData = this.createLinesData(layerInfo, properties);
+        let pointData = this.createPointsData(lineData, layerInfo, properties);
+        let options = this.createOptions(layerInfo, lineData, pointData);
+        let layer = new window.ol3Echarts(options, {
+            hideOnMoving: true,
+            hideOnZooming: true
+        });
+        layer.type = 'ECHARTS';
+        return layer;
+    }
 
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createOptions
+     * @description 创建echarts的options
+     * @param {Object} layerInfo 图层信息
+     * @param {Array} lineData 线数据
+     * @param {Array} pointData 点数据
+     * @returns {Object} echarts参数
+     */
+    createOptions(layerInfo, lineData, pointData) {
+        let series;
+        let lineSeries = this.createLineSeries(layerInfo, lineData);
+        if (pointData && pointData.length) {
+            let pointSeries = this.createPointSeries(layerInfo, pointData);
+            series = lineSeries.concat(pointSeries);
+        } else {
+            series = lineSeries.slice();
+        }
+        let options = {
+            series
+        }
+        return options;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createLineSeries
+     * @description 创建线系列
+     * @param {Object} layerInfo 图层参数
+     * @param {Array} lineData 线数据
+     * @returns {Object} 线系列
+     */
+    createLineSeries(layerInfo, lineData) {
+        let lineSetting = layerInfo.lineSetting;
+        let animationSetting = layerInfo.animationSetting;
+        let linesSeries = [
+            // 轨迹线样式
+            {
+                name: 'line-series',
+                type: 'lines',
+                zlevel: 1,
+                effect: {
+                    show: animationSetting.show,
+                    constantSpeed: animationSetting.constantSpeed,
+                    trailLength: 0,
+                    symbol: animationSetting.symbol,
+                    symbolSize: animationSetting.symbolSize
+                },
+                lineStyle: {
+                    normal: {
+                        color: lineSetting.color,
+                        type: lineSetting.type,
+                        width: lineSetting.width,
+                        opacity: lineSetting.opacity,
+                        curveness: lineSetting.curveness
+                    }
+                },
+                data: lineData
+            }
+        ];
+
+        if (lineData.length > WebMap_MAX_MIGRATION_ANIMATION_COUNT) {
+            linesSeries[0].large = true;
+            linesSeries[0].largeThreshold = 100;
+            linesSeries[0].blendMode = 'lighter';
+        }
+
+        return linesSeries;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createPointSeries
+     * @description 创建点系列
+     * @param {Object} layerInfo 图层参数
+     * @param {Array} pointData 点数据
+     * @returns {Object} 点系列
+     */
+    createPointSeries(layerInfo, pointData) {
+        let lineSetting = layerInfo.lineSetting;
+        let animationSetting = layerInfo.animationSetting;
+        let labelSetting = layerInfo.labelSetting;
+        let pointSeries = [{
+            name: 'point-series',
+            coordinateSystem: 'geo',
+            zlevel: 2,
+            label: {
+                normal: {
+                    show: labelSetting.show,
+                    position: 'right',
+                    formatter: '{b}',
+                    color: labelSetting.color,
+                    fontFamily: labelSetting.fontFamily
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: lineSetting.color || labelSetting.color
+                }
+            },
+            data: pointData
+        }]
+
+        if (animationSetting.show) {
+            // 开启动画
+            pointSeries[0].type = 'effectScatter';
+            pointSeries[0].rippleEffect = {
+                brushType: 'stroke'
+            }
+        } else {
+            // 关闭动画
+            pointSeries[0].type = 'scatter';
+        }
+
+        return pointSeries;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createPointsData
+     * @param {Array} lineData 线数据
+     * @param {Object} layerInfo 图层信息
+     * @param {Array} properties 属性
+     * @returns {Array} 点数据
+     */
+    createPointsData(lineData, layerInfo, properties) {
+        let data = [],
+            labelSetting = layerInfo.labelSetting;
+        // 标签隐藏则直接返回
+        if (!labelSetting.show || !lineData.length) {
+            return data;
+        }
+        let fromData = [], toData = [];
+        lineData.forEach((item, idx) => {
+            let coords = item.coords,
+                fromCoord = coords[0],
+                toCoord = coords[1],
+                fromProperty = properties[idx][labelSetting.from],
+                toProperty = properties[idx][labelSetting.to];
+            // 起始字段去重
+            let f = fromData.find(d => {
+                return d.value[0] === fromCoord[0] && d.value[1] === fromCoord[1]
+            });
+            !f && fromData.push({
+                name: fromProperty,
+                value: fromCoord
+            })
+            // 终点字段去重
+            let t = toData.find(d => {
+                return d.value[0] === toCoord[0] && d.value[1] === toCoord[1]
+            });
+            !t && toData.push({
+                name: toProperty,
+                value: toCoord
+            })
+        });
+        data = fromData.concat(toData);
+        return data;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createLinesData
+     * @param {Object} layerInfo 图层信息
+     * @param {Array} properties 属性
+     * @returns {Array} 线数据
+     */
+    createLinesData(layerInfo, properties) {
+        let data = [];
+        if (properties && properties.length) {
+            // 重新获取数据
+            let from = layerInfo.from,
+                to = layerInfo.to,
+                fromCoord, toCoord;
+            if (from.type === 'XY_FIELD' && from['xField'] && from['yField'] && to['xField'] && to['yField']) {
+                properties.forEach(property => {
+                    let fromX = property[from['xField']],
+                        fromY = property[from['yField']],
+                        toX = property[to['xField']],
+                        toY = property[to['yField']];
+                    if (!fromX || !fromY || !toX || !toY) {
+                        return;
+                    }
+
+                    fromCoord = [property[from['xField']], property[from['yField']]];
+                    toCoord = [property[to['xField']], property[to['yField']]];
+                    data.push({
+                        coords: [fromCoord, toCoord]
+                    })
+                });
+            } else if(from.type === 'PLACE_FIELD' && from['field'] && to['field']) {
+                const centerDatas = ProvinceCenter.concat(MunicipalCenter);
+                
+                properties.forEach(property => {
+                    let fromField = property[from['field']], 
+                        toField = property[to['field']];
+                    fromCoord = centerDatas.find(item => {
+                        return core_Util_Util.isMatchAdministrativeName(item.name, fromField);
+                    })
+                    toCoord = centerDatas.find(item => {
+                        return core_Util_Util.isMatchAdministrativeName(item.name, toField);
+                    })
+                    if (!fromCoord || !toCoord) {
+                        return;
+                    }
+                    data.push({
+                        coords: [fromCoord.coord, toCoord.coord]
+                    })
+                });
+            }
+        }
+        return data;
+    }
 }
 
 external_ol_default.a.supermap.WebMap = WebMap_WebMap;
@@ -86014,8 +86350,6 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
@@ -86024,6 +86358,8 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
@@ -86053,14 +86389,14 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(96);
+/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(98);
 /* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(94);
+/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(96);
 /* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__);
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -86069,7 +86405,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -86097,7 +86433,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -86300,7 +86636,7 @@ exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -86425,7 +86761,7 @@ exports.inverse = function(p) {
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(10);
@@ -86541,7 +86877,7 @@ exports.names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -86624,7 +86960,7 @@ exports.names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var pj_mlfn = __webpack_require__(25);
@@ -86649,7 +86985,7 @@ module.exports = function(arg, es, en) {
 };
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports) {
 
 var C00 = 1;
@@ -86678,15 +87014,15 @@ module.exports = function(es) {
 };
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
 var adjust_lat = __webpack_require__(5);
-var pj_enfn = __webpack_require__(47);
+var pj_enfn = __webpack_require__(49);
 var MAX_ITER = 20;
 var pj_mlfn = __webpack_require__(25);
-var pj_inv_mlfn = __webpack_require__(46);
+var pj_inv_mlfn = __webpack_require__(48);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var asinz = __webpack_require__(2);
@@ -86789,7 +87125,7 @@ exports.inverse = function(p) {
 exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -86840,7 +87176,7 @@ exports.names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports) {
 
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
@@ -87064,7 +87400,7 @@ exports.inverse = function(p) {
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(10);
@@ -87197,7 +87533,7 @@ exports.inverse = function(p) {
 exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -87244,7 +87580,7 @@ exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -87281,13 +87617,13 @@ module.exports = function(eccent, q) {
 };
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
 var qsfnz = __webpack_require__(16);
 var msfnz = __webpack_require__(3);
-var iqsfnz = __webpack_require__(53);
+var iqsfnz = __webpack_require__(55);
 /*
   reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
@@ -87350,7 +87686,7 @@ exports.names = ["cea"];
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -87455,7 +87791,7 @@ exports.names = ["gnom"];
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -87582,7 +87918,7 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -87876,7 +88212,7 @@ exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area",
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mlfn = __webpack_require__(6);
@@ -87984,7 +88320,7 @@ exports.inverse = function(p) {
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -88088,7 +88424,7 @@ exports.names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -88229,7 +88565,7 @@ exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Confo
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var tsfnz = __webpack_require__(13);
@@ -88402,7 +88738,7 @@ exports.inverse = function(p) {
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports) {
 
 /*
@@ -88488,7 +88824,7 @@ exports.names = ["somerc"];
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -88660,7 +88996,7 @@ exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (vari
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports) {
 
 module.exports = function(esinp, exp) {
@@ -88668,11 +89004,11 @@ module.exports = function(esinp, exp) {
 };
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var FORTPI = Math.PI/4;
-var srat = __webpack_require__(64);
+var srat = __webpack_require__(66);
 var HALF_PI = Math.PI/2;
 var MAX_ITER = 20;
 exports.init = function() {
@@ -88719,10 +89055,10 @@ exports.names = ["gauss"];
 
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var gauss = __webpack_require__(65);
+var gauss = __webpack_require__(67);
 var adjust_lon = __webpack_require__(1);
 exports.init = function() {
   gauss.init.apply(this);
@@ -88782,7 +89118,7 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
@@ -88806,13 +89142,15 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
   __webpack_require__(26),
-  __webpack_require__(67),
-  __webpack_require__(66),
+  __webpack_require__(69),
+  __webpack_require__(68),
+  __webpack_require__(65),
+  __webpack_require__(64),
   __webpack_require__(63),
   __webpack_require__(62),
   __webpack_require__(61),
@@ -88821,17 +89159,15 @@ var projs = [
   __webpack_require__(58),
   __webpack_require__(57),
   __webpack_require__(56),
-  __webpack_require__(55),
   __webpack_require__(54),
+  __webpack_require__(53),
   __webpack_require__(52),
   __webpack_require__(51),
   __webpack_require__(50),
-  __webpack_require__(49),
-  __webpack_require__(48),
+  __webpack_require__(47),
+  __webpack_require__(46),
   __webpack_require__(45),
-  __webpack_require__(44),
-  __webpack_require__(43),
-  __webpack_require__(42)
+  __webpack_require__(44)
 ];
 module.exports = function(proj4){
   projs.forEach(function(proj){
@@ -88840,13 +89176,13 @@ module.exports = function(proj4){
 };
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module) {
 
 module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mgrs = __webpack_require__(27);
@@ -88886,7 +89222,7 @@ module.exports = Point;
 
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports) {
 
 module.exports = function(crs, denorm, point) {
@@ -88943,7 +89279,7 @@ module.exports = function(crs, denorm, point) {
 
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports) {
 
 var PJD_3PARAM = 1;
@@ -89048,7 +89384,7 @@ module.exports = function(source, dest, point) {
 
 
 /***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -89457,7 +89793,7 @@ module.exports = datum;
 
 
 /***/ }),
-/* 74 */
+/* 76 */
 /***/ (function(module, exports) {
 
 exports.MERIT = {
@@ -89677,7 +90013,7 @@ exports.sphere = {
 };
 
 /***/ }),
-/* 75 */
+/* 77 */
 /***/ (function(module, exports) {
 
 exports.wgs84 = {
@@ -89762,13 +90098,13 @@ exports.rnb72 = {
 };
 
 /***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Datum = __webpack_require__(75);
-var Ellipsoid = __webpack_require__(74);
+var Datum = __webpack_require__(77);
+var Ellipsoid = __webpack_require__(76);
 var extend = __webpack_require__(19);
-var datum = __webpack_require__(73);
+var datum = __webpack_require__(75);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
 var SIXTH = 0.1666666666666666667;
@@ -89824,7 +90160,7 @@ module.exports = function(json) {
 
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, exports) {
 
 exports.init = function() {
@@ -89840,7 +90176,7 @@ exports.names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var msfnz = __webpack_require__(3);
@@ -89943,12 +90279,12 @@ exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_
 
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(78),
-  __webpack_require__(77)
+  __webpack_require__(80),
+  __webpack_require__(79)
 ];
 var names = {};
 var projStore = [];
@@ -89983,7 +90319,7 @@ exports.start = function() {
 
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, exports) {
 
 exports.ft = {to_meter: 0.3048};
@@ -89991,7 +90327,7 @@ exports['us-ft'] = {to_meter: 1200 / 3937};
 
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, exports) {
 
 exports.greenwich = 0.0; //"0dE",
@@ -90009,7 +90345,7 @@ exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports) {
 
 module.exports = function(defs) {
@@ -90026,7 +90362,7 @@ module.exports = function(defs) {
 
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var defs = __webpack_require__(32);
@@ -90067,7 +90403,7 @@ function parse(code){
 module.exports = parse;
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var proj = __webpack_require__(20);
@@ -90136,7 +90472,7 @@ function proj4(fromProj, toProj, coord) {
 module.exports = proj4;
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -90560,7 +90896,7 @@ module.exports = proj4;
 
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -90750,7 +91086,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -90940,10 +91276,10 @@ process.umask = function() { return 0; };
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14), __webpack_require__(86)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14), __webpack_require__(88)))
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -90999,7 +91335,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(87);
+__webpack_require__(89);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -91013,26 +91349,26 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14)))
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(39);
-module.exports = __webpack_require__(40);
+__webpack_require__(41);
+module.exports = __webpack_require__(42);
 
 
 /***/ }),
-/* 90 */,
-/* 91 */,
 /* 92 */,
 /* 93 */,
-/* 94 */
+/* 94 */,
+/* 95 */,
+/* 96 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 95 */,
-/* 96 */
+/* 97 */,
+/* 98 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
