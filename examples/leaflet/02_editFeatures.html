@@ -187,7 +187,7 @@
         var deleteParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
-            IDs: [e.layer.feature.properties.ID],
+            IDs: [e.layer.feature.id],
             editType: "delete"
         });
         featureService.editFeatures(deleteParams, function (serviceResult) {

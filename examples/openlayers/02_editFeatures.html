@@ -317,7 +317,7 @@
         map.forEachFeatureAtPixel(e.pixel, function (feature) {
             //只删选中第一个要素：
             if (!deletedId) {
-                deletedId = feature.getProperties().ID;
+                deletedId = feature.getId();
                 var deleteParams = new SuperMap.EditFeaturesParameters({
                     dataSourceName: "World",
                     dataSetName: "Capitals",

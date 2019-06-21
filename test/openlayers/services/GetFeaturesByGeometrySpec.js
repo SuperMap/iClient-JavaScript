@@ -51,7 +51,7 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
                     expect(features[i].id).not.toBeNull();
                     expect(features[i].type).toEqual("Feature");
                     expect(features[i].properties).not.toBeNull();
-                    expect(features[i].properties.ID).toEqual(features[i].id);
+                    expect(features[i].id).toEqual(features[i].id);
                     expect(features[i].geometry.type).toEqual("MultiPolygon");
                     expect(features[i].geometry.coordinates[0][0].length).toBeGreaterThan(0);
                     for (var j = 0; j < features[i].geometry.coordinates[0][0].length; j++) {

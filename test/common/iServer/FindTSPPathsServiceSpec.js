@@ -72,7 +72,7 @@ describe('FindTSPPathsService', () => {
                 expect(analystResult[0].edgeFeatures.features[0].id).toEqual(6569);
                 expect(analystResult[0].edgeFeatures.features[0].geometry.type).toBe("LineString");
                 expect(analystResult[0].edgeFeatures.features[0].geometry.coordinates.length).toBeGreaterThan(0);
-                expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(6569);
+                expect(analystResult[0].edgeFeatures.features[0].id).toEqual(6569);
                 expect(analystResult[0].nodeFeatures).not.toBeNull();
                 expect(analystResult[0].nodeFeatures.type).toEqual("FeatureCollection");
                 expect(analystResult[0].nodeFeatures.features).not.toBeNull();
@@ -86,7 +86,7 @@ describe('FindTSPPathsService', () => {
                 expect(analystResult[0].nodeFeatures.features[0].id).toEqual(1575);
                 expect(analystResult[0].nodeFeatures.features[0].geometry.type).toBe("Point");
                 expect(analystResult[0].nodeFeatures.features[0].geometry.coordinates.length).toBeGreaterThan(0);
-                expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(1575);
+                expect(analystResult[0].nodeFeatures.features[0].id).toEqual(1575);
                 expect(analystResult[0].pathGuideItems).not.toBeNull();
                 expect(analystResult[0].pathGuideItems.type).toBe("FeatureCollection");
                 expect(analystResult[0].pathGuideItems.features.length).toBeGreaterThan(0);

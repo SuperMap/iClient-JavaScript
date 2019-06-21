@@ -61,9 +61,9 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
                 expect(serviceResult.features).not.toBeNull();
                 expect(serviceResult.features.length).toBe(3);
                 let features = serviceResult.features;
-                expect(features[0].properties.ID).toBe(1);
-                expect(features[1].properties.ID).toBe(2);
-                expect(features[2].properties.ID).toBe(3);
+                expect(features[0].id).toBe(1);
+                expect(features[1].id).toBe(2);
+                expect(features[2].id).toBe(3);
                 done();
             } catch (exception) {
                 console.log("'getFeatureByID'案例失败：" + exception.name + ":" + exception.message);
@@ -95,7 +95,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
                 expect(serviceResult.features).not.toBeNull();
                 expect(serviceResult.features.length).toBe(1);
                 let features = serviceResult.features;
-                expect(features[0].properties.ID).toBe(1);
+                expect(features[0].id).toBe(1);
                 done();
             } catch (exception) {
                 console.log("'getFeatureBySQL'案例失败：" + exception.name + ":" + exception.message);

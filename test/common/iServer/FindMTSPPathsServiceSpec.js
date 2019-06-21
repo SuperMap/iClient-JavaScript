@@ -65,9 +65,9 @@ describe('FindMTSPPathsService', () => {
                 expect(analystResult[0].edgeFeatures.features).not.toBeNull();
                 expect(analystResult[0].edgeFeatures.features[0].type).toEqual("Feature");
                 expect(analystResult[0].edgeFeatures.features[0].geometry).not.toBeNull();
-                expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(4786);
+                expect(analystResult[0].edgeFeatures.features[0].id).toEqual(4786);
                 expect(analystResult[0].nodeFeatures).not.toBeNull();
-                expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(1575);
+                expect(analystResult[0].nodeFeatures.features[0].is-disabled).toEqual(1575);
                 expect(analystResult[0].pathGuideItems).not.toBeNull();
                 expect(analystResult[0].route).not.toBeNull();
                 findMTSPPathsService.destroy();
@@ -134,9 +134,9 @@ describe('FindMTSPPathsService', () => {
                 expect(analystResult[0].edgeFeatures.features).not.toBeNull();
                 expect(analystResult[0].edgeFeatures.features[0].type).toEqual("Feature");
                 expect(analystResult[0].edgeFeatures.features[0].geometry).not.toBeNull();
-                expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(4786);
+                expect(analystResult[0].edgeFeatures.features[0].id).toEqual(4786);
                 expect(analystResult[0].nodeFeatures).not.toBeNull();
-                expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(1575);
+                expect(analystResult[0].nodeFeatures.features[0].id).toEqual(1575);
                 expect(analystResult[0].pathGuideItems).not.toBeNull();
                 expect(analystResult[0].route).not.toBeNull();
                 findMTSPPathsService.destroy();
@@ -199,9 +199,9 @@ describe('FindMTSPPathsService', () => {
                 expect(analystResult[0].edgeFeatures.features).not.toBeNull();
                 expect(analystResult[0].edgeFeatures.features[0].type).toEqual("Feature");
                 expect(analystResult[0].edgeFeatures.features[0].geometry).not.toBeNull();
-                expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(4786);
+                expect(analystResult[0].edgeFeatures.features[0].id).toEqual(4786);
                 expect(analystResult[0].nodeFeatures).not.toBeNull();
-                expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(1575);
+                expect(analystResult[0].nodeFeatures.features[0].id).toEqual(1575);
                 expect(analystResult[0].route).not.toBeNull();
                 findMTSPPathsService.destroy();
                 expect(findMTSPPathsService.EVENT_TYPES).toBeNull();
