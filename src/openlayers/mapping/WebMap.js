@@ -158,12 +158,20 @@ export class WebMap extends ol.Observable {
                 return;
             }
             that.baseProjection = mapInfo.projection;
+            that.mapParams = {
+                title: mapInfo.title,
+                description: mapInfo.description
+            }; //存储地图的名称以及描述等信息，返回给用户
 
             // 多坐标系支持
             if(proj4){
                 ol.proj.setProj4(proj4);
             } 
-            if(that.addProjctionFromWKT(mapInfo.projection)){
+            if(mapInfo.projection === "EPSG:-1000" || mapInfo.projection === "EPSG:0"){
+                //对于这两种地图，只能view，不能叠加其他图层
+                that.createSpecLayer(mapInfo);  
+                return;     
+            } else if(that.addProjctionFromWKT(mapInfo.projection)){
                 mapInfo.projection = that.baseProjection = that.getEpsgInfoFromWKT(mapInfo.projection);
             }else{
                 // 不支持的坐标系
@@ -171,10 +179,6 @@ export class WebMap extends ol.Observable {
                 return;
             }
 
-            that.mapParams = {
-                title: mapInfo.title,
-                description: mapInfo.description
-            }; //存储地图的名称以及描述等信息，返回给用户
             that.addBaseMap(mapInfo);
             if (!mapInfo.layers || mapInfo.layers.length === 0) {
                 that.sendMapToUser(0);
@@ -185,6 +189,110 @@ export class WebMap extends ol.Observable {
             that.errorCallback && that.errorCallback(error, 'getMapFaild', that.map);
         });
     }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createSpecLayer
+     * @description 创建坐标系为0和-1000的图层
+     * @param {object} mapInfo - 地图信息
+     */
+    createSpecLayer(mapInfo) {
+        let me = this, 
+            baseLayerInfo = mapInfo.baseLayer,
+            url = baseLayerInfo.url,
+            baseLayerType = baseLayerInfo.layerType;  
+
+        let proj = new ol.proj.Projection({
+            extent: [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y],
+            units: 'm',
+            code: 'EPSG:0'
+        }); 
+        ol.proj.addProjection(proj);
+        let options = {
+            center: mapInfo.center,
+            level: 0 
+        }
+        //添加view
+        me.baseProjection = proj;
+        me.createView(options);
+        
+        let source;
+        if(baseLayerType === "TILE"){
+            FetchRequest.get(`${me.getProxy()}${url}.json`, null, {
+                withCredentials: this.withCredentials
+            }).then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                baseLayerInfo.originResult = result;
+                source = new ol.source.TileSuperMapRest({
+                    url: baseLayerInfo.url,
+                    tileGrid: ol.source.TileSuperMapRest.optionsFromMapJSON(baseLayerInfo.url, baseLayerInfo.originResult).tileGrid
+                });
+                me.addSpecToMap(source);
+            }).catch(function(error) {
+                me.errorCallback && me.errorCallback(error, 'getMapFaild', me.map);
+            });  
+        } else if(baseLayerType === "WMS"){
+            source = me.createWMSSource(baseLayerInfo);
+            me.addSpecToMap(source);
+        } else if(baseLayerType === "WMTS"){
+            FetchRequest.get(`${me.getProxy()}${url}`, null, {
+                withCredentials: this.withCredentials
+            }).then(function (response) {
+                return response.text();
+            }).then(function(capabilitiesText) {
+                baseLayerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
+                baseLayerInfo.scales = me.getWMTSScales(baseLayerInfo.tileMatrixSet, capabilitiesText);
+                baseLayerInfo.dpi = 90.6;
+                source = me.createWMTSSource(baseLayerInfo);
+                me.addSpecToMap(source);
+            }).catch(function(error) {
+                me.errorCallback && me.errorCallback(error, 'getMapFaild', me.map);
+            })
+        }else{
+            me.errorCallback && me.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${baseLayerType}`}, 'getMapFaild', me.map);
+        } 
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.addSpecToMap
+     * @description 将坐标系为0和-1000的图层添加到地图上
+     * @param {object} mapInfo - 地图信息
+     */
+    addSpecToMap(source) {
+        let layer = new ol.layer.Tile({
+            source: source,
+            zIndex: 0
+        });
+        layer && this.map.addLayer(layer);
+        this.sendMapToUser(0);   
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getWMTSScales
+     * @description 获取wmts的比例尺
+     * @param {object} identifier - 图层存储的标识信息
+     * @param {object} capabilitiesText - wmts信息
+     */
+    getWMTSScales(identifier, capabilitiesText) {
+        const format = new ol.format.WMTSCapabilities();
+        let capabilities = format.read(capabilitiesText);
+
+        let content = capabilities.Contents,
+            tileMatrixSet = content.TileMatrixSet;
+        let scales = [];
+        for (let i = 0; i < tileMatrixSet.length; i++) {
+            if (tileMatrixSet[i].Identifier === identifier) {
+                for (let h = 0; h < tileMatrixSet[i].TileMatrix.length; h++) {
+                    scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator)
+                }
+                break;
+            }
+        }
+        return scales;
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.addBaseMap
@@ -225,7 +333,7 @@ export class WebMap extends ol.Observable {
             center = [0, 0];
         }
         //与DV一致用底图的默认范围，不用存储的范围。否则会导致地图拖不动
-        this.baseLayerExtent = extent = options.baseLayer.extent;
+        this.baseLayerExtent = extent = options.baseLayer && options.baseLayer.extent;
         if(this.mapParams) {
             this.mapParams.extent = extent;
             this.mapParams.projection = projection;
@@ -233,7 +341,7 @@ export class WebMap extends ol.Observable {
 
         // 计算当前最大分辨率
         let maxResolution;
-        if(options.baseLayer.layerType === "TILE" && extent && extent.length === 4){
+        if(options.baseLayer && options.baseLayer.layerType === "TILE" && extent && extent.length === 4){
             let width = extent[2] - extent[0];
             let height = extent[3] - extent[1];
             let maxResolution1 = width/256;
@@ -765,7 +873,6 @@ export class WebMap extends ol.Observable {
             url: layerInfo.url,
             layer: layerInfo.name,
             format: 'image/png',
-            // style: 'default',
             matrixSet: layerInfo.tileMatrixSet,
             requestEncoding: layerInfo.requestEncoding || 'KVP',
             tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi),
@@ -2297,21 +2404,25 @@ export class WebMap extends ol.Observable {
             let geomType = feature.getGeometry().getType().toUpperCase();
             // let styleType = geomType === "POINT" ? 'MARKER' : geomType;
             let defaultStyle = feature.getProperties().useStyle;
-            if (geomType === 'POINT' && defaultStyle.text) {
-                //说明是文字的feature类型
-                geomType = "TEXT";
-            }
-            let featureInfo = this.setFeatureInfo(feature);
-            feature.setProperties({
-                useStyle: defaultStyle,
-                featureInfo: featureInfo
-            });
-            //标注图层的feature上需要存一个layerId，为了之后样式应用到图层上使用
-            // feature.layerId = timeId;
-            if (geomType === 'POINT' && defaultStyle.src &&
-                defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
-                //说明地址不完整
-                defaultStyle.src = that.server + defaultStyle.src;
+            if(defaultStyle) {
+                if (geomType === 'POINT' && defaultStyle.text) {
+                    //说明是文字的feature类型
+                    geomType = "TEXT";
+                }
+                let featureInfo = this.setFeatureInfo(feature);
+                feature.setProperties({
+                    useStyle: defaultStyle,
+                    featureInfo: featureInfo
+                });
+                //标注图层的feature上需要存一个layerId，为了之后样式应用到图层上使用
+                // feature.layerId = timeId;
+                if (geomType === 'POINT' && defaultStyle.src &&
+                    defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
+                    //说明地址不完整
+                    defaultStyle.src = that.server + defaultStyle.src;
+                }
+            } else {
+                defaultStyle = StyleUtils.getMarkerDefaultStyle(geomType, that.server);
             }
             feature.setStyle(StyleUtils.toOpenLayersStyle(defaultStyle, geomType))
         }, this)
@@ -2512,6 +2623,16 @@ export class WebMap extends ol.Observable {
             return result;
         });
     }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getProxy
+     * @description 获取代理地址
+     *  @returns {Promise<T | never>} 代理地址
+     */
+    getProxy() {
+        return this.server + 'apps/viewer/getUrlResource.json?url=';      
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getTileLayerInfo
