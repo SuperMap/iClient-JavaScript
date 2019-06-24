@@ -1172,7 +1172,7 @@ var exampleConfig = {
         name_en: "Vue Components",
         localIgnore: true,
         content: {
-            map: {
+            map_vue: {
                 name: "地图",
                 name_en: "Map",
                 content: [
@@ -1331,7 +1331,7 @@ var exampleConfig = {
                     }
                 ]
             },
-            chart: {
+            chart_vue: {
                 name: "图表",
                 name_en: "Chart",
                 content: [
@@ -1365,7 +1365,7 @@ var exampleConfig = {
                     }
                 ]
             },
-            tools: {
+            tools_vue: {
                 name: "工具",
                 name_en: "Tools",
                 content: [
@@ -1399,8 +1399,7 @@ var exampleConfig = {
                     }
                 ]
             },
-
-            others: {
+            others_vue: {
                 name: "其他",
                 name_en: "Others",
                 content: [

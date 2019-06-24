@@ -3,7 +3,7 @@
  *          iclient-classic.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.2
+ *          version: v10.0.0-alpha
  *         
  */
 /******/ (function(modules) { // webpackBootstrap

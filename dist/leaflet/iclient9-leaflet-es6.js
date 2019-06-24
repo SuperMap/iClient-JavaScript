@@ -3,7 +3,7 @@
  *          iclient9-leaflet.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.2
+ *          version: v10.0.0-alpha
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -4182,7 +4182,7 @@ var DataServiceQuery = __webpack_require__(96);
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-//微件样式
+//组件样式
 
 
 
@@ -13688,7 +13688,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         }
         var attr = {};
         processFieldsAttributes(feature, attr);
-        var exceptKeys = ["fieldNames", "fieldValues", "geometry"];
+        var exceptKeys = ["fieldNames", "fieldValues", "geometry", "stringID", "ID"];
         for (var key in feature) {
             if (exceptKeys.indexOf(key) > -1) {
                 continue;
@@ -64636,8 +64636,8 @@ const FileConfig = {
 
 /**
  * @class SuperMap.FileModel
- * @description 文件数据微件数据模型，用于存储一些文件数据或状态，todo 结构待完善
- * @category Widgets OpenFile
+ * @description 文件数据组件数据模型，用于存储一些文件数据或状态，todo 结构待完善
+ * @category Components OpenFile
  * @private
  */
 class FileModel_FileModel {
@@ -64677,8 +64677,8 @@ class FileModel_FileModel {
 /**
  * @class SuperMap.Widgets.MessageBox
  * @version 9.1.1
- * @classdesc 微件信息提示框。
- * @category Widgets Common
+ * @classdesc 组件信息提示框。
+ * @category Components Common
  */
 class MessageBox_MessageBox {
 
@@ -64879,7 +64879,7 @@ var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__we
 
 /**
  * @class SuperMap.Widgets.FileReaderUtil
- * @classdesc 微件读取文件工具类。
+ * @classdesc 组件读取文件工具类。
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  */
@@ -65105,10 +65105,10 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil_FileReaderUtil;
 
 /**
  * @class SuperMap.Widgets.ChartModel
- * @classdesc 图表微件数据模型
+ * @classdesc 图表组件数据模型
  * @private
  * @param {Object} datasets - 数据来源。
- * @category Widgets Chart
+ * @category Components Chart
  * @fires SuperMap.Widgets.ChartModel#getdatafailed
  */
 
@@ -65626,8 +65626,8 @@ class ChartModel_ChartModel {
 
 /**
  * @class SuperMap.Widgets.ChartViewModel
- * @classdesc 图表微件功能类
- * @category Widgets Chart
+ * @classdesc 图表组件功能类
+ * @category Components Chart
  * @version 10.X.X
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
@@ -66220,7 +66220,7 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
 
 /**
  * @class SuperMap.Widgets.Chart
- * @classdesc 图表微件
+ * @classdesc 图表组件
  * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
@@ -66233,7 +66233,7 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
  * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
  * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
- * @category Widgets Chart
+ * @category Components Chart
  */
 /**
  * @typedef {Object} SuperMap.Widgets.Chart.Datasets  - 数据来源
@@ -66379,11 +66379,11 @@ SuperMap.Widgets.Chart = ChartView_ChartView;
 
 /**
  * @class SuperMap.Widgets.TemplateBase
- * @classdesc 微件公用组件父类，用于约束统一封装的公用组件结构。
+ * @classdesc 组件公用组件父类，用于约束统一封装的公用组件结构。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
- * @category Widgets Common
+ * @category Components Common
  */
 class TemplateBase_TemplateBase {
     constructor(options) {
@@ -66451,12 +66451,12 @@ SuperMap.Widgets.TemplateBase = TemplateBase_TemplateBase;
 
 /**
  * @class SuperMap.Widgets.CommonContainer
- * @classdesc 微件统一外框。
+ * @classdesc 组件统一外框。
  * @version 9.1.1
  * @param {Object} options - 组件可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
@@ -66518,7 +66518,7 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
 
 /**
  * @class SuperMap.Widgets.Select
- * @classdesc 微件统一的文字下拉框。
+ * @classdesc 组件统一的文字下拉框。
  * @version 9.1.1
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
  * @param {string} options.id - 组件 dom 元素 id。
@@ -66526,7 +66526,7 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 class Select_Select extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -66648,7 +66648,7 @@ SuperMap.Widgets.Select = Select_Select;
 
 /**
  * @class SuperMap.Widgets.DropDownBox
- * @classdesc 微件统一的图片下拉框。
+ * @classdesc 组件统一的图片下拉框。
  * @version 9.1.1
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
@@ -66658,7 +66658,7 @@ SuperMap.Widgets.Select = Select_Select;
  * @param {string} [optionsArr.dataValue] - 下拉框 attribute 名为 data-value 的值 。
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
@@ -66854,7 +66854,7 @@ SuperMap.Widgets.DropDownBox = DropDownBox_DropDownBox;
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 弹框组件名称。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 class PopContainer_PopContainer extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -66925,7 +66925,7 @@ SuperMap.Widgets.PopContainer = PopContainer_PopContainer;
  * @param {Object} options.title - 属性弹框组件名称。
  * @param {Object} options.attributes - 组件需要显示的属性内容。
  * @extends {SuperMap.Widgets.PopContainer}
- * @category Widgets Common
+ * @category Components Common
  */
 class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopContainer {
     constructor(options) {
@@ -66982,7 +66982,7 @@ SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopCo
  * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_TemplateBase {
@@ -67100,7 +67100,7 @@ SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer_IndexTabsPageCo
  * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @extends {SuperMap.Widgets.IndexTabsPageContainer}
- * @category Widgets Common
+ * @category Components Common
  */
 class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageContainer {
     constructor(options) {
@@ -67220,7 +67220,7 @@ SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
  * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组，形如：[{title: "",content: HTMLElement}]，初始时，传入则创建页面。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用
 class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
@@ -67353,7 +67353,7 @@ SuperMap.Widgets.NavTabsPage = NavTabsPage_NavTabsPage;
  * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
  * @param {number} options.pageCounts - 页数。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -67694,9 +67694,9 @@ let Util_widgetsUtil = {
 
 //组件
 
-//提示框微件
+//提示框组件
 
-//图表微件
+//图表组件
 
 
 //公用模板：
@@ -84915,11 +84915,11 @@ external_L_default.a.supermap.trafficTransferAnalystService = TrafficTransferAna
 
 /**
  * @class L.supermap.widgets.WidgetsViewBase
- * @classdesc Lealfet 微件基类。
- * @category Widgets Common
+ * @classdesc Lealfet 组件基类。
+ * @category Components Common
  * @version 9.1.1
  * @param {Object} options - 参数。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
@@ -84928,7 +84928,7 @@ var WidgetsViewBase_WidgetsViewBase = external_L_default.a.Control.extend({
     options: {
         //控件位置 继承自leaflet control
         position: 'topright',
-        //默认样式，以支持微件设置图层基本样式
+        //默认样式，以支持组件设置图层基本样式
         style: (feature, latLng) => {
             if (latLng /*&& feature instanceof L.latLng || feature.geometry.type.toLowerCase() === "point"*/) {
                 return external_L_default.a.circleMarker(latLng, {
@@ -84953,16 +84953,16 @@ var WidgetsViewBase_WidgetsViewBase = external_L_default.a.Control.extend({
 
     initialize(options) {
         external_L_default.a.setOptions(this, options);
-        //微件事件处理对象：//todo 确认一些公开或私有的成员变量
+        //组件事件处理对象：//todo 确认一些公开或私有的成员变量
         this._event = new external_L_default.a.Evented();
-        //微件根 dom 元素：
+        //组件根 dom 元素：
         this.rootContainer = null;
-        //图层参数，主要配置微件返回数据图层的样式和事件等
+        //图层参数，主要配置组件返回数据图层的样式和事件等
     },
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.onAdd
-     * @description 向地图添加微件。
+     * @description 向地图添加组件。
      */
     onAdd(map) {
         //子类实现此方法
@@ -84992,7 +84992,7 @@ var WidgetsViewBase_WidgetsViewBase = external_L_default.a.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype._initView
-     * @description 初始化微件 UI。
+     * @description 初始化组件 UI。
      * @private
      */
     _initView() {
@@ -85037,9 +85037,9 @@ external_L_default.a.supermap.widgets.widgetsViewBase = WidgetsViewBase_widgetsV
 
 /**
  * @class L.supermap.widgets.openFileViewModel
- * @classdesc 打开本地文件微件功能类,目前只支持WGS84经纬度坐标。
+ * @classdesc 打开本地文件组件功能类,目前只支持WGS84经纬度坐标。
  * @version 9.1.1
- * @category Widgets OpenFile
+ * @category Components OpenFile
  * @param {L.Map} map - leaflet map 对象。
  * @fires L.supermap.widgets.openFileViewModel#filesizeexceed
  * @fires L.supermap.widgets.openFileViewModel#errorfileformat
@@ -85164,16 +85164,16 @@ external_L_default.a.supermap.widgets.util = Util_widgetsUtil;
 
 /**
  * @class L.supermap.widgets.openFile
- * @classdesc 打开文件微件，用于打开本地数据文件并加载到地图，目前支持打开 .csv|.xls|.xlsx|.geojson|.json 格式文件，只支持WGS84经纬度坐标。
+ * @classdesc 打开文件组件，用于打开本地数据文件并加载到地图，目前支持打开 .csv|.xls|.xlsx|.geojson|.json 格式文件，只支持WGS84经纬度坐标。
  * @version 9.1.1
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.openFile#openfilesucceeded
  * @fires L.supermap.widgets.openFile#openfilefailed
  * @extends {L.supermap.widgets.widgetsViewBase}
- * @category Widgets OpenFile
+ * @category Components OpenFile
  */
 var OpenFileView_OpenFileView = WidgetsViewBase_WidgetsViewBase.extend({
     options: {
@@ -85189,7 +85189,7 @@ var OpenFileView_OpenFileView = WidgetsViewBase_WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.openFile.prototype.setViewStyle
-     * @description 改变微件样式。
+     * @description 改变组件样式。
      * @param {string} styleName - css 样式名。
      * @param {string} value - css 样式值。
      */
@@ -85199,7 +85199,7 @@ var OpenFileView_OpenFileView = WidgetsViewBase_WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.openFile.prototype._initView
-     * @description 创建打开本地文件数据微件。
+     * @description 创建打开本地文件数据组件。
      * @returns {HTMLElement}
      * @private
      * @override
@@ -85338,7 +85338,7 @@ const CityConfig_config = {
 /**
  * @class L.supermap.widgets.GeoJsonLayersDataModel
  * @description 多图层数据模型 todo 看看如何完善
- * @category Widgets Common
+ * @category Components Common
  * @private
  * @param {Array.<Object>} layers - 图层数组。
  * @param {L.supermap.widgets.geoJSONLayerWithName} layers.layerObject - 含有 layerName 与 GeoJSON 图层的对象。
@@ -85539,9 +85539,9 @@ class GeoJsonLayersModel_GeoJsonLayerDataModel {
 
 /**
  * @class L.supermap.widgets.searchViewModel
- * @classdesc 图层查询微件功能类。
+ * @classdesc 图层查询组件功能类。
  * @version 9.1.1
- * @category Widgets Search
+ * @category Components Search
  * @param {L.Map} map - Leaflet Map 对象。
  * @param {Object} options - 可选参
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""}，默认为 online 本地搜索服务。
@@ -85563,7 +85563,7 @@ var SearchViewModel_SearchViewModel = external_L_default.a.Evented.extend({
         if (map) {
             /**
              * @member {L.Map} L.supermap.widgets.searchViewModel.prototype.map
-             * @description 当前微件所在的地图。
+             * @description 当前组件所在的地图。
              */
             this.map = map;
         } else {
@@ -85780,8 +85780,8 @@ external_L_default.a.supermap.widgets.searchViewModel = SearchViewModel_searchVi
 
 /**
  * @class L.supermap.widgets.search
- * @classdesc 图层查询微件。
- * @category Widgets Search
+ * @classdesc 图层查询组件。
+ * @category Components Search
  * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
@@ -85791,7 +85791,7 @@ external_L_default.a.supermap.widgets.searchViewModel = SearchViewModel_searchVi
  * @param {number} [options.pageSize=10] - 地址匹配查询返回记录结果数，最大设置为 20。
  * @param {number} [options.pageNum=1] - 地址匹配查询分页页码，默认 1 代表第一页。
  * @param {number} [options.perPageDataNum=8] - 每页显示个数，最大值为 8。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.supermap.widgets.widgetsViewBase}
@@ -85823,12 +85823,12 @@ var SearchView_SearchView = WidgetsViewBase_WidgetsViewBase.extend({
     /*------以下是一些接口-----*/
     /**
      * @function L.supermap.widgets.search.prototype.onAdd
-     * @description 向底图添加微件。
+     * @description 向底图添加组件。
      * @private
      * @override
      */
     onAdd: function (map) {
-        //初始化微件业务逻辑执行对象 viewModel
+        //初始化组件业务逻辑执行对象 viewModel
         this.viewModel = new SearchViewModel_SearchViewModel(map, this.options);
         return WidgetsViewBase_WidgetsViewBase.prototype.onAdd.apply(this, [map]);
     },
@@ -85846,7 +85846,7 @@ var SearchView_SearchView = WidgetsViewBase_WidgetsViewBase.extend({
     /*----------以下是创建 dom 元素的方法---------*/
     /**
      * @function L.supermap.widgets.search.prototype._initView
-     * @description 创建地址匹配或图层要素查询微件。
+     * @description 创建地址匹配或图层要素查询组件。
      * @override
      * @returns {HTMLElement}
      * @private
@@ -86547,10 +86547,10 @@ external_L_default.a.supermap.widgets.search = SearchView_searchView;
 
 /**
  * @class L.supermap.widgets.dataFlowViewModel
- * @classdesc 数据流微件功能类。
+ * @classdesc 数据流组件功能类。
  * @version 9.1.1
- * @category Widgets DataFlow
- * @param {L.Map} map - 当前微件所在的地图。
+ * @category Components DataFlow
+ * @param {L.Map} map - 当前组件所在的地图。
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
  * @param {Object} options - 可选参数。
  * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
@@ -86589,7 +86589,7 @@ var DataFlowViewModel_DataFlowViewModel = external_L_default.a.Evented.extend({
         if (map) {
             /**
              * @member {L.Map} L.supermap.widgets.dataFlowViewModel.prototype.map
-             * @description 当前微件所在的地图。
+             * @description 当前组件所在的地图。
              */
             this.map = map;
         } else {
@@ -86764,11 +86764,11 @@ external_L_default.a.supermap.widgets.dataFlowViewModel = DataFlowViewModel_data
 
 /**
  * @class L.supermap.widgets.dataFlow
- * @classdesc 数据流微件。
+ * @classdesc 数据流组件。
  * @version 9.1.1
- * @category Widgets DataFlow
+ * @category Components DataFlow
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {Function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。<br>
  `function (feature) {
                                                     return {
@@ -86789,7 +86789,7 @@ var DataFlowView_DataFlowView = WidgetsViewBase_WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.dataFlow.prototype.onAdd
-     * @description 向底图添加微件
+     * @description 向底图添加组件
      * @override
      * @private
      */
@@ -86808,7 +86808,7 @@ var DataFlowView_DataFlowView = WidgetsViewBase_WidgetsViewBase.extend({
 
     /**
      * @function L.supermap.widgets.dataFlow.prototype._initView
-     * @description 创建打开本地文件数据微件
+     * @description 创建打开本地文件数据组件
      * @returns {HTMLElement}
      * @private
      * @override
@@ -86955,7 +86955,7 @@ external_L_default.a.supermap.widgets.dataFlow = DataFlowView_dataFlowView;
  * @param {Object} layerObject - 图层对象。
  * @param {string} layerName -  图层名。
  * @param {L.GeoJSON} layer -  图层。
- * @category Widgets Common
+ * @category Components Common
  */
 class GeoJSONLayerWithName_GeoJSONLayerWithName {
     constructor(layerName, layer) {
@@ -86982,9 +86982,9 @@ external_L_default.a.supermap.widgets.geoJSONLayerWithName = GeoJSONLayerWithNam
 
 /**
  * @class L.supermap.widgets.clientComputationViewModel
- * @classdesc 客户端计算微件功能类。
+ * @classdesc 客户端计算组件功能类。
  * @version 9.1.1
- * @category Widgets ClientComputation
+ * @category Components ClientComputation
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @fires L.supermap.widgets.clientComputationViewModel#analysisfailed
  * @fires L.supermap.widgets.clientComputationViewModel#analysissucceeded
@@ -87236,17 +87236,17 @@ external_L_default.a.supermap.widgets.clientComputationViewModel = ClientComputa
 
 /**
  * @class L.supermap.widgets.clientComputation
- * @classdesc 客户端计算微件，用于进行叠加图层的客户端计算。
+ * @classdesc 客户端计算组件，用于进行叠加图层的客户端计算。
  * @version 9.1.1
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.clientComputation#analysissucceeded
  * @fires L.supermap.widgets.clientComputation#analysisfailed
  * @fires L.supermap.widgets.clientComputation#layersremoved
- * @category Widgets ClientComputation
+ * @category Components ClientComputation
  * @extends {L.supermap.widgets.widgetsViewBase}
  */
 var ClientComputationView_ClientComputationView = WidgetsViewBase_WidgetsViewBase.extend({
@@ -87359,7 +87359,7 @@ var ClientComputationView_ClientComputationView = WidgetsViewBase_WidgetsViewBas
 
     /**
      * @function L.supermap.widgets.clientComputation.prototype._initView
-     * @description 创建客户端计算微件。
+     * @description 创建客户端计算组件。
      * @returns {HTMLElement}
      * @private
      */
@@ -87847,7 +87847,7 @@ external_L_default.a.supermap.widgets.clientComputation = ClientComputationView_
  * @param {string} layerObject.layerName -  图层名。
  * @param {L.GeoJSON} layerObject.layer -  图层。
  * @param {Array.<string>} [layerObject.fields] - 字段数组。
- * @category Widgets ClientComputation
+ * @category Components ClientComputation
  */
 class ClientComputationLayer_ClientComputationLayer{
     constructor(layerObject){
@@ -87871,9 +87871,9 @@ external_L_default.a.supermap.widgets.clientComputationLayer = ClientComputation
 
 /**
  * @class L.supermap.widgets.DistributedAnalysisModel
- * @classdesc 分布式分析微件数据模型。
+ * @classdesc 分布式分析组件数据模型。
  * @private
- * @category Widgets DistributedAnalysis
+ * @category Components DistributedAnalysis
  * @param {string} processingUrl - 分布式分析地址。
  * @fires L.supermap.widgets.DistributedAnalysisModel#datasetsloaded
  * @fires L.supermap.widgets.DistributedAnalysisModel#datasetinfoloaded
@@ -87988,9 +87988,9 @@ external_L_default.a.supermap.widgets.DistributedAnalysisModel = DistributedAnal
 
 /**
  * @class L.supermap.widgets.distributedAnalysisViewModel
- * @classdesc 分布式分析微件功能类。
+ * @classdesc 分布式分析组件功能类。
  * @version 9.1.1
- * @category Widgets DistributedAnalysis
+ * @category Components DistributedAnalysis
  * @param {string} processingUrl - 分布式分析地址。
  * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetsloaded
  * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetinfoloaded
@@ -88136,18 +88136,18 @@ external_L_default.a.supermap.widgets.distributedAnalysisViewModel = Distributed
 
 /**
  * @class L.supermap.widgets.distributedAnalysis
- * @classdesc 分布式分析微件。
+ * @classdesc 分布式分析组件。
  * @version 9.1.1
  * @param {string} processingUrl - 分布式分析服务地址。
  * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.distributedAnalysis#analysissucceeded
  * @fires L.supermap.widgets.distributedAnalysis#analysisfailed
  * @fires L.supermap.widgets.distributedAnalysis#layersremoved
  * @extends {L.supermap.widgets.widgetsViewBase}
- * @category Widgets DistributedAnalysis
+ * @category Components DistributedAnalysis
  */
 var DistributedAnalysisView_DistributedAnalysisView = WidgetsViewBase_WidgetsViewBase.extend({
 
@@ -88187,18 +88187,18 @@ var DistributedAnalysisView_DistributedAnalysisView = WidgetsViewBase_WidgetsVie
 
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._initView
-     * @description 创建分布式分析微件。
+     * @description 创建分布式分析组件。
      * @returns {HTMLElement}
      * @private
      * @override
      */
     _initView: function () {
-        // 微件 container
+        // 组件 container
         let container = (new CommonContainer_CommonContainer({title: Lang_Lang.i18n('title_distributedAnalysis')})).getElement();
         container.classList.add('widget-analysis');
         container.children[0].style.fontSize = '12px';
 
-        // 微件内容 container
+        // 组件内容 container
         let widgetContentContainer = external_L_default.a.DomUtil.create('div', 'widget-content widget-content--scroll widget-content--analysis', container);
 
         // 分析方式下拉框
@@ -88631,9 +88631,9 @@ external_L_default.a.supermap.widgets.distributedAnalysis = DistributedAnalysisV
 
 /**
  * @class L.supermap.widgets.dataServiceQueryViewModel
- * @classdesc 数据服务查询微件功能类。
+ * @classdesc 数据服务查询组件功能类。
  * @version 9.1.1
- * @category Widgets DataServiceQuery
+ * @category Components DataServiceQuery
  * @param {string} dataserviceUrl - 数据服务地址。
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturessucceeded
  * @fires L.supermap.widgets.dataServiceQueryViewModel#getfeaturesfailed
@@ -88740,18 +88740,18 @@ external_L_default.a.supermap.widgets.dataServiceQueryViewModel = DataServiceQue
 
 /**
  * @class L.supermap.widgets.dataServiceQuery
- * @classdesc 数据服务查询微件。
+ * @classdesc 数据服务查询组件。
  * @version 9.1.1
  * @param {string} dataServiceUrl - 数据服务地址。
  * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries"。
  * @param {Object} options - 可选参数。
  * @param {(Array.<SuperMap.GetFeatureMode>|SuperMap.GetFeatureMode)} [options.getFeatureMode] - 查询方式。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturessucceeded
  * @fires L.supermap.widgets.dataServiceQuery#getfeaturesfailed
- * @category Widgets DataServiceQuery
+ * @category Components DataServiceQuery
  * @extends {L.supermap.widgets.widgetsViewBase}
  */
 var DataServiceQueryView_DataServiceQueryView = WidgetsViewBase_WidgetsViewBase.extend({
@@ -88841,7 +88841,7 @@ var DataServiceQueryView_DataServiceQueryView = WidgetsViewBase_WidgetsViewBase.
 
     /**
      * @function L.supermap.widgets.dataServiceQuery.prototype._initView
-     * @description 创建数据服务查询微件。
+     * @description 创建数据服务查询组件。
      * @returns {HTMLElement}
      * @private
      */
@@ -88850,14 +88850,14 @@ var DataServiceQueryView_DataServiceQueryView = WidgetsViewBase_WidgetsViewBase.
         this.viewModel = new DataServiceQueryViewModel_DataServiceQueryViewModel(this.dataServiceUrl);
         this.messageBox = new MessageBox_MessageBox();
 
-        // 微件 container
+        // 组件 container
         let container = (new CommonContainer_CommonContainer({title: Lang_Lang.i18n('title_dataServiceQuery')})).getElement();
         container.classList.add('widget-servicequery__container');
         container.children[0].classList.add('widget-servicequery__title');
         let widgetContentContainer = container.children[1];
         widgetContentContainer.classList.add('widget-content--scroll');
         widgetContentContainer.classList.add('data-services');
-        // 微件内容 container
+        // 组件内容 container
         let analyusisTypeContainer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container', widgetContentContainer);
         let analysisType = external_L_default.a.DomUtil.create('div', 'widget-servicequery__analysistype', analyusisTypeContainer);
         let analysisLayer = external_L_default.a.DomUtil.create('div', 'widget-analysis__container__analysisLayer', analysisType);
