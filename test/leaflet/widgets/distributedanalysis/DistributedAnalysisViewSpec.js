@@ -21,7 +21,7 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
             zoom: 2
         });
         // tiledMapLayer(url).addTo(map);
-        // 初始化微件
+        // 初始化组件
         distributedAnalysis = distributedAnalysisView(distributedAnalysisURL);
         // 模拟发送请求
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -50,7 +50,7 @@ describe('leaflet_distributedanalysis_DistributedAnalysisView', () => {
             }
             return Promise.resolve();
         });
-        // 将微件加载在地图上
+        // 将组件加载在地图上
         distributedAnalysis.addTo(map);
 
     });

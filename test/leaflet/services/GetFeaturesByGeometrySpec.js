@@ -56,7 +56,6 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
                 expect(serviceResult.result.features.features[0].geometry.coordinates.length).toEqual(2);
                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
                     CAPITAL: "利伯维尔",
-                    ID: 127,
                     SMID: "127"
                 }));
                 getFeaturesByGeometryService.destroy();

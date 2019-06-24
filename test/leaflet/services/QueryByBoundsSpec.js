@@ -67,7 +67,6 @@ describe('leaflet_QueryService_queryByBounds', ()=> {
                 }
                 expect(serviceResult.result.recordsets[0].features.features[0].properties).toEqual(Object({
                     CAPITAL: "拉巴斯",
-                    ID: 59,
                     SmID: "59"
                 }));
                 queryByBoundsService.destroy();

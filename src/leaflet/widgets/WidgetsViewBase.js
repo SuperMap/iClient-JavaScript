@@ -6,11 +6,11 @@ import '../core/Base';
 
 /**
  * @class L.supermap.widgets.WidgetsViewBase
- * @classdesc Lealfet 微件基类。
- * @category Widgets Common
+ * @classdesc Lealfet 组件基类。
+ * @category Components Common
  * @version 9.1.1
  * @param {Object} options - 参数。
- * @param {string} [options.position='topright'] - 微件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
  * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
@@ -19,7 +19,7 @@ export var WidgetsViewBase = L.Control.extend({
     options: {
         //控件位置 继承自leaflet control
         position: 'topright',
-        //默认样式，以支持微件设置图层基本样式
+        //默认样式，以支持组件设置图层基本样式
         style: (feature, latLng) => {
             if (latLng /*&& feature instanceof L.latLng || feature.geometry.type.toLowerCase() === "point"*/) {
                 return L.circleMarker(latLng, {
@@ -44,16 +44,16 @@ export var WidgetsViewBase = L.Control.extend({
 
     initialize(options) {
         L.setOptions(this, options);
-        //微件事件处理对象：//todo 确认一些公开或私有的成员变量
+        //组件事件处理对象：//todo 确认一些公开或私有的成员变量
         this._event = new L.Evented();
-        //微件根 dom 元素：
+        //组件根 dom 元素：
         this.rootContainer = null;
-        //图层参数，主要配置微件返回数据图层的样式和事件等
+        //图层参数，主要配置组件返回数据图层的样式和事件等
     },
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype.onAdd
-     * @description 向地图添加微件。
+     * @description 向地图添加组件。
      */
     onAdd(map) {
         //子类实现此方法
@@ -83,7 +83,7 @@ export var WidgetsViewBase = L.Control.extend({
 
     /**
      * @function L.supermap.widgets.widgetsViewBase.prototype._initView
-     * @description 初始化微件 UI。
+     * @description 初始化组件 UI。
      * @private
      */
     _initView() {

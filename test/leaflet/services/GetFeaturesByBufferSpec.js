@@ -60,7 +60,6 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
                     expect(serviceResult.result.features.features[i].geometry.coordinates.length).toEqual(2);
                 }
                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
-                    ID: 127,
                     SMID: '127',
                     CAPITAL: "利伯维尔"
                 }));

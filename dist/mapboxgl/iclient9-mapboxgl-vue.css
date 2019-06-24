@@ -8810,7 +8810,7 @@ body {
 /* link */
 /* border */
 /* fill */
-.sm-component-minimap #miniMap {
+.sm-component-minimap .miniMap {
   height: 180px; }
 
 .sm-component-measure__panel {
@@ -8978,11 +8978,11 @@ body {
   .sm-component-legend .ant-collapse {
     border: 0;
     background: transparent; }
-    .sm-component-legend .ant-collapse .ant-collapse-item {
-      border: 0; }
+    .sm-component-legend .ant-collapse .ant-collapse-item:last-child {
+      border-bottom-color: transparent; }
   .sm-component-legend .ant-collapse-content {
     background: transparent; }
-    .sm-component-legend .ant-collapse-content.ant-collapse-content-active {
+    .sm-component-legend .ant-collapse-content.ant-collapse-content {
       border-top-color: transparent; }
     .sm-component-legend .ant-collapse-content .ant-collapse-content-box {
       padding: 0px;
@@ -9161,7 +9161,7 @@ body {
     padding: 10px 15px;
     overflow-y: auto; }
     .sm-component-query__body > div {
-      width: 244px; }
+      width: 100%; }
     .sm-component-query__body::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -9214,7 +9214,8 @@ body {
   .sm-component-query__a-select {
     margin-top: 10px;
     margin-left: 7%;
-    font-weight: 100; }
+    font-weight: 100;
+    width: 84%; }
   .sm-component-query__a-button {
     width: 100%;
     margin-top: 70px;
@@ -9226,7 +9227,6 @@ body {
     margin-top: 10px;
     overflow: auto;
     line-height: normal;
-    max-width: 300px;
     height: 86%; }
     .sm-component-query__result-info::-webkit-scrollbar {
       width: 6px;
@@ -9244,6 +9244,11 @@ body {
     color: #409eff;
     margin: 7px;
     font-weight: bolder; }
+    .sm-component-query__result-header .sm-components-icons-close {
+      float: right;
+      font-size: 10px;
+      margin-top: 5px;
+      cursor: pointer; }
   .sm-component-query__no-result, .sm-component-query__result-loading {
     height: 100%;
     display: flex;
@@ -9264,33 +9269,24 @@ body {
         color: #409eff; }
 
 .sm-component-open-file {
-  margin-left: 30px; }
+  width: 110px;
+  height: 32px;
+  font-size: 14px;
+  background-color: #fff;
+  border: 1px solid;
+  border-radius: 4px;
+  color: #38adf5; }
   .sm-component-open-file__title {
-    position: relative;
-    width: 110px;
-    height: 32px;
-    font-size: 14px;
-    text-align: center;
     letter-spacing: 0.75px;
-    line-height: 32px;
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
     cursor: pointer;
-    background-color: #fff;
-    display: block;
-    border: 1px solid #38adf5;
-    color: #38adf5;
-    cursor: pointer; }
-    .sm-component-open-file__title:hover {
-      color: #fff;
-      background-color: #38adf5; }
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%; }
   .sm-component-open-file__input {
-    position: relative;
-    left: 190px;
-    top: 49px;
-    height: 32px;
-    width: 160px;
-    display: none !important; }
+    display: none; }
 
 .sm-component-chart .sm-component-card__content {
   width: 400px;

@@ -10,7 +10,7 @@ import {TemplateBase} from './TemplateBase';
  * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 export class IndexTabsPageContainer extends TemplateBase {

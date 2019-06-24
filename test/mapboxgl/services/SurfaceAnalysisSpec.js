@@ -60,8 +60,8 @@ describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', () => {
             var features = serviceResult.result.recordset.features.features;
             expect(features.length).toEqual(1);
             expect(features[0].id).toEqual(2);
-            expect(features[0].properties.ID).toEqual(2);
-            expect(features[0].properties.ID).toEqual(2);
+            expect(features[0].id).toEqual(2);
+            expect(features[0].id).toEqual(2);
             expect(features[0].type).toEqual("Feature");
             expect(features[0].geometry.type).toEqual("LineString");
             expect(features[0].geometry.coordinates.length).toEqual(7);

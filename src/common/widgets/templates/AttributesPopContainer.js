@@ -13,7 +13,7 @@ import {PopContainer} from './PopContainer';
  * @param {Object} options.title - 属性弹框组件名称。
  * @param {Object} options.attributes - 组件需要显示的属性内容。
  * @extends {SuperMap.Widgets.PopContainer}
- * @category Widgets Common
+ * @category Components Common
  */
 export class AttributesPopContainer extends PopContainer {
     constructor(options) {

@@ -12,7 +12,7 @@ import '../../core/Base';
  * @param {Object} layerObject - 图层对象。
  * @param {string} layerName -  图层名。
  * @param {L.GeoJSON} layer -  图层。
- * @category Widgets Common
+ * @category Components Common
  */
 export class GeoJSONLayerWithName {
     constructor(layerName, layer) {

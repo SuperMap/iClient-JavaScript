@@ -7,8 +7,8 @@ import { Events } from '../../commontypes/Events';
 
 /**
  * @class SuperMap.Widgets.ChartViewModel
- * @classdesc 图表微件功能类
- * @category Widgets Chart
+ * @classdesc 图表组件功能类
+ * @category Components Chart
  * @version 10.X.X
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。

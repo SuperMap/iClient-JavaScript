@@ -10,7 +10,7 @@ import '../../core/Base';
 /**
  * @class L.supermap.widgets.GeoJsonLayersDataModel
  * @description 多图层数据模型 todo 看看如何完善
- * @category Widgets Common
+ * @category Components Common
  * @private
  * @param {Array.<Object>} layers - 图层数组。
  * @param {L.supermap.widgets.geoJSONLayerWithName} layers.layerObject - 含有 layerName 与 GeoJSON 图层的对象。

@@ -1,4 +1,4 @@
-/**分析微件公共样式**/
+/**分析组件公共样式**/
 .hidden,
 .display_none {
     display: none;
@@ -13,7 +13,7 @@
     overflow-x: hidden;
 }
 
-/**分析微件相关样式**/
+/**分析组件相关样式**/
 .widget-analysis {
     position: absolute;
     right: 10px;

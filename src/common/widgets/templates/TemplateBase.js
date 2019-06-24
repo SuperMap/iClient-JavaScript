@@ -5,11 +5,11 @@ import {SuperMap} from '../../SuperMap';
 
 /**
  * @class SuperMap.Widgets.TemplateBase
- * @classdesc 微件公用组件父类，用于约束统一封装的公用组件结构。
+ * @classdesc 组件公用组件父类，用于约束统一封装的公用组件结构。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
- * @category Widgets Common
+ * @category Components Common
  */
 export class TemplateBase {
     constructor(options) {

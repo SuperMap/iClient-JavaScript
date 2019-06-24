@@ -15,10 +15,10 @@ import { FileReaderUtil } from "../util/FileReaderUtil";
 import { Events } from "../../commontypes/Events";
 /**
  * @class SuperMap.Widgets.ChartModel
- * @classdesc 图表微件数据模型
+ * @classdesc 图表组件数据模型
  * @private
  * @param {Object} datasets - 数据来源。
- * @category Widgets Chart
+ * @category Components Chart
  * @fires SuperMap.Widgets.ChartModel#getdatafailed
  */
 

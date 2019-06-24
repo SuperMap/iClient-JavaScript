@@ -10,9 +10,9 @@ import {AttributesPopContainer} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.clientComputationViewModel
- * @classdesc 客户端计算微件功能类。
+ * @classdesc 客户端计算组件功能类。
  * @version 9.1.1
- * @category Widgets ClientComputation
+ * @category Components ClientComputation
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @fires L.supermap.widgets.clientComputationViewModel#analysisfailed
  * @fires L.supermap.widgets.clientComputationViewModel#analysissucceeded
