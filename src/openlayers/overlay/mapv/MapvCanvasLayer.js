@@ -29,22 +29,21 @@ export class MapvCanvasLayer {
     }
 
     initialize() {
-        var me = this;
-        var canvas = me.canvas = document.createElement("canvas");
-        canvas.style.cssText = "position:absolute;" + "left:0;" + "top:0;" + "z-index:" + me.zIndex + ";user-select:none;";
-        canvas.style.mixBlendMode = me.mixBlendMode;
+        var canvas = this.canvas = document.createElement("canvas");
+        canvas.style.cssText = "position:absolute;" + "left:0;" + "top:0;" + "z-index:" + this.zIndex + ";user-select:none;";
+        canvas.style.mixBlendMode = this.mixBlendMode;
         canvas.className = "mapvClass";
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = me.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
         this.devicePixelRatio = devicePixelRatio;
-        canvas.width = parseInt(me.width) * devicePixelRatio;
-        canvas.height = parseInt(me.height) * devicePixelRatio;
-        if (me.context == '2d') {
-            canvas.getContext(me.context).scale(devicePixelRatio, devicePixelRatio);
+        canvas.width = parseInt(this.width) * devicePixelRatio;
+        canvas.height = parseInt(this.height) * devicePixelRatio;
+        if (this.context === '2d') {
+            canvas.getContext(this.context).scale(devicePixelRatio, devicePixelRatio);
         }
-        canvas.style.width = me.width + "px";
-        canvas.style.height = me.height + "px";
-        if (this.context == 'webgl') {
+        canvas.style.width = this.width + "px";
+        canvas.style.height = this.height + "px";
+        if (this.context === 'webgl') {
             this.canvas.getContext(this.context).viewport(0, 0, canvas.width, canvas.height)
         }
     }
@@ -69,12 +68,12 @@ export class MapvCanvasLayer {
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
         this.canvas.width = mapWidth * devicePixelRatio;
         this.canvas.height = mapHeight * devicePixelRatio;
-        if (this.context == '2d') {
+        if (this.context === '2d') {
             this.canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         this.canvas.style.width = mapWidth + "px";
         this.canvas.style.height = mapHeight + "px";
-        if (this.context == 'webgl') {
+        if (this.context === 'webgl') {
             this.canvas.getContext(this.context).viewport(0, 0, this.canvas.width, this.canvas.height)
         }
     }

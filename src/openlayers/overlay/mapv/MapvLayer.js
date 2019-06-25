@@ -282,7 +282,7 @@ export class MapvLayer extends BaiduMapLayer {
                 self.clear(context);
                 return;
             }
-            if (self.context == '2d') {
+            if (!self.context || self.context === '2d') {
                 context.save();
                 context.globalCompositeOperation = 'destination-out';
                 context.fillStyle = 'rgba(0, 0, 0, .1)';
@@ -292,7 +292,7 @@ export class MapvLayer extends BaiduMapLayer {
         } else {
             this.clear(context);
         }
-        if (self.context == '2d') {
+        if (!self.context || self.context === '2d') {
             for (var key in self.options) {
                 context[key] = self.options[key];
             }

@@ -205,7 +205,7 @@ export var MapVLayer = L.Layer.extend({
         canvas.style.zIndex = this.options.zIndex || 600;
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
-        if (this.mapVOptions.context == '2d') {
+        if (!this.mapVOptions.context || this.mapVOptions.context === '2d') {
             canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         return canvas;
