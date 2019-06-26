@@ -768,7 +768,10 @@ export class WebMap extends ol.Observable {
            let projection = {
             epsgCode: that.baseProjection.split(":")[1]
         }
-        url += `.json?prjCoordSys=${JSON.stringify(projection)}`;
+        //url += `.json?prjCoordSys=${JSON.stringify(projection)}`;
+        // bug IE11 不会自动编码
+        url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
+        
         }else{
             url += (url.indexOf('?') > -1 ? '&SERVICE=WMS&REQUEST=GetCapabilities' : '?SERVICE=WMS&REQUEST=GetCapabilities');
         }
