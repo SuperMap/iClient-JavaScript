@@ -58617,12 +58617,12 @@ var LayerList_component = normalizeComponent(
 )
 
 /* harmony default export */ var LayerList = (LayerList_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/measure/Measure.vue?vue&type=template&id=c66d968a&
-var Measurevue_type_template_id_c66d968a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{key:group.mode,class:{'sm-component-measure__modeIcon': true, 'sm-component-measure__iconActive': _vm.activeMode === group.mode},style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('a-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-component-measure__unit",attrs:{"placeholder":"请选择","get-popup-container":_vm.getPopupContainer},on:{"change":_vm.updateUnit,"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('a-select-option',{key:index,attrs:{"title":value,"value":key}},[_vm._v(_vm._s(value))])})),_vm._v(" "),_c('a-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-component-measure__unit",attrs:{"placeholder":"请选择","get-popup-container":_vm.getPopupContainer},on:{"change":_vm.updateUnit,"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('a-select-option',{key:index,attrs:{"title":value,"value":key}},[_vm._v(_vm._s(value))])})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-component-measure__unit sm-component-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-component-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-component-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-component-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
-var Measurevue_type_template_id_c66d968a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/measure/Measure.vue?vue&type=template&id=1a3f3504&
+var Measurevue_type_template_id_1a3f3504_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{key:group.mode,class:{'sm-component-measure__modeIcon': true, 'sm-component-measure__iconActive': _vm.activeMode === group.mode},style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('a-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-component-measure__unit",attrs:{"placeholder":"请选择","get-popup-container":_vm.getPopupContainer},on:{"change":_vm.updateUnit,"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('a-select-option',{key:index,attrs:{"title":value,"value":key}},[_vm._v(_vm._s(value))])})),_vm._v(" "),_c('a-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-component-measure__unit",attrs:{"placeholder":"请选择","get-popup-container":_vm.getPopupContainer},on:{"change":_vm.updateUnit,"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('a-select-option',{key:index,attrs:{"title":value,"value":key}},[_vm._v(_vm._s(value))])})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-component-measure__unit sm-component-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-component-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-component-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-component-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
+var Measurevue_type_template_id_1a3f3504_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/measure/Measure.vue?vue&type=template&id=c66d968a&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/measure/Measure.vue?vue&type=template&id=1a3f3504&
 
 // EXTERNAL MODULE: external {"root":"MapboxDraw","commonjs":"@mapbox/mapbox-gl-draw","commonjs2":"@mapbox/mapbox-gl-draw","amd":"@mapbox/mapbox-gl-draw"}
 var mapbox_gl_draw_ = __webpack_require__("dz+5");
@@ -59360,7 +59360,7 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
       var _this3 = this;
 
       setTimeout(function () {
-        if (_this3.mapTarget && !map_event.$options.getMap(_this3.mapTarget)) {
+        if (_this3.mapTarget && !map_event.$options.getMap(_this3.mapTarget) || _this3.map && !_this3.map.loaded()) {
           _this3.$message.destroy();
 
           _this3.$message.warning('关联的地图尚未加载完整，请稍后！');
@@ -59377,10 +59377,10 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
 
             _this3.activeMode = null;
           }
-        } else if (!_this3.map) {
+        } else {
           _this3.nonMapTip();
         }
-      }, 100);
+      }, 0);
     },
     updateUnit: function updateUnit(unit) {
       this.viewModel && this.viewModel.updateUnit(unit);
@@ -59402,8 +59402,8 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
 
 var Measure_component = normalizeComponent(
   measure_Measurevue_type_script_lang_js_,
-  Measurevue_type_template_id_c66d968a_render,
-  Measurevue_type_template_id_c66d968a_staticRenderFns,
+  Measurevue_type_template_id_1a3f3504_render,
+  Measurevue_type_template_id_1a3f3504_staticRenderFns,
   false,
   null,
   null,
