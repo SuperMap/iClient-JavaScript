@@ -73005,6 +73005,13 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 that.errorCallback && that.errorCallback(mapInfo.error, 'getMapFaild', that.map);
                 return;
             }
+            if(mapInfo.projection === 'EPSG:910111' || mapInfo.projection === 'EPSG:910112'){
+                // 早期数据存在的自定义坐标系  "EPSG:910111": "GCJ02MERCATOR"， "EPSG:910112": "BDMERCATOR"
+                mapInfo.projection = "EPSG:3857";
+            }else if(mapInfo.projection === 'EPSG:910101' || mapInfo.projection === 'EPSG:910102'){
+                 // 早期数据存在的自定义坐标系 "EPSG:910101": "GCJ02", "EPSG:910102": "BD",
+                mapInfo.projection = "EPSG:4326";
+            }
             that.baseProjection = mapInfo.projection;
             that.mapParams = {
                 title: mapInfo.title,
@@ -79650,22 +79657,21 @@ class MapvCanvasLayer {
     }
 
     initialize() {
-        var me = this;
-        var canvas = me.canvas = document.createElement("canvas");
-        canvas.style.cssText = "position:absolute;" + "left:0;" + "top:0;" + "z-index:" + me.zIndex + ";user-select:none;";
-        canvas.style.mixBlendMode = me.mixBlendMode;
+        var canvas = this.canvas = document.createElement("canvas");
+        canvas.style.cssText = "position:absolute;" + "left:0;" + "top:0;" + "z-index:" + this.zIndex + ";user-select:none;";
+        canvas.style.mixBlendMode = this.mixBlendMode;
         canvas.className = "mapvClass";
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = me.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
         this.devicePixelRatio = devicePixelRatio;
-        canvas.width = parseInt(me.width) * devicePixelRatio;
-        canvas.height = parseInt(me.height) * devicePixelRatio;
-        if (me.context == '2d') {
-            canvas.getContext(me.context).scale(devicePixelRatio, devicePixelRatio);
+        canvas.width = parseInt(this.width) * devicePixelRatio;
+        canvas.height = parseInt(this.height) * devicePixelRatio;
+        if (this.context === '2d') {
+            canvas.getContext(this.context).scale(devicePixelRatio, devicePixelRatio);
         }
-        canvas.style.width = me.width + "px";
-        canvas.style.height = me.height + "px";
-        if (this.context == 'webgl') {
+        canvas.style.width = this.width + "px";
+        canvas.style.height = this.height + "px";
+        if (this.context === 'webgl') {
             this.canvas.getContext(this.context).viewport(0, 0, canvas.width, canvas.height)
         }
     }
@@ -79690,12 +79696,12 @@ class MapvCanvasLayer {
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
         this.canvas.width = mapWidth * devicePixelRatio;
         this.canvas.height = mapHeight * devicePixelRatio;
-        if (this.context == '2d') {
+        if (this.context === '2d') {
             this.canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         this.canvas.style.width = mapWidth + "px";
         this.canvas.style.height = mapHeight + "px";
-        if (this.context == 'webgl') {
+        if (this.context === 'webgl') {
             this.canvas.getContext(this.context).viewport(0, 0, this.canvas.width, this.canvas.height)
         }
     }
@@ -80010,7 +80016,7 @@ class MapvLayer_MapvLayer extends MapvLayer_BaiduMapLayer {
                 self.clear(context);
                 return;
             }
-            if (self.context == '2d') {
+            if (!self.context || self.context === '2d') {
                 context.save();
                 context.globalCompositeOperation = 'destination-out';
                 context.fillStyle = 'rgba(0, 0, 0, .1)';
@@ -80020,7 +80026,7 @@ class MapvLayer_MapvLayer extends MapvLayer_BaiduMapLayer {
         } else {
             this.clear(context);
         }
-        if (self.context == '2d') {
+        if (!self.context || self.context === '2d') {
             for (var key in self.options) {
                 context[key] = self.options[key];
             }
@@ -89290,7 +89296,7 @@ module.exports = function(proj4){
 /* 71 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\git\\SuperMap\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 72 */

@@ -68191,7 +68191,7 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
         var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio;
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
-        if (this.canvasLayer.mapVOptions.context == '2d') {
+        if (!this.canvasLayer.mapVOptions.context || this.canvasLayer.mapVOptions.context == '2d') {
             canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         canvas.style.width = this.map.getCanvas().style.width;
@@ -68486,8 +68486,8 @@ class MapvLayer_MapvLayer {
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
-        if (this.mapVOptions.context == '2d') {
-            canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
+        if (!this.mapVOptions.context || this.mapVOptions.context == '2d') {
+            canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         canvas.style.width = this.map.getCanvas().style.width;
         canvas.style.height = this.map.getCanvas().style.height;
