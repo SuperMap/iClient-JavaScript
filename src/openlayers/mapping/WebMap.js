@@ -1154,7 +1154,9 @@ export class WebMap extends ol.Observable {
         let isMapService = info ? !info.isMvt : layer.layerType === 'HOSTED_TILE',
             isAdded = false;
         dataItemServices.forEach(function (service) {
-            if(isAdded) return;
+            if(isAdded) {
+                return;
+            }
             //有服务了，就不需要循环
             if(service && isMapService && service.serviceType === 'RESTMAP') {
                 isAdded = true;
@@ -1621,7 +1623,7 @@ export class WebMap extends ol.Observable {
             featureClass: ol.Feature
 		});
 		//要加上这一句，否则坐标，默认都是3857
-		ol.format.MVT.prototype.readProjection = function (source) {
+		ol.format.MVT.prototype.readProjection = function () {
 			return new ol.proj.Projection({
 				code: '',
 				units: ol.proj.Units.TILE_PIXELS
