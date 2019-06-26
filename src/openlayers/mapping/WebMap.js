@@ -1046,7 +1046,8 @@ export class WebMap extends ol.Observable {
                             serverId = dataSource ? dataSource.serverId : layer.serverId;
                         that.checkUploadToRelationship(serverId).then(function (result) {
                             if(result && result.length > 0) {
-                                let datasetName = result[0].name;
+                                let datasetName = result[0].name, 
+                                    featureType = result[0].type.toUpperCase();
                                 that.getDataService(serverId,datasetName).then(function (data) {
                                     let dataItemServices = data.dataItemServices;
                                     if(dataItemServices.length === 0) {
@@ -1055,46 +1056,17 @@ export class WebMap extends ol.Observable {
                                         that.errorCallback && that.errorCallback(null, 'getLayerFaild', that.map);
                                         return;
                                     }
-                                    let isAdded = false;
-                                    dataItemServices.forEach(function (service) {
-                                        if(isAdded) {
-                                            return;
-                                        }
-                                        if(service && isMapService && service.serviceType === 'RESTMAP') {
-                                            //关系型文件发布的restMap服务
-                                            isAdded = true;
-                                            //地图服务
-                                            that.getTileLayerInfo(service.address).then(function (restMaps) {
-                                                restMaps.forEach(function (restMapInfo) {
-                                                    let bounds = restMapInfo.bounds;
-                                                    layer.layerType = 'TILE';
-                                                    layer.overLayer= true;
-                                                    layer.orginEpsgCode = that.baseProjection;
-                                                    layer.units= restMapInfo.coordUnit && restMapInfo.coordUnit.toLowerCase();
-                                                    layer.extent= [bounds.left, bounds.bottom, bounds.right, bounds.top];
-                                                    layer.visibleScales= restMapInfo.visibleScales;
-                                                    layer.url= restMapInfo.url;
-                                                    layer.sourceType= 'TILE';
-                                                    that.map.addLayer(that.createBaseLayer(layer, layerIndex));
-                                                    that.layerAdded++;
-                                                    that.sendMapToUser(len);
-                                                })
-                                            })
-                                        } else if(service && !isMapService && service.serviceType === 'RESTDATA') {
-                                            isAdded = true;
-                                            //关系型文件发布的数据服务
-                                            that.getDatasources(service.address).then(function (datasourceName) {
-                                                layer.dataSource.dataSourceName = datasourceName + ":" + datasetName;
-                                                layer.dataSource.url = `${service.address}/data`;
-                                                that.getFeaturesFromRestData(layer, layerIndex, len);
-                                            });
-                                        }
-                                    });
-                                    if(!isAdded) {
-                                        //循环完成了，也没有找到合适的服务。有可能服务被删除
-                                        that.layerAdded++;
-                                        that.sendMapToUser(len);
-                                        that.errorCallback && that.errorCallback(null, 'getLayerFaild', that.map);
+                                    if(isMapService) {
+                                        //需要判断是使用tile还是mvt服务
+                                        let dataService = that.getService(dataItemServices, 'RESTDATA');
+                                        that.isMvt(dataService.address, datasetName).then(info => {
+                                            that.getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType, info);      
+                                        }).catch(() => {
+                                            //判断失败就走之前逻辑，>数据量用tile
+                                            that.getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType); 
+                                        })
+                                    } else {
+                                        that.getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType);    
                                     }
                                 });
                             } else {
@@ -1163,6 +1135,82 @@ export class WebMap extends ol.Observable {
                     })
                 }
             }, this);
+        }
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getServiceInfoFromLayer
+     * @description 判断使用哪种服务上图
+     * @param {Number} layerIndex - 图层对应的index
+     * @param {Number} len - 成功添加的图层个数
+     * @param {Object} layer - 图层信息
+     * @param {Array} dataItemServices - 数据发布的服务
+     * @param {String} datasetName - 数据服务的数据集名称 
+     * @param {String} featureType - feature类型 
+     * @param {Object} info - 数据服务的信息 
+     */
+    getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType, info) {
+        let that = this;
+        let isMapService = info ? !info.isMvt : layer.layerType === 'HOSTED_TILE',
+            isAdded = false;
+        dataItemServices.forEach(function (service) {
+            if(isAdded) return;
+            //有服务了，就不需要循环
+            if(service && isMapService && service.serviceType === 'RESTMAP') {
+                isAdded = true;
+                //地图服务,判断使用mvt还是tile
+                that.getTileLayerInfo(service.address).then(function (restMaps) {
+                    restMaps.forEach(function (restMapInfo) {
+                        let bounds = restMapInfo.bounds;
+                        layer.layerType = 'TILE';
+                        layer.orginEpsgCode = that.baseProjection;
+                        layer.units= restMapInfo.coordUnit && restMapInfo.coordUnit.toLowerCase();
+                        layer.extent= [bounds.left, bounds.bottom, bounds.right, bounds.top];
+                        layer.visibleScales= restMapInfo.visibleScales;
+                        layer.url= restMapInfo.url;
+                        layer.sourceType= 'TILE';
+                        that.map.addLayer(that.createBaseLayer(layer, layerIndex));
+                        that.layerAdded++;
+                        that.sendMapToUser(len);
+                    })
+                })
+            } else if(service && !isMapService && service.serviceType === 'RESTDATA') {
+                isAdded = true;
+                if(info && info.isMvt) {
+                    let bounds = info.bounds;
+                    layer = Object.assign(layer, {
+                        layerType: "VECTOR_TILE", 
+                        epsgCode: info.epsgCode,
+                        projection: `EPSG:${info.epsgCode}`,
+                        bounds: bounds,
+                        extent: [bounds.left, bounds.bottom, bounds.right, bounds.top],
+                        name: layer.name,
+                        url: info.url,
+                        visible: layer.visible,
+                        featureType: featureType, 
+                        serverId: layer.serverId.toString() 
+                    });
+                    that.map.addLayer(that.addVectorTileLayer(layer, layerIndex, 'RESTDATA'));
+                    that.layerAdded++;
+                    that.sendMapToUser(len);
+                  
+                } else {
+                    //数据服务
+                    isAdded = true;
+                    //关系型文件发布的数据服务
+                    that.getDatasources(service.address).then(function (datasourceName) {
+                        layer.dataSource.dataSourceName = datasourceName + ":" + datasetName;
+                        layer.dataSource.url = `${service.address}/data`;
+                        that.getFeaturesFromRestData(layer, layerIndex, len);
+                    });
+                }
+            }
+        });
+        if(!isAdded) {
+            //循环完成了，也没有找到合适的服务。有可能服务被删除
+            that.layerAdded++;
+            that.sendMapToUser(len);
+            that.errorCallback && that.errorCallback(null, 'getLayerFaild', that.map);
         }
     }
 
@@ -1529,6 +1577,95 @@ export class WebMap extends ol.Observable {
             features = layerInfo.filterCondition ? this.getFiterFeatures(layerInfo.filterCondition, features) : features;
             this.addLabelLayer(layerInfo, features);
         }
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.addVectorTileLayer
+     * @description 添加vectorTILE图层
+     * @param {object} layerInfo - 图层信息
+     * @param {number} index 图层的顺序
+     * @param {String} type 创建的图层类型，restData为创建数据服务的mvt, restMap为创建地图服务的mvt
+     * @returns {Object}  图层对象
+     */
+    addVectorTileLayer(layerInfo, index, type) {
+        let layer;
+        if(type === 'RESTDATA') {
+            //用的是restdata服务的mvt
+            layer = this.createDataVectorTileLayer(layerInfo)
+        }   
+        let layerID = Util.newGuid(8);
+        if (layer) {
+            layerInfo.name && layer.setProperties({
+                name: layerInfo.name,
+                layerID: layerID
+            });
+            layerInfo.opacity != undefined && layer.setOpacity(layerInfo.opacity);
+            layer.setVisible(layerInfo.visible);
+            layer.setZIndex(index);
+        }
+        layerInfo.layer = layer;
+        layerInfo.layerID = layerID; 
+        return layer;
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createDataVectorTileLayer
+     * @description 创建vectorTILE图层
+     * @param {object} layerInfo - 图层信息
+     * @returns {Object} 图层对象
+     */
+    createDataVectorTileLayer(layerInfo) {
+        //创建图层
+        var format = new ol.format.MVT({
+            featureClass: ol.Feature
+		});
+		//要加上这一句，否则坐标，默认都是3857
+		ol.format.MVT.prototype.readProjection = function (source) {
+			return new ol.proj.Projection({
+				code: '',
+				units: ol.proj.Units.TILE_PIXELS
+			});
+        };
+        let featureType = layerInfo.featureType;
+        let style = StyleUtils.toOpenLayersStyle(this.getDataVectorTileStyle(featureType), featureType);    
+        return new ol.layer.VectorTile({
+            //设置避让参数
+            declutter: true,
+            source: new ol.source.VectorTileSuperMapRest({
+                url: layerInfo.url,
+                projection: layerInfo.projection,
+                tileType: "ScaleXY",
+                format: format
+            }),
+            style: style
+        });
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getDataVectorTileStyle
+     * @description 获取数据服务的mvt上图的默认样式
+     * @param {String} featureType - 要素类型
+     * @returns {Object} 样式参数
+     */
+    getDataVectorTileStyle(featureType) { 
+        let styleParameters = {
+            radius: 8, //圆点半径
+            fillColor: '#0083cb', //填充色
+            fillOpacity: 0.9,
+            strokeColor: '#ffffff', //边框颜色
+            strokeWidth: 1,
+            strokeOpacity: 1,
+            lineDash: 'solid',
+            type: "BASIC_POINT"
+        };
+        if(["LINE", "LINESTRING", "MULTILINESTRING"].includes(featureType)){
+            styleParameters.strokeColor = '#0083cb';
+            styleParameters.strokeWidth = 2;
+        }else if(["REGION", "POLYGON", "MULTIPOLYGON"].includes(featureType)){
+            styleParameters.fillColor = '#0083cb';
+        }
+        return styleParameters;
     }
 
     /**
@@ -2975,6 +3112,72 @@ export class WebMap extends ol.Observable {
             }
         }
         return data;
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getService
+     * @description 获取当前数据发布的服务中的某种类型服务
+     * @param {Array} services 服务集合
+     * @param {String} type 服务类型，RESTDATA, RESTMAP
+     * @returns {Object} 服务
+     */
+    getService(services, type) {
+        let service = services.filter((info) => {
+            return info && info.serviceType === type;
+        });
+        return service[0];
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.isMvt
+     * @description 判断当前能否使用数据服务的mvt上图方式
+     * @param {String} serviceUrl 数据服务的地址
+     * @param {String} datasetName 数据服务的数据集名称
+     * @returns {Object} 数据服务的信息
+     */
+    isMvt(serviceUrl, datasetName) {
+        let that = this;
+        return this.getDatasetsInfo(serviceUrl, datasetName).then((info) => {
+            //判断是否和底图坐标系一直
+            if(info.epsgCode == that.baseProjection.split('EPSG:')[1]) {
+                return FetchRequest.get(`${that.getProxy()}${info.url}/tilefeature.mvt`).then(function (response) {
+                    return response.json()
+                }).then(function (result) {
+                    info.isMvt = result.error && result.error.code === 400;
+                    return info;
+                }).catch(() => {
+                    return info; 
+                });   
+            }
+            return info;
+        })   
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getDatasetsInfo
+     * @description 获取数据集信息
+     * @param {String} serviceUrl 数据服务的地址
+     * @param {String} datasetName 数据服务的数据集名称
+     * @returns {Object} 数据服务的信息
+     */
+    getDatasetsInfo(serviceUrl, datasetName) {
+        let that = this;
+        return that.getDatasources(serviceUrl).then(function(datasourceName) {
+            //判断mvt服务是否可用
+          let url = `${serviceUrl}/data/datasources/${datasourceName}/datasets/${datasetName}`;   
+          return FetchRequest.get(`${that.getProxy()}${url}.json`).then(function (response) {
+                return response.json()
+          }).then(function (datasetsInfo) {
+                return {
+                    epsgCode: datasetsInfo.datasetInfo.prjCoordSys.epsgCode,   
+                    bounds: datasetsInfo.datasetInfo.bounds,  
+                    url
+                };
+          });
+      })
     }
 }
 
