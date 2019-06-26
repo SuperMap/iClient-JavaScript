@@ -69,7 +69,7 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.js");
+            inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.min.js");
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
             inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.js");
         }

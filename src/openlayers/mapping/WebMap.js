@@ -157,6 +157,13 @@ export class WebMap extends ol.Observable {
                 that.errorCallback && that.errorCallback(mapInfo.error, 'getMapFaild', that.map);
                 return;
             }
+            if(mapInfo.projection === 'EPSG:910111' || mapInfo.projection === 'EPSG:910112'){
+                // 早期数据存在的自定义坐标系  "EPSG:910111": "GCJ02MERCATOR"， "EPSG:910112": "BDMERCATOR"
+                mapInfo.projection = "EPSG:3857";
+            }else if(mapInfo.projection === 'EPSG:910101' || mapInfo.projection === 'EPSG:910102'){
+                 // 早期数据存在的自定义坐标系 "EPSG:910101": "GCJ02", "EPSG:910102": "BD",
+                mapInfo.projection = "EPSG:4326";
+            }
             that.baseProjection = mapInfo.projection;
             that.mapParams = {
                 title: mapInfo.title,

@@ -3,7 +3,7 @@
  *          iclient-classic.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.2
+ *          version: v10.0.0-alpha
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -10378,7 +10378,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         _this.canvasContext = _this.canvas.getContext(context);
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = _this.devicePixelRatio = global$2.devicePixelRatio;
-        if (_this.options.context == '2d') {
+        if (context == '2d') {
             _this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         }
         _this.attribution = "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";

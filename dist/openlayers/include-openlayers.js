@@ -81,7 +81,7 @@
             inputCSS("../../dist/openlayers/iclient9-openlayers.min.css");
         }
         if (inArray(includes, 'echarts')) {
-          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.js");
+          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.min.js");
         }
         if (inArray(includes, 'ol3-echarts')) {
             inputScript("http://iclient.supermap.io/libs/openlayers/ol3-echarts/1.3.4/ol3Echarts.min.js");

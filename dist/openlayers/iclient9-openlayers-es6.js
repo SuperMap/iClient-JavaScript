@@ -3,7 +3,7 @@
  *          iclient9-openlayers.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.2
+ *          version: v10.0.0-alpha
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -12772,7 +12772,7 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  */
 class ServerColor_ServerColor {
 
-    constructor(red, green, blue, alpha) {
+    constructor(red, green, blue) {
 
         /**
          * @member {number} [SuperMap.ServerColor.prototype.red=255]
@@ -12792,8 +12792,6 @@ class ServerColor_ServerColor {
          */
         this.blue = blue||0;
 
-        this.alpha = (!alpha && alpha != 0)?255:alpha;
-
         this.CLASS_NAME = "SuperMap.ServerColor";
     }
 
@@ -12806,7 +12804,6 @@ class ServerColor_ServerColor {
         me.red = null;
         me.green = null;
         me.blue = null;
-        me.alpha = null;
     }
 
 
@@ -12838,13 +12835,6 @@ class ServerColor_ServerColor {
             blue = Number(jsonObject.blue);
         }
         color.blue = blue;
-
-        var alpha = 255;
-        if (jsonObject.alpha !== null) {
-            alpha = Number(jsonObject.blue);
-        }
-        color.alpha = alpha;
-        
         return color;
     }
 
@@ -65680,8 +65670,8 @@ const FileConfig = {
 
 /**
  * @class SuperMap.FileModel
- * @description 文件数据微件数据模型，用于存储一些文件数据或状态，todo 结构待完善
- * @category Widgets OpenFile
+ * @description 文件数据组件数据模型，用于存储一些文件数据或状态，todo 结构待完善
+ * @category Components OpenFile
  * @private
  */
 class FileModel_FileModel {
@@ -65721,8 +65711,8 @@ class FileModel_FileModel {
 /**
  * @class SuperMap.Widgets.MessageBox
  * @version 9.1.1
- * @classdesc 微件信息提示框。
- * @category Widgets Common
+ * @classdesc 组件信息提示框。
+ * @category Components Common
  */
 class MessageBox_MessageBox {
 
@@ -65923,7 +65913,7 @@ var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__we
 
 /**
  * @class SuperMap.Widgets.FileReaderUtil
- * @classdesc 微件读取文件工具类。
+ * @classdesc 组件读取文件工具类。
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  */
@@ -66149,10 +66139,10 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil_FileReaderUtil;
 
 /**
  * @class SuperMap.Widgets.ChartModel
- * @classdesc 图表微件数据模型
+ * @classdesc 图表组件数据模型
  * @private
  * @param {Object} datasets - 数据来源。
- * @category Widgets Chart
+ * @category Components Chart
  * @fires SuperMap.Widgets.ChartModel#getdatafailed
  */
 
@@ -66670,8 +66660,8 @@ class ChartModel_ChartModel {
 
 /**
  * @class SuperMap.Widgets.ChartViewModel
- * @classdesc 图表微件功能类
- * @category Widgets Chart
+ * @classdesc 图表组件功能类
+ * @category Components Chart
  * @version 10.X.X
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
@@ -67264,7 +67254,7 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
 
 /**
  * @class SuperMap.Widgets.Chart
- * @classdesc 图表微件
+ * @classdesc 图表组件
  * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
@@ -67277,7 +67267,7 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
  * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
  * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
- * @category Widgets Chart
+ * @category Components Chart
  */
 /**
  * @typedef {Object} SuperMap.Widgets.Chart.Datasets  - 数据来源
@@ -67423,11 +67413,11 @@ SuperMap.Widgets.Chart = ChartView_ChartView;
 
 /**
  * @class SuperMap.Widgets.TemplateBase
- * @classdesc 微件公用组件父类，用于约束统一封装的公用组件结构。
+ * @classdesc 组件公用组件父类，用于约束统一封装的公用组件结构。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
- * @category Widgets Common
+ * @category Components Common
  */
 class TemplateBase_TemplateBase {
     constructor(options) {
@@ -67495,12 +67485,12 @@ SuperMap.Widgets.TemplateBase = TemplateBase_TemplateBase;
 
 /**
  * @class SuperMap.Widgets.CommonContainer
- * @classdesc 微件统一外框。
+ * @classdesc 组件统一外框。
  * @version 9.1.1
  * @param {Object} options - 组件可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
@@ -67562,7 +67552,7 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
 
 /**
  * @class SuperMap.Widgets.Select
- * @classdesc 微件统一的文字下拉框。
+ * @classdesc 组件统一的文字下拉框。
  * @version 9.1.1
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
  * @param {string} options.id - 组件 dom 元素 id。
@@ -67570,7 +67560,7 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 class Select_Select extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -67692,7 +67682,7 @@ SuperMap.Widgets.Select = Select_Select;
 
 /**
  * @class SuperMap.Widgets.DropDownBox
- * @classdesc 微件统一的图片下拉框。
+ * @classdesc 组件统一的图片下拉框。
  * @version 9.1.1
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
@@ -67702,7 +67692,7 @@ SuperMap.Widgets.Select = Select_Select;
  * @param {string} [optionsArr.dataValue] - 下拉框 attribute 名为 data-value 的值 。
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
@@ -67898,7 +67888,7 @@ SuperMap.Widgets.DropDownBox = DropDownBox_DropDownBox;
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 弹框组件名称。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 class PopContainer_PopContainer extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -67969,7 +67959,7 @@ SuperMap.Widgets.PopContainer = PopContainer_PopContainer;
  * @param {Object} options.title - 属性弹框组件名称。
  * @param {Object} options.attributes - 组件需要显示的属性内容。
  * @extends {SuperMap.Widgets.PopContainer}
- * @category Widgets Common
+ * @category Components Common
  */
 class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopContainer {
     constructor(options) {
@@ -68026,7 +68016,7 @@ SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopCo
  * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_TemplateBase {
@@ -68144,7 +68134,7 @@ SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer_IndexTabsPageCo
  * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @extends {SuperMap.Widgets.IndexTabsPageContainer}
- * @category Widgets Common
+ * @category Components Common
  */
 class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageContainer {
     constructor(options) {
@@ -68264,7 +68254,7 @@ SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
  * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组，形如：[{title: "",content: HTMLElement}]，初始时，传入则创建页面。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用
 class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
@@ -68397,7 +68387,7 @@ SuperMap.Widgets.NavTabsPage = NavTabsPage_NavTabsPage;
  * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
  * @param {number} options.pageCounts - 页数。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -68738,9 +68728,9 @@ let Util_widgetsUtil = {
 
 //组件
 
-//提示框微件
+//提示框组件
 
-//图表微件
+//图表组件
 
 
 //公用模板：
@@ -73015,13 +73005,28 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 that.errorCallback && that.errorCallback(mapInfo.error, 'getMapFaild', that.map);
                 return;
             }
+            if(mapInfo.projection === 'EPSG:910111' || mapInfo.projection === 'EPSG:910112'){
+                // 早期数据存在的自定义坐标系  "EPSG:910111": "GCJ02MERCATOR"， "EPSG:910112": "BDMERCATOR"
+                mapInfo.projection = "EPSG:3857";
+            }else if(mapInfo.projection === 'EPSG:910101' || mapInfo.projection === 'EPSG:910102'){
+                 // 早期数据存在的自定义坐标系 "EPSG:910101": "GCJ02", "EPSG:910102": "BD",
+                mapInfo.projection = "EPSG:4326";
+            }
             that.baseProjection = mapInfo.projection;
+            that.mapParams = {
+                title: mapInfo.title,
+                description: mapInfo.description
+            }; //存储地图的名称以及描述等信息，返回给用户
 
             // 多坐标系支持
             if(lib_default.a){
                 external_ol_default.a.proj.setProj4(lib_default.a);
             } 
-            if(that.addProjctionFromWKT(mapInfo.projection)){
+            if(mapInfo.projection === "EPSG:-1000" || mapInfo.projection === "EPSG:0"){
+                //对于这两种地图，只能view，不能叠加其他图层
+                that.createSpecLayer(mapInfo);  
+                return;     
+            } else if(that.addProjctionFromWKT(mapInfo.projection)){
                 mapInfo.projection = that.baseProjection = that.getEpsgInfoFromWKT(mapInfo.projection);
             }else{
                 // 不支持的坐标系
@@ -73029,10 +73034,6 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 return;
             }
 
-            that.mapParams = {
-                title: mapInfo.title,
-                description: mapInfo.description
-            }; //存储地图的名称以及描述等信息，返回给用户
             that.addBaseMap(mapInfo);
             if (!mapInfo.layers || mapInfo.layers.length === 0) {
                 that.sendMapToUser(0);
@@ -73043,6 +73044,110 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             that.errorCallback && that.errorCallback(error, 'getMapFaild', that.map);
         });
     }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createSpecLayer
+     * @description 创建坐标系为0和-1000的图层
+     * @param {object} mapInfo - 地图信息
+     */
+    createSpecLayer(mapInfo) {
+        let me = this, 
+            baseLayerInfo = mapInfo.baseLayer,
+            url = baseLayerInfo.url,
+            baseLayerType = baseLayerInfo.layerType;  
+
+        let proj = new external_ol_default.a.proj.Projection({
+            extent: [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y],
+            units: 'm',
+            code: 'EPSG:0'
+        }); 
+        external_ol_default.a.proj.addProjection(proj);
+        let options = {
+            center: mapInfo.center,
+            level: 0 
+        }
+        //添加view
+        me.baseProjection = proj;
+        me.createView(options);
+        
+        let source;
+        if(baseLayerType === "TILE"){
+            FetchRequest_FetchRequest.get(`${me.getProxy()}${url}.json`, null, {
+                withCredentials: this.withCredentials
+            }).then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                baseLayerInfo.originResult = result;
+                source = new external_ol_default.a.source.TileSuperMapRest({
+                    url: baseLayerInfo.url,
+                    tileGrid: external_ol_default.a.source.TileSuperMapRest.optionsFromMapJSON(baseLayerInfo.url, baseLayerInfo.originResult).tileGrid
+                });
+                me.addSpecToMap(source);
+            }).catch(function(error) {
+                me.errorCallback && me.errorCallback(error, 'getMapFaild', me.map);
+            });  
+        } else if(baseLayerType === "WMS"){
+            source = me.createWMSSource(baseLayerInfo);
+            me.addSpecToMap(source);
+        } else if(baseLayerType === "WMTS"){
+            FetchRequest_FetchRequest.get(`${me.getProxy()}${url}`, null, {
+                withCredentials: this.withCredentials
+            }).then(function (response) {
+                return response.text();
+            }).then(function(capabilitiesText) {
+                baseLayerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
+                baseLayerInfo.scales = me.getWMTSScales(baseLayerInfo.tileMatrixSet, capabilitiesText);
+                baseLayerInfo.dpi = 90.6;
+                source = me.createWMTSSource(baseLayerInfo);
+                me.addSpecToMap(source);
+            }).catch(function(error) {
+                me.errorCallback && me.errorCallback(error, 'getMapFaild', me.map);
+            })
+        }else{
+            me.errorCallback && me.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${baseLayerType}`}, 'getMapFaild', me.map);
+        } 
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.addSpecToMap
+     * @description 将坐标系为0和-1000的图层添加到地图上
+     * @param {object} mapInfo - 地图信息
+     */
+    addSpecToMap(source) {
+        let layer = new external_ol_default.a.layer.Tile({
+            source: source,
+            zIndex: 0
+        });
+        layer && this.map.addLayer(layer);
+        this.sendMapToUser(0);   
+    }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getWMTSScales
+     * @description 获取wmts的比例尺
+     * @param {object} identifier - 图层存储的标识信息
+     * @param {object} capabilitiesText - wmts信息
+     */
+    getWMTSScales(identifier, capabilitiesText) {
+        const format = new external_ol_default.a.format.WMTSCapabilities();
+        let capabilities = format.read(capabilitiesText);
+
+        let content = capabilities.Contents,
+            tileMatrixSet = content.TileMatrixSet;
+        let scales = [];
+        for (let i = 0; i < tileMatrixSet.length; i++) {
+            if (tileMatrixSet[i].Identifier === identifier) {
+                for (let h = 0; h < tileMatrixSet[i].TileMatrix.length; h++) {
+                    scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator)
+                }
+                break;
+            }
+        }
+        return scales;
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.addBaseMap
@@ -73083,7 +73188,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             center = [0, 0];
         }
         //与DV一致用底图的默认范围，不用存储的范围。否则会导致地图拖不动
-        this.baseLayerExtent = extent = options.baseLayer.extent;
+        this.baseLayerExtent = extent = options.baseLayer && options.baseLayer.extent;
         if(this.mapParams) {
             this.mapParams.extent = extent;
             this.mapParams.projection = projection;
@@ -73091,7 +73196,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
 
         // 计算当前最大分辨率
         let maxResolution;
-        if(options.baseLayer.layerType === "TILE" && extent && extent.length === 4){
+        if(options.baseLayer && options.baseLayer.layerType === "TILE" && extent && extent.length === 4){
             let width = extent[2] - extent[0];
             let height = extent[3] - extent[1];
             let maxResolution1 = width/256;
@@ -73623,7 +73728,6 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             url: layerInfo.url,
             layer: layerInfo.name,
             format: 'image/png',
-            // style: 'default',
             matrixSet: layerInfo.tileMatrixSet,
             requestEncoding: layerInfo.requestEncoding || 'KVP',
             tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi),
@@ -75155,21 +75259,25 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let geomType = feature.getGeometry().getType().toUpperCase();
             // let styleType = geomType === "POINT" ? 'MARKER' : geomType;
             let defaultStyle = feature.getProperties().useStyle;
-            if (geomType === 'POINT' && defaultStyle.text) {
-                //说明是文字的feature类型
-                geomType = "TEXT";
-            }
-            let featureInfo = this.setFeatureInfo(feature);
-            feature.setProperties({
-                useStyle: defaultStyle,
-                featureInfo: featureInfo
-            });
-            //标注图层的feature上需要存一个layerId，为了之后样式应用到图层上使用
-            // feature.layerId = timeId;
-            if (geomType === 'POINT' && defaultStyle.src &&
-                defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
-                //说明地址不完整
-                defaultStyle.src = that.server + defaultStyle.src;
+            if(defaultStyle) {
+                if (geomType === 'POINT' && defaultStyle.text) {
+                    //说明是文字的feature类型
+                    geomType = "TEXT";
+                }
+                let featureInfo = this.setFeatureInfo(feature);
+                feature.setProperties({
+                    useStyle: defaultStyle,
+                    featureInfo: featureInfo
+                });
+                //标注图层的feature上需要存一个layerId，为了之后样式应用到图层上使用
+                // feature.layerId = timeId;
+                if (geomType === 'POINT' && defaultStyle.src &&
+                    defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
+                    //说明地址不完整
+                    defaultStyle.src = that.server + defaultStyle.src;
+                }
+            } else {
+                defaultStyle = StyleUtils_StyleUtils.getMarkerDefaultStyle(geomType, that.server);
             }
             feature.setStyle(StyleUtils_StyleUtils.toOpenLayersStyle(defaultStyle, geomType))
         }, this)
@@ -75370,6 +75478,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             return result;
         });
     }
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getProxy
+     * @description 获取代理地址
+     *  @returns {Promise<T | never>} 代理地址
+     */
+    getProxy() {
+        return this.server + 'apps/viewer/getUrlResource.json?url=';      
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getTileLayerInfo
@@ -79539,22 +79657,21 @@ class MapvCanvasLayer {
     }
 
     initialize() {
-        var me = this;
-        var canvas = me.canvas = document.createElement("canvas");
-        canvas.style.cssText = "position:absolute;" + "left:0;" + "top:0;" + "z-index:" + me.zIndex + ";user-select:none;";
-        canvas.style.mixBlendMode = me.mixBlendMode;
+        var canvas = this.canvas = document.createElement("canvas");
+        canvas.style.cssText = "position:absolute;" + "left:0;" + "top:0;" + "z-index:" + this.zIndex + ";user-select:none;";
+        canvas.style.mixBlendMode = this.mixBlendMode;
         canvas.className = "mapvClass";
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = me.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
         this.devicePixelRatio = devicePixelRatio;
-        canvas.width = parseInt(me.width) * devicePixelRatio;
-        canvas.height = parseInt(me.height) * devicePixelRatio;
-        if (me.context == '2d') {
-            canvas.getContext(me.context).scale(devicePixelRatio, devicePixelRatio);
+        canvas.width = parseInt(this.width) * devicePixelRatio;
+        canvas.height = parseInt(this.height) * devicePixelRatio;
+        if (this.context === '2d') {
+            canvas.getContext(this.context).scale(devicePixelRatio, devicePixelRatio);
         }
-        canvas.style.width = me.width + "px";
-        canvas.style.height = me.height + "px";
-        if (this.context == 'webgl') {
+        canvas.style.width = this.width + "px";
+        canvas.style.height = this.height + "px";
+        if (this.context === 'webgl') {
             this.canvas.getContext(this.context).viewport(0, 0, canvas.width, canvas.height)
         }
     }
@@ -79579,12 +79696,12 @@ class MapvCanvasLayer {
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
         this.canvas.width = mapWidth * devicePixelRatio;
         this.canvas.height = mapHeight * devicePixelRatio;
-        if (this.context == '2d') {
+        if (this.context === '2d') {
             this.canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         this.canvas.style.width = mapWidth + "px";
         this.canvas.style.height = mapHeight + "px";
-        if (this.context == 'webgl') {
+        if (this.context === 'webgl') {
             this.canvas.getContext(this.context).viewport(0, 0, this.canvas.width, this.canvas.height)
         }
     }
@@ -79899,7 +80016,7 @@ class MapvLayer_MapvLayer extends MapvLayer_BaiduMapLayer {
                 self.clear(context);
                 return;
             }
-            if (self.context == '2d') {
+            if (!self.context || self.context === '2d') {
                 context.save();
                 context.globalCompositeOperation = 'destination-out';
                 context.fillStyle = 'rgba(0, 0, 0, .1)';
@@ -79909,7 +80026,7 @@ class MapvLayer_MapvLayer extends MapvLayer_BaiduMapLayer {
         } else {
             this.clear(context);
         }
-        if (self.context == '2d') {
+        if (!self.context || self.context === '2d') {
             for (var key in self.options) {
                 context[key] = self.options[key];
             }
@@ -89179,7 +89296,7 @@ module.exports = function(proj4){
 /* 71 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\git\\SuperMap\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 72 */

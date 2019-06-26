@@ -3,7 +3,7 @@
  *          iclient9-leaflet.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.2
+ *          version: v10.0.0-alpha
  *         
  */
 /**下拉框组件样式**/
@@ -670,7 +670,7 @@
 
 .widget-analyst-density-img {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAqCAMAAADCkShIAAAAElBMVEVNXXNcvv8zp/8hg9mF0v+t5P+bmLduAAAANklEQVR42u3LMQoAIBADQU/P/39ZCBaBNGK9U4bswJ+SKUsI8hrBRdDGA0ewJTO/EmTmOwEeHNAtB+F8eBWwAAAAAElFTkSuQmCC) no-repeat;
-}/*--打开文件微件样式--*/
+}/*--打开文件组件样式--*/
 .widget-openfile__span--select {
     position: relative;
     /*    margin: 20px auto;*/
@@ -831,7 +831,7 @@
     outline: none !important;
 }
 
-/*微件输入框清除按钮*/
+/*组件输入框清除按钮*/
 .widget-dataflow__container .supermapol-icons-close:before {
     content: "\E6AE";
 }
@@ -849,7 +849,7 @@
     z-index: 10;
 }
 
-/*微件按钮默认样式*/
+/*组件按钮默认样式*/
 .widget-button-default {
     position: relative;
     margin: 0 5px;
@@ -899,7 +899,7 @@
 
 .widget-label-selected {
     color: #595959 !important;
-}/**图层查询微件样式 search**/
+}/**图层查询组件样式 search**/
 .widget-search-container {
     position: absolute;
     top: 32px;
@@ -1920,7 +1920,7 @@ a.leaflet-control-ctv-toggle {
 
 .widget-popcontainer__content__td--color{
     background-color: #f9f9f9;
-}/**分析微件公共样式**/
+}/**分析组件公共样式**/
 .hidden,
 .display_none {
     display: none;
@@ -1935,7 +1935,7 @@ a.leaflet-control-ctv-toggle {
     overflow-x: hidden;
 }
 
-/**分析微件相关样式**/
+/**分析组件相关样式**/
 .widget-analysis {
     position: absolute;
     right: 10px;

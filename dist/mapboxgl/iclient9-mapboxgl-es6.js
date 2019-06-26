@@ -3,7 +3,7 @@
  *          iclient9-mapboxgl.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.2
+ *          version: v10.0.0-alpha
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -10697,7 +10697,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         }
         var attr = {};
         processFieldsAttributes(feature, attr);
-        var exceptKeys = ["fieldNames", "fieldValues", "geometry"];
+        var exceptKeys = ["fieldNames", "fieldValues", "geometry", "stringID", "ID"];
         for (var key in feature) {
             if (exceptKeys.indexOf(key) > -1) {
                 continue;
@@ -61645,8 +61645,8 @@ const FileConfig = {
 
 /**
  * @class SuperMap.FileModel
- * @description 文件数据微件数据模型，用于存储一些文件数据或状态，todo 结构待完善
- * @category Widgets OpenFile
+ * @description 文件数据组件数据模型，用于存储一些文件数据或状态，todo 结构待完善
+ * @category Components OpenFile
  * @private
  */
 class FileModel_FileModel {
@@ -61686,8 +61686,8 @@ class FileModel_FileModel {
 /**
  * @class SuperMap.Widgets.MessageBox
  * @version 9.1.1
- * @classdesc 微件信息提示框。
- * @category Widgets Common
+ * @classdesc 组件信息提示框。
+ * @category Components Common
  */
 class MessageBox_MessageBox {
 
@@ -61888,7 +61888,7 @@ var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__we
 
 /**
  * @class SuperMap.Widgets.FileReaderUtil
- * @classdesc 微件读取文件工具类。
+ * @classdesc 组件读取文件工具类。
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  */
@@ -62114,10 +62114,10 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil_FileReaderUtil;
 
 /**
  * @class SuperMap.Widgets.ChartModel
- * @classdesc 图表微件数据模型
+ * @classdesc 图表组件数据模型
  * @private
  * @param {Object} datasets - 数据来源。
- * @category Widgets Chart
+ * @category Components Chart
  * @fires SuperMap.Widgets.ChartModel#getdatafailed
  */
 
@@ -62635,8 +62635,8 @@ class ChartModel_ChartModel {
 
 /**
  * @class SuperMap.Widgets.ChartViewModel
- * @classdesc 图表微件功能类
- * @category Widgets Chart
+ * @classdesc 图表组件功能类
+ * @category Components Chart
  * @version 10.X.X
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
@@ -63229,7 +63229,7 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
 
 /**
  * @class SuperMap.Widgets.Chart
- * @classdesc 图表微件
+ * @classdesc 图表组件
  * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
@@ -63242,7 +63242,7 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
  * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
  * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
- * @category Widgets Chart
+ * @category Components Chart
  */
 /**
  * @typedef {Object} SuperMap.Widgets.Chart.Datasets  - 数据来源
@@ -63388,11 +63388,11 @@ SuperMap.Widgets.Chart = ChartView_ChartView;
 
 /**
  * @class SuperMap.Widgets.TemplateBase
- * @classdesc 微件公用组件父类，用于约束统一封装的公用组件结构。
+ * @classdesc 组件公用组件父类，用于约束统一封装的公用组件结构。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
- * @category Widgets Common
+ * @category Components Common
  */
 class TemplateBase_TemplateBase {
     constructor(options) {
@@ -63460,12 +63460,12 @@ SuperMap.Widgets.TemplateBase = TemplateBase_TemplateBase;
 
 /**
  * @class SuperMap.Widgets.CommonContainer
- * @classdesc 微件统一外框。
+ * @classdesc 组件统一外框。
  * @version 9.1.1
  * @param {Object} options - 组件可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
@@ -63527,7 +63527,7 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
 
 /**
  * @class SuperMap.Widgets.Select
- * @classdesc 微件统一的文字下拉框。
+ * @classdesc 组件统一的文字下拉框。
  * @version 9.1.1
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
  * @param {string} options.id - 组件 dom 元素 id。
@@ -63535,7 +63535,7 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 class Select_Select extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -63657,7 +63657,7 @@ SuperMap.Widgets.Select = Select_Select;
 
 /**
  * @class SuperMap.Widgets.DropDownBox
- * @classdesc 微件统一的图片下拉框。
+ * @classdesc 组件统一的图片下拉框。
  * @version 9.1.1
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
@@ -63667,7 +63667,7 @@ SuperMap.Widgets.Select = Select_Select;
  * @param {string} [optionsArr.dataValue] - 下拉框 attribute 名为 data-value 的值 。
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
@@ -63863,7 +63863,7 @@ SuperMap.Widgets.DropDownBox = DropDownBox_DropDownBox;
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 弹框组件名称。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 class PopContainer_PopContainer extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -63934,7 +63934,7 @@ SuperMap.Widgets.PopContainer = PopContainer_PopContainer;
  * @param {Object} options.title - 属性弹框组件名称。
  * @param {Object} options.attributes - 组件需要显示的属性内容。
  * @extends {SuperMap.Widgets.PopContainer}
- * @category Widgets Common
+ * @category Components Common
  */
 class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopContainer {
     constructor(options) {
@@ -63991,7 +63991,7 @@ SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopCo
  * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
- * @category Widgets Common
+ * @category Components Common
  * @extends {SuperMap.Widgets.TemplateBase}
  */
 class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_TemplateBase {
@@ -64109,7 +64109,7 @@ SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer_IndexTabsPageCo
  * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @extends {SuperMap.Widgets.IndexTabsPageContainer}
- * @category Widgets Common
+ * @category Components Common
  */
 class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageContainer {
     constructor(options) {
@@ -64229,7 +64229,7 @@ SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
  * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组，形如：[{title: "",content: HTMLElement}]，初始时，传入则创建页面。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用
 class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
@@ -64362,7 +64362,7 @@ SuperMap.Widgets.NavTabsPage = NavTabsPage_NavTabsPage;
  * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
  * @param {number} options.pageCounts - 页数。
  * @extends {SuperMap.Widgets.TemplateBase}
- * @category Widgets Common
+ * @category Components Common
  */
 class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -64703,9 +64703,9 @@ let Util_widgetsUtil = {
 
 //组件
 
-//提示框微件
+//提示框组件
 
-//图表微件
+//图表组件
 
 
 //公用模板：
@@ -68191,7 +68191,7 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
         var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio;
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
-        if (this.canvasLayer.mapVOptions.context == '2d') {
+        if (!this.canvasLayer.mapVOptions.context || this.canvasLayer.mapVOptions.context == '2d') {
             canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         canvas.style.width = this.map.getCanvas().style.width;
@@ -68486,8 +68486,8 @@ class MapvLayer_MapvLayer {
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
-        if (this.mapVOptions.context == '2d') {
-            canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
+        if (!this.mapVOptions.context || this.mapVOptions.context == '2d') {
+            canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }
         canvas.style.width = this.map.getCanvas().style.width;
         canvas.style.height = this.map.getCanvas().style.height;
