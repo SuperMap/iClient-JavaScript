@@ -186,11 +186,24 @@ export class WebMap extends ol.Observable {
                 return;
             }
 
-            that.addBaseMap(mapInfo);
-            if (!mapInfo.layers || mapInfo.layers.length === 0) {
-                that.sendMapToUser(0);
+            if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
+                // 添加矢量瓦片服务作为底图
+                that.addMVTBaseMap(mapInfo).then(() => {
+                    if (!mapInfo.layers || mapInfo.layers.length === 0) {
+                        that.sendMapToUser(0);
+                    } else {
+                        that.addLayers(mapInfo);
+                    }
+                    that.createView(mapInfo);
+                });
             } else {
-                that.addLayers(mapInfo);
+                that.addBaseMap(mapInfo);
+                if (!mapInfo.layers || mapInfo.layers.length === 0) {
+                    that.sendMapToUser(0);
+                } else {
+                    that.addLayers(mapInfo);
+                }
+                that.createView(mapInfo);
             }
         }).catch(function (error) {
             that.errorCallback && that.errorCallback(error, 'getMapFaild', that.map);
@@ -320,6 +333,36 @@ export class WebMap extends ol.Observable {
             this.map.addLayer(labelLayer);
         }
     }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.addMVTBaseMap
+     * @description 添加矢量瓦片服务底图
+     * @param {object} mapInfo - 地图信息
+     */
+    addMVTBaseMap(mapInfo) {
+        // 获取地图详细信息
+        return this.getMBStyle(mapInfo).then(baseLayerInfo => {
+            // 创建图层
+            return this.createMVTLayer(baseLayerInfo).then(layer => {
+                let layerID = Util.newGuid(8);
+                if (baseLayerInfo.name) {
+                    layer.setProperties({
+                        name: baseLayerInfo.name,
+                        layerID: layerID,
+                        layerType: 'VECTOR_TILE'
+                    });
+                }
+
+                //否则没有ID，对不上号
+                baseLayerInfo.layer = layer;
+                baseLayerInfo.layerID = layerID;
+
+                this.map.addLayer(layer);
+            });
+        });
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createView
@@ -328,7 +371,7 @@ export class WebMap extends ol.Observable {
      */
     createView(options) {
         let oldcenter = options.center,
-            zoom = options.level || 1,
+            zoom = options.level !== undefined ? options.level : 1,
             extent,
             projection = this.baseProjection;
         let center = [];
@@ -348,11 +391,11 @@ export class WebMap extends ol.Observable {
 
         // 计算当前最大分辨率
         let maxResolution;
-        if(options.baseLayer && options.baseLayer.layerType === "TILE" && extent && extent.length === 4){
+        if(options.baseLayer && ['TILE', 'MAPBOXSTYLE'].includes(options.baseLayer.layerType) && extent && extent.length === 4){
             let width = extent[2] - extent[0];
             let height = extent[3] - extent[1];
-            let maxResolution1 = width/256;
-            let maxResolution2 = height/256;
+            let maxResolution1 = width / 512;
+            let maxResolution2 = height / 512;
             maxResolution = Math.max(maxResolution1, maxResolution2);
         }
         
@@ -3187,6 +3230,100 @@ export class WebMap extends ol.Observable {
                 };
           });
       })
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getMBStyle
+     * @description 生成图层信息
+     * @param {object} mapInfo - 地图信息
+     */
+    getMBStyle(mapInfo) {
+        let baseLayer = mapInfo.baseLayer,
+            url = baseLayer.dataSource.url,
+            layerInfo = {};
+        return FetchRequest.get(url).then(result => {
+            return result.json();
+        }).then(styles => {
+            let extent = styles.metadata.mapbounds;
+            baseLayer.extent = extent; // 这里把extent保存一下
+
+            layerInfo.projection = mapInfo.projection,
+            layerInfo.epsgCode = mapInfo.projection,
+            layerInfo.visible = baseLayer.visible,
+            layerInfo.name = baseLayer.name,
+            layerInfo.url = url,
+            layerInfo.sourceType = 'VECTOR_TILE',
+            layerInfo.layerType = 'VECTOR_TILE',
+            layerInfo.styles = styles,
+            layerInfo.extent = extent,
+            layerInfo.bounds = {
+                bottom: extent[1],
+                left: extent[0],
+                leftBottom: { x: extent[0], y: extent[1] },
+                right: extent[2],
+                rightTop: { x: extent[2], y: extent[3] },
+                top: extent[3]
+            }
+            return layerInfo;
+        })
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createMVTLayer
+     * @description 创建矢量瓦片图层
+     * @param {object} mapInfo - 图层信息
+     */
+    createMVTLayer(layerInfo) {
+        let styles = layerInfo.styles;
+        let resolutions = this.getMVTResolutions(layerInfo.bounds);
+        // 创建MapBoxStyle样式
+        let mapboxStyles = new ol.supermap.MapboxStyles({
+            style: styles,
+            source: styles.name,
+            resolutions,
+            map: this.map
+        });
+        return new Promise((resolve) => {
+            mapboxStyles.on('styleloaded', function () {
+                let url = Object.values(styles.sources)[0].tiles[0];
+                let layer = new ol.layer.VectorTile({
+                    //设置避让参数
+                    declutter: true,
+                    source: new ol.source.VectorTile({
+                        url,
+                        projection: layerInfo.projection,
+                        format: new ol.format.MVT({
+                            featureClass: ol.Feature
+                        }),
+                        wrapX: false
+                    }),
+                    style: mapboxStyles.featureStyleFuntion,
+                    visible: layerInfo.visible
+                });
+                resolve(layer);
+            })
+        })
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getMVTResolutions
+     * @description 创建矢量瓦片图层
+     * @param {array} extent - 瓦片范围
+     * @param {number} numbers - 缩放层级数
+     */
+    getMVTResolutions(extent, numbers = 22) {
+        let { left, right, top, bottom } = extent;
+        let dx = right - left;
+        let dy = top - bottom;
+        let calcArgs = dx - dy > 0 ? dx : dy;
+        let resolutions = [calcArgs / 512];
+        for (let i = 1; i < numbers; i++) {
+            resolutions.push(resolutions[i - 1] / 2)
+        }
+        return resolutions;
     }
 }
 
