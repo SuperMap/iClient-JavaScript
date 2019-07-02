@@ -13181,9 +13181,8 @@ SuperMap.iPortalMap = iPortalMap_IPortalMap;
  * @param {string} iportalUrl - 地址。
  */
 class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
-
     constructor(iportalUrl, options) {
-        super(iportalUrl,options);
+        super(iportalUrl, options);
         this.iportalUrl = iportalUrl;
         options = options || {};
         this.withCredentials = options.withCredentials || false;
@@ -13195,7 +13194,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
      * @returns {Promise} 返回包含 iportal web 资源信息的 Promise 对象。
      */
     load() {
-        return FetchRequest_FetchRequest.get(this.iportalUrl + '/web');
+        return FetchRequest_FetchRequest.get(this.iportalUrl + "/web");
     }
 
     /**
@@ -13209,9 +13208,9 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
             return null;
         }
         var serviceUrl = this.iportalUrl + "/web/services";
-        return this.request("GET", serviceUrl, queryParams).then(function (result) {
+        return this.request("GET", serviceUrl, queryParams).then(function(result) {
             var services = [];
-            result.content.map(function (serviceJsonObj) {
+            result.content.map(function(serviceJsonObj) {
                 services.push(new iPortalService_IPortalService(serviceUrl, serviceJsonObj));
                 return serviceJsonObj;
             });
@@ -13246,25 +13245,26 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
         } else {
             mapsUrl = this.iportalUrl + "/web/maps";
         }
-        return this.request("GET", mapsUrl, queryParams).then(function (result) {
+        return this.request("GET", mapsUrl, queryParams).then(function(result) {
             var mapRetult = {};
             var maps = [];
-            result.content.map(function (mapJsonObj) {
-                maps.push(new iPortalMap_IPortalMap(mapsUrl + "/" + mapJsonObj.id, mapJsonObj));
-                return mapJsonObj;
-            });
-            mapRetult.content = maps;
-            mapRetult.currentPage = result.currentPage;
-            mapRetult.pageSize = result.pageSize;
-            mapRetult.total = result.total;
-            mapRetult.totalPage = result.totalPage;
-            return mapRetult;
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(mapJsonObj) {
+                    maps.push(new iPortalMap_IPortalMap(mapsUrl + "/" + mapJsonObj.id, mapJsonObj));
+                    return mapJsonObj;
+                });
+                mapRetult.content = maps;
+                mapRetult.currentPage = result.currentPage;
+                mapRetult.pageSize = result.pageSize;
+                mapRetult.total = result.total;
+                mapRetult.totalPage = result.totalPage;
+                return mapRetult;
+            }
         });
     }
 }
 
 SuperMap.iPortal = iPortal_IPortal;
-
 
 // CONCATENATED MODULE: ./src/common/iPortal/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
