@@ -811,7 +811,10 @@ export class WebMap extends ol.Observable {
            let projection = {
             epsgCode: that.baseProjection.split(":")[1]
         }
-        url += `.json?prjCoordSys=${JSON.stringify(projection)}`;
+        //url += `.json?prjCoordSys=${JSON.stringify(projection)}`;
+        // bug IE11 不会自动编码
+        url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
+        
         }else{
             url += (url.indexOf('?') > -1 ? '&SERVICE=WMS&REQUEST=GetCapabilities' : '?SERVICE=WMS&REQUEST=GetCapabilities');
         }
@@ -3287,7 +3290,8 @@ export class WebMap extends ol.Observable {
         });
         return new Promise((resolve) => {
             mapboxStyles.on('styleloaded', function () {
-                let url = Object.values(styles.sources)[0].tiles[0];
+                let key = Object.keys(styles.sources)[0] || mapboxStyles.name;
+                let url = styles.sources[key].tiles[0];
                 let layer = new ol.layer.VectorTile({
                     //设置避让参数
                     declutter: true,
