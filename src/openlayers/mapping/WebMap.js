@@ -36,7 +36,7 @@ const MAX_MIGRATION_ANIMATION_COUNT = 1000;
  * @param {string} [options.target='map'] - 地图容器id。
  * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址。
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
- * @param {function} [options.errorCallback] - 加载地图失败。
+ * @param {function} [options.errorCallback] - 加载地图失败调用的函数。
  * @param {string} [options.credentialKey] - 凭证密钥。
  * @param {string} [options.credentialValue] - 凭证值。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -1703,7 +1703,7 @@ export class WebMap extends ol.Observable {
     getDataVectorTileStyle(featureType) { 
         let styleParameters = {
             radius: 8, //圆点半径
-            fillColor: '#0083cb', //填充色
+            fillColor: '#EE4D5A', //填充色
             fillOpacity: 0.9,
             strokeColor: '#ffffff', //边框颜色
             strokeWidth: 1,
@@ -1712,10 +1712,10 @@ export class WebMap extends ol.Observable {
             type: "BASIC_POINT"
         };
         if(["LINE", "LINESTRING", "MULTILINESTRING"].includes(featureType)){
-            styleParameters.strokeColor = '#0083cb';
+            styleParameters.strokeColor = '#4CC8A3';
             styleParameters.strokeWidth = 2;
         }else if(["REGION", "POLYGON", "MULTIPOLYGON"].includes(featureType)){
-            styleParameters.fillColor = '#0083cb';
+            styleParameters.fillColor = '#826DBA';
         }
         return styleParameters;
     }
