@@ -59,7 +59,7 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.js");
+          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.min.js");
         }
         if (inArray(includes, 'nanoscroller')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/nanoscroller.css");
