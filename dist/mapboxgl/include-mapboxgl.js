@@ -70,14 +70,14 @@
         }
         if (inArray(includes, 'echarts')) {
             inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.min.js");
-            inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
-            inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.js");
+            inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.min.js");
+            inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.min.js");
         }
         if (inArray(includes, 'echarts-vue')) {
-          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.js");
+          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.min.js");
           inputScript("https://cdn.jsdelivr.net/npm/vue-echarts@4.0.2");
-          inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.js");
-          inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
+          inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.min.js");
+          inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.min.js");
         }
         if (inArray(includes, 'three')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/92/three.min.js");
@@ -135,20 +135,16 @@
         if (inArray(includes, 'shapefile')) {
             inputScript("https://unpkg.com/shapefile@0.6.6/dist/shapefile.js");
         }
-        if (inArray(includes, 'element')) {
-            inputCSS("https://unpkg.com/element-ui/lib/theme-chalk/index.css");
-            inputScript("https://unpkg.com/element-ui/lib/index.js");
-        }
         if (inArray(includes, 'ant-design-vue')) {
             inputCSS("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.css");
             inputScript("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.js");
         }
-        if (inArray(includes, 'iclient9-mapboxgl-vue')) {
-            inputCSS("../../dist/mapboxgl/iclient9-mapboxgl-vue.css");
-            inputScript("../../dist/mapboxgl/iclient9-mapboxgl-vue.js");
-        }
         if (inArray(includes, 'xlsx')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.12.13/xlsx.core.min.js");
+        }
+        if (inArray(includes, 'iclient9-mapboxgl-vue')) {
+            inputCSS("../../dist/mapboxgl/iclient9-mapboxgl-vue.css");
+            inputScript("../../dist/mapboxgl/iclient9-mapboxgl-vue.min.js");
         }
     }
 
