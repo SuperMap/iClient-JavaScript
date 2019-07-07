@@ -1,4 +1,64 @@
-# next release #
+# 10.0.0 alpha #
+
+## 新特性
+
+- iClient for MapboxGL（for vue）组件库新增示例，新增房产项目可视化监控平台示例，使用 iClient Vue 组件快速搭建行业大屏应用
+
+![whatsNewComponents](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-1.gif)
+
+## API changes
+
+### for Leaflet
+- `L.supermap.ServiceBase` 及其子类
+
+  - 新增 `options.crossOrigin` 参数，支持设置是否允许跨域请求。
+
+### for OpenLayers
+
+- iPortal
+
+  - `ol.supermap.WebMap` 新增支持迁徙图、MVT矢量瓦片图层。
+
+  - `ol.supermap.MapboxStyles` 新增 `setSelectedObjects` `addSelectedObjects` `removeSelectedObjects` `clearSelectedObjects` 接口，只是设置、增加、移除、清除多个高亮要素。
+
+- `ol.supermap.ServiceBase` 及其子类
+
+  - 新增 `options.crossOrigin` 参数，支持设置是否允许跨域请求。
+
+
+### for MapboxGL
+
+- `mapboxgl.supermap.ServiceBase` 及其子类
+
+  - 新增 `options.crossOrigin` 参数，支持设置是否允许跨域请求。
+
+## Fixed
+
+### for Leaflet
+
+- 修复从 SuperMap iServer 获取要素可能多`stringID`和`ID`属性字段的问题,请使用`feature.id`获取要素id
+
+### for OpenLayers
+
+- 修复从 SuperMap iServer 获取要素可能多`stringID`和`ID`属性字段的问题,请使用`feature.getId()`获取要素id
+
+### for MapboxGL
+
+- 修复从 SuperMap iServer 获取要素可能多`stringID`和`ID`属性字段的问题,请使用`feature.id`获取要素id
+
+
+## Examples
+
+### for OpenLayers
+
+- 修复平面无投影地图相关示例访问失败的问题。
+
+### for MapboxGL
+
+- 新增 `Vue 组件` 分类及相关示例。
+
+
+
 # 9.1.2 (2019-04-26) #
 
 ## 新特性
