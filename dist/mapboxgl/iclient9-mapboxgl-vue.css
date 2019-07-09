@@ -8531,15 +8531,14 @@ body {
 
 /** common */
 .sm-component-indicator {
-  display: inline-block;
+  display: inline-flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
+  justify-content: center;
   color: #595959; }
   .sm-component-indicator__head {
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
-    height: 30%;
     padding-left: 5px;
     margin-right: 5px; }
   .sm-component-indicator__title {
@@ -8547,13 +8546,10 @@ body {
     line-height: 30px;
     font-weight: bolder; }
   .sm-component-indicator__content {
-    height: 50%;
     display: flex;
     flex-flow: row nowrap;
     align-items: flex-end;
     font-weight: bolder;
-    padding-top: 10px;
-    margin-bottom: 10px;
     margin-right: 10px; }
   .sm-component-indicator__num {
     text-indent: 5px;
@@ -9062,8 +9058,7 @@ body {
 .sm-component-legend {
   overflow-y: auto;
   border: none;
-  color: #fff;
-  padding-right: 30px; }
+  color: #fff; }
   .sm-component-legend::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -9074,11 +9069,17 @@ body {
   .sm-component-legend .sm-component-card__content {
     box-shadow: unset;
     max-height: 400px; }
+    .sm-component-legend .sm-component-card__content.is-not-header {
+      padding-right: 15px; }
   .sm-component-legend .ant-card {
     height: 100%; }
   .sm-component-legend .ant-card-body {
     padding: 0px;
     height: 100%; }
+  .sm-component-legend .sm-component-card__icon + .sm-component-card__content .ant-collapse-item:last-child .header-wrap {
+    margin-bottom: 10px; }
+  .sm-component-legend .sm-component-card__icon + .sm-component-card__content .ant-collapse-content-box {
+    padding-right: 30px; }
   .sm-component-legend__table {
     border-top: none; }
   .sm-component-legend__noBorder {
@@ -9104,7 +9105,7 @@ body {
       border-top-color: transparent; }
     .sm-component-legend .ant-collapse-content .ant-collapse-content-box {
       padding: 0px;
-      padding-left: 8px; }
+      padding: 0 8px; }
       .sm-component-legend__wrap {
         display: flex;
         justify-content: center;
@@ -9123,7 +9124,8 @@ body {
           width: 40px;
           height: 100%; }
         .sm-component-legend__range-item > span {
-          margin-left: 2px; }
+          margin-left: 2px;
+          max-width: 200px; }
       .sm-component-legend__heatbox {
         display: flex !important;
         overflow: hidden; }
@@ -9142,11 +9144,17 @@ body {
         list-style: none;
         height: 30px; }
       .sm-component-legend__field-value {
-        margin-left: 20px; }
+        margin-left: 20px;
+        max-width: 200px; }
       .sm-component-legend__themefield {
         font-size: 12px;
         margin-left: 30px;
-        margin-bottom: 4px; }
+        margin-bottom: 4px;
+        max-width: 250px; }
+      .sm-component-legend__title {
+        max-width: 250px; }
+        .sm-component-legend__title + i {
+          margin-left: 5px; }
 
 .sm-component-web-map {
   width: 100%;
@@ -9224,7 +9232,8 @@ body {
       width: 6px;
       height: 6px; }
   .sm-component-search__panel {
-    padding-left: 4px; }
+    padding-left: 4px;
+    padding-right: 4px; }
   .sm-component-search__panel-header {
     display: block;
     border-bottom: 1px solid;
@@ -9232,7 +9241,11 @@ body {
     font-family: "微软雅黑";
     padding: 6px 0px;
     margin: 7px;
-    font-weight: bolder; }
+    font-weight: bolder;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 96%; }
   .sm-component-search__panel-body > ul {
     list-style: none;
     margin-left: -32px;
@@ -9277,6 +9290,7 @@ body {
     font-weight: 700; }
   .sm-component-query__body {
     min-width: 200px;
+    max-height: 400px;
     transform-origin: top left;
     transition: all 0.5s;
     background: #ffff;
@@ -9310,14 +9324,21 @@ body {
       border-color: transparent; }
   .sm-component-query__job-info-header {
     cursor: pointer;
-    padding: 10px 5px; }
+    padding: 10px 5px 2px; }
     .sm-component-query__job-info-header:hover {
       color: #409eff; }
     .sm-component-query__job-info-header > .sm-components-icons-preview {
-      font-size: 14px; }
+      font-size: 14px;
+      position: relative;
+      top: -5px; }
     .sm-component-query__job-info-header > .sm-component-query__job-info-name {
       margin-left: 10px;
-      font-size: 14px; }
+      margin-right: 10px;
+      font-size: 14px;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
     .sm-component-query__job-info-header > .sm-components-icons-legend-unfold,
     .sm-component-query__job-info-header > .sm-components-icons-legend-fold {
       color: #c0c4cc;
@@ -9373,6 +9394,12 @@ body {
       font-size: 10px;
       margin-top: 5px;
       cursor: pointer; }
+  .sm-component-query__header-name {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%; }
   .sm-component-query__no-result, .sm-component-query__result-loading {
     height: 100%;
     display: flex;
