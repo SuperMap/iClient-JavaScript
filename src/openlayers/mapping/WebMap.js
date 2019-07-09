@@ -174,7 +174,8 @@ export class WebMap extends ol.Observable {
             if(proj4){
                 ol.proj.setProj4(proj4);
             } 
-            if(mapInfo.projection === "EPSG:-1000" || mapInfo.projection === "EPSG:0"){
+            // 目前iServer服务中可能出现的EPSG 0，-1，-1000
+            if(mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0){
                 //对于这两种地图，只能view，不能叠加其他图层
                 that.createSpecLayer(mapInfo);  
                 return;     
