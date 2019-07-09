@@ -1686,7 +1686,6 @@ export class WebMap extends ol.Observable {
         let style = StyleUtils.toOpenLayersStyle(this.getDataVectorTileStyle(featureType), featureType);    
         return new ol.layer.VectorTile({
             //设置避让参数
-            declutter: true,
             source: new ol.source.VectorTileSuperMapRest({
                 url: layerInfo.url,
                 projection: layerInfo.projection,
@@ -2788,7 +2787,7 @@ export class WebMap extends ol.Observable {
      *  @returns {Promise<T | never>} 数据源名称
      */
     getDatasources(url) {
-        return FetchRequest.get(`${url}/data/datasources.json`).then(function (response) {
+        return FetchRequest.get(`${this.getProxy()}${url}/data/datasources.json`).then(function (response) {
             return response.json()
         }).then(function (datasource) {
             let datasourceNames = datasource.datasourceNames;
