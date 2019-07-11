@@ -405,7 +405,7 @@ export class WebMap extends ol.Observable {
             maxResolution = Math.max(maxResolution1, maxResolution2);
         }
         
-        if(options.baseLayer.visibleScales){
+        if(options.baseLayer.visibleScales && options.baseLayer.visibleScales.length > 0){
             maxZoom = options.baseLayer.visibleScales.length;
         }
 
@@ -688,7 +688,7 @@ export class WebMap extends ol.Observable {
             prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] },
             tileProxy: this.tileProxy
         };
-        if(layerInfo.visibleScales){
+        if(layerInfo.visibleScales && layerInfo.visibleScales.length >0){
             let result = this.getReslutionsFromScales(layerInfo.visibleScales, 96, layerInfo.coordUnit);
             let tileGrid = new ol.tilegrid.TileGrid({
                 extent: layerInfo.extent,
