@@ -560,7 +560,7 @@ export class WebMap extends ol.Observable {
                 baseLayerInfo.url= 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
-                baseLayerInfo.maxZoom= 19;
+                baseLayerInfo.maxZoom= 18;
                 baseLayerInfo.level= 1;
                 baseLayerInfo.extent= baiduBounds;
                 break;
