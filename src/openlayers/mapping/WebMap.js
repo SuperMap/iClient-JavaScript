@@ -322,7 +322,11 @@ export class WebMap extends ol.Observable {
      */
     addBaseMap(mapInfo) {
         let layer = this.createBaseLayer(mapInfo, null, false);
-        this.map.addLayer(layer);
+        // 部分图层是异步的 早期异步没有设计好，所以将就将就吧
+        if(layer){
+            this.map.addLayer(layer);
+        }
+        
         if (mapInfo.baseLayer && mapInfo.baseLayer.labelLayerVisible) {
             let layerInfo = mapInfo.baseLayer;
             //存在天地图路网
@@ -373,6 +377,7 @@ export class WebMap extends ol.Observable {
     createView(options) {
         let oldcenter = options.center,
             zoom = options.level !== undefined ? options.level : 1,
+            maxZoom = options.maxZoom || 22,
             extent,
             projection = this.baseProjection;
         let center = [];
@@ -400,13 +405,11 @@ export class WebMap extends ol.Observable {
             maxResolution = Math.max(maxResolution1, maxResolution2);
         }
         
-        this.map.setView(new ol.View({
-            zoom,
-            center,
-            projection,
-            extent,
-            maxResolution
-        }));
+        if(options.baseLayer.visibleScales){
+            maxZoom = options.baseLayer.visibleScales.length;
+        }
+
+        this.map.setView(new ol.View({zoom, center, projection, extent, maxResolution, maxZoom}));
     }
     /**
      * @private
@@ -434,9 +437,11 @@ export class WebMap extends ol.Observable {
                 this.getInternetMapInfo(mapInfo.baseLayer);
             }else if(mapInfo.baseLayer.layerType === 'WMTS' && !isCallBack){
                 // 通过请求完善信息
-                //todo 之后需要优化
                this.getWmtsInfo(mapInfo.baseLayer, this.createBaseLayer, mapInfo);
                return;
+            }else if(mapInfo.baseLayer.layerType === 'TILE' && !isCallBack){
+                this.getTileInfo(mapInfo.baseLayer, this.createBaseLayer, mapInfo);
+                return;
             }else{
                 mapInfo.baseLayer.projection = mapInfo.projection;
                 mapInfo.baseLayer.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
@@ -473,7 +478,7 @@ export class WebMap extends ol.Observable {
                 break;
             case 'TILE':
             case 'SUPERMAP_REST':
-                source = this.createDynamicTiledSource(layerInfo, isBaseLayer);
+                source = that.createDynamicTiledSource(layerInfo, isBaseLayer);
                 break;
             case 'CLOUD':
             case 'CLOUD_BLACK':
@@ -546,7 +551,7 @@ export class WebMap extends ol.Observable {
                 baseLayerInfo.iServerUrl= 'https://map.baidu.com/';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
-                baseLayerInfo.maxZoom= 18;
+                baseLayerInfo.maxZoom= 19;
                 baseLayerInfo.level= 1;
                 baseLayerInfo.extent= baiduBounds;
                 // thumbnail: this.getImagePath('bmap.png') 暂时不用到缩略图
@@ -555,7 +560,7 @@ export class WebMap extends ol.Observable {
                 baseLayerInfo.url= 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
-                baseLayerInfo.maxZoom= 18;
+                baseLayerInfo.maxZoom= 19;
                 baseLayerInfo.level= 1;
                 baseLayerInfo.extent= baiduBounds;
                 break;
@@ -580,9 +585,12 @@ export class WebMap extends ol.Observable {
                 baseLayerInfo.iserverUrl= 'http://map.tianditu.gov.cn/';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 0;
-                baseLayerInfo.maxZoom= 18;
+                baseLayerInfo.maxZoom= 19;
                 baseLayerInfo.level= 1;
                 baseLayerInfo.extent= baiduBounds;
+                if(baseLayerInfo.layerType === "TIANDITU_TER_3857"){
+                    baseLayerInfo.maxZoom = 14;
+                }
                 break;
             case ('TIANDITU_VEC_4326'):
             case ('TIANDITU_IMG_4326'):
@@ -590,9 +598,12 @@ export class WebMap extends ol.Observable {
                 baseLayerInfo.iserverUrl= 'http://map.tianditu.gov.cn/';
                 baseLayerInfo.epsgCode= 'EPSG:4326';
                 baseLayerInfo.minZoom= 0;
-                baseLayerInfo.maxZoom= 18;
+                baseLayerInfo.maxZoom= 19;
                 baseLayerInfo.level= 1;
                 baseLayerInfo.extent= bounds_4326;
+                if(baseLayerInfo.layerType === "TIANDITU_TER_4326"){
+                    baseLayerInfo.maxZoom = 14;
+                }
                 break;
             case ('OSM'):
                 baseLayerInfo.url= 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -607,28 +618,10 @@ export class WebMap extends ol.Observable {
                 baseLayerInfo.url= 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0';
                 baseLayerInfo.epsgCode= 'EPSG:3857';
                 baseLayerInfo.minZoom= 1;
-                baseLayerInfo.maxZoom= 20;
+                baseLayerInfo.maxZoom= 22;
                 baseLayerInfo.level= 1;
                 baseLayerInfo.extent= osmBounds;
                 baseLayerInfo.iserverUrl= 'http://www.google.cn/maps';
-                break;
-            case ('GOOGLE_CN'):
-                baseLayerInfo.url= 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}';
-                baseLayerInfo.epsgCode= 'EPSG:3857';
-                baseLayerInfo.minZoom= 1;
-                baseLayerInfo.maxZoom= 20;
-                baseLayerInfo.level= 1;
-                baseLayerInfo.extent= osmBounds;
-                baseLayerInfo.iserverUrl= 'http://www.google.cn/maps';
-                break;
-            case ('BING'):
-                baseLayerInfo.url= 'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
-                baseLayerInfo.epsgCode= 'EPSG:3857';
-                baseLayerInfo.minZoom= 1;
-                baseLayerInfo.maxZoom= 18;
-                baseLayerInfo.level= 1;
-                baseLayerInfo.extent= osmBounds;
-                baseLayerInfo.iserverUrl= 'https://cn.bing.com/maps';
                 break;
             case ('JAPAN_STD'):
                 baseLayerInfo.url= 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png';
@@ -686,19 +679,29 @@ export class WebMap extends ol.Observable {
             SecurityManager[`register${keyfix}`](keyParams, credential);
         }
         // extent: isBaseLayer ? layerInfo.extent : ol.proj.transformExtent(layerInfo.extent, layerInfo.projection, this.baseProjection),
-        let source = new ol.source.TileSuperMapRest({
+        let options = {
             transparent: true,
             url: layerInfo.url,
             wrapX: false,
             serverType: serverType,
-            extent: this.baseLayerExtent,
+            // extent: this.baseLayerExtent,
             prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] },
- 
             tileProxy: this.tileProxy
-        });
+        };
+        if(layerInfo.visibleScales){
+            let result = this.getReslutionsFromScales(layerInfo.visibleScales, 96, layerInfo.coordUnit);
+            let tileGrid = new ol.tilegrid.TileGrid({
+                extent: layerInfo.extent,
+                resolutions: result.res
+            });
+            layerInfo.visibleResolutions = result.res;
+            options.tileGrid = tileGrid;
+        }else{
+            options.extent = this.baseLayerExtent;
+        }
+        let source = new ol.source.TileSuperMapRest(options);
         SecurityManager[`register${keyfix}`](layerInfo.url);
         return source;
-
     }
     /**
      * @private
@@ -835,6 +838,42 @@ export class WebMap extends ol.Observable {
                 layerInfo.projection = that.baseProjection;
                 callback(layerInfo);
             }
+        });
+    }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getTileInfo
+     * @description 获取rest map的图层参数。
+     * @param {Object} layerInfo - 图层信息。
+     * @param {function} callback - 获得wmts图层参数执行的回调函数
+     */
+    getTileInfo(layerInfo, callback, mapInfo){
+        let that = this;
+        let url = layerInfo.url;
+        let options = {
+            withCredentials: this.withCredentials,
+            withoutFormatSuffix: true
+        };
+        FetchRequest.get(url + ".json", null, options).then(function (response) {
+            return response.json();
+        }).then(function (result) {
+            layerInfo.projection = mapInfo.projection;
+            layerInfo.extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
+             // 比例尺 单位
+             if(result.visibleScales){
+                layerInfo.visibleScales = result.visibleScales;
+                layerInfo.coordUnit = result.coordUnit;
+            }
+            // 请求结果完成 继续添加图层
+            if(mapInfo){
+                callback(mapInfo, null, true, that);
+            }else{
+                callback(layerInfo);
+            }
+            
+        }).catch(function (error) {
+            that.errorCallback && that.errorCallback(error, 'getWmtsFaild', that.map)
         });
     }
     
