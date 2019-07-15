@@ -14,7 +14,7 @@ export var MapExtend = function () {
     mapboxgl.Map.prototype.overlayLayersManager = {};
     mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
     mapboxgl.Map.prototype.addLayer = function (layer, before) {
-        if (layer.source) {
+        if (layer.source || layer.type === 'custom') {
             this.addLayerBak(layer, before);
             return this;
         }

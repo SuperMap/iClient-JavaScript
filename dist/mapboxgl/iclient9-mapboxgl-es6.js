@@ -65063,7 +65063,7 @@ var MapExtend_MapExtend = function () {
     external_mapboxgl_default.a.Map.prototype.overlayLayersManager = {};
     external_mapboxgl_default.a.Map.prototype.addLayerBak = external_mapboxgl_default.a.Map.prototype.addLayer;
     external_mapboxgl_default.a.Map.prototype.addLayer = function (layer, before) {
-        if (layer.source) {
+        if (layer.source || layer.type === 'custom') {
             this.addLayerBak(layer, before);
             return this;
         }

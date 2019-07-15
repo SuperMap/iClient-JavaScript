@@ -506,6 +506,7 @@ window.examplesResources = {
         "title_componentsRankSymbolTheme_Vue": '等级符号专题图图层组件',
         "title_componentsLabelTheme_Vue": '标签专题图图层组件',
         "title_componentsDataFlow_Vue": '数据流图层组件',
+        'title_componentsFireLayer_Vue': '动态火焰图层',
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
