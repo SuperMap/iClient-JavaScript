@@ -1603,7 +1603,8 @@ export class WebMap extends ol.Observable {
         if (layer) {
             layerInfo.name && layer.setProperties({
                 name: layerInfo.name,
-                layerID: layerID
+                layerID: layerID,
+                layerType: layerInfo.layerType 
             });
             
             //刷新下图层，否则feature样式出不来
