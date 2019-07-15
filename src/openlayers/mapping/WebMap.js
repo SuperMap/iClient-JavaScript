@@ -1657,6 +1657,8 @@ export class WebMap extends ol.Observable {
                 layer.appendTo(this.map);
                 // 在这里恢复图层可见性状态
                 layer.setVisible(layerInfo.visible);
+                // 设置鼠标样式为默认
+                layer.setCursor();
             } else {
                 layerInfo.opacity != undefined && layer.setOpacity(layerInfo.opacity);
                 layer.setVisible(layerInfo.visible);
@@ -2958,7 +2960,13 @@ export class WebMap extends ol.Observable {
      * @returns {ol.layer} 图层
      */
     createMigrationLayer(layerInfo, features) {
-        // 给ol3Echarts上添加设置图层可见性和设置图层层级的方法
+        // 获取图层外包DOM
+        if (!window.ol3Echarts.prototype.getContainer) {
+            window.ol3Echarts.prototype.getContainer = function() {
+                return this.$container;
+            };
+        }
+        // 设置图层可见性
         if (!window.ol3Echarts.prototype.setVisible) {
             window.ol3Echarts.prototype.setVisible = function(visible) {
                 if (visible) {
@@ -2975,12 +2983,28 @@ export class WebMap extends ol.Observable {
                 }
             };
         }
+        // 设置图层层级
         if (!window.ol3Echarts.prototype.setZIndex) {
             window.ol3Echarts.prototype.setZIndex = function(zIndex) {
-                if (this.$container) {
-                    this.$container.style.zIndex = zIndex;
+                let container = this.getContainer();
+                if (container) {
+                    container.style.zIndex = zIndex;
                 }
             };
+        }
+        /**
+         * 设置鼠标样式
+         * .cursor-default > div {
+         *     cursor: default !important;
+         * }
+         */
+        if (!window.ol3Echarts.prototype.setCursor) {
+            window.ol3Echarts.prototype.setCursor = function(cursor = 'default') {
+                let container = this.getContainer();
+                if (container && cursor === 'default') {
+                    container.classList.add('cursor-default');
+                }
+            }
         }
         let properties = Util.getFeatureProperties(features);
         let lineData = this.createLinesData(layerInfo, properties);
