@@ -1328,7 +1328,14 @@ var exampleConfig = {
                         version: "10.0.0",
                         thumbnail: "components_dataflow_vue.gif",
                         fileName: "components_dataflow_vue"
-                    }
+                    },
+                    {
+                        name: "动态火焰图层",
+                        name_en: "Dynamic Fire Layer",
+                        version: "10.0.0",
+                        thumbnail: "components_fire_layer_vue.gif",
+                        fileName: "component_fire_layer_vue"
+                    },
                 ]
             },
             chart_vue: {

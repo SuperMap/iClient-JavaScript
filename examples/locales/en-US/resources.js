@@ -558,6 +558,7 @@ window.examplesResources = {
         "title_componentsRankSymbolTheme_Vue": 'RankSymbolTheme Layer component(Vue)',
         "title_componentsLabelTheme_Vue": 'LabelTheme Layer component(Vue)',
         "title_componentsDataFlow_Vue": 'Data FLow Layer component(Vue)',
+        'title_componentsFireLayer_Vue': 'Dynamic Fire Layer component(Vue)',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",

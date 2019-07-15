@@ -623,11 +623,26 @@ export class StyleUtils {
         }
         if (type === "POINT") {
             if (src) {
-                newImage = new ol.style.Icon({
-                    src: src,
-                    scale: scale,
-                    anchor: anchor
-                });
+                if (/.+(\.svg$)/.test(src)) {
+                    if(!this.svgDiv) {
+                        this.svgDiv = document.createElement('div');
+                        document.body.appendChild(this.svgDiv);
+                    }
+                    this.getCanvasFromSVG(src, this.svgDiv, (canvas) => {
+                        newImage = new ol.style.Icon({
+                            img: canvas,
+                            scale: radius / canvas.width,
+                            imgSize: [canvas.width, canvas.height],
+                            anchor : [0.5, 0.5]
+                        })
+                    })
+                } else {
+                    newImage = new ol.style.Icon({
+                        src: src,
+                        scale: scale,
+                        anchor: anchor
+                    });
+                }
             } else {
                 newImage = new ol.style.Circle({
                     radius: radius,

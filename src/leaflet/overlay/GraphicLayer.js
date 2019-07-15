@@ -52,6 +52,8 @@ export var GraphicLayer = L.Path.extend({
     initialize: function (graphics, options) {
         this.graphics = [].concat(graphics);
         let opt = options || {};
+        // 由于是canvas实现所以不能更改pane
+        opt.pane = 'overlayPane';
         L.Util.setOptions(this, opt);
         //因为跟基类的renderer冲突，所以采用render这个名字
         this.options.render = this.options.render || Renderer[0];
