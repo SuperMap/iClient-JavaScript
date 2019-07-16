@@ -37,6 +37,7 @@
             new SuperMap.Components.commontypes.RestDataParameter({
               url: host + "/iserver/services/data-world/rest/data",
               attributeFilter: "SmID>0",
+              maxFeatures: 30,
               dataName: ["World:Countries"],
             })
           ],
@@ -44,7 +45,8 @@
             new SuperMap.Components.commontypes.RestMapParameter({
               url: host + "/iserver/services/map-world/rest/maps/World",
               attributeFilter: "SmID>0",
-              layerName: "Capitals@World.1",
+              maxFeatures: 30,
+              layerName: "Rivers@World1",
             })
           ],
         }

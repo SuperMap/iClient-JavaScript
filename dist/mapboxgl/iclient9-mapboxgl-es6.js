@@ -65351,11 +65351,11 @@ external_mapboxgl_default.a.supermap.LogoControl = Logo_Logo;
  * @classdesc 工具类。
  */
 class core_Util_Util {
-
     /**
      * @function mapboxgl.supermap.Util.toSuperMapGeometry
      * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
      * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
+     * @returns {SuperMap.Geometry}
      */
     static toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {
@@ -65368,19 +65368,9 @@ class core_Util_Util {
     static toSuperMapBounds(bounds) {
         if (this.isArray(bounds)) {
             //左下右上
-            return new Bounds_Bounds(
-                bounds[0],
-                bounds[1],
-                bounds[2],
-                bounds[3]
-            );
+            return new Bounds_Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
         }
-        return new Bounds_Bounds(
-            bounds.getWest(),
-            bounds.getSouth(),
-            bounds.getEast(),
-            bounds.getNorth()
-        );
+        return new Bounds_Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
     }
 
     static toSuperMapPoint(lnglat) {
@@ -65392,6 +65382,26 @@ class core_Util_Util {
         }
         return new Point_Point(lnglat.geometry.coordinates[0], lnglat.geometry.coordinates[1]);
     }
+    /**
+     * @function mapboxgl.supermap.Util.toSuperMapPolygon
+     * @description 将 Mapbox GL LngLatbounds 对象转为 SuperMap 几何图形。
+     * @param {Mapboxgl.LngLatbounds} lnglatBounds - Mapbox GL LngLatbounds对象。
+     * @returns {SuperMap.Geometry.Polygon}
+     */
+    static toSuperMapPolygon(lnglatBounds) {
+        const west = lnglatBounds.getWest();
+        const east = lnglatBounds.getEast();
+        const sourth = lnglatBounds.getSouth();
+        const north = lnglatBounds.getNorth();
+        return new Polygon_Polygon([
+            new LinearRing_LinearRing([
+                new Point_Point(west, sourth),
+                new Point_Point(east, sourth),
+                new Point_Point(east, north),
+                new Point_Point(west, north)
+            ])
+        ]);
+    }
 
     /**
      * @function mapboxgl.supermap.Util.isArray
@@ -65400,9 +65410,8 @@ class core_Util_Util {
      * @returns {boolean} 是否是数组。
      */
     static isArray(obj) {
-        return Object.prototype.toString.call(obj) == '[object Array]'
+        return Object.prototype.toString.call(obj) == "[object Array]";
     }
-
 
     /**
      * @function mapboxgl.supermap.Util.toGeoJSON
@@ -65467,14 +65476,13 @@ class core_Util_Util {
         return dest;
     }
 
-    
     /**
      * 检测数据是否为number
      * @param value 值，未知数据类型
      * @returns {boolean}
      */
     static isNumber(value) {
-        if (value === '') {
+        if (value === "") {
             return false;
         }
         let mdata = Number(value);
@@ -65484,7 +65492,7 @@ class core_Util_Util {
         return !isNaN(mdata);
     }
 
-     /**
+    /**
      * 随机生成id
      * @param attr
      * @returns {string}
@@ -65505,7 +65513,8 @@ class core_Util_Util {
      * @returns {string} 生成的 RGBA 格式。
      */
     static hexToRgba(hex, opacity) {
-        var color = [], rgba = [];
+        var color = [],
+            rgba = [];
         hex = hex.replace(/#/, "");
         if (hex.length == 3) {
             var tmp = [];
@@ -65524,6 +65533,7 @@ class core_Util_Util {
 }
 
 external_mapboxgl_default.a.supermap.Util = core_Util_Util;
+
 // CONCATENATED MODULE: ./src/mapboxgl/core/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -73201,7 +73211,7 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
             return {};
         }
         var me = this;
-        params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+        params.returnContent = params.returnContent == null ? true : params.returnContent;
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
         params.toIndex = params.toIndex ? params.toIndex : -1;
         if (params.bounds) {
@@ -73213,13 +73223,17 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
 
         //mapboxgl geojson要素对象转 SuperMap Geometry 对象
         if (params.geometry) {
-            params.geometry = core_Util_Util.toSuperMapGeometry(params.geometry);
+            if (params.geometry instanceof external_mapboxgl_default.a.LngLatBounds) {
+                params.geometry = core_Util_Util.toSuperMapPolygon(params.geometry);
+            } else {
+                params.geometry = core_Util_Util.toSuperMapGeometry(params.geometry);
+            }
         }
         //editFeature服务参数转换,传入单独得对象或对象数组
         if (params.features) {
             var features = [];
             if (core_Util_Util.isArray(params.features)) {
-                params.features.map(function (feature) {
+                params.features.map(function(feature) {
                     features.push(me._createServerFeature(feature));
                     return features;
                 });
@@ -73233,7 +73247,9 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
 
     //geoFeature严格按照 mapboxgl geojson的结构
     _createServerFeature(geoFeature) {
-        var feature = {}, fieldNames = [], fieldValues = [];
+        var feature = {},
+            fieldNames = [],
+            fieldValues = [];
         var properties = geoFeature.properties;
         for (var key in properties) {
             fieldNames.push(key);
@@ -73249,11 +73265,12 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return resultFormat ? resultFormat : REST_DataFormat.GEOJSON;
     }
 }
 
 external_mapboxgl_default.a.supermap.FeatureService = FeatureService_FeatureService;
+
 // CONCATENATED MODULE: ./src/mapboxgl/services/FieldService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -75138,8 +75155,8 @@ external_mapboxgl_default.a.supermap.ProcessingService = ProcessingService_Proce
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL 查询，几何查询，距离查询。
  * @extends {mapboxgl.supermap.ServiceBase}
- * @param {string} url - 地图查询服务访问地址。 
- * @param {Object} options - 服务交互时所需的可选参数。 
+ * @param {string} url - 地图查询服务访问地址。
+ * @param {Object} options - 服务交互时所需的可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -75151,7 +75168,6 @@ external_mapboxgl_default.a.supermap.ProcessingService = ProcessingService_Proce
  * })
  */
 class services_QueryService_QueryService extends ServiceBase_ServiceBase {
-
     constructor(url, options) {
         super(url, options);
     }
@@ -75257,24 +75273,17 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
         queryByGeometryService.processAsync(me._processParams(params));
     }
 
-
     _processParams(params) {
-
         if (!params) {
             return {};
         }
-        params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+        params.returnContent = params.returnContent == null ? true : params.returnContent;
         if (params.queryParams && !core_Util_Util.isArray(params.queryParams)) {
             params.queryParams = [params.queryParams];
         }
         if (params.bounds) {
             if (params.bounds instanceof Array) {
-                params.bounds = new Bounds_Bounds(
-                    params.bounds[0],
-                    params.bounds[1],
-                    params.bounds[2],
-                    params.bounds[3]
-                );
+                params.bounds = new Bounds_Bounds(params.bounds[0], params.bounds[1], params.bounds[2], params.bounds[3]);
             }
             if (params.bounds instanceof external_mapboxgl_default.a.LngLatBounds) {
                 params.bounds = new Bounds_Bounds(
@@ -75284,11 +75293,9 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
                     params.bounds.getNorthEast().lat
                 );
             }
-
         }
 
         if (params.geometry) {
-
             if (params.geometry instanceof external_mapboxgl_default.a.LngLat) {
                 params.geometry = new Point_Point(params.geometry.lng, params.geometry.lat);
             }
@@ -75297,8 +75304,11 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
                 params.geometry = new Point_Point(params.geometry.x, params.geometry.y);
             }
 
-            if (!(params.geometry instanceof Geometry_Geometry)) {
+            if (params.geometry instanceof external_mapboxgl_default.a.LngLatBounds) {
+                params.geometry = core_Util_Util.toSuperMapPolygon(params.geometry);
+            }
 
+            if (!(params.geometry instanceof Geometry_Geometry)) {
                 params.geometry = core_Util_Util.toSuperMapGeometry(params.geometry);
             }
         }
@@ -75306,11 +75316,12 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return resultFormat ? resultFormat : REST_DataFormat.GEOJSON;
     }
 }
 
 external_mapboxgl_default.a.supermap.QueryService = services_QueryService_QueryService;
+
 // CONCATENATED MODULE: ./src/mapboxgl/services/SpatialAnalystService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0

@@ -3,8 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {Util} from '../core/Util';
-import {ServiceBase} from './ServiceBase';
+import { Util } from '../core/Util';
+import { ServiceBase } from './ServiceBase';
 import {
     DataFormat,
     GetFeaturesByIDsService,
@@ -168,7 +168,7 @@ export class FeatureService extends ServiceBase {
             dataSourceName = params.dataSourceName,
             dataSetName = params.dataSetName;
 
-        url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
+        url += '/datasources/' + dataSourceName + '/datasets/' + dataSetName;
         var editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
@@ -193,7 +193,7 @@ export class FeatureService extends ServiceBase {
             return {};
         }
         var me = this;
-        params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+        params.returnContent = params.returnContent == null ? true : params.returnContent;
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
         params.toIndex = params.toIndex ? params.toIndex : -1;
         if (params.bounds) {
@@ -205,13 +205,17 @@ export class FeatureService extends ServiceBase {
 
         //mapboxgl geojson要素对象转 SuperMap Geometry 对象
         if (params.geometry) {
-            params.geometry = Util.toSuperMapGeometry(params.geometry);
+            if (params.geometry instanceof mapboxgl.LngLatBounds) {
+                params.geometry = Util.toSuperMapPolygon(params.geometry);
+            } else {
+                params.geometry = Util.toSuperMapGeometry(params.geometry);
+            }
         }
         //editFeature服务参数转换,传入单独得对象或对象数组
         if (params.features) {
             var features = [];
             if (Util.isArray(params.features)) {
-                params.features.map(function (feature) {
+                params.features.map(function(feature) {
                     features.push(me._createServerFeature(feature));
                     return features;
                 });
@@ -225,7 +229,9 @@ export class FeatureService extends ServiceBase {
 
     //geoFeature严格按照 mapboxgl geojson的结构
     _createServerFeature(geoFeature) {
-        var feature = {}, fieldNames = [], fieldValues = [];
+        var feature = {},
+            fieldNames = [],
+            fieldValues = [];
         var properties = geoFeature.properties;
         for (var key in properties) {
             fieldNames.push(key);
@@ -241,7 +247,7 @@ export class FeatureService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+        return resultFormat ? resultFormat : DataFormat.GEOJSON;
     }
 }
 
