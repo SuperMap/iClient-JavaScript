@@ -27001,6 +27001,7 @@ __webpack_require__.d(components_namespaceObject, "RasterTileLayer", function() 
 __webpack_require__.d(components_namespaceObject, "UniqueThemeLayer", function() { return UniqueThemeLayer; });
 __webpack_require__.d(components_namespaceObject, "VectorTileLayer", function() { return VectorTileLayer; });
 __webpack_require__.d(components_namespaceObject, "FireLayer", function() { return fire_FireLayer; });
+__webpack_require__.d(components_namespaceObject, "DynamicMarkerLayer", function() { return dynamicMarker_DynamicMarkerLayer; });
 __webpack_require__.d(components_namespaceObject, "Legend", function() { return Legend; });
 __webpack_require__.d(components_namespaceObject, "LayerList", function() { return LayerList; });
 __webpack_require__.d(components_namespaceObject, "Measure", function() { return Measure; });
@@ -34185,7 +34186,19 @@ function getPBMWidth(elem, props, which) {
   return value;
 }
 
-var domUtils = {};
+var domUtils = {
+  getParent: function getParent(element) {
+    var parent = element;
+    do {
+      if (parent.nodeType === 11 && parent.host) {
+        parent = parent.host;
+      } else {
+        parent = parent.parentNode;
+      }
+    } while (parent && parent.nodeType !== 1 && parent.nodeType !== 9);
+    return parent;
+  }
+};
 
 each(['Width', 'Height'], function (name) {
   domUtils['doc' + name] = function (refWin) {
@@ -34392,6 +34405,8 @@ mix(utils_utils, domUtils);
 /**
  * 得到会导致元素显示不全的祖先元素
  */
+var getParent = es_utils.getParent;
+
 
 function getOffsetParent(element) {
   if (es_utils.isWindow(element) || element.nodeType === 9) {
@@ -34419,10 +34434,10 @@ function getOffsetParent(element) {
   var skipStatic = positionStyle === 'fixed' || positionStyle === 'absolute';
 
   if (!skipStatic) {
-    return element.nodeName.toLowerCase() === 'html' ? null : element.parentNode;
+    return element.nodeName.toLowerCase() === 'html' ? null : getParent(element);
   }
 
-  for (parent = element.parentNode; parent && parent !== body; parent = parent.parentNode) {
+  for (parent = getParent(element); parent && parent !== body; parent = getParent(parent)) {
     positionStyle = es_utils.css(parent, 'position');
     if (positionStyle !== 'static') {
       return parent;
@@ -34435,6 +34450,9 @@ function getOffsetParent(element) {
 // CONCATENATED MODULE: ./node_modules/dom-align/es/isAncestorFixed.js
 
 
+var isAncestorFixed_getParent = es_utils.getParent;
+
+
 function isAncestorFixed(element) {
   if (es_utils.isWindow(element) || element.nodeType === 9) {
     return false;
@@ -34443,7 +34461,7 @@ function isAncestorFixed(element) {
   var doc = es_utils.getDocument(element);
   var body = doc.body;
   var parent = null;
-  for (parent = element.parentNode; parent && parent !== body; parent = parent.parentNode) {
+  for (parent = isAncestorFixed_getParent(element); parent && parent !== body; parent = isAncestorFixed_getParent(parent)) {
     var positionStyle = es_utils.css(parent, 'position');
     if (positionStyle === 'fixed') {
       return true;
@@ -58368,7 +58386,7 @@ function (_mapboxgl$Evented) {
       this.features.features.forEach(function (feature, index) {
         var geometry = feature.geometry;
 
-        if (geometry.type === 'Point' && index <= 5) {
+        if (geometry.type === 'Point') {
           _this2._initializeFireLayer(geometry.coordinates, index);
         }
       });
@@ -58631,6 +58649,469 @@ var FireLayer_component = normalizeComponent(
 )
 
 /* harmony default export */ var fire_FireLayer = (FireLayer_component.exports);
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/dynamicMarker/DynamicMarkerLayerViewModel.ts
+
+
+
+
+
+
+
+var DynamicMarkerLayerViewModel_DynamicMarkerLayerViewModel =
+/*#__PURE__*/
+function (_mapboxgl$Evented) {
+  inherits_default()(DynamicMarkerLayerViewModel, _mapboxgl$Evented);
+
+  function DynamicMarkerLayerViewModel(map, features, markersElement) {
+    var _this;
+
+    var type = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'breathingAperture';
+    var circleStyle = arguments.length > 4 ? arguments[4] : undefined;
+    var layerId = arguments.length > 5 ? arguments[5] : undefined;
+
+    helpers_classCallCheck_default()(this, DynamicMarkerLayerViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(DynamicMarkerLayerViewModel).call(this));
+
+    if (!map) {
+      throw new Error('map is requierd');
+    }
+
+    _this.map = map;
+    _this.layerId = layerId;
+    _this.features = features;
+    _this.type = type;
+    _this.circleStyle = circleStyle;
+    _this.markers = [];
+    _this.markersElement = markersElement;
+
+    _this._initalizeMarkerLayer();
+
+    return _this;
+  }
+
+  helpers_createClass_default()(DynamicMarkerLayerViewModel, [{
+    key: "setType",
+    value: function setType(type, markersElement) {
+      this.type = type;
+      this.markersElement = markersElement;
+
+      this._initalizeMarkerLayer();
+    }
+  }, {
+    key: "setCircleStyle",
+    value: function setCircleStyle(circleStyle) {
+      this.circleStyle = circleStyle;
+    }
+  }, {
+    key: "_initalizeMarkerLayer",
+    value: function _initalizeMarkerLayer() {
+      this.features.features = this.features.features.slice(0, 5);
+
+      this._clearMarkerLayer();
+
+      if (this.type === 'breathingAperture') {
+        this.map.addLayer({
+          id: this.layerId,
+          type: 'circle',
+          source: {
+            type: 'geojson',
+            data: this.features
+          },
+          paint: {
+            'circle-color': '#409eff',
+            'circle-opacity': 0.6,
+            'circle-radius': 8,
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#409eff',
+            'circle-stroke-opacity': 1
+          }
+        });
+      }
+
+      this._createMarker();
+    }
+  }, {
+    key: "_createMarker",
+    value: function _createMarker() {
+      var _this2 = this;
+
+      this.features.features.forEach(function (point, index) {
+        var marker = new mapbox_gl_enhance_js_default.a.Marker(_this2.markersElement[index] || _this2.markersElement[0]).setLngLat(point.geometry.coordinates).addTo(_this2.map);
+
+        _this2.markers.push(marker);
+      }, this);
+    }
+  }, {
+    key: "_clearMarkerLayer",
+    value: function _clearMarkerLayer() {
+      this.markers.length > 0 && this.markers.forEach(function (marker) {
+        marker && marker.remove();
+      });
+      this.markers = [];
+      this.layerId && this.map.getLayer(this.layerId) && this.map.removeLayer(this.layerId);
+    }
+  }]);
+
+  return DynamicMarkerLayerViewModel;
+}(mapbox_gl_enhance_js_default.a.Evented);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--1-1!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/layer/dynamicMarker/DynamicMarkerLayer.vue?vue&type=script&lang=ts&
+
+
+
+
+
+
+
+var DynamicMarkerLayervue_type_script_lang_ts_decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+  var c = arguments.length,
+      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+      d;
+  if ((typeof Reflect === "undefined" ? "undefined" : helpers_typeof_default()(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+    if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  }
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+var DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer =
+/*#__PURE__*/
+function (_Mixins) {
+  inherits_default()(DynamicMarkerLayer, _Mixins);
+
+  function DynamicMarkerLayer() {
+    helpers_classCallCheck_default()(this, DynamicMarkerLayer);
+
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(DynamicMarkerLayer).apply(this, arguments));
+  }
+
+  helpers_createClass_default()(DynamicMarkerLayer, [{
+    key: "typeChanged",
+    value: function typeChanged() {
+      if (this.viewModel) {
+        this._getMarkerElement();
+
+        this.viewModel.setType(this.type, this._markersElement);
+      }
+    }
+  }, {
+    key: "widthChanged",
+    value: function widthChanged() {
+      if (this.viewModel) {
+        if (this.type === 'breathingAperture') {
+          this._setBreathingApertureStyle('width');
+        } else if (this.type === 'rotatingAperture') {
+          this._setRotatingApertureStyle('width');
+        }
+      }
+    }
+  }, {
+    key: "lightColorChanged",
+    value: function lightColorChanged() {
+      if (this.viewModel) {
+        if (this.type === 'breathingAperture') {} else if (this.type === 'rotatingAperture') {
+          var dotsMarker = document.getElementsByClassName('sm-component-dynamic-marker--rotating-aperture');
+
+          for (var i = 0; i < dotsMarker.length; i++) {
+            dotsMarker[i].style.setProperty('--light-color', this.lightColor);
+          }
+        }
+      }
+    }
+  }, {
+    key: "colorChanged",
+    value: function colorChanged() {
+      if (this.viewModel) {
+        if (this.type === 'breathingAperture') {
+          this._setBreathingApertureStyle('color');
+        } else if (this.type === 'rotatingAperture') {
+          this._setRotatingApertureStyle('color');
+        }
+      }
+    }
+  }, {
+    key: "textColorChanged",
+    value: function textColorChanged() {
+      if (this.viewModel) {
+        if (this.type === 'breathingAperture') {
+          var pulse = document.getElementsByClassName('sm-component-dynamic-marker__name-container');
+
+          for (var i = 0; i < pulse.length; i++) {
+            pulse[i].style.color = this.textColor;
+          }
+        }
+      }
+    }
+  }, {
+    key: "mounted",
+    value: function mounted() {
+      this._markersElement = [];
+    }
+  }, {
+    key: "_getMarkerElement",
+    value: function _getMarkerElement() {
+      if (this.type === 'breathingAperture') {
+        this._createBreathingApertureMarker();
+      } else if (this.type === 'rotatingAperture') {
+        this._createRotatingApertureMarker();
+      }
+    }
+  }, {
+    key: "_createBreathingApertureMarker",
+    value: function _createBreathingApertureMarker() {
+      var _this = this;
+
+      this.features.features.forEach(function (point) {
+        var markerContainer = document.createElement('div');
+        markerContainer.className = 'sm-component-dynamic-marker --breathing-aperture';
+        var delay3 = document.createElement('span');
+        delay3.className = 'sm-component-dynamic-marker__delay-03 sm-component-dynamic-marker__pulse';
+        delay3.style.borderColor = _this.color;
+        delay3.style.boxShadow = "0 0 12px ".concat(_this.color, ", 0 0 20px ").concat(_this.color, " inset");
+
+        _this._setBreathingApertureWidth(delay3.style);
+
+        markerContainer.appendChild(delay3);
+        var delay2 = document.createElement('span');
+        delay2.className = 'sm-component-dynamic-marker__delay-02 sm-component-dynamic-marker__pulse';
+        delay2.style.borderColor = _this.color;
+        delay2.style.boxShadow = "0 0 12px ".concat(_this.color, ", 0 0 20px ").concat(_this.color, " inset");
+
+        _this._setBreathingApertureWidth(delay2.style);
+
+        markerContainer.appendChild(delay2);
+        var delay1 = document.createElement('span');
+        delay1.className = 'sm-component-dynamic-marker__delay-01 sm-component-dynamic-marker__pulse';
+        delay1.style.borderColor = _this.color;
+        delay1.style.boxShadow = "0 0 12px ".concat(_this.color, ", 0 0 20px ").concat(_this.color, " inset");
+
+        _this._setBreathingApertureWidth(delay1.style);
+
+        markerContainer.appendChild(delay1);
+        var name = point.properties && (point.properties['name'] || point.properties['Name'] || point.properties['NAME']);
+
+        if (name) {
+          var nameContainer = document.createElement('div');
+          nameContainer.className = 'sm-component-dynamic-marker__name-container';
+          nameContainer.style.color = _this.textColor;
+          var nameSpan = document.createElement('span');
+          nameSpan.innerHTML = name;
+          nameContainer.appendChild(nameSpan);
+          markerContainer.appendChild(nameContainer);
+        }
+
+        _this._markersElement.push(markerContainer);
+      });
+    }
+  }, {
+    key: "_createRotatingApertureMarker",
+    value: function _createRotatingApertureMarker() {
+      var _this2 = this;
+
+      this.features.features.forEach(function (point) {
+        var step = _this2._getRotatingApertureWidthStep();
+
+        var width = step ? _this2.width : 50;
+        var markerContainer = document.createElement('div');
+        markerContainer.className = 'sm-component-dynamic-marker--rotating-aperture';
+        var dots1 = document.createElement('div');
+        dots1.className = 'sm-component-dynamic-marker__dots-01 sm-component-dynamic-marker__dots';
+        dots1.setAttribute('style', _this2._getDotsStyleObj(width - (step && step * 2 || 16)));
+        markerContainer.appendChild(dots1);
+        var dots2 = document.createElement('div');
+        dots2.className = 'sm-component-dynamic-marker__dots-02 sm-component-dynamic-marker__dots';
+        dots2.setAttribute('style', _this2._getDotsStyleObj(width - (step || 32)));
+        markerContainer.appendChild(dots2);
+        var dots3 = document.createElement('div');
+        dots3.className = 'sm-component-dynamic-marker__dots-03 sm-component-dynamic-marker__dots';
+        dots3.setAttribute('style', _this2._getDotsStyleObj(width));
+        markerContainer.appendChild(dots3);
+        markerContainer.style.setProperty('--container-width', '100px');
+        markerContainer.style.setProperty('--color', _this2.color);
+        markerContainer.style.setProperty('--line-color', _this2._getRgbaColor(_this2.color));
+        markerContainer.style.setProperty('--light-color', _this2.lightColor);
+
+        _this2._markersElement.push(markerContainer);
+      }, this);
+    }
+  }, {
+    key: "_getDotsStyleObj",
+    value: function _getDotsStyleObj(width) {
+      return "--dots-width: ".concat(width, "px;\n      --dots-height: ").concat(width, "px;\n      --dots-box-shadow-x: ").concat(width / 2 + 6, "px;\n      --dots-box-shadow-x-negative: -").concat(width / 2 + 6, "px;\n      --dots-box-shadow-radius1: ").concat(width / 2 - 2, "px;\n      --dots-box-shadow-radius1-negative: -").concat(width / 2 - 2, "px;\n      --dots-box-shadow-radius2: ").concat(width / 2 - 3, "px;\n      --dots-box-shadow-radius2-negative: -").concat(width / 2 - 3, "px;");
+    }
+  }, {
+    key: "_setBreathingApertureStyle",
+    value: function _setBreathingApertureStyle(type) {
+      if (type === 'color') {
+        this.map.setPaintProperty(this.layerId, 'circle-color', this.color);
+        this.map.setPaintProperty(this.layerId, 'circle-stroke-color', this.color);
+        var pulse = document.getElementsByClassName('sm-component-dynamic-marker__pulse');
+
+        for (var i = 0; i < pulse.length; i++) {
+          var style = pulse[i].style;
+          style.borderColor = this.color;
+          style.boxShadow = "0 0 12px ".concat(this.color, ", 0 0 20px ").concat(this.color, " inset");
+        }
+      } else if (type === 'width') {
+        var _pulse = document.getElementsByClassName('sm-component-dynamic-marker__pulse');
+
+        for (var _i = 0; _i < _pulse.length; _i++) {
+          this._setBreathingApertureWidth(_pulse[_i].style);
+        }
+      }
+    }
+  }, {
+    key: "_setBreathingApertureWidth",
+    value: function _setBreathingApertureWidth(style) {
+      style.width = this.width + 'px';
+      style.height = this.width + 'px';
+      style.top = -this.width / 2 + 'px';
+      style.left = -this.width / 2 + 5 + 'px';
+      style.borderRadius = this.width / 2 + 'px';
+    }
+  }, {
+    key: "_setRotatingApertureStyle",
+    value: function _setRotatingApertureStyle(type) {
+      if (type === 'color') {
+        if (!(this.color.indexOf('rgb') > -1)) {
+          return;
+        }
+
+        var rgbaColor = this._getRgbaColor(this.color);
+
+        var dotsMarker = document.getElementsByClassName('sm-component-dynamic-marker--rotating-aperture');
+
+        for (var i = 0; i < dotsMarker.length; i++) {
+          var style = dotsMarker[i].style;
+          style.setProperty('--color', this.color);
+          style.setProperty('--line-color', rgbaColor);
+        }
+      } else if (type === 'width') {
+        var step = this._getRotatingApertureWidthStep();
+
+        if (!step) {
+          return;
+        }
+
+        var _dotsMarker = document.getElementsByClassName('sm-component-dynamic-marker--rotating-aperture');
+
+        for (var _i2 = 0; _i2 < _dotsMarker.length; _i2++) {
+          _dotsMarker[_i2].style.setProperty('--container-width', "".concat(this.width, "px"));
+
+          var dots1 = _dotsMarker[_i2].children[0];
+          var dots2 = _dotsMarker[_i2].children[1];
+          var dots3 = _dotsMarker[_i2].children[2];
+          dots1.setAttribute('style', this._getDotsStyleObj(this.width - step * 2));
+          dots2.setAttribute('style', this._getDotsStyleObj(this.width - step));
+          dots3.setAttribute('style', this._getDotsStyleObj(this.width));
+        }
+      }
+    }
+  }, {
+    key: "_getRotatingApertureWidthStep",
+    value: function _getRotatingApertureWidthStep() {
+      var step = 16;
+
+      if (this.width < 48) {
+        step = 8;
+      } else if (this.width < 26) {
+        return false;
+      }
+
+      return step;
+    }
+  }, {
+    key: "_getRgbaColor",
+    value: function _getRgbaColor(color) {
+      if (!(color.indexOf('rgb') > -1)) {
+        return null;
+      } else {
+        var colors = color.split('(')[1].split(')')[0].split(',');
+        var rgbaColor = "rgba(".concat(colors[0], ",").concat(colors[1], ",").concat(colors[2], ",0.2)");
+        return rgbaColor;
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {}
+  }]);
+
+  return DynamicMarkerLayer;
+}(mixins(map_getter, _mixin_layer));
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop()], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "features", void 0);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
+  default: 'breathingAperture'
+})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "type", void 0);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
+  default: 88
+})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "width", void 0);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
+  default: '#009fd9'
+})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "color", void 0);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
+  default: '#009fd9'
+})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "lightColor", void 0);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
+  default: 14
+})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "textFontSize", void 0);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
+  default: '#ccc'
+})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "textColor", void 0);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('type')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "typeChanged", null);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('width')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "widthChanged", null);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('lightColor')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "lightColorChanged", null);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('color')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "colorChanged", null);
+
+DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('textColor')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "textColorChanged", null);
+
+DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer = DynamicMarkerLayervue_type_script_lang_ts_decorate([vue_class_component_esm({
+  name: 'SmDynamicMarkerLayer',
+  loaded: function loaded(vm) {
+    vm._getMarkerElement();
+
+    vm.viewModel = new DynamicMarkerLayerViewModel_DynamicMarkerLayerViewModel(vm.map, vm.features, vm._markersElement, vm.type, null, vm.layerId);
+  }
+})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer);
+/* harmony default export */ var DynamicMarkerLayervue_type_script_lang_ts_ = (DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer);
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/dynamicMarker/DynamicMarkerLayer.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var dynamicMarker_DynamicMarkerLayervue_type_script_lang_ts_ = (DynamicMarkerLayervue_type_script_lang_ts_); 
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/dynamicMarker/DynamicMarkerLayer.vue
+var DynamicMarkerLayer_render, DynamicMarkerLayer_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var DynamicMarkerLayer_component = normalizeComponent(
+  dynamicMarker_DynamicMarkerLayervue_type_script_lang_ts_,
+  DynamicMarkerLayer_render,
+  DynamicMarkerLayer_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var dynamicMarker_DynamicMarkerLayer = (DynamicMarkerLayer_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/legend/Legend.vue?vue&type=template&id=349704ab&
 var Legendvue_type_template_id_349704ab_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-legend",style:([_vm.noBorder]),attrs:{"icon-class":_vm.mode === 'simple' ? '' : _vm.iconClass,"icon-position":_vm.position,"header-name":_vm.mode === 'simple' ? '' : _vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('a-card',{style:(_vm.mode !== 'simple' ? [_vm.getBackgroundStyle, _vm.getTextColorStyle, {border: 0, borderRadius: 0}] : [{border: 0, borderRadius: 0, background: 'transparent'}]),attrs:{"bordered":false}},[((_vm.mode === 'panel' || (_vm.layerNames.length > 1 && _vm.mode !== 'simple')) && JSON.stringify(_vm.legendList) !== '{}')?_c('a-collapse',{staticClass:"sm-component-legend__table",model:{value:(_vm.activeLegend),callback:function ($$v) {_vm.activeLegend=$$v},expression:"activeLegend"}},_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('a-collapse-panel',{key:("" + (index+1)),attrs:{"showArrow":false}},[_c('template',{slot:"header"},[_c('div',{staticClass:"header-wrap",style:([_vm.getColorStyle(0)])},[_c('div',{staticClass:"sm-component-legend__title add-ellipsis"},[_vm._v(_vm._s(layerValue.layerId))]),_vm._v(" "),_c('a-icon',{staticClass:"header-arrow",attrs:{"type":"right"}})],1)]),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',{staticClass:"sm-component-legend__wrap",style:([_vm.getTextColorStyle])},[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,i){return _c('li',{key:i,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value add-ellipsis"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',{staticClass:"sm-component-legend__wrap",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__heatbox"},[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})}),_vm._v(" "),_c('div',{staticClass:"sm-component-legend__heatText"},[_c('span',{staticClass:"sm-component-legend__top"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(_vm.$t("legend.top"))+"\n              ")],1),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(_vm.$t("legend.bottom"))+"\n              ")],1)])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',{staticClass:"sm-component-legend__wrap",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,j){return _c('div',{key:j,staticClass:"sm-component-legend__range-item"},[_c('div',{style:({background: item.color})}),_vm._v(" "),_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n              ")],1)])}))]):_vm._e()],2)})):(_vm.mode === 'simple' || _vm.layerNames.length === 1)?_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('div',{key:index,staticClass:"sm-component-legend__noBorder",style:([_vm.getTextColorStyle])},[(_vm.isShowTitle)?_c('div',{staticClass:"sm-component-legend__title add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))]):_vm._e(),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',{staticClass:"sm-component-legend__wrap"},[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,k){return _c('li',{key:k,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value add-ellipsis"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',{staticClass:"sm-component-legend__wrap"},[_c('div',{staticClass:"sm-component-legend__heatbox"},[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})}),_vm._v(" "),_c('div',{staticClass:"sm-component-legend__heatText"},[_c('span',{staticClass:"sm-component-legend__top"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(_vm.$t("legend.top"))+"\n            ")],1),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(_vm.$t("legend.bottom"))+"\n            ")],1)])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',{staticClass:"sm-component-legend__wrap"},[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,l){return _c('div',{key:l,staticClass:"sm-component-legend__range-item"},[_c('div',{style:({background: item.color})}),_vm._v(" "),_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n            ")],1)])}))]):_vm._e()])}):_vm._e()],2)],1)}
 var Legendvue_type_template_id_349704ab_staticRenderFns = []
@@ -63833,12 +64314,12 @@ var Chart_component = normalizeComponent(
 )
 
 /* harmony default export */ var Chart = (Chart_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=20332ec3&
-var WebMapvue_type_template_id_20332ec3_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl.show)?_c('Pan',{attrs:{"position":_vm.panControl.position}}):_vm._e(),_vm._v(" "),(_vm.scaleControl.show)?_c('Scale',{attrs:{"position":_vm.scaleControl.position}}):_vm._e(),_vm._v(" "),(_vm.zoomControl.show)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomControl.zoomWithSlider,"position":_vm.zoomControl.position}}):_vm._e(),_vm._v(" "),(_vm.miniMapControl.show)?_c('mini-map',_vm._b({},'mini-map',_vm.miniMapControl,false)):_vm._e(),_vm._v(" "),(_vm.layerListControl.show)?_c('layer-list',_vm._b({},'layer-list',_vm.layerListControl,false)):_vm._e(),_vm._v(" "),(_vm.measureControl.show)?_c('Measure',_vm._b({},'Measure',_vm.measureControl,false)):_vm._e(),_vm._v(" "),(_vm.legendControl.show)?_c('Legend',_vm._b({},'Legend',_vm.legendControl,false)):_vm._e(),_vm._v(" "),(_vm.queryControl.show)?_c('Query',_vm._b({},'Query',_vm.queryControl,false)):_vm._e(),_vm._v(" "),(_vm.searchControl.show)?_c('Search',_vm._b({},'Search',_vm.searchControl,false)):_vm._e(),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
-var WebMapvue_type_template_id_20332ec3_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=7525414c&
+var WebMapvue_type_template_id_7525414c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl.show)?_c('Pan',{attrs:{"position":_vm.panControl.position}}):_vm._e(),_vm._v(" "),(_vm.scaleControl.show)?_c('Scale',{attrs:{"position":_vm.scaleControl.position}}):_vm._e(),_vm._v(" "),(_vm.zoomControl.show)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomControl.zoomWithSlider,"position":_vm.zoomControl.position}}):_vm._e(),_vm._v(" "),(_vm.miniMapControl.show)?_c('mini-map',_vm._b({},'mini-map',_vm.miniMapControl,false)):_vm._e(),_vm._v(" "),(_vm.layerListControl.show)?_c('layer-list',_vm._b({},'layer-list',_vm.layerListControl,false)):_vm._e(),_vm._v(" "),(_vm.measureControl.show)?_c('Measure',_vm._b({},'Measure',_vm.measureControl,false)):_vm._e(),_vm._v(" "),(_vm.legendControl.show)?_c('Legend',_vm._b({},'Legend',_vm.legendControl,false)):_vm._e(),_vm._v(" "),(_vm.queryControl.show)?_c('Query',_vm._b({},'Query',_vm.queryControl,false)):_vm._e(),_vm._v(" "),(_vm.searchControl.show)?_c('Search',_vm._b({},'Search',_vm.searchControl,false)):_vm._e(),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
+var WebMapvue_type_template_id_7525414c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=20332ec3&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=7525414c&
 
 // CONCATENATED MODULE: ./src/mapboxgl/_utils/geometry-util.js
 var handleMultyPolygon = function handleMultyPolygon(features) {
@@ -63916,6 +64397,7 @@ function (_mapboxgl$Evented) {
     _this.serverUrl = options.serverUrl || 'http://www.supermapol.com';
     _this.accessToken = options.accessToken;
     _this.accessKey = options.accessKey;
+    _this.tiandituKey = options.tiandituKey || '';
     _this.withCredentials = options.withCredentials || false;
     _this.target = options.target || 'map';
     _this.excludePortalProxyUrl = options.excludePortalProxyUrl;
@@ -64376,10 +64858,13 @@ function (_mapboxgl$Evented) {
     key: "_getTiandituUrl",
     value: function _getTiandituUrl(mapInfo) {
       var re = /t0/gi;
-      var tiandituUrls;
+      var tiandituUrls = {
+        tiandituUrl: [],
+        labelUrl: []
+      };
       var layerType = mapInfo.baseLayer.layerType.split('_')[1].toLowerCase();
       var isLabel = Boolean(mapInfo.baseLayer.labelLayerVisible);
-      var url = 'http://t0.tianditu.com/{layer}_{proj}/wmts?';
+      var url = "http://t0.tianditu.com/{layer}_{proj}/wmts?tk=".concat(this.tiandituKey);
       var labelUrl = url;
       var layerLabelMap = {
         vec: 'cva',
@@ -65917,12 +66402,12 @@ function (_mapboxgl$Evented) {
 }(mapbox_gl_enhance_js_default.a.Evented);
 
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/query/Query.vue?vue&type=template&id=5510111e&
-var Queryvue_type_template_id_5510111e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-component-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-component-query__job-info-panel"},[_c('div',{staticClass:"sm-component-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"sm-components-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-component-query__job-info-name",attrs:{"title":jobInfo.queryParameter.name}},[_vm._v(_vm._s(jobInfo.queryParameter.name))]),_vm._v(" "),_c('div',{staticClass:"sm-components-icons-legend-unfold"})]),_vm._v(" "),(jobInfo.queryParameter.attributeFilter)?_c('div',{staticClass:"sm-component-query__job-info-body hidden"},[_c('div',{staticClass:"sm-component-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.queryParameter.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('a-select',{staticClass:"sm-component-query__a-select",attrs:{"get-popup-container":_vm.getPopupContainer},on:{"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(jobInfo.spaceFilter),callback:function ($$v) {_vm.$set(jobInfo, "spaceFilter", $$v)},expression:"jobInfo.spaceFilter"}},_vm._l((_vm.selectOptions),function(item){return _c('a-select-option',{key:item.value,attrs:{"value":item.value}},[_vm._v(_vm._s(item.label))])}))],1),_vm._v(" "),_c('div',{staticClass:"sm-component-query__query-button"},[_c('a-button',{staticClass:"sm-component-query__a-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo.queryParameter, jobInfo.spaceFilter)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult && !_vm.isQuery),expression:"!queryResult && !isQuery"}],staticClass:"sm-component-query__no-result hidden"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isQuery && !_vm.queryResult),expression:"isQuery && !queryResult"}],staticClass:"sm-component-query__result-loading"},[_c('a-spin',{attrs:{"tip":_vm.$t('query.querying')}},[_c('a-icon',{staticStyle:{"font-size":"24px"},attrs:{"slot":"indicator","type":"loading","spin":""},slot:"indicator"})],1)],1),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-header",style:(_vm.getColorStyle(0))},[_c('span',{staticClass:"sm-component-query__header-name",attrs:{"title":_vm.queryResult.name}},[_vm._v(_vm._s(_vm.queryResult.name))]),_vm._v(" "),_c('span',{staticClass:"sm-components-icons-close",on:{"click":_vm.clearResult}})]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"queryTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
-var Queryvue_type_template_id_5510111e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/query/Query.vue?vue&type=template&id=3d89a932&
+var Queryvue_type_template_id_3d89a932_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-component-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-component-query__job-info-panel"},[_c('div',{staticClass:"sm-component-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"sm-components-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-component-query__job-info-name",attrs:{"title":jobInfo.queryParameter.name}},[_vm._v(_vm._s(jobInfo.queryParameter.name))]),_vm._v(" "),_c('div',{staticClass:"sm-components-icons-legend-unfold"})]),_vm._v(" "),(jobInfo.queryParameter.attributeFilter)?_c('div',{staticClass:"sm-component-query__job-info-body hidden"},[_c('div',{staticClass:"sm-component-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.queryParameter.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('a-select',{staticClass:"sm-component-query__a-select",attrs:{"get-popup-container":_vm.getPopupContainer},on:{"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(jobInfo.spaceFilter),callback:function ($$v) {_vm.$set(jobInfo, "spaceFilter", $$v)},expression:"jobInfo.spaceFilter"}},_vm._l((_vm.selectOptions),function(item){return _c('a-select-option',{key:item.value,attrs:{"value":item.value}},[_vm._v(_vm._s(item.label))])}))],1),_vm._v(" "),_c('div',{staticClass:"sm-component-query__query-button"},[_c('a-button',{staticClass:"sm-component-query__a-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo.queryParameter, jobInfo.spaceFilter)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult && !_vm.isQuery),expression:"!queryResult && !isQuery"}],staticClass:"sm-component-query__no-result hidden"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isQuery && !_vm.queryResult),expression:"isQuery && !queryResult"}],staticClass:"sm-component-query__result-loading"},[_c('a-spin',{attrs:{"tip":_vm.$t('query.querying')}},[_c('a-icon',{staticStyle:{"font-size":"24px"},attrs:{"slot":"indicator","type":"loading","spin":""},slot:"indicator"})],1)],1),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-header",style:(_vm.getColorStyle(0))},[_c('span',{staticClass:"sm-component-query__header-name",attrs:{"title":_vm.queryResult.name}},[_vm._v(_vm._s(_vm.queryResult.name))]),_vm._v(" "),_c('span',{staticClass:"sm-components-icons-close",on:{"click":_vm.clearResult}})]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"queryTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
+var Queryvue_type_template_id_3d89a932_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/query/Query.vue?vue&type=template&id=5510111e&
+// CONCATENATED MODULE: ./src/mapboxgl/query/Query.vue?vue&type=template&id=3d89a932&
 
 // CONCATENATED MODULE: ./src/mapboxgl/query/QueryViewModel.js
 
@@ -65976,6 +66461,7 @@ function (_mapboxgl$Evented) {
   helpers_createClass_default()(QueryViewModel, [{
     key: "clearResultLayer",
     value: function clearResultLayer() {
+      this.bounds = null;
       this.strokeLayerID && this.map.getLayer(this.strokeLayerID) && this.map.removeLayer(this.strokeLayerID);
       this.layerID && this.map.getLayer(this.layerID) && this.map.removeLayer(this.layerID);
     }
@@ -66849,7 +67335,7 @@ var TablePopup_component = normalizeComponent(
           if (key === 'iportalData' || key === 'restData' || key === 'restMap') {
             _this.$props[key] && _this.$props[key].forEach(function (item) {
               item.name && _this.jobInfos.push({
-                spaceFilter: 'mapBounds',
+                spaceFilter: 'currentMapBounds',
                 queryParameter: item
               });
             }, _this);
@@ -66996,6 +67482,8 @@ var TablePopup_component = normalizeComponent(
 
         _this4.$el.querySelector('.sm-component-query__no-result').classList.remove('hidden');
 
+        _this4.clearResult();
+
         _this4.$message.warning(e.message);
 
         _this4.jobButton.classList.remove('disabled');
@@ -67073,8 +67561,8 @@ var TablePopup_component = normalizeComponent(
 
 var Query_component = normalizeComponent(
   query_Queryvue_type_script_lang_js_,
-  Queryvue_type_template_id_5510111e_render,
-  Queryvue_type_template_id_5510111e_staticRenderFns,
+  Queryvue_type_template_id_3d89a932_render,
+  Queryvue_type_template_id_3d89a932_staticRenderFns,
   false,
   null,
   null,
@@ -68007,6 +68495,7 @@ function (_Mixins) {
           serverUrl = _this$$props.serverUrl,
           accessToken = _this$$props.accessToken,
           accessKey = _this$$props.accessKey,
+          tiandituKey = _this$$props.tiandituKey,
           withCredentials = _this$$props.withCredentials,
           excludePortalProxyUrl = _this$$props.excludePortalProxyUrl,
           mapOptions = _this$$props.mapOptions;
@@ -68015,6 +68504,7 @@ function (_Mixins) {
         serverUrl: serverUrl,
         accessToken: accessToken,
         accessKey: accessKey,
+        tiandituKey: tiandituKey,
         withCredentials: withCredentials,
         excludePortalProxyUrl: excludePortalProxyUrl
       }, mapOptions);
@@ -68078,6 +68568,8 @@ WebMapvue_type_script_lang_ts_decorate([Prop({
 WebMapvue_type_script_lang_ts_decorate([Prop()], WebMapvue_type_script_lang_ts_SmWebMap.prototype, "accessToken", void 0);
 
 WebMapvue_type_script_lang_ts_decorate([Prop()], WebMapvue_type_script_lang_ts_SmWebMap.prototype, "accessKey", void 0);
+
+WebMapvue_type_script_lang_ts_decorate([Prop()], WebMapvue_type_script_lang_ts_SmWebMap.prototype, "tiandituKey", void 0);
 
 WebMapvue_type_script_lang_ts_decorate([Prop({
   default: false
@@ -68211,8 +68703,8 @@ WebMapvue_type_script_lang_ts_SmWebMap = WebMapvue_type_script_lang_ts_decorate(
 
 var WebMap_component = normalizeComponent(
   web_map_WebMapvue_type_script_lang_ts_,
-  WebMapvue_type_template_id_20332ec3_render,
-  WebMapvue_type_template_id_20332ec3_staticRenderFns,
+  WebMapvue_type_template_id_7525414c_render,
+  WebMapvue_type_template_id_7525414c_staticRenderFns,
   false,
   null,
   null,
@@ -69225,6 +69717,7 @@ var OpenFile_component = normalizeComponent(
 
 
 /** layer */
+
 
 
 
