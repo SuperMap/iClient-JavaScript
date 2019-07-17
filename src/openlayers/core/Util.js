@@ -347,7 +347,8 @@ export class Util {
                 processFailed: function (e) {
                     processFaild && processFaild(e);
                 }
-            }
+            },
+            withCredentials: true
         };
         getFeatureBySQLService = new GetFeaturesBySQLService(url, options);
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);

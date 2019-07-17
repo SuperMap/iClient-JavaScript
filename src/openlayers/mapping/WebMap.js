@@ -8,7 +8,8 @@ import {
     SecurityManager,
     ColorsPickerUtil,
     ArrayStatistic,
-    Events
+    Events,
+    CommonUtil
 } from '@supermap/iclient-common';
 import {
     Util
@@ -16,6 +17,7 @@ import {
 import {
     StyleUtils
 } from '../core/StyleUtils';
+
 import provincialCenterData from './webmap/config/ProvinceCenter';
 import municipalCenterData from './webmap/config/MunicipalCenter';
 import jsonsql from 'jsonsql';
@@ -128,10 +130,6 @@ export class WebMap extends ol.Observable {
                 mapUrl = urlArray[0] + filter + this.server + 'web/maps/' + this.mapId + '/map.json';
             }
         }
-        //todo 请求用户以及更新时间和地图标签等参数，暂时不需要
-        // let appUrl = this.server;
-        // appUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
-        // this.getAppInfo(appUrl);
         this.getMapInfo(mapUrl);
     }
 
@@ -148,7 +146,7 @@ export class WebMap extends ol.Observable {
             //传递过来的url,没有包括.json,在这里加上。
             mapUrl = `${url}.json`
         }
-        FetchRequest.get(mapUrl, null, {
+        FetchRequest.get(that.getRequestUrl(mapUrl), null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json();
@@ -239,7 +237,7 @@ export class WebMap extends ol.Observable {
         
         let source;
         if(baseLayerType === "TILE"){
-            FetchRequest.get(`${me.getProxy()}${url}.json`, null, {
+            FetchRequest.get(me.getRequestUrl(`${url}.json`), null, {
                 withCredentials: this.withCredentials
             }).then(function (response) {
                 return response.json();
@@ -257,7 +255,7 @@ export class WebMap extends ol.Observable {
             source = me.createWMSSource(baseLayerInfo);
             me.addSpecToMap(source);
         } else if(baseLayerType === "WMTS"){
-            FetchRequest.get(`${me.getProxy()}${url}`, null, {
+            FetchRequest.get(me.getRequestUrl(url), null, {
                 withCredentials: this.withCredentials
             }).then(function (response) {
                 return response.text();
@@ -815,7 +813,6 @@ export class WebMap extends ol.Observable {
            let projection = {
             epsgCode: that.baseProjection.split(":")[1]
         }
-        //url += `.json?prjCoordSys=${JSON.stringify(projection)}`;
         // bug IE11 不会自动编码
         url += '.json?prjCoordSys=' + encodeURI(JSON.stringify(projection));
         
@@ -826,13 +823,12 @@ export class WebMap extends ol.Observable {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
-        FetchRequest.get(url, null, options).then(function (response) {
+        FetchRequest.get(that.getRequestUrl(url), null, options).then(function (response) {
             return layerInfo.layerType  === "TILE" ? response.json() : response.text();
         }).then(function (result) {
             if (layerInfo.layerType === "TILE") {
                 layerInfo.extent = [result.bounds.left, result.bounds.bottom, result.bounds.right, result.bounds.top];
                 layerInfo.projection = `EPSG:${result.prjCoordSys.epsgCode}`;
-
                 callback(layerInfo);
             } else {
                 layerInfo.projection = that.baseProjection;
@@ -850,12 +846,11 @@ export class WebMap extends ol.Observable {
      */
     getTileInfo(layerInfo, callback, mapInfo){
         let that = this;
-        let url = layerInfo.url;
         let options = {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
-        FetchRequest.get(url + ".json", null, options).then(function (response) {
+        FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
             return response.json();
         }).then(function (result) {
             layerInfo.projection = mapInfo.projection;
@@ -886,12 +881,11 @@ export class WebMap extends ol.Observable {
      */
     getWmtsInfo(layerInfo, callback, mapInfo) {
         let that = this;
-        let url = layerInfo.url;
         let options = {
             withCredentials: false,
             withoutFormatSuffix: true
         };
-        FetchRequest.get(url, null, options).then(function (response) {
+        FetchRequest.get(that.getRequestUrl(layerInfo.url), null, options).then(function (response) {
             return response.text();
         }).then(function (capabilitiesText) {
             const format = new ol.format.WMTSCapabilities();
@@ -1102,9 +1096,7 @@ export class WebMap extends ol.Observable {
                     if((layer.layerType === "MARKER") || (dataSource && (!dataSource.accessType || dataSource.accessType === 'DIRECT'))) {
                         //原来二进制文件
                         let url = `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
-                        if(that.credentialValue) {
-                            url = `${url}&${that.credentialKey}=${that.credentialValue}`;
-                        }
+                        url = that.getRequestUrl(url);
                         FetchRequest.get(url, null, {
                             withCredentials: this.withCredentials
                         }).then(function (response) {
@@ -1320,7 +1312,7 @@ export class WebMap extends ol.Observable {
     getDataflowInfo(layerInfo, success, faild) {
         let that = this;
         let url = layerInfo.url, token;
-        let requestUrl = that.server + 'apps/viewer/getUrlResource.json?url=' + encodeURIComponent(url) + '.json';
+        let requestUrl = that.getRequestUrl(`${url}.json`)
         if(layerInfo.credential && layerInfo.credential.token) {
             token = layerInfo.credential.token;
             requestUrl+= `?token=${token}`;
@@ -1369,7 +1361,7 @@ export class WebMap extends ol.Observable {
         let that = this,dataSource = layer.dataSource,
             url = layer.dataSource.url,
             dataSourceName= dataSource.dataSourceName || layer.name;
-        let requestUrl = that.server + 'apps/viewer/getUrlResource.json?url=' + encodeURIComponent(url);
+        let requestUrl = that.getRequestUrl(url); 
         //因为itest上使用的https，iserver是http，所以要加上代理
         Util.getFeatureBySQL(requestUrl, [dataSourceName], function (result) {
             let features = that.parseGeoJsonData2Feature({
@@ -2814,7 +2806,8 @@ export class WebMap extends ol.Observable {
      *  @returns {Promise<T | never>} 关系型文件一些参数
      */
     checkUploadToRelationship(fileId) {
-        return FetchRequest.get(`${this.server}web/datas/${fileId}/datasets.json`, null, {
+        let url = this.getRequestUrl(`${this.server}web/datas/${fileId}/datasets.json`);
+        return FetchRequest.get(url, null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json()
@@ -2830,7 +2823,10 @@ export class WebMap extends ol.Observable {
      *  @returns {Promise<T | never>} 数据源名称
      */
     getDatasources(url) {
-        return FetchRequest.get(`${this.getProxy()}${url}/data/datasources.json`).then(function (response) {
+        let requestUrl = this.getRequestUrl(`${url}/data/datasources.json`);
+        return FetchRequest.get(requestUrl, null, {
+            withCredentials: this.withCredentials   
+        }).then(function (response) {
             return response.json()
         }).then(function (datasource) {
             let datasourceNames = datasource.datasourceNames;
@@ -2847,7 +2843,8 @@ export class WebMap extends ol.Observable {
      *  @returns {Promise<T | never>} 数据的信息
      */
     getDataService(fileId, datasetName) {
-        return FetchRequest.get(`${this.server}web/datas/${fileId}.json`, null, {
+        let url = this.getRequestUrl(`${this.server}web/datas/${fileId}.json`);
+        return FetchRequest.get(url, null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json()
@@ -2857,11 +2854,30 @@ export class WebMap extends ol.Observable {
             return result;
         });
     }
+
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.getRootUrl
+     * @description 获取请求地址
+     * @returns {Promise<T | never>} 请求地址
+     */
+    getRequestUrl(url) {
+        if(this.credentialValue) {
+            //有token之类的配置项
+            url = `${url}&${this.credentialKey}=${this.credentialValue}`;
+        }
+        //如果传入进来的url带了代理则不需要处理
+        if(this.excludePortalProxyUrl) {
+            return;
+        }
+        return CommonUtil.isInTheSameDomain(url) ? url : `${this.getProxy()}${encodeURIComponent(url)}`;
+    }
+
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getProxy
      * @description 获取代理地址
-     *  @returns {Promise<T | never>} 代理地址
+     * @returns {Promise<T | never>} 代理地址
      */
     getProxy() {
         return this.server + 'apps/viewer/getUrlResource.json?url=';      
@@ -2875,11 +2891,9 @@ export class WebMap extends ol.Observable {
      * @returns {Promise<T | never>} 地图服务信息
      */
     getTileLayerInfo(url) {
-        let that = this;
-        let proxyUrl = this.server + 'apps/viewer/getUrlResource.json?url=';
-        let requestUrl = proxyUrl + encodeURIComponent(url);
-        let epsgCode = that.baseProjection.split('EPSG:')[1];
-        return FetchRequest.get(`${requestUrl}/maps.json`, null, {
+        let that = this, epsgCode = that.baseProjection.split('EPSG:')[1];
+        let requestUrl = that.getRequestUrl(`${url}/maps.json`);
+        return FetchRequest.get(requestUrl, null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json()
@@ -2887,7 +2901,8 @@ export class WebMap extends ol.Observable {
             let promises = [];
             if(mapInfo) {
                 mapInfo.forEach(function (info) {
-                    let promise = FetchRequest.get(`${proxyUrl}${info.path}.json?prjCoordSys=${JSON.stringify({ epsgCode: epsgCode })}`, null, {
+                    let mapUrl = that.getRequestUrl(`${info.path}.json?prjCoordSys=${encodeURI(JSON.stringify({ epsgCode: epsgCode }))}`)
+                    let promise = FetchRequest.get(mapUrl, null, {
                         withCredentials: that.withCredentials
                     }).then(function (response) {
                         return response.json()
@@ -3261,7 +3276,9 @@ export class WebMap extends ol.Observable {
         return this.getDatasetsInfo(serviceUrl, datasetName).then((info) => {
             //判断是否和底图坐标系一直
             if(info.epsgCode == that.baseProjection.split('EPSG:')[1]) {
-                return FetchRequest.get(`${that.getProxy()}${info.url}/tilefeature.mvt`).then(function (response) {
+                return FetchRequest.get(that.getRequestUrl(`${info.url}/tilefeature.mvt`), null, {
+                    withCredentials: that.withCredentials      
+                }).then(function (response) {
                     return response.json()
                 }).then(function (result) {
                     info.isMvt = result.error && result.error.code === 400;
@@ -3285,15 +3302,17 @@ export class WebMap extends ol.Observable {
     getDatasetsInfo(serviceUrl, datasetName) {
         let that = this;
         return that.getDatasources(serviceUrl).then(function(datasourceName) {
-            //判断mvt服务是否可用
-          let url = `${serviceUrl}/data/datasources/${datasourceName}/datasets/${datasetName}`;   
-          return FetchRequest.get(`${that.getProxy()}${url}.json`).then(function (response) {
+          //判断mvt服务是否可用 
+          let url = `${serviceUrl}/data/datasources/${datasourceName}/datasets/${datasetName}.json`;  
+          return FetchRequest.get(that.getRequestUrl(url), null, {
+            withCredentials: that.withCredentials       
+          }).then(function (response) {
                 return response.json()
           }).then(function (datasetsInfo) {
                 return {
                     epsgCode: datasetsInfo.datasetInfo.prjCoordSys.epsgCode,   
                     bounds: datasetsInfo.datasetInfo.bounds,  
-                    url
+                    url //返回的是原始url，没有代理。因为用于请求mvt
                 };
           });
       })
@@ -3309,7 +3328,7 @@ export class WebMap extends ol.Observable {
         let baseLayer = mapInfo.baseLayer,
             url = baseLayer.dataSource.url,
             layerInfo = {};
-        return FetchRequest.get(url).then(result => {
+        return FetchRequest.get(this.getRequestUrl(url)).then(result => {
             return result.json();
         }).then(styles => {
             let extent = styles.metadata.mapbounds;
