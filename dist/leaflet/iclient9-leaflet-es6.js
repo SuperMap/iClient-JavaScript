@@ -17942,7 +17942,7 @@ SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo_DatasourceConnectio
  *      // 设置关联的外部数据库信息,alias表示数据库别名
  *      var dc = new SuperMap.DatasourceConnectionInfo({
  *          dataBase: "RelQuery",
- *          server: "192.168.168.39",
+ *          server: "{ip}:{port}",
  *          user: "sa",
  *          password: "map",
  *          driver: "SQL Server",
@@ -19670,7 +19670,7 @@ SuperMap.QueryParameters = QueryParameters_QueryParameters;
  *      1.通过 AsyncResponder 类获取（推荐使用）；
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。
  * @extends {SuperMap.CommonServiceBase}
- * @param {string} url - 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
+ * @param {string} url - 地图查询服务访问地址。如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
@@ -68622,7 +68622,18 @@ external_L_default.a.Control.Attribution.include({
         prefix: core_Attributions.Prefix
     }
 });
-
+external_L_default.a.Map.include({
+    /*
+     * 获取精确的像素坐标.
+     * 当需要绘制比较平滑的曲线的时候可调用此方法代替latLngToContainerPoint
+     * @param latlng
+     */
+    latLngToAccurateContainerPoint: function (latlng) {
+        var projectedPoint = this.project(external_L_default.a.latLng(latlng));
+        var layerPoint = projectedPoint._subtract(this.getPixelOrigin());
+        return external_L_default.a.point(layerPoint).add(this._getMapPanePos());
+    }
+});
 Base_wrapToGeoJSON([external_L_default.a.Polyline, external_L_default.a.Polygon, external_L_default.a.Marker, external_L_default.a.CircleMarker, external_L_default.a.Circle, external_L_default.a.LayerGroup]);
 
 function Base_wrapToGeoJSON(objClassArray) {
@@ -72139,7 +72150,7 @@ var ThemeLayer_ThemeLayer = external_L_default.a.Layer.extend({
             }
 
         }
-        var point = this._map.latLngToContainerPoint(!this.options.alwaysMapCRS ? external_L_default.a.latLng(coor.y, coor.x) : this._map.options.crs.unproject(coor));
+        var point = this._map.latLngToAccurateContainerPoint(!this.options.alwaysMapCRS ? external_L_default.a.latLng(coor.y, coor.x) : this._map.options.crs.unproject(coor));
         return [point.x, point.y];
     },
 
@@ -76301,19 +76312,6 @@ var MapVLayer_MapVLayer = external_L_default.a.Layer.extend({
 var MapVLayer_mapVLayer = function (dataSet, mapVOptions, options) {
     return new MapVLayer_MapVLayer(dataSet, mapVOptions, options);
 };
-
-external_L_default.a.Map.include({
-    /*
-     * 获取精确的像素坐标.
-     * 当需要绘制比较平滑的曲线的时候可调用此方法代替latLngToContainerPoint
-     * @param latlng
-     */
-    latLngToAccurateContainerPoint: function (latlng) {
-        var projectedPoint = this.project(external_L_default.a.latLng(latlng));
-        var layerPoint = projectedPoint._subtract(this.getPixelOrigin());
-        return external_L_default.a.point(layerPoint).add(this._getMapPanePos());
-    }
-});
 
 external_L_default.a.supermap.mapVLayer = MapVLayer_mapVLayer;
 // CONCATENATED MODULE: ./src/leaflet/overlay/dataflow/MapvRenderer.js
@@ -90047,7 +90045,7 @@ function readTile(tag, layers, pbf) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
-  var eLen = nBytes * 8 - mLen - 1
+  var eLen = (nBytes * 8) - mLen - 1
   var eMax = (1 << eLen) - 1
   var eBias = eMax >> 1
   var nBits = -7
@@ -90060,12 +90058,12 @@ exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   e = s & ((1 << (-nBits)) - 1)
   s >>= (-nBits)
   nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
 
   m = e & ((1 << (-nBits)) - 1)
   e >>= (-nBits)
   nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
 
   if (e === 0) {
     e = 1 - eBias
@@ -90080,7 +90078,7 @@ exports.read = function (buffer, offset, isLE, mLen, nBytes) {
 
 exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
+  var eLen = (nBytes * 8) - mLen - 1
   var eMax = (1 << eLen) - 1
   var eBias = eMax >> 1
   var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
@@ -90113,7 +90111,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
       m = 0
       e = eMax
     } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
+      m = ((value * c) - 1) * Math.pow(2, mLen)
       e = e + eBias
     } else {
       m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
@@ -92910,7 +92908,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\git\\SuperMap\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */
