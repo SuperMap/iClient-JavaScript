@@ -62,6 +62,7 @@ var typeLinks = {
     //mapboxgl
     "mapboxgl.Evented": mbglapi + '#Evented',
     "mapboxgl.Map": mbglapi + '#map',
+    "mapboxgl.LngLatbounds": mbglapi + '#lnglatbounds',
     //mapv
     "Mapv.DataSet": mapv + 'data/DataSet.md',
     "Mapv.BaiduMapLayer": mapv + 'map/baidu-map/Layer.md',

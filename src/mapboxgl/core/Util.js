@@ -1,13 +1,9 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
-import '../core/Base';
-import {
-    Bounds,
-    GeometryPoint,
-    GeoJSON as GeoJSONFormat
-} from '@supermap/iclient-common';
+import mapboxgl from "mapbox-gl";
+import "../core/Base";
+import { Bounds, GeometryPoint, Polygon, LinearRing, GeoJSON as GeoJSONFormat } from "@supermap/iclient-common";
 
 /**
  * @class mapboxgl.supermap.Util
@@ -15,11 +11,11 @@ import {
  * @classdesc 工具类。
  */
 export class Util {
-
     /**
      * @function mapboxgl.supermap.Util.toSuperMapGeometry
      * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
      * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
+     * @returns {SuperMap.Geometry}
      */
     static toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {
@@ -32,19 +28,9 @@ export class Util {
     static toSuperMapBounds(bounds) {
         if (this.isArray(bounds)) {
             //左下右上
-            return new Bounds(
-                bounds[0],
-                bounds[1],
-                bounds[2],
-                bounds[3]
-            );
+            return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
         }
-        return new Bounds(
-            bounds.getWest(),
-            bounds.getSouth(),
-            bounds.getEast(),
-            bounds.getNorth()
-        );
+        return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
     }
 
     static toSuperMapPoint(lnglat) {
@@ -56,6 +42,26 @@ export class Util {
         }
         return new GeometryPoint(lnglat.geometry.coordinates[0], lnglat.geometry.coordinates[1]);
     }
+    /**
+     * @function mapboxgl.supermap.Util.toSuperMapPolygon
+     * @description 将 Mapbox GL LngLatbounds 对象转为 SuperMap 几何图形。
+     * @param {Mapboxgl.LngLatbounds} lnglatBounds - Mapbox GL LngLatbounds对象。
+     * @returns {SuperMap.Geometry.Polygon}
+     */
+    static toSuperMapPolygon(lnglatBounds) {
+        const west = lnglatBounds.getWest();
+        const east = lnglatBounds.getEast();
+        const sourth = lnglatBounds.getSouth();
+        const north = lnglatBounds.getNorth();
+        return new Polygon([
+            new LinearRing([
+                new GeometryPoint(west, sourth),
+                new GeometryPoint(east, sourth),
+                new GeometryPoint(east, north),
+                new GeometryPoint(west, north)
+            ])
+        ]);
+    }
 
     /**
      * @function mapboxgl.supermap.Util.isArray
@@ -64,9 +70,8 @@ export class Util {
      * @returns {boolean} 是否是数组。
      */
     static isArray(obj) {
-        return Object.prototype.toString.call(obj) == '[object Array]'
+        return Object.prototype.toString.call(obj) == "[object Array]";
     }
-
 
     /**
      * @function mapboxgl.supermap.Util.toGeoJSON
@@ -131,14 +136,13 @@ export class Util {
         return dest;
     }
 
-    
     /**
      * 检测数据是否为number
      * @param value 值，未知数据类型
      * @returns {boolean}
      */
     static isNumber(value) {
-        if (value === '') {
+        if (value === "") {
             return false;
         }
         let mdata = Number(value);
@@ -148,7 +152,7 @@ export class Util {
         return !isNaN(mdata);
     }
 
-     /**
+    /**
      * 随机生成id
      * @param attr
      * @returns {string}
@@ -169,7 +173,8 @@ export class Util {
      * @returns {string} 生成的 RGBA 格式。
      */
     static hexToRgba(hex, opacity) {
-        var color = [], rgba = [];
+        var color = [],
+            rgba = [];
         hex = hex.replace(/#/, "");
         if (hex.length == 3) {
             var tmp = [];

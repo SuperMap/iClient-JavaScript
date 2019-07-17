@@ -8,14 +8,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("vue"), require("echarts"), require("echarts-liquidfill"), require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("three"), require("@mapbox/mapbox-gl-draw"), require("VueECharts"), require("xlsx"), require("shapefile"));
+		module.exports = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("echarts"), require("three"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"), require("shapefile"), require("xlsx"));
 	else if(typeof define === 'function' && define.amd)
-		define(["vue", "echarts", "echarts-liquidfill", "./static/libs/mapboxgl/mapbox-gl-enhance.js", "./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js", "./static/libs/deckgl/deck.gl.min.js", "./static/libs/echarts-layer/EchartsLayer.js", "three", "@mapbox/mapbox-gl-draw", "VueECharts", "xlsx", "shapefile"], factory);
+		define(["./static/libs/mapboxgl/mapbox-gl-enhance.js", "./static/libs/echarts-layer/EchartsLayer.js", "./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js", "./static/libs/deckgl/deck.gl.min.js", "echarts", "three", "VueECharts", "@mapbox/mapbox-gl-draw", "echarts-liquidfill", "vue", "shapefile", "xlsx"], factory);
 	else if(typeof exports === 'object')
-		exports["Components"] = factory(require("vue"), require("echarts"), require("echarts-liquidfill"), require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("three"), require("@mapbox/mapbox-gl-draw"), require("VueECharts"), require("xlsx"), require("shapefile"));
+		exports["Components"] = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("echarts"), require("three"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"), require("shapefile"), require("xlsx"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["Vue"], root["echarts"], root["echarts-liquidfill"], root["mapboxgl"], root["SuperMap"], root["DeckGL"], root["EchartsLayer"], root["THREE"], root["MapboxDraw"], root["VueECharts"], root["XLSX"], root["shapefile"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__9RVc__, __WEBPACK_EXTERNAL_MODULE_AEfv__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE_X9qW__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_X1wy__, __WEBPACK_EXTERNAL_MODULE__4v0n__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["mapboxgl"], root["EchartsLayer"], root["SuperMap"], root["DeckGL"], root["echarts"], root["THREE"], root["VueECharts"], root["MapboxDraw"], root["echarts-liquidfill"], root["Vue"], root["shapefile"], root["XLSX"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE__9RVc__, __WEBPACK_EXTERNAL_MODULE_AEfv__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_X9qW__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE__4v0n__, __WEBPACK_EXTERNAL_MODULE_X1wy__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -34663,8 +34663,8 @@ function getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset) {
   var diff = [p2.left - p1.left, p2.top - p1.top];
 
   return {
-    left: elRegion.left - diff[0] + offset[0] - targetOffset[0],
-    top: elRegion.top - diff[1] + offset[1] - targetOffset[1]
+    left: Math.round(elRegion.left - diff[0] + offset[0] - targetOffset[0]),
+    top: Math.round(elRegion.top - diff[1] + offset[1] - targetOffset[1])
   };
 }
 
@@ -66022,16 +66022,17 @@ function (_mapboxgl$Evented) {
       var _this2 = this;
 
       if (this.bounds) {
-        var param = new SuperMap.QueryByBoundsParameters({
+        var param = new SuperMap.QueryByGeometryParameters({
           queryParams: {
             name: restMapParameter.layerName,
             attributeFilter: restMapParameter.attributeFilter
           },
-          bounds: this.bounds,
+          spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+          geometry: this.bounds,
           startRecord: 0,
           expectCount: restMapParameter.maxFeatures || this.maxFeatures
         });
-        new mapbox_gl_enhance_js_default.a.supermap.QueryService(restMapParameter.url).queryByBounds(param, function (serviceResult) {
+        new mapbox_gl_enhance_js_default.a.supermap.QueryService(restMapParameter.url).queryByGeometry(param, function (serviceResult) {
           _this2._mapQuerySucceed(serviceResult, restMapParameter);
         });
       } else {
@@ -66058,11 +66059,12 @@ function (_mapboxgl$Evented) {
         var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
           attributeFilter: restDataParameter.attributeFilter,
           datasetNames: restDataParameter.dataName,
-          bounds: this.bounds,
+          spatialQueryMode: 'INTERSECT',
+          geometry: this.bounds,
           fromIndex: 0,
           toIndex: restDataParameter.maxFeatures - 1 || this.maxFeatures - 1
         });
-        new mapbox_gl_enhance_js_default.a.supermap.FeatureService(restDataParameter.url).getFeaturesByBounds(boundsParam, function (serviceResult) {
+        new mapbox_gl_enhance_js_default.a.supermap.FeatureService(restDataParameter.url).getFeaturesByGeometry(boundsParam, function (serviceResult) {
           _this3._dataQuerySucceed(serviceResult, restDataParameter);
         });
       } else {
