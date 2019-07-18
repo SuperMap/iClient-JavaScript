@@ -55302,6 +55302,7 @@ function () {
     this.overlayLayers = this.map.overlayLayersManager;
     this.detailLayers = null;
     this.sourceList = {};
+    this.sourceNames = [];
 
     this._initLayers();
 
@@ -55320,6 +55321,11 @@ function () {
       }
 
       return sourceList;
+    }
+  }, {
+    key: "getSourceNames",
+    value: function getSourceNames() {
+      return [].concat(this.sourceNames);
     }
   }, {
     key: "getLegendStyle",
@@ -55385,6 +55391,8 @@ function () {
           _this2.sourceList[layer['source']] = new web_map_SourceModel({
             source: layer['source']
           });
+
+          _this2.sourceNames.push(layer['source']);
         }
 
         _this2.sourceList[layer['source']].addLayer(new web_map_LayerModel(layer), layer['sourceLayer']);
@@ -56267,7 +56275,7 @@ var LineStyle_LineStyle = function LineStyle() {
  * @category Components Layer
  * @desc 数据流图层组件。
  * @vue-prop {String} serviceUrl - 数据流服务地址。
- * @vue-prop {String} [layerId] - 图层 ID。
+ * @vue-prop {String} [registerToken] -  SuperMap iServer 提供的一种基于 Token（令牌）的用户身份验证机制。
  * @vue-prop {GeoJSONObject} [geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @vue-prop {String} [excludeField] - 排除字段。
  * @vue-prop {Object} [layerStyle] - 图层样式配置。
@@ -59749,12 +59757,12 @@ var Legend_component = normalizeComponent(
 )
 
 /* harmony default export */ var Legend = (Legend_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/layer-list/LayerList.vue?vue&type=template&id=6dacc4b0&
-var LayerListvue_type_template_id_6dacc4b0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-layer-list",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('a-card',{staticClass:"sm-component-layer-list__a-card",style:([_vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-component-layer-list__content"},_vm._l((_vm.sourceList),function(sourceValue,sourceKey,index){return _c('a-collapse',{key:index,staticClass:"sm-component-layer-list__collapse",attrs:{"bordered":false},on:{"change":_vm.handleCollapseChange}},[(typeof sourceValue.sourceLayerList === 'object')?_c('a-collapse-panel',{staticClass:"sm-component-layer-list__collapseitem",attrs:{"showArrow":false}},[_c('template',{slot:"header"},[_c('div',{staticClass:"header-wrap",style:(sourceValue.visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle())},[_c('div',{staticClass:"header-text"},[_c('a-icon',{style:(sourceValue.visibility === 'visible' ? _vm.getColorStyle(0) : _vm.getDisabledStyle(false)),attrs:{"type":"eye"},on:{"click":function($event){$event.stopPropagation();_vm.toggleLayerGroupVisibility(sourceKey,sourceValue.visibility)}}}),_vm._v(" "),_c('span',{staticClass:"add-ellipsis"},[_vm._v(_vm._s(sourceKey))])],1),_vm._v(" "),_c('a-icon',{staticClass:"header-arrow",attrs:{"type":"right"}})],1)]),_vm._v(" "),_vm._l((sourceValue.sourceLayerList),function(sourcelayerValue,sourcelayerKey,i){return _c('a-checkbox',{key:i,style:(sourcelayerValue[0].visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle()),attrs:{"checked":_vm._f("isVisible")(sourcelayerValue[0].visibility),"title":sourcelayerKey},on:{"change":function($event){_vm.toggleVisibility(sourcelayerKey,sourceKey,sourcelayerValue[0].visibility)}}},[_vm._v(_vm._s(sourcelayerKey))])})],2):_c('a-card',{staticClass:"sm-component-layer-list__elcarditem",style:([_vm.getTextColorStyle])},[_c('a-icon',{class:[sourceValue.visibility === 'visible' ? 'visible':'none'],style:(sourceValue.visibility === 'visible' ? _vm.getColorStyle(0) : _vm.getDisabledStyle(false)),attrs:{"type":"eye"},on:{"click":function($event){$event.stopPropagation();_vm.toggleLayerGroupVisibility(sourceKey,sourceValue.visibility)}}}),_vm._v(" "),_c('div',{staticClass:"sm-component-layer-list__layergroupname add-ellipsis",style:(sourceValue.visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle()),attrs:{"title":sourceKey}},[_vm._v(_vm._s(sourceKey))])],1)],1)}))])],1)}
-var LayerListvue_type_template_id_6dacc4b0_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/layer-list/LayerList.vue?vue&type=template&id=4557eb66&
+var LayerListvue_type_template_id_4557eb66_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-layer-list",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('a-card',{staticClass:"sm-component-layer-list__a-card",style:([_vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-component-layer-list__content"},_vm._l((_vm.sourceNames),function(name,index){return _c('a-collapse',{key:index,staticClass:"sm-component-layer-list__collapse",attrs:{"bordered":false},on:{"change":_vm.handleCollapseChange}},[(typeof _vm.sourceList[name].sourceLayerList === 'object')?_c('a-collapse-panel',{staticClass:"sm-component-layer-list__collapseitem",attrs:{"showArrow":false}},[_c('template',{slot:"header"},[_c('div',{staticClass:"header-wrap",style:(_vm.sourceList[name].visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle())},[_c('div',{staticClass:"header-text"},[_c('a-icon',{style:(_vm.sourceList[name].visibility === 'visible' ? _vm.getColorStyle(0) : _vm.getDisabledStyle(false)),attrs:{"type":"eye"},on:{"click":function($event){$event.stopPropagation();_vm.toggleLayerGroupVisibility(name,_vm.sourceList[name].visibility)}}}),_vm._v(" "),_c('span',{staticClass:"add-ellipsis"},[_vm._v(_vm._s(name))])],1),_vm._v(" "),_c('a-icon',{staticClass:"header-arrow",attrs:{"type":"right"}})],1)]),_vm._v(" "),_vm._l((_vm.sourceList[name].sourceLayerList),function(sourcelayerValue,sourcelayerKey,i){return _c('a-checkbox',{key:i,style:(sourcelayerValue[0].visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle()),attrs:{"checked":_vm._f("isVisible")(sourcelayerValue[0].visibility),"title":sourcelayerKey},on:{"change":function($event){_vm.toggleVisibility(sourcelayerKey,name,sourcelayerValue[0].visibility)}}},[_vm._v(_vm._s(sourcelayerKey))])})],2):_c('a-card',{staticClass:"sm-component-layer-list__elcarditem",style:([_vm.getTextColorStyle])},[_c('a-icon',{class:[_vm.sourceList[name].visibility === 'visible' ? 'visible':'none'],style:(_vm.sourceList[name].visibility === 'visible' ? _vm.getColorStyle(0) : _vm.getDisabledStyle(false)),attrs:{"type":"eye"},on:{"click":function($event){$event.stopPropagation();_vm.toggleLayerGroupVisibility(name,_vm.sourceList[name].visibility)}}}),_vm._v(" "),_c('div',{staticClass:"sm-component-layer-list__layergroupname add-ellipsis",style:(_vm.sourceList[name].visibility === 'visible' ? _vm.getTextColorStyle : _vm.getDisabledStyle()),attrs:{"title":name}},[_vm._v(_vm._s(name))])],1)],1)}))])],1)}
+var LayerListvue_type_template_id_4557eb66_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/layer-list/LayerList.vue?vue&type=template&id=6dacc4b0&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/layer-list/LayerList.vue?vue&type=template&id=4557eb66&
 
 // CONCATENATED MODULE: ./src/mapboxgl/web-map/control/layer-list/LayerListViewModel.js
 
@@ -59785,6 +59793,7 @@ function (_mapboxgl$Evented) {
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(LayerListViewModel).call(this));
     _this.map = map;
     _this.sourceList = {};
+    _this.sourceNames = [];
 
     _this._init();
 
@@ -59808,7 +59817,13 @@ function (_mapboxgl$Evented) {
         map: this.map
       });
       this.sourceList = this.sourceListModel.getSourceList();
+      this.sourceNames = this.sourceListModel.getSourceNames().reverse();
       return this.sourceList;
+    }
+  }, {
+    key: "getSourceNames",
+    value: function getSourceNames() {
+      return this.sourceNames;
     }
   }, {
     key: "changeLayerVisible",
@@ -59964,6 +59979,7 @@ function (_mapboxgl$Evented) {
   },
   data: function data() {
     return {
+      sourceNames: [],
       sourceList: {},
       disabledStyle: {
         color: '#c0c4cc'
@@ -60027,10 +60043,12 @@ function (_mapboxgl$Evented) {
     this.viewModel = new layer_list_LayerListViewModel(this.map);
     this.$nextTick(function () {
       _this2.sourceList = _this2.viewModel.initLayerList();
+      _this2.sourceNames = _this2.viewModel.getSourceNames();
     });
     this.viewModel.on('layersUpdated', function () {
       _this2.$nextTick(function () {
         _this2.sourceList = _this2.viewModel.initLayerList();
+        _this2.sourceNames = _this2.viewModel.getSourceNames();
 
         _this2.changCheckStyle();
       });
@@ -60038,6 +60056,7 @@ function (_mapboxgl$Evented) {
   },
   removed: function removed() {
     this.sourceList = {};
+    this.sourceNames = [];
   }
 });
 // CONCATENATED MODULE: ./src/mapboxgl/web-map/control/layer-list/LayerList.vue?vue&type=script&lang=js&
@@ -60052,8 +60071,8 @@ function (_mapboxgl$Evented) {
 
 var LayerList_component = normalizeComponent(
   layer_list_LayerListvue_type_script_lang_js_,
-  LayerListvue_type_template_id_6dacc4b0_render,
-  LayerListvue_type_template_id_6dacc4b0_staticRenderFns,
+  LayerListvue_type_template_id_4557eb66_render,
+  LayerListvue_type_template_id_4557eb66_staticRenderFns,
   false,
   null,
   null,
@@ -64314,12 +64333,12 @@ var Chart_component = normalizeComponent(
 )
 
 /* harmony default export */ var Chart = (Chart_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=7525414c&
-var WebMapvue_type_template_id_7525414c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl.show)?_c('Pan',{attrs:{"position":_vm.panControl.position}}):_vm._e(),_vm._v(" "),(_vm.scaleControl.show)?_c('Scale',{attrs:{"position":_vm.scaleControl.position}}):_vm._e(),_vm._v(" "),(_vm.zoomControl.show)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomControl.zoomWithSlider,"position":_vm.zoomControl.position}}):_vm._e(),_vm._v(" "),(_vm.miniMapControl.show)?_c('mini-map',_vm._b({},'mini-map',_vm.miniMapControl,false)):_vm._e(),_vm._v(" "),(_vm.layerListControl.show)?_c('layer-list',_vm._b({},'layer-list',_vm.layerListControl,false)):_vm._e(),_vm._v(" "),(_vm.measureControl.show)?_c('Measure',_vm._b({},'Measure',_vm.measureControl,false)):_vm._e(),_vm._v(" "),(_vm.legendControl.show)?_c('Legend',_vm._b({},'Legend',_vm.legendControl,false)):_vm._e(),_vm._v(" "),(_vm.queryControl.show)?_c('Query',_vm._b({},'Query',_vm.queryControl,false)):_vm._e(),_vm._v(" "),(_vm.searchControl.show)?_c('Search',_vm._b({},'Search',_vm.searchControl,false)):_vm._e(),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
-var WebMapvue_type_template_id_7525414c_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=70558eca&
+var WebMapvue_type_template_id_70558eca_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.panControl.show)?_c('Pan',{attrs:{"position":_vm.panControl.position}}):_vm._e(),_vm._v(" "),(_vm.scaleControl.show)?_c('Scale',{attrs:{"position":_vm.scaleControl.position}}):_vm._e(),_vm._v(" "),(_vm.zoomControl.show)?_c('Zoom',{attrs:{"show-zoom-slider":_vm.zoomControl.zoomWithSlider,"position":_vm.zoomControl.position}}):_vm._e(),_vm._v(" "),(_vm.miniMapControl.show)?_c('mini-map',_vm._b({},'mini-map',_vm.miniMapControl,false)):_vm._e(),_vm._v(" "),(_vm.layerListControl.show)?_c('layer-list',_vm._b({},'layer-list',_vm.layerListControl,false)):_vm._e(),_vm._v(" "),(_vm.measureControl.show)?_c('Measure',_vm._b({},'Measure',_vm.measureControl,false)):_vm._e(),_vm._v(" "),(_vm.legendControl.show)?_c('Legend',_vm._b({},'Legend',_vm.legendControl,false)):_vm._e(),_vm._v(" "),(_vm.queryControl.show)?_c('Query',_vm._b({},'Query',_vm.queryControl,false)):_vm._e(),_vm._v(" "),(_vm.searchControl.show)?_c('Search',_vm._b({},'Search',_vm.searchControl,false)):_vm._e(),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
+var WebMapvue_type_template_id_70558eca_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=7525414c&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMap.vue?vue&type=template&id=70558eca&
 
 // CONCATENATED MODULE: ./src/mapboxgl/_utils/geometry-util.js
 var handleMultyPolygon = function handleMultyPolygon(features) {
@@ -66087,6 +66106,12 @@ function (_mapboxgl$Evented) {
           this._sourceListModel.addSourceStyle(layerID, this._legendList[layerID]);
         }
 
+        for (var index = this._layers.length - 2; index > -1; index--) {
+          var targetlayerId = this._layers[index].layerID;
+          var beforLayerId = this._layers[index + 1].layerID;
+          this.map.moveLayer(targetlayerId, beforLayerId);
+        }
+
         this.fire('addlayerssucceeded', {
           map: this.map,
           mapparams: this.mapParams,
@@ -66402,12 +66427,12 @@ function (_mapboxgl$Evented) {
 }(mapbox_gl_enhance_js_default.a.Evented);
 
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/query/Query.vue?vue&type=template&id=3d89a932&
-var Queryvue_type_template_id_3d89a932_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-component-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-component-query__job-info-panel"},[_c('div',{staticClass:"sm-component-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"sm-components-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-component-query__job-info-name",attrs:{"title":jobInfo.queryParameter.name}},[_vm._v(_vm._s(jobInfo.queryParameter.name))]),_vm._v(" "),_c('div',{staticClass:"sm-components-icons-legend-unfold"})]),_vm._v(" "),(jobInfo.queryParameter.attributeFilter)?_c('div',{staticClass:"sm-component-query__job-info-body hidden"},[_c('div',{staticClass:"sm-component-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.queryParameter.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('a-select',{staticClass:"sm-component-query__a-select",attrs:{"get-popup-container":_vm.getPopupContainer},on:{"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(jobInfo.spaceFilter),callback:function ($$v) {_vm.$set(jobInfo, "spaceFilter", $$v)},expression:"jobInfo.spaceFilter"}},_vm._l((_vm.selectOptions),function(item){return _c('a-select-option',{key:item.value,attrs:{"value":item.value}},[_vm._v(_vm._s(item.label))])}))],1),_vm._v(" "),_c('div',{staticClass:"sm-component-query__query-button"},[_c('a-button',{staticClass:"sm-component-query__a-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo.queryParameter, jobInfo.spaceFilter)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult && !_vm.isQuery),expression:"!queryResult && !isQuery"}],staticClass:"sm-component-query__no-result hidden"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isQuery && !_vm.queryResult),expression:"isQuery && !queryResult"}],staticClass:"sm-component-query__result-loading"},[_c('a-spin',{attrs:{"tip":_vm.$t('query.querying')}},[_c('a-icon',{staticStyle:{"font-size":"24px"},attrs:{"slot":"indicator","type":"loading","spin":""},slot:"indicator"})],1)],1),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-header",style:(_vm.getColorStyle(0))},[_c('span',{staticClass:"sm-component-query__header-name",attrs:{"title":_vm.queryResult.name}},[_vm._v(_vm._s(_vm.queryResult.name))]),_vm._v(" "),_c('span',{staticClass:"sm-components-icons-close",on:{"click":_vm.clearResult}})]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"queryTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
-var Queryvue_type_template_id_3d89a932_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/query/Query.vue?vue&type=template&id=40eafbc8&
+var Queryvue_type_template_id_40eafbc8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-query",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-query__body",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-query__choose-panel clearfix"},[_c('div',{staticClass:"sm-component-query__job-button is-active",style:(_vm.activeTab === 'job' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryJob')},on:{"click":_vm.jobButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryJob')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-button",style:(_vm.activeTab === 'result' ? _vm.getColorStyle(0) : ''),attrs:{"title":_vm.$t('query.queryReuslt')},on:{"click":_vm.resultButtonClicked}},[_vm._v(_vm._s(_vm.$t('query.queryReuslt')))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__job-info"},_vm._l((_vm.jobInfos),function(jobInfo,index){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.jobInfos.length > 0),expression:"jobInfos.length > 0"}],key:index,staticClass:"sm-component-query__job-info-panel"},[_c('div',{staticClass:"sm-component-query__job-info-header",style:(_vm.getTextColorStyle),on:{"click":_vm.jobInfoClicked,"mouseleave":_vm.resetHoverStyle,"mouseenter":_vm.changeHoverStyle}},[_c('span',{staticClass:"sm-components-icons-preview"}),_vm._v(" "),_c('span',{staticClass:"sm-component-query__job-info-name",attrs:{"title":jobInfo.queryParameter.name}},[_vm._v(_vm._s(jobInfo.queryParameter.name))]),_vm._v(" "),_c('div',{staticClass:"sm-components-icons-legend-unfold"})]),_vm._v(" "),(jobInfo.queryParameter.attributeFilter)?_c('div',{staticClass:"sm-component-query__job-info-body hidden"},[_c('div',{staticClass:"sm-component-query__attribute"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.attributeCondition')))]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__attribute-name",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(jobInfo.queryParameter.attributeFilter))])]),_vm._v(" "),_c('div',{staticClass:"sm-component-query__spatial-filter"},[_c('div',[_vm._v(_vm._s(_vm.$t('query.spatialFilter')))]),_vm._v(" "),_c('a-select',{staticClass:"sm-component-query__a-select",attrs:{"get-popup-container":_vm.getPopupContainer},on:{"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(jobInfo.spaceFilter),callback:function ($$v) {_vm.$set(jobInfo, "spaceFilter", $$v)},expression:"jobInfo.spaceFilter"}},_vm._l((_vm.selectOptions),function(item){return _c('a-select-option',{key:item.value,attrs:{"value":item.value}},[_vm._v(_vm._s(item.label))])}))],1),_vm._v(" "),_c('div',{staticClass:"sm-component-query__query-button"},[_c('a-button',{staticClass:"sm-component-query__a-button",style:({backgroundColor: _vm.getColorStyle(0).color, color: _vm.getTextColor}),attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.queryButtonClicked(jobInfo.queryParameter, jobInfo.spaceFilter)}}},[_vm._v(_vm._s(_vm.$t('query.applicate')))])],1)]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"sm-component-query__result-info hidden"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.queryResult && !_vm.isQuery),expression:"!queryResult && !isQuery"}],staticClass:"sm-component-query__no-result hidden"},[_vm._v(_vm._s(_vm.$t('query.noResult')))]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isQuery && !_vm.queryResult),expression:"isQuery && !queryResult"}],staticClass:"sm-component-query__result-loading"},[_c('a-spin',{attrs:{"tip":_vm.$t('query.querying')}},[_c('a-icon',{staticStyle:{"font-size":"24px"},attrs:{"slot":"indicator","type":"loading","spin":""},slot:"indicator"})],1)],1),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-header",style:(_vm.getColorStyle(0))},[_c('span',{staticClass:"sm-component-query__header-name",attrs:{"title":_vm.queryResult.name}},[_vm._v(_vm._s(_vm.queryResult.name))]),_vm._v(" "),_c('span',{staticClass:"sm-components-icons-close",on:{"click":_vm.clearResult}})]):_vm._e(),_vm._v(" "),(_vm.queryResult)?_c('div',{staticClass:"sm-component-query__result-body"},[_c('ul',_vm._l((_vm.queryResult.result),function(item,index){return _c('li',{key:index,attrs:{"title":'SmID：'+(item.properties.SmID || item.properties.SMID)},on:{"click":_vm.queryResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s('SmID：'+(item.properties.SmID || item.properties.SMID)))])}))]):_vm._e()])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"queryTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
+var Queryvue_type_template_id_40eafbc8_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/query/Query.vue?vue&type=template&id=3d89a932&
+// CONCATENATED MODULE: ./src/mapboxgl/query/Query.vue?vue&type=template&id=40eafbc8&
 
 // CONCATENATED MODULE: ./src/mapboxgl/query/QueryViewModel.js
 
@@ -67162,12 +67187,12 @@ var TablePopup_component = normalizeComponent(
  * @module Query
  * @category Components
  * @desc 查询组件。
- * @vue-prop {String} [iconClass='sm-components-icons-search'] - 组件 icon 的类名。
+ * @vue-prop {String} [iconClass='sm-components-icons-search'] - 设置组件图标的类名。
  * @vue-prop {String} [headerName='查询'] - 组件标题名。
  * @vue-prop {Number} [maxFeatures=200] - 最大返回要素个数。
- * @vue-prop {RestMapParameter} [restMap] - iServer 地图服务查询配置。
- * @vue-prop {RestDataParameter} [restData] - iServer 数据服务查询配置。
- * @vue-prop {iPortalDataParameter} [iportalData] - iPortal 数据查询配置。
+ * @vue-prop {Array} [restMap] - iServer 地图服务查询配置。
+ * @vue-prop {Array} [restData] - iServer 数据服务查询配置。
+ * @vue-prop {Array} [iportalData] - iPortal 数据查询配置。
  * @vue-prop {Object} [layerStyle] - 图层样式配置。
  * @vue-prop {SuperMap.Components.commontypes.LineStyle} [layerStyle.line] - 线图层样式配置。
  * @vue-prop {SuperMap.Components.commontypes.CircleStyle} [layerStyle.circle] - 点图层样式配置。
@@ -67561,8 +67586,8 @@ var TablePopup_component = normalizeComponent(
 
 var Query_component = normalizeComponent(
   query_Queryvue_type_script_lang_js_,
-  Queryvue_type_template_id_3d89a932_render,
-  Queryvue_type_template_id_3d89a932_staticRenderFns,
+  Queryvue_type_template_id_40eafbc8_render,
+  Queryvue_type_template_id_40eafbc8_staticRenderFns,
   false,
   null,
   null,
@@ -67571,12 +67596,12 @@ var Query_component = normalizeComponent(
 )
 
 /* harmony default export */ var Query = (Query_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/search/Search.vue?vue&type=template&id=76cb013a&
-var Searchvue_type_template_id_76cb013a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-search",style:([_vm.getTextColorStyle, _vm.getBackgroundStyle]),attrs:{"id":"sm-component-search"}},[_c('div',{staticClass:"sm-component-search__input"},[_c('a-input',{staticClass:"sm-component-search__a-input",style:([_vm.getBackgroundStyle]),attrs:{"placeholder":_vm.$t('search.inputPlaceHolder')},on:{"pressEnter":_vm.searchButtonClicked,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('a-icon',{style:(_vm.getColorStyle(0)),attrs:{"slot":"prefix","type":_vm.prefixType},on:{"click":_vm.searchButtonClicked},slot:"prefix"}),_vm._v(" "),_c('a-icon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isHover && _vm.searchKey),expression:"isHover && searchKey"}],style:(_vm.getColorStyle(0)),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.inputValueCleared,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},slot:"suffix"})],1)],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResultLength),expression:"getResultLength"}],staticClass:"sm-component-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-component-search__panel"},[(result.source)?_c('span',{staticClass:"sm-component-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-component-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,i){return _c('li',{key:i,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])})),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"searchTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
-var Searchvue_type_template_id_76cb013a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/search/Search.vue?vue&type=template&id=f8123c0e&
+var Searchvue_type_template_id_f8123c0e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-search",style:([_vm.getTextColorStyle, _vm.getBackgroundStyle]),attrs:{"id":"sm-component-search"}},[_c('div',{staticClass:"sm-component-search__input"},[_c('a-input',{staticClass:"sm-component-search__a-input",style:([_vm.getBackgroundStyle]),attrs:{"placeholder":_vm.$t('search.inputPlaceHolder')},on:{"pressEnter":_vm.searchButtonClicked,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('a-icon',{style:(_vm.getColorStyle(0)),attrs:{"slot":"prefix","type":_vm.prefixType},on:{"click":_vm.searchButtonClicked},slot:"prefix"}),_vm._v(" "),_c('a-icon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isHover && _vm.searchKey),expression:"isHover && searchKey"}],style:(_vm.getColorStyle(0)),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.inputValueCleared,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},slot:"suffix"})],1)],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResultLength),expression:"getResultLength"}],staticClass:"sm-component-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-component-search__panel"},[(result.source)?_c('span',{staticClass:"sm-component-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-component-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,i){return _c('li',{key:i,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])})),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"searchTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
+var Searchvue_type_template_id_f8123c0e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/search/Search.vue?vue&type=template&id=76cb013a&
+// CONCATENATED MODULE: ./src/mapboxgl/search/Search.vue?vue&type=template&id=f8123c0e&
 
 // CONCATENATED MODULE: ./src/mapboxgl/search/SearchViewModel.js
 
@@ -68140,12 +68165,13 @@ function (_mapboxgl$Evented) {
  * @desc 搜索组件。
  * @vue-prop {(Number|String)} [maxFeatures=8] - 最多可返回的要素数量，最大值为 100。
  * @vue-prop {Array} [layerNames] - 地图图层搜索配置，如：'['UNIQUE-民航数']'。
- * @vue-prop {RestMapParameter} [restMap] - iServer 地图服务搜索配置。
- * @vue-prop {RestDataParameter} [restData] - iServer 数据服务搜索配置。
- * @vue-prop {iPortalDataParameter} [iportalData] - iPortal 数据搜索配置。
- * @vue-prop {AddressMatchParameter} [addressMatch] - iServer 地址匹配服务搜索配置。
+ * @vue-prop {Array} [restMap] - SuperMap iServer 地图服务搜索配置。
+ * @vue-prop {Array} [restData] - SuperMap iServer 数据服务搜索配置。
+ * @vue-prop {Array} [iportalData] - SuperMap iPortal 数据搜索配置。
+ * @vue-prop {Array} [addressMatch] - SuperMap iServer 地址匹配服务搜索配置。
  * @vue-prop {Object} [onlineLocalSearch] - online 本地搜索配置。
  * @vue-prop {Boolean} [onlineLocalSearch.enable=true] - 是否开启 online 本地搜索。
+ * @vue-prop {String} [onlineLocalSearch.city='北京市'] - 搜索的城市。
  * @vue-computed {Number} getResultLength - 获取结果数据长度。
  */
 
@@ -68398,8 +68424,8 @@ function (_mapboxgl$Evented) {
 
 var Search_component = normalizeComponent(
   search_Searchvue_type_script_lang_js_,
-  Searchvue_type_template_id_76cb013a_render,
-  Searchvue_type_template_id_76cb013a_staticRenderFns,
+  Searchvue_type_template_id_f8123c0e_render,
+  Searchvue_type_template_id_f8123c0e_staticRenderFns,
   false,
   null,
   null,
@@ -68703,8 +68729,8 @@ WebMapvue_type_script_lang_ts_SmWebMap = WebMapvue_type_script_lang_ts_decorate(
 
 var WebMap_component = normalizeComponent(
   web_map_WebMapvue_type_script_lang_ts_,
-  WebMapvue_type_template_id_7525414c_render,
-  WebMapvue_type_template_id_7525414c_staticRenderFns,
+  WebMapvue_type_template_id_70558eca_render,
+  WebMapvue_type_template_id_70558eca_staticRenderFns,
   false,
   null,
   null,
