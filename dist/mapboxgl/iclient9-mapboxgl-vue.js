@@ -8,14 +8,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("shapefile"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("echarts"), require("xlsx"), require("three"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"));
+		module.exports = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("shapefile"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("echarts"), require("three"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"), require("xlsx"));
 	else if(typeof define === 'function' && define.amd)
-		define(["./static/libs/mapboxgl/mapbox-gl-enhance.js", "shapefile", "./static/libs/echarts-layer/EchartsLayer.js", "./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js", "./static/libs/deckgl/deck.gl.min.js", "echarts", "xlsx", "three", "VueECharts", "@mapbox/mapbox-gl-draw", "echarts-liquidfill", "vue"], factory);
+		define(["./static/libs/mapboxgl/mapbox-gl-enhance.js", "shapefile", "./static/libs/echarts-layer/EchartsLayer.js", "./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js", "./static/libs/deckgl/deck.gl.min.js", "echarts", "three", "VueECharts", "@mapbox/mapbox-gl-draw", "echarts-liquidfill", "vue", "xlsx"], factory);
 	else if(typeof exports === 'object')
-		exports["Components"] = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("shapefile"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("echarts"), require("xlsx"), require("three"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"));
+		exports["Components"] = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("shapefile"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("echarts"), require("three"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"), require("xlsx"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["mapboxgl"], root["shapefile"], root["EchartsLayer"], root["SuperMap"], root["DeckGL"], root["echarts"], root["XLSX"], root["THREE"], root["VueECharts"], root["MapboxDraw"], root["echarts-liquidfill"], root["Vue"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__4v0n__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE__9RVc__, __WEBPACK_EXTERNAL_MODULE_AEfv__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_X1wy__, __WEBPACK_EXTERNAL_MODULE_X9qW__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_i7_w__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["mapboxgl"], root["shapefile"], root["EchartsLayer"], root["SuperMap"], root["DeckGL"], root["echarts"], root["THREE"], root["VueECharts"], root["MapboxDraw"], root["echarts-liquidfill"], root["Vue"], root["XLSX"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__4v0n__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE__9RVc__, __WEBPACK_EXTERNAL_MODULE_AEfv__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_X9qW__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_X1wy__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5476,13 +5476,6 @@ module.exports = _inherits;
 /***/ }),
 
 /***/ "7bmt":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ "85GZ":
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
@@ -15494,17 +15487,6 @@ module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
-
-/***/ }),
-
-/***/ "Rhgv":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Border_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("85GZ");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Border_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Border_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Border_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -55324,12 +55306,12 @@ var TimeText_component = normalizeComponent(
 )
 
 /* harmony default export */ var TimeText = (TimeText_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/border/Border.vue?vue&type=template&id=0f31962e&
-var Bordervue_type_template_id_0f31962e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:_vm.borderId,staticClass:"borders",style:(_vm.borderStyle)},[_c('div',{staticClass:"content",style:(_vm.contentStyle)},[_vm._t("default")],2)])}
-var Bordervue_type_template_id_0f31962e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/border/Border.vue?vue&type=template&id=f564987c&
+var Bordervue_type_template_id_f564987c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:_vm.borderId,staticClass:"sm-component-border",style:(_vm.borderStyle)},[_c('div',{staticClass:"sm-component-border__content",style:(_vm.contentStyle)},[_vm._t("default")],2)])}
+var Bordervue_type_template_id_f564987c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/common/border/Border.vue?vue&type=template&id=0f31962e&
+// CONCATENATED MODULE: ./src/common/border/Border.vue?vue&type=template&id=f564987c&
 
 // EXTERNAL MODULE: ./src/common/border/assets/border.config.json
 var border_config = __webpack_require__("W6Z/");
@@ -55451,11 +55433,7 @@ var lodash_uniqueid_default = /*#__PURE__*/__webpack_require__.n(lodash_uniqueid
 });
 // CONCATENATED MODULE: ./src/common/border/Border.vue?vue&type=script&lang=js&
  /* harmony default export */ var border_Bordervue_type_script_lang_js_ = (Bordervue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/common/border/Border.vue?vue&type=style&index=0&lang=css&
-var Bordervue_type_style_index_0_lang_css_ = __webpack_require__("Rhgv");
-
 // CONCATENATED MODULE: ./src/common/border/Border.vue
-
 
 
 
@@ -55465,8 +55443,8 @@ var Bordervue_type_style_index_0_lang_css_ = __webpack_require__("Rhgv");
 
 var Border_component = normalizeComponent(
   border_Bordervue_type_script_lang_js_,
-  Bordervue_type_template_id_0f31962e_render,
-  Bordervue_type_template_id_0f31962e_staticRenderFns,
+  Bordervue_type_template_id_f564987c_render,
+  Bordervue_type_template_id_f564987c_staticRenderFns,
   false,
   null,
   null,
@@ -65560,6 +65538,7 @@ function (_mapboxgl$Evented) {
     helpers_classCallCheck_default()(this, WebMapViewModel);
 
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(WebMapViewModel).call(this));
+    _this._layers = [];
     _this.mapId = id;
     _this.mapOptions = mapOptions;
     _this.serverUrl = options.serverUrl || 'http://www.supermapol.com';
