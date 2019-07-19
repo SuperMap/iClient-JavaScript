@@ -1330,12 +1330,26 @@ var exampleConfig = {
                         fileName: "components_dataflow_vue"
                     },
                     {
-                        name: "动态火焰图层",
-                        name_en: "Dynamic Fire Layer",
+                        name: "动效火焰图层",
+                        name_en: "Animate Fire Layer",
                         version: "10.0.0",
                         thumbnail: "components_fire_layer_vue.gif",
-                        fileName: "component_fire_layer_vue"
+                        fileName: "components_fire_layer_vue"
                     },
+                    {
+                        name: "动效标记图层",
+                        name_en: "Animate Marker Layer",
+                        version: "10.0.0",
+                        thumbnail: "components_animate_marker_layer_vue.gif",
+                        fileName: "components_animate_marker_layer_vue"
+                    },
+                    {
+                        name: "动效文本标记图层",
+                        name_en: "Animate Text Layer",
+                        version: "10.0.0",
+                        thumbnail: "components_rotating_text_border_vue.gif",
+                        fileName: "components_rotating_text_border_vue"
+                    }
                 ]
             },
             chart_vue: {
@@ -1439,7 +1453,6 @@ var exampleConfig = {
                         thumbnail: "components_estateMonitoringPlatform_vue.png",
                         fileName: "components_estateMonitoringPlatform_vue"
                     }
-
                 ]
             }
         }

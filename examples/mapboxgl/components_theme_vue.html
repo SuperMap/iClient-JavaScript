@@ -69,9 +69,9 @@
     <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="1649097980" ref="map" @load.once='load'></sm-web-map>
     <!-- 切换主题按钮组 -->
     <a-radio-group class="radio-group" v-model="theme" @change="changeTheme">
-      <a-radio-button value="light">浅色主题</a-radio-button>
-      <a-radio-button value="dark">深色主题</a-radio-button>
-      <a-radio-button value="custom">自定义主题</a-radio-button>
+      <a-radio-button value="light">{{resources.btn_lightTheme}}</a-radio-button>
+      <a-radio-button value="dark">{{resources.btn_darkTheme}}</a-radio-button>
+      <a-radio-button value="custom">{{resources.btn_customTheme}}</a-radio-button>
     </a-radio-group>
     <div class="box-card">
       <!-- 图标组件 -->

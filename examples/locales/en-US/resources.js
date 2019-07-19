@@ -558,7 +558,9 @@ window.examplesResources = {
         "title_componentsRankSymbolTheme_Vue": 'RankSymbolTheme Layer component(Vue)',
         "title_componentsLabelTheme_Vue": 'LabelTheme Layer component(Vue)',
         "title_componentsDataFlow_Vue": 'Data FLow Layer component(Vue)',
-        'title_componentsFireLayer_Vue': 'Dynamic Fire Layer component(Vue)',
+        'title_componentsFireLayer_Vue': 'Animate Fire Layer component(Vue)',
+        'title_componentsAnimateMarkerLayer_Vue': 'Animate Marker Layer',
+        'title_componentsAnimateTextLayer_Vue': 'Animate Text Layer',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",
@@ -1390,8 +1392,15 @@ window.examplesResources = {
         "btn_symbolEqualWidthHeight":"Equal width and height",
         "btn_symbolLevelDistribution":"Horizontal uniform distribution",
         "btn_symbolVerticalDistribution":"Vertical uniform distribution",
-
-
+        "btn_breathingAperture":"Breathing Aperture",
+        "btn_haloRing":"Halo Ring",
+        "btn_rotatingAperture":"Rotating Aperture",
+        "btn_diffusedAperture":"Diffused Aperture",
+        "btn_rotatingTextBorder":"RotatingTextBorder",
+        "btn_lightTheme":"Light theme",
+        "btn_darkTheme":"Dark theme",
+        "btn_customTheme":"Custom theme",
+        
         "msg_addPath": "Please add the path for buffer analysis.",
         "msg_bufferAnalyst": "Please do the buffer analysis at first to get the scope of the query.",
         "msg_eventPoint": "Please choose a event point!",

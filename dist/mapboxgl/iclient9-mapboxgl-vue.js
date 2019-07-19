@@ -3,19 +3,19 @@
  *     vue-iclient.(http://iclient.supermap.io)
  *     Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *     license: Apache-2.0
- *     version: v10.0.0-alpha
+ *     version: v10.0.0-beta
  *    
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("echarts"), require("three"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"), require("shapefile"), require("xlsx"));
+		module.exports = factory(require("vue"), require("echarts"), require("echarts-liquidfill"), require("@mapbox/mapbox-gl-draw"), require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("three"), require("VueECharts"), require("xlsx"), require("shapefile"));
 	else if(typeof define === 'function' && define.amd)
-		define(["./static/libs/mapboxgl/mapbox-gl-enhance.js", "./static/libs/echarts-layer/EchartsLayer.js", "./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js", "./static/libs/deckgl/deck.gl.min.js", "echarts", "three", "VueECharts", "@mapbox/mapbox-gl-draw", "echarts-liquidfill", "vue", "shapefile", "xlsx"], factory);
+		define(["vue", "echarts", "echarts-liquidfill", "@mapbox/mapbox-gl-draw", "./static/libs/mapboxgl/mapbox-gl-enhance.js", "./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js", "./static/libs/deckgl/deck.gl.min.js", "./static/libs/echarts-layer/EchartsLayer.js", "three", "VueECharts", "xlsx", "shapefile"], factory);
 	else if(typeof exports === 'object')
-		exports["Components"] = factory(require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("echarts"), require("three"), require("VueECharts"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"), require("shapefile"), require("xlsx"));
+		exports["Components"] = factory(require("vue"), require("echarts"), require("echarts-liquidfill"), require("@mapbox/mapbox-gl-draw"), require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("./static/libs/iclient-mapboxgl/iclient9-mapboxgl.min.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("three"), require("VueECharts"), require("xlsx"), require("shapefile"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["mapboxgl"], root["EchartsLayer"], root["SuperMap"], root["DeckGL"], root["echarts"], root["THREE"], root["VueECharts"], root["MapboxDraw"], root["echarts-liquidfill"], root["Vue"], root["shapefile"], root["XLSX"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE__9RVc__, __WEBPACK_EXTERNAL_MODULE_AEfv__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_X9qW__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE__4v0n__, __WEBPACK_EXTERNAL_MODULE_X1wy__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["Vue"], root["echarts"], root["echarts-liquidfill"], root["MapboxDraw"], root["mapboxgl"], root["SuperMap"], root["DeckGL"], root["EchartsLayer"], root["THREE"], root["VueECharts"], root["XLSX"], root["shapefile"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__9RVc__, __WEBPACK_EXTERNAL_MODULE_AEfv__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE_X9qW__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_X1wy__, __WEBPACK_EXTERNAL_MODULE__4v0n__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -27001,7 +27001,7 @@ __webpack_require__.d(components_namespaceObject, "RasterTileLayer", function() 
 __webpack_require__.d(components_namespaceObject, "UniqueThemeLayer", function() { return UniqueThemeLayer; });
 __webpack_require__.d(components_namespaceObject, "VectorTileLayer", function() { return VectorTileLayer; });
 __webpack_require__.d(components_namespaceObject, "FireLayer", function() { return fire_FireLayer; });
-__webpack_require__.d(components_namespaceObject, "DynamicMarkerLayer", function() { return dynamicMarker_DynamicMarkerLayer; });
+__webpack_require__.d(components_namespaceObject, "AnimateMarkerLayer", function() { return animate_marker_AnimateMarkerLayer; });
 __webpack_require__.d(components_namespaceObject, "Legend", function() { return Legend; });
 __webpack_require__.d(components_namespaceObject, "LayerList", function() { return LayerList; });
 __webpack_require__.d(components_namespaceObject, "Measure", function() { return Measure; });
@@ -27009,6 +27009,7 @@ __webpack_require__.d(components_namespaceObject, "MiniMap", function() { return
 __webpack_require__.d(components_namespaceObject, "Pan", function() { return Pan; });
 __webpack_require__.d(components_namespaceObject, "Scale", function() { return Scale; });
 __webpack_require__.d(components_namespaceObject, "Zoom", function() { return Zoom; });
+__webpack_require__.d(components_namespaceObject, "Draw", function() { return Draw; });
 __webpack_require__.d(components_namespaceObject, "Chart", function() { return Chart; });
 __webpack_require__.d(components_namespaceObject, "WebMap", function() { return WebMap; });
 __webpack_require__.d(components_namespaceObject, "WebScene", function() { return WebScene; });
@@ -34186,19 +34187,7 @@ function getPBMWidth(elem, props, which) {
   return value;
 }
 
-var domUtils = {
-  getParent: function getParent(element) {
-    var parent = element;
-    do {
-      if (parent.nodeType === 11 && parent.host) {
-        parent = parent.host;
-      } else {
-        parent = parent.parentNode;
-      }
-    } while (parent && parent.nodeType !== 1 && parent.nodeType !== 9);
-    return parent;
-  }
-};
+var domUtils = {};
 
 each(['Width', 'Height'], function (name) {
   domUtils['doc' + name] = function (refWin) {
@@ -34405,8 +34394,6 @@ mix(utils_utils, domUtils);
 /**
  * 得到会导致元素显示不全的祖先元素
  */
-var getParent = es_utils.getParent;
-
 
 function getOffsetParent(element) {
   if (es_utils.isWindow(element) || element.nodeType === 9) {
@@ -34434,10 +34421,10 @@ function getOffsetParent(element) {
   var skipStatic = positionStyle === 'fixed' || positionStyle === 'absolute';
 
   if (!skipStatic) {
-    return element.nodeName.toLowerCase() === 'html' ? null : getParent(element);
+    return element.nodeName.toLowerCase() === 'html' ? null : element.parentNode;
   }
 
-  for (parent = getParent(element); parent && parent !== body; parent = getParent(parent)) {
+  for (parent = element.parentNode; parent && parent !== body; parent = parent.parentNode) {
     positionStyle = es_utils.css(parent, 'position');
     if (positionStyle !== 'static') {
       return parent;
@@ -34450,9 +34437,6 @@ function getOffsetParent(element) {
 // CONCATENATED MODULE: ./node_modules/dom-align/es/isAncestorFixed.js
 
 
-var isAncestorFixed_getParent = es_utils.getParent;
-
-
 function isAncestorFixed(element) {
   if (es_utils.isWindow(element) || element.nodeType === 9) {
     return false;
@@ -34461,7 +34445,7 @@ function isAncestorFixed(element) {
   var doc = es_utils.getDocument(element);
   var body = doc.body;
   var parent = null;
-  for (parent = isAncestorFixed_getParent(element); parent && parent !== body; parent = isAncestorFixed_getParent(parent)) {
+  for (parent = element.parentNode; parent && parent !== body; parent = parent.parentNode) {
     var positionStyle = es_utils.css(parent, 'position');
     if (positionStyle === 'fixed') {
       return true;
@@ -34681,8 +34665,8 @@ function getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset) {
   var diff = [p2.left - p1.left, p2.top - p1.top];
 
   return {
-    left: Math.round(elRegion.left - diff[0] + offset[0] - targetOffset[0]),
-    top: Math.round(elRegion.top - diff[1] + offset[1] - targetOffset[1])
+    left: elRegion.left - diff[0] + offset[0] - targetOffset[0],
+    top: elRegion.top - diff[1] + offset[1] - targetOffset[1]
   };
 }
 
@@ -54158,7 +54142,8 @@ var js_cookie_default = /*#__PURE__*/__webpack_require__.n(js_cookie);
     squareyards: '平方码',
     squarefeet: '平方英尺',
     distance: '距离',
-    area: '面积'
+    area: '面积',
+    delete: '清空'
   },
   map: {},
   search: {
@@ -55325,7 +55310,13 @@ function () {
   }, {
     key: "getSourceNames",
     value: function getSourceNames() {
-      return [].concat(this.sourceNames);
+      var names = [];
+      this.sourceNames.forEach(function (element) {
+        if (element && element.indexOf('mapbox-gl-draw') < 0 && element.indexOf('smmeasure') < 0) {
+          names.push(element);
+        }
+      });
+      return names;
     }
   }, {
     key: "getLegendStyle",
@@ -55404,7 +55395,212 @@ function () {
 }();
 
 /* harmony default export */ var web_map_SourceListModel = (SourceListModel_SourceListModel);
+// EXTERNAL MODULE: external {"root":"MapboxDraw","commonjs":"@mapbox/mapbox-gl-draw","commonjs2":"@mapbox/mapbox-gl-draw","amd":"@mapbox/mapbox-gl-draw"}
+var mapbox_gl_draw_ = __webpack_require__("dz+5");
+var mapbox_gl_draw_default = /*#__PURE__*/__webpack_require__.n(mapbox_gl_draw_);
+
+// CONCATENATED MODULE: ./src/mapboxgl/_types/draw-event.js
+
+
+
+/**
+ * drawList 结构为 { [mapTarget1]: [draw1], [mapTarget2]: [draw2] }
+ * drawStates 结构如下，每个地图上必须保证只有一个组件的绘画状态为true
+ * {
+ *  [mapTarget1]: {[component1]: true/false, [component2]: true/false},
+ *  [mapTarget2]: {[component1]: true/false, [component2]: true/false}
+ * }
+ */
+
+/* harmony default export */ var draw_event = (new external_root_Vue_commonjs_vue_commonjs2_vue_amd_vue_default.a({
+  drawList: {},
+  drawStates: {},
+  _createDraw: function _createDraw(mapTarget) {
+    var drawOptions = {
+      displayControlsDefault: false,
+      controls: {
+        line_string: true,
+        trash: false
+      },
+      styles: [// line stroke
+      {
+        id: 'gl-draw-line',
+        type: 'line',
+        filter: ['all', ['==', '$type', 'LineString'], ['!=', 'mode', 'static']],
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
+        paint: {
+          'line-color': '#D20C0C',
+          'line-dasharray': [0.2, 2],
+          'line-width': 2
+        }
+      }, // polygon fill
+      {
+        id: 'gl-draw-polygon-fill',
+        type: 'fill',
+        filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+        paint: {
+          'fill-color': '#D20C0C',
+          'fill-outline-color': '#D20C0C',
+          'fill-opacity': 0.1
+        }
+      }, // polygon outline stroke
+      // This doesn't style the first edge of the polygon, which uses the line stroke styling instead
+      {
+        id: 'gl-draw-polygon-stroke-active',
+        type: 'line',
+        filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
+        paint: {
+          'line-color': '#D20C0C',
+          'line-dasharray': [0.2, 2],
+          'line-width': 2
+        }
+      }, // vertex point halos
+      {
+        id: 'gl-draw-polygon-and-line-vertex-halo-active',
+        type: 'circle',
+        filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#FFF'
+        }
+      }, // vertex points
+      {
+        id: 'gl-draw-polygon-and-line-vertex-active',
+        type: 'circle',
+        filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+        paint: {
+          'circle-radius': 3,
+          'circle-color': '#D20C0C'
+        }
+      }, // INACTIVE (static, already drawn)
+      // line stroke
+      {
+        id: 'gl-draw-line-static',
+        type: 'line',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', 'mode', 'static']],
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
+        paint: {
+          'line-color': '#000',
+          'line-width': 3
+        }
+      }, // polygon fill
+      {
+        id: 'gl-draw-polygon-fill-static',
+        type: 'fill',
+        filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
+        paint: {
+          'fill-color': '#000',
+          'fill-outline-color': '#000',
+          'fill-opacity': 0.1
+        }
+      }, // polygon outline
+      {
+        id: 'gl-draw-polygon-stroke-static',
+        type: 'line',
+        filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
+        paint: {
+          'line-color': '#000',
+          'line-width': 3
+        }
+      }, // point outline
+      {
+        id: 'gl-draw-point-stroke-active',
+        type: 'circle',
+        filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'feature'], ['==', 'active', 'true']],
+        paint: {
+          'circle-radius': 7,
+          'circle-color': '#fff'
+        }
+      }, // point fill
+      {
+        id: 'gl-draw-point-fill-active',
+        type: 'circle',
+        filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'feature'], ['==', 'active', 'true']],
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#D20C0C'
+        }
+      }, // point
+      {
+        id: 'gl-draw-point-static',
+        type: 'circle',
+        filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'feature'], ['==', 'active', 'false']],
+        paint: {
+          'circle-radius': 7,
+          'circle-color': '#D20C0C'
+        }
+      }]
+    };
+    var draw = new mapbox_gl_draw_default.a(drawOptions);
+    this.drawList[mapTarget] = draw;
+    return draw;
+  },
+  getDraw: function getDraw(mapTarget) {
+    var draw = this.drawList[mapTarget];
+    var map = map_event.$options.getMap(mapTarget);
+
+    if (map && !draw) {
+      draw = this._createDraw(mapTarget);
+      draw.onAdd(map);
+    }
+
+    return draw;
+  },
+  getDrawingState: function getDrawingState(mapTarget, componentName) {
+    return this.drawStates[mapTarget] && this.drawStates[mapTarget][componentName];
+  },
+  setDrawingState: function setDrawingState(mapTarget, componentName, drawing) {
+    this.drawStates[mapTarget] = this.drawStates[mapTarget] || {};
+
+    if (drawing) {
+      for (var key in this.drawStates[mapTarget]) {
+        this.drawStates[mapTarget][key] = false;
+      }
+    }
+
+    this.drawStates[mapTarget][componentName] = drawing;
+  },
+  deleteDrawingState: function deleteDrawingState(mapTarget, componentName) {
+    var mapDrawStates = this.drawStates[mapTarget];
+
+    if (mapDrawStates) {
+      if (componentName in mapDrawStates) {
+        delete mapDrawStates[componentName];
+      } // 如果当前map上有关draw的组件都销毁 则把当前map上的draw图层销毁 同时把组件状态也销毁
+
+
+      if (!Object.keys(mapDrawStates).length) {
+        delete this.drawStates[mapTarget];
+        this.deletDrawOfMap(mapTarget);
+      }
+    }
+  },
+  deletDrawOfMap: function deletDrawOfMap(mapTarget) {
+    var draw = this.getDraw(mapTarget);
+    var map = map_event.$options.getMap(mapTarget);
+
+    if (draw && map) {
+      draw.onRemove(map);
+      delete this.drawList[mapTarget];
+    }
+  }
+}));
 // CONCATENATED MODULE: ./src/mapboxgl/_types/map-event.js
+
 
 
 
@@ -55422,6 +55618,7 @@ function () {
   },
   deleteMap: function deleteMap(mapTarget) {
     global_event.$emit('delete-map', mapTarget);
+    draw_event.$options.deletDrawOfMap(mapTarget);
     delete this.mapCache[mapTarget];
   },
   getWebMap: function getWebMap(webmapTarget) {
@@ -58356,9 +58553,7 @@ function (_mapboxgl$Evented) {
     _this.layerId = layerId;
     _this.features = features;
     _this.modelScale = modelScale;
-
-    _this._addFireLayer();
-
+    _this.features && _this._addFireLayer();
     return _this;
   }
 
@@ -58657,7 +58852,7 @@ var FireLayer_component = normalizeComponent(
 )
 
 /* harmony default export */ var fire_FireLayer = (FireLayer_component.exports);
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/dynamicMarker/DynamicMarkerLayerViewModel.ts
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/animate-marker/AnimateMarkerLayerViewModel.ts
 
 
 
@@ -58665,77 +58860,49 @@ var FireLayer_component = normalizeComponent(
 
 
 
-var DynamicMarkerLayerViewModel_DynamicMarkerLayerViewModel =
+var AnimateMarkerLayerViewModel_AnimateMarkerLayerViewModel =
 /*#__PURE__*/
 function (_mapboxgl$Evented) {
-  inherits_default()(DynamicMarkerLayerViewModel, _mapboxgl$Evented);
+  inherits_default()(AnimateMarkerLayerViewModel, _mapboxgl$Evented);
 
-  function DynamicMarkerLayerViewModel(map, features, markersElement) {
+  function AnimateMarkerLayerViewModel(map, features, markersElement) {
     var _this;
 
-    var type = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'breathingAperture';
-    var circleStyle = arguments.length > 4 ? arguments[4] : undefined;
-    var layerId = arguments.length > 5 ? arguments[5] : undefined;
+    helpers_classCallCheck_default()(this, AnimateMarkerLayerViewModel);
 
-    helpers_classCallCheck_default()(this, DynamicMarkerLayerViewModel);
-
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(DynamicMarkerLayerViewModel).call(this));
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(AnimateMarkerLayerViewModel).call(this));
 
     if (!map) {
       throw new Error('map is requierd');
     }
 
     _this.map = map;
-    _this.layerId = layerId;
     _this.features = features;
-    _this.type = type;
-    _this.circleStyle = circleStyle;
     _this.markers = [];
     _this.markersElement = markersElement;
-
-    _this._initalizeMarkerLayer();
-
+    _this.features && _this._initalizeMarkerLayer();
     return _this;
   }
 
-  helpers_createClass_default()(DynamicMarkerLayerViewModel, [{
+  helpers_createClass_default()(AnimateMarkerLayerViewModel, [{
     key: "setType",
-    value: function setType(type, markersElement) {
-      this.type = type;
+    value: function setType(markersElement) {
       this.markersElement = markersElement;
 
       this._initalizeMarkerLayer();
     }
   }, {
-    key: "setCircleStyle",
-    value: function setCircleStyle(circleStyle) {
-      this.circleStyle = circleStyle;
+    key: "setFeatures",
+    value: function setFeatures(features, markersElement) {
+      this.markersElement = markersElement;
+      this.features = features;
+
+      this._initalizeMarkerLayer();
     }
   }, {
     key: "_initalizeMarkerLayer",
     value: function _initalizeMarkerLayer() {
-      this.features.features = this.features.features.slice(0, 5);
-
       this._clearMarkerLayer();
-
-      if (this.type === 'breathingAperture') {
-        this.map.addLayer({
-          id: this.layerId,
-          type: 'circle',
-          source: {
-            type: 'geojson',
-            data: this.features
-          },
-          paint: {
-            'circle-color': '#409eff',
-            'circle-opacity': 0.6,
-            'circle-radius': 8,
-            'circle-stroke-width': 2,
-            'circle-stroke-color': '#409eff',
-            'circle-stroke-opacity': 1
-          }
-        });
-      }
 
       this._createMarker();
     }
@@ -58757,15 +58924,14 @@ function (_mapboxgl$Evented) {
         marker && marker.remove();
       });
       this.markers = [];
-      this.layerId && this.map.getLayer(this.layerId) && this.map.removeLayer(this.layerId);
     }
   }]);
 
-  return DynamicMarkerLayerViewModel;
+  return AnimateMarkerLayerViewModel;
 }(mapbox_gl_enhance_js_default.a.Evented);
 
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--1-1!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/layer/dynamicMarker/DynamicMarkerLayer.vue?vue&type=script&lang=ts&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--1-1!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/layer/animate-marker/AnimateMarkerLayer.vue?vue&type=script&lang=ts&
 
 
 
@@ -58773,7 +58939,7 @@ function (_mapboxgl$Evented) {
 
 
 
-var DynamicMarkerLayervue_type_script_lang_ts_decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+var AnimateMarkerLayervue_type_script_lang_ts_decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
       r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
       d;
@@ -58787,72 +58953,156 @@ var DynamicMarkerLayervue_type_script_lang_ts_decorate = undefined && undefined.
 
 
 
-
-var DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer =
+var AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer =
 /*#__PURE__*/
 function (_Mixins) {
-  inherits_default()(DynamicMarkerLayer, _Mixins);
+  inherits_default()(AnimateMarkerLayer, _Mixins);
 
-  function DynamicMarkerLayer() {
-    helpers_classCallCheck_default()(this, DynamicMarkerLayer);
+  function AnimateMarkerLayer() {
+    helpers_classCallCheck_default()(this, AnimateMarkerLayer);
 
-    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(DynamicMarkerLayer).apply(this, arguments));
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(AnimateMarkerLayer).apply(this, arguments));
   }
 
-  helpers_createClass_default()(DynamicMarkerLayer, [{
+  helpers_createClass_default()(AnimateMarkerLayer, [{
+    key: "featuresChanged",
+    value: function featuresChanged() {
+      if (this.viewModel) {
+        this._markersElement = [];
+
+        this._getMarkerElement();
+
+        this.viewModel.setFeatures(this.features, this._markersElement);
+      }
+    }
+  }, {
     key: "typeChanged",
     value: function typeChanged() {
       if (this.viewModel) {
+        this._markersElement = [];
+
         this._getMarkerElement();
 
-        this.viewModel.setType(this.type, this._markersElement);
+        this.viewModel.setType(this._markersElement);
       }
     }
   }, {
     key: "widthChanged",
     value: function widthChanged() {
-      if (this.viewModel) {
-        if (this.type === 'breathingAperture') {
-          this._setBreathingApertureStyle('width');
-        } else if (this.type === 'rotatingAperture') {
-          this._setRotatingApertureStyle('width');
-        }
-      }
-    }
-  }, {
-    key: "lightColorChanged",
-    value: function lightColorChanged() {
-      if (this.viewModel) {
-        if (this.type === 'breathingAperture') {} else if (this.type === 'rotatingAperture') {
-          var dotsMarker = document.getElementsByClassName('sm-component-dynamic-marker--rotating-aperture');
+      if (this.viewModel && this.width) {
+        switch (this.type) {
+          case 'rotatingAperture':
+            this._setRotatingApertureStyle('width');
 
-          for (var i = 0; i < dotsMarker.length; i++) {
-            dotsMarker[i].style.setProperty('--light-color', this.lightColor);
-          }
+            break;
+
+          case 'haloRing':
+            this._setHaloRingStyle('width');
+
+            break;
+
+          case 'breathingAperture':
+            this._setBreathingApertureStyle('width');
+
+            break;
+
+          case 'diffusedAperture':
+            this._setDiffuseApertureStyle('width');
+
+            break;
+
+          case 'rotatingTextBorder':
+            this._setRotatingTextBoderStyle('width');
+
+            break;
         }
       }
     }
   }, {
-    key: "colorChanged",
-    value: function colorChanged() {
-      if (this.viewModel) {
-        if (this.type === 'breathingAperture') {
-          this._setBreathingApertureStyle('color');
-        } else if (this.type === 'rotatingAperture') {
-          this._setRotatingApertureStyle('color');
+    key: "heightChanged",
+    value: function heightChanged() {
+      if (this.viewModel && this.height) {
+        if (this.type === 'rotatingTextBorder') {
+          this._setRotatingTextBoderStyle('height');
         }
       }
     }
   }, {
     key: "textColorChanged",
     value: function textColorChanged() {
-      if (this.viewModel) {
+      if (this.viewModel && this.textColor) {
         if (this.type === 'breathingAperture') {
-          var pulse = document.getElementsByClassName('sm-component-dynamic-marker__name-container');
+          var pulse = document.getElementsByClassName('sm-component-animate-marker__name-container');
 
           for (var i = 0; i < pulse.length; i++) {
             pulse[i].style.color = this.textColor;
           }
+        } else if (this.type === 'rotatingTextBorder') {
+          this._setRotatingTextBoderStyle('textColor');
+        }
+      }
+    }
+  }, {
+    key: "textFontSizeChanged",
+    value: function textFontSizeChanged() {
+      if (this.viewModel && this.textFontSize) {
+        if (this.type === 'breathingAperture') {
+          var pulse = document.getElementsByClassName('sm-component-animate-marker__name-container');
+
+          for (var i = 0; i < pulse.length; i++) {
+            pulse[i].style.fontSize = this.textFontSize + 'px';
+          }
+        } else if (this.type === 'rotatingTextBorder') {
+          this._setRotatingTextBoderStyle('textFontSize');
+        }
+      }
+    }
+  }, {
+    key: "colorsChanged",
+    value: function colorsChanged() {
+      if (this.viewModel && this.colors && this.colors.length && this.colors.length > 0) {
+        switch (this.type) {
+          case 'rotatingAperture':
+            this._setRotatingApertureStyle('colors');
+
+            break;
+
+          case 'haloRing':
+            this._setHaloRingStyle('colors');
+
+            break;
+
+          case 'breathingAperture':
+            this._setBreathingApertureStyle('colors');
+
+            break;
+
+          case 'diffusedAperture':
+            this._setDiffuseApertureStyle('colors');
+
+            break;
+
+          case 'rotatingTextBorder':
+            this._setRotatingTextBoderStyle('colors');
+
+            break;
+        }
+      }
+    }
+  }, {
+    key: "textFieldChanged",
+    value: function textFieldChanged() {
+      if (this.textField) {
+        switch (this.type) {
+          case 'breathingAperture':
+            this._setBreathingApertureStyle('textField');
+
+            break;
+
+          case 'rotatingTextBorder':
+            this._setRotatingTextBoderStyle('textField');
+
+            break;
         }
       }
     }
@@ -58864,10 +59114,31 @@ function (_Mixins) {
   }, {
     key: "_getMarkerElement",
     value: function _getMarkerElement() {
-      if (this.type === 'breathingAperture') {
-        this._createBreathingApertureMarker();
-      } else if (this.type === 'rotatingAperture') {
-        this._createRotatingApertureMarker();
+      switch (this.type) {
+        case 'rotatingAperture':
+          this._createRotatingApertureMarker();
+
+          break;
+
+        case 'haloRing':
+          this._createHaloRingMarker();
+
+          break;
+
+        case 'breathingAperture':
+          this._createBreathingApertureMarker();
+
+          break;
+
+        case 'diffusedAperture':
+          this._createDiffusedApertureMarker();
+
+          break;
+
+        case 'rotatingTextBorder':
+          this._createRotatingTextBorderMarker();
+
+          break;
       }
     }
   }, {
@@ -58877,42 +59148,38 @@ function (_Mixins) {
 
       this.features.features.forEach(function (point) {
         var markerContainer = document.createElement('div');
-        markerContainer.className = 'sm-component-dynamic-marker --breathing-aperture';
-        var delay3 = document.createElement('span');
-        delay3.className = 'sm-component-dynamic-marker__delay-03 sm-component-dynamic-marker__pulse';
-        delay3.style.borderColor = _this.color;
-        delay3.style.boxShadow = "0 0 12px ".concat(_this.color, ", 0 0 20px ").concat(_this.color, " inset");
+        markerContainer.className = 'sm-component-animate-marker--breathing-aperture';
+        var dot = document.createElement('span');
+        dot.className = 'sm-component-animate-marker__dot-point';
+        markerContainer.appendChild(dot);
 
-        _this._setBreathingApertureWidth(delay3.style);
+        var childElements = _this._createMakerElement(3, 'span', ['sm-component-animate-marker__delay', 'sm-component-animate-marker__pulse']);
 
-        markerContainer.appendChild(delay3);
-        var delay2 = document.createElement('span');
-        delay2.className = 'sm-component-dynamic-marker__delay-02 sm-component-dynamic-marker__pulse';
-        delay2.style.borderColor = _this.color;
-        delay2.style.boxShadow = "0 0 12px ".concat(_this.color, ", 0 0 20px ").concat(_this.color, " inset");
+        childElements.forEach(function (element) {
+          if (_this.colors && _this.colors.length && _this.colors.length > 0) {
+            element.style.borderColor = _this.colors[0];
+            element.style.boxShadow = "0 0 12px ".concat(_this.colors[1], ", 0 0 20px ").concat(_this.colors[1], " inset");
+          }
 
-        _this._setBreathingApertureWidth(delay2.style);
+          _this._setBreathingApertureWidth(element.style);
 
-        markerContainer.appendChild(delay2);
-        var delay1 = document.createElement('span');
-        delay1.className = 'sm-component-dynamic-marker__delay-01 sm-component-dynamic-marker__pulse';
-        delay1.style.borderColor = _this.color;
-        delay1.style.boxShadow = "0 0 12px ".concat(_this.color, ", 0 0 20px ").concat(_this.color, " inset");
+          markerContainer.appendChild(element);
+        });
+        var name;
 
-        _this._setBreathingApertureWidth(delay1.style);
-
-        markerContainer.appendChild(delay1);
-        var name = point.properties && (point.properties['name'] || point.properties['Name'] || point.properties['NAME']);
-
-        if (name) {
-          var nameContainer = document.createElement('div');
-          nameContainer.className = 'sm-component-dynamic-marker__name-container';
-          nameContainer.style.color = _this.textColor;
-          var nameSpan = document.createElement('span');
-          nameSpan.innerHTML = name;
-          nameContainer.appendChild(nameSpan);
-          markerContainer.appendChild(nameContainer);
+        if (point.properties && Object.keys(point.properties).length !== 0 && _this.textField) {
+          name = point.properties[_this.textField];
         }
+
+        var nameContainer = document.createElement('div');
+        nameContainer.className = 'sm-component-animate-marker__name-container';
+        nameContainer.style.color = _this.textColor;
+        nameContainer.style.fontSize = _this.textFontSize + 'px';
+        var nameSpan = document.createElement('span');
+        nameSpan.className = 'sm-component-animate-marker__breathing-aperture-name';
+        nameSpan.innerHTML = name || '';
+        nameContainer.appendChild(nameSpan);
+        markerContainer.appendChild(nameContainer);
 
         _this._markersElement.push(markerContainer);
       });
@@ -58927,25 +59194,141 @@ function (_Mixins) {
 
         var width = step ? _this2.width : 50;
         var markerContainer = document.createElement('div');
-        markerContainer.className = 'sm-component-dynamic-marker--rotating-aperture';
-        var dots1 = document.createElement('div');
-        dots1.className = 'sm-component-dynamic-marker__dots-01 sm-component-dynamic-marker__dots';
-        dots1.setAttribute('style', _this2._getDotsStyleObj(width - (step && step * 2 || 16)));
-        markerContainer.appendChild(dots1);
-        var dots2 = document.createElement('div');
-        dots2.className = 'sm-component-dynamic-marker__dots-02 sm-component-dynamic-marker__dots';
-        dots2.setAttribute('style', _this2._getDotsStyleObj(width - (step || 32)));
-        markerContainer.appendChild(dots2);
-        var dots3 = document.createElement('div');
-        dots3.className = 'sm-component-dynamic-marker__dots-03 sm-component-dynamic-marker__dots';
-        dots3.setAttribute('style', _this2._getDotsStyleObj(width));
-        markerContainer.appendChild(dots3);
-        markerContainer.style.setProperty('--container-width', '100px');
-        markerContainer.style.setProperty('--color', _this2.color);
-        markerContainer.style.setProperty('--line-color', _this2._getRgbaColor(_this2.color));
-        markerContainer.style.setProperty('--light-color', _this2.lightColor);
+        markerContainer.className = 'sm-component-animate-marker--rotating-aperture';
+
+        var childElements = _this2._createMakerElement(3, 'div', ['sm-component-animate-marker__dots', 'sm-component-animate-marker__dots']);
+
+        childElements.forEach(function (element, index) {
+          var elementWidth;
+          index === 0 && (elementWidth = width - (step && step * 2 || 16));
+          index === 1 && (elementWidth = width - (step || 32));
+          index === 2 && (elementWidth = width);
+          element.setAttribute('style', _this2._getDotsStyleObj(elementWidth));
+          markerContainer.appendChild(element);
+        });
+
+        if (_this2.colors && _this2.colors.length && _this2.colors.length > 0 && _this2.colors[0].indexOf('rgb') > -1) {
+          markerContainer.style.setProperty('--color', _this2.colors[0]);
+          markerContainer.style.setProperty('--line-color', _this2._getRgbaColor(_this2.colors[0], 0.2));
+          markerContainer.style.setProperty('--light-color', _this2.colors[1]);
+        }
+
+        markerContainer.style.setProperty('--container-width', width + 'px');
 
         _this2._markersElement.push(markerContainer);
+      }, this);
+    }
+  }, {
+    key: "_createHaloRingMarker",
+    value: function _createHaloRingMarker() {
+      var _this3 = this;
+
+      this.features.features.forEach(function (point) {
+        var markerContainer = document.createElement('div');
+        markerContainer.className = 'sm-component-animate-marker--halo-ring';
+
+        var childElements = _this3._createMakerElement(8, 'div', ['sm-component-animate-marker__ring', 'sm-component-animate-marker__halo']);
+
+        childElements.forEach(function (element) {
+          markerContainer.appendChild(element);
+        });
+
+        if (_this3.width) {
+          markerContainer.style.setProperty('--halo-width', _this3.width + 'px');
+          markerContainer.style.setProperty('--halo-left', -_this3.width / 2 + 'px');
+          markerContainer.style.setProperty('--box-shadow-width-1', _this3.width / 10 + 'px');
+          markerContainer.style.setProperty('--box-shadow-width-2', _this3.width / 4 + 'px');
+        }
+
+        if (_this3.colors && _this3.colors.length && _this3.colors.length > 0 && _this3.colors[0].indexOf('rgb') > -1) {
+          markerContainer.style.setProperty('--color-1', _this3._getRgbaColor(_this3.colors[0], 0.3));
+          markerContainer.style.setProperty('--color-1-transparent', _this3._getRgbaColor(_this3.colors[0], 0.1));
+          markerContainer.style.setProperty('--color-2', _this3._getRgbaColor(_this3.colors[1], 0.3));
+          markerContainer.style.setProperty('--color-2-transparent', _this3._getRgbaColor(_this3.colors[1], 0.1));
+        }
+
+        _this3._markersElement.push(markerContainer);
+      }, this);
+    }
+  }, {
+    key: "_createRotatingTextBorderMarker",
+    value: function _createRotatingTextBorderMarker() {
+      var _this4 = this;
+
+      this.features.features.forEach(function (point) {
+        var markerContainer = document.createElement('div');
+        markerContainer.className = 'sm-component-animate-marker--text-boder';
+        var border = document.createElement('div');
+        border.className = 'sm-component-animate-marker__boder';
+        var keys = Object.keys(point.properties);
+        var name;
+
+        if (point.properties || Object.keys(point.properties).length !== 0) {
+          name = point.properties[_this4.textField] || point.properties[keys[0]];
+        }
+
+        var span = document.createElement('span');
+        span.className = 'sm-component-animate-marker__text';
+        span.innerHTML = name || '';
+        border.appendChild(span);
+
+        if (_this4.colors && _this4.colors.length && _this4.colors.length > 0) {
+          markerContainer.style.setProperty('--border-color', _this4.colors[0]);
+          markerContainer.style.setProperty('--box-shadow-color', _this4.colors[1]);
+        }
+
+        _this4.textColor && markerContainer.style.setProperty('--text-color', _this4.textColor);
+        markerContainer.style.setProperty('--text-font-size', _this4.textFontSize + 'px');
+
+        if (_this4.width) {
+          markerContainer.style.setProperty('--clip-width-1', _this4.width + _this4.width / 10 + 'px');
+          markerContainer.style.setProperty('--clip-width-2', _this4.width + _this4.width / 10 - 2 + 'px');
+          markerContainer.style.setProperty('--boder-width', _this4.width + 'px');
+          markerContainer.style.setProperty('--text-left-position', -_this4.width / 2 + 'px');
+        }
+
+        if (_this4.height) {
+          markerContainer.style.setProperty('--clip-height-1', _this4.height + _this4.width / 10 + 'px');
+          markerContainer.style.setProperty('--clip-height-2', _this4.height + _this4.width / 10 - 2 + 'px');
+          markerContainer.style.setProperty('--boder-height', _this4.height + 'px');
+        }
+
+        if ((_this4.height || 100) > (_this4.width || 200)) {
+          markerContainer.style.setProperty('--animation-name', 'clipMe2');
+        } else {
+          markerContainer.style.setProperty('--animation-name', 'clipMe1');
+        }
+
+        markerContainer.appendChild(border);
+
+        _this4._markersElement.push(markerContainer);
+      }, this);
+    }
+  }, {
+    key: "_createDiffusedApertureMarker",
+    value: function _createDiffusedApertureMarker() {
+      var _this5 = this;
+
+      this.features.features.forEach(function (point) {
+        var markerContainer = document.createElement('div');
+        markerContainer.className = 'sm-component-animate-marker--diffused-aperture';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'sm-component-animate-marker__diffused-aperture-wrapper';
+        var bg = document.createElement('div');
+        bg.className = 'sm-component-animate-marker__bg';
+        wrapper.appendChild(bg);
+        var circle = document.createElement('div');
+        circle.className = 'sm-component-animate-marker__circle';
+        wrapper.appendChild(circle);
+        markerContainer.appendChild(wrapper);
+        _this5.width && markerContainer.style.setProperty('--container-width', _this5.width + 'px');
+
+        if (_this5.colors && _this5.colors.length && _this5.colors.length > 0) {
+          markerContainer.style.setProperty('--background-color', _this5.colors[0]);
+          markerContainer.style.setProperty('--box-shadow-color', _this5.colors[1] || _this5.colors[0]);
+        }
+
+        _this5._markersElement.push(markerContainer);
       }, this);
     }
   }, {
@@ -58956,21 +59339,31 @@ function (_Mixins) {
   }, {
     key: "_setBreathingApertureStyle",
     value: function _setBreathingApertureStyle(type) {
-      if (type === 'color') {
-        this.map.setPaintProperty(this.layerId, 'circle-color', this.color);
-        this.map.setPaintProperty(this.layerId, 'circle-stroke-color', this.color);
-        var pulse = document.getElementsByClassName('sm-component-dynamic-marker__pulse');
+      if (type === 'colors') {
+        var dot = document.getElementsByClassName('sm-component-animate-marker__dot-point');
 
-        for (var i = 0; i < pulse.length; i++) {
-          var style = pulse[i].style;
-          style.borderColor = this.color;
-          style.boxShadow = "0 0 12px ".concat(this.color, ", 0 0 20px ").concat(this.color, " inset");
+        for (var i = 0; i < dot.length; i++) {
+          dot[i].style.background = this.colors[0];
+        }
+
+        var pulse = document.getElementsByClassName('sm-component-animate-marker__pulse');
+
+        for (var _i = 0; _i < pulse.length; _i++) {
+          var style = pulse[_i].style;
+          style.borderColor = this.colors[0];
+          style.boxShadow = "0 0 12px ".concat(this.colors[1], ", 0 0 20px ").concat(this.colors[1], " inset");
         }
       } else if (type === 'width') {
-        var _pulse = document.getElementsByClassName('sm-component-dynamic-marker__pulse');
+        var _pulse = document.getElementsByClassName('sm-component-animate-marker__pulse');
 
-        for (var _i = 0; _i < _pulse.length; _i++) {
-          this._setBreathingApertureWidth(_pulse[_i].style);
+        for (var _i2 = 0; _i2 < _pulse.length; _i2++) {
+          this._setBreathingApertureWidth(_pulse[_i2].style);
+        }
+      } else if (type === 'textField') {
+        var name = document.getElementsByClassName('sm-component-animate-marker__breathing-aperture-name');
+
+        for (var _i3 = 0; _i3 < name.length; _i3++) {
+          name[_i3].innerHTML = this.features.features[_i3].properties[this.textField];
         }
       }
     }
@@ -58986,19 +59379,18 @@ function (_Mixins) {
   }, {
     key: "_setRotatingApertureStyle",
     value: function _setRotatingApertureStyle(type) {
-      if (type === 'color') {
-        if (!(this.color.indexOf('rgb') > -1)) {
+      if (type === 'colors') {
+        if (!(this.colors[0].indexOf('rgb') > -1)) {
           return;
         }
 
-        var rgbaColor = this._getRgbaColor(this.color);
-
-        var dotsMarker = document.getElementsByClassName('sm-component-dynamic-marker--rotating-aperture');
+        var dotsMarker = document.getElementsByClassName('sm-component-animate-marker--rotating-aperture');
 
         for (var i = 0; i < dotsMarker.length; i++) {
           var style = dotsMarker[i].style;
-          style.setProperty('--color', this.color);
-          style.setProperty('--line-color', rgbaColor);
+          style.setProperty('--light-color', this.colors[1]);
+          style.setProperty('--color', this.colors[0]);
+          style.setProperty('--line-color', this._getRgbaColor(this.colors[0], 0.2));
         }
       } else if (type === 'width') {
         var step = this._getRotatingApertureWidthStep();
@@ -59007,14 +59399,14 @@ function (_Mixins) {
           return;
         }
 
-        var _dotsMarker = document.getElementsByClassName('sm-component-dynamic-marker--rotating-aperture');
+        var _dotsMarker = document.getElementsByClassName('sm-component-animate-marker--rotating-aperture');
 
-        for (var _i2 = 0; _i2 < _dotsMarker.length; _i2++) {
-          _dotsMarker[_i2].style.setProperty('--container-width', "".concat(this.width, "px"));
+        for (var _i4 = 0; _i4 < _dotsMarker.length; _i4++) {
+          _dotsMarker[_i4].style.setProperty('--container-width', "".concat(this.width, "px"));
 
-          var dots1 = _dotsMarker[_i2].children[0];
-          var dots2 = _dotsMarker[_i2].children[1];
-          var dots3 = _dotsMarker[_i2].children[2];
+          var dots1 = _dotsMarker[_i4].children[0];
+          var dots2 = _dotsMarker[_i4].children[1];
+          var dots3 = _dotsMarker[_i4].children[2];
           dots1.setAttribute('style', this._getDotsStyleObj(this.width - step * 2));
           dots2.setAttribute('style', this._getDotsStyleObj(this.width - step));
           dots3.setAttribute('style', this._getDotsStyleObj(this.width));
@@ -59022,26 +59414,130 @@ function (_Mixins) {
       }
     }
   }, {
+    key: "_setHaloRingStyle",
+    value: function _setHaloRingStyle(type) {
+      var markerContainer = document.getElementsByClassName('sm-component-animate-marker--halo-ring');
+
+      for (var i = 0; i < markerContainer.length; i++) {
+        var style = markerContainer[i].style;
+
+        if (type === 'colors' && this.colors[0].indexOf('rgb') > -1) {
+          style.setProperty('--color-1', this._getRgbaColor(this.colors[0], 0.3));
+          style.setProperty('--color-1-transparent', this._getRgbaColor(this.colors[0], 0.1));
+          style.setProperty('--color-2', this._getRgbaColor(this.colors[1], 0.3));
+          style.setProperty('--color-2-transparent', this._getRgbaColor(this.colors[1], 0.1));
+        }
+
+        if (type === 'width') {
+          style.setProperty('--halo-width', this.width + 'px');
+          style.setProperty('--halo-left', -this.width / 2 + 'px');
+          style.setProperty('--box-shadow-width-1', this.width / 10 + 'px');
+          style.setProperty('--box-shadow-width-2', this.width / 4 + 'px');
+        }
+      }
+    }
+  }, {
+    key: "_setRotatingTextBoderStyle",
+    value: function _setRotatingTextBoderStyle(type) {
+      if (type !== 'textField') {
+        var markerContainer = document.getElementsByClassName('sm-component-animate-marker--text-boder');
+
+        for (var i = 0; i < markerContainer.length; i++) {
+          var style = markerContainer[i].style;
+
+          if (type === 'width') {
+            style.setProperty('--clip-width-1', this.width + this.width / 10 + 'px');
+            style.setProperty('--clip-width-2', this.width + this.width / 10 - 2 + 'px');
+            style.setProperty('--boder-width', this.width + 'px');
+            style.setProperty('--text-left-position', -this.width / 2 + 'px');
+          }
+
+          if (type === 'height') {
+            style.setProperty('--clip-height-1', this.height + this.height / 10 + 'px');
+            style.setProperty('--boder-height', this.height + 'px');
+          }
+
+          if (type === 'colors') {
+            style.setProperty('--border-color', this.colors[0]);
+            style.setProperty('--box-shadow-color', this.colors[1]);
+          }
+
+          if (type === 'textColor') {
+            style.setProperty('--text-color', this.textColor);
+          }
+
+          if (type === 'textFontSize') {
+            style.setProperty('--text-font-size', this.textFontSize + 'px');
+          }
+
+          if ((this.height || 100) > (this.width || 200)) {
+            style.setProperty('--animation-name', 'clipMe2');
+          } else {
+            style.setProperty('--animation-name', 'clipMe1');
+          }
+        }
+      } else {
+        var name = document.getElementsByClassName('sm-component-animate-marker__text');
+
+        for (var _i5 = 0; _i5 < name.length; _i5++) {
+          name[_i5].innerHTML = this.features.features[_i5].properties[this.textField];
+        }
+      }
+    }
+  }, {
+    key: "_setDiffuseApertureStyle",
+    value: function _setDiffuseApertureStyle(type) {
+      var markerContainer = document.getElementsByClassName('sm-component-animate-marker--diffused-aperture');
+
+      for (var i = 0; i < markerContainer.length; i++) {
+        var style = markerContainer[i].style;
+
+        if (type === 'width') {
+          style.setProperty('--container-width', this.width + 'px');
+        }
+
+        if (type === 'colors') {
+          style.setProperty('--background-color', this.colors[0]);
+          style.setProperty('--box-shadow-color', this.colors[1] || this.colors[0]);
+        }
+      }
+    }
+  }, {
+    key: "_createMakerElement",
+    value: function _createMakerElement(length, type, classNames) {
+      var markerElements = [];
+
+      for (var i = 1; i < length + 1; i++) {
+        var element = document.createElement(type);
+        element.className = "".concat(classNames[0], "-0").concat(i, " ").concat(classNames[1]);
+        markerElements.push(element);
+      }
+
+      return markerElements;
+    }
+  }, {
     key: "_getRotatingApertureWidthStep",
     value: function _getRotatingApertureWidthStep() {
       var step = 16;
 
+      if (!this.width || this.width < 26) {
+        return false;
+      }
+
       if (this.width < 48) {
         step = 8;
-      } else if (this.width < 26) {
-        return false;
       }
 
       return step;
     }
   }, {
     key: "_getRgbaColor",
-    value: function _getRgbaColor(color) {
+    value: function _getRgbaColor(color, opacity) {
       if (!(color.indexOf('rgb') > -1)) {
         return null;
       } else {
         var colors = color.split('(')[1].split(')')[0].split(',');
-        var rgbaColor = "rgba(".concat(colors[0], ",").concat(colors[1], ",").concat(colors[2], ",0.2)");
+        var rgbaColor = "rgba(".concat(colors[0], ",").concat(colors[1], ",").concat(colors[2], ",").concat(opacity, ")");
         return rgbaColor;
       }
     }
@@ -59050,68 +59546,67 @@ function (_Mixins) {
     value: function render() {}
   }]);
 
-  return DynamicMarkerLayer;
-}(mixins(map_getter, _mixin_layer));
+  return AnimateMarkerLayer;
+}(mixins(map_getter));
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop()], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "features", void 0);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Prop()], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "features", void 0);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Prop({
   default: 'breathingAperture'
-})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "type", void 0);
+})], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "type", void 0);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
-  default: 88
-})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "width", void 0);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Prop()], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "width", void 0);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
-  default: '#009fd9'
-})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "color", void 0);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Prop()], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "height", void 0);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
-  default: '#009fd9'
-})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "lightColor", void 0);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Prop()], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "colors", void 0);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Prop({
   default: 14
-})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "textFontSize", void 0);
+})], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "textFontSize", void 0);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Prop({
-  default: '#ccc'
-})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "textColor", void 0);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Prop()], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "textColor", void 0);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('type')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "typeChanged", null);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Prop()], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "textField", void 0);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('width')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "widthChanged", null);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Watch('features')], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "featuresChanged", null);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('lightColor')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "lightColorChanged", null);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Watch('type')], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "typeChanged", null);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('color')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "colorChanged", null);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Watch('width')], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "widthChanged", null);
 
-DynamicMarkerLayervue_type_script_lang_ts_decorate([Watch('textColor')], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer.prototype, "textColorChanged", null);
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Watch('height')], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "heightChanged", null);
 
-DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer = DynamicMarkerLayervue_type_script_lang_ts_decorate([vue_class_component_esm({
-  name: 'SmDynamicMarkerLayer',
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Watch('textColor')], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "textColorChanged", null);
+
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Watch('textFontSize')], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "textFontSizeChanged", null);
+
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Watch('colors')], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "colorsChanged", null);
+
+AnimateMarkerLayervue_type_script_lang_ts_decorate([Watch('textField')], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer.prototype, "textFieldChanged", null);
+
+AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer = AnimateMarkerLayervue_type_script_lang_ts_decorate([vue_class_component_esm({
+  name: 'SmAnimateMarkerLayer',
   loaded: function loaded(vm) {
-    vm._getMarkerElement();
-
-    vm.viewModel = new DynamicMarkerLayerViewModel_DynamicMarkerLayerViewModel(vm.map, vm.features, vm._markersElement, vm.type, null, vm.layerId);
+    vm.features && vm._getMarkerElement();
+    vm.viewModel = new AnimateMarkerLayerViewModel_AnimateMarkerLayerViewModel(vm.map, vm.features, vm._markersElement);
   }
-})], DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer);
-/* harmony default export */ var DynamicMarkerLayervue_type_script_lang_ts_ = (DynamicMarkerLayervue_type_script_lang_ts_DynamicMarkerLayer);
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/dynamicMarker/DynamicMarkerLayer.vue?vue&type=script&lang=ts&
- /* harmony default export */ var dynamicMarker_DynamicMarkerLayervue_type_script_lang_ts_ = (DynamicMarkerLayervue_type_script_lang_ts_); 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/dynamicMarker/DynamicMarkerLayer.vue
-var DynamicMarkerLayer_render, DynamicMarkerLayer_staticRenderFns
+})], AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer);
+/* harmony default export */ var AnimateMarkerLayervue_type_script_lang_ts_ = (AnimateMarkerLayervue_type_script_lang_ts_AnimateMarkerLayer);
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/animate-marker/AnimateMarkerLayer.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var animate_marker_AnimateMarkerLayervue_type_script_lang_ts_ = (AnimateMarkerLayervue_type_script_lang_ts_); 
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/layer/animate-marker/AnimateMarkerLayer.vue
+var AnimateMarkerLayer_render, AnimateMarkerLayer_staticRenderFns
 
 
 
 
 /* normalize component */
 
-var DynamicMarkerLayer_component = normalizeComponent(
-  dynamicMarker_DynamicMarkerLayervue_type_script_lang_ts_,
-  DynamicMarkerLayer_render,
-  DynamicMarkerLayer_staticRenderFns,
+var AnimateMarkerLayer_component = normalizeComponent(
+  animate_marker_AnimateMarkerLayervue_type_script_lang_ts_,
+  AnimateMarkerLayer_render,
+  AnimateMarkerLayer_staticRenderFns,
   false,
   null,
   null,
@@ -59119,13 +59614,13 @@ var DynamicMarkerLayer_component = normalizeComponent(
   
 )
 
-/* harmony default export */ var dynamicMarker_DynamicMarkerLayer = (DynamicMarkerLayer_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/legend/Legend.vue?vue&type=template&id=349704ab&
-var Legendvue_type_template_id_349704ab_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-legend",style:([_vm.noBorder]),attrs:{"icon-class":_vm.mode === 'simple' ? '' : _vm.iconClass,"icon-position":_vm.position,"header-name":_vm.mode === 'simple' ? '' : _vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('a-card',{style:(_vm.mode !== 'simple' ? [_vm.getBackgroundStyle, _vm.getTextColorStyle, {border: 0, borderRadius: 0}] : [{border: 0, borderRadius: 0, background: 'transparent'}]),attrs:{"bordered":false}},[((_vm.mode === 'panel' || (_vm.layerNames.length > 1 && _vm.mode !== 'simple')) && JSON.stringify(_vm.legendList) !== '{}')?_c('a-collapse',{staticClass:"sm-component-legend__table",model:{value:(_vm.activeLegend),callback:function ($$v) {_vm.activeLegend=$$v},expression:"activeLegend"}},_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('a-collapse-panel',{key:("" + (index+1)),attrs:{"showArrow":false}},[_c('template',{slot:"header"},[_c('div',{staticClass:"header-wrap",style:([_vm.getColorStyle(0)])},[_c('div',{staticClass:"sm-component-legend__title add-ellipsis"},[_vm._v(_vm._s(layerValue.layerId))]),_vm._v(" "),_c('a-icon',{staticClass:"header-arrow",attrs:{"type":"right"}})],1)]),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',{staticClass:"sm-component-legend__wrap",style:([_vm.getTextColorStyle])},[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,i){return _c('li',{key:i,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value add-ellipsis"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',{staticClass:"sm-component-legend__wrap",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__heatbox"},[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})}),_vm._v(" "),_c('div',{staticClass:"sm-component-legend__heatText"},[_c('span',{staticClass:"sm-component-legend__top"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(_vm.$t("legend.top"))+"\n              ")],1),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(_vm.$t("legend.bottom"))+"\n              ")],1)])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',{staticClass:"sm-component-legend__wrap",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,j){return _c('div',{key:j,staticClass:"sm-component-legend__range-item"},[_c('div',{style:({background: item.color})}),_vm._v(" "),_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n              ")],1)])}))]):_vm._e()],2)})):(_vm.mode === 'simple' || _vm.layerNames.length === 1)?_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('div',{key:index,staticClass:"sm-component-legend__noBorder",style:([_vm.getTextColorStyle])},[(_vm.isShowTitle)?_c('div',{staticClass:"sm-component-legend__title add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))]):_vm._e(),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',{staticClass:"sm-component-legend__wrap"},[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,k){return _c('li',{key:k,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value add-ellipsis"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',{staticClass:"sm-component-legend__wrap"},[_c('div',{staticClass:"sm-component-legend__heatbox"},[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})}),_vm._v(" "),_c('div',{staticClass:"sm-component-legend__heatText"},[_c('span',{staticClass:"sm-component-legend__top"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(_vm.$t("legend.top"))+"\n            ")],1),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(_vm.$t("legend.bottom"))+"\n            ")],1)])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',{staticClass:"sm-component-legend__wrap"},[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,l){return _c('div',{key:l,staticClass:"sm-component-legend__range-item"},[_c('div',{style:({background: item.color})}),_vm._v(" "),_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n            ")],1)])}))]):_vm._e()])}):_vm._e()],2)],1)}
-var Legendvue_type_template_id_349704ab_staticRenderFns = []
+/* harmony default export */ var animate_marker_AnimateMarkerLayer = (AnimateMarkerLayer_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/legend/Legend.vue?vue&type=template&id=04a30314&
+var Legendvue_type_template_id_04a30314_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-legend",style:([_vm.noBorder]),attrs:{"icon-class":_vm.mode === 'simple' ? '' : _vm.iconClass,"icon-position":_vm.position,"header-name":_vm.mode === 'simple' ? '' : _vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('a-card',{style:(_vm.mode !== 'simple' ? [_vm.getBackgroundStyle, _vm.getTextColorStyle, {border: 0, borderRadius: 0}] : [{border: 0, borderRadius: 0, background: 'transparent'}]),attrs:{"bordered":false}},[((_vm.mode === 'panel' || (_vm.layerNames.length > 1 && _vm.mode !== 'simple')) && JSON.stringify(_vm.legendList) !== '{}')?_c('a-collapse',{staticClass:"sm-component-legend__table",model:{value:(_vm.activeLegend),callback:function ($$v) {_vm.activeLegend=$$v},expression:"activeLegend"}},_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('a-collapse-panel',{key:("" + (index+1)),attrs:{"showArrow":false}},[_c('template',{slot:"header"},[_c('div',{staticClass:"header-wrap",style:([_vm.getColorStyle(0)])},[_c('div',{staticClass:"sm-component-legend__title add-ellipsis"},[_vm._v(_vm._s(layerValue.layerId))]),_vm._v(" "),_c('a-icon',{staticClass:"header-arrow",attrs:{"type":"right"}})],1)]),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',{staticClass:"sm-component-legend__wrap",style:([_vm.getTextColorStyle])},[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,i){return _c('li',{key:i,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value add-ellipsis"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',{staticClass:"sm-component-legend__wrap",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__heatbox"},[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})}),_vm._v(" "),_c('div',{staticClass:"sm-component-legend__heatText"},[_c('span',{staticClass:"sm-component-legend__top"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(_vm.$t("legend.top"))+"\n              ")],1),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(_vm.$t("legend.bottom"))+"\n              ")],1)])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',{staticClass:"sm-component-legend__wrap",style:([_vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,j){return _c('div',{key:j,staticClass:"sm-component-legend__range-item"},[_c('div',{style:({background: item.color})}),_vm._v(" "),_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n                "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n              ")],1)])}))]):_vm._e()],2)})):(_vm.mode === 'simple' || _vm.layerNames.length === 1)?_vm._l((_vm.legendList),function(layerValue,layerKey,index){return _c('div',{key:index,staticClass:"sm-component-legend__noBorder",style:([_vm.getTextColorStyle])},[(_vm.isShowTitle)?_c('div',{staticClass:"sm-component-legend__title add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(layerValue.layerId))]):_vm._e(),_vm._v(" "),(_vm.isShowField)?_c('div',{staticClass:"sm-component-legend__themefield add-ellipsis",style:([_vm.getColorStyle(0)])},[_vm._v(_vm._s(_vm.$t("legend.themeField"))+":"+_vm._s(layerValue.themeField))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'UNIQUE')?_c('div',{staticClass:"sm-component-legend__wrap"},[_c('ul',{staticClass:"sm-component-legend__point"},_vm._l((layerValue.styleGroup),function(item,k){return _c('li',{key:k,staticClass:"sm-component-legend__item"},[_c('i',{class:_vm._f("selectLayerType")(layerValue.featureType),style:({color:item.color})}),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__field-value add-ellipsis"},[_vm._v(_vm._s(item.value))])])}))]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'HEAT')?_c('div',{staticClass:"sm-component-legend__wrap"},[_c('div',{staticClass:"sm-component-legend__heatbox"},[_c('div',{staticClass:"sm-component-legend__heat",style:({background:("linear-gradient(to top," + (layerValue.styleGroup.join(',')) + ")")})}),_vm._v(" "),_c('div',{staticClass:"sm-component-legend__heatText"},[_c('span',{staticClass:"sm-component-legend__top"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(_vm.$t("legend.top"))+"\n            ")],1),_vm._v(" "),_c('span',{staticClass:"sm-component-legend__bottom"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(_vm.$t("legend.bottom"))+"\n            ")],1)])])]):_vm._e(),_vm._v(" "),(layerValue.layerType === 'RANGE')?_c('div',{staticClass:"sm-component-legend__wrap"},[_c('div',{staticClass:"sm-component-legend__range"},_vm._l((layerValue.styleGroup),function(item,l){return _c('div',{key:l,staticClass:"sm-component-legend__range-item"},[_c('div',{style:({background: item.color})}),_vm._v(" "),_c('span',{staticClass:"add-ellipsis"},[_c('a-icon',{attrs:{"type":"caret-left"}}),_vm._v("\n              "+_vm._s(item.start)+"-"+_vm._s(item.end)+"\n            ")],1)])}))]):_vm._e()])}):_vm._e()],2)],1)}
+var Legendvue_type_template_id_04a30314_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/legend/Legend.vue?vue&type=template&id=349704ab&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/legend/Legend.vue?vue&type=template&id=04a30314&
 
 // CONCATENATED MODULE: ./src/mapboxgl/_mixin/control.js
 
@@ -59213,14 +59708,14 @@ var Legendvue_type_template_id_349704ab_staticRenderFns = []
     map_event.$off('load-map', this.controlLoadMapSucceed);
   }
 });
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/card/Card.vue?vue&type=template&id=e321eda4&
-var Cardvue_type_template_id_e321eda4_render = function () {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/card/Card.vue?vue&type=template&id=6fdbd0b0&
+var Cardvue_type_template_id_6fdbd0b0_render = function () {
 var _obj, _obj$1, _obj$2;
 var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-card"},[(_vm.iconClass)?_c('div',{class:( _obj = {}, _obj['sm-component-card__icon'] = true, _obj['is-'+_vm.position] = true, _obj[("is-click-" + (_vm.isShow?'out':'in'))] = true, _obj['is-not-header'] = !_vm.headerName, _obj ),style:([_vm.getBackgroundStyle, _vm.getTextColorStyle, _vm.iconStyleObject]),on:{"click":_vm.iconClicked}},[_c('div',{class:( _obj$1 = {}, _obj$1[_vm.iconClass] = true, _obj$1['is-auto-rotate'] = _vm.autoRotate, _obj$1['sm-component-card__component-icon'] = true, _obj$1 ),style:([_vm.iconStyle])})]):_vm._e(),_vm._v(" "),_c('transition',{attrs:{"name":"sm-component-zoom-in"},on:{"after-leave":function($event){_vm.toggleTransition('leave')},"enter":function($event){_vm.toggleTransition('enter')}}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],class:( _obj$2 = {}, _obj$2['sm-component-card__content'] = true, _obj$2['is-not-header'] = !_vm.headerName, _obj$2['is-'+_vm.position] = true, _obj$2['is-icon'] = _vm.iconClass, _obj$2 ),style:([_vm.getCardStyle])},[(_vm.headerName)?_c('div',{staticClass:"sm-component-card__header",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('span',{staticClass:"sm-component-card__header-name"},[_vm._v(_vm._s(_vm.headerName))])]):_vm._e(),_vm._v(" "),_vm._t("default")],2)])],1)}
-var Cardvue_type_template_id_e321eda4_staticRenderFns = []
+var Cardvue_type_template_id_6fdbd0b0_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/common/card/Card.vue?vue&type=template&id=e321eda4&
+// CONCATENATED MODULE: ./src/common/card/Card.vue?vue&type=template&id=6fdbd0b0&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/common/card/Card.vue?vue&type=script&lang=js&
 //
@@ -59334,7 +59829,11 @@ var Cardvue_type_template_id_e321eda4_staticRenderFns = []
   watch: {
     iconClass: function iconClass(newVal, oldVal) {
       if (newVal && !oldVal) {
+        this.isShow = this.collapsed;
         this.toggleTransition(this.collapsed ? 'enter' : 'leave');
+      } else if (!newVal) {
+        // 如果iconClass 为空 则默认显示内容
+        this.isShow = true;
       }
     }
   },
@@ -59378,8 +59877,8 @@ var Cardvue_type_template_id_e321eda4_staticRenderFns = []
 
 var Card_component = normalizeComponent(
   card_Cardvue_type_script_lang_js_,
-  Cardvue_type_template_id_e321eda4_render,
-  Cardvue_type_template_id_e321eda4_staticRenderFns,
+  Cardvue_type_template_id_6fdbd0b0_render,
+  Cardvue_type_template_id_6fdbd0b0_staticRenderFns,
   false,
   null,
   null,
@@ -59678,7 +60177,7 @@ function (_mapboxgl$Evented) {
     return {
       legendList: {},
       // 控制第一个图例默认展开
-      activeLegend: ['1'],
+      activeLegend: [],
       themeStyle: {}
     };
   },
@@ -59747,8 +60246,8 @@ function (_mapboxgl$Evented) {
 
 var Legend_component = normalizeComponent(
   legend_Legendvue_type_script_lang_js_,
-  Legendvue_type_template_id_349704ab_render,
-  Legendvue_type_template_id_349704ab_staticRenderFns,
+  Legendvue_type_template_id_04a30314_render,
+  Legendvue_type_template_id_04a30314_staticRenderFns,
   false,
   null,
   null,
@@ -60081,16 +60580,12 @@ var LayerList_component = normalizeComponent(
 )
 
 /* harmony default export */ var LayerList = (LayerList_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/measure/Measure.vue?vue&type=template&id=4dc3aac7&
-var Measurevue_type_template_id_4dc3aac7_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{key:group.mode,class:{'sm-component-measure__modeIcon': true, 'sm-component-measure__iconActive': _vm.activeMode === group.mode},style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('a-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-component-measure__unit",attrs:{"placeholder":"请选择","get-popup-container":_vm.getPopupContainer},on:{"change":_vm.updateUnit,"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('a-select-option',{key:index,attrs:{"title":value,"value":key}},[_vm._v(_vm._s(value))])})),_vm._v(" "),_c('a-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-component-measure__unit",attrs:{"placeholder":"请选择","get-popup-container":_vm.getPopupContainer},on:{"change":_vm.updateUnit,"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('a-select-option',{key:index,attrs:{"title":value,"value":key}},[_vm._v(_vm._s(value))])})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-component-measure__unit sm-component-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-component-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-component-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-component-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
-var Measurevue_type_template_id_4dc3aac7_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/measure/Measure.vue?vue&type=template&id=48fb8572&
+var Measurevue_type_template_id_48fb8572_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-measure",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-measure__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('div',{staticClass:"sm-component-measure__panelContent"},[_vm._l((_vm.modeGroups),function(group){return _c('span',{directives:[{name:"show",rawName:"v-show",value:(group.mode !== 'delete' || (!_vm.continueDraw && group.mode === 'delete')),expression:"group.mode !== 'delete' || (!continueDraw && group.mode === 'delete')"}],key:group.mode,staticClass:"sm-component-measure__modeIcon",style:(_vm.activeMode === group.mode ? _vm.getColorStyle(0) : ''),attrs:{"title":group.title},on:{"click":function($event){_vm.changeMeasureMode(group.mode)}}},[_c('i',{class:group.iconClass})])}),_vm._v(" "),_c('a-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getDistanceSelect),expression:"getDistanceSelect"}],staticClass:"sm-component-measure__unit",attrs:{"placeholder":"请选择","get-popup-container":_vm.getPopupContainer},on:{"change":_vm.updateUnit,"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(_vm.activeDistanceUnit),callback:function ($$v) {_vm.activeDistanceUnit=$$v},expression:"activeDistanceUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('a-select-option',{key:index,attrs:{"title":value,"value":key}},[_vm._v(_vm._s(value))])})),_vm._v(" "),_c('a-select',{directives:[{name:"show",rawName:"v-show",value:(_vm.getAreaSelect),expression:"getAreaSelect"}],staticClass:"sm-component-measure__unit",attrs:{"placeholder":"请选择","get-popup-container":_vm.getPopupContainer},on:{"change":_vm.updateUnit,"dropdownVisibleChange":_vm.changeChosenStyle},model:{value:(_vm.activeAreaUnit),callback:function ($$v) {_vm.activeAreaUnit=$$v},expression:"activeAreaUnit"}},_vm._l((_vm.getUnitOptions),function(value,key,index){return _c('a-select-option',{key:index,attrs:{"title":value,"value":key}},[_vm._v(_vm._s(value))])})),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showUnitSelect && _vm.activeMode),expression:"!showUnitSelect && activeMode"}],staticClass:"sm-component-measure__unit sm-component-measure__default"},[_vm._v(_vm._s(_vm.getUnitLabel))])],2),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResult),expression:"getResult"}],staticClass:"sm-component-measure__calculateResult",style:(_vm.getTextColorStyle)},[_c('div',{staticClass:"sm-component-measure__calcuTitle"},[_vm._v(_vm._s(_vm.$t("measure.measureResult")))]),_vm._v(" "),_c('div',{staticClass:"sm-component-measure__result"},[_vm._v(_vm._s(_vm.getResult))])])])])}
+var Measurevue_type_template_id_48fb8572_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/measure/Measure.vue?vue&type=template&id=4dc3aac7&
-
-// EXTERNAL MODULE: external {"root":"MapboxDraw","commonjs":"@mapbox/mapbox-gl-draw","commonjs2":"@mapbox/mapbox-gl-draw","amd":"@mapbox/mapbox-gl-draw"}
-var mapbox_gl_draw_ = __webpack_require__("dz+5");
-var mapbox_gl_draw_default = /*#__PURE__*/__webpack_require__.n(mapbox_gl_draw_);
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/measure/Measure.vue?vue&type=template&id=48fb8572&
 
 // EXTERNAL MODULE: ./node_modules/@turf/length/index.js
 var _turf_length = __webpack_require__("Xrjk");
@@ -60139,35 +60634,92 @@ function (_mapboxgl$Evented) {
     helpers_classCallCheck_default()(this, MeasureViewModel);
 
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(MeasureViewModel).call(this));
-    _this.tipNodes = []; // 收集测算长度实时生成的popup，以方便后面销毁
+    _this.lenTipNodesList = {}; // 收集测量长度实时生成的popup，以方便后面销毁
 
-    _this.cacheLengthUnitList = []; // 缓存量算长度每个节点的值跟单位，在修改单位时使用
+    _this.areaTipNodesList = {}; // 收集多绘制情况下 测量面积最后生成的结果popup
+
+    _this.cacheLengthUnitList = {}; // 缓存量算长度每个节点的值跟单位，在修改单位时使用
 
     _this.cachePolygonUnit = {};
-    _this.mode = null;
-    _this.result = '';
-    _this.activeMode = '';
     _this.map = options.map;
-    _this.layerId = options.layerId;
+    _this.mapTarget = options.mapTarget;
+    _this.componentName = 'SmMeasure';
+    _this.continueDraw = options.continueDraw;
 
     _this._addDrawControl();
 
-    _this.isEditing = true;
     return _this;
-  } // 开启绘制
-
+  }
 
   helpers_createClass_default()(MeasureViewModel, [{
+    key: "_addDrawControl",
+    value: function _addDrawControl() {
+      this.draw = draw_event.$options.getDraw(this.mapTarget);
+      this.map.on('draw.create', this._finishDraw.bind(this));
+      this.map.on('draw.modechange', this._changeMode.bind(this));
+    } // 绘画结束后计算最后的结果
+
+  }, {
+    key: "_finishDraw",
+    value: function _finishDraw(e) {
+      if (this._isDrawing()) {
+        this._resetEvent();
+
+        switch (this.activeMode) {
+          case 'draw_line_string':
+            var tempLength = length_default()(e.features[0], 'kilometers');
+            this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit); // 将tipNodesList中key为“id”的字段替换成生成的id值
+
+            this._updateLenPopupNodes(e.features[0].id); // 如果是测量长度，销毁实时计算生成的popup
+
+
+            this._removeHoverPopup();
+
+            break;
+
+          case 'draw_polygon':
+            var tempArea = area_default()(e.features[0]);
+            this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
+
+            this._updateAreaPopupNodes(this.result, e.features[0]);
+
+            break;
+        }
+
+        this.ids = this.ids || [];
+        this.ids.push((e.features[0] || {}).id);
+        this.fire('measure-finished', {
+          result: this._getFormatResult(this.result)
+        });
+      }
+    }
+  }, {
+    key: "_changeMode",
+    value: function _changeMode(e) {
+      if (this._isDrawing() && this.continueDraw && this.isEditing) {
+        this.draw.changeMode(this.mode);
+        this.continueDrawBind = this._continueDraw.bind(this);
+        this.map.on('mousedown', this.continueDrawBind);
+        this.map.on('mousedown', this.measureNodeDistanceBind);
+        this.fire('measure-finished', {
+          result: this._getFormatResult(this.result)
+        });
+      }
+    } // 开启绘制
+
+  }, {
     key: "openDraw",
     value: function openDraw(mode, activeUnit) {
-      this._initDraw();
+      draw_event.$options.setDrawingState(this.mapTarget, this.componentName, true);
+
+      this._resetDraw();
 
       this._resetEvent();
 
+      this.isEditing = true;
       this.mode = mode;
       this.activeMode = mode;
-      this.activeUnit = activeUnit;
-      this.isEditing = true; // 绘画线或面
+      this.activeUnit = activeUnit; // 绘画线或面
 
       this.draw.changeMode(mode);
       this.measureNodeDistanceBind = this._measureNodeDistance.bind(this);
@@ -60176,30 +60728,29 @@ function (_mapboxgl$Evented) {
   }, {
     key: "closeDraw",
     value: function closeDraw() {
-      this.isEditing = false;
-      this.ids = null;
+      this._resetDraw();
 
-      this._initDraw();
-
-      this._resetEvent();
-
-      this.activeMode = null;
-      this.draw.trash();
-      this.map.off('mousedown', this.continueDrawBind);
+      this._clearEvent();
     }
   }, {
     key: "updateUnit",
     value: function updateUnit(unit) {
-      if (this.tipNodes.length !== 0) {
-        for (var i = 1; i < this.tipNodes.length; i++) {
-          var transValue = Object(helpers["convertLength"])(this.cacheLengthUnitList[i - 1].value, this.cacheLengthUnitList[i - 1].unit, unit);
-          transValue = this._getFormatResult(transValue);
-          this.cacheLengthUnitList[i - 1].value = transValue;
-          this.cacheLengthUnitList[i - 1].unit = unit;
+      if (Object.values(this.lenTipNodesList).length) {
+        for (var id in this.lenTipNodesList) {
+          var tipNodes = this.lenTipNodesList[id];
 
-          if (this.activeMode === 'draw_line_string') {
-            var uniti18n = _lang.t("measure.".concat(unit));
-            this.tipNodes[i] && this.tipNodes[i].setText("".concat(transValue, " ").concat(uniti18n));
+          if (tipNodes && tipNodes.length && (this.continueDraw && id !== 'id' || id === 'id')) {
+            for (var i = 1; i < tipNodes.length; i++) {
+              var transValue = Object(helpers["convertLength"])(this.cacheLengthUnitList[id][i - 1].value, this.cacheLengthUnitList[id][i - 1].unit, unit);
+              transValue = this._getFormatResult(transValue);
+              this.cacheLengthUnitList[id][i - 1].value = transValue;
+              this.cacheLengthUnitList[id][i - 1].unit = unit;
+
+              if (this.activeMode === 'draw_line_string') {
+                var uniti18n = _lang.t("measure.".concat(unit));
+                tipNodes[i] && tipNodes[i].setText("".concat(transValue, " ").concat(uniti18n));
+              }
+            }
           }
         }
 
@@ -60214,154 +60765,35 @@ function (_mapboxgl$Evented) {
       }
 
       this.result && this.fire('update-unit', {
-        result: this._getFormatResult(this.result)
+        result: this._getFormatResult(this.result),
+        mode: this.mode
       });
       this.activeUnit = unit;
     }
   }, {
-    key: "_addDrawControl",
-    value: function _addDrawControl() {
-      this.draw = new mapbox_gl_draw_default.a({
-        displayControlsDefault: false,
-        controls: {
-          line_string: true,
-          trash: false
-        },
-        styles: [// line stroke
-        {
-          id: 'gl-draw-line',
-          type: 'line',
-          filter: ['all', ['==', '$type', 'LineString'], ['!=', 'mode', 'static']],
-          layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
-          paint: {
-            'line-color': '#D20C0C',
-            'line-dasharray': [0.2, 2],
-            'line-width': 2
-          }
-        }, // polygon fill
-        {
-          id: 'gl-draw-polygon-fill',
-          type: 'fill',
-          filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
-          paint: {
-            'fill-color': '#D20C0C',
-            'fill-outline-color': '#D20C0C',
-            'fill-opacity': 0.1
-          }
-        }, // polygon outline stroke
-        // This doesn't style the first edge of the polygon, which uses the line stroke styling instead
-        {
-          id: 'gl-draw-polygon-stroke-active',
-          type: 'line',
-          filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
-          layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
-          paint: {
-            'line-color': '#D20C0C',
-            'line-dasharray': [0.2, 2],
-            'line-width': 2
-          }
-        }, // vertex point halos
-        {
-          id: 'gl-draw-polygon-and-line-vertex-halo-active',
-          type: 'circle',
-          filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
-          paint: {
-            'circle-radius': 5,
-            'circle-color': '#FFF'
-          }
-        }, // vertex points
-        {
-          id: 'gl-draw-polygon-and-line-vertex-active',
-          type: 'circle',
-          filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
-          paint: {
-            'circle-radius': 3,
-            'circle-color': '#D20C0C'
-          }
-        }, // INACTIVE (static, already drawn)
-        // line stroke
-        {
-          id: 'gl-draw-line-static',
-          type: 'line',
-          filter: ['all', ['==', '$type', 'LineString'], ['==', 'mode', 'static']],
-          layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
-          paint: {
-            'line-color': '#000',
-            'line-width': 3
-          }
-        }, // polygon fill
-        {
-          id: 'gl-draw-polygon-fill-static',
-          type: 'fill',
-          filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
-          paint: {
-            'fill-color': '#000',
-            'fill-outline-color': '#000',
-            'fill-opacity': 0.1
-          }
-        }, // polygon outline
-        {
-          id: 'gl-draw-polygon-stroke-static',
-          type: 'line',
-          filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
-          layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
-          paint: {
-            'line-color': '#000',
-            'line-width': 3
-          }
-        }]
-      });
-      this.draw.id = this.layerId;
-
-      this.draw.removeFromMap = function () {
-        this.onRemove();
-      };
-
-      this.map.addLayer(this.draw);
-      this.map.on('draw.create', this._finishDraw.bind(this));
-      this.map.on('draw.modechange', this._resetDraw.bind(this));
-    }
-  }, {
     key: "_resetDraw",
-    value: function _resetDraw(e) {
-      if (this.isEditing) {
-        this.map.off('mousemove', this.popupFollowMouseBind);
-        this.ids = this.draw.getSelectedIds();
-        this.draw.changeMode(this.mode);
-        this.continueDrawBind = this._continueDraw.bind(this);
-        this.map.on('mousedown', this.continueDrawBind);
-        this.measureNodeDistanceBind = this._measureNodeDistance.bind(this);
-        this.map.on('mousedown', this.measureNodeDistanceBind);
-        this.fire('measure-finished', {
-          result: this._getFormatResult(this.result)
-        });
+    value: function _resetDraw(continueDraw) {
+      // 连续绘制情况下 根据ids只删除上一次量算的数据
+      if (this.draw && this.continueDraw) {
+        this.ids && this.draw.delete(this.ids);
+        this.ids = null;
+
+        this._removePopups();
+
+        this._removeHoverPopup();
       }
-    }
-  }, {
-    key: "_initDraw",
-    value: function _initDraw() {
-      // 根据ids只删除上一次量算的数据
-      this.ids ? this.draw.delete(this.ids) : this.draw.deleteAll();
+
+      this.isOpenMoveEvent = true;
+      this.cacheLengthUnitList = {};
       this.measureNodes = []; // 收集测算长度生成每个点的feature数据, 方便后面计算总长度
 
-      this.tipNodes.length && this.tipNodes.map(function (tipNode) {
-        return tipNode.remove();
-      });
-      this.tipNodes = [];
-      this.cacheLengthUnitList = [];
       this.result = 0;
+
+      if (!continueDraw) {
+        this.activeMode = null;
+        this.mode = null;
+      }
+
       this.fire('measure-start', {
         result: this._getFormatResult(this.result)
       });
@@ -60369,122 +60801,90 @@ function (_mapboxgl$Evented) {
   }, {
     key: "_continueDraw",
     value: function _continueDraw(e) {
-      this._initDraw();
+      if (this._isDrawing()) {
+        this._resetDraw(true);
 
-      this._resetEvent(false);
-
-      this.map.off('mousedown', this.continueDrawBind);
-    } // 绘画结束后计算最后的结果
-
-  }, {
-    key: "_finishDraw",
-    value: function _finishDraw(e) {
-      this.time = null;
-      this.map.off('mousedown', this.measureNodeDistanceBind);
-
-      switch (this.activeMode) {
-        case 'draw_line_string':
-          var tempLength = length_default()(e.features[0], 'kilometers');
-          this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
-
-          this._resetEvent();
-
-          break;
-
-        case 'draw_polygon':
-          var tempArea = area_default()(e.features[0]);
-          this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
-
-          this._resetEvent(true, false, this.result, e.features[0]);
-
-          break;
+        this.map.off('mousemove', this.popupFollowMouseBind);
+        this.map.off('mousedown', this.continueDrawBind);
       }
-
-      this.fire('measure-finished', {
-        result: this._getFormatResult(this.result)
-      });
     } // 绘画每个点显示tip，同时监听鼠标move事件
 
   }, {
     key: "_measureNodeDistance",
     value: function _measureNodeDistance(e) {
-      var _e$lngLat = e.lngLat,
-          lng = _e$lngLat.lng,
-          lat = _e$lngLat.lat;
-      var to = [lng, lat];
+      if (this._isDrawing()) {
+        var _e$lngLat = e.lngLat,
+            lng = _e$lngLat.lng,
+            lat = _e$lngLat.lat;
+        var to = [lng, lat];
 
-      if (this.isOpenMoveEvent) {
-        this.popupFollowMouseBind = this._popupFollowMouse.bind(this);
-        this.map.on('mousemove', this.popupFollowMouseBind);
-        this.isOpenMoveEvent = false;
-      }
+        if (this.isOpenMoveEvent) {
+          this.popupFollowMouseBind = this._popupFollowMouse.bind(this);
+          this.map.on('mousemove', this.popupFollowMouseBind);
+          this.isOpenMoveEvent = false;
+        }
 
-      this.measureNodes.push(to);
+        this.measureNodes.push(to);
 
-      if (this.activeMode === 'draw_line_string') {
-        this._renderPopupTip(e);
-      }
-
-      var _this$draw$getAll = this.draw.getAll(),
-          features = _this$draw$getAll.features;
-
-      if (!features.length) {
-        this._resetEvent();
-
-        this.activeMode = null;
+        if (this.activeMode === 'draw_line_string') {
+          this._renderPopupTip(e);
+        }
       }
     }
   }, {
     key: "_popupFollowMouse",
     value: function _popupFollowMouse(e) {
-      var _e$lngLat2 = e.lngLat,
-          lng = _e$lngLat2.lng,
-          lat = _e$lngLat2.lat;
-      var lastPointPos = [lng, lat];
-      var popup = this.tipHoverDiv; // 实时显示popup只需要一个，如果没有再生成新popup
+      if (this._isDrawing()) {
+        var _e$lngLat2 = e.lngLat,
+            lng = _e$lngLat2.lng,
+            lat = _e$lngLat2.lat;
+        var lastPointPos = [lng, lat];
+        var popup = this.tipHoverDiv; // 实时显示popup只需要一个，如果没有再生成新popup
 
-      if (!popup) {
-        popup = new mapbox_gl_enhance_js_default.a.Popup({
-          closeButton: false,
-          closeOnClick: false
-        });
-      }
-
-      popup.setLngLat(lastPointPos);
-      var measureNodeList = [].concat(this.measureNodes, [lastPointPos]);
-      var feature = {
-        type: 'Feature',
-        geometry: {
-          type: "".concat(this.activeMode === 'draw_line_string' ? 'LineString' : 'Polygon'),
-          coordinates: this.activeMode === 'draw_line_string' ? measureNodeList : [measureNodeList]
+        if (!popup) {
+          popup = new mapbox_gl_enhance_js_default.a.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            className: 'sm-component-measure__popup'
+          });
         }
-      };
 
-      switch (this.activeMode) {
-        case 'draw_line_string':
-          var tempLength = length_default()(feature, 'kilometers');
-          this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
-          break;
+        popup.setLngLat(lastPointPos);
+        var measureNodeList = [].concat(this.measureNodes, [lastPointPos]);
+        var feature = {
+          type: 'Feature',
+          geometry: {
+            type: "".concat(this.activeMode === 'draw_line_string' ? 'LineString' : 'Polygon'),
+            coordinates: this.activeMode === 'draw_line_string' ? measureNodeList : [measureNodeList]
+          }
+        };
 
-        case 'draw_polygon':
-          var tempArea = area_default()(feature);
-          this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
-          break;
+        switch (this.activeMode) {
+          case 'draw_line_string':
+            var tempLength = length_default()(feature, 'kilometers');
+            this.result = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
+            break;
+
+          case 'draw_polygon':
+            var tempArea = area_default()(feature);
+            this.result = Object(helpers["convertArea"])(tempArea, 'meters', this.activeUnit);
+            break;
+        }
+
+        var uniti18n;
+
+        if (this.activeMode === 'draw_line_string') {
+          uniti18n = _lang.t("measure.".concat(this.activeUnit));
+        } else if (this.activeMode === 'draw_polygon') {
+          uniti18n = _lang.t("measure.square".concat(this.activeUnit));
+        }
+
+        popup.setText("".concat(this._getFormatResult(this.result), " ").concat(uniti18n));
+        popup.addTo(this.map);
+        this.cachePolygonUnit['value'] = this.result;
+        this.cachePolygonUnit['unit'] = this.activeUnit;
+        this.tipHoverDiv = popup;
       }
-
-      var uniti18n;
-
-      if (this.activeMode === 'draw_line_string') {
-        uniti18n = _lang.t("measure.".concat(this.activeUnit));
-      } else if (this.activeMode === 'draw_polygon') {
-        uniti18n = _lang.t("measure.square".concat(this.activeUnit));
-      }
-
-      popup.setText("".concat(this._getFormatResult(this.result), " ").concat(uniti18n));
-      popup.addTo(this.map);
-      this.cachePolygonUnit['value'] = this.result;
-      this.cachePolygonUnit['unit'] = this.activeUnit;
-      this.tipHoverDiv = popup;
     }
   }, {
     key: "_renderPopupTip",
@@ -60494,9 +60894,9 @@ function (_mapboxgl$Evented) {
           lat = _e$lngLat3.lat;
       var popup = new mapbox_gl_enhance_js_default.a.Popup({
         closeButton: false,
+        closeOnClick: false,
         className: 'sm-component-measure__popup'
       });
-      popup.setLngLat([lng, lat]);
 
       if (this.measureNodes.length > 1) {
         var line = {
@@ -60505,7 +60905,7 @@ function (_mapboxgl$Evented) {
             type: 'LineString',
             coordinates: this.measureNodes
           }
-        }; // 修改单位！！！！
+        }; // 修改单位
 
         var tempLength = length_default()(line, 'kilometers');
         var calcValue = Object(helpers["convertLength"])(tempLength, 'kilometers', this.activeUnit);
@@ -60518,45 +60918,147 @@ function (_mapboxgl$Evented) {
         }
 
         var renderText = "".concat(this._getFormatResult(calcValue), " ").concat(uniti18n);
-        this.cacheLengthUnitList.push({
+        this.cacheLengthUnitList.id = this.cacheLengthUnitList.id || [];
+        this.cacheLengthUnitList.id.push({
           value: this._getFormatResult(calcValue),
           unit: this.activeUnit
         });
         popup.setText(renderText);
       } else {
         popup.setText('起点');
+        this.cacheLengthUnitList.id = this.cacheLengthUnitList.id || [];
       }
 
-      popup && popup.addTo(this.map);
-      this.tipNodes.push(popup);
-    }
-  }, {
-    key: "_resetEvent",
-    value: function _resetEvent() {
-      var isOffEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-      var isResetHoverTip = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-      var result = arguments.length > 2 ? arguments[2] : undefined;
-      var feature = arguments.length > 3 ? arguments[3] : undefined;
-      this.isOpenMoveEvent = true;
-      this.map.off('mousemove', this.popupFollowMouseBind);
-      isOffEvent && this.map.off('mousedown', this.measureNodeDistanceBind);
+      popup.setLngLat([lng, lat]);
+      popup && popup.addTo(this.map); // 这里的key-id只是一个临时的值 在绘画完成后(会生成一个featureId) 这时会把id这个key转换成真实的id值
 
-      if (isResetHoverTip) {
-        // 如果是测量长度，销毁实时计算生成的popup
-        this.tipHoverDiv && this.tipHoverDiv.remove();
-        this.tipHoverDiv = null;
-      } else {
-        // 如果是测量面积，直接利用实时计算生成的popup显示最后结果
-        var centerResult = center_default()(feature);
-        var uniti18n = _lang.t("measure.square".concat(this.activeUnit));
-        result = this._getFormatResult(result);
-        this.tipHoverDiv && this.tipHoverDiv.setLngLat(centerResult.geometry.coordinates).setText("".concat(result, " ").concat(uniti18n));
-      }
+      this.lenTipNodesList.id = this.lenTipNodesList.id || [];
+      this.lenTipNodesList.id.push(popup);
     }
   }, {
     key: "_getFormatResult",
     value: function _getFormatResult(result) {
       return reservedDecimal(result || this.result, 4);
+    }
+  }, {
+    key: "_isDrawing",
+    value: function _isDrawing() {
+      return draw_event.$options.getDrawingState(this.mapTarget, this.componentName) && this.draw; // return true;
+    }
+  }, {
+    key: "_updateLenPopupNodes",
+    value: function _updateLenPopupNodes(idValue) {
+      this.cacheLengthUnitList[idValue] = this.cacheLengthUnitList.id || [];
+      delete this.cacheLengthUnitList.id;
+      this.lenTipNodesList[idValue] = this.lenTipNodesList.id || [];
+      delete this.lenTipNodesList.id;
+
+      for (var id in this.lenTipNodesList) {
+        var tipNodes = this.lenTipNodesList[id];
+
+        if (tipNodes && !tipNodes.length) {
+          delete this.lenTipNodesList[id];
+          delete this.cacheLengthUnitList[id];
+        }
+      }
+    }
+  }, {
+    key: "_updateAreaPopupNodes",
+    value: function _updateAreaPopupNodes(popupResult, feature) {
+      // 如果是测量面积，直接利用实时计算生成的popup显示最后结果
+      var centerResult = center_default()(feature);
+      var uniti18n = _lang.t("measure.square".concat(this.activeUnit));
+
+      var result = this._getFormatResult(popupResult);
+
+      if (this.continueDraw) {
+        this.tipHoverDiv && this.tipHoverDiv.setLngLat(centerResult.geometry.coordinates).setText("".concat(result, " ").concat(uniti18n));
+      } else {
+        this._removeHoverPopup();
+
+        var popup = new mapbox_gl_enhance_js_default.a.Popup({
+          closeButton: false,
+          closeOnClick: false,
+          className: 'sm-component-measure__popup'
+        });
+        popup.setLngLat(centerResult.geometry.coordinates).setText("".concat(result, " ").concat(uniti18n)).addTo(this.map);
+        this.areaTipNodesList[feature.id] = popup;
+      }
+    }
+  }, {
+    key: "_resetEvent",
+    value: function _resetEvent() {
+      this.map.off('mousemove', this.popupFollowMouseBind);
+      this.map.off('mousedown', this.measureNodeDistanceBind);
+    }
+  }, {
+    key: "_clearEvent",
+    value: function _clearEvent() {
+      this.map.off('mousemove', this.popupFollowMouseBind);
+      this.map.off('mousedown', this.measureNodeDistanceBind);
+      this.map.off('mousedown', this.continueDrawBind);
+      this.map.off('draw.create', this._finishDraw.bind(this));
+      this.map.off('draw.modechange', this._changeMode.bind(this));
+    }
+  }, {
+    key: "_removePopups",
+    value: function _removePopups() {
+      for (var id in this.lenTipNodesList) {
+        var tipNodes = this.lenTipNodesList[id];
+
+        if (tipNodes && tipNodes.length) {
+          tipNodes.forEach(function (tipNode) {
+            return tipNode.remove();
+          });
+        }
+      }
+
+      for (var _id in this.areaTipNodesList) {
+        var tipNode = this.areaTipNodesList[_id];
+        tipNode && tipNode.remove();
+      }
+
+      this.lenTipNodesList = {};
+      this.areaTipNodesList = {};
+    }
+  }, {
+    key: "_removeHoverPopup",
+    value: function _removeHoverPopup() {
+      this.tipHoverDiv && this.tipHoverDiv.remove();
+      this.tipHoverDiv = null;
+    }
+  }, {
+    key: "removeDraw",
+    value: function removeDraw() {
+      this.isEditing = false;
+
+      if (this.ids) {
+        this.draw.delete(this.ids);
+        this.ids = null;
+      }
+
+      this.draw.trash();
+      this.closeDraw();
+
+      this._removePopups();
+
+      this._removeHoverPopup();
+    }
+  }, {
+    key: "pauseDraw",
+    value: function pauseDraw() {
+      this._clearEvent();
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      var map = draw_event.$options.getDraw(this.mapTarget);
+
+      if (this.draw && map) {
+        this.closeDraw();
+        this.removeDraw();
+        draw_event.$options.deleteDrawingState(this.mapTarget, this.componentName);
+      }
     }
   }]);
 
@@ -60568,6 +61070,7 @@ function (_mapboxgl$Evented) {
 var mapbox_gl_draw = __webpack_require__("vdDi");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/measure/Measure.vue?vue&type=script&lang=js&
+//
 //
 //
 //
@@ -60676,6 +61179,11 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
       // 面积默认单位
       type: String,
       default: 'kilometers'
+    },
+    continueDraw: {
+      // 是否开启多绘制
+      type: Boolean,
+      default: true
     }
   },
   data: function data() {
@@ -60705,6 +61213,10 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
         mode: 'draw_polygon',
         title: this.$t('measure.area'),
         iconClass: 'sm-components-icons-polygon-layer'
+      }, {
+        mode: 'delete',
+        title: this.$t('measure.delete'),
+        iconClass: 'sm-components-icons-delete'
       }],
       activeMode: '',
       result: '',
@@ -60722,8 +61234,10 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
       return this.unitOptions[this.activeMode] || [];
     },
     getResult: function getResult() {
-      if (this.result) {
-        return "".concat(this.result, " ").concat(this.getUnitLabel);
+      if (this.result && this.measureFinished) {
+        var result = "".concat(this.result, " ").concat(this.getUnitLabel);
+        this.resetActiveMode();
+        return result;
       }
 
       return '';
@@ -60765,34 +61279,42 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
   loaded: function loaded() {
     var _this = this;
 
-    this.layerId = lodash_uniqueid_default()("".concat(this.$options.name.toLowerCase(), "-"));
+    var mapTarget = this.getTargetName();
     this.viewModel = new measure_MeasureViewModel({
       map: this.map,
-      layerId: this.layerId
+      mapTarget: mapTarget,
+      continueDraw: this.continueDraw
     }); // 控制显示结果的显示
 
     this.viewModel.on('measure-finished', function (_ref) {
       var result = _ref.result;
       _this.result = result;
+      _this.measureFinished = true;
     });
     this.viewModel.on('measure-start', function (_ref2) {
       var result = _ref2.result;
       _this.result = '';
+      _this.measureFinished = false;
     });
     this.viewModel.on('update-unit', function (_ref3) {
       var result = _ref3.result;
       _this.result = result;
     });
+    draw_event.$on('draw-reset', function (_ref4) {
+      var componentName = _ref4.componentName;
+
+      if (componentName !== _this.$options.name) {
+        _this.activeMode = null;
+        _this.result = '';
+
+        _this.viewModel.pauseDraw();
+      }
+    });
   },
   removed: function removed() {
     this.activeMode = null;
     this.result = '';
-
-    if (this.layerId && this.map) {
-      this.viewModel && this.viewModel.closeDraw();
-      this.map.removeLayer(this.layerId);
-      this.layerId = null;
-    }
+    this.viewModel && this.viewModel.clear();
   },
   methods: {
     changeSelectInputStyle: function changeSelectInputStyle() {
@@ -60844,12 +61366,20 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
           var modeUnitKey = _this4.modeUnitMap[mode];
           var activeUnit = _this4[modeUnitKey];
 
-          if (_this4.activeMode !== mode) {
+          if (mode === 'delete') {
+            _this4.viewModel.removeDraw();
+
+            _this4.activeMode = null;
+            _this4.result = '';
+            return;
+          }
+
+          if (_this4.activeMode !== mode || !_this4.continueDraw) {
             _this4.viewModel.openDraw(mode, activeUnit);
 
             _this4.activeMode = mode;
           } else {
-            _this4.viewModel.closeDraw();
+            _this4.viewModel.removeDraw();
 
             _this4.activeMode = null;
           }
@@ -60863,6 +61393,14 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
     },
     getPopupContainer: function getPopupContainer() {
       return this.$el.querySelector('.sm-component-measure__panelContent');
+    },
+    resetActiveMode: function resetActiveMode() {
+      !this.activeModeCache && (this.activeModeCache = this.activeMode);
+      this.measureFinished && !this.continueDraw && (this.activeMode = null);
+
+      if (!this.measureFinished && this.continueDraw) {
+        this.activeMode = this.activeModeCache;
+      }
     }
   }
 });
@@ -60878,8 +61416,8 @@ var mapbox_gl_draw = __webpack_require__("vdDi");
 
 var Measure_component = normalizeComponent(
   measure_Measurevue_type_script_lang_js_,
-  Measurevue_type_template_id_4dc3aac7_render,
-  Measurevue_type_template_id_4dc3aac7_staticRenderFns,
+  Measurevue_type_template_id_48fb8572_render,
+  Measurevue_type_template_id_48fb8572_staticRenderFns,
   false,
   null,
   null,
@@ -62120,12 +62658,319 @@ var Zoom_component = normalizeComponent(
 )
 
 /* harmony default export */ var Zoom = (Zoom_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/chart/Chart.vue?vue&type=template&id=e465376e&
-var Chartvue_type_template_id_e465376e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"autoresize":_vm.autoresize,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme}})],1)}
-var Chartvue_type_template_id_e465376e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/draw/Draw.vue?vue&type=template&id=a826d092&scoped=true&
+var Drawvue_type_template_id_a826d092_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-draw",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('div',{staticClass:"sm-component-draw__panel",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},_vm._l((_vm.modes),function(item){return _c('span',{key:item.icon,class:['sm-component-draw__draw-item', {'sm-component-draw__draw-active': _vm.activeMode && _vm.activeMode === item.value}],style:({'--icon-color--hover': _vm.colorGroupsData[0]}),attrs:{"title":item.title},on:{"click":function($event){_vm.updateMode(item.value)}}},[_c('i',{class:("sm-components-icons-" + (item.icon))})])}))])}
+var Drawvue_type_template_id_a826d092_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/chart/Chart.vue?vue&type=template&id=e465376e&
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/draw/Draw.vue?vue&type=template&id=a826d092&scoped=true&
+
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/draw/DrawViewModel.js
+
+
+
+
+
+
+
+
+
+
+/**
+ * @class DrawViewModel
+ * @description 量算 viewModel.
+ * @param {Object} webmap - webmap实例对象。
+ * @extends mapboxgl.Evented
+ */
+
+var DrawViewModel_DrawViewModel =
+/*#__PURE__*/
+function (_mapboxgl$Evented) {
+  inherits_default()(DrawViewModel, _mapboxgl$Evented);
+
+  function DrawViewModel(map, mapTarget) {
+    var _this;
+
+    helpers_classCallCheck_default()(this, DrawViewModel);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(DrawViewModel).call(this));
+    _this.map = map;
+    _this.mapTarget = mapTarget;
+    _this.componentName = 'SmDraw';
+    _this.featureIds = []; // 收集当前draw所画的点线面的id
+
+    _this._addDrawControl();
+
+    return _this;
+  }
+
+  helpers_createClass_default()(DrawViewModel, [{
+    key: "_addDrawControl",
+    value: function _addDrawControl() {
+      this.draw = draw_event.$options.getDraw(this.mapTarget);
+      this.map.on('draw.create', this._drawCreate.bind(this));
+    }
+  }, {
+    key: "_drawCreate",
+    value: function _drawCreate(e) {
+      if (this._isDrawing()) {
+        var features = e.features;
+        var feature = features[0] || {};
+        var selectedId = feature.id;
+        this.featureIds.push(selectedId); // 计算长度和面积的结果
+
+        var _feature$geometry = feature.geometry,
+            geometry = _feature$geometry === void 0 ? {} : _feature$geometry;
+        var coordinates = geometry.coordinates;
+        var result = '';
+        var coordinateOfMaxLatitude = [];
+
+        if (geometry.type === 'Point') {
+          result = length_default()(feature, 'kilometers');
+          coordinateOfMaxLatitude = coordinates;
+        } else if (geometry.type === 'LineString') {
+          result = length_default()(feature, 'kilometers');
+          coordinateOfMaxLatitude = this._calcMaxLatitudeInCoordinate(coordinates);
+        } else if (geometry.type === 'Polygon') {
+          var area = area_default()(feature);
+          result = Object(helpers["convertArea"])(area, 'meters', 'kilometers');
+          coordinateOfMaxLatitude = this._calcMaxLatitudeInCoordinate(coordinates[0]);
+        }
+
+        result = result && result + ' 千米';
+        /**
+         * @event DrawViewModel#drawcreated
+         * @description 绘制完成。
+         */
+
+        this.fire('draw-create', {
+          popupInfo: {
+            resultInfo: {
+              type: geometry.type,
+              result: result
+            },
+            trash: this.trash.bind(this),
+            map: this.map,
+            drawId: selectedId,
+            coordinate: coordinateOfMaxLatitude
+          }
+        });
+      }
+    }
+  }, {
+    key: "_calcMaxLatitudeInCoordinate",
+    value: function _calcMaxLatitudeInCoordinate() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var indexOfMax = 0;
+      var compareNum = data[indexOfMax] && data[indexOfMax][1];
+
+      for (var i = 0; i < data.length; i++) {
+        if (data[i] && data[i][1] > compareNum) {
+          compareNum = data[i][1];
+          indexOfMax = i;
+        }
+      }
+
+      return data[indexOfMax];
+    } // 开启绘制
+
+  }, {
+    key: "openDraw",
+    value: function openDraw(mode) {
+      draw_event.$options.setDrawingState(this.mapTarget, this.componentName, true); // 绘画线或面
+
+      this.draw.changeMode(mode);
+    }
+  }, {
+    key: "trash",
+    value: function trash(id) {
+      var _this2 = this;
+
+      if (id) {
+        this.draw.delete(id);
+        return;
+      }
+
+      var selectedIds = this.draw.getSelectedIds();
+      selectedIds.forEach(function (item) {
+        var matchIndex = _this2.featureIds.findIndex(function (id) {
+          return id === item;
+        });
+
+        if (matchIndex > -1) {
+          _this2.featureIds.splice(matchIndex, 1);
+        }
+      });
+      this.draw.trash();
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      if (this.draw && draw_event.$options.getDraw(this.mapTarget)) {
+        this.draw.delete(this.featureIds);
+        draw_event.$options.deleteDrawingState(this.mapTarget, this.componentName);
+      }
+    }
+  }, {
+    key: "_isDrawing",
+    value: function _isDrawing() {
+      return draw_event.$options.getDrawingState(this.mapTarget, this.componentName);
+    }
+  }]);
+
+  return DrawViewModel;
+}(mapbox_gl_enhance_js_default.a.Evented);
+
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/web-map/control/draw/Draw.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+/* harmony default export */ var Drawvue_type_script_lang_js_ = ({
+  name: 'SmDraw',
+  mixins: [map_getter, control, _mixin_theme, _mixin_card],
+  props: {
+    iconClass: {
+      type: String,
+      default: 'sm-components-icons-edit'
+    },
+    headerName: {
+      type: String,
+      default: '绘制'
+    }
+  },
+  data: function data() {
+    return {
+      modes: [{
+        icon: 'point-layer',
+        value: 'draw_point',
+        title: 'Point Tool'
+      }, {
+        icon: 'line-layer',
+        value: 'draw_line_string',
+        title: 'LineString Tool'
+      }, {
+        icon: 'polygon-layer',
+        value: 'draw_polygon',
+        title: 'Polygon Tool'
+      }, {
+        icon: 'delete',
+        value: 'trash',
+        title: 'Delete'
+      }],
+      activeMode: null
+    };
+  },
+  loaded: function loaded() {
+    var mapTarget = this.getTargetName();
+    this.viewModel = new DrawViewModel_DrawViewModel(this.map, mapTarget);
+    this.initEvent();
+  },
+  removed: function removed() {
+    this.activeMode = null;
+    this.viewModel && this.viewModel.clear();
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.$options.removed.call(this);
+  },
+  methods: {
+    initEvent: function initEvent() {
+      var _this = this;
+
+      this.viewModel.on('draw-create', function (data) {
+        _this.activeMode = null;
+
+        _this.$emit('draw-created', data.popupInfo);
+      });
+    },
+    updateMode: function updateMode(mode) {
+      var _this2 = this;
+
+      setTimeout(function () {
+        if (_this2.mapTarget && !map_event.$options.getMap(_this2.mapTarget) || _this2.map && !_this2.map.loaded()) {
+          _this2.$message.destroy();
+
+          _this2.$message.warning('关联的地图尚未加载完整，请稍后！');
+        } else if (_this2.map && _this2.map.loaded()) {
+          _this2.activeMode = mode;
+
+          if (mode === 'trash') {
+            _this2.viewModel.trash();
+
+            _this2.activeMode = null;
+            return;
+          }
+
+          _this2.viewModel.openDraw(mode);
+
+          draw_event.$emit('draw-reset', {
+            componentName: _this2.$options.name
+          });
+        } else {
+          _this2.nonMapTip();
+        }
+      }, 0);
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/draw/Draw.vue?vue&type=script&lang=js&
+ /* harmony default export */ var draw_Drawvue_type_script_lang_js_ = (Drawvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/mapboxgl/web-map/control/draw/Draw.vue
+
+
+
+
+
+/* normalize component */
+
+var Draw_component = normalizeComponent(
+  draw_Drawvue_type_script_lang_js_,
+  Drawvue_type_template_id_a826d092_scoped_true_render,
+  Drawvue_type_template_id_a826d092_scoped_true_staticRenderFns,
+  false,
+  null,
+  "a826d092",
+  null
+  
+)
+
+/* harmony default export */ var Draw = (Draw_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/chart/Chart.vue?vue&type=template&id=7cb1abc2&
+var Chartvue_type_template_id_7cb1abc2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-card',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShow),expression:"isShow"}],staticClass:"sm-component-chart",attrs:{"icon-class":_vm.iconClass,"icon-position":_vm.position,"header-name":_vm.headerName,"auto-rotate":_vm.autoRotate,"collapsed":_vm.collapsed}},[_c('v-chart',{ref:_vm.chartId,style:(_vm._chartStyle),attrs:{"id":_vm.chartId,"options":_vm._chartOptions,"autoresize":_vm.autoresize,"initOptions":_vm.initOptions,"group":_vm.group,"manual-update":_vm.manualUpdate,"theme":_vm.theme || _vm.chartTheme}})],1)}
+var Chartvue_type_template_id_7cb1abc2_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/mapboxgl/chart/Chart.vue?vue&type=template&id=7cb1abc2&
 
 // EXTERNAL MODULE: external "VueECharts"
 var external_VueECharts_ = __webpack_require__("Zni2");
@@ -63861,10 +64706,9 @@ var lodash_merge_default = /*#__PURE__*/__webpack_require__.n(lodash_merge);
  * @module Chart
  * @category Components
  * @desc Chart 组件。除了prop: dataset和datasetOptions，其他的所有prop,event,computed, methods都是ECharts的配置，参考https://echarts.baidu.com/api.html#echartsInstance.dispose
- * @vue-prop {Object} dataset - 用来请求的dataset配置。
- * @vue-prop {Object} datasetOptions - 和请求dataset数据相关的配置。
- * @vue-prop {String} [background] - 图表背景颜色。
- * @vue-prop {String} [textColor] - 图表字体颜色。
+ * @vue-prop {String} [iconClass='sm-components-icons-attribute']  - 设置组件图标的类名。
+ * @vue-prop {Object} [dataset=null] - 数据来源,支持的参数类型为iPortalDataParameter/RestDataParameter/RestMapParameter。
+ * @vue-prop {Array} datasetOptions - 数据来源的配置。
  * @vue-prop {Array} [colorGroup] - 图表颜色数组。
  * @vue-prop {Object} theme - 当前 ECharts 实例使用的主题。
  * @vue-prop {Object} initOptions - 用来初始化 ECharts 实例。
@@ -63872,8 +64716,6 @@ var lodash_merge_default = /*#__PURE__*/__webpack_require__.n(lodash_merge);
  * @vue-prop {Boolean} [autoresize = true] - 用来指定 ECharts 实例在组件根元素尺寸变化时是否需要自动进行重绘。
  * @vue-prop {String} group - 实例的分组，会自动绑定到 ECharts 组件的同名属性上。
  * @vue-prop {Boolean} [manualUpdate = false] - 在性能敏感（数据量很大）的场景下，我们最好对于 options prop 绕过 Vue 的响应式系统。当将 manual-update prop 指定为 true 且不传入 options prop 时，数据将不会被监听。然后，你需要用 ref 获取组件实例以后手动调用 mergeOptions 方法来更新图表。
- * @vue-computed {String} width - 用来获取 ECharts 实例的当前宽度。
- * @vue-computed {String} height - 用来获取 ECharts 实例的当前高度。
  * @vue-computed {String} computedOptions - 用来读取 ECharts 更新内部 options 后的实际数据。
  * @vue-event {Object} legendselectchanged - 切换图例选中状态后的事件。
  * @vue-event {Object} legendselected - 图例选中后的事件。
@@ -63991,7 +64833,6 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
     computedOptions: function computedOptions() {
       return this.smChart && this.smChart.computedOptions;
     },
-    // 内部调用
     _chartStyle: function _chartStyle() {
       return {
         width: '100%',
@@ -64323,8 +65164,8 @@ var EVENTS = ['legendselectchanged', 'legendselected', 'legendunselected', 'lege
 
 var Chart_component = normalizeComponent(
   chart_Chartvue_type_script_lang_js_,
-  Chartvue_type_template_id_e465376e_render,
-  Chartvue_type_template_id_e465376e_staticRenderFns,
+  Chartvue_type_template_id_7cb1abc2_render,
+  Chartvue_type_template_id_7cb1abc2_staticRenderFns,
   false,
   null,
   null,
@@ -67596,12 +68437,12 @@ var Query_component = normalizeComponent(
 )
 
 /* harmony default export */ var Query = (Query_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/search/Search.vue?vue&type=template&id=f8123c0e&
-var Searchvue_type_template_id_f8123c0e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-search",style:([_vm.getTextColorStyle, _vm.getBackgroundStyle]),attrs:{"id":"sm-component-search"}},[_c('div',{staticClass:"sm-component-search__input"},[_c('a-input',{staticClass:"sm-component-search__a-input",style:([_vm.getBackgroundStyle]),attrs:{"placeholder":_vm.$t('search.inputPlaceHolder')},on:{"pressEnter":_vm.searchButtonClicked,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('a-icon',{style:(_vm.getColorStyle(0)),attrs:{"slot":"prefix","type":_vm.prefixType},on:{"click":_vm.searchButtonClicked},slot:"prefix"}),_vm._v(" "),_c('a-icon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isHover && _vm.searchKey),expression:"isHover && searchKey"}],style:(_vm.getColorStyle(0)),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.inputValueCleared,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},slot:"suffix"})],1)],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResultLength),expression:"getResultLength"}],staticClass:"sm-component-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-component-search__panel"},[(result.source)?_c('span',{staticClass:"sm-component-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-component-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,i){return _c('li',{key:i,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])})),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"searchTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
-var Searchvue_type_template_id_f8123c0e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/mapboxgl/search/Search.vue?vue&type=template&id=5bfc694a&
+var Searchvue_type_template_id_5bfc694a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-search",style:(_vm.getTextColorStyle),attrs:{"id":"sm-component-search"}},[(_vm.showIcon)?_c('div',{staticClass:"sm-component-search__toggle-icon",style:([{'--icon-color--hover': _vm.colorGroupsData[0]}, _vm.getBackgroundStyle]),on:{"click":function($event){_vm.showSearch = !_vm.showSearch; _vm.showIcon = !_vm.showIcon}}},[_c('a-icon',{attrs:{"type":"search"}})],1):_vm._e(),_vm._v(" "),_c('transition',{attrs:{"name":"sm-component-zoom-in"},on:{"after-leave":function($event){_vm.showIcon = !_vm.showIcon}}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showSearch),expression:"showSearch"}],staticClass:"sm-component-search__content",style:([{'transform-origin': _vm.position.includes('left') ? 'top left' : 'top right'}, _vm.getBackgroundStyle])},[_c('div',{staticClass:"sm-component-search__input"},[_c('div',{staticClass:"sm-component-search__arrow-icon",style:({ float: _vm.position.includes('left') ? 'right' : 'left'}),on:{"click":function($event){_vm.showSearch = !_vm.showSearch}}},[_c('a-icon',{attrs:{"type":_vm.position.includes('left') ? 'double-left' : 'double-right'}})],1),_vm._v(" "),_c('div',{class:['sm-component-search__search-icon', { 'right': _vm.position.includes('right') }],style:([_vm.getBackgroundStyle, _vm.getColorStyle(0)]),on:{"click":_vm.searchButtonClicked}},[_c('a-icon',{attrs:{"type":_vm.prefixType}})],1),_vm._v(" "),_c('a-input',{staticClass:"sm-component-search__a-input",style:([_vm.getBackgroundStyle]),attrs:{"placeholder":_vm.$t('search.inputPlaceHolder')},on:{"pressEnter":_vm.searchButtonClicked,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},model:{value:(_vm.searchKey),callback:function ($$v) {_vm.searchKey=$$v},expression:"searchKey"}},[_c('a-icon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isHover && _vm.searchKey),expression:"isHover && searchKey"}],style:(_vm.getColorStyle(0)),attrs:{"slot":"suffix","type":"close-circle"},on:{"click":_vm.inputValueCleared,"mouseenter":_vm.handleInputHover,"mouseleave":_vm.handleInputHover},slot:"suffix"})],1)],1),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.getResultLength),expression:"getResultLength"}],staticClass:"sm-component-search__result",style:([_vm.getBackgroundStyle])},_vm._l((_vm.searchResult),function(result,index){return _c('div',{key:index,staticClass:"sm-component-search__panel"},[(result.source)?_c('span',{staticClass:"sm-component-search__panel-header",style:(_vm.getColorStyle(0))},[_vm._v(_vm._s(result.source))]):_vm._e(),_vm._v(" "),(result.result)?_c('div',{staticClass:"sm-component-search__panel-body"},[_c('ul',_vm._l((result.result),function(item,i){return _c('li',{key:i,attrs:{"title":item.filterVal || item.address},on:{"click":_vm.searchResultListClicked,"mouseenter":_vm.changeChosenResultStyle,"mouseleave":_vm.resetChosenResultStyle}},[_vm._v(_vm._s(item.filterVal || item.address))])}))]):_vm._e()])}))])]),_vm._v(" "),_c('TablePopup',_vm._b({directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}],ref:"searchTablePopup"},'TablePopup',_vm.tablePopupProps,false))],1)}
+var Searchvue_type_template_id_5bfc694a_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/search/Search.vue?vue&type=template&id=f8123c0e&
+// CONCATENATED MODULE: ./src/mapboxgl/search/Search.vue?vue&type=template&id=5bfc694a&
 
 // CONCATENATED MODULE: ./src/mapboxgl/search/SearchViewModel.js
 
@@ -68141,6 +68982,34 @@ function (_mapboxgl$Evented) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -68229,7 +69098,9 @@ function (_mapboxgl$Evented) {
       searchResult: [],
       prefixType: 'search',
       isHover: false,
-      tablePopupProps: {}
+      tablePopupProps: {},
+      showSearch: false,
+      showIcon: true
     };
   },
   computed: {
@@ -68424,8 +69295,8 @@ function (_mapboxgl$Evented) {
 
 var Search_component = normalizeComponent(
   search_Searchvue_type_script_lang_js_,
-  Searchvue_type_template_id_f8123c0e_render,
-  Searchvue_type_template_id_f8123c0e_staticRenderFns,
+  Searchvue_type_template_id_5bfc694a_render,
+  Searchvue_type_template_id_5bfc694a_staticRenderFns,
   false,
   null,
   null,
@@ -69761,6 +70632,7 @@ var OpenFile_component = normalizeComponent(
 
 
 /** control */
+
 
 
 

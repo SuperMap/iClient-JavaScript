@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title data-i18n="resources.title_componentsFireLayer_Vue"></title>
+        <title data-i18n="resources.title_componentsAnimateTextLayer_Vue"></title>
         <script type="text/javascript" include="vue,jquery" src="../js/include-web.js"></script>
         <script
             type="text/javascript"
@@ -24,23 +24,19 @@
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
             <sm-web-map :map-options="mapOptions" style="background:black">
-                <sm-fire-layer :features="features" :model-scale='5.41843220338983e-6'></sm-fire-layer>
+                <sm-animate-marker-layer
+                    :features="features"
+                    type="rotatingTextBorder"
+                    text-field="NAME"
+                    :colors="['rgb(21, 209, 242)', 'rgba(21, 209, 242, 0.56)']"
+                    :width="150"
+                ></sm-animate-marker-layer>
             </sm-web-map>
         </div>
         <script>
             var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-            var url = host + "/iserver/services/data-jingjin/rest/data";
-            var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
-                queryParameter: {
-                    attributeFilter: "SmID>0"
-                },
-                datasetNames: ["Jingjin:Town_P"],
-                fromIndex: 0,
-                toIndex: 5
-            });
-
-            new mapboxgl.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function(serviceResult) {
-                var features = serviceResult.result.features;
+            $.get("../data/text-marker.json", function(features) {
+                var features = features;
                 new Vue({
                     el: "#main",
                     data() {
@@ -60,6 +56,10 @@
                                             type: "raster",
                                             tiles: [mapUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}"],
                                             tileSize: 256
+                                        },
+                                        buildings: {
+                                            type: "geojson",
+                                            data: "http://iclient.supermap.io/examples/data/buildings.json"
                                         }
                                     },
                                     layers: [
@@ -69,11 +69,32 @@
                                             source: "raster-tiles",
                                             minzoom: 0,
                                             maxzoom: 22
+                                        },
+                                        {
+                                            id: "3d-buildings",
+                                            source: "buildings",
+                                            type: "fill-extrusion",
+                                            paint: {
+                                                "fill-extrusion-color": [
+                                                    "case",
+                                                    ["<", ["get", "height"], 2],
+                                                    "#fbb03b",
+                                                    ["<", ["get", "height"], 4],
+                                                    "#223b53",
+                                                    ["<", ["get", "height"], 8],
+                                                    "#15D1F2",
+                                                    ["<", ["get", "height"], 16],
+                                                    "#15D1F2",
+                                                    "#3bb2d0"
+                                                ],
+                                                "fill-extrusion-height": ["*", ["get", "height"], 5],
+                                                "fill-extrusion-opacity": 0.6
+                                            }
                                         }
                                     ]
                                 },
-                                center: [116.3850255890805, 39.90519670197787],
-                                zoom: 13,
+                                center: [116.45678770471238, 39.91985987899349],
+                                zoom: 14.310035105070941,
                                 bearing: 0.8568,
                                 pitch: 60
                             },
