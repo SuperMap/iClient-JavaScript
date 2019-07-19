@@ -1,0 +1,676 @@
+<!--********************************************************************
+* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n='resources.title_componentsBorder_Vue'></title>
+  <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+  <script include="ant-design-vue,echarts-vue,iclient9-mapboxgl-vue" src="../../dist/mapboxgl/include-mapboxgl.js">
+  </script>
+  <style>
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      top: 0;
+    }
+
+    #main {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+    }
+    .select-group {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      width: 240px;
+      left: 40px;
+      top: 40px;
+    }
+    .select-group span{
+      color: #fff;
+      font-size: 15px;
+      margin-right: 10px;
+    }
+    .select-border{
+      width: 100px;
+    }
+    .ant-select-selection{
+      background: #262626;
+      color: #fff;
+    }
+    .all-borders {
+      width: 98%;
+      margin: 0 auto;
+      position: absolute;
+      left: 1%;
+      bottom: 0px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap-reverse;
+      align-content: flex-start；
+    }
+   .common-border {
+      margin-bottom: 10px;
+      width: 300px;
+      height: 230px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="main">
+    <!-- WebMap组件 -->
+    <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="352513795" ref="map"></sm-web-map>
+    <div class="all-borders">
+      <!-- Border组件 -->
+      <sm-border :type="borderType" class="common-border">
+        <sm-chart icon-class="" :options="barChartOptions"></sm-chart>
+      </sm-border> 
+      <!-- Border组件 -->
+      <sm-border :type="borderType" class="common-border">
+        <sm-chart icon-class="" :options="lineChartOptions"></sm-chart>
+      </sm-border> 
+      <!-- Border组件 -->
+      <sm-border :type="borderType" class="common-border">
+        <sm-chart icon-class="" :options="scatterChartOptions"></sm-chart>
+      </sm-border> 
+      <!-- Border组件 -->
+      <sm-border :type="borderType" class="common-border">
+        <sm-chart icon-class="" :options="radarChartOptions"></sm-chart>
+      </sm-border> 
+      <!-- Border组件 -->
+      <sm-border :type="borderType" class="common-border">
+        <sm-chart icon-class="" :options="pieChartOptions"></sm-chart>
+      </sm-border> 
+      <!-- Border组件 -->
+      <sm-border :type="borderType" class="common-border">
+        <sm-chart icon-class="" :options="gaugeChartOptions"></sm-chart>
+      </sm-border> 
+    </div>
+    
+    <!-- 切换边框类型 -->
+    <div class="select-group">
+      <span>边框类型:</span>
+      <a-select class="select-border" v-model="borderType" >
+        <a-select-option value="border1">边框1</a-select-option>
+        <a-select-option value="border2">边框2</a-select-option>
+        <a-select-option value="border3">边框3</a-select-option>
+        <a-select-option value="border4">边框4</a-select-option>
+        <a-select-option value="border5">边框5</a-select-option>
+        <a-select-option value="border6">边框6</a-select-option>
+        <a-select-option value="border7">边框7</a-select-option>
+        <a-select-option value="border8">边框8</a-select-option>
+        <a-select-option value="border9">边框9</a-select-option>
+        <a-select-option value="border10">边框10</a-select-option>
+        <a-select-option value="border11">边框11</a-select-option>
+        <a-select-option value="border12">边框12</a-select-option>
+        <a-select-option value="border13">边框13</a-select-option>
+      </a-select>
+    </div>
+    
+  </div>
+
+<script>
+  new Vue({
+    el: '#main',
+    data() {
+      return {
+        borderType: 'border7',
+        // 和echarts一样的配置
+        barChartOptions: {
+          "yAxis": {
+            "name": "",
+            "axisLine": {
+              "lineStyle": {}
+            },
+            "axisLabel": {
+              "rotate": 0,
+              "fontFamily": "MicrosoftYaHei"
+            },
+            "show": true,
+            "splitLine": {
+              "lineStyle": {
+                "width": 0.3,
+                "type": "solid"
+              },
+              "show": false
+            },
+            "splitArea": {
+              "show": false
+            },
+            "nameGap": 5,
+            "nameLocation": "end",
+            "type": "value",
+            "nameTextStyle": {
+              "padding": [0, 0, 5, 0]
+            }
+          },
+          "xAxis": {
+            "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            "axisLine": {
+              "lineStyle": {}
+            },
+            "axisLabel": {
+              "rotate": 0,
+              "fontFamily": "MicrosoftYaHei"
+            },
+            "show": true,
+            "name": "",
+            "axisTick": {
+              "alignWithLabel": true
+            },
+            "splitLine": {
+              "lineStyle": {
+                "type": "solid"
+              },
+              "show": false
+            },
+            "nameGap": 2,
+            "nameLocation": "end",
+            "type": "category"
+          },
+          "grid": {
+            "left": 50,
+            "right": 50,
+            "top": 35,
+            "bottom": 35
+          },
+          "legend": {
+            "data": ["Y2", "Y1", "Y3"],
+            "show": false,
+            "type": "scroll",
+            "top": "auto",
+            "bottom": "auto"
+          },
+          "series": [
+            {
+              "data": ["500", "800", "3000", "3617", "3400", "4200", "1842"],
+              "name": "Y2",
+              "emphasis": {
+                "itemStyle": {}
+              },
+              "type": "bar"
+            },
+            {
+              "data": ["100", "520", "2000", "3340", "3900", "3300", "2500"],
+              "name": "Y1",
+              "emphasis": {
+                "itemStyle": {}
+              },
+              "type": "bar"
+            },
+            {
+              "data": ["1", "1", "0", "0", "0", "1", "0"],
+              "name": "Y3",
+              "emphasis": {
+                "itemStyle": {}
+              },
+              "type": "bar"
+            }
+          ],
+          "tooltip": {
+            "axisPointer": {
+              "shadowStyle": {},
+              "type": "shadow"
+            },
+            "trigger": "axis",
+            "textStyle": {
+              "align": "left"
+            }
+          },
+          "textStyle": {
+            "fontFamily": "Microsoft YaHei Light"
+          },
+          "title": {
+            "padding": [5, 0, 0, 20],
+            "x": "left",
+            "text": "",
+            "textStyle": {
+              "fontFamily": "Microsoft YaHei Light",
+              "fontWeight": "100"
+            }
+          }
+        },
+        lineChartOptions: {
+          "series": [
+            {
+              "data": ["3900", "3340", "3300", "2500", "2000", "520", "100"],
+              "name": "Y1",
+              "emphasis": {
+                "itemStyle": {}
+              },
+              "type": "line",
+              "smooth": false
+            },
+            {
+              "data": ["3400", "3617", "4200", "1842", "3000", "800", "500"],
+              "name": "Y2",
+              "emphasis": {
+                "itemStyle": {}
+              },
+              "type": "line",
+              "smooth": false
+            }
+          ],
+          "yAxis": {
+            "axisLabel": {
+              "rotate": 0,
+              "fontFamily": "MicrosoftYaHei"
+            },
+            "axisLine": {
+              "lineStyle": {}
+            },
+            "name": "",
+            "show": true,
+            "splitLine": {
+              "lineStyle": {
+                "width": 0.3,
+                "type": "solid"
+              },
+              "show": false
+            },
+            "splitArea": {
+              "show": false
+            },
+            "nameGap": 5,
+            "nameLocation": "end",
+            "type": "value",
+            "nameTextStyle": {
+              "padding": [0, 0, 5, 0]
+            }
+          },
+          "xAxis": {
+            "axisLabel": {
+              "rotate": 0,
+              "fontFamily": "MicrosoftYaHei"
+            },
+            "data": ["Fri", "Thu", "Sat", "Sun", "Wed", "Tue", "Mon"],
+            "axisLine": {
+              "lineStyle": {}
+            },
+            "show": true,
+            "name": "",
+            "axisTick": {
+              "alignWithLabel": true
+            },
+            "splitLine": {
+              "lineStyle": {
+                "type": "solid"
+              },
+              "show": false
+            },
+            "nameGap": 2,
+            "nameLocation": "end",
+            "type": "category",
+            "boundaryGap": false
+          },
+          "grid": {
+            "top": 35,
+            "left": 50,
+            "bottom": 25
+          },
+          "legend": {
+            "data": ["Y1", "Y2"],
+            "show": false,
+            "textStyle": {},
+            "type": "scroll",
+            "top": "auto",
+            "bottom": "auto"
+          },
+          "tooltip": {
+            "axisPointer": {
+              "shadowStyle": {},
+              "type": "line"
+            },
+            "trigger": "axis",
+            "textStyle": {
+              "align": "left"
+            }
+          },
+          "textStyle": {
+            "fontFamily": "Microsoft YaHei Light"
+          },
+          "title": {
+            "padding": [5, 0, 0, 20],
+            "x": "left",
+            "text": "",
+            "textStyle": {
+              "fontFamily": "Microsoft YaHei Light",
+              "fontWeight": "100"
+            }
+          }
+        },
+        scatterChartOptions: {
+          "yAxis": {
+            "axisLabel": {
+              "rotate": 0,
+              "fontFamily": "MicrosoftYaHei"
+            },
+            "axisLine": {
+              "lineStyle": {}
+            },
+            "name": "",
+            "show": true,
+            "splitLine": {
+              "lineStyle": {
+                "width": 0.3,
+                "type": "solid"
+              },
+              "show": false
+            },
+            "splitArea": {
+              "show": false
+            },
+            "nameGap": 5,
+            "nameLocation": "end",
+            "type": "value",
+            "nameTextStyle": {
+              "padding": [0, 0, 5, 0]
+            }
+          },
+          "xAxis": {
+            "axisLabel": {
+              "rotate": 0,
+              "fontFamily": "MicrosoftYaHei"
+            },
+            "data": ["Fri", "Thu", "Sat", "Sun", "Wed", "Tue", "Mon"],
+            "axisLine": {
+              "lineStyle": {}
+            },
+            "show": true,
+            "name": "",
+            "axisTick": {
+              "alignWithLabel": true
+            },
+            "splitLine": {
+              "lineStyle": {
+                "type": "solid"
+              },
+              "show": false
+            },
+            "nameGap": 2,
+            "nameLocation": "end",
+            "type": "category",
+            "boundaryGap": false
+          },
+          "grid": {
+            "top": 35,
+            "left": 50,
+            "bottom": 25
+          },
+          "legend": {
+            "data": ["Y1", "Y2"],
+            "show": false,
+            "textStyle": {},
+            "type": "scroll",
+            "top": "auto",
+            "bottom": "auto"
+          },
+          "series": [
+            {
+              "data": ["3900", "3340", "3300", "2500", "2000", "520", "100"],
+              "name": "Y1",
+              "emphasis": {
+                "itemStyle": {}
+              },
+              "type": "scatter"
+            },
+            {
+              "data": ["3400", "3617", "4200", "1842", "3000", "800", "500"],
+              "name": "Y2",
+              "emphasis": {
+                "itemStyle": {}
+              },
+              "type": "scatter"
+            }
+          ],
+          "tooltip": {
+            "axisPointer": {
+              "shadowStyle": {},
+              "type": "line"
+            },
+            "trigger": "axis",
+            "textStyle": {
+              "align": "left"
+            }
+          },
+          "textStyle": {
+            "fontFamily": "Microsoft YaHei Light"
+          },
+          "title": {
+            "padding": [5, 0, 0, 20],
+            "x": "left",
+            "text": "",
+            "textStyle": {
+              "fontFamily": "Microsoft YaHei Light",
+              "fontWeight": "100"
+            }
+          }
+        },
+        radarChartOptions: {
+          "radar": {
+            "indicator": [
+              {
+                "max": "500",
+                "name": "Mon"
+              },
+              {
+                "max": "800",
+                "name": "Tue"
+              },
+              {
+                "max": "3000",
+                "name": "Wed"
+              },
+              {
+                "max": "3617",
+                "name": "Thu"
+              },
+              {
+                "max": "3400",
+                "name": "Fri"
+              },
+              {
+                "max": "4200",
+                "name": "Sat"
+              },
+              {
+                "max": "1842",
+                "name": "Sun"
+              }
+            ],
+            "shape": "circle",
+            "splitArea": {
+              "show": false
+            },
+            "axisLine": {
+              "lineStyle": {}
+            },
+            "name": {
+              "textStyle": {}
+            },
+            "splitLine": {
+              "lineStyle": {}
+            },
+            "splitNumber": 5,
+            "radius": "70%"
+          },
+          "grid": {
+            "top": 35,
+            "left": 50,
+            "bottom": 25
+          },
+          "legend": {
+            "data": ["Y1"],
+            "textStyle": {},
+            "show": false,
+            "top": "auto",
+            "bottom": "auto"
+          },
+          "series": [
+            {
+              "barWidth": "80%",
+              "data": [
+                {
+                  "name": "Y1",
+                  "value": ["100", "520", "2000", "3340", "3900", "3300", "2500"]
+                }
+              ],
+              "name": "示范数据",
+              "emphasis": {
+                "itemStyle": {}
+              },
+              "type": "radar"
+            }
+          ],
+          "tooltip": {
+            "axisPointer": {
+              "shadowStyle": {},
+              "type": "shadow"
+            },
+            "trigger": "axis",
+            "textStyle": {
+              "align": "left"
+            }
+          },
+          "textStyle": {
+            "fontFamily": "Microsoft YaHei Light"
+          },
+          "title": {
+            "padding": [5, 0, 0, 20],
+            "x": "left",
+            "text": "",
+            "textStyle": {
+              "fontFamily": "Microsoft YaHei Light",
+              "fontWeight": "100"
+            }
+          }
+        },
+        pieChartOptions: {
+          "tooltip": {
+            "trigger": "item",
+            "formatter": "{a} <br/>{b}: {c} ({d}%)"
+          },
+          "legend": {
+            "orient": "vertical",
+            "x": "left",
+            "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            "show": true,
+            "top": "auto",
+            "bottom": "auto"
+          },
+          "series": [
+            {
+              "name": "示范数据",
+              "type": "pie",
+              "radius": "80%",
+              "avoidLabelOverlap": false,
+              "label": {
+                "normal": {
+                  "show": false,
+                  "position": "center"
+                },
+                "emphasis": {
+                  "show": true,
+                  "textStyle": {
+                    "fontSize": "30",
+                    "fontWeight": "bold"
+                  }
+                }
+              },
+              "labelLine": {
+                "normal": {
+                  "show": false
+                }
+              },
+              "data": [
+                {
+                  "value": 500,
+                  "name": "Mon"
+                },
+                {
+                  "value": 800,
+                  "name": "Tue"
+                },
+                {
+                  "value": 3000,
+                  "name": "Wed"
+                },
+                {
+                  "value": 3617,
+                  "name": "Thu"
+                },
+                {
+                  "value": 3400,
+                  "name": "Fri"
+                },
+                {
+                  "value": 4200,
+                  "name": "Sat"
+                },
+                {
+                  "value": 1842,
+                  "name": "Sun"
+                }
+              ]
+            }
+          ]
+        },
+        gaugeChartOptions:{
+          "tooltip" : {
+              "formatter": "{a} <br/>{b} : {c}%"
+          },
+          "series": [
+              {
+                  "name": '业务指标',
+                  "type": 'gauge',
+                  "radius": '100%',
+                  "pointer": {
+                      "width": 5
+                  },
+                  "axisLine": { 
+                    "lineStyle": {       // 属性lineStyle控制线条样式
+                      "width": 12
+                    }
+                  },
+                  "splitLine": {           // 分隔线
+                    "length": 6,         // 属性length控制线长
+                  },
+                  "axisTick": {            // 坐标轴小标记
+                      "length": 12,        // 属性length控制线长
+                      "lineStyle": {       // 属性lineStyle控制线条样式
+                          "color": 'auto'
+                      }
+                  },
+                  "detail": {
+                    "formatter":'{value}%',
+                    "fontSize": 20
+                  },
+                  "data": [{"value": 50}]
+              }
+          ]
+        },
+      };
+    },
+    mounted(){
+      let transparent = {
+        textColor: '#eee',
+        background: 'rgba(0,0,0,0)',
+        colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8']
+      };
+      //边框最好配上透明主题， body设置一个底色
+      SuperMap.Components.setTheme(transparent);
+      document.getElementsByTagName('body')[0].style.background = 'rgba(0, 0, 0, 0.9)';
+    }
+  })
+</script>
+</body>
+
+</html>

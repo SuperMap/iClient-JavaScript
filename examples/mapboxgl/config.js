@@ -1431,7 +1431,6 @@ var exampleConfig = {
                         thumbnail: "components_basic_vue.png",
                         fileName: "components_basic_vue"
                     },
-
                     {
                         name: "主题切换",
                         name_en: "Theme switching",
@@ -1452,6 +1451,13 @@ var exampleConfig = {
                         version: "10.0.0",
                         thumbnail: "components_estateMonitoringPlatform_vue.png",
                         fileName: "components_estateMonitoringPlatform_vue"
+                    },
+                    {
+                        name: "边框组件",
+                        name_en: "Border Component",
+                        version: "10.0.0",
+                        thumbnail: "components_border_vue.png",
+                        fileName: "components_border_vue"
                     }
                 ]
             }

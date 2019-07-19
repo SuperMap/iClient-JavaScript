@@ -36,7 +36,6 @@
         <script>
             var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
             $.get("../data/text-marker.json", function(features) {
-                var features = features;
                 new Vue({
                     el: "#main",
                     data() {

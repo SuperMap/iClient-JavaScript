@@ -506,9 +506,10 @@ window.examplesResources = {
         "title_componentsRankSymbolTheme_Vue": '等级符号专题图图层组件',
         "title_componentsLabelTheme_Vue": '标签专题图图层组件',
         "title_componentsDataFlow_Vue": '数据流图层组件',
-        'title_componentsFireLayer_Vue': '动效火焰图层',
-        'title_componentsAnimateMarkerLayer_Vue': '动效标记图层',
-        'title_componentsAnimateTextLayer_Vue': '动效文本标记图层',
+        "title_componentsFireLayer_Vue": '动态火焰图层',
+        "title_componentsAnimateMarkerLayer_Vue": '动效标记图层',
+        "title_componentsAnimateTextLayer_Vue": '动效文本标记图层',
+        "title_componentsBorder_Vue": '边框组件',
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
