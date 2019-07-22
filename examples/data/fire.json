@@ -1,0 +1,71 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "1",
+        "SMX": "116.4761803398518",
+        "SMY": "39.94523658612576",
+        "NAME": "流星花园"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.4761803398518, 39.94523658612576] },
+      "id": 1
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "2",
+        "SMX": "116.45232859046547",
+        "SMY": "39.940792015044366",
+        "NAME": "什刹海"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.45232859046547, 39.940792015044366] },
+      "id": 2
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "3",
+        "SMX": "116.43836302095974",
+        "SMY": "39.930558174912676",
+        "NAME": "月坛"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.43836302095974, 39.930558174912676] },
+      "id": 3
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "4",
+        "SMX": "116.4317944049053",
+        "SMY": "39.92051672843084",
+        "NAME": "超图集团"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.4317944049053, 39.92051672843084] },
+      "id": 4
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "5",
+        "SMX": "116.45783612863801",
+        "SMY": "39.91314505177505",
+        "NAME": "牛街"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.45783612863801, 39.91314505177505] },
+      "id": 5
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "6",
+        "SMX": "116.47886488380118",
+        "SMY": "39.92696402104232",
+        "NAME": "崇文门外"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.47886488380118, 39.92696402104232] },
+      "id": 6
+    }
+  ]
+}

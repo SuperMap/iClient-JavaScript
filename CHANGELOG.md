@@ -1,3 +1,34 @@
+# 10.0.0 beta #
+
+## 新特性
+
+## API changes
+
+### for MapboxGL
+
+- `SuperMap.GetFeaturesByGeometryParameters` 的 `geometry` 参数支持传入 `mapboxgl.LngLatBounds` 
+
+- `SuperMap.QueryByGeometryParameters` 的 `geometry` 参数支持传入 `mapboxgl.LngLatBounds` 
+
+## Fixed
+
+### for Leaflet
+
+- 修复客户端专题图鼠标滑过要素时可能出现的闪动问题
+
+- 修复 `L.supermap.echartsLayer` 的 `options` 传入 `pane` 参数无效的问题
+
+### for OpenLayers
+
+- `ol.supermap.WebMap`
+
+  - 修复在跨域情况下访问地图失败的问题
+
+  - 修正内置的互联网底图最大缩放级别
+
+  - 修复访问坐标系为 epsg:0/epsg:-1000/epsg:-1 地图失败的问题
+
+
 # 10.0.0 alpha #
 
 ## 新特性
@@ -15,11 +46,10 @@
 
 ### for OpenLayers
 
-- iPortal
 
-  - `ol.supermap.WebMap` 新增支持迁徙图、MVT矢量瓦片图层。
+- `ol.supermap.WebMap` 新增支持迁徙图、MVT矢量瓦片图层。
 
-  - `ol.supermap.MapboxStyles` 新增 `setSelectedObjects` `addSelectedObjects` `removeSelectedObjects` `clearSelectedObjects` 接口，只是设置、增加、移除、清除多个高亮要素。
+- `ol.supermap.MapboxStyles` 新增 `setSelectedObjects` `addSelectedObjects` `removeSelectedObjects` `clearSelectedObjects` 接口，支持设置、增加、移除、清除多个高亮要素。
 
 - `ol.supermap.ServiceBase` 及其子类
 

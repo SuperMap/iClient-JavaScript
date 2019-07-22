@@ -17,7 +17,7 @@ import {GeoJSON} from '../format/GeoJSON';
  *      1.通过 AsyncResponder 类获取（推荐使用）；
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。
  * @extends {SuperMap.CommonServiceBase}
- * @param {string} url - 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
+ * @param {string} url - 地图查询服务访问地址。如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。

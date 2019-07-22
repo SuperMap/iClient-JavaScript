@@ -248,17 +248,4 @@ export var mapVLayer = function (dataSet, mapVOptions, options) {
     return new MapVLayer(dataSet, mapVOptions, options);
 };
 
-L.Map.include({
-    /*
-     * 获取精确的像素坐标.
-     * 当需要绘制比较平滑的曲线的时候可调用此方法代替latLngToContainerPoint
-     * @param latlng
-     */
-    latLngToAccurateContainerPoint: function (latlng) {
-        var projectedPoint = this.project(L.latLng(latlng));
-        var layerPoint = projectedPoint._subtract(this.getPixelOrigin());
-        return L.point(layerPoint).add(this._getMapPanePos());
-    }
-});
-
 L.supermap.mapVLayer = mapVLayer;

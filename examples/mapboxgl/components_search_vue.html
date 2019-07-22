@@ -24,7 +24,7 @@
       <!-- 搜索组件: sm-search -->
       <!-- 支持的数据：layer-names address-match  rest-map rest-data online-local-search-->
       <sm-search position="top-left" :layer-names="layerNames" :address-match="addressMatch"
-        :rest-map-search="restMapSearch"
+        :rest-map="restMap"
         :online-local-search='onlineLocalSearch'></sm-search>
     </sm-web-map>
   </div>
@@ -41,7 +41,7 @@
               url: host + "/iserver/services/addressmatch-Address/restjsr/v1/address"
             })
           ],
-          restMapSearch: [
+          restMap: [
             new SuperMap.Components.commontypes.RestMapParameter({
               url: host + "/iserver/services/map-world/rest/maps/World",
               layerName: "Capitals@World.1",
