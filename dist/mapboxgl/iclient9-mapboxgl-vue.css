@@ -8270,9 +8270,7 @@ body {
       height: 100% !important; }
   .sm-component-border .sm-component-chart .sm-component-card__content {
     width: 100%;
-    height: 100%;
-    /* 去除阴影效果 */
-    box-shadow: none; }
+    height: 100%; }
 
 /** control */
 .sm-component-scale {
@@ -8500,9 +8498,7 @@ body {
   padding: 6px 10px 6px; }
 
 .sm-component-layer-list {
-  overflow-y: auto;
-  z-index: 10;
-  max-height: 500px; }
+  z-index: 10; }
   .sm-component-layer-list::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -9040,7 +9036,9 @@ body {
 
 .sm-component-chart .sm-component-card__content {
   width: 400px;
-  height: 200px; }
+  height: 200px;
+  /* 去除阴影效果 */
+  box-shadow: none; }
 
 /* layer */
 /* Transition */
