@@ -1082,20 +1082,23 @@ export class WebMap extends ol.Observable {
             this.layers = layers;
             layers.forEach(function (layer, index) {
                 //加上底图的index
-                let layerIndex = index + 1;
-                if ((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER" || layer.layerType === 'HOSTED_TILE') {
+                let layerIndex = index + 1, 
+                    dataSource = layer.dataSource,
+                    isSampleData = dataSource && dataSource.type === "SAMPLE_DATA" && !!dataSource.name; //SAMPLE_DATA是本地示例数据
+
+                if ((dataSource && dataSource.serverId) || layer.layerType === "MARKER" || layer.layerType === 'HOSTED_TILE' || isSampleData) {
                     //数据存储到iportal上了
                     let dataSource = layer.dataSource,
                         serverId = dataSource ? dataSource.serverId : layer.serverId;
-                    if(!serverId) {
+                    if(!serverId && !isSampleData) {
                         that.addLayer(layer, null, layerIndex);
                         that.layerAdded++;
                         that.sendMapToUser(len);
                         return;
                     }
-                    if((layer.layerType === "MARKER") || (dataSource && (!dataSource.accessType || dataSource.accessType === 'DIRECT'))) {
+                    if((layer.layerType === "MARKER") || (dataSource && (!dataSource.accessType || dataSource.accessType === 'DIRECT')) || isSampleData) {
                         //原来二进制文件
-                        let url = `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
+                        let url = isSampleData ? `${that.server}apps/dataviz/libs/sample-datas/${dataSource.name}.json` : `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
                         url = that.getRequestUrl(url);
                         FetchRequest.get(url, null, {
                             withCredentials: this.withCredentials
@@ -1111,7 +1114,7 @@ export class WebMap extends ol.Observable {
                             }
                             if (data && data.type) {
                                 if (data.type === "JSON" || data.type === "GEOJSON") {
-                                    data.content = JSON.parse(data.content);
+                                    data.content = data.content.type ? data.content : JSON.parse(data.content);
                                     features = that.geojsonToFeature(data.content, layer);
                                 } else if (data.type === 'EXCEL' || data.type === 'CSV') {
                                     features = that.excelData2Feature(data.content, layer);
