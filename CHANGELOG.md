@@ -2,6 +2,19 @@
 
 ## 新特性
 
+### 积木式搭建应用：SuperMap iClient Vue 组件库
+ - SuperMap iClient Vue 组件库在架构设计上采用 MVVM 模式（Model-View-ViewModel）同时也能兼容其它框架，例如 React、Angular 以及原生 H5 开发。 使用 SuperMap iClient Vue 组件库，可像搭积木一样快速的创建自定义的 WebGIS 应用
+![1000-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-2.png)
+
+### 开箱即用：丰富的组件选择
+ - 组件库采用了开箱即用的方案，现阶段提供了二/三维地图组件，丰富的地理可视化组件，图表类组件和基础 GIS 组件等
+![1000-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-3.gif)
+
+### 一键主题切换
+ - 在主题风格上，SuperMap iClient Vue 组件现阶段内置了多套主题，可一键切换所有组件的主题风格
+![1000-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-1.gif)
+
+
 ## API changes
 
 ### for MapboxGL
