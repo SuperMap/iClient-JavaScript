@@ -2,7 +2,7 @@
 
 ## 新特性
 
-### 积木式搭建应用：SuperMap iClient Vue 组件库
+### 积木式搭建应用：[SuperMap iClient Vue 组件库](https://github.com/SuperMap/vue-iclient)
  - SuperMap iClient Vue 组件库在架构设计上采用 MVVM 模式（Model-View-ViewModel）同时也能兼容其它框架，例如 React、Angular 以及原生 H5 开发。 使用 SuperMap iClient Vue 组件库，可像搭积木一样快速的创建自定义的 WebGIS 应用
 ![1000-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-2.png)
 
