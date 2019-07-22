@@ -52,11 +52,11 @@
                 <sm-animate-marker-layer :features="features" :type="type" v-bind="param"></sm-animate-marker-layer>
             </sm-web-map>
             <a-radio-group class="radio-group" v-model="type" @change="changeType">
-                <a-radio-button value="breathingAperture">{{ resources.btn_rotatingTextBorder }}</a-radio-button>
+                <a-radio-button value="breathingAperture">{{ resources.btn_breathingAperture }}</a-radio-button>
                 <a-radio-button value="haloRing">{{ resources.btn_haloRing }}</a-radio-button>
                 <a-radio-button value="rotatingAperture">{{ resources.btn_rotatingAperture }}</a-radio-button>
                 <a-radio-button value="diffusedAperture">{{ resources.btn_diffusedAperture }}</a-radio-button>
-                <a-radio-button value="rotatingTextBorder">{{ resources.btn_breathingAperture }}</a-radio-button>
+                <a-radio-button value="rotatingTextBorder">{{ resources.btn_rotatingTextBorder }}</a-radio-button>
             </a-radio-group>
         </div>
         <script>
