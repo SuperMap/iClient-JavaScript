@@ -27,18 +27,18 @@ var mapStyles = {
                         "background-color": "#75CFF0"
                     }
                 }, {
-                    "id": "单值专题图#2",
+                    "id": "面区界R@北京",
                     "type": "fill",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#2",
+                    "source-layer": "面区界R@北京",
                     "paint": {
                         "fill-color": "#EFE9E1"
                     }
                 }, {
-                    "id": "单值专题图#1",
+                    "id": "界线@北京",
                     "type": "line",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#1",
+                    "source-layer": "界线@北京",
                     "paint": {
                         "line-color": "hsl(240, 8%, 51%)",
                         "line-width": 0.5
@@ -311,10 +311,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -347,10 +347,10 @@ var mapStyles = {
                     }
 
                 }, {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -1012,19 +1012,19 @@ var mapStyles = {
                     }
                 },
                 {
-                    "id": "单值专题图#2",
+                    "id": "面区界R@北京",
                     "type": "fill",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#2",
+                    "source-layer": "面区界R@北京",
                     "paint": {
                         "fill-color": "hsl(55, 1%, 20%)"
                     }
                 },
                 {
-                    "id": "单值专题图#1",
+                    "id": "界线@北京",
                     "type": "line",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#1",
+                    "source-layer": "界线@北京",
                     "paint": {
                         "line-color": "hsl(0, 0%, 35%)",
                         "line-width": 0.5
@@ -1180,10 +1180,10 @@ var mapStyles = {
 
 //区划
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -1237,10 +1237,10 @@ var mapStyles = {
                 },
 //地标
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -2245,10 +2245,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -2282,10 +2282,10 @@ var mapStyles = {
 
                 },
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -3204,10 +3204,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -3241,10 +3241,10 @@ var mapStyles = {
 
                 },
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -4006,10 +4006,10 @@ var mapStyles = {
                     }
                 },
                 {
-                    "id": "单值专题图#1",
+                    "id": "界线@北京",
                     "type": "line",
                     "source": "vector-tiles",
-                    "source-layer": "单值专题图#1",
+                    "source-layer": "界线@北京",
                     "layout": {
                         "line-join": "round"
                     },
@@ -4442,10 +4442,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -4479,10 +4479,10 @@ var mapStyles = {
 
                 },
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -5635,10 +5635,10 @@ var mapStyles = {
 
 
                 {
-                    "id": "标签专题图#10",
+                    "id": "区政府驻地@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#10",
+                    "source-layer": "区政府驻地@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
@@ -5672,10 +5672,10 @@ var mapStyles = {
 
                 },
                 {
-                    "id": "标签专题图#64",
+                    "id": "标志建筑@北京",
                     "type": "symbol",
                     "source": "vector-tiles",
-                    "source-layer": "标签专题图#64",
+                    "source-layer": "标志建筑@北京",
                     "layout": {
                         "text-offset": [-1.5, -0.5],
                         "text-anchor": "bottom-left",
