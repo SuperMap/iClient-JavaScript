@@ -3,7 +3,7 @@
  *          iclient9-mapboxgl.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.0-alpha
+ *          version: v10.0.0-beta
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -13246,7 +13246,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
             mapsUrl = this.iportalUrl + "/web/maps";
         }
         return this.request("GET", mapsUrl, queryParams).then(function(result) {
-            var mapRetult = {};
+            var mapRetult = {content:[]};
             var maps = [];
             if (result.content && result.content.length > 0) {
                 result.content.map(function(mapJsonObj) {
@@ -13258,8 +13258,8 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
                 mapRetult.pageSize = result.pageSize;
                 mapRetult.total = result.total;
                 mapRetult.totalPage = result.totalPage;
-                return mapRetult;
             }
+            return mapRetult; 
         });
     }
 }

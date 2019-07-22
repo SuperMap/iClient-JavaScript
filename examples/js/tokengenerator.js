@@ -1,1 +1,1 @@
-window.exampleToken = "_uDMq3VJhd-sfv5AHfswlk9xf4GdjLpsad19QOq8CR3Q2eXazaEV6KHWqFrlb9nSbkPLH6ec4eP3nmyFMa5Slg.."
+window.exampleToken = "fMSRxYQTkMfjlfP8Ce86nkgJEtX4Qx6XDp8kjq9kq1H9OizLar4SLugO2mTnC6X66Qhwl3-CaTNnoPVQkzfFRg.."

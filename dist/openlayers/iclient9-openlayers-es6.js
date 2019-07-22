@@ -3,7 +3,7 @@
  *          iclient9-openlayers.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.0-alpha
+ *          version: v10.0.0-beta
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -17271,7 +17271,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
             mapsUrl = this.iportalUrl + "/web/maps";
         }
         return this.request("GET", mapsUrl, queryParams).then(function(result) {
-            var mapRetult = {};
+            var mapRetult = {content:[]};
             var maps = [];
             if (result.content && result.content.length > 0) {
                 result.content.map(function(mapJsonObj) {
@@ -17283,8 +17283,8 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
                 mapRetult.pageSize = result.pageSize;
                 mapRetult.total = result.total;
                 mapRetult.totalPage = result.totalPage;
-                return mapRetult;
             }
+            return mapRetult; 
         });
     }
 }
@@ -73945,20 +73945,23 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             this.layers = layers;
             layers.forEach(function (layer, index) {
                 //加上底图的index
-                let layerIndex = index + 1;
-                if ((layer.dataSource && layer.dataSource.serverId) || layer.layerType === "MARKER" || layer.layerType === 'HOSTED_TILE') {
+                let layerIndex = index + 1, 
+                    dataSource = layer.dataSource,
+                    isSampleData = dataSource && dataSource.type === "SAMPLE_DATA" && !!dataSource.name; //SAMPLE_DATA是本地示例数据
+
+                if ((dataSource && dataSource.serverId) || layer.layerType === "MARKER" || layer.layerType === 'HOSTED_TILE' || isSampleData) {
                     //数据存储到iportal上了
                     let dataSource = layer.dataSource,
                         serverId = dataSource ? dataSource.serverId : layer.serverId;
-                    if(!serverId) {
+                    if(!serverId && !isSampleData) {
                         that.addLayer(layer, null, layerIndex);
                         that.layerAdded++;
                         that.sendMapToUser(len);
                         return;
                     }
-                    if((layer.layerType === "MARKER") || (dataSource && (!dataSource.accessType || dataSource.accessType === 'DIRECT'))) {
+                    if((layer.layerType === "MARKER") || (dataSource && (!dataSource.accessType || dataSource.accessType === 'DIRECT')) || isSampleData) {
                         //原来二进制文件
-                        let url = `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
+                        let url = isSampleData ? `${that.server}apps/dataviz/libs/sample-datas/${dataSource.name}.json` : `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
                         url = that.getRequestUrl(url);
                         FetchRequest_FetchRequest.get(url, null, {
                             withCredentials: this.withCredentials
@@ -73974,7 +73977,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                             }
                             if (data && data.type) {
                                 if (data.type === "JSON" || data.type === "GEOJSON") {
-                                    data.content = JSON.parse(data.content);
+                                    data.content = data.content.type ? data.content : JSON.parse(data.content);
                                     features = that.geojsonToFeature(data.content, layer);
                                 } else if (data.type === 'EXCEL' || data.type === 'CSV') {
                                     features = that.excelData2Feature(data.content, layer);

@@ -27,7 +27,7 @@
         var baseLayer = L.supermap.tiledMapLayer(url).addTo(map);
 
         var control = L.control.layers().addTo(map).setPosition('topleft').addBaseLayer(baseLayer, 'baseLayer');
-        var distributedHost = window.isLocal ? window.server : "http://114.115.213.31:8090";
+        var distributedHost = window.isLocal ? window.server : "http://iclient.supermap.io";
         var distributedAnalystUrl = distributedHost + "/iserver/services/distributedanalyst/rest/v1/jobs";
         
         SuperMap.SecurityManager.registerToken(distributedAnalystUrl, window.exampleToken);

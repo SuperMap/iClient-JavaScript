@@ -82,7 +82,7 @@ export class IPortal extends IPortalServiceBase {
             mapsUrl = this.iportalUrl + "/web/maps";
         }
         return this.request("GET", mapsUrl, queryParams).then(function(result) {
-            var mapRetult = {};
+            var mapRetult = {content:[]};
             var maps = [];
             if (result.content && result.content.length > 0) {
                 result.content.map(function(mapJsonObj) {
@@ -94,8 +94,8 @@ export class IPortal extends IPortalServiceBase {
                 mapRetult.pageSize = result.pageSize;
                 mapRetult.total = result.total;
                 mapRetult.totalPage = result.totalPage;
-                return mapRetult;
             }
+            return mapRetult; 
         });
     }
 }
