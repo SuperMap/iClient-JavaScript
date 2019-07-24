@@ -18,8 +18,8 @@ import {
     StyleUtils
 } from '../core/StyleUtils';
 
-import provincialCenterData from './webmap/config/ProvinceCenter';
-import municipalCenterData from './webmap/config/MunicipalCenter';
+import provincialCenterData from './webmap/config/ProvinceCenter.json';// eslint-disable-line import/extensions
+import municipalCenterData from './webmap/config/MunicipalCenter.json';// eslint-disable-line import/extensions
 import jsonsql from 'jsonsql';
 
 window.proj4 = proj4;

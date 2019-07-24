@@ -72881,8 +72881,8 @@ var external_function_try_return_jsonsql_catch_e_return_default = /*#__PURE__*/_
 
 
 
-
-
+// eslint-disable-line import/extensions
+// eslint-disable-line import/extensions
 
 
 window.proj4 = lib_default.a;
