@@ -49,7 +49,12 @@
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
             <sm-web-map :map-options="mapOptions" style="background:black">
-                <sm-animate-marker-layer :features="features" :type="type" v-bind="param"></sm-animate-marker-layer>
+                <sm-animate-marker-layer
+                    :features="features"
+                    :type="type"
+                    text-field="name"
+                    v-bind="param"
+                ></sm-animate-marker-layer>
             </sm-web-map>
             <a-radio-group class="radio-group" v-model="type" @change="changeType">
                 <a-radio-button value="breathingAperture">{{ resources.btn_breathingAperture }}</a-radio-button>
@@ -60,12 +65,12 @@
             </a-radio-group>
         </div>
         <script>
-            var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-            var url = host + "/iserver/services/map-china400/rest/maps/China";
+            var host = window.isLocal ? window.server : 'http://support.supermap.com.cn:8090';
+            var url = host + '/iserver/services/map-china400/rest/maps/China';
             var param = new SuperMap.QueryBySQLParameters({
                 queryParams: {
-                    name: "China_provincename_A_txt@China",
-                    attributeFilter: "SMID > 0"
+                    name: 'China_provincename_A_txt@China',
+                    attributeFilter: 'SMID > 0'
                 }
             });
 
@@ -77,45 +82,43 @@
                     feature.properties.name = feature.properties.texts[0];
                 });
                 new Vue({
-                    el: "#main",
+                    el: '#main',
                     data() {
-                        var mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+                        var mapUrl = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
                         var attribution =
                             "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
                             " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
                             " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
                         return {
                             features: features,
-                            type: "breathingAperture",
+                            type: 'breathingAperture',
                             breathingApertureParam: {
-                                textField: "name",
                                 width: 80
                             },
                             haloRingParam: {
                                 width: 44
                             },
                             rotatingTextBorderParam: {
-                                textField: "name",
                                 width: 120
                             },
                             param: null,
                             mapOptions: {
-                                container: "map",
+                                container: 'map',
                                 style: {
                                     version: 8,
                                     sources: {
-                                        "raster-tiles": {
+                                        'raster-tiles': {
                                             attribution: attribution,
-                                            type: "raster",
-                                            tiles: [mapUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}"],
+                                            type: 'raster',
+                                            tiles: [mapUrl + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
                                             tileSize: 256
                                         }
                                     },
                                     layers: [
                                         {
-                                            id: "simple-tiles",
-                                            type: "raster",
-                                            source: "raster-tiles",
+                                            id: 'simple-tiles',
+                                            type: 'raster',
+                                            source: 'raster-tiles',
                                             minzoom: 0,
                                             maxzoom: 22
                                         }
@@ -133,8 +136,8 @@
                     },
                     methods: {
                         changeType() {
-                            if (this[this.type + "Param"]) {
-                                this.param = this[this.type + "Param"];
+                            if (this[this.type + 'Param']) {
+                                this.param = this[this.type + 'Param'];
                             } else {
                                 this.param = null;
                             }

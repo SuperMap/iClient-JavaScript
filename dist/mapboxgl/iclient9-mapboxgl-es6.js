@@ -73213,7 +73213,7 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
         var me = this;
         params.returnContent = params.returnContent == null ? true : params.returnContent;
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
-        params.toIndex = params.toIndex ? params.toIndex : -1;
+        params.toIndex = params.toIndex === 0 ? 0 : params.toIndex ? params.toIndex : -1;
         if (params.bounds) {
             params.bounds = core_Util_Util.toSuperMapBounds(params.bounds);
         }
