@@ -1171,6 +1171,8 @@ window.examplesResources = {
         'text_symbolEqualSize':"等大",
         'text_symbolDistribution':"均匀分布",
         'text_myRasterLayer':"我的栅格图层",
+        'text_opt_border': "边框",
+        'text_sel_border': "边框类型",
 
 
         "btn_overlayAnalyst": "叠加分析",

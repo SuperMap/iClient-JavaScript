@@ -1223,6 +1223,8 @@ window.examplesResources = {
         'text_symbolEqualSize':"Equal large",
         'text_symbolDistribution':"Uniform distribution",
         'text_myRasterLayer':"My Raster Layer",
+        'text_opt_border': "border",
+        'text_sel_border': "Border type",
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",

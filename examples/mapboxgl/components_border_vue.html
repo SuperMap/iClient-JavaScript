@@ -24,26 +24,6 @@
       width: 100%;
       height: 100%;
     }
-    .select-group {
-      display: flex;
-      align-items: center;
-      position: absolute;
-      width: 240px;
-      left: 40px;
-      top: 40px;
-    }
-    .select-group span{
-      color: #fff;
-      font-size: 15px;
-      margin-right: 10px;
-    }
-    .select-border{
-      width: 100px;
-    }
-    .ant-select-selection{
-      background: #262626;
-      color: #fff;
-    }
     .all-borders {
       width: 98%;
       margin: 0 auto;
@@ -61,6 +41,49 @@
       height: 230px;
       z-index: 1000;
     }
+    
+    .select-group {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      width: 240px;
+      left: 40px;
+      top: 40px;
+    }
+    .select-group span{
+      color: #fff;
+      font-size: 15px;
+      margin-right: 10px;
+    }
+    .select-border{
+      width: 110px;
+    }
+    .ant-select-selection{
+      background: #262626;
+      color: #fff;
+    }
+    .ant-select-dropdown-content ul::-webkit-scrollbar{
+    width: 4px;
+    height: 4px;
+    background-color: rgba(245, 245, 245, 0);
+    }
+    .ant-select-dropdown-content ul::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: gray;
+    }
+    .ant-select-dropdown-menu-item {
+      background: #262626;
+      color: #909399;
+    }
+    .ant-select-dropdown-menu-item-active {
+      background: #dddcdc !important;
+      color: #4f4f4f !important;
+    }
+    .ant-select-dropdown-menu-item-selected, .ant-select-dropdown-menu-item-selected:hover{
+      background: #dddcdc !important;
+      color: #4f4f4f !important;
+    }
+   
   </style>
 </head>
 
@@ -95,23 +118,23 @@
       </sm-border> 
     </div>
     
-    <!-- 切换边框类型 -->
+    <!-- 切换{{resources.text_opt_border}}类型 -->
     <div class="select-group">
-      <span>边框类型:</span>
+      <span>{{resources.text_sel_border}}:</span>
       <a-select class="select-border" v-model="borderType" >
-        <a-select-option value="border1">边框1</a-select-option>
-        <a-select-option value="border2">边框2</a-select-option>
-        <a-select-option value="border3">边框3</a-select-option>
-        <a-select-option value="border4">边框4</a-select-option>
-        <a-select-option value="border5">边框5</a-select-option>
-        <a-select-option value="border6">边框6</a-select-option>
-        <a-select-option value="border7">边框7</a-select-option>
-        <a-select-option value="border8">边框8</a-select-option>
-        <a-select-option value="border9">边框9</a-select-option>
-        <a-select-option value="border10">边框10</a-select-option>
-        <a-select-option value="border11">边框11</a-select-option>
-        <a-select-option value="border12">边框12</a-select-option>
-        <a-select-option value="border13">边框13</a-select-option>
+        <a-select-option value="border1">{{resources.text_opt_border}}1</a-select-option>
+        <a-select-option value="border2">{{resources.text_opt_border}}2</a-select-option>
+        <a-select-option value="border3">{{resources.text_opt_border}}3</a-select-option>
+        <a-select-option value="border4">{{resources.text_opt_border}}4</a-select-option>
+        <a-select-option value="border5">{{resources.text_opt_border}}5</a-select-option>
+        <a-select-option value="border6">{{resources.text_opt_border}}6</a-select-option>
+        <a-select-option value="border7">{{resources.text_opt_border}}7</a-select-option>
+        <a-select-option value="border8">{{resources.text_opt_border}}8</a-select-option>
+        <a-select-option value="border9">{{resources.text_opt_border}}9</a-select-option>
+        <a-select-option value="border10">{{resources.text_opt_border}}10</a-select-option>
+        <a-select-option value="border11">{{resources.text_opt_border}}11</a-select-option>
+        <a-select-option value="border12">{{resources.text_opt_border}}12</a-select-option>
+        <a-select-option value="border13">{{resources.text_opt_border}}13</a-select-option>
       </a-select>
     </div>
     
@@ -665,7 +688,7 @@
         background: 'rgba(0,0,0,0)',
         colorGroup: ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8']
       };
-      //边框最好配上透明主题， body设置一个底色
+      //{{resources.text_opt_border}}最好配上透明主题， body设置一个底色
       SuperMap.Components.setTheme(transparent);
       document.getElementsByTagName('body')[0].style.background = 'rgba(0, 0, 0, 0.9)';
     }
