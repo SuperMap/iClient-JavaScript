@@ -9,6 +9,13 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
         browser.pause(1000);
         browser.elements('class name', 'leaflet-marker-icon', function (result) {
+            if (result.value.length < 2) {
+                browser.pause(10000);
+                browser.elements('class name', 'leaflet-layer', function (result) {
+                    browser.assert.equal(result.value.length, 2, "expect Number of initial marker to be 2, actual is " + result.value.length);
+                })
+                browser.assert.equal(result.value.length, 2, "expect Number of initial marker to be 2, actual is " + result.value.length);
+            }
             browser.assert.equal(result.value.length, 2, "expect Number of initial marker to be 2, actual is " + result.value.length);
         });
         /*判断初始popup*/

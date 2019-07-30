@@ -13,9 +13,23 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-layer', 10000);
         browser.pause(20000);
         browser.elements('class name', 'leaflet-layer', function (result) {
-            browser.assert.equal(result.value.length, 2, "expect Number of leaflet-layer to be 2, actual is " + result.value.length);
+            if (result.value.length < 2) {
+                browser.pause(10000);
+                browser.elements('class name', 'leaflet-layer', function (result) {
+                    browser.assert.equal(result.value.length, 2, "expect Number of leaflet-layer to be 2, actual is " + result.value.length);
+                })
+                browser.assert.equal(result.value.length, 2, "expect Number of leaflet-layer to be 2, actual is " + result.value.length);
+            }
         });
         browser.elements('class name', 'leaflet-tile-container', function (result) {
+            if (result.value.length < 2) {
+                browser.pause(10000);
+                browser.elements('class name', 'leaflet-layer', function (result) {
+                    browser.assert.equal(result.value.length, 2, "expect Number of leaflet-tile-container to be 2, actual is " + result.value.length);
+                })
+                browser.assert.equal(result.value.length, 2, "expect Number of leaflet-tile-container to be 2, actual is " + result.value.length);
+            }
+
             browser.assert.equal(result.value.length, 2, "expect Number of leaflet-tile-container to be 2, actual is " + result.value.length);
         });
         //测试版权点击的正确性
