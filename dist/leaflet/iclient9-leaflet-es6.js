@@ -68177,9 +68177,8 @@ window.proj4 = lib_default.a;
 window.Proj4js = lib_default.a;
 external_L_default.a.Proj = {};
 
-external_L_default.a.Proj._isProj4Obj = function (a) {
-    return (typeof a.inverse !== 'undefined' &&
-        typeof a.forward !== 'undefined');
+external_L_default.a.Proj._isProj4Obj = function(a) {
+    return typeof a.inverse !== 'undefined' && typeof a.forward !== 'undefined';
 };
 
 /**
@@ -68193,8 +68192,7 @@ external_L_default.a.Proj._isProj4Obj = function (a) {
  * @param {L.bounds} bounds -  投影范围参数
  */
 external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
-
-    initialize: function (code, def, bounds) {
+    initialize: function(code, def, bounds) {
         var isP4 = external_L_default.a.Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
         var boundsOption = bounds;
@@ -68210,7 +68208,7 @@ external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
      * @param  {L.Latlng} latlng -  经纬度坐标。
      * @returns {L.Point} 返回投影坐标点。
      */
-    project: function (latlng) {
+    project: function(latlng) {
         var point = this._proj.forward([latlng.lng, latlng.lat]);
         return new external_L_default.a.Point(point[0], point[1]);
     },
@@ -68222,16 +68220,26 @@ external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
      * @param {number} unbounded -  坐标点高程值等。
      * @returns {L.LatLng} 返回经纬度坐标
      */
-    unproject: function (point, unbounded) {
+    unproject: function(point, unbounded) {
         if (this.bounds) {
-            point.x = point.x < this.bounds.min.x ? this.bounds.min.x : (point.x > this.bounds.max.x ? this.bounds.max.x : point.x);
-            point.y = point.y < this.bounds.min.y ? this.bounds.min.y : (point.y > this.bounds.max.y ? this.bounds.max.y : point.y);
+            point.x =
+                point.x < this.bounds.min.x
+                    ? this.bounds.min.x
+                    : point.x > this.bounds.max.x
+                    ? this.bounds.max.x
+                    : point.x;
+            point.y =
+                point.y < this.bounds.min.y
+                    ? this.bounds.min.y
+                    : point.y > this.bounds.max.y
+                    ? this.bounds.max.y
+                    : point.y;
         }
         var point2 = this._proj.inverse([point.x, point.y]);
         return new external_L_default.a.LatLng(point2[1], point2[0], unbounded);
     },
 
-    _projFromCodeDef: function (code, def) {
+    _projFromCodeDef: function(code, def) {
         if (def) {
             lib_default.a.defs(code, def);
         } else if (lib_default.a.defs[code] === undefined) {
@@ -68246,8 +68254,8 @@ external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
 
         return lib_default()(code);
     },
-    getUnits: function () {
-        return this._proj.oProj.units || "degrees";
+    getUnits: function() {
+        return this._proj.oProj.units || 'degrees';
     }
 });
 
@@ -68286,7 +68294,7 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
         transformation: new external_L_default.a.Transformation(1, 0, -1, 0)
     },
 
-    initialize: function (srsCode, options) {
+    initialize: function(srsCode, options) {
         var code, proj, def;
 
         if (external_L_default.a.Proj._isProj4Obj(srsCode)) {
@@ -68305,7 +68313,7 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
         external_L_default.a.Util.setOptions(this, options);
         this.code = code;
         this.transformation = this.options.transformation;
-        this.options.dpi=this.options.dpi||96;
+        this.options.dpi = this.options.dpi || 96;
         if (this.options.bounds) {
             this.options.bounds = external_L_default.a.bounds(this.options.bounds);
         }
@@ -68316,8 +68324,7 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
             if (this.options.origin instanceof external_L_default.a.Point) {
                 this.options.origin = [this.options.origin.x, this.options.origin.y];
             }
-            this.transformation =
-                new external_L_default.a.Transformation(1, -this.options.origin[0], -1, this.options.origin[1]);
+            this.transformation = new external_L_default.a.Transformation(1, -this.options.origin[0], -1, this.options.origin[1]);
         }
 
         if (this.options.scales && this.options.scales.length > 0) {
@@ -68341,9 +68348,8 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
         }
         this._rectify();
         this.infinite = !this.options.bounds;
-
     },
-    _rectify: function () {
+    _rectify: function() {
         if (this._scales) {
             if (!this.resolutions) {
                 this.resolutions = [];
@@ -68352,7 +68358,11 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
             if (!this.scales) {
                 this.scales = [];
                 for (let i = 0; i < this.resolutions.length; i++) {
-                    var scaleD = this.resolutions[i] * this.options.dpi * (1 / 0.0254) * this._getMeterPerMapUnit(this.projection.getUnits());
+                    var scaleD =
+                        this.resolutions[i] *
+                        this.options.dpi *
+                        (1 / 0.0254) *
+                        this._getMeterPerMapUnit(this.projection.getUnits());
                     this.scales[i] = 1.0 / scaleD;
                 }
             }
@@ -68364,7 +68374,7 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
      * @param {number} zoom - 缩放级别。
      * @returns 比例尺值。
      */
-    scale: function (zoom) {
+    scale: function(zoom) {
         var iZoom = Math.floor(zoom),
             baseScale,
             nextScale,
@@ -68377,7 +68387,7 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
             baseScale = this._scales[iZoom];
             nextScale = this._scales[iZoom + 1];
             scaleDiff = nextScale - baseScale;
-            zDiff = (zoom - iZoom);
+            zDiff = zoom - iZoom;
             return baseScale + scaleDiff * zDiff;
         }
     },
@@ -68388,7 +68398,7 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
      * @param {number} scale - 比例尺。
      * @returns {number} 缩放级别。
      */
-    zoom: function (scale) {
+    zoom: function(scale) {
         // Find closest number in this._scales, down
         var downScale = this._closestElement(this._scales, scale),
             downZoom = this._scales.indexOf(downScale),
@@ -68396,6 +68406,9 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
             nextZoom,
             scaleDiff;
         // Check if scale is downScale => return array index
+        if (!downScale) {
+            return 0;
+        }
         if (scale === downScale) {
             return downZoom;
         }
@@ -68403,7 +68416,7 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
         nextZoom = downZoom + 1;
         nextScale = this._scales[nextZoom];
         if (nextScale === undefined) {
-            return Infinity;
+            return downZoom;
         }
         scaleDiff = nextScale - downScale;
         return (scale - downScale) / scaleDiff + downZoom;
@@ -68414,9 +68427,9 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
     R: external_L_default.a.CRS.Earth.R,
 
     /* Get the closest lowest element in an array */
-    _closestElement: function (array, element) {
+    _closestElement: function(array, element) {
         var low;
-        for (var i = array.length; i--;) {
+        for (var i = array.length; i--; ) {
             if (array[i] <= element && (low === undefined || low < array[i])) {
                 low = array[i];
             }
@@ -68432,9 +68445,8 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
             resolutions[i] = 1.0 / _scales[i];
         }
         return resolutions;
-
     },
-    _toProj4Scales: function (scales, dpi) {
+    _toProj4Scales: function(scales, dpi) {
         var proj4Scales = [];
         if (!scales) {
             return proj4Scales;
@@ -68445,24 +68457,24 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
         }
         return proj4Scales;
     },
-    _getMeterPerMapUnit: function (mapUnit) {
+    _getMeterPerMapUnit: function(mapUnit) {
         var earchRadiusInMeters = 6378137;
         var meterPerMapUnit = 1;
-        if (mapUnit === "meter") {
+        if (mapUnit === 'meter') {
             meterPerMapUnit = 1;
-        } else if (mapUnit === "degrees") {
+        } else if (mapUnit === 'degrees') {
             // 每度表示多少米。
-            meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-        } else if (mapUnit === "kilometer") {
-            meterPerMapUnit = 1.0E-3;
-        } else if (mapUnit === "inch") {
-            meterPerMapUnit = 1 / 2.5399999918E-2;
-        } else if (mapUnit === "feet") {
+            meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
+        } else if (mapUnit === 'kilometer') {
+            meterPerMapUnit = 1.0e-3;
+        } else if (mapUnit === 'inch') {
+            meterPerMapUnit = 1 / 2.5399999918e-2;
+        } else if (mapUnit === 'feet') {
             meterPerMapUnit = 0.3048;
         }
         return meterPerMapUnit;
     },
-    _getDefaultProj4ScalesByBounds: function (bounds) {
+    _getDefaultProj4ScalesByBounds: function(bounds) {
         if (!bounds) {
             return [];
         }
@@ -68477,10 +68489,11 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
         return scales;
     }
 });
-var Proj4Leaflet_crs = function (srsCode, options) {
-    return new Proj4Leaflet_CRS(srsCode, options)
+var Proj4Leaflet_crs = function(srsCode, options) {
+    return new Proj4Leaflet_CRS(srsCode, options);
 };
 external_L_default.a.Proj.CRS = Proj4Leaflet_crs;
+
 // CONCATENATED MODULE: ./src/leaflet/core/ExtendsCRS.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
