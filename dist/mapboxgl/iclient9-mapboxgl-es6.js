@@ -65492,6 +65492,9 @@ class core_Util_Util {
         return !isNaN(mdata);
     }
 
+    static isString(str) {
+      return (typeof str === 'string') && str.constructor === String;
+  }
     /**
      * 随机生成id
      * @param attr
@@ -65530,6 +65533,24 @@ class core_Util_Util {
         rgba.push(opacity);
         return "rgba(" + rgba.join(",") + ")";
     }
+
+    /**
+     * @function ol.supermap.Util.isMatchAdministrativeName
+     * @param {string} featureName 原始数据中的地名
+     * @param {string} fieldName 需要匹配的地名
+     * @returns {boolean} 是否匹配
+     */
+    static isMatchAdministrativeName(featureName, fieldName) {
+      if (this.isString(fieldName)) {
+          let shortName = featureName.substr(0, 2);
+          // 张家口市和张家界市 特殊处理
+          if (shortName === '张家') {
+              shortName = featureName.substr(0, 3);
+          }
+          return !!fieldName.match(new RegExp(shortName));
+      }
+      return false;
+  }
 }
 
 external_mapboxgl_default.a.supermap.Util = core_Util_Util;
