@@ -439,6 +439,7 @@ window.examplesResources = {
         "title_mapvNyvTaxi": "NY Taxi Car Points",
         "title_modifyFeatures": "Modify Features",
         "title_mvtVectorLayer_vectortilerest": "iServer REST VectorTile",
+        "title_mvtVectorLayer_restdata": "iServer REST Data TileFeature",
         "title_mvtVectorLayer": "iServer MVT VectorTile",
         "title_mvtVectorLayer4326": "iServer MVT VectorTile (WGS84)",
         "title_mvtVectorLayer_mapboxStyle": "Style Switch",

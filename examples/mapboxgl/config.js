@@ -491,6 +491,13 @@ var exampleConfig = {
                         version: "9.1.2",
                         thumbnail: "mvtVectorTile_overlay.png",
                         fileName: "mvtVectorTile_overlay"
+                    },
+                    {
+                        name: "iServer数据服务矢量瓦片(2000万点)",
+                        name_en: "iServer REST Data VectorTile(20 million Point)",
+                        version: "10.0.1",
+                        thumbnail: "mvtVectorTile_restdata.png",
+                        fileName: "mvtVectorTile_restdata"
                     }
                 ]
             },
