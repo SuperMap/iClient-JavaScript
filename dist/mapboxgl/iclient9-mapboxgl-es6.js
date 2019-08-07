@@ -74,7 +74,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 18);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -125,22 +125,16 @@ module.exports = g;
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return jsonsql}catch(e){return {}}}();
+module.exports = function(){try{return convert}catch(e){return {}}}();
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return convert}catch(e){return {}}}();
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
 module.exports = function(){try{return XLSX}catch(e){return {}}}();
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -248,19 +242,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return canvg}catch(e){return {}}}();
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return echarts}catch(e){return {}}}();
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -976,13 +970,13 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -1219,10 +1213,10 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(18).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(17).setImmediate))
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11748,7 +11742,7 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise = __webpack_require__(12);
+var promise = __webpack_require__(11);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
@@ -11759,10 +11753,10 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch_ie8_fetch = __webpack_require__(15);
+var fetch_ie8_fetch = __webpack_require__(14);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(7);
+var fetch_jsonp = __webpack_require__(6);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
@@ -36582,7 +36576,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(11);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(10);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -39011,7 +39005,7 @@ SuperMap.ArrayStatistic = ArrayStatistic_ArrayStatistic;
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(10);
+var lodash_topairs = __webpack_require__(9);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -61764,7 +61758,7 @@ class MessageBox_MessageBox {
 
 SuperMap.Widgets.MessageBox = MessageBox_MessageBox;
 // EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
-var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(9);
+var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(8);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
@@ -61874,7 +61868,7 @@ SuperMap.Lang = Lang_Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
 
 // EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
-var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(6);
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(5);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
@@ -65535,7 +65529,6 @@ class core_Util_Util {
     }
 
     /**
-     * @function ol.supermap.Util.isMatchAdministrativeName
      * @param {string} featureName 原始数据中的地名
      * @param {string} fieldName 需要匹配的地名
      * @returns {boolean} 是否匹配
@@ -76042,22 +76035,17 @@ external_mapboxgl_default.a.supermap.TrafficTransferAnalystService = TrafficTran
 
 
 // EXTERNAL MODULE: external "function(){try{return convert}catch(e){return {}}}()"
-var external_function_try_return_convert_catch_e_return_ = __webpack_require__(5);
+var external_function_try_return_convert_catch_e_return_ = __webpack_require__(4);
 var external_function_try_return_convert_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_convert_catch_e_return_);
 
 // EXTERNAL MODULE: external "function(){try{return canvg}catch(e){return {}}}()"
-var external_function_try_return_canvg_catch_e_return_ = __webpack_require__(8);
+var external_function_try_return_canvg_catch_e_return_ = __webpack_require__(7);
 var external_function_try_return_canvg_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_canvg_catch_e_return_);
-
-// EXTERNAL MODULE: external "function(){try{return jsonsql}catch(e){return {}}}()"
-var external_function_try_return_jsonsql_catch_e_return_ = __webpack_require__(4);
-var external_function_try_return_jsonsql_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_jsonsql_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/mapboxgl/mapping/WebMap.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 
 
 
@@ -76116,8 +76104,9 @@ const WebMap_DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatib
  * @classdesc 对接 iPortal/Online 地图类。目前支持地图坐标系包括：'EPSG:3857'，'EPSG:4326'，'EPSG:4490'，'EPSG:4214'，'EPSG:4610'。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
- *      <p style="font-size: 13px">该功能依赖 <a href='http://iclient.supermap.io/web/libs/geostats/geostats.js'>geostats</a> 插件，请确认引入该插件。</p>
- *      `<script type="text/javascript" src="http://iclient.supermap.io/web/libs/geostats/geostats.js"></script>`
+ *      <p style="font-size: 13px">该功能依赖 <a href='http://iclient.supermap.io/web/libs/geostats/geostats.js'>geostats</a> 和 <a href='http://iclient.supermap.io/web/libs/jsonsql/jsonsql.js'>JsonSql</a> 插件，请确认引入该插件。</p>
+ *      `<script type="text/javascript" src="http://iclient.supermap.io/web/libs/geostats/geostats.js"></script>`</br>
+ *      `<script type="text/javascript" src="http://iclient.supermap.io/web/libs/jsonsql/jsonsql.js"></script>`
  * </div>
  * @param {number} id - iPortal|Online 地图 ID。
  * @param {Object} options - 参数。
@@ -77480,7 +77469,6 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
 		if (!filterCondition) {
 			return allFeatures;
 		}
-		let jsonsqls = external_function_try_return_jsonsql_catch_e_return_default.a ? external_function_try_return_jsonsql_catch_e_return_default.a : window.jsonsql;
 		let condition = this._replaceFilterCharacter(filterCondition);
 		let sql = 'select * from json where (' + condition + ')';
 		let filterFeatures = [];
@@ -77488,7 +77476,7 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
 			let feature = allFeatures[i];
 			let filterResult = false;
 			try {
-				filterResult = jsonsqls.query(sql, {
+				filterResult = window.jsonsql.query(sql, {
 					properties: feature.properties
 				});
 			} catch (err) {
@@ -78395,20 +78383,20 @@ external_mapboxgl_default.a.supermap.WebMap = WebMap_WebMap;
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
+/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
 /* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _supermap_iclient_common_widgets_css_MessageBox_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
+/* harmony import */ var _supermap_iclient_common_widgets_css_MessageBox_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
 /* harmony import */ var _supermap_iclient_common_widgets_css_MessageBox_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_supermap_iclient_common_widgets_css_MessageBox_css__WEBPACK_IMPORTED_MODULE_1__);
 
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -78832,7 +78820,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -79022,7 +79010,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -79212,10 +79200,10 @@ process.umask = function() { return 0; };
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(16)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(15)))
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -79271,7 +79259,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(17);
+__webpack_require__(16);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -79285,26 +79273,26 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(13);
-module.exports = __webpack_require__(14);
+__webpack_require__(12);
+module.exports = __webpack_require__(13);
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 20 */,
 /* 21 */,
 /* 22 */,
 /* 23 */,
 /* 24 */,
-/* 25 */,
-/* 26 */
+/* 25 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

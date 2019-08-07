@@ -18,7 +18,6 @@ import {
 import { Util } from '../core/Util';
 import convert from 'xml-js';
 import canvg from 'canvg';
-import jsonsql from 'jsonsql';
 
 mapboxgl.supermap = mapboxgl.supermap || {};
 
@@ -72,8 +71,9 @@ const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
  * @classdesc 对接 iPortal/Online 地图类。目前支持地图坐标系包括：'EPSG:3857'，'EPSG:4326'，'EPSG:4490'，'EPSG:4214'，'EPSG:4610'。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
- *      <p style="font-size: 13px">该功能依赖 <a href='http://iclient.supermap.io/web/libs/geostats/geostats.js'>geostats</a> 插件，请确认引入该插件。</p>
- *      `<script type="text/javascript" src="http://iclient.supermap.io/web/libs/geostats/geostats.js"></script>`
+ *      <p style="font-size: 13px">该功能依赖 <a href='http://iclient.supermap.io/web/libs/geostats/geostats.js'>geostats</a> 和 <a href='http://iclient.supermap.io/web/libs/jsonsql/jsonsql.js'>JsonSql</a> 插件，请确认引入该插件。</p>
+ *      `<script type="text/javascript" src="http://iclient.supermap.io/web/libs/geostats/geostats.js"></script>`</br>
+ *      `<script type="text/javascript" src="http://iclient.supermap.io/web/libs/jsonsql/jsonsql.js"></script>`
  * </div>
  * @param {number} id - iPortal|Online 地图 ID。
  * @param {Object} options - 参数。
@@ -1436,7 +1436,6 @@ export class WebMap extends mapboxgl.Evented {
 		if (!filterCondition) {
 			return allFeatures;
 		}
-		let jsonsqls = jsonsql ? jsonsql : window.jsonsql;
 		let condition = this._replaceFilterCharacter(filterCondition);
 		let sql = 'select * from json where (' + condition + ')';
 		let filterFeatures = [];
@@ -1444,7 +1443,7 @@ export class WebMap extends mapboxgl.Evented {
 			let feature = allFeatures[i];
 			let filterResult = false;
 			try {
-				filterResult = jsonsqls.query(sql, {
+				filterResult = window.jsonsql.query(sql, {
 					properties: feature.properties
 				});
 			} catch (err) {

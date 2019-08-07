@@ -20,7 +20,6 @@ import {
 
 import provincialCenterData from './webmap/config/ProvinceCenter.json';// eslint-disable-line import/extensions
 import municipalCenterData from './webmap/config/MunicipalCenter.json';// eslint-disable-line import/extensions
-import jsonsql from 'jsonsql';
 
 window.proj4 = proj4;
 window.Proj4js = proj4;
@@ -1768,7 +1767,6 @@ export class WebMap extends ol.Observable {
      * @param {array} allFeatures - 图层上的feature集合
      */
     getFiterFeatures(filterCondition, allFeatures) {
-        let jsonsqls = window.jsonsql ? window.jsonsql : jsonsql;
         let condition = this.replaceFilterCharacter(filterCondition);
         let sql = "select * from json where (" + condition + ")";
         let filterFeatures = [];
@@ -1776,7 +1774,7 @@ export class WebMap extends ol.Observable {
             let feature = allFeatures[i];
             let filterResult = false;
             try {
-                filterResult = jsonsqls.query(sql, {
+                filterResult = window.jsonsql.query(sql, {
                     attributes: feature.attributes
                 });
             } catch (err) {
@@ -2383,7 +2381,6 @@ export class WebMap extends ol.Observable {
             this.map.addLayer(pathLayer);
         }
         let featureCache = {}, labelFeatureCache={}, pathFeatureCache = {}, that = this;
-        let jsonsqls = window.jsonsql ? window.jsonsql : jsonsql;
         this.createDataflowService(layerInfo, function (featureCache, labelFeatureCache, pathFeatureCache) {
             return function (feature) {
                 that.events.triggerEvent('updateDataflowFeature', {
@@ -2395,7 +2392,7 @@ export class WebMap extends ol.Observable {
                     //过滤条件
                     let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
-                    let filterResult = jsonsqls.query(sql, {
+                    let filterResult = window.jsonsql.query(sql, {
                         attributes: feature.attributes
                     });
                     if (filterResult && filterResult.length > 0) {
@@ -2539,7 +2536,6 @@ export class WebMap extends ol.Observable {
             source = new ol.source.Vector({
             wrapX: false
         });
-        let jsonsqls = window.jsonsql ? window.jsonsql : jsonsql;
         let featureCache = {};
         this.createDataflowService(layerInfo, function (featureCache) {
             return function (feature) {
@@ -2547,7 +2543,7 @@ export class WebMap extends ol.Observable {
                     //过滤条件
                     let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
-                    let filterResult = jsonsqls.query(sql, {
+                    let filterResult = window.jsonsql.query(sql, {
                         attributes: feature.attributes
                     });
                     if (filterResult && filterResult.length > 0) {
