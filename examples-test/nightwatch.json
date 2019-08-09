@@ -1,5 +1,5 @@
 {
-  "src_folders": ["./examples-test/leaflet/"],
+  "src_folders": ["./examples-test/leaflet","./examples-test/openlayers"]
   "output_folder": "./examples-test/reports",
   "exclude" : [],
   "filter" : "",
