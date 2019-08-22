@@ -1351,6 +1351,7 @@ window.examplesResources = {
         "btn_rotatingAperture":"旋转的光环",
         "btn_diffusedAperture":"扩散的点",
         "btn_rotatingTextBorder":"旋转的文本框",
+        "btn_fluorescence":"荧光点",
         "btn_lightTheme":"浅色主题",
         "btn_darkTheme":"深色主题",
         "btn_customTheme":"自定义主题",

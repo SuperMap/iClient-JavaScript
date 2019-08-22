@@ -53,6 +53,7 @@
                     :features="features"
                     :type="type"
                     text-field="name"
+                    :fit-bounds="false"
                     v-bind="param"
                 ></sm-animate-marker-layer>
             </sm-web-map>
@@ -62,6 +63,7 @@
                 <a-radio-button value="rotatingAperture">{{ resources.btn_rotatingAperture }}</a-radio-button>
                 <a-radio-button value="diffusedAperture">{{ resources.btn_diffusedAperture }}</a-radio-button>
                 <a-radio-button value="rotatingTextBorder">{{ resources.btn_rotatingTextBorder }}</a-radio-button>
+                <a-radio-button value="fluorescence">{{ resources.btn_fluorescence }}</a-radio-button>
             </a-radio-group>
         </div>
         <script>

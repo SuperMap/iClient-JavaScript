@@ -1401,6 +1401,7 @@ window.examplesResources = {
         "btn_rotatingAperture":"Rotating Aperture",
         "btn_diffusedAperture":"Diffused Aperture",
         "btn_rotatingTextBorder":"RotatingTextBorder",
+        "btn_fluorescence":"Fluorescent point",
         "btn_lightTheme":"Light theme",
         "btn_darkTheme":"Dark theme",
         "btn_customTheme":"Custom theme",
