@@ -32,11 +32,11 @@ if (product) {
   });
   app.use(instance);
   instance.waitUntilValid(() => {
-    open(`http://localhost:9999/examples/${product}`);
+    open(`http://localhost:8082/examples/${product}`);
   });
 }
 
-const server = app.listen(9999, () => {
+const server = app.listen(8082, () => {
   const host = server.address().address;
   const port = server.address().port;
   console.log('Example app listening at http://%s:%s', host, port);
@@ -58,5 +58,5 @@ app.use("/en/dist", express.static('dist'), serveIndex('dist'));
 app.use("/en/build", express.static('build'), serveIndex('build'));
 app.use("/en", express.static('web/en'), serveIndex('web/en'));
 if (!product) {
-  open(`http://localhost:9999`);
+  open(`http://localhost:8082`);
 }
