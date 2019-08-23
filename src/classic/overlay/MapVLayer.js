@@ -1,12 +1,8 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    SuperMap
-} from '../SuperMap';
-import {
-    MapVRenderer
-} from './mapv/MapVRenderer';
+import { SuperMap } from '../SuperMap';
+import { MapVRenderer } from './mapv/MapVRenderer';
 
 /**
  * @class SuperMap.Layer.MapVLayer
@@ -57,35 +53,37 @@ export class MapVLayer extends SuperMap.Layer {
             SuperMap.Util.extend(this, options);
         }
         //MapV图要求使用canvas绘制，判断是否支持
-        this.canvas = document.createElement("canvas");
+        this.canvas = document.createElement('canvas');
         if (!this.canvas.getContext) {
             return;
         }
         this.supported = true;
         //构建绘图面板
-        this.canvas.style.position = "absolute";
-        this.canvas.style.top = 0 + "px";
-        this.canvas.style.left = 0 + "px";
+        this.canvas.style.position = 'absolute';
+        this.canvas.style.top = 0 + 'px';
+        this.canvas.style.left = 0 + 'px';
         this.div.appendChild(this.canvas);
-        var context = this.options && this.options.context || "2d";
+        var context = (this.options && this.options.context) || '2d';
         this.canvasContext = this.canvas.getContext(context);
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = (this.devicePixelRatio = global$2.devicePixelRatio);
         if (context == '2d') {
             this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         }
-        this.attribution = "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " +
+        this.attribution =
+            "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " +
             "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
 
-        this.CLASS_NAME = "SuperMap.Layer.MapVLayer";
+        this.CLASS_NAME = 'SuperMap.Layer.MapVLayer';
     }
-
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.destroy
      * @override
      */
     destroy() {
+        this.renderer.animator && this.renderer.animator.stop();
+        this.renderer.animator = null;
         this.dataSet = null;
         this.options = null;
         this.renderer = null;
@@ -97,7 +95,6 @@ export class MapVLayer extends SuperMap.Layer {
         super.destroy();
     }
 
-
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
@@ -108,7 +105,6 @@ export class MapVLayer extends SuperMap.Layer {
         this.renderer && this.renderer.addData(dataSet, options);
     }
 
-
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
@@ -118,7 +114,6 @@ export class MapVLayer extends SuperMap.Layer {
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
     }
-
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
@@ -156,7 +151,6 @@ export class MapVLayer extends SuperMap.Layer {
         this.renderer.clearData();
     }
 
-
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.setMap
      * @description 图层已经添加到 Map 中。
@@ -188,21 +182,21 @@ export class MapVLayer extends SuperMap.Layer {
         }
         this.zoomChanged = zoomChanged;
         if (!dragging) {
-            this.div.style.visibility = "hidden";
-            this.div.style.left = -parseInt(this.map.layerContainerDiv.style.left) + "px";
-            this.div.style.top = -parseInt(this.map.layerContainerDiv.style.top) + "px";
+            this.div.style.visibility = 'hidden';
+            this.div.style.left = -parseInt(this.map.layerContainerDiv.style.left) + 'px';
+            this.div.style.top = -parseInt(this.map.layerContainerDiv.style.top) + 'px';
             /*this.canvas.style.left = this.div.style.left;
              this.canvas.style.top = this.div.style.top;*/
             var size = this.map.getSize();
-            this.div.style.width = parseInt(size.w) + "px";
-            this.div.style.height = parseInt(size.h) + "px";
+            this.div.style.width = parseInt(size.w) + 'px';
+            this.div.style.height = parseInt(size.h) + 'px';
             this.canvas.width = parseInt(size.w);
             this.canvas.height = parseInt(size.h);
             this.canvas.style.width = this.div.style.width;
             this.canvas.style.height = this.div.style.height;
             this.maxWidth = size.w;
             this.maxHeight = size.h;
-            this.div.style.visibility = "";
+            this.div.style.visibility = '';
             if (!zoomChanged) {
                 this.renderer && this.renderer.render();
             }
@@ -213,7 +207,6 @@ export class MapVLayer extends SuperMap.Layer {
         }
     }
 
-
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
      * @description 将经纬度转成底图的投影坐标。
@@ -221,15 +214,14 @@ export class MapVLayer extends SuperMap.Layer {
      * @deprecated
      */
     transferToMapLatLng(latLng) {
-        var source = "EPSG:4326",
-            dest = "EPSG:4326";
-        var unit = this.map.getUnits() || "degree";
-        if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
-            dest = "EPSG:3857";
+        var source = 'EPSG:4326',
+            dest = 'EPSG:4326';
+        var unit = this.map.getUnits() || 'degree';
+        if (['m', 'meter'].indexOf(unit.toLowerCase()) > -1) {
+            dest = 'EPSG:3857';
         }
         return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
-
 }
 
 SuperMap.Layer.MapVLayer = MapVLayer;

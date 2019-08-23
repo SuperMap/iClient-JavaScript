@@ -68055,8 +68055,8 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
             return;
         }
         var newData = this.dataSet.get({
-            filter: function (data) {
-                return (filter != null && typeof filter === "function") ? !filter(data) : true;
+            filter: function(data) {
+                return filter != null && typeof filter === 'function' ? !filter(data) : true;
             }
         });
         this.dataSet.set(newData);
@@ -68126,7 +68126,10 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
             context.clear(context.COLOR_BUFFER_BIT);
         }
 
-        if (self.options.minZoom && map.getZoom() < self.options.minZoom || self.options.maxZoom && map.getZoom() > self.options.maxZoom) {
+        if (
+            (self.options.minZoom && map.getZoom() < self.options.minZoom) ||
+            (self.options.maxZoom && map.getZoom() > self.options.maxZoom)
+        ) {
             return;
         }
 
@@ -68139,9 +68142,9 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
         var center = map.getCenter();
         var centerPx = map.project(center);
         var dataGetOptions = {
-            transferCoordinate: function (coordinate) {
+            transferCoordinate: function(coordinate) {
                 if (map.transform.rotationMatrix || self.context === '2d') {
-                    var worldPoint = map.project((new external_mapboxgl_default.a.LngLat(coordinate[0], coordinate[1])));
+                    var worldPoint = map.project(new external_mapboxgl_default.a.LngLat(coordinate[0], coordinate[1]));
                     return [worldPoint.x, worldPoint.y];
                 }
                 var pixel = [(coordinate[0] - center.lng) / resolutionX, (center.lat - coordinate[1]) / resolutionY];
@@ -68150,10 +68153,10 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
         };
 
         if (time !== undefined) {
-            dataGetOptions.filter = function (item) {
+            dataGetOptions.filter = function(item) {
                 var trails = animationOptions.trails || 10;
-                return (time && item.time > (time - trails) && item.time < time);
-            }
+                return time && item.time > time - trails && item.time < time;
+            };
         }
 
         var data = self.dataSet.get(dataGetOptions);
@@ -68169,7 +68172,6 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
     }
 
     init(options) {
-
         var self = this;
 
         self.options = options;
@@ -68186,12 +68188,22 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
     }
 
     /**
+     * @function L.supermap.MapVRenderer.prototype.destroy
+     * @description 释放资源。
+     */
+    destroy() {
+        this.unbindEvent();
+        this.clearData();
+        this.animator && this.animator.stop();
+        this.animator = null;
+        this.canvasLayer = null;
+    }
+
+    /**
      * @function MapvRenderer.prototype.addAnimatorEvent
      * @description 添加动画事件。
      */
-    addAnimatorEvent() {
-
-    }
+    addAnimatorEvent() {}
 
     /**
      * @function MapvRenderer.prototype.removeEvent
@@ -68209,10 +68221,10 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
         this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         var canvas = this.canvasLayer.canvas;
         canvas.style.position = 'absolute';
-        canvas.style.top = 0 + "px";
-        canvas.style.left = 0 + "px";
+        canvas.style.top = 0 + 'px';
+        canvas.style.left = 0 + 'px';
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = (this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio);
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
         if (!this.canvasLayer.mapVOptions.context || this.canvasLayer.mapVOptions.context == '2d') {
@@ -68258,7 +68270,18 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
         var tMoveX = endMovePoint.x - this.startMoveX;
         var tMoveY = endMovePoint.y - this.startMoveY;
         var canvas = this.getContext().canvas;
-        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
+        canvas.style.transform =
+            'rotateX(' +
+            tPitch +
+            'deg)' +
+            ' rotateZ(' +
+            tBearing +
+            'deg)' +
+            ' translate3d(' +
+            tMoveX +
+            'px, ' +
+            tMoveY +
+            'px, 0px)';
     }
 
     zoomStartEvent() {
@@ -68269,7 +68292,6 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
     zoomEndEvent() {
         this.zooming = false;
     }
-
 
     rotateStartEvent() {
         this.rotating = true;
@@ -68283,7 +68305,7 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
         var tPitch = this.map.getPitch() - this.startPitch;
         var tBearing = -this.map.getBearing() + this.startBearing;
         var canvas = this.getContext().canvas;
-        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)'
+        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)';
     }
 
     rotateEndEvent() {
@@ -68295,7 +68317,14 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
      * @description 清除环境。
      */
     clear(context) {
-        context && context.clearRect && context.clearRect(0, 0, parseInt(this.map.getCanvas().style.width), parseInt(this.map.getCanvas().style.height));
+        context &&
+            context.clearRect &&
+            context.clearRect(
+                0,
+                0,
+                parseInt(this.map.getCanvas().style.width),
+                parseInt(this.map.getCanvas().style.height)
+            );
     }
 
     /**
@@ -68313,10 +68342,8 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
     _show() {
         this.canvasLayer.canvas.style.display = 'block';
     }
-
-
-
 }
+
 // CONCATENATED MODULE: ./src/mapboxgl/overlay/MapvLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -68336,11 +68363,10 @@ class MapvRenderer_MapvRenderer extends MapvRenderer_BaseLayer {
  * @param {string} [mapVOptions.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("mapvLayer_") 创建专题图层 ID。
  */
 class MapvLayer_MapvLayer {
-
     constructor(map, dataSet, mapVOptions) {
         this.map = map;
-        this.id = mapVOptions.layerID ? mapVOptions.layerID : Util_Util.createUniqueID("mapvLayer_");
-        delete mapVOptions["layerID"];
+        this.id = mapVOptions.layerID ? mapVOptions.layerID : Util_Util.createUniqueID('mapvLayer_');
+        delete mapVOptions['layerID'];
 
         this.mapVOptions = mapVOptions;
         this.dataSet = dataSet;
@@ -68350,7 +68376,6 @@ class MapvLayer_MapvLayer {
         if (this.map) {
             this.map.addLayer(this);
         }
-
     }
 
     onAdd(map) {
@@ -68369,7 +68394,7 @@ class MapvLayer_MapvLayer {
      */
     removeFromMap() {
         this.mapContainer.removeChild(this.canvas);
-        this.clearData();
+        this.renderer.destroy();
     }
 
     /**
@@ -68413,7 +68438,6 @@ class MapvLayer_MapvLayer {
             nextLayer.parentNode.appendChild(layer);
         }
     }
-
 
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.getTopLeft
@@ -68504,10 +68528,10 @@ class MapvLayer_MapvLayer {
         var canvas = document.createElement('canvas');
         canvas.id = this.id;
         canvas.style.position = 'absolute';
-        canvas.style.top = 0 + "px";
-        canvas.style.left = 0 + "px";
+        canvas.style.top = 0 + 'px';
+        canvas.style.left = 0 + 'px';
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = (this.devicePixelRatio = global$2.devicePixelRatio);
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
         if (!this.mapVOptions.context || this.mapVOptions.context == '2d') {
@@ -68526,10 +68550,10 @@ class MapvLayer_MapvLayer {
     setZIndex(z) {
         this.canvas.style.zIndex = z;
     }
-
 }
 
 external_mapboxgl_default.a.supermap.MapvLayer = MapvLayer_MapvLayer;
+
 // CONCATENATED MODULE: ./src/mapboxgl/overlay/theme/Theme3DLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0

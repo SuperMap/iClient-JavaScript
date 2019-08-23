@@ -10364,17 +10364,17 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
             _SuperMap.SuperMap.Util.extend(_this, options);
         }
         //MapV图要求使用canvas绘制，判断是否支持
-        _this.canvas = document.createElement("canvas");
+        _this.canvas = document.createElement('canvas');
         if (!_this.canvas.getContext) {
             return _possibleConstructorReturn(_this);
         }
         _this.supported = true;
         //构建绘图面板
-        _this.canvas.style.position = "absolute";
-        _this.canvas.style.top = 0 + "px";
-        _this.canvas.style.left = 0 + "px";
+        _this.canvas.style.position = 'absolute';
+        _this.canvas.style.top = 0 + 'px';
+        _this.canvas.style.left = 0 + 'px';
         _this.div.appendChild(_this.canvas);
-        var context = _this.options && _this.options.context || "2d";
+        var context = _this.options && _this.options.context || '2d';
         _this.canvasContext = _this.canvas.getContext(context);
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = _this.devicePixelRatio = global$2.devicePixelRatio;
@@ -10383,7 +10383,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         }
         _this.attribution = "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
 
-        _this.CLASS_NAME = "SuperMap.Layer.MapVLayer";
+        _this.CLASS_NAME = 'SuperMap.Layer.MapVLayer';
         return _this;
     }
 
@@ -10396,6 +10396,8 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
     _createClass(MapVLayer, [{
         key: 'destroy',
         value: function destroy() {
+            this.renderer.animator && this.renderer.animator.stop();
+            this.renderer.animator = null;
             this.dataSet = null;
             this.options = null;
             this.renderer = null;
@@ -10515,21 +10517,21 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
             }
             this.zoomChanged = zoomChanged;
             if (!dragging) {
-                this.div.style.visibility = "hidden";
-                this.div.style.left = -parseInt(this.map.layerContainerDiv.style.left) + "px";
-                this.div.style.top = -parseInt(this.map.layerContainerDiv.style.top) + "px";
+                this.div.style.visibility = 'hidden';
+                this.div.style.left = -parseInt(this.map.layerContainerDiv.style.left) + 'px';
+                this.div.style.top = -parseInt(this.map.layerContainerDiv.style.top) + 'px';
                 /*this.canvas.style.left = this.div.style.left;
                  this.canvas.style.top = this.div.style.top;*/
                 var size = this.map.getSize();
-                this.div.style.width = parseInt(size.w) + "px";
-                this.div.style.height = parseInt(size.h) + "px";
+                this.div.style.width = parseInt(size.w) + 'px';
+                this.div.style.height = parseInt(size.h) + 'px';
                 this.canvas.width = parseInt(size.w);
                 this.canvas.height = parseInt(size.h);
                 this.canvas.style.width = this.div.style.width;
                 this.canvas.style.height = this.div.style.height;
                 this.maxWidth = size.w;
                 this.maxHeight = size.h;
-                this.div.style.visibility = "";
+                this.div.style.visibility = '';
                 if (!zoomChanged) {
                     this.renderer && this.renderer.render();
                 }
@@ -10550,11 +10552,11 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
     }, {
         key: 'transferToMapLatLng',
         value: function transferToMapLatLng(latLng) {
-            var source = "EPSG:4326",
-                dest = "EPSG:4326";
-            var unit = this.map.getUnits() || "degree";
-            if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
-                dest = "EPSG:3857";
+            var source = 'EPSG:4326',
+                dest = 'EPSG:4326';
+            var unit = this.map.getUnits() || 'degree';
+            if (['m', 'meter'].indexOf(unit.toLowerCase()) > -1) {
+                dest = 'EPSG:3857';
             }
             return new _SuperMap.SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
         }
