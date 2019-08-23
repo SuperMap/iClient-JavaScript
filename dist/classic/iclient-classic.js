@@ -10396,8 +10396,10 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
     _createClass(MapVLayer, [{
         key: 'destroy',
         value: function destroy() {
-            this.renderer.animator && this.renderer.animator.stop();
-            this.renderer.animator = null;
+            if (this.renderer && this.renderer.animator) {
+                this.renderer.animator.stop();
+                this.renderer.animator = null;
+            }
             this.dataSet = null;
             this.options = null;
             this.renderer = null;

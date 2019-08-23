@@ -82,8 +82,10 @@ export class MapVLayer extends SuperMap.Layer {
      * @override
      */
     destroy() {
-        this.renderer.animator && this.renderer.animator.stop();
-        this.renderer.animator = null;
+        if (this.renderer && this.renderer.animator) {
+            this.renderer.animator.stop();
+            this.renderer.animator = null;
+        }
         this.dataSet = null;
         this.options = null;
         this.renderer = null;
