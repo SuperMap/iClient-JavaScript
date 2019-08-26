@@ -50,8 +50,8 @@ describe('mapboxgl_WebMap', () => {
 	        expect(map).not.toBe(null);
 					expect(map.getZoom()).toBe(0);
 					var center = map.getCenter();
-					expect(center.lat.toFixed(4)).toEqual(4.2149);
-					expect(center.lng.toFixed(4)).toEqual(110);
+					expect(+center.lat.toFixed(4)).toEqual(4.2149);
+					expect(+center.lng.toFixed(4)).toEqual(110);
 	        expect(datavizWebmap.mapParams.title).toBe('tianditu');
 	        expect(datavizWebmap.mapParams.description).toBe('');
 	        datavizWebmap.map = null;
