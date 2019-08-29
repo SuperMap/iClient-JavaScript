@@ -2417,6 +2417,20 @@ var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
     SQL: 'SQL'
 }
 
+
+/**
+ * @enum RasterFunctionType
+ * @memberOf SuperMap
+ * @description 栅格分析方法。
+ * @type {string}
+ */
+var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
+    /** 归一化植被指数。 */
+    NDVI: "NDVI",
+    /** 阴影面分析。 */
+    HILLSHADE: "HILLSHADE"
+}
+
 // CONCATENATED MODULE: ./src/common/commontypes/Size.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -16854,7 +16868,7 @@ SuperMap.ChartQueryService = ChartQueryService_ChartQueryService;
 
 /**
  * @class SuperMap.ClipParameter
- * @category iServer SpatialAnalyst Interpolation
+ * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 用于裁剪的参数。
  * @description 优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
  * @param {Object} options - 参数。 
@@ -35467,10 +35481,222 @@ class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_
 }
 
 SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
+// CONCATENATED MODULE: ./src/common/iServer/RasterFunctionParameter.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.RasterFunctionParameter
+ * @category iServer Map
+ * @classdesc iServer 地图服务栅格分析参数基类
+ * @param {Object} options - 参数。
+ * @param {SuperMap.RasterFunctionType} options.type - 栅格分析方法。
+ */
+class RasterFunctionParameter_RasterFunctionParameter {
+    constructor(options) {
+        options = options || {};
+        /**
+         * @member {SuperMap.RasterFunctionType} [SuperMap.RasterFunctionParameter.prototype.type]
+         * @description 栅格分析方法。
+         */
+        this.type = null;
+        Util_Util.extend(this, options);
+        this.CLASS_NAME = 'SuperMap.RasterFunctionParameter';
+    }
+
+    /**
+     * @function SuperMap.RasterFunctionParameter.prototype.destroy
+     * @description 释放资源，将资源的属性置空。
+     */
+    destroy() {
+        this.type = null;
+    }
+}
+
+SuperMap.RasterFunctionParameter = RasterFunctionParameter_RasterFunctionParameter;
+
+// CONCATENATED MODULE: ./src/common/iServer/NDVIParameter.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.NDVIParameter
+ * @category iServer Map
+ * @classdesc 归一化植被指数参数类
+ * @param {Object} options - 参数。
+ * @param {number} [options.redIndex=0] - 红光谱波段索引。
+ * @param {number} [options.nirIndex=1] - 近红外光谱波段索引。
+ * @param {string} [options.colorMap="0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff"] - 颜色表。由栅格的中断值和颜色停止之间的映射组成的，如0.3->d9f0a3ff 指的是[0,0.3)显示d9f0a3ff。仅单波段数据时设定。
+ * @extends {SuperMap.RasterFunctionParameter}
+ */
+class NDVIParameter_NDVIParameter extends RasterFunctionParameter_RasterFunctionParameter {
+    constructor(options) {
+        super(options);
+        /**
+         * @member {number} [SuperMap.NDVIParameter.prototype.redIndex=0]
+         * @description 红光谱波段索引。
+         */
+        this.redIndex = 0;
+
+        /**
+         * @member {number} [SuperMap.NDVIParameter.prototype.nirIndex=1]
+         * @description 近红外光谱波段索引。
+         */
+        this.nirIndex = 1;
+
+        /**
+         * @member {string} [SuperMap.NDVIParameter.prototype.colorMap="0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff"]
+         * @description 颜色表。由栅格的中断值和颜色停止之间的映射组成的，如0.3->d9f0a3ff 指的是[0,0.3)显示d9f0a3ff。仅单波段数据时设定。
+         */
+        this.colorMap =
+            '0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff';
+
+        /**
+         * @member {SuperMap.RasterFunctionType} [SuperMap.RasterFunctionParameter.prototype.type]
+         * @description 栅格分析方法。
+         */
+        this.type = REST_RasterFunctionType.NDVI;
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = 'SuperMap.NDVIParameter';
+    }
+
+    /**
+     * @function SuperMap.NDVIParameter.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+        this.redIndex = null;
+        this.nirIndex = null;
+        this.colorMap = null;
+    }
+    /**
+     * @function SuperMap.NDVIParameter.prototype.toJSON
+     * @description 将 NDVIParameter 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+    toJSON() {
+        return {
+            redIndex: this.redIndex,
+            nirIndex: this.nirIndex,
+            colorMap: this.colorMap,
+            type: this.type
+        };
+    }
+}
+
+SuperMap.NDVIParameter = NDVIParameter_NDVIParameter;
+
+// CONCATENATED MODULE: ./src/common/iServer/HillshadeParameter.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.HillshadeParameter
+ * @category iServer Map
+ * @classdesc 阴影面分析参数类
+ * @param {Object} options - 参数。
+ * @param {number} [options.altitude=45] - 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
+ * @param {number} [options.azimuth=315] - 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
+ * @param {number} [options.zFactor=1] - 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
+ *                                       z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
+ *                                      如果 x,y 单位和 z 单位采用相同的测量单位，则 z 因子为 1。这是默认设置。
+ *                                      如果 x,y 单位和 z 单位采用不同的测量单位，则必须将 z 因子设置为适当的因子，否则会得到错误的结果。例如，如果 z 单位是英尺而 x,y 单位是米，则应使用 z 因子 0.3048 将 z 单位从英尺转换为米（1 英尺 = 0.3048 米）。
+ *                                      如果输入栅格位于球面坐标系中（如十进制度球面坐标系），则生成的山体阴影可能看起来很独特。这是因为水平地面单位与高程 z 单位之间的测量值存在差异。由于经度的长度随着纬度而变化，因此需要为该纬度指定一个适当的 z 因子。如果 x,y 单位是十进制度而 Z 单位是米，特定纬度的一些合适的 Z 因子为：
+ *                                      Latitude     Z-factor
+ *                                      0           0.00000898
+ *                                      10           0.00000912
+ *                                      20           0.00000956
+ *                                      30           0.00001036
+ *                                      40           0.00001171
+ *                                      50           0.00001395
+ *                                      60           0.00001792
+ *                                      70           0.00002619
+ *                                      80           0.00005156
+ * @extends {SuperMap.RasterFunctionParameter}
+ */
+class HillshadeParameter_HillshadeParameter extends RasterFunctionParameter_RasterFunctionParameter {
+    constructor(options) {
+        super(options);
+        /**
+         * @member {number} [SuperMap.HillshadeParameter.prototype.altitude = 45]
+         * @description 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
+         */
+        this.altitude = 45;
+
+        /**
+         * @member {number} [SuperMap.HillshadeParameter.prototype.azimuth = 315]
+         * @description 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
+         */
+        this.azimuth = 315;
+
+        /**
+         * @member {number} [SuperMap.HillshadeParameter.prototype.zFactor = 1]
+         * @description 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
+         */
+        this.zFactor = 1;
+
+        /**
+         * @member {SuperMap.RasterFunctionType} SuperMap.RasterFunctionParameter.prototype.type
+         * @description 栅格分析方法。
+         */
+        this.type = REST_RasterFunctionType.HILLSHADE;
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = 'SuperMap.HillshadeParameter';
+    }
+
+    /**
+     * @function SuperMap.HillshadeParameter.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+        this.altitude = null;
+        this.azimuth = null;
+        this.zFactor = null;
+    }
+    /**
+     * @function SuperMap.HillshadeParameter.prototype.toJSON
+     * @description 将 HillshadeParameter 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+    toJSON() {
+        return {
+            altitude: this.altitude,
+            azimuth: this.azimuth,
+            zFactor: this.zFactor,
+            type: this.type
+        };
+    }
+}
+
+SuperMap.HillshadeParameter = HillshadeParameter_HillshadeParameter;
+
 // CONCATENATED MODULE: ./src/common/iServer/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
 
 
 
@@ -65089,6 +65315,7 @@ SuperMap.Lang["zh-CN"] = zh_CN_zh;
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 

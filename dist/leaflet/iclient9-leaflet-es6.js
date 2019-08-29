@@ -5414,6 +5414,20 @@ var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
     SQL: 'SQL'
 }
 
+
+/**
+ * @enum RasterFunctionType
+ * @memberOf SuperMap
+ * @description 栅格分析方法。
+ * @type {string}
+ */
+var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
+    /** 归一化植被指数。 */
+    NDVI: "NDVI",
+    /** 阴影面分析。 */
+    HILLSHADE: "HILLSHADE"
+}
+
 // CONCATENATED MODULE: ./src/common/commontypes/Size.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -19851,7 +19865,7 @@ SuperMap.ChartQueryService = ChartQueryService_ChartQueryService;
 
 /**
  * @class SuperMap.ClipParameter
- * @category iServer SpatialAnalyst Interpolation
+ * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 用于裁剪的参数。
  * @description 优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
  * @param {Object} options - 参数。 
@@ -38464,10 +38478,222 @@ class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_
 }
 
 SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
+// CONCATENATED MODULE: ./src/common/iServer/RasterFunctionParameter.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.RasterFunctionParameter
+ * @category iServer Map
+ * @classdesc iServer 地图服务栅格分析参数基类
+ * @param {Object} options - 参数。
+ * @param {SuperMap.RasterFunctionType} options.type - 栅格分析方法。
+ */
+class RasterFunctionParameter_RasterFunctionParameter {
+    constructor(options) {
+        options = options || {};
+        /**
+         * @member {SuperMap.RasterFunctionType} [SuperMap.RasterFunctionParameter.prototype.type]
+         * @description 栅格分析方法。
+         */
+        this.type = null;
+        Util_Util.extend(this, options);
+        this.CLASS_NAME = 'SuperMap.RasterFunctionParameter';
+    }
+
+    /**
+     * @function SuperMap.RasterFunctionParameter.prototype.destroy
+     * @description 释放资源，将资源的属性置空。
+     */
+    destroy() {
+        this.type = null;
+    }
+}
+
+SuperMap.RasterFunctionParameter = RasterFunctionParameter_RasterFunctionParameter;
+
+// CONCATENATED MODULE: ./src/common/iServer/NDVIParameter.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.NDVIParameter
+ * @category iServer Map
+ * @classdesc 归一化植被指数参数类
+ * @param {Object} options - 参数。
+ * @param {number} [options.redIndex=0] - 红光谱波段索引。
+ * @param {number} [options.nirIndex=1] - 近红外光谱波段索引。
+ * @param {string} [options.colorMap="0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff"] - 颜色表。由栅格的中断值和颜色停止之间的映射组成的，如0.3->d9f0a3ff 指的是[0,0.3)显示d9f0a3ff。仅单波段数据时设定。
+ * @extends {SuperMap.RasterFunctionParameter}
+ */
+class NDVIParameter_NDVIParameter extends RasterFunctionParameter_RasterFunctionParameter {
+    constructor(options) {
+        super(options);
+        /**
+         * @member {number} [SuperMap.NDVIParameter.prototype.redIndex=0]
+         * @description 红光谱波段索引。
+         */
+        this.redIndex = 0;
+
+        /**
+         * @member {number} [SuperMap.NDVIParameter.prototype.nirIndex=1]
+         * @description 近红外光谱波段索引。
+         */
+        this.nirIndex = 1;
+
+        /**
+         * @member {string} [SuperMap.NDVIParameter.prototype.colorMap="0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff"]
+         * @description 颜色表。由栅格的中断值和颜色停止之间的映射组成的，如0.3->d9f0a3ff 指的是[0,0.3)显示d9f0a3ff。仅单波段数据时设定。
+         */
+        this.colorMap =
+            '0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff';
+
+        /**
+         * @member {SuperMap.RasterFunctionType} [SuperMap.RasterFunctionParameter.prototype.type]
+         * @description 栅格分析方法。
+         */
+        this.type = REST_RasterFunctionType.NDVI;
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = 'SuperMap.NDVIParameter';
+    }
+
+    /**
+     * @function SuperMap.NDVIParameter.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+        this.redIndex = null;
+        this.nirIndex = null;
+        this.colorMap = null;
+    }
+    /**
+     * @function SuperMap.NDVIParameter.prototype.toJSON
+     * @description 将 NDVIParameter 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+    toJSON() {
+        return {
+            redIndex: this.redIndex,
+            nirIndex: this.nirIndex,
+            colorMap: this.colorMap,
+            type: this.type
+        };
+    }
+}
+
+SuperMap.NDVIParameter = NDVIParameter_NDVIParameter;
+
+// CONCATENATED MODULE: ./src/common/iServer/HillshadeParameter.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.HillshadeParameter
+ * @category iServer Map
+ * @classdesc 阴影面分析参数类
+ * @param {Object} options - 参数。
+ * @param {number} [options.altitude=45] - 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
+ * @param {number} [options.azimuth=315] - 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
+ * @param {number} [options.zFactor=1] - 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
+ *                                       z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
+ *                                      如果 x,y 单位和 z 单位采用相同的测量单位，则 z 因子为 1。这是默认设置。
+ *                                      如果 x,y 单位和 z 单位采用不同的测量单位，则必须将 z 因子设置为适当的因子，否则会得到错误的结果。例如，如果 z 单位是英尺而 x,y 单位是米，则应使用 z 因子 0.3048 将 z 单位从英尺转换为米（1 英尺 = 0.3048 米）。
+ *                                      如果输入栅格位于球面坐标系中（如十进制度球面坐标系），则生成的山体阴影可能看起来很独特。这是因为水平地面单位与高程 z 单位之间的测量值存在差异。由于经度的长度随着纬度而变化，因此需要为该纬度指定一个适当的 z 因子。如果 x,y 单位是十进制度而 Z 单位是米，特定纬度的一些合适的 Z 因子为：
+ *                                      Latitude     Z-factor
+ *                                      0           0.00000898
+ *                                      10           0.00000912
+ *                                      20           0.00000956
+ *                                      30           0.00001036
+ *                                      40           0.00001171
+ *                                      50           0.00001395
+ *                                      60           0.00001792
+ *                                      70           0.00002619
+ *                                      80           0.00005156
+ * @extends {SuperMap.RasterFunctionParameter}
+ */
+class HillshadeParameter_HillshadeParameter extends RasterFunctionParameter_RasterFunctionParameter {
+    constructor(options) {
+        super(options);
+        /**
+         * @member {number} [SuperMap.HillshadeParameter.prototype.altitude = 45]
+         * @description 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
+         */
+        this.altitude = 45;
+
+        /**
+         * @member {number} [SuperMap.HillshadeParameter.prototype.azimuth = 315]
+         * @description 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
+         */
+        this.azimuth = 315;
+
+        /**
+         * @member {number} [SuperMap.HillshadeParameter.prototype.zFactor = 1]
+         * @description 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
+         */
+        this.zFactor = 1;
+
+        /**
+         * @member {SuperMap.RasterFunctionType} SuperMap.RasterFunctionParameter.prototype.type
+         * @description 栅格分析方法。
+         */
+        this.type = REST_RasterFunctionType.HILLSHADE;
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = 'SuperMap.HillshadeParameter';
+    }
+
+    /**
+     * @function SuperMap.HillshadeParameter.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+        this.altitude = null;
+        this.azimuth = null;
+        this.zFactor = null;
+    }
+    /**
+     * @function SuperMap.HillshadeParameter.prototype.toJSON
+     * @description 将 HillshadeParameter 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+    toJSON() {
+        return {
+            altitude: this.altitude,
+            azimuth: this.azimuth,
+            zFactor: this.zFactor,
+            type: this.type
+        };
+    }
+}
+
+SuperMap.HillshadeParameter = HillshadeParameter_HillshadeParameter;
+
 // CONCATENATED MODULE: ./src/common/iServer/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
 
 
 
@@ -68120,6 +68346,7 @@ SuperMap.Lang["zh-CN"] = zh_CN_zh;
 
 
 
+
 // EXTERNAL MODULE: external "L"
 var external_L_ = __webpack_require__(0);
 var external_L_default = /*#__PURE__*/__webpack_require__.n(external_L_);
@@ -69765,7 +69992,7 @@ external_L_default.a.Util.transform = Transform_transform;
  * @param {number} [options.maxZoom=19] - 最大缩放级别。
  * @param {L.LatLngBounds} [options.bounds=L.latLngBounds([-85.0511287798, -180],[85.0511287798, 180])] - 显示范围。
  * @param {L.Browser} [options.retina=L.Browser.retina] - 浏览器显示分辨率。
- * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.tileProxy] - 代理地址。
  * @param {string} [options.attribution='Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方'] - 版权信息。
  */
 var BaiduTileLayer_BaiduTileLayer = external_L_default.a.TileLayer.extend({
@@ -69906,7 +70133,7 @@ external_L_default.a.supermap.cloudTileLayer = CloudTileLayer_cloudTileLayer;
  * @extends {L.Layer}
  * @example
  *      L.supermap.imageMapLayer(url).addTo(map);
- * @param {string} url - 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
+ * @param {string} url - 地图服务地址,如：http://{ip}:{port}/iserver/services/map-china400/rest/maps/China
  * @param {Object} options - 图层可选参数。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
  * @param {boolean} [options.redirect=false] - 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
@@ -69927,15 +70154,15 @@ external_L_default.a.supermap.cloudTileLayer = CloudTileLayer_cloudTileLayer;
  * @param {string} [options.className] - 自定义 dom 元素的 className。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {number} [options.updateInterval=150] - 平移时图层延迟刷新间隔时间。
- * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @fires L.supermap.imageMapLayer#load
  * @fires L.supermap.imageMapLayer#error
  * @fires L.supermap.imageMapLayer#loading
  */
 var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
-
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
@@ -69980,10 +70207,9 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
         //启用托管地址。
         tileProxy: null,
         format: 'png'
-
     },
 
-    initialize: function (url, options) {
+    initialize: function(url, options) {
         this._url = url;
         external_L_["Util"].setOptions(this, options);
     },
@@ -69994,7 +70220,7 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
      * @description 添加到地图。
      * @param {L.Map} map - 待添加到的地图对象。
      */
-    onAdd: function (map) {
+    onAdd: function(map) {
         this.update = external_L_["Util"].throttle(this.update, this.options.updateInterval, this);
         map.on('moveend', this.update, this);
 
@@ -70011,9 +70237,9 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
      * @private
      * @function L.supermap.imageMapLayer.prototype.onRemove
      * @description 从地图上移除。
-     * @param {L.Map} map - 待移除的地图对象。
      */
-    onRemove: function (map) { // eslint-disable-line no-unused-vars
+    onRemove: function() {
+        // eslint-disable-line no-unused-vars
         if (this._currentImage) {
             this._map.removeLayer(this._currentImage);
         }
@@ -70024,7 +70250,7 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
      * @function L.supermap.imageMapLayer.prototype.bringToFront
      * @description 将当前图层置顶
      */
-    bringToFront: function () {
+    bringToFront: function() {
         this.options.position = 'front';
         if (this._currentImage) {
             this._currentImage.bringToFront();
@@ -70036,7 +70262,7 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
      * @function L.supermap.imageMapLayer.prototype.bringToFront
      * @description 将当前图层置底。
      */
-    bringToBack: function () {
+    bringToBack: function() {
         this.options.position = 'back';
         if (this._currentImage) {
             this._currentImage.bringToBack();
@@ -70049,7 +70275,7 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
      * @description 获取图层透明度。
      * @returns {number} 图层的透明度。
      */
-    getOpacity: function () {
+    getOpacity: function() {
         return this.options.opacity;
     },
 
@@ -70057,7 +70283,7 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
      * @function L.supermap.imageMapLayer.prototype.setOpacity
      * @description 设置透明度。
      */
-    setOpacity: function (opacity) {
+    setOpacity: function(opacity) {
         this.options.opacity = opacity;
         if (this._currentImage) {
             this._currentImage.setOpacity(opacity);
@@ -70070,24 +70296,23 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
      * @description 获取 image 图层请求地址，子类可重写实现。
      * @returns {string} 请求瓦片地址。
      */
-    getImageUrl: function (params) {
+    getImageUrl: function(params) {
         var imageUrl = external_L_["Util"].getParamString(params) + this._initLayerUrl();
         var serviceUrl = this._url;
-        imageUrl = serviceUrl + "/image." + this.options.format + imageUrl;
+        imageUrl = serviceUrl + '/image.' + this.options.format + imageUrl;
         imageUrl = this._appendCredential(imageUrl);
         //支持代理
         if (this.options.tileProxy) {
             imageUrl = this.options.tileProxy + encodeURIComponent(imageUrl);
         }
         if (!this.options.cacheEnabled) {
-            imageUrl += "&_t=" + new Date().getTime();
+            imageUrl += '&_t=' + new Date().getTime();
         }
         return imageUrl;
-
     },
 
     //获取请求瓦片宽高以及请求范围参数
-    _getImageParams: function () {
+    _getImageParams: function() {
         var size = this._calculateImageSize();
         return {
             viewBounds: this._compriseBounds(this._calculateBounds()),
@@ -70097,62 +70322,67 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
     },
 
     //拼接请求链接
-    _initLayerUrl: function () {
+    _initLayerUrl: function() {
         var me = this;
-        var layerUrl = "&";
+        var layerUrl = '&';
         layerUrl += encodeURI(me._initAllRequestParams().join('&'));
         return layerUrl;
     },
 
     //初始化服务请求参数
-    _initAllRequestParams: function () {
-        var me = this, options = me.options || {}, params = [];
+    _initAllRequestParams: function() {
+        var me = this,
+            options = me.options || {},
+            params = [];
 
-        var redirect = (options.redirect === true) ? options.redirect : false;
-        params.push("redirect=" + redirect);
+        var redirect = options.redirect === true ? options.redirect : false;
+        params.push('redirect=' + redirect);
 
-        var transparent = (options.transparent === true) ? options.transparent : false;
-        params.push("transparent=" + transparent);
+        var transparent = options.transparent === true ? options.transparent : false;
+        params.push('transparent=' + transparent);
 
-        var cacheEnabled = (options.cacheEnabled === false) ? options.cacheEnabled : true;
-        params.push("cacheEnabled=" + cacheEnabled);
+        var cacheEnabled = options.cacheEnabled === false ? options.cacheEnabled : true;
+        params.push('cacheEnabled=' + cacheEnabled);
 
         if (options.prjCoordSys) {
-            params.push("prjCoordSys=" + JSON.stringify(options.prjCoordSys));
+            params.push('prjCoordSys=' + JSON.stringify(options.prjCoordSys));
         }
 
         if (options.layersID) {
-            params.push("layersID=" + options.layersID);
+            params.push('layersID=' + options.layersID);
+        }
+        if (options.rasterfunction) {
+            params.push('rasterfunction=' + JSON.stringify(options.rasterfunction));
         }
 
         if (options.clipRegionEnabled && options.clipRegion instanceof external_L_default.a.Path) {
             options.clipRegion = external_L_default.a.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
             options.clipRegion = Util_Util.toJSON(ServerGeometry_ServerGeometry.fromGeometry(options.clipRegion));
-            params.push("clipRegionEnabled=" + options.clipRegionEnabled);
-            params.push("clipRegion=" + JSON.stringify(options.clipRegion));
+            params.push('clipRegionEnabled=' + options.clipRegionEnabled);
+            params.push('clipRegion=' + JSON.stringify(options.clipRegion));
         }
 
         if (options.overlapDisplayed === false) {
-            params.push("overlapDisplayed=false");
+            params.push('overlapDisplayed=false');
             if (options.overlapDisplayedOptions) {
-                params.push("overlapDisplayedOptions=" + me.overlapDisplayedOptions.toString());
+                params.push('overlapDisplayedOptions=' + me.overlapDisplayedOptions.toString());
             }
         } else {
-            params.push("overlapDisplayed=true");
+            params.push('overlapDisplayed=true');
         }
         return params;
     },
 
     //初始化请求链接
-    _requestImage: function (params, bounds) {
+    _requestImage: function(params, bounds) {
         var imageUrl = this.getImageUrl(params);
         this._loadImage(imageUrl, bounds);
     },
 
     //加载请求图层
-    _loadImage: function (url, bounds) {
+    _loadImage: function(url, bounds) {
         if (!this._map) {
-            return
+            return;
         }
 
         var image = new external_L_["ImageOverlay"](url, bounds, {
@@ -70166,8 +70396,7 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
             interactive: this.options.interactive
         }).addTo(this._map);
 
-
-        var onLoad = function (e) {
+        var onLoad = function(e) {
             image.off('error', onLoad, this);
             var map = this._map;
             if (!map) {
@@ -70177,10 +70406,7 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
             var newImage = e.target;
             var oldImage = this._currentImage;
 
-            if (newImage._bounds
-                && newImage._bounds.equals(bounds)
-                && newImage._bounds.equals(map.getBounds())) {
-
+            if (newImage._bounds && newImage._bounds.equals(bounds) && newImage._bounds.equals(map.getBounds())) {
                 this._currentImage = newImage;
 
                 if (this.options.position === 'front') {
@@ -70209,18 +70435,21 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
             this.fire('load', { bounds: bounds });
         };
 
-
         image.once('load', onLoad, this);
 
-        image.once('error', function () {
-            this._map.removeLayer(image);
-            /**
-             * @event L.supermap.imageMapLayer#error
-             * @description 请求图层加载失败后触发。
-             */
-            this.fire('error');
-            image.off('load', onLoad, this);
-        }, this);
+        image.once(
+            'error',
+            function() {
+                this._map.removeLayer(image);
+                /**
+                 * @event L.supermap.imageMapLayer#error
+                 * @description 请求图层加载失败后触发。
+                 */
+                this.fire('error');
+                image.off('load', onLoad, this);
+            },
+            this
+        );
 
         /**
          * @event L.supermap.imageMapLayer#loading
@@ -70228,14 +70457,13 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
          * @property {L.bounds} bounds  - 图层 bounds。
          */
         this.fire('loading', { bounds: bounds });
-
     },
 
     /**
      * @function L.supermap.imageMapLayer.prototype.update
      * @description 更新图层。
      */
-    update: function () {
+    update: function() {
         if (!this._map) {
             return;
         }
@@ -70259,7 +70487,7 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
     },
 
     //将像素坐标转成点坐标
-    _calculateBounds: function () {
+    _calculateBounds: function() {
         var pixelBounds = this._map.getPixelBounds();
         var sw = this._map.unproject(pixelBounds.getBottomLeft());
         var ne = this._map.unproject(pixelBounds.getTopRight());
@@ -70269,22 +70497,22 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
     },
 
     //转换viewBounds为JSON字符串
-    _compriseBounds: function (boundsProjected) {
+    _compriseBounds: function(boundsProjected) {
         var projBounds = {
-            "leftBottom": {
-                'x': boundsProjected.getBottomLeft().x,
-                'y': boundsProjected.getTopRight().y
+            leftBottom: {
+                x: boundsProjected.getBottomLeft().x,
+                y: boundsProjected.getTopRight().y
             },
-            "rightTop": {
-                'x': boundsProjected.getTopRight().x,
-                'y': boundsProjected.getBottomLeft().y
+            rightTop: {
+                x: boundsProjected.getTopRight().x,
+                y: boundsProjected.getBottomLeft().y
             }
         };
         return JSON.stringify(projBounds);
     },
 
     //计算图层的宽高
-    _calculateImageSize: function () {
+    _calculateImageSize: function() {
         var map = this._map;
         var bounds = map.getPixelBounds();
         var size = map.getSize();
@@ -70302,39 +70530,41 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
     },
 
     //追加token或key
-    _appendCredential: function (url) {
-        var newUrl = url, credential, value;
+    _appendCredential: function(url) {
+        var newUrl = url,
+            credential,
+            value;
         switch (this.options.serverType) {
             case REST_ServerType.IPORTAL:
                 value = SecurityManager_SecurityManager.getToken(this._url);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential_Credential(value, 'token') : null;
                 if (!credential) {
                     value = SecurityManager_SecurityManager.getKey(this._url);
-                    credential = value ? new Credential_Credential(value, "key") : null;
+                    credential = value ? new Credential_Credential(value, 'key') : null;
                 }
                 break;
             case REST_ServerType.ONLINE:
                 value = SecurityManager_SecurityManager.getKey(this._url);
-                credential = value ? new Credential_Credential(value, "key") : null;
+                credential = value ? new Credential_Credential(value, 'key') : null;
                 break;
             default:
                 //iserver or others
                 value = SecurityManager_SecurityManager.getToken(this._url);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential_Credential(value, 'token') : null;
                 break;
         }
         if (credential) {
-            newUrl += "&" + credential.getUrlParameters();
+            newUrl += '&' + credential.getUrlParameters();
         }
         return newUrl;
     }
-
 });
 
-var ImageMapLayer_imageMapLayer = function (url, options) {
+var ImageMapLayer_imageMapLayer = function(url, options) {
     return new ImageMapLayer_ImageMapLayer(url, options);
 };
 external_L_default.a.supermap.imageMapLayer = ImageMapLayer_imageMapLayer;
+
 // CONCATENATED MODULE: ./src/leaflet/mapping/TileLayer.WMTS.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -70350,7 +70580,7 @@ external_L_default.a.supermap.imageMapLayer = ImageMapLayer_imageMapLayer;
  * @param {string} url - wmts 图层地址。
  * @param {Object} options - wmts 图层可选参数。
  * @param {string} options.layer - 需要显示的图层。
- * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.tileProxy] - 代理地址。
  * @param {Object} [options.style] - 图层样式。
  * @param {string} [options.format='image/png'] - wmts 图像格式（'image/png'用于具有透明度的图层）。
  * @param {(number|L.Point)} [options.tileSize='256'] - 瓦片大小。
@@ -70533,8 +70763,8 @@ external_L_default.a.supermap.tiandituTileLayer = TiandituTileLayer_tiandituTile
  * @extends {L.TileLayer}
  * @example
  *      L.supermap.tiledMapLayer(url).addTo(map);
- * @param {string} url - 影像图层地址。
- * @param {Object} options - 影像图层参数。
+ * @param {string} url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {Object} options - 参数。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
  * @param {boolean} [options.redirect=false] - 是否重定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
  * @param {boolean} [options.transparent=true] - 是否背景透明。
@@ -70547,9 +70777,10 @@ external_L_default.a.supermap.tiandituTileLayer = TiandituTileLayer_tiandituTile
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
  * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
+ * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @fires L.supermap.tiledMapLayer#tilesetsinfoloaded
  * @fires L.supermap.tiledMapLayer#tileversionschanged
@@ -70871,8 +71102,11 @@ var TiledMapLayer_TiledMapLayer = external_L_default.a.TileLayer.extend({
             params["overlapDisplayed"] = true;
         }
 
-        if (options.cacheEnabled === true && options.tileversion) {
+        if (params.cacheEnabled === true && options.tileversion) {
             params["tileversion"] = options.tileversion.toString();
+        }
+        if (options.rasterfunction) {
+            params["rasterfunction"] = JSON.stringify(options.rasterfunction);
         }
 
         return params;
@@ -93111,7 +93345,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */

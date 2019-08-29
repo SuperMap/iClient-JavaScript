@@ -1301,3 +1301,19 @@ var GetFeatureMode = SuperMap.GetFeatureMode = {
 export {
     GetFeatureMode
 }
+
+/**
+ * @enum RasterFunctionType
+ * @memberOf SuperMap
+ * @description 栅格分析方法。
+ * @type {string}
+ */
+var RasterFunctionType = SuperMap.RasterFunctionType = {
+    /** 归一化植被指数。 */
+    NDVI: "NDVI",
+    /** 阴影面分析。 */
+    HILLSHADE: "HILLSHADE"
+}
+export {
+    RasterFunctionType
+}

@@ -19,8 +19,8 @@ import {
  * @category iServer Map
  * @classdesc SuperMap iServer TileImage 图层源。
  * @param {Object} options - 参数。
- * @param {string} options.url - 服务地址。
- * @param {(ol.tilegrid.TileGrid|ol.tilegrid.TileGrid)} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
+ * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {ol.tilegrid.TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
  * @param {SuperMap.ServerType} [options.serverType=ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
@@ -34,6 +34,7 @@ import {
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol.source.TileImage}
  */
 export class TileSuperMapRest extends ol.source.TileImage {
@@ -161,8 +162,11 @@ export class TileSuperMapRest extends ol.source.TileImage {
                 params["overlapDisplayed"] = true;
             }
 
-            if (options.cacheEnabled && options.tileversion) {
+            if (params.cacheEnabled && options.tileversion) {
                 params["tileversion"] = options.tileversion.toString();
+            }
+            if (options.rasterfunction) {
+                params["rasterfunction"] = JSON.stringify(options.rasterfunction);
             }
 
             return params;

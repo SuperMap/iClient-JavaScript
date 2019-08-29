@@ -5718,6 +5718,20 @@ var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
     SQL: 'SQL'
 }
 
+
+/**
+ * @enum RasterFunctionType
+ * @memberOf SuperMap
+ * @description 栅格分析方法。
+ * @type {string}
+ */
+var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
+    /** 归一化植被指数。 */
+    NDVI: "NDVI",
+    /** 阴影面分析。 */
+    HILLSHADE: "HILLSHADE"
+}
+
 // CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0

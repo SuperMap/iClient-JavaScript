@@ -6442,6 +6442,20 @@ var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
     SQL: 'SQL'
 }
 
+
+/**
+ * @enum RasterFunctionType
+ * @memberOf SuperMap
+ * @description 栅格分析方法。
+ * @type {string}
+ */
+var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
+    /** 归一化植被指数。 */
+    NDVI: "NDVI",
+    /** 阴影面分析。 */
+    HILLSHADE: "HILLSHADE"
+}
+
 // CONCATENATED MODULE: ./src/common/commontypes/Size.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -20879,7 +20893,7 @@ SuperMap.ChartQueryService = ChartQueryService_ChartQueryService;
 
 /**
  * @class SuperMap.ClipParameter
- * @category iServer SpatialAnalyst Interpolation
+ * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 用于裁剪的参数。
  * @description 优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
  * @param {Object} options - 参数。 
@@ -39492,10 +39506,222 @@ class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_
 }
 
 SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
+// CONCATENATED MODULE: ./src/common/iServer/RasterFunctionParameter.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.RasterFunctionParameter
+ * @category iServer Map
+ * @classdesc iServer 地图服务栅格分析参数基类
+ * @param {Object} options - 参数。
+ * @param {SuperMap.RasterFunctionType} options.type - 栅格分析方法。
+ */
+class RasterFunctionParameter_RasterFunctionParameter {
+    constructor(options) {
+        options = options || {};
+        /**
+         * @member {SuperMap.RasterFunctionType} [SuperMap.RasterFunctionParameter.prototype.type]
+         * @description 栅格分析方法。
+         */
+        this.type = null;
+        Util_Util.extend(this, options);
+        this.CLASS_NAME = 'SuperMap.RasterFunctionParameter';
+    }
+
+    /**
+     * @function SuperMap.RasterFunctionParameter.prototype.destroy
+     * @description 释放资源，将资源的属性置空。
+     */
+    destroy() {
+        this.type = null;
+    }
+}
+
+SuperMap.RasterFunctionParameter = RasterFunctionParameter_RasterFunctionParameter;
+
+// CONCATENATED MODULE: ./src/common/iServer/NDVIParameter.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.NDVIParameter
+ * @category iServer Map
+ * @classdesc 归一化植被指数参数类
+ * @param {Object} options - 参数。
+ * @param {number} [options.redIndex=0] - 红光谱波段索引。
+ * @param {number} [options.nirIndex=1] - 近红外光谱波段索引。
+ * @param {string} [options.colorMap="0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff"] - 颜色表。由栅格的中断值和颜色停止之间的映射组成的，如0.3->d9f0a3ff 指的是[0,0.3)显示d9f0a3ff。仅单波段数据时设定。
+ * @extends {SuperMap.RasterFunctionParameter}
+ */
+class NDVIParameter_NDVIParameter extends RasterFunctionParameter_RasterFunctionParameter {
+    constructor(options) {
+        super(options);
+        /**
+         * @member {number} [SuperMap.NDVIParameter.prototype.redIndex=0]
+         * @description 红光谱波段索引。
+         */
+        this.redIndex = 0;
+
+        /**
+         * @member {number} [SuperMap.NDVIParameter.prototype.nirIndex=1]
+         * @description 近红外光谱波段索引。
+         */
+        this.nirIndex = 1;
+
+        /**
+         * @member {string} [SuperMap.NDVIParameter.prototype.colorMap="0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff"]
+         * @description 颜色表。由栅格的中断值和颜色停止之间的映射组成的，如0.3->d9f0a3ff 指的是[0,0.3)显示d9f0a3ff。仅单波段数据时设定。
+         */
+        this.colorMap =
+            '0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff';
+
+        /**
+         * @member {SuperMap.RasterFunctionType} [SuperMap.RasterFunctionParameter.prototype.type]
+         * @description 栅格分析方法。
+         */
+        this.type = REST_RasterFunctionType.NDVI;
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = 'SuperMap.NDVIParameter';
+    }
+
+    /**
+     * @function SuperMap.NDVIParameter.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+        this.redIndex = null;
+        this.nirIndex = null;
+        this.colorMap = null;
+    }
+    /**
+     * @function SuperMap.NDVIParameter.prototype.toJSON
+     * @description 将 NDVIParameter 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+    toJSON() {
+        return {
+            redIndex: this.redIndex,
+            nirIndex: this.nirIndex,
+            colorMap: this.colorMap,
+            type: this.type
+        };
+    }
+}
+
+SuperMap.NDVIParameter = NDVIParameter_NDVIParameter;
+
+// CONCATENATED MODULE: ./src/common/iServer/HillshadeParameter.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.HillshadeParameter
+ * @category iServer Map
+ * @classdesc 阴影面分析参数类
+ * @param {Object} options - 参数。
+ * @param {number} [options.altitude=45] - 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
+ * @param {number} [options.azimuth=315] - 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
+ * @param {number} [options.zFactor=1] - 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
+ *                                       z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
+ *                                      如果 x,y 单位和 z 单位采用相同的测量单位，则 z 因子为 1。这是默认设置。
+ *                                      如果 x,y 单位和 z 单位采用不同的测量单位，则必须将 z 因子设置为适当的因子，否则会得到错误的结果。例如，如果 z 单位是英尺而 x,y 单位是米，则应使用 z 因子 0.3048 将 z 单位从英尺转换为米（1 英尺 = 0.3048 米）。
+ *                                      如果输入栅格位于球面坐标系中（如十进制度球面坐标系），则生成的山体阴影可能看起来很独特。这是因为水平地面单位与高程 z 单位之间的测量值存在差异。由于经度的长度随着纬度而变化，因此需要为该纬度指定一个适当的 z 因子。如果 x,y 单位是十进制度而 Z 单位是米，特定纬度的一些合适的 Z 因子为：
+ *                                      Latitude     Z-factor
+ *                                      0           0.00000898
+ *                                      10           0.00000912
+ *                                      20           0.00000956
+ *                                      30           0.00001036
+ *                                      40           0.00001171
+ *                                      50           0.00001395
+ *                                      60           0.00001792
+ *                                      70           0.00002619
+ *                                      80           0.00005156
+ * @extends {SuperMap.RasterFunctionParameter}
+ */
+class HillshadeParameter_HillshadeParameter extends RasterFunctionParameter_RasterFunctionParameter {
+    constructor(options) {
+        super(options);
+        /**
+         * @member {number} [SuperMap.HillshadeParameter.prototype.altitude = 45]
+         * @description 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
+         */
+        this.altitude = 45;
+
+        /**
+         * @member {number} [SuperMap.HillshadeParameter.prototype.azimuth = 315]
+         * @description 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
+         */
+        this.azimuth = 315;
+
+        /**
+         * @member {number} [SuperMap.HillshadeParameter.prototype.zFactor = 1]
+         * @description 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。
+         */
+        this.zFactor = 1;
+
+        /**
+         * @member {SuperMap.RasterFunctionType} SuperMap.RasterFunctionParameter.prototype.type
+         * @description 栅格分析方法。
+         */
+        this.type = REST_RasterFunctionType.HILLSHADE;
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = 'SuperMap.HillshadeParameter';
+    }
+
+    /**
+     * @function SuperMap.HillshadeParameter.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+        this.altitude = null;
+        this.azimuth = null;
+        this.zFactor = null;
+    }
+    /**
+     * @function SuperMap.HillshadeParameter.prototype.toJSON
+     * @description 将 HillshadeParameter 对象转化为 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
+     */
+    toJSON() {
+        return {
+            altitude: this.altitude,
+            azimuth: this.azimuth,
+            zFactor: this.zFactor,
+            type: this.type
+        };
+    }
+}
+
+SuperMap.HillshadeParameter = HillshadeParameter_HillshadeParameter;
+
 // CONCATENATED MODULE: ./src/common/iServer/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
 
 
 
@@ -69148,6 +69374,7 @@ SuperMap.Lang["zh-CN"] = zh_CN_zh;
 
 
 
+
 // EXTERNAL MODULE: external "ol"
 var external_ol_ = __webpack_require__(0);
 var external_ol_default = /*#__PURE__*/__webpack_require__.n(external_ol_);
@@ -72062,8 +72289,8 @@ external_ol_default.a.source.BaiduMap = BaiduMap_BaiduMap;
  * @category iServer Map
  * @classdesc SuperMap iServer Image 图层源。
  * @param {Object} options - 参数。
- * @param {string} options.url - 服务地址。
- * @param {(ol.tilegrid.TileGrid|ol.tilegrid.TileGrid)} [options.tileGrid] - 瓦片网格对象。
+ * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {ol.tilegrid.TileGrid} [options.tileGrid] - 瓦片网格对象。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
  * @param {boolean} [options.redirect=false] - 是否重定向。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。
@@ -72076,22 +72303,23 @@ external_ol_default.a.source.BaiduMap = BaiduMap_BaiduMap;
  * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
- * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol.source.TileImage}
  */
 class ImageSuperMapRest_ImageSuperMapRest extends external_ol_default.a.source.TileImage {
-
     constructor(options) {
         if (options.url === undefined) {
             return;
         }
-        options.attributions = options.attributions ||
+        options.attributions =
+            options.attributions ||
             new external_ol_default.a.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
+                html:
+                    "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
             });
 
-        options.format = options.format ? options.format : "png";
-        var layerUrl = options.url + "/image." + options.format + "?";
+        options.format = options.format ? options.format : 'png';
+        var layerUrl = options.url + '/image.' + options.format + '?';
 
         options.serverType = options.serverType || REST_ServerType.ISERVER;
         //为url添加安全认证信息片段
@@ -72105,67 +72333,78 @@ class ImageSuperMapRest_ImageSuperMapRest extends external_ol_default.a.source.T
          * @returns {string} 添加生成后的新地址。
          */
         function appendCredential(id, url, serverType) {
-            var newUrl = url, credential, value;
+            var newUrl = url,
+                credential,
+                value;
             switch (serverType) {
                 case REST_ServerType.IPORTAL:
                     value = SecurityManager_SecurityManager.getToken(id);
-                    credential = value ? new Credential_Credential(value, "token") : null;
+                    credential = value ? new Credential_Credential(value, 'token') : null;
                     if (!credential) {
                         value = SecurityManager_SecurityManager.getKey(id);
-                        credential = value ? new Credential_Credential(value, "key") : null;
+                        credential = value ? new Credential_Credential(value, 'key') : null;
                     }
                     break;
                 case REST_ServerType.ONLINE:
                     value = SecurityManager_SecurityManager.getKey(id);
-                    credential = value ? new Credential_Credential(value, "key") : null;
+                    credential = value ? new Credential_Credential(value, 'key') : null;
                     break;
                 default:
                     //iserver or others
                     value = SecurityManager_SecurityManager.getToken(id);
-                    credential = value ? new Credential_Credential(value, "token") : null;
+                    credential = value ? new Credential_Credential(value, 'token') : null;
                     break;
             }
             if (credential) {
-                newUrl += "&" + credential.getUrlParameters();
+                newUrl += '&' + credential.getUrlParameters();
             }
             return newUrl;
         }
 
         //切片是否透明
         var transparent = options.transparent !== undefined ? options.transparent : true;
-        layerUrl += "&transparent=" + transparent;
+        layerUrl += '&transparent=' + transparent;
 
         //是否使用缓存吗，默认为true
         var cacheEnabled = options.cacheEnabled !== undefined ? options.cacheEnabled : true;
-        layerUrl += "&cacheEnabled=" + cacheEnabled;
+        layerUrl += '&cacheEnabled=' + cacheEnabled;
 
         //如果有layersID，则是在使用专题图
         if (options.layersID !== undefined) {
-            layerUrl += "&layersID=" + options.layersID;
+            layerUrl += '&layersID=' + options.layersID;
         }
         //是否重定向,默认为false
         var redirect = false;
         if (options.redirect !== undefined) {
             redirect = options.redirect;
         }
-        layerUrl += "&redirect=" + redirect;
+        layerUrl += '&redirect=' + redirect;
 
         if (options.prjCoordSys) {
-            layerUrl += "prjCoordSys=" + JSON.stringify(options.prjCoordSys);
+            layerUrl += '&prjCoordSys=' + JSON.stringify(options.prjCoordSys);
         }
         if (options.clipRegionEnabled && options.clipRegion instanceof external_ol_default.a.geom.Geometry) {
-            options.clipRegion = core_Util_Util.toSuperMapGeometry(new external_ol_default.a.format.GeoJSON().writeGeometryObject(options.clipRegion));
+            options.clipRegion = core_Util_Util.toSuperMapGeometry(
+                new external_ol_default.a.format.GeoJSON().writeGeometryObject(options.clipRegion)
+            );
             options.clipRegion = Util_Util.toJSON(ServerGeometry_ServerGeometry.fromGeometry(options.clipRegion));
-            layerUrl += "&clipRegionEnabled=" + options.clipRegionEnabled + "&clipRegion=" + JSON.stringify(options.clipRegion);
+            layerUrl +=
+                '&clipRegionEnabled=' + options.clipRegionEnabled + '&clipRegion=' + JSON.stringify(options.clipRegion);
         }
         if (!!options.overlapDisplayed && options.overlapDisplayedOptions) {
             options.overlapDisplayedOptions = options.overlapDisplayedOptions;
-            layerUrl += "&overlapDisplayed=" + options.overlapDisplayed + "&overlapDisplayedOptions=" + options.overlapDisplayedOptions.toString();
+            layerUrl +=
+                '&overlapDisplayed=' +
+                options.overlapDisplayed +
+                '&overlapDisplayedOptions=' +
+                options.overlapDisplayedOptions.toString();
         }
-        if (options.cacheEnabled === true && options.tileversion) {
-            layerUrl += "tileversion=" + options.tileversion;
+        if (cacheEnabled === true && options.tileversion) {
+            layerUrl += '&tileversion=' + options.tileversion;
         }
-
+        if (options.rasterfunction) {
+            layerUrl += '&rasterfunction=' + JSON.stringify(options.rasterfunction);
+        }
         super({
             attributions: options.attributions,
             cacheSize: options.cacheSize,
@@ -72205,13 +72444,44 @@ class ImageSuperMapRest_ImageSuperMapRest extends external_ol_default.a.source.T
          */
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!this.tileGrid) {
-                this.tileGrid = this.getTileGridForProjection(projection);
+                this.tileGrid = this.getTileGridForProjection && this.getTileGridForProjection(projection);
             }
-            var tileExtent = this.tileGrid.getTileCoordExtent(
-                tileCoord, this.tmpExtent_);
-            var tileSize = external_ol_default.a.size.toSize(
-                this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-            var url = encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
+            if (!this.tileGrid) {
+                if (options.extent) {
+                    this.tileGrid = ImageSuperMapRest_ImageSuperMapRest.createTileGrid(options.extent);
+                    if (this.resolutions) {
+                        this.tileGrid.resolutions = me.resolutions;
+                    }
+                } else {
+                    if (projection.getCode() === "EPSG:3857") {
+                        this.tileGrid = ImageSuperMapRest_ImageSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+                        this.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+                    }
+                    if (projection.getCode() === "EPSG:4326") {
+                        this.tileGrid = ImageSuperMapRest_ImageSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+                        this.extent = [-180, -90, 180, 90];
+                    }
+                }
+            }
+            var tileExtent = this.tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
+            var tileSize = external_ol_default.a.size.toSize(this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
+            var url = encodeURI(
+                layerUrl +
+                    '&width=' +
+                    tileSize[0] +
+                    '&height=' +
+                    tileSize[1] +
+                    '&viewBounds=' +
+                    '{"leftBottom" : {"x":' +
+                    tileExtent[0] +
+                    ',"y":' +
+                    tileExtent[1] +
+                    '},"rightTop" : {"x":' +
+                    tileExtent[2] +
+                    ',"y":' +
+                    tileExtent[3] +
+                    '}}'
+            );
 
             //支持代理
             if (me.tileProxy) {
@@ -72219,7 +72489,7 @@ class ImageSuperMapRest_ImageSuperMapRest extends external_ol_default.a.source.T
             }
             //不启用缓存时启用时间戳
             if (!me.cacheEnabled) {
-                url += "&_t=" + new Date().getTime();
+                url += '&_t=' + new Date().getTime();
             }
 
             return url;
@@ -72242,8 +72512,8 @@ class ImageSuperMapRest_ImageSuperMapRest extends external_ol_default.a.source.T
         function getResolutions() {
             var level = 17;
             var dpi = 96;
-            var width = (extent[2] - extent[0]);
-            var height = (extent[3] - extent[1]);
+            var width = extent[2] - extent[0];
+            var height = extent[3] - extent[1];
             var tileSize = width >= height ? width : height;
             var maxReolution;
             if (tileSize === width) {
@@ -72298,17 +72568,17 @@ class ImageSuperMapRest_ImageSuperMapRest extends external_ol_default.a.source.T
             tileSize: tileSize
         });
         return new external_ol_default.a.tilegrid.TileGrid({
-                extent: extent,
-                minZoom: minZoom,
-                origin: origin,
-                resolutions: tilegrid.getResolutions(),
-                tileSize: tilegrid.getTileSize()
-            }
-        );
+            extent: extent,
+            minZoom: minZoom,
+            origin: origin,
+            resolutions: tilegrid.getResolutions(),
+            tileSize: tilegrid.getTileSize()
+        });
     }
 }
 
 external_ol_default.a.source.ImageSuperMapRest = ImageSuperMapRest_ImageSuperMapRest;
+
 // CONCATENATED MODULE: ./src/openlayers/mapping/SuperMapCloud.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -72532,8 +72802,8 @@ external_ol_default.a.source.Tianditu = Tianditu_Tianditu;
  * @category iServer Map
  * @classdesc SuperMap iServer TileImage 图层源。
  * @param {Object} options - 参数。
- * @param {string} options.url - 服务地址。
- * @param {(ol.tilegrid.TileGrid|ol.tilegrid.TileGrid)} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
+ * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {ol.tilegrid.TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
  * @param {SuperMap.ServerType} [options.serverType=ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
@@ -72547,6 +72817,7 @@ external_ol_default.a.source.Tianditu = Tianditu_Tianditu;
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol.source.TileImage}
  */
 class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.TileImage {
@@ -72674,8 +72945,11 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
                 params["overlapDisplayed"] = true;
             }
 
-            if (options.cacheEnabled && options.tileversion) {
+            if (params.cacheEnabled && options.tileversion) {
                 params["tileversion"] = options.tileversion.toString();
+            }
+            if (options.rasterfunction) {
+                params["rasterfunction"] = JSON.stringify(options.rasterfunction);
             }
 
             return params;
@@ -89922,7 +90196,7 @@ module.exports = function(proj4){
 /* 70 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 71 */

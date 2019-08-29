@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from './SuperMap';
+import { SuperMap } from './SuperMap';
 import {
     DataFormat,
     ServerType,
@@ -59,7 +59,8 @@ import {
     OutputType,
     AggregationQueryBuilderType,
     AggregationType,
-    GetFeatureMode
+    GetFeatureMode,
+    RasterFunctionType
 } from './REST';
 import {
     Collection,
@@ -90,22 +91,10 @@ import {
     CommonUtil,
     GeometryVector
 } from './commontypes';
-import {
-    Format,
-    GeoJSON,
-    JSONFormat,
-    WKT
-} from './format';
+import { Format, GeoJSON, JSONFormat, WKT } from './format';
 
-import {
-    TimeControlBase,
-    TimeFlowControl
-} from './control';
-import {
-    IManager,
-    IManagerCreateNodeParam,
-    IManagerServiceBase
-} from './iManager';
+import { TimeControlBase, TimeFlowControl } from './control';
+import { IManager, IManagerCreateNodeParam, IManagerServiceBase } from './iManager';
 import {
     IPortal,
     IPortalMap,
@@ -333,7 +322,10 @@ import {
     UpdateTurnNodeWeightService,
     Vector,
     VectorClipJobsParameter,
-    VectorClipJobsService
+    VectorClipJobsService,
+    RasterFunctionParameter,
+    NDVIParameter,
+    HillshadeParameter
 } from './iServer';
 import {
     Online,
@@ -345,15 +337,8 @@ import {
     FilterField,
     OnlineServiceBase
 } from './online';
-import {
-    KeyServiceParameter,
-    SecurityManager,
-    ServerInfo,
-    TokenServiceParameter
-} from './security';
-import {
-    ElasticSearch
-} from './thirdparty';
+import { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter } from './security';
+import { ElasticSearch } from './thirdparty';
 import {
     setCORS,
     isCORS,
@@ -363,10 +348,7 @@ import {
     ColorsPickerUtil,
     ArrayStatistic
 } from './util';
-import {
-    CartoCSS,
-    ThemeStyle
-} from './style';
+import { CartoCSS, ThemeStyle } from './style';
 import {
     Bar,
     Bar3D,
@@ -391,7 +373,8 @@ import {
     FeatureTheme,
     LevelRenderer,
     Render,
-    Animation, Animator,
+    Animation,
+    Animator,
     Area,
     Clip,
     Color,
@@ -408,7 +391,8 @@ import {
     Log,
     Math,
     Matrix,
-    Painter, PaintLayer,
+    Painter,
+    PaintLayer,
     Shape,
     SmicBrokenLine,
     SmicCircle,
@@ -427,12 +411,11 @@ import {
     Util,
     LevelRendererVector,
     SUtil
-
 } from './overlay';
 import {
     FileTypes,
     FileConfig,
-    FileModel, 
+    FileModel,
     MessageBox,
     CommonContainer,
     DropDownBox,
@@ -448,11 +431,7 @@ import {
     ChartView,
     ChartViewModel
 } from './widgets';
-import {
-    Lang,
-    en,
-    zh
-} from './lang';
+import { Lang, en, zh } from './lang';
 
 export {
     FileTypes,
@@ -472,8 +451,8 @@ export {
     FileReaderUtil,
     ChartView,
     ChartViewModel
-}
-export {SuperMap};
+};
+export { SuperMap };
 export {
     DataFormat,
     ServerType,
@@ -531,7 +510,8 @@ export {
     OutputType,
     AggregationQueryBuilderType,
     AggregationType,
-    GetFeatureMode
+    GetFeatureMode,
+    RasterFunctionType
 };
 export {
     Collection,
@@ -562,38 +542,11 @@ export {
     CommonUtil,
     GeometryVector
 };
-export {
-    TimeControlBase,
-    TimeFlowControl
-};
-export {
-    Format,
-    GeoJSON,
-    JSONFormat,
-    WKT
-};
-export {
-    setCORS,
-    isCORS,
-    setRequestTimeout,
-    getRequestTimeout,
-    FetchRequest,
-    ColorsPickerUtil,
-    ArrayStatistic
-};
-export {
-    IManager,
-    IManagerCreateNodeParam,
-    IManagerServiceBase
-};
-export {
-    IPortal,
-    IPortalMap,
-    IPortalMapsQueryParam,
-    IPortalService,
-    IPortalServiceBase,
-    IPortalServicesQueryParam
-};
+export { TimeControlBase, TimeFlowControl };
+export { Format, GeoJSON, JSONFormat, WKT };
+export { setCORS, isCORS, setRequestTimeout, getRequestTimeout, FetchRequest, ColorsPickerUtil, ArrayStatistic };
+export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
+export { IPortal, IPortalMap, IPortalMapsQueryParam, IPortalService, IPortalServiceBase, IPortalServicesQueryParam };
 export {
     AddressMatchService,
     AggregationParameter,
@@ -813,7 +766,10 @@ export {
     UpdateTurnNodeWeightService,
     Vector,
     VectorClipJobsParameter,
-    VectorClipJobsService
+    VectorClipJobsService,
+    RasterFunctionParameter,
+    NDVIParameter,
+    HillshadeParameter
 };
 export {
     Online,
@@ -849,7 +805,8 @@ export {
     FeatureTheme,
     LevelRenderer,
     Render,
-    Animation, Animator,
+    Animation,
+    Animator,
     Area,
     Clip,
     Color,
@@ -866,7 +823,8 @@ export {
     Log,
     Math,
     Matrix,
-    Painter, PaintLayer,
+    Painter,
+    PaintLayer,
     Shape,
     SmicBrokenLine,
     SmicCircle,
@@ -886,21 +844,7 @@ export {
     LevelRendererVector,
     SUtil
 };
-export {
-    KeyServiceParameter,
-    SecurityManager,
-    ServerInfo,
-    TokenServiceParameter
-};
-export {
-    CartoCSS,
-    ThemeStyle
-};
-export {
-    ElasticSearch
-};
-export {
-    Lang,
-    en,
-    zh
-}
+export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter };
+export { CartoCSS, ThemeStyle };
+export { ElasticSearch };
+export { Lang, en, zh };
