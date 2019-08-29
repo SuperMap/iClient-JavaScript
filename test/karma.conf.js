@@ -75,6 +75,7 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            './tool/utils.js': ['browserify'],
             '../node_modules/whatwg-fetch-importable/whatwgFetch.js': ['browserify'],
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
             '../src/classic/libs/SuperMap_Basic-8.1.1-17226.js': ['browserify'],
