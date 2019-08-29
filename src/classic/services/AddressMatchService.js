@@ -13,6 +13,7 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class AddressMatchService extends CommonServiceBase {
 
@@ -30,6 +31,7 @@ export class AddressMatchService extends CommonServiceBase {
     code(params, callback) {
         var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
@@ -52,6 +54,7 @@ export class AddressMatchService extends CommonServiceBase {
     decode(params, callback) {
         var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,

@@ -14,6 +14,7 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @param {Object} params - 服务请求参数。
  * @param {boolean} [params.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [params.crossOrigin] - 请求是否携带 cookie。 * 
+ * @param {Object} [options.headers] - 请求头。
  */
 export class IPortalService extends IPortalServiceBase {
 
@@ -88,7 +89,7 @@ export class IPortalService extends IPortalServiceBase {
             thumbnail: this.thumbnail
         };
         var options = {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            headers: Object.assign({ 'Content-Type': 'application/x-www-form-urlencoded' }, this.headers || {})
         };
         return this.request("PUT", this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
     }

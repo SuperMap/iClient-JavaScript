@@ -17,6 +17,7 @@ import {SummaryMeshJobParameter} from './SummaryMeshJobParameter';
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class SummaryMeshJobsService extends ProcessingServiceBase {
 

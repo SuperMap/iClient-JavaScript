@@ -25,6 +25,14 @@ describe('GetFeaturesBySQLService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var getFeaturesBySQLService = new GetFeaturesBySQLService(dataServiceURL, { headers: myHeaders });
+        expect(getFeaturesBySQLService).not.toBeNull();
+        expect(getFeaturesBySQLService.headers).not.toBeNull();
+        getFeaturesBySQLService.destroy();
+    });
+    
     //不直接返回查询结果
     it('processAsync_returnContent:false', (done) => {
         var getFeaturesBySQLFailed = (serviceFailedEventArgs) => {

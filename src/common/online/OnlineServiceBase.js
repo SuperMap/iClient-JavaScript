@@ -13,6 +13,7 @@ import {FetchRequest} from '../util/FetchRequest';
  * @category iPortal/Online
  * @param {Object} options - 服务参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class OnlineServiceBase {
 
@@ -32,9 +33,11 @@ export class OnlineServiceBase {
      * @param {Object} [requestOptions] - http 请求参数, 比如请求头，超时时间等。
      * @returns {Promise}  返回包含请求结果的 Promise 对象。
      */
-    request(method, url, param, requestOptions) {
+    request(method, url, param, requestOptions = {}) {
         url = this.createCredentialUrl(url);
-        return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
+        requestOptions['crossOrigin'] = this.options.crossOrigin;
+        requestOptions['headers'] = this.options.headers;
+        return FetchRequest.commit(method, url, param, requestOptions).then(function(response) {
             return response.json();
         });
     }

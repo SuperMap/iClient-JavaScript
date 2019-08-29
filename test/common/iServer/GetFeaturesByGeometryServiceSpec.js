@@ -26,6 +26,14 @@ describe('GetFeaturesByGeometryService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var getFeaturesByGeometryService = new GetFeaturesByGeometryService(dataServiceURL, { headers: myHeaders });
+        expect(getFeaturesByGeometryService).not.toBeNull();
+        expect(getFeaturesByGeometryService.headers).not.toBeNull();
+        getFeaturesByGeometryService.destroy();
+    });
+
     //不直接返回查询结果
     it('processAsync_returnContent:false', (done) => {
         var point = new Point(112, 36);

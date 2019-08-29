@@ -21,6 +21,15 @@ describe('leaflet_AddressMatchService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var geoCodingService = addressMatchService(addressMatchURL, { headers: myHeaders });
+        expect(geoCodingService).not.toBeNull();
+        expect(geoCodingService.options).not.toBeNull();
+        expect(geoCodingService.options.headers).not.toBeNull();
+        geoCodingService.destroy();
+    });
+
     it('successEvent:code', (done) => {
         var geoCodingParams = new GeoCodingParameter({
             address: '公司',

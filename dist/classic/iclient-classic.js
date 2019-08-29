@@ -2660,6 +2660,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonServiceBase) {
     _inherits(ProcessingServiceBase, _CommonServiceBase);
@@ -2739,11 +2740,12 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                 parameterObject = new Object();
                 paramType.toObject(params, parameterObject);
             }
+            var headers = Object.assign({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }, me.headers || {});
             var options = {
                 proxy: me.proxy,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
+                headers: headers,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
                 isInTheSameDomain: me.isInTheSameDomain
@@ -2889,6 +2891,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var CommonServiceBase = exports.CommonServiceBase = function () {
     function CommonServiceBase(url, options) {
@@ -2952,6 +2955,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
 
         options = options || {};
         this.crossOrigin = options.crossOrigin;
+        this.headers = options.headers;
         _Util.Util.extend(this, options);
 
         me.isInTheSameDomain = _Util.Util.isInTheSameDomain(me.url);
@@ -3010,7 +3014,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
          * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
          * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
          * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
-         * 
+         * @param {Object} [options.headers] - 请求头。
          */
 
     }, {
@@ -3021,6 +3025,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
             options.proxy = options.proxy || me.proxy;
             options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
             options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
+            options.headers = options.headers || me.headers;
             options.isInTheSameDomain = me.isInTheSameDomain;
             //为url添加安全认证信息片段
             var credential = this.getCredential(options.url);
@@ -7315,6 +7320,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url - 汇总统计分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryAttributesJobsService, _ProcessingServiceBas);
@@ -7421,6 +7427,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url - 拓扑检查分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = function (_ProcessingServiceBas) {
     _inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
@@ -7527,6 +7534,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_ProcessingServiceBas) {
     _inherits(BuffersAnalystJobsService, _ProcessingServiceBas);
@@ -7637,6 +7645,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_ProcessingServiceBas) {
     _inherits(OverlayGeoJobsService, _ProcessingServiceBas);
@@ -7889,6 +7898,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url -矢量裁剪分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var VectorClipJobsService = exports.VectorClipJobsService = function (_ProcessingServiceBas) {
     _inherits(VectorClipJobsService, _ProcessingServiceBas);
@@ -7995,6 +8005,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url - 区域汇总分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryRegionJobsService, _ProcessingServiceBas);
@@ -8105,6 +8116,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryMeshJobsService, _ProcessingServiceBas);
@@ -8211,6 +8223,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url - 单对象空间查询分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     _inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
@@ -8317,6 +8330,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url -核密度分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var KernelDensityJobsService = exports.KernelDensityJobsService = function (_ProcessingServiceBas) {
     _inherits(KernelDensityJobsService, _ProcessingServiceBas);
@@ -8446,6 +8460,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url - 分布式分析服务地址。
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var ProcessingService = exports.ProcessingService = function (_CommonServiceBase) {
     _inherits(ProcessingService, _CommonServiceBase);
@@ -8481,6 +8496,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _KernelDensityJobsService.KernelDensityJobsService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -8509,6 +8525,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _KernelDensityJobsService.KernelDensityJobsService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -8538,6 +8555,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _KernelDensityJobsService.KernelDensityJobsService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -8580,6 +8598,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _SummaryMeshJobsService.SummaryMeshJobsService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -8608,6 +8627,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _SummaryMeshJobsService.SummaryMeshJobsService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -8637,6 +8657,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _SummaryMeshJobsService.SummaryMeshJobsService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -8679,6 +8700,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _SingleObjectQueryJobsService.SingleObjectQueryJobsService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -8707,6 +8729,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _SingleObjectQueryJobsService.SingleObjectQueryJobsService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -8737,6 +8760,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _SingleObjectQueryJobsService.SingleObjectQueryJobsService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -8780,6 +8804,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _SummaryRegionJobsService.SummaryRegionJobsService(me.url, {
                 proxy: me.proxy,
+                headers: me.headers,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
                 serverType: me.serverType,
@@ -8810,6 +8835,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -8839,6 +8865,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -8881,6 +8908,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -8909,6 +8937,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -8939,6 +8968,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -8982,6 +9012,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9010,6 +9041,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9039,6 +9071,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9082,6 +9115,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9110,6 +9144,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9139,6 +9174,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9182,6 +9218,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9210,6 +9247,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9239,6 +9277,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9282,6 +9321,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9310,6 +9350,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9339,6 +9380,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
+                headers: me.headers,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9452,6 +9494,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var AddressMatchService = exports.AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
@@ -9519,7 +9562,11 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         key: 'processAsync',
         value: function processAsync(url, params) {
             var me = this;
-            _FetchRequest.FetchRequest.get(url, params, { crossOrigin: me.crossOrigin, proxy: me.proxy }).then(function (response) {
+            var headers = this.headers,
+                crossOrigin = this.crossOrigin,
+                proxy = this.proxy;
+
+            _FetchRequest.FetchRequest.get(url, params, { headers: headers, crossOrigin: crossOrigin, proxy: proxy }).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 if (result) {
@@ -10157,6 +10204,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 var AddressMatchService = exports.AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
@@ -10183,6 +10231,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         value: function code(params, callback) {
             var me = this;
             var addressMatchService = new _AddressMatchService.AddressMatchService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,
@@ -10208,6 +10257,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         value: function decode(params, callback) {
             var me = this;
             var addressMatchService = new _AddressMatchService.AddressMatchService(me.url, {
+                headers: me.headers,
                 proxy: me.proxy,
                 withCredentials: me.withCredentials,
                 crossOrigin: me.crossOrigin,

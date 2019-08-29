@@ -19,6 +19,15 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var getFeaturesBySQLService = featureService(dataServiceURL, { headers: myHeaders });
+        expect(getFeaturesBySQLService).not.toBeNull();
+        expect(getFeaturesBySQLService.options).not.toBeNull();
+        expect(getFeaturesBySQLService.options.headers).not.toBeNull();
+        getFeaturesBySQLService.destroy();
+    });
+
     it('successEvent:getFeaturesBySQL_returnContent=true', (done) => {
         var getFeaturesBySQLParams = new GetFeaturesBySQLParameters({
             returnContent: true,

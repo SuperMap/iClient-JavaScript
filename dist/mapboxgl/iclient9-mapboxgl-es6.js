@@ -12570,6 +12570,7 @@ SuperMap.SecurityManager = SecurityManager_SecurityManager;
  * @param {string} url - iManager 首页地址，如：http://localhost:8390/imanager。
  * @param {Object} options - 服务参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class iManagerServiceBase_IManagerServiceBase {
 
@@ -12603,6 +12604,7 @@ class iManagerServiceBase_IManagerServiceBase {
             requestOptions['withCredentials'] = true;
         }
         requestOptions['crossOrigin'] = this.options.crossOrigin;
+        requestOptions['headers'] = this.options.headers;
         var token = SecurityManager_SecurityManager.imanagerToken;
         if (token) {
             if (!requestOptions.headers) {
@@ -12862,6 +12864,7 @@ SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class iPortalServiceBase_IPortalServiceBase {
 
@@ -12872,6 +12875,7 @@ class iPortalServiceBase_IPortalServiceBase {
         this.CLASS_NAME = "SuperMap.iPortalServiceBase";
         this.withCredentials = options.withCredentials || false;
         this.crossOrigin = options.crossOrigin
+        this.headers = options.headers
     }
 
     /**
@@ -12884,7 +12888,7 @@ class iPortalServiceBase_IPortalServiceBase {
      * @returns {Promise} 返回包含请求结果的 Promise 对象。
      */
 
-    request(method, url, param, requestOptions = {crossOrigin: this.crossOrigin, withCredentials: this.withCredentials }) {
+    request(method, url, param, requestOptions = {headers: this.headers, crossOrigin: this.crossOrigin, withCredentials: this.withCredentials }) {
         url = this.createCredentialUrl(url);
         return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
@@ -12968,6 +12972,7 @@ SuperMap.iPortalServiceBase = iPortalServiceBase_IPortalServiceBase;
  * @param {Object} params - 服务请求参数。
  * @param {boolean} [params.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [params.crossOrigin] - 请求是否携带 cookie。 * 
+ * @param {Object} [options.headers] - 请求头。
  */
 class iPortalService_IPortalService extends iPortalServiceBase_IPortalServiceBase {
 
@@ -13042,7 +13047,7 @@ class iPortalService_IPortalService extends iPortalServiceBase_IPortalServiceBas
             thumbnail: this.thumbnail
         };
         var options = {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            headers: Object.assign({ 'Content-Type': 'application/x-www-form-urlencoded' }, this.headers || {})
         };
         return this.request("PUT", this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
     }
@@ -13302,6 +13307,7 @@ SuperMap.iPortal = iPortal_IPortal;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class CommonServiceBase_CommonServiceBase {
 
@@ -13366,6 +13372,7 @@ class CommonServiceBase_CommonServiceBase {
 
         options = options || {};
         this.crossOrigin = options.crossOrigin;
+        this.headers = options.headers;
         Util_Util.extend(this, options);
 
         me.isInTheSameDomain = Util_Util.isInTheSameDomain(me.url);
@@ -13420,7 +13427,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
      * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
      * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
-     * 
+     * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
         let me = this;
@@ -13428,6 +13435,7 @@ class CommonServiceBase_CommonServiceBase {
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
         options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
+        options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
         //为url添加安全认证信息片段
         let credential = this.getCredential(options.url);
@@ -13870,6 +13878,7 @@ SuperMap.GeoDecodingParameter = GeoDecodingParameter_GeoDecodingParameter;
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
 
@@ -13920,7 +13929,8 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 
     processAsync(url, params) {
         var me = this;
-        FetchRequest_FetchRequest.get(url, params,{crossOrigin:me.crossOrigin, proxy: me.proxy}).then(function (response) {
+        let { headers, crossOrigin, proxy } = this;
+        FetchRequest_FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -14240,6 +14250,7 @@ SuperMap.AreaSolarRadiationParameters = AreaSolarRadiationParameters_AreaSolarRa
  * @param {string} url - 地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.CommonServiceBase}
  */
 class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServiceBase {
@@ -14344,6 +14355,7 @@ SuperMap.SpatialAnalystBase = SpatialAnalystBase_SpatialAnalystBase;
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -15420,6 +15432,7 @@ SuperMap.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters_Geome
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -15810,6 +15823,7 @@ SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalys
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_CommonServiceBase {
 
@@ -15874,13 +15888,14 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
             parameterObject = new Object();
             paramType.toObject(params, parameterObject);
         }
+        let headers = Object.assign({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }, me.headers || {})
         var options = {
             proxy: me.proxy,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
+            headers,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             isInTheSameDomain: me.isInTheSameDomain
         };
         FetchRequest_FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
@@ -15971,6 +15986,7 @@ SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class BuffersAnalystJobsService_BuffersAnalystJobsService extends ProcessingServiceBase_ProcessingServiceBase {
     constructor(url, options) {
@@ -16102,6 +16118,7 @@ SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters_BurstPi
  * @param {string} url - 网络分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceBase_CommonServiceBase {
 
@@ -16173,6 +16190,7 @@ SuperMap.NetworkAnalystServiceBase = NetworkAnalystServiceBase_NetworkAnalystSer
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class BurstPipelineAnalystService_BurstPipelineAnalystService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -16257,6 +16275,7 @@ SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService_BurstPipeline
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class ChartFeatureInfoSpecsService_ChartFeatureInfoSpecsService extends CommonServiceBase_CommonServiceBase {
 
@@ -16679,6 +16698,7 @@ SuperMap.QueryParameters = QueryParameters_QueryParameters;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * 下面示例显示了如何进行海图属性查询：
  * var nameArray = ["GB4X0000_52000"];
@@ -17278,6 +17298,7 @@ SuperMap.ComputeWeightMatrixParameters = ComputeWeightMatrixParameters_ComputeWe
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class ComputeWeightMatrixService_ComputeWeightMatrixService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -17374,6 +17395,7 @@ SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService_ComputeWeightMa
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - -排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBase {
 
@@ -18528,6 +18550,7 @@ SuperMap.DensityKernelAnalystParameters = DensityKernelAnalystParameters_Density
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example  例如：
  *  var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
@@ -18744,6 +18767,7 @@ SuperMap.EditFeaturesParameters = EditFeaturesParameters_EditFeaturesParameters;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} [format] -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
  *     "processCompleted": editFeatureCompleted,
@@ -18984,6 +19008,7 @@ SuperMap.FacilityAnalystSinks3DParameters = FacilityAnalystSinks3DParameters_Fac
  * @param {Object} options - 参数。<br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FacilityAnalystSinks3DService_FacilityAnalystSinks3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19097,6 +19122,7 @@ SuperMap.FacilityAnalystSources3DParameters = FacilityAnalystSources3DParameters
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FacilityAnalystSources3DService_FacilityAnalystSources3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19238,6 +19264,7 @@ SuperMap.FacilityAnalystStreamParameters = FacilityAnalystStreamParameters_Facil
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FacilityAnalystStreamService_FacilityAnalystStreamService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -19366,6 +19393,7 @@ SuperMap.FacilityAnalystTracedown3DParameters = FacilityAnalystTracedown3DParame
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FacilityAnalystTracedown3DService_FacilityAnalystTracedown3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19470,6 +19498,7 @@ SuperMap.FacilityAnalystTraceup3DParameters = FacilityAnalystTraceup3DParameters
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FacilityAnalystTraceup3DService_FacilityAnalystTraceup3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19589,6 +19618,7 @@ SuperMap.FacilityAnalystUpstream3DParameters = FacilityAnalystUpstream3DParamete
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FacilityAnalystUpstream3DService_FacilityAnalystUpstream3DService extends CommonServiceBase_CommonServiceBase {
 
@@ -19815,6 +19845,7 @@ SuperMap.FieldStatisticsParameters = FieldStatisticsParameters_FieldStatisticsPa
  * @param {string} options.field - 查询统计的目标字段名称。
  * @param {SuperMap.StatisticMode} options.statisticMode - 字段查询统计的方法类型。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * var myService = new SuperMap.FieldStatisticService(url, {eventListeners: {
  *     "processCompleted": fieldStatisticCompleted,
@@ -20034,6 +20065,7 @@ SuperMap.FindClosestFacilitiesParameters = FindClosestFacilitiesParameters_FindC
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FindClosestFacilitiesService_FindClosestFacilitiesService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -20267,6 +20299,7 @@ SuperMap.FindLocationParameters = FindLocationParameters_FindLocationParameters;
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FindLocationService_FindLocationService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -20476,6 +20509,7 @@ SuperMap.FindMTSPPathsParameters = FindMTSPPathsParameters_FindMTSPPathsParamete
  * @param {Object} options - 互服务时所需可选参数。如：
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FindMTSPPathsService_FindMTSPPathsService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -20698,6 +20732,7 @@ SuperMap.FindPathParameters = FindPathParameters_FindPathParameters;
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FindPathService_FindPathService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -20931,6 +20966,7 @@ SuperMap.FindServiceAreasParameters = FindServiceAreasParameters_FindServiceArea
  * @param {Object} options - 互服务时所需可选参数。如：
  * @param {Object} options.eventListeners - 需要被注册的监听器对象
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FindServiceAreasService_FindServiceAreasService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -21148,6 +21184,7 @@ SuperMap.FindTSPPathsParameters = FindTSPPathsParameters_FindTSPPathsParameters;
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class FindTSPPathsService_FindTSPPathsService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -21408,6 +21445,7 @@ SuperMap.GenerateSpatialDataParameters = GenerateSpatialDataParameters_GenerateS
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 实例化该类如下例所示：
  * (start code)
@@ -21998,6 +22036,7 @@ SuperMap.GeoRelationAnalystParameters = GeoRelationAnalystParameters_GeoRelation
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 实例化该类如下例所示：
  * (start code)
@@ -22329,6 +22368,7 @@ SuperMap.GetFeaturesByBoundsParameters = GetFeaturesByBoundsParameters_GetFeatur
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * var myService = new SuperMap.GetFeaturesServiceBase(url, {
  *     eventListeners: {
@@ -22488,6 +22528,7 @@ SuperMap.GetFeaturesServiceBase = GetFeaturesServiceBase_GetFeaturesServiceBase;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * var myGetFeaturesByBoundsService = new SuperMa.GetFeaturesByBoundsService(url, {
  *     eventListeners: {
@@ -22668,6 +22709,7 @@ SuperMap.GetFeaturesByBufferParameters = GetFeaturesByBufferParameters_GetFeatur
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.GetFeaturesServiceBase}
  * @example
  * var myGetFeaturesByBufferService = new SuperMap.GetFeaturesByBufferService(url, {
@@ -22862,6 +22904,7 @@ SuperMap.GetFeaturesByGeometryParameters = GetFeaturesByGeometryParameters_GetFe
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.GetFeaturesServiceBase}
  * @example
  * var myService = new SuperMap.GetFeaturesByGeometryService(url, {
@@ -23016,6 +23059,7 @@ SuperMap.GetFeaturesByIDsParameters = GetFeaturesByIDsParameters_GetFeaturesByID
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.GetFeaturesServiceBase}
  * @example
  * var myGetFeaturesByIDsService = new SuperMap.GetFeaturesByIDsService(url, {
@@ -23160,6 +23204,7 @@ SuperMap.GetFeaturesBySQLParameters = GetFeaturesBySQLParameters_GetFeaturesBySQ
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.GetFeaturesServiceBase}
  * @example
  * var myGetFeaturesBySQLService = new SuperMap.GetFeaturesBySQLService(url, {
@@ -23222,6 +23267,7 @@ SuperMap.GetFeaturesBySQLService = GetFeaturesBySQLService_GetFeaturesBySQLServi
  * @param {string}options.datasource - 要查询的数据集所在的数据源名称。</br>
  * @param {string}options.dataset - 要查询的数据集名称。</br>
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myService = new SuperMap.GetFieldsService(url, {eventListeners: {
@@ -23376,6 +23422,7 @@ SuperMap.GetGridCellInfosParameters = GetGridCellInfosParameters_GetGridCellInfo
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
@@ -27474,6 +27521,7 @@ SuperMap.Vector = iServer_Vector_Vector;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
  */
 class GetLayersInfoService_GetLayersInfoService extends CommonServiceBase_CommonServiceBase {
@@ -28292,6 +28340,7 @@ SuperMap.InterpolationKrigingAnalystParameters = InterpolationKrigingAnalystPara
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -28572,6 +28621,7 @@ SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobP
  * @param {string} url -核密度分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class KernelDensityJobsService_KernelDensityJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -28991,6 +29041,7 @@ SuperMap.LayerStatus = LayerStatus_LayerStatus;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class MapService_MapService extends CommonServiceBase_CommonServiceBase {
 
@@ -29233,6 +29284,7 @@ SuperMap.MathExpressionAnalysisParameters = MathExpressionAnalysisParameters_Mat
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -29397,6 +29449,7 @@ SuperMap.MeasureParameters = MeasureParameters_MeasureParameters;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {MeasureMode} options.measureMode - 量算模式，包括距离量算模式和面积量算模式。
  */
 class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase {
@@ -29506,6 +29559,7 @@ SuperMap.MeasureService = MeasureService_MeasureService;
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * (start code)
@@ -29730,6 +29784,7 @@ SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class OverlayGeoJobsService_OverlayGeoJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -29866,6 +29921,7 @@ SuperMap.QueryByBoundsParameters = QueryByBoundsParameters_QueryByBoundsParamete
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * var myService = new SuperMap.QueryService(url, {
  *     eventListeners: {
@@ -30053,6 +30109,7 @@ SuperMap.QueryService = QueryService_QueryService;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class QueryByBoundsService_QueryByBoundsService extends QueryService_QueryService {
 
@@ -30226,6 +30283,7 @@ SuperMap.QueryByDistanceParameters = QueryByDistanceParameters_QueryByDistancePa
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class QueryByDistanceService_QueryByDistanceService extends QueryService_QueryService {
 
@@ -30381,6 +30439,7 @@ SuperMap.QueryByGeometryParameters = QueryByGeometryParameters_QueryByGeometryPa
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class QueryByGeometryService_QueryByGeometryService extends QueryService_QueryService {
 
@@ -30524,6 +30583,7 @@ SuperMap.QueryBySQLParameters = QueryBySQLParameters_QueryBySQLParameters;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class QueryBySQLService_QueryBySQLService extends QueryService_QueryService {
 
@@ -30662,6 +30722,7 @@ SuperMap.RouteCalculateMeasureParameters = RouteCalculateMeasureParameters_Route
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example 实例化该类如下例所示：
  * (start code)
  * var parameters = new SuperMap.RouteCalculateMeasureParameters({
@@ -30919,6 +30980,7 @@ SuperMap.RouteLocatorParameters = RouteLocatorParameters_RouteLocatorParameters;
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example 实例化该类如下例所示：
  * (start code)
  * var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
@@ -31220,6 +31282,7 @@ SuperMap.SetLayerInfoParameters = SetLayerInfoParameters_SetLayerInfoParameters;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SetLayerInfoService_SetLayerInfoService extends CommonServiceBase_CommonServiceBase {
 
@@ -31350,6 +31413,7 @@ SuperMap.SetLayersInfoParameters = SetLayersInfoParameters_SetLayersInfoParamete
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SetLayersInfoService_SetLayersInfoService extends CommonServiceBase_CommonServiceBase {
 
@@ -31562,6 +31626,7 @@ SuperMap.SetLayerStatusParameters = SetLayerStatusParameters_SetLayerStatusParam
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_CommonServiceBase {
 
@@ -31825,6 +31890,7 @@ SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleO
  * @param {string} url - 单对象空间查询分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SingleObjectQueryJobsService_SingleObjectQueryJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -31938,6 +32004,7 @@ SuperMap.StopQueryParameters = StopQueryParameters_StopQueryParameters;
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example 例如：
  * (start code)
  * var myService = new SuperMap.StopQueryService(url, {eventListeners: {
@@ -32123,6 +32190,7 @@ SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_Summary
  * @param {string} url - 汇总统计分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SummaryAttributesJobsService_SummaryAttributesJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -32362,6 +32430,7 @@ SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParamet
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SummaryMeshJobsService_SummaryMeshJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -32638,6 +32707,7 @@ SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobP
  * @param {string} url - 区域汇总分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SummaryRegionJobsService_SummaryRegionJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -32795,6 +32865,7 @@ SuperMap.SupplyCenter = SupplyCenter_SupplyCenter;
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -32994,6 +33065,7 @@ SuperMap.TerrainCurvatureCalculationParameters = TerrainCurvatureCalculationPara
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example 例如：
  * (start code)
  * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
@@ -33752,6 +33824,7 @@ SuperMap.ThemeParameters = ThemeParameters_ThemeParameters;
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class ThemeService_ThemeService extends CommonServiceBase_CommonServiceBase {
 
@@ -33890,6 +33963,7 @@ SuperMap.ThemeService = ThemeService_ThemeService;
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
@@ -33987,6 +34061,7 @@ SuperMap.ThiessenAnalystService = ThiessenAnalystService_ThiessenAnalystService;
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  * var myOverlayAnalystService = new SuperMap.REST.GeometryBatchAnalystService(url, {
  *     eventListeners: {
@@ -34124,6 +34199,7 @@ SuperMap.GeometryBatchAnalystService = GeometryBatchAnalystService_GeometryBatch
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。 
  * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class TilesetsService_TilesetsService extends CommonServiceBase_CommonServiceBase {
 
@@ -34295,6 +34371,7 @@ SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter_Topolog
  * @param {string} url - 拓扑检查分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class TopologyValidatorJobsService_TopologyValidatorJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -34551,6 +34628,7 @@ SuperMap.TransferPathParameters = TransferPathParameters_TransferPathParameters;
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class TransferPathService_TransferPathService extends CommonServiceBase_CommonServiceBase {
 
@@ -34752,6 +34830,7 @@ SuperMap.TransferSolutionParameters = TransferSolutionParameters_TransferSolutio
  * @param {Object} options - 参数。</br>
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * (start code)
@@ -34933,6 +35012,7 @@ SuperMap.UpdateEdgeWeightParameters = UpdateEdgeWeightParameters_UpdateEdgeWeigh
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class UpdateEdgeWeightService_UpdateEdgeWeightService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -35118,6 +35198,7 @@ SuperMap.UpdateTurnNodeWeightParameters = UpdateTurnNodeWeightParameters_UpdateT
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class UpdateTurnNodeWeightService_UpdateTurnNodeWeightService extends NetworkAnalystServiceBase_NetworkAnalystServiceBase {
 
@@ -35339,6 +35420,7 @@ SuperMap.VectorClipJobsParameter = VectorClipJobsParameter_VectorClipJobsParamet
  * @param {string} url -矢量裁剪分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -35984,6 +36066,7 @@ var OnlineResources_FilterField = SuperMap.FilterField = {
  * @category iPortal/Online
  * @param {Object} options - 服务参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class OnlineServiceBase_OnlineServiceBase {
 
@@ -36003,9 +36086,11 @@ class OnlineServiceBase_OnlineServiceBase {
      * @param {Object} [requestOptions] - http 请求参数, 比如请求头，超时时间等。
      * @returns {Promise}  返回包含请求结果的 Promise 对象。
      */
-    request(method, url, param, requestOptions) {
+    request(method, url, param, requestOptions = {}) {
         url = this.createCredentialUrl(url);
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
+        requestOptions['crossOrigin'] = this.options.crossOrigin;
+        requestOptions['headers'] = this.options.headers;
+        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function(response) {
             return response.json();
         });
     }
@@ -36057,7 +36142,9 @@ SuperMap.OnlineServiceBase = OnlineServiceBase_OnlineServiceBase;
  * @classdesc Online myData 服务。
  * @category iPortal/Online
  * @param {string} serviceRootUrl - 服务根地址。
- * @param {Object} options - 服务相关参数。
+ * @param {Object} options - 服务相关参数。 
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class OnlineData_OnlineData extends OnlineServiceBase_OnlineServiceBase {
 
@@ -72674,6 +72761,7 @@ external_mapboxgl_default.a.supermap.map.setPaintProperty = MapExtend_setPaintPr
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @fires mapboxgl.supermap.ServiceBase#initialized
  */
 class ServiceBase_ServiceBase extends external_mapboxgl_default.a.Evented {
@@ -72716,6 +72804,7 @@ external_mapboxgl_default.a.supermap.ServiceBase = ServiceBase_ServiceBase;
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {Object} [options.headers] - 请求头。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
 class services_AddressMatchService_AddressMatchService extends ServiceBase_ServiceBase {
@@ -72735,6 +72824,7 @@ class services_AddressMatchService_AddressMatchService extends ServiceBase_Servi
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -72757,6 +72847,7 @@ class services_AddressMatchService_AddressMatchService extends ServiceBase_Servi
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -72795,6 +72886,7 @@ external_mapboxgl_default.a.supermap.AddressMatchService = services_AddressMatch
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class ChartService_ChartService extends ServiceBase_ServiceBase {
@@ -72817,6 +72909,7 @@ class ChartService_ChartService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -72841,6 +72934,7 @@ class ChartService_ChartService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -72913,6 +73007,7 @@ external_mapboxgl_default.a.supermap.ChartService = ChartService_ChartService;
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketConnected
  * @fires mapboxgl.supermap.DataFlowService#broadcastSocketError
  * @fires mapboxgl.supermap.DataFlowService#broadcastFailed
@@ -73086,6 +73181,7 @@ external_mapboxgl_default.a.supermap.DataFlowService = services_DataFlowService_
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class FeatureService_FeatureService extends ServiceBase_ServiceBase {
@@ -73106,6 +73202,7 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73129,6 +73226,7 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73152,6 +73250,7 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73175,6 +73274,7 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73199,6 +73299,7 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73229,6 +73330,7 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73332,6 +73434,7 @@ external_mapboxgl_default.a.supermap.FeatureService = FeatureService_FeatureServ
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @extends {mapboxgl.supermap.ServiceBase}
  */
@@ -73352,6 +73455,7 @@ class FieldService_FieldService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73397,7 +73501,9 @@ class FieldService_FieldService extends ServiceBase_ServiceBase {
             datasource: datasource,
             dataset: dataset,
             field: fieldName,
-            statisticMode: statisticMode
+            statisticMode: statisticMode,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers
         });
         statisticService.processAsync();
     }
@@ -73450,6 +73556,7 @@ external_mapboxgl_default.a.supermap.FieldService = FieldService_FieldService;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class GridCellInfosService_GridCellInfosService extends ServiceBase_ServiceBase {
@@ -73472,6 +73579,7 @@ class GridCellInfosService_GridCellInfosService extends ServiceBase_ServiceBase 
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73508,6 +73616,7 @@ external_mapboxgl_default.a.supermap.GridCellInfosService = GridCellInfosService
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class LayerInfoService_LayerInfoService extends ServiceBase_ServiceBase {
@@ -73528,6 +73637,7 @@ class LayerInfoService_LayerInfoService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73560,6 +73670,7 @@ class LayerInfoService_LayerInfoService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73590,6 +73701,7 @@ class LayerInfoService_LayerInfoService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73616,6 +73728,7 @@ class LayerInfoService_LayerInfoService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -73646,6 +73759,7 @@ external_mapboxgl_default.a.supermap.LayerInfoService = LayerInfoService_LayerIn
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @example
  * new mapboxgl.supermap.MapService(url)
@@ -73671,6 +73785,7 @@ class services_MapService_MapService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73693,6 +73808,7 @@ class services_MapService_MapService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73724,6 +73840,7 @@ external_mapboxgl_default.a.supermap.MapService = services_MapService_MapService
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {SuperMap.MeasureMode} [options.measureMode=SuperMap.MeasureMode.DISTANCE] - 量算模式，包括距离量算模式和面积量算模式。
  */
@@ -73767,6 +73884,7 @@ class services_MeasureService_MeasureService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             measureMode: type,
             eventListeners: {
@@ -73817,6 +73935,7 @@ external_mapboxgl_default.a.supermap.MeasureService = services_MeasureService_Me
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBase {
@@ -73837,6 +73956,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73859,6 +73979,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73882,6 +74003,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73906,6 +74028,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73930,6 +74053,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73954,6 +74078,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -73978,6 +74103,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74002,6 +74128,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74026,6 +74153,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74049,6 +74177,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74071,6 +74200,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74186,6 +74316,7 @@ external_mapboxgl_default.a.supermap.NetworkAnalystService = NetworkAnalystServi
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class NetworkAnalyst3DService_NetworkAnalyst3DService extends ServiceBase_ServiceBase {
@@ -74207,6 +74338,7 @@ class NetworkAnalyst3DService_NetworkAnalyst3DService extends ServiceBase_Servic
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74230,6 +74362,7 @@ class NetworkAnalyst3DService_NetworkAnalyst3DService extends ServiceBase_Servic
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74254,6 +74387,7 @@ class NetworkAnalyst3DService_NetworkAnalyst3DService extends ServiceBase_Servic
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74277,6 +74411,7 @@ class NetworkAnalyst3DService_NetworkAnalyst3DService extends ServiceBase_Servic
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74300,6 +74435,7 @@ class NetworkAnalyst3DService_NetworkAnalyst3DService extends ServiceBase_Servic
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74337,6 +74473,7 @@ external_mapboxgl_default.a.supermap.NetworkAnalyst3DService = NetworkAnalyst3DS
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
@@ -74367,6 +74504,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74392,6 +74530,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74419,6 +74558,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74455,6 +74595,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74480,6 +74621,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74507,6 +74649,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74544,6 +74687,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74568,6 +74712,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74595,6 +74740,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74631,6 +74777,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74656,6 +74803,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74683,6 +74831,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74719,6 +74868,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74745,6 +74895,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74772,6 +74923,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74809,6 +74961,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74834,6 +74987,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74861,6 +75015,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74898,6 +75053,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74923,6 +75079,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74950,6 +75107,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -74987,6 +75145,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -75012,6 +75171,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -75039,6 +75199,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -75076,6 +75237,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -75101,6 +75263,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -75128,6 +75291,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
             withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -75198,6 +75362,7 @@ external_mapboxgl_default.a.supermap.ProcessingService = ProcessingService_Proce
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @example
  * new mapboxgl.supermap.QueryService(url)
@@ -75223,6 +75388,7 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75249,6 +75415,7 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75274,6 +75441,7 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75299,6 +75467,7 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75385,6 +75554,7 @@ external_mapboxgl_default.a.supermap.QueryService = services_QueryService_QueryS
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBase {
@@ -75406,6 +75576,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75430,6 +75601,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75454,6 +75626,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75478,6 +75651,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75502,6 +75676,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75526,6 +75701,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75550,6 +75726,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75574,6 +75751,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75598,6 +75776,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75622,6 +75801,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75646,6 +75826,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75670,6 +75851,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75694,6 +75876,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75883,6 +76066,7 @@ external_mapboxgl_default.a.supermap.SpatialAnalystService = SpatialAnalystServi
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class services_ThemeService_ThemeService extends ServiceBase_ServiceBase {
@@ -75903,6 +76087,7 @@ class services_ThemeService_ThemeService extends ServiceBase_ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75940,6 +76125,7 @@ external_mapboxgl_default.a.supermap.ThemeService = services_ThemeService_ThemeS
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  */
 class TrafficTransferAnalystService_TrafficTransferAnalystService extends ServiceBase_ServiceBase {
@@ -75960,6 +76146,7 @@ class TrafficTransferAnalystService_TrafficTransferAnalystService extends Servic
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -75982,6 +76169,7 @@ class TrafficTransferAnalystService_TrafficTransferAnalystService extends Servic
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -76004,6 +76192,7 @@ class TrafficTransferAnalystService_TrafficTransferAnalystService extends Servic
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

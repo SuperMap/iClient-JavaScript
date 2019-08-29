@@ -28,6 +28,14 @@ describe('AddressMatchService', () => {
         expect(addressMatchService.url).toBeNull();
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var addressMatchService = new AddressMatchService(addressMatchURL_code, { headers: myHeaders });
+        expect(addressMatchService).not.toBeNull();
+        expect(addressMatchService.headers).not.toBeNull();
+        addressMatchService.destroy();
+    });
+
     it('code', (done) => {
         var codingFailedEventArgs = null, codingSuccessEventArgs = null;
         var codeFailed = (serviceFailedEventArgs) => {

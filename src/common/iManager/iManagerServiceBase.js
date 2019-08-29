@@ -12,6 +12,7 @@ import {FetchRequest} from '../util/FetchRequest';
  * @param {string} url - iManager 首页地址，如：http://localhost:8390/imanager。
  * @param {Object} options - 服务参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class IManagerServiceBase {
 
@@ -45,6 +46,7 @@ export class IManagerServiceBase {
             requestOptions['withCredentials'] = true;
         }
         requestOptions['crossOrigin'] = this.options.crossOrigin;
+        requestOptions['headers'] = this.options.headers;
         var token = SecurityManager.imanagerToken;
         if (token) {
             if (!requestOptions.headers) {

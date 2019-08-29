@@ -10622,8 +10622,7 @@ body {
   text-align: center;
   font-size: 22px;
   vertical-align: middle; }
-  .sm-component-measure__modeIcon .sm-components-icons-polygon-layer,
-  .sm-component-measure__modeIcon .sm-components-icons-line-layer {
+  .sm-component-measure__modeIcon i {
     cursor: pointer;
     font-size: 14px; }
 
@@ -10866,10 +10865,11 @@ body {
   height: 36px;
   line-height: 36px;
   text-align: center;
-  font-size: 22px;
   cursor: pointer; }
   .sm-component-draw__draw-item:hover {
     color: var(--icon-color--hover); }
+  .sm-component-draw__draw-item i {
+    font-size: 14px; }
 
 .sm-component-draw__draw-active {
   color: var(--icon-color--hover); }
@@ -11218,6 +11218,54 @@ body {
   height: 200px;
   /* 去除阴影效果 */
   box-shadow: none; }
+
+.sm-component-text-list {
+  width: 500px;
+  height: 300px;
+  overflow: hidden;
+  background-color: transparent;
+  position: relative; }
+  .sm-component-text-list > .ant-spin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.8); }
+  .sm-component-text-list__header {
+    color: #fff; }
+  .sm-component-text-list__header-content {
+    display: flex; }
+    .sm-component-text-list__header-content > div {
+      text-align: center;
+      flex: 1;
+      font-family: 'MicrosoftYaHei';
+      display: block;
+      word-break: keep-all;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
+  .sm-component-text-list__animate {
+    overflow: hidden; }
+  .sm-component-text-list__body-content--anim {
+    transition: margin-top 0.3s linear; }
+  .sm-component-text-list__list {
+    width: 100%;
+    display: flex; }
+    .sm-component-text-list__list > div {
+      text-align: center;
+      flex: 1;
+      font-family: 'MicrosoftYaHei';
+      display: block;
+      word-break: keep-all;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
 
 /* layer */
 /* Transition */
