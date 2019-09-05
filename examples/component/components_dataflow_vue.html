@@ -64,7 +64,7 @@
                 var queryService = new mapboxgl.supermap.QueryService(
                     host + "/iserver/services/map-world/rest/maps/World"
                 ).queryBySQL(param, function(serviceResult) {
-                    featureResult = serviceResult.result.recordsets[0].features.features;
+                    featureResult = serviceResult.result && serviceResult.result.recordsets[0].features.features;
                     dataFlowBroadcast = new mapboxgl.supermap.DataFlowService(
                         wsHost + "/iserver/services/dataflowTest/dataflow"
                     ).initBroadcast();

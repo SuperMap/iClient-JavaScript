@@ -18686,42 +18686,40 @@ SuperMap.MappingParameters = MappingParameters_MappingParameters;
  * @class SuperMap.BuffersAnalystJobsParameter
  * @category iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析任务参数类。
- * @param {Object} options - 参数。   
- * @param {string} options.datasetName - 数据集名。   
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 分析范围。   
- * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。   
- * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。   
- * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。   
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。  
- * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.bounds] - 分析范围（默认为全图范围）。
+ * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
+ * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
+ * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  */
 class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
-
-
     constructor(options) {
         /**
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
-        this.datasetName = "";
+        this.datasetName = '';
 
         /**
          * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.BuffersAnalystJobsParameter.prototype.bounds
-         * @description 分析范围。 
+         * @description 分析范围。
          */
-        this.bounds = "";
+        this.bounds = '';
 
         /**
          * @member {string} [SuperMap.BuffersAnalystJobsParameter.prototype.distance='15']
          * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
          */
-        this.distance = "";
+        this.distance = '';
 
         /**
          * @member {string} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceField='pickup_latitude']
          * @description 缓冲距离字段。
          */
-        this.distanceField = "";
+        this.distanceField = '';
 
         /**
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit=SuperMap.AnalystSizeUnit.METER]
@@ -18733,17 +18731,17 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
          * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
          */
-        this.dissolveField = "";
+        this.dissolveField = '';
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.BuffersAnalystJobsParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
-        
+
         /**
          * @member {SuperMap.MappingParameters} [SuperMap.BuffersAnalystJobsParameter.prototype.mappingParameters]
-         * @description 分析后结果可视化的参数类。   
+         * @description 分析后结果可视化的参数类。
          */
         this.mappingParameters = null;
 
@@ -18752,7 +18750,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
         }
         Util_Util.extend(this, options);
 
-        this.CLASS_NAME = "SuperMap.BuffersAnalystJobsParameter";
+        this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsParameter';
     }
 
     /**
@@ -18770,7 +18768,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -18784,33 +18782,33 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
      */
     static toObject(BuffersAnalystJobsParameter, tempObj) {
         for (var name in BuffersAnalystJobsParameter) {
-            if (name === "datasetName") {
+            if (name === 'datasetName') {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = BuffersAnalystJobsParameter[name];
                 continue;
             }
-            if (name === "output") {
+            if (name === 'output') {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = BuffersAnalystJobsParameter[name];
                 continue;
             }
 
             tempObj['analyst'] = tempObj['analyst'] || {};
-            if (name === 'bounds') {
+            if (name === 'bounds' && BuffersAnalystJobsParameter[name]) {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name];
             }
-            if(name === 'mappingParameters'){
+            if (name === 'mappingParameters') {
                 tempObj['analyst'][name] = tempObj['analyst'][name] || {};
                 tempObj['analyst']['mappingParameters'] = BuffersAnalystJobsParameter[name];
             }
         }
     }
-
 }
 
 SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalystJobsParameter;
+
 // CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -31466,7 +31464,7 @@ SuperMap.InterpolationAnalystService = InterpolationAnalystService_Interpolation
  * @param {Object} options - 参数。 
  * @param {string} options.datasetName - 数据集名。 
  * @param {string} options.fields - 权重索引。 
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。 
  * @param {number} [options.resolution=80] - 分辨率。 
  * @param {number} [options.method=0] - 分析方法。 
  * @param {number} [options.meshType=0] - 分析类型。 
@@ -35265,7 +35263,7 @@ SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttr
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
@@ -35504,7 +35502,7 @@ SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {SuperMap.StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -93345,7 +93343,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */

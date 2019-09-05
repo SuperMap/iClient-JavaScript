@@ -3,72 +3,45 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title data-i18n="resources.title_componentsRaster_Vue"></title>
-        <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-        <script
-            include="iclient9-mapboxgl-vue,mapbox-gl-enhance"
-            src="../../dist/mapboxgl/include-mapboxgl.js"
-        ></script>
-        <style>
-            #main {
-                margin: 0 auto;
-                width: 100%;
-                height: 100%;
-            }
-        </style>
-    </head>
+	<head>
+		<meta charset="UTF-8" />
+		<title data-i18n="resources.title_componentsRaster_Vue"></title>
+		<script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+		<script
+			include="iclient9-mapboxgl-vue,mapbox-gl-enhance"
+			src="../../dist/mapboxgl/include-mapboxgl.js"
+		></script>
+		<style>
+			#main {
+				margin: 0 auto;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
 
-    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-        <div id="main">
-            <sm-web-map :map-options="mapOptions">
-                <sm-raster-tile-layer v-bind="rasteLayerOptions"></sm-raster-tile-layer>
-                <sm-layer-list position="top-left"></sm-layer-list>
-            </sm-web-map>
-        </div>
-        <script>
-            new Vue({
-                el: '#main',
-                data() {
-                    return {
-                        mapOptions: {
-                            container: 'map', // container id
-                            style: {
-                                version: 8,
-                                sources: {
-                                    浦东底图: {
-                                        type: 'raster',
-
-                                        tiles: ['http://211.136.105.71:8090/iserver/services/map-pd/rest/maps/BaseMap'],
-                                        rasterSource: 'iserver',
-                                        tileSize: 256
-                                    }
-                                },
-                                layers: [
-                                    {
-                                        id: 'simple-tiles',
-                                        type: 'raster',
-                                        source: '浦东底图',
-                                        minzoom: 0,
-                                        maxzoom: 20
-                                    }
-                                ]
-                            },
-                            center: [120.143, 30.236],
-                            crs: 'EPSG:4326',
-                            zoom: 9
-                        },
-                        rasteLayerOptions: {
-                            layerId: '周浦管线',
-                            name: 'ZhouPuGX',
-                            opacity: 0.8,
-                            visible: true,
-                            mapUrl: 'http://211.136.105.71:8090/iserver/services/map-NWJG/rest/maps/ZhouPuGX'
-                        }
-                    };
-                }
-            });
-        </script>
-    </body>
+	<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+		<div id="main">
+			<sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="676816598">
+				<sm-raster-tile-layer v-bind="rasteLayerOptions"></sm-raster-tile-layer>
+				<sm-layer-list position="top-left"></sm-layer-list>
+			</sm-web-map>
+		</div>
+		<script>
+			new Vue({
+				el: '#main',
+				data() {
+					var host = window.isLocal ? window.server : 'http://support.supermap.com.cn:8090';
+					return {
+						rasteLayerOptions: {
+							layerId: resources.text_myRasterLayer,
+							opacity: 0.8,
+							visible: true,
+							mapUrl: host + '/iserver/services/map-Population/rest/maps/PopulationDistribution',
+						},
+					};
+				},
+			});
+		</script>
+	</body>
 </html>
