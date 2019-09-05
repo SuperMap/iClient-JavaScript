@@ -6042,7 +6042,7 @@ SuperMap.MappingParameters = MappingParameters_MappingParameters;
  * @param {Object} options - 参数。 
  * @param {string} options.datasetName - 数据集名。 
  * @param {string} options.fields - 权重索引。 
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。 
  * @param {number} [options.resolution=80] - 分辨率。 
  * @param {number} [options.method=0] - 分析方法。 
  * @param {number} [options.meshType=0] - 分析类型。 
@@ -6439,7 +6439,7 @@ SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_Summary
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
@@ -6611,7 +6611,7 @@ SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParamet
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {SuperMap.StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -6948,42 +6948,40 @@ SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
  * @class SuperMap.BuffersAnalystJobsParameter
  * @category iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析任务参数类。
- * @param {Object} options - 参数。   
- * @param {string} options.datasetName - 数据集名。   
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 分析范围。   
- * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。   
- * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。   
- * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。   
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。  
- * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.bounds] - 分析范围（默认为全图范围）。
+ * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
+ * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
+ * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  */
 class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
-
-
     constructor(options) {
         /**
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
-        this.datasetName = "";
+        this.datasetName = '';
 
         /**
          * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.BuffersAnalystJobsParameter.prototype.bounds
-         * @description 分析范围。 
+         * @description 分析范围。
          */
-        this.bounds = "";
+        this.bounds = '';
 
         /**
          * @member {string} [SuperMap.BuffersAnalystJobsParameter.prototype.distance='15']
          * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
          */
-        this.distance = "";
+        this.distance = '';
 
         /**
          * @member {string} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceField='pickup_latitude']
          * @description 缓冲距离字段。
          */
-        this.distanceField = "";
+        this.distanceField = '';
 
         /**
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit=SuperMap.AnalystSizeUnit.METER]
@@ -6995,17 +6993,17 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
          * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
          */
-        this.dissolveField = "";
+        this.dissolveField = '';
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.BuffersAnalystJobsParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
-        
+
         /**
          * @member {SuperMap.MappingParameters} [SuperMap.BuffersAnalystJobsParameter.prototype.mappingParameters]
-         * @description 分析后结果可视化的参数类。   
+         * @description 分析后结果可视化的参数类。
          */
         this.mappingParameters = null;
 
@@ -7014,7 +7012,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
         }
         Util_Util.extend(this, options);
 
-        this.CLASS_NAME = "SuperMap.BuffersAnalystJobsParameter";
+        this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsParameter';
     }
 
     /**
@@ -7032,7 +7030,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -7046,33 +7044,33 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
      */
     static toObject(BuffersAnalystJobsParameter, tempObj) {
         for (var name in BuffersAnalystJobsParameter) {
-            if (name === "datasetName") {
+            if (name === 'datasetName') {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = BuffersAnalystJobsParameter[name];
                 continue;
             }
-            if (name === "output") {
+            if (name === 'output') {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = BuffersAnalystJobsParameter[name];
                 continue;
             }
 
             tempObj['analyst'] = tempObj['analyst'] || {};
-            if (name === 'bounds') {
+            if (name === 'bounds' && BuffersAnalystJobsParameter[name]) {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name];
             }
-            if(name === 'mappingParameters'){
+            if (name === 'mappingParameters') {
                 tempObj['analyst'][name] = tempObj['analyst'][name] || {};
                 tempObj['analyst']['mappingParameters'] = BuffersAnalystJobsParameter[name];
             }
         }
     }
-
 }
 
 SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalystJobsParameter;
+
 // CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -7795,7 +7793,7 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
         var context = (this.options && this.options.context) || '2d';
         this.canvasContext = this.canvas.getContext(context);
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = (this.devicePixelRatio = global$2.devicePixelRatio);
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         if (context == '2d') {
             this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         }

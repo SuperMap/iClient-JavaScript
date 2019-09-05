@@ -66,7 +66,7 @@ export class MapVLayer extends SuperMap.Layer {
         var context = (this.options && this.options.context) || '2d';
         this.canvasContext = this.canvas.getContext(context);
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = (this.devicePixelRatio = global$2.devicePixelRatio);
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         if (context == '2d') {
             this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         }

@@ -140,7 +140,7 @@ export class MapboxStyles extends ol.Observable {
 
     /**
      * @function ol.supermap.MapboxStyles.prototype.setSelectedObjects
-     * @version 10.x.x
+     * @version 10.0.0
      * @description 设置选中要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 `ol.layer.VectorTile` 的 `changed`,才能生效。
      * @param {ol.supermap.MapboxStyles.selectedObject|Array.<ol.supermap.MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
      */
@@ -153,7 +153,7 @@ export class MapboxStyles extends ol.Observable {
     }
     /**
      * @function ol.supermap.MapboxStyles.prototype.addSelectedObjects
-     * @version 10.x.x
+     * @version 10.0.0
      * @description 增加选中的要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 `ol.layer.VectorTile` 的 `changed`,才能生效。
      * @param {ol.supermap.MapboxStyles.selectedObject|Array.<ol.supermap.MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
      */
@@ -165,7 +165,7 @@ export class MapboxStyles extends ol.Observable {
     }
     /**
      * @function ol.supermap.MapboxStyles.prototype.clearSelectedObjects
-     * @version 10.x.x
+     * @version 10.0.0
      * @description 清空选中状态。调用该方法后需要调用 `ol.layer.VectorTile` 的 `changed`,才能生效。
      */
     removeSelectedObjects(selectedObjects) {
@@ -180,7 +180,7 @@ export class MapboxStyles extends ol.Observable {
     }
     /**
      * @function ol.supermap.MapboxStyles.prototype.clearSelectedObjects
-     * @version 10.x.x
+     * @version 10.0.0
      * @description 清空选中状态。调用该方法后需要调用 `ol.layer.VectorTile` 的 `changed`,才能生效。
      */
     clearSelectedObjects() {

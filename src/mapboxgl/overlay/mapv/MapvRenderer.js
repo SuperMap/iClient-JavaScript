@@ -335,7 +335,7 @@ export class MapvRenderer extends BaseLayer {
         canvas.style.top = 0 + 'px';
         canvas.style.left = 0 + 'px';
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = (this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio);
+        var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio || 1;
         canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
         canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
         if (!this.canvasLayer.mapVOptions.context || this.canvasLayer.mapVOptions.context == '2d') {

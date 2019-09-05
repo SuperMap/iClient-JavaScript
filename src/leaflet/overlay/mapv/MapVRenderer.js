@@ -49,7 +49,7 @@ export class MapVRenderer extends BaseLayer {
      */
     clickEvent(e) {
         var offset = this.map.containerPointToLayerPoint([0, 0]);
-        var devicePixelRatio = this.devicePixelRatio = this.canvasLayer.devicePixelRatio = window.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = this.canvasLayer.devicePixelRatio = window.devicePixelRatio || 1 ;
         var pixel = e.layerPoint;
         super.clickEvent(L.point((pixel.x - offset.x) / devicePixelRatio, (pixel.y - offset.y) / devicePixelRatio), e);
     }
