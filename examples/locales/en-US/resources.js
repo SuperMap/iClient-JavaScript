@@ -28,6 +28,9 @@ window.examplesResources = {
         "3dwebgl": {
             "_name": "3D-WebGL"
         },
+        "component": {
+          "_name": "Component"
+      },
         "product": {
             "_name": "Products",
             "introduce": "Introduction",
@@ -80,8 +83,9 @@ window.examplesResources = {
             "others": "Others",
             "3D-WebGL": "3D-WebGL",
             "multiCoordSys": "Multiple CRS",
-            "vuecomponents": "Vue Components"
-
+            "vuecomponents": "Vue",
+            "reactcomponents": 'React',
+            "h5components": "H5"
         },
         "more": {
             "_name": "More>>",
@@ -428,6 +432,8 @@ window.examplesResources = {
         "title_examplesLeaflet": "iClient for Leaflet Examples",
         "title_editorMBGL": "iClient for MapboxGL  Sample Code",
         "title_examplesMBGL": "iClient for MapboxGL Examples",
+        "title_examplesComponent": "Component Examples",
+        "title_editorComponent": "Component Sample Code",
         "title_editorClassic": "iClient Classic  Sample Code",
         "title_examplesClassic": "iClient Classic Examples",
         "title_editor3DWebGL": "SuperMap 3D-WebGL  Sample Code",

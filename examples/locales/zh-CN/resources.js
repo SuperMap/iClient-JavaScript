@@ -52,7 +52,9 @@ window.examplesResources = {
             "others": "其他",
             "3D-WebGL": "3D-WebGL",
             "multiCoordSys": "多坐标系",
-            "vuecomponents": "Vue 组件"
+            "vuecomponents": "Vue",
+            "reactcomponents": 'React',
+            "h5components": "H5"
         }
     },
     "footer": {
@@ -371,6 +373,8 @@ window.examplesResources = {
         "title_examplesLeaflet": "iClient for Leaflet 示范程序",
         "title_editorMBGL": "iClient for MapboxGL 示例代码",
         "title_examplesMBGL": "iClient for MapboxGL 示范程序",
+        "title_examplesComponent": "组件示范程序",
+        "title_editorComponent": "组件示例代码",
         "title_editorClassic": "iClient Classic 示例代码",
         "title_examplesClassic": "iClient Classic 示范程序",
         "title_editor3DWebGL": "SuperMap 3D-WebGL 示例代码",
