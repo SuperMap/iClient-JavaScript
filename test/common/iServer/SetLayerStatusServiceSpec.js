@@ -26,6 +26,21 @@ describe('SetLayerStatusService_processAsync', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var setLayerStatusService = new SetLayerStatusService(GlobeParameter.WorldURL, { headers: myHeaders });
+        expect(setLayerStatusService).not.toBeNull();
+        expect(setLayerStatusService.headers).not.toBeNull();
+        setLayerStatusService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var setLayerStatusService = new SetLayerStatusService(GlobeParameter.WorldURL, { crossOrigin: false });
+        expect(setLayerStatusService).not.toBeNull();
+        expect(setLayerStatusService.crossOrigin).toBeFalsy();
+        setLayerStatusService.destroy();
+    });
+
     it('constructor, destroy', () => {
         var url = GlobeParameter.WorldURL;
         var setLayersStatusEvtArgs = null, setLayersStatusFaildEvtArgs = null;

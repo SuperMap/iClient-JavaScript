@@ -53,6 +53,21 @@ describe('SurfaceAnalystService', () => {
         serviceFailedEventArgsSystem = null;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var surfaceAnalystService = new SurfaceAnalystService("http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst", { headers: myHeaders });
+        expect(surfaceAnalystService).not.toBeNull();
+        expect(surfaceAnalystService.headers).not.toBeNull();
+        surfaceAnalystService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var surfaceAnalystService = new SurfaceAnalystService("http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst", { crossOrigin: false });
+        expect(surfaceAnalystService).not.toBeNull();
+        expect(surfaceAnalystService.crossOrigin).toBeFalsy();
+        surfaceAnalystService.destroy();
+    });
+
     //点数据集提取等值线
     it('Dataset_ISOLINE', (done) => {
         var spatialAnalystURL = "http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";

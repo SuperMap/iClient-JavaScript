@@ -26,6 +26,21 @@ describe('SetLayerInfoService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var setLayerInfoService = new SetLayerInfoService(url, { headers: myHeaders });
+        expect(setLayerInfoService).not.toBeNull();
+        expect(setLayerInfoService.headers).not.toBeNull();
+        setLayerInfoService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var setLayerInfoService = new SetLayerInfoService(url, { crossOrigin: false });
+        expect(setLayerInfoService).not.toBeNull();
+        expect(setLayerInfoService.crossOrigin).toBeFalsy();
+        setLayerInfoService.destroy();
+    });
+
     //新建临时图层
     it('setNewTempLayer', (done) => {
         var layersInformation = layersInfo;

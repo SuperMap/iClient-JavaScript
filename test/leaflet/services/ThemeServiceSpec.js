@@ -43,6 +43,41 @@ describe('leaflet_ThemeService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('proxy', () => {
+        var service = themeService(WorldURL, { proxy: 'testProxy' });
+        expect(service).not.toBeNull();
+        expect(service.options.proxy).toEqual('testProxy');
+        service.destroy();
+    });
+
+    it('serverType', () => {
+        var service = themeService(WorldURL, { serverType: 'iPortal' });
+        expect(service).not.toBeNull();
+        expect(service.options.serverType).toEqual('iPortal');
+        service.destroy();
+    });
+
+    it('withCredentials', () => {
+        var service = themeService(WorldURL, { withCredentials: true });
+        expect(service).not.toBeNull();
+        expect(service.options.withCredentials).toBeTruthy();
+        service.destroy();
+    });
+
+    it('crossOrigin', () => {
+        var service = themeService(WorldURL, { crossOrigin: true });
+        expect(service).not.toBeNull();
+        expect(service.options.crossOrigin).toBeTruthy();
+        service.destroy();
+    });
+
+    it('headers', () => {
+        var service = themeService(WorldURL, { headers: {} });
+        expect(service).not.toBeNull();
+        expect(service.options.headers).not.toBeNull();
+        service.destroy();
+    });
+
     // 点密度专题图
     it('successEvent:ThemeDotDensity', (done) => {
         var themeDot = new ThemeDotDensity({

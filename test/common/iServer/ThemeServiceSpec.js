@@ -65,6 +65,21 @@ describe('ThemeService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var themeService = new ThemeService(themeURL, { headers: myHeaders });
+        expect(themeService).not.toBeNull();
+        expect(themeService.headers).not.toBeNull();
+        themeService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var themeService = new ThemeService(themeURL, { crossOrigin: false });
+        expect(themeService).not.toBeNull();
+        expect(themeService.crossOrigin).toBeFalsy();
+        themeService.destroy();
+    });
+
     it('processAsync_Range', (done) => {
         var themeService = initThemeService();
         var themeRange = new ThemeRange({

@@ -19,6 +19,41 @@ describe('leaflet_QueryService_queryBySQL', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('proxy', () => {
+        var service = queryService(worldMapURL, { proxy: 'testProxy' });
+        expect(service).not.toBeNull();
+        expect(service.options.proxy).toEqual('testProxy');
+        service.destroy();
+    });
+
+    it('serverType', () => {
+        var service = queryService(worldMapURL, { serverType: 'iPortal' });
+        expect(service).not.toBeNull();
+        expect(service.options.serverType).toEqual('iPortal');
+        service.destroy();
+    });
+
+    it('withCredentials', () => {
+        var service = queryService(worldMapURL, { withCredentials: true });
+        expect(service).not.toBeNull();
+        expect(service.options.withCredentials).toBeTruthy();
+        service.destroy();
+    });
+
+    it('crossOrigin', () => {
+        var service = queryService(worldMapURL, { crossOrigin: true });
+        expect(service).not.toBeNull();
+        expect(service.options.crossOrigin).toBeTruthy();
+        service.destroy();
+    });
+
+    it('headers', () => {
+        var service = queryService(worldMapURL, { headers: {} });
+        expect(service).not.toBeNull();
+        expect(service.options.headers).not.toBeNull();
+        service.destroy();
+    });
+
     it('successEvent:queryBySQL_returnContent=true', (done) => {
         var queryBySQLParams = new QueryBySQLParameters({
             queryParams: {

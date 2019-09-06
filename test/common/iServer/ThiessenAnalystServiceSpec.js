@@ -26,6 +26,21 @@ describe('ThiessenAnalystService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var thiessenAnalystService = new ThiessenAnalystService(GlobeParameter.spatialAnalystURL_Changchun, { headers: myHeaders });
+        expect(thiessenAnalystService).not.toBeNull();
+        expect(thiessenAnalystService.headers).not.toBeNull();
+        thiessenAnalystService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var thiessenAnalystService = new ThiessenAnalystService(GlobeParameter.spatialAnalystURL_Changchun, { crossOrigin: false });
+        expect(thiessenAnalystService).not.toBeNull();
+        expect(thiessenAnalystService.crossOrigin).toBeFalsy();
+        thiessenAnalystService.destroy();
+    });
+
     //成功事件 AnalyzeByDatasets
     it('processAsync_byDatasets', (done) => {
         var spatialAnalystURL_Changchun = GlobeParameter.spatialAnalystURL_Changchun;

@@ -26,6 +26,21 @@ describe('RouteCalculateMeasureService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var routeCalculateMeasureService = new RouteCalculateMeasureService(GlobeParameter.spatialAnalystURL, { headers: myHeaders });
+        expect(routeCalculateMeasureService).not.toBeNull();
+        expect(routeCalculateMeasureService.headers).not.toBeNull();
+        routeCalculateMeasureService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var routeCalculateMeasureService = new RouteCalculateMeasureService(GlobeParameter.spatialAnalystURL, { crossOrigin: false });
+        expect(routeCalculateMeasureService).not.toBeNull();
+        expect(routeCalculateMeasureService.crossOrigin).toBeFalsy();
+        routeCalculateMeasureService.destroy();
+    });
+
     it('processAsync', (done) => {
         var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
         var routeCalculateMeasureEventArgsSystem = null, serviceFailedEventArgsSystem = null;

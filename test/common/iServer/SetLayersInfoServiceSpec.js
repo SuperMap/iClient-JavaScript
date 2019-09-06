@@ -26,6 +26,21 @@ describe('SetLayersInfoService', () => {
         setLayersEventArgsSystem = null;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var setLayersInfoService = new SetLayersInfoService("http://supermap:8090/iserver/services/map-world/rest/maps/World", { headers: myHeaders });
+        expect(setLayersInfoService).not.toBeNull();
+        expect(setLayersInfoService.headers).not.toBeNull();
+        setLayersInfoService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var setLayersInfoService = new SetLayersInfoService("http://supermap:8090/iserver/services/map-world/rest/maps/World", { crossOrigin: false });
+        expect(setLayersInfoService).not.toBeNull();
+        expect(setLayersInfoService.crossOrigin).toBeFalsy();
+        setLayersInfoService.destroy();
+    });
+
     //新建临时图层
     it('setNewTempLayer', (done) => {
         var setLayersFailedEventArgsSystem = null, setLayersEventArgsSystem = null;
