@@ -29,6 +29,22 @@ describe('OverlayAnalystService', () => {
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
+    it('headers', () => {
+      let myHeaders = new Headers();
+      var overlayService = new OverlayAnalystService(GlobeParameter.spatialAnalystURL, { headers: myHeaders });
+      expect(overlayService).not.toBeNull();
+      expect(overlayService.headers).not.toBeNull();
+      overlayService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var overlayService = new OverlayAnalystService(GlobeParameter.spatialAnalystURL, { crossOrigin: false });
+        expect(overlayService).not.toBeNull();
+        expect(overlayService.crossOrigin).toBeFalsy();
+        overlayService.destroy();
+    });
+
     //不直接返回查询结果
     it('processAsync_byDatasets_returnContent:false', (done) => {
         var spatialAnalystURL = GlobeParameter.spatialAnalystURL;

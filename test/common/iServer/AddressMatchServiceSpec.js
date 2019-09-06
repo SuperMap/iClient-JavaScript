@@ -36,12 +36,21 @@ describe('AddressMatchService', () => {
         addressMatchService.destroy();
     });
 
-    it('code', (done) => {
-        var codingFailedEventArgs = null, codingSuccessEventArgs = null;
-        var codeFailed = (serviceFailedEventArgs) => {
+    it('crossOrigin', () => {
+        let myHeaders = new Headers();
+        var addressMatchService = new AddressMatchService(addressMatchURL_code, { crossOrigin: false });
+        expect(addressMatchService).not.toBeNull();
+        expect(addressMatchService.crossOrigin).toBeFalsy();
+        addressMatchService.destroy();
+    });
+
+    it('code', done => {
+        var codingFailedEventArgs = null,
+            codingSuccessEventArgs = null;
+        var codeFailed = serviceFailedEventArgs => {
             codingFailedEventArgs = serviceFailedEventArgs;
         };
-        var codeCompleted = (analyseEventArgs) => {
+        var codeCompleted = analyseEventArgs => {
             codingSuccessEventArgs = analyseEventArgs;
             try {
                 expect(addressCodeService).not.toBeNull();
@@ -55,7 +64,7 @@ describe('AddressMatchService', () => {
                 codingSuccessEventArgs = null;
                 done();
             } catch (exception) {
-                console.log("'code'案例失败：" + exception.name + ":" + exception.message);
+                console.log("'code'案例失败：" + exception.name + ':' + exception.message);
                 addressCodeService.destroy();
                 GeoCodingParams.destroy();
                 codingFailedEventArgs = null;
@@ -65,7 +74,7 @@ describe('AddressMatchService', () => {
             }
         };
         var options = {
-            eventListeners: {"processCompleted": codeCompleted, 'processFailed': codeFailed}
+            eventListeners: { processCompleted: codeCompleted, processFailed: codeFailed }
         };
         var GeoCodingParams = new GeoCodingParameter({
             address: '公司',
@@ -84,15 +93,15 @@ describe('AddressMatchService', () => {
             return Promise.resolve(new Response(codeSuccessEscapedJson));
         });
         addressCodeService.code(addressMatchURL_code, GeoCodingParams);
-           
     });
 
-    it('decode', (done) => {
-        var decodingFailedEventArgs = null, decodingSuccessEventArgs = null;
-        var decodeFailed = (serviceFailedEventArgs) => {
+    it('decode', done => {
+        var decodingFailedEventArgs = null,
+            decodingSuccessEventArgs = null;
+        var decodeFailed = serviceFailedEventArgs => {
             decodingFailedEventArgs = serviceFailedEventArgs;
         };
-        var decodeCompleted = (analyseEventArgs) => {
+        var decodeCompleted = analyseEventArgs => {
             decodingSuccessEventArgs = analyseEventArgs;
             try {
                 expect(addressDeCodeService).not.toBeNull();
@@ -106,7 +115,7 @@ describe('AddressMatchService', () => {
                 decodingSuccessEventArgs = null;
                 done();
             } catch (exception) {
-                console.log("'code'案例失败：" + exception.name + ":" + exception.message);
+                console.log("'code'案例失败：" + exception.name + ':' + exception.message);
                 addressDeCodeService.destroy();
                 GeoDeCodingParams.destroy();
                 decodingFailedEventArgs = null;
@@ -116,7 +125,7 @@ describe('AddressMatchService', () => {
             }
         };
         var options = {
-            eventListeners: {"processCompleted": decodeCompleted, 'processFailed': decodeFailed}
+            eventListeners: { processCompleted: decodeCompleted, processFailed: decodeFailed }
         };
         var GeoDeCodingParams = new GeoDecodingParameter({
             x: 116.31740122415627,
@@ -138,8 +147,5 @@ describe('AddressMatchService', () => {
             return Promise.resolve(new Response(decodeSuccessEscapedJson));
         });
         addressDeCodeService.decode(addressMatchURL_decode, GeoDeCodingParams);
-          
     });
 });
-
-
