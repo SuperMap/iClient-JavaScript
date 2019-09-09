@@ -20,7 +20,14 @@ var exampleConfig = {
                         name_en: "3857 coordinate system",
                         thumbnail: "mb_TileLayer.png",
                         fileName: "01_tiledMapLayer"
-                    },
+                    }, 
+                    {
+                        name: "地图-栅格分析",
+                        name_en: "map rasterFunction",
+                        version: "10.0.0",
+                        thumbnail: "tiledMapLayerRasterfunction.png",
+                        fileName: "01_tiledMapLayer_rasterfunction"
+                    },          
                     {
                         name: "地图信息",
                         name_en: "map query service",
@@ -495,7 +502,7 @@ var exampleConfig = {
                     {
                         name: "iServer数据服务矢量瓦片(2000万点)",
                         name_en: "iServer REST Data VectorTile(20 million Point)",
-                        version: "10.0.1",
+                        version: "10.0.0",
                         thumbnail: "mvtVectorTile_restdata.png",
                         fileName: "mvtVectorTile_restdata"
                     }

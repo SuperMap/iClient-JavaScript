@@ -65939,7 +65939,7 @@ class ChartModel_ChartModel {
  * @class SuperMap.Widgets.ChartViewModel
  * @classdesc 图表组件功能类
  * @category Components Chart
- * @version 10.X.X
+ * @version 10.0.0
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
  * @param {SuperMap.Widgets.Chart.Datasets} options.datasets - 数据来源。
@@ -81101,7 +81101,7 @@ var TileVectorLayer_TileVectorLayer = VectorGrid_VectorGrid.extend({
         for (var itemKey in shaders) {
             var shader = shaders[itemKey];
             for (var j = 0; j < shader.length; j++) {
-                var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
+                var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature,this.options.serverCartoCSSStyle);
                 if (serverStyle) {
                     style.push(serverStyle);
                 }

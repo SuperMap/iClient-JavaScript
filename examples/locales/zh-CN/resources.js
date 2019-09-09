@@ -89,6 +89,7 @@ window.examplesResources = {
         "title_tiledMapLayer3857": "SuperMap REST 地图服务底图",
         "title_imageMapLayer3857": "SuperMap REST 地图服务底图(image)",
         "title_imageMapLayer4326": "SuperMap REST 地图服务底图(image)",
+        "title_tiledMapLayer_rasterfunction": "SuperMap REST 地图服务(栅格分析)",
         "title_addressMatchService": "地址匹配服务",
         "title_bufferAnalyst1": "缓冲区分析一",
         "title_bufferAnalyst2": "缓冲区分析二",

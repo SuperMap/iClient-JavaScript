@@ -50,6 +50,12 @@ var exampleConfig = {
                     thumbnail: "l_tiledMapLayerProj4.png",
                     fileName: "01_tiledMapLayerProj4"
                 }, {
+                    name: "地图-栅格分析",
+                    name_en: "map rasterFunction",
+                    version: "10.0.0",
+                    thumbnail: "l_tiledMapLayerRasterfunction.png",
+                    fileName: "01_tiledMapLayer_rasterfunction"
+                }, {
                     name: "地图信息",
                     name_en: "map query service",
                     thumbnail: "l_mapService.png",

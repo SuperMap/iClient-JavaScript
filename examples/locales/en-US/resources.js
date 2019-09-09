@@ -148,6 +148,7 @@ window.examplesResources = {
         "title_tiledMapLayer3857": "3857 Base Map of SuperMap REST",
         "title_imageMapLayer3857": "3857 Base Map of SuperMap REST (image)",
         "title_imageMapLayer4326": "4326 Base Map of SuperMap REST (image)",
+        "title_tiledMapLayer_rasterfunction": "SuperMap REST Map Service(rasterfunction)",
         "title_addressMatchService": "Address Match Service",
         "title_bufferAnalyst1": "Buffer Analysis 1",
         "title_bufferAnalyst2": "Buffer Analysis 2",
