@@ -239,7 +239,7 @@ export {
     UpdateTurnNodeWeightParameters,
     Vector,
     VectorClipJobsParameter,
-    //widgets
+    //components
     FileTypes,
     FileConfig,
     FileModel, 
@@ -253,7 +253,7 @@ export {
     CityTabsPage,
     NavTabsPage,
     PaginationContainer,
-    widgetsUtil,
+    ComponentsUtil,
     FileReaderUtil
 }
 from '@supermap/iclient-common';

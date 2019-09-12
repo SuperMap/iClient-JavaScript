@@ -239,7 +239,7 @@ import {
     UpdateTurnNodeWeightParameters,
     Vector,
     VectorClipJobsParameter,
-    //widgets
+    //components
     FileTypes,
     FileConfig,
     FileModel,
@@ -253,7 +253,7 @@ import {
     CityTabsPage,
     NavTabsPage,
     PaginationContainer,
-    widgetsUtil,
+    ComponentsUtil,
     FileReaderUtil,
     ChartView,
     ChartViewModel
@@ -425,7 +425,7 @@ import {
     dataServiceQueryView,
     DataServiceQueryViewModel,
     dataServiceQueryViewModel
-} from './widgets';
+} from './components';
 
 export {
     OpenFileView,
@@ -692,7 +692,7 @@ export {
     UpdateTurnNodeWeightParameters,
     Vector,
     VectorClipJobsParameter,
-    //widgets
+    //components
     FileTypes,
     FileConfig,
     FileModel,
@@ -706,7 +706,7 @@ export {
     CityTabsPage,
     NavTabsPage,
     PaginationContainer,
-    widgetsUtil,
+    ComponentsUtil,
     FileReaderUtil,
     ChartView,
     ChartViewModel

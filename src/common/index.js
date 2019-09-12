@@ -426,11 +426,11 @@ import {
     CityTabsPage,
     NavTabsPage,
     PaginationContainer,
-    widgetsUtil,
+    ComponentsUtil,
     FileReaderUtil,
     ChartView,
     ChartViewModel
-} from './widgets';
+} from './components';
 import { Lang, en, zh } from './lang';
 
 export {
@@ -447,7 +447,7 @@ export {
     CityTabsPage,
     NavTabsPage,
     PaginationContainer,
-    widgetsUtil,
+    ComponentsUtil,
     FileReaderUtil,
     ChartView,
     ChartViewModel

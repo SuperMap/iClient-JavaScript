@@ -5252,7 +5252,7 @@ __webpack_require__.r(__webpack_exports__);
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = window.SuperMap = window.SuperMap || {};
-SuperMap.Widgets = window.SuperMap.Widgets || {};
+SuperMap.Components = window.SuperMap.Components || {};
 
 // CONCATENATED MODULE: ./src/common/REST.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -65949,7 +65949,7 @@ class SmicStar_SmicStar extends Shape_Shape {
 
 
 
-// CONCATENATED MODULE: ./src/common/widgets/CommonTypes.js
+// CONCATENATED MODULE: ./src/common/components/CommonTypes.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -65967,7 +65967,7 @@ const FileTypes = {
 const FileConfig = {
     fileMaxSize: 10 * 1024 * 1024
 };
-// CONCATENATED MODULE: ./src/common/widgets/openfile/FileModel.js
+// CONCATENATED MODULE: ./src/common/components/openfile/FileModel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66007,14 +66007,14 @@ class FileModel_FileModel {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/widgets/messagebox/MessageBox.js
+// CONCATENATED MODULE: ./src/common/components/messagebox/MessageBox.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
- * @class SuperMap.Widgets.MessageBox
+ * @class SuperMap.Components.MessageBox
  * @version 9.1.1
  * @classdesc 组件信息提示框。
  * @category Components Common
@@ -66029,7 +66029,7 @@ class MessageBox_MessageBox {
         //原生js形式
         const messageBoxContainer = document.createElement("div");
         messageBoxContainer.hidden = true;
-        messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
+        messageBoxContainer.setAttribute("class", "component-messageboxcontainer component-border-bottom-orange");
 
         //图标
         const iconContainer = document.createElement("div");
@@ -66041,16 +66041,16 @@ class MessageBox_MessageBox {
 
         //内容：
         const messageBox = document.createElement("div");
-        messageBox.setAttribute("class", "widget-messagebox");
+        messageBox.setAttribute("class", "component-messagebox");
         messageBox.innerHTML = "";
         messageBoxContainer.appendChild(messageBox);
         this.messageBox = messageBox;
 
         //关闭按钮
         const cancelContainer = document.createElement("div");
-        cancelContainer.setAttribute("class", "widget-messagebox__cancelbtncontainer");
+        cancelContainer.setAttribute("class", "component-messagebox__cancelbtncontainer");
         const cancelBtn = document.createElement("button");
-        cancelBtn.setAttribute("class", "widget-messagebox__cancelBtn");
+        cancelBtn.setAttribute("class", "component-messagebox__cancelBtn");
         cancelBtn.innerHTML = "x";
         cancelBtn.onclick = this.closeView.bind(this);
         cancelContainer.appendChild(cancelBtn);
@@ -66061,7 +66061,7 @@ class MessageBox_MessageBox {
     }
 
     /**
-     * @function SuperMap.Widgets.MessageBox.prototype.closeView
+     * @function SuperMap.Components.MessageBox.prototype.closeView
      * @description 关闭提示框。
      */
     closeView() {
@@ -66069,7 +66069,7 @@ class MessageBox_MessageBox {
     }
 
     /**
-     * @function SuperMap.Widgets.MessageBox.prototype.showView
+     * @function SuperMap.Components.MessageBox.prototype.showView
      * @description 显示提示框。
      * @param {string} message - 提示框显示内容。
      * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success"。
@@ -66078,21 +66078,21 @@ class MessageBox_MessageBox {
         //设置提示框的样式：
         if (type === "success") {
             this.icon.setAttribute("class", "supermapol-icons-message-success");
-            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-green");
+            this.messageBoxContainer.setAttribute("class", "component-messageboxcontainer component-border-bottom-green");
 
         } else if (type === "failure") {
             this.icon.setAttribute("class", "supermapol-icons-message-failure");
-            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-red");
+            this.messageBoxContainer.setAttribute("class", "component-messageboxcontainer component-border-bottom-red");
         } else if (type === "warring") {
             this.icon.setAttribute("class", "supermapol-icons-message-warning");
-            this.messageBoxContainer.setAttribute("class", "widget-messageboxcontainer widget-border-bottom-orange");
+            this.messageBoxContainer.setAttribute("class", "component-messageboxcontainer component-border-bottom-orange");
         }
         this.messageBox.innerHTML = message;
         this.messageBoxContainer.hidden = false;
     }
 }
 
-SuperMap.Widgets.MessageBox = MessageBox_MessageBox;
+SuperMap.Components.MessageBox = MessageBox_MessageBox;
 // EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
 var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(36);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
@@ -66207,7 +66207,7 @@ SuperMap.i18n = SuperMap.Lang.i18n;
 var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(22);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
-// CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
+// CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66217,7 +66217,7 @@ var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__we
 
 
 /**
- * @class SuperMap.Widgets.FileReaderUtil
+ * @class SuperMap.Components.FileReaderUtil
  * @classdesc 组件读取文件工具类。
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
@@ -66228,7 +66228,7 @@ let FileReaderUtil_FileReaderUtil = {
     rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
 
     /**
-     * @function SuperMap.Widgets.FileReaderUtil.prototype.readFile
+     * @function SuperMap.Components.FileReaderUtil.prototype.readFile
      * @description 读取文件
      * @param {string} fileType - 当前读取的文件类型
      *
@@ -66293,7 +66293,7 @@ let FileReaderUtil_FileReaderUtil = {
     },
 
     /**
-     * @function SuperMap.Widgets.FileReaderUtil.prototype.processDataToGeoJson
+     * @function SuperMap.Components.FileReaderUtil.prototype.processDataToGeoJson
      * @description 将读取回来得数据统一处理为 GeoJSON 格式
      * @param {string} type - 文件类型
      * @param {Object} data - 读取返回的数据对象
@@ -66329,7 +66329,7 @@ let FileReaderUtil_FileReaderUtil = {
         }
     },
     /**
-     * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
+     * @function SuperMap.Components.FileReaderUtil.prototype.processExcelDataToGeoJson
      * @description 表格文件数据处理
      * @param {Object} data - 读取的表格文件数据
      * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
@@ -66423,10 +66423,10 @@ let FileReaderUtil_FileReaderUtil = {
 
 };
 
-SuperMap.Widgets.FileReaderUtil = FileReaderUtil_FileReaderUtil;
+SuperMap.Components.FileReaderUtil = FileReaderUtil_FileReaderUtil;
 
 
-// CONCATENATED MODULE: ./src/common/widgets/chart/ChartModel.js
+// CONCATENATED MODULE: ./src/common/components/chart/ChartModel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66443,12 +66443,12 @@ SuperMap.Widgets.FileReaderUtil = FileReaderUtil_FileReaderUtil;
 
 
 /**
- * @class SuperMap.Widgets.ChartModel
+ * @class SuperMap.Components.ChartModel
  * @classdesc 图表组件数据模型
  * @private
  * @param {Object} datasets - 数据来源。
  * @category Components Chart
- * @fires SuperMap.Widgets.ChartModel#getdatafailed
+ * @fires SuperMap.Components.ChartModel#getdatafailed
  */
 
 class ChartModel_ChartModel {
@@ -66460,7 +66460,7 @@ class ChartModel_ChartModel {
     }
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype.getDatasetInfo
+     * @function SuperMap.Components.ChartModel.prototype.getDatasetInfo
      * @description 获得数据集数据。
      * @param {string} datasetUrl - 数据集资源地址。
      */
@@ -66489,7 +66489,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype.getDataFeatures
+     * @function SuperMap.Components.ChartModel.prototype.getDataFeatures
      * @description 请求数据集的数据信息
      * @param {Object} results - 数据集信息。
      * @param {function} success - 成功回调函数。
@@ -66519,7 +66519,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype.getLayerFeatures
+     * @function SuperMap.Components.ChartModel.prototype.getLayerFeatures
      * @description 请求图层要素的数据信息
      * @param {Object} results - 数据集信息。
      * @param {Callbacks} success - 成功回调函数。
@@ -66547,7 +66547,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype.getDataInfoByIptl
+     * @function SuperMap.Components.ChartModel.prototype.getDataInfoByIptl
      * @description 用dataId获取iportal的数据。
      * @param {Callbacks} success - getdatachart。
      * 
@@ -66559,7 +66559,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype.getServiceInfo
+     * @function SuperMap.Components.ChartModel.prototype.getServiceInfo
      * @description 用iportal获取dataItemServices。
      * @param {String} url 
      * @param {Callbacks} success - getdatachart。
@@ -66607,7 +66607,7 @@ class ChartModel_ChartModel {
     }
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype.getDatafromURL
+     * @function SuperMap.Components.ChartModel.prototype.getDatafromURL
      * @description 用iportal获取数据。（通过固定的url来请求，但是不能请求工作空间的数据）
      * @param {String} url 
      * @param {Callbacks} success - getdatachart。
@@ -66663,7 +66663,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype._getDataSource
+     * @function SuperMap.Components.ChartModel.prototype._getDataSource
      * @description 获取数据源名和数据集名。
      * @param {string} serviceType 服务类型
      * @param {string} address 地址
@@ -66736,7 +66736,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype.getDatafromRestData
+     * @function SuperMap.Components.ChartModel.prototype.getDatafromRestData
      * @description 请求restdata服务
      * @param {String} url
      * @param {Array<string>} dataSource [数据源名:数据集名]
@@ -66756,7 +66756,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype.getDatafromRestMap
+     * @function SuperMap.Components.ChartModel.prototype.getDatafromRestMap
      * @description 请求restmap服务
      * @param {String} dataSource layerName
      * @param {String} path - map服务地址。
@@ -66776,7 +66776,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype._getFeatureBySQL
+     * @function SuperMap.Components.ChartModel.prototype._getFeatureBySQL
      * @description 通过 sql 方式查询数据。
      */
     _getFeatureBySQL(url, datasetNames, queryInfo, processCompleted, processFaild) {
@@ -66809,7 +66809,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype._queryFeatureBySQL
+     * @function SuperMap.Components.ChartModel.prototype._queryFeatureBySQL
      * @description 通过 sql 方式查询数据。
      */
     _queryFeatureBySQL(url, layerName, queryInfo, fields, epsgCode, processCompleted, processFaild, startRecord, recordLength, onlyAttribute) {
@@ -66841,7 +66841,7 @@ class ChartModel_ChartModel {
         });
     }
     /**
-     * @function SuperMap.Widgets.ChartModel.prototype._queryBySQL
+     * @function SuperMap.Components.ChartModel.prototype._queryBySQL
      * @description  SQL 查询服务。
      * @param {SuperMap.QueryBySQLParameters} params - SQL 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
@@ -66861,7 +66861,7 @@ class ChartModel_ChartModel {
         queryBySQLService.processAsync(params);
     }
     /**
-     * @function SuperMap.Widgets.ChartModel.prototype._processFormat
+     * @function SuperMap.Components.ChartModel.prototype._processFormat
      * @description 将数据转换成geojson。
      * @param {object} resultFormat - 返回结果集。
      * @return {object} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
@@ -66872,7 +66872,7 @@ class ChartModel_ChartModel {
 
     /**
      * @private
-     * @function SuperMap.Widgets.ChartModel.prototype._formatGeoJSON
+     * @function SuperMap.Components.ChartModel.prototype._formatGeoJSON
      * @description 格式 GeoJSON。
      * @param {GeoJSON} data - GeoJSON 数据。
      */
@@ -66887,7 +66887,7 @@ class ChartModel_ChartModel {
     /**
      * @private
      * @description 将 csv 和 xls 文件内容转换成 geojson
-     * @function SuperMap.Widgets.ChartModel.prototype._excelData2Feature
+     * @function SuperMap.Components.ChartModel.prototype._excelData2Feature
      * @param content  文件内容
      * @param layerInfo  图层信息
      * @returns {Array}  feature的数组集合
@@ -66937,7 +66937,7 @@ class ChartModel_ChartModel {
     /**
      * @private
      * @description 请求数据失败的事件
-     * @function SuperMap.Widgets.ChartModel.prototype._fireFailedEvent
+     * @function SuperMap.Components.ChartModel.prototype._fireFailedEvent
      * @param {object} error  错误信息
      */
     _fireFailedEvent(error) {
@@ -66948,14 +66948,14 @@ class ChartModel_ChartModel {
             message: Lang_Lang.i18n('msg_getdatafailed')
         };
         /**
-         * @event SuperMap.Widgets.Chart#getdatafailed
+         * @event SuperMap.Components.Chart#getdatafailed
          * @description 监听到获取数据失败事件后触发
          * @property {Object} error  - 事件对象。
          */
         this.events.triggerEvent("getdatafailed", errorData);
     }
 }
-// CONCATENATED MODULE: ./src/common/widgets/chart/ChartViewModel.js
+// CONCATENATED MODULE: ./src/common/components/chart/ChartViewModel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -66964,13 +66964,13 @@ class ChartModel_ChartModel {
 
 
 /**
- * @class SuperMap.Widgets.ChartViewModel
+ * @class SuperMap.Components.ChartViewModel
  * @classdesc 图表组件功能类
  * @category Components Chart
- * @version 10.X.X
+ * @version 10.0.0
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {SuperMap.Widgets.Chart.Datasets} options.datasets - 数据来源。
+ * @param {SuperMap.Components.Chart.Datasets} options.datasets - 数据来源。
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -66978,7 +66978,7 @@ class ChartModel_ChartModel {
  * @param {Array.<Object>} options.chartOptions.yAxis - 图表Y轴。
  * @param {string} options.chartOptions.yAxis.field - 图表Y轴字段名。
  * @param {string} options.chartOptions.yAxis.name - 图表Y轴名称。
- * @fires SuperMap.Widgets.ChartViewModel#getdatafailed
+ * @fires SuperMap.Components.ChartViewModel#getdatafailed
  */
 
 class ChartViewModel_ChartViewModel {
@@ -67000,7 +67000,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._initXYField
+     * @function SuperMap.Components.ChartViewModel.prototype._initXYField
      * @description 初始化XY字段。
      * @private
      * @param {Object} chartOptions - options里的图表参数
@@ -67025,7 +67025,7 @@ class ChartViewModel_ChartViewModel {
         }
     }
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.getDatasetInfo
+     * @function SuperMap.Components.ChartViewModel.prototype.getDatasetInfo
      * @description 获得数据集数据。
      * @param {function} success - 成功回调函数
      */
@@ -67039,7 +67039,7 @@ class ChartViewModel_ChartViewModel {
                 this.chartModel.getDataInfoByIptl(this._getDataInfoSuccess.bind(this));
             }
             /**
-             * @event SuperMap.Widgets.ChartViewModel#getdatafailed
+             * @event SuperMap.Components.ChartViewModel#getdatafailed
              * @description 监听到获取数据失败事件后触发
              * @property {Object} error  - 事件对象。
              */
@@ -67050,7 +67050,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getDatasetInfoSuccess
+     * @function SuperMap.Components.ChartViewModel.prototype._getDatasetInfoSuccess
      * @description 成功回调函数。
      * @private
      * @param {Object} results - 数据集信息
@@ -67078,7 +67078,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getDataInfoSuccess
+     * @function SuperMap.Components.ChartViewModel.prototype._getDataInfoSuccess
      * @description 请求iportal数据成功之后的回调
      * @private
      */
@@ -67092,7 +67092,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getDataFeatures
+     * @function SuperMap.Components.ChartViewModel.prototype._getDataFeatures
      * @description 请求数据集的数据信息
      * @private
      * @param {Object} results - 数据集信息
@@ -67102,7 +67102,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getLayerFeatures
+     * @function SuperMap.Components.ChartViewModel.prototype._getLayerFeatures
      * @description 请求图层的数据信息
      * @private
      * @param {Object} results - 数据集信息
@@ -67112,7 +67112,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getChartDatas
+     * @function SuperMap.Components.ChartViewModel.prototype._getChartDatas
      * @description 将请求回来的数据转换为图表所需的数据格式
      * @private
      * @param {Object} results - 数据要素信息
@@ -67153,7 +67153,7 @@ class ChartViewModel_ChartViewModel {
         }
     }
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getChartDatasFromLayer
+     * @function SuperMap.Components.ChartViewModel.prototype._getChartDatasFromLayer
      * @description 将请求回来的数据转换为图表所需的数据格式
      * @private
      * @param {Object} results - 图层数据要素信息
@@ -67188,7 +67188,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._createChartOptions
+     * @function SuperMap.Components.ChartViewModel.prototype._createChartOptions
      * @description 创建图表所需参数
      * @private
      * @param {Object} data - 图表数据
@@ -67199,7 +67199,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.changeType
+     * @function SuperMap.Components.ChartViewModel.prototype.changeType
      * @description 改变图表类型
      * @param {string} type - 图表类型
      */
@@ -67211,9 +67211,9 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.updateData
+     * @function SuperMap.Components.ChartViewModel.prototype.updateData
      * @description 改变图表类型
-     * @param {SuperMap.Widgets.Chart.Datasets} datasets - 数据来源
+     * @param {SuperMap.Components.Chart.Datasets} datasets - 数据来源
      * @param {function} success 成功回调函数
      */
     updateData(datasets, chartOption, success) {
@@ -67230,7 +67230,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._updateDataSuccess
+     * @function SuperMap.Components.ChartViewModel.prototype._updateDataSuccess
      * @description 改变图表类型
      * @private
      * @param {Object} data - 图表数据
@@ -67241,7 +67241,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.updateChartOptions
+     * @function SuperMap.Components.ChartViewModel.prototype.updateChartOptions
      * @description 更新图表所需参数
      * @param {string} type - 图表类型
      * @param {Object} style - 图表样式
@@ -67317,7 +67317,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._createChartDatas
+     * @function SuperMap.Components.ChartViewModel.prototype._createChartDatas
      * @description 构建图表数据
      * @private
      * @param {Object} data - 源数据
@@ -67390,7 +67390,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getAttrData
+     * @function SuperMap.Components.ChartViewModel.prototype._getAttrData
      * @description 选中字段数据
      * @private
      * @param {Object} datacontent - 图表数据
@@ -67415,7 +67415,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._createChartSeries
+     * @function SuperMap.Components.ChartViewModel.prototype._createChartSeries
      * @description 图表数据
      * @private
      * @param {Object} calculatedData - 图表数据
@@ -67445,7 +67445,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._isDate
+     * @function SuperMap.Components.ChartViewModel.prototype._isDate
      * @description 判断是否为日期
      * @private
      * @param {string} data - 字符串
@@ -67456,7 +67456,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._isNumber
+     * @function SuperMap.Components.ChartViewModel.prototype._isNumber
      * @description 判断是否为数值
      * @private
      * @param {string} data - 字符串
@@ -67470,7 +67470,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._getDataType
+     * @function SuperMap.Components.ChartViewModel.prototype._getDataType
      * @description 判断数据的类型
      * @private
      * @param {string} data - 字符串
@@ -67488,7 +67488,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._checkUrl
+     * @function SuperMap.Components.ChartViewModel.prototype._checkUrl
      * @description 检查url是否符合要求
      * @private
      * @param {string} url
@@ -67507,7 +67507,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype._isMatchUrl
+     * @function SuperMap.Components.ChartViewModel.prototype._isMatchUrl
      * @description 判断输入的地址是否符合地址格式
      * @private
      * @param {string} str - url
@@ -67518,7 +67518,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.getStyle
+     * @function SuperMap.Components.ChartViewModel.prototype.getStyle
      * @description 获取图表样式。
      */
     getStyle() {
@@ -67531,7 +67531,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.getFeatures
+     * @function SuperMap.Components.ChartViewModel.prototype.getFeatures
      * @description 获取地图服务，数据服务请求返回的数据。
      */
     getFeatures() {
@@ -67539,7 +67539,7 @@ class ChartViewModel_ChartViewModel {
     }
 
     /**
-     * @function SuperMap.Widgets.ChartViewModel.prototype.setStyle
+     * @function SuperMap.Components.ChartViewModel.prototype.setStyle
      * @description 设置图表样式。
      * @param {Object} style - 图表样式
      */
@@ -67547,8 +67547,8 @@ class ChartViewModel_ChartViewModel {
         return this.updateChartOptions(this.chartType, style);
     }
 }
-SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
-// CONCATENATED MODULE: ./src/common/widgets/chart/ChartView.js
+SuperMap.Components.ChartViewModel = ChartViewModel_ChartViewModel;
+// CONCATENATED MODULE: ./src/common/components/chart/ChartView.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -67558,13 +67558,13 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
 
 
 /**
- * @class SuperMap.Widgets.Chart
+ * @class SuperMap.Components.Chart
  * @classdesc 图表组件
  * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {SuperMap.Widgets.Chart.Datasets} options.datasets - 数据来源
+ * @param {SuperMap.Components.Chart.Datasets} options.datasets - 数据来源
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -67575,7 +67575,7 @@ SuperMap.Widgets.ChartViewModel = ChartViewModel_ChartViewModel;
  * @category Components Chart
  */
 /**
- * @typedef {Object} SuperMap.Widgets.Chart.Datasets  - 数据来源
+ * @typedef {Object} SuperMap.Components.Chart.Datasets  - 数据来源
  * @property {string} [type = 'iServer'] - 服务类型 iServer, iPortal。
  * @property {string} url - 服务url地址。
  * @property {boolean} [withCredentials = false] - 设置请求是否带cookie
@@ -67596,7 +67596,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.Chart.prototype.onAdd
+     * @function SuperMap.Components.Chart.prototype.onAdd
      * @description 创建图表之后成功回调
      * @param {function} addChart - 回调函数
      */
@@ -67605,7 +67605,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.Chart.prototype._fillDataToView
+     * @function SuperMap.Components.Chart.prototype._fillDataToView
      * @description 填充数据到 view。
      * @private
      */
@@ -67621,7 +67621,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.Chart.prototype.getStyle
+     * @function SuperMap.Components.Chart.prototype.getStyle
      * @description 获取图表样式。
      */
     getStyle() {
@@ -67629,7 +67629,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.Chart.prototype.getFeatures
+     * @function SuperMap.Components.Chart.prototype.getFeatures
      * @description 获取地图服务，数据服务请求返回的数据。
      */
     getFeatures() {
@@ -67637,7 +67637,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.Chart.prototype.setStyle
+     * @function SuperMap.Components.Chart.prototype.setStyle
      * @description 设置图表样式。
      * @param {Object} style - 图表样式 参考Echarts-options样式设置
      */
@@ -67647,7 +67647,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.Chart.prototype.changeType
+     * @function SuperMap.Components.Chart.prototype.changeType
      * @description 改变图表类型
      * @param {string} type - 图表类型
      */
@@ -67660,9 +67660,9 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.Chart.prototype.updateData
+     * @function SuperMap.Components.Chart.prototype.updateData
      * @description 更新图表数据
-     * @param {SuperMap.Widgets.Chart.Datasets} datasets - 数据来源
+     * @param {SuperMap.Components.Chart.Datasets} datasets - 数据来源
      * @param {Object} chartOption - X,Y轴信息
      */
     updateData(datasets, chartOption) {
@@ -67676,7 +67676,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.Chart.prototype._createChart
+     * @function SuperMap.Components.Chart.prototype._createChart
      * @description 创建图表
      * @private
      * @param {Object} data - 图表数据
@@ -67696,7 +67696,7 @@ class ChartView_ChartView {
     }
 
     /**
-     * @function SuperMap.Widgets.Chart.prototype._updateChart
+     * @function SuperMap.Components.Chart.prototype._updateChart
      * @description 更新图表
      * @private
      * @param {Object} options - 图表参数
@@ -67709,15 +67709,15 @@ class ChartView_ChartView {
     }
 }
 
-SuperMap.Widgets.Chart = ChartView_ChartView;
-// CONCATENATED MODULE: ./src/common/widgets/templates/TemplateBase.js
+SuperMap.Components.Chart = ChartView_ChartView;
+// CONCATENATED MODULE: ./src/common/components/templates/TemplateBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
- * @class SuperMap.Widgets.TemplateBase
+ * @class SuperMap.Components.TemplateBase
  * @classdesc 组件公用组件父类，用于约束统一封装的公用组件结构。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
@@ -67728,20 +67728,20 @@ class TemplateBase_TemplateBase {
     constructor(options) {
         options = options ? options : {};
         /**
-         * @member {string} [SuperMap.Widgets.TemplateBase.prototype.id=null]
+         * @member {string} [SuperMap.Components.TemplateBase.prototype.id=null]
          * @description  组件 dom 元素 id。
          */
         this.id = options.id ? options.id : null;
 
         /**
-         * @member {Element} [SuperMap.Widgets.TemplateBase.prototype.rootContainer=null]
+         * @member {Element} [SuperMap.Components.TemplateBase.prototype.rootContainer=null]
          * @description  组件 dom 元素对象。
          */
         this.rootContainer = null;
     }
 
     /**
-     * @function SuperMap.Widgets.TemplateBase.prototype.getElement
+     * @function SuperMap.Components.TemplateBase.prototype.getElement
      * @description 获取当前组件元素对象。
      * @return {Element}
      */
@@ -67755,7 +67755,7 @@ class TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.TemplateBase.prototype._initView
+     * @function SuperMap.Components.TemplateBase.prototype._initView
      * @private
      * @description 初始化模板。
      */
@@ -67764,7 +67764,7 @@ class TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.TemplateBase.prototype.showView
+     * @function SuperMap.Components.TemplateBase.prototype.showView
      * @description 显示组件。
      */
     showView() {
@@ -67772,7 +67772,7 @@ class TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.TemplateBase.prototype.closeView
+     * @function SuperMap.Components.TemplateBase.prototype.closeView
      * @description 隐藏组件。
      */
     closeView() {
@@ -67780,8 +67780,8 @@ class TemplateBase_TemplateBase {
     }
 }
 
-SuperMap.Widgets.TemplateBase = TemplateBase_TemplateBase;
-// CONCATENATED MODULE: ./src/common/widgets/templates/CommonContainer.js
+SuperMap.Components.TemplateBase = TemplateBase_TemplateBase;
+// CONCATENATED MODULE: ./src/common/components/templates/CommonContainer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -67789,14 +67789,14 @@ SuperMap.Widgets.TemplateBase = TemplateBase_TemplateBase;
 
 
 /**
- * @class SuperMap.Widgets.CommonContainer
+ * @class SuperMap.Components.CommonContainer
  * @classdesc 组件统一外框。
  * @version 9.1.1
  * @param {Object} options - 组件可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。
  * @category Components Common
- * @extends {SuperMap.Widgets.TemplateBase}
+ * @extends {SuperMap.Components.TemplateBase}
  */
 class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -67811,27 +67811,27 @@ class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
      */
     _initView(title) {
         const container = document.createElement("div");
-        container.setAttribute("class", "widget-container");
+        container.setAttribute("class", "component-container");
 
         //title
         const titleContainer = document.createElement("div");
-        titleContainer.setAttribute("class", "widget-title");
+        titleContainer.setAttribute("class", "component-title");
         const titleContent = document.createElement("div");
         titleContent.innerHTML = title;
         titleContainer.appendChild(titleContent);
         container.appendChild(titleContainer);
         //container
-        const widgetContent = document.createElement("div");
-        widgetContent.setAttribute("class", "widget-content");
-        container.appendChild(widgetContent);
-        this.content = widgetContent;
+        const componentContent = document.createElement("div");
+        componentContent.setAttribute("class", "component-content");
+        container.appendChild(componentContent);
+        this.content = componentContent;
 
         this.rootContainer = container;
         return container;
     }
 
     /**
-     * @function SuperMap.Widgets.CommonContainer.prototype.getContentElement
+     * @function SuperMap.Components.CommonContainer.prototype.getContentElement
      * @description 获取内容元素容器
      */
     getContentElement() {
@@ -67839,7 +67839,7 @@ class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.CommonContainer.prototype.appendContent
+     * @function SuperMap.Components.CommonContainer.prototype.appendContent
      * @description 填充内容元素
      */
     appendContent(element) {
@@ -67847,8 +67847,8 @@ class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
     }
 }
 
-SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
-// CONCATENATED MODULE: ./src/common/widgets/templates/Select.js
+SuperMap.Components.CommonContainer = CommonContainer_CommonContainer;
+// CONCATENATED MODULE: ./src/common/components/templates/Select.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -67856,7 +67856,7 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
 
 
 /**
- * @class SuperMap.Widgets.Select
+ * @class SuperMap.Components.Select
  * @classdesc 组件统一的文字下拉框。
  * @version 9.1.1
  * @param {Array.<string|Array>} options - 需要创建的 Select 数据数组。
@@ -67864,7 +67864,7 @@ SuperMap.Widgets.CommonContainer = CommonContainer_CommonContainer;
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
- * @extends {SuperMap.Widgets.TemplateBase}
+ * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
 class Select_Select extends TemplateBase_TemplateBase {
@@ -67874,25 +67874,25 @@ class Select_Select extends TemplateBase_TemplateBase {
     }
 
     _initView(options) {
-        let selectTool = this._createElement('div', "widget-selecttool");
+        let selectTool = this._createElement('div', "component-selecttool");
 
         if (options.labelName) {
-            let label = this._createElement('label', 'widget-selecttool__lable--describe', selectTool);
+            let label = this._createElement('label', 'component-selecttool__lable--describe', selectTool);
             label.innerHTML = options.labelName;
         }
 
-        let chartSelect = this._createElement('div', 'widget-selecttool--chart', selectTool);
+        let chartSelect = this._createElement('div', 'component-selecttool--chart', selectTool);
         chartSelect.setAttribute('tabindex', '1');
 
-        let selectName = this._createElement('div', "widget-selecttool__name", chartSelect);
+        let selectName = this._createElement('div', "component-selecttool__name", chartSelect);
         selectName.title = options.optionsArr[0];
         selectName.innerHTML = options.optionsArr[0];
 
-        let chartTriangleBtn = this._createElement('div', 'widget-selecttool__trianglebtn--chart', chartSelect);
-        let triangleBtn = this._createElement('div', 'widget-triangle-down-img', chartTriangleBtn);
-        let selectContent = this._createElement('div', 'widget-selecttool__content', chartSelect);
-        let scrollarea = this._createElement('div', 'widget-selecttool__content--chart', selectContent);
-        let scrollareaContent = this._createElement('div', 'widget-selecttool__scrollarea__content', scrollarea);
+        let chartTriangleBtn = this._createElement('div', 'component-selecttool__trianglebtn--chart', chartSelect);
+        let triangleBtn = this._createElement('div', 'component-triangle-down-img', chartTriangleBtn);
+        let selectContent = this._createElement('div', 'component-selecttool__content', chartSelect);
+        let scrollarea = this._createElement('div', 'component-selecttool__content--chart', selectContent);
+        let scrollareaContent = this._createElement('div', 'component-selecttool__scrollarea__content', scrollarea);
         scrollareaContent.setAttribute('tabindex', '1');
         this.createOptions(scrollareaContent, options.optionsArr);
         this.optionClickEvent(scrollareaContent, selectName, options.optionsClickCb);
@@ -67902,19 +67902,19 @@ class Select_Select extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.Select.prototype.createOptions
+     * @function SuperMap.Components.Select.prototype.createOptions
      * @description 创建所属下拉框选项。
      */
     createOptions(container, optionsArr) {
         for (let i in optionsArr) {
-            let option = this._createElement('div', 'widget-selecttool__option', container);
+            let option = this._createElement('div', 'component-selecttool__option', container);
             option.title = optionsArr[i];
             option.innerHTML = optionsArr[i];
         }
     }
 
     /**
-     * @function SuperMap.Widgets.Select.prototype._selectClickEvent
+     * @function SuperMap.Components.Select.prototype._selectClickEvent
      * @description select 点击显示&隐藏事件。
      * @private
      */
@@ -67922,7 +67922,7 @@ class Select_Select extends TemplateBase_TemplateBase {
         eventElement.onclick = function (e) {
             if (contentElement.style.display === "block") {
                 contentElement.style.display = "none";
-                triangleBtn.className = "widget-triangle-down-img";
+                triangleBtn.className = "component-triangle-down-img";
             } else {
                 contentElement.style.display = "block";
                 triangleBtn.className = "triangle-up-img";
@@ -67941,7 +67941,7 @@ class Select_Select extends TemplateBase_TemplateBase {
         eventElement.onblur = function () {
 
             contentElement.style.display = "none";
-            triangleBtn.className = "widget-triangle-down-img";
+            triangleBtn.className = "component-triangle-down-img";
         }
     }
 
@@ -67958,7 +67958,7 @@ class Select_Select extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.Select.prototype.optionClickEvent
+     * @function SuperMap.Components.Select.prototype.optionClickEvent
      * @description 下拉框的 option 的点击事件。
      */
     optionClickEvent(optionEleArr, selectNameEle, optionsClickCb) {
@@ -67976,9 +67976,9 @@ class Select_Select extends TemplateBase_TemplateBase {
     }
 }
 
-SuperMap.Widgets.Select = Select_Select;
+SuperMap.Components.Select = Select_Select;
 
-// CONCATENATED MODULE: ./src/common/widgets/templates/DropDownBox.js
+// CONCATENATED MODULE: ./src/common/components/templates/DropDownBox.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -67986,7 +67986,7 @@ SuperMap.Widgets.Select = Select_Select;
 
 
 /**
- * @class SuperMap.Widgets.DropDownBox
+ * @class SuperMap.Components.DropDownBox
  * @classdesc 组件统一的图片下拉框。
  * @version 9.1.1
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
@@ -67998,7 +67998,7 @@ SuperMap.Widgets.Select = Select_Select;
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
  * @category Components Common
- * @extends {SuperMap.Widgets.TemplateBase}
+ * @extends {SuperMap.Components.TemplateBase}
  */
 class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
     constructor(optionsArr) {
@@ -68007,17 +68007,17 @@ class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._initView
+     * @function SuperMap.Components.DropDownBox.prototype._initView
      * @description 初始化下拉框。
      * @private
      * @override
      */
     _initView(optionsArr) {
         let dropDownContainer = document.createElement('div');
-        dropDownContainer.className = 'widget-dropdownbox--container';
+        dropDownContainer.className = 'component-dropdownbox--container';
         let dropDownBox = document.createElement('div');
         dropDownBox.setAttribute('tabindex', '1');
-        dropDownBox.className = "widget-dropdownbox";
+        dropDownBox.className = "component-dropdownbox";
         dropDownContainer.appendChild(dropDownBox);
 
         let dropDownTopContainer = document.createElement('div');
@@ -68026,17 +68026,17 @@ class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
         this._createDropDownOption(optionsArr[0], dropDownTopContainer);
 
         let triangleBtnContainer = document.createElement('div');
-        triangleBtnContainer.className = 'widget-dropdownbox__triangle-btn';
+        triangleBtnContainer.className = 'component-dropdownbox__triangle-btn';
         dropDownBox.appendChild(triangleBtnContainer);
 
         let triangleBtn = document.createElement('div');
-        triangleBtn.className = 'widget-triangle-down-img';
+        triangleBtn.className = 'component-triangle-down-img';
         triangleBtnContainer.appendChild(triangleBtn);
 
         let createDropDownBoxParam = {
             "parentEle": dropDownBox,
-            "dropDownContent": ['widget-dropdownbox__content widget-dropdownbox__content--chart', 'dropDownContent'],
-            "scrollareaContent": 'widget-selecttool__scrollarea__content',
+            "dropDownContent": ['component-dropdownbox__content component-dropdownbox__content--chart', 'dropDownContent'],
+            "scrollareaContent": 'component-selecttool__scrollarea__content',
             "optionsArr": optionsArr,
             "triangleBtn": triangleBtn,
             "dropDownTopContainer": dropDownTopContainer
@@ -68048,7 +68048,7 @@ class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._createDropDownBox
+     * @function SuperMap.Components.DropDownBox.prototype._createDropDownBox
      * @description 创建下拉框。
      * @private
      */
@@ -68084,13 +68084,13 @@ class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._createDropDownOption
+     * @function SuperMap.Components.DropDownBox.prototype._createDropDownOption
      * @description 创建下拉框子元素。
      * @private
      */
     _createDropDownOption(data, parentElement) {
         let ele = document.createElement('div');
-        ele.className = 'widget-dropdownbox__item';
+        ele.className = 'component-dropdownbox__item';
         let dataItem = data;
         if (dataItem['dataValue']) {
             ele.setAttribute('data-value', dataItem['dataValue']);
@@ -68098,7 +68098,7 @@ class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
         parentElement.appendChild(ele);
 
         let imgContainer = document.createElement('div');
-        imgContainer.className = 'widget-dropdownbox__item__img';
+        imgContainer.className = 'component-dropdownbox__item__img';
         ele.appendChild(imgContainer);
 
         let img = document.createElement('div');
@@ -68111,20 +68111,20 @@ class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
         imgContainer.appendChild(img);
 
         let title = document.createElement('div');
-        title.className = 'widget-dropdownbox__item__title';
+        title.className = 'component-dropdownbox__item__title';
         title.title = dataItem.title;
         title.innerHTML = dataItem.title;
         ele.appendChild(title);
 
         let remark = document.createElement('div');
-        remark.className = 'widget-dropdownbox__item__remark';
+        remark.className = 'component-dropdownbox__item__remark';
         remark.title = dataItem.remark;
         remark.innerHTML = dataItem.remark;
         ele.appendChild(remark);
     }
 
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._dropDownClickEvent
+     * @function SuperMap.Components.DropDownBox.prototype._dropDownClickEvent
      * @description 下拉框点击事件。
      * @private
      */
@@ -68132,7 +68132,7 @@ class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
         eventElement.onclick = function (e) {
             if (contentElement.style.display === "block") {
                 contentElement.style.display = "none";
-                triangleBtn.className = "widget-triangle-down-img";
+                triangleBtn.className = "component-triangle-down-img";
             } else {
                 contentElement.style.display = "block";
                 triangleBtn.className = "triangle-up-img";
@@ -68151,19 +68151,19 @@ class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._eleOnblur
+     * @function SuperMap.Components.DropDownBox.prototype._eleOnblur
      * @description 下拉框失焦事件。
      * @private
      */
     _eleOnblur(eventElement, contentElement, triangleBtn) {
         eventElement.onblur = function () {
             contentElement.style.display = "none";
-            triangleBtn.className = "widget-triangle-down-img";
+            triangleBtn.className = "component-triangle-down-img";
         }
     }
 
     /**
-     * @function SuperMap.Widgets.DropDownBox.prototype._createElement
+     * @function SuperMap.Components.DropDownBox.prototype._createElement
      * @description 通用创建元素。
      * @private
      */
@@ -68176,9 +68176,9 @@ class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
 
 }
 
-SuperMap.Widgets.DropDownBox = DropDownBox_DropDownBox;
+SuperMap.Components.DropDownBox = DropDownBox_DropDownBox;
 
-// CONCATENATED MODULE: ./src/common/widgets/templates/PopContainer.js
+// CONCATENATED MODULE: ./src/common/components/templates/PopContainer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68186,13 +68186,13 @@ SuperMap.Widgets.DropDownBox = DropDownBox_DropDownBox;
 
 
 /**
- * @class SuperMap.Widgets.PopContainer
+ * @class SuperMap.Components.PopContainer
  * @classdesc 弹框组件。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 弹框组件名称。
- * @extends {SuperMap.Widgets.TemplateBase}
+ * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
 class PopContainer_PopContainer extends TemplateBase_TemplateBase {
@@ -68209,25 +68209,25 @@ class PopContainer_PopContainer extends TemplateBase_TemplateBase {
      */
     _initView(titile) {
         const container = document.createElement("div");
-        container.setAttribute("class", "widget-popcontainer");
+        container.setAttribute("class", "component-popcontainer");
 
         //header
         const header = document.createElement("div");
-        header.setAttribute("class", "widget-popcontainer__header");
+        header.setAttribute("class", "component-popcontainer__header");
         const title = document.createElement("label");
-        title.setAttribute("class", "widget-popcontainer__header__title");
+        title.setAttribute("class", "component-popcontainer__header__title");
         title.innerHTML = titile;
         header.appendChild(title);
 
         const closeBtn = document.createElement("span");
-        closeBtn.setAttribute("class", "supermapol-icons-clear widget-popcontainer__header__close");
+        closeBtn.setAttribute("class", "supermapol-icons-clear component-popcontainer__header__close");
         closeBtn.onclick = this.closeView.bind(this);
         container.appendChild(closeBtn);
         container.appendChild(header);
 
         //content
         const content = document.createElement("div");
-        content.setAttribute("class", "widget-popcontainer__content");
+        content.setAttribute("class", "component-popcontainer__content");
         this.content = content;
 
         container.appendChild(content);
@@ -68237,7 +68237,7 @@ class PopContainer_PopContainer extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.PopContainer.prototype.appendContent
+     * @function SuperMap.Components.PopContainer.prototype.appendContent
      * @description 追加内容。
      * @param {Element} dom - 内容元素。
      */
@@ -68247,8 +68247,8 @@ class PopContainer_PopContainer extends TemplateBase_TemplateBase {
 
 }
 
-SuperMap.Widgets.PopContainer = PopContainer_PopContainer;
-// CONCATENATED MODULE: ./src/common/widgets/templates/AttributesPopContainer.js
+SuperMap.Components.PopContainer = PopContainer_PopContainer;
+// CONCATENATED MODULE: ./src/common/components/templates/AttributesPopContainer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68256,14 +68256,14 @@ SuperMap.Widgets.PopContainer = PopContainer_PopContainer;
 
 
 /**
- * @class SuperMap.Widgets.AttributesPopContainer
+ * @class SuperMap.Components.AttributesPopContainer
  * @classdesc 属性弹框组件
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object} options.title - 属性弹框组件名称。
  * @param {Object} options.attributes - 组件需要显示的属性内容。
- * @extends {SuperMap.Widgets.PopContainer}
+ * @extends {SuperMap.Components.PopContainer}
  * @category Components Common
  */
 class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopContainer {
@@ -68279,7 +68279,7 @@ class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopCont
 
     _createAttributesTable(attributes) {
         const table = document.createElement("table");
-        table.setAttribute("class", "widget-popcontainer__content__table");
+        table.setAttribute("class", "component-popcontainer__content__table");
 
         const tbody = document.createElement("tbody");
 
@@ -68287,7 +68287,7 @@ class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopCont
         for (let name in attributes) {
             const tr = document.createElement("tr");
             if (single) {
-                tr.setAttribute("class", "widget-popcontainer__content__td--color");
+                tr.setAttribute("class", "component-popcontainer__content__td--color");
             }
             const title = document.createElement("td");
             const titleSpan = document.createElement("Span");
@@ -68307,8 +68307,8 @@ class AttributesPopContainer_AttributesPopContainer extends PopContainer_PopCont
     }
 }
 
-SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopContainer;
-// CONCATENATED MODULE: ./src/common/widgets/templates/IndexTabsPageContainer.js
+SuperMap.Components.AttributesPopContainer = AttributesPopContainer_AttributesPopContainer;
+// CONCATENATED MODULE: ./src/common/components/templates/IndexTabsPageContainer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68316,13 +68316,13 @@ SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopCo
 
 
 /**
- * @class SuperMap.Widgets.IndexTabsPageContainer
+ * @class SuperMap.Components.IndexTabsPageContainer
  * @description 标签索引组件。
  * @version 9.1.1
  * @param {Object} options - 可选参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Components Common
- * @extends {SuperMap.Widgets.TemplateBase}
+ * @extends {SuperMap.Components.TemplateBase}
  */
 class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_TemplateBase {
     constructor(options) {
@@ -68336,13 +68336,13 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_Templat
      */
     _initView() {
         const container = document.createElement("div");
-        container.setAttribute("class", "widget-tabpage");
+        container.setAttribute("class", "component-tabpage");
 
         const header = document.createElement("ul");
         this.header = header;
 
         const content = document.createElement("div");
-        content.setAttribute("class", "widget-tabpage__content");
+        content.setAttribute("class", "component-tabpage__content");
         this.content = content;
 
         container.appendChild(header);
@@ -68352,7 +68352,7 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_Templat
     }
 
     /**
-     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.setTabs
+     * @function SuperMap.Components.IndexTabsPageContainer.prototype.setTabs
      * @description 设置标签元素。
      * @param {Array.<Element>} tabs
      */
@@ -68362,7 +68362,7 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_Templat
     }
 
     /**
-     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.appendTabs
+     * @function SuperMap.Components.IndexTabsPageContainer.prototype.appendTabs
      * @description 追加标签元素。
      * @param {Array.<Element>} tabs
      */
@@ -68387,7 +68387,7 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_Templat
     }
 
     /**
-     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeTab
+     * @function SuperMap.Components.IndexTabsPageContainer.prototype.removeTab
      * @description 删除某个标签页面。
      * @param {number} index - 标签索引号。
      */
@@ -68397,7 +68397,7 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_Templat
     }
 
     /**
-     * @function SuperMap.Widgets.IndexTabsPageContainer.prototype.removeAllTabs
+     * @function SuperMap.Components.IndexTabsPageContainer.prototype.removeAllTabs
      * @description 删除所有标签。
      */
     removeAllTabs() {
@@ -68421,8 +68421,8 @@ class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_Templat
 
 }
 
-SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer_IndexTabsPageContainer;
-// CONCATENATED MODULE: ./src/common/widgets/templates/CityTabsPage.js
+SuperMap.Components.IndexTabsPageContainer = IndexTabsPageContainer_IndexTabsPageContainer;
+// CONCATENATED MODULE: ./src/common/components/templates/CityTabsPage.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68431,21 +68431,21 @@ SuperMap.Widgets.IndexTabsPageContainer = IndexTabsPageContainer_IndexTabsPageCo
 
 
 /**
- * @class SuperMap.Widgets.CityTabsPage
+ * @class SuperMap.Components.CityTabsPage
  * @classdesc 城市地址匹配组件模板
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
- * @extends {SuperMap.Widgets.IndexTabsPageContainer}
+ * @extends {SuperMap.Components.IndexTabsPageContainer}
  * @category Components Common
  */
 class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageContainer {
     constructor(options) {
         super(options);
         //去掉默认的边框阴影样式：
-        this.rootContainer.classList.add("widget-citytabpage--noneBoxShadow");
+        this.rootContainer.classList.add("component-citytabpage--noneBoxShadow");
         this.config = options.config;
         //header，若 config为城市名称数组，则直接加载内容
         if (Util_Util.isArray(this.config)) {
@@ -68468,7 +68468,7 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageCont
     }
 
     /**
-     * @function SuperMap.Widgets.CityTabsPage.prototype._createTabs
+     * @function SuperMap.Components.CityTabsPage.prototype._createTabs
      * @description 创建 Tabs
      * @private
      */
@@ -68496,7 +68496,7 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageCont
     }
 
     /**
-     * @function SuperMap.Widgets.CityTabsPage.prototype._createCityContent
+     * @function SuperMap.Components.CityTabsPage.prototype._createCityContent
      * @description 创建列表容器
      * @private
      */
@@ -68513,7 +68513,7 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageCont
     }
 
     /**
-     * @function SuperMap.Widgets.CityTabsPage.prototype._createCityContent
+     * @function SuperMap.Components.CityTabsPage.prototype._createCityContent
      * @description 创建列表容器
      * @private
      */
@@ -68521,12 +68521,12 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageCont
         const city = document.createElement("div");
 
         const cityClass = document.createElement("div");
-        cityClass.setAttribute("class", "widget-citytabpag__py-key");
+        cityClass.setAttribute("class", "component-citytabpag__py-key");
         cityClass.innerHTML = key;
         city.appendChild(cityClass);
 
         const cityContent = document.createElement("div");
-        cityContent.setAttribute("class", "widget-citytabpag__content");
+        cityContent.setAttribute("class", "component-citytabpag__content");
 
         for (let i = 0; i < cities.length; i++) {
             let span = document.createElement("span");
@@ -68543,8 +68543,8 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageCont
 
 }
 
-SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
-// CONCATENATED MODULE: ./src/common/widgets/templates/NavTabsPage.js
+SuperMap.Components.CityTabsPage = CityTabsPage_CityTabsPage;
+// CONCATENATED MODULE: ./src/common/components/templates/NavTabsPage.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68552,13 +68552,13 @@ SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
 
 
 /**
- * @class SuperMap.Widgets.NavTabsPage
+ * @class SuperMap.Components.NavTabsPage
  * @classdesc 标签页面组件。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {Array.<Object>} [options.tabs=[]] - 标签对象数组，形如：[{title: "",content: HTMLElement}]，初始时，传入则创建页面。
- * @extends {SuperMap.Widgets.TemplateBase}
+ * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用
@@ -68577,7 +68577,7 @@ class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
      */
     _initView(tabs) {
         const navTabsPage = document.createElement("div");
-        navTabsPage.setAttribute("class", "widget-navtabspage");
+        navTabsPage.setAttribute("class", "component-navtabspage");
 
         //关闭按钮
         const closeBtn = document.createElement("span");
@@ -68588,13 +68588,13 @@ class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
         //标签
         const navTabsTitle = document.createElement("div");
         this.navTabsTitle = navTabsTitle;
-        navTabsTitle.setAttribute("class", "widget-navtabspage__title");
+        navTabsTitle.setAttribute("class", "component-navtabspage__title");
         navTabsPage.appendChild(navTabsTitle);
 
         //内容
         const navTabsContent = document.createElement("div");
         this.navTabsContent = navTabsContent;
-        navTabsContent.setAttribute("class", "widget-navtabspage__content");
+        navTabsContent.setAttribute("class", "component-navtabspage__content");
         navTabsPage.appendChild(navTabsContent);
 
         //若 tabs 初始传入值，则
@@ -68606,7 +68606,7 @@ class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.NavTabsPage.prototype.setTabs
+     * @function SuperMap.Components.NavTabsPage.prototype.setTabs
      * @description 设置标签。
      * @param {Array.<Object>} tabs - 标签对象数组，形如：[{title: "",content: {}}]。
      */
@@ -68616,7 +68616,7 @@ class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.NavTabsPage.prototype.appendTabs
+     * @function SuperMap.Components.NavTabsPage.prototype.appendTabs
      * @description 添加标签页面。
      * @param {Array.<Object>} tabs - 标签对象数组，形如：[{title: "",content: {}}]。
      */
@@ -68636,12 +68636,12 @@ class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
         }
         //todo 确认是否两个子元素的 index 相互对应
         //默认显示第一个标签对象
-        this.navTabsTitle.firstChild.setAttribute("class", "widget-navtabspage__tabs--select");
+        this.navTabsTitle.firstChild.setAttribute("class", "component-navtabspage__tabs--select");
         this.navTabsContent.firstChild.hidden = false;
     }
 
     /**
-     * @function SuperMap.Widgets.NavTabsPage.prototype.removeTab
+     * @function SuperMap.Components.NavTabsPage.prototype.removeTab
      * @description 删除某个标签页面。
      * @param {number} index - 标签索引号。
      */
@@ -68651,7 +68651,7 @@ class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
     }
 
     /**
-     * @function SuperMap.Widgets.NavTabsPage.prototype.removeAllTabs
+     * @function SuperMap.Components.NavTabsPage.prototype.removeAllTabs
      * @description 删除所有标签。
      */
     removeAllTabs() {
@@ -68667,7 +68667,7 @@ class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
             this.navTabsTitle.children[i].setAttribute("class", "");
             this.navTabsContent.children[i].hidden = true;
             if (i === index) {
-                this.navTabsTitle.children[i].setAttribute("class", "widget-navtabspage__tabs--select");
+                this.navTabsTitle.children[i].setAttribute("class", "component-navtabspage__tabs--select");
                 this.navTabsContent.children[i].hidden = false;
             }
         }
@@ -68675,8 +68675,8 @@ class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
 
 }
 
-SuperMap.Widgets.NavTabsPage = NavTabsPage_NavTabsPage;
-// CONCATENATED MODULE: ./src/common/widgets/templates/PaginationContainer.js
+SuperMap.Components.NavTabsPage = NavTabsPage_NavTabsPage;
+// CONCATENATED MODULE: ./src/common/components/templates/PaginationContainer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68684,14 +68684,14 @@ SuperMap.Widgets.NavTabsPage = NavTabsPage_NavTabsPage;
 
 
 /**
- * @class SuperMap.Widgets.PaginationContainer
+ * @class SuperMap.Components.PaginationContainer
  * @classdesc 分页组件模板。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} optionsArr.id - 组件 dom 元素 id。
  * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
  * @param {number} options.pageCounts - 页数。
- * @extends {SuperMap.Widgets.TemplateBase}
+ * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
 class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase {
@@ -68709,7 +68709,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase 
     }
 
     /**
-     * @function SuperMap.Widgets.PaginationContainer.prototype.setLinkageEvent
+     * @function SuperMap.Components.PaginationContainer.prototype.setLinkageEvent
      * @description 设置页面联动方法。
      * @param {function} linkageEvent - 联动方法，实现指定功能。
      */
@@ -68723,17 +68723,17 @@ class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase 
      */
     _initView(contents, pageCounts) {
         const container = document.createElement("div");
-        container.setAttribute("class", "widget-pagination");
+        container.setAttribute("class", "component-pagination");
 
         //content
         const content = document.createElement("div");
-        content.setAttribute("class", "widget-pagination__content");
+        content.setAttribute("class", "component-pagination__content");
         container.appendChild(content);
         this.content = content;
 
         //link
         const link = document.createElement("ul");
-        link.setAttribute("class", "widget-pagination__link");
+        link.setAttribute("class", "component-pagination__link");
         link.onclick = this._changePageEvent.bind(this);
         container.appendChild(link);
         this._createLink(link);
@@ -68750,7 +68750,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase 
 
     /**---------以下是页面相关操作 **/
     /**
-     * @function SuperMap.Widgets.PaginationContainer.prototype.setContent
+     * @function SuperMap.Components.PaginationContainer.prototype.setContent
      * @description 设置页面内容。
      * @param {Element} element - 页面内容元素。
      */
@@ -68760,7 +68760,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase 
     }
 
     /**
-     * @function SuperMap.Widgets.PaginationContainer.prototype.appendContent
+     * @function SuperMap.Components.PaginationContainer.prototype.appendContent
      * @description 追加内容。
      * @param {Element} element - 页面内容元素。
      */
@@ -68769,7 +68769,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase 
     }
 
     /**
-     * @function SuperMap.Widgets.PaginationContainer.prototype.clearContent
+     * @function SuperMap.Components.PaginationContainer.prototype.clearContent
      * @description 清空内容元素。
      */
     clearContent() {
@@ -68780,7 +68780,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase 
 
     /** -----以下是页码相关的操作：**/
     /**
-     * @function SuperMap.Widgets.PaginationContainer.prototype.setPageLink
+     * @function SuperMap.Components.PaginationContainer.prototype.setPageLink
      * @description 设置页码数。
      * @param {number} pageNumber - 页码数。
      */
@@ -68850,7 +68850,7 @@ class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase 
     }
 
     /**
-     * @function SuperMap.Widgets.PaginationContainer.prototype.clearPageLink
+     * @function SuperMap.Components.PaginationContainer.prototype.clearPageLink
      * @description 清除页码列表。
      */
     clearPageLink() {
@@ -68989,14 +68989,14 @@ class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase 
 
 }
 
-SuperMap.Widgets.PaginationContainer = PaginationContainer_PaginationContainer;
-// CONCATENATED MODULE: ./src/common/widgets/util/Util.js
+SuperMap.Components.PaginationContainer = PaginationContainer_PaginationContainer;
+// CONCATENATED MODULE: ./src/common/components/util/Util.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-let Util_widgetsUtil = {
+let Util_ComponentsUtil = {
     /**
      * 获取上传文件类型
      * @param fileName
@@ -69016,7 +69016,7 @@ let Util_widgetsUtil = {
     }
 
 };
-// CONCATENATED MODULE: ./src/common/widgets/util/index.js
+// CONCATENATED MODULE: ./src/common/components/util/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -69025,7 +69025,7 @@ let Util_widgetsUtil = {
 
 
 
-// CONCATENATED MODULE: ./src/common/widgets/index.js
+// CONCATENATED MODULE: ./src/common/components/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -87329,7 +87329,7 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CityTabsPage", function() { return CityTabsPage_CityTabsPage; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NavTabsPage", function() { return NavTabsPage_NavTabsPage; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PaginationContainer", function() { return PaginationContainer_PaginationContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "widgetsUtil", function() { return Util_widgetsUtil; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ComponentsUtil", function() { return Util_ComponentsUtil; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil_FileReaderUtil; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChangeTileVersion", function() { return ChangeTileVersion_ChangeTileVersion; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ScaleLine", function() { return ScaleLine_ScaleLine; });
@@ -90193,7 +90193,7 @@ module.exports = function(proj4){
 /* 70 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 71 */

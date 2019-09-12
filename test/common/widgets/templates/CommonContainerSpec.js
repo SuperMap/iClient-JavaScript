@@ -1,6 +1,6 @@
 import {
     CommonContainer
-} from '../../../../src/common/widgets/templates/CommonContainer';
+} from '../../../../src/common/components/templates/CommonContainer';
 
 
 describe('CommonContainer', () => {

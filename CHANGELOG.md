@@ -110,7 +110,7 @@
 
 - iClient for MapboxGL 新增 WebMap 地图组件，图表组件，图例组件，图层列表组件，量算组件，查询/搜索组件，进度条等基础组件，支持多种主题（可一键切换风格）
 
-![whatsNewMapboxGlWidgets](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
+![whatsNewMapboxGlComponents](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
  
 ## API changes
 
@@ -199,7 +199,7 @@
 
 -	iClient for Leaflet新增：文件打开组件、数据流组件、地址匹配与图层查询组件、客户端计算组件、分布式分析组件、数据服务查询组件
 
-![whatsNewWidgets](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-2.png)
+![whatsNewClientComputaion](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-2.png)
  
 ## API changes
 

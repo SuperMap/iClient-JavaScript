@@ -91,7 +91,7 @@ Object.defineProperty(exports, "__esModule", {
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = exports.SuperMap = window.SuperMap = window.SuperMap || {};
-SuperMap.Widgets = window.SuperMap.Widgets || {};
+SuperMap.Components = window.SuperMap.Components || {};
 
 /***/ }),
 /* 1 */

@@ -1,0 +1,75 @@
+/** 提示框样式 **/
+.component-messageboxcontainer {
+    position: absolute;
+    top: 20px;
+
+    /*绝对定位左右居中(注：该方法需要设置最大宽度)*/
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    min-height: 50px;
+    max-width: 500px;
+    border-radius: 2px;
+    background-color: white;
+    z-index: 1000;
+}
+
+.component-border-bottom-orange {
+    border-bottom: orange solid 1.5px;
+}
+
+.component-border-bottom-red {
+    border-bottom: red solid 1.5px;
+}
+
+.component-border-bottom-green {
+    border-bottom: green solid 1.5px;
+}
+
+.component-messageboxcontainer .icon {
+    float: left;
+    font-size: 24px;
+    margin-left: 20px;
+    margin-top: 6px;
+    display: inline-block;
+}
+
+.component-messageboxcontainer .supermapol-icons-message-success {
+    color: green;
+}
+
+.component-messageboxcontainer .supermapol-icons-message-failure {
+    color: red;
+}
+
+.component-messageboxcontainer .supermapol-icons-message-warning {
+    color: orange;
+}
+
+.component-messagebox {
+    float: left;
+    color: #595959;
+    font-size: 12px;
+    margin: 15px 10px;
+}
+
+.component-messagebox__cancelbtncontainer {
+    position: relative;
+    height: 5px;
+}
+
+.component-messagebox__cancelBtn {
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    border: none;
+    background: transparent;
+    color: #A4A4A4;
+    cursor: pointer;
+}
+
+.component-messagebox__cancelBtn:hover {
+    border: none;
+    font-weight: 600;
+}

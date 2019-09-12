@@ -1,0 +1,80 @@
+/**弹框组件样式**/
+.component-popcontainer {
+    /*width: 300px;*/
+    background-color: #fff;
+    box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.component-popcontainer__header {
+    position: relative;
+    width: 100%;
+    height: 36px;
+    background-color: #0083cb;
+    left: 0;
+    top: 0;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.component-popcontainer__header__title {
+    color: #fff;
+    font-size: 14px;
+    margin-left: 16px;
+    margin-bottom: 0;
+    overflow: hidden;
+    font-weight: bold;
+    line-height: 36px;
+    text-overflow: ellipsis;
+}
+
+.component-popcontainer__header__close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 15px;
+    color: #fff;
+    opacity: 0.6;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/*.component-pop-delete:hover {
+    opacity: 1;
+}*/
+
+.component-popcontainer__content {
+    position: relative;
+    /*padding: 5px 16px;*/
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    padding-bottom: 15px;
+}
+
+.component-popcontainer__content__table {
+    font-size: 12px;
+    line-height: 18px;
+    word-wrap: break-word;
+    color: #919191;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.component-popcontainer__content__table span {
+    display: inline-block;
+    color: #595959;
+    overflow: hidden;
+    max-width: 133px;
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
+
+.component-popcontainer__content__table td {
+    /*width: 50%;*/
+    min-height: 28px;
+    padding: 4px 18px;
+}
+
+.component-popcontainer__content__td--color{
+    background-color: #f9f9f9;
+}

@@ -30,7 +30,7 @@
         var infoView = L.control({position: 'topright'});
         infoView.onAdd = function () {
             var me = this;
-            me._div = L.DomUtil.create('div', "widget-openfile");
+            me._div = L.DomUtil.create('div', "component-openfile");
             //避免与"源码"控件重叠
             me._div.style["margin"] = "40px 4px 0px 0px";
             me._div.id = "addDataContainer";
@@ -83,19 +83,19 @@
 
         render() {
             return <div className="file-select">
-                <label className="widget-openfile__span--select" htmlFor="input_file">
+                <label className="component-openfile__span--select" htmlFor="input_file">
                     <div className="supermapol-icons-upload"/>
-                    <span className="widget-openfile__span">{this.props.text}</span>
+                    <span className="component-openfile__span">{this.props.text}</span>
                 </label>
-                <input className="widget-openfile__input" id="input_file" type="file"
+                <input className="component-openfile__input" id="input_file" type="file"
                        accept=".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                        onChange={this.fileSelectfn}/>
             </div>
         }
     }
 
-    var openFileViewModel = L.supermap.widgets.openFileViewModel(map);
-    var messageBox = new SuperMap.Widgets.MessageBox();
+    var openFileViewModel = L.supermap.components.openFileViewModel(map);
+    var messageBox = new SuperMap.Components.MessageBox();
     ReactDOM.render(
             <AddData openFileViewModel={openFileViewModel} messageBox={messageBox} text={resources.text_openFile}/>,
         document.getElementById('addDataContainer')

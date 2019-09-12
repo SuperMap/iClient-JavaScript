@@ -1,6 +1,6 @@
 import {
     NavTabsPage
-} from '../../../../src/common/widgets/templates/NavTabsPage';
+} from '../../../../src/common/components/templates/NavTabsPage';
 
 
 describe('NavTabsPage', () => {

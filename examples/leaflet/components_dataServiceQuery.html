@@ -28,7 +28,7 @@
         L.supermap.tiledMapLayer(url).addTo(map);
 
         var dataserviceUrl = host + '/iserver/services/data-world/rest/data';
-        var dataServiceQuery = L.supermap.widgets.dataServiceQuery(dataserviceUrl, ['World:Countries']).addTo(map);
+        var dataServiceQuery = L.supermap.components.dataServiceQuery(dataserviceUrl, ['World:Countries']).addTo(map);
     </script>
 </body>
 

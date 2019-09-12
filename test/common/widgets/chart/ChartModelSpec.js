@@ -1,6 +1,6 @@
 import {
     ChartModel
-} from '../../../../src/common/widgets/chart/ChartModel';
+} from '../../../../src/common/components/chart/ChartModel';
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 import '../../../resources/LayersInfo';
 

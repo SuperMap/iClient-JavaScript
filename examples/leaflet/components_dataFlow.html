@@ -23,7 +23,7 @@
 
     L.supermap.tiledMapLayer(url).addTo(map);
 
-    L.supermap.widgets.dataFlow({
+    L.supermap.components.dataFlow({
         //pointToLayer 设置点样式：
         pointToLayer: function (geoJsonPoint, latlng) {
             return L.circleMarker(latlng, {

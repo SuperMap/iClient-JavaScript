@@ -36,7 +36,7 @@
 
         L.supermap.tiledMapLayer(url).addTo(map);
         //添加组件：
-        var poiSearch = L.supermap.widgets.search({
+        var poiSearch = L.supermap.components.search({
             isGeoCoding: !window.isLocal,
             perPageDataNum: 8  // 每页显示数据个数
             //设置结果图层样式：
@@ -79,7 +79,7 @@
                             });
                         },
                     }).addTo(map);
-                    poiSearch.addSearchLayer([L.supermap.widgets.geoJSONLayerWithName("首都", resultLayer)]);
+                    poiSearch.addSearchLayer([L.supermap.components.geoJSONLayerWithName("首都", resultLayer)]);
                 });
         }
     </script>

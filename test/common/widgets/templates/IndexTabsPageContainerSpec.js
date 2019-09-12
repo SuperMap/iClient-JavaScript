@@ -1,6 +1,6 @@
 import {
     IndexTabsPageContainer
-} from '../../../../src/common/widgets/templates/IndexTabsPageContainer';
+} from '../../../../src/common/components/templates/IndexTabsPageContainer';
 // import {
 //     GeometryType
 // } from '../../../src/common/REST';

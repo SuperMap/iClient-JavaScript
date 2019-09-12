@@ -25,8 +25,8 @@
     var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
     var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);
 
-    var openFileViewModel = L.supermap.widgets.openFileViewModel(map);
-    var messageBox = new SuperMap.Widgets.MessageBox();
+    var openFileViewModel = L.supermap.components.openFileViewModel(map);
+    var messageBox = new SuperMap.Components.MessageBox();
 
     initEditView();
 
@@ -34,7 +34,7 @@
         var infoView = L.control({position: 'topright'});
         infoView.onAdd = function () {
             var me = this;
-            me._div = L.DomUtil.create('div', "widget-openfile");
+            me._div = L.DomUtil.create('div', "component-openfile");
             me._div.id = "openFileContainer";
             //避免与"源码"控件重叠
             me._div.style["margin"] = "40px 4px 0px 0px";
@@ -70,11 +70,11 @@
         },
         template: [
             "<div class='file-select'>",
-            "<label class='widget-openfile__span--select' for='input_file'>",
+            "<label class='component-openfile__span--select' for='input_file'>",
             "<div class='supermapol-icons-upload'/>",
-            "<span class='widget-openfile__span'>{{text}}</span>",
+            "<span class='component-openfile__span'>{{text}}</span>",
             "</label>",
-            "<input class='widget-openfile__input' id='input_file' type='file'",
+            "<input class='component-openfile__input' id='input_file' type='file'",
             "accept='.json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel'",
             "v-on:change='fileSelectfn(this, $event)'>",
             "</div>"

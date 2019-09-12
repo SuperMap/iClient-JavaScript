@@ -1,0 +1,133 @@
+/**客户端分析样式**/
+/**-----------分析面板滚动条----------------*/
+.component-textarea {
+    height: 200px;
+    padding-right: 0;
+    overflow: hidden;
+}
+
+.component-scrollarea-content {
+    margin-top: 0;
+    margin-left: 0;
+    overflow: visible;
+    width: 188px;
+    min-height: 28px;
+}
+
+.component-textarea__content {
+    overflow: scroll;
+    text-align: left;
+    font-family: "Microsoft Yahei";
+    line-height: 1;
+    height: 200px;
+    color: rgb(89, 89, 89);
+    letter-spacing: 0.14px;
+    border: 0;
+    width: 96%;
+    font-size: 12px;
+}
+
+.component-textarea__content:focus {
+    border: 1px solid transparent;
+    outline: none;
+}
+
+/* 缓冲区 */
+.component-clientcomputation__buffer--radius > div {
+    line-height: 28px;
+    margin-top: 8px;
+    vertical-align: middle;
+    margin-bottom: 16px;
+}
+
+.component-clientcomputation__buffer--radius > div > input {
+    width: 112px;
+    height: 24px;
+    margin-right: 5px;
+    margin-top: 0;
+    display: inline-block;
+}
+
+.component-clientcomputation__buffer--unit {
+    position: relative;
+    width: 62px;
+    height: 28px;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+/* --------- 复选框 保留原对象字段属性 start  --------- */
+.component-clientcomputation__buffer--isunion .checkbox,
+.component-clientcomputation__buffer--issaveattrs .checkbox {
+    position: absolute;
+    margin-top: 1px;
+    height: 14px;
+    width: 14px;
+}
+
+.component-clientcomputation__buffer--isunion .lable,
+.component-clientcomputation__buffer--issaveattrs .lable {
+    margin-left: 20px;
+    line-height: 16px;
+    font-size: 12px;
+    color: #919191;
+}
+
+.component-clientcomputation__buffer--isunion,
+.component-clientcomputation__buffer--issaveattrs {
+    height: 16px;
+    width: 100%;
+    margin-top: 8px;
+    position: relative;
+}
+
+/* -------- 复选框两种状态随意切换 --------  */
+.component-clientcomputation__buffer--isunion .checkbox-fault,
+.component-clientcomputation__buffer--issaveattrs .checkbox-fault {
+    background: url("../image/iweb_checkbox_default_icon.png") no-repeat center;
+}
+
+.component-clientcomputation__buffer--isunion .checkbox-active,
+.component-clientcomputation__buffer--issaveattrs .checkbox-active {
+    background: url("../image/iweb_checkbox_selected_icon.png") no-repeat center;
+}
+
+/* -------- 合并缓冲区 start --------  */
+.component-clientcomputation__buffer--isunion .selected,
+.component-clientcomputation__buffer--issaveattrs .selected {
+    color: #595959 !important;
+}
+
+/* -------- end --------  */
+.component-clientcomputation__buffer--unit .component-select-options {
+    width: 100%;
+    outline: none;
+}
+
+.component-clientcomputation__buffer--unit .__selecttool {
+    width: 65px;
+}
+
+.component-clientcomputation__buffer--unit .component-selecttool .component-selecttool__name {
+    width: 32px;
+}
+
+.component-clientcomputation__buffer--unit .component-selecttool__trianglebtn--chart {
+    left: 39px;
+}
+
+.component-clientcomputation__buffer--unit .component-selecttool .component-selecttool__content--chart {
+    width: 62px;
+}
+
+.component-clientcomputation__buffer--unit .component-selecttool--chart {
+    width: 57px;
+}
+
+.component-clientcomputation__buffer--unit .component-selecttool .component-selecttool__content {
+    overflow: unset;
+}
+
+.component-clientcomputation__buffer--unit .component-selecttool__scrollarea__content .component-selecttool__option {
+    width: unset;
+}
