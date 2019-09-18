@@ -3,7 +3,7 @@
  *          iclient9-openlayers.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.0-beta
+ *          version: v10.0.0
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -72645,7 +72645,7 @@ external_ol_default.a.source.SuperMapCloud = SuperMapCloud_SuperMapCloud;
  * @category  ThirdPartyMap
  * @classdesc 天地图图层源。
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.url='http://t{0-7}.tianditu.com/{layer}_{proj}/wmts?'] - 服务地址。
+ * @param {string} [opt_options.url='http://t{0-7}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 服务地址。
  * @param {string} options.key - 天地图服务密钥。详见{@link http://lbs.tianditu.gov.cn/server/MapService.html}
  * @param {string} [opt_options.layerType='vec'] - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)
  * @param {string} [opt_options.attributions] - 版权描述信息。
@@ -72672,15 +72672,15 @@ class Tianditu_Tianditu extends external_ol_default.a.source.WMTS {
         }
         var options = opt_options || {};
         var attributions = options.attributions || new external_ol_default.a.Attribution({
-            html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
-                "src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
+            html: "Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
+                "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
                 "<span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         options.layerType = options.layerType || "vec";
         options.layerType = options.isLabel ? external_ol_default.a.source.Tianditu.layerLabelMap[options.layerType] : options.layerType;
         options.matrixSet = (options.projection === 'EPSG:4326' || options.projection === 'EPSG:4490') ? "c" : "w";
         if (!options.url && !options.urls) {
-            options.url = "http://t{0-7}.tianditu.com/{layer}_{proj}/wmts?"
+            options.url = "http://t{0-7}.tianditu.gov.cn/{layer}_{proj}/wmts?"
         }
         if (options.key) {
             options.url = `${options.url}tk=${options.key}`;
@@ -73931,7 +73931,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             layerType: layerType.split('_')[1].toLowerCase(),
             isLabel: isLabel || false,
             projection: projection,
-            url: `https://t{0-7}.tianditu.com/{layer}_{proj}/wmts?tk=${this.tiandituKey}`
+            url: `https://t{0-7}.tianditu.gov.cn/{layer}_{proj}/wmts?tk=${this.tiandituKey}`
         };
         return new external_ol_default.a.source.Tianditu(options);
     }
@@ -90193,7 +90193,7 @@ module.exports = function(proj4){
 /* 70 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 71 */

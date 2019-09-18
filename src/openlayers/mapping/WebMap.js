@@ -715,7 +715,7 @@ export class WebMap extends ol.Observable {
             layerType: layerType.split('_')[1].toLowerCase(),
             isLabel: isLabel || false,
             projection: projection,
-            url: `https://t{0-7}.tianditu.com/{layer}_{proj}/wmts?tk=${this.tiandituKey}`
+            url: `https://t{0-7}.tianditu.gov.cn/{layer}_{proj}/wmts?tk=${this.tiandituKey}`
         };
         return new ol.source.Tianditu(options);
     }

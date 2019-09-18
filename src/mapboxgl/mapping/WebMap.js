@@ -570,7 +570,7 @@ export class WebMap extends mapboxgl.Evented {
 		let layerType = mapInfo.baseLayer.layerType.split('_')[1].toLowerCase();
 		let isLabel = Boolean(mapInfo.baseLayer.labelLayerVisible);
 		// let isLabel = true;
-		let url = 'http://t0.tianditu.com/{layer}_{proj}/wmts?';
+		let url = 'http://t0.tianditu.gov.cn/{layer}_{proj}/wmts?';
 		let labelUrl = url;
 		let layerLabelMap = {
 			vec: 'cva',

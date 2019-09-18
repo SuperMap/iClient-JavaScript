@@ -3,7 +3,7 @@
  *          iclient9-mapboxgl.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.0-beta
+ *          version: v10.0.0
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -77041,7 +77041,7 @@ class WebMap_WebMap extends external_mapboxgl_default.a.Evented {
 		let layerType = mapInfo.baseLayer.layerType.split('_')[1].toLowerCase();
 		let isLabel = Boolean(mapInfo.baseLayer.labelLayerVisible);
 		// let isLabel = true;
-		let url = 'http://t0.tianditu.com/{layer}_{proj}/wmts?';
+		let url = 'http://t0.tianditu.gov.cn/{layer}_{proj}/wmts?';
 		let labelUrl = url;
 		let layerLabelMap = {
 			vec: 'cva',
