@@ -133,6 +133,48 @@ var exampleConfig = {
           }
         ]
       },
+      tdtmap_subcomponent: {
+        name: '天地图子组件',
+        name_en: 'Tianditu subcomponent',
+        localIgnore: true,
+        content: [
+          {
+            name: '天地图',
+            name_en: 'Tianditu',
+            version: '10.0.0',
+            thumbnail: 'components_Tianditu_vue.png',
+            fileName: 'components_Tianditu_vue'
+          },
+          {
+            name: '路线规划',
+            name_en: 'Tianditu Route Plan',
+            version: '10.0.0',
+            thumbnail: 'components_Tianditu_route_vue.png',
+            fileName: 'components_Tianditu_route_vue'
+          },
+          {
+            name: 'POI搜索',
+            name_en: 'Tianditu POI Search',
+            version: '10.0.0',
+            thumbnail: 'components_Tianditu_search_vue.png',
+            fileName: 'components_Tianditu_search_vue'
+          },
+          {
+            name: '天地图切换',
+            name_en: 'Tianditu Switcher',
+            version: '10.0.0',
+            thumbnail: 'components_Tianditu_switch_vue.png',
+            fileName: 'components_Tianditu_switch_vue'
+          },
+          {
+            name: '天地图首页',
+            name_en: 'Tianditu Home',
+            version: '10.0.0',
+            thumbnail: 'components_Tianditu_home_vue.png',
+            fileName: 'components_Tianditu_home_vue'
+          }
+        ]
+      },
       viz: {
         name: '可视化',
         name_en: 'Visualization',

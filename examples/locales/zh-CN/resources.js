@@ -516,6 +516,11 @@ window.examplesResources = {
         "title_componentsAnimateMarkerLayer_Vue": '动效标记图层',
         "title_componentsAnimateTextLayer_Vue": '动效文本标记图层',
         "title_componentsBorder_Vue": '边框组件',
+        "title_componentsTianditu_Vue": '天地图',
+        "title_componentsTianditu_route_Vue": '路线规划',
+        "title_componentsTianditu_search_Vue": 'POI搜索',
+        "title_componentsTianditu_switch_Vue": '天地图切换',
+        "title_componentsTianditu_home_Vue": '天地图首页',
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",

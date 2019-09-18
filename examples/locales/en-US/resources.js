@@ -1233,6 +1233,11 @@ window.examplesResources = {
         'text_myRasterLayer':"My Raster Layer",
         'text_opt_border': "border",
         'text_sel_border': "Border type",
+        "title_componentsTianditu_Vue": 'Tianditu',
+        "title_componentsTianditu_route_Vue": 'Route Plan',
+        "title_componentsTianditu_search_Vue": 'POI Search',
+        "title_componentsTianditu_switch_Vue": 'Tianditu Switcher',
+        "title_componentsTianditu_home_Vue": 'Tianditu Home',
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",
