@@ -6842,7 +6842,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__4v0n__;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _LiquidFill_vue_vue_type_template_id_6f763eef___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("62wD");
+/* harmony import */ var _LiquidFill_vue_vue_type_template_id_6fdb9911___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("p7FL");
 /* harmony import */ var _LiquidFill_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("O2Ir");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _LiquidFill_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _LiquidFill_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("KHd+");
@@ -6855,8 +6855,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _LiquidFill_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _LiquidFill_vue_vue_type_template_id_6f763eef___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _LiquidFill_vue_vue_type_template_id_6f763eef___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _LiquidFill_vue_vue_type_template_id_6fdb9911___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _LiquidFill_vue_vue_type_template_id_6fdb9911___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -7106,23 +7106,6 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
     : baseURL;
 };
-
-
-/***/ }),
-
-/***/ "62wD":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/liquidfill/LiquidFill.vue?vue&type=template&id=6f763eef&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"chart",staticClass:"sm-component-liquidFill",style:([_vm.background && _vm.getBackgroundStyle]),attrs:{"id":"chart"}})}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/liquidfill/LiquidFill.vue?vue&type=template&id=6f763eef&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
 
 /***/ }),
@@ -52976,6 +52959,15 @@ var _default = {
     finalValue: function finalValue() {
       this.updateChart();
     },
+    fontSize: function fontSize() {
+      this.updateChart();
+    },
+    waveCount: function waveCount() {
+      this.updateChart();
+    },
+    waveAnimation: function waveAnimation() {
+      this.updateChart();
+    },
     value: function value(val) {
       this.finalValue = val;
     }
@@ -56574,6 +56566,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 	return init(function () {});
 }));
+
+
+/***/ }),
+
+/***/ "p7FL":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/liquidfill/LiquidFill.vue?vue&type=template&id=6fdb9911&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"chart",staticClass:"sm-component-liquidFill",style:([_vm.background && _vm.getBackgroundStyle]),attrs:{"id":"chart"}})}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/liquidfill/LiquidFill.vue?vue&type=template&id=6fdb9911&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
 
 /***/ }),
