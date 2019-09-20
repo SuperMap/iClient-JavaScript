@@ -291,6 +291,7 @@ var exampleConfig = {
       chart: {
         name: '图表',
         name_en: 'Chart',
+        localIgnore: true,
         content: [
           {
             name: '图表',
@@ -328,6 +329,7 @@ var exampleConfig = {
       },
       basic: {
         name: '基础',
+        localIgnore: true,
         name_en: 'Basic component',
         content: [
           {

@@ -83,9 +83,9 @@
         <sm-web-map :map-options="mapOptions">
           <!-- 天地图路线查询组件: sm-tdt-route
           天地图搜索组件：sm-tdt-search -->
-          <sm-tdt-route position="top-right"></sm-tdt-route>
-          <sm-tdt-search position="top-right"></sm-tdt-search>
-          <sm-tdt-map-switcher position="top-right"></sm-tdt-map-switcher>
+          <sm-tdt-route position="top-right" :data="{tk:tk}"></sm-tdt-route>
+          <sm-tdt-search position="top-right" :data="{tk:tk}"></sm-tdt-search>
+          <sm-tdt-map-switcher position="top-right" :data="{tk:tk}"></sm-tdt-map-switcher>
         </sm-web-map>
       </div>
     </div>
@@ -95,6 +95,7 @@
         el: '#main',
         data() {
           return {
+            tk: '979370626f38396281484293eb175e2e',
             mapOptions: {
               center: [126.64318, 45.74141],
               zoom: 11,

@@ -7,7 +7,10 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsTianditu_switch_Vue"></title>
     <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-    <script include="ant-design-vue,iclient9-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script
+      include="ant-design-vue,iclient9-mapboxgl-vue,mapbox-gl-enhance"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
     <style>
       #main {
         margin: 0 auto;
@@ -17,13 +20,11 @@
     </style>
   </head>
 
-  <body
-    style=" margin: 0;overflow: hidden;background: #fff;color:#000;width: 100%;height:100%;"
-  >
+  <body style=" margin: 0;overflow: hidden;background: #fff;color:#000;width: 100%;height:100%;">
     <div id="main">
       <sm-web-map :map-options="mapOptions">
         <!-- 天地图切换组件：sm-tdt-map-switcher -->
-        <sm-tdt-map-switcher position="top-left"></sm-tdt-map-switcher>
+        <sm-tdt-map-switcher position="top-left" :data="{tk:tk}"></sm-tdt-map-switcher>
       </sm-web-map>
     </div>
 
@@ -41,14 +42,14 @@
                   baseLayer: {
                     type: 'raster',
                     tiles: [
-                      'http://t0.tianditu.com/img_w/wmts?tk=979370626f38396281484293eb175e2e&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
+                      'http://t0.tianditu.com/img_w/wmts?tk=979370626f38396281484293eb175e2e&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}'
                     ],
                     tileSize: 256
                   },
                   labelLayer: {
                     type: 'raster',
                     tiles: [
-                      'http://t0.tianditu.com/cia_w/wmts?tk=979370626f38396281484293eb175e2e&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix={z}&tilerow={y}&tilecol={x}',
+                      'http://t0.tianditu.com/cia_w/wmts?tk=979370626f38396281484293eb175e2e&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix={z}&tilerow={y}&tilecol={x}'
                     ],
                     tileSize: 256
                   }
@@ -71,7 +72,8 @@
                 ]
               },
               renderWorldCopies: false
-            }
+            },
+            tk: '979370626f38396281484293eb175e2e'
           };
         }
       });
