@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsTianditu_route_Vue"></title>
     <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-    <script include="iclient9-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script include="ant-design-vue,iclient9-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
       #main {
         margin: 0 auto;
@@ -40,14 +40,14 @@
                   baseLayer: {
                     type: 'raster',
                     tiles: [
-                      'http://support.supermap.com.cn:8092/apps/viewer/getUrlResource.png?url=http%3A%2F%2Ft0.tianditu.com%2Fimg_w%2Fwmts%3Ftk%3D979370626f38396281484293eb175e2e%26service%3DWMTS%26request%3DGetTile%26version%3D1.0.0%26style%3Ddefault%26tilematrixSet%3Dw%26format%3Dtiles%26width%3D256%26height%3D256%26layer%3Dimg%26tilematrix%3D{z}%26tilerow%3D{y}%26tilecol%3D{x}',
+                      'http://t0.tianditu.com/img_w/wmts?tk=979370626f38396281484293eb175e2e&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
                     ],
                     tileSize: 256
                   },
                   labelLayer: {
                     type: 'raster',
                     tiles: [
-                      'http://support.supermap.com.cn:8092/apps/viewer/getUrlResource.png?url=http%3A%2F%2Ft0.tianditu.com%2Fcia_w%2Fwmts%3Ftk%3D979370626f38396281484293eb175e2e%26service%3DWMTS%26request%3DGetTile%26version%3D1.0.0%26style%3Ddefault%26tilematrixSet%3Dw%26format%3Dtiles%26width%3D256%26height%3D256%26layer%3Dcia%26tilematrix%3D{z}%26tilerow%3D{y}%26tilecol%3D{x}',
+                      'http://t0.tianditu.com/cia_w/wmts?tk=979370626f38396281484293eb175e2e&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix={z}&tilerow={y}&tilecol={x}',
                     ],
                     tileSize: 256
                   }
