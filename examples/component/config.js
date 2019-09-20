@@ -143,35 +143,35 @@ var exampleConfig = {
             name_en: 'Tianditu',
             version: '10.0.0',
             thumbnail: 'components_Tianditu_vue.png',
-            fileName: 'components_Tianditu_vue'
+            fileName: 'components_tianditu_vue'
           },
           {
             name: '路线规划',
             name_en: 'Tianditu Route Plan',
             version: '10.0.0',
             thumbnail: 'components_Tianditu_route_vue.png',
-            fileName: 'components_Tianditu_route_vue'
+            fileName: 'components_tianditu_route_vue'
           },
           {
             name: 'POI搜索',
             name_en: 'Tianditu POI Search',
             version: '10.0.0',
             thumbnail: 'components_Tianditu_search_vue.png',
-            fileName: 'components_Tianditu_search_vue'
+            fileName: 'components_tianditu_search_vue'
           },
           {
             name: '天地图切换',
             name_en: 'Tianditu Switcher',
             version: '10.0.0',
             thumbnail: 'components_Tianditu_switch_vue.png',
-            fileName: 'components_Tianditu_switch_vue'
+            fileName: 'components_tianditu_switch_vue'
           },
           {
             name: '天地图首页',
             name_en: 'Tianditu Home',
             version: '10.0.0',
             thumbnail: 'components_Tianditu_home_vue.png',
-            fileName: 'components_Tianditu_home_vue'
+            fileName: 'components_tianditu_home_vue'
           }
         ]
       },
