@@ -67,6 +67,9 @@ function createSubGalleryItem(config, name) {
     var categoryContentDiv = $("<div class='category-content'></div>");
     for (var key in config) {
         var configItem = config[key];
+        if (window.isLocal && configItem.localIgnore) {
+            continue;
+        }
         var content = $("<div class='box box-default color-palette-box' id='" + name + '-' + key + "'></div>");
         var title = utils.getLocalPairs(configItem, "name");
         createSubGalleryItemTitle(key, title).appendTo(content);
