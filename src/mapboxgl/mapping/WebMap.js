@@ -362,7 +362,7 @@ export class WebMap extends mapboxgl.Evented {
 		let labelUrl = tiandituUrls['labelUrl'];
 		let tiandituUrl = tiandituUrls['tiandituUrl'];
 		this._addBaselayer(tiandituUrl, 'tianditu-layers-' + layerType);
-		isLabel && this._addBaselayer([labelUrl], 'tianditu-label-layers-' + layerType);
+		isLabel && this._addBaselayer(labelUrl, 'tianditu-label-layers-' + layerType);
 	}
 
 	/**
