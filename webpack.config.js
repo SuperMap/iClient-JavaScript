@@ -5,7 +5,7 @@ module.exports = {
     //入口文件输出配置
     output: {
         path: __dirname + '/dist',
-        filename: 'iclient9.js'
+        filename: 'iclient.js'
     },
     //其它解决方案配置
     resolve: {

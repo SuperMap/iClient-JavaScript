@@ -678,7 +678,7 @@ window.examplesResources = {
         "text_input_tips_opacity": "设置图层的不透明度,取值[0-1]之间",
         "text_toggleMaps": "底图切换",
         "text_translation": "缩放与平移",
-        "text_iClient9": "示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理",
+        "text_iClient": "示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理",
         "text_queryByWFS": "WFS查询",
         "text_wms": "WMS图层",
         "text_projection": "地图投影系",

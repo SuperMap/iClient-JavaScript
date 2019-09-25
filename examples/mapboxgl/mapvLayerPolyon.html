@@ -60,7 +60,7 @@
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     loadData();
 
-    //示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理
+    //示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理
     function loadData() {
         $.get('../data/guang_dong.json', function (geojson) {
             var dataSet1 = mapv.geojson.getDataSet(geojson);
@@ -124,7 +124,7 @@
             setTimeout(function () {
                 new mapboxgl.Popup({closeOnClick: false})
                     .setLngLat(map.getCenter())
-                    .setHTML(resources.text_iClient9)
+                    .setHTML(resources.text_iClient)
                     .addTo(map);
             }, 1000)
         });

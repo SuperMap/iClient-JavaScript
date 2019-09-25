@@ -66,7 +66,7 @@ export class ChartView {
      */
     _fillDataToView() {
         let messageboxs = new MessageBox();
-        //iclient9 绑定createChart事件成功回调
+        //iclient 绑定createChart事件成功回调
         this.viewModel.getDatasetInfo(this._createChart.bind(this));
         this.viewModel.events.on({
             "getdatafailed": (error) => {

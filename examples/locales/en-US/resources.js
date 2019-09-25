@@ -727,7 +727,7 @@ window.examplesResources = {
         "text_input_tips_opacity": "Set layer's opacity. Range [0-1].",
         "text_toggleMaps": "Toggle Maps",
         "text_translation": "Zoom and Translation",
-        "text_iClient9": "The sample data comes from the offset data of the Baidu MapV, iClient9 does not rectify deviation",
+        "text_iClient": "The sample data comes from the offset data of the Baidu MapV, iClient does not rectify deviation",
         "text_queryByWFS": "WFS Query",
         "text_wms": "WMS Layer",
         "text_projection": "Projection system",

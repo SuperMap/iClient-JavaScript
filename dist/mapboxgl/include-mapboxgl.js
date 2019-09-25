@@ -132,19 +132,19 @@
         }
 
         // dist
-        if (!inArray(excludes, 'iclient9-mapboxgl')) {
+        if (!inArray(excludes, 'iclient-mapboxgl')) {
           if (supportES6()) {
-              inputScript("../../dist/mapboxgl/iclient9-mapboxgl-es6.min.js");
+              inputScript("../../dist/mapboxgl/iclient-mapboxgl-es6.min.js");
           } else {
-              inputScript("../../dist/mapboxgl/iclient9-mapboxgl.min.js");
+              inputScript("../../dist/mapboxgl/iclient-mapboxgl.min.js");
           }
         }
-        if (!inArray(excludes, 'iclient9-mapboxgl-css')) {
-            inputCSS("../../dist/mapboxgl/iclient9-mapboxgl.min.css");
+        if (!inArray(excludes, 'iclient-mapboxgl-css')) {
+            inputCSS("../../dist/mapboxgl/iclient-mapboxgl.min.css");
         }
-        if (inArray(includes, 'iclient9-mapboxgl-vue')) {
-            inputCSS("../../dist/mapboxgl/iclient9-mapboxgl-vue.css");
-            inputScript("../../dist/mapboxgl/iclient9-mapboxgl-vue.min.js");
+        if (inArray(includes, 'iclient-mapboxgl-vue')) {
+            inputCSS("../../dist/mapboxgl/iclient-mapboxgl-vue.css");
+            inputScript("../../dist/mapboxgl/iclient-mapboxgl-vue.min.js");
         }
     }
 

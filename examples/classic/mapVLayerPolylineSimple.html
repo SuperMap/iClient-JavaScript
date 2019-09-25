@@ -55,7 +55,7 @@
             createMapVLayer();
         }
 
-        //示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理
+        //示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理
         function createMapVLayer() {
             var randomCount = 1000;
             var data = [];
@@ -103,7 +103,7 @@
             map.addLayer(mapvLayer);
 
             setTimeout(function () {
-                openToolTip(resources.text_iClient9, map.getCenter());
+                openToolTip(resources.text_iClient, map.getCenter());
             }, 1000);
 
         }

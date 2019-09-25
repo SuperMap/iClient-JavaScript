@@ -113,22 +113,22 @@
         }
 
         // iclient
-        if (!inArray(excludes, 'iclient9-leaflet')) {
+        if (!inArray(excludes, 'iclient-leaflet')) {
           if (supportES6()) {
-              inputScript("../../dist/leaflet/iclient9-leaflet-es6.min.js");
+              inputScript("../../dist/leaflet/iclient-leaflet-es6.min.js");
           } else {
-              inputScript("../../dist/leaflet/iclient9-leaflet.min.js");
+              inputScript("../../dist/leaflet/iclient-leaflet.min.js");
           }
         }
-        if (inArray(includes, 'iclient9-leaflet-css')) {
-            inputCSS("../../dist/leaflet/iclient9-leaflet.min.css");
+        if (inArray(includes, 'iclient-leaflet-css')) {
+            inputCSS("../../dist/leaflet/iclient-leaflet.min.css");
         }
-        if (inArray(includes, 'iclient9-plot-leaflet')) {
-            inputCSS("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient9-plot-leaflet.css");
+        if (inArray(includes, 'iclient-plot-leaflet')) {
+            inputCSS("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.css");
             if (supportES6()) {
-                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient9-plot-leaflet-es6.min.js");
+                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet-es6.min.js");
             } else {
-                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient9-plot-leaflet.min.js");
+                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.min.js");
             }
         }
     }

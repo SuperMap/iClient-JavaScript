@@ -104,15 +104,15 @@
         }
         
         // dist
-        if (!inArray(excludes, 'iclient9-openlayers')) {
+        if (!inArray(excludes, 'iclient-openlayers')) {
           if (supportES6()) {
-              inputScript("../../dist/openlayers/iclient9-openlayers-es6.min.js");
+              inputScript("../../dist/openlayers/iclient-openlayers-es6.min.js");
           } else {
-              inputScript("../../dist/openlayers/iclient9-openlayers.min.js");
+              inputScript("../../dist/openlayers/iclient-openlayers.min.js");
           }
         }
-        if (!inArray(excludes, 'iclient9-openlayers-css')) {
-            inputCSS("../../dist/openlayers/iclient9-openlayers.min.css");
+        if (!inArray(excludes, 'iclient-openlayers-css')) {
+            inputCSS("../../dist/openlayers/iclient-openlayers.min.css");
         }
     }
 

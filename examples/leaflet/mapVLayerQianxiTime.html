@@ -23,7 +23,7 @@
     L.supermap.tiledMapLayer(url).addTo(map);
     loadData();
 
-    //示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理
+    //示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理
     function loadData() {
         var data = [];
         var timeData = [];
@@ -114,7 +114,7 @@
                 //动画图层
                 L.supermap.mapVLayer(dataSet2, options2).addTo(map);
                 setTimeout(function () {
-                    map.openPopup(resources.text_iClient9, map.getCenter());
+                    map.openPopup(resources.text_iClient, map.getCenter());
                 }, 1000)
             }
         });
