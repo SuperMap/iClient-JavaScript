@@ -30,7 +30,7 @@
         <script>
             let data;
             $.get("../data/全国671个气象站观测数据.geojson", function(res) {
-                data = res;
+                data = JSON.parse(res);
                 new Vue({
                     el: "#main",
                     data() {
