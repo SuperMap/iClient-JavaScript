@@ -8,14 +8,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("vue-echarts"), require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("shapefile"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("video.js"), require("echarts"), require("./static/libs/iclient-mapboxgl/iclient10-mapboxgl.min.js"), require("ant-design-vue"), require("xlsx"), require("three"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"));
+		module.exports = factory(require("vue"), require("ant-design-vue"), require("../static/libs/mapboxgl/mapbox-gl-enhance.js"), require("../static/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("echarts"), require("echarts-liquidfill"), require("video.js"), require("@mapbox/mapbox-gl-draw"), require("../static/libs/deckgl/deck.gl.min.js"), require("../static/libs/echarts-layer/EchartsLayer.js"), require("three"), require("vue-echarts"), require("xlsx"), require("shapefile"));
 	else if(typeof define === 'function' && define.amd)
-		define(["vue-echarts", "./static/libs/mapboxgl/mapbox-gl-enhance.js", "shapefile", "./static/libs/echarts-layer/EchartsLayer.js", "./static/libs/deckgl/deck.gl.min.js", "video.js", "echarts", "./static/libs/iclient-mapboxgl/iclient10-mapboxgl.min.js", "ant-design-vue", "xlsx", "three", "@mapbox/mapbox-gl-draw", "echarts-liquidfill", "vue"], factory);
+		define(["vue", "ant-design-vue", "../static/libs/mapboxgl/mapbox-gl-enhance.js", "../static/libs/iclient-mapboxgl/iclient-mapboxgl.min.js", "echarts", "echarts-liquidfill", "video.js", "@mapbox/mapbox-gl-draw", "../static/libs/deckgl/deck.gl.min.js", "../static/libs/echarts-layer/EchartsLayer.js", "three", "vue-echarts", "xlsx", "shapefile"], factory);
 	else if(typeof exports === 'object')
-		exports["Components"] = factory(require("vue-echarts"), require("./static/libs/mapboxgl/mapbox-gl-enhance.js"), require("shapefile"), require("./static/libs/echarts-layer/EchartsLayer.js"), require("./static/libs/deckgl/deck.gl.min.js"), require("video.js"), require("echarts"), require("./static/libs/iclient-mapboxgl/iclient10-mapboxgl.min.js"), require("ant-design-vue"), require("xlsx"), require("three"), require("@mapbox/mapbox-gl-draw"), require("echarts-liquidfill"), require("vue"));
+		exports["Components"] = factory(require("vue"), require("ant-design-vue"), require("../static/libs/mapboxgl/mapbox-gl-enhance.js"), require("../static/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("echarts"), require("echarts-liquidfill"), require("video.js"), require("@mapbox/mapbox-gl-draw"), require("../static/libs/deckgl/deck.gl.min.js"), require("../static/libs/echarts-layer/EchartsLayer.js"), require("three"), require("vue-echarts"), require("xlsx"), require("shapefile"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["VueECharts"], root["mapboxgl"], root["shapefile"], root["EchartsLayer"], root["DeckGL"], root["_videojs"], root["echarts"], root["SuperMap"], root["antd"], root["XLSX"], root["THREE"], root["MapboxDraw"], root["echarts-liquidfill"], root["Vue"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__4v0n__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE_AEfv__, __WEBPACK_EXTERNAL_MODULE_AzSJ__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_NkX2__, __WEBPACK_EXTERNAL_MODULE_TnLG__, __WEBPACK_EXTERNAL_MODULE_X1wy__, __WEBPACK_EXTERNAL_MODULE_X9qW__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_i7_w__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["Vue"], root["antd"], root["mapboxgl"], root["SuperMap"], root["echarts"], root["echarts-liquidfill"], root["_videojs"], root["MapboxDraw"], root["DeckGL"], root["EchartsLayer"], root["THREE"], root["VueECharts"], root["XLSX"], root["shapefile"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_TnLG__, __WEBPACK_EXTERNAL_MODULE__38sZ__, __WEBPACK_EXTERNAL_MODULE__93vV__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_AzSJ__, __WEBPACK_EXTERNAL_MODULE_dz_5__, __WEBPACK_EXTERNAL_MODULE_AEfv__, __WEBPACK_EXTERNAL_MODULE__5bPg__, __WEBPACK_EXTERNAL_MODULE_X9qW__, __WEBPACK_EXTERNAL_MODULE_Zni2__, __WEBPACK_EXTERNAL_MODULE_X1wy__, __WEBPACK_EXTERNAL_MODULE__4v0n__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -141,7 +141,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 var RanksymbolThemeLayerViewModel =
 /*#__PURE__*/
@@ -2025,7 +2025,7 @@ var _QueryViewModel = _interopRequireDefault(__webpack_require__("Gnmz"));
 
 var _TablePopup = _interopRequireDefault(__webpack_require__("vyqP"));
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -2745,7 +2745,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 var RangeThemeLayerViewModel =
 /*#__PURE__*/
@@ -6575,7 +6575,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 var LabelThemeLayerViewModel =
 /*#__PURE__*/
@@ -7529,7 +7529,7 @@ var _geometryUtil = __webpack_require__("lPp8");
 
 var _util = __webpack_require__("e7LN");
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 __webpack_require__("e/Qi");
 
@@ -11176,6 +11176,13 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
+/***/ "93vV":
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__93vV__;
+
+/***/ }),
+
 /***/ "9R+g":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12106,7 +12113,7 @@ var _FillStyle = _interopRequireDefault(__webpack_require__("EjQA"));
 
 var _LineStyle = _interopRequireDefault(__webpack_require__("v9r3"));
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -13069,7 +13076,7 @@ var _mapEvent = _interopRequireDefault(__webpack_require__("o5Qt"));
 
 var _lodash = _interopRequireDefault(__webpack_require__("lx9i"));
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -14297,7 +14304,7 @@ var _lodash = _interopRequireDefault(__webpack_require__("zT9C"));
 
 var _vueI18n = _interopRequireDefault(__webpack_require__("qSUR"));
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -14866,7 +14873,7 @@ var _center = _interopRequireDefault(__webpack_require__("SPBs"));
 
 var _lang = __webpack_require__("DSM6");
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 // import iPortalDataParameter from '../../common/_types/iPortalDataParameter';
 // import RestDataParameter from '../../common/_types/RestDataParameter';
@@ -15551,7 +15558,8 @@ function toByteArray (b64) {
     ? validLen - 4
     : validLen
 
-  for (var i = 0; i < len; i += 4) {
+  var i
+  for (i = 0; i < len; i += 4) {
     tmp =
       (revLookup[b64.charCodeAt(i)] << 18) |
       (revLookup[b64.charCodeAt(i + 1)] << 12) |
@@ -15664,7 +15672,7 @@ var _SearchViewModel = _interopRequireDefault(__webpack_require__("g6o1"));
 
 var _TablePopup = _interopRequireDefault(__webpack_require__("vyqP"));
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -17856,7 +17864,7 @@ var _lodash4 = _interopRequireDefault(__webpack_require__("SPmy"));
 
 var _util = __webpack_require__("e7LN");
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -20463,13 +20471,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "NkX2":
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_NkX2__;
-
-/***/ }),
-
 /***/ "Nsbk":
 /***/ (function(module, exports) {
 
@@ -20511,9 +20512,9 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -22690,22 +22691,25 @@ function addListener(elem, callback) {
 }
 
 function removeListener(elem, callback) {
-  // targeting IE9/10
-  if (elem.detachEvent && elem.removeEventListener) {
-    elem.detachEvent('onresize', elem.__resize_legacy_resize_handler__);
-    document.removeEventListener('DOMSubtreeModified', elem.__resize_mutation_handler__);
-    return;
-  }
-
   var listeners = elem.__resize_listeners__;
 
   if (!listeners) {
     return;
   }
 
-  listeners.splice(listeners.indexOf(callback), 1);
+  if (callback) {
+    listeners.splice(listeners.indexOf(callback), 1);
+  } // no listeners exist, or removing all listeners
 
-  if (!listeners.length) {
+
+  if (!listeners.length || !callback) {
+    // targeting IE9/10
+    if (elem.detachEvent && elem.removeEventListener) {
+      elem.detachEvent('onresize', elem.__resize_legacy_resize_handler__);
+      document.removeEventListener('DOMSubtreeModified', elem.__resize_mutation_handler__);
+      return;
+    }
+
     if (elem.__resize_observer__) {
       elem.__resize_observer__.unobserve(elem);
 
@@ -23859,7 +23863,7 @@ var _NothingResult = _interopRequireDefault(__webpack_require__("QepR"));
 
 var _lodash = _interopRequireDefault(__webpack_require__("XaGS"));
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -28841,7 +28845,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 var RasterTileLayerViewModel =
 /*#__PURE__*/
@@ -32275,7 +32279,7 @@ vue_class_component_esm_Component.registerHooks = function registerHooks(keys) {
 /* concated harmony reexport Component */__webpack_require__.d(__webpack_exports__, "Component", function() { return vue_class_component_esm; });
 /* concated harmony reexport Vue */__webpack_require__.d(__webpack_exports__, "Vue", function() { return external_root_Vue_commonjs_vue_commonjs2_vue_amd_vue_default.a; });
 /* concated harmony reexport Mixins */__webpack_require__.d(__webpack_exports__, "Mixins", function() { return mixins; });
-/** vue-property-decorator verson 8.2.1 MIT LICENSE copyright 2019 kaorun343 */
+/** vue-property-decorator verson 8.2.2 MIT LICENSE copyright 2019 kaorun343 */
 /// <reference types='reflect-metadata'/>
 
 
@@ -32660,7 +32664,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 /**
  * @class iServerRestService
@@ -33141,7 +33145,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 __webpack_require__("AEfv");
 
@@ -35966,7 +35970,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 var UniqueThemeLayerViewModel =
 /*#__PURE__*/
@@ -37634,7 +37638,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 var RestService =
 /*#__PURE__*/
@@ -39071,7 +39075,7 @@ var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
 var _lodash = _interopRequireDefault(__webpack_require__("zT9C"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 /**
  * @class DataFlowLayerViewModel
@@ -39571,7 +39575,7 @@ var _CircleStyle = _interopRequireDefault(__webpack_require__("/X5Q"));
 
 var _lodash = _interopRequireDefault(__webpack_require__("XaGS"));
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -49421,7 +49425,7 @@ var _util = __webpack_require__("e7LN");
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 /**
  * @class iPortalDataService
@@ -50313,7 +50317,7 @@ var _lodash = _interopRequireDefault(__webpack_require__("zT9C"));
 
 var _center = _interopRequireDefault(__webpack_require__("SPBs"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 var _iPortalDataService = _interopRequireDefault(__webpack_require__("fPvO"));
 
@@ -50321,7 +50325,7 @@ var _iServerRestService = _interopRequireDefault(__webpack_require__("ZC2D"));
 
 var _lang = __webpack_require__("DSM6");
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -55690,7 +55694,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _mapboxGlEnhance = _interopRequireDefault(__webpack_require__("38sZ"));
 
-__webpack_require__("NkX2");
+__webpack_require__("93vV");
 
 var GraphThemeLayerViewModel =
 /*#__PURE__*/
@@ -56141,14 +56145,14 @@ exports.default = _default2;
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * JavaScript Cookie v2.2.0
+ * JavaScript Cookie v2.2.1
  * https://github.com/js-cookie/js-cookie
  *
  * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
  * Released under the MIT license
  */
 ;(function (factory) {
-	var registeredInModuleLoader = false;
+	var registeredInModuleLoader;
 	if (true) {
 		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
@@ -56182,125 +56186,123 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		return result;
 	}
 
+	function decode (s) {
+		return s.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
+	}
+
 	function init (converter) {
-		function api (key, value, attributes) {
-			var result;
+		function api() {}
+
+		function set (key, value, attributes) {
 			if (typeof document === 'undefined') {
 				return;
 			}
 
-			// Write
+			attributes = extend({
+				path: '/'
+			}, api.defaults, attributes);
 
-			if (arguments.length > 1) {
-				attributes = extend({
-					path: '/'
-				}, api.defaults, attributes);
-
-				if (typeof attributes.expires === 'number') {
-					var expires = new Date();
-					expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
-					attributes.expires = expires;
-				}
-
-				// We're using "expires" because "max-age" is not supported by IE
-				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
-
-				try {
-					result = JSON.stringify(value);
-					if (/^[\{\[]/.test(result)) {
-						value = result;
-					}
-				} catch (e) {}
-
-				if (!converter.write) {
-					value = encodeURIComponent(String(value))
-						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
-				} else {
-					value = converter.write(value, key);
-				}
-
-				key = encodeURIComponent(String(key));
-				key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
-				key = key.replace(/[\(\)]/g, escape);
-
-				var stringifiedAttributes = '';
-
-				for (var attributeName in attributes) {
-					if (!attributes[attributeName]) {
-						continue;
-					}
-					stringifiedAttributes += '; ' + attributeName;
-					if (attributes[attributeName] === true) {
-						continue;
-					}
-					stringifiedAttributes += '=' + attributes[attributeName];
-				}
-				return (document.cookie = key + '=' + value + stringifiedAttributes);
+			if (typeof attributes.expires === 'number') {
+				attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
 			}
 
-			// Read
+			// We're using "expires" because "max-age" is not supported by IE
+			attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
 
-			if (!key) {
-				result = {};
+			try {
+				var result = JSON.stringify(value);
+				if (/^[\{\[]/.test(result)) {
+					value = result;
+				}
+			} catch (e) {}
+
+			value = converter.write ?
+				converter.write(value, key) :
+				encodeURIComponent(String(value))
+					.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+
+			key = encodeURIComponent(String(key))
+				.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent)
+				.replace(/[\(\)]/g, escape);
+
+			var stringifiedAttributes = '';
+			for (var attributeName in attributes) {
+				if (!attributes[attributeName]) {
+					continue;
+				}
+				stringifiedAttributes += '; ' + attributeName;
+				if (attributes[attributeName] === true) {
+					continue;
+				}
+
+				// Considers RFC 6265 section 5.2:
+				// ...
+				// 3.  If the remaining unparsed-attributes contains a %x3B (";")
+				//     character:
+				// Consume the characters of the unparsed-attributes up to,
+				// not including, the first %x3B (";") character.
+				// ...
+				stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
 			}
 
+			return (document.cookie = key + '=' + value + stringifiedAttributes);
+		}
+
+		function get (key, json) {
+			if (typeof document === 'undefined') {
+				return;
+			}
+
+			var jar = {};
 			// To prevent the for loop in the first place assign an empty array
-			// in case there are no cookies at all. Also prevents odd result when
-			// calling "get()"
+			// in case there are no cookies at all.
 			var cookies = document.cookie ? document.cookie.split('; ') : [];
-			var rdecode = /(%[0-9A-Z]{2})+/g;
 			var i = 0;
 
 			for (; i < cookies.length; i++) {
 				var parts = cookies[i].split('=');
 				var cookie = parts.slice(1).join('=');
 
-				if (!this.json && cookie.charAt(0) === '"') {
+				if (!json && cookie.charAt(0) === '"') {
 					cookie = cookie.slice(1, -1);
 				}
 
 				try {
-					var name = parts[0].replace(rdecode, decodeURIComponent);
-					cookie = converter.read ?
-						converter.read(cookie, name) : converter(cookie, name) ||
-						cookie.replace(rdecode, decodeURIComponent);
+					var name = decode(parts[0]);
+					cookie = (converter.read || converter)(cookie, name) ||
+						decode(cookie);
 
-					if (this.json) {
+					if (json) {
 						try {
 							cookie = JSON.parse(cookie);
 						} catch (e) {}
 					}
 
-					if (key === name) {
-						result = cookie;
-						break;
-					}
+					jar[name] = cookie;
 
-					if (!key) {
-						result[name] = cookie;
+					if (key === name) {
+						break;
 					}
 				} catch (e) {}
 			}
 
-			return result;
+			return key ? jar[key] : jar;
 		}
 
-		api.set = api;
+		api.set = set;
 		api.get = function (key) {
-			return api.call(api, key);
+			return get(key, false /* read as raw */);
 		};
-		api.getJSON = function () {
-			return api.apply({
-				json: true
-			}, [].slice.call(arguments));
+		api.getJSON = function (key) {
+			return get(key, true /* read as json */);
 		};
-		api.defaults = {};
-
 		api.remove = function (key, attributes) {
-			api(key, '', extend(attributes, {
+			set(key, '', extend(attributes, {
 				expires: -1
 			}));
 		};
+
+		api.defaults = {};
 
 		api.withConverter = init;
 
@@ -56426,7 +56428,7 @@ exports.default = _default;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /*!
- * vue-i18n v8.12.0 
+ * vue-i18n v8.14.0 
  * (c) 2019 kazuya kawaguchi
  * Released under the MIT License.
  */
@@ -56665,6 +56667,7 @@ var mixin = {
           options.i18n.root = this.$root;
           options.i18n.formatter = this.$root.$i18n.formatter;
           options.i18n.fallbackLocale = this.$root.$i18n.fallbackLocale;
+          options.i18n.formatFallbackMessages = this.$root.$i18n.formatFallbackMessages;
           options.i18n.silentTranslationWarn = this.$root.$i18n.silentTranslationWarn;
           options.i18n.silentFallbackWarn = this.$root.$i18n.silentFallbackWarn;
           options.i18n.pluralizationRules = this.$root.$i18n.pluralizationRules;
@@ -56765,8 +56768,7 @@ var interpolationComponent = {
   functional: true,
   props: {
     tag: {
-      type: String,
-      default: 'span'
+      type: String
     },
     path: {
       type: String,
@@ -56780,61 +56782,78 @@ var interpolationComponent = {
     }
   },
   render: function render (h, ref) {
-    var props = ref.props;
     var data = ref.data;
-    var children = ref.children;
     var parent = ref.parent;
+    var props = ref.props;
+    var slots = ref.slots;
 
-    var i18n = parent.$i18n;
-
-    children = (children || []).filter(function (child) {
-      return child.tag || (child.text = child.text.trim())
-    });
-
-    if (!i18n) {
+    var $i18n = parent.$i18n;
+    if (!$i18n) {
       if (false) {}
-      return children
+      return
     }
 
     var path = props.path;
     var locale = props.locale;
+    var places = props.places;
+    var params = slots();
+    var children = $i18n.i(
+      path,
+      locale,
+      onlyHasDefaultPlace(params) || places
+        ? useLegacyPlaces(params.default, places)
+        : params
+    );
 
-    var params = {};
-    var places = props.places || {};
-
-    var hasPlaces = Array.isArray(places)
-      ? places.length > 0
-      : Object.keys(places).length > 0;
-
-    var everyPlace = children.every(function (child) {
-      if (child.data && child.data.attrs) {
-        var place = child.data.attrs.place;
-        return (typeof place !== 'undefined') && place !== ''
-      }
-    });
-
-    if (false) {}
-
-    if (Array.isArray(places)) {
-      places.forEach(function (el, i) {
-        params[i] = el;
-      });
-    } else {
-      Object.keys(places).forEach(function (key) {
-        params[key] = places[key];
-      });
-    }
-
-    children.forEach(function (child, i) {
-      var key = everyPlace
-        ? ("" + (child.data.attrs.place))
-        : ("" + i);
-      params[key] = child;
-    });
-
-    return h(props.tag, data, i18n.i(path, locale, params))
+    var tag = props.tag || 'span';
+    return tag ? h(tag, data, children) : children
   }
 };
+
+function onlyHasDefaultPlace (params) {
+  var prop;
+  for (prop in params) {
+    if (prop !== 'default') { return false }
+  }
+  return Boolean(prop)
+}
+
+function useLegacyPlaces (children, places) {
+  var params = places ? createParamsFromPlaces(places) : {};
+  if (!children) { return params }
+
+  var everyPlace = children.every(vnodeHasPlaceAttribute);
+  if (false) {}
+
+  return children.reduce(
+    everyPlace ? assignChildPlace : assignChildIndex,
+    params
+  )
+}
+
+function createParamsFromPlaces (places) {
+  if (false) {}
+
+  return Array.isArray(places)
+    ? places.reduce(assignChildIndex, {})
+    : Object.assign({}, places)
+}
+
+function assignChildPlace (params, child) {
+  if (child.data && child.data.attrs && child.data.attrs.place) {
+    params[child.data.attrs.place] = child;
+  }
+  return params
+}
+
+function assignChildIndex (params, child, index) {
+  params[index] = child;
+  return params
+}
+
+function vnodeHasPlaceAttribute (vnode) {
+  return Boolean(vnode.data && vnode.data.attrs && vnode.data.attrs.place)
+}
 
 /*  */
 
@@ -57492,9 +57511,12 @@ var VueI18n = function VueI18n (options) {
   this._fallbackRoot = options.fallbackRoot === undefined
     ? true
     : !!options.fallbackRoot;
+  this._formatFallbackMessages = options.formatFallbackMessages === undefined
+    ? false
+    : !!options.formatFallbackMessages;
   this._silentTranslationWarn = options.silentTranslationWarn === undefined
     ? false
-    : !!options.silentTranslationWarn;
+    : options.silentTranslationWarn;
   this._silentFallbackWarn = options.silentFallbackWarn === undefined
     ? false
     : !!options.silentFallbackWarn;
@@ -57531,7 +57553,7 @@ var VueI18n = function VueI18n (options) {
   });
 };
 
-var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },availableLocales: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true },warnHtmlInMessage: { configurable: true } };
+var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },availableLocales: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },formatFallbackMessages: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true },warnHtmlInMessage: { configurable: true } };
 
 VueI18n.prototype._checkLocaleMessage = function _checkLocaleMessage (locale, level, message) {
   var paths = [];
@@ -57640,6 +57662,9 @@ prototypeAccessors.fallbackLocale.set = function (locale) {
   this._vm.$set(this._vm, 'fallbackLocale', locale);
 };
 
+prototypeAccessors.formatFallbackMessages.get = function () { return this._formatFallbackMessages };
+prototypeAccessors.formatFallbackMessages.set = function (fallback) { this._formatFallbackMessages = fallback; };
+
 prototypeAccessors.missing.get = function () { return this._missing };
 prototypeAccessors.missing.set = function (handler) { this._missing = handler; };
 
@@ -57683,15 +57708,33 @@ VueI18n.prototype._warnDefault = function _warnDefault (locale, key, result, vm,
   } else {
     if (false) {}
   }
-  return key
+
+  if (this._formatFallbackMessages) {
+    var parsedArgs = parseArgs.apply(void 0, values);
+    return this._render(key, 'string', parsedArgs.params, key)
+  } else {
+    return key
+  }
 };
 
 VueI18n.prototype._isFallbackRoot = function _isFallbackRoot (val) {
   return !val && !isNull(this._root) && this._fallbackRoot
 };
 
-VueI18n.prototype._isSilentFallback = function _isSilentFallback (locale) {
-  return this._silentFallbackWarn && (this._isFallbackRoot() || locale !== this.fallbackLocale)
+VueI18n.prototype._isSilentFallbackWarn = function _isSilentFallbackWarn (key) {
+  return this._silentFallbackWarn instanceof RegExp
+    ? this._silentFallbackWarn.test(key)
+    : this._silentFallbackWarn
+};
+
+VueI18n.prototype._isSilentFallback = function _isSilentFallback (locale, key) {
+  return this._isSilentFallbackWarn(key) && (this._isFallbackRoot() || locale !== this.fallbackLocale)
+};
+
+VueI18n.prototype._isSilentTranslationWarn = function _isSilentTranslationWarn (key) {
+  return this._silentTranslationWarn instanceof RegExp
+    ? this._silentTranslationWarn.test(key)
+    : this._silentTranslationWarn
 };
 
 VueI18n.prototype._interpolate = function _interpolate (
@@ -58249,7 +58292,7 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = install;
-VueI18n.version = '8.12.0';
+VueI18n.version = '8.14.0';
 
 /* harmony default export */ __webpack_exports__["default"] = (VueI18n);
 
@@ -64553,7 +64596,7 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _lodash = _interopRequireDefault(__webpack_require__("9csQ"));
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 

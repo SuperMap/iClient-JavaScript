@@ -22,7 +22,7 @@
       <div id="main" style="position: absolute">
         <sm-web-map :map-options="mapOptions">
           <!-- 天地图路线查询组件: sm-tdt-route, 参数： token, busUrl, carUrl, searchUrl, position, theme -->
-          <sm-tdt-route position="top-left" :data="{tk:tk}"></sm-tdt-route>
+          <sm-tdt-route position="top-left" :data="{tk:tk}" :collapsed="false"></sm-tdt-route>
         </sm-web-map>
       </div>
 
