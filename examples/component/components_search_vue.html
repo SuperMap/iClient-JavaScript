@@ -23,10 +23,8 @@
     <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="1649097980">
       <!-- 搜索组件: sm-search -->
       <!-- 支持的数据：layer-names address-match  rest-map rest-data online-local-search-->
-      <sm-search position="top-left" :layer-names="layerNames" :address-match="addressMatch"
-        :rest-map="restMap"
-        :online-local-search='onlineLocalSearch'></sm-search>
-    </sm-web-map>
+      <sm-search :layer-names="layerNames" :address-match="addressMatch" :rest-map="restMap" :online-local-search='onlineLocalSearch'></sm-search>
+      </sm-web-map>
   </div>
 
   <script>

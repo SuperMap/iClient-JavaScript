@@ -36,16 +36,6 @@
         v-show="!!features.length">
       </sm-ranksymbol-theme-layer>
     </sm-web-map>
-    <div style="width: 272px;float:right">
-      <div id="infoBox" class="panel panel-primary infoPane"
-        style="width:272px;margin-top: 250px;position: absolute;fontSize:14px;display: none;float:right">
-        <div class="panel-heading">
-          <h5 class='panel-title text-center' data-i18n="resources.text_attributeTable"></h5>
-        </div>
-        <div id="infoContent" class="panel-body content">
-        </div>
-      </div>
-    </div>
   </div>
   <script type="text/javascript" include="vue,bootstrap" src="../js/include-web.js"></script>
   <script include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
@@ -98,7 +88,7 @@
           },
           features,
           themeOptions: {
-            //                map: map,//该可选参数将在下个版本遗弃
+            //map: map,//该可选参数将在下个版本遗弃
             attributions: " ",
             themeField: "CON2009",
             // 配置图表参数
