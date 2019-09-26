@@ -79,7 +79,7 @@
             var queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(param, function(serviceResult) {
                 var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
                 var features = recordsets && recordsets[0] && recordsets[0].features;
-                features.features.forEach(feature => {
+                features.features.forEach(function(feature){
                     feature.geometry.coordinates = _unproject(feature.geometry.coordinates);
                     feature.properties.name = feature.properties.texts[0];
                 });

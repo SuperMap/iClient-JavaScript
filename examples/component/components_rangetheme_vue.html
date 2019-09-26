@@ -52,10 +52,10 @@
         src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script>
         widgets.loader.showLoader('data loading...');
-        const HOST = window.isLocal ? window.server : 'http://iclient.supermap.io';
+        var HOST = window.isLocal ? window.server : 'http://iclient.supermap.io';
         var features = [];
         function createThemeFeatures() {
-            let getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+            var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
             getFeatureParam = new SuperMap.FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
@@ -65,7 +65,7 @@
                 toIndex: 500,
                 datasetNames: ["Jingjin:BaseMap_R"]
             });
-            const dataUrl = HOST + '/iserver/services/data-jingjin/rest/data';
+            var dataUrl = HOST + '/iserver/services/data-jingjin/rest/data';
             getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
                 format: SuperMap.DataFormat.ISERVER,
                 eventListeners: { "processCompleted": processCompleted }

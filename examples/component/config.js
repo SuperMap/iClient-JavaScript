@@ -148,7 +148,7 @@ var exampleConfig = {
           },
           {
             name: '路线规划',
-            name_en: 'Tianditu Route Plan',
+            name_en: 'Route Plan',
             version: '10.0.0',
             localIgnore: true,
             thumbnail: 'components_Tianditu_route_vue.png',
@@ -156,7 +156,7 @@ var exampleConfig = {
           },
           {
             name: 'POI搜索',
-            name_en: 'Tianditu POI Search',
+            name_en: 'POI Search',
             version: '10.0.0',
             localIgnore: true,
             thumbnail: 'components_Tianditu_search_vue.png',
@@ -164,7 +164,7 @@ var exampleConfig = {
           },
           {
             name: '天地图切换',
-            name_en: 'Tianditu Switcher',
+            name_en: 'Switcher',
             version: '10.0.0',
             localIgnore: true,
             thumbnail: 'components_Tianditu_switch_vue.png',
@@ -172,7 +172,7 @@ var exampleConfig = {
           },
           {
             name: '天地图首页',
-            name_en: 'Tianditu Home',
+            name_en: 'Home',
             version: '10.0.0',
             localIgnore: true,
             thumbnail: 'components_Tianditu_home_vue.png',
@@ -307,7 +307,7 @@ var exampleConfig = {
             localIgnore: true
           },
           {
-            name: '图表-饼图',
+            name: '饼图',
             name_en: 'Chart(pie)',
             version: '10.0.0',
             thumbnail: 'components_chart_vue(pie).png',
@@ -315,7 +315,7 @@ var exampleConfig = {
             localIgnore: true
           },
           {
-            name: '图表-雷达图',
+            name: '雷达图',
             name_en: 'Chart(radar)',
             version: '10.0.0',
             thumbnail: 'components_chart_vue(radar).png',
@@ -323,7 +323,7 @@ var exampleConfig = {
             localIgnore: true
           },
           {
-            name: '图表-仪表盘',
+            name: '仪表盘',
             name_en: 'Chart(gauge)',
             version: '10.0.0',
             thumbnail: 'components_chart_vue(gauge).png',

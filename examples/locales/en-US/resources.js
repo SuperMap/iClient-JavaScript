@@ -1236,8 +1236,8 @@ window.examplesResources = {
         "title_componentsTianditu_Vue": 'Tianditu',
         "title_componentsTianditu_route_Vue": 'Route Plan',
         "title_componentsTianditu_search_Vue": 'POI Search',
-        "title_componentsTianditu_switch_Vue": 'Tianditu Switcher',
-        "title_componentsTianditu_home_Vue": 'Tianditu Home',
+        "title_componentsTianditu_switch_Vue": 'Switcher',
+        "title_componentsTianditu_home_Vue": 'Home',
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",
@@ -1417,6 +1417,7 @@ window.examplesResources = {
         "btn_lightTheme":"Light theme",
         "btn_darkTheme":"Dark theme",
         "btn_customTheme":"Custom theme",
+        "btn_switchTheme":"Switch theme",
         
         "msg_addPath": "Please add the path for buffer analysis.",
         "msg_bufferAnalyst": "Please do the buffer analysis at first to get the scope of the query.",

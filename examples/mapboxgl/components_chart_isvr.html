@@ -82,7 +82,7 @@
         init();
 
         function init() {
-            let container = document.getElementsByClassName("chart-setting")[0];
+            var container = document.getElementsByClassName("chart-setting")[0];
             container.innerHTML = "<div class='input-group'><span class='input-group-addon'>" +
                 resources.text_dataset + "</span>" +
                 "<select class='form-control' id='rule' name='rule'>" +
@@ -126,7 +126,7 @@
             zoom: 6
         });
         //图表组件
-        let options = {
+        var options = {
             type: 'bar',
             datasets: {
                 type: 'iServer', //iServer iPortal 
@@ -148,7 +148,7 @@
                 }
             }]
         }
-        let barChart = new SuperMap.Components.Chart("chart", options);
+        var barChart = new SuperMap.Components.Chart("chart", options);
         resultLayer = {
             "id": 'jinjin',
             "type": 'fill',
@@ -163,7 +163,7 @@
         barChart.onAdd(addDataToMap);
 
         function addDataToMap() {
-            let features = barChart.getFeatures();
+            var features = barChart.getFeatures();
             // resultLayer.source = {
             //     "type": "geojson",
             //     "data": features
