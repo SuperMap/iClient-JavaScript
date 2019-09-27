@@ -385,19 +385,19 @@ var exampleConfig = {
         ]
       }
     }
-  },
-  reactcomponents: {
-    name: 'React',
-    name_en: 'React',
-    localIgnore: true,
-    content: {}
-  },
-  h5components: {
-    name: 'H5',
-    name_en: 'H5',
-    localIgnore: true,
-    content: {}
   }
+  // reactcomponents: {
+  //   name: 'React',
+  //   name_en: 'React',
+  //   localIgnore: true,
+  //   content: {}
+  // },
+  // h5components: {
+  //   name: 'H5',
+  //   name_en: 'H5',
+  //   localIgnore: true,
+  //   content: {}
+  // }
 };
 
 /**
