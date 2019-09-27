@@ -817,18 +817,18 @@ var exampleConfig = {
                         thumbnail: "cartoCSS_naturalStyle.png",
                         fileName: "cartoCSS_naturalStyle"
                     },
-                    {
-                        name: "默认风格(MVT)",
-                        name_en: "normal(MVT)",
-                        thumbnail: "mvtVectorLayer.png",
-                        fileName: "mvtVectorLayer"
-                    },
-                    {
-                        name: "默认风格(MVT WGS84)",
-                        name_en: "normal(MVT WGS84)",
-                        thumbnail: "mvtVectorLayer4326.png",
-                        fileName: "mvtVectorLayer4326"
-                    },
+                    // {
+                    //     name: "默认风格(MVT)",
+                    //     name_en: "normal(MVT)",
+                    //     thumbnail: "mvtVectorLayer.png",
+                    //     fileName: "mvtVectorLayer"
+                    // },
+                    // {
+                    //     name: "默认风格(MVT WGS84)",
+                    //     name_en: "normal(MVT WGS84)",
+                    //     thumbnail: "mvtVectorLayer4326.png",
+                    //     fileName: "mvtVectorLayer4326"
+                    // },
                     {
                         name: "OSM风格(MVT WGS84)",
                         name_en: "OSM Style(MVT WGS84)",

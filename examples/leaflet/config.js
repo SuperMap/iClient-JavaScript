@@ -886,19 +886,19 @@ var exampleConfig = {
                         name_en: "natural style",
                         thumbnail: "l_tileVectorLayer_natural.png",
                         fileName: "vectorTileLayerNatural"
-                    }, {
-                        name: "默认风格(MVT)",
-                        name_en: "normal(MVT)",
-                        thumbnail: "l_tileVectorLayer_normal.png",
-                        fileName: "vectorTileLayerMVT"
-
-                    }, {
-                        name: "默认风格(MVT 4326)",
-                        name_en: "normal(MVT 4326)",
-                        thumbnail: "l_tileVectorLayer_mvt4326.png",
-                        fileName: "vectorTileLayerMVT_4326"
-
                     }
+                    // , {
+                    //     name: "默认风格(MVT)",
+                    //     name_en: "normal(MVT)",
+                    //     thumbnail: "l_tileVectorLayer_normal.png",
+                    //     fileName: "vectorTileLayerMVT"
+
+                    // }, {
+                    //     name: "默认风格(MVT 4326)",
+                    //     name_en: "normal(MVT 4326)",
+                    //     thumbnail: "l_tileVectorLayer_mvt4326.png",
+                    //     fileName: "vectorTileLayerMVT_4326"
+                    // }
                 ]
             },
             "themeLayer": {
