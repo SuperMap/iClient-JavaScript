@@ -1,5 +1,5 @@
 var olapi = "https://openlayers.org/en/v4.6.5/apidoc/";
-var lfapi = "http://leafletjs.com/reference-1.3.1.html";
+var lfapi = "http://leafletjs.com/reference-1.5.1.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
 var classicapi="http://iclient.supermap.io/libs/iclient8c/apidoc/files/SuperMap"
