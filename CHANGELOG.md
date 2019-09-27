@@ -1,3 +1,141 @@
+# 10.0.0 #
+
+## Distribution package changes
+
+### for Leaflet
+
+- `iclient9-leaflet.js` 更名 `iclient-leaflet.js`
+  
+- `iclient9-leaflet.min.js` 更名 `iclient-leaflet.min.js`
+
+- `iclient9-leaflet-es6.js` 更名 `iclient-leaflet-es6.js`
+
+- `iclient9-leaflet-es6.min.js` 更名 `iclient-leaflet-es6.min.js`
+  
+- `iclient9-leaflet.css` 更名 `iclient-leaflet.css`
+
+- `iclient9-leaflet.min.css` 更名 `iclient-leaflet.min.css`
+
+
+### for OpenLayers
+
+- `iclient9-openlayers.js` 更名 `iclient-openlayers.js`
+  
+- `iclient9-openlayers.min.js` 更名 `iclient-openlayers.min.js`
+
+- `iclient9-openlayers-es6.js` 更名 `iclient-openlayers-es6.js`
+
+- `iclient9-openlayers-es6.min.js` 更名 `iclient-openlayers-es6.min.js`
+  
+- `iclient9-openlayers.css` 更名 `iclient-openlayers.css`
+
+- `iclient9-openlayers.min.css` 更名 `iclient-openlayers.min.css`
+
+### for MapboxGL
+
+- `iclient9-mapboxgl.js` 更名 `iclient-mapboxgl.js`
+  
+- `iclient9-mapboxgl.min.js` 更名 `iclient-mapboxgl.min.js`
+
+- `iclient9-mapboxgl-es6.js` 更名 `iclient-mapboxgl-es6.js`
+
+- `iclient9-mapboxgl-es6.min.js` 更名 `iclient-mapboxgl-es6.min.js`
+  
+- `iclient9-mapboxgl.css` 更名 `iclient-mapboxgl.css`
+
+- `iclient9-mapboxgl.min.css` 更名 `iclient-mapboxgl.min.css`
+
+
+## API changes
+
+### for Leaflet
+
+- `L.supermap.imageMapLayer` `L.supermap.tiledMapLayer` 新增 `options.rasterfunction` 参数，支持对接 SuperMap iServer 的栅格运算。
+
+- `L.supermap.ServiceBase` 及其子类
+
+  - 新增 `options.headers` 参数，支持设置请求头内容。
+
+- 命名空间 `L.supermap.widgets` 更名为 `L.supermap.components`
+
+- 命名空间 `SuperMap.Widgets` 更名为 `SuperMap.Components`
+
+### for OpenLayers
+
+- `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 新增 `options.rasterfunction` 参数，支持对接 SuperMap iServer 的栅格运算。
+
+- `ol.supermap.ServiceBase` 及其子类
+
+  - 新增 `options. headers` 参数，支持设置请求头内容
+
+- 命名空间 `SuperMap.Widgets` 更名为 `SuperMap.Components`
+
+
+### for MapboxGL
+
+- `mapboxgl.supermap.ServiceBase` 及其子类
+
+  - 新增 `options. headers` 参数，支持设置请求头内容
+
+- 命名空间 `SuperMap.Widgets` 更名为 `SuperMap.Components`
+
+## Fixed
+
+### for Leaflet
+
+- 修复 SuperMap iServer 地图设置可见比例尺时，手机端用双指缩放时，超出最大最小级别时出错的问题
+
+- 修复 `L.supermap.mapVLayer` 在 Internet Explorer 11/10 浏览器上可能不出图的问题
+  
+- 修复 `L.supermap.tiledVectorLayer` 使用自定义 `cartoCSS` 样式时配置 `pointurl` 不生效的问题 
+
+
+### for OpenLayers
+
+- 修复 `ol.source.Mapv` 在 Internet Explorer 11/10 浏览器上可能不出图的问题
+
+### for MapboxGL
+
+- 修复 `mapboxgl.supermap.MapvLayer` 在 Internet Explorer 11/10 浏览器上可能不出图的问题
+
+
+## Examples
+
+- 新增 Component 分类
+
+  - 新增 “Vue - 地图” 分类及相关示例
+  
+  - 新增 “Vue - 地图子组件” 分类及相关示例
+
+  - 新增 “Vue - 天地图子组件” 分类及相关示例
+  
+  - 新增 “Vue - 可视化” 分类及相关示例
+  
+  - 新增 “Vue - 图表” 分类及相关示例
+  
+  - 新增 “Vue – 基础” 分类及相关示例
+  
+  - 新增 “Vue - 其他” 分类及相关示例
+
+### for Leaflet
+
+- iServer – 地图
+  
+  - 增加 “地图-栅格分析” 例子
+
+### for OpenLayers
+
+- iServer – 地图
+  
+  - 增加 “地图-栅格分析” 例子
+
+### for MapboxGL
+
+- 可视化 - 矢量瓦片
+  
+  - 增加 “iServer数据服务矢量瓦片(2000万点)” 例子
+
+
 # 10.0.0 beta #
 
 ## 新特性
