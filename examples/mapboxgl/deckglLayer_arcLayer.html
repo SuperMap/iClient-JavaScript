@@ -80,10 +80,10 @@
             },
             callback: {
 //                getStrokeWidth: 12,
-                getSourcePosition: d => d.from.coordinates,
-                getTargetPosition: d => d.to.coordinates,
-                getSourceColor: d => [Math.sqrt(d.inbound), 140, 0],
-                getTargetColor: d => [Math.sqrt(d.outbound), 140, 0],
+                getSourcePosition: function(d) { return d.from.coordinates },
+                getTargetPosition: function(d) { return d.to.coordinates },
+                getSourceColor: function(d) { return [Math.sqrt(d.inbound), 140, 0] },
+                getTargetColor: function(d) { return [Math.sqrt(d.outbound), 140, 0] },
             }
         });
         map.addLayer(deckglLayer);

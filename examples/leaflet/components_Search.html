@@ -40,7 +40,7 @@
             isGeoCoding: !window.isLocal,
             perPageDataNum: 8  // 每页显示数据个数
             //设置结果图层样式：
-            /*style: (feature, latLng) => {
+            /*style: function (feature, latLng) {
                 if (latLng /!*&& feature instanceof L.latLng || feature.geometry.type.toLowerCase() === "point"*!/) {
                     return L.circleMarker(latLng, {
                         fillColor: 'red',
@@ -69,7 +69,7 @@
                 .queryByBounds(param, function (serviceResult) {
                     var result = serviceResult.result;
                     var resultLayer = L.geoJSON(result.recordsets[0].features, {
-                        pointToLayer: (geoJsonPoint, latlng) => {
+                        pointToLayer: function (geoJsonPoint, latlng) {
                             return L.circleMarker(latlng, {
                                 fillColor: 'blue',
                                 weight: 1,

@@ -66,6 +66,7 @@
 
   <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
     <div class="container">
+      <!-- 导航 -->
       <div class="nav-header">
         <a href="https://www.tianditu.gov.cn/" class="logo"
           ><image class="logo-image" src="../img/tianditu/tianditu.png"></image
@@ -79,10 +80,12 @@
           <li><a href="http://yjfw.tianditu.gov.cn/" target="_blank">应急服务</a></li>
         </ul>
       </div>
+      <!-- 天地图及其子组件 -->
       <div id="main">
         <sm-web-map :map-options="mapOptions">
           <!-- 天地图路线查询组件: sm-tdt-route
-          天地图搜索组件：sm-tdt-search -->
+          天地图搜索组件：sm-tdt-search 
+          天地图切换组件：sm-tdt-map-switcher-->
           <sm-tdt-route position="top-right" :data="{tk:tk}" :collapsed="true"></sm-tdt-route>
           <sm-tdt-search position="top-right" :data="{tk:tk}" :collapsed="true"></sm-tdt-search>
           <sm-tdt-map-switcher position="top-right" :data="{tk:tk}" :collapsed="true"></sm-tdt-map-switcher>

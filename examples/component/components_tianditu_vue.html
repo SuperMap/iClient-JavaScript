@@ -7,7 +7,10 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsTianditu_Vue"></title>
     <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-    <script include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script
+      include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
     <style>
       #main {
         margin: 0 auto;
@@ -18,10 +21,9 @@
   </head>
 
   <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;">
-      <div id="main">
-        <!-- 天地图 -->
-        <sm-web-map :map-options="mapOptions"></sm-web-map>
-      </div>
+    <div id="main">
+      <!-- 天地图 -->
+      <sm-web-map :map-options="mapOptions"></sm-web-map>
     </div>
 
     <script>
@@ -38,14 +40,14 @@
                   baseLayer: {
                     type: 'raster',
                     tiles: [
-                      'http://t0.tianditu.com/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}',
+                      'http://t0.tianditu.com/img_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}'
                     ],
                     tileSize: 256
                   },
                   labelLayer: {
                     type: 'raster',
                     tiles: [
-                      'http://t0.tianditu.com/cia_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix={z}&tilerow={y}&tilecol={x}',
+                      'http://t0.tianditu.com/cia_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix={z}&tilerow={y}&tilecol={x}'
                     ],
                     tileSize: 256
                   }
