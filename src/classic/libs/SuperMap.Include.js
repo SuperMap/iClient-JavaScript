@@ -22,9 +22,9 @@
     }
     //加载类库资源文件
     function loadSMLibs() {
-        inputScript(baseurl+'SuperMap-8.1.1-17226.js');
+        inputScript(baseurl+'SuperMap-8.1.1-17729.js');
         if(!window.excludePlot){
-            inputScript(baseurl+'SuperMap_Plot-8.1.1-17226.js');
+            inputScript(baseurl+'SuperMap_Plot-8.1.1-17729.js');
         }
         loadLocalization();
         inputCSS('style.css');
