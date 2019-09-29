@@ -126,7 +126,7 @@
           layerLoaded(themeLayer) {
             themeLayer.on('mousemove', function(e) {
               return this.showInfoWin(themeLayer, e);
-            });
+            }.bind(this));
           },
           showInfoWin(themeLayer, e) {
             // e.target 是图形对象，即数据的可视化对象。

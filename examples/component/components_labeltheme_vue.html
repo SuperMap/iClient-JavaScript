@@ -316,7 +316,7 @@
           layerLoaded(themeLayer) {
             themeLayer.on('mousemove', function(e) {
               this.handleMouseOver(themeLayer, e);
-            });
+            }.bind(this));
           },
           handleMouseOver(themeLayer, e) {
             if (e.target && e.target.refDataID) {
