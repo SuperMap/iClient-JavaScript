@@ -221,7 +221,12 @@ export var Event = SuperMap.Event = {
 
         //add the actual browser event listener
         if (element.addEventListener) {
-            element.addEventListener(name, observer, useCapture);
+            if(name === 'mousewheel'){
+                // https://www.chromestatus.com/features/6662647093133312
+                element.addEventListener(name, observer, {useCapture: useCapture, passive: false} );
+            } else {
+                element.addEventListener(name, observer, useCapture);
+            }
         } else if (element.attachEvent) {
             element.attachEvent('on' + name, observer);
         }

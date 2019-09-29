@@ -8632,7 +8632,12 @@ var Event_Event = SuperMap.Event = {
 
         //add the actual browser event listener
         if (element.addEventListener) {
-            element.addEventListener(name, observer, useCapture);
+            if(name === 'mousewheel'){
+                // https://www.chromestatus.com/features/6662647093133312
+                element.addEventListener(name, observer, {useCapture: useCapture, passive: false} );
+            } else {
+                element.addEventListener(name, observer, useCapture);
+            }
         } else if (element.attachEvent) {
             element.attachEvent('on' + name, observer);
         }
@@ -23573,7 +23578,6 @@ SuperMap.GetFeaturesParametersBase = GetFeaturesParametersBase_GetFeaturesParame
  * @param {string} [options.attributeFilter] - 范围查询属性过滤条件。 
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。 
  * @param {SuperMap.SpatialQueryMode} [options.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式常量。 
- * @param {SuperMap.FilterParameter} [options.queryParameter] - 查询过滤条件参数。 
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
@@ -24118,7 +24122,6 @@ SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService_GetFeaturesByBu
  * @param {string} [options.attributeFilter] - 几何查询属性过滤条件。  
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。  
  * @param {SuperMap.SpatialQueryMode} [options.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式常量。  
- * @param {SuperMap.FilterParameter} [options.queryParameter] - 查询过滤条件参数。  
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
