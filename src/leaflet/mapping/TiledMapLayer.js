@@ -40,6 +40,7 @@ import Attributions from '../core/Attributions'
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
+ * @param {Array.<number>} [options.subdomains=[0, 1, 2, 3, 4, 5, 6, 7]] - 子域名数组。
  * @fires L.supermap.tiledMapLayer#tilesetsinfoloaded
  * @fires L.supermap.tiledMapLayer#tileversionschanged
  */
@@ -68,7 +69,8 @@ export var TiledMapLayer = L.TileLayer.extend({
         format: 'png',
         //启用托管地址。
         tileProxy:null,
-        attribution: Attributions.Common.attribution
+        attribution: Attributions.Common.attribution,
+        subdomains: null
     },
 
     initialize: function (url, options) {
@@ -109,6 +111,9 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
         if (!this.options.cacheEnabled) {
             tileUrl += "&_t=" + new Date().getTime();
+        }
+        if (this.options.subdomains) {
+            tileUrl = L.Util.template(tileUrl, {s: this._getSubdomain(coords)});
         }
         return tileUrl;
     },
