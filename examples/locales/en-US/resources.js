@@ -570,6 +570,8 @@ window.examplesResources = {
         "title_componentsAnimateMarkerLayer_Vue": 'Animate Marker Layer',
         "title_componentsAnimateTextLayer_Vue": 'Animate Text Layer',
         "title_componentsBorder_Vue": 'Border component',
+        "title_componentsWebmap_React": 'iPortal Map component(React）',
+        "title_componentsMap_React": 'iServer Map component(React）',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",

@@ -385,13 +385,35 @@ var exampleConfig = {
         ]
       }
     }
+  },
+  reactcomponents: {
+    name: 'React',
+    name_en: 'React',
+    localIgnore: true,
+    content: {
+      react_map: {
+        name: '地图',
+        name_en: 'Map',
+        content: [
+          {
+            name: 'iServer 地图',
+            name_en: 'iServer Map',
+            version: '10.0.0',
+            thumbnail: 'components_map_react.png',
+            fileName: 'components_map_react'
+          },
+          {
+            name: 'iPortal 地图',
+            name_en: 'iPortal Map',
+            version: '10.0.0',
+            thumbnail: 'components_webmap_react.png',
+            fileName: 'components_webmap_react',
+            localIgnore: true
+          }
+        ]
+      }
+    }
   }
-  // reactcomponents: {
-  //   name: 'React',
-  //   name_en: 'React',
-  //   localIgnore: true,
-  //   content: {}
-  // },
   // h5components: {
   //   name: 'H5',
   //   name_en: 'H5',

@@ -146,6 +146,10 @@
             inputCSS("../../dist/mapboxgl/iclient-mapboxgl-vue.css");
             inputScript("../../dist/mapboxgl/iclient-mapboxgl-vue.min.js");
         }
+        if (inArray(includes, 'iclient-mapboxgl-react')) {
+          inputCSS("../../dist/mapboxgl/iclient-mapboxgl-react.css");
+          inputScript("../../dist/mapboxgl/iclient-mapboxgl-react.min.js");
+      }
     }
 
     load();
