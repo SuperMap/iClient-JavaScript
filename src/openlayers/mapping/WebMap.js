@@ -681,9 +681,9 @@ export class WebMap extends ol.Observable {
             url: layerInfo.url,
             wrapX: false,
             serverType: serverType,
+            crossOrigin: 'anonymous',
             // extent: this.baseLayerExtent,
-            prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] },
-            tileProxy: this.tileProxy
+            prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] }
         };
         if(layerInfo.visibleScales && layerInfo.visibleScales.length >0){
             let result = this.getReslutionsFromScales(layerInfo.visibleScales, 96, layerInfo.coordUnit);
@@ -695,6 +695,10 @@ export class WebMap extends ol.Observable {
             options.tileGrid = tileGrid;
         }else{
             options.extent = this.baseLayerExtent;
+        }
+         //主机名相同时不添加代理
+        if (layerInfo.url && !this.isSameDomain(layerInfo.url)) {
+            options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
         }
         let source = new ol.source.TileSuperMapRest(options);
         SecurityManager[`register${keyfix}`](layerInfo.url);
@@ -739,6 +743,7 @@ export class WebMap extends ol.Observable {
         return new ol.source.XYZ({
             wrapX: false,
             projection: projection,
+            crossOrigin: 'anonymous',
             tileUrlFunction: function (coordinates) {
                 let /*quadDigits = '', */[z, x, y] = [...coordinates];
                 y = y > 0 ? y - 1 : -y - 1;
@@ -770,7 +775,7 @@ export class WebMap extends ol.Observable {
         return new ol.source.XYZ({
             url: layerInfo.url,
             wrapX: false,
-            crossOrigin: window.location.host
+            crossOrigin: 'anonymous'
         })
     }
 
@@ -3410,6 +3415,26 @@ export class WebMap extends ol.Observable {
             resolutions.push(resolutions[i - 1] / 2)
         }
         return resolutions;
+    }
+    /**
+     * 判断是否同域名（如果是域名，只判断后门两级域名是否相同，第一级忽略），如果是ip地址则需要完全相同。
+     * @param {*} url 
+     */
+    isSameDomain (url) {
+        let documentUrlArray = url.split("://"), substring = documentUrlArray[1];
+        let domainIndex = substring.indexOf("/"), domain = substring.substring(0, domainIndex);
+
+        let documentUrl = document.location.toString();
+        let docUrlArray = documentUrl.split("://"), documentSubstring = docUrlArray[1];
+        let docuDomainIndex = documentSubstring.indexOf("/"), docDomain = documentSubstring.substring(0, docuDomainIndex);
+
+        if(domain.indexOf(':') >-1 || window.location.port !== "") {
+            //说明用的是ip地址，判断完整域名判断
+            return domain === docDomain;
+        } else {
+            let domainArray = domain.split('.'), docDomainArray = docDomain.split('.');
+            return domainArray[1] === docDomainArray[1] && domainArray[2] === docDomainArray[2];
+        }
     }
 }
 
