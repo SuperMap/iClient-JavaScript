@@ -1929,7 +1929,7 @@ export class WebMap extends ol.Observable {
                     color: parameters.fill
                 }),
                 backgroundFill: new ol.style.Fill({
-                    color: [255, 255, 255, 0.7]
+                    color: parameters.backgroundFill || [255, 255, 255, 0.7]
                 }),
                 padding: [3, 3, 3, 3],
                 offsetY: parameters.offsetY
