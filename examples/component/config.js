@@ -409,6 +409,92 @@ var exampleConfig = {
             thumbnail: 'components_webmap_react.png',
             fileName: 'components_webmap_react',
             localIgnore: true
+          },
+          {
+            name: '栅格图层',
+            name_en: 'Raster Layer',
+            version: '10.0.0',
+            thumbnail: 'components_rasterLayer_vue.png',
+            fileName: 'components_raster_react',
+            localIgnore: true
+          },
+          {
+            name: '矢量瓦片图层',
+            name_en: 'Vector Tile Layer',
+            version: '10.0.0',
+            thumbnail: 'components_map_vue.png',
+            fileName: 'components_vector_tile_react',
+            localIgnore: true
+          }
+        ]
+      },
+      viz: {
+        name: '可视化',
+        name_en: 'Visualization',
+        content: [
+          {
+            name: '单值专题图',
+            name_en: 'Unique Theme layer',
+            version: '10.0.0',
+            thumbnail: 'components_uniquetheme_vue.png',
+            fileName: 'components_uniquetheme_react'
+          },
+          {
+            name: '分段专题图',
+            name_en: 'Range Theme layer',
+            version: '10.0.0',
+            thumbnail: 'components_rangetheme_vue.png',
+            fileName: 'components_rangetheme_react'
+          },
+          {
+            name: '图表专题图',
+            name_en: 'Statistical chart',
+            version: '10.0.0',
+            thumbnail: 'components_graph_theme_layer_vue.png',
+            fileName: 'components_graph_theme_layer_react',
+            localIgnore: true
+          },
+          {
+            name: '热力图图层',
+            name_en: 'Heatmap layer',
+            version: '10.0.0',
+            thumbnail: 'components_heatmap_vue.png',
+            fileName: 'components_heatmap_react'
+          },
+          {
+            name: 'MapV 图层',
+            name_en: 'MapV layer',
+            version: '10.0.0',
+            thumbnail: 'components_mapv_vue.gif',
+            fileName: 'components_mapv_react'
+          },
+          {
+            name: 'Echarts 图层',
+            name_en: 'Echarts layer',
+            version: '10.0.0',
+            thumbnail: 'components_echartsLayer_vue.gif',
+            fileName: 'components_echarts_react'
+          },
+          {
+            name: '数据流图层',
+            name_en: 'Data Flow Layer',
+            version: '10.0.0',
+            thumbnail: 'components_dataflow_vue.gif',
+            fileName: 'components_dataflow_react'
+          },
+          {
+            name: '动效火焰图层',
+            name_en: 'Animate Fire Layer',
+            version: '10.0.0',
+            thumbnail: 'components_fire_layer_vue.gif',
+            fileName: 'components_fire_layer_react'
+          },
+          {
+            name: 'GeoJSON 图层',
+            name_en: 'GeoJSON Layer',
+            version: '10.0.0',
+            thumbnail: 'components_geojson_vue.png',
+            fileName: 'components_geojson_react'
           }
         ]
       }
