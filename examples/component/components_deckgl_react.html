@@ -7,7 +7,10 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_componentsDeckGL_React"></title>
     <script type="text/javascript" include="react,jquery,papaparse,widgets" src="../js/include-web.js"></script>
-    <script include="deck,iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script
+      include="deck,iclient-mapboxgl-react,mapbox-gl-enhance"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
     <style>
       html,
       body {
@@ -25,10 +28,6 @@
     <script type="text/babel">
       // import {SmDeckglLayer} from '@supermap/react-iclient'
       var host = window.isLocal ? window.server : 'http://support.supermap.com.cn:8090';
-      var attribution =
-        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
       var SmWebMap = window.SuperMap.Components.SmWebMap;
       var SmDeckglLayer = window.SuperMap.Components.SmDeckglLayer;
       var mapOptions = {
@@ -37,7 +36,6 @@
           version: 8,
           sources: {
             'raster-tiles': {
-              attribution: attribution,
               type: 'raster',
               tiles: [host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}'],
               tileSize: 256
@@ -61,11 +59,12 @@
 
       widgets.loader.showLoader('data loading...');
       var _this = this,
-        popup, map;
+        popup,
+        map;
 
       function mapIsLoaded(e) {
-				map = e.map;
-			}
+        map = e.map;
+      }
 
       $.get('../data/deck.gl/strees_data.csv', function(csvstr) {
         widgets.loader.removeLoader();
@@ -131,10 +130,7 @@
           }
         };
         ReactDOM.render(
-          <SmWebMap
-            mapOptions={mapOptions}
-            onLoad={mapIsLoaded}
-          >
+          <SmWebMap mapOptions={mapOptions} onLoad={mapIsLoaded}>
             <SmDeckglLayer layerType={'hexagon-layer'} options={deckglOptions} />
           </SmWebMap>,
           document.getElementById('main')

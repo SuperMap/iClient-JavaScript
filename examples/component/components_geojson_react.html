@@ -60,11 +60,11 @@
       var layerStyle = new SuperMap.Components.commontypes.CircleStyle();
 
       $.get('../data/全国671个气象站观测数据.geojson', function(res) {
-        var data = JSON.parse(JSON.stringify(res));
+        var data = JSON.parse(res);
 
         ReactDOM.render(
           <SmWebMap mapOptions={mapOptions}>
-            <SmGeojsonLayer data={res} layerStyle={layerStyle} />
+            <SmGeojsonLayer data={data} layerStyle={layerStyle} />
           </SmWebMap>,
           document.getElementById('main')
         );

@@ -38,10 +38,6 @@
     <script type="text/babel">
       // import {SmRanksymbolThemeLayer} from '@supermap/react-iclient'
       var host = window.isLocal ? window.server : 'http://support.supermap.com.cn:8090';
-      var attribution =
-        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
       var SmWebMap = window.SuperMap.Components.SmWebMap;
       var SmRanksymbolThemeLayer = window.SuperMap.Components.SmRanksymbolThemeLayer;
 
@@ -65,7 +61,6 @@
           version: 8,
           sources: {
             'raster-tiles': {
-              attribution: attribution,
               type: 'raster',
               tiles: [host + '/iserver/services/map-china400/rest/maps/China_4326/zxyTileImage.png?z={z}&x={x}&y={y}'],
               tileSize: 256
@@ -87,7 +82,6 @@
 
       var themeOptions = {
         //map: map,//该可选参数将在下个版本遗弃
-        attributions: ' ',
         themeField: 'CON2009',
         // 配置图表参数
         symbolSetting: {

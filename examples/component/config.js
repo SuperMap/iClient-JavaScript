@@ -422,7 +422,7 @@ var exampleConfig = {
             name: '矢量瓦片图层',
             name_en: 'Vector Tile Layer',
             version: '10.0.0',
-            thumbnail: 'components_map_vue.png',
+            thumbnail: 'components_vector_tile_vue.png',
             fileName: 'components_vector_tile_react',
             localIgnore: true
           }
@@ -433,7 +433,7 @@ var exampleConfig = {
         name_en: 'Visualization',
         content: [
           {
-            name: '点聚合图层组件',
+            name: '点聚合图层',
             name_en: 'Cluster Layer',
             version: '10.0.0',
             thumbnail: 'components_cluster_vue.png',
@@ -454,14 +454,14 @@ var exampleConfig = {
             fileName: 'components_rangetheme_react'
           },
           {
-            name: '等级符号专题图图层组件',
+            name: '等级符号专题图',
             name_en: 'RankSymbolTheme Layer',
             version: '10.0.0',
             thumbnail: 'components_ranksymboltheme_vue.png',
             fileName: 'components_ranksymboltheme_react'
           },
           {
-            name: '标签专题图图层组件',
+            name: '标签专题图',
             name_en: 'LabelTheme Layer',
             version: '10.0.0',
             thumbnail: 'components_labeltheme_vue.png',
@@ -497,7 +497,7 @@ var exampleConfig = {
             fileName: 'components_echarts_react'
           },
           {
-            name: 'DeckGL 图层组件',
+            name: 'DeckGL 图层',
             name_en: 'DeckGL Layer',
             version: '10.0.0',
             thumbnail: 'components_deckgl_vue.png',

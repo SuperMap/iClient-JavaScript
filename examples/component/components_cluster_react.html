@@ -23,7 +23,7 @@
   <body>
     <div id="main"></div>
     <script type="text/babel">
-    // import {SmClusterLayer} from '@supermap/react-iclient'
+      // import {SmClusterLayer} from '@supermap/react-iclient'
       var SmWebMap = window.SuperMap.Components.SmWebMap;
       var SmClusterLayer = window.SuperMap.Components.SmClusterLayer;
 
@@ -61,10 +61,9 @@
           }
         }
 
-
         ReactDOM.render(
-          <SmWebMap mapId={'676816598'} serverUrl={'http://support.supermap.com.cn:8092/'} >
-            <SmClusterLayer data={geojson} radius={100}/>
+          <SmWebMap mapId={'676816598'} serverUrl={'http://support.supermap.com.cn:8092/'}>
+            <SmClusterLayer data={geojson} radius={100} />
           </SmWebMap>,
           document.getElementById('main')
         );

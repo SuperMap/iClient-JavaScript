@@ -28,11 +28,6 @@
       var SmWebMap = window.SuperMap.Components.SmWebMap;
       var SmLabelThemeLayer = window.SuperMap.Components.SmLabelThemeLayer;
       var host = window.isLocal ? window.server : 'http://iclient.supermap.io';
-      var attribution =
-        "<a href='https://www.mapbtyx.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
-
       var features = [];
       var feat, popup, map;
       for (var i = 0; i < themeData.length; i++) {
@@ -50,7 +45,6 @@
           version: 8,
           sources: {
             'raster-tiles': {
-              attribution: attribution,
               type: 'raster',
               tiles: [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
               tileSize: 256
@@ -72,7 +66,6 @@
 
       var themeOptions = {
         //                map: map,//该可选参数将在下个版本遗弃
-        attributions: ' ',
         style: new SuperMap.ThemeStyle({
           labelRect: true,
           fontColor: '#000000',
@@ -153,7 +146,7 @@
         var statisticsData = getStatisticsData();
         var contentHTML =
           '<table><tbody><tr>' +
-          "<td><div>" +
+          '<td><div>' +
           '<table><tbody><tr>' +
           "<td><div id='contentID' style='margin-top: 2px;margin-bottom: 2px;width:65px;height:60px;line-height:60px;text-align: center;font-size:35px;color: #ffffff;'>" +
           feature.attributes.aqi +

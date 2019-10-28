@@ -209,10 +209,8 @@
               feas.push(feature);
             }
           }
-          console.log(IHFeas.concat(feas));
           // 岛洞多面要素必需在其他要素之前添加
           features = IHFeas.concat(feas);
-          console.log(features);
 
           ReactDOM.render(
             <SmWebMap mapOptions={mapOptions}>
