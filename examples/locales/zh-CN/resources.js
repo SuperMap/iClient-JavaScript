@@ -538,6 +538,8 @@ window.examplesResources = {
         "title_componentsDeckGL_React": 'DeckGL 图层组件',
         "title_componentsLabelTheme_React": '标签专题图图层组件',
         "title_componentsRankSymbolTheme_React": '等级符号专题图图层组件',
+        "title_componentsAnimateMarkerLayer_React": '动效标记图层',
+        "title_componentsAnimateTextLayer_React": '动效文本标记图层',
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",

@@ -433,6 +433,13 @@ var exampleConfig = {
         name_en: 'Visualization',
         content: [
           {
+            name: '点聚合图层组件',
+            name_en: 'Cluster Layer',
+            version: '10.0.0',
+            thumbnail: 'components_cluster_vue.png',
+            fileName: 'components_cluster_react'
+          },
+          {
             name: '单值专题图',
             name_en: 'Unique Theme layer',
             version: '10.0.0',
@@ -445,6 +452,20 @@ var exampleConfig = {
             version: '10.0.0',
             thumbnail: 'components_rangetheme_vue.png',
             fileName: 'components_rangetheme_react'
+          },
+          {
+            name: '等级符号专题图图层组件',
+            name_en: 'RankSymbolTheme Layer',
+            version: '10.0.0',
+            thumbnail: 'components_ranksymboltheme_vue.png',
+            fileName: 'components_ranksymboltheme_react'
+          },
+          {
+            name: '标签专题图图层组件',
+            name_en: 'LabelTheme Layer',
+            version: '10.0.0',
+            thumbnail: 'components_labeltheme_vue.png',
+            fileName: 'components_labeltheme_react'
           },
           {
             name: '图表专题图',
@@ -476,6 +497,13 @@ var exampleConfig = {
             fileName: 'components_echarts_react'
           },
           {
+            name: 'DeckGL 图层组件',
+            name_en: 'DeckGL Layer',
+            version: '10.0.0',
+            thumbnail: 'components_deckgl_vue.png',
+            fileName: 'components_deckgl_react'
+          },
+          {
             name: '数据流图层',
             name_en: 'Data Flow Layer',
             version: '10.0.0',
@@ -490,39 +518,25 @@ var exampleConfig = {
             fileName: 'components_fire_layer_react'
           },
           {
+            name: '动效标记图层',
+            name_en: 'Animate Marker Layer',
+            version: '10.0.0',
+            thumbnail: 'components_animate_marker_layer_vue.gif',
+            fileName: 'components_animate_marker_layer_react'
+          },
+          {
+            name: '动效文本标记图层',
+            name_en: 'Animate Text Layer',
+            version: '10.0.0',
+            thumbnail: 'components_rotating_text_border_vue.gif',
+            fileName: 'components_rotating_text_border_react'
+          },
+          {
             name: 'GeoJSON 图层',
             name_en: 'GeoJSON Layer',
             version: '10.0.0',
             thumbnail: 'components_geojson_vue.png',
             fileName: 'components_geojson_react'
-          },
-          {
-            name: '点聚合图层组件',
-            name_en: 'Cluster Layer',
-            version: '10.0.0',
-            thumbnail: 'components_cluster_vue.png',
-            fileName: 'components_cluster_react'
-          },
-          {
-            name: 'DeckGL 图层组件',
-            name_en: 'DeckGL Layer',
-            version: '10.0.0',
-            thumbnail: 'components_deckgl_vue.png',
-            fileName: 'components_deckgl_react'
-          },
-          {
-            name: '标签专题图图层组件',
-            name_en: 'LabelTheme Layer',
-            version: '10.0.0',
-            thumbnail: 'components_labeltheme_vue.png',
-            fileName: 'components_labeltheme_react'
-          },
-          {
-            name: '等级符号专题图图层组件',
-            name_en: 'RankSymbolTheme Layer',
-            version: '10.0.0',
-            thumbnail: 'components_ranksymboltheme_vue.png',
-            fileName: 'components_ranksymboltheme_react'
           }
         ]
       }
