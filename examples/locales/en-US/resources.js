@@ -583,6 +583,10 @@ window.examplesResources = {
         "title_componentsDataFlow_React": 'Data FLow Layer component(React)',
         "title_componentsFireLayer_React": 'Animate Fire Layer component(React)',
         "title_componentsGeoJSON_React": 'GeoJSON Layer component(React)',
+        "title_componentsCluster_React":'Cluster Layer component(React)',
+        "title_componentsDeckGL_React": 'DeckGL Layer component(React)',
+        "title_componentsLabelTheme_React": 'LabelTheme Layer component(React)',
+        "title_componentsRankSymbolTheme_React": 'RankSymbolTheme Layer component(React)',
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",

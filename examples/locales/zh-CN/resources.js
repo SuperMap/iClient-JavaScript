@@ -534,6 +534,10 @@ window.examplesResources = {
         "title_componentsDataFlow_React": '数据流图层组件',
         "title_componentsFireLayer_React": '动态火焰图层',
         "title_componentsGeoJSON_React": 'GeoJSON 图层组件',
+        "title_componentsCluster_React":'点聚合图层组件',
+        "title_componentsDeckGL_React": 'DeckGL 图层组件',
+        "title_componentsLabelTheme_React": '标签专题图图层组件',
+        "title_componentsRankSymbolTheme_React": '等级符号专题图图层组件',
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
