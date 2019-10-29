@@ -129,10 +129,6 @@
           }
         ]
       };
-
-      function mapIsLoaded(e) {
-        map = e.map;
-      }
       function updateInfoView(feature, themeLayer) {
         if (!feature && popup) {
           removePopup();
@@ -293,15 +289,10 @@
         var latLng = latLng.split(',');
         return [parseFloat(latLng[0]), parseFloat(latLng[1])];
       }
-      function layerLoaded(themeLayer) {
-        themeLayer.on(
-          'mousemove',
-          function(e) {
-            handleMouseOver(themeLayer, e);
-          }.bind(this)
-        );
-      }
-      function handleMouseOver(themeLayer, e) {
+      function handleMouseOver(params) {
+        var e = params.mapboxEvent;
+        map = params.map;
+        var themeLayer = map.getLayer(params.layerId);
         if (e.target && e.target.refDataID) {
           var fid = e.target.refDataID;
           var fea = themeLayer.getFeatureById(fid);
@@ -317,12 +308,12 @@
       }
 
       ReactDOM.render(
-        <SmWebMap mapOptions={mapOptions} onLoad={mapIsLoaded}>
+        <SmWebMap mapOptions={mapOptions}>
           <SmLabelThemeLayer
             options={themeOptions}
             layerName={'LabelThemeLayer'}
             data={features}
-            onLoad={layerLoaded}
+            onMousemove={handleMouseOver}
           />
         </SmWebMap>,
         document.getElementById('main')
