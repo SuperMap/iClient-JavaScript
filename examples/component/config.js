@@ -414,7 +414,7 @@ var exampleConfig = {
             name: '栅格图层',
             name_en: 'Raster Layer',
             version: '10.0.0',
-            thumbnail: 'components_rasterLayer_vue.png',
+            thumbnail: 'components_rasterLayer_react.png',
             fileName: 'components_raster_react',
             localIgnore: true
           },
@@ -422,7 +422,7 @@ var exampleConfig = {
             name: '矢量瓦片图层',
             name_en: 'Vector Tile Layer',
             version: '10.0.0',
-            thumbnail: 'components_vector_tile_vue.png',
+            thumbnail: 'components_vector_tile_react.png',
             fileName: 'components_vector_tile_react',
             localIgnore: true
           }
@@ -436,42 +436,42 @@ var exampleConfig = {
             name: '点聚合图层',
             name_en: 'Cluster Layer',
             version: '10.0.0',
-            thumbnail: 'components_cluster_vue.png',
+            thumbnail: 'components_cluster_react.png',
             fileName: 'components_cluster_react'
           },
           {
             name: '单值专题图',
             name_en: 'Unique Theme layer',
             version: '10.0.0',
-            thumbnail: 'components_uniquetheme_vue.png',
+            thumbnail: 'components_uniquetheme_react.png',
             fileName: 'components_uniquetheme_react'
           },
           {
             name: '分段专题图',
             name_en: 'Range Theme layer',
             version: '10.0.0',
-            thumbnail: 'components_rangetheme_vue.png',
+            thumbnail: 'components_rangetheme_react.png',
             fileName: 'components_rangetheme_react'
           },
           {
             name: '等级符号专题图',
             name_en: 'RankSymbolTheme Layer',
             version: '10.0.0',
-            thumbnail: 'components_ranksymboltheme_vue.png',
+            thumbnail: 'components_ranksymboltheme_react.png',
             fileName: 'components_ranksymboltheme_react'
           },
           {
             name: '标签专题图',
             name_en: 'LabelTheme Layer',
             version: '10.0.0',
-            thumbnail: 'components_labeltheme_vue.png',
+            thumbnail: 'components_labeltheme_react.png',
             fileName: 'components_labeltheme_react'
           },
           {
             name: '图表专题图',
             name_en: 'Statistical chart',
             version: '10.0.0',
-            thumbnail: 'components_graph_theme_layer_vue.png',
+            thumbnail: 'components_graph_theme_layer_react.png',
             fileName: 'components_graph_theme_layer_react',
             localIgnore: true
           },
@@ -479,63 +479,63 @@ var exampleConfig = {
             name: '热力图图层',
             name_en: 'Heatmap layer',
             version: '10.0.0',
-            thumbnail: 'components_heatmap_vue.png',
+            thumbnail: 'components_heatmap_react.png',
             fileName: 'components_heatmap_react'
           },
           {
             name: 'MapV 图层',
             name_en: 'MapV layer',
             version: '10.0.0',
-            thumbnail: 'components_mapv_vue.gif',
+            thumbnail: 'components_mapv_react.gif',
             fileName: 'components_mapv_react'
           },
           {
             name: 'Echarts 图层',
             name_en: 'Echarts layer',
             version: '10.0.0',
-            thumbnail: 'components_echartsLayer_vue.gif',
+            thumbnail: 'components_echartsLayer_react.gif',
             fileName: 'components_echarts_react'
           },
           {
             name: 'DeckGL 图层',
             name_en: 'DeckGL Layer',
             version: '10.0.0',
-            thumbnail: 'components_deckgl_vue.png',
+            thumbnail: 'components_deckgl_react.png',
             fileName: 'components_deckgl_react'
           },
           {
             name: '数据流图层',
             name_en: 'Data Flow Layer',
             version: '10.0.0',
-            thumbnail: 'components_dataflow_vue.gif',
+            thumbnail: 'components_dataflow_react.gif',
             fileName: 'components_dataflow_react'
           },
           {
             name: '动效火焰图层',
             name_en: 'Animate Fire Layer',
             version: '10.0.0',
-            thumbnail: 'components_fire_layer_vue.gif',
+            thumbnail: 'components_fire_layer_react.gif',
             fileName: 'components_fire_layer_react'
           },
           {
             name: '动效标记图层',
             name_en: 'Animate Marker Layer',
             version: '10.0.0',
-            thumbnail: 'components_animate_marker_layer_vue.gif',
+            thumbnail: 'components_animate_marker_layer_react.gif',
             fileName: 'components_animate_marker_layer_react'
           },
           {
             name: '动效文本标记图层',
             name_en: 'Animate Text Layer',
             version: '10.0.0',
-            thumbnail: 'components_rotating_text_border_vue.gif',
+            thumbnail: 'components_rotating_text_border_react.gif',
             fileName: 'components_rotating_text_border_react'
           },
           {
             name: 'GeoJSON 图层',
             name_en: 'GeoJSON Layer',
             version: '10.0.0',
-            thumbnail: 'components_geojson_vue.png',
+            thumbnail: 'components_geojson_react.png',
             fileName: 'components_geojson_react'
           }
         ]
