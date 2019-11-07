@@ -1506,11 +1506,16 @@ export class WebMap extends ol.Observable {
 
             // 标注图层特殊处理
             let isMarker = false;
-            let featureInfo;
+            let attributes;
             let useStyle;
             if (allFeatures[i].dv_v5_markerInfo) {
-                featureInfo = allFeatures[i].dv_v5_markerInfo;
-                isMarker = true;
+                 //因为优化代码之前，属性字段都存储在propertise上，markerInfo没有
+                 attributes = Object.assign({}, allFeatures[i].dv_v5_markerInfo, feature.attributes);
+                 if(attributes.lon) {
+                     //标注图层不需要
+                     delete attributes.lon;
+                     delete attributes.lat;
+                 }
             }
             if (allFeatures[i].dv_v5_markerStyle) {
                 useStyle = allFeatures[i].dv_v5_markerStyle;
@@ -1519,14 +1524,14 @@ export class WebMap extends ol.Observable {
             let properties;
             if (isMarker) {
                 properties = Object.assign({}, {
-                    featureInfo: featureInfo
+                    attributes
                 }, {
-                        useStyle: useStyle
-                    });
+                    useStyle
+                });
                 //feature上添加图层的id，为了对应图层
                 feature.layerId = layerInfo.timeId;
                 //删除不需要的属性，因为这两个属性存储在properties上
-                delete feature.attributes.featureInfo;
+                delete feature.attributes.attributes;
                 delete feature.attributes.useStyle;
             } else if (layerInfo.featureStyles) {
                 //V4 版本标注图层处理
@@ -1540,7 +1545,7 @@ export class WebMap extends ol.Observable {
                     //上传的图片，加上当前地址
                     imgUrl = `${Util.getIPortalUrl()}resources/markerIcon/${attr._smiportal_imgLinkUrl}`
                 }
-                featureInfo = {
+                attributes = {
                     dataViz_description: attr._smiportal_description,
                     dataViz_imgUrl: imgUrl,
                     dataViz_title: attr._smiportal_title,
@@ -1551,10 +1556,10 @@ export class WebMap extends ol.Observable {
 
                 useStyle = style;
                 properties = Object.assign({}, {
-                    featureInfo: featureInfo
+                    attributes
                 }, {
-                        useStyle: useStyle
-                    });
+                    useStyle
+                });
                 delete attr._smiportal_description;
                 delete attr._smiportal_imgLinkUrl;
                 delete attr._smiportal_title;
@@ -2639,10 +2644,10 @@ export class WebMap extends ol.Observable {
                     //说明是文字的feature类型
                     geomType = "TEXT";
                 }
-                let featureInfo = this.setFeatureInfo(feature);
+                let attributes = this.setFeatureInfo(feature);
                 feature.setProperties({
                     useStyle: defaultStyle,
-                    featureInfo: featureInfo
+                    attributes
                 });
                 //标注图层的feature上需要存一个layerId，为了之后样式应用到图层上使用
                 // feature.layerId = timeId;
@@ -2666,22 +2671,22 @@ export class WebMap extends ol.Observable {
      * @returns {*}
      */
     setFeatureInfo(feature) {
-        let featureInfo;
-        if (feature.getProperties().featureInfo && feature.getProperties().featureInfo.dataViz_title !== undefined &&
-            feature.getProperties().featureInfo.dataViz_title != null) {
-            //有featureInfo信息就不需要再添加
-            featureInfo = feature.getProperties().featureInfo;
-        } else {
-            featureInfo = this.getDefaultAttribute();
-        }
+        let attributes = feature.getProperties().attributes,
+            defaultAttr = {
+                dataViz_title: '',
+                dataViz_description: '',
+                dataViz_imgUrl: '',
+                dataViz_url:''
+            }, 
+            newAttribute = Object.assign(defaultAttr, attributes);
         let properties = feature.getProperties();
-        for (let key in featureInfo) {
-            if (properties[key]) {
-                featureInfo[key] = properties[key];
+        for(let key in newAttribute) {
+            if(properties[key]) {
+                newAttribute[key] = properties[key];
                 delete properties[key];
             }
         }
-        return featureInfo;
+        return newAttribute;
     }
 
     /**
