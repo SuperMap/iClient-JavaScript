@@ -5,7 +5,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title data-i18n="resources.title_componentsWebmap_React"></title>
+    <title data-i18n="resources.title_componentsVectorTile_React"></title>
     <script type="text/javascript" include="react" src="../js/include-web.js"></script>
     <script include="iclient-mapboxgl-react,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
@@ -15,18 +15,27 @@
         margin: 0;
         padding: 0;
       }
+
       #main {
         height: 100%;
       }
     </style>
   </head>
+
   <body>
     <div id="main"></div>
     <script type="text/babel">
-      // import {WebMap} from '@supermap/react-iclient'
+      var host = window.isLocal ? window.server : 'http://iclient.supermap.io';
       var SmWebMap = window.SuperMap.Components.SmWebMap;
+      var SmVectorTileLayer = window.SuperMap.Components.SmVectorTileLayer;
+      var styleOptions =
+        host +
+        '/iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true';
+
       ReactDOM.render(
-        <SmWebMap mapId={'1649097980'} serverUrl={'http://support.supermap.com.cn:8092/'} />,
+        <SmWebMap serverUrl="http://support.supermap.com.cn:8092/" mapId="676816598">
+          <SmVectorTileLayer styleOptions={styleOptions} />
+        </SmWebMap>,
         document.getElementById('main')
       );
     </script>

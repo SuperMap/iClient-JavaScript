@@ -9,3 +9,486 @@
 .sm-component-web-map {
   height: 100%; }
 
+/* Transition */
+/* color */
+/* 53a8ff */
+/* 66b1ff */
+/* 79bbff */
+/* 8cc5ff */
+/* a0cfff */
+/* b3d8ff */
+/* c6e2ff */
+/* d9ecff */
+/* ecf5ff */
+/* text */
+/* icon */
+/* z-index */
+/* link */
+/* border */
+/* fill */
+.sm-component-animate-marker--rotating-aperture {
+  --container-width: 50px;
+  --color: rgb(18, 28, 141);
+  --light-color: #14c8ff;
+  --line-color: rgba(18, 28, 141, 0.4);
+  width: var(--container-width); }
+
+.sm-component-animate-marker--halo-ring {
+  --halo-width: 60px;
+  --halo-left: -30px;
+  --color-1: rgba(0, 255, 255, 0.3);
+  --color-1-transparent: rgba(0, 255, 255, 0.1);
+  --color-2: rgba(255, 0, 255, 0.3);
+  --color-2-transparent: rgba(255, 0, 255, 0.1);
+  --box-shadow-width-1: 6px;
+  --box-shadow-width-2: 15px; }
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-01, .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-01:before,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-02,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-02:before,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-03,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-03:before,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-04,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-04:before,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-06,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-06:before,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-07,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-07:before {
+    border: 1px solid var(--color-1);
+    box-shadow: 0 0 var(--box-shadow-width-1) var(--color-1-transparent), 0 0 var(--box-shadow-width-2) var(--color-1-transparent), inset 0 0 var(--box-shadow-width-1) var(--color-1-transparent), inset 0 0 var(--box-shadow-width-2) var(--color-1-transparent); }
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-05, .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-05:before,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-08,
+  .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-08:before {
+    border: 1px solid var(--color-2);
+    box-shadow: 0 0 var(--box-shadow-width-1) var(--color-2-transparent), 0 0 var(--box-shadow-width-2) var(--color-2-transparent), inset 0 0 var(--box-shadow-width-1) var(--color-2-transparent), inset 0 0 var(--box-shadow-width-2) var(--color-2-transparent); }
+
+.sm-component-animate-marker--text-boder {
+  --boder-width: 100px;
+  --text-left-position: -50px;
+  --boder-height: 30px;
+  --clip-width-1: 110px;
+  --clip-width-2: 108px;
+  --clip-height-1: 40px;
+  --clip-height-2: 38px;
+  --border-color: rgb(24, 144, 255);
+  --box-shadow-color: rgba(24, 144, 255, 0.73);
+  --text-color: #ccc;
+  --text-font-size: 14px;
+  --animation-name: clipMe1; }
+
+.sm-component-animate-marker--diffused-aperture {
+  --container-width: 20px;
+  --background-color: rgb(24, 144, 255);
+  --box-shadow-color: rgba(24, 144, 255, 0.73); }
+
+.sm-component-animate-marker--fluorescence {
+  --container-width: 6px;
+  --box-shadow-width: 18px;
+  --box-shadow-color: rgb(126, 214, 223);
+  --light-color: white; }
+  .sm-component-animate-marker--fluorescence .sm-component-animate-marker__name-container > span {
+    padding-left: 30px; }
+
+.sm-component-animate-marker__fluorescence {
+  width: var(--container-width);
+  height: var(--container-width);
+  border-radius: 100%;
+  background-color: var(--light-color);
+  box-shadow: var(--light-color) 0px 0px var(--container-width) var(--container-width), var(--box-shadow-color) 0px 0px var(--box-shadow-width) var(--box-shadow-width); }
+
+.sm-component-animate-marker__dot-point {
+  background: #009fd9;
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  opacity: 1;
+  filter: alpha(opacity=100); }
+
+.sm-component-animate-marker__delay-03 {
+  -webkit-animation-delay: 2s !important;
+          animation-delay: 2s !important; }
+
+.sm-component-animate-marker__delay-02 {
+  -webkit-animation-delay: 1.6s !important;
+          animation-delay: 1.6s !important; }
+
+.sm-component-animate-marker__delay-01 {
+  -webkit-animation-delay: 1.2s !important;
+          animation-delay: 1.2s !important; }
+
+.sm-component-animate-marker__pulse {
+  position: absolute;
+  border: 2px solid;
+  border-radius: 48px;
+  opacity: 0.12;
+  filter: alpha(opacity=0);
+  -webkit-animation: warn 2s ease-out both;
+          animation: warn 2s ease-out both;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  background: 0 0;
+  border-color: #009fd9;
+  top: -44px;
+  left: -44px;
+  height: 88px;
+  width: 88px;
+  box-shadow: 0 0 12px #0080d9, 0 0 20px #0080d9 inset; }
+
+.sm-component-animate-marker__name-container {
+  position: absolute;
+  color: #ccc;
+  left: 0;
+  height: 0;
+  top: -10px;
+  width: 11px;
+  font-size: 14px;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out; }
+  .sm-component-animate-marker__name-container > span {
+    width: 80px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 2px;
+    white-space: nowrap;
+    padding-left: 14px; }
+  .sm-component-animate-marker__name-container--breathing-aperture-name {
+    padding: 6px 10px; }
+    .sm-component-animate-marker__name-container--breathing-aperture-name > span {
+      padding-left: 20px; }
+  .sm-component-animate-marker__name-container--halo-ring-name {
+    top: -10px;
+    left: calc(var(--halo-width) / 2); }
+  .sm-component-animate-marker__name-container--rotating-aperture-name {
+    left: var(--container-width);
+    top: -10px; }
+  .sm-component-animate-marker__name-container--diffused-aperture-name {
+    left: var(--container-width);
+    top: calc(var(--container-width) / 2 - 10px); }
+
+.sm-component-animate-marker__dots {
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  margin: auto;
+  width: var(--dots-width);
+  height: var(--dots-height);
+  box-shadow: var(--dots-box-shadow-x-negative) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x-negative) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), var(--dots-box-shadow-x) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x-negative) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x-negative) 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x) 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 0 4px 4px #111, 0 0 4px 8px var(--line-color); }
+  .sm-component-animate-marker__dots:before,
+  .sm-component-animate-marker__dots :after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: inherit;
+    width: inherit;
+    border-radius: inherit; }
+  .sm-component-animate-marker__dots:before, .sm-component-animate-marker__dots:after {
+    box-shadow: var(--dots-box-shadow-x-negative) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x-negative) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), var(--dots-box-shadow-x) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x-negative) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x-negative) 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x) 4px var(--dots-box-shadow-radius2-negative) var(--color); }
+
+.sm-component-animate-marker__dots-01 {
+  -webkit-animation: dots 4s linear infinite;
+          animation: dots 4s linear infinite; }
+  .sm-component-animate-marker__dots-01:before {
+    -webkit-transform: rotate(8deg);
+            transform: rotate(8deg); }
+  .sm-component-animate-marker__dots-01:after {
+    -webkit-transform: rotate(65deg);
+            transform: rotate(65deg); }
+
+.sm-component-animate-marker__dots-02 {
+  -webkit-animation: dots2 4s linear infinite;
+          animation: dots2 4s linear infinite; }
+  .sm-component-animate-marker__dots-02:before {
+    -webkit-transform: rotate(73deg);
+            transform: rotate(73deg); }
+  .sm-component-animate-marker__dots-02:after {
+    -webkit-transform: rotate(122deg);
+            transform: rotate(122deg); }
+
+.sm-component-animate-marker__dots-03 {
+  -webkit-animation: dots 4s linear infinite;
+          animation: dots 4s linear infinite; }
+  .sm-component-animate-marker__dots-03:before {
+    -webkit-transform: rotate(39deg);
+            transform: rotate(39deg); }
+  .sm-component-animate-marker__dots-03:after {
+    -webkit-transform: rotate(242deg);
+            transform: rotate(242deg); }
+
+.sm-component-animate-marker__halo {
+  position: absolute;
+  left: var(--halo-left);
+  top: var(--halo-left);
+  -webkit-transform: translate3d(-50%, -50%, 0);
+          transform: translate3d(-50%, -50%, 0);
+  border-radius: 100%;
+  width: var(--halo-width);
+  height: var(--halo-width);
+  -webkit-transform: scale(1); }
+  .sm-component-animate-marker__halo:before {
+    content: '';
+    position: absolute;
+    width: var(--halo-width);
+    height: var(--halo-width);
+    border-radius: 100%; }
+
+.sm-component-animate-marker__ring-01, .sm-component-animate-marker__ring-01:before {
+  animation: halo 3.5s infinite alternate-reverse; }
+
+.sm-component-animate-marker__ring-02 {
+  animation: halo 2s infinite alternate-reverse; }
+  .sm-component-animate-marker__ring-02:before {
+    animation: halo 3.5 infinite alternate-reverse; }
+
+.sm-component-animate-marker__ring-03 {
+  animation: halo2 4s infinite alternate-reverse; }
+  .sm-component-animate-marker__ring-03:before {
+    animation: halo 3.5s infinite alternate-reverse; }
+
+.sm-component-animate-marker__ring-04 {
+  animation: halo 7s infinite alternate-reverse; }
+  .sm-component-animate-marker__ring-04:before {
+    animation: halo 3.5s infinite alternate-reverse; }
+
+.sm-component-animate-marker__ring-05 {
+  -webkit-animation: halo2 5s infinite alternate;
+          animation: halo2 5s infinite alternate; }
+  .sm-component-animate-marker__ring-05:before {
+    animation: halo 3.5s infinite alternate-reverse; }
+
+.sm-component-animate-marker__ring-06 {
+  animation: halo 2s infinite alternate-reverse; }
+  .sm-component-animate-marker__ring-06:before {
+    animation: halo 3.5s infinite alternate-reverse; }
+
+.sm-component-animate-marker__ring-07 {
+  -webkit-animation: halo2 5s infinite alternate;
+          animation: halo2 5s infinite alternate; }
+  .sm-component-animate-marker__ring-07:before {
+    animation: halo 3.5s infinite alternate-reverse; }
+
+.sm-component-animate-marker__ring-08 {
+  animation: halo 10s infinite alternate-reverse; }
+  .sm-component-animate-marker__ring-08:before {
+    animation: halo 3.5s infinite alternate-reverse; }
+
+.sm-component-animate-marker__boder {
+  width: var(--boder-width);
+  height: var(--boder-height);
+  margin: auto;
+  color: var(--border-color);
+  box-shadow: inset 0 0 0 1px var(--box-shadow-color); }
+  .sm-component-animate-marker__boder, .sm-component-animate-marker__boder::before, .sm-component-animate-marker__boder::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; }
+  .sm-component-animate-marker__boder {
+    left: var(--text-left-position); }
+  .sm-component-animate-marker__boder::before, .sm-component-animate-marker__boder::after {
+    content: '';
+    z-index: -1;
+    margin: -5%;
+    box-shadow: inset 0 0 0 2px;
+    -webkit-animation: var(--animation-name) 8s linear infinite;
+            animation: var(--animation-name) 8s linear infinite; }
+  .sm-component-animate-marker__boder::before {
+    -webkit-animation-delay: -4s;
+            animation-delay: -4s; }
+
+.sm-component-animate-marker__text {
+  color: var(--text-color);
+  font-size: var(--text-font-size);
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-weight: bolder; }
+
+.sm-component-animate-marker__diffused-aperture-wrapper {
+  width: var(--container-width);
+  height: var(--container-width);
+  border-radius: 50%;
+  background-color: var(--background-color);
+  position: relative; }
+
+.sm-component-animate-marker__bg {
+  width: var(--container-width);
+  height: var(--container-width);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-animation: pulse 3s infinite;
+          animation: pulse 3s infinite; }
+
+.sm-component-animate-marker__circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; }
+
+@-webkit-keyframes warn {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1; }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0; } }
+
+@keyframes warn {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1; }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0; } }
+
+@-webkit-keyframes dots {
+  0% {
+    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
+            transform: rotate(0deg) scale(0.7, 0.7); }
+  50% {
+    -webkit-transform: rotate(180deg) scale(1, 1);
+            transform: rotate(180deg) scale(1, 1); }
+  100% {
+    -webkit-transform: rotate(360deg) scale(0.7, 0.7);
+            transform: rotate(360deg) scale(0.7, 0.7); } }
+
+@keyframes dots {
+  0% {
+    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
+            transform: rotate(0deg) scale(0.7, 0.7); }
+  50% {
+    -webkit-transform: rotate(180deg) scale(1, 1);
+            transform: rotate(180deg) scale(1, 1); }
+  100% {
+    -webkit-transform: rotate(360deg) scale(0.7, 0.7);
+            transform: rotate(360deg) scale(0.7, 0.7); } }
+
+@-webkit-keyframes dots2 {
+  0% {
+    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
+            transform: rotate(0deg) scale(0.7, 0.7); }
+  50% {
+    -webkit-transform: rotate(-180deg) scale(1, 1);
+            transform: rotate(-180deg) scale(1, 1); }
+  100% {
+    -webkit-transform: rotate(-360deg) scale(0.7, 0.7);
+            transform: rotate(-360deg) scale(0.7, 0.7); } }
+
+@keyframes dots2 {
+  0% {
+    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
+            transform: rotate(0deg) scale(0.7, 0.7); }
+  50% {
+    -webkit-transform: rotate(-180deg) scale(1, 1);
+            transform: rotate(-180deg) scale(1, 1); }
+  100% {
+    -webkit-transform: rotate(-360deg) scale(0.7, 0.7);
+            transform: rotate(-360deg) scale(0.7, 0.7); } }
+
+@-webkit-keyframes halo {
+  0% {
+    -webkit-transform: rotate(360deg) scaleX(1);
+            transform: rotate(360deg) scaleX(1); }
+  100% {
+    -webkit-transform: rotate(0deg) scaleX(1.1);
+            transform: rotate(0deg) scaleX(1.1); } }
+
+@keyframes halo {
+  0% {
+    -webkit-transform: rotate(360deg) scaleX(1);
+            transform: rotate(360deg) scaleX(1); }
+  100% {
+    -webkit-transform: rotate(0deg) scaleX(1.1);
+            transform: rotate(0deg) scaleX(1.1); } }
+
+@-webkit-keyframes halo2 {
+  0% {
+    -webkit-transform: rotate(360deg) scaleX(0.9);
+            transform: rotate(360deg) scaleX(0.9); }
+  100% {
+    -webkit-transform: rotate(90deg) scaleX(1.1);
+            transform: rotate(90deg) scaleX(1.1); } }
+
+@keyframes halo2 {
+  0% {
+    -webkit-transform: rotate(360deg) scaleX(0.9);
+            transform: rotate(360deg) scaleX(0.9); }
+  100% {
+    -webkit-transform: rotate(90deg) scaleX(1.1);
+            transform: rotate(90deg) scaleX(1.1); } }
+
+@-webkit-keyframes clipMe1 {
+  0%,
+  100% {
+    clip: rect(0px, var(--clip-width-1), 2px, 0px); }
+  25% {
+    clip: rect(0px, 2px, var(--clip-height-1), 0px); }
+  50% {
+    clip: rect(var(--clip-height-2), var(--clip-width-1), var(--clip-width-1), 0px); }
+  75% {
+    clip: rect(0px, var(--clip-width-1), var(--clip-height-1), var(--clip-width-2)); } }
+
+@keyframes clipMe1 {
+  0%,
+  100% {
+    clip: rect(0px, var(--clip-width-1), 2px, 0px); }
+  25% {
+    clip: rect(0px, 2px, var(--clip-height-1), 0px); }
+  50% {
+    clip: rect(var(--clip-height-2), var(--clip-width-1), var(--clip-width-1), 0px); }
+  75% {
+    clip: rect(0px, var(--clip-width-1), var(--clip-height-1), var(--clip-width-2)); } }
+
+@-webkit-keyframes clipMe2 {
+  0%,
+  100% {
+    clip: rect(0px, var(--clip-width-1), 2px, 0px); }
+  25% {
+    clip: rect(0px, 2px, var(--clip-height-1), 0px); }
+  50% {
+    clip: rect(var(--boder-height), var(--clip-width-1), var(--clip-height-1), 0px); }
+  75% {
+    clip: rect(0px, var(--clip-width-1), var(--clip-height-1), var(--clip-width-2)); } }
+
+@keyframes clipMe2 {
+  0%,
+  100% {
+    clip: rect(0px, var(--clip-width-1), 2px, 0px); }
+  25% {
+    clip: rect(0px, 2px, var(--clip-height-1), 0px); }
+  50% {
+    clip: rect(var(--boder-height), var(--clip-width-1), var(--clip-height-1), 0px); }
+  75% {
+    clip: rect(0px, var(--clip-width-1), var(--clip-height-1), var(--clip-width-2)); } }
+
+@-webkit-keyframes pulse {
+  0% {
+    box-shadow: 0 0 8px 6px transparent; }
+  50% {
+    box-shadow: 0 0 8px 6px var(--box-shadow-color); }
+  100% {
+    box-shadow: 0 0 8px 6px transparent; } }
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 8px 6px transparent; }
+  50% {
+    box-shadow: 0 0 8px 6px var(--box-shadow-color); }
+  100% {
+    box-shadow: 0 0 8px 6px transparent; } }
+

@@ -1447,9 +1447,10 @@ export class WebMap extends ol.Observable {
                 colTitles[i] = Util.trim(colTitles[i]);
             }
         }
+        // 迁徙图xyField暂时用from中的
         let fileCode = layerInfo.projection,
-            xIdx = colTitles.indexOf(Util.trim(layerInfo.xyField.xField)),
-            yIdx = colTitles.indexOf(Util.trim(layerInfo.xyField.yField)),
+            xIdx = colTitles.indexOf(Util.trim((layerInfo.xyField && layerInfo.xyField.xField) || (layerInfo.from && layerInfo.from.xField))),
+            yIdx = colTitles.indexOf(Util.trim((layerInfo.xyField && layerInfo.xyField.yField) || (layerInfo.from && layerInfo.from.yField))),
             baseLayerEpsgCode = this.baseProjection,
             features = [];
 
@@ -1939,7 +1940,7 @@ export class WebMap extends ol.Observable {
                     color: parameters.fill
                 }),
                 backgroundFill: new ol.style.Fill({
-                    color: [255, 255, 255, 0.7]
+                    color: parameters.backgroundFill || [255, 255, 255, 0.7]
                 }),
                 padding: [3, 3, 3, 3],
                 offsetY: parameters.offsetY
