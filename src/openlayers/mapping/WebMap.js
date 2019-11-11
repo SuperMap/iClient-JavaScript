@@ -1470,9 +1470,8 @@ export class WebMap extends ol.Observable {
                 }
                 let feature = new ol.Feature({
                     geometry: olGeom,
-                    Properties: attributes
+                    attributes: attributes
                 });
-                feature.attributes = attributes;
                 features.push(feature);
             }
         }
@@ -1490,6 +1489,9 @@ export class WebMap extends ol.Observable {
         let allFeatures = geojson.features,
             features = [];
         for (let i = 0, len = allFeatures.length; i < len; i++) {
+            //转换前删除properties,这样转换后属性不会重复存储
+            let featureAttr = allFeatures[i].properties || {};
+            delete allFeatures[i].properties;
             let feature = transformTools.readFeature(allFeatures[i], {
                 dataProjection: layerInfo.projection || 'EPSG:4326',
                 featureProjection: this.baseProjection || 'ESPG:4326'
@@ -1503,7 +1505,6 @@ export class WebMap extends ol.Observable {
                     allFeatures[i].properties.lat = coordinate[1];
                 }
             }
-            feature.attributes = allFeatures[i].properties || {};
 
             // 标注图层特殊处理
             let isMarker = false;
@@ -1511,7 +1512,7 @@ export class WebMap extends ol.Observable {
             let useStyle;
             if (allFeatures[i].dv_v5_markerInfo) {
                  //因为优化代码之前，属性字段都存储在propertise上，markerInfo没有
-                 attributes = Object.assign({}, allFeatures[i].dv_v5_markerInfo, feature.attributes);
+                 attributes = Object.assign({}, allFeatures[i].dv_v5_markerInfo, featureAttr);
                  if(attributes.lon) {
                      //标注图层不需要
                      delete attributes.lon;
@@ -1531,13 +1532,10 @@ export class WebMap extends ol.Observable {
                 });
                 //feature上添加图层的id，为了对应图层
                 feature.layerId = layerInfo.timeId;
-                //删除不需要的属性，因为这两个属性存储在properties上
-                delete feature.attributes.attributes;
-                delete feature.attributes.useStyle;
             } else if (layerInfo.featureStyles) {
                 //V4 版本标注图层处理
                 let style = JSON.parse(layerInfo.featureStyles[i].style);
-                let attr = feature.attributes;
+                let attr = featureAttr;
                 let imgUrl;
                 if (attr._smiportal_imgLinkUrl.indexOf('http://') > -1 || attr._smiportal_imgLinkUrl.indexOf('https://') > -1) {
                     imgUrl = attr._smiportal_imgLinkUrl;
@@ -1566,7 +1564,7 @@ export class WebMap extends ol.Observable {
                 delete attr._smiportal_title;
                 delete attr._smiportal_otherLinkUrl;
             } else {
-                properties = feature.attributes;
+                properties = {attributes: featureAttr};
             }
 
             feature.setProperties(properties);
@@ -1586,6 +1584,8 @@ export class WebMap extends ol.Observable {
         let allFeatures = metaData.allDatas.features,
             features = [];
         for (let i = 0, len = allFeatures.length; i < len; i++) {
+            let properties = allFeatures[i].properties;
+            delete allFeatures[i].properties;
             let feature = transformTools.readFeature(allFeatures[i], {
                 dataProjection: metaData.fileCode || 'EPSG:4326',
                 featureProjection: metaData.featureProjection || Util.getBaseLayerProj() || 'EPSG:4326'
@@ -1593,12 +1593,11 @@ export class WebMap extends ol.Observable {
             //geojson格式的feature属性没有坐标系字段，为了统一，再次加上
             let coordinate = feature.getGeometry().getCoordinates();
             if (allFeatures[i].geometry.type === 'Point') {
-                allFeatures[i].properties.lon = coordinate[0];
-                allFeatures[i].properties.lat = coordinate[1];
+                properties.lon = coordinate[0];
+                properties.lat = coordinate[1];
             }
-            feature.attributes = allFeatures[i].properties || {};
             feature.setProperties({
-                Properties: feature.attributes
+                attributes: properties
             });
             features.push(feature);
         }
@@ -1786,7 +1785,7 @@ export class WebMap extends ol.Observable {
             let filterResult = false;
             try {
                 filterResult = window.jsonsql.query(sql, {
-                    attributes: feature.attributes
+                    attributes: feature.get('attributes')
                 });
             } catch (err) {
                 //必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
@@ -1848,8 +1847,9 @@ export class WebMap extends ol.Observable {
         let graphics = [];
         //构建graphic
         for (let i in features) {
-            let graphic = new ol.Graphic(features[i].getGeometry(), features[i].attributes);
+            let graphic = new ol.Graphic(features[i].getGeometry());
             graphic.setStyle(shape);
+            graphic.setProperties({attributes: features[i].get('attributes')})
             graphics.push(graphic);
         }
         return graphics;
@@ -1896,7 +1896,7 @@ export class WebMap extends ol.Observable {
         });
         layer.setStyle(features => {
             let labelField = labelStyle.labelField;
-            let label = features.attributes[labelField.trim()] + "";
+            let label = features.get('attributes')[labelField.trim()] + "";
             if (label === "undefined") {
                 return null;
             }
@@ -2013,7 +2013,7 @@ export class WebMap extends ol.Observable {
         this.getMaxValue(features, weightFeild);
         let maxValue = this.fieldMaxValue[weightFeild];
         features.forEach(function (feature) {
-            let attributes = feature.get("Properties") || feature.attributes;
+            let attributes = feature.get('attributes');
             try {
                 let value = attributes[weightFeild];
                 feature.set('weight', value / maxValue);
@@ -2038,7 +2038,7 @@ export class WebMap extends ol.Observable {
         }
         features.forEach(function (feature) {
             //收集当前权重字段对应的所有值
-            attributes = feature.get("Properties") || feature.attributes;
+            attributes = feature.get('attributes');
             try {
                 values.push(parseFloat(attributes[field]));
             } catch (e) {
@@ -2067,7 +2067,7 @@ export class WebMap extends ol.Observable {
         layer.setStyle(feature => {
             let styleSource = layer.get('styleSource');
             let labelField = styleSource.themeField;
-            let label = feature.attributes[labelField];
+            let label = feature.get('attributes')[labelField];
             return styleSource.styleGroups[label].olStyle;
         });
 
@@ -2114,7 +2114,7 @@ export class WebMap extends ol.Observable {
         let names = [],
             customSettings = themeSetting.customSettings;
         for (let i in features) {
-            let attributes = features[i].attributes;
+            let attributes = features[i].get('attributes');
             let name = attributes[fieldName];
             let isSaved = false;
             for (let j in names) {
@@ -2180,7 +2180,7 @@ export class WebMap extends ol.Observable {
             let styleSource = layer.get('styleSource');
             if (styleSource) {
                 let labelField = styleSource.themeField;
-                let value = Number(feature.attributes[labelField.trim()]);
+                let value = Number(feature.get('attributes')[labelField.trim()]);
                 let styleGroups = styleSource.styleGroups;
                 for (let i = 0; i < styleGroups.length; i++) {
                     if (i === 0) {
@@ -2245,7 +2245,7 @@ export class WebMap extends ol.Observable {
         let segmentMethod = method;
         let that = this;
         features.forEach(function (feature) {
-            attributes = feature.get("Properties") || feature.attributes;
+            attributes = feature.get("attributes");
             try {
                 if (attributes) {
                     //过滤掉非数值的数据
@@ -2404,7 +2404,7 @@ export class WebMap extends ol.Observable {
                     let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
-                        attributes: feature.attributes
+                        attributes: feature.get('attributes')
                     });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
@@ -2492,7 +2492,7 @@ export class WebMap extends ol.Observable {
             //有转向字段
             let value, image;
             if(directionField !== undefined && directionField !== "未设置" && directionField !== "None") {
-                value = feature.attributes[directionField];
+                value = feature.get('attributes')[directionField];
             } else {
                 value = 0;  
             }
@@ -2555,7 +2555,7 @@ export class WebMap extends ol.Observable {
                     let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
-                        attributes: feature.attributes
+                        attributes: feature.get('attributes')
                     });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
@@ -2598,7 +2598,6 @@ export class WebMap extends ol.Observable {
             }*/
             featureCache[geoID].setGeometry(feature.getGeometry());
             featureCache[geoID].setProperties(feature.getProperties());
-            featureCache[geoID].attributes = feature.attributes;
             source.changed();
         } else {
             source.addFeature(feature);
@@ -2621,7 +2620,7 @@ export class WebMap extends ol.Observable {
                 dataProjection: "EPSG:4326", // todo 坐标系
                 featureProjection: that.baseProjection || 'EPSG:4326'
             });
-            feature.attributes = geojson.properties;
+            feature.setProperties({attributes: geojson.properties});
             callback(feature);
 
         });
@@ -2672,7 +2671,7 @@ export class WebMap extends ol.Observable {
      * @returns {*}
      */
     setFeatureInfo(feature) {
-        let attributes = feature.getProperties().attributes,
+        let attributes = feature.get('attributes'),
             defaultAttr = {
                 dataViz_title: '',
                 dataViz_description: '',
@@ -2711,7 +2710,7 @@ export class WebMap extends ol.Observable {
         layer.setStyle(feature => {
             let styleSource = layer.get('styleSource');
             let themeField = styleSource.parameters.themeSetting.themeField;
-            let value = Number(feature.attributes[themeField]);
+            let value = Number(feature.get('attributes')[themeField]);
             let styleGroups = styleSource.styleGroups;
             for (let i = 0, len = styleGroups.length; i < len; i++) {
                 if (value >= styleGroups[i].start && value < styleGroups[i].end) {
@@ -2758,7 +2757,7 @@ export class WebMap extends ol.Observable {
             minR = parameters.themeSetting.minRadius,
             maxR = parameters.themeSetting.maxRadius;
         features.forEach(feature => {
-            let attributes = feature.attributes,
+            let attributes = feature.get('attributes'),
                 value = attributes[themeField];
             // 过滤掉空值和非数值
             if (value == null || !Util.isNumber(value)) {
