@@ -2456,8 +2456,11 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
+// EXTERNAL MODULE: ./src/common/css/webmapfont/iconfont.css
+var iconfont = __webpack_require__(70);
+
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(66);
+var supermapol_icons = __webpack_require__(64);
 
 // EXTERNAL MODULE: ./src/common/components/css/components-icon.css
 var components_icon = __webpack_require__(59);
@@ -2543,6 +2546,8 @@ var ChangeTileVersion = __webpack_require__(27);
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -15050,7 +15055,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.viewInsightDetail
+     * @function SuperMap.iPortal.prototype.queryMapdashboard
      * @param {Array} ids - 大屏的序号。
      * @description 查看某个大屏资源的详情。
      * @returns {Promise} 返回包含某条大屏资源操作状态的 Promise 对象。
@@ -15109,7 +15114,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.viewInsightDetail
+     * @function SuperMap.iPortal.prototype.queryInsight
      * @param {Array} ids - 洞察的序号。
      * @description 查看某个洞察资源的详情。
      * @returns {Promise} 返回包含某条洞察资源操作状态的 Promise 对象。
@@ -15123,7 +15128,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.updateInsight
+     * @function SuperMap.iPortal.prototype.updateInsightAttrs
      * @param {Array} ids - 洞察的序号。
      * @description 更新某个洞察信息。
      * @returns {Promise} 返回包含更新洞察属性操作状态的 Promise 对象。
@@ -15176,6 +15181,31 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
             }
             return sceneRetult;
         });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryScene
+     * @param {Array} ids - 场景的序号。
+     * @description 查看某个场景资源的详情。
+     * @returns {Promise} 返回包含某条场景资源操作状态的 Promise 对象。
+     */
+    queryScene(id){
+        var sceneUrl = this.iportalUrl + "/web/scenes/"+id;
+        var scene = new iPortalScene_IPortalScene(sceneUrl);
+        return scene.load().then(()=>{
+            return scene
+        })
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.updateSceneAttrs
+     * @param {Array} ids - 场景的序号。
+     * @description 更新某个场景信息。
+     * @returns {Promise} 返回包含更新场景属性操作状态的 Promise 对象。
+     */
+    updateSceneAttrs(id,updateParam){
+        var sceneAttributesUrl = this.iportalUrl + "/web/scenes/"+id+"/attributes.json";
+        return new iPortalScene_IPortalScene(sceneAttributesUrl, updateParam).update();
     }
 }
 
@@ -87454,6 +87484,7 @@ external_L_default.a.supermap.turfLayer = TurfLayer_turfLayer;
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
+ * @param {boolean} [options.blur] - 模糊量，默认值为半径的二分之一。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  *
  * @extends {L.Layer}
@@ -87503,6 +87534,7 @@ var HeatMapLayer_HeatMapLayer = external_L_default.a.Layer.extend({
         this.useGeoUnit = this.options.useGeoUnit;
         this.opacity = this.options.opacity;
         this.radius = this.options.radius;
+        this.blur = this.options.blur;
         this.movingOffset = [0, 0];
     },
 
@@ -87720,7 +87752,7 @@ var HeatMapLayer_HeatMapLayer = external_L_default.a.Layer.extend({
      * @private
      */
     drawCircle: function (r) {
-        var blur = r / 2;
+        var blur = this.blur || r / 2;
 
         var circle = this.circle = document.createElement('canvas'),
             ctx = circle.getContext("2d");
@@ -97412,9 +97444,18 @@ module.exports = __webpack_require__(16);
 /* 61 */,
 /* 62 */,
 /* 63 */,
-/* 64 */,
+/* 64 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 65 */,
-/* 66 */
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

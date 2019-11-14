@@ -204,8 +204,8 @@
                     var insightDOM = $(
                         "<div class='col-md-4 gallery-item'>" +
                         "<div class='gallery-item-border'>" +
-                        "<a href='JavaScript:void(0)' target='_blank' class='thumbnail' style='margin-bottom: 10px'>" +
-                        "<img  class='gallery-item-img' src='" + insightsData.content[i].thumbnail + "' alt='' onclick='viewDetail("+ insightsData.content[i].id + ")'>" +
+                        "<a href='./iPortalInsightsDetail.html?id="+insightsData.content[i].id+"' class='thumbnail' style='margin-bottom: 10px'>" +
+                        "<img  class='gallery-item-img' src='" + insightsData.content[i].thumbnail + "' alt=''>" +
                         "</a>" +
                         "<div>" +
                         "<p class='insightDetails'>" + insightsData.content[i].name + "</p>" +
@@ -244,11 +244,6 @@
             }).catch(err=>{
                 widgets.alert.showAlert(resources.msg_deleteFailure, false);
             })
-        }
-
-        //查看某个洞察资源详情
-        function viewDetail(id){
-            window.location.href = "./iPortalInsightsDetail.html?id=" + id;
         }
         
         // 初始化分页列表UI

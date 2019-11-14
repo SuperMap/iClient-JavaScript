@@ -488,10 +488,14 @@ window.examplesResources = {
         "title_iPortalQueryServices2": "Examples of iPortal QueryService ",
         "title_iPortalQueryMapdashboards1": "Examples of iPortal QueryMapdashboards ",
         "title_iPortalQueryMapdashboards2": "Examples of iPortal QueryMapdashboard ",
-        "title_iPortalQueryInsights1": "Examples of iPortal QueryInsights ",
-        "title_iPortalQueryScenes1": "Examples of iPortal QueryScenes ",
-        "title_iPortalInsightsDetail": "Detail of iPortal Insight ",
-        "title_iPortalInsightsEdit": "Edit iPortal Insight",
+
+        "title_iPortalQueryInsights1": "Examples of iPortal QueryInsights",
+        "title_iPortalQueryInsight": "Examples of iPortal QueryInsight",
+        "title_iPortalUpdateInsightAttrs": "Examples of iPortal UpdateInsightAttrs",
+        "title_iPortalQueryScenes1": "Examples of iPortal QueryScenes",
+        "title_iPortalQueryScene": "Examples of iPortal QueryScene",
+        "title_iPortalUpdateSceneAttrs": "Examples of iPortal UpdateSceneAttrs",
+
         "detail_iPortal_baseInfo": "Basic Info",
         "detail_iPortal_name": "Name",
         "detail_iPortal_owner": "Owner",

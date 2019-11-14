@@ -429,6 +429,14 @@ window.examplesResources = {
         "title_iPortalQueryServices2": "iPortal QueryService使用示例",
         "title_iPortalQueryMapdashboards1": "iPortal QueryMapdashboards使用示例",
         "title_iPortalQueryMapdashboards2": "iPortal QueryMapdashboard使用示例",
+
+        "title_iPortalQueryInsights1": "iPortal QueryInsights使用示例",
+        "title_iPortalQueryInsight": "iPortal QueryInsight使用示例",
+        "title_iPortalUpdateInsightAttrs": "iPortal UpdateInsight使用示例",
+        "title_iPortalQueryScenes1": "iPortal QueryScenes使用示例",
+        "title_iPortalQueryScene": "iPortal QueryScene使用示例",
+        "title_iPortalUpdateSceneAttrs": "iPortal UpdateSceneAttrs使用示例",
+
         "detail_iPortal_baseInfo": "基本信息",
         "detail_iPortal_name": "名称",
         "detail_iPortal_owner": "所有者",

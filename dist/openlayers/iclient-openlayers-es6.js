@@ -16078,7 +16078,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.viewInsightDetail
+     * @function SuperMap.iPortal.prototype.queryMapdashboard
      * @param {Array} ids - 大屏的序号。
      * @description 查看某个大屏资源的详情。
      * @returns {Promise} 返回包含某条大屏资源操作状态的 Promise 对象。
@@ -16137,7 +16137,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.viewInsightDetail
+     * @function SuperMap.iPortal.prototype.queryInsight
      * @param {Array} ids - 洞察的序号。
      * @description 查看某个洞察资源的详情。
      * @returns {Promise} 返回包含某条洞察资源操作状态的 Promise 对象。
@@ -16151,7 +16151,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.updateInsight
+     * @function SuperMap.iPortal.prototype.updateInsightAttrs
      * @param {Array} ids - 洞察的序号。
      * @description 更新某个洞察信息。
      * @returns {Promise} 返回包含更新洞察属性操作状态的 Promise 对象。
@@ -16204,6 +16204,31 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
             }
             return sceneRetult;
         });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryScene
+     * @param {Array} ids - 场景的序号。
+     * @description 查看某个场景资源的详情。
+     * @returns {Promise} 返回包含某条场景资源操作状态的 Promise 对象。
+     */
+    queryScene(id){
+        var sceneUrl = this.iportalUrl + "/web/scenes/"+id;
+        var scene = new iPortalScene_IPortalScene(sceneUrl);
+        return scene.load().then(()=>{
+            return scene
+        })
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.updateSceneAttrs
+     * @param {Array} ids - 场景的序号。
+     * @description 更新某个场景信息。
+     * @returns {Promise} 返回包含更新场景属性操作状态的 Promise 对象。
+     */
+    updateSceneAttrs(id,updateParam){
+        var sceneAttributesUrl = this.iportalUrl + "/web/scenes/"+id+"/attributes.json";
+        return new iPortalScene_IPortalScene(sceneAttributesUrl, updateParam).update();
     }
 }
 

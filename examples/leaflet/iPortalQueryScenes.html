@@ -202,7 +202,7 @@
                 var createTime = new Date(parseInt(scenesData.content[i].createTime)).toLocaleString();
                 var sceneDOM = $("<div class='col-md-4 gallery-item'>" +
                     "<div class='gallery-item-border'>" +
-                    "<a href='JavaScript:void(0)' target='_blank' class='thumbnail' style='margin-bottom: 10px'>" +
+                    "<a href='./iPortalScenesDetail.html?id="+scenesData.content[i].id+"' class='thumbnail' style='margin-bottom: 10px'>" +
                     "<img  class='gallery-item-img' src='" + scenesData.content[i].thumbnail + "' alt=''>" +
                     "</a>" +
                     "<div>" +
@@ -211,7 +211,7 @@
                     "<div class='sceneUserDetails'>" +
                     "<div class='textEllipsis'>" +
                     "<span class='glyphicon glyphicon-user'>" + "</span>" + "&nbsp;" + scenesData.content[i].userName +
-                    "<span class='glyphicon-delete' onclick='deleteResource(" + scenesData.content[i].id +")'>" + "删除</span>" + "&nbsp;" +
+                    // "<span class='glyphicon-delete' onclick='deleteResource(" + scenesData.content[i].id +")'>" + "删除</span>" + "&nbsp;" +
                     "</div>" +
                     "<div class='sceneBottomList'>" +
                     "<span class='glyphicon glyphicon-eye-open'>" + "</span>" +
