@@ -7,6 +7,8 @@ import {IPortalMapsQueryParam} from './iPortalMapsQueryParam';
 import {IPortalService} from './iPortalService';
 import {IPortalServiceBase} from './iPortalServiceBase';
 import {IPortalServicesQueryParam} from './iPortalServicesQueryParam';
+import {IPortalMapdashboard} from './iPortalMapdashboard';
+import {IPortalMapdashboardsQueryParam} from './iPortalMapdashboardsQueryParam';
 import {IPortalInsight} from './iPortalInsight'
 import {IPortalInsightsQueryParam} from './iPortalInsightsQueryParam';
 import {IPortalScene} from './iPortalScene'
@@ -18,6 +20,8 @@ export {IPortalMapsQueryParam} ;
 export {IPortalService} ;
 export {IPortalServiceBase};
 export {IPortalServicesQueryParam} ;
+export {IPortalMapdashboard};
+export {IPortalMapdashboardsQueryParam};
 export {IPortalInsight};
 export {IPortalInsightsQueryParam} ;
 export {IPortalScene};

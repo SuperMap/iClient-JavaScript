@@ -13890,7 +13890,8 @@ class SecurityManager_SecurityManager {
         if (!url) {
             return url;
         }
-        var patten = /http:\/\/(.*\/rest)/i;
+        // var patten = /http:\/\/(.*\/rest)/i;
+        var patten = /(http|https):\/\/(.*\/rest)/i;
         var result = url.match(patten);
         if (!result) {
             return url;
@@ -14760,10 +14761,133 @@ SuperMap.iPortalMap = iPortalMap_IPortalMap;
  SuperMap.iPortalScene = iPortalScene_IPortalScene;
  
  
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapdashboard.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+/**
+ * @class SuperMap.iPortalMapdashboard
+ * @classdesc iPortal 大屏服务类。
+ * @category iPortal/Online
+ * @param {string} mapdashboardUrl - 大屏地址。
+ * @param {Object} [params] - 服务参数。
+ * @extends {SuperMap.iPortalServiceBase}
+ *
+ */
+class iPortalMapdashboard_IPortalMapdashboard extends iPortalServiceBase_IPortalServiceBase {
+
+
+    constructor(mapdashboardUrl, params) {
+        super(mapdashboardUrl);
+        params = params || {};
+        this.authorizeSetting = [];
+        this.content = "";
+        this.createTime = 0;
+        this.description = "";
+        this.id = 0;
+        this.name = "";
+        this.nickname = "";
+        this.tags = [];
+        this.thumbnail = "";
+        this.updateTime = 0;
+        this.userName = "";
+        this.visitCount = 0;
+        Util_Util.extend(this, params);
+        this.mapdashboardUrl = mapdashboardUrl;
+    }
+
+    /**
+     * @function SuperMap.iPortalMapdashboard.prototype.load
+     * @description 加载大屏信息。
+     * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+     */
+    load() {
+        var me = this;
+        return me.request("GET", me.mapdashboardUrl + ".json")
+            .then(function (mapdashboardInfo) {
+                if (mapdashboardInfo.error) {
+                    return mapdashboardInfo;
+                }
+                for (var key in mapdashboardInfo) {
+                    me[key] = mapdashboardInfo[key];
+                }
+            });
+    }
+
+    /**
+     * @function SuperMap.iPortalMapdashboard.prototype.update
+     * @description 更新大屏参数。
+     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+     */
+    update() {
+        var mapdashboardUpdateParam = {
+            authorizeSetting: this.authorizeSetting,
+            description: this.description,
+            name: this.name,
+            tags: this.tags,
+            thumbnail: this.thumbnail
+        };
+        var options = {
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        };
+        return this.request("PUT", this.mapdashboardUrl, JSON.stringify(mapdashboardUpdateParam), options);
+    }
+
+}
+
+SuperMap.iPortalMapdashboard = iPortalMapdashboard_IPortalMapdashboard;
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapdashboardsQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.iPortalMapdashboardsQueryParam
+ * @classdesc iPortal 大屏资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 大屏资源查询具体参数。
+ *
+ */
+class iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam {
+
+
+    constructor(params) {
+        params = params || {};
+        this.userNames = null;
+        this.tags = null;
+        this.orderBy = null;
+        this.filterFields = null;
+        this.currentUser = null;
+        this.dirIds = null;
+        this.returnSubDir = false;
+        this.isNotInDir = false;
+        this.groupIds = null;
+        this.departmentIds = null;
+        this.resourceIds = null;
+        this.searchScope = null;
+        this.permissionType = null;
+        this.keywords = null;
+        this.currentPage = null;
+        this.pageSize = null;
+        this.orderType = null;
+        Util_Util.extend(this, params);
+    }
+
+}
+
+SuperMap.iPortalMapdashboardsQueryParam = iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -14833,6 +14957,20 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
+     * @function SuperMap.iPortal.prototype.queryService
+     * @param {Array} ids - 服务的序号。
+     * @description 查看单个服务资源的详情。
+     * @returns {Promise} 返回包含单个服务资源操作状态的 Promise 对象。
+     */
+    queryService(id){
+        var serviceUrl = this.iportalUrl + "/web/services/" + id;
+        var service = new iPortalService_IPortalService(serviceUrl);
+        return service.load().then(()=>{
+            return service
+        })
+    }
+
+    /**
      * @function SuperMap.iPortal.prototype.queryMaps
      * @param {SuperMap.iPortalMapsQueryParam} queryParams - 查询参数。
      * @description 获取地图信息。
@@ -14864,6 +15002,65 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
             }
             return mapRetult;
         });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryMapdashboards
+     * @param {SuperMap.iPortalMapdashboardsQueryParam} queryParams - 查询参数。
+     * @description 获取大屏信息。
+     * @returns {Promise} 返回包含所有大屏服务信息的 Promise 对象。
+     */
+    queryMapdashboards(queryParams) {
+        if (!(queryParams instanceof iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam)) {
+            return null;
+        }
+        let mapdashboardsUrl;
+        if (this.withCredentials) {
+            mapdashboardsUrl = this.iportalUrl + "web/mycontent/mapdashboards";
+        } else {
+            mapdashboardsUrl = this.iportalUrl + "/web/mapdashboards";
+        }
+        return this.request("GET", mapdashboardsUrl, queryParams).then(function(result) {
+            var mapdashboardRetult = {content:[]};
+            var mapdashboards = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(mapdashboardJsonObj) {
+                    mapdashboards.push(new iPortalMapdashboard_IPortalMapdashboard(mapdashboardsUrl + "/" + mapdashboardJsonObj.id, mapdashboardJsonObj));
+                    return mapdashboardJsonObj;
+                });
+                mapdashboardRetult.content = mapdashboards;
+                mapdashboardRetult.currentPage = result.currentPage;
+                mapdashboardRetult.pageSize = result.pageSize;
+                mapdashboardRetult.total = result.total;
+                mapdashboardRetult.totalPage = result.totalPage;
+            }
+            return mapdashboardRetult; 
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteMapdashboards
+     * @param {Array} ids - 大屏的序号。
+     * @description 删除大屏。
+     * @returns {Promise} 返回包含大屏删除操作状态的 Promise 对象。
+     */
+    deleteMapdashboards(ids) {
+        var mapdashboardUrl = this.iportalUrl + "/web/mapdashboardsworkspaces.json";
+        return this.request("DELETE", mapdashboardUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.viewInsightDetail
+     * @param {Array} ids - 大屏的序号。
+     * @description 查看某个大屏资源的详情。
+     * @returns {Promise} 返回包含某条大屏资源操作状态的 Promise 对象。
+     */
+    queryMapdashboard(id){
+        var mapdashboardUrl = this.iportalUrl + "/web/mapdashboards/"+id;
+        var mapdashboard = new iPortalMapdashboard_IPortalMapdashboard(mapdashboardUrl);
+        return mapdashboard.load().then(()=>{
+            return mapdashboard
+        })
     }
 
     /**
@@ -14988,6 +15185,10 @@ SuperMap.iPortal = iPortal_IPortal;
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
 
 
 
@@ -95405,6 +95606,8 @@ external_L_default.a.supermap.components.dataServiceQuery = DataServiceQueryView
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboard", function() { return iPortalMapdashboard_IPortalMapdashboard; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboardsQueryParam", function() { return iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });

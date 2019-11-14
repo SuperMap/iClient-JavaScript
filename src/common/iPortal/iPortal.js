@@ -12,6 +12,8 @@ import { IPortalMap } from "./iPortalMap";
 import { IPortalInsight } from "./iPortalInsight";
 import { IPortalScene } from "./iPortalScene";
 import { IPortalServiceBase } from "./iPortalServiceBase";
+import { IPortalMapdashboard } from "./iPortalMapdashboard";
+import { IPortalMapdashboardsQueryParam } from "./iPortalMapdashboardsQueryParam";
 
 /**
  * @class SuperMap.iPortal
@@ -70,6 +72,20 @@ export class IPortal extends IPortalServiceBase {
     }
 
     /**
+     * @function SuperMap.iPortal.prototype.queryService
+     * @param {Array} ids - 服务的序号。
+     * @description 查看单个服务资源的详情。
+     * @returns {Promise} 返回包含单个服务资源操作状态的 Promise 对象。
+     */
+    queryService(id){
+        var serviceUrl = this.iportalUrl + "/web/services/" + id;
+        var service = new IPortalService(serviceUrl);
+        return service.load().then(()=>{
+            return service
+        })
+    }
+
+    /**
      * @function SuperMap.iPortal.prototype.queryMaps
      * @param {SuperMap.iPortalMapsQueryParam} queryParams - 查询参数。
      * @description 获取地图信息。
@@ -101,6 +117,65 @@ export class IPortal extends IPortalServiceBase {
             }
             return mapRetult;
         });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryMapdashboards
+     * @param {SuperMap.iPortalMapdashboardsQueryParam} queryParams - 查询参数。
+     * @description 获取大屏信息。
+     * @returns {Promise} 返回包含所有大屏服务信息的 Promise 对象。
+     */
+    queryMapdashboards(queryParams) {
+        if (!(queryParams instanceof IPortalMapdashboardsQueryParam)) {
+            return null;
+        }
+        let mapdashboardsUrl;
+        if (this.withCredentials) {
+            mapdashboardsUrl = this.iportalUrl + "web/mycontent/mapdashboards";
+        } else {
+            mapdashboardsUrl = this.iportalUrl + "/web/mapdashboards";
+        }
+        return this.request("GET", mapdashboardsUrl, queryParams).then(function(result) {
+            var mapdashboardRetult = {content:[]};
+            var mapdashboards = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(mapdashboardJsonObj) {
+                    mapdashboards.push(new IPortalMapdashboard(mapdashboardsUrl + "/" + mapdashboardJsonObj.id, mapdashboardJsonObj));
+                    return mapdashboardJsonObj;
+                });
+                mapdashboardRetult.content = mapdashboards;
+                mapdashboardRetult.currentPage = result.currentPage;
+                mapdashboardRetult.pageSize = result.pageSize;
+                mapdashboardRetult.total = result.total;
+                mapdashboardRetult.totalPage = result.totalPage;
+            }
+            return mapdashboardRetult; 
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteMapdashboards
+     * @param {Array} ids - 大屏的序号。
+     * @description 删除大屏。
+     * @returns {Promise} 返回包含大屏删除操作状态的 Promise 对象。
+     */
+    deleteMapdashboards(ids) {
+        var mapdashboardUrl = this.iportalUrl + "/web/mapdashboardsworkspaces.json";
+        return this.request("DELETE", mapdashboardUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.viewInsightDetail
+     * @param {Array} ids - 大屏的序号。
+     * @description 查看某个大屏资源的详情。
+     * @returns {Promise} 返回包含某条大屏资源操作状态的 Promise 对象。
+     */
+    queryMapdashboard(id){
+        var mapdashboardUrl = this.iportalUrl + "/web/mapdashboards/"+id;
+        var mapdashboard = new IPortalMapdashboard(mapdashboardUrl);
+        return mapdashboard.load().then(()=>{
+            return mapdashboard
+        })
     }
 
     /**

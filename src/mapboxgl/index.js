@@ -77,6 +77,8 @@ export {
     IPortalService,
     IPortalServiceBase,
     IPortalServicesQueryParam,
+    IPortalMapdashboard,
+    IPortalMapdashboardsQueryParam,
     //Online
     Online,
     OnlineData,

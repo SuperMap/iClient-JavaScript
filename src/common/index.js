@@ -105,7 +105,9 @@ import {
     IPortalScenesQueryParam,
     IPortalService,
     IPortalServiceBase,
-    IPortalServicesQueryParam
+    IPortalServicesQueryParam,
+    IPortalMapdashboard,
+    IPortalMapdashboardsQueryParam
 } from './iPortal';
 import {
     AddressMatchService,
@@ -550,7 +552,7 @@ export { TimeControlBase, TimeFlowControl };
 export { Format, GeoJSON, JSONFormat, WKT };
 export { setCORS, isCORS, setRequestTimeout, getRequestTimeout, FetchRequest, ColorsPickerUtil, ArrayStatistic };
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
-export { IPortal, IPortalMap, IPortalMapsQueryParam, IPortalInsight, IPortalInsightsQueryParam, IPortalScene, IPortalScenesQueryParam,IPortalService, IPortalServiceBase, IPortalServicesQueryParam };
+export { IPortal, IPortalMap, IPortalMapsQueryParam, IPortalInsight, IPortalInsightsQueryParam, IPortalScene, IPortalScenesQueryParam,IPortalService, IPortalServiceBase, IPortalServicesQueryParam, IPortalMapdashboard, IPortalMapdashboardsQueryParam };
 export {
     AddressMatchService,
     AggregationParameter,
