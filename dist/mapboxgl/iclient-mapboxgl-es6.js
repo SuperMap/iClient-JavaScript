@@ -1893,13 +1893,13 @@ var REST_BufferEndType = SuperMap.BufferEndType = {
 var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
-    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。。 */
+    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
     ERASE: "ERASE",
     /**对被操作数据集（几何对象）进行同一操作，即操作执行后，被操作数据集（几何对象）包含来自操作数据集（几何对象）的几何形状。 */
     IDENTITY: "IDENTITY",
     /** 对两个数据集（几何对象）求交，返回两个数据集（几何对象）的交集。 */
     INTERSECT: "INTERSECT",
-    /** 对两个面数据集（几何对象）进行合并操作。。 */
+    /** 对两个面数据集（几何对象）进行合并操作。 */
     UNION: "UNION",
     /** 对两个面数据集（几何对象）进行更新操作。 */
     UPDATE: "UPDATE",
@@ -2065,7 +2065,7 @@ var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
  * @type {string}
  */
 var REST_LayerType = SuperMap.LayerType = {
-    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。。 */
+    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
     WMS: "WMS",
@@ -12865,6 +12865,88 @@ class iPortalMapsQueryParam_IPortalMapsQueryParam {
 SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
 
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsightsQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalInsightsQueryParam
+  * @classdesc iPortal 地图资源查询参数。
+  * @category iPortal/Online
+  * @param {Object} params - iPortal 地图资源查询具体参数。
+  *
+  */
+ class iPortalInsightsQueryParam_IPortalInsightsQueryParam {
+ 
+    constructor(params) {
+        params = params || {};
+        this.createEnd = null;
+        this.createStart = null;
+        this.filterFields = null;
+        this.orderBy = null;
+        this.tags = null;
+        this.userNames = null;
+        this.currentPage = null;
+        this.keywords = null;
+        this.pageSize = null;
+        this.currentUser = null;
+        this.departmentIds = null;
+        this.dirIds = null;
+        this.groupIds = null;
+        this.isNotInDir = false;
+        this.permissionType = null;
+        this.resourceIds = null;
+        this.returnSubDir = null;
+        this.searchScope = null;
+        Util_Util.extend(this, params);
+    }
+ 
+ }
+ 
+ SuperMap.iPortalInsightsQueryParam = iPortalInsightsQueryParam_IPortalInsightsQueryParam;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalScenesQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalScenesQueryParam
+  * @classdesc iPortal 地图资源查询参数。
+  * @category iPortal/Online
+  * @param {Object} params - iPortal 地图资源查询具体参数。
+  *
+  */
+ class iPortalScenesQueryParam_IPortalScenesQueryParam {
+ 
+     constructor(params) {
+         params = params || {};
+         this.tags = null;
+         this.userNames = null;
+         this.orderBy = null;
+         this.orderType = null;
+         this.keywords = null;
+         this.currentPage = null;
+         this.pageSize = null;
+         this.dirIds = null;
+         this.isNotInDir = false;
+         this.filterFields = null;
+         this.createStart = null;
+         this.createEnd = null;
+         Util_Util.extend(this, params);
+     }
+ 
+ }
+ 
+ SuperMap.iPortalScenesQueryParam = iPortalScenesQueryParam_IPortalScenesQueryParam;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalServiceBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -12991,7 +13073,7 @@ SuperMap.iPortalServiceBase = iPortalServiceBase_IPortalServiceBase;
  * @param {Object} params - 服务请求参数。
  * @param {boolean} [params.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [params.crossOrigin] - 请求是否携带 cookie。 * 
- * @param {Object} [options.headers] - 请求头。
+ * @param {Object} [params.headers] - 请求头。
  */
 class iPortalService_IPortalService extends iPortalServiceBase_IPortalServiceBase {
 
@@ -13179,10 +13261,182 @@ class iPortalMap_IPortalMap extends iPortalServiceBase_IPortalServiceBase {
 SuperMap.iPortalMap = iPortalMap_IPortalMap;
 
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsight.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalInsight
+  * @classdesc iPortal 洞察服务类。
+  * @category iPortal/Online
+  * @param {string} insightUrl - 洞察地址。
+  * @param {Object} [params] - 服务参数。
+  * @extends {SuperMap.iPortalServiceBase}
+  *
+  */
+ class iPortalInsight_IPortalInsight extends iPortalServiceBase_IPortalServiceBase {
+ 
+ 
+     constructor(insightUrl, params) {
+         super(insightUrl);
+         params = params || {};
+         this.authorizeSetting = [];
+         this.name = "";
+         this.checkStatus = "";
+         this.createTime = 0;
+         this.description = "";
+         this.id = 0;
+         this.nickname = "";
+         this.tags = [];
+         this.thumbnail = "";
+         this.updateTime = 0;
+         this.userName = "";
+         this.visitCount = 0;
+         Util_Util.extend(this, params);
+         this.insightUrl = insightUrl;
+     }
+ 
+     /**
+      * @function SuperMap.iPortalInsight.prototype.load
+      * @description 加载洞察信息。
+      * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+      */
+     load() {
+         var me = this;
+         return me.request("GET", me.insightUrl + ".json")
+             .then(function (insightInfo) {
+                 if (insightInfo.error) {
+                     return insightInfo;
+                 }
+                 for (var key in insightInfo) {
+                     me[key] = insightInfo[key];
+                 }
+             });
+     }
+ 
+     /**
+      * @function SuperMap.iPortalInsight.prototype.update
+      * @description 更新洞察参数。
+      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+      */
+     update() {
+         var insightUpdateParam = {
+            authorizeSetting: this.authorizeSetting,
+            description: this.description,
+            tags: this.tags,
+            thumbnail: this.thumbnail,
+            name:this.name
+         };
+         var options = {
+             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+         };
+         return this.request("PUT", this.insightUrl, JSON.stringify(insightUpdateParam), options);
+     }
+ 
+ }
+ 
+ SuperMap.iPortalInsight = iPortalInsight_IPortalInsight;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalScene.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalScene
+  * @classdesc iPortal 场景服务类。
+  * @category iPortal/Online
+  * @param {string} sceneUrl - 场景地址。
+  * @param {Object} [params] - 服务参数。
+  * @extends {SuperMap.iPortalServiceBase}
+  *
+  */
+ class iPortalScene_IPortalScene extends iPortalServiceBase_IPortalServiceBase {
+ 
+ 
+     constructor(sceneUrl, params) {
+         super(sceneUrl);
+         params = params || {};
+         this.authorizeSetting = [];
+         this.content = null;
+         this.createTime = 0;
+         this.description = "";
+         this.id = 0;
+         this.layers = [];
+         this.name  = "";
+         this.nickname = "";
+         this.tags = [];
+         this.thumbnail = "";
+         this.title = "";
+         this.updateTime = 0;
+         this.url = "";
+         this.userName = "";
+         this.visitCount = 0;
+         Util_Util.extend(this, params);
+         this.sceneUrl = sceneUrl;
+         // if (this.id) {
+         //     this.sceneUrl = sceneUrl + "/" + this.id;
+         // }
+     }
+ 
+     /**
+      * @function SuperMap.iPortalScene.prototype.load
+      * @description 加载场景信息。
+      * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+      */
+     load() {
+         var me = this;
+         return me.request("GET", me.sceneUrl + ".json")
+             .then(function (sceneInfo) {
+                 if (sceneInfo.error) {
+                     return sceneInfo;
+                 }
+                 for (var key in sceneInfo) {
+                     me[key] = sceneInfo[key];
+                 }
+             });
+     }
+ 
+     /**
+      * @function SuperMap.iPortalScene.prototype.update
+      * @description 更新场景参数。
+      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+      */
+     update() {
+         var sceneUpdateParam = {
+             authorizeSetting: this.authorizeSetting,
+             name:this.name,
+             tags:this.tags,
+             description: this.description,
+             thumbnail:this.thumbnail
+         };
+         var options = {
+             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+         };
+         return this.request("PUT", this.sceneUrl, JSON.stringify(sceneUpdateParam), options);
+     }
+ 
+ }
+ 
+ SuperMap.iPortalScene = iPortalScene_IPortalScene;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
 
 
 
@@ -13277,7 +13531,122 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
                 mapRetult.total = result.total;
                 mapRetult.totalPage = result.totalPage;
             }
-            return mapRetult; 
+            return mapRetult;
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryInsights
+     * @param {SuperMap.iPortalInsightsQueryParam} queryParams - 查询参数。
+     * @description 获取洞察信息。
+     * @returns {Promise} 返回包含所有洞察服务信息的 Promise 对象。
+     */
+    queryInsights(queryParams) {
+        if (!(queryParams instanceof iPortalInsightsQueryParam_IPortalInsightsQueryParam)) {
+            return null;
+        }
+        let insightsUrl;
+        if (this.withCredentials) {
+            insightsUrl = this.iportalUrl + "web/mycontent/insightsworkspaces";
+        } else {
+            insightsUrl = this.iportalUrl + "/web/insightsworkspaces";
+        }
+        return this.request("GET", insightsUrl, queryParams).then(function(result) {
+            var insightRetult = {content:[]};
+            var insights = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(insightJsonObj) {
+                    insights.push(new iPortalInsight_IPortalInsight(insightsUrl + "/" + insightJsonObj.id, insightJsonObj));
+                    return insightJsonObj;
+                });
+                insightRetult.content = insights;
+                insightRetult.currentPage = result.currentPage;
+                insightRetult.pageSize = result.pageSize;
+                insightRetult.total = result.total;
+                insightRetult.totalPage = result.totalPage;
+            }
+            return insightRetult; 
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteInsights
+     * @param {Array} ids - 洞察的序号。
+     * @description 删除洞察。
+     * @returns {Promise} 返回包含洞察删除操作状态的 Promise 对象。
+     */
+    deleteInsights(ids) {
+        var insightUrl = this.iportalUrl + "/web/insightsworkspaces.json";
+        return this.request("DELETE", insightUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.viewInsightDetail
+     * @param {Array} ids - 洞察的序号。
+     * @description 查看某个洞察资源的详情。
+     * @returns {Promise} 返回包含某条洞察资源操作状态的 Promise 对象。
+     */
+    queryInsight(id){
+        var insightUrl = this.iportalUrl + "/web/insightsworkspaces/"+id;
+        var insight = new iPortalInsight_IPortalInsight(insightUrl);
+        return insight.load().then(()=>{
+            return insight
+        })
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.updateInsight
+     * @param {Array} ids - 洞察的序号。
+     * @description 更新某个洞察信息。
+     * @returns {Promise} 返回包含更新洞察属性操作状态的 Promise 对象。
+     */
+    updateInsightAttrs(id,updateParam){
+        var insightAttributesUrl = this.iportalUrl + "/web/insightsworkspaces/"+id+"/attributes.json";
+        return new iPortalInsight_IPortalInsight(insightAttributesUrl, updateParam).update();
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteScenes
+     * @param {Array} ids - 场景的序号。
+     * @description 删除场景。
+     * @returns {Promise} 返回包含场景删除操作状态的 Promise 对象。
+     */
+    deleteScenes(ids) {
+        var sceneUrl = this.iportalUrl + "/web/scenes.json";
+        return this.request("DELETE", sceneUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryScenes
+     * @param {SuperMap.iPortalScenesQueryParam} queryParams - 查询参数。
+     * @description 获取场景信息。
+     * @returns {Promise} 返回包含所有场景服务信息的 Promise 对象。
+     */
+    queryScenes(queryParams) {
+        if (!(queryParams instanceof iPortalScenesQueryParam_IPortalScenesQueryParam)) {
+            return null;
+        }
+        let scenesUrl;
+        if (this.withCredentials) {
+            scenesUrl = this.iportalUrl + "/web/mycontent/scenes";
+        } else {
+            scenesUrl = this.iportalUrl + "/web/scenes";
+        }
+        return this.request("GET", scenesUrl, queryParams).then(function(result) {
+            var sceneRetult = {content:[]};
+            var scenes = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(sceneJsonObj) {
+                    scenes.push(new iPortalScene_IPortalScene(scenesUrl + "/" + sceneJsonObj.id, sceneJsonObj));
+                    return sceneJsonObj;
+                });
+                sceneRetult.content = scenes;
+                sceneRetult.currentPage = result.currentPage;
+                sceneRetult.pageSize = result.pageSize;
+                sceneRetult.total = result.total;
+                sceneRetult.totalPage = result.totalPage;
+            }
+            return sceneRetult;
         });
     }
 }
@@ -13288,6 +13657,14 @@ SuperMap.iPortal = iPortal_IPortal;
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
 
 
 
@@ -78586,6 +78963,10 @@ external_mapboxgl_default.a.supermap.WebMap = WebMap_WebMap;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortal", function() { return iPortal_IPortal; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalInsight", function() { return iPortalInsight_IPortalInsight; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalInsightsQueryParam", function() { return iPortalInsightsQueryParam_IPortalInsightsQueryParam; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalScene", function() { return iPortalScene_IPortalScene; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalScenesQueryParam", function() { return iPortalScenesQueryParam_IPortalScenesQueryParam; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });

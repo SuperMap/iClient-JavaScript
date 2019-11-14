@@ -4,9 +4,13 @@
 import { SuperMap } from "../SuperMap";
 import { IPortalServicesQueryParam } from "./iPortalServicesQueryParam";
 import { IPortalMapsQueryParam } from "./iPortalMapsQueryParam";
+import { IPortalInsightsQueryParam } from "./iPortalInsightsQueryParam";
+import { IPortalScenesQueryParam } from "./iPortalScenesQueryParam";
 import { FetchRequest } from "../util/FetchRequest";
 import { IPortalService } from "./iPortalService";
 import { IPortalMap } from "./iPortalMap";
+import { IPortalInsight } from "./iPortalInsight";
+import { IPortalScene } from "./iPortalScene";
 import { IPortalServiceBase } from "./iPortalServiceBase";
 
 /**
@@ -95,7 +99,122 @@ export class IPortal extends IPortalServiceBase {
                 mapRetult.total = result.total;
                 mapRetult.totalPage = result.totalPage;
             }
-            return mapRetult; 
+            return mapRetult;
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryInsights
+     * @param {SuperMap.iPortalInsightsQueryParam} queryParams - 查询参数。
+     * @description 获取洞察信息。
+     * @returns {Promise} 返回包含所有洞察服务信息的 Promise 对象。
+     */
+    queryInsights(queryParams) {
+        if (!(queryParams instanceof IPortalInsightsQueryParam)) {
+            return null;
+        }
+        let insightsUrl;
+        if (this.withCredentials) {
+            insightsUrl = this.iportalUrl + "web/mycontent/insightsworkspaces";
+        } else {
+            insightsUrl = this.iportalUrl + "/web/insightsworkspaces";
+        }
+        return this.request("GET", insightsUrl, queryParams).then(function(result) {
+            var insightRetult = {content:[]};
+            var insights = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(insightJsonObj) {
+                    insights.push(new IPortalInsight(insightsUrl + "/" + insightJsonObj.id, insightJsonObj));
+                    return insightJsonObj;
+                });
+                insightRetult.content = insights;
+                insightRetult.currentPage = result.currentPage;
+                insightRetult.pageSize = result.pageSize;
+                insightRetult.total = result.total;
+                insightRetult.totalPage = result.totalPage;
+            }
+            return insightRetult; 
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteInsights
+     * @param {Array} ids - 洞察的序号。
+     * @description 删除洞察。
+     * @returns {Promise} 返回包含洞察删除操作状态的 Promise 对象。
+     */
+    deleteInsights(ids) {
+        var insightUrl = this.iportalUrl + "/web/insightsworkspaces.json";
+        return this.request("DELETE", insightUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.viewInsightDetail
+     * @param {Array} ids - 洞察的序号。
+     * @description 查看某个洞察资源的详情。
+     * @returns {Promise} 返回包含某条洞察资源操作状态的 Promise 对象。
+     */
+    queryInsight(id){
+        var insightUrl = this.iportalUrl + "/web/insightsworkspaces/"+id;
+        var insight = new IPortalInsight(insightUrl);
+        return insight.load().then(()=>{
+            return insight
+        })
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.updateInsight
+     * @param {Array} ids - 洞察的序号。
+     * @description 更新某个洞察信息。
+     * @returns {Promise} 返回包含更新洞察属性操作状态的 Promise 对象。
+     */
+    updateInsightAttrs(id,updateParam){
+        var insightAttributesUrl = this.iportalUrl + "/web/insightsworkspaces/"+id+"/attributes.json";
+        return new IPortalInsight(insightAttributesUrl, updateParam).update();
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteScenes
+     * @param {Array} ids - 场景的序号。
+     * @description 删除场景。
+     * @returns {Promise} 返回包含场景删除操作状态的 Promise 对象。
+     */
+    deleteScenes(ids) {
+        var sceneUrl = this.iportalUrl + "/web/scenes.json";
+        return this.request("DELETE", sceneUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryScenes
+     * @param {SuperMap.iPortalScenesQueryParam} queryParams - 查询参数。
+     * @description 获取场景信息。
+     * @returns {Promise} 返回包含所有场景服务信息的 Promise 对象。
+     */
+    queryScenes(queryParams) {
+        if (!(queryParams instanceof IPortalScenesQueryParam)) {
+            return null;
+        }
+        let scenesUrl;
+        if (this.withCredentials) {
+            scenesUrl = this.iportalUrl + "/web/mycontent/scenes";
+        } else {
+            scenesUrl = this.iportalUrl + "/web/scenes";
+        }
+        return this.request("GET", scenesUrl, queryParams).then(function(result) {
+            var sceneRetult = {content:[]};
+            var scenes = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(sceneJsonObj) {
+                    scenes.push(new IPortalScene(scenesUrl + "/" + sceneJsonObj.id, sceneJsonObj));
+                    return sceneJsonObj;
+                });
+                sceneRetult.content = scenes;
+                sceneRetult.currentPage = result.currentPage;
+                sceneRetult.pageSize = result.pageSize;
+                sceneRetult.total = result.total;
+                sceneRetult.totalPage = result.totalPage;
+            }
+            return sceneRetult;
         });
     }
 }

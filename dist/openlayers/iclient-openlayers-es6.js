@@ -4252,13 +4252,13 @@ var REST_BufferEndType = SuperMap.BufferEndType = {
 var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
-    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。。 */
+    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
     ERASE: "ERASE",
     /**对被操作数据集（几何对象）进行同一操作，即操作执行后，被操作数据集（几何对象）包含来自操作数据集（几何对象）的几何形状。 */
     IDENTITY: "IDENTITY",
     /** 对两个数据集（几何对象）求交，返回两个数据集（几何对象）的交集。 */
     INTERSECT: "INTERSECT",
-    /** 对两个面数据集（几何对象）进行合并操作。。 */
+    /** 对两个面数据集（几何对象）进行合并操作。 */
     UNION: "UNION",
     /** 对两个面数据集（几何对象）进行更新操作。 */
     UPDATE: "UPDATE",
@@ -4424,7 +4424,7 @@ var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
  * @type {string}
  */
 var REST_LayerType = SuperMap.LayerType = {
-    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。。 */
+    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
     WMS: "WMS",
@@ -15224,6 +15224,88 @@ class iPortalMapsQueryParam_IPortalMapsQueryParam {
 SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
 
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsightsQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalInsightsQueryParam
+  * @classdesc iPortal 地图资源查询参数。
+  * @category iPortal/Online
+  * @param {Object} params - iPortal 地图资源查询具体参数。
+  *
+  */
+ class iPortalInsightsQueryParam_IPortalInsightsQueryParam {
+ 
+    constructor(params) {
+        params = params || {};
+        this.createEnd = null;
+        this.createStart = null;
+        this.filterFields = null;
+        this.orderBy = null;
+        this.tags = null;
+        this.userNames = null;
+        this.currentPage = null;
+        this.keywords = null;
+        this.pageSize = null;
+        this.currentUser = null;
+        this.departmentIds = null;
+        this.dirIds = null;
+        this.groupIds = null;
+        this.isNotInDir = false;
+        this.permissionType = null;
+        this.resourceIds = null;
+        this.returnSubDir = null;
+        this.searchScope = null;
+        Util_Util.extend(this, params);
+    }
+ 
+ }
+ 
+ SuperMap.iPortalInsightsQueryParam = iPortalInsightsQueryParam_IPortalInsightsQueryParam;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalScenesQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalScenesQueryParam
+  * @classdesc iPortal 地图资源查询参数。
+  * @category iPortal/Online
+  * @param {Object} params - iPortal 地图资源查询具体参数。
+  *
+  */
+ class iPortalScenesQueryParam_IPortalScenesQueryParam {
+ 
+     constructor(params) {
+         params = params || {};
+         this.tags = null;
+         this.userNames = null;
+         this.orderBy = null;
+         this.orderType = null;
+         this.keywords = null;
+         this.currentPage = null;
+         this.pageSize = null;
+         this.dirIds = null;
+         this.isNotInDir = false;
+         this.filterFields = null;
+         this.createStart = null;
+         this.createEnd = null;
+         Util_Util.extend(this, params);
+     }
+ 
+ }
+ 
+ SuperMap.iPortalScenesQueryParam = iPortalScenesQueryParam_IPortalScenesQueryParam;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalServiceBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -15350,7 +15432,7 @@ SuperMap.iPortalServiceBase = iPortalServiceBase_IPortalServiceBase;
  * @param {Object} params - 服务请求参数。
  * @param {boolean} [params.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [params.crossOrigin] - 请求是否携带 cookie。 * 
- * @param {Object} [options.headers] - 请求头。
+ * @param {Object} [params.headers] - 请求头。
  */
 class iPortalService_IPortalService extends iPortalServiceBase_IPortalServiceBase {
 
@@ -15538,10 +15620,182 @@ class iPortalMap_IPortalMap extends iPortalServiceBase_IPortalServiceBase {
 SuperMap.iPortalMap = iPortalMap_IPortalMap;
 
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsight.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalInsight
+  * @classdesc iPortal 洞察服务类。
+  * @category iPortal/Online
+  * @param {string} insightUrl - 洞察地址。
+  * @param {Object} [params] - 服务参数。
+  * @extends {SuperMap.iPortalServiceBase}
+  *
+  */
+ class iPortalInsight_IPortalInsight extends iPortalServiceBase_IPortalServiceBase {
+ 
+ 
+     constructor(insightUrl, params) {
+         super(insightUrl);
+         params = params || {};
+         this.authorizeSetting = [];
+         this.name = "";
+         this.checkStatus = "";
+         this.createTime = 0;
+         this.description = "";
+         this.id = 0;
+         this.nickname = "";
+         this.tags = [];
+         this.thumbnail = "";
+         this.updateTime = 0;
+         this.userName = "";
+         this.visitCount = 0;
+         Util_Util.extend(this, params);
+         this.insightUrl = insightUrl;
+     }
+ 
+     /**
+      * @function SuperMap.iPortalInsight.prototype.load
+      * @description 加载洞察信息。
+      * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+      */
+     load() {
+         var me = this;
+         return me.request("GET", me.insightUrl + ".json")
+             .then(function (insightInfo) {
+                 if (insightInfo.error) {
+                     return insightInfo;
+                 }
+                 for (var key in insightInfo) {
+                     me[key] = insightInfo[key];
+                 }
+             });
+     }
+ 
+     /**
+      * @function SuperMap.iPortalInsight.prototype.update
+      * @description 更新洞察参数。
+      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+      */
+     update() {
+         var insightUpdateParam = {
+            authorizeSetting: this.authorizeSetting,
+            description: this.description,
+            tags: this.tags,
+            thumbnail: this.thumbnail,
+            name:this.name
+         };
+         var options = {
+             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+         };
+         return this.request("PUT", this.insightUrl, JSON.stringify(insightUpdateParam), options);
+     }
+ 
+ }
+ 
+ SuperMap.iPortalInsight = iPortalInsight_IPortalInsight;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalScene.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalScene
+  * @classdesc iPortal 场景服务类。
+  * @category iPortal/Online
+  * @param {string} sceneUrl - 场景地址。
+  * @param {Object} [params] - 服务参数。
+  * @extends {SuperMap.iPortalServiceBase}
+  *
+  */
+ class iPortalScene_IPortalScene extends iPortalServiceBase_IPortalServiceBase {
+ 
+ 
+     constructor(sceneUrl, params) {
+         super(sceneUrl);
+         params = params || {};
+         this.authorizeSetting = [];
+         this.content = null;
+         this.createTime = 0;
+         this.description = "";
+         this.id = 0;
+         this.layers = [];
+         this.name  = "";
+         this.nickname = "";
+         this.tags = [];
+         this.thumbnail = "";
+         this.title = "";
+         this.updateTime = 0;
+         this.url = "";
+         this.userName = "";
+         this.visitCount = 0;
+         Util_Util.extend(this, params);
+         this.sceneUrl = sceneUrl;
+         // if (this.id) {
+         //     this.sceneUrl = sceneUrl + "/" + this.id;
+         // }
+     }
+ 
+     /**
+      * @function SuperMap.iPortalScene.prototype.load
+      * @description 加载场景信息。
+      * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+      */
+     load() {
+         var me = this;
+         return me.request("GET", me.sceneUrl + ".json")
+             .then(function (sceneInfo) {
+                 if (sceneInfo.error) {
+                     return sceneInfo;
+                 }
+                 for (var key in sceneInfo) {
+                     me[key] = sceneInfo[key];
+                 }
+             });
+     }
+ 
+     /**
+      * @function SuperMap.iPortalScene.prototype.update
+      * @description 更新场景参数。
+      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+      */
+     update() {
+         var sceneUpdateParam = {
+             authorizeSetting: this.authorizeSetting,
+             name:this.name,
+             tags:this.tags,
+             description: this.description,
+             thumbnail:this.thumbnail
+         };
+         var options = {
+             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+         };
+         return this.request("PUT", this.sceneUrl, JSON.stringify(sceneUpdateParam), options);
+     }
+ 
+ }
+ 
+ SuperMap.iPortalScene = iPortalScene_IPortalScene;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
 
 
 
@@ -15636,7 +15890,122 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
                 mapRetult.total = result.total;
                 mapRetult.totalPage = result.totalPage;
             }
-            return mapRetult; 
+            return mapRetult;
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryInsights
+     * @param {SuperMap.iPortalInsightsQueryParam} queryParams - 查询参数。
+     * @description 获取洞察信息。
+     * @returns {Promise} 返回包含所有洞察服务信息的 Promise 对象。
+     */
+    queryInsights(queryParams) {
+        if (!(queryParams instanceof iPortalInsightsQueryParam_IPortalInsightsQueryParam)) {
+            return null;
+        }
+        let insightsUrl;
+        if (this.withCredentials) {
+            insightsUrl = this.iportalUrl + "web/mycontent/insightsworkspaces";
+        } else {
+            insightsUrl = this.iportalUrl + "/web/insightsworkspaces";
+        }
+        return this.request("GET", insightsUrl, queryParams).then(function(result) {
+            var insightRetult = {content:[]};
+            var insights = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(insightJsonObj) {
+                    insights.push(new iPortalInsight_IPortalInsight(insightsUrl + "/" + insightJsonObj.id, insightJsonObj));
+                    return insightJsonObj;
+                });
+                insightRetult.content = insights;
+                insightRetult.currentPage = result.currentPage;
+                insightRetult.pageSize = result.pageSize;
+                insightRetult.total = result.total;
+                insightRetult.totalPage = result.totalPage;
+            }
+            return insightRetult; 
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteInsights
+     * @param {Array} ids - 洞察的序号。
+     * @description 删除洞察。
+     * @returns {Promise} 返回包含洞察删除操作状态的 Promise 对象。
+     */
+    deleteInsights(ids) {
+        var insightUrl = this.iportalUrl + "/web/insightsworkspaces.json";
+        return this.request("DELETE", insightUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.viewInsightDetail
+     * @param {Array} ids - 洞察的序号。
+     * @description 查看某个洞察资源的详情。
+     * @returns {Promise} 返回包含某条洞察资源操作状态的 Promise 对象。
+     */
+    queryInsight(id){
+        var insightUrl = this.iportalUrl + "/web/insightsworkspaces/"+id;
+        var insight = new iPortalInsight_IPortalInsight(insightUrl);
+        return insight.load().then(()=>{
+            return insight
+        })
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.updateInsight
+     * @param {Array} ids - 洞察的序号。
+     * @description 更新某个洞察信息。
+     * @returns {Promise} 返回包含更新洞察属性操作状态的 Promise 对象。
+     */
+    updateInsightAttrs(id,updateParam){
+        var insightAttributesUrl = this.iportalUrl + "/web/insightsworkspaces/"+id+"/attributes.json";
+        return new iPortalInsight_IPortalInsight(insightAttributesUrl, updateParam).update();
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteScenes
+     * @param {Array} ids - 场景的序号。
+     * @description 删除场景。
+     * @returns {Promise} 返回包含场景删除操作状态的 Promise 对象。
+     */
+    deleteScenes(ids) {
+        var sceneUrl = this.iportalUrl + "/web/scenes.json";
+        return this.request("DELETE", sceneUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryScenes
+     * @param {SuperMap.iPortalScenesQueryParam} queryParams - 查询参数。
+     * @description 获取场景信息。
+     * @returns {Promise} 返回包含所有场景服务信息的 Promise 对象。
+     */
+    queryScenes(queryParams) {
+        if (!(queryParams instanceof iPortalScenesQueryParam_IPortalScenesQueryParam)) {
+            return null;
+        }
+        let scenesUrl;
+        if (this.withCredentials) {
+            scenesUrl = this.iportalUrl + "/web/mycontent/scenes";
+        } else {
+            scenesUrl = this.iportalUrl + "/web/scenes";
+        }
+        return this.request("GET", scenesUrl, queryParams).then(function(result) {
+            var sceneRetult = {content:[]};
+            var scenes = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(sceneJsonObj) {
+                    scenes.push(new iPortalScene_IPortalScene(scenesUrl + "/" + sceneJsonObj.id, sceneJsonObj));
+                    return sceneJsonObj;
+                });
+                sceneRetult.content = scenes;
+                sceneRetult.currentPage = result.currentPage;
+                sceneRetult.pageSize = result.pageSize;
+                sceneRetult.total = result.total;
+                sceneRetult.totalPage = result.totalPage;
+            }
+            return sceneRetult;
         });
     }
 }
@@ -15647,6 +16016,14 @@ SuperMap.iPortal = iPortal_IPortal;
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
 
 
 
@@ -69309,7 +69686,7 @@ class core_Util_Util {
         let properties = [];
         if (core_Util_Util.isArray(features) && features.length) {
             features.forEach(feature => {
-                let property = feature.attributes || feature.get('Properties');
+                let property = feature.get('attributes');
                 property && properties.push(property);
             });
         }
@@ -79112,9 +79489,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             url: layerInfo.url,
             wrapX: false,
             serverType: serverType,
+            crossOrigin: 'anonymous',
             // extent: this.baseLayerExtent,
-            prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] },
-            tileProxy: this.tileProxy
+            prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] }
         };
         if(layerInfo.visibleScales && layerInfo.visibleScales.length >0){
             let result = this.getReslutionsFromScales(layerInfo.visibleScales, 96, layerInfo.coordUnit);
@@ -79126,6 +79503,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             options.tileGrid = tileGrid;
         }else{
             options.extent = this.baseLayerExtent;
+        }
+         //主机名相同时不添加代理
+        if (layerInfo.url && !this.isSameDomain(layerInfo.url)) {
+            options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
         }
         let source = new external_ol_default.a.source.TileSuperMapRest(options);
         SecurityManager_SecurityManager[`register${keyfix}`](layerInfo.url);
@@ -79170,6 +79551,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         return new external_ol_default.a.source.XYZ({
             wrapX: false,
             projection: projection,
+            crossOrigin: 'anonymous',
             tileUrlFunction: function (coordinates) {
                 let /*quadDigits = '', */[z, x, y] = [...coordinates];
                 y = y > 0 ? y - 1 : -y - 1;
@@ -79201,7 +79583,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         return new external_ol_default.a.source.XYZ({
             url: layerInfo.url,
             wrapX: false,
-            crossOrigin: window.location.host
+            crossOrigin: 'anonymous'
         })
     }
 
@@ -79873,9 +80255,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 colTitles[i] = core_Util_Util.trim(colTitles[i]);
             }
         }
+        // 迁徙图xyField暂时用from中的
         let fileCode = layerInfo.projection,
-            xIdx = colTitles.indexOf(core_Util_Util.trim(layerInfo.xyField.xField)),
-            yIdx = colTitles.indexOf(core_Util_Util.trim(layerInfo.xyField.yField)),
+            xIdx = colTitles.indexOf(core_Util_Util.trim((layerInfo.xyField && layerInfo.xyField.xField) || (layerInfo.from && layerInfo.from.xField))),
+            yIdx = colTitles.indexOf(core_Util_Util.trim((layerInfo.xyField && layerInfo.xyField.yField) || (layerInfo.from && layerInfo.from.yField))),
             baseLayerEpsgCode = this.baseProjection,
             features = [];
 
@@ -79895,9 +80278,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 }
                 let feature = new external_ol_default.a.Feature({
                     geometry: olGeom,
-                    Properties: attributes
+                    attributes: attributes
                 });
-                feature.attributes = attributes;
                 features.push(feature);
             }
         }
@@ -79915,6 +80297,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let allFeatures = geojson.features,
             features = [];
         for (let i = 0, len = allFeatures.length; i < len; i++) {
+            //转换前删除properties,这样转换后属性不会重复存储
+            let featureAttr = allFeatures[i].properties || {};
+            delete allFeatures[i].properties;
             let feature = WebMap_transformTools.readFeature(allFeatures[i], {
                 dataProjection: layerInfo.projection || 'EPSG:4326',
                 featureProjection: this.baseProjection || 'ESPG:4326'
@@ -79928,15 +80313,19 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     allFeatures[i].properties.lat = coordinate[1];
                 }
             }
-            feature.attributes = allFeatures[i].properties || {};
 
             // 标注图层特殊处理
             let isMarker = false;
-            let featureInfo;
+            let attributes;
             let useStyle;
             if (allFeatures[i].dv_v5_markerInfo) {
-                featureInfo = allFeatures[i].dv_v5_markerInfo;
-                isMarker = true;
+                 //因为优化代码之前，属性字段都存储在propertise上，markerInfo没有
+                 attributes = Object.assign({}, allFeatures[i].dv_v5_markerInfo, featureAttr);
+                 if(attributes.lon) {
+                     //标注图层不需要
+                     delete attributes.lon;
+                     delete attributes.lat;
+                 }
             }
             if (allFeatures[i].dv_v5_markerStyle) {
                 useStyle = allFeatures[i].dv_v5_markerStyle;
@@ -79945,19 +80334,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let properties;
             if (isMarker) {
                 properties = Object.assign({}, {
-                    featureInfo: featureInfo
+                    attributes
                 }, {
-                        useStyle: useStyle
-                    });
+                    useStyle
+                });
                 //feature上添加图层的id，为了对应图层
                 feature.layerId = layerInfo.timeId;
-                //删除不需要的属性，因为这两个属性存储在properties上
-                delete feature.attributes.featureInfo;
-                delete feature.attributes.useStyle;
             } else if (layerInfo.featureStyles) {
                 //V4 版本标注图层处理
                 let style = JSON.parse(layerInfo.featureStyles[i].style);
-                let attr = feature.attributes;
+                let attr = featureAttr;
                 let imgUrl;
                 if (attr._smiportal_imgLinkUrl.indexOf('http://') > -1 || attr._smiportal_imgLinkUrl.indexOf('https://') > -1) {
                     imgUrl = attr._smiportal_imgLinkUrl;
@@ -79966,7 +80352,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     //上传的图片，加上当前地址
                     imgUrl = `${core_Util_Util.getIPortalUrl()}resources/markerIcon/${attr._smiportal_imgLinkUrl}`
                 }
-                featureInfo = {
+                attributes = {
                     dataViz_description: attr._smiportal_description,
                     dataViz_imgUrl: imgUrl,
                     dataViz_title: attr._smiportal_title,
@@ -79977,16 +80363,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
 
                 useStyle = style;
                 properties = Object.assign({}, {
-                    featureInfo: featureInfo
+                    attributes
                 }, {
-                        useStyle: useStyle
-                    });
+                    useStyle
+                });
                 delete attr._smiportal_description;
                 delete attr._smiportal_imgLinkUrl;
                 delete attr._smiportal_title;
                 delete attr._smiportal_otherLinkUrl;
             } else {
-                properties = feature.attributes;
+                properties = {attributes: featureAttr};
             }
 
             feature.setProperties(properties);
@@ -80006,6 +80392,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let allFeatures = metaData.allDatas.features,
             features = [];
         for (let i = 0, len = allFeatures.length; i < len; i++) {
+            let properties = allFeatures[i].properties;
+            delete allFeatures[i].properties;
             let feature = WebMap_transformTools.readFeature(allFeatures[i], {
                 dataProjection: metaData.fileCode || 'EPSG:4326',
                 featureProjection: metaData.featureProjection || core_Util_Util.getBaseLayerProj() || 'EPSG:4326'
@@ -80013,12 +80401,11 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             //geojson格式的feature属性没有坐标系字段，为了统一，再次加上
             let coordinate = feature.getGeometry().getCoordinates();
             if (allFeatures[i].geometry.type === 'Point') {
-                allFeatures[i].properties.lon = coordinate[0];
-                allFeatures[i].properties.lat = coordinate[1];
+                properties.lon = coordinate[0];
+                properties.lat = coordinate[1];
             }
-            feature.attributes = allFeatures[i].properties || {};
             feature.setProperties({
-                Properties: feature.attributes
+                attributes: properties
             });
             features.push(feature);
         }
@@ -80206,7 +80593,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let filterResult = false;
             try {
                 filterResult = window.jsonsql.query(sql, {
-                    attributes: feature.attributes
+                    attributes: feature.get('attributes')
                 });
             } catch (err) {
                 //必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
@@ -80268,8 +80655,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let graphics = [];
         //构建graphic
         for (let i in features) {
-            let graphic = new external_ol_default.a.Graphic(features[i].getGeometry(), features[i].attributes);
+            let graphic = new external_ol_default.a.Graphic(features[i].getGeometry());
             graphic.setStyle(shape);
+            graphic.setProperties({attributes: features[i].get('attributes')})
             graphics.push(graphic);
         }
         return graphics;
@@ -80316,7 +80704,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         });
         layer.setStyle(features => {
             let labelField = labelStyle.labelField;
-            let label = features.attributes[labelField.trim()] + "";
+            let label = features.get('attributes')[labelField.trim()] + "";
             if (label === "undefined") {
                 return null;
             }
@@ -80360,7 +80748,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     color: parameters.fill
                 }),
                 backgroundFill: new external_ol_default.a.style.Fill({
-                    color: [255, 255, 255, 0.7]
+                    color: parameters.backgroundFill || [255, 255, 255, 0.7]
                 }),
                 padding: [3, 3, 3, 3],
                 offsetY: parameters.offsetY
@@ -80433,7 +80821,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         this.getMaxValue(features, weightFeild);
         let maxValue = this.fieldMaxValue[weightFeild];
         features.forEach(function (feature) {
-            let attributes = feature.get("Properties") || feature.attributes;
+            let attributes = feature.get('attributes');
             try {
                 let value = attributes[weightFeild];
                 feature.set('weight', value / maxValue);
@@ -80458,7 +80846,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         }
         features.forEach(function (feature) {
             //收集当前权重字段对应的所有值
-            attributes = feature.get("Properties") || feature.attributes;
+            attributes = feature.get('attributes');
             try {
                 values.push(parseFloat(attributes[field]));
             } catch (e) {
@@ -80487,7 +80875,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         layer.setStyle(feature => {
             let styleSource = layer.get('styleSource');
             let labelField = styleSource.themeField;
-            let label = feature.attributes[labelField];
+            let label = feature.get('attributes')[labelField];
             return styleSource.styleGroups[label].olStyle;
         });
 
@@ -80534,7 +80922,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let names = [],
             customSettings = themeSetting.customSettings;
         for (let i in features) {
-            let attributes = features[i].attributes;
+            let attributes = features[i].get('attributes');
             let name = attributes[fieldName];
             let isSaved = false;
             for (let j in names) {
@@ -80600,7 +80988,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let styleSource = layer.get('styleSource');
             if (styleSource) {
                 let labelField = styleSource.themeField;
-                let value = Number(feature.attributes[labelField.trim()]);
+                let value = Number(feature.get('attributes')[labelField.trim()]);
                 let styleGroups = styleSource.styleGroups;
                 for (let i = 0; i < styleGroups.length; i++) {
                     if (i === 0) {
@@ -80665,7 +81053,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let segmentMethod = method;
         let that = this;
         features.forEach(function (feature) {
-            attributes = feature.get("Properties") || feature.attributes;
+            attributes = feature.get("attributes");
             try {
                 if (attributes) {
                     //过滤掉非数值的数据
@@ -80824,7 +81212,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
-                        attributes: feature.attributes
+                        attributes: feature.get('attributes')
                     });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
@@ -80912,7 +81300,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             //有转向字段
             let value, image;
             if(directionField !== undefined && directionField !== "未设置" && directionField !== "None") {
-                value = feature.attributes[directionField];
+                value = feature.get('attributes')[directionField];
             } else {
                 value = 0;  
             }
@@ -80975,7 +81363,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
-                        attributes: feature.attributes
+                        attributes: feature.get('attributes')
                     });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
@@ -81018,7 +81406,6 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             }*/
             featureCache[geoID].setGeometry(feature.getGeometry());
             featureCache[geoID].setProperties(feature.getProperties());
-            featureCache[geoID].attributes = feature.attributes;
             source.changed();
         } else {
             source.addFeature(feature);
@@ -81041,7 +81428,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 dataProjection: "EPSG:4326", // todo 坐标系
                 featureProjection: that.baseProjection || 'EPSG:4326'
             });
-            feature.attributes = geojson.properties;
+            feature.setProperties({attributes: geojson.properties});
             callback(feature);
 
         });
@@ -81065,10 +81452,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     //说明是文字的feature类型
                     geomType = "TEXT";
                 }
-                let featureInfo = this.setFeatureInfo(feature);
+                let attributes = this.setFeatureInfo(feature);
                 feature.setProperties({
                     useStyle: defaultStyle,
-                    featureInfo: featureInfo
+                    attributes
                 });
                 //标注图层的feature上需要存一个layerId，为了之后样式应用到图层上使用
                 // feature.layerId = timeId;
@@ -81092,22 +81479,22 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @returns {*}
      */
     setFeatureInfo(feature) {
-        let featureInfo;
-        if (feature.getProperties().featureInfo && feature.getProperties().featureInfo.dataViz_title !== undefined &&
-            feature.getProperties().featureInfo.dataViz_title != null) {
-            //有featureInfo信息就不需要再添加
-            featureInfo = feature.getProperties().featureInfo;
-        } else {
-            featureInfo = this.getDefaultAttribute();
-        }
+        let attributes = feature.get('attributes'),
+            defaultAttr = {
+                dataViz_title: '',
+                dataViz_description: '',
+                dataViz_imgUrl: '',
+                dataViz_url:''
+            }, 
+            newAttribute = Object.assign(defaultAttr, attributes);
         let properties = feature.getProperties();
-        for (let key in featureInfo) {
-            if (properties[key]) {
-                featureInfo[key] = properties[key];
+        for(let key in newAttribute) {
+            if(properties[key]) {
+                newAttribute[key] = properties[key];
                 delete properties[key];
             }
         }
-        return featureInfo;
+        return newAttribute;
     }
 
     /**
@@ -81131,7 +81518,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         layer.setStyle(feature => {
             let styleSource = layer.get('styleSource');
             let themeField = styleSource.parameters.themeSetting.themeField;
-            let value = Number(feature.attributes[themeField]);
+            let value = Number(feature.get('attributes')[themeField]);
             let styleGroups = styleSource.styleGroups;
             for (let i = 0, len = styleGroups.length; i < len; i++) {
                 if (value >= styleGroups[i].start && value < styleGroups[i].end) {
@@ -81178,7 +81565,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             minR = parameters.themeSetting.minRadius,
             maxR = parameters.themeSetting.maxRadius;
         features.forEach(feature => {
-            let attributes = feature.attributes,
+            let attributes = feature.get('attributes'),
                 value = attributes[themeField];
             // 过滤掉空值和非数值
             if (value == null || !core_Util_Util.isNumber(value)) {
@@ -81841,6 +82228,26 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             resolutions.push(resolutions[i - 1] / 2)
         }
         return resolutions;
+    }
+    /**
+     * 判断是否同域名（如果是域名，只判断后门两级域名是否相同，第一级忽略），如果是ip地址则需要完全相同。
+     * @param {*} url 
+     */
+    isSameDomain (url) {
+        let documentUrlArray = url.split("://"), substring = documentUrlArray[1];
+        let domainIndex = substring.indexOf("/"), domain = substring.substring(0, domainIndex);
+
+        let documentUrl = document.location.toString();
+        let docUrlArray = documentUrl.split("://"), documentSubstring = docUrlArray[1];
+        let docuDomainIndex = documentSubstring.indexOf("/"), docDomain = documentSubstring.substring(0, docuDomainIndex);
+
+        if(domain.indexOf(':') >-1 || window.location.port !== "") {
+            //说明用的是ip地址，判断完整域名判断
+            return domain === docDomain;
+        } else {
+            let domainArray = domain.split('.'), docDomainArray = docDomain.split('.');
+            return domainArray[1] === docDomainArray[1] && domainArray[2] === docDomainArray[2];
+        }
     }
 }
 
@@ -92370,6 +92777,10 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalInsight", function() { return iPortalInsight_IPortalInsight; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalInsightsQueryParam", function() { return iPortalInsightsQueryParam_IPortalInsightsQueryParam; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalScene", function() { return iPortalScene_IPortalScene; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalScenesQueryParam", function() { return iPortalScenesQueryParam_IPortalScenesQueryParam; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
@@ -92579,6 +92990,8 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
@@ -92587,8 +93000,6 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });

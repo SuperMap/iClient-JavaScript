@@ -73,6 +73,10 @@ export {
     IPortalService,
     IPortalServiceBase,
     IPortalServicesQueryParam,
+    IPortalInsight,
+    IPortalInsightsQueryParam,
+    IPortalScene,
+    IPortalScenesQueryParam,
     //Online
     Online,
     OnlineData,
