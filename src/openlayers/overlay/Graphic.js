@@ -87,7 +87,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
         if (options.onClick) {
             me.map.on('click', function (e) {
-                me.map.forEachFeatureAtPixel(e.pixel, options.onClick,{},e);
+                me.map.forEachFeatureAtPixel(e.pixel, options.onClick, {}, e);
             });
         }
 
@@ -151,6 +151,7 @@ export class Graphic extends ol.source.ImageCanvas {
          */
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
             let graphics = me.getGraphicsInExtent();
+            let includeGraphics = []; // 点密集的时候，符合条件的有多个 还需精确计算
             for (let i = graphics.length - 1; i >= 0; i--) {
                 let style = graphics[i].getStyle();
                 if (!style) {
@@ -182,7 +183,7 @@ export class Graphic extends ol.source.ImageCanvas {
                         for (let index = 0; index < 8; index++) {
                             const radian = (ratation + index * perAngle) / 180 * Math.PI;
                             coors.push([center[0] + r * Math.cos(radian),
-                                center[1] - r * Math.sin(radian)
+                            center[1] - r * Math.sin(radian)
                             ]);
                         }
                         coors.push(center);
@@ -201,7 +202,8 @@ export class Graphic extends ol.source.ImageCanvas {
                     extent[1] = center[1] - image.getAnchor()[1] * resolution;
                     extent[3] = center[1] + image.getAnchor()[1] * resolution;
                     if (ol.extent.containsCoordinate(extent, coordinate)) {
-                        contain = true;
+                        includeGraphics.push(graphics[i]);
+                        // contain = true;
                     }
                 }
 
@@ -218,9 +220,58 @@ export class Graphic extends ol.source.ImageCanvas {
                     me._highLightClose();
                 }
             }
+            // 精确计算
+            let exactGraphic = this._getExactGraphic(includeGraphics, evtPixel);
+            if (exactGraphic) {
+                let _style = exactGraphic.getStyle(),
+                    _center = exactGraphic.getGeometry().getCoordinates(),
+                    _image = new ol.style.Style({
+                        image: _style
+                    }).getImage();
+
+                if (me.isHighLight) {
+                    me._highLight(_center, _image, exactGraphic, evtPixel);
+                }
+                if (callback) {
+                    callback(exactGraphic, e);
+                }
+            } else {
+                if (me.isHighLight) {
+                    me._highLightClose();
+                }
+            }
             return undefined;
         }
 
+    }
+
+    /**
+     * @private
+     * @function ol.source.Graphic.prototype._getExactGraphic
+     * @description 获取到精确的graphic。
+     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+     * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
+     */
+    _getExactGraphic(graphics, evtPixel) {
+        if (graphics.length === 0) {
+            return false;
+        } else if (graphics.length === 1) {
+            return graphics[0];
+        } else {
+            let distances = [];
+            graphics.map((graphic, index) => {
+                let center = graphic.getGeometry().getCoordinates(),
+                    centerPixel = this.map.getPixelFromCoordinate(center),
+                    distance = Math.sqrt(Math.pow((centerPixel[0] - evtPixel[0]), 2) + Math.pow((centerPixel[1] - evtPixel[1]), 2));
+                distances.push({ distance: distance, index: index });
+                return null;
+            });
+
+            distances.sort((a, b) => {
+                return a.distance - b.distance
+            });
+            return graphics[distances[0].index];
+        }
     }
 
     /**
