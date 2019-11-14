@@ -150,6 +150,7 @@ export class Graphic extends ol.source.ImageCanvas {
          * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
          */
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
+            evtPixel = evtPixel || [0, 0];
             let graphics = me.getGraphicsInExtent();
             let includeGraphics = []; // 点密集的时候，符合条件的有多个 还需精确计算
             for (let i = graphics.length - 1; i >= 0; i--) {

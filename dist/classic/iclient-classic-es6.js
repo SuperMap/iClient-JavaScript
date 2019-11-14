@@ -3813,8 +3813,8 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
-        url = this._processUrl(url, options);
         url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -3834,8 +3834,8 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
     delete: function (url, params, options) {
         options = options || {};
         var type = 'DELETE';
-        url = this._processUrl(url, options);
         url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {

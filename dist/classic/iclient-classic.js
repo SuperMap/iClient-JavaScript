@@ -3394,8 +3394,8 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
     get: function get(url, params, options) {
         options = options || {};
         var type = 'GET';
-        url = this._processUrl(url, options);
         url = _Util.Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -3414,8 +3414,8 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
     delete: function _delete(url, params, options) {
         options = options || {};
         var type = 'DELETE';
-        url = this._processUrl(url, options);
         url = _Util.Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
