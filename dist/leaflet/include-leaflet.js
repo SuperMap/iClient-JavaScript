@@ -131,6 +131,14 @@
                 inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.min.js");
             }
         }
+        if (inArray(includes, 'ant-design-vue')) {
+          inputCSS("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.css");
+          inputScript("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.js");
+        }
+        if (inArray(includes, 'iclient-leaflet-vue')) {
+          inputCSS("../../dist/leaflet/iclient-leaflet-vue.css");
+          inputScript("../../dist/leaflet/iclient-leaflet-vue.min.js");
+        }
     }
 
 

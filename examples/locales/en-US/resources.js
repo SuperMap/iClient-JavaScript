@@ -83,8 +83,9 @@ window.examplesResources = {
             "others": "Others",
             "3D-WebGL": "3D-WebGL",
             "multiCoordSys": "Multiple CRS",
-            "vuecomponents": "Vue",
-            "reactcomponents": 'React',
+            "vuecomponents_mbgl": "Vue - MapboxGL",
+            "vuecomponents_leaflet": "Vue - Leaflet",
+            "reactcomponents_mbgl": 'React - MapboxGL',
             "h5components": "H5"
         },
         "more": {

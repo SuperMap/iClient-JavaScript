@@ -52,8 +52,9 @@ window.examplesResources = {
             "others": "其他",
             "3D-WebGL": "3D-WebGL",
             "multiCoordSys": "多坐标系",
-            "vuecomponents": "Vue",
-            "reactcomponents": 'React',
+            "vuecomponents_mbgl": "Vue - MapboxGL",
+            "vuecomponents_leaflet": "Vue - Leaflet",
+            "reactcomponents_mbgl": 'React - MapboxGL',
             "h5components": "H5"
         }
     },

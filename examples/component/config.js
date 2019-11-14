@@ -7,9 +7,9 @@ var identification = {
 };
 
 var exampleConfig = {
-  vuecomponents: {
-    name: 'Vue',
-    name_en: 'Vue',
+  vuecomponents_mbgl: {
+    name: 'Vue - MapboxGL',
+    name_en: 'Vue - MapboxGL',
     content: {
       map: {
         name: '地图',
@@ -26,7 +26,7 @@ var exampleConfig = {
             name: 'iPortal 地图',
             name_en: 'iPortal Map',
             version: '10.0.0',
-            thumbnail: 'components_webmap_vue.png',
+            thumbnail: 'components_webmap.png',
             fileName: 'components_webmap_vue',
             localIgnore: true
           },
@@ -386,9 +386,29 @@ var exampleConfig = {
       }
     }
   },
-  reactcomponents: {
-    name: 'React',
-    name_en: 'React',
+  vuecomponents_leaflet: {
+    name: 'Vue - Leaflet',
+    name_en: 'Vue - Leaflet',
+    content: {
+      l_map: {
+        name: '地图',
+        name_en: 'Map',
+        content: [
+          {
+            name: 'iPortal 地图',
+            name_en: 'iPortal Map',
+            version: '10.0.1',
+            thumbnail: 'components_webmap.png',
+            fileName: 'l_webmap_vue',
+            localIgnore: true
+          }
+        ]
+      }
+    }
+  },
+  reactcomponents_mbgl: {
+    name: 'React - MapboxGL',
+    name_en: 'React - MapboxGL',
     localIgnore: true,
     content: {
       react_map: {
@@ -406,7 +426,7 @@ var exampleConfig = {
             name: 'iPortal 地图',
             name_en: 'iPortal Map',
             version: '10.0.0',
-            thumbnail: 'components_webmap_react.png',
+            thumbnail: 'components_webmap.png',
             fileName: 'components_webmap_react',
             localIgnore: true
           },
@@ -557,8 +577,9 @@ var exampleConfig = {
  *不分层
  */
 var sideBarIconConfig = {
-  vuecomponents: 'fa-window-restore',
-  reactcomponents: 'fa-globe',
+  vuecomponents_mbgl: 'fa-window-restore',
+  vuecomponents_leaflet: 'fa-window-restore',
+  reactcomponents_mbgl: 'fa-globe',
   h5components: 'fa-map'
 };
 
@@ -568,8 +589,9 @@ var sideBarIconConfig = {
  *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
  */
 var exampleIconConfig = {
-  vuecomponents: 'fa-window-restore',
-  reactcomponents: 'fa-globe',
+  vuecomponents_mbgl: 'fa-window-restore',
+  vuecomponents_leaflet: 'fa-window-restore',
+  reactcomponents_mbgl: 'fa-globe',
   h5components: 'fa-map'
 };
 window.componentExampleConfig = exampleConfig;
