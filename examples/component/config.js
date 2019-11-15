@@ -401,6 +401,14 @@ var exampleConfig = {
             thumbnail: 'components_webmap.png',
             fileName: 'l_webmap_vue',
             localIgnore: true
+          },
+          {
+            name: '栅格图层',
+            name_en: 'Raster Layer',
+            version: '10.0.1',
+            thumbnail: 'components_rasterLayer_react.png',
+            fileName: 'l_raster_vue',
+            localIgnore: true
           }
         ]
       }

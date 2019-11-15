@@ -8,14 +8,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("vue"), require("ant-design-vue"), require("echarts"), require("echarts-liquidfill"), require("video.js"), require("L"), require("../../static/libs/iclient-leaflet/iclient-leaflet.min.js"));
+		module.exports = factory(require("../../static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("video.js"), require("echarts"), require("ant-design-vue"), require("echarts-liquidfill"), require("L"), require("vue"));
 	else if(typeof define === 'function' && define.amd)
-		define(["vue", "ant-design-vue", "echarts", "echarts-liquidfill", "video.js", "L", "../../static/libs/iclient-leaflet/iclient-leaflet.min.js"], factory);
+		define(["../../static/libs/iclient-leaflet/iclient-leaflet.min.js", "video.js", "echarts", "ant-design-vue", "echarts-liquidfill", "L", "vue"], factory);
 	else if(typeof exports === 'object')
-		exports["Components"] = factory(require("vue"), require("ant-design-vue"), require("echarts"), require("echarts-liquidfill"), require("video.js"), require("L"), require("../../static/libs/iclient-leaflet/iclient-leaflet.min.js"));
+		exports["Components"] = factory(require("../../static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("video.js"), require("echarts"), require("ant-design-vue"), require("echarts-liquidfill"), require("L"), require("vue"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["Vue"], root["antd"], root["echarts"], root["echarts-liquidfill"], root["_videojs"], root["L"], root["SuperMap"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE_i7_w__, __WEBPACK_EXTERNAL_MODULE_TnLG__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_AzSJ__, __WEBPACK_EXTERNAL_MODULE_hgx0__, __WEBPACK_EXTERNAL_MODULE_oAb8__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["SuperMap"], root["_videojs"], root["echarts"], root["antd"], root["echarts-liquidfill"], root["L"], root["Vue"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE__17FK__, __WEBPACK_EXTERNAL_MODULE_AzSJ__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_TnLG__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_hgx0__, __WEBPACK_EXTERNAL_MODULE_i7_w__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -921,8 +921,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("RIqP"));
-
 var _regenerator = _interopRequireDefault(__webpack_require__("o0o1"));
 
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__("lwsE"));
@@ -937,7 +935,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
 var _leaflet = _interopRequireDefault(__webpack_require__("hgx0"));
 
-__webpack_require__("oAb8");
+__webpack_require__("17FK");
 
 __webpack_require__("e/Qi");
 
@@ -956,12 +954,6 @@ var _ProvinceCenter = _interopRequireDefault(__webpack_require__("9EWs"));
 var _MunicipalCenter = _interopRequireDefault(__webpack_require__("84wO"));
 
 var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
   return new (P || (P = Promise))(function (resolve, reject) {
     function fulfilled(value) {
       try {
@@ -980,7 +972,9 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
     }
 
     function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve(result.value) : new P(function (resolve) {
+        resolve(result.value);
+      }).then(fulfilled, rejected);
     }
 
     step((generator = generator.apply(thisArg, _arguments || [])).next());
@@ -1545,12 +1539,9 @@ function (_L$Evented) {
       var url = 'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
       _leaflet.default.TileLayer.BingLayer = _leaflet.default.TileLayer.extend({
         getTileUrl: function getTileUrl(coordinates) {
-          var _ref = (0, _toConsumableArray2.default)(coordinates),
-              z = _ref[0],
-              x = _ref[1],
-              y = _ref[2];
-
-          y = y > 0 ? y - 1 : -y - 1;
+          var z = coordinates.z,
+              x = coordinates.x,
+              y = coordinates.y;
           var index = '';
 
           for (var i = z; i > 0; i--) {
@@ -2094,13 +2085,13 @@ function (_L$Evented) {
     }
   }, {
     key: "_addLayerToMap",
-    value: function _addLayerToMap(_ref2) {
-      var layer = _ref2.layer,
-          _ref2$type = _ref2.type,
-          type = _ref2$type === void 0 ? 'overlays' : _ref2$type,
-          layerInfo = _ref2.layerInfo,
-          _ref2$sendToMap = _ref2.sendToMap,
-          sendToMap = _ref2$sendToMap === void 0 ? true : _ref2$sendToMap;
+    value: function _addLayerToMap(_ref) {
+      var layer = _ref.layer,
+          _ref$type = _ref.type,
+          type = _ref$type === void 0 ? 'overlays' : _ref$type,
+          layerInfo = _ref.layerInfo,
+          _ref$sendToMap = _ref.sendToMap,
+          sendToMap = _ref$sendToMap === void 0 ? true : _ref$sendToMap;
       var visible = layerInfo.visible,
           layerID = layerInfo.layerID,
           name = layerInfo.name,
@@ -2329,11 +2320,11 @@ function (_L$Evented) {
     }
   }, {
     key: "_getFeaturesFromHosted",
-    value: function _getFeaturesFromHosted(_ref3) {
-      var layer = _ref3.layer,
-          index = _ref3.index,
-          len = _ref3.len,
-          _taskID = _ref3._taskID;
+    value: function _getFeaturesFromHosted(_ref2) {
+      var layer = _ref2.layer,
+          index = _ref2.index,
+          len = _ref2.len,
+          _taskID = _ref2._taskID;
       var dataSource = layer.dataSource,
           layerType = layer.layerType;
       var serverId = dataSource ? dataSource.serverId : layer.serverId;
@@ -2365,13 +2356,13 @@ function (_L$Evented) {
     }
   }, {
     key: "_getDataFromHosted",
-    value: function _getDataFromHosted(_ref4) {
+    value: function _getDataFromHosted(_ref3) {
       var _this10 = this;
 
-      var layer = _ref4.layer,
-          serverId = _ref4.serverId,
-          len = _ref4.len,
-          index = _ref4.index;
+      var layer = _ref3.layer,
+          serverId = _ref3.serverId,
+          len = _ref3.len,
+          index = _ref3.index;
       var isMapService = layer.layerType === 'HOSTED_TILE';
 
       this._checkUploadToRelationship(serverId).then(function (result) {
@@ -2415,12 +2406,12 @@ function (_L$Evented) {
     }
   }, {
     key: "_getFeaturesFromRestData",
-    value: function _getFeaturesFromRestData(_ref5) {
+    value: function _getFeaturesFromRestData(_ref4) {
       var _this11 = this;
 
-      var layer = _ref5.layer,
-          index = _ref5.index,
-          len = _ref5.len;
+      var layer = _ref4.layer,
+          index = _ref4.index,
+          len = _ref4.len;
       var features;
       var dataSource = layer.dataSource;
 
@@ -2446,12 +2437,12 @@ function (_L$Evented) {
     }
   }, {
     key: "_getFeaturesFromRestMap",
-    value: function _getFeaturesFromRestMap(_ref6) {
+    value: function _getFeaturesFromRestMap(_ref5) {
       var _this12 = this;
 
-      var layer = _ref6.layer,
-          index = _ref6.index,
-          len = _ref6.len;
+      var layer = _ref5.layer,
+          index = _ref5.index,
+          len = _ref5.len;
 
       this._queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, function (result) {
         var recordsets = result && result.result.recordsets;
@@ -2493,12 +2484,12 @@ function (_L$Evented) {
     }
   }, {
     key: "_getFeaturesFromDataflow",
-    value: function _getFeaturesFromDataflow(_ref7) {
+    value: function _getFeaturesFromDataflow(_ref6) {
       var _this13 = this;
 
-      var layer = _ref7.layer,
-          index = _ref7.index,
-          len = _ref7.len;
+      var layer = _ref6.layer,
+          index = _ref6.index,
+          len = _ref6.len;
 
       this._getDataflowInfo(layer, function () {
         _this13._addLayer(layer, null, index);
@@ -2508,14 +2499,14 @@ function (_L$Evented) {
     }
   }, {
     key: "_getDataFromIportal",
-    value: function _getDataFromIportal(_ref8) {
+    value: function _getDataFromIportal(_ref7) {
       var _this14 = this;
 
-      var layer = _ref8.layer,
-          serverId = _ref8.serverId,
-          _taskID = _ref8._taskID,
-          len = _ref8.len,
-          index = _ref8.index;
+      var layer = _ref7.layer,
+          serverId = _ref7.serverId,
+          _taskID = _ref7._taskID,
+          len = _ref7.len,
+          index = _ref7.index;
       var features;
       var url = "".concat(this.serverUrl, "web/datas/").concat(serverId, "/content.json?pageSize=9999999&currentPage=1");
 
@@ -3430,8 +3421,8 @@ function (_L$Evented) {
       var epsgCode = this.baseProjection.split(':')[1];
 
       if (parseFloat(epsgCode) <= 0 || !['4326', '3857', '3395'].includes(epsgCode)) {
-        this.fire("crsnotsupport");
-        throw Error("Unsupported coordinate system!");
+        this.fire('crsnotsupport');
+        throw Error('Unsupported coordinate system!');
       }
 
       var bounds = _leaflet.default.bounds([extent.leftBottom.x, extent.leftBottom.y], [extent.rightTop.x, extent.rightTop.y]);
@@ -3496,6 +3487,13 @@ var staticRenderFns = []
 /* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
 
+
+/***/ }),
+
+/***/ "17FK":
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__17FK__;
 
 /***/ }),
 
@@ -4220,7 +4218,7 @@ exports.default = _default2;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WebMap_vue_vue_type_template_id_5aa1f9b2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("Hdpx");
+/* harmony import */ var _WebMap_vue_vue_type_template_id_0d7d2bd8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("w5PQ");
 /* harmony import */ var _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("dZA3");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("KHd+");
@@ -4233,8 +4231,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _WebMap_vue_vue_type_template_id_5aa1f9b2___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _WebMap_vue_vue_type_template_id_5aa1f9b2___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _WebMap_vue_vue_type_template_id_0d7d2bd8___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _WebMap_vue_vue_type_template_id_0d7d2bd8___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -4610,14 +4608,124 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "Bnag":
-/***/ (function(module, exports) {
+/***/ "BFO0":
+/***/ (function(module, exports, __webpack_require__) {
 
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance");
-}
+"use strict";
 
-module.exports = _nonIterableSpread;
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("lwsE"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("W8MJ"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("a1gu"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("Nsbk"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
+
+var _leaflet = _interopRequireDefault(__webpack_require__("hgx0"));
+
+__webpack_require__("17FK");
+
+var _propsBinder = __webpack_require__("hS5c");
+
+var RasterTileLayerViewModel =
+/*#__PURE__*/
+function (_L$Evented) {
+  (0, _inherits2.default)(RasterTileLayerViewModel, _L$Evented);
+
+  function RasterTileLayerViewModel(options) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, RasterTileLayerViewModel);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RasterTileLayerViewModel).call(this));
+    _this.defaultOptions = {
+      minZoom: 0,
+      maxZoom: 22,
+      opacity: 1,
+      tileSize: 256
+    };
+
+    var _loop = function _loop(key) {
+      var setMethodName = 'set' + (0, _propsBinder.capitalizeFirstLetter)(key);
+
+      _this[setMethodName] = function (newVal) {
+        if (this.layer) {
+          this.layer._paramsChanged = true;
+
+          if (key === 'url') {
+            this.layer.setUrl(newVal);
+          } else if (key === 'bounds') {
+            this.layer.options[key] = this._setBounds(newVal);
+          } else {
+            this.layer.options[key] = newVal;
+            this.layer.redraw();
+          }
+        }
+      };
+    };
+
+    for (var key in options) {
+      _loop(key);
+    }
+
+    Object.assign(_this.defaultOptions, options);
+    _this.defaultOptions.bounds && (_this.defaultOptions.bounds = _this._setBounds(_this.defaultOptions.bounds));
+
+    _this._init();
+
+    return _this;
+  }
+
+  (0, _createClass2.default)(RasterTileLayerViewModel, [{
+    key: "_setBounds",
+    value: function _setBounds(bounds) {
+      return _leaflet.default.latLngBounds(_leaflet.default.latLng(bounds[1], bounds[0]), _leaflet.default.latLng(bounds[3], bounds[2]));
+    }
+  }, {
+    key: "_init",
+    value: function _init() {
+      this._addLayer();
+    }
+  }, {
+    key: "_addLayer",
+    value: function _addLayer() {
+      this.layer = _leaflet.default.supermap.tiledMapLayer(this.defaultOptions.url, this.defaultOptions);
+    }
+  }, {
+    key: "getLayer",
+    value: function getLayer() {
+      return this.layer;
+    }
+  }, {
+    key: "addTo",
+    value: function addTo(map) {
+      this.map = map;
+      this.map.addLayer(this.layer);
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      var map = this.map,
+          layer = this.layer;
+
+      if (map && layer && map.hasLayer(this.layer)) {
+        map.removeLayer(layer);
+      }
+    }
+  }]);
+  return RasterTileLayerViewModel;
+}(_leaflet.default.Evented);
+
+exports.default = RasterTileLayerViewModel;
 
 /***/ }),
 
@@ -4688,18 +4796,6 @@ var staticRenderFns = []
 
 /***/ }),
 
-/***/ "C7zH":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("ojXt");
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
 /***/ "Cb6A":
 /***/ (function(module, exports) {
 
@@ -4731,7 +4827,7 @@ exports.setLocale = setLocale;
 exports.initi18n = initi18n;
 exports.default = exports.lang = void 0;
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
+var _objectSpread2 = _interopRequireDefault(__webpack_require__("MVZn"));
 
 var _jsCookie = _interopRequireDefault(__webpack_require__("p46w"));
 
@@ -4743,10 +4839,7 @@ var _lodash = _interopRequireDefault(__webpack_require__("zT9C"));
 
 var _vueI18n = _interopRequireDefault(__webpack_require__("qSUR"));
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+// import Vue from 'vue';
 var dateTimeFormats = {
   en: _en.default.dateTimeFormat,
   zh: _zh.default.dateTimeFormat
@@ -4754,8 +4847,8 @@ var dateTimeFormats = {
 var i18n = {};
 var rooti18n;
 var messages = {
-  en: _objectSpread({}, _en.default),
-  zh: _objectSpread({}, _zh.default)
+  en: (0, _objectSpread2.default)({}, _en.default),
+  zh: (0, _objectSpread2.default)({}, _zh.default)
 };
 
 function getLanguage() {
@@ -4892,17 +4985,6 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "EbDI":
-/***/ (function(module, exports) {
-
-function _iterableToArray(iter) {
-  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
-}
-
-module.exports = _iterableToArray;
-
-/***/ }),
-
 /***/ "ExA7":
 /***/ (function(module, exports) {
 
@@ -4958,6 +5040,36 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_Fk5u__;
 
 /***/ }),
 
+/***/ "G9Sk":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("UJ84");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("KHd+");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(
+  _SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
 /***/ "GoyQ":
 /***/ (function(module, exports) {
 
@@ -4993,6 +5105,120 @@ function isObject(value) {
 
 module.exports = isObject;
 
+
+/***/ }),
+
+/***/ "HVJS":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mapGetter = _interopRequireDefault(__webpack_require__("KP9C"));
+
+var _SmTileLayerViewModel = _interopRequireDefault(__webpack_require__("BFO0"));
+
+var _propsBinder = __webpack_require__("hS5c");
+
+var _TileLayer = _interopRequireDefault(__webpack_require__("T3Jp"));
+
+var _default = {
+  name: 'SmTileLayer',
+  mixins: [_mapGetter.default, _TileLayer.default],
+  props: {
+    layersID: {
+      type: String
+    },
+    redirect: {
+      type: Boolean,
+      default: false
+    },
+    cacheEnabled: {
+      type: Boolean,
+      default: true
+    },
+    clipRegionEnabled: {
+      type: Boolean,
+      default: false
+    },
+    prjCoordSys: {
+      type: Object
+    },
+    overlapDisplayed: {
+      type: Boolean,
+      default: false
+    },
+    overlapDisplayedOptions: {
+      type: String
+    },
+    tileversion: {
+      type: String
+    },
+    serverType: {
+      type: String,
+      default: 'iServer'
+    },
+    tileProxy: {
+      type: String
+    },
+    format: {
+      type: String,
+      default: 'png',
+      validator: function validator(val) {
+        return ['png', 'jpg', 'bmp', 'gif'].indexOf(val) !== -1;
+      }
+    },
+    tileSize: {
+      type: Number,
+      default: 256
+    },
+    url: {
+      type: String
+    },
+    transparent: {
+      type: Boolean,
+      default: true
+    },
+    clipRegion: {
+      type: Object
+    },
+    crs: {
+      type: Object
+    }
+  },
+  created: function created() {
+    var _this = this;
+
+    var _loop = function _loop(key) {
+      var setMethodName = 'set' + (0, _propsBinder.capitalizeFirstLetter)(key);
+
+      if (!_this[setMethodName]) {
+        _this[setMethodName] = function (newValue) {
+          this.viewModel && this.viewModel[setMethodName](newValue);
+        };
+      }
+    };
+
+    for (var key in this.$props) {
+      _loop(key);
+    }
+
+    this.viewModel = new _SmTileLayerViewModel.default(this.$props);
+    this.layer = this.viewModel.getLayer();
+  },
+  loaded: function loaded() {
+    this.viewModel.addTo(this.map);
+  },
+  render: function render() {}
+};
+exports.default = _default;
 
 /***/ }),
 
@@ -5065,23 +5291,6 @@ var _default = {
   }
 };
 exports.default = _default;
-
-/***/ }),
-
-/***/ "Hdpx":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/leaflet/web-map/WebMap.vue?vue&type=template&id=5aa1f9b2&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/leaflet/web-map/WebMap.vue?vue&type=template&id=5aa1f9b2&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
 
 /***/ }),
 
@@ -5195,23 +5404,6 @@ var _default = {
   }
 };
 exports.default = _default;
-
-/***/ }),
-
-/***/ "Ijbi":
-/***/ (function(module, exports) {
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  }
-}
-
-module.exports = _arrayWithoutHoles;
 
 /***/ }),
 
@@ -5501,6 +5693,50 @@ __decorate([(0, _vuePropertyDecorator.Watch)('mapTarget')], MapGetter.prototype,
 
 MapGetter = __decorate([_vuePropertyDecorator.Component], MapGetter);
 var _default = MapGetter;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "KS6f":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _propsBinder = __webpack_require__("hS5c");
+
+var _default = {
+  props: {
+    pane: {
+      type: String,
+      default: 'overlayPane'
+    },
+    name: {
+      type: String,
+      default: undefined
+    },
+    attribution: {
+      type: String,
+      default: null
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    if (this.layer) {
+      this.layer.on('add', function (e) {
+        _this.$emit('load', e);
+      });
+    }
+
+    (0, _propsBinder.propsBinder)(this, this.$props);
+  }
+};
 exports.default = _default;
 
 /***/ }),
@@ -5935,6 +6171,34 @@ module.exports = root;
 
 /***/ }),
 
+/***/ "MVZn":
+/***/ (function(module, exports, __webpack_require__) {
+
+var defineProperty = __webpack_require__("lSNA");
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    var ownKeys = Object.keys(source);
+
+    if (typeof Object.getOwnPropertySymbols === 'function') {
+      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+      }));
+    }
+
+    ownKeys.forEach(function (key) {
+      defineProperty(target, key, source[key]);
+    });
+  }
+
+  return target;
+}
+
+module.exports = _objectSpread;
+
+/***/ }),
+
 /***/ "NGA9":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6057,132 +6321,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "OLmv":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("TqRt");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("lwsE"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("W8MJ"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("a1gu"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("Nsbk"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
-
-var _leaflet = _interopRequireDefault(__webpack_require__("hgx0"));
-
-__webpack_require__("oAb8");
-
-var RasterTileLayerViewModel =
-/*#__PURE__*/
-function (_L$Evented) {
-  (0, _inherits2.default)(RasterTileLayerViewModel, _L$Evented);
-
-  function RasterTileLayerViewModel(map, rasterLayerOptions) {
-    var _this;
-
-    (0, _classCallCheck2.default)(this, RasterTileLayerViewModel);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RasterTileLayerViewModel).call(this));
-    _this.map = map;
-    var layerId = rasterLayerOptions.layerId,
-        tileSize = rasterLayerOptions.tileSize,
-        mapUrl = rasterLayerOptions.mapUrl,
-        bounds = rasterLayerOptions.bounds,
-        _rasterLayerOptions$m = rasterLayerOptions.minZoom,
-        minZoom = _rasterLayerOptions$m === void 0 ? 0 : _rasterLayerOptions$m,
-        _rasterLayerOptions$m2 = rasterLayerOptions.maxZoom,
-        maxZoom = _rasterLayerOptions$m2 === void 0 ? 22 : _rasterLayerOptions$m2,
-        attribution = rasterLayerOptions.attribution,
-        _rasterLayerOptions$v = rasterLayerOptions.visible,
-        visible = _rasterLayerOptions$v === void 0 ? true : _rasterLayerOptions$v,
-        _rasterLayerOptions$o = rasterLayerOptions.opacity,
-        opacity = _rasterLayerOptions$o === void 0 ? 1 : _rasterLayerOptions$o;
-    _this.layerId = layerId;
-    _this.tileSize = tileSize;
-    _this.mapUrl = mapUrl;
-    _this.bounds = bounds;
-    _this.minZoom = minZoom;
-    _this.maxZoom = maxZoom;
-    _this.attribution = attribution;
-    _this.opacity = opacity;
-    _this.visibility = visible;
-    _this.rasterSource = '';
-
-    _this._init();
-
-    return _this;
-  }
-
-  (0, _createClass2.default)(RasterTileLayerViewModel, [{
-    key: "_init",
-    value: function _init() {
-      this._addRestMapLayer();
-    }
-  }, {
-    key: "_addRestMapLayer",
-    value: function _addRestMapLayer() {
-      var _this2 = this;
-
-      var service = new _leaflet.default.supermap.mapService(this.mapUrl);
-      service.getMapInfo(function (mapObj) {
-        if (!_this2.layerId) {
-          _this2.layerId = mapObj.result.name;
-        }
-
-        if (!_this2.tileSize && mapObj.result.viewer) {
-          _this2.tileSize = mapObj.result.viewer.width;
-        }
-
-        _this2.rasterSource = 'iServer';
-
-        _this2._addLayer();
-      });
-    }
-  }, {
-    key: "_addLayer",
-    value: function _addLayer() {
-      this.layer = _leaflet.default.supermap.tiledMapLayer(this.mapUrl, {
-        layerId: this.layerId,
-        transparent: this.visibility,
-        opacity: this.opacity,
-        tileSize: this.tileSize || 256,
-        serverType: this.rasterSource,
-        minZoom: this.minZoom,
-        maxZoom: this.maxZoom,
-        bounds: this.bounds,
-        attribution: this.attribution
-      });
-      this.map.addLayer(this.layer);
-    }
-  }, {
-    key: "clear",
-    value: function clear() {
-      var map = this.map,
-          layer = this.layer;
-
-      if (map && layer && map.hasLayer(this.layer)) {
-        map.removeLayer(layer);
-      }
-    }
-  }]);
-  return RasterTileLayerViewModel;
-}(_leaflet.default.Evented);
-
-exports.default = RasterTileLayerViewModel;
-
-/***/ }),
-
 /***/ "ORi+":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6271,7 +6409,8 @@ var _default = {
     loadingTip: '地图加载中...',
     crsNotSupport: '不支持当前地图的坐标系！',
     TileMatrixSetNotSuppport: '不支持传入的 TileMatrixSet！',
-    getLayerInfoFailed: '获取图层信息失败！'
+    getLayerInfoFailed: '获取图层信息失败！',
+    crsnotsupport: '不支持的坐标系！'
   },
   legend: {
     themeField: '专题字段',
@@ -7632,23 +7771,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "RIqP":
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayWithoutHoles = __webpack_require__("Ijbi");
-
-var iterableToArray = __webpack_require__("EbDI");
-
-var nonIterableSpread = __webpack_require__("Bnag");
-
-function _toConsumableArray(arr) {
-  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
-}
-
-module.exports = _toConsumableArray;
-
-/***/ }),
-
 /***/ "SPBs":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7881,6 +8003,41 @@ module.exports = {
 
 /***/ }),
 
+/***/ "T3Jp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _GridLayer = _interopRequireDefault(__webpack_require__("mkpX"));
+
+var _default = {
+  mixins: [_GridLayer.default],
+  props: {
+    tms: {
+      type: Boolean,
+      default: false
+    },
+    detectRetina: {
+      type: Boolean,
+      default: false
+    }
+  },
+  render: function render() {
+    return null;
+  }
+};
+exports.default = _default;
+
+/***/ }),
+
 /***/ "TTB2":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8102,6 +8259,18 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
+/***/ "UJ84":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("HVJS");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_SmTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "UYA6":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8269,7 +8438,8 @@ var _default = {
     loadingTip: 'Map is loading...',
     crsNotSupport: 'The coordinate system of the current map is not supported!',
     TileMatrixSetNotSuppport: 'Incoming TileMatrixSet is not supported!',
-    getLayerInfoFailed: 'Failed to get layer information!'
+    getLayerInfoFailed: 'Failed to get layer information!',
+    crsnotsupport: 'Unsupported coordinate system!'
   },
   legend: {
     themeField: 'Thematic Field',
@@ -11018,7 +11188,7 @@ vue_class_component_esm_Component.registerHooks = function registerHooks(keys) {
 /* concated harmony reexport Component */__webpack_require__.d(__webpack_exports__, "Component", function() { return vue_class_component_esm; });
 /* concated harmony reexport Vue */__webpack_require__.d(__webpack_exports__, "Vue", function() { return external_root_Vue_commonjs_vue_commonjs2_vue_amd_vue_default.a; });
 /* concated harmony reexport Mixins */__webpack_require__.d(__webpack_exports__, "Mixins", function() { return mixins; });
-/** vue-property-decorator verson 8.2.2 MIT LICENSE copyright 2019 kaorun343 */
+/** vue-property-decorator verson 8.2.1 MIT LICENSE copyright 2019 kaorun343 */
 /// <reference types='reflect-metadata'/>
 
 
@@ -14425,36 +14595,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "f+wy":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("C7zH");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("KHd+");
-var render, staticRenderFns
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(
-  _RasterTileLayer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
 /***/ "gQum":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14651,6 +14791,9 @@ function (_Mixins) {
 
         _this2.$message.error(_this2.$t('webmap.getLayerInfoFailed'));
       });
+      this.viewModel.on('crsnotsupport', function () {
+        _this2.$message.error(_this2.$t('webmap.crsnotsupport'));
+      });
     }
   }, {
     key: "destory",
@@ -14717,6 +14860,49 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_hQXD__;
+
+/***/ }),
+
+/***/ "hS5c":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.propsBinder = exports.capitalizeFirstLetter = void 0;
+
+var capitalizeFirstLetter = function capitalizeFirstLetter(string) {
+  if (!string || typeof string.charAt !== 'function') {
+    return string;
+  }
+
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+exports.capitalizeFirstLetter = capitalizeFirstLetter;
+
+var propsBinder = function propsBinder(vueElement, props) {
+  var _loop = function _loop(key) {
+    var setMethodName = 'set' + capitalizeFirstLetter(key);
+
+    if (vueElement[setMethodName]) {
+      vueElement.$watch(key, function (newVal) {
+        vueElement[setMethodName](newVal);
+      }, {
+        deep: true
+      });
+    }
+  };
+
+  for (var key in props) {
+    _loop(key);
+  }
+};
+
+exports.propsBinder = propsBinder;
 
 /***/ }),
 
@@ -14909,10 +15095,10 @@ Object.defineProperty(exports, "WebMap", {
     return _WebMap.default;
   }
 });
-Object.defineProperty(exports, "RasterTileLayer", {
+Object.defineProperty(exports, "SmTileLayer", {
   enumerable: true,
   get: function get() {
-    return _RasterTileLayer.default;
+    return _SmTileLayer.default;
   }
 });
 
@@ -14938,7 +15124,7 @@ var _Iframe = _interopRequireDefault(__webpack_require__("81VL"));
 
 var _WebMap = _interopRequireDefault(__webpack_require__("8Wwx"));
 
-var _RasterTileLayer = _interopRequireDefault(__webpack_require__("f+wy"));
+var _SmTileLayer = _interopRequireDefault(__webpack_require__("G9Sk"));
 
 /***/ }),
 
@@ -16083,6 +16269,56 @@ try {
 
 /***/ }),
 
+/***/ "mkpX":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Layer = _interopRequireDefault(__webpack_require__("KS6f"));
+
+var _default = {
+  mixins: [_Layer.default],
+  props: {
+    pane: {
+      type: String,
+      default: 'tilePane'
+    },
+    opacity: {
+      type: Number,
+      default: 1,
+      validator: function validator(opacity) {
+        return opacity >= 0 && opacity <= 1;
+      }
+    },
+    bounds: {
+      type: Array
+    },
+    zIndex: {
+      type: Number,
+      default: 1
+    },
+    tileSize: {
+      type: Number,
+      default: 256
+    },
+    noWrap: {
+      type: Boolean,
+      default: false
+    }
+  }
+};
+exports.default = _default;
+
+/***/ }),
+
 /***/ "n4aT":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16149,67 +16385,6 @@ var staticRenderFns = []
 
 module.exports = __webpack_require__("mLhc");
 
-
-/***/ }),
-
-/***/ "oAb8":
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_oAb8__;
-
-/***/ }),
-
-/***/ "ojXt":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("TqRt");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _mapGetter = _interopRequireDefault(__webpack_require__("KP9C"));
-
-var _RasterTileLayerViewModel = _interopRequireDefault(__webpack_require__("OLmv"));
-
-var _default = {
-  name: 'SmRasterTileLayer',
-  mixins: [_mapGetter.default],
-  props: {
-    tileSize: {
-      type: Number
-    },
-    mapUrl: {
-      type: String
-    },
-    bounds: {
-      type: Array
-    },
-    attribution: {
-      type: String
-    },
-    visible: {
-      type: Boolean,
-      default: true
-    },
-    opacity: {
-      type: Number,
-      default: 1,
-      validator: function validator(opacity) {
-        return opacity >= 0 && opacity <= 1;
-      }
-    }
-  },
-  loaded: function loaded() {
-    this.viewModel = new _RasterTileLayerViewModel.default(this.map, this.$props);
-  },
-  render: function render() {}
-};
-exports.default = _default;
 
 /***/ }),
 
@@ -16475,14 +16650,14 @@ exports.default = _default2;
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * JavaScript Cookie v2.2.1
+ * JavaScript Cookie v2.2.0
  * https://github.com/js-cookie/js-cookie
  *
  * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
  * Released under the MIT license
  */
 ;(function (factory) {
-	var registeredInModuleLoader;
+	var registeredInModuleLoader = false;
 	if (true) {
 		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
@@ -16516,123 +16691,125 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		return result;
 	}
 
-	function decode (s) {
-		return s.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
-	}
-
 	function init (converter) {
-		function api() {}
-
-		function set (key, value, attributes) {
+		function api (key, value, attributes) {
+			var result;
 			if (typeof document === 'undefined') {
 				return;
 			}
 
-			attributes = extend({
-				path: '/'
-			}, api.defaults, attributes);
+			// Write
 
-			if (typeof attributes.expires === 'number') {
-				attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
-			}
+			if (arguments.length > 1) {
+				attributes = extend({
+					path: '/'
+				}, api.defaults, attributes);
 
-			// We're using "expires" because "max-age" is not supported by IE
-			attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
-
-			try {
-				var result = JSON.stringify(value);
-				if (/^[\{\[]/.test(result)) {
-					value = result;
-				}
-			} catch (e) {}
-
-			value = converter.write ?
-				converter.write(value, key) :
-				encodeURIComponent(String(value))
-					.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
-
-			key = encodeURIComponent(String(key))
-				.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent)
-				.replace(/[\(\)]/g, escape);
-
-			var stringifiedAttributes = '';
-			for (var attributeName in attributes) {
-				if (!attributes[attributeName]) {
-					continue;
-				}
-				stringifiedAttributes += '; ' + attributeName;
-				if (attributes[attributeName] === true) {
-					continue;
+				if (typeof attributes.expires === 'number') {
+					var expires = new Date();
+					expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
+					attributes.expires = expires;
 				}
 
-				// Considers RFC 6265 section 5.2:
-				// ...
-				// 3.  If the remaining unparsed-attributes contains a %x3B (";")
-				//     character:
-				// Consume the characters of the unparsed-attributes up to,
-				// not including, the first %x3B (";") character.
-				// ...
-				stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+				// We're using "expires" because "max-age" is not supported by IE
+				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+				try {
+					result = JSON.stringify(value);
+					if (/^[\{\[]/.test(result)) {
+						value = result;
+					}
+				} catch (e) {}
+
+				if (!converter.write) {
+					value = encodeURIComponent(String(value))
+						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+				} else {
+					value = converter.write(value, key);
+				}
+
+				key = encodeURIComponent(String(key));
+				key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
+				key = key.replace(/[\(\)]/g, escape);
+
+				var stringifiedAttributes = '';
+
+				for (var attributeName in attributes) {
+					if (!attributes[attributeName]) {
+						continue;
+					}
+					stringifiedAttributes += '; ' + attributeName;
+					if (attributes[attributeName] === true) {
+						continue;
+					}
+					stringifiedAttributes += '=' + attributes[attributeName];
+				}
+				return (document.cookie = key + '=' + value + stringifiedAttributes);
 			}
 
-			return (document.cookie = key + '=' + value + stringifiedAttributes);
-		}
+			// Read
 
-		function get (key, json) {
-			if (typeof document === 'undefined') {
-				return;
+			if (!key) {
+				result = {};
 			}
 
-			var jar = {};
 			// To prevent the for loop in the first place assign an empty array
-			// in case there are no cookies at all.
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling "get()"
 			var cookies = document.cookie ? document.cookie.split('; ') : [];
+			var rdecode = /(%[0-9A-Z]{2})+/g;
 			var i = 0;
 
 			for (; i < cookies.length; i++) {
 				var parts = cookies[i].split('=');
 				var cookie = parts.slice(1).join('=');
 
-				if (!json && cookie.charAt(0) === '"') {
+				if (!this.json && cookie.charAt(0) === '"') {
 					cookie = cookie.slice(1, -1);
 				}
 
 				try {
-					var name = decode(parts[0]);
-					cookie = (converter.read || converter)(cookie, name) ||
-						decode(cookie);
+					var name = parts[0].replace(rdecode, decodeURIComponent);
+					cookie = converter.read ?
+						converter.read(cookie, name) : converter(cookie, name) ||
+						cookie.replace(rdecode, decodeURIComponent);
 
-					if (json) {
+					if (this.json) {
 						try {
 							cookie = JSON.parse(cookie);
 						} catch (e) {}
 					}
 
-					jar[name] = cookie;
-
 					if (key === name) {
+						result = cookie;
 						break;
+					}
+
+					if (!key) {
+						result[name] = cookie;
 					}
 				} catch (e) {}
 			}
 
-			return key ? jar[key] : jar;
+			return result;
 		}
 
-		api.set = set;
+		api.set = api;
 		api.get = function (key) {
-			return get(key, false /* read as raw */);
+			return api.call(api, key);
 		};
-		api.getJSON = function (key) {
-			return get(key, true /* read as json */);
+		api.getJSON = function () {
+			return api.apply({
+				json: true
+			}, [].slice.call(arguments));
 		};
+		api.defaults = {};
+
 		api.remove = function (key, attributes) {
-			set(key, '', extend(attributes, {
+			api(key, '', extend(attributes, {
 				expires: -1
 			}));
 		};
-
-		api.defaults = {};
 
 		api.withConverter = init;
 
@@ -17082,7 +17259,7 @@ exports.default = _default;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /*!
- * vue-i18n v8.14.0 
+ * vue-i18n v8.11.2 
  * (c) 2019 kazuya kawaguchi
  * Released under the MIT License.
  */
@@ -17321,7 +17498,6 @@ var mixin = {
           options.i18n.root = this.$root;
           options.i18n.formatter = this.$root.$i18n.formatter;
           options.i18n.fallbackLocale = this.$root.$i18n.fallbackLocale;
-          options.i18n.formatFallbackMessages = this.$root.$i18n.formatFallbackMessages;
           options.i18n.silentTranslationWarn = this.$root.$i18n.silentTranslationWarn;
           options.i18n.silentFallbackWarn = this.$root.$i18n.silentFallbackWarn;
           options.i18n.pluralizationRules = this.$root.$i18n.pluralizationRules;
@@ -17339,12 +17515,6 @@ var mixin = {
           } catch (e) {
             if (false) {}
           }
-        }
-
-        var ref = options.i18n;
-        var sharedMessages = ref.sharedMessages;
-        if (sharedMessages && isPlainObject(sharedMessages)) {
-          options.i18n.messages = merge(options.i18n.messages, sharedMessages);
         }
 
         this._i18n = new VueI18n(options.i18n);
@@ -17422,7 +17592,8 @@ var interpolationComponent = {
   functional: true,
   props: {
     tag: {
-      type: String
+      type: String,
+      default: 'span'
     },
     path: {
       type: String,
@@ -17436,78 +17607,61 @@ var interpolationComponent = {
     }
   },
   render: function render (h, ref) {
-    var data = ref.data;
-    var parent = ref.parent;
     var props = ref.props;
-    var slots = ref.slots;
+    var data = ref.data;
+    var children = ref.children;
+    var parent = ref.parent;
 
-    var $i18n = parent.$i18n;
-    if (!$i18n) {
+    var i18n = parent.$i18n;
+
+    children = (children || []).filter(function (child) {
+      return child.tag || (child.text = child.text.trim())
+    });
+
+    if (!i18n) {
       if (false) {}
-      return
+      return children
     }
 
     var path = props.path;
     var locale = props.locale;
-    var places = props.places;
-    var params = slots();
-    var children = $i18n.i(
-      path,
-      locale,
-      onlyHasDefaultPlace(params) || places
-        ? useLegacyPlaces(params.default, places)
-        : params
-    );
 
-    var tag = props.tag || 'span';
-    return tag ? h(tag, data, children) : children
+    var params = {};
+    var places = props.places || {};
+
+    var hasPlaces = Array.isArray(places)
+      ? places.length > 0
+      : Object.keys(places).length > 0;
+
+    var everyPlace = children.every(function (child) {
+      if (child.data && child.data.attrs) {
+        var place = child.data.attrs.place;
+        return (typeof place !== 'undefined') && place !== ''
+      }
+    });
+
+    if (false) {}
+
+    if (Array.isArray(places)) {
+      places.forEach(function (el, i) {
+        params[i] = el;
+      });
+    } else {
+      Object.keys(places).forEach(function (key) {
+        params[key] = places[key];
+      });
+    }
+
+    children.forEach(function (child, i) {
+      var key = everyPlace
+        ? ("" + (child.data.attrs.place))
+        : ("" + i);
+      params[key] = child;
+    });
+
+    return h(props.tag, data, i18n.i(path, locale, params))
   }
 };
-
-function onlyHasDefaultPlace (params) {
-  var prop;
-  for (prop in params) {
-    if (prop !== 'default') { return false }
-  }
-  return Boolean(prop)
-}
-
-function useLegacyPlaces (children, places) {
-  var params = places ? createParamsFromPlaces(places) : {};
-  if (!children) { return params }
-
-  var everyPlace = children.every(vnodeHasPlaceAttribute);
-  if (false) {}
-
-  return children.reduce(
-    everyPlace ? assignChildPlace : assignChildIndex,
-    params
-  )
-}
-
-function createParamsFromPlaces (places) {
-  if (false) {}
-
-  return Array.isArray(places)
-    ? places.reduce(assignChildIndex, {})
-    : Object.assign({}, places)
-}
-
-function assignChildPlace (params, child) {
-  if (child.data && child.data.attrs && child.data.attrs.place) {
-    params[child.data.attrs.place] = child;
-  }
-  return params
-}
-
-function assignChildIndex (params, child, index) {
-  params[index] = child;
-  return params
-}
-
-function vnodeHasPlaceAttribute (vnode) {
-  return Boolean(vnode.data && vnode.data.attrs && vnode.data.attrs.place)
-}
 
 /*  */
 
@@ -18165,12 +18319,9 @@ var VueI18n = function VueI18n (options) {
   this._fallbackRoot = options.fallbackRoot === undefined
     ? true
     : !!options.fallbackRoot;
-  this._formatFallbackMessages = options.formatFallbackMessages === undefined
-    ? false
-    : !!options.formatFallbackMessages;
   this._silentTranslationWarn = options.silentTranslationWarn === undefined
     ? false
-    : options.silentTranslationWarn;
+    : !!options.silentTranslationWarn;
   this._silentFallbackWarn = options.silentFallbackWarn === undefined
     ? false
     : !!options.silentFallbackWarn;
@@ -18207,7 +18358,7 @@ var VueI18n = function VueI18n (options) {
   });
 };
 
-var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },availableLocales: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },formatFallbackMessages: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true },warnHtmlInMessage: { configurable: true } };
+var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },availableLocales: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true },silentFallbackWarn: { configurable: true },preserveDirectiveContent: { configurable: true },warnHtmlInMessage: { configurable: true } };
 
 VueI18n.prototype._checkLocaleMessage = function _checkLocaleMessage (locale, level, message) {
   var paths = [];
@@ -18316,9 +18467,6 @@ prototypeAccessors.fallbackLocale.set = function (locale) {
   this._vm.$set(this._vm, 'fallbackLocale', locale);
 };
 
-prototypeAccessors.formatFallbackMessages.get = function () { return this._formatFallbackMessages };
-prototypeAccessors.formatFallbackMessages.set = function (fallback) { this._formatFallbackMessages = fallback; };
-
 prototypeAccessors.missing.get = function () { return this._missing };
 prototypeAccessors.missing.set = function (handler) { this._missing = handler; };
 
@@ -18362,33 +18510,15 @@ VueI18n.prototype._warnDefault = function _warnDefault (locale, key, result, vm,
   } else {
     if (false) {}
   }
-
-  if (this._formatFallbackMessages) {
-    var parsedArgs = parseArgs.apply(void 0, values);
-    return this._render(key, 'string', parsedArgs.params, key)
-  } else {
-    return key
-  }
+  return key
 };
 
 VueI18n.prototype._isFallbackRoot = function _isFallbackRoot (val) {
   return !val && !isNull(this._root) && this._fallbackRoot
 };
 
-VueI18n.prototype._isSilentFallbackWarn = function _isSilentFallbackWarn (key) {
-  return this._silentFallbackWarn instanceof RegExp
-    ? this._silentFallbackWarn.test(key)
-    : this._silentFallbackWarn
-};
-
-VueI18n.prototype._isSilentFallback = function _isSilentFallback (locale, key) {
-  return this._isSilentFallbackWarn(key) && (this._isFallbackRoot() || locale !== this.fallbackLocale)
-};
-
-VueI18n.prototype._isSilentTranslationWarn = function _isSilentTranslationWarn (key) {
-  return this._silentTranslationWarn instanceof RegExp
-    ? this._silentTranslationWarn.test(key)
-    : this._silentTranslationWarn
+VueI18n.prototype._isSilentFallback = function _isSilentFallback (locale) {
+  return this._silentFallbackWarn && (this._isFallbackRoot() || locale !== this.fallbackLocale)
 };
 
 VueI18n.prototype._interpolate = function _interpolate (
@@ -18946,7 +19076,7 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = install;
-VueI18n.version = '8.14.0';
+VueI18n.version = '8.11.2';
 
 /* harmony default export */ __webpack_exports__["default"] = (VueI18n);
 
@@ -20244,7 +20374,6 @@ function debounce(func, wait, options) {
       }
       if (maxing) {
         // Handle invocations in a tight loop.
-        clearTimeout(timerId);
         timerId = setTimeout(timerExpired, wait);
         return invokeFunc(lastCallTime);
       }
@@ -20842,6 +20971,23 @@ function (_Events) {
 }(_Events2.Events);
 
 exports.default = RestService;
+
+/***/ }),
+
+/***/ "w5PQ":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/leaflet/web-map/WebMap.vue?vue&type=template&id=0d7d2bd8&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/leaflet/web-map/WebMap.vue?vue&type=template&id=0d7d2bd8&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
 
 /***/ }),
 
