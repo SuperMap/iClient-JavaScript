@@ -25,6 +25,21 @@ describe('TransferSolutionService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var transferSolutionService = new TransferSolutionService(trafficTransferURL, { headers: myHeaders });
+        expect(transferSolutionService).not.toBeNull();
+        expect(transferSolutionService.headers).not.toBeNull();
+        transferSolutionService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var transferSolutionService = new TransferSolutionService(trafficTransferURL, { crossOrigin: false });
+        expect(transferSolutionService).not.toBeNull();
+        expect(transferSolutionService.crossOrigin).toBeFalsy();
+        transferSolutionService.destroy();
+    });
+
     it('processAsync_noParams', (done) => {
         var service = initTransferSolutionService();
         service.processAsync();

@@ -50,6 +50,12 @@ var exampleConfig = {
                     thumbnail: "l_tiledMapLayerProj4.png",
                     fileName: "01_tiledMapLayerProj4"
                 }, {
+                    name: "地图-栅格分析",
+                    name_en: "map rasterFunction",
+                    version: "10.0.0",
+                    thumbnail: "l_tiledMapLayerRasterfunction.png",
+                    fileName: "01_tiledMapLayer_rasterfunction"
+                }, {
                     name: "地图信息",
                     name_en: "map query service",
                     thumbnail: "l_mapService.png",
@@ -475,6 +481,46 @@ var exampleConfig = {
                     thumbnail: "l_iPortalQueryMaps.png",
                     fileName: "iPortalQueryMaps"
                 }]
+            },
+            "ip_queryservices": {
+                name: "服务列表",
+                name_en: "Web service list",
+                content: [{
+                    name: "服务列表",
+                    name_en: "web service list",
+                    thumbnail: "l_iPortalQueryMaps.png",
+                    fileName: "iPortalQueryServices"
+                }]
+            },
+            "ip_querymapdashboards": {
+                name: "大屏列表",
+                name_en: "Web mapdashboard list",
+                content: [{
+                    name: "大屏列表",
+                    name_en: "web mapdashboard list",
+                    thumbnail: "l_iPortalQueryMaps.png",
+                    fileName: "iPortalQueryMapdashboards"
+                }]
+            },
+            "ip_queryscenes": {
+                name: "场景列表",
+                name_en: "Web scene list",
+                content: [{
+                    name: "场景列表",
+                    name_en: "web scene list",
+                    thumbnail: "l_iPortalQueryMaps.png",
+                    fileName: "iPortalQueryScenes"
+                }]
+            },
+            "ip_queryinsights": {
+                name: "洞察列表",
+                name_en: "Web insight list",
+                content: [{
+                    name: "洞察列表",
+                    name_en: "web insight list",
+                    thumbnail: "l_iPortalQueryMaps.png",
+                    fileName: "iPortalQueryInsights"
+                }]
             }
         }
     },
@@ -880,19 +926,19 @@ var exampleConfig = {
                         name_en: "natural style",
                         thumbnail: "l_tileVectorLayer_natural.png",
                         fileName: "vectorTileLayerNatural"
-                    }, {
-                        name: "默认风格(MVT)",
-                        name_en: "normal(MVT)",
-                        thumbnail: "l_tileVectorLayer_normal.png",
-                        fileName: "vectorTileLayerMVT"
-
-                    }, {
-                        name: "默认风格(MVT 4326)",
-                        name_en: "normal(MVT 4326)",
-                        thumbnail: "l_tileVectorLayer_mvt4326.png",
-                        fileName: "vectorTileLayerMVT_4326"
-
                     }
+                    // , {
+                    //     name: "默认风格(MVT)",
+                    //     name_en: "normal(MVT)",
+                    //     thumbnail: "l_tileVectorLayer_normal.png",
+                    //     fileName: "vectorTileLayerMVT"
+
+                    // }, {
+                    //     name: "默认风格(MVT 4326)",
+                    //     name_en: "normal(MVT 4326)",
+                    //     thumbnail: "l_tileVectorLayer_mvt4326.png",
+                    //     fileName: "vectorTileLayerMVT_4326"
+                    // }
                 ]
             },
             "themeLayer": {

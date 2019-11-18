@@ -1,0 +1,195 @@
+<!--********************************************************************
+* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        ul, li {
+            list-style: none
+        }
+        .page-content-thumbnail {
+            width: 92%;
+            margin: 0 auto;
+        }
+        .page-head {
+            padding-top: 25px;
+            border-bottom: .01rem solid #d9d9d9;
+            padding-left: 25px;
+            margin: 13px 0;
+        }
+        .page-head h4 {
+            font-size: 16px;
+            border-bottom: 2px solid #127fdc;
+            margin-top: 6px;
+            display: inline-block;
+            text-shadow: #acacac 0 0 1px;
+            letter-spacing: .8px;
+            margin-bottom: 0;
+            padding-bottom: 13px;
+        }
+        .page-body {
+            padding-left: 25px;
+            font-family: MicrosoftYaHei;
+            letter-spacing: .7px;
+            word-wrap: break-word;
+        }
+        #detail {
+            padding: 10px 0 80px 10px;
+            min-width: 271px;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
+        <div class="container" style="margin-bottom: 100px">
+            <div class="page-header">
+                <h4 data-i18n="resources.title_iPortalQueryMapdashboards2"></h4>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--所有Mapdashboards的承载DIV-->
+                        <div class="row" id="mapdashboard">
+                            <!--单个Mapdashboard数据的可视化承载DIV 添加在此位置中-->
+                        </div>
+                        <!-- <div class="row" id="operate">
+                            <button id="operate-btn" onclick="mapdashboardEdit()" data-i18n="resources.text_input_value_modify"></button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+<script type="text/javascript" include="jquery,bootstrap-css,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script>
+    let mapdashboardId = location.search.split("=")[1];
+    let iportalUrl = "http://support.supermap.com.cn:8092";
+    var iPortal = new SuperMap.iPortal(iportalUrl);
+    
+    // 全局变量，单个大屏类
+    var mapdashboard = new SuperMap.iPortalMapdashboard(iportalUrl);
+    
+    $(document).ready(() => {
+        // 加载完DOM后，开始大屏数据查询并初始化页面
+        iPortal.queryMapdashboard(mapdashboardId).then((res)=>{
+            mapdashboard = res;
+            initPage();
+        });
+    })
+
+    // 初始化页面
+    function initPage() {
+        //解析时间戳，可根据需求自行处理
+        let createTime = new Date(parseInt(mapdashboard.createTime)).toLocaleString();
+        let viewUrl = iportalUrl + "/apps/mapdashboard/" + mapdashboardId;
+        $("#mapdashboard").children().remove();
+        let mapdashboardDOM = $("<div class='detailContent'>"+
+                                    "<div class='page-content-thumbnail'>"+
+                                        "<div class='thumbnail-div'>"+
+                                            "<img class='thumbnail-img' src='"+mapdashboard.thumbnail+"'>"+
+                                        "</div>"+
+                                    "</div>"+
+                                    "<div class='page-head' style='padding-bottom:0px'>"+
+                                        "<h4>基本信息</h4>"+
+                                    "</div>"+
+                                    "<div class='page-body'>"+
+                                        "<div>名称：<span id='name'>"+mapdashboard.name+"</span></div>"+
+                                        "<div>所有者："+mapdashboard.nickname+"</div>"+
+                                        "<div>浏览地址：<a href="+viewUrl+" target='_blank'>"+viewUrl+"</a></div>"+
+                                        "<div>标签：<span id='tags'>" + mapdashboard.tags.toString() + "</span></div>"+
+                                        "<div>描述：<span id='description'>"+mapdashboard.description+"</span></div>"+
+                                        "<div>创建于："+createTime+"</div>"+
+                                        "<div>访问数："+mapdashboard.visitCount+"</div>"+
+                                    "</div>"+
+                                "</div>");
+        $("#mapdashboard").append(mapdashboardDOM);
+    }
+    
+    // 修改大屏信息
+    function mapdashboardEdit() {
+        $(".thumbnail-div").append("<input id='resThumbnail' type='file' name='file' class='hidden-file' onchange='imageChange()' />")
+        $("#name")[0].outerHTML = "<input type='text' id='name' value='" + mapdashboard.name + "' />";
+        $("#tags")[0].outerHTML = "<input type='text' id='tags' value='" + mapdashboard.tags + "' />";
+        $("#description")[0].outerHTML = "<input type='text' id='description' value=''" + mapdashboard.description + "' />";
+        $("#operate-btn")[0].outerHTML = "<button id='operate-btn' onclick='mapdashboardSave()'>" + resources.btn_save + "</button>";
+    }
+
+    // 更新大屏信息
+    function mapdashboardSave() {
+        mapdashboard.name = $("#name")[0].value;
+        mapdashboard.tags = [...new Set($("#tags")[0].value.replace(/，/g,",").split(","))]; // 所有中文逗号替换为英文逗号，并去重
+        mapdashboard.description = $("#description")[0].value;
+        mapdashboard.update().then(result => {
+            if(result.succeed) {
+                initPage();
+                $("#resThumbnail").remove();
+                $("#operate-btn")[0].outerHTML = "<button id='operate-btn' onclick='mapdashboardEdit()'>" + resources.text_input_value_modify + "</button>"
+            }
+        })
+    }
+
+    // 更换缩略图
+    function imageChange() {
+        let file = $("#resThumbnail")[0].files[0];
+        let type = file.type.split('/')[0];
+        if ( type === 'image' ){
+            //将图片img转化为base64
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = (e) => {
+                let dataURL = reader.result;
+                let blob = dataURItoBlob(dataURL);
+                upload(blob); //执行上传接口
+            };
+        }
+    }
+
+    // base64 解码
+    function dataURItoBlob (dataURI) {
+        let byteString = window.atob(dataURI.split(',')[1]);
+        let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        let ab = new ArrayBuffer(byteString.length);
+        let ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], {type: mimeString});
+    }
+
+    // 上传图片
+    function upload(imgUrl){
+        let formdata = new FormData();
+        formdata.append('file', imgUrl);//下面是要传递的参数
+        let uploadUrl = iportalUrl + "/web/uploadfile.json?toFile=./resources/thumbnail/mapdashboard/temp/"+mapdashboardId+"/resThumbnail"+new Date().getTime()+".png&token=MFEKl8kVmkvEDrDFcgnjoaWjmx84a-PF_feHSKDsyOlNcFLgG6ui4J9L8otc7IuKN-E_H0TRt8-fmmFldR0n2A..";
+        $.ajax({
+            type: 'POST',
+            url: uploadUrl,
+            data: formdata,
+            //ajax2.0可以不用设置请求头，但是jq帮我们自动设置了，这样的话需要我们自己取消掉
+            contentType:false,
+            //取消帮我们格式化数据，是什么就是什么
+            processData:false,
+            success: (result) => {
+                result = JSON.parse(result);
+                $(".thumbnail-img").attr("src", iportalUrl + "/" + result.filePath);
+            }
+        })
+    }
+</script>
+</body>
+</html>

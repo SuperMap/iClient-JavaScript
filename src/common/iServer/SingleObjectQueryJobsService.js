@@ -13,6 +13,7 @@ import {SingleObjectQueryJobsParameter} from './SingleObjectQueryJobsParameter';
  * @param {string} url - 单对象空间查询分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class SingleObjectQueryJobsService extends ProcessingServiceBase {
 

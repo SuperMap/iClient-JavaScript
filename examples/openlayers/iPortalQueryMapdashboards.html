@@ -1,0 +1,288 @@
+<!--********************************************************************
+* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_iPortalQueryMapdashboards"></title>
+    <style>* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+
+    a {
+        text-decoration: none
+    }
+
+    ul, li {
+        list-style: none
+    }
+
+    .gallery-item {
+        margin-bottom: 30px;
+    }
+
+    .gallery-item-border {
+        border: 1px solid #dadada;
+        -webkit-box-shadow: 0px 2px 3px #dcdcdc;
+        box-shadow: 0px 2px 3px #dcdcdc;
+        background: white;
+    }
+
+    .thumbnail > img, .thumbnail a > img {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .gallery-item-img {
+        height: 170px !important;
+        width: 262px !important;
+    }
+
+    .mapdashboardDetails {
+        margin: 0px 0 12px 16px;
+        height: 21px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 14px !important;
+        color: #7c7c7c;
+    }
+
+    .mapdashboardUserDetails {
+        width: 100%;
+        border-top: 1px solid #E8E8E8;
+        font-size: 13px;
+    }
+
+    .textEllipsis {
+        display: inline-block;
+        padding-left: 10px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        vertical-align: top;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .mapdashboardBottomList {
+        padding-left: 10px;
+        padding-top: 13px;
+        padding-bottom: 12px;
+        vertical-align: top;
+        float: right;
+        padding-right: 30px;
+        border-left: 1px solid #ececec;
+    }
+
+    .ip-toolbar-footer {
+        text-align: center
+    }
+
+    .pagination > li {
+        display: inline;
+    }
+
+    .pagination > li > a {
+        position: relative;
+        float: left;
+        padding: 8px 16px;
+        margin-left: -1px;
+        line-height: 1.42857143;
+        color: #737373;
+        text-decoration: none;
+        background-color: #fff;
+        border: 1px solid #ececec;
+    }
+
+    #mapdashboardListPaging > .pagination {
+        margin: 10px 15px;
+    }
+
+    #mapdashboardListPaging > .pagination > li > .disable {
+        pointer-events: none;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    #mapdashboardListPaging > .pagination > li > .active {
+        background-color: #0083CB;
+        color: white;
+    }
+    </style>
+</head>
+<body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
+<div class="container" style="margin-bottom: 100px">
+    <div class="page-header">
+        <h4 data-i18n="resources.title_iPortalQueryMapdashboards1"></h4>
+    </div>
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-12">
+                <!--所有Mapdashboards的承载DIV-->
+                <div class="row" id="mapdashboardList">
+                    <!--单个Mapdashboard数据的可视化承载DIV 添加在此位置中-->
+                </div>
+                <!--分页切换列表-->、
+                <div class="row" id="mapdashboardListFooter">
+                    <div class="col-md-12">
+                        <div class="ip-toolbar-footer" id="mapdashboardListPaging">
+                            <ul class="pagination">
+                                <li><a href="javascript:void(0)"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                                </li>
+                                <li><a href="javascript:void(0)"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" include="jquery,bootstrap-css,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script>
+    //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8091/iportal
+    var iPortalUrl = "http://support.supermap.com.cn:8092";
+    //默认请求的参数
+    var mapdashboardsCurrentPage = 1;//默认请求第一页
+    var mapdashboardsPageSize = 9;//每一页显示9条Mapdashboard信息
+    //全局变量，承载请求后，一共有多少页数
+    var totalPages;
+    var queryParams = new SuperMap.iPortalMapdashboardsQueryParam({
+        currentPage: mapdashboardsCurrentPage,
+        pageSize: mapdashboardsPageSize,
+    });
+    //Mapdashboards查询初始化工作
+    var iPortalMapdashboards = new SuperMap.iPortal(iPortalUrl);
+    $(document).ready(function () {
+        //加载完DOM后，开始地图数据查询并添加
+        iPortalMapdashboards.load().then(function () {
+            queryMapdashboards(queryParams);
+        });
+        //为分页列表项绑定事件
+        $('#mapdashboardListPaging>.pagination').delegate('.mapdashboardListChang', 'click', function (e) {
+            if (mapdashboardsCurrentPage != parseInt(e.currentTarget.text)) {
+                mapdashboardsCurrentPage = parseInt(e.currentTarget.text)
+                paginationClick(mapdashboardsCurrentPage);
+            }
+        });
+        //切换到上一页
+        $(".glyphicon-chevron-left").parent().click(function () {
+            mapdashboardsCurrentPage--;
+            paginationClick(mapdashboardsCurrentPage);
+        });
+        //切换到下一页
+        $(".glyphicon-chevron-right").parent().click(function () {
+            mapdashboardsCurrentPage++;
+            paginationClick(mapdashboardsCurrentPage);
+        });
+    });
+
+    // 查询iPortal中的大屏
+    function queryMapdashboards(queryParams) {
+        iPortalMapdashboards.queryMapdashboards(queryParams).then(function (mapdashboardsData) {
+            //返回的结果集，需要查看可打开下行代码
+            // console.log(mapdashboardsData);
+            $("#mapdashboardList").children().remove();
+            //将结果集进行遍历，并添加到HTML中
+            $.each(mapdashboardsData.content, function (i) {
+                //解析时间戳，可根据需求自行处理
+                var createTime = new Date(parseInt(mapdashboardsData.content[i].createTime)).toLocaleString();
+                var mapdashboardDOM = $("<div class='col-md-4 gallery-item'>" +
+                    "<div class='gallery-item-border'>" +
+                    "<a href='JavaScript:void(0)' onclick='toMapdashboard(" + mapdashboardsData.content[i].id + ")'  class='thumbnail' style='margin-bottom: 10px'>" +
+                    "<img  class='gallery-item-img' src='" + mapdashboardsData.content[i].thumbnail + "' alt=''>" +
+                    "</a>" +
+                    "<div>" +
+                    "<p class='mapdashboardDetails'>" + mapdashboardsData.content[i].name + "</p>" +
+                    "<p class='mapdashboardDetails'>" + resources.text_createdIn + createTime + "<span class='mapdashboardTime'>" + "</span>" + "</p>" +
+                    "<div class='mapdashboardUserDetails'>" +
+                    "<div class='textEllipsis'>" +
+                    "<span class='glyphicon glyphicon-user'>" + "</span>" + "&nbsp;" + mapdashboardsData.content[i].userName +
+                    "</div>" +
+                    "<span class='mapdashboardBottomList'>" +
+                    "<span class='glyphicon glyphicon-eye-open'>" + "</span>" +
+                    "<span style='text-align: center'>" + "&nbsp;" + mapdashboardsData.content[i].visitCount + "</span>" +
+                    // "<span style='cursor:pointer' onclick='deleteMapdashboard(" + mapdashboardsData.content[i].id +")'>删除</span>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>")
+                $("#mapdashboardList").append(mapdashboardDOM);
+            });
+            //初始化分页列表以及分页数目发生变化时执行一下
+            if (!totalPages || totalPages !== mapdashboardsData.totalPage) {
+                totalPages = mapdashboardsData.totalPage;
+                initPages(mapdashboardsData.totalPage);
+            }
+        })
+    };
+
+    // 初始化分页列表UI
+    function initPages(totalPage) {
+        for (var i = 0; i < totalPage; i++) {
+            if (i == (mapdashboardsCurrentPage - 1)) {
+                var mapdashboardListPaging = $("<li>" + "<a href='JavaScript:void(0)' class='mapdashboardListChang active' >" + (i + 1) + "</a>" + "</li>")
+            } else {
+                var mapdashboardListPaging = $("<li>" + "<a href='JavaScript:void(0)' class='mapdashboardListChang ' >" + (i + 1) + "</a>" + "</li>")
+            }
+            mapdashboardListPaging.insertBefore($("#mapdashboardListPaging>.pagination>li:last-child"))
+        }
+        //根据初始页面的设置，判断向前/后 翻页按钮是否需要禁止点击
+        if (mapdashboardsCurrentPage == 1) {
+            $(".glyphicon-chevron-left").parent().addClass('disable');
+            if(totalPage === 1) {
+                $(".glyphicon-chevron-right").parent().addClass('disable');
+            }
+        } else if (mapdashboardsCurrentPage == totalPage) {
+            $(".glyphicon-chevron-right").parent().addClass('disable');
+        }
+    };
+
+    //页面的点击事件，触发的function
+    function paginationClick(mapdashboardsCurrentPage) {
+        if (mapdashboardsCurrentPage == 1) {
+            $(".glyphicon-chevron-left").parent().addClass('disable');
+            $(".glyphicon-chevron-right").parent().removeClass('disable');
+        } else if (mapdashboardsCurrentPage == totalPages) {
+            $(".glyphicon-chevron-right").parent().addClass('disable');
+            $(".glyphicon-chevron-left").parent().removeClass('disable');
+        } else {
+            $(".glyphicon-chevron-left").parent().removeClass('disable');
+            $(".glyphicon-chevron-right").parent().removeClass('disable');
+        }
+        queryParams = new SuperMap.iPortalMapdashboardsQueryParam({
+            currentPage: mapdashboardsCurrentPage,
+            pageSize: mapdashboardsPageSize,
+        });
+        queryMapdashboards(queryParams);
+        $("#mapdashboardListPaging>.pagination>li").eq(mapdashboardsCurrentPage).children().addClass('active').parent().siblings().children().removeClass('active');
+    }
+
+    // 删除单个大屏
+    function deleteMapdashboard(id) {
+        iPortalMapdashboards.deleteMapdashboards([id]).then(result => {
+            if(result.succeed) {
+                iPortalMapdashboards.load().then(function () {
+                    queryMapdashboards(queryParams);
+                });
+            } else {
+                widgets.alert.showAlert(resources.msg_deleteFailed, false);
+            }
+        })
+    }
+
+    // 跳转到大屏详情页
+    function toMapdashboard(id) {
+        window.location.href = `./iPortalQueryMapdashboard.html?id=${id}`;
+    }
+</script>
+</body>
+</html>

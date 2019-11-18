@@ -27,9 +27,18 @@ describe('classic_AddressMatchService', () => {
         expect(addressMatchService.url).toBeNull();
     });
 
-    it('code', (done) => {
-        var codingFailedEventArgs = null, codingSuccessEventArgs = null;
-        var codeCompleted = (analyseEventArgs) => {
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var addressMatchService = new AddressMatchService(addressMatchURL, { headers: myHeaders });
+        expect(addressMatchService).not.toBeNull();
+        expect(addressMatchService.headers).not.toBeNull();
+        addressMatchService.destroy();
+    });
+
+    it('code', done => {
+        var codingFailedEventArgs = null,
+            codingSuccessEventArgs = null;
+        var codeCompleted = analyseEventArgs => {
             codingSuccessEventArgs = analyseEventArgs;
         };
         var codeFailed = (serviceFailedEventArgs) => {

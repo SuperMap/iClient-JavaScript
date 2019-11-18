@@ -6,12 +6,11 @@ var getFieldsEventArgsSystem = null;
 var initGetLayersInfoService = (url, getLayersInfoServiceCompleted, getLayersInfoServiceFailed) => {
     return new GetLayersInfoService(url, {
         eventListeners: {
-            "processCompleted": getLayersInfoServiceCompleted,
-            "processFailed": getLayersInfoServiceFailed
+            processCompleted: getLayersInfoServiceCompleted,
+            processFailed: getLayersInfoServiceFailed
         }
     });
 };
-
 
 describe('GetLayersInfoService', () => {
     var originalTimeout;
@@ -23,37 +22,56 @@ describe('GetLayersInfoService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var getLayersInfoService = new GetLayersInfoService(GlobeParameter.vectorURL, { headers: myHeaders });
+        expect(getLayersInfoService).not.toBeNull();
+        expect(getLayersInfoService.headers).not.toBeNull();
+        getLayersInfoService.destroy();
+    });
+
+    it('crossOrigin', () => {
+        var getLayersInfoService = new GetLayersInfoService(GlobeParameter.vectorURL, { crossOrigin: false });
+        expect(getLayersInfoService).not.toBeNull();
+        expect(getLayersInfoService.crossOrigin).toBeFalsy();
+        getLayersInfoService.destroy();
+    });
+
     it('constructor, destroy', () => {
         var vectorURL = GlobeParameter.vectorURL;
-        var getLayersInfoServiceCompleted = (result) => {
+        var getLayersInfoServiceCompleted = result => {
             getFieldsEventArgsSystem = result;
         };
-        var getLayersInfoServiceFailed = (result) => {
+        var getLayersInfoServiceFailed = result => {
             serviceFailedEventArgsSystem = result;
         };
-        var getLayersInfoService = initGetLayersInfoService(vectorURL, getLayersInfoServiceCompleted, getLayersInfoServiceFailed);
+        var getLayersInfoService = initGetLayersInfoService(
+            vectorURL,
+            getLayersInfoServiceCompleted,
+            getLayersInfoServiceFailed
+        );
         expect(getLayersInfoService).not.toBeNull();
         getLayersInfoService.destroy();
         expect(getLayersInfoService.events).toBeNull();
         expect(getLayersInfoService.eventListeners).toBeNull();
     });
 
-    it('processAsync_Vector', (done) => {
+    it('processAsync_Vector', done => {
         var vectorURL = GlobeParameter.vectorURL;
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toBe(vectorURL + "layers.json?");
-            return Promise.resolve(new Response("[" + JSON.stringify(layersInfo) + "]"));
+        spyOn(FetchRequest, 'get').and.callFake(url => {
+            expect(url).toBe(vectorURL + 'layers.json?');
+            return Promise.resolve(new Response('[' + JSON.stringify(layersInfo) + ']'));
         });
-        var getLayersInfoServiceCompleted = (getFieldsEventArgsSystem) => {
+        var getLayersInfoServiceCompleted = getFieldsEventArgsSystem => {
             try {
                 var analystResult = getFieldsEventArgsSystem.result;
                 expect(analystResult).not.toBeNull();
-                expect(analystResult.type).toBe("UGC");
+                expect(analystResult.type).toBe('UGC');
                 var layers = analystResult.subLayers.layers;
-                expect(layers[0].datasetInfo.type).toEqual("TEXT");
+                expect(layers[0].datasetInfo.type).toEqual('TEXT');
                 expect(layers.length).toBeGreaterThan(0);
                 for (var i = 0; i < layers.length; i++) {
-                    expect(layers[i].type).toEqual("UGC");
+                    expect(layers[i].type).toEqual('UGC');
                     expect(layers[i].CLASS_NAME).not.toBeNull();
                     expect(layers[i].ugcLayerType).not.toBeNull();
                     expect(layers[i].style).not.toBeNull();
@@ -62,7 +80,7 @@ describe('GetLayersInfoService', () => {
                     expect(layers[i].caption).not.toBeNull();
                     expect(layers[i].name).not.toBeNull();
                     expect(layers[i].opaqueRate).toBe(100);
-                    expect(layers[i].datasetInfo.dataSourceName).toEqual("World");
+                    expect(layers[i].datasetInfo.dataSourceName).toEqual('World');
                     expect(layers[i].datasetInfo.name).not.toBeNull();
                     expect(layers[i].datasetInfo.type).not.toBeNull();
                 }
@@ -70,21 +88,25 @@ describe('GetLayersInfoService', () => {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("GetLayersInfoService_" + exception.name + ":" + exception.message);
+                console.log('GetLayersInfoService_' + exception.name + ':' + exception.message);
                 getLayersInfoService.destroy();
                 done();
             }
         };
-        var getLayersInfoServiceFailed = (result) => {
+        var getLayersInfoServiceFailed = result => {
             serviceFailedEventArgsSystem = result;
         };
-        var getLayersInfoService = initGetLayersInfoService(vectorURL,getLayersInfoServiceCompleted, getLayersInfoServiceFailed);
+        var getLayersInfoService = initGetLayersInfoService(
+            vectorURL,
+            getLayersInfoServiceCompleted,
+            getLayersInfoServiceFailed
+        );
         getLayersInfoService.processAsync();
     });
 
-    it('processAsync_image', (done) => {
+    it('processAsync_image', done => {
         var imageURL = GlobeParameter.imageURL;
-        var getLayersInfoServiceCompleted = (getFieldsEventArgsSystem) => {
+        var getLayersInfoServiceCompleted = getFieldsEventArgsSystem => {
             try {
                 var analystResult = getFieldsEventArgsSystem.result;
                 expect(analystResult).not.toBeNull();
@@ -93,25 +115,29 @@ describe('GetLayersInfoService', () => {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("GetLayersInfoService_" + exception.name + ":" + exception.message);
+                console.log('GetLayersInfoService_' + exception.name + ':' + exception.message);
                 getLayersInfoService.destroy();
                 done();
             }
         };
-        var getLayersInfoServiceFailed = (result) => {
+        var getLayersInfoServiceFailed = result => {
             serviceFailedEventArgsSystem = result;
         };
-        var getLayersInfoService = initGetLayersInfoService(imageURL, getLayersInfoServiceCompleted, getLayersInfoServiceFailed);
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toBe(imageURL + "/layers.json?");
-            return Promise.resolve(new Response("[" + JSON.stringify(layersInfo) + "]"));
+        var getLayersInfoService = initGetLayersInfoService(
+            imageURL,
+            getLayersInfoServiceCompleted,
+            getLayersInfoServiceFailed
+        );
+        spyOn(FetchRequest, 'get').and.callFake(url => {
+            expect(url).toBe(imageURL + '/layers.json?');
+            return Promise.resolve(new Response('[' + JSON.stringify(layersInfo) + ']'));
         });
         getLayersInfoService.processAsync();
     });
 
-    it('processAsync_grid', (done) => {
+    it('processAsync_grid', done => {
         var gridURL = GlobeParameter.gridURL;
-        var getLayersInfoServiceCompleted = (getFieldsEventArgsSystem) => {
+        var getLayersInfoServiceCompleted = getFieldsEventArgsSystem => {
             try {
                 var analystResult = getFieldsEventArgsSystem.result;
                 expect(analystResult).not.toBeNull();
@@ -120,18 +146,22 @@ describe('GetLayersInfoService', () => {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("GetLayersInfoService_" + exception.name + ":" + exception.message);
+                console.log('GetLayersInfoService_' + exception.name + ':' + exception.message);
                 getLayersInfoService.destroy();
                 done();
             }
         };
-        var getLayersInfoServiceFailed = (result) => {
+        var getLayersInfoServiceFailed = result => {
             serviceFailedEventArgsSystem = result;
         };
-        var getLayersInfoService = initGetLayersInfoService(gridURL, getLayersInfoServiceCompleted, getLayersInfoServiceFailed);
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            expect(url).toBe(gridURL + "/layers.json?");
-            return Promise.resolve(new Response("[" + JSON.stringify(layersInfo) + "]"));
+        var getLayersInfoService = initGetLayersInfoService(
+            gridURL,
+            getLayersInfoServiceCompleted,
+            getLayersInfoServiceFailed
+        );
+        spyOn(FetchRequest, 'get').and.callFake(url => {
+            expect(url).toBe(gridURL + '/layers.json?');
+            return Promise.resolve(new Response('[' + JSON.stringify(layersInfo) + ']'));
         });
         getLayersInfoService.processAsync();
     });

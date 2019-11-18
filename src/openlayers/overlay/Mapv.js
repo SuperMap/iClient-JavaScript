@@ -73,10 +73,10 @@ export class Mapv extends ol.source.ImageCanvas {
             var canvas2 = this.context.canvas;
             this.context.clearRect(0, 0, canvas2.width, canvas2.height);
             canvas2.width = size[0];
-            canvas2.height = size[0];
+            canvas2.height = size[1];
             canvas2.style.width = size[0] + "px";
-            canvas2.style.height = size[0] + "px";
-            this.context.drawImage(canvas, 0, 0, size[0], size[0], 0, 0, size[0], size[0]);
+            canvas2.style.height = size[1] + "px";
+            this.context.drawImage(canvas, 0, 0);
             if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
                 this.resolution = resolution;
                 this.extent = extent;

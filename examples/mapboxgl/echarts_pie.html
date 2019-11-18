@@ -18,6 +18,9 @@
             bottom: 0;
             width: 100%;
         }
+        #map .mapboxgl-popup-content {
+          padding: 10px 16px 15px;
+        }
     </style>
 </head>
 <body>
@@ -205,7 +208,7 @@
             });
 
             map.on('click', 'points', function (e) {
-                popup = new mapboxgl.Popup();
+                popup = new mapboxgl.Popup({maxWidth: 'none'});
                 popup.setLngLat(e.lngLat.toArray())
                     .setDOMContent(div) // sets a popup on this marker
                     .addTo(map);

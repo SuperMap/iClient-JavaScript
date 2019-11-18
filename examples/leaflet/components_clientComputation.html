@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <title data-i18n='resources.title_spatialAnalysis'></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient9-leaflet-css,turf,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript" include="iclient-leaflet-css,turf,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
     <style>
         .leaflet-popup,
         .leaflet-popup-content-wrapper {
@@ -40,7 +40,7 @@
         
         // worker 路径，默认为 dist/leaflet/workers/TurfWorker.js
         var workerUrl = '../../dist/leaflet/workers/TurfWorker.js';
-        var clientComputation = L.supermap.widgets.clientComputation(workerUrl).addTo(map);
+        var clientComputation = L.supermap.components.clientComputation(workerUrl).addTo(map);
 
         query();
         function query() {
@@ -72,13 +72,13 @@
                         'layer': resultLayer,
                         'fields': ['震级', '深度', '经度', '纬度', 'SmID', 'SmX', 'SmY']
                     };
-                    var clientComputationLayer = L.supermap.widgets.clientComputationLayer(setLayer);
+                    var clientComputationLayer = L.supermap.components.clientComputationLayer(setLayer);
                     clientComputation.addLayer(clientComputationLayer);
                 });
         }
 
         // 打开文件
-        var openFile = L.supermap.widgets.openFile().addTo(map).setPosition('bottomleft');
+        var openFile = L.supermap.components.openFile().addTo(map).setPosition('bottomleft');
 
         openFile.viewModel.on('openfilesucceeded', function (e) {
             var layer = L.geoJSON(e.result, {
@@ -90,7 +90,7 @@
             };
             map.flyToBounds(layer.getBounds());
             control.addOverlay(layer, e.layerName);
-            var clientComputationLayer = L.supermap.widgets.clientComputationLayer(setLayer);
+            var clientComputationLayer = L.supermap.components.clientComputationLayer(setLayer);
             clientComputation.addLayer(clientComputationLayer);
         })
 

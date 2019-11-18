@@ -24,6 +24,22 @@ describe('TerrainCurvatureCalculationService', () => {
     });
 
     var resultDataset = "TerrainCurvature_commonTest";
+
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(GlobeParameter.spatialAnalystURL, { headers: myHeaders });
+        expect(terrainCurvatureCalculationService).not.toBeNull();
+        expect(terrainCurvatureCalculationService.headers).not.toBeNull();
+        terrainCurvatureCalculationService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(GlobeParameter.spatialAnalystURL, { crossOrigin: false });
+        expect(terrainCurvatureCalculationService).not.toBeNull();
+        expect(terrainCurvatureCalculationService.crossOrigin).toBeFalsy();
+        terrainCurvatureCalculationService.destroy();
+    });
+
     //成功事件
     it('success:processAsync', (done) => {
         var spatialAnalystURL = GlobeParameter.spatialAnalystURL;

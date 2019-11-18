@@ -20,6 +20,41 @@ describe('leaflet_TrafficTransferAnalystService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('proxy', () => {
+        var service = trafficTransferAnalystService(url, { proxy: 'testProxy' });
+        expect(service).not.toBeNull();
+        expect(service.options.proxy).toEqual('testProxy');
+        service.destroy();
+    });
+
+    it('serverType', () => {
+        var service = trafficTransferAnalystService(url, { serverType: 'iPortal' });
+        expect(service).not.toBeNull();
+        expect(service.options.serverType).toEqual('iPortal');
+        service.destroy();
+    });
+
+    it('withCredentials', () => {
+        var service = trafficTransferAnalystService(url, { withCredentials: true });
+        expect(service).not.toBeNull();
+        expect(service.options.withCredentials).toBeTruthy();
+        service.destroy();
+    });
+
+    it('crossOrigin', () => {
+        var service = trafficTransferAnalystService(url, { crossOrigin: true });
+        expect(service).not.toBeNull();
+        expect(service.options.crossOrigin).toBeTruthy();
+        service.destroy();
+    });
+
+    it('headers', () => {
+        var service = trafficTransferAnalystService(url, { headers: {} });
+        expect(service).not.toBeNull();
+        expect(service.options.headers).not.toBeNull();
+        service.destroy();
+    });
+
     //站点查询服务 返回坐标
     it('queryStop_returnPosition:true', (done) => {
         var stopQueryParams = new StopQueryParameters({

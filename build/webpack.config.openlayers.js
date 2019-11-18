@@ -2,7 +2,7 @@ var configBase = require("./webpack.config.base");
 //端名
 var libName = "openlayers";
 //产品包名
-var productName = "iclient9-openlayers";
+var productName = "iclient-openlayers";
 
 module.exports = {
     mode: configBase.mode,

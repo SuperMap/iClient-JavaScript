@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title data-i18n='resources.title_chart_iPortal'></title>
     <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient9-mapboxgl-css,echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" include="iclient-mapboxgl-css,echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 
     <style>
         .chart-setting {
@@ -82,7 +82,7 @@
         init();
 
         function init() {
-            let container = document.getElementsByClassName("chart-setting")[0];
+            var container = document.getElementsByClassName("chart-setting")[0];
             container.innerHTML =
                 "<div class='chart-type-btn'>" +
                 "<button type='button' class='btn btn-default graph' id='scatter' title='" + resources.title_Scatter +
@@ -119,7 +119,7 @@
             zoom: 6
         });
         //图表组件
-        let options = {
+        var options = {
             type: 'bar',
             datasets: {
                 type: 'iPortal', //iServer iPortal 
@@ -141,13 +141,13 @@
                 }
             }]
         }
-        let barChart = new SuperMap.Components.Chart("chart", options);
+        var barChart = new SuperMap.Components.Chart("chart", options);
         //加载图表之后，将要素添加到地图上
         barChart.onAdd(addDataToMap);
 
         function addDataToMap() {
-            let features = barChart.getFeatures();
-            let layer = {
+            var features = barChart.getFeatures();
+            var layer = {
                 "id": '1',
                 "type": 'circle',
                 "layout": {

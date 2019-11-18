@@ -36,6 +36,12 @@ var exampleConfig = {
                     thumbnail: "ol_tiledMapLayerNoProj.png",
                     fileName: "01_tiledMapLayerNoProj"
                 }, {
+                    name: "地图-栅格分析",
+                    name_en: "map rasterFunction",
+                    version: "10.0.0",
+                    thumbnail: "ol_tiledMapLayerRasterfunction.png",
+                    fileName: "01_tiledmaplayer_rasterfunction"
+                }, {
                     name: "地图信息",
                     name_en: "map query service",
                     thumbnail: "ol_mapService.png",
@@ -443,6 +449,46 @@ var exampleConfig = {
                     thumbnail: "ol_iPortalQueryMaps.png",
                     fileName: "iPortalQueryMaps"
                 }]
+            },
+            "ip_queryservices": {
+                name: "服务列表",
+                name_en: "Web service list",
+                content: [{
+                    name: "服务列表",
+                    name_en: "web service list",
+                    thumbnail: "ol_iPortalQueryMaps.png",
+                    fileName: "iPortalQueryServices"
+                }]
+            },
+            "ip_querymapdashboards": {
+                name: "大屏列表",
+                name_en: "Web mapdashboard list",
+                content: [{
+                    name: "大屏列表",
+                    name_en: "web mapdashboard list",
+                    thumbnail: "ol_iPortalQueryMaps.png",
+                    fileName: "iPortalQueryMapdashboards"
+                }]
+            },
+            "ip_queryscenes": {
+                name: "场景列表",
+                name_en: "Web scene list",
+                content: [{
+                    name: "场景列表",
+                    name_en: "web scene list",
+                    thumbnail: "ol_iPortalQueryMaps.png",
+                    fileName: "iPortalQueryScenes"
+                }]
+            },
+            "ip_queryinsights": {
+                name: "洞察列表",
+                name_en: "Web insight list",
+                content: [{
+                    name: "洞察列表",
+                    name_en: "web insight list",
+                    thumbnail: "ol_iPortalQueryMaps.png",
+                    fileName: "iPortalQueryInsights"
+                }]
             }
         }
     },
@@ -811,18 +857,18 @@ var exampleConfig = {
                         thumbnail: "cartoCSS_naturalStyle.png",
                         fileName: "cartoCSS_naturalStyle"
                     },
-                    {
-                        name: "默认风格(MVT)",
-                        name_en: "normal(MVT)",
-                        thumbnail: "mvtVectorLayer.png",
-                        fileName: "mvtVectorLayer"
-                    },
-                    {
-                        name: "默认风格(MVT WGS84)",
-                        name_en: "normal(MVT WGS84)",
-                        thumbnail: "mvtVectorLayer4326.png",
-                        fileName: "mvtVectorLayer4326"
-                    },
+                    // {
+                    //     name: "默认风格(MVT)",
+                    //     name_en: "normal(MVT)",
+                    //     thumbnail: "mvtVectorLayer.png",
+                    //     fileName: "mvtVectorLayer"
+                    // },
+                    // {
+                    //     name: "默认风格(MVT WGS84)",
+                    //     name_en: "normal(MVT WGS84)",
+                    //     thumbnail: "mvtVectorLayer4326.png",
+                    //     fileName: "mvtVectorLayer4326"
+                    // },
                     {
                         name: "OSM风格(MVT WGS84)",
                         name_en: "OSM Style(MVT WGS84)",

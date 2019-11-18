@@ -102,7 +102,6 @@ L.Canvas.include({
         if (!this._drawing) {
             return;
         }
-        this._drawnLayers[layer._leaflet_id] = layer;
         let pt = {x: layer._point.x, y: layer._point.y},
             ctx = this._ctx,
             fontStyle = [layer.options.fontStyle,

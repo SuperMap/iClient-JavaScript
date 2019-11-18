@@ -22,7 +22,7 @@ import Attributions from './Attributions';
 
 L.supermap = L.supermap || {};
 L.supermap.control = L.supermap.control || {};
-L.supermap.widgets = L.supermap.widgets || {};
+L.supermap.components = L.supermap.components || {};
 
 L.Control.Attribution.include({
     options: {
@@ -30,7 +30,18 @@ L.Control.Attribution.include({
         prefix: Attributions.Prefix
     }
 });
-
+L.Map.include({
+    /*
+     * 获取精确的像素坐标.
+     * 当需要绘制比较平滑的曲线的时候可调用此方法代替latLngToContainerPoint
+     * @param latlng
+     */
+    latLngToAccurateContainerPoint: function (latlng) {
+        var projectedPoint = this.project(L.latLng(latlng));
+        var layerPoint = projectedPoint._subtract(this.getPixelOrigin());
+        return L.point(layerPoint).add(this._getMapPanePos());
+    }
+});
 wrapToGeoJSON([L.Polyline, L.Polygon, L.Marker, L.CircleMarker, L.Circle, L.LayerGroup]);
 
 function wrapToGeoJSON(objClassArray) {

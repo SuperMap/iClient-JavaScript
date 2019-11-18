@@ -70,9 +70,15 @@ export {
     IPortal,
     IPortalMap,
     IPortalMapsQueryParam,
+    IPortalInsight,
+    IPortalInsightsQueryParam,
+    IPortalScene,
+    IPortalScenesQueryParam,
     IPortalService,
     IPortalServiceBase,
     IPortalServicesQueryParam,
+    IPortalMapdashboard,
+    IPortalMapdashboardsQueryParam,
     //Online
     Online,
     OnlineData,
@@ -239,7 +245,7 @@ export {
     UpdateTurnNodeWeightParameters,
     Vector,
     VectorClipJobsParameter,
-    //widgets
+    //components
     FileTypes,
     FileConfig,
     FileModel,
@@ -253,7 +259,7 @@ export {
     CityTabsPage,
     NavTabsPage,
     PaginationContainer,
-    widgetsUtil,
+    ComponentsUtil,
     FileReaderUtil,
     ChartView,
     ChartViewModel

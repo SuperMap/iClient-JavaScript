@@ -309,7 +309,7 @@ export class MapvLayer extends BaiduMapLayer {
         var scaleRatio = 1;
         if (this.context != '2d') {
             var global$2 = typeof window === 'undefined' ? {} : window;
-            var devicePixelRatio = global$2.devicePixelRatio;
+            var devicePixelRatio = global$2.devicePixelRatio || 1;
             scaleRatio = devicePixelRatio;
            
         }

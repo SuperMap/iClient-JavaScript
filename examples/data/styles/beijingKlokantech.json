@@ -218,10 +218,10 @@
 
 
     {
-        "id": "标签专题图#10",
+        "id": "区政府驻地@北京",
         "type": "symbol",
         "source": "vector-tiles",
-        "source-layer": "标签专题图#10",
+        "source-layer": "区政府驻地@北京",
         "maxzoom":12,
         "layout": {
             "text-offset": [-1.5, -0.5],
@@ -243,10 +243,10 @@
 
     },
     {
-        "id": "标签专题图#64",
+        "id": "标志建筑@北京",
         "type": "symbol",
         "source": "vector-tiles",
-        "source-layer": "标签专题图#64",
+        "source-layer": "标志建筑@北京",
         "minzoom":11,
         "layout": {
             "text-offset": [-1.5, -0.5],

@@ -49,51 +49,45 @@
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
+        // 在线
         if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug')) {
-            inputCSS("https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css");
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js");
+            inputCSS("https://cdn.bootcss.com/openlayers/4.6.5/ol.css");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol.js");
         }
         if (inArray(includes, 'ol-debug')) {
-            inputCSS("https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.css");
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.js");
+            inputCSS("https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.css");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.min.js");
+            inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js");
         }
+        if (inArray(includes, 'echarts')) {
+          inputScript("https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js");
+        }
+        if (inArray(includes, 'proj4')) {
+          inputScript("https://cdn.bootcss.com/proj4js/2.5.0/proj4.js");
+        }
+        if (inArray(includes, 'ol3-echarts')) {
+          inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts@1.3.6/dist/ol3Echarts.min.js");
+        }
+
+
         if (inArray(includes, 'ol-mapbox-style')) {
             inputScript("http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js");
         }
-
         if (inArray(includes, 'deck')) {
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
         }
-        if (!inArray(excludes, 'iclient9-openlayers')) {
-            if (supportES6()) {
-                inputScript("../../dist/openlayers/iclient9-openlayers-es6.min.js");
-            } else {
-                inputScript("../../dist/openlayers/iclient9-openlayers.min.js");
-            }
-        }
-        if (!inArray(excludes, 'iclient9-openlayers-css')) {
-            inputCSS("../../dist/openlayers/iclient9-openlayers.min.css");
-        }
-        if (inArray(includes, 'echarts')) {
-          inputScript("https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.min.js");
-        }
-        if (inArray(includes, 'ol3-echarts')) {
-            inputScript("http://iclient.supermap.io/libs/openlayers/ol3-echarts/1.3.4/ol3Echarts.min.js");
-        }
+        
+        
         if (inArray(includes, 'osmbuildings')) {
             inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-OL3.js");
         }
         if (inArray(includes, 'animatedclusterlayer')) {
             inputScript("http://iclient.supermap.io/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js");
-        }
-        if (inArray(includes, 'proj4')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js");
         }
         if (inArray(includes, 'layerswitcher')) {
             inputCSS("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.css");
@@ -108,7 +102,18 @@
         if (inArray(includes, 'canvg')) {
             inputScript("http://iclient.supermap.io/web/libs/canvg/canvg.min.js");
         }
-
+        
+        // dist
+        if (!inArray(excludes, 'iclient-openlayers')) {
+          if (supportES6()) {
+              inputScript("../../dist/openlayers/iclient-openlayers-es6.min.js");
+          } else {
+              inputScript("../../dist/openlayers/iclient-openlayers.min.js");
+          }
+        }
+        if (!inArray(excludes, 'iclient-openlayers-css')) {
+            inputCSS("../../dist/openlayers/iclient-openlayers.min.css");
+        }
     }
 
     load();

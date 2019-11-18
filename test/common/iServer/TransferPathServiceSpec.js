@@ -22,6 +22,21 @@ describe('TransferPathService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var transferPathService = new TransferPathService(trafficTransferURL, { headers: myHeaders });
+        expect(transferPathService).not.toBeNull();
+        expect(transferPathService.headers).not.toBeNull();
+        transferPathService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var transferPathService = new TransferPathService(trafficTransferURL, { crossOrigin: false });
+        expect(transferPathService).not.toBeNull();
+        expect(transferPathService.crossOrigin).toBeFalsy();
+        transferPathService.destroy();
+    });
+
     it('processAsync_noParams', (done) => {
         var service = initTransferPathService();
         service.processAsync();

@@ -30,6 +30,21 @@ describe('QueryByGeometryService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var queryByGeometryService = new QueryByGeometryService(GlobeParameter.mapServiceURL + "World Map", { headers: myHeaders });
+        expect(queryByGeometryService).not.toBeNull();
+        expect(queryByGeometryService.headers).not.toBeNull();
+        queryByGeometryService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var queryByGeometryService = new QueryByGeometryService(GlobeParameter.mapServiceURL + "World Map", { crossOrigin: false });
+        expect(queryByGeometryService).not.toBeNull();
+        expect(queryByGeometryService.crossOrigin).toBeFalsy();
+        queryByGeometryService.destroy();
+    });
+
     it('constructor, destroy', () => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var QueryByGeometryServiceFailed = (serviceFailedEventArgs) => {

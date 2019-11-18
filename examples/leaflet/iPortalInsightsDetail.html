@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title data-i18n="resources.title_iPortalQueryInsight"></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        ul, li {
+            list-style: none
+        }
+    
+        .page-content-thumbnail {
+            width: 92%;
+            margin: 0 auto;
+        }
+        .page-header {
+            padding-top: 25px;
+            border-bottom: .01rem solid #d9d9d9;
+            padding-left: 25px;
+            margin: 13px 0;
+        }
+        .page-header h4 {
+            font-size: 16px;
+            border-bottom: 2px solid #127fdc;
+            margin-top: 6px;
+            display: inline-block;
+            text-shadow: #acacac 0 0 1px;
+            letter-spacing: .8px;
+            margin-bottom: 0;
+            padding-bottom: 13px;
+        }
+        .page-body {
+            padding-left: 25px;
+            font-family: MicrosoftYaHei;
+            letter-spacing: .7px;
+            word-wrap: break-word;
+        }
+        #detail {
+            padding: 10px 0 80px 10px;
+            min-width: 271px;
+            background-color: #ffffff;
+        }
+        .edit {
+            border-radius: 4px;
+            line-height: 1.499;
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            padding: 0 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            height: 32px;
+            position: relative;
+            box-shadow: 0 2px 0 rgba(0,0,0,.015);
+            color: rgba(0,0,0,.65);
+            background-color: #fff;
+            border-color: #d9d9d9;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
+    <div class="container" style="margin-bottom: 100px">
+        <div class="page-header">
+            <h3 data-i18n="resources.title_iPortalQueryInsight"></h3>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--所有Insights的承载DIV-->
+                    <div class="row" id="detail">
+
+                    </div>
+                    <!-- <div style="width:100%;text-align: center;">
+                        <button onclick="editResource()" class="edit" data-i18n="resources.text_input_value_modify"></button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script>
+    //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8091/iportal
+    var iPortalUrl = "http://support.supermap.com.cn:8092";
+    var theRequest = new Object();  
+    var url = location.search;
+    if ( url.indexOf( "?" ) != -1 ) {  
+        var str = url.substr( 1 ); //substr()方法返回从参数值开始到结束的字符串； 
+        var strs = str.split( "&" ); 
+        for ( var i = 0; i < strs.length; i++ ) {  
+            theRequest[ strs[ i ].split( "=" )[ 0 ] ] = ( strs[ i ].split( "=" )[ 1 ] );  
+        }
+    }
+    //Insights查询初始化工作
+    var iPortalInsight = new SuperMap.iPortal(iPortalUrl);
+    $(document).ready(function () {
+        //加载完DOM后，开始某个洞察数据查询
+        iPortalInsight.load().then(function() {
+            queryInsight(theRequest.id);
+        })
+    })
+
+    //点击编辑按钮 跳转编辑页面
+    function editResource(){
+        window.location.href = "./iPortalInsightsEdit.html?id=" + theRequest.id;
+    }
+
+    //查询iportal 某个洞察资源
+    function queryInsight(id){
+        var viewUrl = iPortalUrl+"/apps/insights/view.html?id="+ id;
+        iPortalInsight.queryInsight(id).then((result)=>{
+            $("#detail").children().remove();
+            //解析时间戳，可根据需求自行处理
+            var createTime = new Date(parseInt(result.createTime)).toLocaleString();
+            var insightDOM = $(
+                "<div class='detailContent'>"+
+                    "<div class='page-content-thumbnail'>"+
+                        "<div class='thumbnail-div'>"+
+                            "<img class='thumbnail-img' src='"+result.thumbnail+"'>"+
+                        "</div>"+
+                    "</div>"+
+                    "<div class='page-header' style='padding-bottom:0px'>"+
+                        "<h4>"+resources.detail_iPortal_baseInfo+"</h4>"+
+                    "</div>"+
+                    "<div class='page-body'>"+
+                        "<div>"+resources.detail_iPortal_name+"："+result.name+"</div>"+
+                        "<div>"+resources.detail_iPortal_owner+"："+result.nickname+"</div>"+
+                        "<div>"+resources.detail_iPortal_URL+"：<a href="+viewUrl+">"+viewUrl+"</a></div>"+
+                        "<div id='tags'>"+resources.detail_iPortal_tags+"：</div>"+
+                        "<div>"+resources.detail_iPortal_description+"："+result.description+"</div>"+
+                        "<div>"+resources.detail_iPortal_createdTime+"："+createTime+"</div>"+
+                        "<div>"+resources.detail_iPortal_visits+"："+result.visitCount+"</div>"+
+                    "</div>"+
+                "</div>"
+            )
+            $("#detail").append(insightDOM);
+            $.each(result.tags, function (i) {
+                var tagsDOM = $(
+                    "<span>"+result.tags[i]+"&nbsp</span>"
+                )
+                $("#tags").append(tagsDOM);
+            });
+        });
+    }
+</script>
+</html>

@@ -10,7 +10,9 @@ import {OnlineServiceBase} from './OnlineServiceBase';
  * @classdesc Online myData 服务。
  * @category iPortal/Online
  * @param {string} serviceRootUrl - 服务根地址。
- * @param {Object} options - 服务相关参数。
+ * @param {Object} options - 服务相关参数。 
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class OnlineData extends OnlineServiceBase {
 

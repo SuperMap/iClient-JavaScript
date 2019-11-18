@@ -14,20 +14,23 @@ module.exports = {
             browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
         });
         browser.pause(1000);
-        browser.doubleClick(function () {
-            browser.waitForElementPresent('.leaflet-popup-content-wrapper', 10000);
-            browser.waitForElementPresent('.leaflet-popup-content', 10000);
-            var queryInfo = "国家：扎伊尔";
-            browser.expect.element('.leaflet-popup-content').text.to.be.contain(queryInfo);
+        browser.moveTo('map',560, 510, function () {
+            browser.pause(1000);
+            browser.doubleClick(function () {
+                browser.waitForElementPresent('.leaflet-popup-content-wrapper', 10000);
+                browser.waitForElementPresent('.leaflet-popup-content', 10000);
+                var queryInfo = "国家：安哥拉";
+                browser.expect.element('.leaflet-popup-content').text.to.be.contain(queryInfo);
+            });
+            browser.pause(1000);
+            browser.click('.leaflet-popup-close-button', function () {
+                browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
+            });
+            //测试版权点击的正确性
+            //commonTools.verifyCopyrightOfLeaflet(browser);
+            browser.pause(1000);
+            browser.end();
         });
-        browser.pause(1000);
-        browser.click('.leaflet-popup-close-button', function () {
-            browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
-        });
-        //测试版权点击的正确性
-        //commonTools.verifyCopyrightOfLeaflet(browser);
-        browser.pause(1000);
-        browser.end();
     }
 };
 

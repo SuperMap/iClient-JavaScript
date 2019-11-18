@@ -208,7 +208,7 @@ export const EchartsLayer = L.Layer.extend({
         _div.style.zIndex = 10;
         this._echartsContainer = _div;
 
-        this._map.getPanes().overlayPane.appendChild(this._echartsContainer);
+        this.getPane().appendChild(this._echartsContainer);
         const me = this;
 
         function _resizeHandler(e) {

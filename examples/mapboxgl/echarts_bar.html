@@ -144,7 +144,7 @@
             });
 
             map.on('click', 'points', function (e) {
-                popup = new mapboxgl.Popup();
+                popup = new mapboxgl.Popup({maxWidth: 'none'});
                 popup.setLngLat(e.lngLat.toArray())
                     .setDOMContent(div) // sets a popup on this marker
                     .addTo(map);

@@ -16,6 +16,14 @@ describe('mapboxgl_AddressMatchService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var geoCodingService = new AddressMatchService(addressMatchURL, { headers: myHeaders });
+        expect(geoCodingService).not.toBeNull();
+        expect(geoCodingService.options).not.toBeNull();
+        expect(geoCodingService.options.headers).not.toBeNull();
+    });
+
     //正向匹配，成功事件
     it('code_successEvent', (done) => {
         var geoCodingParams = new GeoCodingParameter({

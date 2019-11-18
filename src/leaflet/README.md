@@ -19,7 +19,7 @@
 ```
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"/>
 
-<link rel="stylesheet" href="http://iclient.supermap.io/dist/leaflet/iclient9-leaflet.min.css"/>
+<link rel="stylesheet" href="http://iclient.supermap.io/dist/leaflet/iclient-leaflet.min.css"/>
 ```
 
 在 JS 文件中加入如下代码

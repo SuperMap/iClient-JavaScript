@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_dataFlow"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient9-leaflet-css"
+    <script type="text/javascript" include="iclient-leaflet-css"
             src="../../dist/leaflet/include-leaflet.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -23,7 +23,7 @@
 
     L.supermap.tiledMapLayer(url).addTo(map);
 
-    L.supermap.widgets.dataFlow({
+    L.supermap.components.dataFlow({
         //pointToLayer 设置点样式：
         pointToLayer: function (geoJsonPoint, latlng) {
             return L.circleMarker(latlng, {

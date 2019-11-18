@@ -13,6 +13,7 @@ import L from "leaflet";
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  * @fires L.supermap.ServiceBase#initialized
  * @fires L.supermap.ServiceBase#destroy
  * @extends {L.Evented}

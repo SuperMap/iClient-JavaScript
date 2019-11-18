@@ -34,8 +34,7 @@ export class MapvCanvasLayer {
         canvas.style.mixBlendMode = this.mixBlendMode;
         canvas.className = "mapvClass";
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
-        this.devicePixelRatio = devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         canvas.width = parseInt(this.width) * devicePixelRatio;
         canvas.height = parseInt(this.height) * devicePixelRatio;
         if (this.context === '2d') {
@@ -65,7 +64,7 @@ export class MapvCanvasLayer {
     resize(mapWidth, mapHeight) {
         console.log("resize");
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         this.canvas.width = mapWidth * devicePixelRatio;
         this.canvas.height = mapHeight * devicePixelRatio;
         if (this.context === '2d') {

@@ -347,7 +347,8 @@ export class Util {
                 processFailed: function (e) {
                     processFaild && processFaild(e);
                 }
-            }
+            },
+            withCredentials: true
         };
         getFeatureBySQLService = new GetFeaturesBySQLService(url, options);
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
@@ -392,7 +393,7 @@ export class Util {
         let properties = [];
         if (Util.isArray(features) && features.length) {
             features.forEach(feature => {
-                let property = feature.attributes || feature.get('Properties');
+                let property = feature.get('attributes');
                 property && properties.push(property);
             });
         }

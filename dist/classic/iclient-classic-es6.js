@@ -3,7 +3,7 @@
  *          iclient-classic.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.0-alpha
+ *          version: v10.0.0
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -475,7 +475,7 @@ __webpack_require__.r(__webpack_exports__);
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = window.SuperMap = window.SuperMap || {};
-SuperMap.Widgets = window.SuperMap.Widgets || {};
+SuperMap.Components = window.SuperMap.Components || {};
 
 // CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -2437,7 +2437,12 @@ var Event_Event = SuperMap.Event = {
 
         //add the actual browser event listener
         if (element.addEventListener) {
-            element.addEventListener(name, observer, useCapture);
+            if(name === 'mousewheel'){
+                // https://www.chromestatus.com/features/6662647093133312
+                element.addEventListener(name, observer, {useCapture: useCapture, passive: false} );
+            } else {
+                element.addEventListener(name, observer, useCapture);
+            }
         } else if (element.attachEvent) {
             element.attachEvent('on' + name, observer);
         }
@@ -3808,8 +3813,8 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
-        url = this._processUrl(url, options);
         url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -3829,8 +3834,8 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
     delete: function (url, params, options) {
         options = options || {};
         var type = 'DELETE';
-        url = this._processUrl(url, options);
         url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -4515,7 +4520,8 @@ class SecurityManager_SecurityManager {
         if (!url) {
             return url;
         }
-        var patten = /http:\/\/(.*\/rest)/i;
+        // var patten = /http:\/\/(.*\/rest)/i;
+        var patten = /(http|https):\/\/(.*\/rest)/i;
         var result = url.match(patten);
         if (!result) {
             return url;
@@ -5194,13 +5200,13 @@ var REST_BufferEndType = SuperMap.BufferEndType = {
 var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
-    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。。 */
+    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
     ERASE: "ERASE",
     /**对被操作数据集（几何对象）进行同一操作，即操作执行后，被操作数据集（几何对象）包含来自操作数据集（几何对象）的几何形状。 */
     IDENTITY: "IDENTITY",
     /** 对两个数据集（几何对象）求交，返回两个数据集（几何对象）的交集。 */
     INTERSECT: "INTERSECT",
-    /** 对两个面数据集（几何对象）进行合并操作。。 */
+    /** 对两个面数据集（几何对象）进行合并操作。 */
     UNION: "UNION",
     /** 对两个面数据集（几何对象）进行更新操作。 */
     UPDATE: "UPDATE",
@@ -5366,7 +5372,7 @@ var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
  * @type {string}
  */
 var REST_LayerType = SuperMap.LayerType = {
-    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。。 */
+    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
     WMS: "WMS",
@@ -5718,6 +5724,20 @@ var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
     SQL: 'SQL'
 }
 
+
+/**
+ * @enum RasterFunctionType
+ * @memberOf SuperMap
+ * @description 栅格分析方法。
+ * @type {string}
+ */
+var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
+    /** 归一化植被指数。 */
+    NDVI: "NDVI",
+    /** 阴影面分析。 */
+    HILLSHADE: "HILLSHADE"
+}
+
 // CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -6028,7 +6048,7 @@ SuperMap.MappingParameters = MappingParameters_MappingParameters;
  * @param {Object} options - 参数。 
  * @param {string} options.datasetName - 数据集名。 
  * @param {string} options.fields - 权重索引。 
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。 
  * @param {number} [options.resolution=80] - 分辨率。 
  * @param {number} [options.method=0] - 分析方法。 
  * @param {number} [options.meshType=0] - 分析类型。 
@@ -6425,7 +6445,7 @@ SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_Summary
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
@@ -6597,7 +6617,7 @@ SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParamet
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {SuperMap.StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -6934,42 +6954,40 @@ SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
  * @class SuperMap.BuffersAnalystJobsParameter
  * @category iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析任务参数类。
- * @param {Object} options - 参数。   
- * @param {string} options.datasetName - 数据集名。   
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 分析范围。   
- * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。   
- * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。   
- * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。   
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。  
- * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.bounds] - 分析范围（默认为全图范围）。
+ * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
+ * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
+ * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  */
 class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
-
-
     constructor(options) {
         /**
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
-        this.datasetName = "";
+        this.datasetName = '';
 
         /**
          * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.BuffersAnalystJobsParameter.prototype.bounds
-         * @description 分析范围。 
+         * @description 分析范围。
          */
-        this.bounds = "";
+        this.bounds = '';
 
         /**
          * @member {string} [SuperMap.BuffersAnalystJobsParameter.prototype.distance='15']
          * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
          */
-        this.distance = "";
+        this.distance = '';
 
         /**
          * @member {string} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceField='pickup_latitude']
          * @description 缓冲距离字段。
          */
-        this.distanceField = "";
+        this.distanceField = '';
 
         /**
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit=SuperMap.AnalystSizeUnit.METER]
@@ -6981,17 +6999,17 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
          * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
          */
-        this.dissolveField = "";
+        this.dissolveField = '';
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.BuffersAnalystJobsParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
-        
+
         /**
          * @member {SuperMap.MappingParameters} [SuperMap.BuffersAnalystJobsParameter.prototype.mappingParameters]
-         * @description 分析后结果可视化的参数类。   
+         * @description 分析后结果可视化的参数类。
          */
         this.mappingParameters = null;
 
@@ -7000,7 +7018,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
         }
         Util_Util.extend(this, options);
 
-        this.CLASS_NAME = "SuperMap.BuffersAnalystJobsParameter";
+        this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsParameter';
     }
 
     /**
@@ -7018,7 +7036,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
             this.output.destroy();
             this.output = null;
         }
-        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
             this.mappingParameters.destroy();
             this.mappingParameters = null;
         }
@@ -7032,33 +7050,33 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
      */
     static toObject(BuffersAnalystJobsParameter, tempObj) {
         for (var name in BuffersAnalystJobsParameter) {
-            if (name === "datasetName") {
+            if (name === 'datasetName') {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = BuffersAnalystJobsParameter[name];
                 continue;
             }
-            if (name === "output") {
+            if (name === 'output') {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = BuffersAnalystJobsParameter[name];
                 continue;
             }
 
             tempObj['analyst'] = tempObj['analyst'] || {};
-            if (name === 'bounds') {
+            if (name === 'bounds' && BuffersAnalystJobsParameter[name]) {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name];
             }
-            if(name === 'mappingParameters'){
+            if (name === 'mappingParameters') {
                 tempObj['analyst'][name] = tempObj['analyst'][name] || {};
                 tempObj['analyst']['mappingParameters'] = BuffersAnalystJobsParameter[name];
             }
         }
     }
-
 }
 
 SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalystJobsParameter;
+
 // CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -7768,35 +7786,39 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
             SuperMap_SuperMap.Util.extend(this, options);
         }
         //MapV图要求使用canvas绘制，判断是否支持
-        this.canvas = document.createElement("canvas");
+        this.canvas = document.createElement('canvas');
         if (!this.canvas.getContext) {
             return;
         }
         this.supported = true;
         //构建绘图面板
-        this.canvas.style.position = "absolute";
-        this.canvas.style.top = 0 + "px";
-        this.canvas.style.left = 0 + "px";
+        this.canvas.style.position = 'absolute';
+        this.canvas.style.top = 0 + 'px';
+        this.canvas.style.left = 0 + 'px';
         this.div.appendChild(this.canvas);
-        var context = this.options && this.options.context || "2d";
+        var context = (this.options && this.options.context) || '2d';
         this.canvasContext = this.canvas.getContext(context);
         var global$2 = typeof window === 'undefined' ? {} : window;
-        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         if (context == '2d') {
             this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         }
-        this.attribution = "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " +
+        this.attribution =
+            "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " +
             "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
 
-        this.CLASS_NAME = "SuperMap.Layer.MapVLayer";
+        this.CLASS_NAME = 'SuperMap.Layer.MapVLayer';
     }
-
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.destroy
      * @override
      */
     destroy() {
+        if (this.renderer && this.renderer.animator) {
+            this.renderer.animator.stop();
+            this.renderer.animator = null;
+        }
         this.dataSet = null;
         this.options = null;
         this.renderer = null;
@@ -7808,7 +7830,6 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
         super.destroy();
     }
 
-
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
@@ -7819,7 +7840,6 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
         this.renderer && this.renderer.addData(dataSet, options);
     }
 
-
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
@@ -7829,7 +7849,6 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
     }
-
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
@@ -7867,7 +7886,6 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
         this.renderer.clearData();
     }
 
-
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.setMap
      * @description 图层已经添加到 Map 中。
@@ -7899,21 +7917,21 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
         }
         this.zoomChanged = zoomChanged;
         if (!dragging) {
-            this.div.style.visibility = "hidden";
-            this.div.style.left = -parseInt(this.map.layerContainerDiv.style.left) + "px";
-            this.div.style.top = -parseInt(this.map.layerContainerDiv.style.top) + "px";
+            this.div.style.visibility = 'hidden';
+            this.div.style.left = -parseInt(this.map.layerContainerDiv.style.left) + 'px';
+            this.div.style.top = -parseInt(this.map.layerContainerDiv.style.top) + 'px';
             /*this.canvas.style.left = this.div.style.left;
              this.canvas.style.top = this.div.style.top;*/
             var size = this.map.getSize();
-            this.div.style.width = parseInt(size.w) + "px";
-            this.div.style.height = parseInt(size.h) + "px";
+            this.div.style.width = parseInt(size.w) + 'px';
+            this.div.style.height = parseInt(size.h) + 'px';
             this.canvas.width = parseInt(size.w);
             this.canvas.height = parseInt(size.h);
             this.canvas.style.width = this.div.style.width;
             this.canvas.style.height = this.div.style.height;
             this.maxWidth = size.w;
             this.maxHeight = size.h;
-            this.div.style.visibility = "";
+            this.div.style.visibility = '';
             if (!zoomChanged) {
                 this.renderer && this.renderer.render();
             }
@@ -7924,7 +7942,6 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
         }
     }
 
-
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
      * @description 将经纬度转成底图的投影坐标。
@@ -7932,18 +7949,18 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
      * @deprecated
      */
     transferToMapLatLng(latLng) {
-        var source = "EPSG:4326",
-            dest = "EPSG:4326";
-        var unit = this.map.getUnits() || "degree";
-        if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
-            dest = "EPSG:3857";
+        var source = 'EPSG:4326',
+            dest = 'EPSG:4326';
+        var unit = this.map.getUnits() || 'degree';
+        if (['m', 'meter'].indexOf(unit.toLowerCase()) > -1) {
+            dest = 'EPSG:3857';
         }
         return new SuperMap_SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
-
 }
 
 SuperMap_SuperMap.Layer.MapVLayer = MapVLayer_MapVLayer;
+
 // CONCATENATED MODULE: ./src/classic/overlay/mapv/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -8451,6 +8468,7 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class CommonServiceBase_CommonServiceBase {
 
@@ -8515,6 +8533,7 @@ class CommonServiceBase_CommonServiceBase {
 
         options = options || {};
         this.crossOrigin = options.crossOrigin;
+        this.headers = options.headers;
         Util_Util.extend(this, options);
 
         me.isInTheSameDomain = Util_Util.isInTheSameDomain(me.url);
@@ -8569,7 +8588,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
      * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
      * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
-     * 
+     * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
         let me = this;
@@ -8577,6 +8596,7 @@ class CommonServiceBase_CommonServiceBase {
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
         options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
+        options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
         //为url添加安全认证信息片段
         let credential = this.getCredential(options.url);
@@ -8830,6 +8850,7 @@ SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
 
@@ -8880,7 +8901,8 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 
     processAsync(url, params) {
         var me = this;
-        FetchRequest_FetchRequest.get(url, params,{crossOrigin:me.crossOrigin, proxy: me.proxy}).then(function (response) {
+        let { headers, crossOrigin, proxy } = this;
+        FetchRequest_FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -8929,6 +8951,7 @@ SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class services_AddressMatchService_AddressMatchService extends CommonServiceBase_CommonServiceBase {
 
@@ -8946,6 +8969,7 @@ class services_AddressMatchService_AddressMatchService extends CommonServiceBase
     code(params, callback) {
         var me = this;
         var addressMatchService = new AddressMatchService_AddressMatchService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
@@ -8968,6 +8992,7 @@ class services_AddressMatchService_AddressMatchService extends CommonServiceBase
     decode(params, callback) {
         var me = this;
         var addressMatchService = new AddressMatchService_AddressMatchService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin: me.crossOrigin,
@@ -9006,6 +9031,7 @@ SuperMap_SuperMap.REST.AddressMatchService = services_AddressMatchService_Addres
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_CommonServiceBase {
 
@@ -9070,13 +9096,14 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
             parameterObject = new Object();
             paramType.toObject(params, parameterObject);
         }
+        let headers = Object.assign({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }, me.headers || {})
         var options = {
             proxy: me.proxy,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
+            headers,
             withCredentials: me.withCredentials,
-            crossOrigin:me.crossOrigin,
+            crossOrigin: me.crossOrigin,
             isInTheSameDomain: me.isInTheSameDomain
         };
         FetchRequest_FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
@@ -9167,6 +9194,7 @@ SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
  * @param {string} url -核密度分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class KernelDensityJobsService_KernelDensityJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9230,6 +9258,7 @@ SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsSe
  * @param {string} url - 单对象空间查询分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SingleObjectQueryJobsService_SingleObjectQueryJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9296,6 +9325,7 @@ SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService_SingleObjec
  * @param {number} options.index - 服务访问地址在数组中的位置。<br>
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SummaryMeshJobsService_SummaryMeshJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9358,6 +9388,7 @@ SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
  * @param {string} url - 区域汇总分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SummaryRegionJobsService_SummaryRegionJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9537,6 +9568,7 @@ SuperMap.VectorClipJobsParameter = VectorClipJobsParameter_VectorClipJobsParamet
  * @param {string} url -矢量裁剪分析服务地址。
  * @param {Object} options - 交互服务时所需可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9603,6 +9635,7 @@ SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class OverlayGeoJobsService_OverlayGeoJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9664,6 +9697,7 @@ SuperMap.OverlayGeoJobsService = OverlayGeoJobsService_OverlayGeoJobsService;
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class BuffersAnalystJobsService_BuffersAnalystJobsService extends ProcessingServiceBase_ProcessingServiceBase {
     constructor(url, options) {
@@ -9724,6 +9758,7 @@ SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService_BuffersAnalystJob
  * @param {string} url - 拓扑检查分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class TopologyValidatorJobsService_TopologyValidatorJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9786,6 +9821,7 @@ SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService_TopologyVal
  * @param {string} url - 汇总统计分析服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class SummaryAttributesJobsService_SummaryAttributesJobsService extends ProcessingServiceBase_ProcessingServiceBase {
 
@@ -9863,6 +9899,7 @@ SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttr
  * @param {string} url - 分布式分析服务地址。
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 class ProcessingService_ProcessingService extends CommonServiceBase_CommonServiceBase {
 
@@ -9889,6 +9926,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var me = this,
             format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -9914,6 +9952,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var me = this,
             format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -9939,6 +9978,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     addKernelDensityJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService_KernelDensityJobsService(me.url, {
+            headers: me.headers,  
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -9975,6 +10015,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
+            headers: me.headers,  
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -10000,6 +10041,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
+            headers: me.headers,  
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -10025,6 +10067,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     addSummaryMeshJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService_SummaryMeshJobsService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -10061,6 +10104,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var me = this,
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -10086,6 +10130,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
         var me = this,
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -10113,6 +10158,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService_SingleObjectQueryJobsService(me.url, {
+            headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
@@ -10150,6 +10196,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService_SummaryRegionJobsService(me.url, {
             proxy: me.proxy,
+            headers: me.headers,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
             serverType: me.serverType,
@@ -10177,6 +10224,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10202,6 +10250,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -10238,6 +10287,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10263,6 +10313,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10290,6 +10341,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10327,6 +10379,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10352,6 +10405,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10378,6 +10432,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10415,6 +10470,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10440,6 +10496,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10466,6 +10523,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10503,6 +10561,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10528,6 +10587,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10554,6 +10614,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10591,6 +10652,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10616,6 +10678,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -10642,6 +10705,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
             proxy: me.proxy,
             withCredentials: me.withCredentials,
             crossOrigin:me.crossOrigin,
+            headers: me.headers,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,

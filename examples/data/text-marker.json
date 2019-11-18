@@ -1,0 +1,122 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "1",
+        "NAME": "北京工人体育场"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.44098698800445,39.92957983310919] },
+      "id": 1
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "2",
+        "NAME": "东方银座"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.42924093532827, 39.93876987850555] },
+      "id": 2
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "3",
+        "NAME": "尚都国际中心"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.44512235461644,39.918269915528185] },
+      "id": 3
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "4",
+        "NAME": "天恒大厦"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.47962378780625,39.93051717765758] },
+      "id": 4
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "5",
+        "NAME": "和乔大厦Ａ座"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.46453316689991,39.91079285361826] },
+      "id": 5
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "6",
+        "NAME": "中国国际贸易中心写字楼３座"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.45222197806004,39.911131479663084] },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "6",
+        "NAME": "中国农业博物馆"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.4588096464496,39.94003939126716] },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "6",
+        "NAME": "摩码大厦"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.46673912036636,39.922323946704836] },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "6",
+        "NAME": "佳程广场"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.45204122509739,39.95567081533676] },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "6",
+        "NAME": "高斓大厦"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.47045955123338,39.95175703233227] },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "6",
+        "NAME": "国雅大厦"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.43406540699226,39.914904775747175] },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "6",
+        "NAME": "新光天地"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.47363341286001,39.90933995330798] },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "SMID": "6",
+        "NAME": "京广中心"
+      },
+      "geometry": { "type": "Point", "coordinates": [116.45442224023509,39.919039109579586] },
+      "id": 6
+    }
+  ]
+}

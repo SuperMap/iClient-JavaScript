@@ -24,6 +24,22 @@ describe('MathExpressionAnalysisService', () => {
     });
 
     var resultDataset = "MathExpression_commonTest";
+    
+    it('headers', () => {
+      let myHeaders = new Headers();
+      var mathExpressionAnalysisService = new MathExpressionAnalysisService(GlobeParameter.spatialAnalystURL, { headers: myHeaders });
+      expect(mathExpressionAnalysisService).not.toBeNull();
+      expect(mathExpressionAnalysisService.headers).not.toBeNull();
+      mathExpressionAnalysisService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var mathExpressionAnalysisService = new MathExpressionAnalysisService(GlobeParameter.spatialAnalystURL, { crossOrigin: false });
+        expect(mathExpressionAnalysisService).not.toBeNull();
+        expect(mathExpressionAnalysisService.crossOrigin).toBeFalsy();
+        mathExpressionAnalysisService.destroy();
+    });
+
     //通过的情况
     it('pass:processAsync', (done) => {
         var spatialAnalystURL = GlobeParameter.spatialAnalystURL;

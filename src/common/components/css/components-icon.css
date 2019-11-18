@@ -1,0 +1,73 @@
+@font-face {
+  font-family: 'supermapol-icons';
+  src:  url('fonts/components-icons.eot?fqa4sk');
+  src:  url('fonts/components-icons.eot?fqa4sk#iefix') format('embedded-opentype'),
+    url('fonts/components-icons.ttf?fqa4sk') format('truetype'),
+    url('fonts/components-icons.woff?fqa4sk') format('woff'),
+    url('fonts/components-icons.svg?fqa4sk#components-icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.supermapol-icons {
+  font-family:"supermapol-icons" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.supermapol-icons-line-layer:before {
+  content: "\e62a";
+}
+.supermapol-icons-marker-layer:before {
+  content: "\e62c";
+}
+.supermapol-icons-point-layer:before {
+  content: "\e62d";
+}
+.supermapol-icons-polygon-layer:before {
+  content: "\e62e";
+}
+.supermapol-icons-search:before {
+  content: "\e630";
+}
+.supermapol-icons-solid-up-triangle:before {
+  content: "\e63a";
+}
+.supermapol-icons-solid-down-triangle:before {
+  content: "\e63b";
+}
+.supermapol-icons-first:before {
+  content: "\e6a4";
+}
+.supermapol-icons-next:before {
+  content: "\e6a5";
+}
+.supermapol-icons-last:before {
+  content: "\e6a6";
+}
+.supermapol-icons-prev:before {
+  content: "\e6a7";
+}
+.supermapol-icons-poi-load:before {
+  content: "\e6a8";
+}
+.supermapol-icons-poi-save:before {
+  content: "\e6a9";
+}
+.supermapol-icons-upload:before {
+  content: "\e6ac";
+}
+.supermapol-icons-close:before {
+  content: "\e6ae";
+}
+.supermapol-icons-message-success:before {
+  content: "\e991";
+}
+.supermapol-icons-message-failure:before {
+  content: "\e993";
+}
+.supermapol-icons-message-warning:before {
+  content: "\e994";
+}

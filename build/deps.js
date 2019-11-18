@@ -555,10 +555,10 @@ deps = {
             "OpenFile": {
                 "name": "打开文件组件",
                 "src": [
-                    "./src/leaflet/widgets/openfile/OpenFileView.js"
+                    "./src/leaflet/components/openfile/OpenFileView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.openFile",
+                    "name": "L.supermap.components.openFile",
                     "des": "打开文件组件",
                     "des_en": "Open file components"
                 }]
@@ -566,10 +566,10 @@ deps = {
             "ClientComputation ": {
                 "name": "客户端计算组件",
                 "src": [
-                    "./src/leaflet/widgets/clientcomputation/ClientComputationView.js"
+                    "./src/leaflet/components/clientcomputation/ClientComputationView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.clientComputation",
+                    "name": "L.supermap.components.clientComputation",
                     "des": "客户端计算组件",
                     "des_en": "Client computation component"
                 }]
@@ -577,10 +577,10 @@ deps = {
             "DistributedAnalysis": {
                 "name": "分布式分析组件",
                 "src": [
-                    "./src/leaflet/widgets/distributedanalysis/DistributedAnalysisView.js"
+                    "./src/leaflet/components/distributedanalysis/DistributedAnalysisView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.distributedAnalysis",
+                    "name": "L.supermap.components.distributedAnalysis",
                     "des": "分布式分析组件",
                     "des_en": "Distributed analysis component"
                 }]
@@ -588,10 +588,10 @@ deps = {
             "Search": {
                 "name": "图层查询组件",
                 "src": [
-                    "./src/leaflet/widgets/search/SearchView.js"
+                    "./src/leaflet/components/search/SearchView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.search",
+                    "name": "L.supermap.components.search",
                     "des": "图层查询组件",
                     "des_en": "Search"
                 }]
@@ -599,10 +599,10 @@ deps = {
             "DataFlow": {
                 "name": "数据流组件",
                 "src": [
-                    "./src/leaflet/widgets/dataflow/DataFlowView.js"
+                    "./src/leaflet/components/dataflow/DataFlowView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.dataFlow",
+                    "name": "L.supermap.components.dataFlow",
                     "des": "数据流组件",
                     "des_en": "Data flow"
                 }]
@@ -610,10 +610,10 @@ deps = {
             "DataServiceQuery": {
                 "name": "数据服务查询组件",
                 "src": [
-                    "./src/leaflet/widgets/dataservicequery/DataServiceQueryView.js"
+                    "./src/leaflet/components/dataservicequery/DataServiceQueryView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.widgets.dataServiceQuery",
+                    "name": "L.supermap.components.dataServiceQuery",
                     "des": "数据服务查询组件",
                     "des_en": "Data service query"
                 }]

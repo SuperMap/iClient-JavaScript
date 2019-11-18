@@ -8,7 +8,7 @@ import ol from 'openlayers';
  * @category  ThirdPartyMap
  * @classdesc 天地图图层源。
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.url='http://t{0-7}.tianditu.com/{layer}_{proj}/wmts?'] - 服务地址。
+ * @param {string} [opt_options.url='http://t{0-7}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 服务地址。
  * @param {string} options.key - 天地图服务密钥。详见{@link http://lbs.tianditu.gov.cn/server/MapService.html}
  * @param {string} [opt_options.layerType='vec'] - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)
  * @param {string} [opt_options.attributions] - 版权描述信息。
@@ -35,15 +35,15 @@ export class Tianditu extends ol.source.WMTS {
         }
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({
-            html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
-                "src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
+            html: "Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
+                "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
                 "<span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         options.layerType = options.layerType || "vec";
         options.layerType = options.isLabel ? ol.source.Tianditu.layerLabelMap[options.layerType] : options.layerType;
         options.matrixSet = (options.projection === 'EPSG:4326' || options.projection === 'EPSG:4490') ? "c" : "w";
         if (!options.url && !options.urls) {
-            options.url = "http://t{0-7}.tianditu.com/{layer}_{proj}/wmts?"
+            options.url = "http://t{0-7}.tianditu.gov.cn/{layer}_{proj}/wmts?"
         }
         if (options.key) {
             options.url = `${options.url}tk=${options.key}`;

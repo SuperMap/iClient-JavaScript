@@ -16,6 +16,14 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var getFeaturesBySQLService = new FeatureService(url, { headers: myHeaders });
+        expect(getFeaturesBySQLService).not.toBeNull();
+        expect(getFeaturesBySQLService.options).not.toBeNull();
+        expect(getFeaturesBySQLService.options.headers).not.toBeNull();
+    });
+
     //数据集SQL查询服务
     it('getFeaturesBySQL', (done) => {
         var sqlParam = new GetFeaturesBySQLParameters({

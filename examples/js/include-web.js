@@ -96,7 +96,7 @@
             inputScript("http://iclient.supermap.io/libs/geohash/geohash.js");
         }
         if (inArray(includes, 'dat-gui')) {
-            inputScript("https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.5/dat.gui.min.js");
+            inputScript("https://cdn.bootcss.com/dat-gui/0.7.6/dat.gui.js");
             datGuiI18N();
         }
         if (inArray(includes, 'admin-lte')) {
@@ -187,5 +187,5 @@
     window.isLocal = false;
     window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : document.location.protocol + "//" + document.location.host;
     window.version = "10.0.0";
-    window.preRelease = "alpha";
+    window.preRelease = "";
 })();

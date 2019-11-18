@@ -14,6 +14,7 @@ import {GeoDecodingParameter} from './GeoDecodingParameter';
  * @param {string} url - 地址匹配服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
  */
 export class AddressMatchService extends CommonServiceBase {
 
@@ -64,7 +65,8 @@ export class AddressMatchService extends CommonServiceBase {
 
     processAsync(url, params) {
         var me = this;
-        FetchRequest.get(url, params,{crossOrigin:me.crossOrigin, proxy: me.proxy}).then(function (response) {
+        let { headers, crossOrigin, proxy } = this;
+        FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {

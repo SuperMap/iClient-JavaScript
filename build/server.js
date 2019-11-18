@@ -12,7 +12,7 @@ if (product) {
   const config = require(`./webpack.config.${product}.js`);
   const configBase = require(`./webpack.config.base.js`);
   const entry = [`./src/${product}/index.js`];
-  const filename= product === 'classic' ? `iclient-classic` : `iclient9-${product}`;
+  const filename= product === 'classic' ? `iclient-classic` : `iclient-${product}`;
   config.output.filename = `${filename}-es6.min.js`
   if (['leaflet', 'openlayers'].includes(product)) {
     entry.push(`./src/${product}/css/index.js`);
@@ -32,11 +32,11 @@ if (product) {
   });
   app.use(instance);
   instance.waitUntilValid(() => {
-    open(`http://localhost:9999/examples/${product}`);
+    open(`http://localhost:8082/examples/${product}`);
   });
 }
 
-const server = app.listen(9999, () => {
+const server = app.listen(8082, () => {
   const host = server.address().address;
   const port = server.address().port;
   console.log('Example app listening at http://%s:%s', host, port);
@@ -58,5 +58,5 @@ app.use("/en/dist", express.static('dist'), serveIndex('dist'));
 app.use("/en/build", express.static('build'), serveIndex('build'));
 app.use("/en", express.static('web/en'), serveIndex('web/en'));
 if (!product) {
-  open(`http://localhost:9999`);
+  open(`http://localhost:8082`);
 }

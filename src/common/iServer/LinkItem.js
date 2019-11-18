@@ -29,7 +29,7 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  *      // 设置关联的外部数据库信息,alias表示数据库别名
  *      var dc = new SuperMap.DatasourceConnectionInfo({
  *          dataBase: "RelQuery",
- *          server: "192.168.168.39",
+ *          server: "{ip}:{port}",
  *          user: "sa",
  *          password: "map",
  *          driver: "SQL Server",

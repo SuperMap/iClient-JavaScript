@@ -22,6 +22,21 @@ describe('TilesetsService', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var tilesetsService = new TilesetsService("http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图", { headers: myHeaders });
+        expect(tilesetsService).not.toBeNull();
+        expect(tilesetsService.headers).not.toBeNull();
+        tilesetsService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var tilesetsService = new TilesetsService("http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图", { crossOrigin: false });
+        expect(tilesetsService).not.toBeNull();
+        expect(tilesetsService.crossOrigin).toBeFalsy();
+        tilesetsService.destroy();
+    });
+
     it('constructor, destroy', () => {
         var tileSetsURL = "http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图";
         var analyzeFailed = (serviceFailedEventArgs) => {

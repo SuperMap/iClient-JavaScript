@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_openFile"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient9-leaflet-css,xlsx"
+    <script type="text/javascript" include="iclient-leaflet-css,xlsx"
             src="../../dist/leaflet/include-leaflet.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -24,16 +24,16 @@
 
     var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
     var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);
-    var openFileWidgets = L.supermap.widgets.openFile().addTo(map);
+    var openFileComponents = L.supermap.components.openFile().addTo(map);
     //将成功返回的数据加载到地图
-    openFileWidgets.on("openfilesucceeded", function (e) {
+    openFileComponents.on("openfilesucceeded", function (e) {
         var layer = L.geoJSON(e.result).addTo(map);
         map.flyToBounds(layer.getBounds());
         layersControl.addOverlay(layer, e.layerName);
     });
 
     //避免与"源码"控件重叠
-    openFileWidgets.rootContainer.style.margin = "40px 4px 0px 0px";
+    openFileComponents.rootContainer.style.margin = "40px 4px 0px 0px";
 
 </script>
 </body>

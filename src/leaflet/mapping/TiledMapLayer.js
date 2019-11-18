@@ -21,8 +21,8 @@ import Attributions from '../core/Attributions'
  * @extends {L.TileLayer}
  * @example
  *      L.supermap.tiledMapLayer(url).addTo(map);
- * @param {string} url - 影像图层地址。
- * @param {Object} options - 影像图层参数。
+ * @param {string} url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {Object} options - 参数。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
  * @param {boolean} [options.redirect=false] - 是否重定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
  * @param {boolean} [options.transparent=true] - 是否背景透明。
@@ -35,10 +35,12 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
  * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
+ * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
+ * @param {Array.<number>} [options.subdomains] - 子域名数组。
  * @fires L.supermap.tiledMapLayer#tilesetsinfoloaded
  * @fires L.supermap.tiledMapLayer#tileversionschanged
  */
@@ -67,7 +69,8 @@ export var TiledMapLayer = L.TileLayer.extend({
         format: 'png',
         //启用托管地址。
         tileProxy:null,
-        attribution: Attributions.Common.attribution
+        attribution: Attributions.Common.attribution,
+        subdomains: null
     },
 
     initialize: function (url, options) {
@@ -108,6 +111,9 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
         if (!this.options.cacheEnabled) {
             tileUrl += "&_t=" + new Date().getTime();
+        }
+        if (this.options.subdomains) {
+            tileUrl = L.Util.template(tileUrl, {s: this._getSubdomain(coords)});
         }
         return tileUrl;
     },
@@ -359,8 +365,11 @@ export var TiledMapLayer = L.TileLayer.extend({
             params["overlapDisplayed"] = true;
         }
 
-        if (options.cacheEnabled === true && options.tileversion) {
+        if (params.cacheEnabled === true && options.tileversion) {
             params["tileversion"] = options.tileversion.toString();
+        }
+        if (options.rasterfunction) {
+            params["rasterfunction"] = JSON.stringify(options.rasterfunction);
         }
 
         return params;

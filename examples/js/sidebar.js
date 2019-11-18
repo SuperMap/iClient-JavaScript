@@ -124,6 +124,9 @@ function createSideBarSecondMenu(config, name) {
     var ul = $("<ul class='treeview-menu second-menu '></ul>");
     for (var key in config) {
         var configItem = config[key];
+        if (window.isLocal && configItem.localIgnore) {
+            continue;
+        }
         var title = utils.getLocalPairs(configItem, "name") || "【empty title】";
         var li = $("<li class='menuTitle ' id='" + key + "' title='" + title + "'></li>");
         li.appendTo(ul);

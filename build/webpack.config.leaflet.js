@@ -3,7 +3,7 @@ let configBase = require("./webpack.config.base");
 //端名
 const libName = "leaflet";
 //产品包名
-const productName = "iclient9-leaflet";
+const productName = "iclient-leaflet";
 
 module.exports = {
     mode: configBase.mode,

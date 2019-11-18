@@ -1,10 +1,10 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L, { Util, Layer, ImageOverlay } from "leaflet";
-import "../core/Base";
-import { ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential } from "@supermap/iclient-common";
-import Attributions from '../core/Attributions'
+import L, { Util, Layer, ImageOverlay } from 'leaflet';
+import '../core/Base';
+import { ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential } from '@supermap/iclient-common';
+import Attributions from '../core/Attributions';
 /**
  * @class L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 Image 资源出图。
@@ -12,7 +12,7 @@ import Attributions from '../core/Attributions'
  * @extends {L.Layer}
  * @example
  *      L.supermap.imageMapLayer(url).addTo(map);
- * @param {string} url - 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
+ * @param {string} url - 地图服务地址,如：http://{ip}:{port}/iserver/services/map-china400/rest/maps/China
  * @param {Object} options - 图层可选参数。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
  * @param {boolean} [options.redirect=false] - 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
@@ -33,15 +33,15 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.className] - 自定义 dom 元素的 className。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {number} [options.updateInterval=150] - 平移时图层延迟刷新间隔时间。
- * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @fires L.supermap.imageMapLayer#load
  * @fires L.supermap.imageMapLayer#error
  * @fires L.supermap.imageMapLayer#loading
  */
 export var ImageMapLayer = Layer.extend({
-
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
@@ -86,10 +86,9 @@ export var ImageMapLayer = Layer.extend({
         //启用托管地址。
         tileProxy: null,
         format: 'png'
-
     },
 
-    initialize: function (url, options) {
+    initialize: function(url, options) {
         this._url = url;
         Util.setOptions(this, options);
     },
@@ -100,7 +99,7 @@ export var ImageMapLayer = Layer.extend({
      * @description 添加到地图。
      * @param {L.Map} map - 待添加到的地图对象。
      */
-    onAdd: function (map) {
+    onAdd: function(map) {
         this.update = Util.throttle(this.update, this.options.updateInterval, this);
         map.on('moveend', this.update, this);
 
@@ -117,9 +116,9 @@ export var ImageMapLayer = Layer.extend({
      * @private
      * @function L.supermap.imageMapLayer.prototype.onRemove
      * @description 从地图上移除。
-     * @param {L.Map} map - 待移除的地图对象。
      */
-    onRemove: function (map) { // eslint-disable-line no-unused-vars
+    onRemove: function() {
+        // eslint-disable-line no-unused-vars
         if (this._currentImage) {
             this._map.removeLayer(this._currentImage);
         }
@@ -130,7 +129,7 @@ export var ImageMapLayer = Layer.extend({
      * @function L.supermap.imageMapLayer.prototype.bringToFront
      * @description 将当前图层置顶
      */
-    bringToFront: function () {
+    bringToFront: function() {
         this.options.position = 'front';
         if (this._currentImage) {
             this._currentImage.bringToFront();
@@ -142,7 +141,7 @@ export var ImageMapLayer = Layer.extend({
      * @function L.supermap.imageMapLayer.prototype.bringToFront
      * @description 将当前图层置底。
      */
-    bringToBack: function () {
+    bringToBack: function() {
         this.options.position = 'back';
         if (this._currentImage) {
             this._currentImage.bringToBack();
@@ -155,7 +154,7 @@ export var ImageMapLayer = Layer.extend({
      * @description 获取图层透明度。
      * @returns {number} 图层的透明度。
      */
-    getOpacity: function () {
+    getOpacity: function() {
         return this.options.opacity;
     },
 
@@ -163,7 +162,7 @@ export var ImageMapLayer = Layer.extend({
      * @function L.supermap.imageMapLayer.prototype.setOpacity
      * @description 设置透明度。
      */
-    setOpacity: function (opacity) {
+    setOpacity: function(opacity) {
         this.options.opacity = opacity;
         if (this._currentImage) {
             this._currentImage.setOpacity(opacity);
@@ -176,24 +175,23 @@ export var ImageMapLayer = Layer.extend({
      * @description 获取 image 图层请求地址，子类可重写实现。
      * @returns {string} 请求瓦片地址。
      */
-    getImageUrl: function (params) {
+    getImageUrl: function(params) {
         var imageUrl = Util.getParamString(params) + this._initLayerUrl();
         var serviceUrl = this._url;
-        imageUrl = serviceUrl + "/image." + this.options.format + imageUrl;
+        imageUrl = serviceUrl + '/image.' + this.options.format + imageUrl;
         imageUrl = this._appendCredential(imageUrl);
         //支持代理
         if (this.options.tileProxy) {
             imageUrl = this.options.tileProxy + encodeURIComponent(imageUrl);
         }
         if (!this.options.cacheEnabled) {
-            imageUrl += "&_t=" + new Date().getTime();
+            imageUrl += '&_t=' + new Date().getTime();
         }
         return imageUrl;
-
     },
 
     //获取请求瓦片宽高以及请求范围参数
-    _getImageParams: function () {
+    _getImageParams: function() {
         var size = this._calculateImageSize();
         return {
             viewBounds: this._compriseBounds(this._calculateBounds()),
@@ -203,62 +201,67 @@ export var ImageMapLayer = Layer.extend({
     },
 
     //拼接请求链接
-    _initLayerUrl: function () {
+    _initLayerUrl: function() {
         var me = this;
-        var layerUrl = "&";
+        var layerUrl = '&';
         layerUrl += encodeURI(me._initAllRequestParams().join('&'));
         return layerUrl;
     },
 
     //初始化服务请求参数
-    _initAllRequestParams: function () {
-        var me = this, options = me.options || {}, params = [];
+    _initAllRequestParams: function() {
+        var me = this,
+            options = me.options || {},
+            params = [];
 
-        var redirect = (options.redirect === true) ? options.redirect : false;
-        params.push("redirect=" + redirect);
+        var redirect = options.redirect === true ? options.redirect : false;
+        params.push('redirect=' + redirect);
 
-        var transparent = (options.transparent === true) ? options.transparent : false;
-        params.push("transparent=" + transparent);
+        var transparent = options.transparent === true ? options.transparent : false;
+        params.push('transparent=' + transparent);
 
-        var cacheEnabled = (options.cacheEnabled === false) ? options.cacheEnabled : true;
-        params.push("cacheEnabled=" + cacheEnabled);
+        var cacheEnabled = options.cacheEnabled === false ? options.cacheEnabled : true;
+        params.push('cacheEnabled=' + cacheEnabled);
 
         if (options.prjCoordSys) {
-            params.push("prjCoordSys=" + JSON.stringify(options.prjCoordSys));
+            params.push('prjCoordSys=' + JSON.stringify(options.prjCoordSys));
         }
 
         if (options.layersID) {
-            params.push("layersID=" + options.layersID);
+            params.push('layersID=' + options.layersID);
+        }
+        if (options.rasterfunction) {
+            params.push('rasterfunction=' + JSON.stringify(options.rasterfunction));
         }
 
         if (options.clipRegionEnabled && options.clipRegion instanceof L.Path) {
             options.clipRegion = L.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
             options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
-            params.push("clipRegionEnabled=" + options.clipRegionEnabled);
-            params.push("clipRegion=" + JSON.stringify(options.clipRegion));
+            params.push('clipRegionEnabled=' + options.clipRegionEnabled);
+            params.push('clipRegion=' + JSON.stringify(options.clipRegion));
         }
 
         if (options.overlapDisplayed === false) {
-            params.push("overlapDisplayed=false");
+            params.push('overlapDisplayed=false');
             if (options.overlapDisplayedOptions) {
-                params.push("overlapDisplayedOptions=" + me.overlapDisplayedOptions.toString());
+                params.push('overlapDisplayedOptions=' + me.overlapDisplayedOptions.toString());
             }
         } else {
-            params.push("overlapDisplayed=true");
+            params.push('overlapDisplayed=true');
         }
         return params;
     },
 
     //初始化请求链接
-    _requestImage: function (params, bounds) {
+    _requestImage: function(params, bounds) {
         var imageUrl = this.getImageUrl(params);
         this._loadImage(imageUrl, bounds);
     },
 
     //加载请求图层
-    _loadImage: function (url, bounds) {
+    _loadImage: function(url, bounds) {
         if (!this._map) {
-            return
+            return;
         }
 
         var image = new ImageOverlay(url, bounds, {
@@ -272,8 +275,7 @@ export var ImageMapLayer = Layer.extend({
             interactive: this.options.interactive
         }).addTo(this._map);
 
-
-        var onLoad = function (e) {
+        var onLoad = function(e) {
             image.off('error', onLoad, this);
             var map = this._map;
             if (!map) {
@@ -283,10 +285,7 @@ export var ImageMapLayer = Layer.extend({
             var newImage = e.target;
             var oldImage = this._currentImage;
 
-            if (newImage._bounds
-                && newImage._bounds.equals(bounds)
-                && newImage._bounds.equals(map.getBounds())) {
-
+            if (newImage._bounds && newImage._bounds.equals(bounds) && newImage._bounds.equals(map.getBounds())) {
                 this._currentImage = newImage;
 
                 if (this.options.position === 'front') {
@@ -315,18 +314,21 @@ export var ImageMapLayer = Layer.extend({
             this.fire('load', { bounds: bounds });
         };
 
-
         image.once('load', onLoad, this);
 
-        image.once('error', function () {
-            this._map.removeLayer(image);
-            /**
-             * @event L.supermap.imageMapLayer#error
-             * @description 请求图层加载失败后触发。
-             */
-            this.fire('error');
-            image.off('load', onLoad, this);
-        }, this);
+        image.once(
+            'error',
+            function() {
+                this._map.removeLayer(image);
+                /**
+                 * @event L.supermap.imageMapLayer#error
+                 * @description 请求图层加载失败后触发。
+                 */
+                this.fire('error');
+                image.off('load', onLoad, this);
+            },
+            this
+        );
 
         /**
          * @event L.supermap.imageMapLayer#loading
@@ -334,14 +336,13 @@ export var ImageMapLayer = Layer.extend({
          * @property {L.bounds} bounds  - 图层 bounds。
          */
         this.fire('loading', { bounds: bounds });
-
     },
 
     /**
      * @function L.supermap.imageMapLayer.prototype.update
      * @description 更新图层。
      */
-    update: function () {
+    update: function() {
         if (!this._map) {
             return;
         }
@@ -365,7 +366,7 @@ export var ImageMapLayer = Layer.extend({
     },
 
     //将像素坐标转成点坐标
-    _calculateBounds: function () {
+    _calculateBounds: function() {
         var pixelBounds = this._map.getPixelBounds();
         var sw = this._map.unproject(pixelBounds.getBottomLeft());
         var ne = this._map.unproject(pixelBounds.getTopRight());
@@ -375,22 +376,22 @@ export var ImageMapLayer = Layer.extend({
     },
 
     //转换viewBounds为JSON字符串
-    _compriseBounds: function (boundsProjected) {
+    _compriseBounds: function(boundsProjected) {
         var projBounds = {
-            "leftBottom": {
-                'x': boundsProjected.getBottomLeft().x,
-                'y': boundsProjected.getTopRight().y
+            leftBottom: {
+                x: boundsProjected.getBottomLeft().x,
+                y: boundsProjected.getTopRight().y
             },
-            "rightTop": {
-                'x': boundsProjected.getTopRight().x,
-                'y': boundsProjected.getBottomLeft().y
+            rightTop: {
+                x: boundsProjected.getTopRight().x,
+                y: boundsProjected.getBottomLeft().y
             }
         };
         return JSON.stringify(projBounds);
     },
 
     //计算图层的宽高
-    _calculateImageSize: function () {
+    _calculateImageSize: function() {
         var map = this._map;
         var bounds = map.getPixelBounds();
         var size = map.getSize();
@@ -408,36 +409,37 @@ export var ImageMapLayer = Layer.extend({
     },
 
     //追加token或key
-    _appendCredential: function (url) {
-        var newUrl = url, credential, value;
+    _appendCredential: function(url) {
+        var newUrl = url,
+            credential,
+            value;
         switch (this.options.serverType) {
             case ServerType.IPORTAL:
                 value = SecurityManager.getToken(this._url);
-                credential = value ? new Credential(value, "token") : null;
+                credential = value ? new Credential(value, 'token') : null;
                 if (!credential) {
                     value = SecurityManager.getKey(this._url);
-                    credential = value ? new Credential(value, "key") : null;
+                    credential = value ? new Credential(value, 'key') : null;
                 }
                 break;
             case ServerType.ONLINE:
                 value = SecurityManager.getKey(this._url);
-                credential = value ? new Credential(value, "key") : null;
+                credential = value ? new Credential(value, 'key') : null;
                 break;
             default:
                 //iserver or others
                 value = SecurityManager.getToken(this._url);
-                credential = value ? new Credential(value, "token") : null;
+                credential = value ? new Credential(value, 'token') : null;
                 break;
         }
         if (credential) {
-            newUrl += "&" + credential.getUrlParameters();
+            newUrl += '&' + credential.getUrlParameters();
         }
         return newUrl;
     }
-
 });
 
-export var imageMapLayer = function (url, options) {
+export var imageMapLayer = function(url, options) {
     return new ImageMapLayer(url, options);
 };
 L.supermap.imageMapLayer = imageMapLayer;

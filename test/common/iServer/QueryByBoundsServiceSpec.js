@@ -27,6 +27,21 @@ describe('QueryByBoundsService_processAsync', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('headers', () => {
+      let myHeaders = new Headers();
+      var queryByBoundsService = new QueryByBoundsService(GlobeParameter.mapServiceURL + "World Map", { headers: myHeaders });
+      expect(queryByBoundsService).not.toBeNull();
+      expect(queryByBoundsService.headers).not.toBeNull();
+      queryByBoundsService.destroy();
+    });
+    
+    it('crossOrigin', () => {
+        var queryByBoundsService = new QueryByBoundsService(GlobeParameter.mapServiceURL + "World Map", { crossOrigin: false });
+        expect(queryByBoundsService).not.toBeNull();
+        expect(queryByBoundsService.crossOrigin).toBeFalsy();
+        queryByBoundsService.destroy();
+    });
+
     it('constructor, destroy', () => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var QueryByBoundsFailed = (serviceFailedEventArgs) => {

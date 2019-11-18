@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title>POI</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient9-leaflet-css" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript" include="iclient-leaflet-css" src="../../dist/leaflet/include-leaflet.js"></script>
     <style>
         /*修改leaflet默认弹框样式*/
 
@@ -36,11 +36,11 @@
 
         L.supermap.tiledMapLayer(url).addTo(map);
         //添加组件：
-        var poiSearch = L.supermap.widgets.search({
+        var poiSearch = L.supermap.components.search({
             isGeoCoding: !window.isLocal,
             perPageDataNum: 8  // 每页显示数据个数
             //设置结果图层样式：
-            /*style: (feature, latLng) => {
+            /*style: function (feature, latLng) {
                 if (latLng /!*&& feature instanceof L.latLng || feature.geometry.type.toLowerCase() === "point"*!/) {
                     return L.circleMarker(latLng, {
                         fillColor: 'red',
@@ -69,7 +69,7 @@
                 .queryByBounds(param, function (serviceResult) {
                     var result = serviceResult.result;
                     var resultLayer = L.geoJSON(result.recordsets[0].features, {
-                        pointToLayer: (geoJsonPoint, latlng) => {
+                        pointToLayer: function (geoJsonPoint, latlng) {
                             return L.circleMarker(latlng, {
                                 fillColor: 'blue',
                                 weight: 1,
@@ -79,7 +79,7 @@
                             });
                         },
                     }).addTo(map);
-                    poiSearch.addSearchLayer([L.supermap.widgets.geoJSONLayerWithName("首都", resultLayer)]);
+                    poiSearch.addSearchLayer([L.supermap.components.geoJSONLayerWithName("首都", resultLayer)]);
                 });
         }
     </script>

@@ -68,12 +68,12 @@ import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
 import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
 
-/* widget */
-import './leaflet/widgets/openfile/OpenFileViewSpec.js';
-import './leaflet/widgets/dataservicequery/DataServiceQueryViewSpec.js';
-import './leaflet/widgets/distributedanalysis/DistributedAnalysisViewSpec.js';
-import './leaflet/widgets/clientcomputation/ClientComputationViewSpec.js';
-import './leaflet/widgets/search/SearchViewSpec.js';
-import './leaflet/widgets/dataflow/DataFlowViewSpec.js';
+/* component */
+import './leaflet/components/openfile/OpenFileViewSpec.js';
+import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';
+import './leaflet/components/distributedanalysis/DistributedAnalysisViewSpec.js';
+import './leaflet/components/clientcomputation/ClientComputationViewSpec.js';
+import './leaflet/components/search/SearchViewSpec.js';
+import './leaflet/components/dataflow/DataFlowViewSpec.js';
 import './leaflet/overlay/DataFlowlayerSpec.js';
 

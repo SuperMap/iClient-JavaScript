@@ -443,7 +443,7 @@ export var ThemeLayer = L.Layer.extend({
             }
 
         }
-        var point = this._map.latLngToContainerPoint(!this.options.alwaysMapCRS ? L.latLng(coor.y, coor.x) : this._map.options.crs.unproject(coor));
+        var point = this._map.latLngToAccurateContainerPoint(!this.options.alwaysMapCRS ? L.latLng(coor.y, coor.x) : this._map.options.crs.unproject(coor));
         return [point.x, point.y];
     },
 

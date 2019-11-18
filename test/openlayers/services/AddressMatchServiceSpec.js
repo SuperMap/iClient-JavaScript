@@ -13,6 +13,15 @@ describe('openlayers_AddressMatchService', () => {
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originaTimeout;
     });
+    
+    it('headers', () => {
+        let myHeaders = new Headers();
+        var addressMatchService = new AddressMatchService(addressMatchURL, { headers: myHeaders });
+        expect(addressMatchService).not.toBeNull();
+        expect(addressMatchService.options).not.toBeNull();
+        expect(addressMatchService.options.headers).not.toBeNull();
+    });
+    
     it('constructor', () => {
         var addressMatchService = new AddressMatchService(addressMatchURL);
         expect(addressMatchService).not.toBeNull();

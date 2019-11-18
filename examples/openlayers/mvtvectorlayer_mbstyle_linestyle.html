@@ -272,7 +272,6 @@
         });
         var style = new ol.supermap.MapboxStyles({
             url: url,
-            source: 'California',
             map: map,
             resolutions: resolutions
         })
@@ -360,7 +359,7 @@
             // 取色器
             colorPicker(jqObject);
             var lineOpacityOption = { min: "0", max: "1", step: "0.1", from: layerStyle.lineOpacity, opacitySlider: "true" };
-            var lineWidthOption = { min: "0", max: "100", step: "0.5", from: layerStyle.lineWidth, opacitySlider: "false" }
+            var lineWidthOption = { min: "0", max: "50", step: "0.5", from: layerStyle.lineWidth, opacitySlider: "false" }
             // 透明度滑块
             slider(jqObject['lineOpacity'], jqObject, lineOpacityOption);
             // 宽度滑块
@@ -416,6 +415,9 @@
         function changeStyle(styleOption) {
             style.updateStyles([{
                 "id": styleOption.id,
+                "layout":{
+                    "line-cap":'round'
+                },
                 "paint": {
                     "line-width": styleOption.style.lineWidth,
                     "line-color": styleOption.style.lineColor

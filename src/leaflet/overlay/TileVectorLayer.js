@@ -291,7 +291,7 @@ export var TileVectorLayer = VectorGrid.extend({
         for (var itemKey in shaders) {
             var shader = shaders[itemKey];
             for (var j = 0; j < shader.length; j++) {
-                var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
+                var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature,this.options.serverCartoCSSStyle);
                 if (serverStyle) {
                     style.push(serverStyle);
                 }

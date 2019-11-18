@@ -1,1 +1,1 @@
-存放iClient9对接iManager服务的代码。
+存放iClient对接iManager服务的代码。

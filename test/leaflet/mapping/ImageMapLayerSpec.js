@@ -1,4 +1,7 @@
 import {imageMapLayer} from '../../../src/leaflet/mapping/ImageMapLayer';
+import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
+import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
+import {getQueryValue} from '../../tool/utils';
 
 var url = GlobeParameter.WorldURL;
 describe('leaflet_ImageMapLayer', () => {
@@ -186,6 +189,38 @@ describe('leaflet_ImageMapLayer', () => {
         var imageUrlArray = imageUrl.split('?');
         expect(imageUrlArray[0]).toBe(url + '/image.png');
         expect(imageUrlArray[1]).toContain("&_t=")
+    });
+    it("getImageUrl, rasterfunction_ndviParameter", () => {
+        // NDVIParameter
+        const tempOptions = {
+            rasterfunction:new NDVIParameter({redIndex:0,nirIndex:2}),
+        };
+        const imageLayerObject = imageMapLayer(url, tempOptions).addTo(map);
+        expect(imageLayerObject).not.toBeNull();
+        const tileUrl = imageLayerObject.getImageUrl( L.point(1, 4));
+        const ndviParameterValue = getQueryValue(tileUrl,'rasterfunction');
+        expect(ndviParameterValue).not.toBeNull;
+        const ndviParameter = JSON.parse(decodeURIComponent(ndviParameterValue));
+        expect(ndviParameter.type).toBe("NDVI");
+        expect(ndviParameter.redIndex).toBe(0);
+        expect(ndviParameter.nirIndex).toBe(2);
+        expect(ndviParameter.colorMap).toBe("0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff");
+    });
+    it("getImageUrl, rasterfunction_hillshadeParameter", () => {
+        // HillshadeParameter
+        const tempOptions = {
+            rasterfunction:new HillshadeParameter({altitude:10,azimuth:200}),
+        };
+        const imageLayerObject = imageMapLayer(url, tempOptions).addTo(map);
+        expect(imageLayerObject).not.toBeNull();
+        const tileUrl = imageLayerObject.getImageUrl(L.point(1, 4));
+        const hillshadeParameterValue = getQueryValue(tileUrl,'rasterfunction');
+        expect(hillshadeParameterValue).not.toBeNull;
+        const hillshadeParameter = JSON.parse(decodeURIComponent(hillshadeParameterValue));
+        expect(hillshadeParameter.type).toBe("HILLSHADE");
+        expect(hillshadeParameter.altitude).toBe(10);
+        expect(hillshadeParameter.azimuth).toBe(200);
+        expect(hillshadeParameter.zFactor).toBe(1);
     });
 
 });

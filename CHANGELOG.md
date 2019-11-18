@@ -1,4 +1,245 @@
-# next release #
+# 10.0.0 #
+
+## Distribution package changes
+
+### for Leaflet
+
+- `iclient9-leaflet.js` 更名 `iclient-leaflet.js`
+  
+- `iclient9-leaflet.min.js` 更名 `iclient-leaflet.min.js`
+
+- `iclient9-leaflet-es6.js` 更名 `iclient-leaflet-es6.js`
+
+- `iclient9-leaflet-es6.min.js` 更名 `iclient-leaflet-es6.min.js`
+  
+- `iclient9-leaflet.css` 更名 `iclient-leaflet.css`
+
+- `iclient9-leaflet.min.css` 更名 `iclient-leaflet.min.css`
+
+
+### for OpenLayers
+
+- `iclient9-openlayers.js` 更名 `iclient-openlayers.js`
+  
+- `iclient9-openlayers.min.js` 更名 `iclient-openlayers.min.js`
+
+- `iclient9-openlayers-es6.js` 更名 `iclient-openlayers-es6.js`
+
+- `iclient9-openlayers-es6.min.js` 更名 `iclient-openlayers-es6.min.js`
+  
+- `iclient9-openlayers.css` 更名 `iclient-openlayers.css`
+
+- `iclient9-openlayers.min.css` 更名 `iclient-openlayers.min.css`
+
+### for MapboxGL
+
+- `iclient9-mapboxgl.js` 更名 `iclient-mapboxgl.js`
+  
+- `iclient9-mapboxgl.min.js` 更名 `iclient-mapboxgl.min.js`
+
+- `iclient9-mapboxgl-es6.js` 更名 `iclient-mapboxgl-es6.js`
+
+- `iclient9-mapboxgl-es6.min.js` 更名 `iclient-mapboxgl-es6.min.js`
+  
+- `iclient9-mapboxgl.css` 更名 `iclient-mapboxgl.css`
+
+- `iclient9-mapboxgl.min.css` 更名 `iclient-mapboxgl.min.css`
+
+
+## API changes
+
+### for Leaflet
+
+- `L.supermap.imageMapLayer` `L.supermap.tiledMapLayer` 新增 `options.rasterfunction` 参数，支持对接 SuperMap iServer 的栅格运算。
+
+- `L.supermap.ServiceBase` 及其子类
+
+  - 新增 `options.headers` 参数，支持设置请求头内容。
+
+- 命名空间 `L.supermap.widgets` 更名为 `L.supermap.components`
+
+- 命名空间 `SuperMap.Widgets` 更名为 `SuperMap.Components`
+
+### for OpenLayers
+
+- `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 新增 `options.rasterfunction` 参数，支持对接 SuperMap iServer 的栅格运算。
+
+- `ol.supermap.ServiceBase` 及其子类
+
+  - 新增 `options. headers` 参数，支持设置请求头内容
+
+- 命名空间 `SuperMap.Widgets` 更名为 `SuperMap.Components`
+
+
+### for MapboxGL
+
+- `mapboxgl.supermap.ServiceBase` 及其子类
+
+  - 新增 `options. headers` 参数，支持设置请求头内容
+
+- 命名空间 `SuperMap.Widgets` 更名为 `SuperMap.Components`
+
+## Fixed
+
+### for Leaflet
+
+- 修复 SuperMap iServer 地图设置可见比例尺时，手机端用双指缩放时，超出最大最小级别时出错的问题
+
+- 修复 `L.supermap.mapVLayer` 在 Internet Explorer 11/10 浏览器上可能不出图的问题
+  
+- 修复 `L.supermap.tiledVectorLayer` 使用自定义 `cartoCSS` 样式时配置 `pointurl` 不生效的问题 
+
+
+### for OpenLayers
+
+- 修复 `ol.source.Mapv` 在 Internet Explorer 11/10 浏览器上可能不出图的问题
+
+### for MapboxGL
+
+- 修复 `mapboxgl.supermap.MapvLayer` 在 Internet Explorer 11/10 浏览器上可能不出图的问题
+
+
+## Examples
+
+- 新增 Component 分类
+
+  - 新增 “Vue - 地图” 分类及相关示例
+  
+  - 新增 “Vue - 地图子组件” 分类及相关示例
+
+  - 新增 “Vue - 天地图子组件” 分类及相关示例
+  
+  - 新增 “Vue - 可视化” 分类及相关示例
+  
+  - 新增 “Vue - 图表” 分类及相关示例
+  
+  - 新增 “Vue – 基础” 分类及相关示例
+  
+  - 新增 “Vue - 其他” 分类及相关示例
+
+### for Leaflet
+
+- iServer – 地图
+  
+  - 增加 “地图-栅格分析” 例子
+
+### for OpenLayers
+
+- iServer – 地图
+  
+  - 增加 “地图-栅格分析” 例子
+
+### for MapboxGL
+
+- 可视化 - 矢量瓦片
+  
+  - 增加 “iServer数据服务矢量瓦片(2000万点)” 例子
+
+
+# 10.0.0 beta #
+
+## 新特性
+
+### 积木式搭建应用：[SuperMap iClient Vue 组件库](https://github.com/SuperMap/vue-iclient)
+ - SuperMap iClient Vue 组件库在架构设计上采用 MVVM 模式（Model-View-ViewModel）同时也能兼容其它框架，例如 React、Angular 以及原生 H5 开发。 使用 SuperMap iClient Vue 组件库，可像搭积木一样快速的创建自定义的 WebGIS 应用
+![1000-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-2.png)
+
+### 开箱即用：丰富的组件选择
+ - 组件库采用了开箱即用的方案，现阶段提供了二/三维地图组件，丰富的地理可视化组件，图表类组件和基础 GIS 组件等
+![1000-3](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-3.gif)
+
+### 一键主题切换
+ - 在主题风格上，SuperMap iClient Vue 组件现阶段内置了多套主题，可一键切换所有组件的主题风格
+![1000-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-1.gif)
+
+
+## API changes
+
+### for MapboxGL
+
+- `SuperMap.GetFeaturesByGeometryParameters` 的 `geometry` 参数支持传入 `mapboxgl.LngLatBounds` 
+
+- `SuperMap.QueryByGeometryParameters` 的 `geometry` 参数支持传入 `mapboxgl.LngLatBounds` 
+
+## Fixed
+
+### for Leaflet
+
+- 修复客户端专题图鼠标滑过要素时可能出现的闪动问题
+
+- 修复 `L.supermap.echartsLayer` 的 `options` 传入 `pane` 参数无效的问题
+
+### for OpenLayers
+
+- `ol.supermap.WebMap`
+
+  - 修复在跨域情况下访问地图失败的问题
+
+  - 修正内置的互联网底图最大缩放级别
+
+  - 修复访问坐标系为 epsg:0/epsg:-1000/epsg:-1 地图失败的问题
+
+
+# 10.0.0 alpha #
+
+## 新特性
+
+- iClient for MapboxGL（for vue）组件库新增示例，新增房产项目可视化监控平台示例，使用 iClient Vue 组件快速搭建行业大屏应用
+
+![whatsNewComponents](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-1.gif)
+
+## API changes
+
+### for Leaflet
+- `L.supermap.ServiceBase` 及其子类
+
+  - 新增 `options.crossOrigin` 参数，支持设置是否允许跨域请求。
+
+### for OpenLayers
+
+
+- `ol.supermap.WebMap` 新增支持迁徙图、MVT矢量瓦片图层。
+
+- `ol.supermap.MapboxStyles` 新增 `setSelectedObjects` `addSelectedObjects` `removeSelectedObjects` `clearSelectedObjects` 接口，支持设置、增加、移除、清除多个高亮要素。
+
+- `ol.supermap.ServiceBase` 及其子类
+
+  - 新增 `options.crossOrigin` 参数，支持设置是否允许跨域请求。
+
+
+### for MapboxGL
+
+- `mapboxgl.supermap.ServiceBase` 及其子类
+
+  - 新增 `options.crossOrigin` 参数，支持设置是否允许跨域请求。
+
+## Fixed
+
+### for Leaflet
+
+- 修复从 SuperMap iServer 获取要素可能多`stringID`和`ID`属性字段的问题,请使用`feature.id`获取要素id
+
+### for OpenLayers
+
+- 修复从 SuperMap iServer 获取要素可能多`stringID`和`ID`属性字段的问题,请使用`feature.getId()`获取要素id
+
+### for MapboxGL
+
+- 修复从 SuperMap iServer 获取要素可能多`stringID`和`ID`属性字段的问题,请使用`feature.id`获取要素id
+
+
+## Examples
+
+### for OpenLayers
+
+- 修复平面无投影地图相关示例访问失败的问题。
+
+### for MapboxGL
+
+- 新增 `Vue 组件` 分类及相关示例。
+
+
+
 # 9.1.2 (2019-04-26) #
 
 ## 新特性
@@ -7,7 +248,7 @@
 
 - iClient for MapboxGL 新增 WebMap 地图组件，图表组件，图例组件，图层列表组件，量算组件，查询/搜索组件，进度条等基础组件，支持多种主题（可一键切换风格）
 
-![whatsNewMapboxGlWidgets](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
+![whatsNewMapboxGlComponents](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
  
 ## API changes
 
@@ -96,7 +337,7 @@
 
 -	iClient for Leaflet新增：文件打开组件、数据流组件、地址匹配与图层查询组件、客户端计算组件、分布式分析组件、数据服务查询组件
 
-![whatsNewWidgets](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-2.png)
+![whatsNewClientComputaion](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-2.png)
  
 ## API changes
 
