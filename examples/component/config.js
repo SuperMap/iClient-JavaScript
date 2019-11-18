@@ -395,6 +395,13 @@ var exampleConfig = {
         name_en: 'Map',
         content: [
           {
+            name: 'iServer 地图',
+            name_en: 'iServer Map',
+            version: '10.0.1',
+            thumbnail: 'components_map_vue.png',
+            fileName: 'l_map_vue'
+          },
+          {
             name: 'iPortal 地图',
             name_en: 'iPortal Map',
             version: '10.0.1',
@@ -404,10 +411,10 @@ var exampleConfig = {
           },
           {
             name: '栅格图层',
-            name_en: 'Raster Layer',
+            name_en: 'Tile Layer',
             version: '10.0.1',
-            thumbnail: 'components_rasterLayer_react.png',
-            fileName: 'l_raster_vue',
+            thumbnail: 'components_rasterLayer_vue.png',
+            fileName: 'l_tile_vue',
             localIgnore: true
           }
         ]
