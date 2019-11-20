@@ -544,6 +544,7 @@ window.examplesResources = {
         "title_componentsAnimateMarkerLayer_Vue": '动效标记图层',
         "title_componentsAnimateTextLayer_Vue": '动效文本标记图层',
         "title_componentsBorder_Vue": '边框组件',
+        "title_componentsIdentify_Vue": '点选查询组件(Vue)',
         "title_componentsTianditu_Vue": '天地图',
         "title_componentsTianditu_route_Vue": '路线规划',
         "title_componentsTianditu_search_Vue": 'POI搜索',

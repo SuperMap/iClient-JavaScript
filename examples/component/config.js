@@ -130,6 +130,13 @@ var exampleConfig = {
             version: '10.0.0',
             thumbnail: 'components_openfile_vue.png',
             fileName: 'components_openfile_vue'
+          },
+          {
+            name: '点选查询',
+            name_en: 'Identify',
+            version: '10.0.0',
+            thumbnail: 'components_identify_vue.png',
+            fileName: 'components_identify_vue'
           }
         ]
       },
