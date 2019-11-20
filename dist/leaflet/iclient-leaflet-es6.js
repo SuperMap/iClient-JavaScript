@@ -82744,113 +82744,115 @@ var NormalRenderer_NormalRenderer = external_L_default.a.GeoJSON.extend({
 
 var DataFlowLayer_DataFlowLayer = external_L_default.a.LayerGroup.extend({
 
-    options: {
-        geometry: null,
-        prjCoordSys: null,
-        excludeField: null,
-        idField: "id",
-        render: 'normal'
-    },
+  options: {
+    geometry: null,
+    prjCoordSys: null,
+    excludeField: null,
+    idField: "id",
+    render: 'normal'
+  },
 
-    initialize: function (url, options) {
-        options = options || {};
-        external_L_default.a.Util.setOptions(this, options);
-        this.url = url;
-        this._layers = {};
-        this.dataService = new services_DataFlowService_DataFlowService(this.url, {
-            geometry: this.options.geometry,
-            prjCoordSys: this.options.prjCoordSys,
-            excludeField: this.options.excludeField
-        })
+  initialize: function (url, options) {
+    options = options || {};
+    external_L_default.a.Util.setOptions(this, options);
+    this.url = url;
+    this._layers = {};
+    this.dataService = new services_DataFlowService_DataFlowService(this.url, {
+      geometry: this.options.geometry,
+      prjCoordSys: this.options.prjCoordSys,
+      excludeField: this.options.excludeField
+    })
 
-    },
+  },
+  /**
+   * @private
+   * @function L.supermap.dataFlowLayer.prototype.onAdd
+   * @description 添加地图。
+   * @param {L.Map} map - 待添加的地图。
+   */
+  onAdd: function (map) { // eslint-disable-line no-unused-vars
+    this.dataService.initSubscribe();
     /**
-     * @private
-     * @function L.supermap.dataFlowLayer.prototype.onAdd
-     * @description 添加地图。
-     * @param {L.Map} map - 待添加的地图。
+     * @event L.supermap.dataFlowLayer#subscribesucceeded
+     * @description 初始化成功后触发。
+     * @property {Object} e  - 事件对象。
      */
-    onAdd: function (map) { // eslint-disable-line no-unused-vars
-        this.dataService.initSubscribe();
-        /**
-         * @event L.supermap.dataFlowLayer#subscribesucceeded
-         * @description 初始化成功后触发。
-         * @property {Object} e  - 事件对象。
-         */
-        this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesucceeded", e));
-        
-        /**
-         * @event L.supermap.dataFlowLayer#subscribefailed
-         * @description 初始化失败后触发。
-         * @property {Object} e  - 事件对象。
-         */
-        this.dataService.on('subscribeSocketError', (e) => this.fire("subscribefailed", e))
-        this.dataService.on('messageSucceeded', (msg) => this._onMessageSuccessed(msg));
-        
-        /**
-         * @event L.supermap.dataFlowLayer#setfilterparamsucceeded
-         * @description 过滤参数设置成功后触发。
-         * @property {Object} e  - 事件对象。
-         */
-        this.dataService.on('setFilterParamSucceeded', (msg) => this.fire("setfilterparamsucceeded", msg));
-        if (this.options.render === 'mapv') {
-            this.addLayer(new MapvRenderer_MapvRenderer(this.url, this.options));
-        } else {
-            this.addLayer(new NormalRenderer_NormalRenderer(this.url, this.options));
-        }
-        external_L_default.a.LayerGroup.prototype.onAdd.call(this, map);
-    },
-    /**
-     * @private
-     * @function L.supermap.dataFlowLayer.prototype.onRemove
-     * @description 删除指定地图。
-     * @param {L.Map} map - 待删除的地图。
-     */
-    onRemove: function (map) { // eslint-disable-line no-unused-vars
-        external_L_default.a.LayerGroup.prototype.onRemove.call(this, map);
-        this.dataService && this.dataService.unSubscribe();
-    },
-    /**
-     * @function L.supermap.dataFlowLayer.prototype.setExcludeField
-     * @description 设置唯一字段。
-     * @param {string} excludeField - 唯一字段。
-     */
-    setExcludeField: function (excludeField) {
-        this.dataService.setExcludeField(excludeField);
-        this.options.excludeField = excludeField;
-        return this;
-    },
+    this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesucceeded", e));
 
     /**
-     * @function L.supermap.dataFlowLayer.prototype.setGeometry
-     * @description 设置集合要素。
-     * @param {GeoJSONObject} geometry - 待设置的 GeoJSON 几何要素对象。
+     * @event L.supermap.dataFlowLayer#subscribefailed
+     * @description 初始化失败后触发。
+     * @property {Object} e  - 事件对象。
      */
-    setGeometry: function (geometry) {
-        this.dataService.setGeometry(geometry);
-        this.options.geometry = geometry;
-        return this;
-    },
-    _onMessageSuccessed: function (msg) {
-        this.getLayers().map((layer) => {
-            layer.onMessageSuccessed(msg);
-            /**
-             * @description 图层数据更新成功后触发。
-             * @event L.supermap.dataFlowLayer#dataupdated
-             * @property {Object} layer  - 更新数据成功的图层。
-             * @property {Object} data  - 更新的要素。
-             */
-            this.fire("dataupdated", {
-                layer: layer,
-                data: msg.featureResult
-            });
-            return layer;
-        })
+    this.dataService.on('subscribeSocketError', (e) => this.fire("subscribefailed", e))
+    this.dataService.on('messageSucceeded', (msg) => this._onMessageSuccessed(msg));
+
+    /**
+     * @event L.supermap.dataFlowLayer#setfilterparamsucceeded
+     * @description 过滤参数设置成功后触发。
+     * @property {Object} e  - 事件对象。
+     */
+    this.dataService.on('setFilterParamSucceeded', (msg) => this.fire("setfilterparamsucceeded", msg));
+    if (this.options.render === 'mapv') {
+      this.addLayer(new MapvRenderer_MapvRenderer(this.url, this.options));
+    } else {
+      this.addLayer(new NormalRenderer_NormalRenderer(this.url, this.options));
     }
+    external_L_default.a.LayerGroup.prototype.onAdd.call(this, map);
+  },
+  /**
+   * @private
+   * @function L.supermap.dataFlowLayer.prototype.onRemove
+   * @description 删除指定地图。
+   * @param {L.Map} map - 待删除的地图。
+   */
+  onRemove: function (map) { // eslint-disable-line no-unused-vars
+    external_L_default.a.LayerGroup.prototype.onRemove.call(this, map);
+    this.dataService && this.dataService.unSubscribe();
+  },
+  /**
+   * @function L.supermap.dataFlowLayer.prototype.setExcludeField
+   * @description 设置唯一字段。
+   * @param {string} excludeField - 唯一字段。
+   */
+  setExcludeField: function (excludeField) {
+    this.dataService.setExcludeField(excludeField);
+    this.options.excludeField = excludeField;
+    return this;
+  },
+
+  /**
+   * @function L.supermap.dataFlowLayer.prototype.setGeometry
+   * @description 设置集合要素。
+   * @param {GeoJSONObject} geometry - 待设置的 GeoJSON 几何要素对象。
+   */
+  setGeometry: function (geometry) {
+    this.dataService.setGeometry(geometry);
+    this.options.geometry = geometry;
+    return this;
+  },
+  _onMessageSuccessed: function (msg) {
+    this.getLayers().map((layer) => {
+      if (layer.onMessageSuccessed) {
+        layer.onMessageSuccessed(msg);
+        /**
+         * @description 图层数据更新成功后触发。
+         * @event L.supermap.dataFlowLayer#dataupdated
+         * @property {Object} layer  - 更新数据成功的图层。
+         * @property {Object} data  - 更新的要素。
+         */
+        this.fire("dataupdated", {
+          layer: layer,
+          data: msg.featureResult
+        });
+      }
+      return layer;
+    })
+  }
 
 });
 var DataFlowLayer_dataFlowLayer = function (url, options) {
-    return new DataFlowLayer_DataFlowLayer(url, options);
+  return new DataFlowLayer_DataFlowLayer(url, options);
 };
 
 external_L_default.a.supermap.dataFlowLayer = DataFlowLayer_dataFlowLayer;
