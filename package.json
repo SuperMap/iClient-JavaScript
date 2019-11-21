@@ -115,7 +115,7 @@
     "@turf/turf": "5.1.6",
     "canvg": "1.5.3",
     "echarts": "4.3.0",
-    "elasticsearch": "16.3.0",
+    "elasticsearch": "16.5.0",
     "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.0.6",
     "jsonsql": "0.2.5",
