@@ -68,7 +68,7 @@
     "chromedriver": "75.1.0",
     "clean-css-cli": "^4.1.6",
     "commander": "^2.15.1",
-    "cross-env": "^5.2.0",
+    "cross-env": "^6.0.3",
     "css-loader": "^0.28.11",
     "es3ify-loader": "^0.2.0",
     "eslint": "^4.6.1",
