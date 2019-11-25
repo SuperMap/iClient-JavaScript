@@ -105,7 +105,7 @@
     "url-loader": "^2.3.0",
     "watchify": "^3.9.0",
     "webpack": "4.41.2",
-    "webpack-cli": "2.0.12",
+    "webpack-cli": "3.3.10",
     "webpack-dev-middleware": "^3.2.0",
     "webpack-node-externals": "^1.6.0"
   },
