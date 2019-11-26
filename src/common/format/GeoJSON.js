@@ -83,7 +83,7 @@ export class GeoJSON extends JSONFormat {
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
             "point": function (array) {
-                if (this.ignoreExtraDims == false &&
+                if (this.ignoreExtraDims === false &&
                     array.length != 2) {
                     throw "Only 2D points are supported: " + array;
                 }

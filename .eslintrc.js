@@ -52,6 +52,8 @@ module.exports = {
         "no-fallthrough": "warn",
         //禁止直接调用eval()
         "no-eval": ["error", {"allowIndirect": true}],
+        "no-prototype-builtins":"off",
+        "no-useless-catch":"off",
         //Ensure imports point to a file/module that can be resolved
         "import/no-unresolved": [2, {commonjs: true, amd: true}],
         //Ensure named imports correspond to a named export in the remote file

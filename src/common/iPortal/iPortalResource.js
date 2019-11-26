@@ -95,5 +95,5 @@ export class IPortalResource extends IPortalServiceBase {
 
 }
 
-SuperMap.iPortalMap = IPortalMap;
+SuperMap.iPortalMap = IPortalResource;
 

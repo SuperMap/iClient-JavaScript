@@ -14,7 +14,6 @@ import {Util} from '../commontypes/Util';
  */
 export class IPortalQueryResult {
     constructor(mapUrl, params) {
-        super(mapUrl);
         params = params || {};
         this.authorizeSetting = [];
         this.center = "";
