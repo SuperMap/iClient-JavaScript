@@ -14,6 +14,9 @@ import { IPortalScene } from "./iPortalScene";
 import { IPortalServiceBase } from "./iPortalServiceBase";
 import { IPortalMapdashboard } from "./iPortalMapdashboard";
 import { IPortalMapdashboardsQueryParam } from "./iPortalMapdashboardsQueryParam";
+import { IPortalQueryParam } from "./iPortalQueryParam";
+import { IPortalQueryResult } from "./iPortalQueryResult";
+import { IPortalResource } from "./iPortalResource";
 
 /**
  * @class SuperMap.iPortal
@@ -38,6 +41,32 @@ export class IPortal extends IPortalServiceBase {
     load() {
         return FetchRequest.get(this.iportalUrl + "/web");
     }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryResources
+     * @description 查询资源。
+     * @param {SuperMap.iPortalQueryParam} queryParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+    queryResources(queryParams) {
+        if (!(queryParams instanceof IPortalQueryParam)) {
+            return null;
+        }
+        //http://rdc.ispeco.com/gateway/catalog/resource/search.json?aggregationTypes=%5B%22TYPE%22%5D&t=1574736505796&pageSize=12&currentPage=1&orderBy=UPDATETIME&orderType=DESC&tags=%5B%5D&dirIds=%5B%5D&searchType=PUBLIC&resourceSubTypes=%5B%5D
+        var resourceUrl = this.iportalUrl + "/gateway/catalog/resource/search.json";
+        return this.request("GET", resourceUrl, queryParams).then(function(result) {
+            var content = [];
+            result.content.forEach(function(item) {
+                content.push(new IPortalResource(resourceUrl, item));
+            });
+            let queryResult = new IPortalQueryResult();
+            queryResult.content = content;
+            queryResult.total = result.total;
+
+            return queryResult;
+        });
+    }
+
 
     /**
      * @function SuperMap.iPortal.prototype.queryServices
