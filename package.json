@@ -91,7 +91,7 @@
     "karma-jasmine": "^2.0.1",
     "karma-teamcity-reporter": "^1.0.0",
     "leaflet.pm": "^0.25.0",
-    "mock-socket": "^8.0.5",
+    "mock-socket": "^9.0.2",
     "nightwatch": "^0.9.5",
     "open": "^6.0.0",
     "pngjs": "^3.3.0",
