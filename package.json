@@ -129,7 +129,7 @@
     "promise-polyfill": "6.0.2",
     "three": "0.92.0",
     "xlsx": "0.15.1",
-    "xml-js": "1.6.8"
+    "xml-js": "1.6.11"
   },
   "pre-commit": [
     "lint"
