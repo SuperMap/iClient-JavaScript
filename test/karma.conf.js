@@ -18,7 +18,7 @@ module.exports = function (config) {
             transform: [
                 [require('babelify'), {
                     presets: ["@babel/preset-env"],
-                    ignore: ["**/libs/**"],
+                    ignore: ["../src/classic/libs/**"],
                     plugins: ['istanbul']
                 }],
                 [require('browserify-css'), {global: true}],
