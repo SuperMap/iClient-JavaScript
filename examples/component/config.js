@@ -425,6 +425,19 @@ var exampleConfig = {
             localIgnore: true
           }
         ]
+      },
+      l_map_subcomponent: {
+        name: '地图子组件',
+        name_en: 'Map subcomponent',
+        content: [
+          {
+            name: '点选查询',
+            name_en: 'Identify',
+            version: '10.0.0',
+            thumbnail: 'components_identify_vue.png',
+            fileName: 'l_identify_vue'
+          }
+        ]
       }
     }
   },

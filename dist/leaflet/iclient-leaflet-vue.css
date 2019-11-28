@@ -2271,3 +2271,52 @@ body {
     z-index: 100;
     background: rgba(0, 0, 0, 0.8); }
 
+/* Transition */
+/* color */
+/* 53a8ff */
+/* 66b1ff */
+/* 79bbff */
+/* 8cc5ff */
+/* a0cfff */
+/* b3d8ff */
+/* c6e2ff */
+/* d9ecff */
+/* ecf5ff */
+/* text */
+/* icon */
+/* z-index */
+/* link */
+/* border */
+/* fill */
+.sm-component-identify {
+  list-style: none;
+  margin: 0;
+  padding: 10px 15px;
+  max-height: 170px;
+  width: 280px;
+  overflow: auto;
+  font-size: 14px;
+  background: transparent; }
+  .sm-component-identify::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: #ffff; }
+  .sm-component-identify::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #bbb; }
+  .sm-component-identify__body {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0; }
+  .sm-component-identify__left {
+    width: 40%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .sm-component-identify__right {
+    margin-left: 10px;
+    width: calc(60% - 10px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+

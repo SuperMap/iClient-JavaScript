@@ -8,14 +8,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("../../static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("video.js"), require("echarts"), require("ant-design-vue"), require("echarts-liquidfill"), require("L"), require("vue"));
+		module.exports = factory(require("./static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("leaflet"), require("video.js"), require("echarts"), require("ant-design-vue"), require("echarts-liquidfill"), require("vue"));
 	else if(typeof define === 'function' && define.amd)
-		define(["../../static/libs/iclient-leaflet/iclient-leaflet.min.js", "video.js", "echarts", "ant-design-vue", "echarts-liquidfill", "L", "vue"], factory);
+		define(["./static/libs/iclient-leaflet/iclient-leaflet.min.js", "leaflet", "video.js", "echarts", "ant-design-vue", "echarts-liquidfill", "vue"], factory);
 	else if(typeof exports === 'object')
-		exports["Components"] = factory(require("../../static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("video.js"), require("echarts"), require("ant-design-vue"), require("echarts-liquidfill"), require("L"), require("vue"));
+		exports["Components"] = factory(require("./static/libs/iclient-leaflet/iclient-leaflet.min.js"), require("leaflet"), require("video.js"), require("echarts"), require("ant-design-vue"), require("echarts-liquidfill"), require("vue"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["SuperMap"], root["_videojs"], root["echarts"], root["antd"], root["echarts-liquidfill"], root["L"], root["Vue"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__17FK__, __WEBPACK_EXTERNAL_MODULE_AzSJ__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_TnLG__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_hgx0__, __WEBPACK_EXTERNAL_MODULE_i7_w__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["SuperMap"], root["L"], root["_videojs"], root["echarts"], root["antd"], root["echarts-liquidfill"], root["Vue"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE__17FK__, __WEBPACK_EXTERNAL_MODULE_hgx0__, __WEBPACK_EXTERNAL_MODULE_AzSJ__, __WEBPACK_EXTERNAL_MODULE_Fk5u__, __WEBPACK_EXTERNAL_MODULE_TnLG__, __WEBPACK_EXTERNAL_MODULE_hQXD__, __WEBPACK_EXTERNAL_MODULE_i7_w__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -103,6 +103,462 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ "+qE3":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+var R = typeof Reflect === 'object' ? Reflect : null
+var ReflectApply = R && typeof R.apply === 'function'
+  ? R.apply
+  : function ReflectApply(target, receiver, args) {
+    return Function.prototype.apply.call(target, receiver, args);
+  }
+
+var ReflectOwnKeys
+if (R && typeof R.ownKeys === 'function') {
+  ReflectOwnKeys = R.ownKeys
+} else if (Object.getOwnPropertySymbols) {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target)
+      .concat(Object.getOwnPropertySymbols(target));
+  };
+} else {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target);
+  };
+}
+
+function ProcessEmitWarning(warning) {
+  if (console && console.warn) console.warn(warning);
+}
+
+var NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {
+  return value !== value;
+}
+
+function EventEmitter() {
+  EventEmitter.init.call(this);
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._eventsCount = 0;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+var defaultMaxListeners = 10;
+
+Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
+  enumerable: true,
+  get: function() {
+    return defaultMaxListeners;
+  },
+  set: function(arg) {
+    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {
+      throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + '.');
+    }
+    defaultMaxListeners = arg;
+  }
+});
+
+EventEmitter.init = function() {
+
+  if (this._events === undefined ||
+      this._events === Object.getPrototypeOf(this)._events) {
+    this._events = Object.create(null);
+    this._eventsCount = 0;
+  }
+
+  this._maxListeners = this._maxListeners || undefined;
+};
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
+  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {
+    throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + '.');
+  }
+  this._maxListeners = n;
+  return this;
+};
+
+function $getMaxListeners(that) {
+  if (that._maxListeners === undefined)
+    return EventEmitter.defaultMaxListeners;
+  return that._maxListeners;
+}
+
+EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
+  return $getMaxListeners(this);
+};
+
+EventEmitter.prototype.emit = function emit(type) {
+  var args = [];
+  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
+  var doError = (type === 'error');
+
+  var events = this._events;
+  if (events !== undefined)
+    doError = (doError && events.error === undefined);
+  else if (!doError)
+    return false;
+
+  // If there is no 'error' event listener then throw.
+  if (doError) {
+    var er;
+    if (args.length > 0)
+      er = args[0];
+    if (er instanceof Error) {
+      // Note: The comments on the `throw` lines are intentional, they show
+      // up in Node's output if this results in an unhandled exception.
+      throw er; // Unhandled 'error' event
+    }
+    // At least give some kind of context to the user
+    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));
+    err.context = er;
+    throw err; // Unhandled 'error' event
+  }
+
+  var handler = events[type];
+
+  if (handler === undefined)
+    return false;
+
+  if (typeof handler === 'function') {
+    ReflectApply(handler, this, args);
+  } else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      ReflectApply(listeners[i], this, args);
+  }
+
+  return true;
+};
+
+function _addListener(target, type, listener, prepend) {
+  var m;
+  var events;
+  var existing;
+
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+
+  events = target._events;
+  if (events === undefined) {
+    events = target._events = Object.create(null);
+    target._eventsCount = 0;
+  } else {
+    // To avoid recursion in the case that type === "newListener"! Before
+    // adding it to the listeners, first emit "newListener".
+    if (events.newListener !== undefined) {
+      target.emit('newListener', type,
+                  listener.listener ? listener.listener : listener);
+
+      // Re-assign `events` because a newListener handler could have caused the
+      // this._events to be assigned to a new object
+      events = target._events;
+    }
+    existing = events[type];
+  }
+
+  if (existing === undefined) {
+    // Optimize the case of one listener. Don't need the extra array object.
+    existing = events[type] = listener;
+    ++target._eventsCount;
+  } else {
+    if (typeof existing === 'function') {
+      // Adding the second element, need to change to array.
+      existing = events[type] =
+        prepend ? [listener, existing] : [existing, listener];
+      // If we've already got an array, just append.
+    } else if (prepend) {
+      existing.unshift(listener);
+    } else {
+      existing.push(listener);
+    }
+
+    // Check for listener leak
+    m = $getMaxListeners(target);
+    if (m > 0 && existing.length > m && !existing.warned) {
+      existing.warned = true;
+      // No error code for this since it is a Warning
+      // eslint-disable-next-line no-restricted-syntax
+      var w = new Error('Possible EventEmitter memory leak detected. ' +
+                          existing.length + ' ' + String(type) + ' listeners ' +
+                          'added. Use emitter.setMaxListeners() to ' +
+                          'increase limit');
+      w.name = 'MaxListenersExceededWarning';
+      w.emitter = target;
+      w.type = type;
+      w.count = existing.length;
+      ProcessEmitWarning(w);
+    }
+  }
+
+  return target;
+}
+
+EventEmitter.prototype.addListener = function addListener(type, listener) {
+  return _addListener(this, type, listener, false);
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.prependListener =
+    function prependListener(type, listener) {
+      return _addListener(this, type, listener, true);
+    };
+
+function onceWrapper() {
+  var args = [];
+  for (var i = 0; i < arguments.length; i++) args.push(arguments[i]);
+  if (!this.fired) {
+    this.target.removeListener(this.type, this.wrapFn);
+    this.fired = true;
+    ReflectApply(this.listener, this.target, args);
+  }
+}
+
+function _onceWrap(target, type, listener) {
+  var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };
+  var wrapped = onceWrapper.bind(state);
+  wrapped.listener = listener;
+  state.wrapFn = wrapped;
+  return wrapped;
+}
+
+EventEmitter.prototype.once = function once(type, listener) {
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+  this.on(type, _onceWrap(this, type, listener));
+  return this;
+};
+
+EventEmitter.prototype.prependOnceListener =
+    function prependOnceListener(type, listener) {
+      if (typeof listener !== 'function') {
+        throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+      }
+      this.prependListener(type, _onceWrap(this, type, listener));
+      return this;
+    };
+
+// Emits a 'removeListener' event if and only if the listener was removed.
+EventEmitter.prototype.removeListener =
+    function removeListener(type, listener) {
+      var list, events, position, i, originalListener;
+
+      if (typeof listener !== 'function') {
+        throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+      }
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      list = events[type];
+      if (list === undefined)
+        return this;
+
+      if (list === listener || list.listener === listener) {
+        if (--this._eventsCount === 0)
+          this._events = Object.create(null);
+        else {
+          delete events[type];
+          if (events.removeListener)
+            this.emit('removeListener', type, list.listener || listener);
+        }
+      } else if (typeof list !== 'function') {
+        position = -1;
+
+        for (i = list.length - 1; i >= 0; i--) {
+          if (list[i] === listener || list[i].listener === listener) {
+            originalListener = list[i].listener;
+            position = i;
+            break;
+          }
+        }
+
+        if (position < 0)
+          return this;
+
+        if (position === 0)
+          list.shift();
+        else {
+          spliceOne(list, position);
+        }
+
+        if (list.length === 1)
+          events[type] = list[0];
+
+        if (events.removeListener !== undefined)
+          this.emit('removeListener', type, originalListener || listener);
+      }
+
+      return this;
+    };
+
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+
+EventEmitter.prototype.removeAllListeners =
+    function removeAllListeners(type) {
+      var listeners, events, i;
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      // not listening for removeListener, no need to emit
+      if (events.removeListener === undefined) {
+        if (arguments.length === 0) {
+          this._events = Object.create(null);
+          this._eventsCount = 0;
+        } else if (events[type] !== undefined) {
+          if (--this._eventsCount === 0)
+            this._events = Object.create(null);
+          else
+            delete events[type];
+        }
+        return this;
+      }
+
+      // emit removeListener for all listeners on all events
+      if (arguments.length === 0) {
+        var keys = Object.keys(events);
+        var key;
+        for (i = 0; i < keys.length; ++i) {
+          key = keys[i];
+          if (key === 'removeListener') continue;
+          this.removeAllListeners(key);
+        }
+        this.removeAllListeners('removeListener');
+        this._events = Object.create(null);
+        this._eventsCount = 0;
+        return this;
+      }
+
+      listeners = events[type];
+
+      if (typeof listeners === 'function') {
+        this.removeListener(type, listeners);
+      } else if (listeners !== undefined) {
+        // LIFO order
+        for (i = listeners.length - 1; i >= 0; i--) {
+          this.removeListener(type, listeners[i]);
+        }
+      }
+
+      return this;
+    };
+
+function _listeners(target, type, unwrap) {
+  var events = target._events;
+
+  if (events === undefined)
+    return [];
+
+  var evlistener = events[type];
+  if (evlistener === undefined)
+    return [];
+
+  if (typeof evlistener === 'function')
+    return unwrap ? [evlistener.listener || evlistener] : [evlistener];
+
+  return unwrap ?
+    unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
+}
+
+EventEmitter.prototype.listeners = function listeners(type) {
+  return _listeners(this, type, true);
+};
+
+EventEmitter.prototype.rawListeners = function rawListeners(type) {
+  return _listeners(this, type, false);
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  if (typeof emitter.listenerCount === 'function') {
+    return emitter.listenerCount(type);
+  } else {
+    return listenerCount.call(emitter, type);
+  }
+};
+
+EventEmitter.prototype.listenerCount = listenerCount;
+function listenerCount(type) {
+  var events = this._events;
+
+  if (events !== undefined) {
+    var evlistener = events[type];
+
+    if (typeof evlistener === 'function') {
+      return 1;
+    } else if (evlistener !== undefined) {
+      return evlistener.length;
+    }
+  }
+
+  return 0;
+}
+
+EventEmitter.prototype.eventNames = function eventNames() {
+  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
+};
+
+function arrayClone(arr, n) {
+  var copy = new Array(n);
+  for (var i = 0; i < n; ++i)
+    copy[i] = arr[i];
+  return copy;
+}
+
+function spliceOne(list, index) {
+  for (; index + 1 < list.length; index++)
+    list[index] = list[index + 1];
+  list.pop();
+}
+
+function unwrapListeners(arr) {
+  var ret = new Array(arr.length);
+  for (var i = 0; i < ret.length; ++i) {
+    ret[i] = arr[i].listener || arr[i];
+  }
+  return ret;
+}
+
+
+/***/ }),
 
 /***/ "/9aa":
 /***/ (function(module, exports, __webpack_require__) {
@@ -933,25 +1389,15 @@ var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("Nsbk"));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
 
-var _leaflet = _interopRequireDefault(__webpack_require__("hgx0"));
+var _leafletWrapper = _interopRequireDefault(__webpack_require__("uTlj"));
 
 __webpack_require__("17FK");
 
 __webpack_require__("e/Qi");
 
-__webpack_require__("s544");
-
-var _util = __webpack_require__("e7LN");
-
 var _center = _interopRequireDefault(__webpack_require__("SPBs"));
 
-var _canvg = _interopRequireDefault(__webpack_require__("ATId"));
-
-var _lodash = _interopRequireDefault(__webpack_require__("Z94/"));
-
-var _ProvinceCenter = _interopRequireDefault(__webpack_require__("9EWs"));
-
-var _MunicipalCenter = _interopRequireDefault(__webpack_require__("84wO"));
+var _WebMapBase2 = _interopRequireDefault(__webpack_require__("qPby"));
 
 var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P, generator) {
   return new (P || (P = Promise))(function (resolve, reject) {
@@ -981,12 +1427,10 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-var MAX_MIGRATION_ANIMATION_COUNT = 1000;
-
 var WebMapViewModel =
 /*#__PURE__*/
-function (_L$Evented) {
-  (0, _inherits2.default)(WebMapViewModel, _L$Evented);
+function (_WebMapBase) {
+  (0, _inherits2.default)(WebMapViewModel, _WebMapBase);
 
   function WebMapViewModel(id) {
     var _this;
@@ -994,52 +1438,21 @@ function (_L$Evented) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var mapOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     (0, _classCallCheck2.default)(this, WebMapViewModel);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(WebMapViewModel).call(this));
-    _this.echartslayer = [];
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(WebMapViewModel).call(this, id, options, mapOptions));
     _this.layers = {};
-    _this._layers = [];
-    _this.mapId = id;
-    _this.serverUrl = options.serverUrl || 'http://www.supermapol.com';
-    _this.accessToken = options.accessToken;
-    _this.accessKey = options.accessKey;
-    _this.tiandituKey = options.tiandituKey || '';
-    _this.withCredentials = options.withCredentials || false;
-    _this.target = options.target || 'map';
-    _this.excludePortalProxyUrl = options.excludePortalProxyUrl;
-    _this.isSuperMapOnline = options.isSuperMapOnline;
-    _this.echartslayer = [];
-    _this.center = mapOptions.center || [];
+    _this._dataflowPathIdCache = {};
+    _this._dataflowLabelIdCache = {};
+    _this._dataflowLineFeatureCache = {};
+    _this.center = mapOptions.center;
     _this.zoom = mapOptions.zoom;
-    _this.mapOptions = mapOptions;
-
-    _this._createWebMap();
-
     return _this;
   }
 
   (0, _createClass2.default)(WebMapViewModel, [{
-    key: "setZoom",
-    value: function setZoom(zoom) {
-      if (this.map) {
-        this.mapOptions.zoom = zoom;
-        (zoom || zoom === 0) && this.map.setZoom(zoom);
-      }
-    }
-  }, {
-    key: "setMinZoom",
-    value: function setMinZoom(minZoom) {
-      if (this.map) {
-        this.mapOptions.minZoom = minZoom;
-        (minZoom || minZoom === 0) && this.map.setMinZoom(minZoom);
-      }
-    }
-  }, {
-    key: "setMaxZoom",
-    value: function setMaxZoom(maxZoom) {
-      if (this.map) {
-        this.mapOptions.maxZoom = maxZoom;
-        (maxZoom || maxZoom === 0) && this.map.setMinZoom(maxZoom);
-      }
+    key: "resize",
+    value: function resize() {
+      this.map && this.map.invalidateSize();
+      this.echartsLayerResize();
     }
   }, {
     key: "setCenter",
@@ -1050,63 +1463,42 @@ function (_L$Evented) {
       }
     }
   }, {
-    key: "setMaxBounds",
-    value: function setMaxBounds(maxBounds) {
-      if (this.map) {
-        this.mapOptions.maxBounds = maxBounds;
-        maxBounds && maxBounds.length > 0 && this.map.setMaxBounds(maxBounds);
+    key: "_initWebMap",
+    value: function _initWebMap() {
+      this.initWebMap();
+    }
+  }, {
+    key: "_getMapInfo",
+    value: function _getMapInfo(mapInfo, _taskID) {
+      var layers = mapInfo.layers;
+
+      this._createMap(mapInfo);
+
+      this._initBaseLayer(mapInfo, false);
+
+      if (!layers || layers.length === 0) {
+        this._sendMapToUser(0, 0);
+      } else {
+        this._initOverlayLayers(layers, _taskID);
       }
     }
   }, {
-    key: "echartsLayerResize",
-    value: function echartsLayerResize() {
-      this.echartslayer.forEach(function (echartslayer) {
-        echartslayer.chart.resize();
-      });
-    }
-  }, {
-    key: "setMapId",
-    value: function setMapId(mapId) {
+    key: "_createMap",
+    value: function _createMap(mapInfo) {
       var _this2 = this;
 
-      this.mapId = mapId;
-      setTimeout(function () {
-        _this2._createWebMap();
-      }, 0);
-    }
-  }, {
-    key: "setServerUrl",
-    value: function setServerUrl(serverUrl) {
-      this.serverUrl = serverUrl;
-    }
-  }, {
-    key: "setWithCredentials",
-    value: function setWithCredentials(withCredentials) {
-      this.withCredentials = withCredentials;
-    }
-  }, {
-    key: "_createWebMap",
-    value: function _createWebMap() {
-      var _this3 = this;
-
-      if (this.map) {
-        this.map.remove();
-        this.center = [];
-        this.zoom = null;
-      }
-
-      if (!this.mapId || !this.serverUrl) {
-        this.map = _leaflet.default.map(this.target, {
-          center: this.center.length ? _leaflet.default.latLng(this.center[0], this.center[1]) : [0, 0],
+      if (!mapInfo) {
+        this.map = _leafletWrapper.default.map(this.target, {
+          center: this.center && this.center.length ? _leafletWrapper.default.latLng(this.center[0], this.center[1]) : [0, 0],
           zoom: this.zoom || 0,
-          crs: this.mapOptions.crs || _leaflet.default.CRS.EPSG3857,
+          crs: this.mapOptions.crs || _leafletWrapper.default.CRS.EPSG3857,
           maxZoom: this.mapOptions.maxZoom || 30,
           minZoom: this.mapOptions.minZoom || 0,
           preferCanvas: this.mapOptions.preferCanvas || true
         });
         setTimeout(function () {
-          _this3.fire('addlayerssucceeded', {
-            map: _this3.map,
+          _this2.triggerEvent('addlayerssucceeded', {
+            map: _this2.map,
             mapparams: {},
             layers: []
           });
@@ -1114,155 +1506,49 @@ function (_L$Evented) {
         return;
       }
 
-      this._taskID = new Date();
-
-      var mapUrl = this._getMapUrl();
-
-      this._getMapInfo(mapUrl, this._taskID);
-    }
-  }, {
-    key: "_getMapUrl",
-    value: function _getMapUrl() {
-      var urlArr = this.serverUrl.split('');
-
-      if (urlArr[urlArr.length - 1] !== '/') {
-        this.serverUrl += '/';
-      }
-
-      var mapUrl = this.serverUrl + 'web/maps/' + this.mapId + '/map';
-
-      if (this.accessToken || this.accessKey) {
-        mapUrl +=  true ? 'token=' + this.accessToken : undefined;
-      }
-
-      var filter = 'getUrlResource.json?url=';
-
-      if (this.excludePortalProxyUrl && this.serverUrl.indexOf(filter) > -1) {
-        var urlArray = this.serverUrl.split(filter);
-
-        if (urlArray.length > 1) {
-          mapUrl = urlArray[0] + filter + this.serverUrl + 'web/maps/' + this.mapId + '/map.json';
-        }
-      }
-
-      return mapUrl;
-    }
-  }, {
-    key: "_getMapInfo",
-    value: function _getMapInfo(url, _taskID) {
-      var _this4 = this;
-
-      var mapUrl = url.indexOf('.json') === -1 ? "".concat(url, ".json") : url;
-      SuperMap.FetchRequest.get(mapUrl, null, {
-        withCredentials: this.withCredentials
-      }).then(function (response) {
-        return response.json();
-      }).then(function (mapInfo) {
-        if (mapInfo && mapInfo.succeed === false) {
-          var error = {
-            message: mapInfo && mapInfo.error && mapInfo.error.errorMsg
-          };
-
-          _this4.fire('getmapinfofailed', {
-            error: error
-          });
-
-          console.log(error);
-          return;
-        }
-
-        var title = mapInfo.title,
-            description = mapInfo.description,
-            layers = mapInfo.layers,
-            baseLayer = mapInfo.baseLayer;
-        _this4.mapParams = {
-          title: title,
-          description: description
-        };
-
-        _this4._createMap(mapInfo);
-
-        if (baseLayer && baseLayer.layerType === 'MAPBOXSTYLE') {} else {
-          _this4._createBaseLayer(mapInfo, false);
-        }
-
-        if (!layers || layers.length === 0) {
-          _this4._sendMapToUser(0, 0);
-        } else {
-          _this4._addLayers(layers, _taskID);
-        }
-      }).catch(function (error) {
-        _this4._addLayerSucceeded();
-
-        _this4.fire('getmapinfofailed', {
-          error: error
-        });
-      });
-    }
-  }, {
-    key: "_createMap",
-    value: function _createMap(mapInfo) {
       var level = mapInfo.level,
           maxZoom = mapInfo.maxZoom,
           minZoom = mapInfo.minZoom;
-      var center;
-      center = mapInfo.center && [mapInfo.center.x, mapInfo.center.y];
-      var zoom = level || 0;
+      var zoom = level ? level : 0;
       zoom = zoom === 0 ? 0 : zoom;
-
-      if (!center) {
-        center = [0, 0];
-      }
 
       var crs = this._handleMapCrs(mapInfo);
 
-      center = this.baseProjection === 'EPSG:3857' ? crs.unproject(_leaflet.default.point(center[0], center[1])) : _leaflet.default.latLng(center[1], center[0]);
-      this.map = _leaflet.default.map(this.target, {
-        center: this.center.length ? _leaflet.default.latLng(this.center[0], this.center[1]) : center,
+      var center = this._getMapCenter(mapInfo);
+
+      this.map = _leafletWrapper.default.map(this.target, {
+        center: this.center || center,
         zoom: this.zoom || zoom,
         crs: crs,
         maxZoom: maxZoom || 30,
         minZoom: minZoom || 0,
         preferCanvas: true
       });
-      this.fire('mapinitialized', {
+      this.triggerEvent('mapinitialized', {
         map: this.map
       });
     }
   }, {
-    key: "_createBaseLayer",
-    value: function _createBaseLayer(mapInfo) {
+    key: "_initBaseLayer",
+    value: function _initBaseLayer(mapInfo) {
       var sendToMap = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var layerInfo = mapInfo.baseLayer || mapInfo;
-      var layerType = layerInfo.layerType;
-
-      if (layerType.indexOf('TIANDITU_VEC') > -1 || layerType.indexOf('TIANDITU_IMG') > -1 || layerType.indexOf('TIANDITU_TER') > -1) {
-        layerType = layerType.substr(0, 12);
-      }
-
-      var mapUrls = {
+      var layerType = this.getBaseLayerType(layerInfo);
+      var mapUrls = this.getMapurls({
         CLOUD: 'http://t2.supermapcloud.com/FileService/image',
         CLOUD_BLACK: 'http://t3.supermapcloud.com/MapService/getGdp',
-        OSM: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
-        GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
-        JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
-        JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
-        JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
-        JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
-      };
+        OSM: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      });
       var url;
       var layer;
 
       switch (layerType) {
-        case 'TIANDITU_VEC':
-        case 'TIANDITU_IMG':
-        case 'TIANDITU_TER':
+        case 'TIANDITU':
           layer = this._createTiandituLayer(layerInfo);
           break;
 
         case 'BING':
-          layer = this._createBingLayer(layerInfo.name);
+          layer = this._createBingLayer();
           break;
 
         case 'WMS':
@@ -1274,29 +1560,25 @@ function (_L$Evented) {
           break;
 
         case 'TILE':
-        case 'SUPERMAP_REST':
           layer = this._createDynamicTiledLayer(layerInfo);
           break;
 
         case 'CLOUD':
-        case 'CLOUD_BLACK':
-          url = mapUrls[layerType];
+          url = mapUrls[layerInfo.layerType];
           layer = this._createCLOUDLayer(layerType, url);
           break;
 
-        case 'OSM':
-        case 'JAPAN_ORT':
-        case 'JAPAN_RELIEF':
-        case 'JAPAN_PALE':
-        case 'JAPAN_STD':
-        case 'GOOGLE_CN':
-        case 'GOOGLE':
-          url = mapUrls[layerType];
-          layer = this._createXYZLayer(layerInfo, url);
+        case 'XYZ':
+          url = mapUrls[layerInfo.layerType];
+          layer = this._createXYZLayer(url);
           break;
 
         case 'BAIDU':
           layer = this._createBaiduTileLayer();
+          break;
+
+        case 'MAPBOXSTYLE':
+          this.triggerEvent('notsupportmvt', {});
           break;
 
         default:
@@ -1311,195 +1593,225 @@ function (_L$Evented) {
       });
     }
   }, {
-    key: "_addLayers",
-    value: function _addLayers(layers, _taskID) {
-      var _this5 = this;
+    key: "_initOverlayLayers",
+    value: function _initOverlayLayers(layers, _taskID) {
+      var _this3 = this;
 
       this._layers = layers;
-      var len = layers.length;
       this.layerAdded = 0;
-      this.expectLayerLen = len;
+      this.expectLayerLen = layers.length;
 
-      if (len > 0) {
+      if (this.expectLayerLen > 0) {
         layers.forEach(function (layer, index) {
-          var type = _this5._getType(layer);
+          var type = _this3.webMapService.getDatasourceType(layer);
+
+          if (type === 'SAMPLE_DATA') {
+            _this3._addLayerSucceeded();
+
+            _this3.triggerEvent('getlayerdatasourcefailed', {
+              error: 'SAMPLE DATA is not supported',
+              layer: layer,
+              map: _this3.map
+            });
+
+            return;
+          }
 
           layer.layerID = layer.name + '-' + index;
           layer.index = index;
 
-          switch (type) {
-            case 'hosted':
-              _this5._getFeaturesFromHosted({
-                layer: layer,
-                index: index,
-                len: len,
-                _taskID: _taskID
-              });
-
-              break;
-
-            case 'tile':
-              _this5._createBaseLayer(layer);
-
-              break;
-
-            case 'rest_data':
-              _this5._getFeaturesFromRestData({
-                layer: layer,
-                index: index,
-                len: len
-              });
-
-              break;
-
-            case 'rest_map':
-              _this5._getFeaturesFromRestMap({
-                layer: layer,
-                index: index,
-                len: len
-              });
-
-              break;
-
-            case 'dataflow':
-              _this5._getFeaturesFromDataflow({
-                layer: layer,
-                index: index,
-                len: len
-              });
-
-              break;
+          if (type === 'tile') {
+            _this3._initBaseLayer(layer);
+          } else {
+            _this3.getLayerFeatures(layer, _taskID, type);
           }
         }, this);
       }
     }
   }, {
-    key: "_addLayer",
-    value: function _addLayer(layerInfo, features, index) {
+    key: "_createMvtLayer",
+    value: function _createMvtLayer(info, layer, featureType) {
+      this._addLayerSucceeded();
+
+      return;
+    }
+  }, {
+    key: "_createRestMapLayer",
+    value: function _createRestMapLayer(restMaps, layer) {
+      var _this4 = this;
+
+      restMaps.forEach(function (restMapInfo, index) {
+        layer = _this4.getRestMapLayerInfo(restMapInfo, layer);
+
+        _this4._initBaseLayer(layer, index === restMaps.length - 1);
+      });
+    }
+  }, {
+    key: "_initOverlayLayer",
+    value: function _initOverlayLayer(layerInfo, features) {
       return __awaiter(this, void 0, void 0,
       /*#__PURE__*/
       _regenerator.default.mark(function _callee() {
-        var layerType, style, themeSetting, filterCondition, projection, featureType, labelStyle, layer, labelLayerInfo, labelLayer;
+        var layerType, style, filterCondition, featureType, labelStyle, projection, epsgCode, layer, labelLayerInfo, labelLayer;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                layerType = layerInfo.layerType, style = layerInfo.style, themeSetting = layerInfo.themeSetting, filterCondition = layerInfo.filterCondition, projection = layerInfo.projection, featureType = layerInfo.featureType, labelStyle = layerInfo.labelStyle;
+                layerType = layerInfo.layerType, style = layerInfo.style, filterCondition = layerInfo.filterCondition, featureType = layerInfo.featureType, labelStyle = layerInfo.labelStyle, projection = layerInfo.projection;
 
-                if ((style || themeSetting) && filterCondition) {
-                  if (layerType !== 'RANGE' && layerType !== 'UNIQUE' && layerType !== 'RANK_SYMBOL') {
-                    features = this._getFiterFeatures(filterCondition, features);
-                  }
+                if (!(layerType === 'restMap')) {
+                  _context.next = 5;
+                  break;
                 }
 
-                if (features && projection && projection !== 'EPSG:4326') {
-                  this._transformFeatures(features);
+                this._createRestMapLayer(features, layerInfo);
+
+                return _context.abrupt("return");
+
+              case 5:
+                if (!(layerType === 'mvt')) {
+                  _context.next = 8;
+                  break;
                 }
 
+                this._createMvtLayer(features.info, layerInfo, features.featureType);
+
+                return _context.abrupt("return");
+
+              case 8:
+                if (!(features && projection && projection !== 'EPSG:4326')) {
+                  _context.next = 16;
+                  break;
+                }
+
+                epsgCode = projection.split(':')[1];
+
+                if (epsgCode) {
+                  _context.next = 12;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 12:
+                _context.next = 14;
+                return this.getTransformCoodinatesCRS(projection.split(':')[1]);
+
+              case 14:
+                this._unprojectCrs = _context.sent;
+                features = this.transformFeatures(features);
+
+              case 16:
+                this.handleLayerFeatures(features, layerInfo);
                 _context.t0 = layerType;
-                _context.next = _context.t0 === 'VECTOR' ? 7 : _context.t0 === 'UNIQUE' ? 23 : _context.t0 === 'RANGE' ? 27 : _context.t0 === 'HEAT' ? 31 : _context.t0 === 'MARKER' ? 35 : _context.t0 === 'RANK_SYMBOL' ? 39 : _context.t0 === 'MIGRATION' ? 43 : _context.t0 === 'DATAFLOW_POINT_TRACK' ? 47 : _context.t0 === 'DATAFLOW_HEAT' ? 47 : 48;
+                _context.next = _context.t0 === 'VECTOR' ? 20 : _context.t0 === 'UNIQUE' ? 36 : _context.t0 === 'RANGE' ? 40 : _context.t0 === 'HEAT' ? 44 : _context.t0 === 'MARKER' ? 48 : _context.t0 === 'RANK_SYMBOL' ? 52 : _context.t0 === 'MIGRATION' ? 56 : _context.t0 === 'DATAFLOW_POINT_TRACK' ? 60 : _context.t0 === 'DATAFLOW_HEAT' ? 60 : 64;
                 break;
 
-              case 7:
+              case 20:
                 if (!(featureType === 'POINT')) {
-                  _context.next = 19;
+                  _context.next = 32;
                   break;
                 }
 
                 if (!(style.type === 'SYMBOL_POINT')) {
-                  _context.next = 14;
+                  _context.next = 27;
                   break;
                 }
 
-                _context.next = 11;
+                _context.next = 24;
                 return this._createSymbolLayer(layerInfo, features);
 
-              case 11:
+              case 24:
                 layer = _context.sent;
-                _context.next = 17;
+                _context.next = 30;
                 break;
-
-              case 14:
-                _context.next = 16;
-                return this._createGraphicLayer(layerInfo, features);
-
-              case 16:
-                layer = _context.sent;
-
-              case 17:
-                _context.next = 22;
-                break;
-
-              case 19:
-                _context.next = 21;
-                return this._createVectorLayer(layerInfo, features);
-
-              case 21:
-                layer = _context.sent;
-
-              case 22:
-                return _context.abrupt("break", 48);
-
-              case 23:
-                _context.next = 25;
-                return this._createUniqueLayer(layerInfo, features);
-
-              case 25:
-                layer = _context.sent;
-                return _context.abrupt("break", 48);
 
               case 27:
                 _context.next = 29;
-                return this._createRangeLayer(layerInfo, features);
+                return this._createGraphicLayer(layerInfo, features);
 
               case 29:
                 layer = _context.sent;
-                return _context.abrupt("break", 48);
 
-              case 31:
-                _context.next = 33;
-                return this._createHeatLayer(layerInfo, features);
+              case 30:
+                _context.next = 35;
+                break;
 
-              case 33:
+              case 32:
+                _context.next = 34;
+                return this._createVectorLayer(layerInfo, features);
+
+              case 34:
                 layer = _context.sent;
-                return _context.abrupt("break", 48);
 
               case 35:
-                _context.next = 37;
-                return this._createMarkerLayer(layerInfo, features);
+                return _context.abrupt("break", 64);
 
-              case 37:
+              case 36:
+                _context.next = 38;
+                return this._createUniqueLayer(layerInfo, features);
+
+              case 38:
                 layer = _context.sent;
-                return _context.abrupt("break", 48);
+                return _context.abrupt("break", 64);
 
-              case 39:
-                _context.next = 41;
-                return this._createRankSymbolLayer(layerInfo, features);
+              case 40:
+                _context.next = 42;
+                return this._createRangeLayer(layerInfo, features);
 
-              case 41:
+              case 42:
                 layer = _context.sent;
-                return _context.abrupt("break", 48);
+                return _context.abrupt("break", 64);
 
-              case 43:
-                _context.next = 45;
-                return this._createMigrationLayer(layerInfo, features);
+              case 44:
+                _context.next = 46;
+                return this._createHeatLayer(layerInfo, features);
 
-              case 45:
+              case 46:
                 layer = _context.sent;
-                return _context.abrupt("break", 48);
-
-              case 47:
-                return _context.abrupt("break", 48);
+                return _context.abrupt("break", 64);
 
               case 48:
+                _context.next = 50;
+                return this._createMarkerLayer(features);
+
+              case 50:
+                layer = _context.sent;
+                return _context.abrupt("break", 64);
+
+              case 52:
+                _context.next = 54;
+                return this._createRankSymbolLayer(layerInfo, features);
+
+              case 54:
+                layer = _context.sent;
+                return _context.abrupt("break", 64);
+
+              case 56:
+                _context.next = 58;
+                return this._createMigrationLayer(layerInfo, features);
+
+              case 58:
+                layer = _context.sent;
+                return _context.abrupt("break", 64);
+
+              case 60:
+                _context.next = 62;
+                return this._createDataflowLayer(layerInfo);
+
+              case 62:
+                layer = _context.sent;
+                return _context.abrupt("break", 64);
+
+              case 64:
                 if (labelStyle && labelStyle.labelField && layerType !== 'DATAFLOW_POINT_TRACK') {
-                  features = this._getFiterFeatures(filterCondition, features);
+                  features = this.getFiterFeatures(filterCondition, features);
                   labelLayerInfo = JSON.parse(JSON.stringify(layerInfo));
                   labelLayer = this._addLabelLayer(labelLayerInfo, features);
 
                   this._addLayerToMap({
-                    layer: _leaflet.default.layerGroup([layer, labelLayer]),
+                    layer: _leafletWrapper.default.layerGroup([layer, labelLayer]),
                     layerInfo: layerInfo
                   });
                 } else {
@@ -1509,35 +1821,35 @@ function (_L$Evented) {
                   });
                 }
 
-                _context.next = 56;
+                _context.next = 72;
                 break;
 
-              case 51:
-                _context.prev = 51;
+              case 67:
+                _context.prev = 67;
                 _context.t1 = _context["catch"](0);
                 console.error(_context.t1);
 
                 this._addLayerSucceeded();
 
-                this.fire('getlayerdatasourcefailed', {
+                this.triggerEvent('getlayerdatasourcefailed', {
                   error: _context.t1,
-                  layer: null,
+                  layer: layerInfo,
                   map: this.map
                 });
 
-              case 56:
+              case 72:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 51]]);
+        }, _callee, this, [[0, 67]]);
       }));
     }
   }, {
     key: "_createBingLayer",
-    value: function _createBingLayer(layerInfo) {
+    value: function _createBingLayer() {
       var url = 'http://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
-      _leaflet.default.TileLayer.BingLayer = _leaflet.default.TileLayer.extend({
+      _leafletWrapper.default.TileLayer.BingLayer = _leafletWrapper.default.TileLayer.extend({
         getTileUrl: function getTileUrl(coordinates) {
           var z = coordinates.z,
               x = coordinates.x,
@@ -1563,11 +1875,11 @@ function (_L$Evented) {
         }
       });
 
-      _leaflet.default.tileLayer.bingLayer = function (url, options) {
-        return new _leaflet.default.TileLayer.BingLayer(url, options);
+      _leafletWrapper.default.tileLayer.bingLayer = function (url, options) {
+        return new _leafletWrapper.default.TileLayer.BingLayer(url, options);
       };
 
-      return _leaflet.default.tileLayer.bingLayer(url, {
+      return _leafletWrapper.default.tileLayer.bingLayer(url, {
         noWrap: true
       });
     }
@@ -1576,8 +1888,11 @@ function (_L$Evented) {
     value: function _createDynamicTiledLayer(layerInfo) {
       var url = layerInfo.url;
 
-      var layer = _leaflet.default.supermap.tiledMapLayer(url, {
-        noWrap: true
+      var layer = _leafletWrapper.default.supermap.tiledMapLayer(url, {
+        noWrap: true,
+        prjCoordSys: {
+          epsgCode: this.baseProjection.split(':')[1]
+        }
       });
 
       return layer;
@@ -1594,7 +1909,7 @@ function (_L$Evented) {
         layers = layers[0];
       }
 
-      return _leaflet.default.tileLayer.wms(url, {
+      return _leafletWrapper.default.tileLayer.wms(url, {
         layers: layers,
         format: 'image/png',
         transparent: true,
@@ -1607,7 +1922,7 @@ function (_L$Evented) {
       var url = layerInfo.url,
           tileMatrixSet = layerInfo.tileMatrixSet,
           name = layerInfo.name;
-      return _leaflet.default.supermap.wmtsLayer(url, {
+      return _leafletWrapper.default.supermap.wmtsLayer(url, {
         layer: name,
         style: 'default',
         tilematrixSet: tileMatrixSet,
@@ -1623,12 +1938,12 @@ function (_L$Evented) {
       var layerType = layerInfo.layerType.split('_')[1].toLowerCase();
       var isLabel = Boolean(layerInfo.labelLayerVisible);
 
-      var tiandituLayer = _leaflet.default.supermap.tiandituTileLayer({
+      var tiandituLayer = _leafletWrapper.default.supermap.tiandituTileLayer({
         layerType: layerType,
         key: this.tiandituKey
       });
 
-      var tiandituLabelLayer = _leaflet.default.supermap.tiandituTileLayer({
+      var tiandituLabelLayer = _leafletWrapper.default.supermap.tiandituTileLayer({
         layerType: layerType,
         isLabel: true,
         key: this.tiandituKey
@@ -1636,7 +1951,7 @@ function (_L$Evented) {
 
       var layers = [tiandituLayer];
       isLabel && layers.push(tiandituLabelLayer);
-      return _leaflet.default.layerGroup(layers);
+      return _leafletWrapper.default.layerGroup(layers);
     }
   }, {
     key: "_createCLOUDLayer",
@@ -1646,14 +1961,14 @@ function (_L$Evented) {
         this.map.setMinZoom(3);
       }
 
-      return _leaflet.default.supermap.cloudTileLayer(url, {
+      return _leafletWrapper.default.supermap.cloudTileLayer(url, {
         noWrap: true
       });
     }
   }, {
     key: "_createXYZLayer",
-    value: function _createXYZLayer(layerInfo, url) {
-      return _leaflet.default.tileLayer(url, {
+    value: function _createXYZLayer(url) {
+      return _leafletWrapper.default.tileLayer(url, {
         noWrap: true
       });
     }
@@ -1662,7 +1977,7 @@ function (_L$Evented) {
     value: function _createBaiduTileLayer() {
       this.map.getZoom() < 3 && this.map.setZoom(3);
       this.map.setMinZoom(3);
-      return _leaflet.default.supermap.baiduTileLayer('', {
+      return _leafletWrapper.default.supermap.baiduTileLayer('', {
         noWrap: true
       });
     }
@@ -1678,8 +1993,8 @@ function (_L$Evented) {
     }
   }, {
     key: "_createMarkerLayer",
-    value: function _createMarkerLayer(layerInfo, features) {
-      var _this6 = this;
+    value: function _createMarkerLayer(features) {
+      var _this5 = this;
 
       return new Promise(function (resolve, reject) {
         var layerGroupPromises = features && features.map(function (feature) {
@@ -1691,18 +2006,18 @@ function (_L$Evented) {
               geomType = 'TEXT';
             }
 
-            var featureInfo = _this6._setFeatureInfo(feature);
+            var featureInfo = _this5.setFeatureInfo(feature);
 
             feature.properties['useStyle'] = defaultStyle;
             feature.properties['featureInfo'] = featureInfo;
 
             if (geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('http://') === -1 && defaultStyle.src.indexOf('https://') === -1) {
-              defaultStyle.src = _this6.serverUrl + defaultStyle.src;
+              defaultStyle.src = _this5.serverUrl + defaultStyle.src;
             }
 
             if (geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('svg') <= -1) {
-              resolve(_leaflet.default.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {
-                icon: _leaflet.default.icon({
+              resolve(_leafletWrapper.default.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {
+                icon: _leafletWrapper.default.icon({
                   iconUrl: defaultStyle.src,
                   iconSize: [defaultStyle.imgWidth * defaultStyle.scale, defaultStyle.imgHeight * defaultStyle.scale],
                   iconAnchor: defaultStyle.anchor
@@ -1711,21 +2026,21 @@ function (_L$Evented) {
             }
 
             if (geomType === 'POINT' && defaultStyle.src && defaultStyle.src.indexOf('svg') > -1) {
-              if (!_this6._svgDiv) {
-                _this6._svgDiv = document.createElement('div');
-                document.body.appendChild(_this6._svgDiv);
+              if (!_this5._svgDiv) {
+                _this5._svgDiv = document.createElement('div');
+                document.body.appendChild(_this5._svgDiv);
               }
 
-              _this6._getCanvasFromSVG(defaultStyle.src, _this6._svgDiv, function (canvas) {
-                resolve(_this6._getSvgLayer(canvas, defaultStyle, [feature]));
+              _this5.getCanvasFromSVG(defaultStyle.src, _this5._svgDiv, function (canvas) {
+                resolve(_this5._getSvgLayer(canvas, defaultStyle, [feature]));
               });
             }
 
             if (!defaultStyle.src) {
               if (geomType === 'LINESTRING' && defaultStyle.lineCap || geomType === 'POLYGON') {
-                resolve(_this6._createGeojsonLayer([feature], _this6._getVectorLayerStyle(defaultStyle)));
+                resolve(_this5._createGeojsonLayer([feature], _this5._getVectorLayerStyle(defaultStyle)));
               } else if (geomType === 'TEXT') {
-                var text = new _leaflet.default.supermap.labelThemeLayer(defaultStyle.text + '-text');
+                var text = new _leafletWrapper.default.supermap.labelThemeLayer(defaultStyle.text + '-text');
                 text.style = {
                   fontSize: defaultStyle.font.split(' ')[0],
                   labelRect: true,
@@ -1736,17 +2051,17 @@ function (_L$Evented) {
                 };
                 text.themeField = 'text';
                 feature.properties.text = defaultStyle.text;
-                var geoTextFeature = new _leaflet.default.supermap.themeFeature([feature.geometry.coordinates[1], feature.geometry.coordinates[0], defaultStyle.text], feature.properties);
+                var geoTextFeature = new _leafletWrapper.default.supermap.themeFeature([feature.geometry.coordinates[1], feature.geometry.coordinates[0], defaultStyle.text], feature.properties);
                 text.addFeatures([geoTextFeature]);
                 resolve(text);
               } else {
-                resolve(_leaflet.default.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], Object.assign({}, _this6._getVectorLayerStyle(defaultStyle))));
+                resolve(_leafletWrapper.default.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], Object.assign({}, _this5._getVectorLayerStyle(defaultStyle))));
               }
             }
           });
         });
         layerGroupPromises && Promise.all(layerGroupPromises).then(function (layerGroup) {
-          layerGroup && resolve(_leaflet.default.layerGroup(layerGroup));
+          layerGroup && resolve(_leafletWrapper.default.layerGroup(layerGroup));
         }).catch(function (error) {
           console.error(error);
         });
@@ -1755,15 +2070,13 @@ function (_L$Evented) {
   }, {
     key: "_createRankSymbolLayer",
     value: function _createRankSymbolLayer(layerInfo, features) {
-      var _this7 = this;
+      var _this6 = this;
 
       var fieldName = layerInfo.themeSetting.themeField;
       var style = layerInfo.style;
-
-      var styleSource = this._createRankStyleSource(layerInfo, features, layerInfo.featureType);
-
+      var styleSource = this.createRankStyleSource(layerInfo, features);
       var styleGroups = styleSource.styleGroups;
-      features = this._getFiterFeatures(layerInfo.filterCondition, features);
+      features = this.getFiterFeatures(layerInfo.filterCondition, features);
       var radiusList = [];
       features.forEach(function (row) {
         var target = parseFloat(row.properties[fieldName]);
@@ -1788,113 +2101,10 @@ function (_L$Evented) {
           var newStyle = Object.assign({}, style, {
             radius: radiusList[index]
           });
-          layerGroup.push(_leaflet.default.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], _this7._getVectorLayerStyle(newStyle)));
+          layerGroup.push(_leafletWrapper.default.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], _this6._getVectorLayerStyle(newStyle)));
         });
-        return _leaflet.default.layerGroup(layerGroup);
+        return _leafletWrapper.default.layerGroup(layerGroup);
       }
-    }
-  }, {
-    key: "_createRankStyleSource",
-    value: function _createRankStyleSource(parameters, features, featureType) {
-      var themeSetting = parameters.themeSetting,
-          themeField = themeSetting.themeField;
-
-      var styleGroups = this._getRankStyleGroup(themeField, features, parameters, featureType);
-
-      return styleGroups ? {
-        parameters: parameters,
-        styleGroups: styleGroups
-      } : false;
-    }
-  }, {
-    key: "_getRankStyleGroup",
-    value: function _getRankStyleGroup(themeField, features, parameters, featureType) {
-      var values = [],
-          segements = [],
-          style = parameters.style,
-          themeSetting = parameters.themeSetting,
-          segmentMethod = themeSetting.segmentMethod,
-          segmentCount = themeSetting.segmentCount,
-          customSettings = themeSetting.customSettings,
-          minR = parameters.themeSetting.minRadius,
-          maxR = parameters.themeSetting.maxRadius;
-      features.forEach(function (feature) {
-        var properties = feature.properties,
-            value = properties[themeField];
-
-        if (value == null || !(0, _lodash.default)(+value)) {
-          return;
-        }
-
-        values.push(Number(value));
-      });
-
-      try {
-        segements = SuperMap.ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
-      } catch (error) {
-        console.error(error);
-      }
-
-      for (var i = 0; i < segmentCount; i++) {
-        if (i in customSettings) {
-          var startValue = customSettings[i]['segment']['start'],
-              endValue = customSettings[i]['segment']['end'];
-          startValue != null && (segements[i] = startValue);
-          endValue != null && (segements[i + 1] = endValue);
-        }
-      }
-
-      var styleGroup = [];
-
-      if (segements && segements.length) {
-        var len = segements.length,
-            incrementR = (maxR - minR) / (len - 1),
-            start,
-            end,
-            radius = Number(((maxR + minR) / 2).toFixed(2));
-
-        for (var _i = 0; _i < len - 1; _i++) {
-          start = Number(segements[_i].toFixed(2));
-          end = Number(segements[_i + 1].toFixed(2));
-          radius = start === end ? radius : minR + Math.round(incrementR * _i);
-          end = _i === len - 2 ? end + 0.01 : end;
-          radius = customSettings[_i] && customSettings[_i].radius ? customSettings[_i].radius : radius;
-          style.radius = radius;
-          styleGroup.push({
-            radius: radius,
-            start: start,
-            end: end,
-            style: style
-          });
-        }
-
-        return styleGroup;
-      } else {
-        return false;
-      }
-    }
-  }, {
-    key: "_setFeatureInfo",
-    value: function _setFeatureInfo(feature) {
-      var featureInfo;
-      var info = feature.dv_v5_markerInfo;
-
-      if (info && info.dataViz_title) {
-        featureInfo = info;
-      } else {
-        return info;
-      }
-
-      var properties = feature.properties;
-
-      for (var key in featureInfo) {
-        if (properties[key]) {
-          featureInfo[key] = properties[key];
-          delete properties[key];
-        }
-      }
-
-      return featureInfo;
     }
   }, {
     key: "_addLabelLayer",
@@ -1902,7 +2112,7 @@ function (_L$Evented) {
       var labelStyle = layerInfo.labelStyle,
           layerID = layerInfo.layerID,
           featureType = layerInfo.featureType;
-      var label = new _leaflet.default.supermap.labelThemeLayer(layerID + '-label');
+      var label = new _leafletWrapper.default.supermap.labelThemeLayer(layerID + '-label');
       labelStyle.fontSize = 14;
       labelStyle.labelRect = true;
       labelStyle.fontColor = labelStyle.fill;
@@ -1933,7 +2143,7 @@ function (_L$Evented) {
         heatColors[i] = customSettings[i];
       }
 
-      var heatMapLayer = _leaflet.default.supermap.heatMapLayer(layerID, {
+      var heatMapLayer = _leafletWrapper.default.supermap.heatMapLayer(layerID, {
         colors: heatColors,
         map: this.map,
         radius: radius * 2,
@@ -1951,20 +2161,11 @@ function (_L$Evented) {
     key: "_createSymbolLayer",
     value: function _createSymbolLayer(layerInfo, features, textSize) {
       var style = layerInfo.style;
-      var fillColor = style.fillColor,
-          unicode = style.unicode;
+      var unicode = style.unicode;
       var pointToLayer;
 
       if (unicode) {
-        var symbolStyle = JSON.parse(JSON.stringify(style));
-        symbolStyle.fontColor = fillColor;
-        symbolStyle.label = unicode;
-        symbolStyle.fontFamily = 'supermapol-icons';
-
-        pointToLayer = function pointToLayer(geojson, latlng) {
-          textSize && (symbolStyle.fontSize = textSize[geojson.id - 1 || geojson.properties.index] + '');
-          return new _leaflet.default.supermap.unicodeMarker(latlng, symbolStyle);
-        };
+        pointToLayer = this._getSymbolPointLayer(style, textSize);
       }
 
       return pointToLayer && this._createGeojsonLayer(features, null, pointToLayer);
@@ -1972,7 +2173,7 @@ function (_L$Evented) {
   }, {
     key: "_createGraphicLayer",
     value: function _createGraphicLayer(layerInfo, features, textSize) {
-      var _this8 = this;
+      var _this7 = this;
 
       return new Promise(function (resolve, reject) {
         var style = layerInfo.style;
@@ -1987,29 +2188,29 @@ function (_L$Evented) {
 
           pointToLayer = function pointToLayer(geojson, latlng) {
             var iconSize = textSize && textSize[geojson.id - 1 || geojson.properties.index] * 2;
-            return _leaflet.default.marker(latlng, {
-              icon: _leaflet.default.icon({
+            return _leafletWrapper.default.marker(latlng, {
+              icon: _leafletWrapper.default.icon({
                 iconUrl: imageInfo.url,
                 iconSize: textSize ? [iconSize, iconSize / resolution] : [radius * 2, radius * 2 / resolution]
               })
             });
           };
         } else if (type === 'SVG_POINT') {
-          if (!_this8._svgDiv) {
-            _this8._svgDiv = document.createElement('div');
-            document.body.appendChild(_this8._svgDiv);
+          if (!_this7._svgDiv) {
+            _this7._svgDiv = document.createElement('div');
+            document.body.appendChild(_this7._svgDiv);
           }
 
-          _this8._getCanvasFromSVG(url, _this8._svgDiv, function (canvas) {
-            resolve(_this8._getSvgLayer(canvas, style, features, textSize));
+          _this7.getCanvasFromSVG(url, _this7._svgDiv, function (canvas) {
+            resolve(_this7._getSvgLayer(canvas, style, features, textSize));
           });
         } else {
           pointToLayer = function pointToLayer(geojson, latlng) {
-            return _leaflet.default.circleMarker(latlng, _this8._getVectorLayerStyle(style));
+            return _leafletWrapper.default.circleMarker(latlng, _this7._getVectorLayerStyle(style));
           };
         }
 
-        pointToLayer && resolve(_this8._createGeojsonLayer(features, null, pointToLayer));
+        pointToLayer && resolve(_this7._createGeojsonLayer(features, null, pointToLayer));
       });
     }
   }, {
@@ -2021,23 +2222,36 @@ function (_L$Evented) {
   }, {
     key: "_createMigrationLayer",
     value: function _createMigrationLayer(layerInfo, features) {
-      var properties = this._getFeatureProperties(features);
+      var options = this.getEchartsLayerOptions(layerInfo, features, 'leaflet');
 
-      var lineData = this._createLinesData(layerInfo, properties);
-
-      var pointData = this._createPointsData(lineData, layerInfo, properties);
-
-      var options = this._createOptions(layerInfo, lineData, pointData);
-
-      var layer = _leaflet.default.supermap.echartsLayer(options);
+      var layer = _leafletWrapper.default.supermap.echartsLayer(options);
 
       this.echartslayer.push(layer);
       return layer;
     }
   }, {
+    key: "_createDataflowLayer",
+    value: function _createDataflowLayer(layerInfo) {
+      var _this8 = this;
+
+      this._dataflowFeatureCache = {};
+      return new Promise(function (resolve, reject) {
+        _this8._getDataflowPointLayer(layerInfo).then(function (pointToLayer) {
+          var dataFlowLayer = _leafletWrapper.default.supermap.dataFlowLayer(layerInfo.wsUrl, {
+            pointToLayer: pointToLayer
+          });
+
+          _this8._updateDataFlowFeaturesCallback = _this8._updateDataFlowFeature.bind(_this8, layerInfo);
+          dataFlowLayer.on('dataupdated', _this8._updateDataFlowFeaturesCallback);
+          _this8._dataFlowLayer = dataFlowLayer;
+          resolve(dataFlowLayer);
+        });
+      });
+    }
+  }, {
     key: "_createGeojsonLayer",
     value: function _createGeojsonLayer(features, style, pointToLayer) {
-      return _leaflet.default.geoJSON({
+      return _leafletWrapper.default.geoJSON({
         type: 'FeatureCollection',
         features: features
       }, {
@@ -2065,7 +2279,7 @@ function (_L$Evented) {
       var dashArray;
 
       if (lineDash) {
-        dashArray = this._dashStyle(lineDash, strokeWidth);
+        dashArray = this.getDashStyle(lineDash, strokeWidth, 'string');
       }
 
       radius && (commonStyle['radius'] = radius);
@@ -2073,14 +2287,27 @@ function (_L$Evented) {
       return commonStyle;
     }
   }, {
-    key: "_addLayerSucceeded",
-    value: function _addLayerSucceeded() {
-      var sendMap = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+    key: "_getMapCenter",
+    value: function _getMapCenter(mapInfo) {
+      var center;
+      center = mapInfo.center && [mapInfo.center.x, mapInfo.center.y];
 
-      if (sendMap) {
-        this.layerAdded++;
+      if (!center) {
+        center = [0, 0];
+      }
 
-        this._sendMapToUser(this.layerAdded, this.expectLayerLen);
+      center = this.baseProjection === 'EPSG:3857' ? this.crs.unproject(_leafletWrapper.default.point(center[0], center[1])) : _leafletWrapper.default.latLng(center[1], center[0]);
+      return center;
+    }
+  }, {
+    key: "_sendMapToUser",
+    value: function _sendMapToUser(count, layersLen) {
+      if (count === layersLen) {
+        this.triggerEvent('addlayerssucceeded', {
+          map: this.map,
+          mapparams: this.mapParams,
+          layers: this._layers
+        });
       }
     }
   }, {
@@ -2097,10 +2324,10 @@ function (_L$Evented) {
           name = layerInfo.name,
           index = layerInfo.index;
       sendToMap && (type = 'overlays');
-      type === 'overlays' && layer.setZIndex && layer.setZIndex(index);
+      type === 'overlays' && layer.setZIndex && layer.setZIndex(index + 1);
 
       if (visible === undefined || visible) {
-        this.map.addLayer(layer);
+        this.map.addLayer(layer, layerInfo.name);
       }
 
       !this.layers[type] && (this.layers[type] = {});
@@ -2120,14 +2347,14 @@ function (_L$Evented) {
       var themeField = layer.themeField,
           style = layer.style;
       var labelFeatures = [];
-      var layerStyle = layerInfo.style;
+      var layerStyle = layerInfo.style || {};
       features.forEach(function (feature) {
         var coordinate = _this9._getLabelLngLat(featureType, feature);
 
         _this9._setLabelOffset(featureType, layerStyle, style);
 
         var properties = feature.properties;
-        var geoTextFeature = new _leaflet.default.supermap.themeFeature([coordinate[1], coordinate[0], properties[themeField]], properties);
+        var geoTextFeature = new _leafletWrapper.default.supermap.themeFeature([coordinate[1], coordinate[0], properties[themeField]], properties);
         labelFeatures.push(geoTextFeature);
       });
       return labelFeatures;
@@ -2163,604 +2390,1072 @@ function (_L$Evented) {
       }
     }
   }, {
-    key: "_getType",
-    value: function _getType(layer) {
-      var type;
-      var isHosted = layer.dataSource && layer.dataSource.serverId || layer.layerType === 'MARKER' || layer.layerType === 'HOSTED_TILE';
-      var isTile = layer.layerType === 'SUPERMAP_REST' || layer.layerType === 'TILE' || layer.layerType === 'WMS' || layer.layerType === 'WMTS';
+    key: "_addLayerSucceeded",
+    value: function _addLayerSucceeded() {
+      var sendMap = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
-      if (isHosted) {
-        type = 'hosted';
-      } else if (isTile) {
-        type = 'tile';
-      } else if (layer.dataSource && layer.dataSource.type === 'REST_DATA') {
-        type = 'rest_data';
-      } else if (layer.dataSource && layer.dataSource.type === 'REST_MAP' && layer.dataSource.url) {
-        type = 'rest_map';
-      } else if (layer.layerType === 'DATAFLOW_POINT_TRACK' || layer.layerType === 'DATAFLOW_HEAT') {
-        type = 'dataflow';
+      if (sendMap) {
+        this.layerAdded++;
+
+        this._sendMapToUser(this.layerAdded, this.expectLayerLen);
       }
-
-      return type;
     }
   }, {
-    key: "_getUniqueStyleGroup",
-    value: function _getUniqueStyleGroup(parameters, features) {
-      var featureType = parameters.featureType;
-      var style = parameters.style;
-      var themeSetting = parameters.themeSetting;
-      var fieldName = themeSetting.themeField;
-      var colors = themeSetting.colors;
+    key: "_unproject",
+    value: function _unproject(coordinate) {
+      var crs = this._unprojectCrs || _leafletWrapper.default.CRS.EPSG3857;
+      return this._latlngToCoordinate(crs.unproject(_leafletWrapper.default.point(coordinate[0], coordinate[1])));
+    }
+  }, {
+    key: "_latlngToCoordinate",
+    value: function _latlngToCoordinate(latlng) {
+      if (!latlng) {
+        return null;
+      }
+
+      return [latlng.lng, latlng.lat];
+    }
+  }, {
+    key: "_getSvgLayer",
+    value: function _getSvgLayer(canvas, style, features, textSize) {
+      var svgPointToLayer = this._getSvgPointLayer(canvas, style, textSize);
+
+      return this._createGeojsonLayer(features, null, svgPointToLayer);
+    }
+  }, {
+    key: "_createThemeLayer",
+    value: function _createThemeLayer(type, layerInfo, features) {
+      var filterCondition = layerInfo.filterCondition,
+          style = layerInfo.style,
+          themeSetting = layerInfo.themeSetting,
+          featureType = layerInfo.featureType,
+          layerID = layerInfo.layerID;
+      var layerStyle = JSON.parse(JSON.stringify(style));
+      featureType === 'POINT' && (layerStyle.pointRadius = style.radius);
+      delete layerStyle.radius;
+
+      if (featureType === 'LINE') {
+        layerStyle.fill = false;
+        layerStyle.strokeDashstyle = style.lineDash;
+        delete layerStyle.lineDash;
+      }
+
+      var styleGroup;
+
+      if (type === 'unique') {
+        styleGroup = this.getUniqueStyleGroup(layerInfo, features);
+      } else if (type === 'range') {
+        styleGroup = this.getRangeStyleGroup(layerInfo, features);
+      }
+
+      filterCondition && (features = this.getFiterFeatures(filterCondition, features));
+      var themeField = themeSetting.themeField;
       Object.keys(features[0].properties).forEach(function (key) {
-        key.toLocaleUpperCase() === fieldName.toLocaleUpperCase() && (fieldName = key);
+        key.toLocaleUpperCase() === themeField.toLocaleUpperCase() && (themeField = key);
       });
-      var names = [];
-      var customSettings = themeSetting.customSettings;
 
-      for (var i in features) {
-        var properties = features[i].properties;
-        var name = properties[fieldName];
-        var isSaved = false;
+      var layer = _leafletWrapper.default.supermap["".concat(type, "ThemeLayer")](layerID);
 
-        for (var j in names) {
-          if (names[j] === name) {
-            isSaved = true;
-            break;
-          }
-        }
-
-        if (!isSaved) {
-          names.push(name || '0');
-        }
-      }
-
-      var curentColors = colors;
-      curentColors = SuperMap.ColorsPickerUtil.getGradientColors(curentColors, names.length);
-      var styleGroup = [];
-      names.forEach(function (name, index) {
-        var color = curentColors[index];
-
-        if (name in customSettings) {
-          color = customSettings[name];
-        }
-
-        if (featureType === 'LINE') {
-          style.strokeColor = color;
-        } else {
-          style.fillColor = color;
-        }
-
-        styleGroup.push({
-          style: Object.assign({}, style),
-          value: name
-        });
-      }, this);
-      return styleGroup;
+      layerStyle.stroke = true;
+      layer.style = layerStyle;
+      layer.themeField = themeField;
+      layer.styleGroups = styleGroup;
+      layer.addFeatures({
+        type: 'FeatureCollection',
+        features: features
+      });
+      return layer;
     }
   }, {
-    key: "_getRangeStyleGroup",
-    value: function _getRangeStyleGroup(layerInfo, features) {
-      var featureType = layerInfo.featureType;
-      var style = layerInfo.style;
-      var values = [];
-      var attributes;
-      var themeSetting = layerInfo.themeSetting;
-      var customSettings = themeSetting.customSettings;
-      var fieldName = themeSetting.themeField;
-      var segmentCount = themeSetting.segmentCount;
-      features.forEach(function (feature) {
-        attributes = feature.properties || feature.get('Properties');
+    key: "_handleMapCrs",
+    value: function _handleMapCrs(mapInfo) {
+      var projection = mapInfo.projection,
+          baseLayer = mapInfo.baseLayer,
+          extent = mapInfo.extent;
+      this.baseProjection = projection;
 
-        if (attributes) {
-          attributes[fieldName] && (0, _lodash.default)(+attributes[fieldName]) && values.push(parseFloat(attributes[fieldName]));
-        } else if (feature.get(fieldName) && (0, _lodash.default)(+feature.get(fieldName))) {
-          feature.get(fieldName) && values.push(parseFloat(feature.get(fieldName)));
-        }
-      }, this);
-      var segements = SuperMap.ArrayStatistic.getArraySegments(values, themeSetting.segmentMethod, segmentCount);
+      if (projection === 'EPSG:910111' || projection === 'EPSG:910112') {
+        this.baseProjection = 'EPSG:3857';
+      } else if (projection === 'EPSG:910101' || projection === 'EPSG:910102') {
+        this.baseProjection = 'EPSG:4326';
+      }
 
-      if (segements) {
-        var itemNum = segmentCount;
+      if (baseLayer.layerType === 'BAIDU') {
+        this.crs = _leafletWrapper.default.CRS.Baidu;
+        return this.crs;
+      }
 
-        if (attributes && segements[0] === segements[attributes.length - 1]) {
-          itemNum = 1;
-          segements.length = 2;
-        }
+      if (baseLayer.layerType.indexOf('TIANDITU') > -1) {
+        this.crs = this.baseProjection === 'EPSG:3857' ? _leafletWrapper.default.CRS.TianDiTu_Mercator : _leafletWrapper.default.CRS.TianDiTu_WGS84;
+        return this.crs;
+      }
 
-        for (var i = 0; i < segements.length; i++) {
-          var value = segements[i];
-          value = i === 0 ? Math.floor(value * 100) / 100 : Math.ceil(value * 100) / 100 + 0.1;
-          segements[i] = Number(value.toFixed(2));
-        }
+      var epsgCode = this.baseProjection.split(':')[1];
 
-        var curentColors = themeSetting.colors;
+      var bounds = _leafletWrapper.default.bounds([extent.leftBottom.x, extent.leftBottom.y], [extent.rightTop.x, extent.rightTop.y]);
 
-        for (var index = 0; index < itemNum; index++) {
-          if (index in customSettings) {
-            if (customSettings[index]['segment']['start']) {
-              segements[index] = customSettings[index]['segment']['start'];
-            }
+      if (['4326', '3857', '3395'].includes(epsgCode)) {
+        this.crs = _leafletWrapper.default.Proj.CRS("EPSG:".concat(epsgCode), {
+          bounds: bounds
+        });
+      } else if (parseFloat(epsgCode) < 0) {
+        this.crs = new _leafletWrapper.default.CRS.NonEarthCRS({
+          bounds: bounds
+        });
+      } else if (!epsgCode) {
+        this.baseProjection = this.getEpsgInfoFromWKT(this.baseProjection);
 
-            if (customSettings[index]['segment']['end']) {
-              segements[index + 1] = customSettings[index]['segment']['end'];
-            }
-          }
-        }
-
-        var styleGroups = [];
-
-        for (var _i2 = 0; _i2 < itemNum; _i2++) {
-          var color = curentColors[_i2];
-
-          if (_i2 in customSettings) {
-            if (customSettings[_i2].color) {
-              color = customSettings[_i2].color;
-            }
-          }
-
-          if (featureType === 'LINE') {
-            style.strokeColor = color;
-          } else {
-            style.fillColor = color;
-          }
-
-          var start = segements[_i2];
-          var end = segements[_i2 + 1];
-          var styleObj = JSON.parse(JSON.stringify(style));
-          styleGroups.push({
-            style: styleObj,
-            color: color,
-            start: start,
-            end: end
+        if (this.baseProjection) {
+          this.crs = _leafletWrapper.default.Proj.CRS(this.baseProjection, {
+            bounds: bounds,
+            def: mapInfo.projection
           });
         }
-
-        return styleGroups;
       }
+
+      return this.crs;
+    }
+  }, {
+    key: "_updateDataFlowFeature",
+    value: function _updateDataFlowFeature(layerInfo, e) {
+      if (layerInfo.visible) {
+        var feature = e.data;
+        var lineStyle = layerInfo.lineStyle,
+            labelStyle = layerInfo.labelStyle;
+        lineStyle && this._updateDataflowPathLayer(feature, layerInfo);
+        labelStyle && labelStyle.labelField !== '未设置' && this._updateDataflowLabelLayer(feature, layerInfo);
+      }
+    }
+  }, {
+    key: "_getSymbolPointLayer",
+    value: function _getSymbolPointLayer(style, textSize) {
+      var symbolStyle = JSON.parse(JSON.stringify(style));
+      symbolStyle.fontColor = style.fillColor;
+      symbolStyle.label = style.unicode;
+      symbolStyle.fontFamily = 'supermapol-icons';
+
+      var pointToLayer = function pointToLayer(geojson, latlng) {
+        textSize && (symbolStyle.fontSize = textSize[geojson.id - 1 || geojson.properties.index] + 'px');
+        return new _leafletWrapper.default.supermap.unicodeMarker(latlng, symbolStyle);
+      };
+
+      return pointToLayer;
+    }
+  }, {
+    key: "_getSvgPointLayer",
+    value: function _getSvgPointLayer(canvas, style, textSize) {
+      var radius = style.radius;
+      this.handleSvgColor(style, canvas);
+      var imgUrl = canvas.toDataURL('img/png');
+      var resolution = canvas.width / canvas.height;
+
+      var svgPointToLayer = function svgPointToLayer(geojson, latlng) {
+        var iconSize = textSize && textSize[geojson.id - 1 || geojson.properties.index];
+        return _leafletWrapper.default.marker(latlng, {
+          icon: _leafletWrapper.default.icon({
+            iconUrl: imgUrl,
+            iconSize: textSize ? [iconSize, iconSize / resolution] : [radius, radius / resolution]
+          })
+        });
+      };
+
+      return svgPointToLayer;
+    }
+  }, {
+    key: "_getDataflowPointLayer",
+    value: function _getDataflowPointLayer(layerInfo) {
+      var _this10 = this;
+
+      var layerType = layerInfo.layerType,
+          pointStyle = layerInfo.pointStyle,
+          layerID = layerInfo.layerID,
+          themeSetting = layerInfo.themeSetting;
+      return new Promise(function (resolve, reject) {
+        if (layerType === 'DATAFLOW_HEAT') {
+          var colors = themeSetting.colors,
+              radius = themeSetting.radius,
+              customSettings = themeSetting.customSettings,
+              weight = themeSetting.weight;
+          var heatLayerInfo = {
+            layerID: layerID,
+            themeSetting: {
+              colors: colors,
+              radius: radius,
+              customSettings: customSettings,
+              weight: weight
+            }
+          };
+
+          var pointToLayer = function pointToLayer(geojson, latlng) {
+            return _this10._createHeatLayer(heatLayerInfo, [geojson]);
+          };
+
+          resolve(pointToLayer);
+        } else if ('SYMBOL_POINT' === pointStyle.type) {
+          resolve(_this10._getSymbolPointLayer(pointStyle, null));
+        } else if ('SVG_POINT' === pointStyle.type) {
+          if (!_this10._svgDiv) {
+            _this10._svgDiv = document.createElement('div');
+            document.body.appendChild(_this10._svgDiv);
+          }
+
+          _this10.getCanvasFromSVG(pointStyle.url, _this10._svgDiv, function (canvas) {
+            resolve(_this10._getSvgPointLayer(canvas, pointStyle, null));
+          });
+        } else {
+          var _pointToLayer = function _pointToLayer(geojson, latlng) {
+            return _leafletWrapper.default.circleMarker(latlng, _this10._getVectorLayerStyle(pointStyle));
+          };
+
+          resolve(_pointToLayer);
+        }
+      });
+    }
+  }, {
+    key: "_handleDataflowFeature",
+    value: function _handleDataflowFeature(feature, layerInfo) {
+      var identifyField = layerInfo.identifyField,
+          maxPointCount = layerInfo.maxPointCount,
+          lineStyle = layerInfo.lineStyle;
+      var geoID = feature.properties[identifyField];
+
+      if (lineStyle) {
+        if (this._dataflowLineFeatureCache[geoID]) {
+          var coordinates = this._dataflowLineFeatureCache[geoID].geometry.coordinates;
+          coordinates.push(feature.geometry.coordinates);
+
+          if (maxPointCount && coordinates.length > maxPointCount) {
+            coordinates.splice(0, coordinates.length - maxPointCount);
+          }
+
+          this._dataflowLineFeatureCache[geoID].geometry.coordinates = coordinates;
+        } else {
+          this._dataflowLineFeatureCache[geoID] = {
+            type: 'Feature',
+            properties: feature.properties,
+            geometry: {
+              type: 'LineString',
+              coordinates: [feature.geometry.coordinates]
+            }
+          };
+        }
+      }
+
+      this._dataflowFeatureCache[geoID] = feature;
+    }
+  }, {
+    key: "_updateDataflowLabelLayer",
+    value: function _updateDataflowLabelLayer(feature, layerInfo) {
+      this._handleDataflowFeature(feature, layerInfo);
+
+      var geoID = feature.properties[layerInfo.identifyField];
+      var layer;
+
+      if (this._dataflowLabelIdCache[geoID]) {
+        layer = this._dataFlowLayer.getLayer(this._dataflowLabelIdCache[geoID]);
+        var _feature = this._dataflowFeatureCache[geoID];
+        var geoTextFeature = new _leafletWrapper.default.supermap.themeFeature([_feature.geometry.coordinates[1], _feature.geometry.coordinates[0], geoID], _feature.properties);
+        layer.removeAllFeatures();
+        layer.addFeatures([geoTextFeature]);
+      } else {
+        var _feature2 = this._dataflowFeatureCache[geoID];
+        layer = this._addLabelLayer(layerInfo, [_feature2]);
+
+        this._dataFlowLayer.addLayer(layer);
+
+        this._dataflowLabelIdCache[geoID] = this._dataFlowLayer.getLayerId(layer);
+      }
+    }
+  }, {
+    key: "_updateDataflowPathLayer",
+    value: function _updateDataflowPathLayer(feature, layerInfo) {
+      this._handleDataflowFeature(feature, layerInfo);
+
+      var geoID = feature.properties[layerInfo.identifyField];
+      var layer;
+      var coordinates = this._dataflowLineFeatureCache[geoID].geometry.coordinates;
+
+      var latlngs = _leafletWrapper.default.GeoJSON.coordsToLatLngs(coordinates, 0);
+
+      if (this._dataflowPathIdCache[geoID]) {
+        layer = this._dataFlowLayer.getLayer(this._dataflowPathIdCache[geoID]);
+        layer.setLatLngs(latlngs);
+      } else {
+        layer = _leafletWrapper.default.polyline(latlngs, Object.assign({}, this._getVectorLayerStyle(layerInfo.lineStyle)));
+
+        this._dataFlowLayer.addLayer(layer);
+
+        this._dataflowPathIdCache[geoID] = this._dataFlowLayer.getLayerId(layer);
+      }
+    }
+  }, {
+    key: "getTransformCoodinatesCRS",
+    value: function getTransformCoodinatesCRS(epsgCode) {
+      var _this11 = this;
+
+      return new Promise(function (resolve, reject) {
+        _this11.webMapService.getEpsgcodeWkt(epsgCode).then(function (epsgcodeInfo) {
+          resolve(_leafletWrapper.default.Proj.CRS(_this11.getEpsgInfoFromWKT(epsgcodeInfo.wkt), {
+            def: epsgcodeInfo.wkt
+          }));
+        }, function (err) {
+          reject(err);
+        });
+      });
+    }
+  }, {
+    key: "cleanWebMap",
+    value: function cleanWebMap() {
+      if (this.map) {
+        this.map.remove();
+        this.center = null;
+        this.zoom = null;
+
+        this._dataFlowLayer.off('dataupdated', this._updateDataFlowFeaturesCallback);
+
+        this._unprojectCrs = null;
+      }
+    }
+  }]);
+  return WebMapViewModel;
+}(_WebMapBase2.default);
+
+exports.default = WebMapViewModel;
+
+/***/ }),
+
+/***/ "0JCW":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/leaflet/identify/Identify.vue?vue&type=template&id=2bb649b5&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('sm-popup',{ref:"SmPopup",attrs:{"latLng":_vm.mapClickPosition}},[_c('ul',{ref:"Popup",class:['sm-component-identify'],style:([_vm.getTextColorStyle])},_vm._l((_vm.popupProps),function(value,key,index){return _c('li',{key:index,staticClass:"sm-component-identify__body"},[_c('div',{staticClass:"sm-component-identify__left",attrs:{"title":key}},[_vm._v(_vm._s(key))]),_vm._v(" "),_c('div',{staticClass:"sm-component-identify__right",attrs:{"title":value}},[_vm._v(_vm._s(value))])])}))])}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/leaflet/identify/Identify.vue?vue&type=template&id=2bb649b5&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
+/***/ "0Tzf":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("5L7t");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "0XuU":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("43KI").Transform
+
+
+/***/ }),
+
+/***/ "0Z9T":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/image/Image.vue?vue&type=template&id=452a2bc2&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-image",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('a',{class:['sm-component-image__link', _vm.realHref ? '': 'sm-component-image__noLink'],attrs:{"href":_vm.realHref,"target":_vm.target}},[(_vm.src)?_c('div',{staticClass:"sm-component-image__content",style:([_vm.repeatStyle,_vm.imgUrl])}):_c('i',{staticClass:"sm-components-icons-x-bmp sm-component-image__defaultImg"})])])}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/common/image/Image.vue?vue&type=template&id=452a2bc2&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
+/***/ "0zgg":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("lwsE"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("W8MJ"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("a1gu"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("Nsbk"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
+
+var _typeof2 = _interopRequireDefault(__webpack_require__("cDf5"));
+
+var _vue = _interopRequireDefault(__webpack_require__("i7/w"));
+
+var _vuePropertyDecorator = __webpack_require__("YKMj");
+
+var __decorate = void 0 && (void 0).__decorate || function (decorators, target, key, desc) {
+  var c = arguments.length,
+      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+      d;
+  if ((typeof Reflect === "undefined" ? "undefined" : (0, _typeof2.default)(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+    if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  }
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var MAP_EVENT_NAMES = ['zoomlevelschange', 'resize', 'unload', 'viewreset', 'load', 'zoomstart', 'movestart', 'zoom', 'move', 'zoomend', 'moveend', 'popupopen', 'popupclose', 'autopanstart', 'tooltipopen', 'tooltipclose', 'locationerror', 'locationfound', 'click', 'dblclick', 'mousedown', 'mouseup', 'mouseover', 'mouseout', 'mousemove', 'contextmenu', 'keypress', 'keydown', 'keyup', 'preclick', 'zoomanim'];
+
+var MapEvents =
+/*#__PURE__*/
+function (_Vue) {
+  (0, _inherits2.default)(MapEvents, _Vue);
+
+  function MapEvents() {
+    (0, _classCallCheck2.default)(this, MapEvents);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MapEvents).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(MapEvents, [{
+    key: "mapEventCallback",
+    value: function mapEventCallback(event) {
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      this.emitMapEvent(event.type, Object.assign({
+        mapboxEvent: event
+      }, data));
+    }
+  }, {
+    key: "bindMapEvents",
+    value: function bindMapEvents() {
+      var _this = this;
+
+      Object.keys(this.$listeners).forEach(function (eventName) {
+        if (MAP_EVENT_NAMES.includes(eventName)) {
+          _this.bindMapEvent(eventName, _this.mapEventCallback.bind(_this));
+        }
+      });
+    }
+  }, {
+    key: "emitMapEvent",
+    value: function emitMapEvent(name) {
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      this.$emit(name, Object.assign({
+        map: this.map,
+        component: this
+      }, data));
+    }
+  }, {
+    key: "bindMapEvent",
+    value: function bindMapEvent(eventName, eventCallback) {
+      this.map.on(eventName, eventCallback);
+    }
+  }]);
+  return MapEvents;
+}(_vue.default);
+
+MapEvents = __decorate([_vuePropertyDecorator.Component], MapEvents);
+var _default = MapEvents;
+exports.default = _default;
+
+/***/ }),
+
+/***/ 1:
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ "17FK":
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__17FK__;
+
+/***/ }),
+
+/***/ "1IWx":
+/***/ (function(module, exports, __webpack_require__) {
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+module.exports = Stream;
+
+var EE = __webpack_require__("+qE3").EventEmitter;
+var inherits = __webpack_require__("P7XM");
+
+inherits(Stream, EE);
+Stream.Readable = __webpack_require__("43KI");
+Stream.Writable = __webpack_require__("LGOv");
+Stream.Duplex = __webpack_require__("CWBI");
+Stream.Transform = __webpack_require__("0XuU");
+Stream.PassThrough = __webpack_require__("wq4j");
+
+// Backwards-compat with node 0.4.x
+Stream.Stream = Stream;
+
+
+
+// old-style streams.  Note that the pipe method (the only relevant
+// part of this class) is overridden in the Readable class.
+
+function Stream() {
+  EE.call(this);
+}
+
+Stream.prototype.pipe = function(dest, options) {
+  var source = this;
+
+  function ondata(chunk) {
+    if (dest.writable) {
+      if (false === dest.write(chunk) && source.pause) {
+        source.pause();
+      }
+    }
+  }
+
+  source.on('data', ondata);
+
+  function ondrain() {
+    if (source.readable && source.resume) {
+      source.resume();
+    }
+  }
+
+  dest.on('drain', ondrain);
+
+  // If the 'end' option is not supplied, dest.end() will be called when
+  // source gets the 'end' or 'close' events.  Only dest.end() once.
+  if (!dest._isStdio && (!options || options.end !== false)) {
+    source.on('end', onend);
+    source.on('close', onclose);
+  }
+
+  var didOnEnd = false;
+  function onend() {
+    if (didOnEnd) return;
+    didOnEnd = true;
+
+    dest.end();
+  }
+
+
+  function onclose() {
+    if (didOnEnd) return;
+    didOnEnd = true;
+
+    if (typeof dest.destroy === 'function') dest.destroy();
+  }
+
+  // don't leave dangling pipes when there are errors.
+  function onerror(er) {
+    cleanup();
+    if (EE.listenerCount(this, 'error') === 0) {
+      throw er; // Unhandled stream error in pipe.
+    }
+  }
+
+  source.on('error', onerror);
+  dest.on('error', onerror);
+
+  // remove all the event listeners that were added.
+  function cleanup() {
+    source.removeListener('data', ondata);
+    dest.removeListener('drain', ondrain);
+
+    source.removeListener('end', onend);
+    source.removeListener('close', onclose);
+
+    source.removeListener('error', onerror);
+    dest.removeListener('error', onerror);
+
+    source.removeListener('end', cleanup);
+    source.removeListener('close', cleanup);
+
+    dest.removeListener('close', cleanup);
+  }
+
+  source.on('end', cleanup);
+  source.on('close', cleanup);
+
+  dest.on('close', cleanup);
+
+  dest.emit('pipe', source);
+
+  // Allow for unix-like usage: A.pipe(B).pipe(C)
+  return dest;
+};
+
+
+/***/ }),
+
+/***/ "1Mc+":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("QmiY");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "1P0Z":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "1ThP":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("TPtX");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("KHd+");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(
+  _Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "1tPa":
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(e,t){ true?module.exports=t(__webpack_require__("AzSJ")):undefined}(this,function(e){return function(e){function t(i){if(n[i])return n[i].exports;var r=n[i]={i:i,l:!1,exports:{}};return e[i].call(r.exports,r,r.exports,t),r.l=!0,r.exports}var n={};return t.m=e,t.c=n,t.i=function(e){return e},t.d=function(e,n,i){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:i})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="/",t(t.s=3)}([function(t,n){t.exports=e},function(e,t,n){"use strict";function i(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}Object.defineProperty(t,"__esModule",{value:!0});var r=n(0),o=function(e){return e&&e.__esModule?e:{default:e}}(r),s=window.videojs||o.default;"function"!=typeof Object.assign&&Object.defineProperty(Object,"assign",{value:function(e,t){if(null==e)throw new TypeError("Cannot convert undefined or null to object");for(var n=Object(e),i=1;i<arguments.length;i++){var r=arguments[i];if(null!=r)for(var o in r)Object.prototype.hasOwnProperty.call(r,o)&&(n[o]=r[o])}return n},writable:!0,configurable:!0});var a=["loadeddata","canplay","canplaythrough","play","pause","waiting","playing","ended","error"];t.default={name:"video-player",props:{start:{type:Number,default:0},crossOrigin:{type:String,default:""},playsinline:{type:Boolean,default:!1},customEventName:{type:String,default:"statechanged"},options:{type:Object,required:!0},events:{type:Array,default:function(){return[]}},globalOptions:{type:Object,default:function(){return{controls:!0,controlBar:{remainingTimeDisplay:!1,playToggle:{},progressControl:{},fullscreenToggle:{},volumeMenuButton:{inline:!1,vertical:!0}},techOrder:["html5"],plugins:{}}}},globalEvents:{type:Array,default:function(){return[]}}},data:function(){return{player:null,reseted:!0}},mounted:function(){this.player||this.initialize()},beforeDestroy:function(){this.player&&this.dispose()},methods:{initialize:function(){var e=this,t=Object.assign({},this.globalOptions,this.options);this.playsinline&&(this.$refs.video.setAttribute("playsinline",this.playsinline),this.$refs.video.setAttribute("webkit-playsinline",this.playsinline),this.$refs.video.setAttribute("x5-playsinline",this.playsinline),this.$refs.video.setAttribute("x5-video-player-type","h5"),this.$refs.video.setAttribute("x5-video-player-fullscreen",!1)),""!==this.crossOrigin&&(this.$refs.video.crossOrigin=this.crossOrigin,this.$refs.video.setAttribute("crossOrigin",this.crossOrigin));var n=function(t,n){t&&e.$emit(t,e.player),n&&e.$emit(e.customEventName,i({},t,n))};t.plugins&&delete t.plugins.__ob__;var r=this;this.player=s(this.$refs.video,t,function(){for(var e=this,t=a.concat(r.events).concat(r.globalEvents),i={},o=0;o<t.length;o++)"string"==typeof t[o]&&void 0===i[t[o]]&&function(t){i[t]=null,e.on(t,function(){n(t,!0)})}(t[o]);this.on("timeupdate",function(){n("timeupdate",this.currentTime())}),r.$emit("ready",this)})},dispose:function(e){var t=this;this.player&&this.player.dispose&&("Flash"!==this.player.techName_&&this.player.pause&&this.player.pause(),this.player.dispose(),this.player=null,this.$nextTick(function(){t.reseted=!1,t.$nextTick(function(){t.reseted=!0,t.$nextTick(function(){e&&e()})})}))}},watch:{options:{deep:!0,handler:function(e,t){var n=this;this.dispose(function(){e&&e.sources&&e.sources.length&&n.initialize()})}}}}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var i=n(1),r=n.n(i);for(var o in i)["default","default"].indexOf(o)<0&&function(e){n.d(t,e,function(){return i[e]})}(o);var s=n(5),a=n(4),l=a(r.a,s.a,!1,null,null,null);t.default=l.exports},function(e,t,n){"use strict";function i(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0}),t.install=t.videoPlayer=t.videojs=void 0;var r=n(0),o=i(r),s=n(2),a=i(s),l=window.videojs||o.default,u=function(e,t){t&&(t.options&&(a.default.props.globalOptions.default=function(){return t.options}),t.events&&(a.default.props.globalEvents.default=function(){return t.events})),e.component(a.default.name,a.default)},d={videojs:l,videoPlayer:a.default,install:u};t.default=d,t.videojs=l,t.videoPlayer=a.default,t.install=u},function(e,t){e.exports=function(e,t,n,i,r,o){var s,a=e=e||{},l=typeof e.default;"object"!==l&&"function"!==l||(s=e,a=e.default);var u="function"==typeof a?a.options:a;t&&(u.render=t.render,u.staticRenderFns=t.staticRenderFns,u._compiled=!0),n&&(u.functional=!0),r&&(u._scopeId=r);var d;if(o?(d=function(e){e=e||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext,e||"undefined"==typeof __VUE_SSR_CONTEXT__||(e=__VUE_SSR_CONTEXT__),i&&i.call(this,e),e&&e._registeredComponents&&e._registeredComponents.add(o)},u._ssrRegister=d):i&&(d=i),d){var c=u.functional,f=c?u.render:u.beforeCreate;c?(u._injectStyles=d,u.render=function(e,t){return d.call(t),f(e,t)}):u.beforeCreate=f?[].concat(f,d):[d]}return{esModule:s,exports:a,options:u}}},function(e,t,n){"use strict";var i=function(){var e=this,t=e.$createElement,n=e._self._c||t;return e.reseted?n("div",{staticClass:"video-player"},[n("video",{ref:"video",staticClass:"video-js"})]):e._e()},r=[],o={render:i,staticRenderFns:r};t.a=o}])});
+
+/***/ }),
+
+/***/ 2:
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ "284h":
+/***/ (function(module, exports) {
+
+function _interopRequireWildcard(obj) {
+  if (obj && obj.__esModule) {
+    return obj;
+  } else {
+    var newObj = {};
+
+    if (obj != null) {
+      for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {};
+
+          if (desc.get || desc.set) {
+            Object.defineProperty(newObj, key, desc);
+          } else {
+            newObj[key] = obj[key];
+          }
+        }
+      }
+    }
+
+    newObj["default"] = obj;
+    return newObj;
+  }
+}
+
+module.exports = _interopRequireWildcard;
+
+/***/ }),
+
+/***/ "2EDF":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("kokw");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "2Vb1":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("284h");
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("lwsE"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("W8MJ"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("a1gu"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("Nsbk"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
+
+var _Events2 = __webpack_require__("peoL");
+
+var _util = __webpack_require__("e7LN");
+
+var convert = _interopRequireWildcard(__webpack_require__("xRo1"));
+
+var DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
+var MB_SCALEDENOMINATOR_3857 = ['559082264.0287178', '279541132.0143589', '139770566.0071794', '69885283.00358972', '34942641.50179486', '17471320.75089743', '8735660.375448715', '4367830.1877224357', '2183915.093862179', '1091957.546931089', '545978.7734655447', '272989.7734655447', '272989.3867327723', '136494.6933663862', '68247.34668319309', '34123.67334159654', '17061.83667079827', '8530.918335399136', '4265.459167699568', '2132.729583849784'];
+var MB_SCALEDENOMINATOR_4326 = ['5.590822640287176E8', '2.795411320143588E8', '1.397705660071794E8', '6.98852830035897E7', '3.494264150179485E7', '1.7471320750897426E7', '8735660.375448713', '4367830.187724357', '2183915.0938621783', '1091957.5469310891', '545978.7734655446', '272989.3867327723', '136494.69336638614', '68247.34668319307', '34123.673341596535', '17061.836670798268', '8530.918335399134'];
+
+var WebMapService =
+/*#__PURE__*/
+function (_Events) {
+  (0, _inherits2.default)(WebMapService, _Events);
+
+  function WebMapService(mapId) {
+    var _this;
+
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    (0, _classCallCheck2.default)(this, WebMapService);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(WebMapService).call(this));
+    _this.mapId = mapId;
+    _this.serverUrl = options.serverUrl || 'http://www.supermapol.com';
+    _this.accessToken = options.accessToken;
+    _this.accessKey = options.accessKey;
+    _this.tiandituKey = options.tiandituKey || '';
+    _this.withCredentials = options.withCredentials || false;
+    _this.excludePortalProxyUrl = options.excludePortalProxyUrl;
+    return _this;
+  }
+
+  (0, _createClass2.default)(WebMapService, [{
+    key: "setMapId",
+    value: function setMapId(mapId) {
+      this.mapId = mapId;
+    }
+  }, {
+    key: "setServerUrl",
+    value: function setServerUrl(serverUrl) {
+      this.serverUrl = serverUrl;
+    }
+  }, {
+    key: "setWithCredentials",
+    value: function setWithCredentials(withCredentials) {
+      this.withCredentials = withCredentials;
+    }
+  }, {
+    key: "handleServerUrl",
+    value: function handleServerUrl(serverUrl) {
+      var urlArr = serverUrl.split('');
+
+      if (urlArr[urlArr.length - 1] !== '/') {
+        serverUrl += '/';
+      }
+
+      this.serverUrl = serverUrl;
+      return serverUrl;
+    }
+  }, {
+    key: "getMapInfo",
+    value: function getMapInfo() {
+      var _this2 = this;
+
+      var mapUrl = this._handleMapUrl();
+
+      return new Promise(function (resolve, reject) {
+        SuperMap.FetchRequest.get(mapUrl, null, {
+          withCredentials: _this2.withCredentials
+        }).then(function (response) {
+          return response.json();
+        }).then(function (mapInfo) {
+          if (mapInfo && mapInfo.succeed === false) {
+            var error = {
+              message: mapInfo && mapInfo.error && mapInfo.error.errorMsg
+            };
+            reject(error);
+            return;
+          }
+
+          mapInfo.mapParams = {
+            title: mapInfo.title,
+            description: mapInfo.description
+          };
+          resolve(mapInfo);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    }
+  }, {
+    key: "getLayerFeatures",
+    value: function getLayerFeatures(type, layer, baseProjection) {
+      var pro;
+
+      switch (type) {
+        case 'hosted':
+          pro = this._getFeaturesFromHosted(layer, baseProjection);
+          break;
+
+        case 'rest_data':
+          pro = this._getFeaturesFromRestData(layer);
+          break;
+
+        case 'rest_map':
+          pro = this._getFeaturesFromRestMap(layer);
+          break;
+
+        case 'dataflow':
+          pro = this._getFeaturesFromDataflow(layer);
+          break;
+      }
+
+      return pro;
+    }
+  }, {
+    key: "getWmtsInfo",
+    value: function getWmtsInfo(mapInfo) {
+      var _this3 = this;
+
+      return new Promise(function (resolve, reject) {
+        var isMatched = false;
+        var matchMaxZoom = 22;
+        SuperMap.FetchRequest.get(mapInfo.url, null, {
+          withCredentials: false,
+          withoutFormatSuffix: true
+        }).then(function (response) {
+          return response.text();
+        }).then(function (capabilitiesText) {
+          var converts = convert || window.convert;
+          var tileMatrixSet = JSON.parse(converts.xml2json(capabilitiesText, {
+            compact: true,
+            spaces: 4
+          })).Capabilities.Contents.TileMatrixSet;
+
+          for (var i = 0; i < tileMatrixSet.length; i++) {
+            if (tileMatrixSet[i]['ows:Identifier'] && tileMatrixSet[i]['ows:Identifier']['_text'] === mapInfo.tileMatrixSet) {
+              if (DEFAULT_WELLKNOWNSCALESET.includes(tileMatrixSet[i]['WellKnownScaleSet']['_text'])) {
+                isMatched = true;
+              } else if (tileMatrixSet[i]['WellKnownScaleSet'] && tileMatrixSet[i]['WellKnownScaleSet']['_text'] === 'Custom') {
+                var matchedScaleDenominator = [];
+                var defaultCRSScaleDenominators = _this3.map.crs === 'EPSG:3857' ? MB_SCALEDENOMINATOR_3857 : MB_SCALEDENOMINATOR_4326;
+
+                for (var j = 0, len = defaultCRSScaleDenominators.length; j < len; j++) {
+                  if (!tileMatrixSet[i].TileMatrix[j]) {
+                    break;
+                  }
+
+                  if (defaultCRSScaleDenominators[j] !== tileMatrixSet[i].TileMatrix[j]['ScaleDenominator']['_text']) {
+                    break;
+                  }
+
+                  matchedScaleDenominator.push(defaultCRSScaleDenominators[j]);
+                }
+
+                matchMaxZoom = matchedScaleDenominator.length - 1;
+
+                if (matchedScaleDenominator.length !== 0) {
+                  isMatched = true;
+                } else {
+                  throw Error('TileMatrixSetNotSuppport');
+                }
+              } else {
+                throw Error('TileMatrixSetNotSuppport');
+              }
+            }
+          }
+
+          resolve({
+            isMatched: isMatched,
+            matchMaxZoom: matchMaxZoom
+          });
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
     }
   }, {
     key: "_getFeaturesFromHosted",
-    value: function _getFeaturesFromHosted(_ref2) {
-      var layer = _ref2.layer,
-          index = _ref2.index,
-          len = _ref2.len,
-          _taskID = _ref2._taskID;
+    value: function _getFeaturesFromHosted(layer, baseProjection) {
       var dataSource = layer.dataSource,
           layerType = layer.layerType;
       var serverId = dataSource ? dataSource.serverId : layer.serverId;
 
       if (!serverId) {
-        this._addLayer(layer, null, index);
-
-        return;
+        return new Promise(function (resolve, reject) {
+          resolve({
+            type: 'noServerId'
+          });
+        });
       }
 
       var getDataFromIportal = layerType === 'MARKER' || dataSource && (!dataSource.accessType || dataSource.accessType === 'DIRECT');
 
       if (getDataFromIportal) {
-        this._getDataFromIportal({
-          layer: layer,
-          serverId: serverId,
-          _taskID: _taskID,
-          len: len,
-          index: index
-        });
+        return this._getDataFromIportal(serverId);
       } else {
-        this._getDataFromHosted({
+        return this._getDataFromHosted({
           layer: layer,
           serverId: serverId,
-          len: len,
-          index: index
+          baseProjection: baseProjection
         });
       }
     }
   }, {
-    key: "_getDataFromHosted",
-    value: function _getDataFromHosted(_ref3) {
-      var _this10 = this;
-
-      var layer = _ref3.layer,
-          serverId = _ref3.serverId,
-          len = _ref3.len,
-          index = _ref3.index;
-      var isMapService = layer.layerType === 'HOSTED_TILE';
-
-      this._checkUploadToRelationship(serverId).then(function (result) {
-        if (result && result.length > 0) {
-          var datasetName = result[0].name,
-              featureType = result[0].type.toUpperCase();
-
-          _this10._getDataService(serverId, datasetName).then(function (data) {
-            var dataItemServices = data.dataItemServices;
-
-            if (dataItemServices.length === 0) {
-              throw new Error();
-            }
-
-            if (isMapService) {
-              var dataService = dataItemServices.filter(function (info) {
-                return info && info.serviceType === 'RESTDATA';
-              })[0];
-
-              _this10._isMvt(dataService.address, datasetName).then(function (info) {
-                _this10._getServiceInfoFromLayer(index, len, layer, dataItemServices, datasetName, featureType, info);
-              }).catch(function () {
-                _this10._getServiceInfoFromLayer(index, len, layer, dataItemServices, datasetName, featureType);
-              });
-            } else {
-              _this10._getServiceInfoFromLayer(index, len, layer, dataItemServices, datasetName, featureType);
-            }
-          });
-        } else {
-          throw new Error();
-        }
-      }).catch(function (error) {
-        _this10._addLayerSucceeded();
-
-        _this10.fire('getlayerdatasourcefailed', {
-          error: error,
-          layer: layer,
-          map: _this10.map
-        });
-      });
-    }
-  }, {
     key: "_getFeaturesFromRestData",
-    value: function _getFeaturesFromRestData(_ref4) {
-      var _this11 = this;
+    value: function _getFeaturesFromRestData(layer) {
+      var _this4 = this;
 
-      var layer = _ref4.layer,
-          index = _ref4.index,
-          len = _ref4.len;
       var features;
       var dataSource = layer.dataSource;
-
-      this._getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function (result) {
-        features = _this11._parseGeoJsonData2Feature({
-          allDatas: {
-            features: result.result.features.features
-          },
-          fileCode: layer.projection,
-          featureProjection: _this11.baseProjection
-        });
-
-        _this11._addLayer(layer, features, index);
-      }, function (err) {
-        _this11._addLayerSucceeded();
-
-        _this11.fire('getlayerdatasourcefailed', {
-          error: err,
-          layer: layer,
-          map: _this11.map
+      return new Promise(function (resolve, reject) {
+        _this4._getFeatureBySQL(dataSource.url, [dataSource.dataSourseName || layer.name], function (result) {
+          features = _this4.parseGeoJsonData2Feature({
+            allDatas: {
+              features: result.result.features.features
+            }
+          });
+          resolve({
+            type: 'feature',
+            features: features
+          });
+        }, function (err) {
+          reject(err);
         });
       });
     }
   }, {
     key: "_getFeaturesFromRestMap",
-    value: function _getFeaturesFromRestMap(_ref5) {
-      var _this12 = this;
+    value: function _getFeaturesFromRestMap(layer) {
+      var _this5 = this;
 
-      var layer = _ref5.layer,
-          index = _ref5.index,
-          len = _ref5.len;
+      return new Promise(function (resolve, reject) {
+        _this5._queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, function (result) {
+          var recordsets = result && result.result.recordsets;
+          var recordset = recordsets && recordsets[0];
+          var attributes = recordset.fields;
 
-      this._queryFeatureBySQL(layer.dataSource.url, layer.dataSource.layerName, function (result) {
-        var recordsets = result && result.result.recordsets;
-        var recordset = recordsets && recordsets[0];
-        var attributes = recordset.fields;
+          if (recordset && attributes) {
+            var fileterAttrs = [];
 
-        if (recordset && attributes) {
-          var fileterAttrs = [];
+            for (var i in attributes) {
+              var value = attributes[i];
 
-          for (var i in attributes) {
-            var value = attributes[i];
-
-            if (value.indexOf('Sm') !== 0 || value === 'SmID') {
-              fileterAttrs.push(value);
+              if (value.indexOf('Sm') !== 0 || value === 'SmID') {
+                fileterAttrs.push(value);
+              }
             }
-          }
 
-          _this12._getFeatures(fileterAttrs, layer, function (features) {
-            _this12._addLayer(layer, features, index);
-          }, function (err) {
-            _this12._addLayerSucceeded();
-
-            _this12.fire('getlayerdatasourcefailed', {
-              error: err,
-              layer: layer,
-              map: _this12.map
-            });
-          });
-        }
-      }, function (err) {
-        _this12._addLayerSucceeded();
-
-        _this12.fire('getlayerdatasourcefailed', {
-          error: err,
-          layer: layer,
-          map: _this12.map
-        });
-      }, 'smid=1');
-    }
-  }, {
-    key: "_getFeaturesFromDataflow",
-    value: function _getFeaturesFromDataflow(_ref6) {
-      var _this13 = this;
-
-      var layer = _ref6.layer,
-          index = _ref6.index,
-          len = _ref6.len;
-
-      this._getDataflowInfo(layer, function () {
-        _this13._addLayer(layer, null, index);
-      }, function (e) {
-        _this13._addLayerSucceeded();
-      });
-    }
-  }, {
-    key: "_getDataFromIportal",
-    value: function _getDataFromIportal(_ref7) {
-      var _this14 = this;
-
-      var layer = _ref7.layer,
-          serverId = _ref7.serverId,
-          _taskID = _ref7._taskID,
-          len = _ref7.len,
-          index = _ref7.index;
-      var features;
-      var url = "".concat(this.serverUrl, "web/datas/").concat(serverId, "/content.json?pageSize=9999999&currentPage=1");
-
-      if (this.accessToken) {
-        url = "".concat(url, "&").concat(this.accessKey, "=").concat(this.accessToken);
-      }
-
-      SuperMap.FetchRequest.get(url, null, {
-        withCredentials: this.withCredentials
-      }).then(function (response) {
-        return response.json();
-      }).then(function (data) {
-        if (_taskID !== _this14._taskID) {
-          return;
-        }
-
-        if (data.succeed === false) {
-          throw new Error(data.error);
-        }
-
-        if (data && data.type) {
-          if (data.type === 'JSON' || data.type === 'GEOJSON') {
-            data.content = JSON.parse(data.content.trim());
-            features = _this14._formatGeoJSON(data.content);
-          } else if (data.type === 'EXCEL' || data.type === 'CSV') {
-            features = _this14._excelData2Feature(data.content);
-          }
-
-          _this14._addLayer(layer, features, index);
-        }
-      }).catch(function (error) {
-        _this14._addLayerSucceeded();
-
-        _this14.fire('getlayerdatasourcefailed', {
-          error: error,
-          layer: layer,
-          map: _this14.map
-        });
-      });
-    }
-  }, {
-    key: "_sendMapToUser",
-    value: function _sendMapToUser(count, layersLen) {
-      if (count === layersLen) {
-        this.fire('addlayerssucceeded', {
-          map: this.map,
-          mapparams: this.mapParams,
-          layers: this._layers
-        });
-      }
-    }
-  }, {
-    key: "_getFiterFeatures",
-    value: function _getFiterFeatures(filterCondition, allFeatures) {
-      if (!filterCondition) {
-        return allFeatures;
-      }
-
-      var condition = this._replaceFilterCharacter(filterCondition);
-
-      var sql = 'select * from json where (' + condition + ')';
-      var filterFeatures = [];
-
-      for (var i = 0; i < allFeatures.length; i++) {
-        var feature = allFeatures[i];
-        var filterResult = void 0;
-
-        try {
-          filterResult = window['jsonsql'].query(sql, {
-            properties: feature.properties
-          });
-        } catch (err) {
-          continue;
-        }
-
-        if (filterResult && filterResult.length > 0) {
-          filterFeatures.push(feature);
-        }
-      }
-
-      return filterFeatures;
-    }
-  }, {
-    key: "_checkUploadToRelationship",
-    value: function _checkUploadToRelationship(fileId) {
-      return SuperMap.FetchRequest.get("".concat(this.serverUrl, "web/datas/").concat(fileId, "/datasets.json"), null, {
-        withCredentials: this.withCredentials
-      }).then(function (response) {
-        return response.json();
-      }).then(function (result) {
-        return result;
-      });
-    }
-  }, {
-    key: "_getDataService",
-    value: function _getDataService(fileId, datasetName) {
-      return SuperMap.FetchRequest.get("".concat(this.serverUrl, "web/datas/").concat(fileId, ".json"), null, {
-        withCredentials: this.withCredentials
-      }).then(function (response) {
-        return response.json();
-      }).then(function (result) {
-        result.fileId = fileId;
-        result.datasetName = datasetName;
-        return result;
-      });
-    }
-  }, {
-    key: "_isMvt",
-    value: function _isMvt(serviceUrl, datasetName) {
-      var _this15 = this;
-
-      return this._getDatasetsInfo(serviceUrl, datasetName).then(function (info) {
-        if (info.epsgCode == _this15.baseProjection.split('EPSG:')[1]) {
-          return SuperMap.FetchRequest.get("".concat(info.url, "/tilefeature.mvt")).then(function (response) {
-            return response.json();
-          }).then(function (result) {
-            info.isMvt = result.error && result.error.code === 400;
-            return info;
-          }).catch(function () {
-            return info;
-          });
-        }
-
-        return info;
-      });
-    }
-  }, {
-    key: "_getServiceInfoFromLayer",
-    value: function _getServiceInfoFromLayer(layerIndex, len, layer, dataItemServices, datasetName, featureType, info) {
-      var _this16 = this;
-
-      var isMapService = info ? !info.isMvt : layer.layerType === 'HOSTED_TILE',
-          isAdded = false;
-      dataItemServices.forEach(function (service, index) {
-        if (isAdded) {
-          return;
-        }
-
-        if (service && isMapService && service.serviceType === 'RESTMAP') {
-          isAdded = true;
-
-          _this16._getTileLayerInfo(service.address).then(function (restMaps) {
-            restMaps.forEach(function (restMapInfo) {
-              var bounds = restMapInfo.bounds;
-              layer.layerType = 'TILE';
-              layer.orginEpsgCode = _this16.baseProjection;
-              layer.units = restMapInfo.coordUnit && restMapInfo.coordUnit.toLowerCase();
-              layer.extent = [bounds.left, bounds.bottom, bounds.right, bounds.top];
-              layer.visibleScales = restMapInfo.visibleScales;
-              layer.url = restMapInfo.url;
-              layer.sourceType = 'TILE';
-
-              _this16._createBaseLayer(layer);
-            });
-          });
-        } else if (service && !isMapService && service.serviceType === 'RESTDATA') {
-          if (info && info.isMvt) {
-            _this16._addLayerSucceeded();
-          } else {
-            isAdded = true;
-
-            _this16._getDatasources(service.address).then(function (datasourceName) {
-              layer.dataSource.dataSourceName = datasourceName + ':' + datasetName;
-              layer.dataSource.url = "".concat(service.address, "/data");
-
-              _this16._getFeatureBySQL(layer.dataSource.url, [layer.dataSource.dataSourceName || layer.name], function (result) {
-                var features = _this16._parseGeoJsonData2Feature({
-                  allDatas: {
-                    features: result.result.features.features
-                  },
-                  fileCode: layer.projection,
-                  featureProjection: _this16.baseProjection
-                });
-
-                _this16._addLayer(layer, features, layerIndex);
-              }, function (err) {
-                _this16._addLayerSucceeded();
-
-                _this16.fire('getlayerdatasourcefailed', {
-                  error: err,
-                  layer: layer,
-                  map: _this16.map
-                });
+            _this5._getFeatures(fileterAttrs, layer, function (features) {
+              resolve({
+                type: 'feature',
+                features: features
               });
+            }, function (err) {
+              reject(err);
             });
           }
-        }
-      }, this);
-
-      if (!isAdded) {
-        this._addLayerSucceeded();
-
-        this.fire('getlayerdatasourcefailed', {
-          error: null,
-          layer: layer,
-          map: this.map
-        });
-      }
-    }
-  }, {
-    key: "_getFeatureBySQL",
-    value: function _getFeatureBySQL(url, datasetNames, _processCompleted, processFaild) {
-      var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-      getFeatureParam = new SuperMap.FilterParameter({
-        name: datasetNames.join().replace(':', '@'),
-        attributeFilter: 'SMID > 0'
+        }, function (err) {
+          reject(err);
+        }, 'smid=1');
       });
-      getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-        queryParameter: getFeatureParam,
-        datasetNames: datasetNames,
-        fromIndex: 0,
-        toIndex: -1,
-        maxFeatures: -1,
-        returnContent: true
-      });
-      var options = {
-        eventListeners: {
-          processCompleted: function processCompleted(getFeaturesEventArgs) {
-            _processCompleted && _processCompleted(getFeaturesEventArgs);
-          },
-          processFailed: function processFailed(e) {
-            processFaild && processFaild(e);
-          }
-        }
-      };
-      getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(url, options);
-      getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-    }
-  }, {
-    key: "_parseGeoJsonData2Feature",
-    value: function _parseGeoJsonData2Feature(metaData) {
-      var allFeatures = metaData.allDatas.features;
-      var features = [];
-
-      for (var i = 0, len = allFeatures.length; i < len; i++) {
-        var feature = allFeatures[i];
-        var coordinate = feature.geometry.coordinates;
-
-        if (allFeatures[i].geometry.type === 'Point') {
-          if (allFeatures[i].properties) {
-            allFeatures[i].properties.lon = coordinate[0];
-            allFeatures[i].properties.lat = coordinate[1];
-          }
-        }
-
-        feature.properties['index'] = i + '';
-        features.push(feature);
-      }
-
-      return features;
     }
   }, {
     key: "_queryFeatureBySQL",
-    value: function _queryFeatureBySQL(url, layerName, processCompleted, processFaild, attributeFilter, fields, epsgCode, startRecord, recordLength, onlyAttribute) {
+    value: function _queryFeatureBySQL(url, layerName, _processCompleted, processFaild, attributeFilter, fields, epsgCode, startRecord, recordLength, onlyAttribute) {
+      var queryBySQLParams = this._getQueryFeaturesParam(layerName, attributeFilter, fields, epsgCode, startRecord, recordLength, onlyAttribute);
+
+      var queryBySQLService = new SuperMap.QueryBySQLService(url, {
+        eventListeners: {
+          processCompleted: function processCompleted(data) {
+            _processCompleted && _processCompleted(data);
+          },
+          processFailed: function processFailed(data) {
+            processFaild && processFaild(data);
+          }
+        }
+      });
+      queryBySQLService.processAsync(queryBySQLParams);
+    }
+  }, {
+    key: "_getFeatures",
+    value: function _getFeatures(fields, layerInfo, resolve, reject) {
+      var _this6 = this;
+
+      var source = layerInfo.dataSource;
+
+      this._queryFeatureBySQL(source.url, source.layerName, function (result) {
+        var recordsets = result.result.recordsets[0];
+        var features = recordsets.features.features;
+
+        var featuresObj = _this6.parseGeoJsonData2Feature({
+          allDatas: {
+            features: features
+          }
+        });
+
+        resolve(featuresObj);
+      }, function (err) {
+        reject(err);
+      }, null, fields);
+    }
+  }, {
+    key: "_getQueryFeaturesParam",
+    value: function _getQueryFeaturesParam(layerName, attributeFilter, fields, epsgCode, startRecord, recordLength, onlyAttribute) {
       var queryParam = new SuperMap.FilterParameter({
         name: layerName,
         attributeFilter: attributeFilter
@@ -2788,37 +3483,22 @@ function (_L$Evented) {
       }
 
       var queryBySQLParams = new SuperMap.QueryBySQLParameters(params);
-
-      var queryBySQLService = _leaflet.default.supermap.queryService(url);
-
-      queryBySQLService.queryBySQL(queryBySQLParams, function (data) {
-        data.type === 'processCompleted' ? processCompleted(data) : processFaild(data);
-      });
+      return queryBySQLParams;
     }
   }, {
-    key: "_getFeatures",
-    value: function _getFeatures(fields, layerInfo, resolve, reject) {
-      var _this17 = this;
+    key: "_getFeaturesFromDataflow",
+    value: function _getFeaturesFromDataflow(layer) {
+      var _this7 = this;
 
-      var source = layerInfo.dataSource;
-      var fileCode = layerInfo.projection;
-
-      this._queryFeatureBySQL(source.url, source.layerName, function (result) {
-        var recordsets = result.result.recordsets[0];
-        var features = recordsets.features.features;
-
-        var featuresObj = _this17._parseGeoJsonData2Feature({
-          allDatas: {
-            features: features
-          },
-          fileCode: fileCode,
-          featureProjection: _this17.baseProjection
+      return new Promise(function (resolve, reject) {
+        _this7._getDataflowInfo(layer, function () {
+          resolve({
+            type: 'dataflow'
+          });
+        }, function (e) {
+          reject(e);
         });
-
-        resolve(featuresObj);
-      }, function (err) {
-        reject(err);
-      }, null, fields);
+      });
     }
   }, {
     key: "_getDataflowInfo",
@@ -2866,63 +3546,260 @@ function (_L$Evented) {
       });
     }
   }, {
-    key: "_formatGeoJSON",
-    value: function _formatGeoJSON(data) {
-      var features = data.features;
-      features.forEach(function (row, index) {
-        row.properties['index'] = index;
-      });
-      return features;
-    }
-  }, {
-    key: "_excelData2Feature",
-    value: function _excelData2Feature(dataContent) {
-      var fieldCaptions = dataContent.colTitles;
-      var xfieldIndex = -1;
-      var yfieldIndex = -1;
+    key: "getDatasourceType",
+    value: function getDatasourceType(layer) {
+      var dataSource = layer.dataSource,
+          layerType = layer.layerType;
 
-      for (var i = 0, len = fieldCaptions.length; i < len; i++) {
-        if ((0, _util.isXField)(fieldCaptions[i])) {
-          xfieldIndex = i;
-        }
-
-        if ((0, _util.isYField)(fieldCaptions[i])) {
-          yfieldIndex = i;
-        }
+      if (dataSource && dataSource.type === 'SAMPLE_DATA') {
+        return dataSource.type;
       }
 
+      var type;
+      var isHosted = dataSource && dataSource.serverId || layerType === 'MARKER' || layerType === 'HOSTED_TILE';
+      var isTile = layerType === 'SUPERMAP_REST' || layerType === 'TILE' || layerType === 'WMS' || layerType === 'WMTS';
+
+      if (isHosted) {
+        type = 'hosted';
+      } else if (isTile) {
+        type = 'tile';
+      } else if (dataSource && dataSource.type === 'REST_DATA') {
+        type = 'rest_data';
+      } else if (dataSource && dataSource.type === 'REST_MAP' && dataSource.url) {
+        type = 'rest_map';
+      } else if (layerType === 'DATAFLOW_POINT_TRACK' || layerType === 'DATAFLOW_HEAT') {
+        type = 'dataflow';
+      }
+
+      return type;
+    }
+  }, {
+    key: "getFeatureProperties",
+    value: function getFeatureProperties(features) {
+      var properties = [];
+
+      if (features && features.length) {
+        features.forEach(function (feature) {
+          var property = feature.properties;
+          property && properties.push(property);
+        });
+      }
+
+      return properties;
+    }
+  }, {
+    key: "parseGeoJsonData2Feature",
+    value: function parseGeoJsonData2Feature(metaData) {
+      var allFeatures = metaData.allDatas.features;
       var features = [];
 
-      for (var _i3 = 0, _len = dataContent.rows.length; _i3 < _len; _i3++) {
-        var row = dataContent.rows[_i3];
-        var x = Number(row[xfieldIndex]);
-        var y = Number(row[yfieldIndex]);
-        var attributes = {};
+      for (var i = 0, len = allFeatures.length; i < len; i++) {
+        var feature = allFeatures[i];
+        var coordinate = feature.geometry.coordinates;
 
-        for (var index in dataContent.colTitles) {
-          var key = dataContent.colTitles[index];
-          attributes[key] = dataContent.rows[_i3][index];
+        if (allFeatures[i].geometry.type === 'Point') {
+          if (allFeatures[i].properties) {
+            allFeatures[i].properties.lon = coordinate[0];
+            allFeatures[i].properties.lat = coordinate[1];
+          }
         }
 
-        attributes['index'] = _i3 + '';
-        var feature = {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [x, y]
-          },
-          properties: attributes
-        };
+        feature.properties['index'] = i + '';
         features.push(feature);
       }
 
       return features;
     }
   }, {
-    key: "_replaceFilterCharacter",
-    value: function _replaceFilterCharacter(filterString) {
-      filterString = filterString.replace(/=/g, '==').replace(/AND|and/g, '&&').replace(/or|OR/g, '||').replace(/<==/g, '<=').replace(/>==/g, '>=');
-      return filterString;
+    key: "getEpsgcodeWkt",
+    value: function getEpsgcodeWkt(epsgCode) {
+      var codeUrl = "".concat(this.serverUrl, "epsgcodes/").concat(epsgCode);
+      return new Promise(function (resolve, reject) {
+        SuperMap.FetchRequest.get(codeUrl).then(function (response) {
+          return response.json();
+        }).then(function (epsgcodeInfo) {
+          resolve(epsgcodeInfo);
+        }).catch(function (err) {
+          reject(err);
+        });
+      });
+    }
+  }, {
+    key: "_getDataFromIportal",
+    value: function _getDataFromIportal(serverId) {
+      var _this8 = this;
+
+      var features;
+      var url = "".concat(this.serverUrl, "web/datas/").concat(serverId, "/content.json?pageSize=9999999&currentPage=1");
+
+      if (this.accessToken) {
+        url = "".concat(url, "&").concat(this.accessKey, "=").concat(this.accessToken);
+      }
+
+      return new Promise(function (resolve, reject) {
+        SuperMap.FetchRequest.get(url, null, {
+          withCredentials: _this8.withCredentials
+        }).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          if (data.succeed === false) {
+            reject(data.error);
+          }
+
+          if (data && data.type) {
+            if (data.type === 'JSON' || data.type === 'GEOJSON') {
+              data.content = JSON.parse(data.content.trim());
+              features = _this8._formatGeoJSON(data.content);
+            } else if (data.type === 'EXCEL' || data.type === 'CSV') {
+              features = _this8._excelData2Feature(data.content);
+            }
+
+            resolve({
+              type: 'feature',
+              features: features
+            });
+          }
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    }
+  }, {
+    key: "_getDataFromHosted",
+    value: function _getDataFromHosted(_ref) {
+      var _this9 = this;
+
+      var layer = _ref.layer,
+          serverId = _ref.serverId,
+          baseProjection = _ref.baseProjection;
+      var isMapService = layer.layerType === 'HOSTED_TILE';
+      return new Promise(function (resolve, reject) {
+        _this9._checkUploadToRelationship(serverId).then(function (result) {
+          if (result && result.length > 0) {
+            var datasetName = result[0].name,
+                featureType = result[0].type.toUpperCase();
+
+            _this9._getDataService(serverId, datasetName).then(function (data) {
+              var dataItemServices = data.dataItemServices;
+
+              if (dataItemServices.length === 0) {
+                reject('noDataServices');
+              }
+
+              var param = {
+                layer: layer,
+                dataItemServices: dataItemServices,
+                datasetName: datasetName,
+                featureType: featureType,
+                resolve: resolve,
+                reject: reject,
+                baseProjection: baseProjection
+              };
+
+              if (isMapService) {
+                var dataService = dataItemServices.filter(function (info) {
+                  return info && info.serviceType === 'RESTDATA';
+                })[0];
+
+                _this9._isMvt(dataService.address, datasetName, baseProjection).then(function (info) {
+                  _this9._getServiceInfoFromLayer(param, info);
+                }).catch(function () {
+                  _this9._getServiceInfoFromLayer(param);
+                });
+              } else {
+                _this9._getServiceInfoFromLayer(param);
+              }
+            });
+          } else {
+            reject('resultIsEmpty');
+          }
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    }
+  }, {
+    key: "_isMvt",
+    value: function _isMvt(serviceUrl, datasetName, baseProjection) {
+      return this._getDatasetsInfo(serviceUrl, datasetName).then(function (info) {
+        if (info.epsgCode == baseProjection.split('EPSG:')[1]) {
+          return SuperMap.FetchRequest.get("".concat(info.url, "/tilefeature.mvt")).then(function (response) {
+            return response.json();
+          }).then(function (result) {
+            info.isMvt = result.error && result.error.code === 400;
+            return info;
+          }).catch(function () {
+            return info;
+          });
+        }
+
+        return info;
+      });
+    }
+  }, {
+    key: "_getServiceInfoFromLayer",
+    value: function _getServiceInfoFromLayer(_ref2, info) {
+      var _this10 = this;
+
+      var layer = _ref2.layer,
+          dataItemServices = _ref2.dataItemServices,
+          datasetName = _ref2.datasetName,
+          featureType = _ref2.featureType,
+          resolve = _ref2.resolve,
+          reject = _ref2.reject,
+          baseProjection = _ref2.baseProjection;
+      var isMapService = info ? !info.isMvt : layer.layerType === 'HOSTED_TILE',
+          isAdded = false;
+      dataItemServices.forEach(function (service, index) {
+        if (isAdded) {
+          return;
+        }
+
+        if (service && isMapService && service.serviceType === 'RESTMAP') {
+          isAdded = true;
+
+          _this10._getTileLayerInfo(service.address, baseProjection).then(function (restMaps) {
+            resolve({
+              type: 'restMap',
+              restMaps: restMaps
+            });
+          });
+        } else if (service && !isMapService && service.serviceType === 'RESTDATA') {
+          if (info && info.isMvt) {
+            resolve({
+              type: 'mvt',
+              info: info,
+              featureType: featureType
+            });
+          } else {
+            isAdded = true;
+
+            _this10._getDatasources(service.address).then(function (datasourceName) {
+              layer.dataSource.dataSourceName = datasourceName + ':' + datasetName;
+              layer.dataSource.url = "".concat(service.address, "/data");
+
+              _this10._getFeatureBySQL(layer.dataSource.url, [layer.dataSource.dataSourceName || layer.name], function (result) {
+                var features = _this10.parseGeoJsonData2Feature({
+                  allDatas: {
+                    features: result.result.features.features
+                  }
+                });
+
+                resolve({
+                  type: 'feature',
+                  features: features
+                });
+              }, function (err) {
+                reject(err);
+              });
+            });
+          }
+        }
+      }, this);
+
+      if (!isAdded) {
+        reject('noService');
+      }
     }
   }, {
     key: "_getDatasetsInfo",
@@ -2953,13 +3830,112 @@ function (_L$Evented) {
       });
     }
   }, {
+    key: "_getDataService",
+    value: function _getDataService(fileId, datasetName) {
+      return SuperMap.FetchRequest.get("".concat(this.serverUrl, "web/datas/").concat(fileId, ".json"), null, {
+        withCredentials: this.withCredentials
+      }).then(function (response) {
+        return response.json();
+      }).then(function (result) {
+        result.fileId = fileId;
+        result.datasetName = datasetName;
+        return result;
+      });
+    }
+  }, {
+    key: "_checkUploadToRelationship",
+    value: function _checkUploadToRelationship(fileId) {
+      return SuperMap.FetchRequest.get("".concat(this.serverUrl, "web/datas/").concat(fileId, "/datasets.json"), null, {
+        withCredentials: this.withCredentials
+      }).then(function (response) {
+        return response.json();
+      }).then(function (result) {
+        return result;
+      });
+    }
+  }, {
+    key: "_handleMapUrl",
+    value: function _handleMapUrl() {
+      var mapUrl = this.serverUrl + 'web/maps/' + this.mapId + '/map';
+
+      if (this.accessToken || this.accessKey) {
+        mapUrl +=  true ? 'token=' + this.accessToken : undefined;
+      }
+
+      var filter = 'getUrlResource.json?url=';
+
+      if (this.excludePortalProxyUrl && this.serverUrl.indexOf(filter) > -1) {
+        var urlArray = this.serverUrl.split(filter);
+
+        if (urlArray.length > 1) {
+          mapUrl = urlArray[0] + filter + this.serverUrl + 'web/maps/' + this.mapId + '/map.json';
+        }
+      }
+
+      mapUrl = mapUrl.indexOf('.json') === -1 ? "".concat(mapUrl, ".json") : mapUrl;
+      return mapUrl;
+    }
+  }, {
+    key: "_formatGeoJSON",
+    value: function _formatGeoJSON(data) {
+      var features = data.features;
+      features.forEach(function (row, index) {
+        row.properties['index'] = index;
+      });
+      return features;
+    }
+  }, {
+    key: "_excelData2Feature",
+    value: function _excelData2Feature(dataContent) {
+      var fieldCaptions = dataContent.colTitles;
+      var xfieldIndex = -1;
+      var yfieldIndex = -1;
+
+      for (var i = 0, len = fieldCaptions.length; i < len; i++) {
+        if ((0, _util.isXField)(fieldCaptions[i])) {
+          xfieldIndex = i;
+        }
+
+        if ((0, _util.isYField)(fieldCaptions[i])) {
+          yfieldIndex = i;
+        }
+      }
+
+      var features = [];
+
+      for (var _i = 0, _len = dataContent.rows.length; _i < _len; _i++) {
+        var row = dataContent.rows[_i];
+        var x = Number(row[xfieldIndex]);
+        var y = Number(row[yfieldIndex]);
+        var attributes = {};
+
+        for (var index in dataContent.colTitles) {
+          var key = dataContent.colTitles[index];
+          attributes[key] = dataContent.rows[_i][index];
+        }
+
+        attributes['index'] = _i + '';
+        var feature = {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [x, y]
+          },
+          properties: attributes
+        };
+        features.push(feature);
+      }
+
+      return features;
+    }
+  }, {
     key: "_getTileLayerInfo",
-    value: function _getTileLayerInfo(url) {
-      var _this18 = this;
+    value: function _getTileLayerInfo(url, baseProjection) {
+      var _this11 = this;
 
       var proxyUrl = this.serverUrl + 'apps/viewer/getUrlResource.json?url=';
       var requestUrl = proxyUrl + encodeURIComponent(url);
-      var epsgCode = this.baseProjection.split('EPSG:')[1];
+      var epsgCode = baseProjection.split('EPSG:')[1];
       return SuperMap.FetchRequest.get("".concat(requestUrl, "/maps.json"), null, {
         withCredentials: this.withCredentials
       }).then(function (response) {
@@ -2972,7 +3948,7 @@ function (_L$Evented) {
             var promise = SuperMap.FetchRequest.get("".concat(proxyUrl).concat(info.path, ".json?prjCoordSys=").concat(JSON.stringify({
               epsgCode: epsgCode
             })), null, {
-              withCredentials: _this18.withCredentials
+              withCredentials: _this11.withCredentials
             }).then(function (response) {
               return response.json();
             }).then(function (restMapInfo) {
@@ -2989,581 +3965,39 @@ function (_L$Evented) {
       });
     }
   }, {
-    key: "_getCanvasFromSVG",
-    value: function _getCanvasFromSVG(svgUrl, divDom, callBack) {
-      var canvas = document.createElement('canvas');
-      canvas.id = "dataviz-canvas-".concat(new Date());
-      canvas.style.display = 'none';
-      canvas.getContext('2d').fillStyle = 'red';
-      divDom.appendChild(canvas);
-      var canvgs = window.canvg ? window.canvg : _canvg.default;
-      canvgs(canvas.id, svgUrl, {
-        ignoreMouse: true,
-        ignoreAnimation: true,
-        renderCallback: function renderCallback() {
-          if (canvas.width > 300 || canvas.height > 300) {
-            return;
-          }
-
-          callBack(canvas);
-        },
-        forceRedraw: function forceRedraw() {
-          return false;
-        }
+    key: "_getFeatureBySQL",
+    value: function _getFeatureBySQL(url, datasetNames, _processCompleted2, processFaild) {
+      var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+      getFeatureParam = new SuperMap.FilterParameter({
+        name: datasetNames.join().replace(':', '@'),
+        attributeFilter: 'SMID > 0'
       });
-    }
-  }, {
-    key: "_dashStyle",
-    value: function _dashStyle(str, strokeWidth) {
-      if (!str) {
-        return [];
-      }
-
-      var w = strokeWidth;
-
-      switch (str) {
-        case 'solid':
-          return [];
-
-        case 'dot':
-          return "1,".concat(4 * w);
-
-        case 'dash':
-          return "".concat(4 * w, ",").concat(4 * w);
-
-        case 'dashdot':
-          return "".concat(4 * w, ",").concat(4 * w, ",").concat(1 * w, ",").concat(4 * w);
-
-        case 'longdash':
-          return "".concat(8 * w, ",").concat(4 * w);
-
-        case 'longdashdot':
-          return "".concat(8 * w, ",").concat(4 * w, ",1,").concat(4 * w);
-
-        default:
-          if (!str) {
-            return [];
-          }
-
-          if (SuperMap.Util.isArray(str)) {
-            return str;
-          }
-
-          str = SuperMap.String.trim(str).replace(/\s+/g, ',');
-          return str;
-      }
-    }
-  }, {
-    key: "_getFeatureProperties",
-    value: function _getFeatureProperties(features) {
-      var properties = [];
-
-      if (features && features.length) {
-        features.forEach(function (feature) {
-          var property = feature.properties;
-          property && properties.push(property);
-        });
-      }
-
-      return properties;
-    }
-  }, {
-    key: "_createLinesData",
-    value: function _createLinesData(layerInfo, properties) {
-      var _this19 = this;
-
-      var data = [];
-
-      if (properties && properties.length) {
-        var from = layerInfo.from,
-            to = layerInfo.to,
-            fromCoord,
-            toCoord;
-
-        if (from.type === 'XY_FIELD' && from['xField'] && from['yField'] && to['xField'] && to['yField']) {
-          properties.forEach(function (property) {
-            var fromX = property[from['xField']],
-                fromY = property[from['yField']],
-                toX = property[to['xField']],
-                toY = property[to['yField']];
-
-            if (!fromX || !fromY || !toX || !toY) {
-              return;
-            }
-
-            fromCoord = [property[from['xField']], property[from['yField']]];
-            toCoord = [property[to['xField']], property[to['yField']]];
-            data.push({
-              coords: [fromCoord, toCoord]
-            });
-          });
-        } else if (from.type === 'PLACE_FIELD' && from['field'] && to['field']) {
-          var centerDatas = _ProvinceCenter.default.concat(_MunicipalCenter.default);
-
-          properties.forEach(function (property) {
-            var fromField = property[from['field']],
-                toField = property[to['field']];
-            fromCoord = centerDatas.find(function (item) {
-              return _this19.isMatchAdministrativeName(item.name, fromField);
-            });
-            toCoord = centerDatas.find(function (item) {
-              return _this19.isMatchAdministrativeName(item.name, toField);
-            });
-
-            if (!fromCoord || !toCoord) {
-              return;
-            }
-
-            data.push({
-              coords: [fromCoord.coord, toCoord.coord]
-            });
-          });
-        }
-      }
-
-      return data;
-    }
-  }, {
-    key: "_createPointsData",
-    value: function _createPointsData(lineData, layerInfo, properties) {
-      var data = [],
-          labelSetting = layerInfo.labelSetting;
-
-      if (!labelSetting.show || !lineData.length) {
-        return data;
-      }
-
-      var fromData = [],
-          toData = [];
-      lineData.forEach(function (item, idx) {
-        var coords = item.coords,
-            fromCoord = coords[0],
-            toCoord = coords[1],
-            fromProperty = properties[idx][labelSetting.from],
-            toProperty = properties[idx][labelSetting.to];
-        var f = fromData.find(function (d) {
-          return d.value[0] === fromCoord[0] && d.value[1] === fromCoord[1];
-        });
-        !f && fromData.push({
-          name: fromProperty,
-          value: fromCoord
-        });
-        var t = toData.find(function (d) {
-          return d.value[0] === toCoord[0] && d.value[1] === toCoord[1];
-        });
-        !t && toData.push({
-          name: toProperty,
-          value: toCoord
-        });
+      getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+        queryParameter: getFeatureParam,
+        datasetNames: datasetNames,
+        fromIndex: 0,
+        toIndex: -1,
+        maxFeatures: -1,
+        returnContent: true
       });
-      data = fromData.concat(toData);
-      return data;
-    }
-  }, {
-    key: "_createOptions",
-    value: function _createOptions(layerInfo, lineData, pointData) {
-      var series;
-
-      var lineSeries = this._createLineSeries(layerInfo, lineData);
-
-      if (pointData && pointData.length) {
-        var pointSeries = this._createPointSeries(layerInfo, pointData);
-
-        series = lineSeries.concat(pointSeries);
-      } else {
-        series = lineSeries.slice();
-      }
-
-      return {
-        series: series
+      var options = {
+        eventListeners: {
+          processCompleted: function processCompleted(getFeaturesEventArgs) {
+            _processCompleted2 && _processCompleted2(getFeaturesEventArgs);
+          },
+          processFailed: function processFailed(e) {
+            processFaild && processFaild(e);
+          }
+        }
       };
-    }
-  }, {
-    key: "_createLineSeries",
-    value: function _createLineSeries(layerInfo, lineData) {
-      var lineSetting = layerInfo.lineSetting;
-      var animationSetting = layerInfo.animationSetting;
-      var linesSeries = [{
-        name: 'line-series',
-        coordinateSystem: 'leaflet',
-        type: 'lines',
-        zlevel: 1,
-        effect: {
-          show: animationSetting.show,
-          constantSpeed: animationSetting.constantSpeed,
-          trailLength: 0,
-          symbol: animationSetting.symbol,
-          symbolSize: animationSetting.symbolSize
-        },
-        lineStyle: {
-          normal: {
-            color: lineSetting.color,
-            type: lineSetting.type,
-            width: lineSetting.width,
-            opacity: lineSetting.opacity,
-            curveness: lineSetting.curveness
-          }
-        },
-        data: lineData
-      }];
-
-      if (lineData.length >= MAX_MIGRATION_ANIMATION_COUNT) {
-        linesSeries[0].large = true;
-        linesSeries[0].largeThreshold = 100;
-        linesSeries[0].blendMode = 'lighter';
-      }
-
-      return linesSeries;
-    }
-  }, {
-    key: "_createPointSeries",
-    value: function _createPointSeries(layerInfo, pointData) {
-      var lineSetting = layerInfo.lineSetting;
-      var animationSetting = layerInfo.animationSetting;
-      var labelSetting = layerInfo.labelSetting;
-      var pointSeries = [{
-        name: 'point-series',
-        coordinateSystem: 'leaflet',
-        zlevel: 2,
-        label: {
-          normal: {
-            show: labelSetting.show,
-            position: 'right',
-            formatter: '{b}',
-            color: labelSetting.color,
-            fontFamily: labelSetting.fontFamily
-          }
-        },
-        itemStyle: {
-          normal: {
-            color: lineSetting.color || labelSetting.color
-          }
-        },
-        data: pointData
-      }];
-
-      if (animationSetting.show) {
-        pointSeries[0].type = 'effectScatter';
-        pointSeries[0].rippleEffect = {
-          brushType: 'stroke'
-        };
-      } else {
-        pointSeries[0].type = 'scatter';
-      }
-
-      return pointSeries;
-    }
-  }, {
-    key: "isMatchAdministrativeName",
-    value: function isMatchAdministrativeName(featureName, fieldName) {
-      var isString = typeof fieldName === 'string' && fieldName.constructor === String;
-
-      if (isString) {
-        var shortName = featureName.substr(0, 2);
-
-        if (shortName === '张家') {
-          shortName = featureName.substr(0, 3);
-        }
-
-        return !!fieldName.match(new RegExp(shortName));
-      }
-
-      return false;
-    }
-  }, {
-    key: "_transformFeatures",
-    value: function _transformFeatures(features) {
-      var _this20 = this;
-
-      var crs = this.crs || _leaflet.default.CRS.EPSG3857;
-      features && features.forEach(function (feature, index) {
-        var geometryType = feature.geometry.type;
-        var coordinates = feature.geometry.coordinates;
-
-        if (geometryType === 'LineString') {
-          coordinates.forEach(function (coordinate, index) {
-            coordinate = _this20._latlngToCoordinate(crs.unproject(_leaflet.default.point(coordinate[0], coordinate[1])));
-            coordinates[index] = coordinate;
-          }, _this20);
-        } else if (geometryType === 'Point') {
-          coordinates = _this20._latlngToCoordinate(crs.unproject(_leaflet.default.point(coordinates[0], coordinates[1])));
-          feature.geometry.coordinates = coordinates;
-        } else if (geometryType === 'MultiPolygon' || geometryType === 'Polygon') {
-          coordinates.forEach(function (coordinate, index) {
-            var coords = geometryType === 'MultiPolygon' ? coordinate[0] : coordinate;
-            coords.forEach(function (latlng, i) {
-              latlng = _this20._latlngToCoordinate(crs.unproject(_leaflet.default.point(latlng[0], latlng[1])));
-              coords[i] = latlng;
-            });
-            coordinates[index] = coordinate;
-          });
-        }
-
-        features[index] = feature;
-      }, this);
-    }
-  }, {
-    key: "_latlngToCoordinate",
-    value: function _latlngToCoordinate(latlng) {
-      if (!latlng) {
-        return null;
-      }
-
-      return [latlng.lng, latlng.lat];
-    }
-  }, {
-    key: "_getSvgLayer",
-    value: function _getSvgLayer(canvas, style, features, textSize) {
-      var radius = style.radius,
-          fillColor = style.fillColor,
-          fillOpacity = style.fillOpacity,
-          strokeColor = style.strokeColor,
-          strokeOpacity = style.strokeOpacity,
-          strokeWidth = style.strokeWidth;
-      var context = canvas.getContext('2d');
-
-      if (fillColor) {
-        context.fillStyle = (0, _util.getColorWithOpacity)(fillColor, fillOpacity);
-        context.fill();
-      }
-
-      if (strokeColor || strokeWidth) {
-        context.strokeStyle = (0, _util.getColorWithOpacity)(strokeColor, strokeOpacity);
-        context.lineWidth = strokeWidth;
-        context.stroke();
-      }
-
-      var imgUrl = canvas.toDataURL('img/png');
-      var resolution = canvas.width / canvas.height;
-
-      var svgPointToLayer = function svgPointToLayer(geojson, latlng) {
-        var iconSize = textSize && textSize[geojson.id - 1 || geojson.properties.index];
-        return _leaflet.default.marker(latlng, {
-          icon: _leaflet.default.icon({
-            iconUrl: imgUrl,
-            iconSize: textSize ? [iconSize, iconSize / resolution] : [radius, radius / resolution]
-          })
-        });
-      };
-
-      var svgPointLayer = this._createGeojsonLayer(features, null, svgPointToLayer);
-
-      return svgPointLayer;
-    }
-  }, {
-    key: "_createThemeLayer",
-    value: function _createThemeLayer(type, layerInfo, features) {
-      var filterCondition = layerInfo.filterCondition,
-          style = layerInfo.style,
-          themeSetting = layerInfo.themeSetting,
-          featureType = layerInfo.featureType,
-          layerID = layerInfo.layerID;
-      var layerStyle = JSON.parse(JSON.stringify(style));
-      featureType === 'POINT' && (layerStyle.pointRadius = style.radius);
-      delete layerStyle.radius;
-
-      if (featureType === 'LINE') {
-        layerStyle.fill = false;
-        layerStyle.strokeDashstyle = style.lineDash;
-        delete layerStyle.lineDash;
-      }
-
-      var styleGroup;
-
-      if (type === 'unique') {
-        styleGroup = this._getUniqueStyleGroup(layerInfo, features);
-      } else if (type === 'range') {
-        styleGroup = this._getRangeStyleGroup(layerInfo, features);
-      }
-
-      filterCondition && (features = this._getFiterFeatures(filterCondition, features));
-      var themeField = themeSetting.themeField;
-      Object.keys(features[0].properties).forEach(function (key) {
-        key.toLocaleUpperCase() === themeField.toLocaleUpperCase() && (themeField = key);
-      });
-
-      var layer = _leaflet.default.supermap["".concat(type, "ThemeLayer")](layerID);
-
-      layerStyle.stroke = true;
-      layer.style = layerStyle;
-      layer.themeField = themeField;
-      layer.styleGroups = styleGroup;
-      layer.addFeatures({
-        type: 'FeatureCollection',
-        features: features
-      });
-      return layer;
-    }
-  }, {
-    key: "_handleMapCrs",
-    value: function _handleMapCrs(mapInfo) {
-      var projection = mapInfo.projection,
-          baseLayer = mapInfo.baseLayer,
-          extent = mapInfo.extent;
-      this.baseProjection = projection;
-
-      if (projection === 'EPSG:910111' || projection === 'EPSG:910112') {
-        this.baseProjection = 'EPSG:3857';
-      } else if (projection === 'EPSG:910101' || projection === 'EPSG:910102') {
-        this.baseProjection = 'EPSG:4326';
-      }
-
-      if (baseLayer.layerType === 'BAIDU') {
-        this.crs = _leaflet.default.CRS.Baidu;
-        return this.crs;
-      }
-
-      if (baseLayer.layerType.indexOf('TIANDITU') > -1) {
-        this.crs = this.baseProjection === 'EPSG:3857' ? _leaflet.default.CRS.TianDiTu_Mercator : _leaflet.default.CRS.TianDiTu_WGS84;
-        return this.crs;
-      }
-
-      var epsgCode = this.baseProjection.split(':')[1];
-
-      if (parseFloat(epsgCode) <= 0 || !['4326', '3857', '3395'].includes(epsgCode)) {
-        this.fire('crsnotsupport');
-        throw Error('Unsupported coordinate system!');
-      }
-
-      var bounds = _leaflet.default.bounds([extent.leftBottom.x, extent.leftBottom.y], [extent.rightTop.x, extent.rightTop.y]);
-
-      var origin = _leaflet.default.point(bounds.min.x, bounds.max.y);
-
-      var maxResolution,
-          resolutions = [];
-      var resolutionExtent = [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y];
-
-      if (resolutionExtent && resolutionExtent.length === 4) {
-        var width = resolutionExtent[2] - resolutionExtent[0];
-        var height = resolutionExtent[3] - resolutionExtent[1];
-        var maxResolution1 = width / 256;
-        var maxResolution2 = height / 256;
-        maxResolution = Math.max(maxResolution1, maxResolution2);
-
-        for (var i = 0; i < 30; i++) {
-          resolutions.push(maxResolution / Math.pow(2, i));
-        }
-      }
-
-      this.crs = _leaflet.default.Proj.CRS("EPSG:".concat(epsgCode), {
-        origin: origin,
-        resolutions: resolutions,
-        bounds: bounds
-      });
-      ;
-      return this.crs;
+      getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(url, options);
+      getFeatureBySQLService.processAsync(getFeatureBySQLParams);
     }
   }]);
-  return WebMapViewModel;
-}(_leaflet.default.Evented);
+  return WebMapService;
+}(_Events2.Events);
 
-exports.default = WebMapViewModel;
-
-/***/ }),
-
-/***/ "0Tzf":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("5L7t");
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Progress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "0Z9T":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/common/image/Image.vue?vue&type=template&id=452a2bc2&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-image",style:([_vm.getBackgroundStyle, _vm.getTextColorStyle])},[_c('a',{class:['sm-component-image__link', _vm.realHref ? '': 'sm-component-image__noLink'],attrs:{"href":_vm.realHref,"target":_vm.target}},[(_vm.src)?_c('div',{staticClass:"sm-component-image__content",style:([_vm.repeatStyle,_vm.imgUrl])}):_c('i',{staticClass:"sm-components-icons-x-bmp sm-component-image__defaultImg"})])])}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/common/image/Image.vue?vue&type=template&id=452a2bc2&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
-/***/ "17FK":
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__17FK__;
-
-/***/ }),
-
-/***/ "1Mc+":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("QmiY");
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_CountTo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "1P0Z":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ "1tPa":
-/***/ (function(module, exports, __webpack_require__) {
-
-!function(e,t){ true?module.exports=t(__webpack_require__("AzSJ")):undefined}(this,function(e){return function(e){function t(i){if(n[i])return n[i].exports;var r=n[i]={i:i,l:!1,exports:{}};return e[i].call(r.exports,r,r.exports,t),r.l=!0,r.exports}var n={};return t.m=e,t.c=n,t.i=function(e){return e},t.d=function(e,n,i){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:i})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="/",t(t.s=3)}([function(t,n){t.exports=e},function(e,t,n){"use strict";function i(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}Object.defineProperty(t,"__esModule",{value:!0});var r=n(0),o=function(e){return e&&e.__esModule?e:{default:e}}(r),s=window.videojs||o.default;"function"!=typeof Object.assign&&Object.defineProperty(Object,"assign",{value:function(e,t){if(null==e)throw new TypeError("Cannot convert undefined or null to object");for(var n=Object(e),i=1;i<arguments.length;i++){var r=arguments[i];if(null!=r)for(var o in r)Object.prototype.hasOwnProperty.call(r,o)&&(n[o]=r[o])}return n},writable:!0,configurable:!0});var a=["loadeddata","canplay","canplaythrough","play","pause","waiting","playing","ended","error"];t.default={name:"video-player",props:{start:{type:Number,default:0},crossOrigin:{type:String,default:""},playsinline:{type:Boolean,default:!1},customEventName:{type:String,default:"statechanged"},options:{type:Object,required:!0},events:{type:Array,default:function(){return[]}},globalOptions:{type:Object,default:function(){return{controls:!0,controlBar:{remainingTimeDisplay:!1,playToggle:{},progressControl:{},fullscreenToggle:{},volumeMenuButton:{inline:!1,vertical:!0}},techOrder:["html5"],plugins:{}}}},globalEvents:{type:Array,default:function(){return[]}}},data:function(){return{player:null,reseted:!0}},mounted:function(){this.player||this.initialize()},beforeDestroy:function(){this.player&&this.dispose()},methods:{initialize:function(){var e=this,t=Object.assign({},this.globalOptions,this.options);this.playsinline&&(this.$refs.video.setAttribute("playsinline",this.playsinline),this.$refs.video.setAttribute("webkit-playsinline",this.playsinline),this.$refs.video.setAttribute("x5-playsinline",this.playsinline),this.$refs.video.setAttribute("x5-video-player-type","h5"),this.$refs.video.setAttribute("x5-video-player-fullscreen",!1)),""!==this.crossOrigin&&(this.$refs.video.crossOrigin=this.crossOrigin,this.$refs.video.setAttribute("crossOrigin",this.crossOrigin));var n=function(t,n){t&&e.$emit(t,e.player),n&&e.$emit(e.customEventName,i({},t,n))};t.plugins&&delete t.plugins.__ob__;var r=this;this.player=s(this.$refs.video,t,function(){for(var e=this,t=a.concat(r.events).concat(r.globalEvents),i={},o=0;o<t.length;o++)"string"==typeof t[o]&&void 0===i[t[o]]&&function(t){i[t]=null,e.on(t,function(){n(t,!0)})}(t[o]);this.on("timeupdate",function(){n("timeupdate",this.currentTime())}),r.$emit("ready",this)})},dispose:function(e){var t=this;this.player&&this.player.dispose&&("Flash"!==this.player.techName_&&this.player.pause&&this.player.pause(),this.player.dispose(),this.player=null,this.$nextTick(function(){t.reseted=!1,t.$nextTick(function(){t.reseted=!0,t.$nextTick(function(){e&&e()})})}))}},watch:{options:{deep:!0,handler:function(e,t){var n=this;this.dispose(function(){e&&e.sources&&e.sources.length&&n.initialize()})}}}}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var i=n(1),r=n.n(i);for(var o in i)["default","default"].indexOf(o)<0&&function(e){n.d(t,e,function(){return i[e]})}(o);var s=n(5),a=n(4),l=a(r.a,s.a,!1,null,null,null);t.default=l.exports},function(e,t,n){"use strict";function i(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0}),t.install=t.videoPlayer=t.videojs=void 0;var r=n(0),o=i(r),s=n(2),a=i(s),l=window.videojs||o.default,u=function(e,t){t&&(t.options&&(a.default.props.globalOptions.default=function(){return t.options}),t.events&&(a.default.props.globalEvents.default=function(){return t.events})),e.component(a.default.name,a.default)},d={videojs:l,videoPlayer:a.default,install:u};t.default=d,t.videojs=l,t.videoPlayer=a.default,t.install=u},function(e,t){e.exports=function(e,t,n,i,r,o){var s,a=e=e||{},l=typeof e.default;"object"!==l&&"function"!==l||(s=e,a=e.default);var u="function"==typeof a?a.options:a;t&&(u.render=t.render,u.staticRenderFns=t.staticRenderFns,u._compiled=!0),n&&(u.functional=!0),r&&(u._scopeId=r);var d;if(o?(d=function(e){e=e||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext,e||"undefined"==typeof __VUE_SSR_CONTEXT__||(e=__VUE_SSR_CONTEXT__),i&&i.call(this,e),e&&e._registeredComponents&&e._registeredComponents.add(o)},u._ssrRegister=d):i&&(d=i),d){var c=u.functional,f=c?u.render:u.beforeCreate;c?(u._injectStyles=d,u.render=function(e,t){return d.call(t),f(e,t)}):u.beforeCreate=f?[].concat(f,d):[d]}return{esModule:s,exports:a,options:u}}},function(e,t,n){"use strict";var i=function(){var e=this,t=e.$createElement,n=e._self._c||t;return e.reseted?n("div",{staticClass:"video-player"},[n("video",{ref:"video",staticClass:"video-js"})]):e._e()},r=[],o={render:i,staticRenderFns:r};t.a=o}])});
-
-/***/ }),
-
-/***/ "284h":
-/***/ (function(module, exports) {
-
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {};
-
-          if (desc.get || desc.set) {
-            Object.defineProperty(newObj, key, desc);
-          } else {
-            newObj[key] = obj[key];
-          }
-        }
-      }
-    }
-
-    newObj["default"] = obj;
-    return newObj;
-  }
-}
-
-module.exports = _interopRequireWildcard;
-
-/***/ }),
-
-/***/ "2EDF":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("kokw");
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Iframe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+exports.default = WebMapService;
 
 /***/ }),
 
@@ -3622,6 +4056,701 @@ var staticRenderFns = []
 
 /***/ }),
 
+/***/ "3BRs":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process, global) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// A bit simpler than readable streams.
+// Implement an async ._write(chunk, encoding, cb), and it'll handle all
+// the drain event emission and buffering.
+
+
+
+/*<replacement>*/
+
+var pna = __webpack_require__("lm0R");
+/*</replacement>*/
+
+module.exports = Writable;
+
+/* <replacement> */
+function WriteReq(chunk, encoding, cb) {
+  this.chunk = chunk;
+  this.encoding = encoding;
+  this.callback = cb;
+  this.next = null;
+}
+
+// It seems a linked list but it is not
+// there will be only 2 of these for each stream
+function CorkedRequest(state) {
+  var _this = this;
+
+  this.next = null;
+  this.entry = null;
+  this.finish = function () {
+    onCorkedFinish(_this, state);
+  };
+}
+/* </replacement> */
+
+/*<replacement>*/
+var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : pna.nextTick;
+/*</replacement>*/
+
+/*<replacement>*/
+var Duplex;
+/*</replacement>*/
+
+Writable.WritableState = WritableState;
+
+/*<replacement>*/
+var util = __webpack_require__("Onz0");
+util.inherits = __webpack_require__("P7XM");
+/*</replacement>*/
+
+/*<replacement>*/
+var internalUtil = {
+  deprecate: __webpack_require__("t9FE")
+};
+/*</replacement>*/
+
+/*<replacement>*/
+var Stream = __webpack_require__("QpuX");
+/*</replacement>*/
+
+/*<replacement>*/
+
+var Buffer = __webpack_require__("hwdV").Buffer;
+var OurUint8Array = global.Uint8Array || function () {};
+function _uint8ArrayToBuffer(chunk) {
+  return Buffer.from(chunk);
+}
+function _isUint8Array(obj) {
+  return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
+}
+
+/*</replacement>*/
+
+var destroyImpl = __webpack_require__("RoFp");
+
+util.inherits(Writable, Stream);
+
+function nop() {}
+
+function WritableState(options, stream) {
+  Duplex = Duplex || __webpack_require__("sZro");
+
+  options = options || {};
+
+  // Duplex streams are both readable and writable, but share
+  // the same options object.
+  // However, some cases require setting options to different
+  // values for the readable and the writable sides of the duplex stream.
+  // These options can be provided separately as readableXXX and writableXXX.
+  var isDuplex = stream instanceof Duplex;
+
+  // object stream flag to indicate whether or not this stream
+  // contains buffers or objects.
+  this.objectMode = !!options.objectMode;
+
+  if (isDuplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
+
+  // the point at which write() starts returning false
+  // Note: 0 is a valid value, means that we always return false if
+  // the entire buffer is not flushed immediately on write()
+  var hwm = options.highWaterMark;
+  var writableHwm = options.writableHighWaterMark;
+  var defaultHwm = this.objectMode ? 16 : 16 * 1024;
+
+  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (writableHwm || writableHwm === 0)) this.highWaterMark = writableHwm;else this.highWaterMark = defaultHwm;
+
+  // cast to ints.
+  this.highWaterMark = Math.floor(this.highWaterMark);
+
+  // if _final has been called
+  this.finalCalled = false;
+
+  // drain event flag.
+  this.needDrain = false;
+  // at the start of calling end()
+  this.ending = false;
+  // when end() has been called, and returned
+  this.ended = false;
+  // when 'finish' is emitted
+  this.finished = false;
+
+  // has it been destroyed
+  this.destroyed = false;
+
+  // should we decode strings into buffers before passing to _write?
+  // this is here so that some node-core streams can optimize string
+  // handling at a lower level.
+  var noDecode = options.decodeStrings === false;
+  this.decodeStrings = !noDecode;
+
+  // Crypto is kind of old and crusty.  Historically, its default string
+  // encoding is 'binary' so we have to make this configurable.
+  // Everything else in the universe uses 'utf8', though.
+  this.defaultEncoding = options.defaultEncoding || 'utf8';
+
+  // not an actual buffer we keep track of, but a measurement
+  // of how much we're waiting to get pushed to some underlying
+  // socket or file.
+  this.length = 0;
+
+  // a flag to see when we're in the middle of a write.
+  this.writing = false;
+
+  // when true all writes will be buffered until .uncork() call
+  this.corked = 0;
+
+  // a flag to be able to tell if the onwrite cb is called immediately,
+  // or on a later tick.  We set this to true at first, because any
+  // actions that shouldn't happen until "later" should generally also
+  // not happen before the first write call.
+  this.sync = true;
+
+  // a flag to know if we're processing previously buffered items, which
+  // may call the _write() callback in the same tick, so that we don't
+  // end up in an overlapped onwrite situation.
+  this.bufferProcessing = false;
+
+  // the callback that's passed to _write(chunk,cb)
+  this.onwrite = function (er) {
+    onwrite(stream, er);
+  };
+
+  // the callback that the user supplies to write(chunk,encoding,cb)
+  this.writecb = null;
+
+  // the amount that is being written when _write is called.
+  this.writelen = 0;
+
+  this.bufferedRequest = null;
+  this.lastBufferedRequest = null;
+
+  // number of pending user-supplied write callbacks
+  // this must be 0 before 'finish' can be emitted
+  this.pendingcb = 0;
+
+  // emit prefinish if the only thing we're waiting for is _write cbs
+  // This is relevant for synchronous Transform streams
+  this.prefinished = false;
+
+  // True if the error was already emitted and should not be thrown again
+  this.errorEmitted = false;
+
+  // count buffered requests
+  this.bufferedRequestCount = 0;
+
+  // allocate the first CorkedRequest, there is always
+  // one allocated and free to use, and we maintain at most two
+  this.corkedRequestsFree = new CorkedRequest(this);
+}
+
+WritableState.prototype.getBuffer = function getBuffer() {
+  var current = this.bufferedRequest;
+  var out = [];
+  while (current) {
+    out.push(current);
+    current = current.next;
+  }
+  return out;
+};
+
+(function () {
+  try {
+    Object.defineProperty(WritableState.prototype, 'buffer', {
+      get: internalUtil.deprecate(function () {
+        return this.getBuffer();
+      }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.', 'DEP0003')
+    });
+  } catch (_) {}
+})();
+
+// Test _writableState for inheritance to account for Duplex streams,
+// whose prototype chain only points to Readable.
+var realHasInstance;
+if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.prototype[Symbol.hasInstance] === 'function') {
+  realHasInstance = Function.prototype[Symbol.hasInstance];
+  Object.defineProperty(Writable, Symbol.hasInstance, {
+    value: function (object) {
+      if (realHasInstance.call(this, object)) return true;
+      if (this !== Writable) return false;
+
+      return object && object._writableState instanceof WritableState;
+    }
+  });
+} else {
+  realHasInstance = function (object) {
+    return object instanceof this;
+  };
+}
+
+function Writable(options) {
+  Duplex = Duplex || __webpack_require__("sZro");
+
+  // Writable ctor is applied to Duplexes, too.
+  // `realHasInstance` is necessary because using plain `instanceof`
+  // would return false, as no `_writableState` property is attached.
+
+  // Trying to use the custom `instanceof` for Writable here will also break the
+  // Node.js LazyTransform implementation, which has a non-trivial getter for
+  // `_writableState` that would lead to infinite recursion.
+  if (!realHasInstance.call(Writable, this) && !(this instanceof Duplex)) {
+    return new Writable(options);
+  }
+
+  this._writableState = new WritableState(options, this);
+
+  // legacy.
+  this.writable = true;
+
+  if (options) {
+    if (typeof options.write === 'function') this._write = options.write;
+
+    if (typeof options.writev === 'function') this._writev = options.writev;
+
+    if (typeof options.destroy === 'function') this._destroy = options.destroy;
+
+    if (typeof options.final === 'function') this._final = options.final;
+  }
+
+  Stream.call(this);
+}
+
+// Otherwise people can pipe Writable streams, which is just wrong.
+Writable.prototype.pipe = function () {
+  this.emit('error', new Error('Cannot pipe, not readable'));
+};
+
+function writeAfterEnd(stream, cb) {
+  var er = new Error('write after end');
+  // TODO: defer error events consistently everywhere, not just the cb
+  stream.emit('error', er);
+  pna.nextTick(cb, er);
+}
+
+// Checks that a user-supplied chunk is valid, especially for the particular
+// mode the stream is in. Currently this means that `null` is never accepted
+// and undefined/non-string values are only allowed in object mode.
+function validChunk(stream, state, chunk, cb) {
+  var valid = true;
+  var er = false;
+
+  if (chunk === null) {
+    er = new TypeError('May not write null values to stream');
+  } else if (typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {
+    er = new TypeError('Invalid non-string/buffer chunk');
+  }
+  if (er) {
+    stream.emit('error', er);
+    pna.nextTick(cb, er);
+    valid = false;
+  }
+  return valid;
+}
+
+Writable.prototype.write = function (chunk, encoding, cb) {
+  var state = this._writableState;
+  var ret = false;
+  var isBuf = !state.objectMode && _isUint8Array(chunk);
+
+  if (isBuf && !Buffer.isBuffer(chunk)) {
+    chunk = _uint8ArrayToBuffer(chunk);
+  }
+
+  if (typeof encoding === 'function') {
+    cb = encoding;
+    encoding = null;
+  }
+
+  if (isBuf) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;
+
+  if (typeof cb !== 'function') cb = nop;
+
+  if (state.ended) writeAfterEnd(this, cb);else if (isBuf || validChunk(this, state, chunk, cb)) {
+    state.pendingcb++;
+    ret = writeOrBuffer(this, state, isBuf, chunk, encoding, cb);
+  }
+
+  return ret;
+};
+
+Writable.prototype.cork = function () {
+  var state = this._writableState;
+
+  state.corked++;
+};
+
+Writable.prototype.uncork = function () {
+  var state = this._writableState;
+
+  if (state.corked) {
+    state.corked--;
+
+    if (!state.writing && !state.corked && !state.finished && !state.bufferProcessing && state.bufferedRequest) clearBuffer(this, state);
+  }
+};
+
+Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
+  // node::ParseEncoding() requires lower case.
+  if (typeof encoding === 'string') encoding = encoding.toLowerCase();
+  if (!(['hex', 'utf8', 'utf-8', 'ascii', 'binary', 'base64', 'ucs2', 'ucs-2', 'utf16le', 'utf-16le', 'raw'].indexOf((encoding + '').toLowerCase()) > -1)) throw new TypeError('Unknown encoding: ' + encoding);
+  this._writableState.defaultEncoding = encoding;
+  return this;
+};
+
+function decodeChunk(state, chunk, encoding) {
+  if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {
+    chunk = Buffer.from(chunk, encoding);
+  }
+  return chunk;
+}
+
+Object.defineProperty(Writable.prototype, 'writableHighWaterMark', {
+  // making it explicit this property is not enumerable
+  // because otherwise some prototype manipulation in
+  // userland will fail
+  enumerable: false,
+  get: function () {
+    return this._writableState.highWaterMark;
+  }
+});
+
+// if we're already writing something, then just put this
+// in the queue, and wait our turn.  Otherwise, call _write
+// If we return false, then we need a drain event, so set that flag.
+function writeOrBuffer(stream, state, isBuf, chunk, encoding, cb) {
+  if (!isBuf) {
+    var newChunk = decodeChunk(state, chunk, encoding);
+    if (chunk !== newChunk) {
+      isBuf = true;
+      encoding = 'buffer';
+      chunk = newChunk;
+    }
+  }
+  var len = state.objectMode ? 1 : chunk.length;
+
+  state.length += len;
+
+  var ret = state.length < state.highWaterMark;
+  // we must ensure that previous needDrain will not be reset to false.
+  if (!ret) state.needDrain = true;
+
+  if (state.writing || state.corked) {
+    var last = state.lastBufferedRequest;
+    state.lastBufferedRequest = {
+      chunk: chunk,
+      encoding: encoding,
+      isBuf: isBuf,
+      callback: cb,
+      next: null
+    };
+    if (last) {
+      last.next = state.lastBufferedRequest;
+    } else {
+      state.bufferedRequest = state.lastBufferedRequest;
+    }
+    state.bufferedRequestCount += 1;
+  } else {
+    doWrite(stream, state, false, len, chunk, encoding, cb);
+  }
+
+  return ret;
+}
+
+function doWrite(stream, state, writev, len, chunk, encoding, cb) {
+  state.writelen = len;
+  state.writecb = cb;
+  state.writing = true;
+  state.sync = true;
+  if (writev) stream._writev(chunk, state.onwrite);else stream._write(chunk, encoding, state.onwrite);
+  state.sync = false;
+}
+
+function onwriteError(stream, state, sync, er, cb) {
+  --state.pendingcb;
+
+  if (sync) {
+    // defer the callback if we are being called synchronously
+    // to avoid piling up things on the stack
+    pna.nextTick(cb, er);
+    // this can emit finish, and it will always happen
+    // after error
+    pna.nextTick(finishMaybe, stream, state);
+    stream._writableState.errorEmitted = true;
+    stream.emit('error', er);
+  } else {
+    // the caller expect this to happen before if
+    // it is async
+    cb(er);
+    stream._writableState.errorEmitted = true;
+    stream.emit('error', er);
+    // this can emit finish, but finish must
+    // always follow error
+    finishMaybe(stream, state);
+  }
+}
+
+function onwriteStateUpdate(state) {
+  state.writing = false;
+  state.writecb = null;
+  state.length -= state.writelen;
+  state.writelen = 0;
+}
+
+function onwrite(stream, er) {
+  var state = stream._writableState;
+  var sync = state.sync;
+  var cb = state.writecb;
+
+  onwriteStateUpdate(state);
+
+  if (er) onwriteError(stream, state, sync, er, cb);else {
+    // Check if we're actually ready to finish, but don't emit yet
+    var finished = needFinish(state);
+
+    if (!finished && !state.corked && !state.bufferProcessing && state.bufferedRequest) {
+      clearBuffer(stream, state);
+    }
+
+    if (sync) {
+      /*<replacement>*/
+      asyncWrite(afterWrite, stream, state, finished, cb);
+      /*</replacement>*/
+    } else {
+      afterWrite(stream, state, finished, cb);
+    }
+  }
+}
+
+function afterWrite(stream, state, finished, cb) {
+  if (!finished) onwriteDrain(stream, state);
+  state.pendingcb--;
+  cb();
+  finishMaybe(stream, state);
+}
+
+// Must force callback to be called on nextTick, so that we don't
+// emit 'drain' before the write() consumer gets the 'false' return
+// value, and has a chance to attach a 'drain' listener.
+function onwriteDrain(stream, state) {
+  if (state.length === 0 && state.needDrain) {
+    state.needDrain = false;
+    stream.emit('drain');
+  }
+}
+
+// if there's something in the buffer waiting, then process it
+function clearBuffer(stream, state) {
+  state.bufferProcessing = true;
+  var entry = state.bufferedRequest;
+
+  if (stream._writev && entry && entry.next) {
+    // Fast case, write everything using _writev()
+    var l = state.bufferedRequestCount;
+    var buffer = new Array(l);
+    var holder = state.corkedRequestsFree;
+    holder.entry = entry;
+
+    var count = 0;
+    var allBuffers = true;
+    while (entry) {
+      buffer[count] = entry;
+      if (!entry.isBuf) allBuffers = false;
+      entry = entry.next;
+      count += 1;
+    }
+    buffer.allBuffers = allBuffers;
+
+    doWrite(stream, state, true, state.length, buffer, '', holder.finish);
+
+    // doWrite is almost always async, defer these to save a bit of time
+    // as the hot path ends with doWrite
+    state.pendingcb++;
+    state.lastBufferedRequest = null;
+    if (holder.next) {
+      state.corkedRequestsFree = holder.next;
+      holder.next = null;
+    } else {
+      state.corkedRequestsFree = new CorkedRequest(state);
+    }
+    state.bufferedRequestCount = 0;
+  } else {
+    // Slow case, write chunks one-by-one
+    while (entry) {
+      var chunk = entry.chunk;
+      var encoding = entry.encoding;
+      var cb = entry.callback;
+      var len = state.objectMode ? 1 : chunk.length;
+
+      doWrite(stream, state, false, len, chunk, encoding, cb);
+      entry = entry.next;
+      state.bufferedRequestCount--;
+      // if we didn't call the onwrite immediately, then
+      // it means that we need to wait until it does.
+      // also, that means that the chunk and cb are currently
+      // being processed, so move the buffer counter past them.
+      if (state.writing) {
+        break;
+      }
+    }
+
+    if (entry === null) state.lastBufferedRequest = null;
+  }
+
+  state.bufferedRequest = entry;
+  state.bufferProcessing = false;
+}
+
+Writable.prototype._write = function (chunk, encoding, cb) {
+  cb(new Error('_write() is not implemented'));
+};
+
+Writable.prototype._writev = null;
+
+Writable.prototype.end = function (chunk, encoding, cb) {
+  var state = this._writableState;
+
+  if (typeof chunk === 'function') {
+    cb = chunk;
+    chunk = null;
+    encoding = null;
+  } else if (typeof encoding === 'function') {
+    cb = encoding;
+    encoding = null;
+  }
+
+  if (chunk !== null && chunk !== undefined) this.write(chunk, encoding);
+
+  // .end() fully uncorks
+  if (state.corked) {
+    state.corked = 1;
+    this.uncork();
+  }
+
+  // ignore unnecessary end() calls.
+  if (!state.ending && !state.finished) endWritable(this, state, cb);
+};
+
+function needFinish(state) {
+  return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;
+}
+function callFinal(stream, state) {
+  stream._final(function (err) {
+    state.pendingcb--;
+    if (err) {
+      stream.emit('error', err);
+    }
+    state.prefinished = true;
+    stream.emit('prefinish');
+    finishMaybe(stream, state);
+  });
+}
+function prefinish(stream, state) {
+  if (!state.prefinished && !state.finalCalled) {
+    if (typeof stream._final === 'function') {
+      state.pendingcb++;
+      state.finalCalled = true;
+      pna.nextTick(callFinal, stream, state);
+    } else {
+      state.prefinished = true;
+      stream.emit('prefinish');
+    }
+  }
+}
+
+function finishMaybe(stream, state) {
+  var need = needFinish(state);
+  if (need) {
+    prefinish(stream, state);
+    if (state.pendingcb === 0) {
+      state.finished = true;
+      stream.emit('finish');
+    }
+  }
+  return need;
+}
+
+function endWritable(stream, state, cb) {
+  state.ending = true;
+  finishMaybe(stream, state);
+  if (cb) {
+    if (state.finished) pna.nextTick(cb);else stream.once('finish', cb);
+  }
+  state.ended = true;
+  stream.writable = false;
+}
+
+function onCorkedFinish(corkReq, state, err) {
+  var entry = corkReq.entry;
+  corkReq.entry = null;
+  while (entry) {
+    var cb = entry.callback;
+    state.pendingcb--;
+    cb(err);
+    entry = entry.next;
+  }
+  if (state.corkedRequestsFree) {
+    state.corkedRequestsFree.next = corkReq;
+  } else {
+    state.corkedRequestsFree = corkReq;
+  }
+}
+
+Object.defineProperty(Writable.prototype, 'destroyed', {
+  get: function () {
+    if (this._writableState === undefined) {
+      return false;
+    }
+    return this._writableState.destroyed;
+  },
+  set: function (value) {
+    // we ignore the value if the stream
+    // has not been initialized yet
+    if (!this._writableState) {
+      return;
+    }
+
+    // backward compatibility, the user is explicitly
+    // managing destroyed
+    this._writableState.destroyed = value;
+  }
+});
+
+Writable.prototype.destroy = destroyImpl.destroy;
+Writable.prototype._undestroy = destroyImpl.undestroy;
+Writable.prototype._destroy = function (err, cb) {
+  this.end();
+  cb(err);
+};
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB"), __webpack_require__("yLpj")))
+
+/***/ }),
+
 /***/ "3DSN":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3643,6 +4772,32 @@ var staticRenderFns = []
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhYAAAD+CAYAAABmz0wVAAAABGdBTUEAALGPC/xhBQAADb5JREFUeAHt3bGK3QkdhuFzJhtRsNRyr8DOQiHaiJ3LFILiDdhpZ7Gla2lhpxchLliE2AoSU1gIFlvY2FiK2AgK2Z1xpghvsUyW5Jt1T2aeNPvtzvzO/M9zin0hgRwPd/DX9y8vH/z2ybOfX15e/uQOvr2Tf0vH4/EX333n0bu/OR4/OvmH9YAECBAgcKsCx1t9tRN4sS/+7s9f/u/Ff359FRXfOoHHubePcBUXv//82Rd+8O/vfPUf9xbBGydAgMA9FLhTYfHw8bOvXRwu3r/6HN++h5/lKb7lv58dzr73/PzRn07x4TwTAQJ3R+DB46eXd+fdfPydfHT+zTfm/9dnH3/8N/O/PHzy9IcXx4s/XD29qDidj/Dt68/k+rM5nUfyJAQIECDwaQoc73rlfZp4XpsAAQIECBAgQIAAAQIECBAgQIAAAQIECBA4dYE35g+DnBrkm/5bSG/SHwQ6tc/e8xAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAgbslcLz6y7q+dLfekndDgAABAgQIfFYCd+bvCvmsAP1cAgQIECBAIAFhkYVFgAABAgQIjALCYgR0ToAAAQIECCQgLLKwCBAgQIAAgVFAWIyAzgkQIECAAIEEhEUWFgECBAgQIDAKCIsR0DkBAgQIECCQgLDIwiJAgAABAgRGAWExAjonQIAAAQIEEhAWWVgECBAgQIDAKCAsRkDnBAgQIECAQALCIguLAAECBAgQGAWExQjonAABAgQIEEhAWGRhESBAgAABAqOAsBgBnRMgQIAAAQIJCIssLAIECBAgQGAUEBYjoHMCBAgQIEAgAWGRhUWAAAECBAiMAsJiBHROgAABAgQIJCAssrAIECBAgACBUUBYjIDOCRAgQIAAgQSERRYWAQIECBAgMAoIixHQOQECBAgQIJCAsMjCIkCAAAECBEYBYTECOidAgAABAgQSEBZZWAQIECBAgMAoICxGQOcECBAgQIBAAsIiC4sAAQIECBAYBYTFCOicAAECBAgQSEBYZGERIECAAAECo4CwGAGdEyBAgAABAgkIiywsAgQIECBAYBQQFiOgcwIECBAgQCABYZGFRYAAAQIECIwCwmIEdE6AAAECBAgkICyysAgQIECAAIFRQFiMgM4JECBAgACBBIRFFhYBAgQIECAwCgiLEdA5AQIECBAgkICwyMIiQIAAAQIERgFhMQI6J0CAAAECBBIQFllYBAgQIECAwCggLEZA5wQIECBAgEACwiILiwABAgQIEBgFhMUI6JwAAQIECBBIQFhkYREgQIAAAQKjgLAYAZ0TIECAAAECCQiLLCwCBAgQIEBgFBAWI6BzAgQIECBAIAFhkYVFgAABAgQIjALCYgR0ToAAAQIECCQgLLKwCBAgQIAAgVFAWIyAzgkQIECAAIEEhEUWFgECBAgQIDAKCIsR0DkBAgQIECCQgLDIwiJAgAABAgRGAWExAjonQIAAAQIEEhAWWVgECBAgQIDAKCAsRkDnBAgQIECAQALCIguLAAECBAgQGAWExQjonAABAgQIEEhAWGRhESBAgAABAqOAsBgBnRMgQIAAAQIJCIssLAIECBAgQGAUEBYjoHMCBAgQIEAgAWGRhUWAAAECBAiMAsJiBHROgAABAgQIJCAssrAIECBAgACBUUBYjIDOCRAgQIAAgQSERRYWAQIECBAgMAoIixHQOQECBAgQIJCAsMjCIkCAAAECBEYBYTECOidAgAABAgQSEBZZWAQIECBAgMAoICxGQOcECBAgQIBAAsIiC4sAAQIECBAYBYTFCOicAAECBAgQSEBYZGERIECAAAECo4CwGAGdEyBAgAABAgkIiywsAgQIECBAYBQQFiOgcwIECBAgQCABYZGFRYAAAQIECIwCwmIEdE6AAAECBAgkICyysAgQIECAAIFRQFiMgM4JECBAgACBBIRFFhYBAgQIECAwCgiLEdA5AQIECBAgkICwyMIiQIAAAQIERgFhMQI6J0CAAAECBBIQFllYBAgQIECAwCggLEZA5wQIECBAgEACwiILiwABAgQIEBgFhMUI6JwAAQIECBBIQFhkYREgQIAAAQKjgLAYAZ0TIECAAAECCQiLLCwCBAgQIEBgFBAWI6BzAgQIECBAIAFhkYVFgAABAgQIjALCYgR0ToAAAQIECCQgLLKwCBAgQIAAgVFAWIyAzgkQIECAAIEEhEUWFgECBAgQIDAKCIsR0DkBAgQIECCQgLDIwiJAgAABAgRGAWExAjonQIAAAQIEEhAWWVgECBAgQIDAKCAsRkDnBAgQIECAQALCIguLAAECBAgQGAWExQjonAABAgQIEEhAWGRhESBAgAABAqOAsBgBnRMgQIAAAQIJCIssLAIECBAgQGAUEBYjoHMCBAgQIEAgAWGRhUWAAAECBAiMAsJiBHROgAABAgQIJCAssrAIECBAgACBUUBYjIDOCRAgQIAAgQSERRYWAQIECBAgMAoIixHQOQECBAgQIJCAsMjCIkCAAAECBEYBYTECOidAgAABAgQSEBZZWAQIECBAgMAoICxGQOcECBAgQIBAAsIiC4sAAQIECBAYBYTFCOicAAECBAgQSEBYZGERIECAAAECo4CwGAGdEyBAgAABAgkIiywsAgQIECBAYBQQFiOgcwIECBAgQCABYZGFRYAAAQIECIwCwmIEdE6AAAECBAgkICyysAgQIECAAIFRQFiMgM4JECBAgACBBIRFFhYBAgQIECAwCgiLEdA5AQIECBAgkICwyMIiQIAAAQIERgFhMQI6J0CAAAECBBIQFllYBAgQIECAwCggLEZA5wQIECBAgEACwiILiwABAgQIEBgFhMUI6JwAAQIECBBIQFhkYREgQIAAAQKjgLAYAZ0TIECAAAECCQiLLCwCBAgQIEBgFBAWI6BzAgQIECBAIAFhkYVFgAABAgQIjALCYgR0ToAAAQIECCQgLLKwCBAgQIAAgVFAWIyAzgkQIECAAIEEhEUWFgECBAgQIDAKCIsR0DkBAgQIECCQgLDIwiJAgAABAgRGAWExAjonQIAAAQIEEhAWWVgECBAgQIDAKCAsRkDnBAgQIECAQALCIguLAAECBAgQGAWExQjonAABAgQIEEhAWGRhESBAgAABAqOAsBgBnRMgQIAAAQIJCIssLAIECBAgQGAUEBYjoHMCBAgQIEAgAWGRhUWAAAECBAiMAsJiBHROgAABAgQIJCAssrAIECBAgACBUUBYjIDOCRAgQIAAgQSERRYWAQIECBAgMAoIixHQOQECBAgQIJCAsMjCIkCAAAECBEYBYTECOidAgAABAgQSEBZZWAQIECBAgMAoICxGQOcECBAgQIBAAsIiC4sAAQIECBAYBYTFCOicAAECBAgQSEBYZGERIECAAAECo4CwGAGdEyBAgAABAgkIiywsAgQIECBAYBQQFiOgcwIECBAgQCABYZGFRYAAAQIECIwCwmIEdE6AAAECBAgkICyysAgQIECAAIFRQFiMgM4JECBAgACBBIRFFhYBAgQIECAwCgiLEdA5AQIECBAgkICwyMIiQIAAAQIERgFhMQI6J0CAAAECBBIQFllYBAgQIECAwCggLEZA5wQIECBAgEACwiILiwABAgQIEBgFhMUI6JwAAQIECBBIQFhkYREgQIAAAQKjgLAYAZ0TIECAAAECCQiLLCwCBAgQIEBgFBAWI6BzAgQIECBAIAFhkYVFgAABAgQIjALCYgR0ToAAAQIECCQgLLKwCBAgQIAAgVFAWIyAzgkQIECAAIEEhEUWFgECBAgQIDAKCIsR0DkBAgQIECCQgLDIwiJAgAABAgRGAWExAjonQIAAAQIEEhAWWVgECBAgQIDAKCAsRkDnBAgQIECAQALCIguLAAECBAgQGAWExQjonAABAgQIEEhAWGRhESBAgAABAqOAsBgBnRMgQIAAAQIJCIssLAIECBAgQGAUEBYjoHMCBAgQIEAgAWGRhUWAAAECBAiMAsJiBHROgAABAgQIJCAssrAIECBAgACBUUBYjIDOCRAgQIAAgQSERRYWAQIECBAgMAoIixHQOQECBAgQIJCAsMjCIkCAAAECBEYBYTECOidAgAABAgQSEBZZWAQIECBAgMAoICxGQOcECBAgQIBAAsIiC4sAAQIECBAYBYTFCOicAAECBAgQSEBYZGERIECAAAECo4CwGAGdEyBAgAABAgkIiywsAgQIECBAYBQQFiOgcwIECBAgQCABYZGFRYAAAQIECIwCwmIEdE6AAAECBAgkICyysAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAEC91DgeA/fs7dMgAABAv8HgYdPnv3o4uLil9c/6uzs7MfP33n0qxc/9ra/9pUPPvjcX//2r/cvD4fzw+H4z7PDW99+fv71v7z4eW89/uN7l4fLn774d/+8WeB4OP7sw/NvvHfzd7z8K8Li5T6+SoAAAQKvIXDb4XD9CDe9pqh4jQ/oE06WuBAWn4DrywQIECDwagI3BcD1q9z210TFq302r/LdrxsXwuJVlH0vAQIECLxU4LbD4fqH3fSaouKlH8WtfPF14uL44PHTq9+S8osAAQIECBAgsAv8D3+y/1UxtS72AAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ "43KI":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("rXFu");
+exports.Stream = exports;
+exports.Readable = exports;
+exports.Writable = __webpack_require__("3BRs");
+exports.Duplex = __webpack_require__("sZro");
+exports.Transform = __webpack_require__("J78i");
+exports.PassThrough = __webpack_require__("eA/Y");
+
+
+/***/ }),
+
+/***/ "49sm":
+/***/ (function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
 
 /***/ }),
 
@@ -3915,13 +5070,6 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 )
 
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "84wO":
-/***/ (function(module) {
-
-module.exports = JSON.parse("[{\"name\":\"克拉玛依市\",\"coord\":[85.01486759299489,45.406422237230046]},{\"name\":\"昌吉回族自治州\",\"coord\":[88.7154624754753,44.26991024636568]},{\"name\":\"石河子市\",\"coord\":[86.0208600035924,44.239045558096805]},{\"name\":\"霍林郭勒市\",\"coord\":[114.73479243733115,44.16058374713977]},{\"name\":\"本溪市\",\"coord\":[124.64357865201586,41.177197783134275]},{\"name\":\"嘉峪关市\",\"coord\":[98.16891560537093,39.76279786284264]},{\"name\":\"莱芜市\",\"coord\":[117.65723565456207,36.27916499211527]},{\"name\":\"神农架林区\",\"coord\":[110.48296222218153,31.581260143666697]},{\"name\":\"天门市\",\"coord\":[113.00615321481195,30.64105781887143]},{\"name\":\"鄂州市\",\"coord\":[114.94764081970385,30.325634953844585]},{\"name\":\"潜江市\",\"coord\":[112.70703817700621,30.349210666019893]},{\"name\":\"仙桃市\",\"coord\":[113.34688900729822,30.315951161935402]},{\"name\":\"萍乡市\",\"coord\":[113.88072263074415,27.47193090553213]},{\"name\":\"台湾省\",\"coord\":[120.14338943402045,23.596002465926095]},{\"name\":\"东莞市\",\"coord\":[113.89443658529342,22.897826158636448]},{\"name\":\"中山市\",\"coord\":[113.37118387764659,22.501478858616522]},{\"name\":\"珠海市\",\"coord\":[113.21799258934986,22.23782602992192]},{\"name\":\"北海市\",\"coord\":[109.18248083043899,21.695773689750148]},{\"name\":\"香港\",\"coord\":[114.20689279508653,22.36016760139811]},{\"name\":\"舟山市\",\"coord\":[122.22514712841459,30.338633120695956]},{\"name\":\"克孜勒苏柯尔克孜\",\"coord\":[74.62910472637343,39.59886016069875]},{\"name\":\"喀什地区\",\"coord\":[77.19899922143753,37.85462871211595]},{\"name\":\"阿克苏地区\",\"coord\":[81.43930290016381,41.067304799230456]},{\"name\":\"和田地区\",\"coord\":[80.69780509160952,36.95287032287055]},{\"name\":\"阿里地区\",\"coord\":[82.536487505389,32.69566569631762]},{\"name\":\"日喀则地区\",\"coord\":[86.5996831353606,29.54861754814263]},{\"name\":\"那曲地区\",\"coord\":[88.32523292667608,33.20600450932715]},{\"name\":\"玉树藏族自治州\",\"coord\":[95.2107128446203,33.90320387919257]},{\"name\":\"迪庆藏族自治州\",\"coord\":[99.42465312188943,28.052797714348895]},{\"name\":\"怒江傈傈族自治州\",\"coord\":[98.85737910439825,26.98345757528851]},{\"name\":\"大理白族自治州\",\"coord\":[99.93934374816013,25.684737357453045]},{\"name\":\"德宏傣族景颇族自\",\"coord\":[98.13830877778075,24.593421919561205]},{\"name\":\"保山市\",\"coord\":[99.19031013453166,24.979380341662]},{\"name\":\"临沧市\",\"coord\":[99.62483778975081,24.058807858948214]},{\"name\":\"普洱市\",\"coord\":[100.94440267992684,23.44121660743221]},{\"name\":\"西双版纳傣族自治\",\"coord\":[100.86105801845994,21.882475641324206]},{\"name\":\"拉萨市\",\"coord\":[91.3684790613129,30.14176592960237]},{\"name\":\"山南地区\",\"coord\":[92.11665242621062,28.33000201578789]},{\"name\":\"林芝地区\",\"coord\":[94.9307847458166,29.125110156601963]},{\"name\":\"昌都地区\",\"coord\":[97.33912235873476,30.48520825551814]},{\"name\":\"丽江市\",\"coord\":[100.65713436205135,26.96190318191959]},{\"name\":\"攀枝花市\",\"coord\":[101.73355913301131,26.714486678752795]},{\"name\":\"凉山彝族自治州\",\"coord\":[102.08678551422615,27.683020519860396]},{\"name\":\"楚雄彝族自治州\",\"coord\":[101.68264761198458,25.369603845264024]},{\"name\":\"红河哈尼族彝族自\",\"coord\":[102.95101719613119,23.624860095239875]},{\"name\":\"文山壮族苗族自治\",\"coord\":[104.8708359910614,23.579587266862504]},{\"name\":\"百色市\",\"coord\":[106.69546907589859,23.98220841166522]},{\"name\":\"崇左市\",\"coord\":[107.3277087317123,22.49769755349952]},{\"name\":\"防城港市\",\"coord\":[107.88939931155171,21.94550204069006]},{\"name\":\"南宁市\",\"coord\":[108.67078983716917,23.12207641861882]},{\"name\":\"钦州市\",\"coord\":[108.8532307305186,22.157690108421384]},{\"name\":\"玉林市\",\"coord\":[110.26918466489103,22.391823643610415]},{\"name\":\"湛江市\",\"coord\":[109.93033457863683,21.086751055633457]},{\"name\":\"茂名市\",\"coord\":[110.80336192333934,22.069184739040775]},{\"name\":\"阳江市\",\"coord\":[111.70471342186183,22.108751366417575]},{\"name\":\"江门市\",\"coord\":[112.53715618649149,22.297368082806777]},{\"name\":\"广州市\",\"coord\":[113.4949302208309,23.28359314707863]},{\"name\":\"清远市\",\"coord\":[113.10957368131268,24.334444053233856]},{\"name\":\"肇庆市\",\"coord\":[112.11117530204233,23.60241158796112]},{\"name\":\"梧州市\",\"coord\":[111.01709510772797,23.518132876753846]},{\"name\":\"贺州市\",\"coord\":[111.50423061842756,24.4095096817199]},{\"name\":\"桂林市\",\"coord\":[110.44046163393094,25.353966673735407]},{\"name\":\"柳州市\",\"coord\":[109.34854449214147,24.972408051485047]},{\"name\":\"河池市\",\"coord\":[107.81191841865586,24.649291651298164]},{\"name\":\"黔东南苗族侗族自\",\"coord\":[108.39952601614591,26.429286420465576]},{\"name\":\"贵阳市\",\"coord\":[106.59784062851153,26.797907456479816]},{\"name\":\"安顺市\",\"coord\":[105.76161265300635,25.988644902171018]},{\"name\":\"黔西南布依族苗族\",\"coord\":[105.5954078788574,25.404850939549405]},{\"name\":\"曲靖市\",\"coord\":[103.9164335632742,25.697243690315265]},{\"name\":\"六盘水市\",\"coord\":[104.77723228072432,26.15402255629164]},{\"name\":\"毕节地区\",\"coord\":[105.03867422931839,27.077913968069666]},{\"name\":\"昭通市\",\"coord\":[104.29730513046874,27.62418247971078]},{\"name\":\"宜宾市\",\"coord\":[104.76748901448207,28.553501804266475]},{\"name\":\"乐山市\",\"coord\":[103.56027669102787,29.160754519210577]},{\"name\":\"自贡市\",\"coord\":[104.63272827056402,29.273152614922402]},{\"name\":\"内江市\",\"coord\":[104.82644562304716,29.61272653799929]},{\"name\":\"遵义市\",\"coord\":[106.82413636302059,28.191847588570702]},{\"name\":\"达州市\",\"coord\":[107.59704170009518,31.32138258839703]},{\"name\":\"遂宁市\",\"coord\":[105.48979445433736,30.677687821242678]},{\"name\":\"广安市\",\"coord\":[106.56708164098042,30.43500706741521]},{\"name\":\"泸州市\",\"coord\":[105.42591761727707,28.50277238478137]},{\"name\":\"资阳市\",\"coord\":[104.97995126874034,30.154251886139654]},{\"name\":\"雅安市\",\"coord\":[102.69931299964517,29.892630706195035]},{\"name\":\"眉山市\",\"coord\":[104.07052881858888,29.894202166560405]},{\"name\":\"甘孜藏族自治州\",\"coord\":[100.50721042614238,30.975216556269658]},{\"name\":\"果洛藏族自治州\",\"coord\":[99.30775565051923,34.03539865224808]},{\"name\":\"海南藏族自治州\",\"coord\":[100.39969108016373,35.90048272566899]},{\"name\":\"黄南藏族自治州\",\"coord\":[101.5360706381689,35.10286360841902]},{\"name\":\"赣南藏族自治州\",\"coord\":[102.97083885806067,34.326752803339026]},{\"name\":\"陇南市\",\"coord\":[105.24780098912132,33.57031117443431]},{\"name\":\"天水市\",\"coord\":[105.53503634660417,34.62320421368087]},{\"name\":\"定西市\",\"coord\":[104.58787768541339,35.08900966621695]},{\"name\":\"临夏回族自治州\",\"coord\":[103.2612870434902,35.591577124455235]},{\"name\":\"西宁市\",\"coord\":[101.57680657999033,36.84800271717157]},{\"name\":\"海东地区\",\"coord\":[102.30909850729282,36.287400615025646]},{\"name\":\"海北藏族自治州\",\"coord\":[100.27122484450717,37.892557516083826]},{\"name\":\"金昌市\",\"coord\":[102.02244049169511,38.497330414886164]},{\"name\":\"酒泉市\",\"coord\":[95.94486678270127,40.56891536586272]},{\"name\":\"海西蒙古族藏族自\",\"coord\":[94.67143298050689,36.022725148503724]},{\"name\":\"巴音郭楞蒙古自治\",\"coord\":[88.18116214759745,39.556478810319916]},{\"name\":\"哈密地区\",\"coord\":[93.84302392518026,42.95015211178875]},{\"name\":\"叶鲁番地区\",\"coord\":[89.82035217277885,42.399368632283505]},{\"name\":\"乌鲁木齐市\",\"coord\":[88.00048109561487,43.549986370786]},{\"name\":\"阿勒泰地区\",\"coord\":[88.11213933257655,47.05593413019629]},{\"name\":\"博尔塔拉蒙古自治\",\"coord\":[82.26402238163408,44.671135542630864]},{\"name\":\"伊犁哈萨克自治州\",\"coord\":[82.80778717477179,43.53783381365267]},{\"name\":\"阿拉善盟\",\"coord\":[103.29923966842289,40.10955801781495]},{\"name\":\"武威市\",\"coord\":[102.73362058791429,37.94211141321436]},{\"name\":\"兰州市\",\"coord\":[103.73793563506032,36.27379827886003]},{\"name\":\"中卫市\",\"coord\":[105.6943786030716,37.20654236148948]},{\"name\":\"银川市\",\"coord\":[106.20022174140034,38.52103167597483]},{\"name\":\"石嘴山市\",\"coord\":[106.41544011793628,38.84054137571417]},{\"name\":\"乌海市\",\"coord\":[106.8984175998405,39.54616572239788]},{\"name\":\"鄂尔多斯市\",\"coord\":[108.43285571424619,39.24036799350715]},{\"name\":\"巴彦淖尔市\",\"coord\":[107.45840392808307,41.30159860424196]},{\"name\":\"包头市\",\"coord\":[110.46472193224272,41.48017783644221]},{\"name\":\"呼和浩特市\",\"coord\":[111.48365173603975,40.498363056149884]},{\"name\":\"乌兰察布市\",\"coord\":[112.61568977597707,41.75789561273154]},{\"name\":\"大同市\",\"coord\":[113.7107192749083,39.898956799744184]},{\"name\":\"朔州市\",\"coord\":[112.65428748167508,39.681772914701924]},{\"name\":\"忻州市\",\"coord\":[112.36127575589583,38.88990233614568]},{\"name\":\"榆林市\",\"coord\":[109.68473112169593,38.19921027134876]},{\"name\":\"延安市\",\"coord\":[109.52425222161318,36.406522726136814]},{\"name\":\"庆阳市\",\"coord\":[107.73052193155061,36.183821532624464]},{\"name\":\"固原市\",\"coord\":[106.20191575442442,36.11634909496382]},{\"name\":\"白银市\",\"coord\":[104.68634478137065,36.51582865625868]},{\"name\":\"宝鸡市\",\"coord\":[107.33534779230747,34.3387216485855]},{\"name\":\"汉中市\",\"coord\":[107.03534754266246,33.00142998064871]},{\"name\":\"广元市\",\"coord\":[105.92928137563939,32.21872447205537]},{\"name\":\"巴中市\",\"coord\":[107.03422410306194,31.99874720836291]},{\"name\":\"南充市\",\"coord\":[106.32964805032347,31.156657700184095]},{\"name\":\"绵阳市\",\"coord\":[104.58949560201106,31.88628780630976]},{\"name\":\"德阳市\",\"coord\":[104.41542984932845,31.110558133718676]},{\"name\":\"成都市\",\"coord\":[103.8852290010473,30.777258040348634]},{\"name\":\"阿坝藏族羌族自治\",\"coord\":[102.26209319552814,32.45725845387284]},{\"name\":\"安康市\",\"coord\":[109.14236501848015,32.77467694678074]},{\"name\":\"十堰市\",\"coord\":[110.39934083416314,32.376209039347906]},{\"name\":\"襄阳市\",\"coord\":[111.97539147094662,31.93399822417465]},{\"name\":\"宜昌市\",\"coord\":[111.22204852395754,30.772457669035354]},{\"name\":\"恩施市\",\"coord\":[109.42158366502872,30.260366574390105]},{\"name\":\"张家界市\",\"coord\":[110.59760006538717,29.330107409240718]},{\"name\":\"吉首市\",\"coord\":[109.72176899848378,28.681903937242495]},{\"name\":\"铜仁地区\",\"coord\":[108.54247523485463,28.11736237519646]},{\"name\":\"重庆市\",\"coord\":[107.86007108564992,30.186253395053196]},{\"name\":\"怀化市\",\"coord\":[109.94325166787243,27.43919084801186]},{\"name\":\"益阳市\",\"coord\":[112.43060358108062,28.75127294553697]},{\"name\":\"娄底市\",\"coord\":[111.41891416951897,27.696312460064604]},{\"name\":\"常德市\",\"coord\":[111.72571610131646,29.27189463838195]},{\"name\":\"荆州市\",\"coord\":[112.65896596965268,30.05161542755362]},{\"name\":\"荆门市\",\"coord\":[112.6586855902184,31.01267124474617]},{\"name\":\"岳阳市\",\"coord\":[113.2595036144316,29.106247116930163]},{\"name\":\"长沙市\",\"coord\":[113.15415586456598,28.222934680488425]},{\"name\":\"湘潭市\",\"coord\":[112.51092596317824,27.69881544105668]},{\"name\":\"株州市\",\"coord\":[113.49665538546823,27.03993794610501]},{\"name\":\"衡阳市\",\"coord\":[112.48849636578527,26.783613569970782]},{\"name\":\"邵阳市\",\"coord\":[110.6723832117475,26.81652287086792]},{\"name\":\"永州市\",\"coord\":[111.8565364154186,25.768488267811968]},{\"name\":\"韶关市\",\"coord\":[113.53420325850979,24.69848878771937]},{\"name\":\"惠州市\",\"coord\":[114.32029589634925,23.25504544231892]},{\"name\":\"佛山市\",\"coord\":[112.95925897403649,23.10116677189257]},{\"name\":\"云浮市\",\"coord\":[111.78042514904234,22.840400494105687]},{\"name\":\"深圳市\",\"coord\":[114.13138648919008,22.649563063468342]},{\"name\":\"汕尾市\",\"coord\":[115.57412892884373,23.06989642104901]},{\"name\":\"河源市\",\"coord\":[114.89746229844398,23.97971937124767]},{\"name\":\"揭阳市\",\"coord\":[116.04290004239446,23.304802704715357]},{\"name\":\"汕头市\",\"coord\":[116.7008461897183,23.35898625947344]},{\"name\":\"潮州市\",\"coord\":[116.75405548481658,23.854381508863064]},{\"name\":\"梅州市\",\"coord\":[116.13719397345734,24.15633544812716]},{\"name\":\"漳州市\",\"coord\":[117.38279760543345,24.41111215459575]},{\"name\":\"厦门市\",\"coord\":[118.04275971554665,24.675908246507944]},{\"name\":\"龙岩市\",\"coord\":[116.69341144552507,25.20284542644492]},{\"name\":\"泉州市\",\"coord\":[118.12035864630246,25.22984144365049]},{\"name\":\"莆田市\",\"coord\":[118.82439690138142,25.439653480972687]},{\"name\":\"福州市\",\"coord\":[119.1608285845262,25.99117532466728]},{\"name\":\"三明市\",\"coord\":[117.51188176216434,26.318292906961602]},{\"name\":\"南平市\",\"coord\":[118.16153136678187,27.306303151805437]},{\"name\":\"抚州市\",\"coord\":[116.3455359885574,27.487043655935366]},{\"name\":\"鹰潭市\",\"coord\":[117.01082360702333,28.241253742969946]},{\"name\":\"吉安市\",\"coord\":[114.91377151807418,26.957486660664525]},{\"name\":\"赣州市\",\"coord\":[115.046455717572,25.81565075681663]},{\"name\":\"郴州市\",\"coord\":[113.1544526703492,25.871927095452524]},{\"name\":\"新余市\",\"coord\":[114.94161795877827,27.79044654578371]},{\"name\":\"宜春市\",\"coord\":[115.04574494880995,28.306428044943356]},{\"name\":\"南昌市\",\"coord\":[115.9963824234495,28.664803351584705]},{\"name\":\"九江市\",\"coord\":[115.53225905704193,29.362905920276297]},{\"name\":\"上饶市\",\"coord\":[117.8595355766598,28.765755150094634]},{\"name\":\"景德镇市\",\"coord\":[117.25387030721845,29.33426823662448]},{\"name\":\"黄山市\",\"coord\":[117.85476357809696,29.969632034273722]},{\"name\":\"池州市\",\"coord\":[117.34517113140791,30.208089337922335]},{\"name\":\"铜陵市\",\"coord\":[117.93160431300694,30.926442655001676]},{\"name\":\"安庆市\",\"coord\":[116.54307680610799,30.524265461641296]},{\"name\":\"黄石市\",\"coord\":[115.02354597728443,29.924060229331015]},{\"name\":\"咸宁市\",\"coord\":[114.26967602231792,29.652174021136048]},{\"name\":\"黄冈市\",\"coord\":[115.2859016705373,30.65856897065683]},{\"name\":\"武汉市\",\"coord\":[114.34552076948799,30.68836237966767]},{\"name\":\"随州市\",\"coord\":[113.3850627838818,31.87891659924412]},{\"name\":\"信阳市\",\"coord\":[114.81374730587638,32.0309685135914]},{\"name\":\"驻马店市\",\"coord\":[114.07756451509235,32.896720987266114]},{\"name\":\"商洛市\",\"coord\":[109.82044421310393,33.77403373563189]},{\"name\":\"西安市\",\"coord\":[109.11839808451401,34.225257215515896]},{\"name\":\"渭南市\",\"coord\":[109.75732444226935,35.025913644359306]},{\"name\":\"铜川市\",\"coord\":[108.98695328111377,35.19235092947735]},{\"name\":\"咸阳市\",\"coord\":[108.36398776446165,34.84311348287181]},{\"name\":\"三门峡市\",\"coord\":[110.80049688104964,34.31818709571671]},{\"name\":\"运城市\",\"coord\":[111.1736679525165,35.19010372283576]},{\"name\":\"洛阳市\",\"coord\":[111.87577573098216,34.33379926109848]},{\"name\":\"平顶山市\",\"coord\":[112.80931281928427,33.759895800153096]},{\"name\":\"漯河市\",\"coord\":[113.83505724178012,33.70034266174508]},{\"name\":\"许昌市\",\"coord\":[113.78762484088509,34.051835688452435]},{\"name\":\"郑州市\",\"coord\":[113.49619951867594,34.61181797865449]},{\"name\":\"焦作市\",\"coord\":[113.13404280173008,35.134167097471625]},{\"name\":\"晋城市\",\"coord\":[112.7495732073233,35.63186423091449]},{\"name\":\"长治市\",\"coord\":[112.85900842873183,36.45872910742828]},{\"name\":\"临汾市\",\"coord\":[111.49379787924448,36.22810800777857]},{\"name\":\"太原市\",\"coord\":[112.15628804033796,37.91704444063036]},{\"name\":\"吕梁市\",\"coord\":[111.31901105774872,37.712740463356496]},{\"name\":\"晋中市\",\"coord\":[113.08199599739676,37.36532613794343]},{\"name\":\"邯郸市\",\"coord\":[114.41824047234618,36.530119932543315]},{\"name\":\"安阳市\",\"coord\":[113.88883283163116,35.7797611183252]},{\"name\":\"鹤壁市\",\"coord\":[114.3654094911545,35.75770487428472]},{\"name\":\"新乡市\",\"coord\":[113.9184107718167,35.348471214026716]},{\"name\":\"开封市\",\"coord\":[114.52801677500626,34.61371216679872]},{\"name\":\"周口市\",\"coord\":[114.88509782391864,33.69999759722657]},{\"name\":\"阜阳市\",\"coord\":[115.44595951398213,32.98060371610532]},{\"name\":\"淮南市\",\"coord\":[116.68941991880993,32.79972275772595]},{\"name\":\"蚌埠市\",\"coord\":[117.38594715783302,33.106729536033896]},{\"name\":\"淮北市\",\"coord\":[116.69651711889378,33.69527529383458]},{\"name\":\"宿州市\",\"coord\":[117.30175405886838,33.943330421260015]},{\"name\":\"亳州市\",\"coord\":[116.12410804185097,33.46769392946132]},{\"name\":\"商丘市\",\"coord\":[115.59575176872548,34.28339840831147]},{\"name\":\"菏泽市\",\"coord\":[115.53631974831816,35.197319393220624]},{\"name\":\"濮阳市\",\"coord\":[115.3070485514902,35.775883510964334]},{\"name\":\"聊城市\",\"coord\":[115.8870069012884,36.40529594548765]},{\"name\":\"邢台市\",\"coord\":[114.74259008644859,37.251396750084155]},{\"name\":\"石家庄市\",\"coord\":[114.56923838363613,38.13141710980106]},{\"name\":\"阳泉市\",\"coord\":[113.39216149668508,38.09075470547468]},{\"name\":\"保定市\",\"coord\":[115.261524468934,39.09118520781398]},{\"name\":\"衡水市\",\"coord\":[115.8182936677897,37.715661598187154]},{\"name\":\"德州市\",\"coord\":[116.4582273790399,37.19372347888644]},{\"name\":\"沧州市\",\"coord\":[116.76192710911863,38.20240042039232]},{\"name\":\"廊坊市\",\"coord\":[116.50410772133856,39.27896741763884]},{\"name\":\"天津市\",\"coord\":[117.31988934444873,39.37154482470619]},{\"name\":\"北京市\",\"coord\":[116.59734730757869,40.237112944270976]},{\"name\":\"张家口市\",\"coord\":[115.1823606483226,40.83732566607167]},{\"name\":\"唐山市\",\"coord\":[117.8693184261954,39.71862889477249]},{\"name\":\"秦皇岛市\",\"coord\":[119.30467355367742,39.990574652162564]},{\"name\":\"承德市\",\"coord\":[117.16275671911026,41.36623845548547]},{\"name\":\"葫芦岛市\",\"coord\":[119.9342336210531,40.5628822626519]},{\"name\":\"朝阳市\",\"coord\":[120.11853493535794,41.471852354885755]},{\"name\":\"赤峰市\",\"coord\":[118.50943546234379,43.25452976059767]},{\"name\":\"锦州市\",\"coord\":[121.5167549323861,41.45933087433065]},{\"name\":\"营口市\",\"coord\":[122.58571915054674,40.42093503997384]},{\"name\":\"丹东市\",\"coord\":[124.33549382902183,40.46369290272115]},{\"name\":\"辽阳市\",\"coord\":[123.34064798039414,41.152331397771356]},{\"name\":\"盘锦市\",\"coord\":[122.06718005354679,41.05573599862555]},{\"name\":\"阜新市\",\"coord\":[121.93889757908204,42.27641773244204]},{\"name\":\"鞍山市\",\"coord\":[122.78904432242356,40.77781183142038]},{\"name\":\"沈阳市\",\"coord\":[122.99508899709724,42.1162195010079]},{\"name\":\"铁岭市\",\"coord\":[124.23100515588399,42.72666083611828]},{\"name\":\"扶顺市\",\"coord\":[124.46027188217573,41.82955407638859]},{\"name\":\"通辽市\",\"coord\":[122.0729370657937,43.90889130864869]},{\"name\":\"兴安盟\",\"coord\":[120.79456431092532,45.92003249442161]},{\"name\":\"白城市\",\"coord\":[123.10619907715235,45.25475749267784]},{\"name\":\"齐齐哈尔市\",\"coord\":[124.5462214659102,47.55395009317394]},{\"name\":\"大兴安岭地区\",\"coord\":[124.50992855161529,52.18438447846694]},{\"name\":\"黑河市\",\"coord\":[127.14721400335922,49.25080134026901]},{\"name\":\"大庆市\",\"coord\":[124.40329830095243,46.401048760966745]},{\"name\":\"绥化市\",\"coord\":[126.5214484055605,46.76992452194825]},{\"name\":\"松原市\",\"coord\":[124.21244334807682,44.75779381338502]},{\"name\":\"四平市\",\"coord\":[124.27839350328821,43.52139065090318]},{\"name\":\"通化市\",\"coord\":[125.67392830706305,41.91771808663852]},{\"name\":\"辽源市\",\"coord\":[125.33529527643432,42.758340204944986]},{\"name\":\"吉林市\",\"coord\":[126.83350281902375,43.60730120049175]},{\"name\":\"长春市\",\"coord\":[125.53597875970374,44.24624314701737]},{\"name\":\"白山市\",\"coord\":[127.16780160322108,42.093893880305075]},{\"name\":\"哈尔滨市\",\"coord\":[127.39125008786029,45.36200668820575]},{\"name\":\"鹤岗市\",\"coord\":[130.4703811258197,47.66520688940109]},{\"name\":\"伊春市\",\"coord\":[128.91240831703635,47.93833794565277]},{\"name\":\"七台河市\",\"coord\":[131.2677920224311,45.945099776108584]},{\"name\":\"鸡西市\",\"coord\":[132.38059153660274,45.722934218318535]},{\"name\":\"双鸭山市\",\"coord\":[132.3184817002743,46.65813679030265]},{\"name\":\"佳木斯市\",\"coord\":[132.26174446608726,47.17569713691394]},{\"name\":\"呼伦贝尔市\",\"coord\":[122.3210739998419,50.18176996070858]},{\"name\":\"孝感市\",\"coord\":[113.83749892135485,31.11757234692128]},{\"name\":\"贵港市\",\"coord\":[110.07354588052804,23.380735604767374]},{\"name\":\"黔南布依族苗族自\",\"coord\":[107.30931767543106,26.2976919432269]},{\"name\":\"宁德市\",\"coord\":[119.52482556634342,27.013151692716413]},{\"name\":\"温州市\",\"coord\":[120.30037042732202,27.8699145504001]},{\"name\":\"台州市\",\"coord\":[120.88886782713843,28.670799172772313]},{\"name\":\"丽水市\",\"coord\":[119.56796851966463,28.170268394477755]},{\"name\":\"衢州市\",\"coord\":[118.79479802644406,28.865874397158763]},{\"name\":\"金华市\",\"coord\":[119.99381920686633,29.093455548185744]},{\"name\":\"绍兴市\",\"coord\":[120.46546691682343,29.69382513836818]},{\"name\":\"宁波市\",\"coord\":[121.42142987830871,29.70001162878972]},{\"name\":\"杭州市\",\"coord\":[119.4405685790891,29.87218307296989]},{\"name\":\"宣城市\",\"coord\":[118.68748382914703,30.628143499626418]},{\"name\":\"湖州市\",\"coord\":[119.98261306633574,30.7945175862809]},{\"name\":\"嘉兴市\",\"coord\":[120.83889215988998,30.67538495499343]},{\"name\":\"上海市\",\"coord\":[121.37534147322967,31.25628247908459]},{\"name\":\"苏州市\",\"coord\":[120.6906182622391,31.381280695137775]},{\"name\":\"无锡市\",\"coord\":[120.32182300914366,31.54113306724517]},{\"name\":\"常州市\",\"coord\":[119.61953292830165,31.611878565375576]},{\"name\":\"南京市\",\"coord\":[118.71890548838064,31.910863187910323]},{\"name\":\"镇江市\",\"coord\":[119.42349332902813,31.97942313430778]},{\"name\":\"合肥市\",\"coord\":[117.30651975617157,31.79407863049138]},{\"name\":\"六安市\",\"coord\":[116.24668220575353,31.820846193819513]},{\"name\":\"滁州市\",\"coord\":[117.88422385307969,32.51792621904418]},{\"name\":\"泰州市\",\"coord\":[120.03124303305091,32.56503102346783]},{\"name\":\"南通市\",\"coord\":[120.85599446760912,32.18496706099728]},{\"name\":\"盐城市\",\"coord\":[120.01812490612667,33.54219948734023]},{\"name\":\"淮安市\",\"coord\":[119.0749424205415,33.39203631772854]},{\"name\":\"宿迁市\",\"coord\":[118.45404943216346,33.666258719120265]},{\"name\":\"徐州市\",\"coord\":[117.77482249295966,34.30847766157078]},{\"name\":\"济宁市\",\"coord\":[116.74147276546373,35.27488504351119]},{\"name\":\"枣庄市\",\"coord\":[117.43359942491492,34.884162021736]},{\"name\":\"连云港市\",\"coord\":[119.01553213785074,34.54316517587849]},{\"name\":\"临沂市\",\"coord\":[118.31478835349617,35.28173079028279]},{\"name\":\"日照市\",\"coord\":[119.14265350444272,35.54479073199592]},{\"name\":\"青岛市\",\"coord\":[120.27779044405756,36.3464117375903]},{\"name\":\"威海市\",\"coord\":[122.12963327195605,37.13879077904251]},{\"name\":\"烟台市\",\"coord\":[120.7689567423966,37.19772002195597]},{\"name\":\"潍坊市\",\"coord\":[119.02178548592039,36.49292234053931]},{\"name\":\"淄博市\",\"coord\":[117.92936024367185,36.60871347163638]},{\"name\":\"泰安市\",\"coord\":[116.93810893944303,36.0423330118612]},{\"name\":\"济南市\",\"coord\":[117.34560282551296,36.769574973846304]},{\"name\":\"东营市\",\"coord\":[118.4915054457184,37.52194690335787]},{\"name\":\"滨州市\",\"coord\":[117.67610299757533,37.4439597758601]},{\"name\":\"昆明市\",\"coord\":[102.93100245594789,25.481300763922075]},{\"name\":\"玉溪市\",\"coord\":[102.23080854291823,24.156168324611663]},{\"name\":\"塔城地区\",\"coord\":[83.60908162840168,45.3721852373893]},{\"name\":\"张掖市\",\"coord\":[100.47710030600572,38.704239320458385]},{\"name\":\"南阳市\",\"coord\":[112.1400670951149,33.03033276715801]},{\"name\":\"扬州市\",\"coord\":[119.48949608990988,32.80956776339646]},{\"name\":\"延边朝鲜族自治州\",\"coord\":[129.3577692895626,43.24968794080283]},{\"name\":\"牡丹江市\",\"coord\":[129.87240796405672,44.7073040108322]},{\"name\":\"澳门\",\"coord\":[113.56289691515346,22.14602596262204]},{\"name\":\"吴忠市\",\"coord\":[106.76894508116403,37.72566765880316]},{\"name\":\"来宾市\",\"coord\":[109.25592217010114,23.86346274681084]},{\"name\":\"平凉市\",\"coord\":[107.0708132782897,35.30329631658711]},{\"name\":\"马鞍山市\",\"coord\":[118.27245878467022,31.657727937739004]},{\"name\":\"芜湖市\",\"coord\":[118.32992684415504,31.081688223101658]},{\"name\":\"澄迈县\",\"coord\":[110.04198076060266,19.694955078668105]},{\"name\":\"保亭黎族苗族自治\",\"coord\":[109.6055304964257,18.6101488675304]},{\"name\":\"乐东黎族自治县\",\"coord\":[109.04051999525574,18.643137437909203]},{\"name\":\"儋州市\",\"coord\":[109.3431358337404,19.550974957403195]},{\"name\":\"定安县\",\"coord\":[110.38744429685676,19.47557074114284]},{\"name\":\"屯昌县\",\"coord\":[110.00574767630334,19.367175093044388]},{\"name\":\"白沙黎族自治县\",\"coord\":[109.36860737761768,19.214416393082217]},{\"name\":\"琼中黎族苗族自治\",\"coord\":[109.86691465937548,19.073671135862682]},{\"name\":\"东方市\",\"coord\":[108.86903802405428,19.017352815445214]},{\"name\":\"昌江黎族自治县\",\"coord\":[108.9686431884767,19.182594167127824]},{\"name\":\"海口市\",\"coord\":[110.420654296875,19.806565564640795]},{\"name\":\"济源市\",\"coord\":[112.38051465474433,35.07958362422394]},{\"name\":\"五指山市\",\"coord\":[109.53595187364496,18.832908264613966]},{\"name\":\"大连市\",\"coord\":[121.96662235866603,39.444150542439914]},{\"name\":\"文昌市三沙市\",\"coord\":[110.81828537536748,19.756501444162936]},{\"name\":\"三亚市\",\"coord\":[109.38424600793707,18.39186315877128]},{\"name\":\"万宁市\",\"coord\":[110.28485046979574,18.860240588635115]},{\"name\":\"陵水黎族自治县\",\"coord\":[109.95577603229562,18.594712684620465]},{\"name\":\"临高县\",\"coord\":[109.71915395436967,19.79420403032508]},{\"name\":\"琼海市\",\"coord\":[110.41650700703043,19.22315873149372]}]");
 
 /***/ }),
 
@@ -4218,7 +5366,7 @@ exports.default = _default2;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WebMap_vue_vue_type_template_id_0d7d2bd8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("w5PQ");
+/* harmony import */ var _WebMap_vue_vue_type_template_id_29a8af74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("mNaD");
 /* harmony import */ var _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("dZA3");
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("KHd+");
@@ -4231,8 +5379,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
   _WebMap_vue_vue_type_script_lang_ts___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _WebMap_vue_vue_type_template_id_0d7d2bd8___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
-  _WebMap_vue_vue_type_template_id_0d7d2bd8___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  _WebMap_vue_vue_type_template_id_29a8af74___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _WebMap_vue_vue_type_template_id_29a8af74___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
   false,
   null,
   null,
@@ -4265,16 +5413,201 @@ var AddressMatchParameter = function AddressMatchParameter(options) {
   (0, _classCallCheck2.default)(this, AddressMatchParameter);
   this.url = options.url;
   this.name = options.name || (0, _lang.geti18n)().t('commontypes.addressMatch');
+  this.proxy = options.proxy;
 };
 
 exports.default = AddressMatchParameter;
 
 /***/ }),
 
-/***/ "9EWs":
-/***/ (function(module) {
+/***/ "8oxB":
+/***/ (function(module, exports) {
 
-module.exports = JSON.parse("[{\"name\":\"黑龙江省\",\"coord\":[127.64559817675396,48.48668098449708]},{\"name\":\"内蒙古自治区\",\"coord\":[118.34519572208615,45.370218276977525]},{\"name\":\"新疆维吾尔自治区\",\"coord\":[87.13479065593184,41.75497055053711]},{\"name\":\"吉林省\",\"coord\":[126.12985278813787,43.57983207702637]},{\"name\":\"辽宁省\",\"coord\":[124.02494773936439,41.105743408203125]},{\"name\":\"甘肃省\",\"coord\":[102.87785725633012,37.69582366943361]},{\"name\":\"河北省\",\"coord\":[115.66327227481898,39.33383178710938]},{\"name\":\"北京市\",\"coord\":[116.62199343603638,40.25053787231445]},{\"name\":\"山西省\",\"coord\":[112.45180235808988,37.666561126708984]},{\"name\":\"天津市\",\"coord\":[117.35711842642581,39.406789779663086]},{\"name\":\"陕西省\",\"coord\":[109.56294003056632,35.64754199981689]},{\"name\":\"宁夏回族自治区\",\"coord\":[105.96110877640074,37.3081169128418]},{\"name\":\"青海省\",\"coord\":[96.07301048277901,35.44417190551758]},{\"name\":\"山东省\",\"coord\":[118.03833752951093,36.29800605773925]},{\"name\":\"西藏自治区\",\"coord\":[87.47361520439412,31.6703872680664]},{\"name\":\"河南省\",\"coord\":[113.07832397097275,33.87751102447509]},{\"name\":\"江苏省\",\"coord\":[119.93926538201052,32.945452690124505]},{\"name\":\"安徽省\",\"coord\":[117.15146765881019,32.024482727050774]},{\"name\":\"四川省\",\"coord\":[102.28998890142759,30.182161331176758]},{\"name\":\"湖北省\",\"coord\":[112.87798261431585,31.157071113586426]},{\"name\":\"重庆市\",\"coord\":[107.870126637831,30.188085556030266]},{\"name\":\"上海市\",\"coord\":[121.42561166015514,31.276043891906745]},{\"name\":\"浙江省\",\"coord\":[119.75337092707514,29.175934791564945]},{\"name\":\"湖南省\",\"coord\":[111.52770282777405,27.38110256195069]},{\"name\":\"江西省\",\"coord\":[115.51091280655628,27.283511161804206]},{\"name\":\"云南省\",\"coord\":[101.27053825991308,25.19783210754396]},{\"name\":\"贵州省\",\"coord\":[106.49672346773299,26.92267990112305]},{\"name\":\"福建省\",\"coord\":[117.9976766946587,25.939599990844727]},{\"name\":\"广西壮族自治区\",\"coord\":[108.98706831086302,23.891559600830078]},{\"name\":\"台湾省\",\"coord\":[120.82468432537434,23.602651596069336]},{\"name\":\"香港特别行政区\",\"coord\":[114.21036850371561,22.374858856201172]},{\"name\":\"海南省\",\"coord\":[109.62792940960824,19.163116455078125]},{\"name\":\"广东省\",\"coord\":[113.32127888266032,22.873867034912106]},{\"name\":\"澳门特别行政区\",\"coord\":[113.56819996291901,22.160347992976]}]");
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
 
 /***/ }),
 
@@ -4526,6 +5859,35 @@ module.exports = getRawTag;
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_AzSJ__;
+
+/***/ }),
+
+/***/ "B4q0":
+/***/ (function(module, exports, __webpack_require__) {
+
+var helper = __webpack_require__("lsHq");
+var xml2js = __webpack_require__("hE+I");
+
+function validateOptions (userOptions) {
+  var options = helper.copyOptions(userOptions);
+  helper.ensureSpacesExists(options);
+  return options;
+}
+
+module.exports = function(xml, userOptions) {
+  var options, js, json, parentKey;
+  options = validateOptions(userOptions);
+  js = xml2js(xml, options);
+  parentKey = 'compact' in options && options.compact ? '_parent' : 'parent';
+  // parentKey = ptions.compact ? '_parent' : 'parent'; // consider this
+  if ('addParent' in options && options.addParent) {
+    json = JSON.stringify(js, function (k, v) { return k === parentKey? '_' : v; }, options.spaces);
+  } else {
+    json = JSON.stringify(js, null, options.spaces);
+  }
+  return json.replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+};
+
 
 /***/ }),
 
@@ -4796,6 +6158,21 @@ var staticRenderFns = []
 
 /***/ }),
 
+/***/ "C6WP":
+/***/ (function(module) {
+
+module.exports = JSON.parse("[{\"name\":\"黑龙江省\",\"coord\":[127.64559817675396,48.48668098449708]},{\"name\":\"内蒙古自治区\",\"coord\":[118.34519572208615,45.370218276977525]},{\"name\":\"新疆维吾尔自治区\",\"coord\":[87.13479065593184,41.75497055053711]},{\"name\":\"吉林省\",\"coord\":[126.12985278813787,43.57983207702637]},{\"name\":\"辽宁省\",\"coord\":[124.02494773936439,41.105743408203125]},{\"name\":\"甘肃省\",\"coord\":[102.87785725633012,37.69582366943361]},{\"name\":\"河北省\",\"coord\":[115.66327227481898,39.33383178710938]},{\"name\":\"北京市\",\"coord\":[116.62199343603638,40.25053787231445]},{\"name\":\"山西省\",\"coord\":[112.45180235808988,37.666561126708984]},{\"name\":\"天津市\",\"coord\":[117.35711842642581,39.406789779663086]},{\"name\":\"陕西省\",\"coord\":[109.56294003056632,35.64754199981689]},{\"name\":\"宁夏回族自治区\",\"coord\":[105.96110877640074,37.3081169128418]},{\"name\":\"青海省\",\"coord\":[96.07301048277901,35.44417190551758]},{\"name\":\"山东省\",\"coord\":[118.03833752951093,36.29800605773925]},{\"name\":\"西藏自治区\",\"coord\":[87.47361520439412,31.6703872680664]},{\"name\":\"河南省\",\"coord\":[113.07832397097275,33.87751102447509]},{\"name\":\"江苏省\",\"coord\":[119.93926538201052,32.945452690124505]},{\"name\":\"安徽省\",\"coord\":[117.15146765881019,32.024482727050774]},{\"name\":\"四川省\",\"coord\":[102.28998890142759,30.182161331176758]},{\"name\":\"湖北省\",\"coord\":[112.87798261431585,31.157071113586426]},{\"name\":\"重庆市\",\"coord\":[107.870126637831,30.188085556030266]},{\"name\":\"上海市\",\"coord\":[121.42561166015514,31.276043891906745]},{\"name\":\"浙江省\",\"coord\":[119.75337092707514,29.175934791564945]},{\"name\":\"湖南省\",\"coord\":[111.52770282777405,27.38110256195069]},{\"name\":\"江西省\",\"coord\":[115.51091280655628,27.283511161804206]},{\"name\":\"云南省\",\"coord\":[101.27053825991308,25.19783210754396]},{\"name\":\"贵州省\",\"coord\":[106.49672346773299,26.92267990112305]},{\"name\":\"福建省\",\"coord\":[117.9976766946587,25.939599990844727]},{\"name\":\"广西壮族自治区\",\"coord\":[108.98706831086302,23.891559600830078]},{\"name\":\"台湾省\",\"coord\":[120.82468432537434,23.602651596069336]},{\"name\":\"香港特别行政区\",\"coord\":[114.21036850371561,22.374858856201172]},{\"name\":\"海南省\",\"coord\":[109.62792940960824,19.163116455078125]},{\"name\":\"广东省\",\"coord\":[113.32127888266032,22.873867034912106]},{\"name\":\"澳门特别行政区\",\"coord\":[113.56819996291901,22.160347992976]}]");
+
+/***/ }),
+
+/***/ "CWBI":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("sZro");
+
+
+/***/ }),
+
 /***/ "Cb6A":
 /***/ (function(module, exports) {
 
@@ -4827,7 +6204,7 @@ exports.setLocale = setLocale;
 exports.initi18n = initi18n;
 exports.default = exports.lang = void 0;
 
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("MVZn"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _jsCookie = _interopRequireDefault(__webpack_require__("p46w"));
 
@@ -4839,7 +6216,10 @@ var _lodash = _interopRequireDefault(__webpack_require__("zT9C"));
 
 var _vueI18n = _interopRequireDefault(__webpack_require__("qSUR"));
 
-// import Vue from 'vue';
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var dateTimeFormats = {
   en: _en.default.dateTimeFormat,
   zh: _zh.default.dateTimeFormat
@@ -4847,8 +6227,8 @@ var dateTimeFormats = {
 var i18n = {};
 var rooti18n;
 var messages = {
-  en: (0, _objectSpread2.default)({}, _en.default),
-  zh: (0, _objectSpread2.default)({}, _zh.default)
+  en: _objectSpread({}, _en.default),
+  zh: _objectSpread({}, _zh.default)
 };
 
 function getLanguage() {
@@ -5070,6 +6450,18 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
+/***/ "GlvM":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("LU8/");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "GoyQ":
 /***/ (function(module, exports) {
 
@@ -5104,6 +6496,165 @@ function isObject(value) {
 }
 
 module.exports = isObject;
+
+
+/***/ }),
+
+/***/ "H7XF":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.byteLength = byteLength
+exports.toByteArray = toByteArray
+exports.fromByteArray = fromByteArray
+
+var lookup = []
+var revLookup = []
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+for (var i = 0, len = code.length; i < len; ++i) {
+  lookup[i] = code[i]
+  revLookup[code.charCodeAt(i)] = i
+}
+
+// Support decoding URL-safe base64 strings, as Node.js does.
+// See: https://en.wikipedia.org/wiki/Base64#URL_applications
+revLookup['-'.charCodeAt(0)] = 62
+revLookup['_'.charCodeAt(0)] = 63
+
+function getLens (b64) {
+  var len = b64.length
+
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // Trim off extra bytes after placeholder bytes are found
+  // See: https://github.com/beatgammit/base64-js/issues/42
+  var validLen = b64.indexOf('=')
+  if (validLen === -1) validLen = len
+
+  var placeHoldersLen = validLen === len
+    ? 0
+    : 4 - (validLen % 4)
+
+  return [validLen, placeHoldersLen]
+}
+
+// base64 is 4/3 + up to two characters of the original data
+function byteLength (b64) {
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function _byteLength (b64, validLen, placeHoldersLen) {
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function toByteArray (b64) {
+  var tmp
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+
+  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+  var curByte = 0
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  var len = placeHoldersLen > 0
+    ? validLen - 4
+    : validLen
+
+  for (var i = 0; i < len; i += 4) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 18) |
+      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+      revLookup[b64.charCodeAt(i + 3)]
+    arr[curByte++] = (tmp >> 16) & 0xFF
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 2) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 2) |
+      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 1) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 10) |
+      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  return arr
+}
+
+function tripletToBase64 (num) {
+  return lookup[num >> 18 & 0x3F] +
+    lookup[num >> 12 & 0x3F] +
+    lookup[num >> 6 & 0x3F] +
+    lookup[num & 0x3F]
+}
+
+function encodeChunk (uint8, start, end) {
+  var tmp
+  var output = []
+  for (var i = start; i < end; i += 3) {
+    tmp =
+      ((uint8[i] << 16) & 0xFF0000) +
+      ((uint8[i + 1] << 8) & 0xFF00) +
+      (uint8[i + 2] & 0xFF)
+    output.push(tripletToBase64(tmp))
+  }
+  return output.join('')
+}
+
+function fromByteArray (uint8) {
+  var tmp
+  var len = uint8.length
+  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+  var parts = []
+  var maxChunkLength = 16383 // must be multiple of 3
+
+  // go through the array every three bytes, we'll deal with trailing stuff later
+  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    parts.push(encodeChunk(
+      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+    ))
+  }
+
+  // pad the end with zeros, but make sure to not forget the extra bytes
+  if (extraBytes === 1) {
+    tmp = uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 2] +
+      lookup[(tmp << 4) & 0x3F] +
+      '=='
+    )
+  } else if (extraBytes === 2) {
+    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 10] +
+      lookup[(tmp >> 4) & 0x3F] +
+      lookup[(tmp << 2) & 0x3F] +
+      '='
+    )
+  }
+
+  return parts.join('')
+}
 
 
 /***/ }),
@@ -5431,10 +6982,262 @@ module.exports = _slicedToArray;
 
 /***/ }),
 
+/***/ "J78i":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// a transform stream is a readable/writable stream where you do
+// something with the data.  Sometimes it's called a "filter",
+// but that's not a great name for it, since that implies a thing where
+// some bits pass through, and others are simply ignored.  (That would
+// be a valid example of a transform, of course.)
+//
+// While the output is causally related to the input, it's not a
+// necessarily symmetric or synchronous transformation.  For example,
+// a zlib stream might take multiple plain-text writes(), and then
+// emit a single compressed chunk some time in the future.
+//
+// Here's how this works:
+//
+// The Transform stream has all the aspects of the readable and writable
+// stream classes.  When you write(chunk), that calls _write(chunk,cb)
+// internally, and returns false if there's a lot of pending writes
+// buffered up.  When you call read(), that calls _read(n) until
+// there's enough pending readable data buffered up.
+//
+// In a transform stream, the written data is placed in a buffer.  When
+// _read(n) is called, it transforms the queued up data, calling the
+// buffered _write cb's as it consumes chunks.  If consuming a single
+// written chunk would result in multiple output chunks, then the first
+// outputted bit calls the readcb, and subsequent chunks just go into
+// the read buffer, and will cause it to emit 'readable' if necessary.
+//
+// This way, back-pressure is actually determined by the reading side,
+// since _read has to be called to start processing a new chunk.  However,
+// a pathological inflate type of transform can cause excessive buffering
+// here.  For example, imagine a stream where every byte of input is
+// interpreted as an integer from 0-255, and then results in that many
+// bytes of output.  Writing the 4 bytes {ff,ff,ff,ff} would result in
+// 1kb of data being output.  In this case, you could write a very small
+// amount of input, and end up with a very large amount of output.  In
+// such a pathological inflating mechanism, there'd be no way to tell
+// the system to stop doing the transform.  A single 4MB write could
+// cause the system to run out of memory.
+//
+// However, even in such a pathological case, only a single written chunk
+// would be consumed, and then the rest would wait (un-transformed) until
+// the results of the previous transformed chunk were consumed.
+
+
+
+module.exports = Transform;
+
+var Duplex = __webpack_require__("sZro");
+
+/*<replacement>*/
+var util = __webpack_require__("Onz0");
+util.inherits = __webpack_require__("P7XM");
+/*</replacement>*/
+
+util.inherits(Transform, Duplex);
+
+function afterTransform(er, data) {
+  var ts = this._transformState;
+  ts.transforming = false;
+
+  var cb = ts.writecb;
+
+  if (!cb) {
+    return this.emit('error', new Error('write callback called multiple times'));
+  }
+
+  ts.writechunk = null;
+  ts.writecb = null;
+
+  if (data != null) // single equals check for both `null` and `undefined`
+    this.push(data);
+
+  cb(er);
+
+  var rs = this._readableState;
+  rs.reading = false;
+  if (rs.needReadable || rs.length < rs.highWaterMark) {
+    this._read(rs.highWaterMark);
+  }
+}
+
+function Transform(options) {
+  if (!(this instanceof Transform)) return new Transform(options);
+
+  Duplex.call(this, options);
+
+  this._transformState = {
+    afterTransform: afterTransform.bind(this),
+    needTransform: false,
+    transforming: false,
+    writecb: null,
+    writechunk: null,
+    writeencoding: null
+  };
+
+  // start out asking for a readable event once data is transformed.
+  this._readableState.needReadable = true;
+
+  // we have implemented the _read method, and done the other things
+  // that Readable wants before the first _read call, so unset the
+  // sync guard flag.
+  this._readableState.sync = false;
+
+  if (options) {
+    if (typeof options.transform === 'function') this._transform = options.transform;
+
+    if (typeof options.flush === 'function') this._flush = options.flush;
+  }
+
+  // When the writable side finishes, then flush out anything remaining.
+  this.on('prefinish', prefinish);
+}
+
+function prefinish() {
+  var _this = this;
+
+  if (typeof this._flush === 'function') {
+    this._flush(function (er, data) {
+      done(_this, er, data);
+    });
+  } else {
+    done(this, null, null);
+  }
+}
+
+Transform.prototype.push = function (chunk, encoding) {
+  this._transformState.needTransform = false;
+  return Duplex.prototype.push.call(this, chunk, encoding);
+};
+
+// This is the part where you do stuff!
+// override this function in implementation classes.
+// 'chunk' is an input chunk.
+//
+// Call `push(newChunk)` to pass along transformed output
+// to the readable side.  You may call 'push' zero or more times.
+//
+// Call `cb(err)` when you are done with this chunk.  If you pass
+// an error, then that'll put the hurt on the whole operation.  If you
+// never call cb(), then you'll never get another chunk.
+Transform.prototype._transform = function (chunk, encoding, cb) {
+  throw new Error('_transform() is not implemented');
+};
+
+Transform.prototype._write = function (chunk, encoding, cb) {
+  var ts = this._transformState;
+  ts.writecb = cb;
+  ts.writechunk = chunk;
+  ts.writeencoding = encoding;
+  if (!ts.transforming) {
+    var rs = this._readableState;
+    if (ts.needTransform || rs.needReadable || rs.length < rs.highWaterMark) this._read(rs.highWaterMark);
+  }
+};
+
+// Doesn't matter what the args are here.
+// _transform does all the work.
+// That we got here means that the readable side wants more data.
+Transform.prototype._read = function (n) {
+  var ts = this._transformState;
+
+  if (ts.writechunk !== null && ts.writecb && !ts.transforming) {
+    ts.transforming = true;
+    this._transform(ts.writechunk, ts.writeencoding, ts.afterTransform);
+  } else {
+    // mark that we need a transform, so that any data that comes in
+    // will get processed, now that we've asked for it.
+    ts.needTransform = true;
+  }
+};
+
+Transform.prototype._destroy = function (err, cb) {
+  var _this2 = this;
+
+  Duplex.prototype._destroy.call(this, err, function (err2) {
+    cb(err2);
+    _this2.emit('close');
+  });
+};
+
+function done(stream, er, data) {
+  if (er) return stream.emit('error', er);
+
+  if (data != null) // single equals check for both `null` and `undefined`
+    stream.push(data);
+
+  // if there's nothing in the write buffer, then that means
+  // that nothing more will ever be provided
+  if (stream._writableState.length) throw new Error('Calling transform done when ws.length != 0');
+
+  if (stream._transformState.transforming) throw new Error('Calling transform done when still transforming');
+
+  return stream.push(null);
+}
+
+/***/ }),
+
 /***/ "JBR1":
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhYAAAD+CAYAAABmz0wVAAAABGdBTUEAALGPC/xhBQAAFxJJREFUeAHt3U9u68qVB2CS8n2byH6ykgA9DLrTQAcBMsqk0YN+AXqUSe8g+8ooC7i2yJxTpGzpXYkiLRJ4cn3EtfivWDI/CfAPp0q6bfP3fw7NnaX92893WjhNgAABAgQIfGWB4d/+/e7tZV54udsqGnw7/uN/mqGPABL/+i4fyr/y0LZ3g8mS59CGAAECBAgQ+JUIDEPbNF35N6779nvT/NeS3649VSy+/f9ffm6G45A/7TFCRJ/bQ9mPHBH7ESZyv4SKDBO5n08R60a4WIKtDQECBAgQ+PULTKEiosUYKk77bdt0JWy0TXuIn9w/tMOha19/95c/ZOvLikWGimOEiqxMHI8RJWK/z2ARP/1b5IfTdgaJ3M4usoqRq/LogQABAgQIEHh2gcgO49JFeIit4xQoMkgM+fMyNO0xQkVuR7yY6hqnqz6GQs5DxfEtKxRjteKYwWKqXmSQyMpFhoxME+1hDBaSxcnTmgABAgQIPLfAcUoWw+s0HJIBIo9l0IjtLioYUbBo+kPTRMZojpch4D1YfFQqIlQMQ9/kcMhYvRhDRoaLMp8iAkWZbxHr4zGeKAOGoZDnfhf57QkQIECAwCTwMb8iUkOEiCHmVuaf+yGrFJkocmhkGgrJoHF4e69xZA/vwWKsSkR4eItAUUJFbB9f+/F4BIches3jbVYwpspF+R1yv2x4IECAAAECBJ5doMSECAwZJnJOxRCVihwCKduRB44RMIY+AkXM7oyZEiV4nN3zR7AocykiJJwmbGaoeMsqRQaH1+l4CR1RpIjjuWTAGNdl5YEAAQIECBB4coEMEBEXIki0ZSplF9WDLqoWWcnoY9ZFnn8rqWOIcJEFjDELTLd9FiwiJJRwkZWK+ClDHxEq3nJoJPezSnFa5/DHqVKhXDFZWhEgQIAAgecXKNMcslIRf/PHSsUYMrpIERkyMk10ER/6yAcxKPLL6RBt+9s/D+V7KvKTIMeoTLy+xTo/FRKzNPvvU8iYQkWGjHEoJKdWREKJJyi54jKtPL+qOyBAgAABArUKRGWiFC3ioZsqFBkwXl7GORZZyTh8y4mcXdPF+nDomm8vXR57/ek3fxwrFpFJ3j/tcapa5JyKsn0WKnK/fMdFpolSsRjDRa327psAAQIECHw9gcgEGSpiLkWWJPJPfhn+iAkVp3GOLodC4pOhfawPMUySnxZtY95FLFOTKURkcMgBlfyUx+lTITn8UYZDMkhkyMh1HMslP3oaCWNa57aFAAECBAgQeGaBMsciQ0IGhvjJj5dmusjj+b1WuWTwiO/GynGQ8knRzA8lQ5yCRfma7tcxKJSwEB3kkEeMiJQwMW5PoSKGQ8Y2sc4sk2FjfB6PBAgQIECAwLML5FyHCA5jqWIMGKUOEX/sS7go2SCHQiJFxBdZ9BFC2jiWEzljmSoW2SiTR1YjMnVkWMifMlkzDpdOok2eL9s5NXTczl5Onw7JbQsBAgQIECDwxAL5lZrxNz7CRflerPwkSO6Xw3FbGSgyD3QlE2TAiE+H5Hb8xDIGi8gK0SoHNaZlChK5V6oVeSYvyIb9lVBROpiutSJAgAABAgSeVqAULPKjptPf9sgX8bc/9vNrNmMpqxwqKd++ncdiOCRPjO0/KhbjwXiME6ecUKoW2TiWfKJSrcjtqUGpVJy1Lw09ECBAgAABAk8rkB8pncJFjHBkVSFLFHE7WbWIb9zMzbaMWkxDIHE6z03LGCxOX9WdB8v//xHzLT4qFNG+dJhnx2pFbl2Eio8O85SFAAECBAgQeFKBPqoV7+GiDHxEuChzLiJURIjIzdOEitwc/9+wqWpxGgrJEzHmUVJIPmTQeM8S07lcfVQsziobfRmCydMWAgQIECBA4LkF4kusIgNM4SJTROaBfCifFsn5mKcKxvsUiTh0muw55Y68xEKAAAECBAgQeFSgFDQe7cT1BAgQIECAQK0Cl1Hicq9WE/dNgAABAgQIbCIgWGzCqBMCBAgQIEAgBQQL7wMCBAgQIEBgMwHBYjNKHREgQIAAAQKChfcAAQIECBAgMC+wIi2saDr/nM4SIECAAAECBAQL7wECBAgQIEBgMwHBYjNKHREgQIAAAQKChfcAAQIECBAgsJmAYLEZpY4IECBAgAABwcJ7gAABAgQIENhMQLDYjFJHBAgQIECAgGDhPUCAAAECBAhsJiBYbEapIwIECBAgQECw8B4gQIAAAQIENhMQLDaj1BEBAgQIEPiCAjeTQtte/l+mY8Obzb8gjVsiQIAAAQIEdhYQLHYG1j0BAgQIEPh6Arfjw+0zX0/BHREgQIAAAQI7CwgWOwPrngABAgQI1CQgWNT0artXAgQIECCwWOBzEeFzVy3+pTQkQIAAAQIEahIQLGp6td0rAQIECBDYWUCw2BlY9wQIECBAoCYBwaKmV9u9EiBAgACBnQUEi52BdU+AAAECBGoSECxqerXdKwECBAgQ2FlAsNgZWPcECBAgQKAmAcGiplfbvRIgQIAAgYcEhviPx+YXwWLex1kCBAgQIEBghYBgsQJLUwIECBAgQGBeQLCY93GWAAECBAgQWCEgWKzA0pQAAQIECBCYFxAs5n2cJUCAAAECBFYICBYrsDQlQIAAAQIE5gUEi3kfZwkQIECAAIElAtMHUQWLJVjaECBAgAABAosEBItFTBoRIECAAAECSwQEiyVK2hAgQIAAAQKLBASLRUwaESBAgAABAksEBIslStoQIECAAAEC1wWG48X/HyJYXGdylAABAgQIEPiEgGDxCTSXECBAgAABAtcFBIvrLo4SIECAAAECnxAQLD6B5hICBAgQIEDguoBgcd3FUQIECBAgQOATAoLFJ9BcQoAAAQIE6hJYHheWt6xL0N0SIECAAAECnxAQLD6B5hICBAgQIEDguoBgcd3FUQIECBAgUJ1Av8EdCxYbIOqCAAECBAjUIzAfHebP1qPkTgkQIECAAIENBASLDRB1QYAAAQIE6hbo3v+/EMGi7neCuydAgAABApsKCBabcuqMAAECBAjULSBY1P36u3sCBAgQILCpgGCxKafOCBAgQIBA3QKCRd2vv7snQIAAAQKbCggWm3LqjAABAgQI1C0gWNT9+rt7AgQIECCwqYBgsSmnzggQIECAwBcWWJAaFjT5wkBujQABAgQIENhUQLDYlFNnBAgQIECgbgHBou7X390TIECAAIFNBQSLTTl1RoAAAQIE6hYQLOp+/d09AQIECBDYVECw2JRTZwQIECBAoG4BwaLu19/dEyBAgACBTQUEi005dUaAAAECBOoWECzqfv3dPQECBAgQ2FRAsNiUU2cECBAgQKBuAcGi7tff3RMgQIAAgU0FBItNOXVGgAABAgTqFhAs6n793T0BAgQIENhUQLDYlFNnBAgQIECgVoExUggWtb7+7psAAQIECOwgIFjsgKpLAgQIECBQq4BgUesr774JECBAgMAOAoLFDqi6JECAAAECtQoIFrW+8u6bAAECBAjsICBY7ICqSwIECBAgUIXAlRRx5VAVFG6SAAECBAgQ2EFAsNgBVZcECBAgQKAegcsocblXj4I7JUCAAAECBHYQECx2QNUlAQIECBCoVUCwqPWVd98ECBAgQGAHAcFiB1RdEiBAgACBWgUEi1pfefdNgAABAgR2EBAsdkDVJQECBAgQqFVAsKj1lXffBAgQIEBgBwHBYgdUXRIgQIAAgVoFBItaX3n3TYAAAQIEVgvcjw33W6x+UhcQIECAAAECVQm0H3crWHxY2CJAgAABAgQeFBAsHgR0OQECBAgQqE+gO6tRXN69YHHpYY8AAQIECBB4QECweADPpQQIECBAgMClgGBx6WGPAAECBAgQeEBAsHgAz6UECBAgQIDApYBgcelhjwABAgQIEHhAQLB4AM+lBAgQIECAwKWAYHHpYY8AAQIECBB4QECweADPpQQIECBAoG6BH2PEj0fqFnL3BAgQIECAwAMCgsUDeC4lQIAAAQIELgUEi0sPewQIECBAgMADAoLFA3guJUCAAAECX1LggXTwwKVfktJNESBAgAABAlcFpshwJzncOX21ZwcJECBAgAABAlcFBIurLA4SIECAAAECswLd9Qhx/ehsT04SIECAAAECBK4LCBbXXRwlQIAAAQIEPiEgWHwCzSUECBAgQIDAdQHB4rqLowQIECBAgMAnBASLT6C5hAABAgQIELguIFhcd3GUAAECBAgQCIGhado1EILFGi1tCRAgQIAAgVkBwWKWx0kCBAgQIEBgjYBgsUZLWwIECBAgQGBWQLCY5XGSAAECBAgQWCMgWKzR0pYAAQIECBBompn0MHOKHAECBAgQIEBgnYBgsc5LawIECBAgQGBGQLCYwXGKAAECBAgQWCcgWKzz0poAAQIECBCYERAsZnCcIkCAAAECBNYJCBbrvLQmQIAAAQIEZgQEixkcpwgQIECAAIF1AoLFOi+tCRAgQIAAgRkBwWIGxykCBAgQIEBgnYBgsc5LawIECBAgUKPA4v86XbCo8e3hngkQIECAwE4CgsVOsLolQIAAAQL1CLRt0w2lqiFY1POqu1MCBAgQILC7gGCxO7EnIECAAAEC9QgIFvW81u6UAAECBAjsLiBY7E7sCQgQIECAQD0CgkU9r7U7JUCAAAECuwsIFrsTewICBAgQIFCPgGBRz2vtTgkQIECAwO4CgsXuxJ6AAAECBAjUIyBY1PNau1MCBAgQILC7gGCxO7EnIECAAAEC9QgIFvW81u6UAAECBAjsLiBY7E7sCQgQIECAwBcW+EWS+MXuF75xt0aAAAECBAh8XqBrFv3X6YLF54ldSYAAAQIEahf4IWwIFrW/Jdw/AQIECBDYUECw2BBTVwQIECBAoHYBwaL2d4D7J0CAAAECGwoIFhti6ooAAQIECNQuIFjU/g5w/wQIECBAYBOBMVIIFptg6oQAAQIECBBIAcHC+4AAAQIECBDYTECw2IxSRwQIECBAgIBg4T1AgAABAgQIbCYgWGxGqSMCBAgQIEBAsPAeIECAAAECBDYTECw2o9QRAQIECBAgIFh4DxAgQIAAAQKbCQgWm1HqiAABAgQIEBAsvAcIECBAgACBzQQEi80odUSAAAECBAgIFt4DBAgQIECAwHKBoW3nGgsWczrOESBAgACB6gXWRYV1ravHBUCAAAECBAjMCQgWczrOESBAgAABAncELodGBIs7XE4TIECAAAECywUEi+VWWhIgQIAAAQJ3BASLO0BOEyBAgACBugS62U993LMQLO4JOU+AAAECBAgsFhAsFlNpSIAAAQIECNwTECzuCTlPgAABAgQILBYQLBZTaUiAAAECBAjcExAs7gk5T4AAAQIECCwWECwWU2lIgAABAgQI3BMQLO4JOU+AAAECBAgsFhAsFlNpSIAAAQIECNwTECzuCTlPgAABAgQILBYQLBZTaUiAAAECBAicCVz9hk7B4kzIJgECBAgQIPCYgGDxmJ+rCRAgQIAAgTMBweIMwyYBAgQIECDwmIBg8ZifqwkQIECAAIEzAcHiDMMmAQIECBAg8JiAYPGYn6sJECBAgACBMwHB4gzDJgECBAgQIPCYgGDxmJ+rCRAgQIAAgTMBweIMwyYBAgQIECDwmIBg8ZifqwkQIECAAIEzAcHiDMMmAQIECBAgsEKg+zFG/HhkRX+aEiBAgAABAgTOBQSLcw3bBAgQIECAwHqBs8qFYLGezxUECBAgQIDADQHB4gaMwwQIECBAgMB6AcFivZkrCBAgQIAAgRsCgsUNGIcJECBAgACBWwK348PtM7f6cpwAAQIECBAgcENAsLgB4zABAgQIECCwXkCwWG/mCgIECBAgQOCGgGBxA8ZhAgQIECBAYL2AYLHezBUECBAgQIDADQHB4gaMwwQIECBAgMCcwPUIcf3oXD/OESBAgAABAgRuCAgWN2AcJkCAAAECBNYLCBbrzVxBgAABAgQI3BAQLG7AOEyAAAECBAisFxAs1pu5ggABAgQIELghIFjcgHGYAAECBAgQWC8gWKw3cwUBAgQIECBwQ0CwuAHjMAECBAgQILBeQLBYb+YKAgQIECBA4IaAYHEDxmECBAgQIEBgvYBgsd7MFQQIECBAgMANAcHiBozDBAgQIECAwCTQLY8Ly1vSJUCAAAECBAjcERAs7gA5TYAAAQIECCwXePloOrRNxoxjPAzTdtnPFrEfD00phfSx2bVNn/ux3Xdt3/RDtrIQIECAAAECzywQf99LySEeutzO9el+yvZ4Po+dH88m03DJGCwySDTdGA6G47TdTus4nBeX7NC3kSaaSBUZMi7CRfZpIUCAAAECBJ5YoISFeMi/8bFEAsgsMN5Ql1nhENu5HxlhKDlhOl0KEKXdVLGIRqWL7CgCRneMykVeG/vDcYjqRF44npt2mj4OnoeL0p0HAgQIECBA4HkFPkJF/I3Pv/Pj3/oSNHI772wMHeUex2JEZIg4UYJG04zBIhvmEEgJF+WisbM+0kU2zPN9nsyqRhdVi9JHBI6zcJGXWQgQIECAAIHnFZgqFRkoosqQBYUpGZQsMFYpStEigkEZ+sjsUNrF/njbHxWLLHEc88L4GaJR/nRxdRfDHsM0HFLmWpQhkxIuspcyLPL+xM9r6TcnQIAAAQLVC0Q4KIGihITMAbHRvWQ2iHVsZ2WiHCvn2hgRiROZHcqUisI3VSyiHHHMIZC4YIifHAYplYpyrG3eSmUiDuaYSF7yVioXuR8XTcdjZSFAgAABAgSeVyBzQCSFkgdyawwVuT9VKzJQHMbt8vc/2pdrcl2GNqahkJyM0caBkjzy4pjAWUJGJJCsWpQs8TZdnOEiOh3LGBEw4rrxF8lfwUKAAAECBAg8tUCGhJwcUUYx8m//mA9KyIi//2U/s0JkhMPpXAaSuKQ8/v2fOWWi+en//vO/m+Pr0LxGeeJ4jFJETKDovw+xnXMp4ifWb1GpaGNcJOdWZLEiKxiZM+JgPloIECBAgACBZxbIgkL+/lO4KEWGDBgxHPJSQkXUFg5d0/0UYSMaHb7lT/v9P/76p7yq/dvPp4pF9hEXDi9Dc4hOM4X0WbWIUkUGh/Iksc7KRYaKaNpE0/gOizg3Jos4YyFAgAABAgSeWiCrDiVUjFMick5FViVy+KNUKnIdIaPNAPJtOp6h4GPJqDAuOauzNIyhjwwXOcTxFpMtXk7hIjrPINHH8axeZM2jzS+3iPYZNiwECBAgQIDAcwucpjZkiMhlDBSxPg15RKjIOZiHCBjlZ9o+u+uzYBEns2oRuaFp84JSp4jhkAgX3U8RHt4iSMSQx0tM6BwDxviEOddCrjgjtUmAAAECBJ5UIOoH47BErDJkZKDIIJHFhxzFyAJECRQxBJJZoRyP82fLR7AoszyjCpFDHDmJM+ZqjuEig0RUJtpDhIpsHskjKxWHSBMlUMTDizkWZ6Y2CRAgQIDAcwqM38QdgSJ//SlY5DqPlxARASODRYaKnHOReSG3z5b3YDHEBW1WKY4RF9q3mIwRgWLIL7CI0NDG0EcX+/lV3hkmsnKRsz9fImyUJcscFgIECBAgQOC5BUqiiCBR/nuPsdBQhkdOQyERIg5TBSNDxWlI5Oym34NFnhxi1KOEi6xF5Nd6l8mZmSfi4j5CRgaN+C/HYg5GbGcvOcciV9MvUnY8ECBAgAABAk8p8P7nPCdo5h3E3/8MFhkicrpEGQ6Ztsu0icgO7WlixnjHbTN93HQOoHwUNSdolgpGrPP/IsvSxRgu8onHgDHXiXMECBAgQIDAr1wgP7yRQSJ/zVifvlEzgsX33//vH+/98pcfN51rXT6zmuEhnrD/lvMrYp0XxEMZFhl/hbkunCNAgAABAgSeQOCHeRblUx2Lf/G2/e2fVRsWc2lIgAABAgQIzAn8C5DdL0rYAs4xAAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ "Jibq":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Identify_vue_vue_type_template_id_2bb649b5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("0JCW");
+/* harmony import */ var _Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("GlvM");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("KHd+");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(
+  _Identify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Identify_vue_vue_type_template_id_2bb649b5___WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"],
+  _Identify_vue_vue_type_template_id_2bb649b5___WEBPACK_IMPORTED_MODULE_0__[/* staticRenderFns */ "b"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
@@ -5765,6 +7568,7 @@ var RestParameter = function RestParameter(options) {
   this.attributeFilter = options.attributeFilter || null;
   this.maxFeatures = options.maxFeatures || 20;
   this.name = options.name || (0, _lang.geti18n)().t('commontypes.restData');
+  this.proxy = options.proxy;
 };
 
 exports.default = RestParameter;
@@ -6171,31 +7975,1871 @@ module.exports = root;
 
 /***/ }),
 
-/***/ "MVZn":
+/***/ "LGOv":
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineProperty = __webpack_require__("lSNA");
+module.exports = __webpack_require__("3BRs");
 
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-    var ownKeys = Object.keys(source);
 
-    if (typeof Object.getOwnPropertySymbols === 'function') {
-      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-      }));
+/***/ }),
+
+/***/ "LU8/":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mapGetter = _interopRequireDefault(__webpack_require__("KP9C"));
+
+var _theme = _interopRequireDefault(__webpack_require__("bCOg"));
+
+var _IdentifyViewModel = _interopRequireDefault(__webpack_require__("PZvK"));
+
+var _Popup = _interopRequireDefault(__webpack_require__("1ThP"));
+
+var _lodash = _interopRequireDefault(__webpack_require__("XaGS"));
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default2 = {
+  name: 'SmIdentify',
+  components: {
+    SmPopup: _Popup.default
+  },
+  mixins: [_mapGetter.default, _theme.default],
+  props: {
+    layerNames: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
+    },
+    fields: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
+    },
+    layerStyle: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    }
+  },
+  data: function data() {
+    return {
+      popupProps: {},
+      layers: [],
+      layerType: false,
+      popupLayers: [],
+      mapClickPosition: null
+    };
+  },
+  watch: {
+    layerNames: function layerNames(val, oldVal) {
+      this.removed();
+
+      if (val && !(0, _lodash.default)(val, oldVal)) {
+        this.setLayers();
+      }
+    }
+  },
+  loaded: function loaded() {
+    var _this = this;
+
+    this.setViewModel();
+    this.setLayers();
+
+    if (this.layers && this.layers.length > 0) {
+      this.layers.forEach(function (layer) {
+        var layerType = _this.viewModel.getLayerType(layer);
+
+        _this.bindLayerClick(layer, layerType);
+      });
+    } // 客户端专题图图层无准确坐标，通过地图坐标来实现
+
+
+    this.map.on('click', function (e) {
+      _this.mapClickPosition = _this.map.layerPointToLatLng(e.layerPoint);
+    });
+  },
+  removed: function removed() {
+    var layers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.layers;
+    // 清除点击事件和popup
+    this.popupLayers && this.popupLayers.forEach(function (layer) {
+      layer.closePopup();
+      layer.off('click');
+      layer.off('popupclose');
+    });
+    layers && layers.forEach(function (layer) {
+      layer.off('click');
+    }); // 清除高亮的图层
+
+    this.viewModel && this.viewModel.removed(); // 重置
+
+    this.popupLayers = [];
+    this.layers = [];
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.map && this.map.off('click');
+    this.$options.removed.call(this);
+  },
+  methods: {
+    setViewModel: function setViewModel() {
+      this.viewModel = new _IdentifyViewModel.default(this.map, {
+        mapTarget: this.getTargetName(),
+        layerNames: this.layerNames,
+        layerStyle: this.layerStyle
+      });
+    },
+    // 通过layerName设置layers
+    setLayers: function setLayers() {
+      var _this2 = this;
+
+      // 重置layers
+      this.layers = [];
+      this.layerNames.forEach(function (layerName) {
+        var layer = _this2.getLayerByName(layerName);
+
+        layer && _this2.layers.push(layer);
+      });
+    },
+    // 通过layerName获取layer
+    getLayerByName: function getLayerByName(layerName) {
+      var layer = this.viewModel.getLayerByName(layerName);
+
+      if (!layer) {
+        this.$message.error(this.$t('identify.layerNotExit', {
+          layer: layerName
+        }));
+      }
+
+      return layer;
+    },
+    // 给选中图层绑定click
+    bindLayerClick: function bindLayerClick(layer, layerType) {
+      if (layerType) {
+        // 如果是geojson
+        this.bindGeojsonLayer(layer);
+      } else if (layer.TFEvents) {
+        // 如果是客户端专题图
+        this.bindThemeLayer(layer);
+      } else {
+        // 如果是其他的图层(marker,polygon,polyline,隐藏的客户端专题图)
+        this.bindOtherLayer(layer);
+      }
+    },
+    // geojsonlayer绑定click事件
+    bindGeojsonLayer: function bindGeojsonLayer(geojsonLayer) {
+      var _this3 = this;
+
+      geojsonLayer.on('click', function (e) {
+        // e.layer是被选中的某个要素
+        _this3.bindPopupLayer(e.layer.feature, e.layer, e.latlng);
+      });
+    },
+    // 给客户端专题图绑定click事件
+    bindThemeLayer: function bindThemeLayer(themeLayer) {
+      var _this4 = this;
+
+      themeLayer.on('click', function (e) {
+        if (e.target && e.target.refDataID) {
+          var themeFeature = themeLayer.getFeatureById(e.target.refDataID); // 将矢量要素转换成geojson
+
+          var feature = _this4.viewModel.formatGeoJSON(themeFeature); // 因为线坐标等要素不准确，所以用地图的点击的坐标点
+
+
+          _this4.bindPopupLayer(feature, themeLayer, '');
+        }
+      });
+    },
+    // 其他layer(layergroup等)绑定click事件
+    bindOtherLayer: function bindOtherLayer(otherLayer) {
+      var _this5 = this;
+
+      if (otherLayer._layers) {
+        for (var key in otherLayer._layers) {
+          var layer = otherLayer._layers[key];
+
+          if (layer.TFEvents) {
+            // 说明是客户端专题图
+            this.bindThemeLayer(otherLayer._layers[key]);
+          } else if (this.viewModel.getLayerType(layer)) {
+            this.bindGeojsonLayer(layer);
+          } else {
+            (function () {
+              // 普通图层
+              var popupLayer = void 0;
+              var feature = void 0;
+              layer.on('click', function (e) {
+                // geojson点线面图层marker,image-marker、 RANK_SYMBOL:等级符号专题图(返回的是layergroup);
+                var coordinates = e.sourceTarget && e.sourceTarget._point && _this5.map.layerPointToLatLng(e.sourceTarget._point) || e.target && e.target._latlng || e.latlng;
+                feature = {
+                  type: 'Feature',
+                  properties: coordinates,
+                  geometry: {
+                    type: 'Point',
+                    coordinates: [coordinates.lng, coordinates.lat]
+                  }
+                };
+                e.sourceTarget.feature = feature;
+                popupLayer = e.sourceTarget;
+
+                _this5.bindPopupLayer(feature, popupLayer, e.latlng);
+              });
+            })();
+          }
+        }
+      }
+    },
+    // 绑定popup
+    bindPopupLayer: function bindPopupLayer(feature, popupLayer, latlng) {
+      var _this6 = this;
+
+      if (!feature) {
+        return;
+      }
+
+      this.filterFeature(feature);
+      this.$nextTick(function () {
+        // 这个定时器是避免和专题图的点击事件（要清空popup）冲突
+        setTimeout(function () {
+          popupLayer.bindPopup(_this6.$refs.Popup); // 定时为了获取最近的一次地图点击事件的坐标mapClickPosition
+
+          popupLayer.openPopup(latlng || _this6.mapClickPosition); // popupclose(点击地图的时候，清除最后一次的高亮)
+
+          popupLayer.on('popupclose', function () {
+            return _this6.viewModel.removed();
+          });
+
+          if (!popupLayer.feature) {
+            popupLayer.feature = feature;
+          }
+
+          _this6.viewModel.addOverlayToMap(popupLayer, feature, _this6.layerStyle);
+
+          _this6.popupLayers.push(popupLayer);
+        }, 0);
+      });
+    },
+    // 过滤用户传入的字段
+    filterFeature: function filterFeature(feature) {
+      var _this7 = this;
+
+      // 重置popupProps
+      this.popupProps = {};
+
+      if (feature.properties) {
+        // 过滤字段
+        if (this.fields.length > 0) {
+          this.fields.forEach(function (field) {
+            if (feature.properties[field]) {
+              _this7.popupProps[field] = feature.properties[field];
+            }
+          });
+        } else {
+          // 默认是读取layer的全部字段
+          this.popupProps = feature.properties;
+        }
+      }
+    }
+  }
+};
+exports.default = _default2;
+
+/***/ }),
+
+/***/ "MXF5":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(Buffer) {;(function (sax) { // wrapper for non-node envs
+  sax.parser = function (strict, opt) { return new SAXParser(strict, opt) }
+  sax.SAXParser = SAXParser
+  sax.SAXStream = SAXStream
+  sax.createStream = createStream
+
+  // When we pass the MAX_BUFFER_LENGTH position, start checking for buffer overruns.
+  // When we check, schedule the next check for MAX_BUFFER_LENGTH - (max(buffer lengths)),
+  // since that's the earliest that a buffer overrun could occur.  This way, checks are
+  // as rare as required, but as often as necessary to ensure never crossing this bound.
+  // Furthermore, buffers are only tested at most once per write(), so passing a very
+  // large string into write() might have undesirable effects, but this is manageable by
+  // the caller, so it is assumed to be safe.  Thus, a call to write() may, in the extreme
+  // edge case, result in creating at most one complete copy of the string passed in.
+  // Set to Infinity to have unlimited buffers.
+  sax.MAX_BUFFER_LENGTH = 64 * 1024
+
+  var buffers = [
+    'comment', 'sgmlDecl', 'textNode', 'tagName', 'doctype',
+    'procInstName', 'procInstBody', 'entity', 'attribName',
+    'attribValue', 'cdata', 'script'
+  ]
+
+  sax.EVENTS = [
+    'text',
+    'processinginstruction',
+    'sgmldeclaration',
+    'doctype',
+    'comment',
+    'opentagstart',
+    'attribute',
+    'opentag',
+    'closetag',
+    'opencdata',
+    'cdata',
+    'closecdata',
+    'error',
+    'end',
+    'ready',
+    'script',
+    'opennamespace',
+    'closenamespace'
+  ]
+
+  function SAXParser (strict, opt) {
+    if (!(this instanceof SAXParser)) {
+      return new SAXParser(strict, opt)
     }
 
-    ownKeys.forEach(function (key) {
-      defineProperty(target, key, source[key]);
-    });
+    var parser = this
+    clearBuffers(parser)
+    parser.q = parser.c = ''
+    parser.bufferCheckPosition = sax.MAX_BUFFER_LENGTH
+    parser.opt = opt || {}
+    parser.opt.lowercase = parser.opt.lowercase || parser.opt.lowercasetags
+    parser.looseCase = parser.opt.lowercase ? 'toLowerCase' : 'toUpperCase'
+    parser.tags = []
+    parser.closed = parser.closedRoot = parser.sawRoot = false
+    parser.tag = parser.error = null
+    parser.strict = !!strict
+    parser.noscript = !!(strict || parser.opt.noscript)
+    parser.state = S.BEGIN
+    parser.strictEntities = parser.opt.strictEntities
+    parser.ENTITIES = parser.strictEntities ? Object.create(sax.XML_ENTITIES) : Object.create(sax.ENTITIES)
+    parser.attribList = []
+
+    // namespaces form a prototype chain.
+    // it always points at the current tag,
+    // which protos to its parent tag.
+    if (parser.opt.xmlns) {
+      parser.ns = Object.create(rootNS)
+    }
+
+    // mostly just for error reporting
+    parser.trackPosition = parser.opt.position !== false
+    if (parser.trackPosition) {
+      parser.position = parser.line = parser.column = 0
+    }
+    emit(parser, 'onready')
   }
 
-  return target;
-}
+  if (!Object.create) {
+    Object.create = function (o) {
+      function F () {}
+      F.prototype = o
+      var newf = new F()
+      return newf
+    }
+  }
 
-module.exports = _objectSpread;
+  if (!Object.keys) {
+    Object.keys = function (o) {
+      var a = []
+      for (var i in o) if (o.hasOwnProperty(i)) a.push(i)
+      return a
+    }
+  }
+
+  function checkBufferLength (parser) {
+    var maxAllowed = Math.max(sax.MAX_BUFFER_LENGTH, 10)
+    var maxActual = 0
+    for (var i = 0, l = buffers.length; i < l; i++) {
+      var len = parser[buffers[i]].length
+      if (len > maxAllowed) {
+        // Text/cdata nodes can get big, and since they're buffered,
+        // we can get here under normal conditions.
+        // Avoid issues by emitting the text node now,
+        // so at least it won't get any bigger.
+        switch (buffers[i]) {
+          case 'textNode':
+            closeText(parser)
+            break
+
+          case 'cdata':
+            emitNode(parser, 'oncdata', parser.cdata)
+            parser.cdata = ''
+            break
+
+          case 'script':
+            emitNode(parser, 'onscript', parser.script)
+            parser.script = ''
+            break
+
+          default:
+            error(parser, 'Max buffer length exceeded: ' + buffers[i])
+        }
+      }
+      maxActual = Math.max(maxActual, len)
+    }
+    // schedule the next check for the earliest possible buffer overrun.
+    var m = sax.MAX_BUFFER_LENGTH - maxActual
+    parser.bufferCheckPosition = m + parser.position
+  }
+
+  function clearBuffers (parser) {
+    for (var i = 0, l = buffers.length; i < l; i++) {
+      parser[buffers[i]] = ''
+    }
+  }
+
+  function flushBuffers (parser) {
+    closeText(parser)
+    if (parser.cdata !== '') {
+      emitNode(parser, 'oncdata', parser.cdata)
+      parser.cdata = ''
+    }
+    if (parser.script !== '') {
+      emitNode(parser, 'onscript', parser.script)
+      parser.script = ''
+    }
+  }
+
+  SAXParser.prototype = {
+    end: function () { end(this) },
+    write: write,
+    resume: function () { this.error = null; return this },
+    close: function () { return this.write(null) },
+    flush: function () { flushBuffers(this) }
+  }
+
+  var Stream
+  try {
+    Stream = __webpack_require__("1IWx").Stream
+  } catch (ex) {
+    Stream = function () {}
+  }
+
+  var streamWraps = sax.EVENTS.filter(function (ev) {
+    return ev !== 'error' && ev !== 'end'
+  })
+
+  function createStream (strict, opt) {
+    return new SAXStream(strict, opt)
+  }
+
+  function SAXStream (strict, opt) {
+    if (!(this instanceof SAXStream)) {
+      return new SAXStream(strict, opt)
+    }
+
+    Stream.apply(this)
+
+    this._parser = new SAXParser(strict, opt)
+    this.writable = true
+    this.readable = true
+
+    var me = this
+
+    this._parser.onend = function () {
+      me.emit('end')
+    }
+
+    this._parser.onerror = function (er) {
+      me.emit('error', er)
+
+      // if didn't throw, then means error was handled.
+      // go ahead and clear error, so we can write again.
+      me._parser.error = null
+    }
+
+    this._decoder = null
+
+    streamWraps.forEach(function (ev) {
+      Object.defineProperty(me, 'on' + ev, {
+        get: function () {
+          return me._parser['on' + ev]
+        },
+        set: function (h) {
+          if (!h) {
+            me.removeAllListeners(ev)
+            me._parser['on' + ev] = h
+            return h
+          }
+          me.on(ev, h)
+        },
+        enumerable: true,
+        configurable: false
+      })
+    })
+  }
+
+  SAXStream.prototype = Object.create(Stream.prototype, {
+    constructor: {
+      value: SAXStream
+    }
+  })
+
+  SAXStream.prototype.write = function (data) {
+    if (typeof Buffer === 'function' &&
+      typeof Buffer.isBuffer === 'function' &&
+      Buffer.isBuffer(data)) {
+      if (!this._decoder) {
+        var SD = __webpack_require__("fXKp").StringDecoder
+        this._decoder = new SD('utf8')
+      }
+      data = this._decoder.write(data)
+    }
+
+    this._parser.write(data.toString())
+    this.emit('data', data)
+    return true
+  }
+
+  SAXStream.prototype.end = function (chunk) {
+    if (chunk && chunk.length) {
+      this.write(chunk)
+    }
+    this._parser.end()
+    return true
+  }
+
+  SAXStream.prototype.on = function (ev, handler) {
+    var me = this
+    if (!me._parser['on' + ev] && streamWraps.indexOf(ev) !== -1) {
+      me._parser['on' + ev] = function () {
+        var args = arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
+        args.splice(0, 0, ev)
+        me.emit.apply(me, args)
+      }
+    }
+
+    return Stream.prototype.on.call(me, ev, handler)
+  }
+
+  // this really needs to be replaced with character classes.
+  // XML allows all manner of ridiculous numbers and digits.
+  var CDATA = '[CDATA['
+  var DOCTYPE = 'DOCTYPE'
+  var XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
+  var XMLNS_NAMESPACE = 'http://www.w3.org/2000/xmlns/'
+  var rootNS = { xml: XML_NAMESPACE, xmlns: XMLNS_NAMESPACE }
+
+  // http://www.w3.org/TR/REC-xml/#NT-NameStartChar
+  // This implementation works on strings, a single character at a time
+  // as such, it cannot ever support astral-plane characters (10000-EFFFF)
+  // without a significant breaking change to either this  parser, or the
+  // JavaScript language.  Implementation of an emoji-capable xml parser
+  // is left as an exercise for the reader.
+  var nameStart = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/
+
+  var nameBody = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/
+
+  var entityStart = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/
+  var entityBody = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/
+
+  function isWhitespace (c) {
+    return c === ' ' || c === '\n' || c === '\r' || c === '\t'
+  }
+
+  function isQuote (c) {
+    return c === '"' || c === '\''
+  }
+
+  function isAttribEnd (c) {
+    return c === '>' || isWhitespace(c)
+  }
+
+  function isMatch (regex, c) {
+    return regex.test(c)
+  }
+
+  function notMatch (regex, c) {
+    return !isMatch(regex, c)
+  }
+
+  var S = 0
+  sax.STATE = {
+    BEGIN: S++, // leading byte order mark or whitespace
+    BEGIN_WHITESPACE: S++, // leading whitespace
+    TEXT: S++, // general stuff
+    TEXT_ENTITY: S++, // &amp and such.
+    OPEN_WAKA: S++, // <
+    SGML_DECL: S++, // <!BLARG
+    SGML_DECL_QUOTED: S++, // <!BLARG foo "bar
+    DOCTYPE: S++, // <!DOCTYPE
+    DOCTYPE_QUOTED: S++, // <!DOCTYPE "//blah
+    DOCTYPE_DTD: S++, // <!DOCTYPE "//blah" [ ...
+    DOCTYPE_DTD_QUOTED: S++, // <!DOCTYPE "//blah" [ "foo
+    COMMENT_STARTING: S++, // <!-
+    COMMENT: S++, // <!--
+    COMMENT_ENDING: S++, // <!-- blah -
+    COMMENT_ENDED: S++, // <!-- blah --
+    CDATA: S++, // <![CDATA[ something
+    CDATA_ENDING: S++, // ]
+    CDATA_ENDING_2: S++, // ]]
+    PROC_INST: S++, // <?hi
+    PROC_INST_BODY: S++, // <?hi there
+    PROC_INST_ENDING: S++, // <?hi "there" ?
+    OPEN_TAG: S++, // <strong
+    OPEN_TAG_SLASH: S++, // <strong /
+    ATTRIB: S++, // <a
+    ATTRIB_NAME: S++, // <a foo
+    ATTRIB_NAME_SAW_WHITE: S++, // <a foo _
+    ATTRIB_VALUE: S++, // <a foo=
+    ATTRIB_VALUE_QUOTED: S++, // <a foo="bar
+    ATTRIB_VALUE_CLOSED: S++, // <a foo="bar"
+    ATTRIB_VALUE_UNQUOTED: S++, // <a foo=bar
+    ATTRIB_VALUE_ENTITY_Q: S++, // <foo bar="&quot;"
+    ATTRIB_VALUE_ENTITY_U: S++, // <foo bar=&quot
+    CLOSE_TAG: S++, // </a
+    CLOSE_TAG_SAW_WHITE: S++, // </a   >
+    SCRIPT: S++, // <script> ...
+    SCRIPT_ENDING: S++ // <script> ... <
+  }
+
+  sax.XML_ENTITIES = {
+    'amp': '&',
+    'gt': '>',
+    'lt': '<',
+    'quot': '"',
+    'apos': "'"
+  }
+
+  sax.ENTITIES = {
+    'amp': '&',
+    'gt': '>',
+    'lt': '<',
+    'quot': '"',
+    'apos': "'",
+    'AElig': 198,
+    'Aacute': 193,
+    'Acirc': 194,
+    'Agrave': 192,
+    'Aring': 197,
+    'Atilde': 195,
+    'Auml': 196,
+    'Ccedil': 199,
+    'ETH': 208,
+    'Eacute': 201,
+    'Ecirc': 202,
+    'Egrave': 200,
+    'Euml': 203,
+    'Iacute': 205,
+    'Icirc': 206,
+    'Igrave': 204,
+    'Iuml': 207,
+    'Ntilde': 209,
+    'Oacute': 211,
+    'Ocirc': 212,
+    'Ograve': 210,
+    'Oslash': 216,
+    'Otilde': 213,
+    'Ouml': 214,
+    'THORN': 222,
+    'Uacute': 218,
+    'Ucirc': 219,
+    'Ugrave': 217,
+    'Uuml': 220,
+    'Yacute': 221,
+    'aacute': 225,
+    'acirc': 226,
+    'aelig': 230,
+    'agrave': 224,
+    'aring': 229,
+    'atilde': 227,
+    'auml': 228,
+    'ccedil': 231,
+    'eacute': 233,
+    'ecirc': 234,
+    'egrave': 232,
+    'eth': 240,
+    'euml': 235,
+    'iacute': 237,
+    'icirc': 238,
+    'igrave': 236,
+    'iuml': 239,
+    'ntilde': 241,
+    'oacute': 243,
+    'ocirc': 244,
+    'ograve': 242,
+    'oslash': 248,
+    'otilde': 245,
+    'ouml': 246,
+    'szlig': 223,
+    'thorn': 254,
+    'uacute': 250,
+    'ucirc': 251,
+    'ugrave': 249,
+    'uuml': 252,
+    'yacute': 253,
+    'yuml': 255,
+    'copy': 169,
+    'reg': 174,
+    'nbsp': 160,
+    'iexcl': 161,
+    'cent': 162,
+    'pound': 163,
+    'curren': 164,
+    'yen': 165,
+    'brvbar': 166,
+    'sect': 167,
+    'uml': 168,
+    'ordf': 170,
+    'laquo': 171,
+    'not': 172,
+    'shy': 173,
+    'macr': 175,
+    'deg': 176,
+    'plusmn': 177,
+    'sup1': 185,
+    'sup2': 178,
+    'sup3': 179,
+    'acute': 180,
+    'micro': 181,
+    'para': 182,
+    'middot': 183,
+    'cedil': 184,
+    'ordm': 186,
+    'raquo': 187,
+    'frac14': 188,
+    'frac12': 189,
+    'frac34': 190,
+    'iquest': 191,
+    'times': 215,
+    'divide': 247,
+    'OElig': 338,
+    'oelig': 339,
+    'Scaron': 352,
+    'scaron': 353,
+    'Yuml': 376,
+    'fnof': 402,
+    'circ': 710,
+    'tilde': 732,
+    'Alpha': 913,
+    'Beta': 914,
+    'Gamma': 915,
+    'Delta': 916,
+    'Epsilon': 917,
+    'Zeta': 918,
+    'Eta': 919,
+    'Theta': 920,
+    'Iota': 921,
+    'Kappa': 922,
+    'Lambda': 923,
+    'Mu': 924,
+    'Nu': 925,
+    'Xi': 926,
+    'Omicron': 927,
+    'Pi': 928,
+    'Rho': 929,
+    'Sigma': 931,
+    'Tau': 932,
+    'Upsilon': 933,
+    'Phi': 934,
+    'Chi': 935,
+    'Psi': 936,
+    'Omega': 937,
+    'alpha': 945,
+    'beta': 946,
+    'gamma': 947,
+    'delta': 948,
+    'epsilon': 949,
+    'zeta': 950,
+    'eta': 951,
+    'theta': 952,
+    'iota': 953,
+    'kappa': 954,
+    'lambda': 955,
+    'mu': 956,
+    'nu': 957,
+    'xi': 958,
+    'omicron': 959,
+    'pi': 960,
+    'rho': 961,
+    'sigmaf': 962,
+    'sigma': 963,
+    'tau': 964,
+    'upsilon': 965,
+    'phi': 966,
+    'chi': 967,
+    'psi': 968,
+    'omega': 969,
+    'thetasym': 977,
+    'upsih': 978,
+    'piv': 982,
+    'ensp': 8194,
+    'emsp': 8195,
+    'thinsp': 8201,
+    'zwnj': 8204,
+    'zwj': 8205,
+    'lrm': 8206,
+    'rlm': 8207,
+    'ndash': 8211,
+    'mdash': 8212,
+    'lsquo': 8216,
+    'rsquo': 8217,
+    'sbquo': 8218,
+    'ldquo': 8220,
+    'rdquo': 8221,
+    'bdquo': 8222,
+    'dagger': 8224,
+    'Dagger': 8225,
+    'bull': 8226,
+    'hellip': 8230,
+    'permil': 8240,
+    'prime': 8242,
+    'Prime': 8243,
+    'lsaquo': 8249,
+    'rsaquo': 8250,
+    'oline': 8254,
+    'frasl': 8260,
+    'euro': 8364,
+    'image': 8465,
+    'weierp': 8472,
+    'real': 8476,
+    'trade': 8482,
+    'alefsym': 8501,
+    'larr': 8592,
+    'uarr': 8593,
+    'rarr': 8594,
+    'darr': 8595,
+    'harr': 8596,
+    'crarr': 8629,
+    'lArr': 8656,
+    'uArr': 8657,
+    'rArr': 8658,
+    'dArr': 8659,
+    'hArr': 8660,
+    'forall': 8704,
+    'part': 8706,
+    'exist': 8707,
+    'empty': 8709,
+    'nabla': 8711,
+    'isin': 8712,
+    'notin': 8713,
+    'ni': 8715,
+    'prod': 8719,
+    'sum': 8721,
+    'minus': 8722,
+    'lowast': 8727,
+    'radic': 8730,
+    'prop': 8733,
+    'infin': 8734,
+    'ang': 8736,
+    'and': 8743,
+    'or': 8744,
+    'cap': 8745,
+    'cup': 8746,
+    'int': 8747,
+    'there4': 8756,
+    'sim': 8764,
+    'cong': 8773,
+    'asymp': 8776,
+    'ne': 8800,
+    'equiv': 8801,
+    'le': 8804,
+    'ge': 8805,
+    'sub': 8834,
+    'sup': 8835,
+    'nsub': 8836,
+    'sube': 8838,
+    'supe': 8839,
+    'oplus': 8853,
+    'otimes': 8855,
+    'perp': 8869,
+    'sdot': 8901,
+    'lceil': 8968,
+    'rceil': 8969,
+    'lfloor': 8970,
+    'rfloor': 8971,
+    'lang': 9001,
+    'rang': 9002,
+    'loz': 9674,
+    'spades': 9824,
+    'clubs': 9827,
+    'hearts': 9829,
+    'diams': 9830
+  }
+
+  Object.keys(sax.ENTITIES).forEach(function (key) {
+    var e = sax.ENTITIES[key]
+    var s = typeof e === 'number' ? String.fromCharCode(e) : e
+    sax.ENTITIES[key] = s
+  })
+
+  for (var s in sax.STATE) {
+    sax.STATE[sax.STATE[s]] = s
+  }
+
+  // shorthand
+  S = sax.STATE
+
+  function emit (parser, event, data) {
+    parser[event] && parser[event](data)
+  }
+
+  function emitNode (parser, nodeType, data) {
+    if (parser.textNode) closeText(parser)
+    emit(parser, nodeType, data)
+  }
+
+  function closeText (parser) {
+    parser.textNode = textopts(parser.opt, parser.textNode)
+    if (parser.textNode) emit(parser, 'ontext', parser.textNode)
+    parser.textNode = ''
+  }
+
+  function textopts (opt, text) {
+    if (opt.trim) text = text.trim()
+    if (opt.normalize) text = text.replace(/\s+/g, ' ')
+    return text
+  }
+
+  function error (parser, er) {
+    closeText(parser)
+    if (parser.trackPosition) {
+      er += '\nLine: ' + parser.line +
+        '\nColumn: ' + parser.column +
+        '\nChar: ' + parser.c
+    }
+    er = new Error(er)
+    parser.error = er
+    emit(parser, 'onerror', er)
+    return parser
+  }
+
+  function end (parser) {
+    if (parser.sawRoot && !parser.closedRoot) strictFail(parser, 'Unclosed root tag')
+    if ((parser.state !== S.BEGIN) &&
+      (parser.state !== S.BEGIN_WHITESPACE) &&
+      (parser.state !== S.TEXT)) {
+      error(parser, 'Unexpected end')
+    }
+    closeText(parser)
+    parser.c = ''
+    parser.closed = true
+    emit(parser, 'onend')
+    SAXParser.call(parser, parser.strict, parser.opt)
+    return parser
+  }
+
+  function strictFail (parser, message) {
+    if (typeof parser !== 'object' || !(parser instanceof SAXParser)) {
+      throw new Error('bad call to strictFail')
+    }
+    if (parser.strict) {
+      error(parser, message)
+    }
+  }
+
+  function newTag (parser) {
+    if (!parser.strict) parser.tagName = parser.tagName[parser.looseCase]()
+    var parent = parser.tags[parser.tags.length - 1] || parser
+    var tag = parser.tag = { name: parser.tagName, attributes: {} }
+
+    // will be overridden if tag contails an xmlns="foo" or xmlns:foo="bar"
+    if (parser.opt.xmlns) {
+      tag.ns = parent.ns
+    }
+    parser.attribList.length = 0
+    emitNode(parser, 'onopentagstart', tag)
+  }
+
+  function qname (name, attribute) {
+    var i = name.indexOf(':')
+    var qualName = i < 0 ? [ '', name ] : name.split(':')
+    var prefix = qualName[0]
+    var local = qualName[1]
+
+    // <x "xmlns"="http://foo">
+    if (attribute && name === 'xmlns') {
+      prefix = 'xmlns'
+      local = ''
+    }
+
+    return { prefix: prefix, local: local }
+  }
+
+  function attrib (parser) {
+    if (!parser.strict) {
+      parser.attribName = parser.attribName[parser.looseCase]()
+    }
+
+    if (parser.attribList.indexOf(parser.attribName) !== -1 ||
+      parser.tag.attributes.hasOwnProperty(parser.attribName)) {
+      parser.attribName = parser.attribValue = ''
+      return
+    }
+
+    if (parser.opt.xmlns) {
+      var qn = qname(parser.attribName, true)
+      var prefix = qn.prefix
+      var local = qn.local
+
+      if (prefix === 'xmlns') {
+        // namespace binding attribute. push the binding into scope
+        if (local === 'xml' && parser.attribValue !== XML_NAMESPACE) {
+          strictFail(parser,
+            'xml: prefix must be bound to ' + XML_NAMESPACE + '\n' +
+            'Actual: ' + parser.attribValue)
+        } else if (local === 'xmlns' && parser.attribValue !== XMLNS_NAMESPACE) {
+          strictFail(parser,
+            'xmlns: prefix must be bound to ' + XMLNS_NAMESPACE + '\n' +
+            'Actual: ' + parser.attribValue)
+        } else {
+          var tag = parser.tag
+          var parent = parser.tags[parser.tags.length - 1] || parser
+          if (tag.ns === parent.ns) {
+            tag.ns = Object.create(parent.ns)
+          }
+          tag.ns[local] = parser.attribValue
+        }
+      }
+
+      // defer onattribute events until all attributes have been seen
+      // so any new bindings can take effect. preserve attribute order
+      // so deferred events can be emitted in document order
+      parser.attribList.push([parser.attribName, parser.attribValue])
+    } else {
+      // in non-xmlns mode, we can emit the event right away
+      parser.tag.attributes[parser.attribName] = parser.attribValue
+      emitNode(parser, 'onattribute', {
+        name: parser.attribName,
+        value: parser.attribValue
+      })
+    }
+
+    parser.attribName = parser.attribValue = ''
+  }
+
+  function openTag (parser, selfClosing) {
+    if (parser.opt.xmlns) {
+      // emit namespace binding events
+      var tag = parser.tag
+
+      // add namespace info to tag
+      var qn = qname(parser.tagName)
+      tag.prefix = qn.prefix
+      tag.local = qn.local
+      tag.uri = tag.ns[qn.prefix] || ''
+
+      if (tag.prefix && !tag.uri) {
+        strictFail(parser, 'Unbound namespace prefix: ' +
+          JSON.stringify(parser.tagName))
+        tag.uri = qn.prefix
+      }
+
+      var parent = parser.tags[parser.tags.length - 1] || parser
+      if (tag.ns && parent.ns !== tag.ns) {
+        Object.keys(tag.ns).forEach(function (p) {
+          emitNode(parser, 'onopennamespace', {
+            prefix: p,
+            uri: tag.ns[p]
+          })
+        })
+      }
+
+      // handle deferred onattribute events
+      // Note: do not apply default ns to attributes:
+      //   http://www.w3.org/TR/REC-xml-names/#defaulting
+      for (var i = 0, l = parser.attribList.length; i < l; i++) {
+        var nv = parser.attribList[i]
+        var name = nv[0]
+        var value = nv[1]
+        var qualName = qname(name, true)
+        var prefix = qualName.prefix
+        var local = qualName.local
+        var uri = prefix === '' ? '' : (tag.ns[prefix] || '')
+        var a = {
+          name: name,
+          value: value,
+          prefix: prefix,
+          local: local,
+          uri: uri
+        }
+
+        // if there's any attributes with an undefined namespace,
+        // then fail on them now.
+        if (prefix && prefix !== 'xmlns' && !uri) {
+          strictFail(parser, 'Unbound namespace prefix: ' +
+            JSON.stringify(prefix))
+          a.uri = prefix
+        }
+        parser.tag.attributes[name] = a
+        emitNode(parser, 'onattribute', a)
+      }
+      parser.attribList.length = 0
+    }
+
+    parser.tag.isSelfClosing = !!selfClosing
+
+    // process the tag
+    parser.sawRoot = true
+    parser.tags.push(parser.tag)
+    emitNode(parser, 'onopentag', parser.tag)
+    if (!selfClosing) {
+      // special case for <script> in non-strict mode.
+      if (!parser.noscript && parser.tagName.toLowerCase() === 'script') {
+        parser.state = S.SCRIPT
+      } else {
+        parser.state = S.TEXT
+      }
+      parser.tag = null
+      parser.tagName = ''
+    }
+    parser.attribName = parser.attribValue = ''
+    parser.attribList.length = 0
+  }
+
+  function closeTag (parser) {
+    if (!parser.tagName) {
+      strictFail(parser, 'Weird empty close tag.')
+      parser.textNode += '</>'
+      parser.state = S.TEXT
+      return
+    }
+
+    if (parser.script) {
+      if (parser.tagName !== 'script') {
+        parser.script += '</' + parser.tagName + '>'
+        parser.tagName = ''
+        parser.state = S.SCRIPT
+        return
+      }
+      emitNode(parser, 'onscript', parser.script)
+      parser.script = ''
+    }
+
+    // first make sure that the closing tag actually exists.
+    // <a><b></c></b></a> will close everything, otherwise.
+    var t = parser.tags.length
+    var tagName = parser.tagName
+    if (!parser.strict) {
+      tagName = tagName[parser.looseCase]()
+    }
+    var closeTo = tagName
+    while (t--) {
+      var close = parser.tags[t]
+      if (close.name !== closeTo) {
+        // fail the first time in strict mode
+        strictFail(parser, 'Unexpected close tag')
+      } else {
+        break
+      }
+    }
+
+    // didn't find it.  we already failed for strict, so just abort.
+    if (t < 0) {
+      strictFail(parser, 'Unmatched closing tag: ' + parser.tagName)
+      parser.textNode += '</' + parser.tagName + '>'
+      parser.state = S.TEXT
+      return
+    }
+    parser.tagName = tagName
+    var s = parser.tags.length
+    while (s-- > t) {
+      var tag = parser.tag = parser.tags.pop()
+      parser.tagName = parser.tag.name
+      emitNode(parser, 'onclosetag', parser.tagName)
+
+      var x = {}
+      for (var i in tag.ns) {
+        x[i] = tag.ns[i]
+      }
+
+      var parent = parser.tags[parser.tags.length - 1] || parser
+      if (parser.opt.xmlns && tag.ns !== parent.ns) {
+        // remove namespace bindings introduced by tag
+        Object.keys(tag.ns).forEach(function (p) {
+          var n = tag.ns[p]
+          emitNode(parser, 'onclosenamespace', { prefix: p, uri: n })
+        })
+      }
+    }
+    if (t === 0) parser.closedRoot = true
+    parser.tagName = parser.attribValue = parser.attribName = ''
+    parser.attribList.length = 0
+    parser.state = S.TEXT
+  }
+
+  function parseEntity (parser) {
+    var entity = parser.entity
+    var entityLC = entity.toLowerCase()
+    var num
+    var numStr = ''
+
+    if (parser.ENTITIES[entity]) {
+      return parser.ENTITIES[entity]
+    }
+    if (parser.ENTITIES[entityLC]) {
+      return parser.ENTITIES[entityLC]
+    }
+    entity = entityLC
+    if (entity.charAt(0) === '#') {
+      if (entity.charAt(1) === 'x') {
+        entity = entity.slice(2)
+        num = parseInt(entity, 16)
+        numStr = num.toString(16)
+      } else {
+        entity = entity.slice(1)
+        num = parseInt(entity, 10)
+        numStr = num.toString(10)
+      }
+    }
+    entity = entity.replace(/^0+/, '')
+    if (isNaN(num) || numStr.toLowerCase() !== entity) {
+      strictFail(parser, 'Invalid character entity')
+      return '&' + parser.entity + ';'
+    }
+
+    return String.fromCodePoint(num)
+  }
+
+  function beginWhiteSpace (parser, c) {
+    if (c === '<') {
+      parser.state = S.OPEN_WAKA
+      parser.startTagPosition = parser.position
+    } else if (!isWhitespace(c)) {
+      // have to process this as a text node.
+      // weird, but happens.
+      strictFail(parser, 'Non-whitespace before first tag.')
+      parser.textNode = c
+      parser.state = S.TEXT
+    }
+  }
+
+  function charAt (chunk, i) {
+    var result = ''
+    if (i < chunk.length) {
+      result = chunk.charAt(i)
+    }
+    return result
+  }
+
+  function write (chunk) {
+    var parser = this
+    if (this.error) {
+      throw this.error
+    }
+    if (parser.closed) {
+      return error(parser,
+        'Cannot write after close. Assign an onready handler.')
+    }
+    if (chunk === null) {
+      return end(parser)
+    }
+    if (typeof chunk === 'object') {
+      chunk = chunk.toString()
+    }
+    var i = 0
+    var c = ''
+    while (true) {
+      c = charAt(chunk, i++)
+      parser.c = c
+
+      if (!c) {
+        break
+      }
+
+      if (parser.trackPosition) {
+        parser.position++
+        if (c === '\n') {
+          parser.line++
+          parser.column = 0
+        } else {
+          parser.column++
+        }
+      }
+
+      switch (parser.state) {
+        case S.BEGIN:
+          parser.state = S.BEGIN_WHITESPACE
+          if (c === '\uFEFF') {
+            continue
+          }
+          beginWhiteSpace(parser, c)
+          continue
+
+        case S.BEGIN_WHITESPACE:
+          beginWhiteSpace(parser, c)
+          continue
+
+        case S.TEXT:
+          if (parser.sawRoot && !parser.closedRoot) {
+            var starti = i - 1
+            while (c && c !== '<' && c !== '&') {
+              c = charAt(chunk, i++)
+              if (c && parser.trackPosition) {
+                parser.position++
+                if (c === '\n') {
+                  parser.line++
+                  parser.column = 0
+                } else {
+                  parser.column++
+                }
+              }
+            }
+            parser.textNode += chunk.substring(starti, i - 1)
+          }
+          if (c === '<' && !(parser.sawRoot && parser.closedRoot && !parser.strict)) {
+            parser.state = S.OPEN_WAKA
+            parser.startTagPosition = parser.position
+          } else {
+            if (!isWhitespace(c) && (!parser.sawRoot || parser.closedRoot)) {
+              strictFail(parser, 'Text data outside of root node.')
+            }
+            if (c === '&') {
+              parser.state = S.TEXT_ENTITY
+            } else {
+              parser.textNode += c
+            }
+          }
+          continue
+
+        case S.SCRIPT:
+          // only non-strict
+          if (c === '<') {
+            parser.state = S.SCRIPT_ENDING
+          } else {
+            parser.script += c
+          }
+          continue
+
+        case S.SCRIPT_ENDING:
+          if (c === '/') {
+            parser.state = S.CLOSE_TAG
+          } else {
+            parser.script += '<' + c
+            parser.state = S.SCRIPT
+          }
+          continue
+
+        case S.OPEN_WAKA:
+          // either a /, ?, !, or text is coming next.
+          if (c === '!') {
+            parser.state = S.SGML_DECL
+            parser.sgmlDecl = ''
+          } else if (isWhitespace(c)) {
+            // wait for it...
+          } else if (isMatch(nameStart, c)) {
+            parser.state = S.OPEN_TAG
+            parser.tagName = c
+          } else if (c === '/') {
+            parser.state = S.CLOSE_TAG
+            parser.tagName = ''
+          } else if (c === '?') {
+            parser.state = S.PROC_INST
+            parser.procInstName = parser.procInstBody = ''
+          } else {
+            strictFail(parser, 'Unencoded <')
+            // if there was some whitespace, then add that in.
+            if (parser.startTagPosition + 1 < parser.position) {
+              var pad = parser.position - parser.startTagPosition
+              c = new Array(pad).join(' ') + c
+            }
+            parser.textNode += '<' + c
+            parser.state = S.TEXT
+          }
+          continue
+
+        case S.SGML_DECL:
+          if ((parser.sgmlDecl + c).toUpperCase() === CDATA) {
+            emitNode(parser, 'onopencdata')
+            parser.state = S.CDATA
+            parser.sgmlDecl = ''
+            parser.cdata = ''
+          } else if (parser.sgmlDecl + c === '--') {
+            parser.state = S.COMMENT
+            parser.comment = ''
+            parser.sgmlDecl = ''
+          } else if ((parser.sgmlDecl + c).toUpperCase() === DOCTYPE) {
+            parser.state = S.DOCTYPE
+            if (parser.doctype || parser.sawRoot) {
+              strictFail(parser,
+                'Inappropriately located doctype declaration')
+            }
+            parser.doctype = ''
+            parser.sgmlDecl = ''
+          } else if (c === '>') {
+            emitNode(parser, 'onsgmldeclaration', parser.sgmlDecl)
+            parser.sgmlDecl = ''
+            parser.state = S.TEXT
+          } else if (isQuote(c)) {
+            parser.state = S.SGML_DECL_QUOTED
+            parser.sgmlDecl += c
+          } else {
+            parser.sgmlDecl += c
+          }
+          continue
+
+        case S.SGML_DECL_QUOTED:
+          if (c === parser.q) {
+            parser.state = S.SGML_DECL
+            parser.q = ''
+          }
+          parser.sgmlDecl += c
+          continue
+
+        case S.DOCTYPE:
+          if (c === '>') {
+            parser.state = S.TEXT
+            emitNode(parser, 'ondoctype', parser.doctype)
+            parser.doctype = true // just remember that we saw it.
+          } else {
+            parser.doctype += c
+            if (c === '[') {
+              parser.state = S.DOCTYPE_DTD
+            } else if (isQuote(c)) {
+              parser.state = S.DOCTYPE_QUOTED
+              parser.q = c
+            }
+          }
+          continue
+
+        case S.DOCTYPE_QUOTED:
+          parser.doctype += c
+          if (c === parser.q) {
+            parser.q = ''
+            parser.state = S.DOCTYPE
+          }
+          continue
+
+        case S.DOCTYPE_DTD:
+          parser.doctype += c
+          if (c === ']') {
+            parser.state = S.DOCTYPE
+          } else if (isQuote(c)) {
+            parser.state = S.DOCTYPE_DTD_QUOTED
+            parser.q = c
+          }
+          continue
+
+        case S.DOCTYPE_DTD_QUOTED:
+          parser.doctype += c
+          if (c === parser.q) {
+            parser.state = S.DOCTYPE_DTD
+            parser.q = ''
+          }
+          continue
+
+        case S.COMMENT:
+          if (c === '-') {
+            parser.state = S.COMMENT_ENDING
+          } else {
+            parser.comment += c
+          }
+          continue
+
+        case S.COMMENT_ENDING:
+          if (c === '-') {
+            parser.state = S.COMMENT_ENDED
+            parser.comment = textopts(parser.opt, parser.comment)
+            if (parser.comment) {
+              emitNode(parser, 'oncomment', parser.comment)
+            }
+            parser.comment = ''
+          } else {
+            parser.comment += '-' + c
+            parser.state = S.COMMENT
+          }
+          continue
+
+        case S.COMMENT_ENDED:
+          if (c !== '>') {
+            strictFail(parser, 'Malformed comment')
+            // allow <!-- blah -- bloo --> in non-strict mode,
+            // which is a comment of " blah -- bloo "
+            parser.comment += '--' + c
+            parser.state = S.COMMENT
+          } else {
+            parser.state = S.TEXT
+          }
+          continue
+
+        case S.CDATA:
+          if (c === ']') {
+            parser.state = S.CDATA_ENDING
+          } else {
+            parser.cdata += c
+          }
+          continue
+
+        case S.CDATA_ENDING:
+          if (c === ']') {
+            parser.state = S.CDATA_ENDING_2
+          } else {
+            parser.cdata += ']' + c
+            parser.state = S.CDATA
+          }
+          continue
+
+        case S.CDATA_ENDING_2:
+          if (c === '>') {
+            if (parser.cdata) {
+              emitNode(parser, 'oncdata', parser.cdata)
+            }
+            emitNode(parser, 'onclosecdata')
+            parser.cdata = ''
+            parser.state = S.TEXT
+          } else if (c === ']') {
+            parser.cdata += ']'
+          } else {
+            parser.cdata += ']]' + c
+            parser.state = S.CDATA
+          }
+          continue
+
+        case S.PROC_INST:
+          if (c === '?') {
+            parser.state = S.PROC_INST_ENDING
+          } else if (isWhitespace(c)) {
+            parser.state = S.PROC_INST_BODY
+          } else {
+            parser.procInstName += c
+          }
+          continue
+
+        case S.PROC_INST_BODY:
+          if (!parser.procInstBody && isWhitespace(c)) {
+            continue
+          } else if (c === '?') {
+            parser.state = S.PROC_INST_ENDING
+          } else {
+            parser.procInstBody += c
+          }
+          continue
+
+        case S.PROC_INST_ENDING:
+          if (c === '>') {
+            emitNode(parser, 'onprocessinginstruction', {
+              name: parser.procInstName,
+              body: parser.procInstBody
+            })
+            parser.procInstName = parser.procInstBody = ''
+            parser.state = S.TEXT
+          } else {
+            parser.procInstBody += '?' + c
+            parser.state = S.PROC_INST_BODY
+          }
+          continue
+
+        case S.OPEN_TAG:
+          if (isMatch(nameBody, c)) {
+            parser.tagName += c
+          } else {
+            newTag(parser)
+            if (c === '>') {
+              openTag(parser)
+            } else if (c === '/') {
+              parser.state = S.OPEN_TAG_SLASH
+            } else {
+              if (!isWhitespace(c)) {
+                strictFail(parser, 'Invalid character in tag name')
+              }
+              parser.state = S.ATTRIB
+            }
+          }
+          continue
+
+        case S.OPEN_TAG_SLASH:
+          if (c === '>') {
+            openTag(parser, true)
+            closeTag(parser)
+          } else {
+            strictFail(parser, 'Forward-slash in opening tag not followed by >')
+            parser.state = S.ATTRIB
+          }
+          continue
+
+        case S.ATTRIB:
+          // haven't read the attribute name yet.
+          if (isWhitespace(c)) {
+            continue
+          } else if (c === '>') {
+            openTag(parser)
+          } else if (c === '/') {
+            parser.state = S.OPEN_TAG_SLASH
+          } else if (isMatch(nameStart, c)) {
+            parser.attribName = c
+            parser.attribValue = ''
+            parser.state = S.ATTRIB_NAME
+          } else {
+            strictFail(parser, 'Invalid attribute name')
+          }
+          continue
+
+        case S.ATTRIB_NAME:
+          if (c === '=') {
+            parser.state = S.ATTRIB_VALUE
+          } else if (c === '>') {
+            strictFail(parser, 'Attribute without value')
+            parser.attribValue = parser.attribName
+            attrib(parser)
+            openTag(parser)
+          } else if (isWhitespace(c)) {
+            parser.state = S.ATTRIB_NAME_SAW_WHITE
+          } else if (isMatch(nameBody, c)) {
+            parser.attribName += c
+          } else {
+            strictFail(parser, 'Invalid attribute name')
+          }
+          continue
+
+        case S.ATTRIB_NAME_SAW_WHITE:
+          if (c === '=') {
+            parser.state = S.ATTRIB_VALUE
+          } else if (isWhitespace(c)) {
+            continue
+          } else {
+            strictFail(parser, 'Attribute without value')
+            parser.tag.attributes[parser.attribName] = ''
+            parser.attribValue = ''
+            emitNode(parser, 'onattribute', {
+              name: parser.attribName,
+              value: ''
+            })
+            parser.attribName = ''
+            if (c === '>') {
+              openTag(parser)
+            } else if (isMatch(nameStart, c)) {
+              parser.attribName = c
+              parser.state = S.ATTRIB_NAME
+            } else {
+              strictFail(parser, 'Invalid attribute name')
+              parser.state = S.ATTRIB
+            }
+          }
+          continue
+
+        case S.ATTRIB_VALUE:
+          if (isWhitespace(c)) {
+            continue
+          } else if (isQuote(c)) {
+            parser.q = c
+            parser.state = S.ATTRIB_VALUE_QUOTED
+          } else {
+            strictFail(parser, 'Unquoted attribute value')
+            parser.state = S.ATTRIB_VALUE_UNQUOTED
+            parser.attribValue = c
+          }
+          continue
+
+        case S.ATTRIB_VALUE_QUOTED:
+          if (c !== parser.q) {
+            if (c === '&') {
+              parser.state = S.ATTRIB_VALUE_ENTITY_Q
+            } else {
+              parser.attribValue += c
+            }
+            continue
+          }
+          attrib(parser)
+          parser.q = ''
+          parser.state = S.ATTRIB_VALUE_CLOSED
+          continue
+
+        case S.ATTRIB_VALUE_CLOSED:
+          if (isWhitespace(c)) {
+            parser.state = S.ATTRIB
+          } else if (c === '>') {
+            openTag(parser)
+          } else if (c === '/') {
+            parser.state = S.OPEN_TAG_SLASH
+          } else if (isMatch(nameStart, c)) {
+            strictFail(parser, 'No whitespace between attributes')
+            parser.attribName = c
+            parser.attribValue = ''
+            parser.state = S.ATTRIB_NAME
+          } else {
+            strictFail(parser, 'Invalid attribute name')
+          }
+          continue
+
+        case S.ATTRIB_VALUE_UNQUOTED:
+          if (!isAttribEnd(c)) {
+            if (c === '&') {
+              parser.state = S.ATTRIB_VALUE_ENTITY_U
+            } else {
+              parser.attribValue += c
+            }
+            continue
+          }
+          attrib(parser)
+          if (c === '>') {
+            openTag(parser)
+          } else {
+            parser.state = S.ATTRIB
+          }
+          continue
+
+        case S.CLOSE_TAG:
+          if (!parser.tagName) {
+            if (isWhitespace(c)) {
+              continue
+            } else if (notMatch(nameStart, c)) {
+              if (parser.script) {
+                parser.script += '</' + c
+                parser.state = S.SCRIPT
+              } else {
+                strictFail(parser, 'Invalid tagname in closing tag.')
+              }
+            } else {
+              parser.tagName = c
+            }
+          } else if (c === '>') {
+            closeTag(parser)
+          } else if (isMatch(nameBody, c)) {
+            parser.tagName += c
+          } else if (parser.script) {
+            parser.script += '</' + parser.tagName
+            parser.tagName = ''
+            parser.state = S.SCRIPT
+          } else {
+            if (!isWhitespace(c)) {
+              strictFail(parser, 'Invalid tagname in closing tag')
+            }
+            parser.state = S.CLOSE_TAG_SAW_WHITE
+          }
+          continue
+
+        case S.CLOSE_TAG_SAW_WHITE:
+          if (isWhitespace(c)) {
+            continue
+          }
+          if (c === '>') {
+            closeTag(parser)
+          } else {
+            strictFail(parser, 'Invalid characters in closing tag')
+          }
+          continue
+
+        case S.TEXT_ENTITY:
+        case S.ATTRIB_VALUE_ENTITY_Q:
+        case S.ATTRIB_VALUE_ENTITY_U:
+          var returnState
+          var buffer
+          switch (parser.state) {
+            case S.TEXT_ENTITY:
+              returnState = S.TEXT
+              buffer = 'textNode'
+              break
+
+            case S.ATTRIB_VALUE_ENTITY_Q:
+              returnState = S.ATTRIB_VALUE_QUOTED
+              buffer = 'attribValue'
+              break
+
+            case S.ATTRIB_VALUE_ENTITY_U:
+              returnState = S.ATTRIB_VALUE_UNQUOTED
+              buffer = 'attribValue'
+              break
+          }
+
+          if (c === ';') {
+            parser[buffer] += parseEntity(parser)
+            parser.entity = ''
+            parser.state = returnState
+          } else if (isMatch(parser.entity.length ? entityBody : entityStart, c)) {
+            parser.entity += c
+          } else {
+            strictFail(parser, 'Invalid character in entity name')
+            parser[buffer] += '&' + parser.entity + c
+            parser.entity = ''
+            parser.state = returnState
+          }
+
+          continue
+
+        default:
+          throw new Error(parser, 'Unknown state: ' + parser.state)
+      }
+    } // while
+
+    if (parser.position >= parser.bufferCheckPosition) {
+      checkBufferLength(parser)
+    }
+    return parser
+  }
+
+  /*! http://mths.be/fromcodepoint v0.1.0 by @mathias */
+  /* istanbul ignore next */
+  if (!String.fromCodePoint) {
+    (function () {
+      var stringFromCharCode = String.fromCharCode
+      var floor = Math.floor
+      var fromCodePoint = function () {
+        var MAX_SIZE = 0x4000
+        var codeUnits = []
+        var highSurrogate
+        var lowSurrogate
+        var index = -1
+        var length = arguments.length
+        if (!length) {
+          return ''
+        }
+        var result = ''
+        while (++index < length) {
+          var codePoint = Number(arguments[index])
+          if (
+            !isFinite(codePoint) || // `NaN`, `+Infinity`, or `-Infinity`
+            codePoint < 0 || // not a valid Unicode code point
+            codePoint > 0x10FFFF || // not a valid Unicode code point
+            floor(codePoint) !== codePoint // not an integer
+          ) {
+            throw RangeError('Invalid code point: ' + codePoint)
+          }
+          if (codePoint <= 0xFFFF) { // BMP code point
+            codeUnits.push(codePoint)
+          } else { // Astral code point; split in surrogate halves
+            // http://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+            codePoint -= 0x10000
+            highSurrogate = (codePoint >> 10) + 0xD800
+            lowSurrogate = (codePoint % 0x400) + 0xDC00
+            codeUnits.push(highSurrogate, lowSurrogate)
+          }
+          if (index + 1 === length || codeUnits.length > MAX_SIZE) {
+            result += stringFromCharCode.apply(null, codeUnits)
+            codeUnits.length = 0
+          }
+        }
+        return result
+      }
+      /* istanbul ignore next */
+      if (Object.defineProperty) {
+        Object.defineProperty(String, 'fromCodePoint', {
+          value: fromCodePoint,
+          configurable: true,
+          writable: true
+        })
+      } else {
+        String.fromCodePoint = fromCodePoint
+      }
+    }())
+  }
+})( false ? undefined : exports)
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("tjlA").Buffer))
 
 /***/ }),
 
@@ -6410,7 +10054,10 @@ var _default = {
     crsNotSupport: '不支持当前地图的坐标系！',
     TileMatrixSetNotSuppport: '不支持传入的 TileMatrixSet！',
     getLayerInfoFailed: '获取图层信息失败！',
-    crsnotsupport: '不支持的坐标系！'
+    crsnotsupport: '不支持的坐标系！',
+    baiduMapNotSupport: '暂不支持加载百度地图！',
+    sampleDataNotSupport: '暂不支持加载示例数据！',
+    mvtNotSupport: '暂不支持加载矢量瓦片图层！'
   },
   legend: {
     themeField: '专题字段',
@@ -6456,6 +10103,9 @@ var _default = {
     noResults: '查询结果为空！',
     queryFailed: '查询失败!',
     seviceNotSupport: '此服务不支持查询！'
+  },
+  identify: {
+    layerNotExit: "地图上不存在该图层: '{layer}'"
   },
   openFile: {
     fileSizeExceeded: '文件大小超限！文件大小不得超过 10M！',
@@ -6571,6 +10221,155 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "Onz0":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// NOTE: These type checking functions intentionally don't use `instanceof`
+// because it is fragile and can be easily faked with `Object.create()`.
+
+function isArray(arg) {
+  if (Array.isArray) {
+    return Array.isArray(arg);
+  }
+  return objectToString(arg) === '[object Array]';
+}
+exports.isArray = isArray;
+
+function isBoolean(arg) {
+  return typeof arg === 'boolean';
+}
+exports.isBoolean = isBoolean;
+
+function isNull(arg) {
+  return arg === null;
+}
+exports.isNull = isNull;
+
+function isNullOrUndefined(arg) {
+  return arg == null;
+}
+exports.isNullOrUndefined = isNullOrUndefined;
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+exports.isNumber = isNumber;
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+exports.isString = isString;
+
+function isSymbol(arg) {
+  return typeof arg === 'symbol';
+}
+exports.isSymbol = isSymbol;
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+exports.isUndefined = isUndefined;
+
+function isRegExp(re) {
+  return objectToString(re) === '[object RegExp]';
+}
+exports.isRegExp = isRegExp;
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+exports.isObject = isObject;
+
+function isDate(d) {
+  return objectToString(d) === '[object Date]';
+}
+exports.isDate = isDate;
+
+function isError(e) {
+  return (objectToString(e) === '[object Error]' || e instanceof Error);
+}
+exports.isError = isError;
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+exports.isFunction = isFunction;
+
+function isPrimitive(arg) {
+  return arg === null ||
+         typeof arg === 'boolean' ||
+         typeof arg === 'number' ||
+         typeof arg === 'string' ||
+         typeof arg === 'symbol' ||  // ES6 symbol
+         typeof arg === 'undefined';
+}
+exports.isPrimitive = isPrimitive;
+
+exports.isBuffer = Buffer.isBuffer;
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("tjlA").Buffer))
+
+/***/ }),
+
+/***/ "P7XM":
+/***/ (function(module, exports) {
+
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    if (superCtor) {
+      ctor.super_ = superCtor
+      ctor.prototype = Object.create(superCtor.prototype, {
+        constructor: {
+          value: ctor,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      })
+    }
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    if (superCtor) {
+      ctor.super_ = superCtor
+      var TempCtor = function () {}
+      TempCtor.prototype = superCtor.prototype
+      ctor.prototype = new TempCtor()
+      ctor.prototype.constructor = ctor
+    }
+  }
+}
+
+
+/***/ }),
+
 /***/ "PJYZ":
 /***/ (function(module, exports) {
 
@@ -6583,6 +10382,176 @@ function _assertThisInitialized(self) {
 }
 
 module.exports = _assertThisInitialized;
+
+/***/ }),
+
+/***/ "PZvK":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("lwsE"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("W8MJ"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("a1gu"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("Nsbk"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
+
+var _leafletWrapper = _interopRequireDefault(__webpack_require__("uTlj"));
+
+__webpack_require__("17FK");
+
+var _lodash = _interopRequireDefault(__webpack_require__("zT9C"));
+
+/**
+ * @class IdentifyViewModel
+ * @description 点选 viewModel.
+ * @param {Object} map - map 对象。
+ * @param {String} [options.layerName] - 图层名。
+ * @param {Object} [options.layerStyle] - 查询结果图层样式配置。
+ * @extends mapboxgl.Evented
+ */
+var IdentifyViewModel =
+/*#__PURE__*/
+function (_L$Evented) {
+  (0, _inherits2.default)(IdentifyViewModel, _L$Evented);
+
+  function IdentifyViewModel(map, options) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, IdentifyViewModel);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(IdentifyViewModel).call(this));
+    _this.map = map;
+    _this.layerNames = options.layerNames;
+    _this.layerStyle = options.layerStyle || {};
+    _this.popup = null;
+    _this.lastLayerName = '';
+    return _this;
+  }
+  /**
+   * @function IdentifyViewModel.prototype.getLayerByName
+   * @desc 获取。
+   * @param {Array} name - 图层名。
+   */
+
+
+  (0, _createClass2.default)(IdentifyViewModel, [{
+    key: "getLayerByName",
+    value: function getLayerByName(name) {
+      return this.map.getLayerByName(name);
+    }
+    /**
+     * @function IdentifyViewModel.prototype.getLayerById
+     * @desc 获取。
+     * @param {Array} id - 图层名。
+     */
+
+  }, {
+    key: "getLayerById",
+    value: function getLayerById(id) {
+      return this.map.getLayerById(id);
+    }
+    /**
+     * @function IdentifyViewModel.prototype.getLayerType
+     * @desc 判断是否是geojson
+     * @param {Array} layer - 图层名。
+     */
+
+  }, {
+    key: "getLayerType",
+    value: function getLayerType(layer) {
+      return layer instanceof _leafletWrapper.default.GeoJSON;
+    }
+    /**
+     * @function IdentifyViewModel.prototype.addOverlayToMap
+     * @desc 添加高亮图层。
+     * @param {Object} layer - layer。
+     * @param {Object} feature - geojson
+     * @param {Object} customStyle - 用户自定义样式
+     */
+
+  }, {
+    key: "addOverlayToMap",
+    value: function addOverlayToMap(layer, feature) {
+      var customStyle = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.layerStyle;
+      // 高亮前，清除之前的高亮
+      this.lastLayerName && this.removed(this.lastLayerName); // 默认样式
+
+      var defaultStyle = {
+        color: '#409eff',
+        fillColor: '#409eff',
+        fillOpacity: 1,
+        opacity: 0.6,
+        renderer: _leafletWrapper.default.svg()
+      }; // new layer
+
+      var styleOptions = Object.assign((0, _lodash.default)(layer.options), defaultStyle, customStyle);
+      var overlayer;
+      var type = feature.geometry.type;
+
+      if (type === 'Point' || type === 'MultiPoint') {
+        var geoCoordinates = (0, _lodash.default)(feature.geometry.coordinates);
+        overlayer = _leafletWrapper.default.circleMarker(geoCoordinates.reverse(), styleOptions);
+      } else {
+        overlayer = _leafletWrapper.default.geoJSON(feature, {
+          style: function style() {
+            return styleOptions;
+          }
+        });
+      } // 上图，记录图层名
+
+
+      this.map.addLayer(overlayer, layer.name + '-SM-highlighted');
+      this.lastLayerName = layer.name;
+    }
+    /**
+     * @function IdentifyViewModel.prototype.removed
+     * @desc 将客户端专题图的矢量要素转换成geojson。
+     * @param {Object} themeFeature - themeFeature。
+     */
+
+  }, {
+    key: "formatGeoJSON",
+    value: function formatGeoJSON(themeFeature) {
+      var formatObj = new SuperMap.Format.GeoJSON();
+      var serverGeometry = SuperMap.ServerGeometry.fromGeometry(themeFeature.geometry);
+      var geojson = formatObj.toGeoJSON(serverGeometry);
+      geojson.properties = themeFeature.attributes;
+      return geojson;
+    }
+    /**
+     * @function IdentifyViewModel.prototype.removed
+     * @desc 清除高亮图层。
+     * @param {String} lastLayerName - 图层名。
+     */
+
+  }, {
+    key: "removed",
+    value: function removed() {
+      var lastLayerName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.lastLayerName;
+
+      // 移除高亮图层
+      if (lastLayerName && this.getLayerByName(lastLayerName + '-SM-highlighted')) {
+        this.map.removeLayer(this.getLayerByName(lastLayerName + '-SM-highlighted'));
+        this.lastLayerName = '';
+      }
+    }
+  }]);
+  return IdentifyViewModel;
+}(_leafletWrapper.default.Evented);
+
+exports.default = IdentifyViewModel;
 
 /***/ }),
 
@@ -6995,6 +10964,13 @@ exports.default = bbox;
 
 /***/ }),
 
+/***/ "QYU9":
+/***/ (function(module) {
+
+module.exports = JSON.parse("[{\"name\":\"克拉玛依市\",\"coord\":[85.01486759299489,45.406422237230046]},{\"name\":\"昌吉回族自治州\",\"coord\":[88.7154624754753,44.26991024636568]},{\"name\":\"石河子市\",\"coord\":[86.0208600035924,44.239045558096805]},{\"name\":\"霍林郭勒市\",\"coord\":[114.73479243733115,44.16058374713977]},{\"name\":\"本溪市\",\"coord\":[124.64357865201586,41.177197783134275]},{\"name\":\"嘉峪关市\",\"coord\":[98.16891560537093,39.76279786284264]},{\"name\":\"莱芜市\",\"coord\":[117.65723565456207,36.27916499211527]},{\"name\":\"神农架林区\",\"coord\":[110.48296222218153,31.581260143666697]},{\"name\":\"天门市\",\"coord\":[113.00615321481195,30.64105781887143]},{\"name\":\"鄂州市\",\"coord\":[114.94764081970385,30.325634953844585]},{\"name\":\"潜江市\",\"coord\":[112.70703817700621,30.349210666019893]},{\"name\":\"仙桃市\",\"coord\":[113.34688900729822,30.315951161935402]},{\"name\":\"萍乡市\",\"coord\":[113.88072263074415,27.47193090553213]},{\"name\":\"台湾省\",\"coord\":[120.14338943402045,23.596002465926095]},{\"name\":\"东莞市\",\"coord\":[113.89443658529342,22.897826158636448]},{\"name\":\"中山市\",\"coord\":[113.37118387764659,22.501478858616522]},{\"name\":\"珠海市\",\"coord\":[113.21799258934986,22.23782602992192]},{\"name\":\"北海市\",\"coord\":[109.18248083043899,21.695773689750148]},{\"name\":\"香港\",\"coord\":[114.20689279508653,22.36016760139811]},{\"name\":\"舟山市\",\"coord\":[122.22514712841459,30.338633120695956]},{\"name\":\"克孜勒苏柯尔克孜\",\"coord\":[74.62910472637343,39.59886016069875]},{\"name\":\"喀什地区\",\"coord\":[77.19899922143753,37.85462871211595]},{\"name\":\"阿克苏地区\",\"coord\":[81.43930290016381,41.067304799230456]},{\"name\":\"和田地区\",\"coord\":[80.69780509160952,36.95287032287055]},{\"name\":\"阿里地区\",\"coord\":[82.536487505389,32.69566569631762]},{\"name\":\"日喀则地区\",\"coord\":[86.5996831353606,29.54861754814263]},{\"name\":\"那曲地区\",\"coord\":[88.32523292667608,33.20600450932715]},{\"name\":\"玉树藏族自治州\",\"coord\":[95.2107128446203,33.90320387919257]},{\"name\":\"迪庆藏族自治州\",\"coord\":[99.42465312188943,28.052797714348895]},{\"name\":\"怒江傈傈族自治州\",\"coord\":[98.85737910439825,26.98345757528851]},{\"name\":\"大理白族自治州\",\"coord\":[99.93934374816013,25.684737357453045]},{\"name\":\"德宏傣族景颇族自\",\"coord\":[98.13830877778075,24.593421919561205]},{\"name\":\"保山市\",\"coord\":[99.19031013453166,24.979380341662]},{\"name\":\"临沧市\",\"coord\":[99.62483778975081,24.058807858948214]},{\"name\":\"普洱市\",\"coord\":[100.94440267992684,23.44121660743221]},{\"name\":\"西双版纳傣族自治\",\"coord\":[100.86105801845994,21.882475641324206]},{\"name\":\"拉萨市\",\"coord\":[91.3684790613129,30.14176592960237]},{\"name\":\"山南地区\",\"coord\":[92.11665242621062,28.33000201578789]},{\"name\":\"林芝地区\",\"coord\":[94.9307847458166,29.125110156601963]},{\"name\":\"昌都地区\",\"coord\":[97.33912235873476,30.48520825551814]},{\"name\":\"丽江市\",\"coord\":[100.65713436205135,26.96190318191959]},{\"name\":\"攀枝花市\",\"coord\":[101.73355913301131,26.714486678752795]},{\"name\":\"凉山彝族自治州\",\"coord\":[102.08678551422615,27.683020519860396]},{\"name\":\"楚雄彝族自治州\",\"coord\":[101.68264761198458,25.369603845264024]},{\"name\":\"红河哈尼族彝族自\",\"coord\":[102.95101719613119,23.624860095239875]},{\"name\":\"文山壮族苗族自治\",\"coord\":[104.8708359910614,23.579587266862504]},{\"name\":\"百色市\",\"coord\":[106.69546907589859,23.98220841166522]},{\"name\":\"崇左市\",\"coord\":[107.3277087317123,22.49769755349952]},{\"name\":\"防城港市\",\"coord\":[107.88939931155171,21.94550204069006]},{\"name\":\"南宁市\",\"coord\":[108.67078983716917,23.12207641861882]},{\"name\":\"钦州市\",\"coord\":[108.8532307305186,22.157690108421384]},{\"name\":\"玉林市\",\"coord\":[110.26918466489103,22.391823643610415]},{\"name\":\"湛江市\",\"coord\":[109.93033457863683,21.086751055633457]},{\"name\":\"茂名市\",\"coord\":[110.80336192333934,22.069184739040775]},{\"name\":\"阳江市\",\"coord\":[111.70471342186183,22.108751366417575]},{\"name\":\"江门市\",\"coord\":[112.53715618649149,22.297368082806777]},{\"name\":\"广州市\",\"coord\":[113.4949302208309,23.28359314707863]},{\"name\":\"清远市\",\"coord\":[113.10957368131268,24.334444053233856]},{\"name\":\"肇庆市\",\"coord\":[112.11117530204233,23.60241158796112]},{\"name\":\"梧州市\",\"coord\":[111.01709510772797,23.518132876753846]},{\"name\":\"贺州市\",\"coord\":[111.50423061842756,24.4095096817199]},{\"name\":\"桂林市\",\"coord\":[110.44046163393094,25.353966673735407]},{\"name\":\"柳州市\",\"coord\":[109.34854449214147,24.972408051485047]},{\"name\":\"河池市\",\"coord\":[107.81191841865586,24.649291651298164]},{\"name\":\"黔东南苗族侗族自\",\"coord\":[108.39952601614591,26.429286420465576]},{\"name\":\"贵阳市\",\"coord\":[106.59784062851153,26.797907456479816]},{\"name\":\"安顺市\",\"coord\":[105.76161265300635,25.988644902171018]},{\"name\":\"黔西南布依族苗族\",\"coord\":[105.5954078788574,25.404850939549405]},{\"name\":\"曲靖市\",\"coord\":[103.9164335632742,25.697243690315265]},{\"name\":\"六盘水市\",\"coord\":[104.77723228072432,26.15402255629164]},{\"name\":\"毕节地区\",\"coord\":[105.03867422931839,27.077913968069666]},{\"name\":\"昭通市\",\"coord\":[104.29730513046874,27.62418247971078]},{\"name\":\"宜宾市\",\"coord\":[104.76748901448207,28.553501804266475]},{\"name\":\"乐山市\",\"coord\":[103.56027669102787,29.160754519210577]},{\"name\":\"自贡市\",\"coord\":[104.63272827056402,29.273152614922402]},{\"name\":\"内江市\",\"coord\":[104.82644562304716,29.61272653799929]},{\"name\":\"遵义市\",\"coord\":[106.82413636302059,28.191847588570702]},{\"name\":\"达州市\",\"coord\":[107.59704170009518,31.32138258839703]},{\"name\":\"遂宁市\",\"coord\":[105.48979445433736,30.677687821242678]},{\"name\":\"广安市\",\"coord\":[106.56708164098042,30.43500706741521]},{\"name\":\"泸州市\",\"coord\":[105.42591761727707,28.50277238478137]},{\"name\":\"资阳市\",\"coord\":[104.97995126874034,30.154251886139654]},{\"name\":\"雅安市\",\"coord\":[102.69931299964517,29.892630706195035]},{\"name\":\"眉山市\",\"coord\":[104.07052881858888,29.894202166560405]},{\"name\":\"甘孜藏族自治州\",\"coord\":[100.50721042614238,30.975216556269658]},{\"name\":\"果洛藏族自治州\",\"coord\":[99.30775565051923,34.03539865224808]},{\"name\":\"海南藏族自治州\",\"coord\":[100.39969108016373,35.90048272566899]},{\"name\":\"黄南藏族自治州\",\"coord\":[101.5360706381689,35.10286360841902]},{\"name\":\"赣南藏族自治州\",\"coord\":[102.97083885806067,34.326752803339026]},{\"name\":\"陇南市\",\"coord\":[105.24780098912132,33.57031117443431]},{\"name\":\"天水市\",\"coord\":[105.53503634660417,34.62320421368087]},{\"name\":\"定西市\",\"coord\":[104.58787768541339,35.08900966621695]},{\"name\":\"临夏回族自治州\",\"coord\":[103.2612870434902,35.591577124455235]},{\"name\":\"西宁市\",\"coord\":[101.57680657999033,36.84800271717157]},{\"name\":\"海东地区\",\"coord\":[102.30909850729282,36.287400615025646]},{\"name\":\"海北藏族自治州\",\"coord\":[100.27122484450717,37.892557516083826]},{\"name\":\"金昌市\",\"coord\":[102.02244049169511,38.497330414886164]},{\"name\":\"酒泉市\",\"coord\":[95.94486678270127,40.56891536586272]},{\"name\":\"海西蒙古族藏族自\",\"coord\":[94.67143298050689,36.022725148503724]},{\"name\":\"巴音郭楞蒙古自治\",\"coord\":[88.18116214759745,39.556478810319916]},{\"name\":\"哈密地区\",\"coord\":[93.84302392518026,42.95015211178875]},{\"name\":\"叶鲁番地区\",\"coord\":[89.82035217277885,42.399368632283505]},{\"name\":\"乌鲁木齐市\",\"coord\":[88.00048109561487,43.549986370786]},{\"name\":\"阿勒泰地区\",\"coord\":[88.11213933257655,47.05593413019629]},{\"name\":\"博尔塔拉蒙古自治\",\"coord\":[82.26402238163408,44.671135542630864]},{\"name\":\"伊犁哈萨克自治州\",\"coord\":[82.80778717477179,43.53783381365267]},{\"name\":\"阿拉善盟\",\"coord\":[103.29923966842289,40.10955801781495]},{\"name\":\"武威市\",\"coord\":[102.73362058791429,37.94211141321436]},{\"name\":\"兰州市\",\"coord\":[103.73793563506032,36.27379827886003]},{\"name\":\"中卫市\",\"coord\":[105.6943786030716,37.20654236148948]},{\"name\":\"银川市\",\"coord\":[106.20022174140034,38.52103167597483]},{\"name\":\"石嘴山市\",\"coord\":[106.41544011793628,38.84054137571417]},{\"name\":\"乌海市\",\"coord\":[106.8984175998405,39.54616572239788]},{\"name\":\"鄂尔多斯市\",\"coord\":[108.43285571424619,39.24036799350715]},{\"name\":\"巴彦淖尔市\",\"coord\":[107.45840392808307,41.30159860424196]},{\"name\":\"包头市\",\"coord\":[110.46472193224272,41.48017783644221]},{\"name\":\"呼和浩特市\",\"coord\":[111.48365173603975,40.498363056149884]},{\"name\":\"乌兰察布市\",\"coord\":[112.61568977597707,41.75789561273154]},{\"name\":\"大同市\",\"coord\":[113.7107192749083,39.898956799744184]},{\"name\":\"朔州市\",\"coord\":[112.65428748167508,39.681772914701924]},{\"name\":\"忻州市\",\"coord\":[112.36127575589583,38.88990233614568]},{\"name\":\"榆林市\",\"coord\":[109.68473112169593,38.19921027134876]},{\"name\":\"延安市\",\"coord\":[109.52425222161318,36.406522726136814]},{\"name\":\"庆阳市\",\"coord\":[107.73052193155061,36.183821532624464]},{\"name\":\"固原市\",\"coord\":[106.20191575442442,36.11634909496382]},{\"name\":\"白银市\",\"coord\":[104.68634478137065,36.51582865625868]},{\"name\":\"宝鸡市\",\"coord\":[107.33534779230747,34.3387216485855]},{\"name\":\"汉中市\",\"coord\":[107.03534754266246,33.00142998064871]},{\"name\":\"广元市\",\"coord\":[105.92928137563939,32.21872447205537]},{\"name\":\"巴中市\",\"coord\":[107.03422410306194,31.99874720836291]},{\"name\":\"南充市\",\"coord\":[106.32964805032347,31.156657700184095]},{\"name\":\"绵阳市\",\"coord\":[104.58949560201106,31.88628780630976]},{\"name\":\"德阳市\",\"coord\":[104.41542984932845,31.110558133718676]},{\"name\":\"成都市\",\"coord\":[103.8852290010473,30.777258040348634]},{\"name\":\"阿坝藏族羌族自治\",\"coord\":[102.26209319552814,32.45725845387284]},{\"name\":\"安康市\",\"coord\":[109.14236501848015,32.77467694678074]},{\"name\":\"十堰市\",\"coord\":[110.39934083416314,32.376209039347906]},{\"name\":\"襄阳市\",\"coord\":[111.97539147094662,31.93399822417465]},{\"name\":\"宜昌市\",\"coord\":[111.22204852395754,30.772457669035354]},{\"name\":\"恩施市\",\"coord\":[109.42158366502872,30.260366574390105]},{\"name\":\"张家界市\",\"coord\":[110.59760006538717,29.330107409240718]},{\"name\":\"吉首市\",\"coord\":[109.72176899848378,28.681903937242495]},{\"name\":\"铜仁地区\",\"coord\":[108.54247523485463,28.11736237519646]},{\"name\":\"重庆市\",\"coord\":[107.86007108564992,30.186253395053196]},{\"name\":\"怀化市\",\"coord\":[109.94325166787243,27.43919084801186]},{\"name\":\"益阳市\",\"coord\":[112.43060358108062,28.75127294553697]},{\"name\":\"娄底市\",\"coord\":[111.41891416951897,27.696312460064604]},{\"name\":\"常德市\",\"coord\":[111.72571610131646,29.27189463838195]},{\"name\":\"荆州市\",\"coord\":[112.65896596965268,30.05161542755362]},{\"name\":\"荆门市\",\"coord\":[112.6586855902184,31.01267124474617]},{\"name\":\"岳阳市\",\"coord\":[113.2595036144316,29.106247116930163]},{\"name\":\"长沙市\",\"coord\":[113.15415586456598,28.222934680488425]},{\"name\":\"湘潭市\",\"coord\":[112.51092596317824,27.69881544105668]},{\"name\":\"株州市\",\"coord\":[113.49665538546823,27.03993794610501]},{\"name\":\"衡阳市\",\"coord\":[112.48849636578527,26.783613569970782]},{\"name\":\"邵阳市\",\"coord\":[110.6723832117475,26.81652287086792]},{\"name\":\"永州市\",\"coord\":[111.8565364154186,25.768488267811968]},{\"name\":\"韶关市\",\"coord\":[113.53420325850979,24.69848878771937]},{\"name\":\"惠州市\",\"coord\":[114.32029589634925,23.25504544231892]},{\"name\":\"佛山市\",\"coord\":[112.95925897403649,23.10116677189257]},{\"name\":\"云浮市\",\"coord\":[111.78042514904234,22.840400494105687]},{\"name\":\"深圳市\",\"coord\":[114.13138648919008,22.649563063468342]},{\"name\":\"汕尾市\",\"coord\":[115.57412892884373,23.06989642104901]},{\"name\":\"河源市\",\"coord\":[114.89746229844398,23.97971937124767]},{\"name\":\"揭阳市\",\"coord\":[116.04290004239446,23.304802704715357]},{\"name\":\"汕头市\",\"coord\":[116.7008461897183,23.35898625947344]},{\"name\":\"潮州市\",\"coord\":[116.75405548481658,23.854381508863064]},{\"name\":\"梅州市\",\"coord\":[116.13719397345734,24.15633544812716]},{\"name\":\"漳州市\",\"coord\":[117.38279760543345,24.41111215459575]},{\"name\":\"厦门市\",\"coord\":[118.04275971554665,24.675908246507944]},{\"name\":\"龙岩市\",\"coord\":[116.69341144552507,25.20284542644492]},{\"name\":\"泉州市\",\"coord\":[118.12035864630246,25.22984144365049]},{\"name\":\"莆田市\",\"coord\":[118.82439690138142,25.439653480972687]},{\"name\":\"福州市\",\"coord\":[119.1608285845262,25.99117532466728]},{\"name\":\"三明市\",\"coord\":[117.51188176216434,26.318292906961602]},{\"name\":\"南平市\",\"coord\":[118.16153136678187,27.306303151805437]},{\"name\":\"抚州市\",\"coord\":[116.3455359885574,27.487043655935366]},{\"name\":\"鹰潭市\",\"coord\":[117.01082360702333,28.241253742969946]},{\"name\":\"吉安市\",\"coord\":[114.91377151807418,26.957486660664525]},{\"name\":\"赣州市\",\"coord\":[115.046455717572,25.81565075681663]},{\"name\":\"郴州市\",\"coord\":[113.1544526703492,25.871927095452524]},{\"name\":\"新余市\",\"coord\":[114.94161795877827,27.79044654578371]},{\"name\":\"宜春市\",\"coord\":[115.04574494880995,28.306428044943356]},{\"name\":\"南昌市\",\"coord\":[115.9963824234495,28.664803351584705]},{\"name\":\"九江市\",\"coord\":[115.53225905704193,29.362905920276297]},{\"name\":\"上饶市\",\"coord\":[117.8595355766598,28.765755150094634]},{\"name\":\"景德镇市\",\"coord\":[117.25387030721845,29.33426823662448]},{\"name\":\"黄山市\",\"coord\":[117.85476357809696,29.969632034273722]},{\"name\":\"池州市\",\"coord\":[117.34517113140791,30.208089337922335]},{\"name\":\"铜陵市\",\"coord\":[117.93160431300694,30.926442655001676]},{\"name\":\"安庆市\",\"coord\":[116.54307680610799,30.524265461641296]},{\"name\":\"黄石市\",\"coord\":[115.02354597728443,29.924060229331015]},{\"name\":\"咸宁市\",\"coord\":[114.26967602231792,29.652174021136048]},{\"name\":\"黄冈市\",\"coord\":[115.2859016705373,30.65856897065683]},{\"name\":\"武汉市\",\"coord\":[114.34552076948799,30.68836237966767]},{\"name\":\"随州市\",\"coord\":[113.3850627838818,31.87891659924412]},{\"name\":\"信阳市\",\"coord\":[114.81374730587638,32.0309685135914]},{\"name\":\"驻马店市\",\"coord\":[114.07756451509235,32.896720987266114]},{\"name\":\"商洛市\",\"coord\":[109.82044421310393,33.77403373563189]},{\"name\":\"西安市\",\"coord\":[109.11839808451401,34.225257215515896]},{\"name\":\"渭南市\",\"coord\":[109.75732444226935,35.025913644359306]},{\"name\":\"铜川市\",\"coord\":[108.98695328111377,35.19235092947735]},{\"name\":\"咸阳市\",\"coord\":[108.36398776446165,34.84311348287181]},{\"name\":\"三门峡市\",\"coord\":[110.80049688104964,34.31818709571671]},{\"name\":\"运城市\",\"coord\":[111.1736679525165,35.19010372283576]},{\"name\":\"洛阳市\",\"coord\":[111.87577573098216,34.33379926109848]},{\"name\":\"平顶山市\",\"coord\":[112.80931281928427,33.759895800153096]},{\"name\":\"漯河市\",\"coord\":[113.83505724178012,33.70034266174508]},{\"name\":\"许昌市\",\"coord\":[113.78762484088509,34.051835688452435]},{\"name\":\"郑州市\",\"coord\":[113.49619951867594,34.61181797865449]},{\"name\":\"焦作市\",\"coord\":[113.13404280173008,35.134167097471625]},{\"name\":\"晋城市\",\"coord\":[112.7495732073233,35.63186423091449]},{\"name\":\"长治市\",\"coord\":[112.85900842873183,36.45872910742828]},{\"name\":\"临汾市\",\"coord\":[111.49379787924448,36.22810800777857]},{\"name\":\"太原市\",\"coord\":[112.15628804033796,37.91704444063036]},{\"name\":\"吕梁市\",\"coord\":[111.31901105774872,37.712740463356496]},{\"name\":\"晋中市\",\"coord\":[113.08199599739676,37.36532613794343]},{\"name\":\"邯郸市\",\"coord\":[114.41824047234618,36.530119932543315]},{\"name\":\"安阳市\",\"coord\":[113.88883283163116,35.7797611183252]},{\"name\":\"鹤壁市\",\"coord\":[114.3654094911545,35.75770487428472]},{\"name\":\"新乡市\",\"coord\":[113.9184107718167,35.348471214026716]},{\"name\":\"开封市\",\"coord\":[114.52801677500626,34.61371216679872]},{\"name\":\"周口市\",\"coord\":[114.88509782391864,33.69999759722657]},{\"name\":\"阜阳市\",\"coord\":[115.44595951398213,32.98060371610532]},{\"name\":\"淮南市\",\"coord\":[116.68941991880993,32.79972275772595]},{\"name\":\"蚌埠市\",\"coord\":[117.38594715783302,33.106729536033896]},{\"name\":\"淮北市\",\"coord\":[116.69651711889378,33.69527529383458]},{\"name\":\"宿州市\",\"coord\":[117.30175405886838,33.943330421260015]},{\"name\":\"亳州市\",\"coord\":[116.12410804185097,33.46769392946132]},{\"name\":\"商丘市\",\"coord\":[115.59575176872548,34.28339840831147]},{\"name\":\"菏泽市\",\"coord\":[115.53631974831816,35.197319393220624]},{\"name\":\"濮阳市\",\"coord\":[115.3070485514902,35.775883510964334]},{\"name\":\"聊城市\",\"coord\":[115.8870069012884,36.40529594548765]},{\"name\":\"邢台市\",\"coord\":[114.74259008644859,37.251396750084155]},{\"name\":\"石家庄市\",\"coord\":[114.56923838363613,38.13141710980106]},{\"name\":\"阳泉市\",\"coord\":[113.39216149668508,38.09075470547468]},{\"name\":\"保定市\",\"coord\":[115.261524468934,39.09118520781398]},{\"name\":\"衡水市\",\"coord\":[115.8182936677897,37.715661598187154]},{\"name\":\"德州市\",\"coord\":[116.4582273790399,37.19372347888644]},{\"name\":\"沧州市\",\"coord\":[116.76192710911863,38.20240042039232]},{\"name\":\"廊坊市\",\"coord\":[116.50410772133856,39.27896741763884]},{\"name\":\"天津市\",\"coord\":[117.31988934444873,39.37154482470619]},{\"name\":\"北京市\",\"coord\":[116.59734730757869,40.237112944270976]},{\"name\":\"张家口市\",\"coord\":[115.1823606483226,40.83732566607167]},{\"name\":\"唐山市\",\"coord\":[117.8693184261954,39.71862889477249]},{\"name\":\"秦皇岛市\",\"coord\":[119.30467355367742,39.990574652162564]},{\"name\":\"承德市\",\"coord\":[117.16275671911026,41.36623845548547]},{\"name\":\"葫芦岛市\",\"coord\":[119.9342336210531,40.5628822626519]},{\"name\":\"朝阳市\",\"coord\":[120.11853493535794,41.471852354885755]},{\"name\":\"赤峰市\",\"coord\":[118.50943546234379,43.25452976059767]},{\"name\":\"锦州市\",\"coord\":[121.5167549323861,41.45933087433065]},{\"name\":\"营口市\",\"coord\":[122.58571915054674,40.42093503997384]},{\"name\":\"丹东市\",\"coord\":[124.33549382902183,40.46369290272115]},{\"name\":\"辽阳市\",\"coord\":[123.34064798039414,41.152331397771356]},{\"name\":\"盘锦市\",\"coord\":[122.06718005354679,41.05573599862555]},{\"name\":\"阜新市\",\"coord\":[121.93889757908204,42.27641773244204]},{\"name\":\"鞍山市\",\"coord\":[122.78904432242356,40.77781183142038]},{\"name\":\"沈阳市\",\"coord\":[122.99508899709724,42.1162195010079]},{\"name\":\"铁岭市\",\"coord\":[124.23100515588399,42.72666083611828]},{\"name\":\"扶顺市\",\"coord\":[124.46027188217573,41.82955407638859]},{\"name\":\"通辽市\",\"coord\":[122.0729370657937,43.90889130864869]},{\"name\":\"兴安盟\",\"coord\":[120.79456431092532,45.92003249442161]},{\"name\":\"白城市\",\"coord\":[123.10619907715235,45.25475749267784]},{\"name\":\"齐齐哈尔市\",\"coord\":[124.5462214659102,47.55395009317394]},{\"name\":\"大兴安岭地区\",\"coord\":[124.50992855161529,52.18438447846694]},{\"name\":\"黑河市\",\"coord\":[127.14721400335922,49.25080134026901]},{\"name\":\"大庆市\",\"coord\":[124.40329830095243,46.401048760966745]},{\"name\":\"绥化市\",\"coord\":[126.5214484055605,46.76992452194825]},{\"name\":\"松原市\",\"coord\":[124.21244334807682,44.75779381338502]},{\"name\":\"四平市\",\"coord\":[124.27839350328821,43.52139065090318]},{\"name\":\"通化市\",\"coord\":[125.67392830706305,41.91771808663852]},{\"name\":\"辽源市\",\"coord\":[125.33529527643432,42.758340204944986]},{\"name\":\"吉林市\",\"coord\":[126.83350281902375,43.60730120049175]},{\"name\":\"长春市\",\"coord\":[125.53597875970374,44.24624314701737]},{\"name\":\"白山市\",\"coord\":[127.16780160322108,42.093893880305075]},{\"name\":\"哈尔滨市\",\"coord\":[127.39125008786029,45.36200668820575]},{\"name\":\"鹤岗市\",\"coord\":[130.4703811258197,47.66520688940109]},{\"name\":\"伊春市\",\"coord\":[128.91240831703635,47.93833794565277]},{\"name\":\"七台河市\",\"coord\":[131.2677920224311,45.945099776108584]},{\"name\":\"鸡西市\",\"coord\":[132.38059153660274,45.722934218318535]},{\"name\":\"双鸭山市\",\"coord\":[132.3184817002743,46.65813679030265]},{\"name\":\"佳木斯市\",\"coord\":[132.26174446608726,47.17569713691394]},{\"name\":\"呼伦贝尔市\",\"coord\":[122.3210739998419,50.18176996070858]},{\"name\":\"孝感市\",\"coord\":[113.83749892135485,31.11757234692128]},{\"name\":\"贵港市\",\"coord\":[110.07354588052804,23.380735604767374]},{\"name\":\"黔南布依族苗族自\",\"coord\":[107.30931767543106,26.2976919432269]},{\"name\":\"宁德市\",\"coord\":[119.52482556634342,27.013151692716413]},{\"name\":\"温州市\",\"coord\":[120.30037042732202,27.8699145504001]},{\"name\":\"台州市\",\"coord\":[120.88886782713843,28.670799172772313]},{\"name\":\"丽水市\",\"coord\":[119.56796851966463,28.170268394477755]},{\"name\":\"衢州市\",\"coord\":[118.79479802644406,28.865874397158763]},{\"name\":\"金华市\",\"coord\":[119.99381920686633,29.093455548185744]},{\"name\":\"绍兴市\",\"coord\":[120.46546691682343,29.69382513836818]},{\"name\":\"宁波市\",\"coord\":[121.42142987830871,29.70001162878972]},{\"name\":\"杭州市\",\"coord\":[119.4405685790891,29.87218307296989]},{\"name\":\"宣城市\",\"coord\":[118.68748382914703,30.628143499626418]},{\"name\":\"湖州市\",\"coord\":[119.98261306633574,30.7945175862809]},{\"name\":\"嘉兴市\",\"coord\":[120.83889215988998,30.67538495499343]},{\"name\":\"上海市\",\"coord\":[121.37534147322967,31.25628247908459]},{\"name\":\"苏州市\",\"coord\":[120.6906182622391,31.381280695137775]},{\"name\":\"无锡市\",\"coord\":[120.32182300914366,31.54113306724517]},{\"name\":\"常州市\",\"coord\":[119.61953292830165,31.611878565375576]},{\"name\":\"南京市\",\"coord\":[118.71890548838064,31.910863187910323]},{\"name\":\"镇江市\",\"coord\":[119.42349332902813,31.97942313430778]},{\"name\":\"合肥市\",\"coord\":[117.30651975617157,31.79407863049138]},{\"name\":\"六安市\",\"coord\":[116.24668220575353,31.820846193819513]},{\"name\":\"滁州市\",\"coord\":[117.88422385307969,32.51792621904418]},{\"name\":\"泰州市\",\"coord\":[120.03124303305091,32.56503102346783]},{\"name\":\"南通市\",\"coord\":[120.85599446760912,32.18496706099728]},{\"name\":\"盐城市\",\"coord\":[120.01812490612667,33.54219948734023]},{\"name\":\"淮安市\",\"coord\":[119.0749424205415,33.39203631772854]},{\"name\":\"宿迁市\",\"coord\":[118.45404943216346,33.666258719120265]},{\"name\":\"徐州市\",\"coord\":[117.77482249295966,34.30847766157078]},{\"name\":\"济宁市\",\"coord\":[116.74147276546373,35.27488504351119]},{\"name\":\"枣庄市\",\"coord\":[117.43359942491492,34.884162021736]},{\"name\":\"连云港市\",\"coord\":[119.01553213785074,34.54316517587849]},{\"name\":\"临沂市\",\"coord\":[118.31478835349617,35.28173079028279]},{\"name\":\"日照市\",\"coord\":[119.14265350444272,35.54479073199592]},{\"name\":\"青岛市\",\"coord\":[120.27779044405756,36.3464117375903]},{\"name\":\"威海市\",\"coord\":[122.12963327195605,37.13879077904251]},{\"name\":\"烟台市\",\"coord\":[120.7689567423966,37.19772002195597]},{\"name\":\"潍坊市\",\"coord\":[119.02178548592039,36.49292234053931]},{\"name\":\"淄博市\",\"coord\":[117.92936024367185,36.60871347163638]},{\"name\":\"泰安市\",\"coord\":[116.93810893944303,36.0423330118612]},{\"name\":\"济南市\",\"coord\":[117.34560282551296,36.769574973846304]},{\"name\":\"东营市\",\"coord\":[118.4915054457184,37.52194690335787]},{\"name\":\"滨州市\",\"coord\":[117.67610299757533,37.4439597758601]},{\"name\":\"昆明市\",\"coord\":[102.93100245594789,25.481300763922075]},{\"name\":\"玉溪市\",\"coord\":[102.23080854291823,24.156168324611663]},{\"name\":\"塔城地区\",\"coord\":[83.60908162840168,45.3721852373893]},{\"name\":\"张掖市\",\"coord\":[100.47710030600572,38.704239320458385]},{\"name\":\"南阳市\",\"coord\":[112.1400670951149,33.03033276715801]},{\"name\":\"扬州市\",\"coord\":[119.48949608990988,32.80956776339646]},{\"name\":\"延边朝鲜族自治州\",\"coord\":[129.3577692895626,43.24968794080283]},{\"name\":\"牡丹江市\",\"coord\":[129.87240796405672,44.7073040108322]},{\"name\":\"澳门\",\"coord\":[113.56289691515346,22.14602596262204]},{\"name\":\"吴忠市\",\"coord\":[106.76894508116403,37.72566765880316]},{\"name\":\"来宾市\",\"coord\":[109.25592217010114,23.86346274681084]},{\"name\":\"平凉市\",\"coord\":[107.0708132782897,35.30329631658711]},{\"name\":\"马鞍山市\",\"coord\":[118.27245878467022,31.657727937739004]},{\"name\":\"芜湖市\",\"coord\":[118.32992684415504,31.081688223101658]},{\"name\":\"澄迈县\",\"coord\":[110.04198076060266,19.694955078668105]},{\"name\":\"保亭黎族苗族自治\",\"coord\":[109.6055304964257,18.6101488675304]},{\"name\":\"乐东黎族自治县\",\"coord\":[109.04051999525574,18.643137437909203]},{\"name\":\"儋州市\",\"coord\":[109.3431358337404,19.550974957403195]},{\"name\":\"定安县\",\"coord\":[110.38744429685676,19.47557074114284]},{\"name\":\"屯昌县\",\"coord\":[110.00574767630334,19.367175093044388]},{\"name\":\"白沙黎族自治县\",\"coord\":[109.36860737761768,19.214416393082217]},{\"name\":\"琼中黎族苗族自治\",\"coord\":[109.86691465937548,19.073671135862682]},{\"name\":\"东方市\",\"coord\":[108.86903802405428,19.017352815445214]},{\"name\":\"昌江黎族自治县\",\"coord\":[108.9686431884767,19.182594167127824]},{\"name\":\"海口市\",\"coord\":[110.420654296875,19.806565564640795]},{\"name\":\"济源市\",\"coord\":[112.38051465474433,35.07958362422394]},{\"name\":\"五指山市\",\"coord\":[109.53595187364496,18.832908264613966]},{\"name\":\"大连市\",\"coord\":[121.96662235866603,39.444150542439914]},{\"name\":\"文昌市三沙市\",\"coord\":[110.81828537536748,19.756501444162936]},{\"name\":\"三亚市\",\"coord\":[109.38424600793707,18.39186315877128]},{\"name\":\"万宁市\",\"coord\":[110.28485046979574,18.860240588635115]},{\"name\":\"陵水黎族自治县\",\"coord\":[109.95577603229562,18.594712684620465]},{\"name\":\"临高县\",\"coord\":[109.71915395436967,19.79420403032508]},{\"name\":\"琼海市\",\"coord\":[110.41650700703043,19.22315873149372]}]");
+
+/***/ }),
+
 /***/ "QmiY":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7145,9 +11121,18 @@ var RestMapParameter = function RestMapParameter(options) {
   this.attributeFilter = options.attributeFilter || null;
   this.maxFeatures = options.maxFeatures || 20;
   this.name = options.name || (0, _lang.geti18n)().t('commontypes.restMap');
+  this.proxy = options.proxy;
 };
 
 exports.default = RestMapParameter;
+
+/***/ }),
+
+/***/ "QpuX":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("+qE3").EventEmitter;
+
 
 /***/ }),
 
@@ -7771,6 +11756,87 @@ module.exports = {
 
 /***/ }),
 
+/***/ "RoFp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*<replacement>*/
+
+var pna = __webpack_require__("lm0R");
+/*</replacement>*/
+
+// undocumented cb() API, needed for core, not for public API
+function destroy(err, cb) {
+  var _this = this;
+
+  var readableDestroyed = this._readableState && this._readableState.destroyed;
+  var writableDestroyed = this._writableState && this._writableState.destroyed;
+
+  if (readableDestroyed || writableDestroyed) {
+    if (cb) {
+      cb(err);
+    } else if (err && (!this._writableState || !this._writableState.errorEmitted)) {
+      pna.nextTick(emitErrorNT, this, err);
+    }
+    return this;
+  }
+
+  // we set destroyed to true before firing error callbacks in order
+  // to make it re-entrance safe in case destroy() is called within callbacks
+
+  if (this._readableState) {
+    this._readableState.destroyed = true;
+  }
+
+  // if this is a duplex stream mark the writable part as destroyed as well
+  if (this._writableState) {
+    this._writableState.destroyed = true;
+  }
+
+  this._destroy(err || null, function (err) {
+    if (!cb && err) {
+      pna.nextTick(emitErrorNT, _this, err);
+      if (_this._writableState) {
+        _this._writableState.errorEmitted = true;
+      }
+    } else if (cb) {
+      cb(err);
+    }
+  });
+
+  return this;
+}
+
+function undestroy() {
+  if (this._readableState) {
+    this._readableState.destroyed = false;
+    this._readableState.reading = false;
+    this._readableState.ended = false;
+    this._readableState.endEmitted = false;
+  }
+
+  if (this._writableState) {
+    this._writableState.destroyed = false;
+    this._writableState.ended = false;
+    this._writableState.ending = false;
+    this._writableState.finished = false;
+    this._writableState.errorEmitted = false;
+  }
+}
+
+function emitErrorNT(self, err) {
+  self.emit('error', err);
+}
+
+module.exports = {
+  destroy: destroy,
+  undestroy: undestroy
+};
+
+/***/ }),
+
 /***/ "SPBs":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7812,6 +11878,32 @@ function center(geojson, options) {
 }
 exports.default = center;
 
+
+/***/ }),
+
+/***/ "STtz":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(Buffer) {var js2xml = __webpack_require__("zvmt");
+
+module.exports = function (json, options) {
+  if (json instanceof Buffer) {
+    json = json.toString();
+  }
+  var js = null;
+  if (typeof (json) === 'string') {
+    try {
+      js = JSON.parse(json);
+    } catch (e) {
+      throw new Error('The JSON structure is invalid');
+    }
+  } else {
+    js = json;
+  }
+  return js2xml(js, options);
+};
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("tjlA").Buffer))
 
 /***/ }),
 
@@ -8035,6 +12127,18 @@ var _default = {
   }
 };
 exports.default = _default;
+
+/***/ }),
+
+/***/ "TPtX":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("V8Rk");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Popup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -8288,6 +12392,105 @@ var staticRenderFns = []
 
 /***/ }),
 
+/***/ "V8Rk":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Popper = _interopRequireDefault(__webpack_require__("jDn+"));
+
+var _Options = _interopRequireDefault(__webpack_require__("VeHG"));
+
+var _vmUpdater = _interopRequireDefault(__webpack_require__("w286"));
+
+var _theme = _interopRequireDefault(__webpack_require__("bCOg"));
+
+var _mapGetter = _interopRequireDefault(__webpack_require__("KP9C"));
+
+var _PopupViewModel = _interopRequireDefault(__webpack_require__("njMg"));
+
+var _default2 = {
+  name: 'SmPopup',
+  mixins: [_Popper.default, _Options.default, _vmUpdater.default, _mapGetter.default, _theme.default],
+  viewModelProps: ['latLng', 'content'],
+  props: {
+    latLng: {
+      type: [Object, Array],
+      default: function _default() {
+        return [];
+      }
+    }
+  },
+  watch: {
+    backgroundData: function backgroundData() {
+      this.changePopupStyle();
+    },
+    options: function options() {
+      this.setViewModel();
+    }
+  },
+  loaded: function loaded() {
+    var _this = this;
+
+    this.setViewModel();
+    this.mapObject = this.viewModel.getPopup();
+    this.parentContainer = this.$parent; // 如果有父组件有mapObject,则可以绑定在上面
+
+    if (this.parentContainer.mapObject && this.parentContainer.mapObject.bindPopup) {
+      this.parentContainer.mapObject.bindPopup(this.mapObject);
+      this.$nextTick(function () {
+        _this.$emit('ready', _this.mapObject);
+      });
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    if (this.parentContainer) {
+      if (this.parentContainer.unbindPopup) {
+        this.parentContainer.unbindPopup();
+      } else if (this.parentContainer.mapObject && this.parentContainer.mapObject.unbindPopup) {
+        this.parentContainer.mapObject.unbindPopup();
+      }
+    }
+  },
+  methods: {
+    setViewModel: function setViewModel() {
+      this.viewModel = new _PopupViewModel.default({
+        latLng: this.latLng,
+        content: this.content || this.$el,
+        options: this.options
+      });
+    },
+    changePopupStyle: function changePopupStyle() {
+      var popupContent = document.querySelector('.leaflet-popup-content-wrapper');
+      var popupTip = document.querySelector('.leaflet-popup-tip');
+      var popupCloseBtn = document.querySelector('.leaflet-container a.leaflet-popup-close-button:hover');
+
+      if (popupContent) {
+        popupContent.style.background = this.backgroundData;
+      }
+
+      if (popupTip) {
+        popupTip.style.background = this.backgroundData;
+      }
+
+      if (popupCloseBtn) {
+        popupTip.style.color = this.textColorsData;
+      }
+    }
+  }
+};
+exports.default = _default2;
+
+/***/ }),
+
 /***/ "VEr5":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8316,6 +12519,30 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 )
 
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "VeHG":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default2 = {
+  props: {
+    options: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    }
+  }
+};
+exports.default = _default2;
 
 /***/ }),
 
@@ -8439,7 +12666,10 @@ var _default = {
     crsNotSupport: 'The coordinate system of the current map is not supported!',
     TileMatrixSetNotSuppport: 'Incoming TileMatrixSet is not supported!',
     getLayerInfoFailed: 'Failed to get layer information!',
-    crsnotsupport: 'Unsupported coordinate system!'
+    crsnotsupport: 'Unsupported coordinate system!',
+    baiduMapNotSupport: 'Baidu maps is not supported yet!',
+    sampleDataNotSupport: 'Sample datas is not supported yet!',
+    mvtNotSupport: 'Vector tile layers is not supported yet!'
   },
   legend: {
     themeField: 'Thematic Field',
@@ -8485,6 +12715,9 @@ var _default = {
     noResults: 'The query result is empty!',
     queryFailed: 'Query failed!',
     seviceNotSupport: 'This service does not support queries!'
+  },
+  identify: {
+    layerNotExit: "The layer '{layer}' does not exist in the map's style"
   },
   openFile: {
     fileSizeExceeded: "The file size is too big! The file size can't exceed 10M!",
@@ -10897,6 +15130,92 @@ function stubFalse() {
 module.exports = isEqual;
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("YuTi")(module)))
+
+/***/ }),
+
+/***/ "Xhqo":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Buffer = __webpack_require__("hwdV").Buffer;
+var util = __webpack_require__(2);
+
+function copyBuffer(src, target, offset) {
+  src.copy(target, offset);
+}
+
+module.exports = function () {
+  function BufferList() {
+    _classCallCheck(this, BufferList);
+
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  BufferList.prototype.push = function push(v) {
+    var entry = { data: v, next: null };
+    if (this.length > 0) this.tail.next = entry;else this.head = entry;
+    this.tail = entry;
+    ++this.length;
+  };
+
+  BufferList.prototype.unshift = function unshift(v) {
+    var entry = { data: v, next: this.head };
+    if (this.length === 0) this.tail = entry;
+    this.head = entry;
+    ++this.length;
+  };
+
+  BufferList.prototype.shift = function shift() {
+    if (this.length === 0) return;
+    var ret = this.head.data;
+    if (this.length === 1) this.head = this.tail = null;else this.head = this.head.next;
+    --this.length;
+    return ret;
+  };
+
+  BufferList.prototype.clear = function clear() {
+    this.head = this.tail = null;
+    this.length = 0;
+  };
+
+  BufferList.prototype.join = function join(s) {
+    if (this.length === 0) return '';
+    var p = this.head;
+    var ret = '' + p.data;
+    while (p = p.next) {
+      ret += s + p.data;
+    }return ret;
+  };
+
+  BufferList.prototype.concat = function concat(n) {
+    if (this.length === 0) return Buffer.alloc(0);
+    if (this.length === 1) return this.head.data;
+    var ret = Buffer.allocUnsafe(n >>> 0);
+    var p = this.head;
+    var i = 0;
+    while (p) {
+      copyBuffer(p.data, ret, i);
+      i += p.data.length;
+      p = p.next;
+    }
+    return ret;
+  };
+
+  return BufferList;
+}();
+
+if (util && util.inspect && util.inspect.custom) {
+  module.exports.prototype[util.inspect.custom] = function () {
+    var obj = util.inspect({ length: this.length });
+    return this.constructor.name + ' ' + obj;
+  };
+}
 
 /***/ }),
 
@@ -14583,6 +18902,60 @@ function parseUrl(url) {
 
 /***/ }),
 
+/***/ "eA/Y":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// a passthrough stream.
+// basically just the most minimal sort of Transform stream.
+// Every written chunk gets output as-is.
+
+
+
+module.exports = PassThrough;
+
+var Transform = __webpack_require__("J78i");
+
+/*<replacement>*/
+var util = __webpack_require__("Onz0");
+util.inherits = __webpack_require__("P7XM");
+/*</replacement>*/
+
+util.inherits(PassThrough, Transform);
+
+function PassThrough(options) {
+  if (!(this instanceof PassThrough)) return new PassThrough(options);
+
+  Transform.call(this, options);
+}
+
+PassThrough.prototype._transform = function (chunk, encoding, cb) {
+  cb(null, chunk);
+};
+
+/***/ }),
+
 /***/ "ekee":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -14592,6 +18965,309 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
  /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Text_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "fXKp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+/*<replacement>*/
+
+var Buffer = __webpack_require__("hwdV").Buffer;
+/*</replacement>*/
+
+var isEncoding = Buffer.isEncoding || function (encoding) {
+  encoding = '' + encoding;
+  switch (encoding && encoding.toLowerCase()) {
+    case 'hex':case 'utf8':case 'utf-8':case 'ascii':case 'binary':case 'base64':case 'ucs2':case 'ucs-2':case 'utf16le':case 'utf-16le':case 'raw':
+      return true;
+    default:
+      return false;
+  }
+};
+
+function _normalizeEncoding(enc) {
+  if (!enc) return 'utf8';
+  var retried;
+  while (true) {
+    switch (enc) {
+      case 'utf8':
+      case 'utf-8':
+        return 'utf8';
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return 'utf16le';
+      case 'latin1':
+      case 'binary':
+        return 'latin1';
+      case 'base64':
+      case 'ascii':
+      case 'hex':
+        return enc;
+      default:
+        if (retried) return; // undefined
+        enc = ('' + enc).toLowerCase();
+        retried = true;
+    }
+  }
+};
+
+// Do not cache `Buffer.isEncoding` when checking encoding names as some
+// modules monkey-patch it to support additional encodings
+function normalizeEncoding(enc) {
+  var nenc = _normalizeEncoding(enc);
+  if (typeof nenc !== 'string' && (Buffer.isEncoding === isEncoding || !isEncoding(enc))) throw new Error('Unknown encoding: ' + enc);
+  return nenc || enc;
+}
+
+// StringDecoder provides an interface for efficiently splitting a series of
+// buffers into a series of JS strings without breaking apart multi-byte
+// characters.
+exports.StringDecoder = StringDecoder;
+function StringDecoder(encoding) {
+  this.encoding = normalizeEncoding(encoding);
+  var nb;
+  switch (this.encoding) {
+    case 'utf16le':
+      this.text = utf16Text;
+      this.end = utf16End;
+      nb = 4;
+      break;
+    case 'utf8':
+      this.fillLast = utf8FillLast;
+      nb = 4;
+      break;
+    case 'base64':
+      this.text = base64Text;
+      this.end = base64End;
+      nb = 3;
+      break;
+    default:
+      this.write = simpleWrite;
+      this.end = simpleEnd;
+      return;
+  }
+  this.lastNeed = 0;
+  this.lastTotal = 0;
+  this.lastChar = Buffer.allocUnsafe(nb);
+}
+
+StringDecoder.prototype.write = function (buf) {
+  if (buf.length === 0) return '';
+  var r;
+  var i;
+  if (this.lastNeed) {
+    r = this.fillLast(buf);
+    if (r === undefined) return '';
+    i = this.lastNeed;
+    this.lastNeed = 0;
+  } else {
+    i = 0;
+  }
+  if (i < buf.length) return r ? r + this.text(buf, i) : this.text(buf, i);
+  return r || '';
+};
+
+StringDecoder.prototype.end = utf8End;
+
+// Returns only complete characters in a Buffer
+StringDecoder.prototype.text = utf8Text;
+
+// Attempts to complete a partial non-UTF-8 character using bytes from a Buffer
+StringDecoder.prototype.fillLast = function (buf) {
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);
+  this.lastNeed -= buf.length;
+};
+
+// Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a
+// continuation byte. If an invalid byte is detected, -2 is returned.
+function utf8CheckByte(byte) {
+  if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;
+  return byte >> 6 === 0x02 ? -1 : -2;
+}
+
+// Checks at most 3 bytes at the end of a Buffer in order to detect an
+// incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)
+// needed to complete the UTF-8 character (if applicable) are returned.
+function utf8CheckIncomplete(self, buf, i) {
+  var j = buf.length - 1;
+  if (j < i) return 0;
+  var nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 1;
+    return nb;
+  }
+  if (--j < i || nb === -2) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 2;
+    return nb;
+  }
+  if (--j < i || nb === -2) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) {
+      if (nb === 2) nb = 0;else self.lastNeed = nb - 3;
+    }
+    return nb;
+  }
+  return 0;
+}
+
+// Validates as many continuation bytes for a multi-byte UTF-8 character as
+// needed or are available. If we see a non-continuation byte where we expect
+// one, we "replace" the validated continuation bytes we've seen so far with
+// a single UTF-8 replacement character ('\ufffd'), to match v8's UTF-8 decoding
+// behavior. The continuation byte check is included three times in the case
+// where all of the continuation bytes for a character exist in the same buffer.
+// It is also done this way as a slight performance increase instead of using a
+// loop.
+function utf8CheckExtraBytes(self, buf, p) {
+  if ((buf[0] & 0xC0) !== 0x80) {
+    self.lastNeed = 0;
+    return '\ufffd';
+  }
+  if (self.lastNeed > 1 && buf.length > 1) {
+    if ((buf[1] & 0xC0) !== 0x80) {
+      self.lastNeed = 1;
+      return '\ufffd';
+    }
+    if (self.lastNeed > 2 && buf.length > 2) {
+      if ((buf[2] & 0xC0) !== 0x80) {
+        self.lastNeed = 2;
+        return '\ufffd';
+      }
+    }
+  }
+}
+
+// Attempts to complete a multi-byte UTF-8 character using bytes from a Buffer.
+function utf8FillLast(buf) {
+  var p = this.lastTotal - this.lastNeed;
+  var r = utf8CheckExtraBytes(this, buf, p);
+  if (r !== undefined) return r;
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, p, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, p, 0, buf.length);
+  this.lastNeed -= buf.length;
+}
+
+// Returns all complete UTF-8 characters in a Buffer. If the Buffer ended on a
+// partial character, the character's bytes are buffered until the required
+// number of bytes are available.
+function utf8Text(buf, i) {
+  var total = utf8CheckIncomplete(this, buf, i);
+  if (!this.lastNeed) return buf.toString('utf8', i);
+  this.lastTotal = total;
+  var end = buf.length - (total - this.lastNeed);
+  buf.copy(this.lastChar, 0, end);
+  return buf.toString('utf8', i, end);
+}
+
+// For UTF-8, a replacement character is added when ending on a partial
+// character.
+function utf8End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + '\ufffd';
+  return r;
+}
+
+// UTF-16LE typically needs two bytes per character, but even if we have an even
+// number of bytes available, we need to check if we end on a leading/high
+// surrogate. In that case, we need to wait for the next two bytes in order to
+// decode the last character properly.
+function utf16Text(buf, i) {
+  if ((buf.length - i) % 2 === 0) {
+    var r = buf.toString('utf16le', i);
+    if (r) {
+      var c = r.charCodeAt(r.length - 1);
+      if (c >= 0xD800 && c <= 0xDBFF) {
+        this.lastNeed = 2;
+        this.lastTotal = 4;
+        this.lastChar[0] = buf[buf.length - 2];
+        this.lastChar[1] = buf[buf.length - 1];
+        return r.slice(0, -1);
+      }
+    }
+    return r;
+  }
+  this.lastNeed = 1;
+  this.lastTotal = 2;
+  this.lastChar[0] = buf[buf.length - 1];
+  return buf.toString('utf16le', i, buf.length - 1);
+}
+
+// For UTF-16LE we do not explicitly append special replacement characters if we
+// end on a partial character, we simply let v8 handle that.
+function utf16End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) {
+    var end = this.lastTotal - this.lastNeed;
+    return r + this.lastChar.toString('utf16le', 0, end);
+  }
+  return r;
+}
+
+function base64Text(buf, i) {
+  var n = (buf.length - i) % 3;
+  if (n === 0) return buf.toString('base64', i);
+  this.lastNeed = 3 - n;
+  this.lastTotal = 3;
+  if (n === 1) {
+    this.lastChar[0] = buf[buf.length - 1];
+  } else {
+    this.lastChar[0] = buf[buf.length - 2];
+    this.lastChar[1] = buf[buf.length - 1];
+  }
+  return buf.toString('base64', i, buf.length - n);
+}
+
+function base64End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + this.lastChar.toString('base64', 0, 3 - this.lastNeed);
+  return r;
+}
+
+// Pass bytes on through for single-byte encodings (e.g. ascii, latin1, hex)
+function simpleWrite(buf) {
+  return buf.toString(this.encoding);
+}
+
+function simpleEnd(buf) {
+  return buf && buf.length ? this.write(buf) : '';
+}
 
 /***/ }),
 
@@ -14620,6 +19296,7 @@ var RestDataParameter = function RestDataParameter(options) {
   this.attributeFilter = options.attributeFilter || null;
   this.maxFeatures = options.maxFeatures || 20;
   this.name = options.name || (0, _lang.geti18n)().t('commontypes.restData');
+  this.proxy = options.proxy;
 };
 
 exports.default = RestDataParameter;
@@ -14669,6 +19346,12 @@ var _vmUpdater = _interopRequireDefault(__webpack_require__("w286"));
 var _mapEvent = _interopRequireDefault(__webpack_require__("Whz7"));
 
 var _vuePropertyDecorator = __webpack_require__("YKMj");
+
+var _resizeDetector = __webpack_require__("QG5D");
+
+var _debounce = _interopRequireDefault(__webpack_require__("sEfC"));
+
+var _mapEvents = _interopRequireDefault(__webpack_require__("0zgg"));
 
 var __decorate = void 0 && (void 0).__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
@@ -14732,6 +19415,8 @@ function (_Mixins) {
   }, {
     key: "initializeWebMap",
     value: function initializeWebMap() {
+      var _this2 = this;
+
       var _this$$props = this.$props,
           target = _this$$props.target,
           serverUrl = _this$$props.serverUrl,
@@ -14752,52 +19437,90 @@ function (_Mixins) {
         excludePortalProxyUrl: excludePortalProxyUrl,
         isSuperMapOnline: isSuperMapOnline
       }, mapOptions);
+
+      if (this.autoresize) {
+        this.__resizeHandler = (0, _debounce.default)(function () {
+          _this2.resize();
+        }, 100, {
+          leading: true
+        });
+        (0, _resizeDetector.addListener)(this.$el, this.__resizeHandler);
+      }
+    }
+  }, {
+    key: "resize",
+    value: function resize() {
+      var _this3 = this;
+
+      if (this.viewModel && this.viewModel.resize) {
+        this.$nextTick(function () {
+          _this3.viewModel.resize();
+        });
+      }
     }
   }, {
     key: "registerEvents",
     value: function registerEvents() {
-      var _this2 = this;
+      var _this4 = this;
 
-      this.viewModel.on('addlayerssucceeded', function (e) {
-        _this2.spinning = false;
+      this.viewModel.on({
+        addlayerssucceeded: function addlayerssucceeded(e) {
+          _this4.spinning = false;
 
-        _mapEvent.default.$options.setMap(_this2.target, e.map);
+          _mapEvent.default.$options.setMap(_this4.target, e.map);
 
-        _this2.viewModel && _mapEvent.default.$options.setWebMap(_this2.target, _this2.viewModel);
+          _this4.viewModel && _mapEvent.default.$options.setWebMap(_this4.target, _this4.viewModel);
 
-        _mapEvent.default.$emit('load-map', e.map, _this2.target);
+          _mapEvent.default.$emit('load-map', e.map, _this4.target);
 
-        _this2.map = e.map;
+          _this4.map = e.map;
 
-        _this2.load({
-          map: e.map
-        });
-      });
-      this.viewModel.on('getmapinfofailed', function (e) {
-        _this2.getMapFailed({
-          error: e.error
-        });
+          _this4.$nextTick(function () {
+            _this4.viewModel.resize();
+          });
 
-        _this2.$message.error(e.error.message);
+          _this4.bindMapEvents();
 
-        _this2.spinning = false;
-      });
-      this.viewModel.on('getlayerdatasourcefailed', function (e) {
-        _this2.getLayerDatasourceFailed({
-          error: e.error,
-          layer: e.layer,
-          map: e.map
-        });
+          _this4.load({
+            map: e.map
+          });
+        },
+        getmapinfofailed: function getmapinfofailed(e) {
+          _this4.getMapFailed({
+            error: e.error
+          });
 
-        _this2.$message.error(_this2.$t('webmap.getLayerInfoFailed'));
-      });
-      this.viewModel.on('crsnotsupport', function () {
-        _this2.$message.error(_this2.$t('webmap.crsnotsupport'));
+          _this4.$message.error(e.error.message);
+
+          _this4.spinning = false;
+        },
+        getlayerdatasourcefailed: function getlayerdatasourcefailed(e) {
+          _this4.getLayerDatasourceFailed({
+            error: e.error,
+            layer: e.layer,
+            map: e.map
+          });
+
+          if (e.error === 'SAMPLE DATA is not supported') {
+            _this4.$message.error(_this4.$t('webmap.sampleDataNotSupport'));
+          } else {
+            _this4.$message.error(_this4.$t('webmap.getLayerInfoFailed'));
+          }
+        },
+        notsupportmvt: function notsupportmvt() {
+          _this4.$message.error('暂不支持加载矢量瓦片图层！');
+
+          _this4.spinning = false;
+        }
       });
     }
   }, {
     key: "destory",
-    value: function destory() {}
+    value: function destory() {
+      if (this.autoresize) {
+        (0, _resizeDetector.removeListener)(this.$el, this.__resizeHandler);
+      }
+    }
   }, {
     key: "getMapTarget",
     get: function get() {
@@ -14805,7 +19528,7 @@ function (_Mixins) {
     }
   }]);
   return SmWebMap;
-}((0, _vuePropertyDecorator.Mixins)(_vmUpdater.default));
+}((0, _vuePropertyDecorator.Mixins)(_vmUpdater.default, _mapEvents.default));
 
 __decorate([(0, _vuePropertyDecorator.Provide)()], SmWebMap.prototype, "__resizeHandler", void 0);
 
@@ -14853,6 +19576,375 @@ SmWebMap = __decorate([(0, _vuePropertyDecorator.Component)({
 })], SmWebMap);
 var _default = SmWebMap;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "hE+I":
+/***/ (function(module, exports, __webpack_require__) {
+
+var sax = __webpack_require__("MXF5");
+var expat /*= require('node-expat');*/ = { on: function () { }, parse: function () { } };
+var helper = __webpack_require__("lsHq");
+var isArray = __webpack_require__("mxIc").isArray;
+
+var options;
+var pureJsParser = true;
+var currentElement;
+
+function validateOptions(userOptions) {
+  options = helper.copyOptions(userOptions);
+  helper.ensureFlagExists('ignoreDeclaration', options);
+  helper.ensureFlagExists('ignoreInstruction', options);
+  helper.ensureFlagExists('ignoreAttributes', options);
+  helper.ensureFlagExists('ignoreText', options);
+  helper.ensureFlagExists('ignoreComment', options);
+  helper.ensureFlagExists('ignoreCdata', options);
+  helper.ensureFlagExists('ignoreDoctype', options);
+  helper.ensureFlagExists('compact', options);
+  helper.ensureFlagExists('alwaysChildren', options);
+  helper.ensureFlagExists('addParent', options);
+  helper.ensureFlagExists('trim', options);
+  helper.ensureFlagExists('nativeType', options);
+  helper.ensureFlagExists('nativeTypeAttributes', options);
+  helper.ensureFlagExists('sanitize', options);
+  helper.ensureFlagExists('instructionHasAttributes', options);
+  helper.ensureFlagExists('captureSpacesBetweenElements', options);
+  helper.ensureAlwaysArrayExists(options);
+  helper.ensureKeyExists('declaration', options);
+  helper.ensureKeyExists('instruction', options);
+  helper.ensureKeyExists('attributes', options);
+  helper.ensureKeyExists('text', options);
+  helper.ensureKeyExists('comment', options);
+  helper.ensureKeyExists('cdata', options);
+  helper.ensureKeyExists('doctype', options);
+  helper.ensureKeyExists('type', options);
+  helper.ensureKeyExists('name', options);
+  helper.ensureKeyExists('elements', options);
+  helper.ensureKeyExists('parent', options);
+  helper.checkFnExists('doctype', options);
+  helper.checkFnExists('instruction', options);
+  helper.checkFnExists('cdata', options);
+  helper.checkFnExists('comment', options);
+  helper.checkFnExists('text', options);
+  helper.checkFnExists('instructionName', options);
+  helper.checkFnExists('elementName', options);
+  helper.checkFnExists('attributeName', options);
+  helper.checkFnExists('attributeValue', options);
+  helper.checkFnExists('attributes', options);
+  return options;
+}
+
+function nativeType(value) {
+  var nValue = Number(value);
+  if (!isNaN(nValue)) {
+    return nValue;
+  }
+  var bValue = value.toLowerCase();
+  if (bValue === 'true') {
+    return true;
+  } else if (bValue === 'false') {
+    return false;
+  }
+  return value;
+}
+
+function addField(type, value) {
+  var key;
+  if (options.compact) {
+    if (
+      !currentElement[options[type + 'Key']] &&
+      (isArray(options.alwaysArray) ? options.alwaysArray.indexOf(options[type + 'Key']) !== -1 : options.alwaysArray)
+    ) {
+      currentElement[options[type + 'Key']] = [];
+    }
+    if (currentElement[options[type + 'Key']] && !isArray(currentElement[options[type + 'Key']])) {
+      currentElement[options[type + 'Key']] = [currentElement[options[type + 'Key']]];
+    }
+    if (type + 'Fn' in options && typeof value === 'string') {
+      value = options[type + 'Fn'](value, currentElement);
+    }
+    if (type === 'instruction' && ('instructionFn' in options || 'instructionNameFn' in options)) {
+      for (key in value) {
+        if (value.hasOwnProperty(key)) {
+          if ('instructionFn' in options) {
+            value[key] = options.instructionFn(value[key], key, currentElement);
+          } else {
+            var temp = value[key];
+            delete value[key];
+            value[options.instructionNameFn(key, temp, currentElement)] = temp;
+          }
+        }
+      }
+    }
+    if (isArray(currentElement[options[type + 'Key']])) {
+      currentElement[options[type + 'Key']].push(value);
+    } else {
+      currentElement[options[type + 'Key']] = value;
+    }
+  } else {
+    if (!currentElement[options.elementsKey]) {
+      currentElement[options.elementsKey] = [];
+    }
+    var element = {};
+    element[options.typeKey] = type;
+    if (type === 'instruction') {
+      for (key in value) {
+        if (value.hasOwnProperty(key)) {
+          break;
+        }
+      }
+      element[options.nameKey] = 'instructionNameFn' in options ? options.instructionNameFn(key, value, currentElement) : key;
+      if (options.instructionHasAttributes) {
+        element[options.attributesKey] = value[key][options.attributesKey];
+        if ('instructionFn' in options) {
+          element[options.attributesKey] = options.instructionFn(element[options.attributesKey], key, currentElement);
+        }
+      } else {
+        if ('instructionFn' in options) {
+          value[key] = options.instructionFn(value[key], key, currentElement);
+        }
+        element[options.instructionKey] = value[key];
+      }
+    } else {
+      if (type + 'Fn' in options) {
+        value = options[type + 'Fn'](value, currentElement);
+      }
+      element[options[type + 'Key']] = value;
+    }
+    if (options.addParent) {
+      element[options.parentKey] = currentElement;
+    }
+    currentElement[options.elementsKey].push(element);
+  }
+}
+
+function manipulateAttributes(attributes) {
+  if ('attributesFn' in options && attributes) {
+    attributes = options.attributesFn(attributes, currentElement);
+  }
+  if ((options.trim || 'attributeValueFn' in options || 'attributeNameFn' in options || options.nativeTypeAttributes) && attributes) {
+    var key;
+    for (key in attributes) {
+      if (attributes.hasOwnProperty(key)) {
+        if (options.trim) attributes[key] = attributes[key].trim();
+        if (options.nativeTypeAttributes) {
+          attributes[key] = nativeType(attributes[key]);
+        }
+        if ('attributeValueFn' in options) attributes[key] = options.attributeValueFn(attributes[key], key, currentElement);
+        if ('attributeNameFn' in options) {
+          var temp = attributes[key];
+          delete attributes[key];
+          attributes[options.attributeNameFn(key, attributes[key], currentElement)] = temp;
+        }
+      }
+    }
+  }
+  return attributes;
+}
+
+function onInstruction(instruction) {
+  var attributes = {};
+  if (instruction.body && (instruction.name.toLowerCase() === 'xml' || options.instructionHasAttributes)) {
+    var attrsRegExp = /([\w:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|(\w+))\s*/g;
+    var match;
+    while ((match = attrsRegExp.exec(instruction.body)) !== null) {
+      attributes[match[1]] = match[2] || match[3] || match[4];
+    }
+    attributes = manipulateAttributes(attributes);
+  }
+  if (instruction.name.toLowerCase() === 'xml') {
+    if (options.ignoreDeclaration) {
+      return;
+    }
+    currentElement[options.declarationKey] = {};
+    if (Object.keys(attributes).length) {
+      currentElement[options.declarationKey][options.attributesKey] = attributes;
+    }
+    if (options.addParent) {
+      currentElement[options.declarationKey][options.parentKey] = currentElement;
+    }
+  } else {
+    if (options.ignoreInstruction) {
+      return;
+    }
+    if (options.trim) {
+      instruction.body = instruction.body.trim();
+    }
+    var value = {};
+    if (options.instructionHasAttributes && Object.keys(attributes).length) {
+      value[instruction.name] = {};
+      value[instruction.name][options.attributesKey] = attributes;
+    } else {
+      value[instruction.name] = instruction.body;
+    }
+    addField('instruction', value);
+  }
+}
+
+function onStartElement(name, attributes) {
+  var element;
+  if (typeof name === 'object') {
+    attributes = name.attributes;
+    name = name.name;
+  }
+  attributes = manipulateAttributes(attributes);
+  if ('elementNameFn' in options) {
+    name = options.elementNameFn(name, currentElement);
+  }
+  if (options.compact) {
+    element = {};
+    if (!options.ignoreAttributes && attributes && Object.keys(attributes).length) {
+      element[options.attributesKey] = {};
+      var key;
+      for (key in attributes) {
+        if (attributes.hasOwnProperty(key)) {
+          element[options.attributesKey][key] = attributes[key];
+        }
+      }
+    }
+    if (
+      !(name in currentElement) &&
+      (isArray(options.alwaysArray) ? options.alwaysArray.indexOf(name) !== -1 : options.alwaysArray)
+    ) {
+      currentElement[name] = [];
+    }
+    if (currentElement[name] && !isArray(currentElement[name])) {
+      currentElement[name] = [currentElement[name]];
+    }
+    if (isArray(currentElement[name])) {
+      currentElement[name].push(element);
+    } else {
+      currentElement[name] = element;
+    }
+  } else {
+    if (!currentElement[options.elementsKey]) {
+      currentElement[options.elementsKey] = [];
+    }
+    element = {};
+    element[options.typeKey] = 'element';
+    element[options.nameKey] = name;
+    if (!options.ignoreAttributes && attributes && Object.keys(attributes).length) {
+      element[options.attributesKey] = attributes;
+    }
+    if (options.alwaysChildren) {
+      element[options.elementsKey] = [];
+    }
+    currentElement[options.elementsKey].push(element);
+  }
+  element[options.parentKey] = currentElement; // will be deleted in onEndElement() if !options.addParent
+  currentElement = element;
+}
+
+function onText(text) {
+  if (options.ignoreText) {
+    return;
+  }
+  if (!text.trim() && !options.captureSpacesBetweenElements) {
+    return;
+  }
+  if (options.trim) {
+    text = text.trim();
+  }
+  if (options.nativeType) {
+    text = nativeType(text);
+  }
+  if (options.sanitize) {
+    text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  addField('text', text);
+}
+
+function onComment(comment) {
+  if (options.ignoreComment) {
+    return;
+  }
+  if (options.trim) {
+    comment = comment.trim();
+  }
+  addField('comment', comment);
+}
+
+function onEndElement(name) {
+  var parentElement = currentElement[options.parentKey];
+  if (!options.addParent) {
+    delete currentElement[options.parentKey];
+  }
+  currentElement = parentElement;
+}
+
+function onCdata(cdata) {
+  if (options.ignoreCdata) {
+    return;
+  }
+  if (options.trim) {
+    cdata = cdata.trim();
+  }
+  addField('cdata', cdata);
+}
+
+function onDoctype(doctype) {
+  if (options.ignoreDoctype) {
+    return;
+  }
+  doctype = doctype.replace(/^ /, '');
+  if (options.trim) {
+    doctype = doctype.trim();
+  }
+  addField('doctype', doctype);
+}
+
+function onError(error) {
+  error.note = error; //console.error(error);
+}
+
+module.exports = function (xml, userOptions) {
+
+  var parser = pureJsParser ? sax.parser(true, {}) : parser = new expat.Parser('UTF-8');
+  var result = {};
+  currentElement = result;
+
+  options = validateOptions(userOptions);
+
+  if (pureJsParser) {
+    parser.opt = {strictEntities: true};
+    parser.onopentag = onStartElement;
+    parser.ontext = onText;
+    parser.oncomment = onComment;
+    parser.onclosetag = onEndElement;
+    parser.onerror = onError;
+    parser.oncdata = onCdata;
+    parser.ondoctype = onDoctype;
+    parser.onprocessinginstruction = onInstruction;
+  } else {
+    parser.on('startElement', onStartElement);
+    parser.on('text', onText);
+    parser.on('comment', onComment);
+    parser.on('endElement', onEndElement);
+    parser.on('error', onError);
+    //parser.on('startCdata', onStartCdata);
+    //parser.on('endCdata', onEndCdata);
+    //parser.on('entityDecl', onEntityDecl);
+  }
+
+  if (pureJsParser) {
+    parser.write(xml).close();
+  } else {
+    if (!parser.parse(xml)) {
+      throw new Error('XML parsing error: ' + parser.getError());
+    }
+  }
+
+  if (result[options.elementsKey]) {
+    var temp = result[options.elementsKey];
+    delete result[options.elementsKey];
+    result[options.elementsKey] = temp;
+    delete result.text;
+  }
+
+  return result;
+
+};
+
 
 /***/ }),
 
@@ -14910,6 +20002,75 @@ exports.propsBinder = propsBinder;
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_hgx0__;
+
+/***/ }),
+
+/***/ "hwdV":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* eslint-disable node/no-deprecated-api */
+var buffer = __webpack_require__("tjlA")
+var Buffer = buffer.Buffer
+
+// alternative to using Object.keys for old browsers
+function copyProps (src, dst) {
+  for (var key in src) {
+    dst[key] = src[key]
+  }
+}
+if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+  module.exports = buffer
+} else {
+  // Copy properties from require('buffer')
+  copyProps(buffer, exports)
+  exports.Buffer = SafeBuffer
+}
+
+function SafeBuffer (arg, encodingOrOffset, length) {
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+// Copy static methods from Buffer
+copyProps(Buffer, SafeBuffer)
+
+SafeBuffer.from = function (arg, encodingOrOffset, length) {
+  if (typeof arg === 'number') {
+    throw new TypeError('Argument must not be a number')
+  }
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.alloc = function (size, fill, encoding) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  var buf = Buffer(size)
+  if (fill !== undefined) {
+    if (typeof encoding === 'string') {
+      buf.fill(fill, encoding)
+    } else {
+      buf.fill(fill)
+    }
+  } else {
+    buf.fill(0)
+  }
+  return buf
+}
+
+SafeBuffer.allocUnsafe = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return Buffer(size)
+}
+
+SafeBuffer.allocUnsafeSlow = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return buffer.SlowBuffer(size)
+}
+
 
 /***/ }),
 
@@ -15018,6 +20179,39 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /***/ }),
 
+/***/ "jDn+":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {
+  props: {
+    content: {
+      type: String,
+      default: null,
+      custom: true
+    }
+  },
+  mounted: function mounted() {
+    this.popperOptions = {};
+  },
+  render: function render(h) {
+    if (this.$slots.default) {
+      return h('div', this.$slots.default);
+    }
+
+    return null;
+  }
+};
+exports.default = _default;
+
+/***/ }),
+
 /***/ "jUok":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15101,6 +20295,18 @@ Object.defineProperty(exports, "SmTileLayer", {
     return _SmTileLayer.default;
   }
 });
+Object.defineProperty(exports, "Identify", {
+  enumerable: true,
+  get: function get() {
+    return _Identify.default;
+  }
+});
+Object.defineProperty(exports, "Popup", {
+  enumerable: true,
+  get: function get() {
+    return _Popup.default;
+  }
+});
 
 var _Icon = _interopRequireDefault(__webpack_require__("8HGC"));
 
@@ -15125,6 +20331,10 @@ var _Iframe = _interopRequireDefault(__webpack_require__("81VL"));
 var _WebMap = _interopRequireDefault(__webpack_require__("8Wwx"));
 
 var _SmTileLayer = _interopRequireDefault(__webpack_require__("G9Sk"));
+
+var _Identify = _interopRequireDefault(__webpack_require__("Jibq"));
+
+var _Popup = _interopRequireDefault(__webpack_require__("1ThP"));
 
 /***/ }),
 
@@ -15371,6 +20581,97 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "kVK+":
+/***/ (function(module, exports) {
+
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = ((value * c) - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+
+/***/ }),
+
 /***/ "kokw":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15422,6 +20723,110 @@ function _defineProperty(obj, key, value) {
 }
 
 module.exports = _defineProperty;
+
+/***/ }),
+
+/***/ "lm0R":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (typeof process === 'undefined' ||
+    !process.version ||
+    process.version.indexOf('v0.') === 0 ||
+    process.version.indexOf('v1.') === 0 && process.version.indexOf('v1.8.') !== 0) {
+  module.exports = { nextTick: nextTick };
+} else {
+  module.exports = process
+}
+
+function nextTick(fn, arg1, arg2, arg3) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('"callback" argument must be a function');
+  }
+  var len = arguments.length;
+  var args, i;
+  switch (len) {
+  case 0:
+  case 1:
+    return process.nextTick(fn);
+  case 2:
+    return process.nextTick(function afterTickOne() {
+      fn.call(null, arg1);
+    });
+  case 3:
+    return process.nextTick(function afterTickTwo() {
+      fn.call(null, arg1, arg2);
+    });
+  case 4:
+    return process.nextTick(function afterTickThree() {
+      fn.call(null, arg1, arg2, arg3);
+    });
+  default:
+    args = new Array(len - 1);
+    i = 0;
+    while (i < args.length) {
+      args[i++] = arguments[i];
+    }
+    return process.nextTick(function afterTick() {
+      fn.apply(null, args);
+    });
+  }
+}
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
+
+/***/ }),
+
+/***/ "lsHq":
+/***/ (function(module, exports, __webpack_require__) {
+
+var isArray = __webpack_require__("mxIc").isArray;
+
+module.exports = {
+
+  copyOptions: function (options) {
+    var key, copy = {};
+    for (key in options) {
+      if (options.hasOwnProperty(key)) {
+        copy[key] = options[key];
+      }
+    }
+    return copy;
+  },
+
+  ensureFlagExists: function (item, options) {
+    if (!(item in options) || typeof options[item] !== 'boolean') {
+      options[item] = false;
+    }
+  },
+
+  ensureSpacesExists: function (options) {
+    if (!('spaces' in options) || (typeof options.spaces !== 'number' && typeof options.spaces !== 'string')) {
+      options.spaces = 0;
+    }
+  },
+
+  ensureAlwaysArrayExists: function (options) {
+    if (!('alwaysArray' in options) || (typeof options.alwaysArray !== 'boolean' && !isArray(options.alwaysArray))) {
+      options.alwaysArray = false;
+    }
+  },
+
+  ensureKeyExists: function (key, options) {
+    if (!(key + 'Key' in options) || typeof options[key + 'Key'] !== 'string') {
+      options[key + 'Key'] = options.compact ? '_' + key : key;
+    }
+  },
+
+  checkFnExists: function (key, options) {
+    return key + 'Fn' in options;
+  }
+
+};
+
 
 /***/ }),
 
@@ -16269,6 +21674,23 @@ try {
 
 /***/ }),
 
+/***/ "mNaD":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/leaflet/web-map/WebMap.vue?vue&type=template&id=29a8af74&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/leaflet/web-map/WebMap.vue?vue&type=template&id=29a8af74&
+/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+
+
+/***/ }),
+
 /***/ "mkpX":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16319,6 +21741,24 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "mxIc":
+/***/ (function(module, exports) {
+
+module.exports = {
+
+  isArray: function(value) {
+    if (Array.isArray) {
+      return Array.isArray(value);
+    }
+    // fallback for older browsers like  IE 8
+    return Object.prototype.toString.call( value ) === '[object Array]';
+  }
+
+};
+
+
+/***/ }),
+
 /***/ "n4aT":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16347,6 +21787,116 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 )
 
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "njMg":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("lwsE"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("W8MJ"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("a1gu"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("Nsbk"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
+
+var _leafletWrapper = _interopRequireDefault(__webpack_require__("uTlj"));
+
+/**
+ * @class PopupViewModel
+ * @description popup viewModel.
+ * @extends leaflet.Evented
+ */
+var PopupViewModel =
+/*#__PURE__*/
+function (_L$Evented) {
+  (0, _inherits2.default)(PopupViewModel, _L$Evented);
+
+  function PopupViewModel(options) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, PopupViewModel);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(PopupViewModel).call(this));
+    _this.popup = null;
+    _this.options = options.options || {};
+    _this.latLng = options.latLng;
+    _this.content = options.content;
+
+    _this.createPopup();
+
+    return _this;
+  }
+  /**
+   * @function PopupViewModel.prototype.createPopup
+   * @desc 创建popup
+   */
+
+
+  (0, _createClass2.default)(PopupViewModel, [{
+    key: "createPopup",
+    value: function createPopup() {
+      this.popup = _leafletWrapper.default.popup(this.options);
+      this.setLatLng();
+      this.setContent();
+    }
+    /**
+     * @function PopupViewModel.prototype.setContent
+     * @desc 设置popup内容
+     * @param {Array} content - 内容。
+     */
+
+  }, {
+    key: "setContent",
+    value: function setContent() {
+      var content = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.content;
+
+      if (this.popup && content) {
+        this.popup.setContent(content);
+      }
+    }
+    /**
+     * @function PopupViewModel.prototype.setLatLng
+     * @desc 设置latlng
+     * @param {Array} latLng - 坐标
+     */
+
+  }, {
+    key: "setLatLng",
+    value: function setLatLng() {
+      var latLng = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.latLng;
+
+      if (this.popup && latLng) {
+        this.popup.setLatLng(latLng);
+      }
+    }
+    /**
+     * @function PopupViewModel.prototype.getPopup
+     * @desc 获取popup
+     */
+
+  }, {
+    key: "getPopup",
+    value: function getPopup() {
+      return this.popup;
+    }
+  }]);
+  return PopupViewModel;
+}(_leafletWrapper.default.Evented);
+
+exports.default = PopupViewModel;
 
 /***/ }),
 
@@ -17075,14 +22625,6 @@ function () {
         this.listeners[type] = [];
       }
     }
-    /**
-     * @function Events.prototype.triggerEvent
-     * @description 触发一个特定的注册事件。
-     * @param {string} type - 触发事件类型。
-     * @param {Event} evt - 事件对象。
-     * @returns {boolean} 返回监听对象，如果返回是 false，则停止监听。
-     */
-
   }, {
     key: "triggerEvent",
     value: function triggerEvent(type, evt) {
@@ -17128,12 +22670,6 @@ function () {
 
       return continueChain;
     }
-    /**
-     * @function Events.prototype.handleBrowserEvent
-     * @description 对 triggerEvent 函数的包装，给事件对象设置了 xy 属性（即当前鼠标点的 xy 坐标）。
-     * @param {Event} evt - 事件对象。
-     */
-
   }, {
     key: "handleBrowserEvent",
     value: function handleBrowserEvent(evt) {
@@ -17188,7 +22724,6 @@ function () {
     }
     /**
      * @function Events.prototype.getMousePosition
-     * @param {Event} evt - 事件对象。
      * @returns {Pixel} 当前的鼠标的 xy 坐标点。
      */
 
@@ -17253,13 +22788,970 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "qPby":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("lwsE"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("W8MJ"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("a1gu"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("Nsbk"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("7W2i"));
+
+var _Events2 = __webpack_require__("peoL");
+
+var _MunicipalCenter = _interopRequireDefault(__webpack_require__("QYU9"));
+
+var _ProvinceCenter = _interopRequireDefault(__webpack_require__("C6WP"));
+
+__webpack_require__("e/Qi");
+
+__webpack_require__("s544");
+
+var _lodash = _interopRequireDefault(__webpack_require__("Z94/"));
+
+var _canvg = _interopRequireDefault(__webpack_require__("ATId"));
+
+var _WebMapService = _interopRequireDefault(__webpack_require__("2Vb1"));
+
+var _util = __webpack_require__("e7LN");
+
+var MAX_MIGRATION_ANIMATION_COUNT = 1000;
+
+var WebMapBase =
+/*#__PURE__*/
+function (_Events) {
+  (0, _inherits2.default)(WebMapBase, _Events);
+
+  function WebMapBase(id, options, mapOptions) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, WebMapBase);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(WebMapBase).call(this));
+    _this.echartslayer = [];
+    _this._layers = [];
+    _this.mapId = id;
+    _this.serverUrl = options.serverUrl || 'http://www.supermapol.com';
+    _this.accessToken = options.accessToken;
+    _this.accessKey = options.accessKey;
+    _this.tiandituKey = options.tiandituKey || '';
+    _this.withCredentials = options.withCredentials || false;
+    _this.target = options.target || 'map';
+    _this.excludePortalProxyUrl = options.excludePortalProxyUrl;
+    _this.isSuperMapOnline = options.isSuperMapOnline;
+    _this.echartslayer = [];
+    _this.webMapService = new _WebMapService.default(id, options);
+    _this.mapOptions = mapOptions;
+    _this.eventTypes = ['getmapinfofailed', 'crsnotsupport', 'getlayerdatasourcefailed', 'addlayerssucceeded', 'notsupportmvt', 'notsupportbaidumap'];
+
+    _this._initWebMap();
+
+    return _this;
+  }
+
+  (0, _createClass2.default)(WebMapBase, [{
+    key: "echartsLayerResize",
+    value: function echartsLayerResize() {
+      this.echartslayer.forEach(function (echartslayer) {
+        echartslayer.chart.resize();
+      });
+    }
+  }, {
+    key: "setMapId",
+    value: function setMapId(mapId) {
+      var _this2 = this;
+
+      this.mapId = mapId;
+      this.webMapService.setMapId(mapId);
+      setTimeout(function () {
+        _this2._initWebMap();
+      }, 0);
+    }
+  }, {
+    key: "setServerUrl",
+    value: function setServerUrl(serverUrl) {
+      this.serverUrl = serverUrl;
+      this.webMapService.setServerUrl(serverUrl);
+    }
+  }, {
+    key: "setWithCredentials",
+    value: function setWithCredentials(withCredentials) {
+      this.withCredentials = withCredentials;
+      this.webMapService.setWithCredentials(withCredentials);
+    }
+  }, {
+    key: "setZoom",
+    value: function setZoom(zoom) {
+      if (this.map) {
+        this.mapOptions.zoom = zoom;
+        (zoom || zoom === 0) && this.map.setZoom(zoom);
+      }
+    }
+  }, {
+    key: "setMaxBounds",
+    value: function setMaxBounds(maxBounds) {
+      if (this.map) {
+        this.mapOptions.maxBounds = maxBounds;
+        maxBounds && this.map.setMaxBounds(maxBounds);
+      }
+    }
+  }, {
+    key: "setMinZoom",
+    value: function setMinZoom(minZoom) {
+      if (this.map) {
+        this.mapOptions.minZoom = minZoom;
+        (minZoom || minZoom === 0) && this.map.setMinZoom(minZoom);
+      }
+    }
+  }, {
+    key: "setMaxZoom",
+    value: function setMaxZoom(maxZoom) {
+      if (this.map) {
+        this.mapOptions.maxZoom = maxZoom;
+        (maxZoom || maxZoom === 0) && this.map.setMinZoom(maxZoom);
+      }
+    }
+  }, {
+    key: "initWebMap",
+    value: function initWebMap() {
+      this.cleanWebMap();
+
+      if (!this.mapId || !this.serverUrl) {
+        this._createMap();
+
+        return;
+      }
+
+      this._taskID = new Date();
+      this.serverUrl = this.webMapService.handleServerUrl(this.serverUrl);
+      this.getMapInfo(this._taskID);
+    }
+  }, {
+    key: "getMapInfo",
+    value: function getMapInfo(_taskID) {
+      var _this3 = this;
+
+      this.webMapService.getMapInfo().then(function (mapInfo) {
+        if (_this3._taskID !== _taskID) {
+          return;
+        }
+
+        _this3.mapParams = mapInfo.mapParams;
+
+        _this3._getMapInfo(mapInfo, _taskID);
+      }, function (error) {
+        throw new Error(error);
+      }).catch(function (error) {
+        _this3.triggerEvent('getmapinfofailed', {
+          error: error
+        });
+
+        console.log(error);
+      });
+    }
+  }, {
+    key: "getBaseLayerType",
+    value: function getBaseLayerType(layerInfo) {
+      var layerType = layerInfo.layerType;
+
+      if (layerType.indexOf('TIANDITU_VEC') > -1 || layerType.indexOf('TIANDITU_IMG') > -1 || layerType.indexOf('TIANDITU_TER') > -1) {
+        layerType = 'TIANDITU';
+      }
+
+      switch (layerType) {
+        case 'TILE':
+        case 'SUPERMAP_REST':
+          return 'TILE';
+
+        case 'CLOUD':
+        case 'CLOUD_BLACK':
+          return 'CLOUD';
+
+        case 'OSM':
+        case 'JAPAN_ORT':
+        case 'JAPAN_RELIEF':
+        case 'JAPAN_PALE':
+        case 'JAPAN_STD':
+        case 'GOOGLE_CN':
+        case 'GOOGLE':
+          return 'XYZ';
+
+        default:
+          return layerType;
+      }
+    }
+  }, {
+    key: "getMapurls",
+    value: function getMapurls() {
+      var mapurl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var mapUrls = {
+        CLOUD: mapurl.CLOUD || 'http://t2.supermapcloud.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}',
+        CLOUD_BLACK: mapurl.CLOUD_BLACK || 'http://t3.supermapcloud.com/MapService/getGdp?x={x}&y={y}&z={z}',
+        OSM: mapurl.OSM || 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        GOOGLE: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0',
+        GOOGLE_CN: 'https://mt{0-3}.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
+        JAPAN_STD: 'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
+        JAPAN_PALE: 'http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+        JAPAN_RELIEF: 'http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+        JAPAN_ORT: 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
+      };
+      return mapUrls;
+    }
+  }, {
+    key: "getLayerFeatures",
+    value: function getLayerFeatures(layer, _taskID, type) {
+      var _this4 = this;
+
+      var getLayerFunc = this.webMapService.getLayerFeatures(type, layer, this.baseProjection);
+      getLayerFunc && getLayerFunc.then(function (result) {
+        if (_this4._taskID !== _taskID) {
+          return;
+        }
+
+        _this4._getLayerFeaturesSucceeded(result, layer);
+      }, function (error) {
+        throw new Error(error);
+      }).catch(function (error) {
+        _this4._addLayerSucceeded();
+
+        _this4.triggerEvent('getlayerdatasourcefailed', {
+          error: error,
+          layer: layer,
+          map: _this4.map
+        });
+
+        console.log(error);
+      });
+    }
+  }, {
+    key: "setFeatureInfo",
+    value: function setFeatureInfo(feature) {
+      var featureInfo;
+      var info = feature.dv_v5_markerInfo;
+
+      if (info && info.dataViz_title) {
+        featureInfo = info;
+      } else {
+        return info;
+      }
+
+      var properties = feature.properties;
+
+      for (var key in featureInfo) {
+        if (properties[key]) {
+          featureInfo[key] = properties[key];
+          delete properties[key];
+        }
+      }
+
+      return featureInfo;
+    }
+  }, {
+    key: "getRankStyleGroup",
+    value: function getRankStyleGroup(themeField, features, parameters) {
+      var values = [],
+          segements = [],
+          style = parameters.style,
+          themeSetting = parameters.themeSetting,
+          segmentMethod = themeSetting.segmentMethod,
+          segmentCount = themeSetting.segmentCount,
+          customSettings = themeSetting.customSettings,
+          minR = parameters.themeSetting.minRadius,
+          maxR = parameters.themeSetting.maxRadius;
+      features.forEach(function (feature) {
+        var properties = feature.properties,
+            value = properties[themeField];
+
+        if (value == null || !(0, _lodash.default)(+value)) {
+          return;
+        }
+
+        values.push(Number(value));
+      });
+
+      try {
+        segements = SuperMap.ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
+      } catch (error) {
+        console.log(error);
+      }
+
+      for (var i = 0; i < segmentCount; i++) {
+        if (i in customSettings) {
+          var startValue = customSettings[i]['segment']['start'],
+              endValue = customSettings[i]['segment']['end'];
+          startValue != null && (segements[i] = startValue);
+          endValue != null && (segements[i + 1] = endValue);
+        }
+      }
+
+      var styleGroup = [];
+
+      if (segements && segements.length) {
+        var len = segements.length,
+            incrementR = (maxR - minR) / (len - 1),
+            start,
+            end,
+            radius = Number(((maxR + minR) / 2).toFixed(2));
+
+        for (var _i = 0; _i < len - 1; _i++) {
+          start = Number(segements[_i].toFixed(2));
+          end = Number(segements[_i + 1].toFixed(2));
+          radius = start === end ? radius : minR + Math.round(incrementR * _i);
+          end = _i === len - 2 ? end + 0.01 : end;
+          radius = customSettings[_i] && customSettings[_i].radius ? customSettings[_i].radius : radius;
+          style.radius = radius;
+          styleGroup.push({
+            radius: radius,
+            start: start,
+            end: end,
+            style: style
+          });
+        }
+
+        return styleGroup;
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: "createRankStyleSource",
+    value: function createRankStyleSource(parameters, features) {
+      var themeSetting = parameters.themeSetting,
+          themeField = themeSetting.themeField;
+      var styleGroups = this.getRankStyleGroup(themeField, features, parameters);
+      return styleGroups ? {
+        parameters: parameters,
+        styleGroups: styleGroups
+      } : false;
+    }
+  }, {
+    key: "isMatchAdministrativeName",
+    value: function isMatchAdministrativeName(featureName, fieldName) {
+      var isString = typeof fieldName === 'string' && fieldName.constructor === String;
+
+      if (isString) {
+        var shortName = featureName.substr(0, 2);
+
+        if (shortName === '张家') {
+          shortName = featureName.substr(0, 3);
+        }
+
+        return !!fieldName.match(new RegExp(shortName));
+      }
+
+      return false;
+    }
+  }, {
+    key: "getRestMapLayerInfo",
+    value: function getRestMapLayerInfo(restMapInfo, layer) {
+      var bounds = restMapInfo.bounds,
+          coordUnit = restMapInfo.coordUnit,
+          visibleScales = restMapInfo.visibleScales,
+          url = restMapInfo.url;
+      layer.layerType = 'TILE';
+      layer.orginEpsgCode = this.baseProjection;
+      layer.units = coordUnit && coordUnit.toLowerCase();
+      layer.extent = [bounds.left, bounds.bottom, bounds.right, bounds.top];
+      layer.visibleScales = visibleScales;
+      layer.url = url;
+      layer.sourceType = 'TILE';
+      return layer;
+    }
+  }, {
+    key: "handleLayerFeatures",
+    value: function handleLayerFeatures(features, layerInfo) {
+      var layerType = layerInfo.layerType,
+          style = layerInfo.style,
+          themeSetting = layerInfo.themeSetting,
+          filterCondition = layerInfo.filterCondition;
+
+      if ((style || themeSetting) && filterCondition) {
+        if (layerType !== 'RANGE' && layerType !== 'UNIQUE' && layerType !== 'RANK_SYMBOL') {
+          features = this.getFiterFeatures(filterCondition, features);
+        }
+      }
+
+      return features;
+    }
+  }, {
+    key: "getFiterFeatures",
+    value: function getFiterFeatures(filterCondition, allFeatures) {
+      if (!filterCondition) {
+        return allFeatures;
+      }
+
+      var condition = this.replaceFilterCharacter(filterCondition);
+      var sql = 'select * from json where (' + condition + ')';
+      var filterFeatures = [];
+
+      for (var i = 0; i < allFeatures.length; i++) {
+        var feature = allFeatures[i];
+        var filterResult = void 0;
+
+        try {
+          filterResult = window['jsonsql'].query(sql, {
+            properties: feature.properties
+          });
+        } catch (err) {
+          continue;
+        }
+
+        if (filterResult && filterResult.length > 0) {
+          filterFeatures.push(feature);
+        }
+      }
+
+      return filterFeatures;
+    }
+  }, {
+    key: "replaceFilterCharacter",
+    value: function replaceFilterCharacter(filterString) {
+      filterString = filterString.replace(/=/g, '==').replace(/AND|and/g, '&&').replace(/or|OR/g, '||').replace(/<==/g, '<=').replace(/>==/g, '>=');
+      return filterString;
+    }
+  }, {
+    key: "getEchartsLayerOptions",
+    value: function getEchartsLayerOptions(layerInfo, features, coordinateSystem) {
+      var properties = this.webMapService.getFeatureProperties(features);
+
+      var lineData = this._createLinesData(layerInfo, properties);
+
+      var pointData = this._createPointsData(lineData, layerInfo, properties);
+
+      var options = this._createOptions(layerInfo, lineData, pointData, coordinateSystem);
+
+      return options;
+    }
+  }, {
+    key: "getDashStyle",
+    value: function getDashStyle(str) {
+      var strokeWidth = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'array';
+
+      if (!str) {
+        return type === 'array' ? [] : '';
+      }
+
+      var w = strokeWidth;
+      var dashArr;
+
+      switch (str) {
+        case 'solid':
+          dashArr = [];
+          break;
+
+        case 'dot':
+          dashArr = [1, 4 * w];
+          break;
+
+        case 'dash':
+          dashArr = [4 * w, 4 * w];
+          break;
+
+        case 'dashdot':
+          dashArr = [4 * w, 4 * w, 1 * w, 4 * w];
+          break;
+
+        case 'longdash':
+          dashArr = [8 * w, 4 * w];
+          break;
+
+        case 'longdashdot':
+          dashArr = [8 * w, 4 * w, 1, 4 * w];
+          break;
+
+        default:
+          if (SuperMap.Util.isArray(str)) {
+            dashArr = str;
+          }
+
+          str = SuperMap.String.trim(str).replace(/\s+/g, ',');
+          dashArr = str.replace(/\[|\]/gi, '').split(',');
+          break;
+      }
+
+      dashArr = type === 'array' ? dashArr : dashArr.join(',');
+      return dashArr;
+    }
+  }, {
+    key: "getCanvasFromSVG",
+    value: function getCanvasFromSVG(svgUrl, divDom, callBack) {
+      var canvas = document.createElement('canvas');
+      canvas.id = "dataviz-canvas-".concat(new Date());
+      canvas.style.display = 'none';
+      divDom.appendChild(canvas);
+      var canvgs = window.canvg ? window.canvg : _canvg.default;
+      canvgs(canvas.id, svgUrl, {
+        ignoreMouse: true,
+        ignoreAnimation: true,
+        renderCallback: function renderCallback() {
+          if (canvas.width > 300 || canvas.height > 300) {
+            return;
+          }
+
+          callBack(canvas);
+        },
+        forceRedraw: function forceRedraw() {
+          return false;
+        }
+      });
+    }
+  }, {
+    key: "getRangeStyleGroup",
+    value: function getRangeStyleGroup(layerInfo, features) {
+      var featureType = layerInfo.featureType,
+          style = layerInfo.style,
+          themeSetting = layerInfo.themeSetting;
+      var customSettings = themeSetting.customSettings,
+          themeField = themeSetting.themeField,
+          segmentCount = themeSetting.segmentCount,
+          segmentMethod = themeSetting.segmentMethod,
+          colors = themeSetting.colors;
+      var values = [];
+      var attributes;
+      features.forEach(function (feature) {
+        attributes = feature.properties;
+
+        if (attributes) {
+          var val = attributes[themeField];
+          (val || val === 0) && (0, _lodash.default)(+val) && values.push(parseFloat(val));
+        }
+      }, this);
+      var segements = SuperMap.ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
+
+      if (segements) {
+        var itemNum = segmentCount;
+
+        if (attributes && segements[0] === segements[attributes.length - 1]) {
+          itemNum = 1;
+          segements.length = 2;
+        }
+
+        for (var i = 0; i < segements.length; i++) {
+          var value = segements[i];
+          value = i === 0 ? Math.floor(value * 100) / 100 : Math.ceil(value * 100) / 100 + 0.1;
+          segements[i] = Number(value.toFixed(2));
+        }
+
+        var curentColors = colors;
+
+        for (var index = 0; index < itemNum; index++) {
+          if (index in customSettings) {
+            if (customSettings[index]['segment']['start']) {
+              segements[index] = customSettings[index]['segment']['start'];
+            }
+
+            if (customSettings[index]['segment']['end']) {
+              segements[index + 1] = customSettings[index]['segment']['end'];
+            }
+          }
+        }
+
+        var styleGroups = [];
+
+        for (var _i2 = 0; _i2 < itemNum; _i2++) {
+          var color = curentColors[_i2];
+
+          if (_i2 in customSettings) {
+            if (customSettings[_i2].color) {
+              color = customSettings[_i2].color;
+            }
+          }
+
+          if (featureType === 'LINE') {
+            style.strokeColor = color;
+          } else {
+            style.fillColor = color;
+          }
+
+          var start = segements[_i2];
+          var end = segements[_i2 + 1];
+          var styleObj = JSON.parse(JSON.stringify(style));
+          styleGroups.push({
+            style: styleObj,
+            color: color,
+            start: start,
+            end: end
+          });
+        }
+
+        return styleGroups;
+      }
+    }
+  }, {
+    key: "getUniqueStyleGroup",
+    value: function getUniqueStyleGroup(parameters, features) {
+      var featureType = parameters.featureType,
+          style = parameters.style,
+          themeSetting = parameters.themeSetting;
+      var themeField = themeSetting.themeField,
+          colors = themeSetting.colors,
+          customSettings = themeSetting.customSettings;
+      Object.keys(features[0].properties).forEach(function (key) {
+        key.toLocaleUpperCase() === themeField.toLocaleUpperCase() && (themeField = key);
+      });
+      var names = [];
+
+      for (var i in features) {
+        var properties = features[i].properties;
+        var name = properties[themeField];
+        var isSaved = false;
+
+        for (var j in names) {
+          if (names[j] === name) {
+            isSaved = true;
+            break;
+          }
+        }
+
+        if (!isSaved) {
+          names.push(name || '0');
+        }
+      }
+
+      var curentColors = colors;
+      curentColors = SuperMap.ColorsPickerUtil.getGradientColors(curentColors, names.length);
+      var styleGroup = [];
+      names.forEach(function (name, index) {
+        var color = curentColors[index];
+
+        if (name in customSettings) {
+          color = customSettings[name];
+        }
+
+        if (featureType === 'LINE') {
+          style.strokeColor = color;
+        } else {
+          style.fillColor = color;
+        }
+
+        styleGroup.push({
+          color: color,
+          style: Object.assign({}, style),
+          value: name
+        });
+      }, this);
+      return styleGroup;
+    }
+  }, {
+    key: "getEpsgInfoFromWKT",
+    value: function getEpsgInfoFromWKT(wkt) {
+      if (typeof wkt !== 'string') {
+        return '';
+      } else if (wkt.indexOf('EPSG') === 0) {
+        return wkt;
+      } else {
+        var lastAuthority = wkt.lastIndexOf('AUTHORITY') + 10,
+            endString = wkt.indexOf(']', lastAuthority) - 1;
+
+        if (lastAuthority > 0 && endString > 0) {
+          return "EPSG:".concat(wkt.substring(lastAuthority, endString).split(',')[1].substr(1));
+        } else {
+          return '';
+        }
+      }
+    }
+  }, {
+    key: "transformFeatures",
+    value: function transformFeatures(features) {
+      var _this5 = this;
+
+      features && features.forEach(function (feature, index) {
+        var geometryType = feature.geometry.type;
+        var coordinates = feature.geometry.coordinates;
+
+        if (coordinates.length === 0) {
+          return;
+        }
+
+        if (geometryType === 'LineString') {
+          coordinates.forEach(function (coordinate, index) {
+            coordinate = _this5._unproject(coordinate);
+            coordinates[index] = coordinate;
+          }, _this5);
+        } else if (geometryType === 'Point') {
+          coordinates = _this5._unproject(coordinates);
+          feature.geometry.coordinates = coordinates;
+        } else if (geometryType === 'MultiPolygon' || geometryType === 'Polygon') {
+          coordinates.forEach(function (coordinate, index) {
+            var coords = geometryType === 'MultiPolygon' ? coordinate[0] : coordinate;
+            coords.forEach(function (latlng, i) {
+              latlng = _this5._unproject(latlng);
+              coords[i] = latlng;
+            });
+            coordinates[index] = coordinate;
+          });
+        }
+
+        features[index] = feature;
+      });
+      return features;
+    }
+  }, {
+    key: "handleSvgColor",
+    value: function handleSvgColor(style, canvas) {
+      var fillColor = style.fillColor,
+          fillOpacity = style.fillOpacity,
+          strokeColor = style.strokeColor,
+          strokeOpacity = style.strokeOpacity,
+          strokeWidth = style.strokeWidth;
+      var context = canvas.getContext('2d');
+
+      if (fillColor) {
+        context.fillStyle = (0, _util.getColorWithOpacity)(fillColor, fillOpacity);
+        context.fill();
+      }
+
+      if (strokeColor || strokeWidth) {
+        context.strokeStyle = (0, _util.getColorWithOpacity)(strokeColor, strokeOpacity);
+        context.lineWidth = strokeWidth;
+        context.stroke();
+      }
+    }
+  }, {
+    key: "_createLinesData",
+    value: function _createLinesData(layerInfo, properties) {
+      var _this6 = this;
+
+      var data = [];
+
+      if (properties && properties.length) {
+        var from = layerInfo.from,
+            to = layerInfo.to,
+            fromCoord,
+            toCoord;
+
+        if (from.type === 'XY_FIELD' && from['xField'] && from['yField'] && to['xField'] && to['yField']) {
+          properties.forEach(function (property) {
+            var fromX = property[from['xField']],
+                fromY = property[from['yField']],
+                toX = property[to['xField']],
+                toY = property[to['yField']];
+
+            if (!fromX || !fromY || !toX || !toY) {
+              return;
+            }
+
+            fromCoord = [property[from['xField']], property[from['yField']]];
+            toCoord = [property[to['xField']], property[to['yField']]];
+            data.push({
+              coords: [fromCoord, toCoord]
+            });
+          });
+        } else if (from.type === 'PLACE_FIELD' && from['field'] && to['field']) {
+          var centerDatas = _ProvinceCenter.default.concat(_MunicipalCenter.default);
+
+          properties.forEach(function (property) {
+            var fromField = property[from['field']],
+                toField = property[to['field']];
+            fromCoord = centerDatas.find(function (item) {
+              return _this6.isMatchAdministrativeName(item.name, fromField);
+            });
+            toCoord = centerDatas.find(function (item) {
+              return _this6.isMatchAdministrativeName(item.name, toField);
+            });
+
+            if (!fromCoord || !toCoord) {
+              return;
+            }
+
+            data.push({
+              coords: [fromCoord.coord, toCoord.coord]
+            });
+          });
+        }
+      }
+
+      return data;
+    }
+  }, {
+    key: "_createPointsData",
+    value: function _createPointsData(lineData, layerInfo, properties) {
+      var data = [],
+          labelSetting = layerInfo.labelSetting;
+
+      if (!labelSetting.show || !lineData.length) {
+        return data;
+      }
+
+      var fromData = [],
+          toData = [];
+      lineData.forEach(function (item, idx) {
+        var coords = item.coords,
+            fromCoord = coords[0],
+            toCoord = coords[1],
+            fromProperty = properties[idx][labelSetting.from],
+            toProperty = properties[idx][labelSetting.to];
+        var f = fromData.find(function (d) {
+          return d.value[0] === fromCoord[0] && d.value[1] === fromCoord[1];
+        });
+        !f && fromData.push({
+          name: fromProperty,
+          value: fromCoord
+        });
+        var t = toData.find(function (d) {
+          return d.value[0] === toCoord[0] && d.value[1] === toCoord[1];
+        });
+        !t && toData.push({
+          name: toProperty,
+          value: toCoord
+        });
+      });
+      data = fromData.concat(toData);
+      return data;
+    }
+  }, {
+    key: "_createOptions",
+    value: function _createOptions(layerInfo, lineData, pointData, coordinateSystem) {
+      var series;
+
+      var lineSeries = this._createLineSeries(layerInfo, lineData, coordinateSystem);
+
+      if (pointData && pointData.length) {
+        var pointSeries = this._createPointSeries(layerInfo, pointData, coordinateSystem);
+
+        series = lineSeries.concat(pointSeries);
+      } else {
+        series = lineSeries.slice();
+      }
+
+      return {
+        series: series
+      };
+    }
+  }, {
+    key: "_createPointSeries",
+    value: function _createPointSeries(layerInfo, pointData, coordinateSystem) {
+      var lineSetting = layerInfo.lineSetting;
+      var animationSetting = layerInfo.animationSetting;
+      var labelSetting = layerInfo.labelSetting;
+      var pointSeries = [{
+        name: 'point-series',
+        coordinateSystem: coordinateSystem,
+        zlevel: 2,
+        label: {
+          normal: {
+            show: labelSetting.show,
+            position: 'right',
+            formatter: '{b}',
+            color: labelSetting.color,
+            fontFamily: labelSetting.fontFamily
+          }
+        },
+        itemStyle: {
+          normal: {
+            color: lineSetting.color || labelSetting.color
+          }
+        },
+        data: pointData
+      }];
+
+      if (animationSetting.show) {
+        pointSeries[0].type = 'effectScatter';
+        pointSeries[0].rippleEffect = {
+          brushType: 'stroke'
+        };
+      } else {
+        pointSeries[0].type = 'scatter';
+      }
+
+      return pointSeries;
+    }
+  }, {
+    key: "_createLineSeries",
+    value: function _createLineSeries(layerInfo, lineData, coordinateSystem) {
+      var lineSetting = layerInfo.lineSetting;
+      var animationSetting = layerInfo.animationSetting;
+      var linesSeries = [{
+        name: 'line-series',
+        coordinateSystem: coordinateSystem,
+        type: 'lines',
+        zlevel: 1,
+        effect: {
+          show: animationSetting.show,
+          constantSpeed: animationSetting.constantSpeed,
+          trailLength: 0,
+          symbol: animationSetting.symbol,
+          symbolSize: animationSetting.symbolSize
+        },
+        lineStyle: {
+          normal: {
+            color: lineSetting.color,
+            type: lineSetting.type,
+            width: lineSetting.width,
+            opacity: lineSetting.opacity,
+            curveness: lineSetting.curveness
+          }
+        },
+        data: lineData
+      }];
+
+      if (lineData.length >= MAX_MIGRATION_ANIMATION_COUNT) {
+        linesSeries[0].large = true;
+        linesSeries[0].largeThreshold = 100;
+        linesSeries[0].blendMode = 'lighter';
+      }
+
+      return linesSeries;
+    }
+  }, {
+    key: "_getLayerFeaturesSucceeded",
+    value: function _getLayerFeaturesSucceeded(result, layer) {
+      switch (result.type) {
+        case 'feature':
+          this._initOverlayLayer(layer, result.features);
+
+          break;
+
+        case 'restMap':
+          layer.layerType = 'restMap';
+
+          this._initOverlayLayer(layer, result.restMaps);
+
+          break;
+
+        case 'mvt':
+          layer.layerType = 'mvt';
+
+          this._initOverlayLayer(layer, result);
+
+          break;
+
+        case 'dataflow':
+        case 'noServerId':
+          this._initOverlayLayer(layer);
+
+          break;
+      }
+    }
+  }]);
+  return WebMapBase;
+}(_Events2.Events);
+
+exports.default = WebMapBase;
+
+/***/ }),
+
 /***/ "qSUR":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /*!
- * vue-i18n v8.11.2 
+ * vue-i18n v8.12.0 
  * (c) 2019 kazuya kawaguchi
  * Released under the MIT License.
  */
@@ -17515,6 +24007,12 @@ var mixin = {
           } catch (e) {
             if (false) {}
           }
+        }
+
+        var ref = options.i18n;
+        var sharedMessages = ref.sharedMessages;
+        if (sharedMessages && isPlainObject(sharedMessages)) {
+          options.i18n.messages = merge(options.i18n.messages, sharedMessages);
         }
 
         this._i18n = new VueI18n(options.i18n);
@@ -19076,10 +25574,1037 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = install;
-VueI18n.version = '8.11.2';
+VueI18n.version = '8.12.0';
 
 /* harmony default export */ __webpack_exports__["default"] = (VueI18n);
 
+
+/***/ }),
+
+/***/ "rXFu":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+/*<replacement>*/
+
+var pna = __webpack_require__("lm0R");
+/*</replacement>*/
+
+module.exports = Readable;
+
+/*<replacement>*/
+var isArray = __webpack_require__("49sm");
+/*</replacement>*/
+
+/*<replacement>*/
+var Duplex;
+/*</replacement>*/
+
+Readable.ReadableState = ReadableState;
+
+/*<replacement>*/
+var EE = __webpack_require__("+qE3").EventEmitter;
+
+var EElistenerCount = function (emitter, type) {
+  return emitter.listeners(type).length;
+};
+/*</replacement>*/
+
+/*<replacement>*/
+var Stream = __webpack_require__("QpuX");
+/*</replacement>*/
+
+/*<replacement>*/
+
+var Buffer = __webpack_require__("hwdV").Buffer;
+var OurUint8Array = global.Uint8Array || function () {};
+function _uint8ArrayToBuffer(chunk) {
+  return Buffer.from(chunk);
+}
+function _isUint8Array(obj) {
+  return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
+}
+
+/*</replacement>*/
+
+/*<replacement>*/
+var util = __webpack_require__("Onz0");
+util.inherits = __webpack_require__("P7XM");
+/*</replacement>*/
+
+/*<replacement>*/
+var debugUtil = __webpack_require__(1);
+var debug = void 0;
+if (debugUtil && debugUtil.debuglog) {
+  debug = debugUtil.debuglog('stream');
+} else {
+  debug = function () {};
+}
+/*</replacement>*/
+
+var BufferList = __webpack_require__("Xhqo");
+var destroyImpl = __webpack_require__("RoFp");
+var StringDecoder;
+
+util.inherits(Readable, Stream);
+
+var kProxyEvents = ['error', 'close', 'destroy', 'pause', 'resume'];
+
+function prependListener(emitter, event, fn) {
+  // Sadly this is not cacheable as some libraries bundle their own
+  // event emitter implementation with them.
+  if (typeof emitter.prependListener === 'function') return emitter.prependListener(event, fn);
+
+  // This is a hack to make sure that our error handler is attached before any
+  // userland ones.  NEVER DO THIS. This is here only because this code needs
+  // to continue to work with older versions of Node.js that do not include
+  // the prependListener() method. The goal is to eventually remove this hack.
+  if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
+}
+
+function ReadableState(options, stream) {
+  Duplex = Duplex || __webpack_require__("sZro");
+
+  options = options || {};
+
+  // Duplex streams are both readable and writable, but share
+  // the same options object.
+  // However, some cases require setting options to different
+  // values for the readable and the writable sides of the duplex stream.
+  // These options can be provided separately as readableXXX and writableXXX.
+  var isDuplex = stream instanceof Duplex;
+
+  // object stream flag. Used to make read(n) ignore n and to
+  // make all the buffer merging and length checks go away
+  this.objectMode = !!options.objectMode;
+
+  if (isDuplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
+
+  // the point at which it stops calling _read() to fill the buffer
+  // Note: 0 is a valid value, means "don't call _read preemptively ever"
+  var hwm = options.highWaterMark;
+  var readableHwm = options.readableHighWaterMark;
+  var defaultHwm = this.objectMode ? 16 : 16 * 1024;
+
+  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (readableHwm || readableHwm === 0)) this.highWaterMark = readableHwm;else this.highWaterMark = defaultHwm;
+
+  // cast to ints.
+  this.highWaterMark = Math.floor(this.highWaterMark);
+
+  // A linked list is used to store data chunks instead of an array because the
+  // linked list can remove elements from the beginning faster than
+  // array.shift()
+  this.buffer = new BufferList();
+  this.length = 0;
+  this.pipes = null;
+  this.pipesCount = 0;
+  this.flowing = null;
+  this.ended = false;
+  this.endEmitted = false;
+  this.reading = false;
+
+  // a flag to be able to tell if the event 'readable'/'data' is emitted
+  // immediately, or on a later tick.  We set this to true at first, because
+  // any actions that shouldn't happen until "later" should generally also
+  // not happen before the first read call.
+  this.sync = true;
+
+  // whenever we return null, then we set a flag to say
+  // that we're awaiting a 'readable' event emission.
+  this.needReadable = false;
+  this.emittedReadable = false;
+  this.readableListening = false;
+  this.resumeScheduled = false;
+
+  // has it been destroyed
+  this.destroyed = false;
+
+  // Crypto is kind of old and crusty.  Historically, its default string
+  // encoding is 'binary' so we have to make this configurable.
+  // Everything else in the universe uses 'utf8', though.
+  this.defaultEncoding = options.defaultEncoding || 'utf8';
+
+  // the number of writers that are awaiting a drain event in .pipe()s
+  this.awaitDrain = 0;
+
+  // if true, a maybeReadMore has been scheduled
+  this.readingMore = false;
+
+  this.decoder = null;
+  this.encoding = null;
+  if (options.encoding) {
+    if (!StringDecoder) StringDecoder = __webpack_require__("fXKp").StringDecoder;
+    this.decoder = new StringDecoder(options.encoding);
+    this.encoding = options.encoding;
+  }
+}
+
+function Readable(options) {
+  Duplex = Duplex || __webpack_require__("sZro");
+
+  if (!(this instanceof Readable)) return new Readable(options);
+
+  this._readableState = new ReadableState(options, this);
+
+  // legacy
+  this.readable = true;
+
+  if (options) {
+    if (typeof options.read === 'function') this._read = options.read;
+
+    if (typeof options.destroy === 'function') this._destroy = options.destroy;
+  }
+
+  Stream.call(this);
+}
+
+Object.defineProperty(Readable.prototype, 'destroyed', {
+  get: function () {
+    if (this._readableState === undefined) {
+      return false;
+    }
+    return this._readableState.destroyed;
+  },
+  set: function (value) {
+    // we ignore the value if the stream
+    // has not been initialized yet
+    if (!this._readableState) {
+      return;
+    }
+
+    // backward compatibility, the user is explicitly
+    // managing destroyed
+    this._readableState.destroyed = value;
+  }
+});
+
+Readable.prototype.destroy = destroyImpl.destroy;
+Readable.prototype._undestroy = destroyImpl.undestroy;
+Readable.prototype._destroy = function (err, cb) {
+  this.push(null);
+  cb(err);
+};
+
+// Manually shove something into the read() buffer.
+// This returns true if the highWaterMark has not been hit yet,
+// similar to how Writable.write() returns true if you should
+// write() some more.
+Readable.prototype.push = function (chunk, encoding) {
+  var state = this._readableState;
+  var skipChunkCheck;
+
+  if (!state.objectMode) {
+    if (typeof chunk === 'string') {
+      encoding = encoding || state.defaultEncoding;
+      if (encoding !== state.encoding) {
+        chunk = Buffer.from(chunk, encoding);
+        encoding = '';
+      }
+      skipChunkCheck = true;
+    }
+  } else {
+    skipChunkCheck = true;
+  }
+
+  return readableAddChunk(this, chunk, encoding, false, skipChunkCheck);
+};
+
+// Unshift should *always* be something directly out of read()
+Readable.prototype.unshift = function (chunk) {
+  return readableAddChunk(this, chunk, null, true, false);
+};
+
+function readableAddChunk(stream, chunk, encoding, addToFront, skipChunkCheck) {
+  var state = stream._readableState;
+  if (chunk === null) {
+    state.reading = false;
+    onEofChunk(stream, state);
+  } else {
+    var er;
+    if (!skipChunkCheck) er = chunkInvalid(state, chunk);
+    if (er) {
+      stream.emit('error', er);
+    } else if (state.objectMode || chunk && chunk.length > 0) {
+      if (typeof chunk !== 'string' && !state.objectMode && Object.getPrototypeOf(chunk) !== Buffer.prototype) {
+        chunk = _uint8ArrayToBuffer(chunk);
+      }
+
+      if (addToFront) {
+        if (state.endEmitted) stream.emit('error', new Error('stream.unshift() after end event'));else addChunk(stream, state, chunk, true);
+      } else if (state.ended) {
+        stream.emit('error', new Error('stream.push() after EOF'));
+      } else {
+        state.reading = false;
+        if (state.decoder && !encoding) {
+          chunk = state.decoder.write(chunk);
+          if (state.objectMode || chunk.length !== 0) addChunk(stream, state, chunk, false);else maybeReadMore(stream, state);
+        } else {
+          addChunk(stream, state, chunk, false);
+        }
+      }
+    } else if (!addToFront) {
+      state.reading = false;
+    }
+  }
+
+  return needMoreData(state);
+}
+
+function addChunk(stream, state, chunk, addToFront) {
+  if (state.flowing && state.length === 0 && !state.sync) {
+    stream.emit('data', chunk);
+    stream.read(0);
+  } else {
+    // update the buffer info.
+    state.length += state.objectMode ? 1 : chunk.length;
+    if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);
+
+    if (state.needReadable) emitReadable(stream);
+  }
+  maybeReadMore(stream, state);
+}
+
+function chunkInvalid(state, chunk) {
+  var er;
+  if (!_isUint8Array(chunk) && typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {
+    er = new TypeError('Invalid non-string/buffer chunk');
+  }
+  return er;
+}
+
+// if it's past the high water mark, we can push in some more.
+// Also, if we have no data yet, we can stand some
+// more bytes.  This is to work around cases where hwm=0,
+// such as the repl.  Also, if the push() triggered a
+// readable event, and the user called read(largeNumber) such that
+// needReadable was set, then we ought to push more, so that another
+// 'readable' event will be triggered.
+function needMoreData(state) {
+  return !state.ended && (state.needReadable || state.length < state.highWaterMark || state.length === 0);
+}
+
+Readable.prototype.isPaused = function () {
+  return this._readableState.flowing === false;
+};
+
+// backwards compatibility.
+Readable.prototype.setEncoding = function (enc) {
+  if (!StringDecoder) StringDecoder = __webpack_require__("fXKp").StringDecoder;
+  this._readableState.decoder = new StringDecoder(enc);
+  this._readableState.encoding = enc;
+  return this;
+};
+
+// Don't raise the hwm > 8MB
+var MAX_HWM = 0x800000;
+function computeNewHighWaterMark(n) {
+  if (n >= MAX_HWM) {
+    n = MAX_HWM;
+  } else {
+    // Get the next highest power of 2 to prevent increasing hwm excessively in
+    // tiny amounts
+    n--;
+    n |= n >>> 1;
+    n |= n >>> 2;
+    n |= n >>> 4;
+    n |= n >>> 8;
+    n |= n >>> 16;
+    n++;
+  }
+  return n;
+}
+
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function howMuchToRead(n, state) {
+  if (n <= 0 || state.length === 0 && state.ended) return 0;
+  if (state.objectMode) return 1;
+  if (n !== n) {
+    // Only flow one buffer at a time
+    if (state.flowing && state.length) return state.buffer.head.data.length;else return state.length;
+  }
+  // If we're asking for more than the current hwm, then raise the hwm.
+  if (n > state.highWaterMark) state.highWaterMark = computeNewHighWaterMark(n);
+  if (n <= state.length) return n;
+  // Don't have enough
+  if (!state.ended) {
+    state.needReadable = true;
+    return 0;
+  }
+  return state.length;
+}
+
+// you can override either this method, or the async _read(n) below.
+Readable.prototype.read = function (n) {
+  debug('read', n);
+  n = parseInt(n, 10);
+  var state = this._readableState;
+  var nOrig = n;
+
+  if (n !== 0) state.emittedReadable = false;
+
+  // if we're doing read(0) to trigger a readable event, but we
+  // already have a bunch of data in the buffer, then just trigger
+  // the 'readable' event and move on.
+  if (n === 0 && state.needReadable && (state.length >= state.highWaterMark || state.ended)) {
+    debug('read: emitReadable', state.length, state.ended);
+    if (state.length === 0 && state.ended) endReadable(this);else emitReadable(this);
+    return null;
+  }
+
+  n = howMuchToRead(n, state);
+
+  // if we've ended, and we're now clear, then finish it up.
+  if (n === 0 && state.ended) {
+    if (state.length === 0) endReadable(this);
+    return null;
+  }
+
+  // All the actual chunk generation logic needs to be
+  // *below* the call to _read.  The reason is that in certain
+  // synthetic stream cases, such as passthrough streams, _read
+  // may be a completely synchronous operation which may change
+  // the state of the read buffer, providing enough data when
+  // before there was *not* enough.
+  //
+  // So, the steps are:
+  // 1. Figure out what the state of things will be after we do
+  // a read from the buffer.
+  //
+  // 2. If that resulting state will trigger a _read, then call _read.
+  // Note that this may be asynchronous, or synchronous.  Yes, it is
+  // deeply ugly to write APIs this way, but that still doesn't mean
+  // that the Readable class should behave improperly, as streams are
+  // designed to be sync/async agnostic.
+  // Take note if the _read call is sync or async (ie, if the read call
+  // has returned yet), so that we know whether or not it's safe to emit
+  // 'readable' etc.
+  //
+  // 3. Actually pull the requested chunks out of the buffer and return.
+
+  // if we need a readable event, then we need to do some reading.
+  var doRead = state.needReadable;
+  debug('need readable', doRead);
+
+  // if we currently have less than the highWaterMark, then also read some
+  if (state.length === 0 || state.length - n < state.highWaterMark) {
+    doRead = true;
+    debug('length less than watermark', doRead);
+  }
+
+  // however, if we've ended, then there's no point, and if we're already
+  // reading, then it's unnecessary.
+  if (state.ended || state.reading) {
+    doRead = false;
+    debug('reading or ended', doRead);
+  } else if (doRead) {
+    debug('do read');
+    state.reading = true;
+    state.sync = true;
+    // if the length is currently zero, then we *need* a readable event.
+    if (state.length === 0) state.needReadable = true;
+    // call internal read method
+    this._read(state.highWaterMark);
+    state.sync = false;
+    // If _read pushed data synchronously, then `reading` will be false,
+    // and we need to re-evaluate how much data we can return to the user.
+    if (!state.reading) n = howMuchToRead(nOrig, state);
+  }
+
+  var ret;
+  if (n > 0) ret = fromList(n, state);else ret = null;
+
+  if (ret === null) {
+    state.needReadable = true;
+    n = 0;
+  } else {
+    state.length -= n;
+  }
+
+  if (state.length === 0) {
+    // If we have nothing in the buffer, then we want to know
+    // as soon as we *do* get something into the buffer.
+    if (!state.ended) state.needReadable = true;
+
+    // If we tried to read() past the EOF, then emit end on the next tick.
+    if (nOrig !== n && state.ended) endReadable(this);
+  }
+
+  if (ret !== null) this.emit('data', ret);
+
+  return ret;
+};
+
+function onEofChunk(stream, state) {
+  if (state.ended) return;
+  if (state.decoder) {
+    var chunk = state.decoder.end();
+    if (chunk && chunk.length) {
+      state.buffer.push(chunk);
+      state.length += state.objectMode ? 1 : chunk.length;
+    }
+  }
+  state.ended = true;
+
+  // emit 'readable' now to make sure it gets picked up.
+  emitReadable(stream);
+}
+
+// Don't emit readable right away in sync mode, because this can trigger
+// another read() call => stack overflow.  This way, it might trigger
+// a nextTick recursion warning, but that's not so bad.
+function emitReadable(stream) {
+  var state = stream._readableState;
+  state.needReadable = false;
+  if (!state.emittedReadable) {
+    debug('emitReadable', state.flowing);
+    state.emittedReadable = true;
+    if (state.sync) pna.nextTick(emitReadable_, stream);else emitReadable_(stream);
+  }
+}
+
+function emitReadable_(stream) {
+  debug('emit readable');
+  stream.emit('readable');
+  flow(stream);
+}
+
+// at this point, the user has presumably seen the 'readable' event,
+// and called read() to consume some data.  that may have triggered
+// in turn another _read(n) call, in which case reading = true if
+// it's in progress.
+// However, if we're not ended, or reading, and the length < hwm,
+// then go ahead and try to read some more preemptively.
+function maybeReadMore(stream, state) {
+  if (!state.readingMore) {
+    state.readingMore = true;
+    pna.nextTick(maybeReadMore_, stream, state);
+  }
+}
+
+function maybeReadMore_(stream, state) {
+  var len = state.length;
+  while (!state.reading && !state.flowing && !state.ended && state.length < state.highWaterMark) {
+    debug('maybeReadMore read 0');
+    stream.read(0);
+    if (len === state.length)
+      // didn't get any data, stop spinning.
+      break;else len = state.length;
+  }
+  state.readingMore = false;
+}
+
+// abstract method.  to be overridden in specific implementation classes.
+// call cb(er, data) where data is <= n in length.
+// for virtual (non-string, non-buffer) streams, "length" is somewhat
+// arbitrary, and perhaps not very meaningful.
+Readable.prototype._read = function (n) {
+  this.emit('error', new Error('_read() is not implemented'));
+};
+
+Readable.prototype.pipe = function (dest, pipeOpts) {
+  var src = this;
+  var state = this._readableState;
+
+  switch (state.pipesCount) {
+    case 0:
+      state.pipes = dest;
+      break;
+    case 1:
+      state.pipes = [state.pipes, dest];
+      break;
+    default:
+      state.pipes.push(dest);
+      break;
+  }
+  state.pipesCount += 1;
+  debug('pipe count=%d opts=%j', state.pipesCount, pipeOpts);
+
+  var doEnd = (!pipeOpts || pipeOpts.end !== false) && dest !== process.stdout && dest !== process.stderr;
+
+  var endFn = doEnd ? onend : unpipe;
+  if (state.endEmitted) pna.nextTick(endFn);else src.once('end', endFn);
+
+  dest.on('unpipe', onunpipe);
+  function onunpipe(readable, unpipeInfo) {
+    debug('onunpipe');
+    if (readable === src) {
+      if (unpipeInfo && unpipeInfo.hasUnpiped === false) {
+        unpipeInfo.hasUnpiped = true;
+        cleanup();
+      }
+    }
+  }
+
+  function onend() {
+    debug('onend');
+    dest.end();
+  }
+
+  // when the dest drains, it reduces the awaitDrain counter
+  // on the source.  This would be more elegant with a .once()
+  // handler in flow(), but adding and removing repeatedly is
+  // too slow.
+  var ondrain = pipeOnDrain(src);
+  dest.on('drain', ondrain);
+
+  var cleanedUp = false;
+  function cleanup() {
+    debug('cleanup');
+    // cleanup event handlers once the pipe is broken
+    dest.removeListener('close', onclose);
+    dest.removeListener('finish', onfinish);
+    dest.removeListener('drain', ondrain);
+    dest.removeListener('error', onerror);
+    dest.removeListener('unpipe', onunpipe);
+    src.removeListener('end', onend);
+    src.removeListener('end', unpipe);
+    src.removeListener('data', ondata);
+
+    cleanedUp = true;
+
+    // if the reader is waiting for a drain event from this
+    // specific writer, then it would cause it to never start
+    // flowing again.
+    // So, if this is awaiting a drain, then we just call it now.
+    // If we don't know, then assume that we are waiting for one.
+    if (state.awaitDrain && (!dest._writableState || dest._writableState.needDrain)) ondrain();
+  }
+
+  // If the user pushes more data while we're writing to dest then we'll end up
+  // in ondata again. However, we only want to increase awaitDrain once because
+  // dest will only emit one 'drain' event for the multiple writes.
+  // => Introduce a guard on increasing awaitDrain.
+  var increasedAwaitDrain = false;
+  src.on('data', ondata);
+  function ondata(chunk) {
+    debug('ondata');
+    increasedAwaitDrain = false;
+    var ret = dest.write(chunk);
+    if (false === ret && !increasedAwaitDrain) {
+      // If the user unpiped during `dest.write()`, it is possible
+      // to get stuck in a permanently paused state if that write
+      // also returned false.
+      // => Check whether `dest` is still a piping destination.
+      if ((state.pipesCount === 1 && state.pipes === dest || state.pipesCount > 1 && indexOf(state.pipes, dest) !== -1) && !cleanedUp) {
+        debug('false write response, pause', src._readableState.awaitDrain);
+        src._readableState.awaitDrain++;
+        increasedAwaitDrain = true;
+      }
+      src.pause();
+    }
+  }
+
+  // if the dest has an error, then stop piping into it.
+  // however, don't suppress the throwing behavior for this.
+  function onerror(er) {
+    debug('onerror', er);
+    unpipe();
+    dest.removeListener('error', onerror);
+    if (EElistenerCount(dest, 'error') === 0) dest.emit('error', er);
+  }
+
+  // Make sure our error handler is attached before userland ones.
+  prependListener(dest, 'error', onerror);
+
+  // Both close and finish should trigger unpipe, but only once.
+  function onclose() {
+    dest.removeListener('finish', onfinish);
+    unpipe();
+  }
+  dest.once('close', onclose);
+  function onfinish() {
+    debug('onfinish');
+    dest.removeListener('close', onclose);
+    unpipe();
+  }
+  dest.once('finish', onfinish);
+
+  function unpipe() {
+    debug('unpipe');
+    src.unpipe(dest);
+  }
+
+  // tell the dest that it's being piped to
+  dest.emit('pipe', src);
+
+  // start the flow if it hasn't been started already.
+  if (!state.flowing) {
+    debug('pipe resume');
+    src.resume();
+  }
+
+  return dest;
+};
+
+function pipeOnDrain(src) {
+  return function () {
+    var state = src._readableState;
+    debug('pipeOnDrain', state.awaitDrain);
+    if (state.awaitDrain) state.awaitDrain--;
+    if (state.awaitDrain === 0 && EElistenerCount(src, 'data')) {
+      state.flowing = true;
+      flow(src);
+    }
+  };
+}
+
+Readable.prototype.unpipe = function (dest) {
+  var state = this._readableState;
+  var unpipeInfo = { hasUnpiped: false };
+
+  // if we're not piping anywhere, then do nothing.
+  if (state.pipesCount === 0) return this;
+
+  // just one destination.  most common case.
+  if (state.pipesCount === 1) {
+    // passed in one, but it's not the right one.
+    if (dest && dest !== state.pipes) return this;
+
+    if (!dest) dest = state.pipes;
+
+    // got a match.
+    state.pipes = null;
+    state.pipesCount = 0;
+    state.flowing = false;
+    if (dest) dest.emit('unpipe', this, unpipeInfo);
+    return this;
+  }
+
+  // slow case. multiple pipe destinations.
+
+  if (!dest) {
+    // remove all.
+    var dests = state.pipes;
+    var len = state.pipesCount;
+    state.pipes = null;
+    state.pipesCount = 0;
+    state.flowing = false;
+
+    for (var i = 0; i < len; i++) {
+      dests[i].emit('unpipe', this, unpipeInfo);
+    }return this;
+  }
+
+  // try to find the right one.
+  var index = indexOf(state.pipes, dest);
+  if (index === -1) return this;
+
+  state.pipes.splice(index, 1);
+  state.pipesCount -= 1;
+  if (state.pipesCount === 1) state.pipes = state.pipes[0];
+
+  dest.emit('unpipe', this, unpipeInfo);
+
+  return this;
+};
+
+// set up data events if they are asked for
+// Ensure readable listeners eventually get something
+Readable.prototype.on = function (ev, fn) {
+  var res = Stream.prototype.on.call(this, ev, fn);
+
+  if (ev === 'data') {
+    // Start flowing on next tick if stream isn't explicitly paused
+    if (this._readableState.flowing !== false) this.resume();
+  } else if (ev === 'readable') {
+    var state = this._readableState;
+    if (!state.endEmitted && !state.readableListening) {
+      state.readableListening = state.needReadable = true;
+      state.emittedReadable = false;
+      if (!state.reading) {
+        pna.nextTick(nReadingNextTick, this);
+      } else if (state.length) {
+        emitReadable(this);
+      }
+    }
+  }
+
+  return res;
+};
+Readable.prototype.addListener = Readable.prototype.on;
+
+function nReadingNextTick(self) {
+  debug('readable nexttick read 0');
+  self.read(0);
+}
+
+// pause() and resume() are remnants of the legacy readable stream API
+// If the user uses them, then switch into old mode.
+Readable.prototype.resume = function () {
+  var state = this._readableState;
+  if (!state.flowing) {
+    debug('resume');
+    state.flowing = true;
+    resume(this, state);
+  }
+  return this;
+};
+
+function resume(stream, state) {
+  if (!state.resumeScheduled) {
+    state.resumeScheduled = true;
+    pna.nextTick(resume_, stream, state);
+  }
+}
+
+function resume_(stream, state) {
+  if (!state.reading) {
+    debug('resume read 0');
+    stream.read(0);
+  }
+
+  state.resumeScheduled = false;
+  state.awaitDrain = 0;
+  stream.emit('resume');
+  flow(stream);
+  if (state.flowing && !state.reading) stream.read(0);
+}
+
+Readable.prototype.pause = function () {
+  debug('call pause flowing=%j', this._readableState.flowing);
+  if (false !== this._readableState.flowing) {
+    debug('pause');
+    this._readableState.flowing = false;
+    this.emit('pause');
+  }
+  return this;
+};
+
+function flow(stream) {
+  var state = stream._readableState;
+  debug('flow', state.flowing);
+  while (state.flowing && stream.read() !== null) {}
+}
+
+// wrap an old-style stream as the async data source.
+// This is *not* part of the readable stream interface.
+// It is an ugly unfortunate mess of history.
+Readable.prototype.wrap = function (stream) {
+  var _this = this;
+
+  var state = this._readableState;
+  var paused = false;
+
+  stream.on('end', function () {
+    debug('wrapped end');
+    if (state.decoder && !state.ended) {
+      var chunk = state.decoder.end();
+      if (chunk && chunk.length) _this.push(chunk);
+    }
+
+    _this.push(null);
+  });
+
+  stream.on('data', function (chunk) {
+    debug('wrapped data');
+    if (state.decoder) chunk = state.decoder.write(chunk);
+
+    // don't skip over falsy values in objectMode
+    if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;
+
+    var ret = _this.push(chunk);
+    if (!ret) {
+      paused = true;
+      stream.pause();
+    }
+  });
+
+  // proxy all the other methods.
+  // important when wrapping filters and duplexes.
+  for (var i in stream) {
+    if (this[i] === undefined && typeof stream[i] === 'function') {
+      this[i] = function (method) {
+        return function () {
+          return stream[method].apply(stream, arguments);
+        };
+      }(i);
+    }
+  }
+
+  // proxy certain important events.
+  for (var n = 0; n < kProxyEvents.length; n++) {
+    stream.on(kProxyEvents[n], this.emit.bind(this, kProxyEvents[n]));
+  }
+
+  // when we try to consume some more bytes, simply unpause the
+  // underlying stream.
+  this._read = function (n) {
+    debug('wrapped _read', n);
+    if (paused) {
+      paused = false;
+      stream.resume();
+    }
+  };
+
+  return this;
+};
+
+Object.defineProperty(Readable.prototype, 'readableHighWaterMark', {
+  // making it explicit this property is not enumerable
+  // because otherwise some prototype manipulation in
+  // userland will fail
+  enumerable: false,
+  get: function () {
+    return this._readableState.highWaterMark;
+  }
+});
+
+// exposed for testing purposes only.
+Readable._fromList = fromList;
+
+// Pluck off n bytes from an array of buffers.
+// Length is the combined lengths of all the buffers in the list.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function fromList(n, state) {
+  // nothing buffered
+  if (state.length === 0) return null;
+
+  var ret;
+  if (state.objectMode) ret = state.buffer.shift();else if (!n || n >= state.length) {
+    // read it all, truncate the list
+    if (state.decoder) ret = state.buffer.join('');else if (state.buffer.length === 1) ret = state.buffer.head.data;else ret = state.buffer.concat(state.length);
+    state.buffer.clear();
+  } else {
+    // read part of list
+    ret = fromListPartial(n, state.buffer, state.decoder);
+  }
+
+  return ret;
+}
+
+// Extracts only enough buffered data to satisfy the amount requested.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function fromListPartial(n, list, hasStrings) {
+  var ret;
+  if (n < list.head.data.length) {
+    // slice is the same for buffers and strings
+    ret = list.head.data.slice(0, n);
+    list.head.data = list.head.data.slice(n);
+  } else if (n === list.head.data.length) {
+    // first chunk is a perfect match
+    ret = list.shift();
+  } else {
+    // result spans more than one buffer
+    ret = hasStrings ? copyFromBufferString(n, list) : copyFromBuffer(n, list);
+  }
+  return ret;
+}
+
+// Copies a specified amount of characters from the list of buffered data
+// chunks.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function copyFromBufferString(n, list) {
+  var p = list.head;
+  var c = 1;
+  var ret = p.data;
+  n -= ret.length;
+  while (p = p.next) {
+    var str = p.data;
+    var nb = n > str.length ? str.length : n;
+    if (nb === str.length) ret += str;else ret += str.slice(0, n);
+    n -= nb;
+    if (n === 0) {
+      if (nb === str.length) {
+        ++c;
+        if (p.next) list.head = p.next;else list.head = list.tail = null;
+      } else {
+        list.head = p;
+        p.data = str.slice(nb);
+      }
+      break;
+    }
+    ++c;
+  }
+  list.length -= c;
+  return ret;
+}
+
+// Copies a specified amount of bytes from the list of buffered data chunks.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function copyFromBuffer(n, list) {
+  var ret = Buffer.allocUnsafe(n);
+  var p = list.head;
+  var c = 1;
+  p.data.copy(ret);
+  n -= p.data.length;
+  while (p = p.next) {
+    var buf = p.data;
+    var nb = n > buf.length ? buf.length : n;
+    buf.copy(ret, ret.length - n, 0, nb);
+    n -= nb;
+    if (n === 0) {
+      if (nb === buf.length) {
+        ++c;
+        if (p.next) list.head = p.next;else list.head = list.tail = null;
+      } else {
+        list.head = p;
+        p.data = buf.slice(nb);
+      }
+      break;
+    }
+    ++c;
+  }
+  list.length -= c;
+  return ret;
+}
+
+function endReadable(stream) {
+  var state = stream._readableState;
+
+  // If we get here before consuming all the bytes, then that is a
+  // bug in node.  Should never happen.
+  if (state.length > 0) throw new Error('"endReadable()" called on non-empty stream');
+
+  if (!state.endEmitted) {
+    state.ended = true;
+    pna.nextTick(endReadableNT, state, stream);
+  }
+}
+
+function endReadableNT(state, stream) {
+  // Check that we didn't get one last unshift.
+  if (!state.endEmitted && state.length === 0) {
+    state.endEmitted = true;
+    stream.readable = false;
+    stream.emit('end');
+  }
+}
+
+function indexOf(xs, x) {
+  for (var i = 0, l = xs.length; i < l; i++) {
+    if (xs[i] === x) return i;
+  }
+  return -1;
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("8oxB")))
 
 /***/ }),
 
@@ -20374,6 +27899,7 @@ function debounce(func, wait, options) {
       }
       if (maxing) {
         // Handle invocations in a tight loop.
+        clearTimeout(timerId);
         timerId = setTimeout(timerExpired, wait);
         return invokeFunc(lastCallTime);
       }
@@ -20390,6 +27916,219 @@ function debounce(func, wait, options) {
 
 module.exports = debounce;
 
+
+/***/ }),
+
+/***/ "sZro":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// a duplex stream is just a stream that is both readable and writable.
+// Since JS doesn't have multiple prototypal inheritance, this class
+// prototypally inherits from Readable, and then parasitically from
+// Writable.
+
+
+
+/*<replacement>*/
+
+var pna = __webpack_require__("lm0R");
+/*</replacement>*/
+
+/*<replacement>*/
+var objectKeys = Object.keys || function (obj) {
+  var keys = [];
+  for (var key in obj) {
+    keys.push(key);
+  }return keys;
+};
+/*</replacement>*/
+
+module.exports = Duplex;
+
+/*<replacement>*/
+var util = __webpack_require__("Onz0");
+util.inherits = __webpack_require__("P7XM");
+/*</replacement>*/
+
+var Readable = __webpack_require__("rXFu");
+var Writable = __webpack_require__("3BRs");
+
+util.inherits(Duplex, Readable);
+
+{
+  // avoid scope creep, the keys array can then be collected
+  var keys = objectKeys(Writable.prototype);
+  for (var v = 0; v < keys.length; v++) {
+    var method = keys[v];
+    if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
+  }
+}
+
+function Duplex(options) {
+  if (!(this instanceof Duplex)) return new Duplex(options);
+
+  Readable.call(this, options);
+  Writable.call(this, options);
+
+  if (options && options.readable === false) this.readable = false;
+
+  if (options && options.writable === false) this.writable = false;
+
+  this.allowHalfOpen = true;
+  if (options && options.allowHalfOpen === false) this.allowHalfOpen = false;
+
+  this.once('end', onend);
+}
+
+Object.defineProperty(Duplex.prototype, 'writableHighWaterMark', {
+  // making it explicit this property is not enumerable
+  // because otherwise some prototype manipulation in
+  // userland will fail
+  enumerable: false,
+  get: function () {
+    return this._writableState.highWaterMark;
+  }
+});
+
+// the no-half-open enforcer
+function onend() {
+  // if we allow half-open state, or if the writable side ended,
+  // then we're ok.
+  if (this.allowHalfOpen || this._writableState.ended) return;
+
+  // no more data can be written.
+  // But allow more writes to happen in this tick.
+  pna.nextTick(onEndNT, this);
+}
+
+function onEndNT(self) {
+  self.end();
+}
+
+Object.defineProperty(Duplex.prototype, 'destroyed', {
+  get: function () {
+    if (this._readableState === undefined || this._writableState === undefined) {
+      return false;
+    }
+    return this._readableState.destroyed && this._writableState.destroyed;
+  },
+  set: function (value) {
+    // we ignore the value if the stream
+    // has not been initialized yet
+    if (this._readableState === undefined || this._writableState === undefined) {
+      return;
+    }
+
+    // backward compatibility, the user is explicitly
+    // managing destroyed
+    this._readableState.destroyed = value;
+    this._writableState.destroyed = value;
+  }
+});
+
+Duplex.prototype._destroy = function (err, cb) {
+  this.push(null);
+  this.end();
+
+  pna.nextTick(cb, err);
+};
+
+/***/ }),
+
+/***/ "t9FE":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {
+/**
+ * Module exports.
+ */
+
+module.exports = deprecate;
+
+/**
+ * Mark that a method should not be used.
+ * Returns a modified function which warns once by default.
+ *
+ * If `localStorage.noDeprecation = true` is set, then it is a no-op.
+ *
+ * If `localStorage.throwDeprecation = true` is set, then deprecated functions
+ * will throw an Error when invoked.
+ *
+ * If `localStorage.traceDeprecation = true` is set, then deprecated functions
+ * will invoke `console.trace()` instead of `console.error()`.
+ *
+ * @param {Function} fn - the function to deprecate
+ * @param {String} msg - the string to print to the console when `fn` is invoked
+ * @returns {Function} a new "deprecated" version of `fn`
+ * @api public
+ */
+
+function deprecate (fn, msg) {
+  if (config('noDeprecation')) {
+    return fn;
+  }
+
+  var warned = false;
+  function deprecated() {
+    if (!warned) {
+      if (config('throwDeprecation')) {
+        throw new Error(msg);
+      } else if (config('traceDeprecation')) {
+        console.trace(msg);
+      } else {
+        console.warn(msg);
+      }
+      warned = true;
+    }
+    return fn.apply(this, arguments);
+  }
+
+  return deprecated;
+}
+
+/**
+ * Checks `localStorage` for boolean values for the given `name`.
+ *
+ * @param {String} name
+ * @returns {Boolean}
+ * @api private
+ */
+
+function config (name) {
+  // accessing global.localStorage can trigger a DOMException in sandboxed iframes
+  try {
+    if (!global.localStorage) return false;
+  } catch (_) {
+    return false;
+  }
+  var val = global.localStorage[name];
+  if (null == val) return false;
+  return String(val).toLowerCase() === 'true';
+}
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj")))
 
 /***/ }),
 
@@ -20736,6 +28475,1951 @@ exports.ArrayExt = ArrayExt;
 
 /***/ }),
 
+/***/ "tjlA":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+/* eslint-disable no-proto */
+
+
+
+var base64 = __webpack_require__("H7XF")
+var ieee754 = __webpack_require__("kVK+")
+var isArray = __webpack_require__("49sm")
+
+exports.Buffer = Buffer
+exports.SlowBuffer = SlowBuffer
+exports.INSPECT_MAX_BYTES = 50
+
+/**
+ * If `Buffer.TYPED_ARRAY_SUPPORT`:
+ *   === true    Use Uint8Array implementation (fastest)
+ *   === false   Use Object implementation (most compatible, even IE6)
+ *
+ * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+ * Opera 11.6+, iOS 4.2+.
+ *
+ * Due to various browser bugs, sometimes the Object implementation will be used even
+ * when the browser supports typed arrays.
+ *
+ * Note:
+ *
+ *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
+ *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+ *
+ *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+ *
+ *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+ *     incorrect length in some situations.
+
+ * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
+ * get the Object implementation, which is slower but behaves correctly.
+ */
+Buffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined
+  ? global.TYPED_ARRAY_SUPPORT
+  : typedArraySupport()
+
+/*
+ * Export kMaxLength after typed array support is determined.
+ */
+exports.kMaxLength = kMaxLength()
+
+function typedArraySupport () {
+  try {
+    var arr = new Uint8Array(1)
+    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
+    return arr.foo() === 42 && // typed array instances can be augmented
+        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+  } catch (e) {
+    return false
+  }
+}
+
+function kMaxLength () {
+  return Buffer.TYPED_ARRAY_SUPPORT
+    ? 0x7fffffff
+    : 0x3fffffff
+}
+
+function createBuffer (that, length) {
+  if (kMaxLength() < length) {
+    throw new RangeError('Invalid typed array length')
+  }
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = new Uint8Array(length)
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    if (that === null) {
+      that = new Buffer(length)
+    }
+    that.length = length
+  }
+
+  return that
+}
+
+/**
+ * The Buffer constructor returns instances of `Uint8Array` that have their
+ * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+ * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+ * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+ * returns a single octet.
+ *
+ * The `Uint8Array` prototype remains unmodified.
+ */
+
+function Buffer (arg, encodingOrOffset, length) {
+  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
+    return new Buffer(arg, encodingOrOffset, length)
+  }
+
+  // Common case.
+  if (typeof arg === 'number') {
+    if (typeof encodingOrOffset === 'string') {
+      throw new Error(
+        'If encoding is specified then the first argument must be a string'
+      )
+    }
+    return allocUnsafe(this, arg)
+  }
+  return from(this, arg, encodingOrOffset, length)
+}
+
+Buffer.poolSize = 8192 // not used by this implementation
+
+// TODO: Legacy, not needed anymore. Remove in next major version.
+Buffer._augment = function (arr) {
+  arr.__proto__ = Buffer.prototype
+  return arr
+}
+
+function from (that, value, encodingOrOffset, length) {
+  if (typeof value === 'number') {
+    throw new TypeError('"value" argument must not be a number')
+  }
+
+  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
+    return fromArrayBuffer(that, value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'string') {
+    return fromString(that, value, encodingOrOffset)
+  }
+
+  return fromObject(that, value)
+}
+
+/**
+ * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+ * if value is a number.
+ * Buffer.from(str[, encoding])
+ * Buffer.from(array)
+ * Buffer.from(buffer)
+ * Buffer.from(arrayBuffer[, byteOffset[, length]])
+ **/
+Buffer.from = function (value, encodingOrOffset, length) {
+  return from(null, value, encodingOrOffset, length)
+}
+
+if (Buffer.TYPED_ARRAY_SUPPORT) {
+  Buffer.prototype.__proto__ = Uint8Array.prototype
+  Buffer.__proto__ = Uint8Array
+  if (typeof Symbol !== 'undefined' && Symbol.species &&
+      Buffer[Symbol.species] === Buffer) {
+    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+    Object.defineProperty(Buffer, Symbol.species, {
+      value: null,
+      configurable: true
+    })
+  }
+}
+
+function assertSize (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('"size" argument must be a number')
+  } else if (size < 0) {
+    throw new RangeError('"size" argument must not be negative')
+  }
+}
+
+function alloc (that, size, fill, encoding) {
+  assertSize(size)
+  if (size <= 0) {
+    return createBuffer(that, size)
+  }
+  if (fill !== undefined) {
+    // Only pay attention to encoding if it's a string. This
+    // prevents accidentally sending in a number that would
+    // be interpretted as a start offset.
+    return typeof encoding === 'string'
+      ? createBuffer(that, size).fill(fill, encoding)
+      : createBuffer(that, size).fill(fill)
+  }
+  return createBuffer(that, size)
+}
+
+/**
+ * Creates a new filled Buffer instance.
+ * alloc(size[, fill[, encoding]])
+ **/
+Buffer.alloc = function (size, fill, encoding) {
+  return alloc(null, size, fill, encoding)
+}
+
+function allocUnsafe (that, size) {
+  assertSize(size)
+  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) {
+    for (var i = 0; i < size; ++i) {
+      that[i] = 0
+    }
+  }
+  return that
+}
+
+/**
+ * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+ * */
+Buffer.allocUnsafe = function (size) {
+  return allocUnsafe(null, size)
+}
+/**
+ * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+ */
+Buffer.allocUnsafeSlow = function (size) {
+  return allocUnsafe(null, size)
+}
+
+function fromString (that, string, encoding) {
+  if (typeof encoding !== 'string' || encoding === '') {
+    encoding = 'utf8'
+  }
+
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError('"encoding" must be a valid string encoding')
+  }
+
+  var length = byteLength(string, encoding) | 0
+  that = createBuffer(that, length)
+
+  var actual = that.write(string, encoding)
+
+  if (actual !== length) {
+    // Writing a hex string, for example, that contains invalid characters will
+    // cause everything after the first invalid character to be ignored. (e.g.
+    // 'abxxcd' will be treated as 'ab')
+    that = that.slice(0, actual)
+  }
+
+  return that
+}
+
+function fromArrayLike (that, array) {
+  var length = array.length < 0 ? 0 : checked(array.length) | 0
+  that = createBuffer(that, length)
+  for (var i = 0; i < length; i += 1) {
+    that[i] = array[i] & 255
+  }
+  return that
+}
+
+function fromArrayBuffer (that, array, byteOffset, length) {
+  array.byteLength // this throws if `array` is not a valid ArrayBuffer
+
+  if (byteOffset < 0 || array.byteLength < byteOffset) {
+    throw new RangeError('\'offset\' is out of bounds')
+  }
+
+  if (array.byteLength < byteOffset + (length || 0)) {
+    throw new RangeError('\'length\' is out of bounds')
+  }
+
+  if (byteOffset === undefined && length === undefined) {
+    array = new Uint8Array(array)
+  } else if (length === undefined) {
+    array = new Uint8Array(array, byteOffset)
+  } else {
+    array = new Uint8Array(array, byteOffset, length)
+  }
+
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = array
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    that = fromArrayLike(that, array)
+  }
+  return that
+}
+
+function fromObject (that, obj) {
+  if (Buffer.isBuffer(obj)) {
+    var len = checked(obj.length) | 0
+    that = createBuffer(that, len)
+
+    if (that.length === 0) {
+      return that
+    }
+
+    obj.copy(that, 0, 0, len)
+    return that
+  }
+
+  if (obj) {
+    if ((typeof ArrayBuffer !== 'undefined' &&
+        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
+      if (typeof obj.length !== 'number' || isnan(obj.length)) {
+        return createBuffer(that, 0)
+      }
+      return fromArrayLike(that, obj)
+    }
+
+    if (obj.type === 'Buffer' && isArray(obj.data)) {
+      return fromArrayLike(that, obj.data)
+    }
+  }
+
+  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+}
+
+function checked (length) {
+  // Note: cannot use `length < kMaxLength()` here because that fails when
+  // length is NaN (which is otherwise coerced to zero.)
+  if (length >= kMaxLength()) {
+    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+                         'size: 0x' + kMaxLength().toString(16) + ' bytes')
+  }
+  return length | 0
+}
+
+function SlowBuffer (length) {
+  if (+length != length) { // eslint-disable-line eqeqeq
+    length = 0
+  }
+  return Buffer.alloc(+length)
+}
+
+Buffer.isBuffer = function isBuffer (b) {
+  return !!(b != null && b._isBuffer)
+}
+
+Buffer.compare = function compare (a, b) {
+  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+    throw new TypeError('Arguments must be Buffers')
+  }
+
+  if (a === b) return 0
+
+  var x = a.length
+  var y = b.length
+
+  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    if (a[i] !== b[i]) {
+      x = a[i]
+      y = b[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+Buffer.isEncoding = function isEncoding (encoding) {
+  switch (String(encoding).toLowerCase()) {
+    case 'hex':
+    case 'utf8':
+    case 'utf-8':
+    case 'ascii':
+    case 'latin1':
+    case 'binary':
+    case 'base64':
+    case 'ucs2':
+    case 'ucs-2':
+    case 'utf16le':
+    case 'utf-16le':
+      return true
+    default:
+      return false
+  }
+}
+
+Buffer.concat = function concat (list, length) {
+  if (!isArray(list)) {
+    throw new TypeError('"list" argument must be an Array of Buffers')
+  }
+
+  if (list.length === 0) {
+    return Buffer.alloc(0)
+  }
+
+  var i
+  if (length === undefined) {
+    length = 0
+    for (i = 0; i < list.length; ++i) {
+      length += list[i].length
+    }
+  }
+
+  var buffer = Buffer.allocUnsafe(length)
+  var pos = 0
+  for (i = 0; i < list.length; ++i) {
+    var buf = list[i]
+    if (!Buffer.isBuffer(buf)) {
+      throw new TypeError('"list" argument must be an Array of Buffers')
+    }
+    buf.copy(buffer, pos)
+    pos += buf.length
+  }
+  return buffer
+}
+
+function byteLength (string, encoding) {
+  if (Buffer.isBuffer(string)) {
+    return string.length
+  }
+  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
+      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
+    return string.byteLength
+  }
+  if (typeof string !== 'string') {
+    string = '' + string
+  }
+
+  var len = string.length
+  if (len === 0) return 0
+
+  // Use a for loop to avoid recursion
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'ascii':
+      case 'latin1':
+      case 'binary':
+        return len
+      case 'utf8':
+      case 'utf-8':
+      case undefined:
+        return utf8ToBytes(string).length
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return len * 2
+      case 'hex':
+        return len >>> 1
+      case 'base64':
+        return base64ToBytes(string).length
+      default:
+        if (loweredCase) return utf8ToBytes(string).length // assume utf8
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+Buffer.byteLength = byteLength
+
+function slowToString (encoding, start, end) {
+  var loweredCase = false
+
+  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+  // property of a typed array.
+
+  // This behaves neither like String nor Uint8Array in that we set start/end
+  // to their upper/lower bounds if the value passed is out of range.
+  // undefined is handled specially as per ECMA-262 6th Edition,
+  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+  if (start === undefined || start < 0) {
+    start = 0
+  }
+  // Return early if start > this.length. Done here to prevent potential uint32
+  // coercion fail below.
+  if (start > this.length) {
+    return ''
+  }
+
+  if (end === undefined || end > this.length) {
+    end = this.length
+  }
+
+  if (end <= 0) {
+    return ''
+  }
+
+  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+  end >>>= 0
+  start >>>= 0
+
+  if (end <= start) {
+    return ''
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  while (true) {
+    switch (encoding) {
+      case 'hex':
+        return hexSlice(this, start, end)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Slice(this, start, end)
+
+      case 'ascii':
+        return asciiSlice(this, start, end)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Slice(this, start, end)
+
+      case 'base64':
+        return base64Slice(this, start, end)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return utf16leSlice(this, start, end)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = (encoding + '').toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
+// Buffer instances.
+Buffer.prototype._isBuffer = true
+
+function swap (b, n, m) {
+  var i = b[n]
+  b[n] = b[m]
+  b[m] = i
+}
+
+Buffer.prototype.swap16 = function swap16 () {
+  var len = this.length
+  if (len % 2 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 16-bits')
+  }
+  for (var i = 0; i < len; i += 2) {
+    swap(this, i, i + 1)
+  }
+  return this
+}
+
+Buffer.prototype.swap32 = function swap32 () {
+  var len = this.length
+  if (len % 4 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 32-bits')
+  }
+  for (var i = 0; i < len; i += 4) {
+    swap(this, i, i + 3)
+    swap(this, i + 1, i + 2)
+  }
+  return this
+}
+
+Buffer.prototype.swap64 = function swap64 () {
+  var len = this.length
+  if (len % 8 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 64-bits')
+  }
+  for (var i = 0; i < len; i += 8) {
+    swap(this, i, i + 7)
+    swap(this, i + 1, i + 6)
+    swap(this, i + 2, i + 5)
+    swap(this, i + 3, i + 4)
+  }
+  return this
+}
+
+Buffer.prototype.toString = function toString () {
+  var length = this.length | 0
+  if (length === 0) return ''
+  if (arguments.length === 0) return utf8Slice(this, 0, length)
+  return slowToString.apply(this, arguments)
+}
+
+Buffer.prototype.equals = function equals (b) {
+  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+  if (this === b) return true
+  return Buffer.compare(this, b) === 0
+}
+
+Buffer.prototype.inspect = function inspect () {
+  var str = ''
+  var max = exports.INSPECT_MAX_BYTES
+  if (this.length > 0) {
+    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+    if (this.length > max) str += ' ... '
+  }
+  return '<Buffer ' + str + '>'
+}
+
+Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+  if (!Buffer.isBuffer(target)) {
+    throw new TypeError('Argument must be a Buffer')
+  }
+
+  if (start === undefined) {
+    start = 0
+  }
+  if (end === undefined) {
+    end = target ? target.length : 0
+  }
+  if (thisStart === undefined) {
+    thisStart = 0
+  }
+  if (thisEnd === undefined) {
+    thisEnd = this.length
+  }
+
+  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+    throw new RangeError('out of range index')
+  }
+
+  if (thisStart >= thisEnd && start >= end) {
+    return 0
+  }
+  if (thisStart >= thisEnd) {
+    return -1
+  }
+  if (start >= end) {
+    return 1
+  }
+
+  start >>>= 0
+  end >>>= 0
+  thisStart >>>= 0
+  thisEnd >>>= 0
+
+  if (this === target) return 0
+
+  var x = thisEnd - thisStart
+  var y = end - start
+  var len = Math.min(x, y)
+
+  var thisCopy = this.slice(thisStart, thisEnd)
+  var targetCopy = target.slice(start, end)
+
+  for (var i = 0; i < len; ++i) {
+    if (thisCopy[i] !== targetCopy[i]) {
+      x = thisCopy[i]
+      y = targetCopy[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+//
+// Arguments:
+// - buffer - a Buffer to search
+// - val - a string, Buffer, or number
+// - byteOffset - an index into `buffer`; will be clamped to an int32
+// - encoding - an optional encoding, relevant is val is a string
+// - dir - true for indexOf, false for lastIndexOf
+function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+  // Empty buffer means no match
+  if (buffer.length === 0) return -1
+
+  // Normalize byteOffset
+  if (typeof byteOffset === 'string') {
+    encoding = byteOffset
+    byteOffset = 0
+  } else if (byteOffset > 0x7fffffff) {
+    byteOffset = 0x7fffffff
+  } else if (byteOffset < -0x80000000) {
+    byteOffset = -0x80000000
+  }
+  byteOffset = +byteOffset  // Coerce to Number.
+  if (isNaN(byteOffset)) {
+    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+    byteOffset = dir ? 0 : (buffer.length - 1)
+  }
+
+  // Normalize byteOffset: negative offsets start from the end of the buffer
+  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+  if (byteOffset >= buffer.length) {
+    if (dir) return -1
+    else byteOffset = buffer.length - 1
+  } else if (byteOffset < 0) {
+    if (dir) byteOffset = 0
+    else return -1
+  }
+
+  // Normalize val
+  if (typeof val === 'string') {
+    val = Buffer.from(val, encoding)
+  }
+
+  // Finally, search either indexOf (if dir is true) or lastIndexOf
+  if (Buffer.isBuffer(val)) {
+    // Special case: looking for empty string/buffer always fails
+    if (val.length === 0) {
+      return -1
+    }
+    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+  } else if (typeof val === 'number') {
+    val = val & 0xFF // Search for a byte value [0-255]
+    if (Buffer.TYPED_ARRAY_SUPPORT &&
+        typeof Uint8Array.prototype.indexOf === 'function') {
+      if (dir) {
+        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+      } else {
+        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+      }
+    }
+    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+  }
+
+  throw new TypeError('val must be string, number or Buffer')
+}
+
+function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+  var indexSize = 1
+  var arrLength = arr.length
+  var valLength = val.length
+
+  if (encoding !== undefined) {
+    encoding = String(encoding).toLowerCase()
+    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+        encoding === 'utf16le' || encoding === 'utf-16le') {
+      if (arr.length < 2 || val.length < 2) {
+        return -1
+      }
+      indexSize = 2
+      arrLength /= 2
+      valLength /= 2
+      byteOffset /= 2
+    }
+  }
+
+  function read (buf, i) {
+    if (indexSize === 1) {
+      return buf[i]
+    } else {
+      return buf.readUInt16BE(i * indexSize)
+    }
+  }
+
+  var i
+  if (dir) {
+    var foundIndex = -1
+    for (i = byteOffset; i < arrLength; i++) {
+      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+        if (foundIndex === -1) foundIndex = i
+        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+      } else {
+        if (foundIndex !== -1) i -= i - foundIndex
+        foundIndex = -1
+      }
+    }
+  } else {
+    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+    for (i = byteOffset; i >= 0; i--) {
+      var found = true
+      for (var j = 0; j < valLength; j++) {
+        if (read(arr, i + j) !== read(val, j)) {
+          found = false
+          break
+        }
+      }
+      if (found) return i
+    }
+  }
+
+  return -1
+}
+
+Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+  return this.indexOf(val, byteOffset, encoding) !== -1
+}
+
+Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+}
+
+Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+}
+
+function hexWrite (buf, string, offset, length) {
+  offset = Number(offset) || 0
+  var remaining = buf.length - offset
+  if (!length) {
+    length = remaining
+  } else {
+    length = Number(length)
+    if (length > remaining) {
+      length = remaining
+    }
+  }
+
+  // must be an even number of digits
+  var strLen = string.length
+  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
+
+  if (length > strLen / 2) {
+    length = strLen / 2
+  }
+  for (var i = 0; i < length; ++i) {
+    var parsed = parseInt(string.substr(i * 2, 2), 16)
+    if (isNaN(parsed)) return i
+    buf[offset + i] = parsed
+  }
+  return i
+}
+
+function utf8Write (buf, string, offset, length) {
+  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+function asciiWrite (buf, string, offset, length) {
+  return blitBuffer(asciiToBytes(string), buf, offset, length)
+}
+
+function latin1Write (buf, string, offset, length) {
+  return asciiWrite(buf, string, offset, length)
+}
+
+function base64Write (buf, string, offset, length) {
+  return blitBuffer(base64ToBytes(string), buf, offset, length)
+}
+
+function ucs2Write (buf, string, offset, length) {
+  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+Buffer.prototype.write = function write (string, offset, length, encoding) {
+  // Buffer#write(string)
+  if (offset === undefined) {
+    encoding = 'utf8'
+    length = this.length
+    offset = 0
+  // Buffer#write(string, encoding)
+  } else if (length === undefined && typeof offset === 'string') {
+    encoding = offset
+    length = this.length
+    offset = 0
+  // Buffer#write(string, offset[, length][, encoding])
+  } else if (isFinite(offset)) {
+    offset = offset | 0
+    if (isFinite(length)) {
+      length = length | 0
+      if (encoding === undefined) encoding = 'utf8'
+    } else {
+      encoding = length
+      length = undefined
+    }
+  // legacy write(string, encoding, offset, length) - remove in v0.13
+  } else {
+    throw new Error(
+      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+    )
+  }
+
+  var remaining = this.length - offset
+  if (length === undefined || length > remaining) length = remaining
+
+  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+    throw new RangeError('Attempt to write outside buffer bounds')
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'hex':
+        return hexWrite(this, string, offset, length)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Write(this, string, offset, length)
+
+      case 'ascii':
+        return asciiWrite(this, string, offset, length)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Write(this, string, offset, length)
+
+      case 'base64':
+        // Warning: maxLength not taken into account in base64Write
+        return base64Write(this, string, offset, length)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return ucs2Write(this, string, offset, length)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+Buffer.prototype.toJSON = function toJSON () {
+  return {
+    type: 'Buffer',
+    data: Array.prototype.slice.call(this._arr || this, 0)
+  }
+}
+
+function base64Slice (buf, start, end) {
+  if (start === 0 && end === buf.length) {
+    return base64.fromByteArray(buf)
+  } else {
+    return base64.fromByteArray(buf.slice(start, end))
+  }
+}
+
+function utf8Slice (buf, start, end) {
+  end = Math.min(buf.length, end)
+  var res = []
+
+  var i = start
+  while (i < end) {
+    var firstByte = buf[i]
+    var codePoint = null
+    var bytesPerSequence = (firstByte > 0xEF) ? 4
+      : (firstByte > 0xDF) ? 3
+      : (firstByte > 0xBF) ? 2
+      : 1
+
+    if (i + bytesPerSequence <= end) {
+      var secondByte, thirdByte, fourthByte, tempCodePoint
+
+      switch (bytesPerSequence) {
+        case 1:
+          if (firstByte < 0x80) {
+            codePoint = firstByte
+          }
+          break
+        case 2:
+          secondByte = buf[i + 1]
+          if ((secondByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+            if (tempCodePoint > 0x7F) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 3:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 4:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          fourthByte = buf[i + 3]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+              codePoint = tempCodePoint
+            }
+          }
+      }
+    }
+
+    if (codePoint === null) {
+      // we did not generate a valid codePoint so insert a
+      // replacement char (U+FFFD) and advance only 1 byte
+      codePoint = 0xFFFD
+      bytesPerSequence = 1
+    } else if (codePoint > 0xFFFF) {
+      // encode to utf16 (surrogate pair dance)
+      codePoint -= 0x10000
+      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+      codePoint = 0xDC00 | codePoint & 0x3FF
+    }
+
+    res.push(codePoint)
+    i += bytesPerSequence
+  }
+
+  return decodeCodePointsArray(res)
+}
+
+// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+// the lowest limit is Chrome, with 0x10000 args.
+// We go 1 magnitude less, for safety
+var MAX_ARGUMENTS_LENGTH = 0x1000
+
+function decodeCodePointsArray (codePoints) {
+  var len = codePoints.length
+  if (len <= MAX_ARGUMENTS_LENGTH) {
+    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+  }
+
+  // Decode in chunks to avoid "call stack size exceeded".
+  var res = ''
+  var i = 0
+  while (i < len) {
+    res += String.fromCharCode.apply(
+      String,
+      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+    )
+  }
+  return res
+}
+
+function asciiSlice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i] & 0x7F)
+  }
+  return ret
+}
+
+function latin1Slice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i])
+  }
+  return ret
+}
+
+function hexSlice (buf, start, end) {
+  var len = buf.length
+
+  if (!start || start < 0) start = 0
+  if (!end || end < 0 || end > len) end = len
+
+  var out = ''
+  for (var i = start; i < end; ++i) {
+    out += toHex(buf[i])
+  }
+  return out
+}
+
+function utf16leSlice (buf, start, end) {
+  var bytes = buf.slice(start, end)
+  var res = ''
+  for (var i = 0; i < bytes.length; i += 2) {
+    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+  }
+  return res
+}
+
+Buffer.prototype.slice = function slice (start, end) {
+  var len = this.length
+  start = ~~start
+  end = end === undefined ? len : ~~end
+
+  if (start < 0) {
+    start += len
+    if (start < 0) start = 0
+  } else if (start > len) {
+    start = len
+  }
+
+  if (end < 0) {
+    end += len
+    if (end < 0) end = 0
+  } else if (end > len) {
+    end = len
+  }
+
+  if (end < start) end = start
+
+  var newBuf
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    newBuf = this.subarray(start, end)
+    newBuf.__proto__ = Buffer.prototype
+  } else {
+    var sliceLen = end - start
+    newBuf = new Buffer(sliceLen, undefined)
+    for (var i = 0; i < sliceLen; ++i) {
+      newBuf[i] = this[i + start]
+    }
+  }
+
+  return newBuf
+}
+
+/*
+ * Need to make sure that buffer isn't trying to write out of bounds.
+ */
+function checkOffset (offset, ext, length) {
+  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+}
+
+Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    checkOffset(offset, byteLength, this.length)
+  }
+
+  var val = this[offset + --byteLength]
+  var mul = 1
+  while (byteLength > 0 && (mul *= 0x100)) {
+    val += this[offset + --byteLength] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  return this[offset]
+}
+
+Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return this[offset] | (this[offset + 1] << 8)
+}
+
+Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return (this[offset] << 8) | this[offset + 1]
+}
+
+Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return ((this[offset]) |
+      (this[offset + 1] << 8) |
+      (this[offset + 2] << 16)) +
+      (this[offset + 3] * 0x1000000)
+}
+
+Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] * 0x1000000) +
+    ((this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    this[offset + 3])
+}
+
+Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var i = byteLength
+  var mul = 1
+  var val = this[offset + --i]
+  while (i > 0 && (mul *= 0x100)) {
+    val += this[offset + --i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  if (!(this[offset] & 0x80)) return (this[offset])
+  return ((0xff - this[offset] + 1) * -1)
+}
+
+Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset] | (this[offset + 1] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset + 1] | (this[offset] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset]) |
+    (this[offset + 1] << 8) |
+    (this[offset + 2] << 16) |
+    (this[offset + 3] << 24)
+}
+
+Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] << 24) |
+    (this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    (this[offset + 3])
+}
+
+Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, true, 23, 4)
+}
+
+Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, false, 23, 4)
+}
+
+Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, true, 52, 8)
+}
+
+Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, false, 52, 8)
+}
+
+function checkInt (buf, value, offset, ext, max, min) {
+  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+}
+
+Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var mul = 1
+  var i = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+function objectWriteUInt16 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
+    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+      (littleEndian ? i : 1 - i) * 8
+  }
+}
+
+Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+function objectWriteUInt32 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffffffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
+    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+  }
+}
+
+Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset + 3] = (value >>> 24)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 1] = (value >>> 8)
+    this[offset] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) {
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = 0
+  var mul = 1
+  var sub = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) {
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  var sub = 0
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  if (value < 0) value = 0xff + value + 1
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 3] = (value >>> 24)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (value < 0) value = 0xffffffff + value + 1
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+function checkIEEE754 (buf, value, offset, ext, max, min) {
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+  if (offset < 0) throw new RangeError('Index out of range')
+}
+
+function writeFloat (buf, value, offset, littleEndian, noAssert) {
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+  return offset + 4
+}
+
+Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, false, noAssert)
+}
+
+function writeDouble (buf, value, offset, littleEndian, noAssert) {
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+  return offset + 8
+}
+
+Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, false, noAssert)
+}
+
+// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+  if (!start) start = 0
+  if (!end && end !== 0) end = this.length
+  if (targetStart >= target.length) targetStart = target.length
+  if (!targetStart) targetStart = 0
+  if (end > 0 && end < start) end = start
+
+  // Copy 0 bytes; we're done
+  if (end === start) return 0
+  if (target.length === 0 || this.length === 0) return 0
+
+  // Fatal error conditions
+  if (targetStart < 0) {
+    throw new RangeError('targetStart out of bounds')
+  }
+  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+  if (end < 0) throw new RangeError('sourceEnd out of bounds')
+
+  // Are we oob?
+  if (end > this.length) end = this.length
+  if (target.length - targetStart < end - start) {
+    end = target.length - targetStart + start
+  }
+
+  var len = end - start
+  var i
+
+  if (this === target && start < targetStart && targetStart < end) {
+    // descending copy from end
+    for (i = len - 1; i >= 0; --i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+    // ascending copy from start
+    for (i = 0; i < len; ++i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else {
+    Uint8Array.prototype.set.call(
+      target,
+      this.subarray(start, start + len),
+      targetStart
+    )
+  }
+
+  return len
+}
+
+// Usage:
+//    buffer.fill(number[, offset[, end]])
+//    buffer.fill(buffer[, offset[, end]])
+//    buffer.fill(string[, offset[, end]][, encoding])
+Buffer.prototype.fill = function fill (val, start, end, encoding) {
+  // Handle string cases:
+  if (typeof val === 'string') {
+    if (typeof start === 'string') {
+      encoding = start
+      start = 0
+      end = this.length
+    } else if (typeof end === 'string') {
+      encoding = end
+      end = this.length
+    }
+    if (val.length === 1) {
+      var code = val.charCodeAt(0)
+      if (code < 256) {
+        val = code
+      }
+    }
+    if (encoding !== undefined && typeof encoding !== 'string') {
+      throw new TypeError('encoding must be a string')
+    }
+    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+      throw new TypeError('Unknown encoding: ' + encoding)
+    }
+  } else if (typeof val === 'number') {
+    val = val & 255
+  }
+
+  // Invalid ranges are not set to a default, so can range check early.
+  if (start < 0 || this.length < start || this.length < end) {
+    throw new RangeError('Out of range index')
+  }
+
+  if (end <= start) {
+    return this
+  }
+
+  start = start >>> 0
+  end = end === undefined ? this.length : end >>> 0
+
+  if (!val) val = 0
+
+  var i
+  if (typeof val === 'number') {
+    for (i = start; i < end; ++i) {
+      this[i] = val
+    }
+  } else {
+    var bytes = Buffer.isBuffer(val)
+      ? val
+      : utf8ToBytes(new Buffer(val, encoding).toString())
+    var len = bytes.length
+    for (i = 0; i < end - start; ++i) {
+      this[i + start] = bytes[i % len]
+    }
+  }
+
+  return this
+}
+
+// HELPER FUNCTIONS
+// ================
+
+var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
+
+function base64clean (str) {
+  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+  // Node converts strings with length < 2 to ''
+  if (str.length < 2) return ''
+  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+  while (str.length % 4 !== 0) {
+    str = str + '='
+  }
+  return str
+}
+
+function stringtrim (str) {
+  if (str.trim) return str.trim()
+  return str.replace(/^\s+|\s+$/g, '')
+}
+
+function toHex (n) {
+  if (n < 16) return '0' + n.toString(16)
+  return n.toString(16)
+}
+
+function utf8ToBytes (string, units) {
+  units = units || Infinity
+  var codePoint
+  var length = string.length
+  var leadSurrogate = null
+  var bytes = []
+
+  for (var i = 0; i < length; ++i) {
+    codePoint = string.charCodeAt(i)
+
+    // is surrogate component
+    if (codePoint > 0xD7FF && codePoint < 0xE000) {
+      // last char was a lead
+      if (!leadSurrogate) {
+        // no lead yet
+        if (codePoint > 0xDBFF) {
+          // unexpected trail
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        } else if (i + 1 === length) {
+          // unpaired lead
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        }
+
+        // valid lead
+        leadSurrogate = codePoint
+
+        continue
+      }
+
+      // 2 leads in a row
+      if (codePoint < 0xDC00) {
+        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+        leadSurrogate = codePoint
+        continue
+      }
+
+      // valid surrogate pair
+      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+    } else if (leadSurrogate) {
+      // valid bmp char, but last char was a lead
+      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+    }
+
+    leadSurrogate = null
+
+    // encode utf8
+    if (codePoint < 0x80) {
+      if ((units -= 1) < 0) break
+      bytes.push(codePoint)
+    } else if (codePoint < 0x800) {
+      if ((units -= 2) < 0) break
+      bytes.push(
+        codePoint >> 0x6 | 0xC0,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x10000) {
+      if ((units -= 3) < 0) break
+      bytes.push(
+        codePoint >> 0xC | 0xE0,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x110000) {
+      if ((units -= 4) < 0) break
+      bytes.push(
+        codePoint >> 0x12 | 0xF0,
+        codePoint >> 0xC & 0x3F | 0x80,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else {
+      throw new Error('Invalid code point')
+    }
+  }
+
+  return bytes
+}
+
+function asciiToBytes (str) {
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    // Node's code seems to be doing this and not & 0x7F..
+    byteArray.push(str.charCodeAt(i) & 0xFF)
+  }
+  return byteArray
+}
+
+function utf16leToBytes (str, units) {
+  var c, hi, lo
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    if ((units -= 2) < 0) break
+
+    c = str.charCodeAt(i)
+    hi = c >> 8
+    lo = c % 256
+    byteArray.push(lo)
+    byteArray.push(hi)
+  }
+
+  return byteArray
+}
+
+function base64ToBytes (str) {
+  return base64.toByteArray(base64clean(str))
+}
+
+function blitBuffer (src, dst, offset, length) {
+  for (var i = 0; i < length; ++i) {
+    if ((i + offset >= dst.length) || (i >= src.length)) break
+    dst[i + offset] = src[i]
+  }
+  return i
+}
+
+function isnan (val) {
+  return val !== val // eslint-disable-line no-self-compare
+}
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj")))
+
+/***/ }),
+
+/***/ "uTlj":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _leaflet = _interopRequireDefault(__webpack_require__("hgx0"));
+
+// @property lastId: Number
+// Last unique ID used by [`stamp()`](#util-stamp)
+var lastId = 0; // @function stamp(obj: Object): Number
+// Returns the unique ID of an object, assigning it one if it doesn't have it.
+
+function stamp(obj) {
+  /*eslint-disable */
+  obj._leaflet_id = obj._leaflet_id || ++lastId;
+  return obj._leaflet_id;
+  /* eslint-enable */
+}
+
+_leaflet.default.Map.prototype.addLayer = function (layer, name) {
+  if (!layer._layerAdd) {
+    throw new Error('The provided object is not a Layer.');
+  }
+
+  var id = stamp(layer); // 如果layer已存在，返回this
+
+  if (this._layers[id] || this._layers[name]) {
+    return this;
+  } // 如果用户没有传入name，就生成一个name
+
+
+  if (!name) {
+    name = 'sm-custom' + id;
+  } // 如果该name已存在，就生成新的name
+
+
+  if (this._layers[name]) {
+    this.fire('addLayerFailed', 'layer name重复,请输入唯一的name');
+    return this;
+  } // 将layer和name添加到layersOnMap
+
+
+  layer.name = name; // 不要将featureLayer加入layersOnMap
+  // let _layersId = {};
+  // for (let key in this._layers) {
+  //   if (this._layers[key]._layers) {
+  //     _layersId[key] = [];
+  //     for (let key2 in this._layers[key]._layers) {
+  //       _layersId[key].push(key2);
+  //     }
+  //   }
+  // }
+  // let layersOnMapFlag = true;
+  // for (let key in _layersId) {
+  //   if (_layersId[key].indexOf(id + '') > -1) {
+  //     layersOnMapFlag = false;
+  //   }
+  // }
+
+  if (!this.layersOnMap) {
+    this.layersOnMap = [];
+  }
+
+  this.layersOnMap.push({
+    name: name,
+    layer: layer
+  }); // if (layersOnMapFlag) {
+  //   this.layersOnMap.push({ name, layer });
+  // }
+
+  this._layers[id] = layer;
+  layer._mapToAdd = this;
+
+  if (layer.beforeAdd) {
+    layer.beforeAdd(this);
+  }
+
+  this.whenReady(layer._layerAdd, layer);
+  return this;
+};
+
+_leaflet.default.Map.prototype.removeLayer = function (layer, name) {
+  // 重新构造layersOnMap
+  this.layersOnMap = this.layersOnMap.filter(function (l) {
+    return l.name !== (layer.name || name);
+  }); // 如果是传入图层，就用图层id; 如果传入name,通过name去获取图层id
+
+  var id = stamp(layer) || this._layers[name].id;
+
+  if (!this._layers[id]) {
+    return this;
+  }
+
+  if (this._loaded) {
+    layer.onRemove(this);
+  }
+
+  if (layer.getAttribution && this.attributionControl) {
+    this.attributionControl.removeAttribution(layer.getAttribution());
+  }
+
+  delete this._layers[id];
+
+  if (this._loaded) {
+    this.fire('layerremove', {
+      layer: layer,
+      name: name
+    });
+    layer.fire('remove');
+  }
+
+  layer._map = layer._mapToAdd = null;
+  return this;
+};
+
+_leaflet.default.Map.include({
+  getLayersOnMap: function getLayersOnMap() {
+    return this.layersOnMap;
+  },
+  getLayerById: function getLayerById(id) {
+    return this._layers[id];
+  },
+  getLayerByName: function getLayerByName(name) {
+    for (var key in this._layers) {
+      if (name === this._layers[key].name) {
+        return this._layers[key];
+      }
+    }
+  },
+  getAllLayers: function getAllLayers() {
+    return this._layers;
+  }
+});
+
+var _default = _leaflet.default;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "usAy":
 /***/ (function(module, exports) {
 
@@ -20904,12 +30588,13 @@ var RestService =
 function (_Events) {
   (0, _inherits2.default)(RestService, _Events);
 
-  function RestService() {
+  function RestService(options) {
     var _this;
 
     (0, _classCallCheck2.default)(this, RestService);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RestService).call(this));
     _this.eventTypes = ['getdatafailed', 'getdatasucceeded'];
+    _this.options = options || {};
     return _this;
   }
   /**
@@ -20928,7 +30613,8 @@ function (_Events) {
       }
 
       SuperMap.FetchRequest.get(url, null, {
-        withoutFormatSuffix: true
+        withoutFormatSuffix: true,
+        proxy: this.options.proxy
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
@@ -20974,23 +30660,6 @@ exports.default = RestService;
 
 /***/ }),
 
-/***/ "w5PQ":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/leaflet/web-map/WebMap.vue?vue&type=template&id=0d7d2bd8&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sm-component-web-map",attrs:{"id":_vm.target}},[_vm._t("default"),_vm._v(" "),(_vm.spinning)?_c('a-spin',{attrs:{"size":"large","tip":_vm.$t('webmap.loadingTip'),"spinning":_vm.spinning}}):_vm._e()],2)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/leaflet/web-map/WebMap.vue?vue&type=template&id=0d7d2bd8&
-/* concated harmony reexport render */__webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* concated harmony reexport staticRenderFns */__webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-
-
-/***/ }),
-
 /***/ "wTVA":
 /***/ (function(module, exports) {
 
@@ -21013,6 +30682,14 @@ module.exports = _nonIterableRest;
 
 /***/ }),
 
+/***/ "wq4j":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("43KI").PassThrough
+
+
+/***/ }),
+
 /***/ "x2TH":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21029,12 +30706,6 @@ var _Util = __webpack_require__("yW8N");
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html. */
-
-/**
- * @name Event
- * @namespace
- * @description 事件处理函数.
- */
 var Event = {
   /**
    * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
@@ -21160,7 +30831,6 @@ var Event = {
 
   /**
    * @description Stops an event from propagating.
-   * @param {Event} event - The event
    * @param {boolean} allowDefault - If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
    */
   stop: function stop(event, allowDefault) {
@@ -21180,7 +30850,6 @@ var Event = {
   },
 
   /**
-   * @param {Event} event - The event。
    * @param {string} tagName - html 标签名。
    * @returns {HTMLElement} The first node with the given tagName, starting from the node the event was triggered on and traversing the DOM upwards
    */
@@ -21364,6 +31033,26 @@ var Event = {
 
 exports.Event = Event;
 Event.observe(window, 'unload', Event.unloadCache, false);
+
+/***/ }),
+
+/***/ "xRo1":
+/***/ (function(module, exports, __webpack_require__) {
+
+/*jslint node:true */
+
+var xml2js = __webpack_require__("hE+I");
+var xml2json = __webpack_require__("B4q0");
+var js2xml = __webpack_require__("zvmt");
+var json2xml = __webpack_require__("STtz");
+
+module.exports = {
+  xml2js: xml2js,
+  xml2json: xml2json,
+  js2xml: js2xml,
+  json2xml: json2xml
+};
+
 
 /***/ }),
 
@@ -23507,6 +33196,333 @@ function stubFalse() {
 module.exports = cloneDeep;
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("YuTi")(module)))
+
+/***/ }),
+
+/***/ "zvmt":
+/***/ (function(module, exports, __webpack_require__) {
+
+var helper = __webpack_require__("lsHq");
+var isArray = __webpack_require__("mxIc").isArray;
+
+var currentElement, currentElementName;
+
+function validateOptions(userOptions) {
+  var options = helper.copyOptions(userOptions);
+  helper.ensureFlagExists('ignoreDeclaration', options);
+  helper.ensureFlagExists('ignoreInstruction', options);
+  helper.ensureFlagExists('ignoreAttributes', options);
+  helper.ensureFlagExists('ignoreText', options);
+  helper.ensureFlagExists('ignoreComment', options);
+  helper.ensureFlagExists('ignoreCdata', options);
+  helper.ensureFlagExists('ignoreDoctype', options);
+  helper.ensureFlagExists('compact', options);
+  helper.ensureFlagExists('indentText', options);
+  helper.ensureFlagExists('indentCdata', options);
+  helper.ensureFlagExists('indentAttributes', options);
+  helper.ensureFlagExists('indentInstruction', options);
+  helper.ensureFlagExists('fullTagEmptyElement', options);
+  helper.ensureFlagExists('noQuotesForNativeAttributes', options);
+  helper.ensureSpacesExists(options);
+  if (typeof options.spaces === 'number') {
+    options.spaces = Array(options.spaces + 1).join(' ');
+  }
+  helper.ensureKeyExists('declaration', options);
+  helper.ensureKeyExists('instruction', options);
+  helper.ensureKeyExists('attributes', options);
+  helper.ensureKeyExists('text', options);
+  helper.ensureKeyExists('comment', options);
+  helper.ensureKeyExists('cdata', options);
+  helper.ensureKeyExists('doctype', options);
+  helper.ensureKeyExists('type', options);
+  helper.ensureKeyExists('name', options);
+  helper.ensureKeyExists('elements', options);
+  helper.checkFnExists('doctype', options);
+  helper.checkFnExists('instruction', options);
+  helper.checkFnExists('cdata', options);
+  helper.checkFnExists('comment', options);
+  helper.checkFnExists('text', options);
+  helper.checkFnExists('instructionName', options);
+  helper.checkFnExists('elementName', options);
+  helper.checkFnExists('attributeName', options);
+  helper.checkFnExists('attributeValue', options);
+  helper.checkFnExists('attributes', options);
+  helper.checkFnExists('fullTagEmptyElement', options);
+  return options;
+}
+
+function writeIndentation(options, depth, firstLine) {
+  return (!firstLine && options.spaces ? '\n' : '') + Array(depth + 1).join(options.spaces);
+}
+
+function writeAttributes(attributes, options, depth) {
+  if (options.ignoreAttributes) {
+    return '';
+  }
+  if ('attributesFn' in options) {
+    attributes = options.attributesFn(attributes, currentElementName, currentElement);
+  }
+  var key, attr, attrName, quote, result = [];
+  for (key in attributes) {
+    if (attributes.hasOwnProperty(key) && attributes[key] !== null && attributes[key] !== undefined) {
+      quote = options.noQuotesForNativeAttributes && typeof attributes[key] !== 'string' ? '' : '"';
+      attr = '' + attributes[key]; // ensure number and boolean are converted to String
+      attr = attr.replace(/"/g, '&quot;');
+      attrName = 'attributeNameFn' in options ? options.attributeNameFn(key, attr, currentElementName, currentElement) : key;
+      result.push((options.spaces && options.indentAttributes? writeIndentation(options, depth+1, false) : ' '));
+      result.push(attrName + '=' + quote + ('attributeValueFn' in options ? options.attributeValueFn(attr, key, currentElementName, currentElement) : attr) + quote);
+    }
+  }
+  if (attributes && Object.keys(attributes).length && options.spaces && options.indentAttributes) {
+    result.push(writeIndentation(options, depth, false));
+  }
+  return result.join('');
+}
+
+function writeDeclaration(declaration, options, depth) {
+  currentElement = declaration;
+  currentElementName = 'xml';
+  return options.ignoreDeclaration ? '' :  '<?' + 'xml' + writeAttributes(declaration[options.attributesKey], options, depth) + '?>';
+}
+
+function writeInstruction(instruction, options, depth) {
+  if (options.ignoreInstruction) {
+    return '';
+  }
+  var key;
+  for (key in instruction) {
+    if (instruction.hasOwnProperty(key)) {
+      break;
+    }
+  }
+  var instructionName = 'instructionNameFn' in options ? options.instructionNameFn(key, instruction[key], currentElementName, currentElement) : key;
+  if (typeof instruction[key] === 'object') {
+    currentElement = instruction;
+    currentElementName = instructionName;
+    return '<?' + instructionName + writeAttributes(instruction[key][options.attributesKey], options, depth) + '?>';
+  } else {
+    var instructionValue = instruction[key] ? instruction[key] : '';
+    if ('instructionFn' in options) instructionValue = options.instructionFn(instructionValue, key, currentElementName, currentElement);
+    return '<?' + instructionName + (instructionValue ? ' ' + instructionValue : '') + '?>';
+  }
+}
+
+function writeComment(comment, options) {
+  return options.ignoreComment ? '' : '<!--' + ('commentFn' in options ? options.commentFn(comment, currentElementName, currentElement) : comment) + '-->';
+}
+
+function writeCdata(cdata, options) {
+  return options.ignoreCdata ? '' : '<![CDATA[' + ('cdataFn' in options ? options.cdataFn(cdata, currentElementName, currentElement) : cdata) + ']]>';
+}
+
+function writeDoctype(doctype, options) {
+  return options.ignoreDoctype ? '' : '<!DOCTYPE ' + ('doctypeFn' in options ? options.doctypeFn(doctype, currentElementName, currentElement) : doctype) + '>';
+}
+
+function writeText(text, options) {
+  if (options.ignoreText) return '';
+  text = '' + text; // ensure Number and Boolean are converted to String
+  text = text.replace(/&amp;/g, '&'); // desanitize to avoid double sanitization
+  text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return 'textFn' in options ? options.textFn(text, currentElementName, currentElement) : text;
+}
+
+function hasContent(element, options) {
+  var i;
+  if (element.elements && element.elements.length) {
+    for (i = 0; i < element.elements.length; ++i) {
+      switch (element.elements[i][options.typeKey]) {
+      case 'text':
+        if (options.indentText) {
+          return true;
+        }
+        break; // skip to next key
+      case 'cdata':
+        if (options.indentCdata) {
+          return true;
+        }
+        break; // skip to next key
+      case 'instruction':
+        if (options.indentInstruction) {
+          return true;
+        }
+        break; // skip to next key
+      case 'doctype':
+      case 'comment':
+      case 'element':
+        return true;
+      default:
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function writeElement(element, options, depth) {
+  currentElement = element;
+  currentElementName = element.name;
+  var xml = [], elementName = 'elementNameFn' in options ? options.elementNameFn(element.name, element) : element.name;
+  xml.push('<' + elementName);
+  if (element[options.attributesKey]) {
+    xml.push(writeAttributes(element[options.attributesKey], options, depth));
+  }
+  var withClosingTag = element[options.elementsKey] && element[options.elementsKey].length || element[options.attributesKey] && element[options.attributesKey]['xml:space'] === 'preserve';
+  if (!withClosingTag) {
+    if ('fullTagEmptyElementFn' in options) {
+      withClosingTag = options.fullTagEmptyElementFn(element.name, element);
+    } else {
+      withClosingTag = options.fullTagEmptyElement;
+    }
+  }
+  if (withClosingTag) {
+    xml.push('>');
+    if (element[options.elementsKey] && element[options.elementsKey].length) {
+      xml.push(writeElements(element[options.elementsKey], options, depth + 1));
+      currentElement = element;
+      currentElementName = element.name;
+    }
+    xml.push(options.spaces && hasContent(element, options) ? '\n' + Array(depth + 1).join(options.spaces) : '');
+    xml.push('</' + elementName + '>');
+  } else {
+    xml.push('/>');
+  }
+  return xml.join('');
+}
+
+function writeElements(elements, options, depth, firstLine) {
+  return elements.reduce(function (xml, element) {
+    var indent = writeIndentation(options, depth, firstLine && !xml);
+    switch (element.type) {
+    case 'element': return xml + indent + writeElement(element, options, depth);
+    case 'comment': return xml + indent + writeComment(element[options.commentKey], options);
+    case 'doctype': return xml + indent + writeDoctype(element[options.doctypeKey], options);
+    case 'cdata': return xml + (options.indentCdata ? indent : '') + writeCdata(element[options.cdataKey], options);
+    case 'text': return xml + (options.indentText ? indent : '') + writeText(element[options.textKey], options);
+    case 'instruction':
+      var instruction = {};
+      instruction[element[options.nameKey]] = element[options.attributesKey] ? element : element[options.instructionKey];
+      return xml + (options.indentInstruction ? indent : '') + writeInstruction(instruction, options, depth);
+    }
+  }, '');
+}
+
+function hasContentCompact(element, options, anyContent) {
+  var key;
+  for (key in element) {
+    if (element.hasOwnProperty(key)) {
+      switch (key) {
+      case options.parentKey:
+      case options.attributesKey:
+        break; // skip to next key
+      case options.textKey:
+        if (options.indentText || anyContent) {
+          return true;
+        }
+        break; // skip to next key
+      case options.cdataKey:
+        if (options.indentCdata || anyContent) {
+          return true;
+        }
+        break; // skip to next key
+      case options.instructionKey:
+        if (options.indentInstruction || anyContent) {
+          return true;
+        }
+        break; // skip to next key
+      case options.doctypeKey:
+      case options.commentKey:
+        return true;
+      default:
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function writeElementCompact(element, name, options, depth, indent) {
+  currentElement = element;
+  currentElementName = name;
+  var elementName = 'elementNameFn' in options ? options.elementNameFn(name, element) : name;
+  if (typeof element === 'undefined' || element === null) {
+    return 'fullTagEmptyElementFn' in options && options.fullTagEmptyElementFn(name, element) || options.fullTagEmptyElement ? '<' + elementName + '></' + elementName + '>' : '<' + elementName + '/>';
+  }
+  var xml = [];
+  if (name) {
+    xml.push('<' + elementName);
+    if (typeof element !== 'object') {
+      xml.push('>' + writeText(element,options) + '</' + elementName + '>');
+      return xml.join('');
+    }
+    if (element[options.attributesKey]) {
+      xml.push(writeAttributes(element[options.attributesKey], options, depth));
+    }
+    var withClosingTag = hasContentCompact(element, options, true) || element[options.attributesKey] && element[options.attributesKey]['xml:space'] === 'preserve';
+    if (!withClosingTag) {
+      if ('fullTagEmptyElementFn' in options) {
+        withClosingTag = options.fullTagEmptyElementFn(name, element);
+      } else {
+        withClosingTag = options.fullTagEmptyElement;
+      }
+    }
+    if (withClosingTag) {
+      xml.push('>');
+    } else {
+      xml.push('/>');
+      return xml.join('');
+    }
+  }
+  xml.push(writeElementsCompact(element, options, depth + 1, false));
+  currentElement = element;
+  currentElementName = name;
+  if (name) {
+    xml.push((indent ? writeIndentation(options, depth, false) : '') + '</' + elementName + '>');
+  }
+  return xml.join('');
+}
+
+function writeElementsCompact(element, options, depth, firstLine) {
+  var i, key, nodes, xml = [];
+  for (key in element) {
+    if (element.hasOwnProperty(key)) {
+      nodes = isArray(element[key]) ? element[key] : [element[key]];
+      for (i = 0; i < nodes.length; ++i) {
+        switch (key) {
+        case options.declarationKey: xml.push(writeDeclaration(nodes[i], options, depth)); break;
+        case options.instructionKey: xml.push((options.indentInstruction ? writeIndentation(options, depth, firstLine) : '') + writeInstruction(nodes[i], options, depth)); break;
+        case options.attributesKey: case options.parentKey: break; // skip
+        case options.textKey: xml.push((options.indentText ? writeIndentation(options, depth, firstLine) : '') + writeText(nodes[i], options)); break;
+        case options.cdataKey: xml.push((options.indentCdata ? writeIndentation(options, depth, firstLine) : '') + writeCdata(nodes[i], options)); break;
+        case options.doctypeKey: xml.push(writeIndentation(options, depth, firstLine) + writeDoctype(nodes[i], options)); break;
+        case options.commentKey: xml.push(writeIndentation(options, depth, firstLine) + writeComment(nodes[i], options)); break;
+        default: xml.push(writeIndentation(options, depth, firstLine) + writeElementCompact(nodes[i], key, options, depth, hasContentCompact(nodes[i], options)));
+        }
+        firstLine = firstLine && !xml.length;
+      }
+    }
+  }
+  return xml.join('');
+}
+
+module.exports = function (js, options) {
+  options = validateOptions(options);
+  var xml = [];
+  currentElement = js;
+  currentElementName = '_root_';
+  if (options.compact) {
+    xml.push(writeElementsCompact(js, options, 0, true));
+  } else {
+    if (js[options.declarationKey]) {
+      xml.push(writeDeclaration(js[options.declarationKey], options, 0));
+    }
+    if (js[options.elementsKey] && js[options.elementsKey].length) {
+      xml.push(writeElements(js[options.elementsKey], options, 0, !xml.length));
+    }
+  }
+  return xml.join('');
+};
+
 
 /***/ })
 
