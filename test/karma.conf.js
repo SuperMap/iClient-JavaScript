@@ -13,15 +13,21 @@ module.exports = function (config) {
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine', 'browserify'],
 
+        client: {
+            jasmine: {
+                random: false
+            }
+        },
+
         browserify: {
             debug: true,
             transform: [
                 [require('babelify'), {
                     presets: ["@babel/preset-env"],
-                    ignore: ["../src/classic/libs/**","../test/libs/**"],
+                    ignore: ["../src/classic/libs/**", "../test/libs/**"],
                     plugins: ['istanbul']
                 }],
-                [require('browserify-css'), {global: true}],
+                [require('browserify-css'), { global: true }],
                 require('browserify-imgify')
             ]
         },
