@@ -50,7 +50,6 @@ module.exports = function (config) {
             /***common的源码***/
             '../src/common/**/*.js',
             /**测试文件**/
-           
             './test-main-common.js',
 
             /***leaflet的源码***/
@@ -87,26 +86,26 @@ module.exports = function (config) {
             '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js': ['browserify'],
             '../src/classic/libs/Lang/*.js': ['browserify'],
             '../src/classic/**/!(index).js': ['browserify'],
-            './classic/**/*Spec.js': ['browserify'],
+            // './classic/**/*Spec.js': ['browserify'],
             './test-main-classic.js': ['browserify'],
 
             '../src/common/**/*.js': ['browserify'],
-            './common/**/*Spec.js': ['browserify'],
+            // './common/**/*Spec.js': ['browserify'],
             './test-main-common.js': ['browserify'],
 
             '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
             '../src/leaflet/**/!(index).js': ['browserify'],
-            './leaflet/**/*Spec.js': ['browserify'],
+            // './leaflet/**/*Spec.js': ['browserify'],
             './test-main-leaflet.js': ['browserify'],
 
             '../node_modules/openlayers/dist/ol-debug.js': ['browserify'],
             '../src/openlayers/**/!(index).js': ['browserify'],
-            './openlayers/**/*Spec.js': ['browserify'],
+            // './openlayers/**/*Spec.js': ['browserify'],
             './test-main-openlayers.js': ['browserify'],
 
             '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
             '../src/mapboxgl/**/!(index).js': ['browserify'],
-            './mapboxgl/**/*Spec.js': ['browserify'],
+            // './mapboxgl/**/*Spec.js': ['browserify'],
             './test-main-mapboxgl.js': ['browserify']
         },
 
