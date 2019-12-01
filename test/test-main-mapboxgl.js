@@ -52,4 +52,4 @@ import './mapboxgl/services/ThiessenAnalysisSpec.js';
 import './mapboxgl/services/TrafficTransferAnalystServiceSpec.js';
 
 /*mapboxgl -- mapping*/
-// import './mapboxgl/mapping/WebMapSpec.js';
+import './mapboxgl/mapping/WebMapSpec.js';
