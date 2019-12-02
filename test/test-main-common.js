@@ -157,6 +157,7 @@ import './common/online/OnlineQueryDatasParameterSpec';
 import './common/iManager/iManagerCreateNodeParamSpec.js';
 
 /**common -- iPortal**/
+import './common/iPortal/iPortalQueryParamSpec.js';
 import './common/iPortal/iPortalMapSpec.js';
 import './common/iPortal/iPortalMapsQueryParamSpec.js';
 import './common/iPortal/iPortalServiceSpec.js';
