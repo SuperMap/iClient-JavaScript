@@ -2024,7 +2024,8 @@ body {
   .sm-component-table-popup__table .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
     background-color: transparent !important; }
   .sm-component-table-popup__table .ant-table-tbody > tr > td {
-    transition: all 0s, height 0s; }
+    transition: all 0s, height 0s;
+    border-bottom-color: transparent; }
   .sm-component-table-popup__table .ant-table-row:hover {
     transition: all 0s, height 0s !important;
     color: var(--table-popup-active-color--text); }
@@ -2271,6 +2272,15 @@ body {
     z-index: 100;
     background: rgba(0, 0, 0, 0.8); }
 
+.sm-leaflet-tabel-popup .leaflet-popup-content {
+  margin: 0; }
+
+.sm-leaflet-tabel-popup .leaflet-popup-content-wrapper {
+  border-radius: 3px; }
+
+.sm-leaflet-tabel-popup .leaflet-popup-content-wrapper, .sm-leaflet-tabel-popup .leaflet-popup-content, .sm-leaflet-tabel-popup .leaflet-popup-tip {
+  background: transparent; }
+
 /* Transition */
 /* color */
 /* 53a8ff */
@@ -2319,4 +2329,10 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+
+.sm-component-chart .sm-component-card__content {
+  width: 400px;
+  height: 200px;
+  /* 去除阴影效果 */
+  box-shadow: none; }
 

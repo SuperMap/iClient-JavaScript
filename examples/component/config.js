@@ -445,6 +445,45 @@ var exampleConfig = {
             fileName: 'l_identify_vue'
           }
         ]
+      },
+      l_chart: {
+        name: '图表',
+        name_en: 'Chart',
+        localIgnore: true,
+        content: [
+          {
+            name: '图表',
+            name_en: 'Chart',
+            version: '10.0.0',
+            thumbnail: 'components_chart_vue.png',
+            fileName: 'l_chart_vue',
+            localIgnore: true
+          },
+          {
+            name: '饼图',
+            name_en: 'Chart(pie)',
+            version: '10.0.0',
+            thumbnail: 'components_chart_vue(pie).png',
+            fileName: 'l_pie_chart_vue',
+            localIgnore: true
+          },
+          {
+            name: '雷达图',
+            name_en: 'Chart(radar)',
+            version: '10.0.0',
+            thumbnail: 'components_chart_vue(radar).png',
+            fileName: 'l_radar_chart_vue',
+            localIgnore: true
+          },
+          {
+            name: '仪表盘',
+            name_en: 'Chart(gauge)',
+            version: '10.0.0',
+            thumbnail: 'components_chart_vue(gauge).png',
+            fileName: 'l_gauge_chart_vue',
+            localIgnore: true
+          }
+        ]
       }
     }
   },
