@@ -68,6 +68,9 @@ export {
     IManagerCreateNodeParam,
     //iPortal
     IPortal,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
     IPortalMap,
     IPortalMapsQueryParam,
     IPortalInsight,

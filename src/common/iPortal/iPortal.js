@@ -52,17 +52,20 @@ export class IPortal extends IPortalServiceBase {
         if (!(queryParams instanceof IPortalQueryParam)) {
             return null;
         }
-        //http://rdc.ispeco.com/gateway/catalog/resource/search.json?aggregationTypes=%5B%22TYPE%22%5D&t=1574736505796&pageSize=12&currentPage=1&orderBy=UPDATETIME&orderType=DESC&tags=%5B%5D&dirIds=%5B%5D&searchType=PUBLIC&resourceSubTypes=%5B%5D
+        var me = this;
         var resourceUrl = this.iportalUrl + "/gateway/catalog/resource/search.json";
+        queryParams.t = new Date().getTime();
         return this.request("GET", resourceUrl, queryParams).then(function(result) {
             var content = [];
             result.content.forEach(function(item) {
-                content.push(new IPortalResource(resourceUrl, item));
+                content.push(new IPortalResource(me.iportalUrl, item));
             });
             let queryResult = new IPortalQueryResult();
             queryResult.content = content;
             queryResult.total = result.total;
-
+            queryResult.currentPage = result.currentPage;
+            queryResult.pageSize = result.pageSize;
+            queryResult.aggregations = result.aggregations;
             return queryResult;
         });
     }
