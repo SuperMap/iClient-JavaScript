@@ -173,7 +173,7 @@ describe('leaflet_ImageMapLayer', () => {
         expect(format).toBe("gif");
     });
 
-    it('getImageUrl', () => {
+    it('getImageUrl_t', () => {
         imageLayer = imageMapLayer(url).addTo(map);
         expect(imageLayer.getImageUrl()).not.toBeNull();
         expect(imageLayer.getImageUrl()).toBe(url + "/image.png?&redirect=false&transparent=true&cacheEnabled=true&overlapDisplayed=false");

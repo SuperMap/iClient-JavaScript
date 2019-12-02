@@ -102,7 +102,7 @@ describe('leaflet_MeasureService', () => {
         });
     });
 
-    it('measureDistance_polygon', (done) => {
+    it('measureArea_polygon', (done) => {
         var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
         var params = new MeasureParameters(polygon);
         spyOn(FetchRequest, 'commit').and.callFake((method) => {
