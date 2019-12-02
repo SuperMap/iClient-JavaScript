@@ -219,9 +219,9 @@ export class WebMap extends ol.Observable {
             baseLayerInfo = mapInfo.baseLayer,
             url = baseLayerInfo.url,
             baseLayerType = baseLayerInfo.layerType;  
-
+        let extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
         let proj = new ol.proj.Projection({
-            extent: [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y],
+            extent,
             units: 'm',
             code: 'EPSG:0'
         }); 
@@ -232,7 +232,16 @@ export class WebMap extends ol.Observable {
         }
         //添加view
         me.baseProjection = proj;
-        me.createView(options);
+        let view = new ol.View({
+            center:  options.center ? [options.center.x, options.center.y] : [0,0],
+            zoom: 0,
+            projection: proj
+        });
+        me.map.setView(view);
+        if(me.mapParams) {
+            me.mapParams.extent = extent;
+            me.mapParams.projection = mapInfo.projection;
+        }
         
         let source;
         if(baseLayerType === "TILE"){
