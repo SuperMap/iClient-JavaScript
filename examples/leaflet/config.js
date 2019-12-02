@@ -472,6 +472,16 @@ var exampleConfig = {
                     fileName: "iPortalSecurity"
                 }]
             },
+            "ip_queryresources": {
+                name: "资源中心",
+                name_en: "Resources Center",
+                content: [{
+                    name: "资源中心",
+                    name_en: "Resources Center",
+                    thumbnail: "l_iPortalQueryResources.png",
+                    fileName: "iPortalQueryResources"
+                }]
+            },
             "ip_querymaps": {
                 name: "地图列表",
                 name_en: "Web map list",
