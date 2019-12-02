@@ -28483,6 +28483,8 @@ function GetFeaturesParametersBase_createClass(Constructor, protoProps, staticPr
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  */
 
 var GetFeaturesParametersBase_GetFeaturesParametersBase =
@@ -28496,6 +28498,18 @@ function () {
      * @description 数据集集合中的数据集名称列表。
      */
     this.datasetNames = null;
+    /**
+     * @member {string} SuperMap.GetFeaturesParametersBase.prototype.targetEpsgCode
+     * @description 动态投影的目标坐标系对应的 EPSG Code，使用时需设置 returnContent 参数为 true。
+     */
+
+    this.targetEpsgCode = null;
+    /**
+     * @member {Object} SuperMap.GetFeaturesParametersBase.prototype.targetEpsgCode
+     * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+     */
+
+    this.targetPrj = null;
     /**
      * @member {boolean} [SuperMap.GetFeaturesParametersBase.prototype.returnContent=true]
      * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。
@@ -28553,6 +28567,8 @@ function () {
       me.fromIndex = null;
       me.toIndex = null;
       me.maxFeatures = null;
+      me.targetEpsgCode = null;
+      me.targetPrj = null;
 
       if (me.aggregation) {
         me.aggregation = null;
@@ -28607,6 +28623,8 @@ function GetFeaturesByBoundsParameters_setPrototypeOf(o, p) { GetFeaturesByBound
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -28729,6 +28747,14 @@ function (_GetFeaturesParameter) {
 
       if (params.maxFeatures && !isNaN(params.maxFeatures)) {
         parasByBounds.maxFeatures = params.maxFeatures;
+      }
+
+      if (params.targetEpsgCode) {
+        parasByBounds.targetEpsgCode = params.targetEpsgCode;
+      }
+
+      if (!params.targetEpsgCode && params.targetPrj) {
+        parasByBounds.targetPrj = params.targetPrj;
       }
 
       return Util_Util.toJSON(parasByBounds);
@@ -29092,6 +29118,8 @@ function GetFeaturesByBufferParameters_setPrototypeOf(o, p) { GetFeaturesByBuffe
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -29198,6 +29226,14 @@ function (_GetFeaturesParameter) {
 
       if (params.maxFeatures && !isNaN(params.maxFeatures)) {
         paramsBySql.maxFeatures = params.maxFeatures;
+      }
+
+      if (params.targetEpsgCode) {
+        paramsBySql.targetEpsgCode = params.targetEpsgCode;
+      }
+
+      if (!params.targetEpsgCode && params.targetPrj) {
+        paramsBySql.targetPrj = params.targetPrj;
       }
 
       return Util_Util.toJSON(paramsBySql);
@@ -29352,6 +29388,8 @@ function GetFeaturesByGeometryParameters_setPrototypeOf(o, p) { GetFeaturesByGeo
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -29466,6 +29504,14 @@ function (_GetFeaturesParameter) {
 
       if (params.maxFeatures && !isNaN(params.maxFeatures)) {
         parasByGeometry.maxFeatures = params.maxFeatures;
+      }
+
+      if (params.targetEpsgCode) {
+        parasByGeometry.targetEpsgCode = params.targetEpsgCode;
+      }
+
+      if (!params.targetEpsgCode && params.targetPrj) {
+        parasByGeometry.targetPrj = params.targetPrj;
       }
 
       return Util_Util.toJSON(parasByGeometry);
@@ -29613,6 +29659,8 @@ function GetFeaturesByIDsParameters_setPrototypeOf(o, p) { GetFeaturesByIDsParam
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -29694,6 +29742,14 @@ function (_GetFeaturesParameter) {
         filterParameter.name = params.datasetNames;
         filterParameter.fields = params.fields;
         parasByIDs.queryParameter = filterParameter;
+      }
+
+      if (params.targetEpsgCode) {
+        parasByIDs.targetEpsgCode = params.targetEpsgCode;
+      }
+
+      if (!params.targetEpsgCode && params.targetPrj) {
+        parasByIDs.targetPrj = params.targetPrj;
       }
 
       return Util_Util.toJSON(parasByIDs);
@@ -29840,6 +29896,8 @@ function GetFeaturesBySQLParameters_setPrototypeOf(o, p) { GetFeaturesBySQLParam
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -29911,6 +29969,14 @@ function (_GetFeaturesParameter) {
 
       if (params.aggregations) {
         paramsBySql.aggregations = params.aggregations;
+      }
+
+      if (params.targetEpsgCode) {
+        paramsBySql.targetEpsgCode = params.targetEpsgCode;
+      }
+
+      if (!params.targetEpsgCode && params.targetPrj) {
+        paramsBySql.targetPrj = params.targetPrj;
       }
 
       return Util_Util.toJSON(paramsBySql);

@@ -26267,6 +26267,8 @@ SuperMap.GeoRelationAnalystService = GeoRelationAnalystService_GeoRelationAnalys
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  */
 class GetFeaturesParametersBase_GetFeaturesParametersBase {
 
@@ -26277,6 +26279,18 @@ class GetFeaturesParametersBase_GetFeaturesParametersBase {
          * @description 数据集集合中的数据集名称列表。
          */
         this.datasetNames = null;
+
+        /**
+         * @member {string} SuperMap.GetFeaturesParametersBase.prototype.targetEpsgCode
+         * @description 动态投影的目标坐标系对应的 EPSG Code，使用时需设置 returnContent 参数为 true。
+         */
+        this.targetEpsgCode = null;
+
+        /**
+         * @member {Object} SuperMap.GetFeaturesParametersBase.prototype.targetEpsgCode
+         * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+         */
+        this.targetPrj = null;
 
         /**
          * @member {boolean} [SuperMap.GetFeaturesParametersBase.prototype.returnContent=true]
@@ -26333,6 +26347,8 @@ class GetFeaturesParametersBase_GetFeaturesParametersBase {
         me.fromIndex = null;
         me.toIndex = null;
         me.maxFeatures = null;
+        me.targetEpsgCode = null;
+        me.targetPrj = null;
         if (me.aggregation) {
             me.aggregation = null;
         }
@@ -26363,6 +26379,8 @@ SuperMap.GetFeaturesParametersBase = GetFeaturesParametersBase_GetFeaturesParame
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -26460,6 +26478,12 @@ class GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters extends GetFea
         }
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByBounds.maxFeatures = params.maxFeatures;
+        }
+        if (params.targetEpsgCode) {
+            parasByBounds.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByBounds.targetPrj = params.targetPrj;
         }
 
         return Util_Util.toJSON(parasByBounds);
@@ -26722,6 +26746,8 @@ SuperMap.GetFeaturesByBoundsService = GetFeaturesByBoundsService_GetFeaturesByBo
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -26810,6 +26836,12 @@ class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFea
         }
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             paramsBySql.maxFeatures = params.maxFeatures;
+        }
+        if (params.targetEpsgCode) {
+            paramsBySql.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            paramsBySql.targetPrj = params.targetPrj;
         }
         return Util_Util.toJSON(paramsBySql);
     }
@@ -26907,6 +26939,8 @@ SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService_GetFeaturesByBu
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -27005,6 +27039,12 @@ class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends Ge
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByGeometry.maxFeatures = params.maxFeatures;
         }
+        if (params.targetEpsgCode) {
+            parasByGeometry.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByGeometry.targetPrj = params.targetPrj;
+        }
 
         return Util_Util.toJSON(parasByGeometry);
     }
@@ -27094,6 +27134,8 @@ SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService_GetFeatures
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -27160,6 +27202,12 @@ class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesP
             filterParameter.name = params.datasetNames;
             filterParameter.fields = params.fields;
             parasByIDs.queryParameter = filterParameter;
+        }
+        if (params.targetEpsgCode) {
+            parasByIDs.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByIDs.targetPrj = params.targetPrj;
         }
         return Util_Util.toJSON(parasByIDs);
     }
@@ -27249,6 +27297,8 @@ SuperMap.GetFeaturesByIDsService = GetFeaturesByIDsService_GetFeaturesByIDsServi
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -27304,6 +27354,12 @@ class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesP
         }
         if (params.aggregations) {
             paramsBySql.aggregations = params.aggregations;
+        }
+        if (params.targetEpsgCode) {
+            paramsBySql.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            paramsBySql.targetPrj = params.targetPrj;
         }
         return Util_Util.toJSON(paramsBySql);
     }
@@ -94365,6 +94421,8 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport GeoFeature */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
 /* concated harmony reexport Theme */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
 /* concated harmony reexport ThemeFeature */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
+/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport pointStyle */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
 /* concated harmony reexport lineStyle */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
 /* concated harmony reexport polygonStyle */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
@@ -94373,8 +94431,6 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport lineMap */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
 /* concated harmony reexport polygonMap */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
 /* concated harmony reexport StyleMap */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
-/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
 /* concated harmony reexport ChartService */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
 /* concated harmony reexport DataFlowService */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
