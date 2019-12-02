@@ -1,4 +1,5 @@
 var commonTools = require('../base/commonTools');
+
 module.exports = {
     'leaflet_02_getFeatureByGeometry': function (browser) {
         var type = 'leaflet';
@@ -14,7 +15,7 @@ module.exports = {
             browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
         });
         browser.pause(1000);
-        browser.moveTo('map',560, 510, function () {
+        browser.moveTo(null,-40,40, function () {
             browser.pause(1000);
             browser.doubleClick(function () {
                 browser.waitForElementPresent('.leaflet-popup-content-wrapper', 10000);
