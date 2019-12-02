@@ -599,6 +599,7 @@ window.examplesResources = {
         "title_componentsAnimateTextLayer_Vue": 'Animate Text Layer(Vue)',
         "title_componentsBorder_Vue": 'Border component',
         "title_componentsIdentify_Vue": 'Identify component(Vue)',
+        "title_componentsPopup_Vue": 'Popup(Vue)',
         "title_componentsWebmap_React": 'iPortal Map component(React)',
         "title_componentsMap_React": 'iServer Map component(React)',
         "title_componentsRasterTile_React": 'Raster Layer component(React)',

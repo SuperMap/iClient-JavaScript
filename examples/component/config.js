@@ -431,6 +431,13 @@ var exampleConfig = {
         name_en: 'Map subcomponent',
         content: [
           {
+            name: '弹窗',
+            name_en: 'Popup',
+            version: '10.0.0',
+            thumbnail: 'components_popup_vue.png',
+            fileName: 'l_popup_vue'
+          },
+          {
             name: '点选查询',
             name_en: 'Identify',
             version: '10.0.0',
