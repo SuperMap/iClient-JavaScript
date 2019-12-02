@@ -33,6 +33,13 @@ describe('ChartView', () => {
     }
     var chartView = new ChartView("chart", options);
 
+    afterAll(() => {
+        if (chartView.echart) {
+            chartView.echart.clear();
+        }
+        window.document.body.removeChild(chartDiv);
+    });
+
     it('constructor, _fillDataToView', () => {
         expect(chartView.domID).toBe("chart");
         expect(chartView.chartType).toBe("line");

@@ -91,7 +91,7 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
             }
             nodesString += ']';
             jsonParameters += nodesString;
-        } else if (params.isAnalyzeById == true) {
+        } else if (params.isAnalyzeById === true) {
             let nodeIDsString = "[", nodes = params.nodes, len = nodes.length;
             for (let i = 0; i < len; i++) {
                 if (i > 0) {

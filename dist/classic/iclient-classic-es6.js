@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -74,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -204,7 +219,7 @@ g = (function() {
 
 try {
 	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
+	g = g || new Function("return this")();
 } catch (e) {
 	// This works if the window reference is available
 	if (typeof window === "object") g = window;
@@ -219,6 +234,12 @@ module.exports = g;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -447,7 +468,7 @@ module.exports = g;
     Promise._unhandledRejectionFn = fn;
   };
   
-  if (typeof module !== 'undefined' && module.exports) {
+  if ( true && module.exports) {
     module.exports = Promise;
   } else if (!root.Promise) {
     root.Promise = Promise;
@@ -455,16 +476,887 @@ module.exports = g;
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(9).setImmediate))
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5).setImmediate))
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(6);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
+
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2), __webpack_require__(7)))
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function(self) {
+  'use strict';
+
+  // if __disableNativeFetch is set to true, the it will always polyfill fetch
+  // with Ajax.
+  if (!self.__disableNativeFetch && self.fetch) {
+    return
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name)
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name')
+    }
+    return name.toLowerCase()
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value)
+    }
+    return value
+  }
+
+  function Headers(headers) {
+    this.map = {}
+
+    if (headers instanceof Headers) {
+      headers.forEach(function(value, name) {
+        this.append(name, value)
+      }, this)
+
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function(name) {
+        this.append(name, headers[name])
+      }, this)
+    }
+  }
+
+  Headers.prototype.append = function(name, value) {
+    name = normalizeName(name)
+    value = normalizeValue(value)
+    var list = this.map[name]
+    if (!list) {
+      list = []
+      this.map[name] = list
+    }
+    list.push(value)
+  }
+
+  Headers.prototype['delete'] = function(name) {
+    delete this.map[normalizeName(name)]
+  }
+
+  Headers.prototype.get = function(name) {
+    var values = this.map[normalizeName(name)]
+    return values ? values[0] : null
+  }
+
+  Headers.prototype.getAll = function(name) {
+    return this.map[normalizeName(name)] || []
+  }
+
+  Headers.prototype.has = function(name) {
+    return this.map.hasOwnProperty(normalizeName(name))
+  }
+
+  Headers.prototype.set = function(name, value) {
+    this.map[normalizeName(name)] = [normalizeValue(value)]
+  }
+
+  Headers.prototype.forEach = function(callback, thisArg) {
+    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+      this.map[name].forEach(function(value) {
+        callback.call(thisArg, value, name, this)
+      }, this)
+    }, this)
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'))
+    }
+    body.bodyUsed = true
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function(resolve, reject) {
+      reader.onload = function() {
+        resolve(reader.result)
+      }
+      reader.onerror = function() {
+        reject(reader.error)
+      }
+    })
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader()
+    reader.readAsArrayBuffer(blob)
+    return fileReaderReady(reader)
+  }
+
+  function readBlobAsText(blob, options) {
+    var reader = new FileReader()
+    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
+    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
+    var _charset = blob.type.match(regex) || contentType.match(regex)
+    var args = [blob]
+
+    if(_charset) {
+      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
+    }
+
+    reader.readAsText.apply(reader, args)
+    return fileReaderReady(reader)
+  }
+
+  var support = {
+    blob: 'FileReader' in self && 'Blob' in self && (function() {
+      try {
+        new Blob();
+        return true
+      } catch(e) {
+        return false
+      }
+    })(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  function Body() {
+    this.bodyUsed = false
+
+
+    this._initBody = function(body, options) {
+      this._bodyInit = body
+      if (typeof body === 'string') {
+        this._bodyText = body
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body
+        this._options = options
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body
+      } else if (!body) {
+        this._bodyText = ''
+      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+        // Only support ArrayBuffers for POST method.
+        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else {
+        throw new Error('unsupported BodyInit type')
+      }
+    }
+
+    if (support.blob) {
+      this.blob = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob')
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]))
+        }
+      }
+
+      this.arrayBuffer = function() {
+        return this.blob().then(readBlobAsArrayBuffer)
+      }
+
+      this.text = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return readBlobAsText(this._bodyBlob, this._options)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as text')
+        } else {
+          return Promise.resolve(this._bodyText)
+        }
+      }
+    } else {
+      this.text = function() {
+        var rejected = consumed(this)
+        return rejected ? rejected : Promise.resolve(this._bodyText)
+      }
+    }
+
+    if (support.formData) {
+      this.formData = function() {
+        return this.text().then(decode)
+      }
+    }
+
+    this.json = function() {
+      return this.text().then(JSON.parse)
+    }
+
+    return this
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase()
+    return (methods.indexOf(upcased) > -1) ? upcased : method
+  }
+
+  function Request(input, options) {
+    options = options || {}
+    var body = options.body
+    if (Request.prototype.isPrototypeOf(input)) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read')
+      }
+      this.url = input.url
+      this.credentials = input.credentials
+      if (!options.headers) {
+        this.headers = new Headers(input.headers)
+      }
+      this.method = input.method
+      this.mode = input.mode
+      if (!body) {
+        body = input._bodyInit
+        input.bodyUsed = true
+      }
+    } else {
+      this.url = input
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit'
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers)
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET')
+    this.mode = options.mode || this.mode || null
+    this.referrer = null
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests')
+    }
+    this._initBody(body, options)
+  }
+
+  Request.prototype.clone = function() {
+    return new Request(this)
+  }
+
+  function decode(body) {
+    var form = new FormData()
+    body.trim().split('&').forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+    return form
+  }
+
+  function headers(xhr) {
+    var head = new Headers()
+    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
+    pairs.forEach(function(header) {
+      var split = header.trim().split(':')
+      var key = split.shift().trim()
+      var value = split.join(':').trim()
+      head.append(key, value)
+    })
+    return head
+  }
+
+  Body.call(Request.prototype)
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {}
+    }
+
+    this._initBody(bodyInit, options)
+    this.type = 'default'
+    this.status = options.status
+    this.ok = this.status >= 200 && this.status < 300
+    this.statusText = options.statusText
+    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+    this.url = options.url || ''
+  }
+
+  Body.call(Response.prototype)
+
+  Response.prototype.clone = function() {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    })
+  }
+
+  Response.error = function() {
+    var response = new Response(null, {status: 0, statusText: ''})
+    response.type = 'error'
+    return response
+  }
+
+  var redirectStatuses = [301, 302, 303, 307, 308]
+
+  Response.redirect = function(url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code')
+    }
+
+    return new Response(null, {status: status, headers: {location: url}})
+  }
+
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
+
+  self.fetch = function(input, init) {
+    return new Promise(function(resolve, reject) {
+      var request
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input
+      } else {
+        request = new Request(input, init)
+      }
+
+      var xhr = new XMLHttpRequest()
+
+      function responseURL() {
+        if ('responseURL' in xhr) {
+          return xhr.responseURL
+        }
+
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
+        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+          return xhr.getResponseHeader('X-Request-URL')
+        }
+
+        return;
+      }
+
+      var __onLoadHandled = false;
+
+      function onload() {
+        if (xhr.readyState !== 4) {
+          return
+        }
+        var status = (xhr.status === 1223) ? 204 : xhr.status
+        if (status < 100 || status > 599) {
+          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+          reject(new TypeError('Network request failed'))
+          return
+        }
+        var options = {
+          status: status,
+          statusText: xhr.statusText,
+          headers: headers(xhr),
+          url: responseURL()
+        }
+        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        resolve(new Response(body, options))
+      }
+      xhr.onreadystatechange = onload;
+      xhr.onload = onload;
+      xhr.onerror = function() {
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.open(request.method, request.url, true)
+
+      // `withCredentials` should be setted after calling `.open` in IE10
+      // http://stackoverflow.com/a/19667959/1219343
+      try {
+        if (request.credentials === 'include') {
+          if ('withCredentials' in xhr) {
+            xhr.withCredentials = true;
+          } else {
+            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
+          }
+        }
+      } catch (e) {
+        console && console.warn && console.warn('set withCredentials error:' + e);
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob'
+      }
+
+      request.headers.forEach(function(value, name) {
+        xhr.setRequestHeader(name, value)
+      })
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+    })
+  }
+  self.fetch.polyfill = true
+
+  // Support CommonJS
+  if ( true && module.exports) {
+    module.exports = self.fetch;
+  }
+})(typeof self !== 'undefined' ? self : this);
+
+
+/***/ }),
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -746,7 +1638,7 @@ SuperMap.mixin = function (...mixins) {
  * @category BaseTypes Util
  * @description 字符串操作的一系列常用扩展函数。
  */
-var BaseTypes_StringExt = SuperMap.String = {
+var StringExt = SuperMap.String = {
 
     /**
      * @function SuperMap.String.startsWith
@@ -927,7 +1819,7 @@ var BaseTypes_StringExt = SuperMap.String = {
  * @category BaseTypes Util
  * @description 数值操作的一系列常用扩展函数。
  */
-var BaseTypes_NumberExt = SuperMap.Number = {
+var NumberExt = SuperMap.Number = {
 
     /**
      * @member {string} [SuperMap.Number.decimalSeparator='.']
@@ -1015,7 +1907,7 @@ if (!Number.prototype.limitSigDigs) {
      *           如果传入值 为 null、0、或者是负数, 返回值 0。
      */
     Number.prototype.limitSigDigs = function (sig) {
-        return BaseTypes_NumberExt.limitSigDigs(this, sig);
+        return NumberExt.limitSigDigs(this, sig);
     };
 }
 
@@ -1026,7 +1918,7 @@ if (!Number.prototype.limitSigDigs) {
  * @category BaseTypes Util
  * @description 函数操作的一系列常用扩展函数。
  */
-var BaseTypes_FunctionExt = SuperMap.Function = {
+var FunctionExt = SuperMap.Function = {
     /**
      * @function SuperMap.Function.bind
      * @description 绑定函数到对象。方便创建 this 的作用域。
@@ -1099,7 +1991,7 @@ var BaseTypes_FunctionExt = SuperMap.Function = {
  * @category BaseTypes Util
  * @description 数组操作的一系列常用扩展函数。
  */
-var BaseTypes_ArrayExt = SuperMap.Array = {
+var ArrayExt = SuperMap.Array = {
 
     /**
      * @function SuperMap.Array.filter
@@ -1141,7 +2033,7 @@ var BaseTypes_ArrayExt = SuperMap.Array = {
 
 
 
-var Util_Util = SuperMap.Util = SuperMap.Util || {};
+var Util = SuperMap.Util = SuperMap.Util || {};
 /**
  * @name Util
  * @memberOf SuperMap
@@ -2226,7 +3118,7 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
  * @namespace
  * @description 事件处理函数.
  */
-var Event_Event = SuperMap.Event = {
+var Event = SuperMap.Event = {
 
     /**
      * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
@@ -2397,7 +3289,7 @@ var Event_Event = SuperMap.Event = {
      * @param {boolean} [useCapture=false] - 是否捕获。
      */
     observe: function (elementParam, name, observer, useCapture) {
-        var element = Util_Util.getElement(elementParam);
+        var element = Util.getElement(elementParam);
         useCapture = useCapture || false;
 
         if (name === 'keypress' &&
@@ -2417,7 +3309,7 @@ var Event_Event = SuperMap.Event = {
             if (element.id) {
                 idPrefix = element.id + "_" + idPrefix;
             }
-            element._eventCacheID = Util_Util.createUniqueID(idPrefix);
+            element._eventCacheID = Util.createUniqueID(idPrefix);
         }
 
         var cacheID = element._eventCacheID;
@@ -2456,7 +3348,7 @@ var Event_Event = SuperMap.Event = {
      * @param {(HTMLElement|string)} elementParam - 
      */
     stopObservingElement: function (elementParam) {
-        var element = Util_Util.getElement(elementParam);
+        var element = Util.getElement(elementParam);
         var cacheID = element._eventCacheID;
 
         this._removeElementObservers(SuperMap.Event.observers[cacheID]);
@@ -2489,7 +3381,7 @@ var Event_Event = SuperMap.Event = {
     stopObserving: function (elementParam, name, observer, useCapture) {
         useCapture = useCapture || false;
 
-        var element = Util_Util.getElement(elementParam);
+        var element = Util.getElement(elementParam);
         var cacheID = element._eventCacheID;
 
         if (name === 'keypress') {
@@ -2555,7 +3447,7 @@ var Event_Event = SuperMap.Event = {
 
     CLASS_NAME: "SuperMap.Event"
 };
-SuperMap.Event = Event_Event;
+SuperMap.Event = Event;
 /* prevent memory leaks in IE */
 SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 
@@ -2704,7 +3596,7 @@ class Events_Events {
          */
         this.clearMouseListener = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         if (eventTypes != null) {
             for (var i = 0, len = eventTypes.length; i < len; i++) {
@@ -2731,9 +3623,9 @@ class Events_Events {
         }
         this.extensions = null;
         if (this.element) {
-            Event_Event.stopObservingElement(this.element);
+            Event.stopObservingElement(this.element);
             if (this.element.hasScrollEvent) {
-                Event_Event.stopObserving(
+                Event.stopObserving(
                     window, "scroll", this.clearMouseListener
                 );
             }
@@ -2766,16 +3658,16 @@ class Events_Events {
      */
     attachToElement(element) {
         if (this.element) {
-            Event_Event.stopObservingElement(this.element);
+            Event.stopObservingElement(this.element);
         } else {
             // keep a bound copy of handleBrowserEvent() so that we can
             // pass the same function to both Event.observe() and .stopObserving()
-            this.eventHandler = BaseTypes_FunctionExt.bindAsEventListener(
+            this.eventHandler = FunctionExt.bindAsEventListener(
                 this.handleBrowserEvent, this
             );
 
             // to be used with observe and stopObserving
-            this.clearMouseListener = BaseTypes_FunctionExt.bind(
+            this.clearMouseListener = FunctionExt.bind(
                 this.clearMouseCache, this
             );
         }
@@ -2788,10 +3680,10 @@ class Events_Events {
             this.addEventType(eventType);
 
             // use Prototype to register the event cross-browser
-            Event_Event.observe(element, eventType, this.eventHandler);
+            Event.observe(element, eventType, this.eventHandler);
         }
         // disable dragstart in IE so that mousedown/move/up works normally
-        Event_Event.observe(element, "dragstart", Event_Event.stop);
+        Event.observe(element, "dragstart", Event.stop);
     }
 
 
@@ -2842,7 +3734,7 @@ class Events_Events {
             this.extensions[type] = new Events_Events[type](this);
         }
         if ((func != null) &&
-            (Util_Util.indexOf(this.eventTypes, type) !== -1)) {
+            (Util.indexOf(this.eventTypes, type) !== -1)) {
 
             if (obj == null) {
                 obj = this.object;
@@ -2977,14 +3869,14 @@ class Events_Events {
             // bind the context to callback.obj
             continueChain = callback.func.apply(callback.obj, [evt]);
 
-            if ((continueChain != undefined) && (continueChain == false)) {
+            if ((continueChain != undefined) && (continueChain === false)) {
                 // if callback returns false, execute no more callbacks.
                 break;
             }
         }
         // don't fall through to other DOM elements
         if (!this.fallThrough) {
-            Event_Event.stop(evt, true);
+            Event.stop(evt, true);
         }
         return continueChain;
     }
@@ -3046,12 +3938,12 @@ class Events_Events {
         if (!this.includeXY) {
             this.clearMouseCache();
         } else if (!this.element.hasScrollEvent) {
-            Event_Event.observe(window, "scroll", this.clearMouseListener);
+            Event.observe(window, "scroll", this.clearMouseListener);
             this.element.hasScrollEvent = true;
         }
 
         if (!this.element.scrolls) {
-            var viewportElement = Util_Util.getViewportElement();
+            var viewportElement = Util.getViewportElement();
             this.element.scrolls = [
                 viewportElement.scrollLeft,
                 viewportElement.scrollTop
@@ -3066,7 +3958,7 @@ class Events_Events {
         }
 
         if (!this.element.offsets) {
-            this.element.offsets = Util_Util.pagePosition(this.element);
+            this.element.offsets = Util.pagePosition(this.element);
         }
 
         return new Pixel_Pixel(
@@ -3091,7 +3983,7 @@ SuperMap.Events.prototype.BROWSER_EVENTS = [
     "contextmenu"
 ];
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(4);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(3);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -3179,7 +4071,7 @@ class ElasticSearch_ElasticSearch {
          * 相当于调用 SuperMap.Events.on(eventListeners)。
          */
         this.eventListeners = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         if (this.eventListeners instanceof Object) {
             this.events.on(this.eventListeners);
         }
@@ -3722,7 +4614,7 @@ class ElasticSearch_ElasticSearch {
 SuperMap.ElasticSearch = ElasticSearch_ElasticSearch;
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise = __webpack_require__(3);
+var promise = __webpack_require__(4);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
@@ -3733,7 +4625,7 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch_ie8_fetch = __webpack_require__(6);
+var fetch = __webpack_require__(8);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(1);
@@ -3755,7 +4647,7 @@ const FetchRequest_fetch = window.fetch;
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
  * @param {boolean} cors - 是否允许跨域请求。
  */
-var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
+var setCORS = SuperMap.setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
@@ -3763,7 +4655,7 @@ var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
  * @description 是是否允许跨域请求。
  * @returns {boolean} 是否允许跨域请求。
  */
-var FetchRequest_isCORS = SuperMap.isCORS = function () {
+var isCORS = SuperMap.isCORS = function () {
     if (SuperMap.CORS != undefined) {
         return SuperMap.CORS;
     }
@@ -3774,7 +4666,7 @@ var FetchRequest_isCORS = SuperMap.isCORS = function () {
  * @description 设置请求超时时间。
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
  */
-var FetchRequest_setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
+var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
     return SuperMap.RequestTimeout = timeout;
 }
 /**
@@ -3782,10 +4674,10 @@ var FetchRequest_setRequestTimeout = SuperMap.setRequestTimeout = function (time
  * @description 获取请求超时时间。
  * @returns {number} 请求超时时间。
  */
-var FetchRequest_getRequestTimeout = SuperMap.getRequestTimeout = function () {
+var getRequestTimeout = SuperMap.getRequestTimeout = function () {
     return SuperMap.RequestTimeout || 45000;
 }
-var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
+var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -3802,19 +4694,19 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
         }
     },
     supportDirectRequest: function (url, options) {
-        if(Util_Util.isInTheSameDomain(url)){
+        if(Util.isInTheSameDomain(url)){
           return true;
         }if(options.crossOrigin != undefined){
           return options.crossOrigin;
         }else{
-          return FetchRequest_isCORS() || options.proxy
+          return isCORS() || options.proxy
         }
     },
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         url = this._processUrl(url, options);
-        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -3834,8 +4726,8 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
     delete: function (url, params, options) {
         options = options || {};
         var type = 'DELETE';
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         url = this._processUrl(url, options);
-        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -3944,7 +4836,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
                 credentials: options.withCredentials ? 'include' : 'omit',
                 mode: 'cors',
-                timeout: FetchRequest_getRequestTimeout()
+                timeout: getRequestTimeout()
             }).then(function (response) {
                 return response;
             }));
@@ -3955,7 +4847,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
             headers: options.headers,
             credentials: options.withCredentials ? 'include' : 'omit',
             mode: 'cors',
-            timeout: FetchRequest_getRequestTimeout()
+            timeout: getRequestTimeout()
         }).then(function (response) {
             return response;
         });
@@ -4200,7 +5092,7 @@ class SecurityManager_SecurityManager {
         if (!serverInfo) {
             return;
         }
-        return FetchRequest_FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
+        return FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
             return response.text();
         });
     }
@@ -4212,7 +5104,7 @@ class SecurityManager_SecurityManager {
      */
     static registerServers(serverInfos) {
         this.servers = this.servers || {};
-        if (!Util_Util.isArray(serverInfos)) {
+        if (!Util.isArray(serverInfos)) {
             serverInfos = [serverInfos];
         }
         for (var i = 0; i < serverInfos.length; i++) {
@@ -4248,7 +5140,7 @@ class SecurityManager_SecurityManager {
             return;
         }
 
-        ids = (Util_Util.isArray(ids)) ? ids : [ids];
+        ids = (Util.isArray(ids)) ? ids : [ids];
         for (var i = 0; i < ids.length; i++) {
             var id = this._getUrlRestString(ids[0]) || ids[0];
             this.keys[id] = key;
@@ -4316,7 +5208,7 @@ class SecurityManager_SecurityManager {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
         };
-        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -4338,7 +5230,7 @@ class SecurityManager_SecurityManager {
             },
             withoutFormatSuffix: true
         };
-        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -4379,7 +5271,7 @@ class SecurityManager_SecurityManager {
             },
             withCredentials: true
         };
-        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -4402,7 +5294,7 @@ class SecurityManager_SecurityManager {
             withCredentials: true,
             withoutFormatSuffix: true
         };
-        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -4422,7 +5314,7 @@ class SecurityManager_SecurityManager {
      * @returns {Promise} 返回包含 iManager 登录请求结果的 Promise 对象。
      */
     static loginManager(url, loginInfoParams, options) {
-        if (!Util_Util.isInTheSameDomain(url)) {
+        if (!Util.isInTheSameDomain(url)) {
             var isNewTab = options ? options.isNewTab : true;
             this._open(url, isNewTab);
             return;
@@ -4442,7 +5334,7 @@ class SecurityManager_SecurityManager {
             }
         };
         var me = this;
-        return FetchRequest_FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
             response.text().then(function (result) {
                 me.imanagerToken = result;
                 return result;
@@ -4520,7 +5412,8 @@ class SecurityManager_SecurityManager {
         if (!url) {
             return url;
         }
-        var patten = /http:\/\/(.*\/rest)/i;
+        // var patten = /http:\/\/(.*\/rest)/i;
+        var patten = /(http|https):\/\/(.*\/rest)/i;
         var result = url.match(patten);
         if (!result) {
             return url;
@@ -4547,7 +5440,7 @@ SuperMap.SecurityManager = SecurityManager_SecurityManager;
  * @description 服务请求返回结果数据类型
  * @type {string}
  */
-var REST_DataFormat = SuperMap.DataFormat = {
+var DataFormat = SuperMap.DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
@@ -4561,7 +5454,7 @@ var REST_DataFormat = SuperMap.DataFormat = {
  * @description 服务器类型
  * @type {string}
  */
-var REST_ServerType = SuperMap.ServerType = {
+var ServerType = SuperMap.ServerType = {
     /** ISERVER */
     ISERVER: "ISERVER",
     /** IPORTAL */
@@ -4577,7 +5470,7 @@ var REST_ServerType = SuperMap.ServerType = {
  * @description 几何对象枚举,定义了一系列几何对象类型。
  * @type {string}
  */
-var REST_GeometryType = SuperMap.GeometryType = {
+var GeometryType = SuperMap.GeometryType = {
     /** LINE */
     LINE: "LINE",
     /** LINEM */
@@ -4611,7 +5504,7 @@ var REST_GeometryType = SuperMap.GeometryType = {
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @type {string}
  */
-var REST_QueryOption = SuperMap.QueryOption = {
+var QueryOption = SuperMap.QueryOption = {
     /** 属性 */
     ATTRIBUTE: "ATTRIBUTE",
     /** 属性和几何对象 */
@@ -4628,7 +5521,7 @@ var REST_QueryOption = SuperMap.QueryOption = {
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
  * @type {string}
  */
-var REST_JoinType = SuperMap.JoinType = {
+var JoinType = SuperMap.JoinType = {
     /** INNERJOIN */
     INNERJOIN: "INNERJOIN",
     /** LEFTJOIN */
@@ -4643,7 +5536,7 @@ var REST_JoinType = SuperMap.JoinType = {
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
  * @type {string}
  */
-var REST_SpatialQueryMode = SuperMap.SpatialQueryMode = {
+var SpatialQueryMode = SuperMap.SpatialQueryMode = {
     /** 包含空间查询模式 */
     CONTAIN: "CONTAIN",
     /** 交叉空间查询模式 */
@@ -4671,7 +5564,7 @@ var REST_SpatialQueryMode = SuperMap.SpatialQueryMode = {
  * 该类定义了数据集对象间的空间关系类型常量。
  * @type {string}
  */
-var REST_SpatialRelationType = SuperMap.SpatialRelationType = {
+var SpatialRelationType = SuperMap.SpatialRelationType = {
     /** 包含关系 */
     CONTAIN: "CONTAIN",
     /** 相交关系 */
@@ -4688,7 +5581,7 @@ var REST_SpatialRelationType = SuperMap.SpatialRelationType = {
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
  */
-var REST_MeasureMode = SuperMap.MeasureMode = {
+var MeasureMode = SuperMap.MeasureMode = {
     /** 距离测量 */
     DISTANCE: "DISTANCE",
     /** 面积测量 */
@@ -4703,7 +5596,7 @@ var REST_MeasureMode = SuperMap.MeasureMode = {
  * 该类定义了一系列距离单位类型。
  * @type {string}
  */
-var REST_Unit = SuperMap.Unit = {
+var Unit = SuperMap.Unit = {
     /**  米 */
     METER: "METER",
     /**  千米 */
@@ -4740,7 +5633,7 @@ var REST_Unit = SuperMap.Unit = {
  * 该类定义了一系列缓冲距离单位类型。
  * @type {string}
  */
-var REST_BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
+var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
     /**  厘米 */
     CENTIMETER: "CENTIMETER",
     /**  分米 */
@@ -4768,7 +5661,7 @@ var REST_BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
  * @description  数据源引擎类型枚举。
  * @type {string}
  */
-var REST_EngineType = SuperMap.EngineType = {
+var EngineType = SuperMap.EngineType = {
     /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
     IMAGEPLUGINS: "IMAGEPLUGINS",
     /**  OGC 引擎类型，针对于 Web 数据源，Web 引擎，目前支持的类型有 WMS，WFS，WCS。 */
@@ -4790,7 +5683,7 @@ var REST_EngineType = SuperMap.EngineType = {
  * @description  统计专题图文本显示格式枚举。
  * @type {string}
  */
-var REST_ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
+var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
     /**  标题。以各子项的标题来进行标注。 */
     CAPTION: "CAPTION",
     /**  标题 + 百分数。以各子项的标题和所占的百分比来进行标注。 */
@@ -4811,7 +5704,7 @@ var REST_ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
  * @description  统计专题图类型枚举。
  * @type {string}
  */
-var REST_ThemeGraphType = SuperMap.ThemeGraphType = {
+var ThemeGraphType = SuperMap.ThemeGraphType = {
     /**  面积图。 */
     AREA: "AREA",
     /**  柱状图。 */
@@ -4847,7 +5740,7 @@ var REST_ThemeGraphType = SuperMap.ThemeGraphType = {
  * @description  统计专题图坐标轴文本显示模式。
  * @type {string}
  */
-var REST_GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
+var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
     /**  显示全部文本。 */
     ALL: "ALL",
     /**  不显示。 */
@@ -4864,7 +5757,7 @@ var REST_GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
  *
  * @type {string}
  */
-var REST_GraduatedMode = SuperMap.GraduatedMode = {
+var GraduatedMode = SuperMap.GraduatedMode = {
     /**  常量分级模式。 */
     CONSTANT: "CONSTANT",
     /** 对数分级模式。 */
@@ -4880,7 +5773,7 @@ var REST_GraduatedMode = SuperMap.GraduatedMode = {
  * @description  范围分段专题图分段方式枚举。
  * @type {string}
  */
-var REST_RangeMode = SuperMap.RangeMode = {
+var RangeMode = SuperMap.RangeMode = {
     /**  自定义分段法。 */
     CUSTOMINTERVAL: "CUSTOMINTERVAL",
     /**  等距离分段法。 */
@@ -4902,7 +5795,7 @@ var REST_RangeMode = SuperMap.RangeMode = {
  * @description  专题图类型枚举。
  * @type {string}
  */
-var REST_ThemeType = SuperMap.ThemeType = {
+var ThemeType = SuperMap.ThemeType = {
     /** 点密度专题图。 */
     DOTDENSITY: "DOTDENSITY",
     /** 等级符号专题图。 */
@@ -4924,7 +5817,7 @@ var REST_ThemeType = SuperMap.ThemeType = {
  * @description  渐变颜色枚举。
  * @type {string}
  */
-var REST_ColorGradientType = SuperMap.ColorGradientType = {
+var ColorGradientType = SuperMap.ColorGradientType = {
     /** 黑白渐变色。 */
     BLACK_WHITE: "BLACKWHITE",
     /** 蓝黑渐变色。 */
@@ -4988,7 +5881,7 @@ var REST_ColorGradientType = SuperMap.ColorGradientType = {
  * @description  文本对齐枚举。
  * @type {string}
  */
-var REST_TextAlignment = SuperMap.TextAlignment = {
+var TextAlignment = SuperMap.TextAlignment = {
     /** 左上角对齐。 */
     TOPLEFT: "TOPLEFT",
     /** 顶部居中对齐。 */
@@ -5021,7 +5914,7 @@ var REST_TextAlignment = SuperMap.TextAlignment = {
  * @description  渐变填充风格的渐变类型枚举。
  * @type {string}
  */
-var REST_FillGradientMode = SuperMap.FillGradientMode = {
+var FillGradientMode = SuperMap.FillGradientMode = {
     /** 无渐变。 */
     NONE: "NONE",
     /** 线性渐变填充。 */
@@ -5041,7 +5934,7 @@ var REST_FillGradientMode = SuperMap.FillGradientMode = {
  * @description  标签沿线标注方向枚举。
  * @type {string}
  */
-var REST_AlongLineDirection = SuperMap.AlongLineDirection = {
+var AlongLineDirection = SuperMap.AlongLineDirection = {
     /** 沿线的法线方向放置标签。 */
     NORMAL: "ALONG_LINE_NORMAL",
     /** 从下到上，从左到右放置。 */
@@ -5061,7 +5954,7 @@ var REST_AlongLineDirection = SuperMap.AlongLineDirection = {
  * @description  标签专题图中标签背景的形状枚举。
  * @type {string}
  */
-var REST_LabelBackShape = SuperMap.LabelBackShape = {
+var LabelBackShape = SuperMap.LabelBackShape = {
     /** 菱形背景，即标签背景的形状为菱形。 */
     DIAMOND: "DIAMOND",
     /** 椭圆形背景，即标签背景的行状为椭圆形。 */
@@ -5085,7 +5978,7 @@ var REST_LabelBackShape = SuperMap.LabelBackShape = {
  * @description  标签专题图中超长标签的处理模式枚举。
  * @type {string}
  */
-var REST_LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
+var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
     /** 换行显示。 */
     NEWLINE: "NEWLINE",
     /** 对超长标签不进行处理。 */
@@ -5102,7 +5995,7 @@ var REST_LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
  * 在行驶引导子项中使用。
  * @type {string}
  */
-var REST_DirectionType = SuperMap.DirectionType = {
+var DirectionType = SuperMap.DirectionType = {
     /** 东。 */
     EAST: "EAST",
     /** 无方向。 */
@@ -5124,7 +6017,7 @@ var REST_DirectionType = SuperMap.DirectionType = {
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
  * @type {string}
  */
-var REST_SideType = SuperMap.SideType = {
+var SideType = SuperMap.SideType = {
     /** 路的左侧。 */
     LEFT: "LEFT",
     /** 在路上（即路的中间）。 */
@@ -5144,7 +6037,7 @@ var REST_SideType = SuperMap.SideType = {
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @type {string}
  */
-var REST_SupplyCenterType = SuperMap.SupplyCenterType = {
+var SupplyCenterType = SuperMap.SupplyCenterType = {
     /** 固定中心点。 */
     FIXEDCENTER: "FIXEDCENTER",
     /** 非中心点。 */
@@ -5161,7 +6054,7 @@ var REST_SupplyCenterType = SuperMap.SupplyCenterType = {
  * 用在行驶引导子项类中，表示转弯的方向。
  * @type {string}
  */
-var REST_TurnType = SuperMap.TurnType = {
+var TurnType = SuperMap.TurnType = {
     /** 向前直行。 */
     AHEAD: "AHEAD",
     /** 掉头。 */
@@ -5183,7 +6076,7 @@ var REST_TurnType = SuperMap.TurnType = {
  * @description  缓冲区分析BufferEnd类型。
  * @type {string}
  */
-var REST_BufferEndType = SuperMap.BufferEndType = {
+var BufferEndType = SuperMap.BufferEndType = {
     /** FLAT */
     FLAT: "FLAT",
     /** ROUND */
@@ -5196,16 +6089,16 @@ var REST_BufferEndType = SuperMap.BufferEndType = {
  * @description  叠加分析类型枚举。
  * @type {string}
  */
-var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
+var OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
-    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。。 */
+    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
     ERASE: "ERASE",
     /**对被操作数据集（几何对象）进行同一操作，即操作执行后，被操作数据集（几何对象）包含来自操作数据集（几何对象）的几何形状。 */
     IDENTITY: "IDENTITY",
     /** 对两个数据集（几何对象）求交，返回两个数据集（几何对象）的交集。 */
     INTERSECT: "INTERSECT",
-    /** 对两个面数据集（几何对象）进行合并操作。。 */
+    /** 对两个面数据集（几何对象）进行合并操作。 */
     UNION: "UNION",
     /** 对两个面数据集（几何对象）进行更新操作。 */
     UPDATE: "UPDATE",
@@ -5220,7 +6113,7 @@ var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
  * @description  分布式分析输出类型枚举。
  * @type {string}
  */
-var REST_OutputType = SuperMap.OutputType = {
+var OutputType = SuperMap.OutputType = {
     /** INDEXEDHDFS */
     INDEXEDHDFS: "INDEXEDHDFS",
     /** UDB */
@@ -5239,7 +6132,7 @@ var REST_OutputType = SuperMap.OutputType = {
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
  * @type {string}
  */
-var REST_SmoothMethod = SuperMap.SmoothMethod = {
+var SmoothMethod = SuperMap.SmoothMethod = {
     /** B 样条法。 */
     BSPLINE: "BSPLINE",
     /** 磨角法。 */
@@ -5253,7 +6146,7 @@ var REST_SmoothMethod = SuperMap.SmoothMethod = {
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
  * @type {string}
  */
-var REST_SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
+var SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
     /** 等值线提取。 */
     ISOLINE: "ISOLINE",
     /** 等值面提取。 */
@@ -5267,7 +6160,7 @@ var REST_SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @type {string}
  */
-var REST_DataReturnMode = SuperMap.DataReturnMode = {
+var DataReturnMode = SuperMap.DataReturnMode = {
     /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
     DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
     /** 只返回数据集标识（数据集名称@数据源名称）。 */
@@ -5283,7 +6176,7 @@ var REST_DataReturnMode = SuperMap.DataReturnMode = {
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var REST_EditType = SuperMap.EditType = {
+var EditType = SuperMap.EditType = {
     /** 增加操作。 */
     ADD: "add",
     /** 修改操作。 */
@@ -5300,7 +6193,7 @@ var REST_EditType = SuperMap.EditType = {
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var REST_TransferTactic = SuperMap.TransferTactic = {
+var TransferTactic = SuperMap.TransferTactic = {
     /** 时间短。 */
     LESS_TIME: "LESS_TIME",
     /** 少换乘。 */
@@ -5319,7 +6212,7 @@ var REST_TransferTactic = SuperMap.TransferTactic = {
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
  * @type {string}
  */
-var REST_TransferPreference = SuperMap.TransferPreference = {
+var TransferPreference = SuperMap.TransferPreference = {
     /** 公交汽车优先。 */
     BUS: "BUS",
     /** 地铁优先。 */
@@ -5337,7 +6230,7 @@ var REST_TransferPreference = SuperMap.TransferPreference = {
  * @description  地图背景格网类型枚举。
  * @type {string}
  */
-var REST_GridType = SuperMap.GridType = {
+var GridType = SuperMap.GridType = {
     /** 十字叉丝。 */
     CROSS: "CROSS",
     /** 网格线。 */
@@ -5357,7 +6250,7 @@ var REST_GridType = SuperMap.GridType = {
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
  * @type {string}
  */
-var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
+var ColorSpaceType = SuperMap.ColorSpaceType = {
     /** 该类型主要在印刷系统使用。 */
     CMYK: "CMYK",
     /** 该类型主要在显示系统中使用。 */
@@ -5370,8 +6263,8 @@ var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
  * @description  图层类型。
  * @type {string}
  */
-var REST_LayerType = SuperMap.LayerType = {
-    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。。 */
+var LayerType = SuperMap.LayerType = {
+    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
     WMS: "WMS",
@@ -5388,7 +6281,7 @@ var REST_LayerType = SuperMap.LayerType = {
  * @description  UGC图层类型。
  * @type {string}
  */
-var REST_UGCLayerType = SuperMap.UGCLayerType = {
+var UGCLayerType = SuperMap.UGCLayerType = {
     /** 专题图层。 */
     THEME: "THEME",
     /** 矢量图层。 */
@@ -5406,7 +6299,7 @@ var REST_UGCLayerType = SuperMap.UGCLayerType = {
  * @description  字段统计方法类型。
  * @type {string}
  */
-var REST_StatisticMode = SuperMap.StatisticMode = {
+var StatisticMode = SuperMap.StatisticMode = {
     /** 统计所选字段的平均值。 */
     AVERAGE: "AVERAGE",
     /** 统计所选字段的最大值。 */
@@ -5428,7 +6321,7 @@ var REST_StatisticMode = SuperMap.StatisticMode = {
  * @description  栅格与影像数据存储的像素格式枚举。
  * @type {string}
  */
-var REST_PixelFormat = SuperMap.PixelFormat = {
+var PixelFormat = SuperMap.PixelFormat = {
     /** 每个像元用16个比特(即2个字节)表示。 */
     BIT16: "BIT16",
     /** 每个像元用32个比特(即4个字节)表示。 */
@@ -5458,7 +6351,7 @@ var REST_PixelFormat = SuperMap.PixelFormat = {
  * @description  内插时使用的样本点的查找方式枚举
  * @type {string}
  */
-var REST_SearchMode = SuperMap.SearchMode = {
+var SearchMode = SuperMap.SearchMode = {
     /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
     KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
     /** 使用 KDTREE 的定长方式查找参与内插分析的点。 */
@@ -5476,7 +6369,7 @@ var REST_SearchMode = SuperMap.SearchMode = {
  * @description  插值分析的算法的类型
  * @type {string}
  */
-var REST_InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
+var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
     /** 普通克吕金插值法。 */
     KRIGING: "KRIGING",
     /** 简单克吕金插值法。 */
@@ -5492,7 +6385,7 @@ var REST_InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
  * @type {string}
  */
-var REST_VariogramMode = SuperMap.VariogramMode = {
+var VariogramMode = SuperMap.VariogramMode = {
     /** 指数函数。 */
     EXPONENTIAL: "EXPONENTIAL",
     /** 高斯函数。 */
@@ -5508,7 +6401,7 @@ var REST_VariogramMode = SuperMap.VariogramMode = {
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
  * @type {string}
  */
-var REST_Exponent = SuperMap.Exponent = {
+var Exponent = SuperMap.Exponent = {
     /** 阶数为1。 */
     EXP1: "EXP1",
     /** 阶数为2。 */
@@ -5522,7 +6415,7 @@ var REST_Exponent = SuperMap.Exponent = {
  * @description token申请的客户端标识类型
  * @type {string}
  */
-var REST_ClientType = SuperMap.ClientType = {
+var ClientType = SuperMap.ClientType = {
     /** 指定的 IP 地址。 */
     IP: "IP",
     /** 指定的 URL。 */
@@ -5544,7 +6437,7 @@ var REST_ClientType = SuperMap.ClientType = {
  * @description 客户端专题图图表类型
  * @type {string}
  */
-var REST_ChartType = SuperMap.ChartType = {
+var ChartType = SuperMap.ChartType = {
     /** 柱状图。 */
     BAR: "Bar",
     /** 三维柱状图。 */
@@ -5568,7 +6461,7 @@ var REST_ChartType = SuperMap.ChartType = {
  * @description  裁剪分析模式
  * @type {string}
  */
-var REST_ClipAnalystMode = SuperMap.ClipAnalystMode = {
+var ClipAnalystMode = SuperMap.ClipAnalystMode = {
     /** CLIP。 */
     CLIP: "clip",
     /** INTERSECT。 */
@@ -5581,7 +6474,7 @@ var REST_ClipAnalystMode = SuperMap.ClipAnalystMode = {
  * @description 分布式分析面积单位
  * @type {string}
  */
-var REST_AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
+var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
     /** 平方米。 */
     "SQUAREMETER": "SquareMeter",
     /** 平方千米。 */
@@ -5606,7 +6499,7 @@ var REST_AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
  * @description 分布式分析单位
  * @type {string}
  */
-var REST_AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
+var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
     /** 米。 */
     "METER": "Meter",
     /** 千米。 */
@@ -5626,7 +6519,7 @@ var REST_AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
  * @description 分布式分析统计模式
  * @type {string}
  */
-var REST_StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
+var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
     /** 统计所选字段的最大值。 */
     "MAX": "max",
     /** 统计所选字段的最小值。 */
@@ -5647,7 +6540,7 @@ var REST_StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
  * @description 分布式分析聚合类型
  * @type {string}
  */
-var REST_SummaryType = SuperMap.SummaryType = {
+var SummaryType = SuperMap.SummaryType = {
     /** 格网聚合。 */
     "SUMMARYMESH": "SUMMARYMESH",
     /** 多边形聚合。 */
@@ -5660,7 +6553,7 @@ var REST_SummaryType = SuperMap.SummaryType = {
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
  * @type {string}
  */
-var REST_TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
+var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
     /** 面内无重叠，用于对面数据进行拓扑检查。 */
     REGIONNOOVERLAP: "REGIONNOOVERLAP",
     /** 面与面无重叠，用于对面数据进行拓扑检查。 */
@@ -5684,7 +6577,7 @@ var REST_TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
  * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
  * @type {string}
  */
-var REST_AggregationType = SuperMap.AggregationType = {
+var AggregationType = SuperMap.AggregationType = {
     /** 格网聚合类型。 */
     GEOHASH_GRID: "geohash_grid",
     /** 过滤聚合类型。 */
@@ -5698,7 +6591,7 @@ var REST_AggregationType = SuperMap.AggregationType = {
  * @description  聚合查询中filter查询枚举类
  * @type {string}
  */
-var REST_AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
+var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
     /** 范围查询。 */
     GEO_BOUNDING_BOX: "geo_bounding_box"
 }
@@ -5710,7 +6603,7 @@ var REST_AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
  * @description feature 查询方式。
  * @type {string}
  */
-var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
+var GetFeatureMode = SuperMap.GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
     /** 通过几何对象的缓冲区来获取要素。 */
@@ -5730,7 +6623,7 @@ var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
  * @description 栅格分析方法。
  * @type {string}
  */
-var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
+var RasterFunctionType = SuperMap.RasterFunctionType = {
     /** 归一化植被指数。 */
     NDVI: "NDVI",
     /** 阴影面分析。 */
@@ -5851,7 +6744,7 @@ class DatasourceConnectionInfo_DatasourceConnectionInfo {
         this.user = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DatasourceConnectionInfo";
@@ -5906,7 +6799,7 @@ class OutputSetting_OutputSetting {
          * @member {SuperMap.OutputType} SuperMap.OutputSetting.prototype.type
          * @description 分布式分析的输出类型。
          */
-        this.type = REST_OutputType.UDB;
+        this.type = OutputType.UDB;
 
         /**
          * @member {string} [SuperMap.OutputSetting.prototype.datasetName='analystResult']
@@ -5926,7 +6819,7 @@ class OutputSetting_OutputSetting {
          */
         this.outputPath = "";
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OutputSetting";
     }
 
@@ -5987,7 +6880,7 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.RangeMode} [SuperMap.MappingParameters.prototype.RangeMode=SuperMap.RangeMode.EQUALINTERVAL]
          * @description 专题图分段模式。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} [SuperMap.MappingParameters.prototype.rangeCount]
@@ -5999,9 +6892,9 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.ColorGradientType} [SuperMap.MappingParameters.prototype.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED]
          * @description 专题图颜色渐变模式。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.MappingParameters";
     }
 
@@ -6107,19 +7000,19 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
+        this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.radiusUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 搜索半径单位。
          */
-        this.radiusUnit = REST_AnalystSizeUnit.METER;
+        this.radiusUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystAreaUnit} [SuperMap.KernelDensityJobParameter.prototype.areaUnit=SuperMap.AnalystAreaUnit.SQUAREMILE]
          * @description 面积单位。
          */
-        this.areaUnit = REST_AnalystAreaUnit.SQUAREMILE;
+        this.areaUnit = AnalystAreaUnit.SQUAREMILE;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.KernelDensityJobParameter.prototype.output
@@ -6133,7 +7026,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
     }
@@ -6246,7 +7139,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          * @member {SuperMap.SpatialQueryMode} [SuperMap.SingleObjectQueryJobsParameter.prototype.mode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式 。
          */
-        this.mode = REST_SpatialQueryMode.CONTAIN;
+        this.mode = SpatialQueryMode.CONTAIN;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SingleObjectQueryJobsParameter.prototype.output]
@@ -6260,7 +7153,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
     }
@@ -6374,7 +7267,7 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
     }
 
@@ -6493,7 +7386,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.StatisticAnalystMode} [SuperMap.SummaryMeshJobParameter.prototype.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE]
          * @description 统计模式。
          */
-        this.statisticModes = REST_StatisticAnalystMode.AVERAGE;
+        this.statisticModes = StatisticAnalystMode.AVERAGE;
 
         /**
          * @member {number} SuperMap.SummaryMeshJobParameter.prototype.fields
@@ -6505,7 +7398,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.SummaryType} [SuperMap.SummaryMeshJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 聚合类型。
          */
-        this.type = REST_SummaryType.SUMMARYMESH;
+        this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SummaryMeshJobParameter.prototype.output]
@@ -6519,7 +7412,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryMeshJobParameter";
     }
@@ -6714,13 +7607,13 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
+        this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.SummaryType} [SuperMap.SummaryRegionJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 汇总类型。
          */
-        this.type = REST_SummaryType.SUMMARYMESH;
+        this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.SummaryRegionJobParameter.prototype.output
@@ -6734,7 +7627,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
     }
@@ -6884,7 +7777,7 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
         */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
     }
 
@@ -6992,7 +7885,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 缓冲距离单位。
          */
-        this.distanceUnit = REST_AnalystSizeUnit.METER;
+        this.distanceUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
@@ -7015,7 +7908,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
         if (!options) {
             return this;
         }
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsParameter';
     }
@@ -7126,7 +8019,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
          * @member {SuperMap.TopologyValidatorRule} [SuperMap.TopologyValidatorJobsParameter.prototype.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP]
          * @description 拓扑检查模式。
          */
-        this.rule = REST_TopologyValidatorRule.REGIONNOOVERLAP;
+        this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
@@ -7140,7 +8033,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TopologyValidatorJobsParameter";
     }
@@ -7262,7 +8155,7 @@ class GeoCodingParameter_GeoCodingParameter {
          * @description 最大返回结果数。
          */
         this.maxReturn = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -7361,7 +8254,7 @@ class GeoDecodingParameter_GeoDecodingParameter {
          * @description 查询半径。
          */
         this.geoDecodingRadius = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -7406,12 +8299,12 @@ var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(0);
  * @param {Mapv.DataSet} dataSet - 待渲染的数据集，数据所属坐标系要求与 map 保持一致。
  * @param {Object} options - 渲染的参数。
  */
-var MapVRenderer_MapVBaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
+var MapVBaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
 
-class MapVRenderer_MapVRenderer extends MapVRenderer_MapVBaseLayer {
+class MapVRenderer_MapVRenderer extends MapVBaseLayer {
     constructor(map, layer, dataSet, options) {
         super(map, dataSet, options);
-        if (!MapVRenderer_MapVBaseLayer) {
+        if (!MapVBaseLayer) {
             return this;
         }
 
@@ -7990,7 +8883,7 @@ SuperMap_SuperMap.Layer.MapVLayer = MapVLayer_MapVLayer;
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
  */
-class Credential_Credential {
+class Credential {
 
 
     constructor(value, name) {
@@ -8065,8 +8958,8 @@ class Credential_Credential {
  *
  */
 
-Credential_Credential.CREDENTIAL = null;
-SuperMap.Credential = Credential_Credential;
+Credential.CREDENTIAL = null;
+SuperMap.Credential = Credential;
 
 // CONCATENATED MODULE: ./src/common/format/Format.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -8100,7 +8993,7 @@ class Format_Format {
          */
         this.keepData = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.options = options;
 
         this.CLASS_NAME = "SuperMap.Format";
@@ -8508,7 +9401,7 @@ class CommonServiceBase_CommonServiceBase {
         
         
 
-        if (Util_Util.isArray(url)) {
+        if (Util.isArray(url)) {
             me.urls = url;
             me.length = url.length;
             me.totalTimes = me.length;
@@ -8523,19 +9416,19 @@ class CommonServiceBase_CommonServiceBase {
             me.url = url;
         }
 
-        if (Util_Util.isArray(url) && !me.isServiceSupportPolling()) {
+        if (Util.isArray(url) && !me.isServiceSupportPolling()) {
             me.url = url[0];
             me.totalTimes = 1;
         }
         
-        me.serverType = me.serverType || REST_ServerType.ISERVER;
+        me.serverType = me.serverType || ServerType.ISERVER;
 
         options = options || {};
         this.crossOrigin = options.crossOrigin;
         this.headers = options.headers;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
-        me.isInTheSameDomain = Util_Util.isInTheSameDomain(me.url);
+        me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 
         me.events = new Events_Events(me, null, me.EVENT_TYPES, true);
         if (me.eventListeners instanceof Object) {
@@ -8551,7 +9444,7 @@ class CommonServiceBase_CommonServiceBase {
      */
     destroy() {
         let me = this;
-        if (Util_Util.isArray(me.urls)) {
+        if (Util.isArray(me.urls)) {
             me.urls = null;
             me.index = null;
             me.length = null;
@@ -8633,22 +9526,22 @@ class CommonServiceBase_CommonServiceBase {
         let keyUrl = url,
             credential, value;
         switch (this.serverType) {
-            case REST_ServerType.IPORTAL:
+            case ServerType.IPORTAL:
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
                     value = SecurityManager_SecurityManager.getKey(keyUrl);
-                    credential = value ? new Credential_Credential(value, "key") : null;
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case REST_ServerType.ONLINE:
+            case ServerType.ONLINE:
                 value = SecurityManager_SecurityManager.getKey(keyUrl);
-                credential = value ? new Credential_Credential(value, "key") : null;
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
                 //iServer or others
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         return credential;
@@ -8694,7 +9587,7 @@ class CommonServiceBase_CommonServiceBase {
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
         me.options.url = url;
-        me.options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
+        me.options.isInTheSameDomain = Util.isInTheSameDomain(url);
         me._commit(me.options);
     }
 
@@ -8744,7 +9637,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         this.events.triggerEvent("processCompleted", {
             result: result
         });
@@ -8756,7 +9649,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessFailed(result) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         let error = result.error || result;
         this.events.triggerEvent("processFailed", {
             error: error
@@ -8766,12 +9659,12 @@ class CommonServiceBase_CommonServiceBase {
     _commit(options) {
         if (options.method === "POST" || options.method === "PUT") {
             if (options.params) {
-                options.url = Util_Util.urlAppend(options.url,
-                    Util_Util.getParameterString(options.params || {}));
+                options.url = Util.urlAppend(options.url,
+                    Util.getParameterString(options.params || {}));
             }
             options.params = options.data;
         }
-        FetchRequest_FetchRequest.commit(options.method, options.url, options.params, {
+        FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withCredentials: options.withCredentials,
             crossOrigin: options.crossOrigin,
@@ -8802,15 +9695,15 @@ class CommonServiceBase_CommonServiceBase {
                 }
             }
             if (result.error) {
-                var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
+                var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
                 failure(result);
             } else {
                 result.succeed = result.succeed == undefined ? true : result.succeed;
-                var success = (options.scope) ? BaseTypes_FunctionExt.bind(options.success, options.scope) : options.success;
+                var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
                 success(result);
             }
         }).catch(function (e) {
-            var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
+            var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
             failure(e);
         })
     }
@@ -8901,7 +9794,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
     processAsync(url, params) {
         var me = this;
         let { headers, crossOrigin, proxy } = this;
-        FetchRequest_FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
+        FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -9065,7 +9958,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      */
     getJobs(url) {
         var me = this;
-        FetchRequest_FetchRequest.get(me._processUrl(url), null, {
+        FetchRequest.get(me._processUrl(url), null, {
             proxy: me.proxy
         }).then(function (response) {
             return response.json();
@@ -9105,7 +9998,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
             crossOrigin: me.crossOrigin,
             isInTheSameDomain: me.isInTheSameDomain
         };
-        FetchRequest_FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+        FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
@@ -9121,12 +10014,12 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
     }
 
     serviceProcessCompleted(result, seconds) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest_FetchRequest.get(me._processUrl(result.newResourceLocation), {
+                FetchRequest.get(me._processUrl(result.newResourceLocation), {
                         _t: new Date().getTime()
                     })
                     .then(function (response) {
@@ -9482,7 +10375,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          * @member {SuperMap.ClipAnalystMode} [SuperMap.VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
          * @description 裁剪分析模式 。
          */
-        this.mode = REST_ClipAnalystMode.CLIP;
+        this.mode = ClipAnalystMode.CLIP;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.VectorClipJobsParameter.prototype.output
@@ -9496,7 +10389,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
     }
@@ -10730,7 +11623,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     _processParams(params) {
@@ -10775,25 +11668,25 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 
 
 // CONCATENATED MODULE: ./src/classic/index.js
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapVLayer", function() { return MapVLayer_MapVLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapVRenderer", function() { return MapVRenderer_MapVRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap_SuperMap; });
+/* concated harmony reexport ElasticSearch */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
+/* concated harmony reexport SecurityManager */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
+/* concated harmony reexport KernelDensityJobParameter */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
+/* concated harmony reexport SingleObjectQueryJobsParameter */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
+/* concated harmony reexport SummaryAttributesJobsParameter */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
+/* concated harmony reexport SummaryMeshJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
+/* concated harmony reexport SummaryRegionJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
+/* concated harmony reexport OverlayGeoJobParameter */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
+/* concated harmony reexport BuffersAnalystJobsParameter */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
+/* concated harmony reexport TopologyValidatorJobsParameter */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
+/* concated harmony reexport OutputSetting */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
+/* concated harmony reexport MappingParameters */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
+/* concated harmony reexport GeoCodingParameter */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
+/* concated harmony reexport GeoDecodingParameter */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
+/* concated harmony reexport MapVLayer */__webpack_require__.d(__webpack_exports__, "MapVLayer", function() { return MapVLayer_MapVLayer; });
+/* concated harmony reexport MapVRenderer */__webpack_require__.d(__webpack_exports__, "MapVRenderer", function() { return MapVRenderer_MapVRenderer; });
+/* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
+/* concated harmony reexport ProcessingService */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
+/* concated harmony reexport SuperMap */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap_SuperMap; });
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -10815,883 +11708,6 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 
 
 
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-(function(self) {
-  'use strict';
-
-  // if __disableNativeFetch is set to true, the it will always polyfill fetch
-  // with Ajax.
-  if (!self.__disableNativeFetch && self.fetch) {
-    return
-  }
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name)
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
-    }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value)
-    }
-    return value
-  }
-
-  function Headers(headers) {
-    this.map = {}
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value)
-      }, this)
-
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name])
-      }, this)
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name)
-    value = normalizeValue(value)
-    var list = this.map[name]
-    if (!list) {
-      list = []
-      this.map[name] = list
-    }
-    list.push(value)
-  }
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
-  }
-
-  Headers.prototype.get = function(name) {
-    var values = this.map[normalizeName(name)]
-    return values ? values[0] : null
-  }
-
-  Headers.prototype.getAll = function(name) {
-    return this.map[normalizeName(name)] || []
-  }
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  }
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = [normalizeValue(value)]
-  }
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    Object.getOwnPropertyNames(this.map).forEach(function(name) {
-      this.map[name].forEach(function(value) {
-        callback.call(thisArg, value, name, this)
-      }, this)
-    }, this)
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    reader.readAsArrayBuffer(blob)
-    return fileReaderReady(reader)
-  }
-
-  function readBlobAsText(blob, options) {
-    var reader = new FileReader()
-    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
-    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
-    var _charset = blob.type.match(regex) || contentType.match(regex)
-    var args = [blob]
-
-    if(_charset) {
-      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
-    }
-
-    reader.readAsText.apply(reader, args)
-    return fileReaderReady(reader)
-  }
-
-  var support = {
-    blob: 'FileReader' in self && 'Blob' in self && (function() {
-      try {
-        new Blob();
-        return true
-      } catch(e) {
-        return false
-      }
-    })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  }
-
-  function Body() {
-    this.bodyUsed = false
-
-
-    this._initBody = function(body, options) {
-      this._bodyInit = body
-      if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-        this._options = options
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (!body) {
-        this._bodyText = ''
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
-      } else {
-        throw new Error('unsupported BodyInit type')
-      }
-    }
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      }
-
-      this.arrayBuffer = function() {
-        return this.blob().then(readBlobAsArrayBuffer)
-      }
-
-      this.text = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob, this._options)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text')
-        } else {
-          return Promise.resolve(this._bodyText)
-        }
-      }
-    } else {
-      this.text = function() {
-        var rejected = consumed(this)
-        return rejected ? rejected : Promise.resolve(this._bodyText)
-      }
-    }
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      }
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    }
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase()
-    return (methods.indexOf(upcased) > -1) ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {}
-    var body = options.body
-    if (Request.prototype.isPrototypeOf(input)) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url
-      this.credentials = input.credentials
-      if (!options.headers) {
-        this.headers = new Headers(input.headers)
-      }
-      this.method = input.method
-      this.mode = input.mode
-      if (!body) {
-        body = input._bodyInit
-        input.bodyUsed = true
-      }
-    } else {
-      this.url = input
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit'
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers)
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET')
-    this.mode = options.mode || this.mode || null
-    this.referrer = null
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body, options)
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this)
-  }
-
-  function decode(body) {
-    var form = new FormData()
-    body.trim().split('&').forEach(function(bytes) {
-      if (bytes) {
-        var split = bytes.split('=')
-        var name = split.shift().replace(/\+/g, ' ')
-        var value = split.join('=').replace(/\+/g, ' ')
-        form.append(decodeURIComponent(name), decodeURIComponent(value))
-      }
-    })
-    return form
-  }
-
-  function headers(xhr) {
-    var head = new Headers()
-    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
-    pairs.forEach(function(header) {
-      var split = header.trim().split(':')
-      var key = split.shift().trim()
-      var value = split.join(':').trim()
-      head.append(key, value)
-    })
-    return head
-  }
-
-  Body.call(Request.prototype)
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {}
-    }
-
-    this._initBody(bodyInit, options)
-    this.type = 'default'
-    this.status = options.status
-    this.ok = this.status >= 200 && this.status < 300
-    this.statusText = options.statusText
-    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
-    this.url = options.url || ''
-  }
-
-  Body.call(Response.prototype)
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  }
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''})
-    response.type = 'error'
-    return response
-  }
-
-  var redirectStatuses = [301, 302, 303, 307, 308]
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  }
-
-  self.Headers = Headers;
-  self.Request = Request;
-  self.Response = Response;
-
-  self.fetch = function(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request
-      if (Request.prototype.isPrototypeOf(input) && !init) {
-        request = input
-      } else {
-        request = new Request(input, init)
-      }
-
-      var xhr = new XMLHttpRequest()
-
-      function responseURL() {
-        if ('responseURL' in xhr) {
-          return xhr.responseURL
-        }
-
-        // Avoid security warnings on getResponseHeader when not allowed by CORS
-        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-          return xhr.getResponseHeader('X-Request-URL')
-        }
-
-        return;
-      }
-
-      var __onLoadHandled = false;
-
-      function onload() {
-        if (xhr.readyState !== 4) {
-          return
-        }
-        var status = (xhr.status === 1223) ? 204 : xhr.status
-        if (status < 100 || status > 599) {
-          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-          reject(new TypeError('Network request failed'))
-          return
-        }
-        var options = {
-          status: status,
-          statusText: xhr.statusText,
-          headers: headers(xhr),
-          url: responseURL()
-        }
-        var body = 'response' in xhr ? xhr.response : xhr.responseText;
-
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        resolve(new Response(body, options))
-      }
-      xhr.onreadystatechange = onload;
-      xhr.onload = onload;
-      xhr.onerror = function() {
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.open(request.method, request.url, true)
-
-      // `withCredentials` should be setted after calling `.open` in IE10
-      // http://stackoverflow.com/a/19667959/1219343
-      try {
-        if (request.credentials === 'include') {
-          if ('withCredentials' in xhr) {
-            xhr.withCredentials = true;
-          } else {
-            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
-          }
-        }
-      } catch (e) {
-        console && console.warn && console.warn('set withCredentials error:' + e);
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
-      }
-
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value)
-      })
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-    })
-  }
-  self.fetch.polyfill = true
-
-  // Support CommonJS
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = self.fetch;
-  }
-})(typeof self !== 'undefined' ? self : this);
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2), __webpack_require__(7)))
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(8);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
 
 /***/ })
 /******/ ]);

@@ -42,7 +42,7 @@ module.exports = {
                     exclude: /classic | webgl-debug/,
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env']
+                        presets: ['@babel/preset-env']
                     }
                 });
 

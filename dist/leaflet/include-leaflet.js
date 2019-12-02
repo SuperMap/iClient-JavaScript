@@ -131,6 +131,20 @@
                 inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.min.js");
             }
         }
+        if (inArray(includes, 'ant-design-vue')) {
+          inputCSS("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.css");
+          inputScript("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.js");
+        }
+        if (inArray(includes, 'echarts-vue')) {
+          inputScript("https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js");
+          inputScript("https://cdn.jsdelivr.net/npm/vue-echarts@4.0.4/dist/vue-echarts.min.js");
+          inputScript("http://iclient.supermap.io/libs/echarts-liquidfill/echarts-liquidfill.min.js");
+          inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.min.js");
+        }
+        if (inArray(includes, 'iclient-leaflet-vue')) {
+          inputCSS("../../dist/leaflet/iclient-leaflet-vue.css");
+          inputScript("../../dist/leaflet/iclient-leaflet-vue.min.js");
+        }
     }
 
 

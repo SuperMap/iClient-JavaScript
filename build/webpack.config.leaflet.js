@@ -39,15 +39,15 @@ module.exports = {
                     exclude: /setImmediate|webgl-debug/,
                     loader: 'babel-loader',
                     options: {
-                        presets: ['es2015']
+                        presets: ['@babel/preset-env']
                     }
                 });
                 //兼容es3相关配置
-                moduleRules.push({
-                    test: /\.js$/,
-                    enforce: "post",
-                    loaders: ['es3ify-loader']
-                });
+                // moduleRules.push({
+                //     test: /\.js$/,
+                //     enforce: "post",
+                //     loaders: ['es3ify-loader']
+                // });
             }
             moduleRules.push(configBase.module.rules.css);
             return moduleRules

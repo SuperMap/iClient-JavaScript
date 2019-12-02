@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title data-i18n="resources.title_iPortalUpdateInsightAttrs"></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        ul, li {
+            list-style: none
+        }
+        #edit{
+            padding:10px 0 80px 10px;
+            min-width: 271px;
+            background: #ffffff;
+        }
+        .upload-div {
+            border: 1px solid #d9d9d9 ;
+            background-color: transparent;
+            height: 34px;
+            text-decoration: none;
+            margin-bottom: 11px;
+            margin-top: 12.1px;
+            padding: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.4s;
+            -webkit-transition: all 0.4s;
+            font-family: MicrosoftYaHei;
+            font-size: 16px;
+            letter-spacing: 0.7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(0, 0, 0, 0.65);
+        }
+        .hidden-file {
+            cursor: pointer;
+            position: absolute;
+            top: 16px;
+            left: -4px;
+            width: 100%;
+            height: 35px;
+            font-size: 0;
+            font-size: 86px \9;
+            opacity: 0;
+        }
+        .thumbnail-format {
+            font-family: MicrosoftYaHei;
+            font-size: 12px;
+            letter-spacing: 0.65px;
+        }
+        .thumbnail-format p {
+            margin-bottom: 4px;
+        }
+        .page-content-thumbnail {
+            max-width: 450px;
+            margin: 0 18px;
+        }
+        .thumbnail-img {
+            width:100%;
+            height:100%;
+        }
+        .page-header {
+            padding-top: 25px;
+            border-bottom: .01rem solid #d9d9d9;
+            padding-left: 25px;
+            margin: 13px 0;
+        }
+        .page-header h4 {
+            font-size: 16px;
+            border-bottom: 2px solid #127fdc;
+            margin-top: 6px;
+            display: inline-block;
+            text-shadow: #acacac 0 0 1px;
+            letter-spacing: .8px;
+            margin-bottom: 0;
+            padding-bottom: 13px;
+        }
+        .page-body {
+            padding-left: 25px;
+            font-family: MicrosoftYaHei;
+            letter-spacing: .7px;
+            word-wrap: break-word;
+        }
+        .parameter {
+            padding: 3px 0 3px 0;
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: flex;
+        }
+        .parameter input,.parameter textarea {
+            outline: 0;
+            border-color:#d9d9d9;
+        }
+        .param-key {
+            display: inline-block;
+            height: 28px;
+            line-height: 28px;
+            text-align: left;
+            min-width: 58px;
+            max-width: 100px;
+        }
+        .param-value {
+            border: 0.01rem solid #d9d9d9 ;
+            height: 28px;
+            width: 435px;
+            padding: 2px 0 2px 4px;
+            font-size: 14px;
+        }
+        .ip-required-item {
+            color: red;
+        }
+        .param-value-desc {
+            width: 436px;
+            height: 80px;
+            padding: 2px 0 2px 4px;
+            font-size: 14px;
+            border: 1px solid;
+        }
+        #updateAttr {
+            background-color: #127fdc!important;
+            color:#fff!important;
+        }
+        #updateAttr , #cancelAttr{
+            border-radius: 4px;
+            line-height: 1.499;
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            padding: 0 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            height: 32px;
+            position: relative;
+            box-shadow: 0 2px 0 rgba(0,0,0,.015);
+            color: rgba(0,0,0,.65);
+            background-color: #fff;
+            border-color: #d9d9d9;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
+    <div class="container" style="margin-bottom: 100px">
+        <div class="page-header">
+            <h3 data-i18n="resources.title_iPortalUpdateInsightAttrs"></h3>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--所有Insights的承载DIV-->
+                    <div class="row" id="edit">
+                        <div class="page-content-thumbnail">
+                            <div class="thumbnail-div">
+                                <img class="thumbnail-img" src="">
+                                <div style="padding-top:0.2rem;position:relative;">
+                                    <div class="upload-div border-color" data-i18n="resources.edit_iPortal_uploadNewThumbnail"></div>
+                                    <input id="resThumbnail" type="file" name="file" class="hidden-file" onchange="imageChange()">
+                                </div>
+                                <div class="thumbnail-format">
+                                    <p data-i18n="resources.edit_iPortal_exceedSize"></p>
+                                    <p data-i18n="resources.edit_iPortal_specifiedSize"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="page-header border-color"  style='padding-bottom:0px'>
+                                <h4  data-i18n="resources.detail_iPortal_baseInfo"></h4>
+                            </div>
+                            <div class="page-body">
+                                <div class="parameter">
+                                    <label class="param-key"><span class="ip-required-item">*</span><span data-i18n="resources.detail_iPortal_name"></span></label>
+                                    <input class="name param-value"></input>
+                                </div>
+                                <div class="parameter">
+                                    <label class="param-key"><span class="ip-required-item">*</span><span data-i18n="resources.detail_iPortal_tags"></span></label>
+                                    <input class="tags param-value"></input>
+                                </div>
+                                <span style="margin-left:0.04rem;position: relative;top: -9px;left: 48px;;font-size:12px"></span>
+                                <div class="parameter">
+                                    <label class="param-key" data-i18n="resources.detail_iPortal_description"></label>
+                                    <textarea class="description param-value-desc"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:100%;text-align: center;">
+                            <button id="updateAttr" onclick="updateAttrs()" style="margin-right: 10px" data-i18n="resources.btn_save"></button>
+                            <button id="cancelAttr" onclick="cancelSave()" style="margin-right: 10px" data-i18n="resources.btn_cancel"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" include="jquery,bootstrap-css,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script>
+    //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8091/iportal
+    var iPortalUrl = "http://support.supermap.com.cn:8092";
+    //上传缩略图的名称
+    var uploadFileName;
+    //获取某个洞察资源的id
+    var theRequest = new Object(); var url = location.search; 
+    if ( url.indexOf( "?" ) != -1 ) {
+        var str = url.substr( 1 ); //substr()方法返回从参数值开始到结束的字符串； 
+        var strs = str.split( "&" ); 
+        for ( var i = 0; i < strs.length; i++ ) {  
+            theRequest[ strs[ i ].split( "=" )[ 0 ] ] = ( strs[ i ].split( "=" )[ 1 ] );  
+        }
+    }
+    //Insights查询初始化工作
+    var iPortalInsights = new SuperMap.iPortal(iPortalUrl);
+    $(document).ready(function () {
+        //加载完DOM后，开始某个洞察数据的查询，填充DOM
+        iPortalInsights.queryInsight(theRequest.id).then((result)=>{
+            $(".thumbnail-img").attr("src",result.thumbnail);
+            $(".name").val(result.name);
+            $(".tags").val(result.tags.join(","));
+            $(".description").val(result.description);
+        })
+    })
+
+    //处理上传缩略图的逻辑
+    function imageChange(){
+        var files = $("#resThumbnail")[0].files[0];
+        uploadFileName = files.name;
+        var type = files.type.split('/')[0];
+        if ( type === 'image' ){
+            //将图片img转化为base64
+            var reader = new FileReader();
+            reader.readAsDataURL(files);
+            reader.onloadend = function (e) {
+                var dataURL = reader.result;
+                var blob = dataURItoBlob(dataURL);
+                upload(blob); //执行上传接口
+            };
+        }
+
+    }  
+
+    // base64 解码
+    function dataURItoBlob(dataURI) {
+        var byteString = window.atob(dataURI.split(',')[1]);
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], {type: mimeString});
+    }
+
+    //执行上传接口
+    function upload(imgUrl){
+        var formdata = new FormData();
+        formdata.append('file',imgUrl);//下面是要传递的参数
+        let uploadUrl = iPortalUrl+"/web/uploadfile.json?toFile=./resources/thumbnail/insightsworkspace/temp/"+theRequest.id+"/resThumbnail"+new Date().getTime()+".png";
+        $.ajax({
+            url:uploadUrl,
+            data:formdata,
+            type:'post',
+            //ajax2.0可以不用设置请求头，但是jq帮我们自动设置了，这样的话需要我们自己取消掉
+            contentType:false,
+            //取消帮我们格式化数据，是什么就是什么
+            processData:false,
+            success:function(res){
+                res = JSON.parse(res)
+                var uploadFilePath = res.filePath.substr(2);
+                $(".upload-div").text(uploadFileName);
+                $(".thumbnail-img").attr("src",iPortalUrl+"/"+uploadFilePath);
+            }
+        })
+    }
+
+    //更新洞察属性
+    function updateAttrs(){
+        let entity = {};
+        entity.name = $('.name').val();
+        entity.description = $('.description').val();
+        // 所有中文逗号替换为英文逗号，并去重
+        entity.tags = [...new Set($('.tags').val().replace(/，/g,",").split(","))];
+        entity.thumbnail = $(".thumbnail-img").attr("src");
+        iPortalInsights.updateInsightAttrs(theRequest.id,entity).then((res)=>{
+            if(res.succeed) {
+                window.location.href = "./iPortalInsightsDetail.html?id="+theRequest.id;
+            }else {
+                widgets.alert.showAlert(resources.msg_updateFailure+res.error.errorMsg,false)
+            }
+        })
+    }
+
+    //取消保存 跳转详情
+    function cancelSave(){
+        window.location.href = "./iPortalInsightsDetail.html?id="+theRequest.id;
+    }
+</script>
+</html>

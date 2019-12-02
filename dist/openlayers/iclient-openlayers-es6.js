@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -74,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -96,7 +111,7 @@ g = (function() {
 
 try {
 	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
+	g = g || new Function("return this")();
 } catch (e) {
 	// This works if the window reference is available
 	if (typeof window === "object") g = window;
@@ -111,24 +126,6 @@ module.exports = g;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return turf}catch(e){return {}}}();
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return mapv}catch(e){return {}}}();
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return XLSX}catch(e){return {}}}();
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -236,13 +233,1017 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return XLSX}catch(e){return {}}}();
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return mapv}catch(e){return {}}}();
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return turf}catch(e){return {}}}();
+
+/***/ }),
 /* 6 */
 /***/ (function(module) {
 
-module.exports = {"a":"2.5.0"};
+module.exports = JSON.parse("{\"a\":\"2.5.0\"}");
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
+
+  // Store setTimeout reference so promise-polyfill will be unaffected by
+  // other code modifying setTimeout (like sinon.useFakeTimers())
+  var setTimeoutFunc = setTimeout;
+
+  function noop() {}
+  
+  // Polyfill for Function.prototype.bind
+  function bind(fn, thisArg) {
+    return function () {
+      fn.apply(thisArg, arguments);
+    };
+  }
+
+  function Promise(fn) {
+    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (typeof fn !== 'function') throw new TypeError('not a function');
+    this._state = 0;
+    this._handled = false;
+    this._value = undefined;
+    this._deferreds = [];
+
+    doResolve(fn, this);
+  }
+
+  function handle(self, deferred) {
+    while (self._state === 3) {
+      self = self._value;
+    }
+    if (self._state === 0) {
+      self._deferreds.push(deferred);
+      return;
+    }
+    self._handled = true;
+    Promise._immediateFn(function () {
+      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+      if (cb === null) {
+        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+        return;
+      }
+      var ret;
+      try {
+        ret = cb(self._value);
+      } catch (e) {
+        reject(deferred.promise, e);
+        return;
+      }
+      resolve(deferred.promise, ret);
+    });
+  }
+
+  function resolve(self, newValue) {
+    try {
+      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
+      if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+        var then = newValue.then;
+        if (newValue instanceof Promise) {
+          self._state = 3;
+          self._value = newValue;
+          finale(self);
+          return;
+        } else if (typeof then === 'function') {
+          doResolve(bind(then, newValue), self);
+          return;
+        }
+      }
+      self._state = 1;
+      self._value = newValue;
+      finale(self);
+    } catch (e) {
+      reject(self, e);
+    }
+  }
+
+  function reject(self, newValue) {
+    self._state = 2;
+    self._value = newValue;
+    finale(self);
+  }
+
+  function finale(self) {
+    if (self._state === 2 && self._deferreds.length === 0) {
+      Promise._immediateFn(function() {
+        if (!self._handled) {
+          Promise._unhandledRejectionFn(self._value);
+        }
+      });
+    }
+
+    for (var i = 0, len = self._deferreds.length; i < len; i++) {
+      handle(self, self._deferreds[i]);
+    }
+    self._deferreds = null;
+  }
+
+  function Handler(onFulfilled, onRejected, promise) {
+    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+    this.promise = promise;
+  }
+
+  /**
+   * Take a potentially misbehaving resolver function and make sure
+   * onFulfilled and onRejected are only called once.
+   *
+   * Makes no guarantees about asynchrony.
+   */
+  function doResolve(fn, self) {
+    var done = false;
+    try {
+      fn(function (value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      }, function (reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      });
+    } catch (ex) {
+      if (done) return;
+      done = true;
+      reject(self, ex);
+    }
+  }
+
+  Promise.prototype['catch'] = function (onRejected) {
+    return this.then(null, onRejected);
+  };
+
+  Promise.prototype.then = function (onFulfilled, onRejected) {
+    var prom = new (this.constructor)(noop);
+
+    handle(this, new Handler(onFulfilled, onRejected, prom));
+    return prom;
+  };
+
+  Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
+    return new Promise(function (resolve, reject) {
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+
+      function res(i, val) {
+        try {
+          if (val && (typeof val === 'object' || typeof val === 'function')) {
+            var then = val.then;
+            if (typeof then === 'function') {
+              then.call(val, function (val) {
+                res(i, val);
+              }, reject);
+              return;
+            }
+          }
+          args[i] = val;
+          if (--remaining === 0) {
+            resolve(args);
+          }
+        } catch (ex) {
+          reject(ex);
+        }
+      }
+
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
+      }
+    });
+  };
+
+  Promise.resolve = function (value) {
+    if (value && typeof value === 'object' && value.constructor === Promise) {
+      return value;
+    }
+
+    return new Promise(function (resolve) {
+      resolve(value);
+    });
+  };
+
+  Promise.reject = function (value) {
+    return new Promise(function (resolve, reject) {
+      reject(value);
+    });
+  };
+
+  Promise.race = function (values) {
+    return new Promise(function (resolve, reject) {
+      for (var i = 0, len = values.length; i < len; i++) {
+        values[i].then(resolve, reject);
+      }
+    });
+  };
+
+  // Use polyfill for setImmediate for performance gains
+  Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
+    function (fn) {
+      setTimeoutFunc(fn, 0);
+    };
+
+  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+    if (typeof console !== 'undefined' && console) {
+      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+    }
+  };
+
+  /**
+   * Set the immediate function to execute callbacks
+   * @param fn {function} Function to execute
+   * @deprecated
+   */
+  Promise._setImmediateFn = function _setImmediateFn(fn) {
+    Promise._immediateFn = fn;
+  };
+
+  /**
+   * Change the function to execute on unhandled rejection
+   * @param {function} fn Function to execute on unhandled rejection
+   * @deprecated
+   */
+  Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
+    Promise._unhandledRejectionFn = fn;
+  };
+  
+  if ( true && module.exports) {
+    module.exports = Promise;
+  } else if (!root.Promise) {
+    root.Promise = Promise;
+  }
+
+})(this);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(16).setImmediate))
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    mapTag = '[object Map]',
+    objectTag = '[object Object]',
+    promiseTag = '[object Promise]',
+    setTag = '[object Set]',
+    weakMapTag = '[object WeakMap]';
+
+var dataViewTag = '[object DataView]';
+
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/**
+ * A specialized version of `_.map` for arrays without support for iteratee
+ * shorthands.
+ *
+ * @private
+ * @param {Array} [array] The array to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the new mapped array.
+ */
+function arrayMap(array, iteratee) {
+  var index = -1,
+      length = array ? array.length : 0,
+      result = Array(length);
+
+  while (++index < length) {
+    result[index] = iteratee(array[index], index, array);
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `_.times` without support for iteratee shorthands
+ * or max array length checks.
+ *
+ * @private
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the array of results.
+ */
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `_.toPairs` and `_.toPairsIn` which creates an array
+ * of key-value pairs for `object` corresponding to the property names of `props`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {Array} props The property names to get values for.
+ * @returns {Object} Returns the key-value pairs.
+ */
+function baseToPairs(object, props) {
+  return arrayMap(props, function(key) {
+    return [key, object[key]];
+  });
+}
+
+/**
+ * Gets the value at `key` of `object`.
+ *
+ * @private
+ * @param {Object} [object] The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+function getValue(object, key) {
+  return object == null ? undefined : object[key];
+}
+
+/**
+ * Checks if `value` is a host object in IE < 9.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+ */
+function isHostObject(value) {
+  // Many host objects are `Object` objects that can coerce to strings
+  // despite having improperly defined `toString` methods.
+  var result = false;
+  if (value != null && typeof value.toString != 'function') {
+    try {
+      result = !!(value + '');
+    } catch (e) {}
+  }
+  return result;
+}
+
+/**
+ * Converts `map` to its key-value pairs.
+ *
+ * @private
+ * @param {Object} map The map to convert.
+ * @returns {Array} Returns the key-value pairs.
+ */
+function mapToArray(map) {
+  var index = -1,
+      result = Array(map.size);
+
+  map.forEach(function(value, key) {
+    result[++index] = [key, value];
+  });
+  return result;
+}
+
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+/**
+ * Converts `set` to its value-value pairs.
+ *
+ * @private
+ * @param {Object} set The set to convert.
+ * @returns {Array} Returns the value-value pairs.
+ */
+function setToPairs(set) {
+  var index = -1,
+      result = Array(set.size);
+
+  set.forEach(function(value) {
+    result[++index] = [value, value];
+  });
+  return result;
+}
+
+/** Used for built-in method references. */
+var funcProto = Function.prototype,
+    objectProto = Object.prototype;
+
+/** Used to detect overreaching core-js shims. */
+var coreJsData = root['__core-js_shared__'];
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeKeys = overArg(Object.keys, Object);
+
+/* Built-in method references that are verified to be native. */
+var DataView = getNative(root, 'DataView'),
+    Map = getNative(root, 'Map'),
+    Promise = getNative(root, 'Promise'),
+    Set = getNative(root, 'Set'),
+    WeakMap = getNative(root, 'WeakMap');
+
+/** Used to detect maps, sets, and weakmaps. */
+var dataViewCtorString = toSource(DataView),
+    mapCtorString = toSource(Map),
+    promiseCtorString = toSource(Promise),
+    setCtorString = toSource(Set),
+    weakMapCtorString = toSource(WeakMap);
+
+/**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys(value, inherited) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  // Safari 9 makes `arguments.length` enumerable in strict mode.
+  var result = (isArray(value) || isArguments(value))
+    ? baseTimes(value.length, String)
+    : [];
+
+  var length = result.length,
+      skipIndexes = !!length;
+
+  for (var key in value) {
+    if ((inherited || hasOwnProperty.call(value, key)) &&
+        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `getTag`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  return objectToString.call(value);
+}
+
+/**
+ * The base implementation of `_.isNative` without bad shim checks.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
+ */
+function baseIsNative(value) {
+  if (!isObject(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource(value));
+}
+
+/**
+ * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeys(object) {
+  if (!isPrototype(object)) {
+    return nativeKeys(object);
+  }
+  var result = [];
+  for (var key in Object(object)) {
+    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * Creates a `_.toPairs` or `_.toPairsIn` function.
+ *
+ * @private
+ * @param {Function} keysFunc The function to get the keys of a given object.
+ * @returns {Function} Returns the new pairs function.
+ */
+function createToPairs(keysFunc) {
+  return function(object) {
+    var tag = getTag(object);
+    if (tag == mapTag) {
+      return mapToArray(object);
+    }
+    if (tag == setTag) {
+      return setToPairs(object);
+    }
+    return baseToPairs(object, keysFunc(object));
+  };
+}
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
+}
+
+/**
+ * Gets the `toStringTag` of `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+var getTag = baseGetTag;
+
+// Fallback for data views, maps, sets, and weak maps in IE 11,
+// for data views in Edge < 14, and promises in Node.js.
+if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||
+    (Map && getTag(new Map) != mapTag) ||
+    (Promise && getTag(Promise.resolve()) != promiseTag) ||
+    (Set && getTag(new Set) != setTag) ||
+    (WeakMap && getTag(new WeakMap) != weakMapTag)) {
+  getTag = function(value) {
+    var result = objectToString.call(value),
+        Ctor = result == objectTag ? value.constructor : undefined,
+        ctorString = Ctor ? toSource(Ctor) : undefined;
+
+    if (ctorString) {
+      switch (ctorString) {
+        case dataViewCtorString: return dataViewTag;
+        case mapCtorString: return mapTag;
+        case promiseCtorString: return promiseTag;
+        case setCtorString: return setTag;
+        case weakMapCtorString: return weakMapTag;
+      }
+    }
+    return result;
+  };
+}
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return !!length &&
+    (typeof value == 'number' || reIsUint.test(value)) &&
+    (value > -1 && value % 1 == 0 && value < length);
+}
+
+/**
+ * Checks if `func` has its source masked.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+ */
+function isMasked(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
+}
+
+/**
+ * Checks if `value` is likely a prototype object.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+ */
+function isPrototype(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+
+  return value === proto;
+}
+
+/**
+ * Converts `func` to its source code.
+ *
+ * @private
+ * @param {Function} func The function to process.
+ * @returns {string} Returns the source code.
+ */
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
+  }
+  return '';
+}
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Creates an array of the own enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects. See the
+ * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * for more details.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keys(new Foo);
+ * // => ['a', 'b'] (iteration order is not guaranteed)
+ *
+ * _.keys('hi');
+ * // => ['0', '1']
+ */
+function keys(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+}
+
+/**
+ * Creates an array of own enumerable string keyed-value pairs for `object`
+ * which can be consumed by `_.fromPairs`. If `object` is a map or set, its
+ * entries are returned.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @alias entries
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the key-value pairs.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.toPairs(new Foo);
+ * // => [['a', 1], ['b', 2]] (iteration order is not guaranteed)
+ */
+var toPairs = createToPairs(keys);
+
+module.exports = toPairs;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return echarts}catch(e){return {}}}();
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return canvg}catch(e){return {}}}();
+
+/***/ }),
+/* 12 */
+/***/ (function(module) {
+
+module.exports = JSON.parse("[{\"name\":\"黑龙江省\",\"coord\":[127.64559817675396,48.48668098449708]},{\"name\":\"内蒙古自治区\",\"coord\":[118.34519572208615,45.370218276977525]},{\"name\":\"新疆维吾尔自治区\",\"coord\":[87.13479065593184,41.75497055053711]},{\"name\":\"吉林省\",\"coord\":[126.12985278813787,43.57983207702637]},{\"name\":\"辽宁省\",\"coord\":[124.02494773936439,41.105743408203125]},{\"name\":\"甘肃省\",\"coord\":[102.87785725633012,37.69582366943361]},{\"name\":\"河北省\",\"coord\":[115.66327227481898,39.33383178710938]},{\"name\":\"北京市\",\"coord\":[116.62199343603638,40.25053787231445]},{\"name\":\"山西省\",\"coord\":[112.45180235808988,37.666561126708984]},{\"name\":\"天津市\",\"coord\":[117.35711842642581,39.406789779663086]},{\"name\":\"陕西省\",\"coord\":[109.56294003056632,35.64754199981689]},{\"name\":\"宁夏回族自治区\",\"coord\":[105.96110877640074,37.3081169128418]},{\"name\":\"青海省\",\"coord\":[96.07301048277901,35.44417190551758]},{\"name\":\"山东省\",\"coord\":[118.03833752951093,36.29800605773925]},{\"name\":\"西藏自治区\",\"coord\":[87.47361520439412,31.6703872680664]},{\"name\":\"河南省\",\"coord\":[113.07832397097275,33.87751102447509]},{\"name\":\"江苏省\",\"coord\":[119.93926538201052,32.945452690124505]},{\"name\":\"安徽省\",\"coord\":[117.15146765881019,32.024482727050774]},{\"name\":\"四川省\",\"coord\":[102.28998890142759,30.182161331176758]},{\"name\":\"湖北省\",\"coord\":[112.87798261431585,31.157071113586426]},{\"name\":\"重庆市\",\"coord\":[107.870126637831,30.188085556030266]},{\"name\":\"上海市\",\"coord\":[121.42561166015514,31.276043891906745]},{\"name\":\"浙江省\",\"coord\":[119.75337092707514,29.175934791564945]},{\"name\":\"湖南省\",\"coord\":[111.52770282777405,27.38110256195069]},{\"name\":\"江西省\",\"coord\":[115.51091280655628,27.283511161804206]},{\"name\":\"云南省\",\"coord\":[101.27053825991308,25.19783210754396]},{\"name\":\"贵州省\",\"coord\":[106.49672346773299,26.92267990112305]},{\"name\":\"福建省\",\"coord\":[117.9976766946587,25.939599990844727]},{\"name\":\"广西壮族自治区\",\"coord\":[108.98706831086302,23.891559600830078]},{\"name\":\"台湾省\",\"coord\":[120.82468432537434,23.602651596069336]},{\"name\":\"香港特别行政区\",\"coord\":[114.21036850371561,22.374858856201172]},{\"name\":\"海南省\",\"coord\":[109.62792940960824,19.163116455078125]},{\"name\":\"广东省\",\"coord\":[113.32127888266032,22.873867034912106]},{\"name\":\"澳门特别行政区\",\"coord\":[113.56819996291901,22.160347992976]}]");
+
+/***/ }),
+/* 13 */
+/***/ (function(module) {
+
+module.exports = JSON.parse("[{\"name\":\"克拉玛依市\",\"coord\":[85.01486759299489,45.406422237230046]},{\"name\":\"昌吉回族自治州\",\"coord\":[88.7154624754753,44.26991024636568]},{\"name\":\"石河子市\",\"coord\":[86.0208600035924,44.239045558096805]},{\"name\":\"霍林郭勒市\",\"coord\":[114.73479243733115,44.16058374713977]},{\"name\":\"本溪市\",\"coord\":[124.64357865201586,41.177197783134275]},{\"name\":\"嘉峪关市\",\"coord\":[98.16891560537093,39.76279786284264]},{\"name\":\"莱芜市\",\"coord\":[117.65723565456207,36.27916499211527]},{\"name\":\"神农架林区\",\"coord\":[110.48296222218153,31.581260143666697]},{\"name\":\"天门市\",\"coord\":[113.00615321481195,30.64105781887143]},{\"name\":\"鄂州市\",\"coord\":[114.94764081970385,30.325634953844585]},{\"name\":\"潜江市\",\"coord\":[112.70703817700621,30.349210666019893]},{\"name\":\"仙桃市\",\"coord\":[113.34688900729822,30.315951161935402]},{\"name\":\"萍乡市\",\"coord\":[113.88072263074415,27.47193090553213]},{\"name\":\"台湾省\",\"coord\":[120.14338943402045,23.596002465926095]},{\"name\":\"东莞市\",\"coord\":[113.89443658529342,22.897826158636448]},{\"name\":\"中山市\",\"coord\":[113.37118387764659,22.501478858616522]},{\"name\":\"珠海市\",\"coord\":[113.21799258934986,22.23782602992192]},{\"name\":\"北海市\",\"coord\":[109.18248083043899,21.695773689750148]},{\"name\":\"香港\",\"coord\":[114.20689279508653,22.36016760139811]},{\"name\":\"舟山市\",\"coord\":[122.22514712841459,30.338633120695956]},{\"name\":\"克孜勒苏柯尔克孜\",\"coord\":[74.62910472637343,39.59886016069875]},{\"name\":\"喀什地区\",\"coord\":[77.19899922143753,37.85462871211595]},{\"name\":\"阿克苏地区\",\"coord\":[81.43930290016381,41.067304799230456]},{\"name\":\"和田地区\",\"coord\":[80.69780509160952,36.95287032287055]},{\"name\":\"阿里地区\",\"coord\":[82.536487505389,32.69566569631762]},{\"name\":\"日喀则地区\",\"coord\":[86.5996831353606,29.54861754814263]},{\"name\":\"那曲地区\",\"coord\":[88.32523292667608,33.20600450932715]},{\"name\":\"玉树藏族自治州\",\"coord\":[95.2107128446203,33.90320387919257]},{\"name\":\"迪庆藏族自治州\",\"coord\":[99.42465312188943,28.052797714348895]},{\"name\":\"怒江傈傈族自治州\",\"coord\":[98.85737910439825,26.98345757528851]},{\"name\":\"大理白族自治州\",\"coord\":[99.93934374816013,25.684737357453045]},{\"name\":\"德宏傣族景颇族自\",\"coord\":[98.13830877778075,24.593421919561205]},{\"name\":\"保山市\",\"coord\":[99.19031013453166,24.979380341662]},{\"name\":\"临沧市\",\"coord\":[99.62483778975081,24.058807858948214]},{\"name\":\"普洱市\",\"coord\":[100.94440267992684,23.44121660743221]},{\"name\":\"西双版纳傣族自治\",\"coord\":[100.86105801845994,21.882475641324206]},{\"name\":\"拉萨市\",\"coord\":[91.3684790613129,30.14176592960237]},{\"name\":\"山南地区\",\"coord\":[92.11665242621062,28.33000201578789]},{\"name\":\"林芝地区\",\"coord\":[94.9307847458166,29.125110156601963]},{\"name\":\"昌都地区\",\"coord\":[97.33912235873476,30.48520825551814]},{\"name\":\"丽江市\",\"coord\":[100.65713436205135,26.96190318191959]},{\"name\":\"攀枝花市\",\"coord\":[101.73355913301131,26.714486678752795]},{\"name\":\"凉山彝族自治州\",\"coord\":[102.08678551422615,27.683020519860396]},{\"name\":\"楚雄彝族自治州\",\"coord\":[101.68264761198458,25.369603845264024]},{\"name\":\"红河哈尼族彝族自\",\"coord\":[102.95101719613119,23.624860095239875]},{\"name\":\"文山壮族苗族自治\",\"coord\":[104.8708359910614,23.579587266862504]},{\"name\":\"百色市\",\"coord\":[106.69546907589859,23.98220841166522]},{\"name\":\"崇左市\",\"coord\":[107.3277087317123,22.49769755349952]},{\"name\":\"防城港市\",\"coord\":[107.88939931155171,21.94550204069006]},{\"name\":\"南宁市\",\"coord\":[108.67078983716917,23.12207641861882]},{\"name\":\"钦州市\",\"coord\":[108.8532307305186,22.157690108421384]},{\"name\":\"玉林市\",\"coord\":[110.26918466489103,22.391823643610415]},{\"name\":\"湛江市\",\"coord\":[109.93033457863683,21.086751055633457]},{\"name\":\"茂名市\",\"coord\":[110.80336192333934,22.069184739040775]},{\"name\":\"阳江市\",\"coord\":[111.70471342186183,22.108751366417575]},{\"name\":\"江门市\",\"coord\":[112.53715618649149,22.297368082806777]},{\"name\":\"广州市\",\"coord\":[113.4949302208309,23.28359314707863]},{\"name\":\"清远市\",\"coord\":[113.10957368131268,24.334444053233856]},{\"name\":\"肇庆市\",\"coord\":[112.11117530204233,23.60241158796112]},{\"name\":\"梧州市\",\"coord\":[111.01709510772797,23.518132876753846]},{\"name\":\"贺州市\",\"coord\":[111.50423061842756,24.4095096817199]},{\"name\":\"桂林市\",\"coord\":[110.44046163393094,25.353966673735407]},{\"name\":\"柳州市\",\"coord\":[109.34854449214147,24.972408051485047]},{\"name\":\"河池市\",\"coord\":[107.81191841865586,24.649291651298164]},{\"name\":\"黔东南苗族侗族自\",\"coord\":[108.39952601614591,26.429286420465576]},{\"name\":\"贵阳市\",\"coord\":[106.59784062851153,26.797907456479816]},{\"name\":\"安顺市\",\"coord\":[105.76161265300635,25.988644902171018]},{\"name\":\"黔西南布依族苗族\",\"coord\":[105.5954078788574,25.404850939549405]},{\"name\":\"曲靖市\",\"coord\":[103.9164335632742,25.697243690315265]},{\"name\":\"六盘水市\",\"coord\":[104.77723228072432,26.15402255629164]},{\"name\":\"毕节地区\",\"coord\":[105.03867422931839,27.077913968069666]},{\"name\":\"昭通市\",\"coord\":[104.29730513046874,27.62418247971078]},{\"name\":\"宜宾市\",\"coord\":[104.76748901448207,28.553501804266475]},{\"name\":\"乐山市\",\"coord\":[103.56027669102787,29.160754519210577]},{\"name\":\"自贡市\",\"coord\":[104.63272827056402,29.273152614922402]},{\"name\":\"内江市\",\"coord\":[104.82644562304716,29.61272653799929]},{\"name\":\"遵义市\",\"coord\":[106.82413636302059,28.191847588570702]},{\"name\":\"达州市\",\"coord\":[107.59704170009518,31.32138258839703]},{\"name\":\"遂宁市\",\"coord\":[105.48979445433736,30.677687821242678]},{\"name\":\"广安市\",\"coord\":[106.56708164098042,30.43500706741521]},{\"name\":\"泸州市\",\"coord\":[105.42591761727707,28.50277238478137]},{\"name\":\"资阳市\",\"coord\":[104.97995126874034,30.154251886139654]},{\"name\":\"雅安市\",\"coord\":[102.69931299964517,29.892630706195035]},{\"name\":\"眉山市\",\"coord\":[104.07052881858888,29.894202166560405]},{\"name\":\"甘孜藏族自治州\",\"coord\":[100.50721042614238,30.975216556269658]},{\"name\":\"果洛藏族自治州\",\"coord\":[99.30775565051923,34.03539865224808]},{\"name\":\"海南藏族自治州\",\"coord\":[100.39969108016373,35.90048272566899]},{\"name\":\"黄南藏族自治州\",\"coord\":[101.5360706381689,35.10286360841902]},{\"name\":\"赣南藏族自治州\",\"coord\":[102.97083885806067,34.326752803339026]},{\"name\":\"陇南市\",\"coord\":[105.24780098912132,33.57031117443431]},{\"name\":\"天水市\",\"coord\":[105.53503634660417,34.62320421368087]},{\"name\":\"定西市\",\"coord\":[104.58787768541339,35.08900966621695]},{\"name\":\"临夏回族自治州\",\"coord\":[103.2612870434902,35.591577124455235]},{\"name\":\"西宁市\",\"coord\":[101.57680657999033,36.84800271717157]},{\"name\":\"海东地区\",\"coord\":[102.30909850729282,36.287400615025646]},{\"name\":\"海北藏族自治州\",\"coord\":[100.27122484450717,37.892557516083826]},{\"name\":\"金昌市\",\"coord\":[102.02244049169511,38.497330414886164]},{\"name\":\"酒泉市\",\"coord\":[95.94486678270127,40.56891536586272]},{\"name\":\"海西蒙古族藏族自\",\"coord\":[94.67143298050689,36.022725148503724]},{\"name\":\"巴音郭楞蒙古自治\",\"coord\":[88.18116214759745,39.556478810319916]},{\"name\":\"哈密地区\",\"coord\":[93.84302392518026,42.95015211178875]},{\"name\":\"叶鲁番地区\",\"coord\":[89.82035217277885,42.399368632283505]},{\"name\":\"乌鲁木齐市\",\"coord\":[88.00048109561487,43.549986370786]},{\"name\":\"阿勒泰地区\",\"coord\":[88.11213933257655,47.05593413019629]},{\"name\":\"博尔塔拉蒙古自治\",\"coord\":[82.26402238163408,44.671135542630864]},{\"name\":\"伊犁哈萨克自治州\",\"coord\":[82.80778717477179,43.53783381365267]},{\"name\":\"阿拉善盟\",\"coord\":[103.29923966842289,40.10955801781495]},{\"name\":\"武威市\",\"coord\":[102.73362058791429,37.94211141321436]},{\"name\":\"兰州市\",\"coord\":[103.73793563506032,36.27379827886003]},{\"name\":\"中卫市\",\"coord\":[105.6943786030716,37.20654236148948]},{\"name\":\"银川市\",\"coord\":[106.20022174140034,38.52103167597483]},{\"name\":\"石嘴山市\",\"coord\":[106.41544011793628,38.84054137571417]},{\"name\":\"乌海市\",\"coord\":[106.8984175998405,39.54616572239788]},{\"name\":\"鄂尔多斯市\",\"coord\":[108.43285571424619,39.24036799350715]},{\"name\":\"巴彦淖尔市\",\"coord\":[107.45840392808307,41.30159860424196]},{\"name\":\"包头市\",\"coord\":[110.46472193224272,41.48017783644221]},{\"name\":\"呼和浩特市\",\"coord\":[111.48365173603975,40.498363056149884]},{\"name\":\"乌兰察布市\",\"coord\":[112.61568977597707,41.75789561273154]},{\"name\":\"大同市\",\"coord\":[113.7107192749083,39.898956799744184]},{\"name\":\"朔州市\",\"coord\":[112.65428748167508,39.681772914701924]},{\"name\":\"忻州市\",\"coord\":[112.36127575589583,38.88990233614568]},{\"name\":\"榆林市\",\"coord\":[109.68473112169593,38.19921027134876]},{\"name\":\"延安市\",\"coord\":[109.52425222161318,36.406522726136814]},{\"name\":\"庆阳市\",\"coord\":[107.73052193155061,36.183821532624464]},{\"name\":\"固原市\",\"coord\":[106.20191575442442,36.11634909496382]},{\"name\":\"白银市\",\"coord\":[104.68634478137065,36.51582865625868]},{\"name\":\"宝鸡市\",\"coord\":[107.33534779230747,34.3387216485855]},{\"name\":\"汉中市\",\"coord\":[107.03534754266246,33.00142998064871]},{\"name\":\"广元市\",\"coord\":[105.92928137563939,32.21872447205537]},{\"name\":\"巴中市\",\"coord\":[107.03422410306194,31.99874720836291]},{\"name\":\"南充市\",\"coord\":[106.32964805032347,31.156657700184095]},{\"name\":\"绵阳市\",\"coord\":[104.58949560201106,31.88628780630976]},{\"name\":\"德阳市\",\"coord\":[104.41542984932845,31.110558133718676]},{\"name\":\"成都市\",\"coord\":[103.8852290010473,30.777258040348634]},{\"name\":\"阿坝藏族羌族自治\",\"coord\":[102.26209319552814,32.45725845387284]},{\"name\":\"安康市\",\"coord\":[109.14236501848015,32.77467694678074]},{\"name\":\"十堰市\",\"coord\":[110.39934083416314,32.376209039347906]},{\"name\":\"襄阳市\",\"coord\":[111.97539147094662,31.93399822417465]},{\"name\":\"宜昌市\",\"coord\":[111.22204852395754,30.772457669035354]},{\"name\":\"恩施市\",\"coord\":[109.42158366502872,30.260366574390105]},{\"name\":\"张家界市\",\"coord\":[110.59760006538717,29.330107409240718]},{\"name\":\"吉首市\",\"coord\":[109.72176899848378,28.681903937242495]},{\"name\":\"铜仁地区\",\"coord\":[108.54247523485463,28.11736237519646]},{\"name\":\"重庆市\",\"coord\":[107.86007108564992,30.186253395053196]},{\"name\":\"怀化市\",\"coord\":[109.94325166787243,27.43919084801186]},{\"name\":\"益阳市\",\"coord\":[112.43060358108062,28.75127294553697]},{\"name\":\"娄底市\",\"coord\":[111.41891416951897,27.696312460064604]},{\"name\":\"常德市\",\"coord\":[111.72571610131646,29.27189463838195]},{\"name\":\"荆州市\",\"coord\":[112.65896596965268,30.05161542755362]},{\"name\":\"荆门市\",\"coord\":[112.6586855902184,31.01267124474617]},{\"name\":\"岳阳市\",\"coord\":[113.2595036144316,29.106247116930163]},{\"name\":\"长沙市\",\"coord\":[113.15415586456598,28.222934680488425]},{\"name\":\"湘潭市\",\"coord\":[112.51092596317824,27.69881544105668]},{\"name\":\"株州市\",\"coord\":[113.49665538546823,27.03993794610501]},{\"name\":\"衡阳市\",\"coord\":[112.48849636578527,26.783613569970782]},{\"name\":\"邵阳市\",\"coord\":[110.6723832117475,26.81652287086792]},{\"name\":\"永州市\",\"coord\":[111.8565364154186,25.768488267811968]},{\"name\":\"韶关市\",\"coord\":[113.53420325850979,24.69848878771937]},{\"name\":\"惠州市\",\"coord\":[114.32029589634925,23.25504544231892]},{\"name\":\"佛山市\",\"coord\":[112.95925897403649,23.10116677189257]},{\"name\":\"云浮市\",\"coord\":[111.78042514904234,22.840400494105687]},{\"name\":\"深圳市\",\"coord\":[114.13138648919008,22.649563063468342]},{\"name\":\"汕尾市\",\"coord\":[115.57412892884373,23.06989642104901]},{\"name\":\"河源市\",\"coord\":[114.89746229844398,23.97971937124767]},{\"name\":\"揭阳市\",\"coord\":[116.04290004239446,23.304802704715357]},{\"name\":\"汕头市\",\"coord\":[116.7008461897183,23.35898625947344]},{\"name\":\"潮州市\",\"coord\":[116.75405548481658,23.854381508863064]},{\"name\":\"梅州市\",\"coord\":[116.13719397345734,24.15633544812716]},{\"name\":\"漳州市\",\"coord\":[117.38279760543345,24.41111215459575]},{\"name\":\"厦门市\",\"coord\":[118.04275971554665,24.675908246507944]},{\"name\":\"龙岩市\",\"coord\":[116.69341144552507,25.20284542644492]},{\"name\":\"泉州市\",\"coord\":[118.12035864630246,25.22984144365049]},{\"name\":\"莆田市\",\"coord\":[118.82439690138142,25.439653480972687]},{\"name\":\"福州市\",\"coord\":[119.1608285845262,25.99117532466728]},{\"name\":\"三明市\",\"coord\":[117.51188176216434,26.318292906961602]},{\"name\":\"南平市\",\"coord\":[118.16153136678187,27.306303151805437]},{\"name\":\"抚州市\",\"coord\":[116.3455359885574,27.487043655935366]},{\"name\":\"鹰潭市\",\"coord\":[117.01082360702333,28.241253742969946]},{\"name\":\"吉安市\",\"coord\":[114.91377151807418,26.957486660664525]},{\"name\":\"赣州市\",\"coord\":[115.046455717572,25.81565075681663]},{\"name\":\"郴州市\",\"coord\":[113.1544526703492,25.871927095452524]},{\"name\":\"新余市\",\"coord\":[114.94161795877827,27.79044654578371]},{\"name\":\"宜春市\",\"coord\":[115.04574494880995,28.306428044943356]},{\"name\":\"南昌市\",\"coord\":[115.9963824234495,28.664803351584705]},{\"name\":\"九江市\",\"coord\":[115.53225905704193,29.362905920276297]},{\"name\":\"上饶市\",\"coord\":[117.8595355766598,28.765755150094634]},{\"name\":\"景德镇市\",\"coord\":[117.25387030721845,29.33426823662448]},{\"name\":\"黄山市\",\"coord\":[117.85476357809696,29.969632034273722]},{\"name\":\"池州市\",\"coord\":[117.34517113140791,30.208089337922335]},{\"name\":\"铜陵市\",\"coord\":[117.93160431300694,30.926442655001676]},{\"name\":\"安庆市\",\"coord\":[116.54307680610799,30.524265461641296]},{\"name\":\"黄石市\",\"coord\":[115.02354597728443,29.924060229331015]},{\"name\":\"咸宁市\",\"coord\":[114.26967602231792,29.652174021136048]},{\"name\":\"黄冈市\",\"coord\":[115.2859016705373,30.65856897065683]},{\"name\":\"武汉市\",\"coord\":[114.34552076948799,30.68836237966767]},{\"name\":\"随州市\",\"coord\":[113.3850627838818,31.87891659924412]},{\"name\":\"信阳市\",\"coord\":[114.81374730587638,32.0309685135914]},{\"name\":\"驻马店市\",\"coord\":[114.07756451509235,32.896720987266114]},{\"name\":\"商洛市\",\"coord\":[109.82044421310393,33.77403373563189]},{\"name\":\"西安市\",\"coord\":[109.11839808451401,34.225257215515896]},{\"name\":\"渭南市\",\"coord\":[109.75732444226935,35.025913644359306]},{\"name\":\"铜川市\",\"coord\":[108.98695328111377,35.19235092947735]},{\"name\":\"咸阳市\",\"coord\":[108.36398776446165,34.84311348287181]},{\"name\":\"三门峡市\",\"coord\":[110.80049688104964,34.31818709571671]},{\"name\":\"运城市\",\"coord\":[111.1736679525165,35.19010372283576]},{\"name\":\"洛阳市\",\"coord\":[111.87577573098216,34.33379926109848]},{\"name\":\"平顶山市\",\"coord\":[112.80931281928427,33.759895800153096]},{\"name\":\"漯河市\",\"coord\":[113.83505724178012,33.70034266174508]},{\"name\":\"许昌市\",\"coord\":[113.78762484088509,34.051835688452435]},{\"name\":\"郑州市\",\"coord\":[113.49619951867594,34.61181797865449]},{\"name\":\"焦作市\",\"coord\":[113.13404280173008,35.134167097471625]},{\"name\":\"晋城市\",\"coord\":[112.7495732073233,35.63186423091449]},{\"name\":\"长治市\",\"coord\":[112.85900842873183,36.45872910742828]},{\"name\":\"临汾市\",\"coord\":[111.49379787924448,36.22810800777857]},{\"name\":\"太原市\",\"coord\":[112.15628804033796,37.91704444063036]},{\"name\":\"吕梁市\",\"coord\":[111.31901105774872,37.712740463356496]},{\"name\":\"晋中市\",\"coord\":[113.08199599739676,37.36532613794343]},{\"name\":\"邯郸市\",\"coord\":[114.41824047234618,36.530119932543315]},{\"name\":\"安阳市\",\"coord\":[113.88883283163116,35.7797611183252]},{\"name\":\"鹤壁市\",\"coord\":[114.3654094911545,35.75770487428472]},{\"name\":\"新乡市\",\"coord\":[113.9184107718167,35.348471214026716]},{\"name\":\"开封市\",\"coord\":[114.52801677500626,34.61371216679872]},{\"name\":\"周口市\",\"coord\":[114.88509782391864,33.69999759722657]},{\"name\":\"阜阳市\",\"coord\":[115.44595951398213,32.98060371610532]},{\"name\":\"淮南市\",\"coord\":[116.68941991880993,32.79972275772595]},{\"name\":\"蚌埠市\",\"coord\":[117.38594715783302,33.106729536033896]},{\"name\":\"淮北市\",\"coord\":[116.69651711889378,33.69527529383458]},{\"name\":\"宿州市\",\"coord\":[117.30175405886838,33.943330421260015]},{\"name\":\"亳州市\",\"coord\":[116.12410804185097,33.46769392946132]},{\"name\":\"商丘市\",\"coord\":[115.59575176872548,34.28339840831147]},{\"name\":\"菏泽市\",\"coord\":[115.53631974831816,35.197319393220624]},{\"name\":\"濮阳市\",\"coord\":[115.3070485514902,35.775883510964334]},{\"name\":\"聊城市\",\"coord\":[115.8870069012884,36.40529594548765]},{\"name\":\"邢台市\",\"coord\":[114.74259008644859,37.251396750084155]},{\"name\":\"石家庄市\",\"coord\":[114.56923838363613,38.13141710980106]},{\"name\":\"阳泉市\",\"coord\":[113.39216149668508,38.09075470547468]},{\"name\":\"保定市\",\"coord\":[115.261524468934,39.09118520781398]},{\"name\":\"衡水市\",\"coord\":[115.8182936677897,37.715661598187154]},{\"name\":\"德州市\",\"coord\":[116.4582273790399,37.19372347888644]},{\"name\":\"沧州市\",\"coord\":[116.76192710911863,38.20240042039232]},{\"name\":\"廊坊市\",\"coord\":[116.50410772133856,39.27896741763884]},{\"name\":\"天津市\",\"coord\":[117.31988934444873,39.37154482470619]},{\"name\":\"北京市\",\"coord\":[116.59734730757869,40.237112944270976]},{\"name\":\"张家口市\",\"coord\":[115.1823606483226,40.83732566607167]},{\"name\":\"唐山市\",\"coord\":[117.8693184261954,39.71862889477249]},{\"name\":\"秦皇岛市\",\"coord\":[119.30467355367742,39.990574652162564]},{\"name\":\"承德市\",\"coord\":[117.16275671911026,41.36623845548547]},{\"name\":\"葫芦岛市\",\"coord\":[119.9342336210531,40.5628822626519]},{\"name\":\"朝阳市\",\"coord\":[120.11853493535794,41.471852354885755]},{\"name\":\"赤峰市\",\"coord\":[118.50943546234379,43.25452976059767]},{\"name\":\"锦州市\",\"coord\":[121.5167549323861,41.45933087433065]},{\"name\":\"营口市\",\"coord\":[122.58571915054674,40.42093503997384]},{\"name\":\"丹东市\",\"coord\":[124.33549382902183,40.46369290272115]},{\"name\":\"辽阳市\",\"coord\":[123.34064798039414,41.152331397771356]},{\"name\":\"盘锦市\",\"coord\":[122.06718005354679,41.05573599862555]},{\"name\":\"阜新市\",\"coord\":[121.93889757908204,42.27641773244204]},{\"name\":\"鞍山市\",\"coord\":[122.78904432242356,40.77781183142038]},{\"name\":\"沈阳市\",\"coord\":[122.99508899709724,42.1162195010079]},{\"name\":\"铁岭市\",\"coord\":[124.23100515588399,42.72666083611828]},{\"name\":\"扶顺市\",\"coord\":[124.46027188217573,41.82955407638859]},{\"name\":\"通辽市\",\"coord\":[122.0729370657937,43.90889130864869]},{\"name\":\"兴安盟\",\"coord\":[120.79456431092532,45.92003249442161]},{\"name\":\"白城市\",\"coord\":[123.10619907715235,45.25475749267784]},{\"name\":\"齐齐哈尔市\",\"coord\":[124.5462214659102,47.55395009317394]},{\"name\":\"大兴安岭地区\",\"coord\":[124.50992855161529,52.18438447846694]},{\"name\":\"黑河市\",\"coord\":[127.14721400335922,49.25080134026901]},{\"name\":\"大庆市\",\"coord\":[124.40329830095243,46.401048760966745]},{\"name\":\"绥化市\",\"coord\":[126.5214484055605,46.76992452194825]},{\"name\":\"松原市\",\"coord\":[124.21244334807682,44.75779381338502]},{\"name\":\"四平市\",\"coord\":[124.27839350328821,43.52139065090318]},{\"name\":\"通化市\",\"coord\":[125.67392830706305,41.91771808663852]},{\"name\":\"辽源市\",\"coord\":[125.33529527643432,42.758340204944986]},{\"name\":\"吉林市\",\"coord\":[126.83350281902375,43.60730120049175]},{\"name\":\"长春市\",\"coord\":[125.53597875970374,44.24624314701737]},{\"name\":\"白山市\",\"coord\":[127.16780160322108,42.093893880305075]},{\"name\":\"哈尔滨市\",\"coord\":[127.39125008786029,45.36200668820575]},{\"name\":\"鹤岗市\",\"coord\":[130.4703811258197,47.66520688940109]},{\"name\":\"伊春市\",\"coord\":[128.91240831703635,47.93833794565277]},{\"name\":\"七台河市\",\"coord\":[131.2677920224311,45.945099776108584]},{\"name\":\"鸡西市\",\"coord\":[132.38059153660274,45.722934218318535]},{\"name\":\"双鸭山市\",\"coord\":[132.3184817002743,46.65813679030265]},{\"name\":\"佳木斯市\",\"coord\":[132.26174446608726,47.17569713691394]},{\"name\":\"呼伦贝尔市\",\"coord\":[122.3210739998419,50.18176996070858]},{\"name\":\"孝感市\",\"coord\":[113.83749892135485,31.11757234692128]},{\"name\":\"贵港市\",\"coord\":[110.07354588052804,23.380735604767374]},{\"name\":\"黔南布依族苗族自\",\"coord\":[107.30931767543106,26.2976919432269]},{\"name\":\"宁德市\",\"coord\":[119.52482556634342,27.013151692716413]},{\"name\":\"温州市\",\"coord\":[120.30037042732202,27.8699145504001]},{\"name\":\"台州市\",\"coord\":[120.88886782713843,28.670799172772313]},{\"name\":\"丽水市\",\"coord\":[119.56796851966463,28.170268394477755]},{\"name\":\"衢州市\",\"coord\":[118.79479802644406,28.865874397158763]},{\"name\":\"金华市\",\"coord\":[119.99381920686633,29.093455548185744]},{\"name\":\"绍兴市\",\"coord\":[120.46546691682343,29.69382513836818]},{\"name\":\"宁波市\",\"coord\":[121.42142987830871,29.70001162878972]},{\"name\":\"杭州市\",\"coord\":[119.4405685790891,29.87218307296989]},{\"name\":\"宣城市\",\"coord\":[118.68748382914703,30.628143499626418]},{\"name\":\"湖州市\",\"coord\":[119.98261306633574,30.7945175862809]},{\"name\":\"嘉兴市\",\"coord\":[120.83889215988998,30.67538495499343]},{\"name\":\"上海市\",\"coord\":[121.37534147322967,31.25628247908459]},{\"name\":\"苏州市\",\"coord\":[120.6906182622391,31.381280695137775]},{\"name\":\"无锡市\",\"coord\":[120.32182300914366,31.54113306724517]},{\"name\":\"常州市\",\"coord\":[119.61953292830165,31.611878565375576]},{\"name\":\"南京市\",\"coord\":[118.71890548838064,31.910863187910323]},{\"name\":\"镇江市\",\"coord\":[119.42349332902813,31.97942313430778]},{\"name\":\"合肥市\",\"coord\":[117.30651975617157,31.79407863049138]},{\"name\":\"六安市\",\"coord\":[116.24668220575353,31.820846193819513]},{\"name\":\"滁州市\",\"coord\":[117.88422385307969,32.51792621904418]},{\"name\":\"泰州市\",\"coord\":[120.03124303305091,32.56503102346783]},{\"name\":\"南通市\",\"coord\":[120.85599446760912,32.18496706099728]},{\"name\":\"盐城市\",\"coord\":[120.01812490612667,33.54219948734023]},{\"name\":\"淮安市\",\"coord\":[119.0749424205415,33.39203631772854]},{\"name\":\"宿迁市\",\"coord\":[118.45404943216346,33.666258719120265]},{\"name\":\"徐州市\",\"coord\":[117.77482249295966,34.30847766157078]},{\"name\":\"济宁市\",\"coord\":[116.74147276546373,35.27488504351119]},{\"name\":\"枣庄市\",\"coord\":[117.43359942491492,34.884162021736]},{\"name\":\"连云港市\",\"coord\":[119.01553213785074,34.54316517587849]},{\"name\":\"临沂市\",\"coord\":[118.31478835349617,35.28173079028279]},{\"name\":\"日照市\",\"coord\":[119.14265350444272,35.54479073199592]},{\"name\":\"青岛市\",\"coord\":[120.27779044405756,36.3464117375903]},{\"name\":\"威海市\",\"coord\":[122.12963327195605,37.13879077904251]},{\"name\":\"烟台市\",\"coord\":[120.7689567423966,37.19772002195597]},{\"name\":\"潍坊市\",\"coord\":[119.02178548592039,36.49292234053931]},{\"name\":\"淄博市\",\"coord\":[117.92936024367185,36.60871347163638]},{\"name\":\"泰安市\",\"coord\":[116.93810893944303,36.0423330118612]},{\"name\":\"济南市\",\"coord\":[117.34560282551296,36.769574973846304]},{\"name\":\"东营市\",\"coord\":[118.4915054457184,37.52194690335787]},{\"name\":\"滨州市\",\"coord\":[117.67610299757533,37.4439597758601]},{\"name\":\"昆明市\",\"coord\":[102.93100245594789,25.481300763922075]},{\"name\":\"玉溪市\",\"coord\":[102.23080854291823,24.156168324611663]},{\"name\":\"塔城地区\",\"coord\":[83.60908162840168,45.3721852373893]},{\"name\":\"张掖市\",\"coord\":[100.47710030600572,38.704239320458385]},{\"name\":\"南阳市\",\"coord\":[112.1400670951149,33.03033276715801]},{\"name\":\"扬州市\",\"coord\":[119.48949608990988,32.80956776339646]},{\"name\":\"延边朝鲜族自治州\",\"coord\":[129.3577692895626,43.24968794080283]},{\"name\":\"牡丹江市\",\"coord\":[129.87240796405672,44.7073040108322]},{\"name\":\"澳门\",\"coord\":[113.56289691515346,22.14602596262204]},{\"name\":\"吴忠市\",\"coord\":[106.76894508116403,37.72566765880316]},{\"name\":\"来宾市\",\"coord\":[109.25592217010114,23.86346274681084]},{\"name\":\"平凉市\",\"coord\":[107.0708132782897,35.30329631658711]},{\"name\":\"马鞍山市\",\"coord\":[118.27245878467022,31.657727937739004]},{\"name\":\"芜湖市\",\"coord\":[118.32992684415504,31.081688223101658]},{\"name\":\"澄迈县\",\"coord\":[110.04198076060266,19.694955078668105]},{\"name\":\"保亭黎族苗族自治\",\"coord\":[109.6055304964257,18.6101488675304]},{\"name\":\"乐东黎族自治县\",\"coord\":[109.04051999525574,18.643137437909203]},{\"name\":\"儋州市\",\"coord\":[109.3431358337404,19.550974957403195]},{\"name\":\"定安县\",\"coord\":[110.38744429685676,19.47557074114284]},{\"name\":\"屯昌县\",\"coord\":[110.00574767630334,19.367175093044388]},{\"name\":\"白沙黎族自治县\",\"coord\":[109.36860737761768,19.214416393082217]},{\"name\":\"琼中黎族苗族自治\",\"coord\":[109.86691465937548,19.073671135862682]},{\"name\":\"东方市\",\"coord\":[108.86903802405428,19.017352815445214]},{\"name\":\"昌江黎族自治县\",\"coord\":[108.9686431884767,19.182594167127824]},{\"name\":\"海口市\",\"coord\":[110.420654296875,19.806565564640795]},{\"name\":\"济源市\",\"coord\":[112.38051465474433,35.07958362422394]},{\"name\":\"五指山市\",\"coord\":[109.53595187364496,18.832908264613966]},{\"name\":\"大连市\",\"coord\":[121.96662235866603,39.444150542439914]},{\"name\":\"文昌市三沙市\",\"coord\":[110.81828537536748,19.756501444162936]},{\"name\":\"三亚市\",\"coord\":[109.38424600793707,18.39186315877128]},{\"name\":\"万宁市\",\"coord\":[110.28485046979574,18.860240588635115]},{\"name\":\"陵水黎族自治县\",\"coord\":[109.95577603229562,18.594712684620465]},{\"name\":\"临高县\",\"coord\":[109.71915395436967,19.79420403032508]},{\"name\":\"琼海市\",\"coord\":[110.41650700703043,19.22315873149372]}]");
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -348,7 +1349,7 @@ var freeSelf = typeof self == 'object' && self && self.Object === Object && self
 var root = freeGlobal || freeSelf || Function('return this')();
 
 /** Detect free variable `exports`. */
-var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+var freeExports =  true && exports && !exports.nodeType && exports;
 
 /** Detect free variable `module`. */
 var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
@@ -2586,996 +3587,939 @@ function property(path) {
 
 module.exports = remove;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(17)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(20)(module)))
 
 /***/ }),
-/* 8 */
-/***/ (function(module) {
-
-module.exports = [{"name":"克拉玛依市","coord":[85.01486759299489,45.406422237230046]},{"name":"昌吉回族自治州","coord":[88.7154624754753,44.26991024636568]},{"name":"石河子市","coord":[86.0208600035924,44.239045558096805]},{"name":"霍林郭勒市","coord":[114.73479243733115,44.16058374713977]},{"name":"本溪市","coord":[124.64357865201586,41.177197783134275]},{"name":"嘉峪关市","coord":[98.16891560537093,39.76279786284264]},{"name":"莱芜市","coord":[117.65723565456207,36.27916499211527]},{"name":"神农架林区","coord":[110.48296222218153,31.581260143666697]},{"name":"天门市","coord":[113.00615321481195,30.64105781887143]},{"name":"鄂州市","coord":[114.94764081970385,30.325634953844585]},{"name":"潜江市","coord":[112.70703817700621,30.349210666019893]},{"name":"仙桃市","coord":[113.34688900729822,30.315951161935402]},{"name":"萍乡市","coord":[113.88072263074415,27.47193090553213]},{"name":"台湾省","coord":[120.14338943402045,23.596002465926095]},{"name":"东莞市","coord":[113.89443658529342,22.897826158636448]},{"name":"中山市","coord":[113.37118387764659,22.501478858616522]},{"name":"珠海市","coord":[113.21799258934986,22.23782602992192]},{"name":"北海市","coord":[109.18248083043899,21.695773689750148]},{"name":"香港","coord":[114.20689279508653,22.36016760139811]},{"name":"舟山市","coord":[122.22514712841459,30.338633120695956]},{"name":"克孜勒苏柯尔克孜","coord":[74.62910472637343,39.59886016069875]},{"name":"喀什地区","coord":[77.19899922143753,37.85462871211595]},{"name":"阿克苏地区","coord":[81.43930290016381,41.067304799230456]},{"name":"和田地区","coord":[80.69780509160952,36.95287032287055]},{"name":"阿里地区","coord":[82.536487505389,32.69566569631762]},{"name":"日喀则地区","coord":[86.5996831353606,29.54861754814263]},{"name":"那曲地区","coord":[88.32523292667608,33.20600450932715]},{"name":"玉树藏族自治州","coord":[95.2107128446203,33.90320387919257]},{"name":"迪庆藏族自治州","coord":[99.42465312188943,28.052797714348895]},{"name":"怒江傈傈族自治州","coord":[98.85737910439825,26.98345757528851]},{"name":"大理白族自治州","coord":[99.93934374816013,25.684737357453045]},{"name":"德宏傣族景颇族自","coord":[98.13830877778075,24.593421919561205]},{"name":"保山市","coord":[99.19031013453166,24.979380341662]},{"name":"临沧市","coord":[99.62483778975081,24.058807858948214]},{"name":"普洱市","coord":[100.94440267992684,23.44121660743221]},{"name":"西双版纳傣族自治","coord":[100.86105801845994,21.882475641324206]},{"name":"拉萨市","coord":[91.3684790613129,30.14176592960237]},{"name":"山南地区","coord":[92.11665242621062,28.33000201578789]},{"name":"林芝地区","coord":[94.9307847458166,29.125110156601963]},{"name":"昌都地区","coord":[97.33912235873476,30.48520825551814]},{"name":"丽江市","coord":[100.65713436205135,26.96190318191959]},{"name":"攀枝花市","coord":[101.73355913301131,26.714486678752795]},{"name":"凉山彝族自治州","coord":[102.08678551422615,27.683020519860396]},{"name":"楚雄彝族自治州","coord":[101.68264761198458,25.369603845264024]},{"name":"红河哈尼族彝族自","coord":[102.95101719613119,23.624860095239875]},{"name":"文山壮族苗族自治","coord":[104.8708359910614,23.579587266862504]},{"name":"百色市","coord":[106.69546907589859,23.98220841166522]},{"name":"崇左市","coord":[107.3277087317123,22.49769755349952]},{"name":"防城港市","coord":[107.88939931155171,21.94550204069006]},{"name":"南宁市","coord":[108.67078983716917,23.12207641861882]},{"name":"钦州市","coord":[108.8532307305186,22.157690108421384]},{"name":"玉林市","coord":[110.26918466489103,22.391823643610415]},{"name":"湛江市","coord":[109.93033457863683,21.086751055633457]},{"name":"茂名市","coord":[110.80336192333934,22.069184739040775]},{"name":"阳江市","coord":[111.70471342186183,22.108751366417575]},{"name":"江门市","coord":[112.53715618649149,22.297368082806777]},{"name":"广州市","coord":[113.4949302208309,23.28359314707863]},{"name":"清远市","coord":[113.10957368131268,24.334444053233856]},{"name":"肇庆市","coord":[112.11117530204233,23.60241158796112]},{"name":"梧州市","coord":[111.01709510772797,23.518132876753846]},{"name":"贺州市","coord":[111.50423061842756,24.4095096817199]},{"name":"桂林市","coord":[110.44046163393094,25.353966673735407]},{"name":"柳州市","coord":[109.34854449214147,24.972408051485047]},{"name":"河池市","coord":[107.81191841865586,24.649291651298164]},{"name":"黔东南苗族侗族自","coord":[108.39952601614591,26.429286420465576]},{"name":"贵阳市","coord":[106.59784062851153,26.797907456479816]},{"name":"安顺市","coord":[105.76161265300635,25.988644902171018]},{"name":"黔西南布依族苗族","coord":[105.5954078788574,25.404850939549405]},{"name":"曲靖市","coord":[103.9164335632742,25.697243690315265]},{"name":"六盘水市","coord":[104.77723228072432,26.15402255629164]},{"name":"毕节地区","coord":[105.03867422931839,27.077913968069666]},{"name":"昭通市","coord":[104.29730513046874,27.62418247971078]},{"name":"宜宾市","coord":[104.76748901448207,28.553501804266475]},{"name":"乐山市","coord":[103.56027669102787,29.160754519210577]},{"name":"自贡市","coord":[104.63272827056402,29.273152614922402]},{"name":"内江市","coord":[104.82644562304716,29.61272653799929]},{"name":"遵义市","coord":[106.82413636302059,28.191847588570702]},{"name":"达州市","coord":[107.59704170009518,31.32138258839703]},{"name":"遂宁市","coord":[105.48979445433736,30.677687821242678]},{"name":"广安市","coord":[106.56708164098042,30.43500706741521]},{"name":"泸州市","coord":[105.42591761727707,28.50277238478137]},{"name":"资阳市","coord":[104.97995126874034,30.154251886139654]},{"name":"雅安市","coord":[102.69931299964517,29.892630706195035]},{"name":"眉山市","coord":[104.07052881858888,29.894202166560405]},{"name":"甘孜藏族自治州","coord":[100.50721042614238,30.975216556269658]},{"name":"果洛藏族自治州","coord":[99.30775565051923,34.03539865224808]},{"name":"海南藏族自治州","coord":[100.39969108016373,35.90048272566899]},{"name":"黄南藏族自治州","coord":[101.5360706381689,35.10286360841902]},{"name":"赣南藏族自治州","coord":[102.97083885806067,34.326752803339026]},{"name":"陇南市","coord":[105.24780098912132,33.57031117443431]},{"name":"天水市","coord":[105.53503634660417,34.62320421368087]},{"name":"定西市","coord":[104.58787768541339,35.08900966621695]},{"name":"临夏回族自治州","coord":[103.2612870434902,35.591577124455235]},{"name":"西宁市","coord":[101.57680657999033,36.84800271717157]},{"name":"海东地区","coord":[102.30909850729282,36.287400615025646]},{"name":"海北藏族自治州","coord":[100.27122484450717,37.892557516083826]},{"name":"金昌市","coord":[102.02244049169511,38.497330414886164]},{"name":"酒泉市","coord":[95.94486678270127,40.56891536586272]},{"name":"海西蒙古族藏族自","coord":[94.67143298050689,36.022725148503724]},{"name":"巴音郭楞蒙古自治","coord":[88.18116214759745,39.556478810319916]},{"name":"哈密地区","coord":[93.84302392518026,42.95015211178875]},{"name":"叶鲁番地区","coord":[89.82035217277885,42.399368632283505]},{"name":"乌鲁木齐市","coord":[88.00048109561487,43.549986370786]},{"name":"阿勒泰地区","coord":[88.11213933257655,47.05593413019629]},{"name":"博尔塔拉蒙古自治","coord":[82.26402238163408,44.671135542630864]},{"name":"伊犁哈萨克自治州","coord":[82.80778717477179,43.53783381365267]},{"name":"阿拉善盟","coord":[103.29923966842289,40.10955801781495]},{"name":"武威市","coord":[102.73362058791429,37.94211141321436]},{"name":"兰州市","coord":[103.73793563506032,36.27379827886003]},{"name":"中卫市","coord":[105.6943786030716,37.20654236148948]},{"name":"银川市","coord":[106.20022174140034,38.52103167597483]},{"name":"石嘴山市","coord":[106.41544011793628,38.84054137571417]},{"name":"乌海市","coord":[106.8984175998405,39.54616572239788]},{"name":"鄂尔多斯市","coord":[108.43285571424619,39.24036799350715]},{"name":"巴彦淖尔市","coord":[107.45840392808307,41.30159860424196]},{"name":"包头市","coord":[110.46472193224272,41.48017783644221]},{"name":"呼和浩特市","coord":[111.48365173603975,40.498363056149884]},{"name":"乌兰察布市","coord":[112.61568977597707,41.75789561273154]},{"name":"大同市","coord":[113.7107192749083,39.898956799744184]},{"name":"朔州市","coord":[112.65428748167508,39.681772914701924]},{"name":"忻州市","coord":[112.36127575589583,38.88990233614568]},{"name":"榆林市","coord":[109.68473112169593,38.19921027134876]},{"name":"延安市","coord":[109.52425222161318,36.406522726136814]},{"name":"庆阳市","coord":[107.73052193155061,36.183821532624464]},{"name":"固原市","coord":[106.20191575442442,36.11634909496382]},{"name":"白银市","coord":[104.68634478137065,36.51582865625868]},{"name":"宝鸡市","coord":[107.33534779230747,34.3387216485855]},{"name":"汉中市","coord":[107.03534754266246,33.00142998064871]},{"name":"广元市","coord":[105.92928137563939,32.21872447205537]},{"name":"巴中市","coord":[107.03422410306194,31.99874720836291]},{"name":"南充市","coord":[106.32964805032347,31.156657700184095]},{"name":"绵阳市","coord":[104.58949560201106,31.88628780630976]},{"name":"德阳市","coord":[104.41542984932845,31.110558133718676]},{"name":"成都市","coord":[103.8852290010473,30.777258040348634]},{"name":"阿坝藏族羌族自治","coord":[102.26209319552814,32.45725845387284]},{"name":"安康市","coord":[109.14236501848015,32.77467694678074]},{"name":"十堰市","coord":[110.39934083416314,32.376209039347906]},{"name":"襄阳市","coord":[111.97539147094662,31.93399822417465]},{"name":"宜昌市","coord":[111.22204852395754,30.772457669035354]},{"name":"恩施市","coord":[109.42158366502872,30.260366574390105]},{"name":"张家界市","coord":[110.59760006538717,29.330107409240718]},{"name":"吉首市","coord":[109.72176899848378,28.681903937242495]},{"name":"铜仁地区","coord":[108.54247523485463,28.11736237519646]},{"name":"重庆市","coord":[107.86007108564992,30.186253395053196]},{"name":"怀化市","coord":[109.94325166787243,27.43919084801186]},{"name":"益阳市","coord":[112.43060358108062,28.75127294553697]},{"name":"娄底市","coord":[111.41891416951897,27.696312460064604]},{"name":"常德市","coord":[111.72571610131646,29.27189463838195]},{"name":"荆州市","coord":[112.65896596965268,30.05161542755362]},{"name":"荆门市","coord":[112.6586855902184,31.01267124474617]},{"name":"岳阳市","coord":[113.2595036144316,29.106247116930163]},{"name":"长沙市","coord":[113.15415586456598,28.222934680488425]},{"name":"湘潭市","coord":[112.51092596317824,27.69881544105668]},{"name":"株州市","coord":[113.49665538546823,27.03993794610501]},{"name":"衡阳市","coord":[112.48849636578527,26.783613569970782]},{"name":"邵阳市","coord":[110.6723832117475,26.81652287086792]},{"name":"永州市","coord":[111.8565364154186,25.768488267811968]},{"name":"韶关市","coord":[113.53420325850979,24.69848878771937]},{"name":"惠州市","coord":[114.32029589634925,23.25504544231892]},{"name":"佛山市","coord":[112.95925897403649,23.10116677189257]},{"name":"云浮市","coord":[111.78042514904234,22.840400494105687]},{"name":"深圳市","coord":[114.13138648919008,22.649563063468342]},{"name":"汕尾市","coord":[115.57412892884373,23.06989642104901]},{"name":"河源市","coord":[114.89746229844398,23.97971937124767]},{"name":"揭阳市","coord":[116.04290004239446,23.304802704715357]},{"name":"汕头市","coord":[116.7008461897183,23.35898625947344]},{"name":"潮州市","coord":[116.75405548481658,23.854381508863064]},{"name":"梅州市","coord":[116.13719397345734,24.15633544812716]},{"name":"漳州市","coord":[117.38279760543345,24.41111215459575]},{"name":"厦门市","coord":[118.04275971554665,24.675908246507944]},{"name":"龙岩市","coord":[116.69341144552507,25.20284542644492]},{"name":"泉州市","coord":[118.12035864630246,25.22984144365049]},{"name":"莆田市","coord":[118.82439690138142,25.439653480972687]},{"name":"福州市","coord":[119.1608285845262,25.99117532466728]},{"name":"三明市","coord":[117.51188176216434,26.318292906961602]},{"name":"南平市","coord":[118.16153136678187,27.306303151805437]},{"name":"抚州市","coord":[116.3455359885574,27.487043655935366]},{"name":"鹰潭市","coord":[117.01082360702333,28.241253742969946]},{"name":"吉安市","coord":[114.91377151807418,26.957486660664525]},{"name":"赣州市","coord":[115.046455717572,25.81565075681663]},{"name":"郴州市","coord":[113.1544526703492,25.871927095452524]},{"name":"新余市","coord":[114.94161795877827,27.79044654578371]},{"name":"宜春市","coord":[115.04574494880995,28.306428044943356]},{"name":"南昌市","coord":[115.9963824234495,28.664803351584705]},{"name":"九江市","coord":[115.53225905704193,29.362905920276297]},{"name":"上饶市","coord":[117.8595355766598,28.765755150094634]},{"name":"景德镇市","coord":[117.25387030721845,29.33426823662448]},{"name":"黄山市","coord":[117.85476357809696,29.969632034273722]},{"name":"池州市","coord":[117.34517113140791,30.208089337922335]},{"name":"铜陵市","coord":[117.93160431300694,30.926442655001676]},{"name":"安庆市","coord":[116.54307680610799,30.524265461641296]},{"name":"黄石市","coord":[115.02354597728443,29.924060229331015]},{"name":"咸宁市","coord":[114.26967602231792,29.652174021136048]},{"name":"黄冈市","coord":[115.2859016705373,30.65856897065683]},{"name":"武汉市","coord":[114.34552076948799,30.68836237966767]},{"name":"随州市","coord":[113.3850627838818,31.87891659924412]},{"name":"信阳市","coord":[114.81374730587638,32.0309685135914]},{"name":"驻马店市","coord":[114.07756451509235,32.896720987266114]},{"name":"商洛市","coord":[109.82044421310393,33.77403373563189]},{"name":"西安市","coord":[109.11839808451401,34.225257215515896]},{"name":"渭南市","coord":[109.75732444226935,35.025913644359306]},{"name":"铜川市","coord":[108.98695328111377,35.19235092947735]},{"name":"咸阳市","coord":[108.36398776446165,34.84311348287181]},{"name":"三门峡市","coord":[110.80049688104964,34.31818709571671]},{"name":"运城市","coord":[111.1736679525165,35.19010372283576]},{"name":"洛阳市","coord":[111.87577573098216,34.33379926109848]},{"name":"平顶山市","coord":[112.80931281928427,33.759895800153096]},{"name":"漯河市","coord":[113.83505724178012,33.70034266174508]},{"name":"许昌市","coord":[113.78762484088509,34.051835688452435]},{"name":"郑州市","coord":[113.49619951867594,34.61181797865449]},{"name":"焦作市","coord":[113.13404280173008,35.134167097471625]},{"name":"晋城市","coord":[112.7495732073233,35.63186423091449]},{"name":"长治市","coord":[112.85900842873183,36.45872910742828]},{"name":"临汾市","coord":[111.49379787924448,36.22810800777857]},{"name":"太原市","coord":[112.15628804033796,37.91704444063036]},{"name":"吕梁市","coord":[111.31901105774872,37.712740463356496]},{"name":"晋中市","coord":[113.08199599739676,37.36532613794343]},{"name":"邯郸市","coord":[114.41824047234618,36.530119932543315]},{"name":"安阳市","coord":[113.88883283163116,35.7797611183252]},{"name":"鹤壁市","coord":[114.3654094911545,35.75770487428472]},{"name":"新乡市","coord":[113.9184107718167,35.348471214026716]},{"name":"开封市","coord":[114.52801677500626,34.61371216679872]},{"name":"周口市","coord":[114.88509782391864,33.69999759722657]},{"name":"阜阳市","coord":[115.44595951398213,32.98060371610532]},{"name":"淮南市","coord":[116.68941991880993,32.79972275772595]},{"name":"蚌埠市","coord":[117.38594715783302,33.106729536033896]},{"name":"淮北市","coord":[116.69651711889378,33.69527529383458]},{"name":"宿州市","coord":[117.30175405886838,33.943330421260015]},{"name":"亳州市","coord":[116.12410804185097,33.46769392946132]},{"name":"商丘市","coord":[115.59575176872548,34.28339840831147]},{"name":"菏泽市","coord":[115.53631974831816,35.197319393220624]},{"name":"濮阳市","coord":[115.3070485514902,35.775883510964334]},{"name":"聊城市","coord":[115.8870069012884,36.40529594548765]},{"name":"邢台市","coord":[114.74259008644859,37.251396750084155]},{"name":"石家庄市","coord":[114.56923838363613,38.13141710980106]},{"name":"阳泉市","coord":[113.39216149668508,38.09075470547468]},{"name":"保定市","coord":[115.261524468934,39.09118520781398]},{"name":"衡水市","coord":[115.8182936677897,37.715661598187154]},{"name":"德州市","coord":[116.4582273790399,37.19372347888644]},{"name":"沧州市","coord":[116.76192710911863,38.20240042039232]},{"name":"廊坊市","coord":[116.50410772133856,39.27896741763884]},{"name":"天津市","coord":[117.31988934444873,39.37154482470619]},{"name":"北京市","coord":[116.59734730757869,40.237112944270976]},{"name":"张家口市","coord":[115.1823606483226,40.83732566607167]},{"name":"唐山市","coord":[117.8693184261954,39.71862889477249]},{"name":"秦皇岛市","coord":[119.30467355367742,39.990574652162564]},{"name":"承德市","coord":[117.16275671911026,41.36623845548547]},{"name":"葫芦岛市","coord":[119.9342336210531,40.5628822626519]},{"name":"朝阳市","coord":[120.11853493535794,41.471852354885755]},{"name":"赤峰市","coord":[118.50943546234379,43.25452976059767]},{"name":"锦州市","coord":[121.5167549323861,41.45933087433065]},{"name":"营口市","coord":[122.58571915054674,40.42093503997384]},{"name":"丹东市","coord":[124.33549382902183,40.46369290272115]},{"name":"辽阳市","coord":[123.34064798039414,41.152331397771356]},{"name":"盘锦市","coord":[122.06718005354679,41.05573599862555]},{"name":"阜新市","coord":[121.93889757908204,42.27641773244204]},{"name":"鞍山市","coord":[122.78904432242356,40.77781183142038]},{"name":"沈阳市","coord":[122.99508899709724,42.1162195010079]},{"name":"铁岭市","coord":[124.23100515588399,42.72666083611828]},{"name":"扶顺市","coord":[124.46027188217573,41.82955407638859]},{"name":"通辽市","coord":[122.0729370657937,43.90889130864869]},{"name":"兴安盟","coord":[120.79456431092532,45.92003249442161]},{"name":"白城市","coord":[123.10619907715235,45.25475749267784]},{"name":"齐齐哈尔市","coord":[124.5462214659102,47.55395009317394]},{"name":"大兴安岭地区","coord":[124.50992855161529,52.18438447846694]},{"name":"黑河市","coord":[127.14721400335922,49.25080134026901]},{"name":"大庆市","coord":[124.40329830095243,46.401048760966745]},{"name":"绥化市","coord":[126.5214484055605,46.76992452194825]},{"name":"松原市","coord":[124.21244334807682,44.75779381338502]},{"name":"四平市","coord":[124.27839350328821,43.52139065090318]},{"name":"通化市","coord":[125.67392830706305,41.91771808663852]},{"name":"辽源市","coord":[125.33529527643432,42.758340204944986]},{"name":"吉林市","coord":[126.83350281902375,43.60730120049175]},{"name":"长春市","coord":[125.53597875970374,44.24624314701737]},{"name":"白山市","coord":[127.16780160322108,42.093893880305075]},{"name":"哈尔滨市","coord":[127.39125008786029,45.36200668820575]},{"name":"鹤岗市","coord":[130.4703811258197,47.66520688940109]},{"name":"伊春市","coord":[128.91240831703635,47.93833794565277]},{"name":"七台河市","coord":[131.2677920224311,45.945099776108584]},{"name":"鸡西市","coord":[132.38059153660274,45.722934218318535]},{"name":"双鸭山市","coord":[132.3184817002743,46.65813679030265]},{"name":"佳木斯市","coord":[132.26174446608726,47.17569713691394]},{"name":"呼伦贝尔市","coord":[122.3210739998419,50.18176996070858]},{"name":"孝感市","coord":[113.83749892135485,31.11757234692128]},{"name":"贵港市","coord":[110.07354588052804,23.380735604767374]},{"name":"黔南布依族苗族自","coord":[107.30931767543106,26.2976919432269]},{"name":"宁德市","coord":[119.52482556634342,27.013151692716413]},{"name":"温州市","coord":[120.30037042732202,27.8699145504001]},{"name":"台州市","coord":[120.88886782713843,28.670799172772313]},{"name":"丽水市","coord":[119.56796851966463,28.170268394477755]},{"name":"衢州市","coord":[118.79479802644406,28.865874397158763]},{"name":"金华市","coord":[119.99381920686633,29.093455548185744]},{"name":"绍兴市","coord":[120.46546691682343,29.69382513836818]},{"name":"宁波市","coord":[121.42142987830871,29.70001162878972]},{"name":"杭州市","coord":[119.4405685790891,29.87218307296989]},{"name":"宣城市","coord":[118.68748382914703,30.628143499626418]},{"name":"湖州市","coord":[119.98261306633574,30.7945175862809]},{"name":"嘉兴市","coord":[120.83889215988998,30.67538495499343]},{"name":"上海市","coord":[121.37534147322967,31.25628247908459]},{"name":"苏州市","coord":[120.6906182622391,31.381280695137775]},{"name":"无锡市","coord":[120.32182300914366,31.54113306724517]},{"name":"常州市","coord":[119.61953292830165,31.611878565375576]},{"name":"南京市","coord":[118.71890548838064,31.910863187910323]},{"name":"镇江市","coord":[119.42349332902813,31.97942313430778]},{"name":"合肥市","coord":[117.30651975617157,31.79407863049138]},{"name":"六安市","coord":[116.24668220575353,31.820846193819513]},{"name":"滁州市","coord":[117.88422385307969,32.51792621904418]},{"name":"泰州市","coord":[120.03124303305091,32.56503102346783]},{"name":"南通市","coord":[120.85599446760912,32.18496706099728]},{"name":"盐城市","coord":[120.01812490612667,33.54219948734023]},{"name":"淮安市","coord":[119.0749424205415,33.39203631772854]},{"name":"宿迁市","coord":[118.45404943216346,33.666258719120265]},{"name":"徐州市","coord":[117.77482249295966,34.30847766157078]},{"name":"济宁市","coord":[116.74147276546373,35.27488504351119]},{"name":"枣庄市","coord":[117.43359942491492,34.884162021736]},{"name":"连云港市","coord":[119.01553213785074,34.54316517587849]},{"name":"临沂市","coord":[118.31478835349617,35.28173079028279]},{"name":"日照市","coord":[119.14265350444272,35.54479073199592]},{"name":"青岛市","coord":[120.27779044405756,36.3464117375903]},{"name":"威海市","coord":[122.12963327195605,37.13879077904251]},{"name":"烟台市","coord":[120.7689567423966,37.19772002195597]},{"name":"潍坊市","coord":[119.02178548592039,36.49292234053931]},{"name":"淄博市","coord":[117.92936024367185,36.60871347163638]},{"name":"泰安市","coord":[116.93810893944303,36.0423330118612]},{"name":"济南市","coord":[117.34560282551296,36.769574973846304]},{"name":"东营市","coord":[118.4915054457184,37.52194690335787]},{"name":"滨州市","coord":[117.67610299757533,37.4439597758601]},{"name":"昆明市","coord":[102.93100245594789,25.481300763922075]},{"name":"玉溪市","coord":[102.23080854291823,24.156168324611663]},{"name":"塔城地区","coord":[83.60908162840168,45.3721852373893]},{"name":"张掖市","coord":[100.47710030600572,38.704239320458385]},{"name":"南阳市","coord":[112.1400670951149,33.03033276715801]},{"name":"扬州市","coord":[119.48949608990988,32.80956776339646]},{"name":"延边朝鲜族自治州","coord":[129.3577692895626,43.24968794080283]},{"name":"牡丹江市","coord":[129.87240796405672,44.7073040108322]},{"name":"澳门","coord":[113.56289691515346,22.14602596262204]},{"name":"吴忠市","coord":[106.76894508116403,37.72566765880316]},{"name":"来宾市","coord":[109.25592217010114,23.86346274681084]},{"name":"平凉市","coord":[107.0708132782897,35.30329631658711]},{"name":"马鞍山市","coord":[118.27245878467022,31.657727937739004]},{"name":"芜湖市","coord":[118.32992684415504,31.081688223101658]},{"name":"澄迈县","coord":[110.04198076060266,19.694955078668105]},{"name":"保亭黎族苗族自治","coord":[109.6055304964257,18.6101488675304]},{"name":"乐东黎族自治县","coord":[109.04051999525574,18.643137437909203]},{"name":"儋州市","coord":[109.3431358337404,19.550974957403195]},{"name":"定安县","coord":[110.38744429685676,19.47557074114284]},{"name":"屯昌县","coord":[110.00574767630334,19.367175093044388]},{"name":"白沙黎族自治县","coord":[109.36860737761768,19.214416393082217]},{"name":"琼中黎族苗族自治","coord":[109.86691465937548,19.073671135862682]},{"name":"东方市","coord":[108.86903802405428,19.017352815445214]},{"name":"昌江黎族自治县","coord":[108.9686431884767,19.182594167127824]},{"name":"海口市","coord":[110.420654296875,19.806565564640795]},{"name":"济源市","coord":[112.38051465474433,35.07958362422394]},{"name":"五指山市","coord":[109.53595187364496,18.832908264613966]},{"name":"大连市","coord":[121.96662235866603,39.444150542439914]},{"name":"文昌市三沙市","coord":[110.81828537536748,19.756501444162936]},{"name":"三亚市","coord":[109.38424600793707,18.39186315877128]},{"name":"万宁市","coord":[110.28485046979574,18.860240588635115]},{"name":"陵水黎族自治县","coord":[109.95577603229562,18.594712684620465]},{"name":"临高县","coord":[109.71915395436967,19.79420403032508]},{"name":"琼海市","coord":[110.41650700703043,19.22315873149372]}];
-
-/***/ }),
-/* 9 */
-/***/ (function(module) {
-
-module.exports = [{"name":"黑龙江省","coord":[127.64559817675396,48.48668098449708]},{"name":"内蒙古自治区","coord":[118.34519572208615,45.370218276977525]},{"name":"新疆维吾尔自治区","coord":[87.13479065593184,41.75497055053711]},{"name":"吉林省","coord":[126.12985278813787,43.57983207702637]},{"name":"辽宁省","coord":[124.02494773936439,41.105743408203125]},{"name":"甘肃省","coord":[102.87785725633012,37.69582366943361]},{"name":"河北省","coord":[115.66327227481898,39.33383178710938]},{"name":"北京市","coord":[116.62199343603638,40.25053787231445]},{"name":"山西省","coord":[112.45180235808988,37.666561126708984]},{"name":"天津市","coord":[117.35711842642581,39.406789779663086]},{"name":"陕西省","coord":[109.56294003056632,35.64754199981689]},{"name":"宁夏回族自治区","coord":[105.96110877640074,37.3081169128418]},{"name":"青海省","coord":[96.07301048277901,35.44417190551758]},{"name":"山东省","coord":[118.03833752951093,36.29800605773925]},{"name":"西藏自治区","coord":[87.47361520439412,31.6703872680664]},{"name":"河南省","coord":[113.07832397097275,33.87751102447509]},{"name":"江苏省","coord":[119.93926538201052,32.945452690124505]},{"name":"安徽省","coord":[117.15146765881019,32.024482727050774]},{"name":"四川省","coord":[102.28998890142759,30.182161331176758]},{"name":"湖北省","coord":[112.87798261431585,31.157071113586426]},{"name":"重庆市","coord":[107.870126637831,30.188085556030266]},{"name":"上海市","coord":[121.42561166015514,31.276043891906745]},{"name":"浙江省","coord":[119.75337092707514,29.175934791564945]},{"name":"湖南省","coord":[111.52770282777405,27.38110256195069]},{"name":"江西省","coord":[115.51091280655628,27.283511161804206]},{"name":"云南省","coord":[101.27053825991308,25.19783210754396]},{"name":"贵州省","coord":[106.49672346773299,26.92267990112305]},{"name":"福建省","coord":[117.9976766946587,25.939599990844727]},{"name":"广西壮族自治区","coord":[108.98706831086302,23.891559600830078]},{"name":"台湾省","coord":[120.82468432537434,23.602651596069336]},{"name":"香港特别行政区","coord":[114.21036850371561,22.374858856201172]},{"name":"海南省","coord":[109.62792940960824,19.163116455078125]},{"name":"广东省","coord":[113.32127888266032,22.873867034912106]},{"name":"澳门特别行政区","coord":[113.56819996291901,22.160347992976]}];
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return canvg}catch(e){return {}}}();
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return echarts}catch(e){return {}}}();
-
-/***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {/**
- * lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright jQuery Foundation and other contributors <https://jquery.org/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
+__webpack_require__(22);
+module.exports = __webpack_require__(21);
 
-/** Used as references for various `Number` constants. */
-var MAX_SAFE_INTEGER = 9007199254740991;
 
-/** `Object#toString` result references. */
-var argsTag = '[object Arguments]',
-    funcTag = '[object Function]',
-    genTag = '[object GeneratorFunction]',
-    mapTag = '[object Map]',
-    objectTag = '[object Object]',
-    promiseTag = '[object Promise]',
-    setTag = '[object Set]',
-    weakMapTag = '[object WeakMap]';
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
 
-var dataViewTag = '[object DataView]';
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
 
-/**
- * Used to match `RegExp`
- * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
- */
-var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+// DOM APIs, for completeness
 
-/** Used to detect host constructors (Safari). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-/** Used to detect unsigned integer values. */
-var reIsUint = /^(?:0|[1-9]\d*)$/;
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-/**
- * A specialized version of `_.map` for arrays without support for iteratee
- * shorthands.
- *
- * @private
- * @param {Array} [array] The array to iterate over.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {Array} Returns the new mapped array.
- */
-function arrayMap(array, iteratee) {
-  var index = -1,
-      length = array ? array.length : 0,
-      result = Array(length);
-
-  while (++index < length) {
-    result[index] = iteratee(array[index], index, array);
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
   }
-  return result;
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
 }
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
 
-/**
- * The base implementation of `_.times` without support for iteratee shorthands
- * or max array length checks.
- *
- * @private
- * @param {number} n The number of times to invoke `iteratee`.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {Array} Returns the array of results.
- */
-function baseTimes(n, iteratee) {
-  var index = -1,
-      result = Array(n);
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
 
-  while (++index < n) {
-    result[index] = iteratee(index);
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
   }
-  return result;
-}
+};
 
-/**
- * The base implementation of `_.toPairs` and `_.toPairsIn` which creates an array
- * of key-value pairs for `object` corresponding to the property names of `props`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {Array} props The property names to get values for.
- * @returns {Object} Returns the key-value pairs.
- */
-function baseToPairs(object, props) {
-  return arrayMap(props, function(key) {
-    return [key, object[key]];
-  });
-}
-
-/**
- * Gets the value at `key` of `object`.
- *
- * @private
- * @param {Object} [object] The object to query.
- * @param {string} key The key of the property to get.
- * @returns {*} Returns the property value.
- */
-function getValue(object, key) {
-  return object == null ? undefined : object[key];
-}
-
-/**
- * Checks if `value` is a host object in IE < 9.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
- */
-function isHostObject(value) {
-  // Many host objects are `Object` objects that can coerce to strings
-  // despite having improperly defined `toString` methods.
-  var result = false;
-  if (value != null && typeof value.toString != 'function') {
-    try {
-      result = !!(value + '');
-    } catch (e) {}
-  }
-  return result;
-}
-
-/**
- * Converts `map` to its key-value pairs.
- *
- * @private
- * @param {Object} map The map to convert.
- * @returns {Array} Returns the key-value pairs.
- */
-function mapToArray(map) {
-  var index = -1,
-      result = Array(map.size);
-
-  map.forEach(function(value, key) {
-    result[++index] = [key, value];
-  });
-  return result;
-}
-
-/**
- * Creates a unary function that invokes `func` with its argument transformed.
- *
- * @private
- * @param {Function} func The function to wrap.
- * @param {Function} transform The argument transform.
- * @returns {Function} Returns the new function.
- */
-function overArg(func, transform) {
-  return function(arg) {
-    return func(transform(arg));
-  };
-}
-
-/**
- * Converts `set` to its value-value pairs.
- *
- * @private
- * @param {Object} set The set to convert.
- * @returns {Array} Returns the value-value pairs.
- */
-function setToPairs(set) {
-  var index = -1,
-      result = Array(set.size);
-
-  set.forEach(function(value) {
-    result[++index] = [value, value];
-  });
-  return result;
-}
-
-/** Used for built-in method references. */
-var funcProto = Function.prototype,
-    objectProto = Object.prototype;
-
-/** Used to detect overreaching core-js shims. */
-var coreJsData = root['__core-js_shared__'];
-
-/** Used to detect methods masquerading as native. */
-var maskSrcKey = (function() {
-  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-  return uid ? ('Symbol(src)_1.' + uid) : '';
-}());
-
-/** Used to resolve the decompiled source of functions. */
-var funcToString = funcProto.toString;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto.toString;
-
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' +
-  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
-
-/** Built-in value references. */
-var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeKeys = overArg(Object.keys, Object);
-
-/* Built-in method references that are verified to be native. */
-var DataView = getNative(root, 'DataView'),
-    Map = getNative(root, 'Map'),
-    Promise = getNative(root, 'Promise'),
-    Set = getNative(root, 'Set'),
-    WeakMap = getNative(root, 'WeakMap');
-
-/** Used to detect maps, sets, and weakmaps. */
-var dataViewCtorString = toSource(DataView),
-    mapCtorString = toSource(Map),
-    promiseCtorString = toSource(Promise),
-    setCtorString = toSource(Set),
-    weakMapCtorString = toSource(WeakMap);
-
-/**
- * Creates an array of the enumerable property names of the array-like `value`.
- *
- * @private
- * @param {*} value The value to query.
- * @param {boolean} inherited Specify returning inherited property names.
- * @returns {Array} Returns the array of property names.
- */
-function arrayLikeKeys(value, inherited) {
-  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
-  // Safari 9 makes `arguments.length` enumerable in strict mode.
-  var result = (isArray(value) || isArguments(value))
-    ? baseTimes(value.length, String)
-    : [];
-
-  var length = result.length,
-      skipIndexes = !!length;
-
-  for (var key in value) {
-    if ((inherited || hasOwnProperty.call(value, key)) &&
-        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
-      result.push(key);
-    }
-  }
-  return result;
-}
-
-/**
- * The base implementation of `getTag`.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-function baseGetTag(value) {
-  return objectToString.call(value);
-}
-
-/**
- * The base implementation of `_.isNative` without bad shim checks.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function,
- *  else `false`.
- */
-function baseIsNative(value) {
-  if (!isObject(value) || isMasked(value)) {
-    return false;
-  }
-  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
-  return pattern.test(toSource(value));
-}
-
-/**
- * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
- *
- * @private
- * @param {Object} object The object to query.
- * @returns {Array} Returns the array of property names.
- */
-function baseKeys(object) {
-  if (!isPrototype(object)) {
-    return nativeKeys(object);
-  }
-  var result = [];
-  for (var key in Object(object)) {
-    if (hasOwnProperty.call(object, key) && key != 'constructor') {
-      result.push(key);
-    }
-  }
-  return result;
-}
-
-/**
- * Creates a `_.toPairs` or `_.toPairsIn` function.
- *
- * @private
- * @param {Function} keysFunc The function to get the keys of a given object.
- * @returns {Function} Returns the new pairs function.
- */
-function createToPairs(keysFunc) {
-  return function(object) {
-    var tag = getTag(object);
-    if (tag == mapTag) {
-      return mapToArray(object);
-    }
-    if (tag == setTag) {
-      return setToPairs(object);
-    }
-    return baseToPairs(object, keysFunc(object));
-  };
-}
-
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative(object, key) {
-  var value = getValue(object, key);
-  return baseIsNative(value) ? value : undefined;
-}
-
-/**
- * Gets the `toStringTag` of `value`.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-var getTag = baseGetTag;
-
-// Fallback for data views, maps, sets, and weak maps in IE 11,
-// for data views in Edge < 14, and promises in Node.js.
-if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||
-    (Map && getTag(new Map) != mapTag) ||
-    (Promise && getTag(Promise.resolve()) != promiseTag) ||
-    (Set && getTag(new Set) != setTag) ||
-    (WeakMap && getTag(new WeakMap) != weakMapTag)) {
-  getTag = function(value) {
-    var result = objectToString.call(value),
-        Ctor = result == objectTag ? value.constructor : undefined,
-        ctorString = Ctor ? toSource(Ctor) : undefined;
-
-    if (ctorString) {
-      switch (ctorString) {
-        case dataViewCtorString: return dataViewTag;
-        case mapCtorString: return mapTag;
-        case promiseCtorString: return promiseTag;
-        case setCtorString: return setTag;
-        case weakMapCtorString: return weakMapTag;
-      }
-    }
-    return result;
-  };
-}
-
-/**
- * Checks if `value` is a valid array-like index.
- *
- * @private
- * @param {*} value The value to check.
- * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
- * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
- */
-function isIndex(value, length) {
-  length = length == null ? MAX_SAFE_INTEGER : length;
-  return !!length &&
-    (typeof value == 'number' || reIsUint.test(value)) &&
-    (value > -1 && value % 1 == 0 && value < length);
-}
-
-/**
- * Checks if `func` has its source masked.
- *
- * @private
- * @param {Function} func The function to check.
- * @returns {boolean} Returns `true` if `func` is masked, else `false`.
- */
-function isMasked(func) {
-  return !!maskSrcKey && (maskSrcKey in func);
-}
-
-/**
- * Checks if `value` is likely a prototype object.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
- */
-function isPrototype(value) {
-  var Ctor = value && value.constructor,
-      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
-
-  return value === proto;
-}
-
-/**
- * Converts `func` to its source code.
- *
- * @private
- * @param {Function} func The function to process.
- * @returns {string} Returns the source code.
- */
-function toSource(func) {
-  if (func != null) {
-    try {
-      return funcToString.call(func);
-    } catch (e) {}
-    try {
-      return (func + '');
-    } catch (e) {}
-  }
-  return '';
-}
-
-/**
- * Checks if `value` is likely an `arguments` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an `arguments` object,
- *  else `false`.
- * @example
- *
- * _.isArguments(function() { return arguments; }());
- * // => true
- *
- * _.isArguments([1, 2, 3]);
- * // => false
- */
-function isArguments(value) {
-  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
-  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
-    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
-}
-
-/**
- * Checks if `value` is classified as an `Array` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an array, else `false`.
- * @example
- *
- * _.isArray([1, 2, 3]);
- * // => true
- *
- * _.isArray(document.body.children);
- * // => false
- *
- * _.isArray('abc');
- * // => false
- *
- * _.isArray(_.noop);
- * // => false
- */
-var isArray = Array.isArray;
-
-/**
- * Checks if `value` is array-like. A value is considered array-like if it's
- * not a function and has a `value.length` that's an integer greater than or
- * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
- * @example
- *
- * _.isArrayLike([1, 2, 3]);
- * // => true
- *
- * _.isArrayLike(document.body.children);
- * // => true
- *
- * _.isArrayLike('abc');
- * // => true
- *
- * _.isArrayLike(_.noop);
- * // => false
- */
-function isArrayLike(value) {
-  return value != null && isLength(value.length) && !isFunction(value);
-}
-
-/**
- * This method is like `_.isArrayLike` except that it also checks if `value`
- * is an object.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an array-like object,
- *  else `false`.
- * @example
- *
- * _.isArrayLikeObject([1, 2, 3]);
- * // => true
- *
- * _.isArrayLikeObject(document.body.children);
- * // => true
- *
- * _.isArrayLikeObject('abc');
- * // => false
- *
- * _.isArrayLikeObject(_.noop);
- * // => false
- */
-function isArrayLikeObject(value) {
-  return isObjectLike(value) && isArrayLike(value);
-}
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a function, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8-9 which returns 'object' for typed array and other constructors.
-  var tag = isObject(value) ? objectToString.call(value) : '';
-  return tag == funcTag || tag == genTag;
-}
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This method is loosely based on
- * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- * @example
- *
- * _.isLength(3);
- * // => true
- *
- * _.isLength(Number.MIN_VALUE);
- * // => false
- *
- * _.isLength(Infinity);
- * // => false
- *
- * _.isLength('3');
- * // => false
- */
-function isLength(value) {
-  return typeof value == 'number' &&
-    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/**
- * Creates an array of the own enumerable property names of `object`.
- *
- * **Note:** Non-object values are coerced to objects. See the
- * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
- * for more details.
- *
- * @static
- * @since 0.1.0
- * @memberOf _
- * @category Object
- * @param {Object} object The object to query.
- * @returns {Array} Returns the array of property names.
- * @example
- *
- * function Foo() {
- *   this.a = 1;
- *   this.b = 2;
- * }
- *
- * Foo.prototype.c = 3;
- *
- * _.keys(new Foo);
- * // => ['a', 'b'] (iteration order is not guaranteed)
- *
- * _.keys('hi');
- * // => ['0', '1']
- */
-function keys(object) {
-  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
-}
-
-/**
- * Creates an array of own enumerable string keyed-value pairs for `object`
- * which can be consumed by `_.fromPairs`. If `object` is a map or set, its
- * entries are returned.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @alias entries
- * @category Object
- * @param {Object} object The object to query.
- * @returns {Array} Returns the key-value pairs.
- * @example
- *
- * function Foo() {
- *   this.a = 1;
- *   this.b = 2;
- * }
- *
- * Foo.prototype.c = 3;
- *
- * _.toPairs(new Foo);
- * // => [['a', 1], ['b', 2]] (iteration order is not guaranteed)
- */
-var toPairs = createToPairs(keys);
-
-module.exports = toPairs;
+// setimmediate attaches itself to the global object
+__webpack_require__(17);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
-
-/***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
 
-  // Store setTimeout reference so promise-polyfill will be unaffected by
-  // other code modifying setTimeout (like sinon.useFakeTimers())
-  var setTimeoutFunc = setTimeout;
-
-  function noop() {}
-  
-  // Polyfill for Function.prototype.bind
-  function bind(fn, thisArg) {
-    return function () {
-      fn.apply(thisArg, arguments);
-    };
-  }
-
-  function Promise(fn) {
-    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
-    if (typeof fn !== 'function') throw new TypeError('not a function');
-    this._state = 0;
-    this._handled = false;
-    this._value = undefined;
-    this._deferreds = [];
-
-    doResolve(fn, this);
-  }
-
-  function handle(self, deferred) {
-    while (self._state === 3) {
-      self = self._value;
-    }
-    if (self._state === 0) {
-      self._deferreds.push(deferred);
-      return;
-    }
-    self._handled = true;
-    Promise._immediateFn(function () {
-      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
-      if (cb === null) {
-        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+    if (global.setImmediate) {
         return;
-      }
-      var ret;
-      try {
-        ret = cb(self._value);
-      } catch (e) {
-        reject(deferred.promise, e);
-        return;
-      }
-      resolve(deferred.promise, ret);
-    });
-  }
-
-  function resolve(self, newValue) {
-    try {
-      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
-      if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
-        var then = newValue.then;
-        if (newValue instanceof Promise) {
-          self._state = 3;
-          self._value = newValue;
-          finale(self);
-          return;
-        } else if (typeof then === 'function') {
-          doResolve(bind(then, newValue), self);
-          return;
-        }
-      }
-      self._state = 1;
-      self._value = newValue;
-      finale(self);
-    } catch (e) {
-      reject(self, e);
-    }
-  }
-
-  function reject(self, newValue) {
-    self._state = 2;
-    self._value = newValue;
-    finale(self);
-  }
-
-  function finale(self) {
-    if (self._state === 2 && self._deferreds.length === 0) {
-      Promise._immediateFn(function() {
-        if (!self._handled) {
-          Promise._unhandledRejectionFn(self._value);
-        }
-      });
     }
 
-    for (var i = 0, len = self._deferreds.length; i < len; i++) {
-      handle(self, self._deferreds[i]);
-    }
-    self._deferreds = null;
-  }
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
 
-  function Handler(onFulfilled, onRejected, promise) {
-    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-    this.promise = promise;
-  }
-
-  /**
-   * Take a potentially misbehaving resolver function and make sure
-   * onFulfilled and onRejected are only called once.
-   *
-   * Makes no guarantees about asynchrony.
-   */
-  function doResolve(fn, self) {
-    var done = false;
-    try {
-      fn(function (value) {
-        if (done) return;
-        done = true;
-        resolve(self, value);
-      }, function (reason) {
-        if (done) return;
-        done = true;
-        reject(self, reason);
-      });
-    } catch (ex) {
-      if (done) return;
-      done = true;
-      reject(self, ex);
-    }
-  }
-
-  Promise.prototype['catch'] = function (onRejected) {
-    return this.then(null, onRejected);
-  };
-
-  Promise.prototype.then = function (onFulfilled, onRejected) {
-    var prom = new (this.constructor)(noop);
-
-    handle(this, new Handler(onFulfilled, onRejected, prom));
-    return prom;
-  };
-
-  Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
-    return new Promise(function (resolve, reject) {
-      if (args.length === 0) return resolve([]);
-      var remaining = args.length;
-
-      function res(i, val) {
-        try {
-          if (val && (typeof val === 'object' || typeof val === 'function')) {
-            var then = val.then;
-            if (typeof then === 'function') {
-              then.call(val, function (val) {
-                res(i, val);
-              }, reject);
-              return;
-            }
-          }
-          args[i] = val;
-          if (--remaining === 0) {
-            resolve(args);
-          }
-        } catch (ex) {
-          reject(ex);
-        }
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
       }
-
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
       for (var i = 0; i < args.length; i++) {
-        res(i, args[i]);
+          args[i] = arguments[i + 1];
       }
-    });
-  };
-
-  Promise.resolve = function (value) {
-    if (value && typeof value === 'object' && value.constructor === Promise) {
-      return value;
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
     }
 
-    return new Promise(function (resolve) {
-      resolve(value);
-    });
-  };
-
-  Promise.reject = function (value) {
-    return new Promise(function (resolve, reject) {
-      reject(value);
-    });
-  };
-
-  Promise.race = function (values) {
-    return new Promise(function (resolve, reject) {
-      for (var i = 0, len = values.length; i < len; i++) {
-        values[i].then(resolve, reject);
-      }
-    });
-  };
-
-  // Use polyfill for setImmediate for performance gains
-  Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
-    function (fn) {
-      setTimeoutFunc(fn, 0);
-    };
-
-  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
-    if (typeof console !== 'undefined' && console) {
-      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
     }
-  };
 
-  /**
-   * Set the immediate function to execute callbacks
-   * @param fn {function} Function to execute
-   * @deprecated
-   */
-  Promise._setImmediateFn = function _setImmediateFn(fn) {
-    Promise._immediateFn = fn;
-  };
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
 
-  /**
-   * Change the function to execute on unhandled rejection
-   * @param {function} fn Function to execute on unhandled rejection
-   * @deprecated
-   */
-  Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
-    Promise._unhandledRejectionFn = fn;
-  };
-  
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = Promise;
-  } else if (!root.Promise) {
-    root.Promise = Promise;
-  }
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
 
-})(this);
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(21).setImmediate))
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(18)))
 
 /***/ }),
-/* 15 */
+/* 18 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function(self) {
+  'use strict';
+
+  // if __disableNativeFetch is set to true, the it will always polyfill fetch
+  // with Ajax.
+  if (!self.__disableNativeFetch && self.fetch) {
+    return
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name)
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name')
+    }
+    return name.toLowerCase()
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value)
+    }
+    return value
+  }
+
+  function Headers(headers) {
+    this.map = {}
+
+    if (headers instanceof Headers) {
+      headers.forEach(function(value, name) {
+        this.append(name, value)
+      }, this)
+
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function(name) {
+        this.append(name, headers[name])
+      }, this)
+    }
+  }
+
+  Headers.prototype.append = function(name, value) {
+    name = normalizeName(name)
+    value = normalizeValue(value)
+    var list = this.map[name]
+    if (!list) {
+      list = []
+      this.map[name] = list
+    }
+    list.push(value)
+  }
+
+  Headers.prototype['delete'] = function(name) {
+    delete this.map[normalizeName(name)]
+  }
+
+  Headers.prototype.get = function(name) {
+    var values = this.map[normalizeName(name)]
+    return values ? values[0] : null
+  }
+
+  Headers.prototype.getAll = function(name) {
+    return this.map[normalizeName(name)] || []
+  }
+
+  Headers.prototype.has = function(name) {
+    return this.map.hasOwnProperty(normalizeName(name))
+  }
+
+  Headers.prototype.set = function(name, value) {
+    this.map[normalizeName(name)] = [normalizeValue(value)]
+  }
+
+  Headers.prototype.forEach = function(callback, thisArg) {
+    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+      this.map[name].forEach(function(value) {
+        callback.call(thisArg, value, name, this)
+      }, this)
+    }, this)
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'))
+    }
+    body.bodyUsed = true
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function(resolve, reject) {
+      reader.onload = function() {
+        resolve(reader.result)
+      }
+      reader.onerror = function() {
+        reject(reader.error)
+      }
+    })
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader()
+    reader.readAsArrayBuffer(blob)
+    return fileReaderReady(reader)
+  }
+
+  function readBlobAsText(blob, options) {
+    var reader = new FileReader()
+    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
+    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
+    var _charset = blob.type.match(regex) || contentType.match(regex)
+    var args = [blob]
+
+    if(_charset) {
+      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
+    }
+
+    reader.readAsText.apply(reader, args)
+    return fileReaderReady(reader)
+  }
+
+  var support = {
+    blob: 'FileReader' in self && 'Blob' in self && (function() {
+      try {
+        new Blob();
+        return true
+      } catch(e) {
+        return false
+      }
+    })(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  function Body() {
+    this.bodyUsed = false
+
+
+    this._initBody = function(body, options) {
+      this._bodyInit = body
+      if (typeof body === 'string') {
+        this._bodyText = body
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body
+        this._options = options
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body
+      } else if (!body) {
+        this._bodyText = ''
+      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+        // Only support ArrayBuffers for POST method.
+        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else {
+        throw new Error('unsupported BodyInit type')
+      }
+    }
+
+    if (support.blob) {
+      this.blob = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob')
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]))
+        }
+      }
+
+      this.arrayBuffer = function() {
+        return this.blob().then(readBlobAsArrayBuffer)
+      }
+
+      this.text = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return readBlobAsText(this._bodyBlob, this._options)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as text')
+        } else {
+          return Promise.resolve(this._bodyText)
+        }
+      }
+    } else {
+      this.text = function() {
+        var rejected = consumed(this)
+        return rejected ? rejected : Promise.resolve(this._bodyText)
+      }
+    }
+
+    if (support.formData) {
+      this.formData = function() {
+        return this.text().then(decode)
+      }
+    }
+
+    this.json = function() {
+      return this.text().then(JSON.parse)
+    }
+
+    return this
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase()
+    return (methods.indexOf(upcased) > -1) ? upcased : method
+  }
+
+  function Request(input, options) {
+    options = options || {}
+    var body = options.body
+    if (Request.prototype.isPrototypeOf(input)) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read')
+      }
+      this.url = input.url
+      this.credentials = input.credentials
+      if (!options.headers) {
+        this.headers = new Headers(input.headers)
+      }
+      this.method = input.method
+      this.mode = input.mode
+      if (!body) {
+        body = input._bodyInit
+        input.bodyUsed = true
+      }
+    } else {
+      this.url = input
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit'
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers)
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET')
+    this.mode = options.mode || this.mode || null
+    this.referrer = null
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests')
+    }
+    this._initBody(body, options)
+  }
+
+  Request.prototype.clone = function() {
+    return new Request(this)
+  }
+
+  function decode(body) {
+    var form = new FormData()
+    body.trim().split('&').forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+    return form
+  }
+
+  function headers(xhr) {
+    var head = new Headers()
+    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
+    pairs.forEach(function(header) {
+      var split = header.trim().split(':')
+      var key = split.shift().trim()
+      var value = split.join(':').trim()
+      head.append(key, value)
+    })
+    return head
+  }
+
+  Body.call(Request.prototype)
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {}
+    }
+
+    this._initBody(bodyInit, options)
+    this.type = 'default'
+    this.status = options.status
+    this.ok = this.status >= 200 && this.status < 300
+    this.statusText = options.statusText
+    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+    this.url = options.url || ''
+  }
+
+  Body.call(Response.prototype)
+
+  Response.prototype.clone = function() {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    })
+  }
+
+  Response.error = function() {
+    var response = new Response(null, {status: 0, statusText: ''})
+    response.type = 'error'
+    return response
+  }
+
+  var redirectStatuses = [301, 302, 303, 307, 308]
+
+  Response.redirect = function(url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code')
+    }
+
+    return new Response(null, {status: status, headers: {location: url}})
+  }
+
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
+
+  self.fetch = function(input, init) {
+    return new Promise(function(resolve, reject) {
+      var request
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input
+      } else {
+        request = new Request(input, init)
+      }
+
+      var xhr = new XMLHttpRequest()
+
+      function responseURL() {
+        if ('responseURL' in xhr) {
+          return xhr.responseURL
+        }
+
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
+        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+          return xhr.getResponseHeader('X-Request-URL')
+        }
+
+        return;
+      }
+
+      var __onLoadHandled = false;
+
+      function onload() {
+        if (xhr.readyState !== 4) {
+          return
+        }
+        var status = (xhr.status === 1223) ? 204 : xhr.status
+        if (status < 100 || status > 599) {
+          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+          reject(new TypeError('Network request failed'))
+          return
+        }
+        var options = {
+          status: status,
+          statusText: xhr.statusText,
+          headers: headers(xhr),
+          url: responseURL()
+        }
+        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        resolve(new Response(body, options))
+      }
+      xhr.onreadystatechange = onload;
+      xhr.onload = onload;
+      xhr.onerror = function() {
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.open(request.method, request.url, true)
+
+      // `withCredentials` should be setted after calling `.open` in IE10
+      // http://stackoverflow.com/a/19667959/1219343
+      try {
+        if (request.credentials === 'include') {
+          if ('withCredentials' in xhr) {
+            xhr.withCredentials = true;
+          } else {
+            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
+          }
+        }
+      } catch (e) {
+        console && console.warn && console.warn('set withCredentials error:' + e);
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob'
+      }
+
+      request.headers.forEach(function(value, name) {
+        xhr.setRequestHeader(name, value)
+      })
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+    })
+  }
+  self.fetch.polyfill = true
+
+  // Support CommonJS
+  if ( true && module.exports) {
+    module.exports = self.fetch;
+  }
+})(typeof self !== 'undefined' ? self : this);
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if (!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
+/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__);
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/***/ }),
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3600,7 +4544,7 @@ SuperMap.Components = window.SuperMap.Components || {};
  * @description 服务请求返回结果数据类型
  * @type {string}
  */
-var REST_DataFormat = SuperMap.DataFormat = {
+var DataFormat = SuperMap.DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
@@ -3614,7 +4558,7 @@ var REST_DataFormat = SuperMap.DataFormat = {
  * @description 服务器类型
  * @type {string}
  */
-var REST_ServerType = SuperMap.ServerType = {
+var ServerType = SuperMap.ServerType = {
     /** ISERVER */
     ISERVER: "ISERVER",
     /** IPORTAL */
@@ -3630,7 +4574,7 @@ var REST_ServerType = SuperMap.ServerType = {
  * @description 几何对象枚举,定义了一系列几何对象类型。
  * @type {string}
  */
-var REST_GeometryType = SuperMap.GeometryType = {
+var GeometryType = SuperMap.GeometryType = {
     /** LINE */
     LINE: "LINE",
     /** LINEM */
@@ -3664,7 +4608,7 @@ var REST_GeometryType = SuperMap.GeometryType = {
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @type {string}
  */
-var REST_QueryOption = SuperMap.QueryOption = {
+var QueryOption = SuperMap.QueryOption = {
     /** 属性 */
     ATTRIBUTE: "ATTRIBUTE",
     /** 属性和几何对象 */
@@ -3681,7 +4625,7 @@ var REST_QueryOption = SuperMap.QueryOption = {
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
  * @type {string}
  */
-var REST_JoinType = SuperMap.JoinType = {
+var JoinType = SuperMap.JoinType = {
     /** INNERJOIN */
     INNERJOIN: "INNERJOIN",
     /** LEFTJOIN */
@@ -3696,7 +4640,7 @@ var REST_JoinType = SuperMap.JoinType = {
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
  * @type {string}
  */
-var REST_SpatialQueryMode = SuperMap.SpatialQueryMode = {
+var SpatialQueryMode = SuperMap.SpatialQueryMode = {
     /** 包含空间查询模式 */
     CONTAIN: "CONTAIN",
     /** 交叉空间查询模式 */
@@ -3724,7 +4668,7 @@ var REST_SpatialQueryMode = SuperMap.SpatialQueryMode = {
  * 该类定义了数据集对象间的空间关系类型常量。
  * @type {string}
  */
-var REST_SpatialRelationType = SuperMap.SpatialRelationType = {
+var SpatialRelationType = SuperMap.SpatialRelationType = {
     /** 包含关系 */
     CONTAIN: "CONTAIN",
     /** 相交关系 */
@@ -3741,7 +4685,7 @@ var REST_SpatialRelationType = SuperMap.SpatialRelationType = {
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
  */
-var REST_MeasureMode = SuperMap.MeasureMode = {
+var MeasureMode = SuperMap.MeasureMode = {
     /** 距离测量 */
     DISTANCE: "DISTANCE",
     /** 面积测量 */
@@ -3756,7 +4700,7 @@ var REST_MeasureMode = SuperMap.MeasureMode = {
  * 该类定义了一系列距离单位类型。
  * @type {string}
  */
-var REST_Unit = SuperMap.Unit = {
+var Unit = SuperMap.Unit = {
     /**  米 */
     METER: "METER",
     /**  千米 */
@@ -3793,7 +4737,7 @@ var REST_Unit = SuperMap.Unit = {
  * 该类定义了一系列缓冲距离单位类型。
  * @type {string}
  */
-var REST_BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
+var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
     /**  厘米 */
     CENTIMETER: "CENTIMETER",
     /**  分米 */
@@ -3821,7 +4765,7 @@ var REST_BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
  * @description  数据源引擎类型枚举。
  * @type {string}
  */
-var REST_EngineType = SuperMap.EngineType = {
+var EngineType = SuperMap.EngineType = {
     /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
     IMAGEPLUGINS: "IMAGEPLUGINS",
     /**  OGC 引擎类型，针对于 Web 数据源，Web 引擎，目前支持的类型有 WMS，WFS，WCS。 */
@@ -3843,7 +4787,7 @@ var REST_EngineType = SuperMap.EngineType = {
  * @description  统计专题图文本显示格式枚举。
  * @type {string}
  */
-var REST_ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
+var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
     /**  标题。以各子项的标题来进行标注。 */
     CAPTION: "CAPTION",
     /**  标题 + 百分数。以各子项的标题和所占的百分比来进行标注。 */
@@ -3864,7 +4808,7 @@ var REST_ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
  * @description  统计专题图类型枚举。
  * @type {string}
  */
-var REST_ThemeGraphType = SuperMap.ThemeGraphType = {
+var ThemeGraphType = SuperMap.ThemeGraphType = {
     /**  面积图。 */
     AREA: "AREA",
     /**  柱状图。 */
@@ -3900,7 +4844,7 @@ var REST_ThemeGraphType = SuperMap.ThemeGraphType = {
  * @description  统计专题图坐标轴文本显示模式。
  * @type {string}
  */
-var REST_GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
+var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
     /**  显示全部文本。 */
     ALL: "ALL",
     /**  不显示。 */
@@ -3917,7 +4861,7 @@ var REST_GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
  *
  * @type {string}
  */
-var REST_GraduatedMode = SuperMap.GraduatedMode = {
+var GraduatedMode = SuperMap.GraduatedMode = {
     /**  常量分级模式。 */
     CONSTANT: "CONSTANT",
     /** 对数分级模式。 */
@@ -3933,7 +4877,7 @@ var REST_GraduatedMode = SuperMap.GraduatedMode = {
  * @description  范围分段专题图分段方式枚举。
  * @type {string}
  */
-var REST_RangeMode = SuperMap.RangeMode = {
+var RangeMode = SuperMap.RangeMode = {
     /**  自定义分段法。 */
     CUSTOMINTERVAL: "CUSTOMINTERVAL",
     /**  等距离分段法。 */
@@ -3955,7 +4899,7 @@ var REST_RangeMode = SuperMap.RangeMode = {
  * @description  专题图类型枚举。
  * @type {string}
  */
-var REST_ThemeType = SuperMap.ThemeType = {
+var ThemeType = SuperMap.ThemeType = {
     /** 点密度专题图。 */
     DOTDENSITY: "DOTDENSITY",
     /** 等级符号专题图。 */
@@ -3977,7 +4921,7 @@ var REST_ThemeType = SuperMap.ThemeType = {
  * @description  渐变颜色枚举。
  * @type {string}
  */
-var REST_ColorGradientType = SuperMap.ColorGradientType = {
+var ColorGradientType = SuperMap.ColorGradientType = {
     /** 黑白渐变色。 */
     BLACK_WHITE: "BLACKWHITE",
     /** 蓝黑渐变色。 */
@@ -4041,7 +4985,7 @@ var REST_ColorGradientType = SuperMap.ColorGradientType = {
  * @description  文本对齐枚举。
  * @type {string}
  */
-var REST_TextAlignment = SuperMap.TextAlignment = {
+var TextAlignment = SuperMap.TextAlignment = {
     /** 左上角对齐。 */
     TOPLEFT: "TOPLEFT",
     /** 顶部居中对齐。 */
@@ -4074,7 +5018,7 @@ var REST_TextAlignment = SuperMap.TextAlignment = {
  * @description  渐变填充风格的渐变类型枚举。
  * @type {string}
  */
-var REST_FillGradientMode = SuperMap.FillGradientMode = {
+var FillGradientMode = SuperMap.FillGradientMode = {
     /** 无渐变。 */
     NONE: "NONE",
     /** 线性渐变填充。 */
@@ -4094,7 +5038,7 @@ var REST_FillGradientMode = SuperMap.FillGradientMode = {
  * @description  标签沿线标注方向枚举。
  * @type {string}
  */
-var REST_AlongLineDirection = SuperMap.AlongLineDirection = {
+var AlongLineDirection = SuperMap.AlongLineDirection = {
     /** 沿线的法线方向放置标签。 */
     NORMAL: "ALONG_LINE_NORMAL",
     /** 从下到上，从左到右放置。 */
@@ -4114,7 +5058,7 @@ var REST_AlongLineDirection = SuperMap.AlongLineDirection = {
  * @description  标签专题图中标签背景的形状枚举。
  * @type {string}
  */
-var REST_LabelBackShape = SuperMap.LabelBackShape = {
+var LabelBackShape = SuperMap.LabelBackShape = {
     /** 菱形背景，即标签背景的形状为菱形。 */
     DIAMOND: "DIAMOND",
     /** 椭圆形背景，即标签背景的行状为椭圆形。 */
@@ -4138,7 +5082,7 @@ var REST_LabelBackShape = SuperMap.LabelBackShape = {
  * @description  标签专题图中超长标签的处理模式枚举。
  * @type {string}
  */
-var REST_LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
+var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
     /** 换行显示。 */
     NEWLINE: "NEWLINE",
     /** 对超长标签不进行处理。 */
@@ -4155,7 +5099,7 @@ var REST_LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
  * 在行驶引导子项中使用。
  * @type {string}
  */
-var REST_DirectionType = SuperMap.DirectionType = {
+var DirectionType = SuperMap.DirectionType = {
     /** 东。 */
     EAST: "EAST",
     /** 无方向。 */
@@ -4177,7 +5121,7 @@ var REST_DirectionType = SuperMap.DirectionType = {
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
  * @type {string}
  */
-var REST_SideType = SuperMap.SideType = {
+var SideType = SuperMap.SideType = {
     /** 路的左侧。 */
     LEFT: "LEFT",
     /** 在路上（即路的中间）。 */
@@ -4197,7 +5141,7 @@ var REST_SideType = SuperMap.SideType = {
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @type {string}
  */
-var REST_SupplyCenterType = SuperMap.SupplyCenterType = {
+var SupplyCenterType = SuperMap.SupplyCenterType = {
     /** 固定中心点。 */
     FIXEDCENTER: "FIXEDCENTER",
     /** 非中心点。 */
@@ -4214,7 +5158,7 @@ var REST_SupplyCenterType = SuperMap.SupplyCenterType = {
  * 用在行驶引导子项类中，表示转弯的方向。
  * @type {string}
  */
-var REST_TurnType = SuperMap.TurnType = {
+var TurnType = SuperMap.TurnType = {
     /** 向前直行。 */
     AHEAD: "AHEAD",
     /** 掉头。 */
@@ -4236,7 +5180,7 @@ var REST_TurnType = SuperMap.TurnType = {
  * @description  缓冲区分析BufferEnd类型。
  * @type {string}
  */
-var REST_BufferEndType = SuperMap.BufferEndType = {
+var BufferEndType = SuperMap.BufferEndType = {
     /** FLAT */
     FLAT: "FLAT",
     /** ROUND */
@@ -4249,16 +5193,16 @@ var REST_BufferEndType = SuperMap.BufferEndType = {
  * @description  叠加分析类型枚举。
  * @type {string}
  */
-var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
+var OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
-    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。。 */
+    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
     ERASE: "ERASE",
     /**对被操作数据集（几何对象）进行同一操作，即操作执行后，被操作数据集（几何对象）包含来自操作数据集（几何对象）的几何形状。 */
     IDENTITY: "IDENTITY",
     /** 对两个数据集（几何对象）求交，返回两个数据集（几何对象）的交集。 */
     INTERSECT: "INTERSECT",
-    /** 对两个面数据集（几何对象）进行合并操作。。 */
+    /** 对两个面数据集（几何对象）进行合并操作。 */
     UNION: "UNION",
     /** 对两个面数据集（几何对象）进行更新操作。 */
     UPDATE: "UPDATE",
@@ -4273,7 +5217,7 @@ var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
  * @description  分布式分析输出类型枚举。
  * @type {string}
  */
-var REST_OutputType = SuperMap.OutputType = {
+var OutputType = SuperMap.OutputType = {
     /** INDEXEDHDFS */
     INDEXEDHDFS: "INDEXEDHDFS",
     /** UDB */
@@ -4292,7 +5236,7 @@ var REST_OutputType = SuperMap.OutputType = {
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
  * @type {string}
  */
-var REST_SmoothMethod = SuperMap.SmoothMethod = {
+var SmoothMethod = SuperMap.SmoothMethod = {
     /** B 样条法。 */
     BSPLINE: "BSPLINE",
     /** 磨角法。 */
@@ -4306,7 +5250,7 @@ var REST_SmoothMethod = SuperMap.SmoothMethod = {
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
  * @type {string}
  */
-var REST_SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
+var SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
     /** 等值线提取。 */
     ISOLINE: "ISOLINE",
     /** 等值面提取。 */
@@ -4320,7 +5264,7 @@ var REST_SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @type {string}
  */
-var REST_DataReturnMode = SuperMap.DataReturnMode = {
+var DataReturnMode = SuperMap.DataReturnMode = {
     /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
     DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
     /** 只返回数据集标识（数据集名称@数据源名称）。 */
@@ -4336,7 +5280,7 @@ var REST_DataReturnMode = SuperMap.DataReturnMode = {
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var REST_EditType = SuperMap.EditType = {
+var EditType = SuperMap.EditType = {
     /** 增加操作。 */
     ADD: "add",
     /** 修改操作。 */
@@ -4353,7 +5297,7 @@ var REST_EditType = SuperMap.EditType = {
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var REST_TransferTactic = SuperMap.TransferTactic = {
+var TransferTactic = SuperMap.TransferTactic = {
     /** 时间短。 */
     LESS_TIME: "LESS_TIME",
     /** 少换乘。 */
@@ -4372,7 +5316,7 @@ var REST_TransferTactic = SuperMap.TransferTactic = {
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
  * @type {string}
  */
-var REST_TransferPreference = SuperMap.TransferPreference = {
+var TransferPreference = SuperMap.TransferPreference = {
     /** 公交汽车优先。 */
     BUS: "BUS",
     /** 地铁优先。 */
@@ -4390,7 +5334,7 @@ var REST_TransferPreference = SuperMap.TransferPreference = {
  * @description  地图背景格网类型枚举。
  * @type {string}
  */
-var REST_GridType = SuperMap.GridType = {
+var GridType = SuperMap.GridType = {
     /** 十字叉丝。 */
     CROSS: "CROSS",
     /** 网格线。 */
@@ -4410,7 +5354,7 @@ var REST_GridType = SuperMap.GridType = {
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
  * @type {string}
  */
-var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
+var ColorSpaceType = SuperMap.ColorSpaceType = {
     /** 该类型主要在印刷系统使用。 */
     CMYK: "CMYK",
     /** 该类型主要在显示系统中使用。 */
@@ -4423,8 +5367,8 @@ var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
  * @description  图层类型。
  * @type {string}
  */
-var REST_LayerType = SuperMap.LayerType = {
-    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。。 */
+var LayerType = SuperMap.LayerType = {
+    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
     WMS: "WMS",
@@ -4441,7 +5385,7 @@ var REST_LayerType = SuperMap.LayerType = {
  * @description  UGC图层类型。
  * @type {string}
  */
-var REST_UGCLayerType = SuperMap.UGCLayerType = {
+var UGCLayerType = SuperMap.UGCLayerType = {
     /** 专题图层。 */
     THEME: "THEME",
     /** 矢量图层。 */
@@ -4459,7 +5403,7 @@ var REST_UGCLayerType = SuperMap.UGCLayerType = {
  * @description  字段统计方法类型。
  * @type {string}
  */
-var REST_StatisticMode = SuperMap.StatisticMode = {
+var StatisticMode = SuperMap.StatisticMode = {
     /** 统计所选字段的平均值。 */
     AVERAGE: "AVERAGE",
     /** 统计所选字段的最大值。 */
@@ -4481,7 +5425,7 @@ var REST_StatisticMode = SuperMap.StatisticMode = {
  * @description  栅格与影像数据存储的像素格式枚举。
  * @type {string}
  */
-var REST_PixelFormat = SuperMap.PixelFormat = {
+var PixelFormat = SuperMap.PixelFormat = {
     /** 每个像元用16个比特(即2个字节)表示。 */
     BIT16: "BIT16",
     /** 每个像元用32个比特(即4个字节)表示。 */
@@ -4511,7 +5455,7 @@ var REST_PixelFormat = SuperMap.PixelFormat = {
  * @description  内插时使用的样本点的查找方式枚举
  * @type {string}
  */
-var REST_SearchMode = SuperMap.SearchMode = {
+var SearchMode = SuperMap.SearchMode = {
     /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
     KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
     /** 使用 KDTREE 的定长方式查找参与内插分析的点。 */
@@ -4529,7 +5473,7 @@ var REST_SearchMode = SuperMap.SearchMode = {
  * @description  插值分析的算法的类型
  * @type {string}
  */
-var REST_InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
+var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
     /** 普通克吕金插值法。 */
     KRIGING: "KRIGING",
     /** 简单克吕金插值法。 */
@@ -4545,7 +5489,7 @@ var REST_InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
  * @type {string}
  */
-var REST_VariogramMode = SuperMap.VariogramMode = {
+var VariogramMode = SuperMap.VariogramMode = {
     /** 指数函数。 */
     EXPONENTIAL: "EXPONENTIAL",
     /** 高斯函数。 */
@@ -4561,7 +5505,7 @@ var REST_VariogramMode = SuperMap.VariogramMode = {
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
  * @type {string}
  */
-var REST_Exponent = SuperMap.Exponent = {
+var Exponent = SuperMap.Exponent = {
     /** 阶数为1。 */
     EXP1: "EXP1",
     /** 阶数为2。 */
@@ -4575,7 +5519,7 @@ var REST_Exponent = SuperMap.Exponent = {
  * @description token申请的客户端标识类型
  * @type {string}
  */
-var REST_ClientType = SuperMap.ClientType = {
+var ClientType = SuperMap.ClientType = {
     /** 指定的 IP 地址。 */
     IP: "IP",
     /** 指定的 URL。 */
@@ -4597,7 +5541,7 @@ var REST_ClientType = SuperMap.ClientType = {
  * @description 客户端专题图图表类型
  * @type {string}
  */
-var REST_ChartType = SuperMap.ChartType = {
+var ChartType = SuperMap.ChartType = {
     /** 柱状图。 */
     BAR: "Bar",
     /** 三维柱状图。 */
@@ -4621,7 +5565,7 @@ var REST_ChartType = SuperMap.ChartType = {
  * @description  裁剪分析模式
  * @type {string}
  */
-var REST_ClipAnalystMode = SuperMap.ClipAnalystMode = {
+var ClipAnalystMode = SuperMap.ClipAnalystMode = {
     /** CLIP。 */
     CLIP: "clip",
     /** INTERSECT。 */
@@ -4634,7 +5578,7 @@ var REST_ClipAnalystMode = SuperMap.ClipAnalystMode = {
  * @description 分布式分析面积单位
  * @type {string}
  */
-var REST_AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
+var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
     /** 平方米。 */
     "SQUAREMETER": "SquareMeter",
     /** 平方千米。 */
@@ -4659,7 +5603,7 @@ var REST_AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
  * @description 分布式分析单位
  * @type {string}
  */
-var REST_AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
+var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
     /** 米。 */
     "METER": "Meter",
     /** 千米。 */
@@ -4679,7 +5623,7 @@ var REST_AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
  * @description 分布式分析统计模式
  * @type {string}
  */
-var REST_StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
+var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
     /** 统计所选字段的最大值。 */
     "MAX": "max",
     /** 统计所选字段的最小值。 */
@@ -4700,7 +5644,7 @@ var REST_StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
  * @description 分布式分析聚合类型
  * @type {string}
  */
-var REST_SummaryType = SuperMap.SummaryType = {
+var SummaryType = SuperMap.SummaryType = {
     /** 格网聚合。 */
     "SUMMARYMESH": "SUMMARYMESH",
     /** 多边形聚合。 */
@@ -4713,7 +5657,7 @@ var REST_SummaryType = SuperMap.SummaryType = {
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
  * @type {string}
  */
-var REST_TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
+var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
     /** 面内无重叠，用于对面数据进行拓扑检查。 */
     REGIONNOOVERLAP: "REGIONNOOVERLAP",
     /** 面与面无重叠，用于对面数据进行拓扑检查。 */
@@ -4737,7 +5681,7 @@ var REST_TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
  * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
  * @type {string}
  */
-var REST_AggregationType = SuperMap.AggregationType = {
+var AggregationType = SuperMap.AggregationType = {
     /** 格网聚合类型。 */
     GEOHASH_GRID: "geohash_grid",
     /** 过滤聚合类型。 */
@@ -4751,7 +5695,7 @@ var REST_AggregationType = SuperMap.AggregationType = {
  * @description  聚合查询中filter查询枚举类
  * @type {string}
  */
-var REST_AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
+var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
     /** 范围查询。 */
     GEO_BOUNDING_BOX: "geo_bounding_box"
 }
@@ -4763,7 +5707,7 @@ var REST_AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
  * @description feature 查询方式。
  * @type {string}
  */
-var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
+var GetFeatureMode = SuperMap.GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
     /** 通过几何对象的缓冲区来获取要素。 */
@@ -4783,7 +5727,7 @@ var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
  * @description 栅格分析方法。
  * @type {string}
  */
-var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
+var RasterFunctionType = SuperMap.RasterFunctionType = {
     /** 归一化植被指数。 */
     NDVI: "NDVI",
     /** 阴影面分析。 */
@@ -4806,7 +5750,7 @@ var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
  * @example
  * var size = new SuperMap.Size(31,46);
  */
-class Size_Size {
+class Size {
 
     constructor(w, h) {
         /**
@@ -4846,7 +5790,7 @@ class Size_Size {
      * @returns {SuperMap.Size}  返回一个新的与当前 size 对象有相同宽、高的 Size 对象。
      */
     clone() {
-        return new Size_Size(this.w, this.h);
+        return new Size(this.w, this.h);
     }
 
 
@@ -4886,7 +5830,7 @@ class Size_Size {
     }
 }
 
-SuperMap.Size = Size_Size;
+SuperMap.Size = Size;
 // CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -5156,7 +6100,7 @@ SuperMap.mixin = function (...mixins) {
  * @category BaseTypes Util
  * @description 字符串操作的一系列常用扩展函数。
  */
-var BaseTypes_StringExt = SuperMap.String = {
+var StringExt = SuperMap.String = {
 
     /**
      * @function SuperMap.String.startsWith
@@ -5337,7 +6281,7 @@ var BaseTypes_StringExt = SuperMap.String = {
  * @category BaseTypes Util
  * @description 数值操作的一系列常用扩展函数。
  */
-var BaseTypes_NumberExt = SuperMap.Number = {
+var NumberExt = SuperMap.Number = {
 
     /**
      * @member {string} [SuperMap.Number.decimalSeparator='.']
@@ -5425,7 +6369,7 @@ if (!Number.prototype.limitSigDigs) {
      *           如果传入值 为 null、0、或者是负数, 返回值 0。
      */
     Number.prototype.limitSigDigs = function (sig) {
-        return BaseTypes_NumberExt.limitSigDigs(this, sig);
+        return NumberExt.limitSigDigs(this, sig);
     };
 }
 
@@ -5436,7 +6380,7 @@ if (!Number.prototype.limitSigDigs) {
  * @category BaseTypes Util
  * @description 函数操作的一系列常用扩展函数。
  */
-var BaseTypes_FunctionExt = SuperMap.Function = {
+var FunctionExt = SuperMap.Function = {
     /**
      * @function SuperMap.Function.bind
      * @description 绑定函数到对象。方便创建 this 的作用域。
@@ -5509,7 +6453,7 @@ var BaseTypes_FunctionExt = SuperMap.Function = {
  * @category BaseTypes Util
  * @description 数组操作的一系列常用扩展函数。
  */
-var BaseTypes_ArrayExt = SuperMap.Array = {
+var ArrayExt = SuperMap.Array = {
 
     /**
      * @function SuperMap.Array.filter
@@ -7034,7 +7978,7 @@ class Bounds_Bounds {
      * @returns {SuperMap.Size} 返回边框大小。
      */
     getSize() {
-        return new Size_Size(this.getWidth(), this.getHeight());
+        return new Size(this.getWidth(), this.getHeight());
     }
 
     /**
@@ -9260,7 +10204,7 @@ SuperMap.Geometry.Rectangle = Rectangle_Rectangle;
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
  */
-class Credential_Credential {
+class Credential {
 
 
     constructor(value, name) {
@@ -9335,8 +10279,8 @@ class Credential_Credential {
  *
  */
 
-Credential_Credential.CREDENTIAL = null;
-SuperMap.Credential = Credential_Credential;
+Credential.CREDENTIAL = null;
+SuperMap.Credential = Credential;
 
 // CONCATENATED MODULE: ./src/common/commontypes/Date.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -9351,7 +10295,7 @@ SuperMap.Credential = Credential_Credential;
  * @category BaseTypes Util
  * @description 包含 parse、toISOString 方法的实现，两个方法用来解析 RFC 3339 日期，遵循 ECMAScript 5 规范。
  */
-var Date_DateExt = SuperMap.Date = {
+var DateExt = SuperMap.Date = {
 
     /**
      * @description 生成代表一个具体的日期字符串，该日期遵循 ISO 8601 标准（详情查看{@link http://tools.ietf.org/html/rfc3339}）。
@@ -9449,7 +10393,7 @@ var Date_DateExt = SuperMap.Date = {
  * @namespace
  * @description 事件处理函数.
  */
-var Event_Event = SuperMap.Event = {
+var Event = SuperMap.Event = {
 
     /**
      * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
@@ -9778,7 +10722,7 @@ var Event_Event = SuperMap.Event = {
 
     CLASS_NAME: "SuperMap.Event"
 };
-SuperMap.Event = Event_Event;
+SuperMap.Event = Event;
 /* prevent memory leaks in IE */
 SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 
@@ -9954,9 +10898,9 @@ class Events_Events {
         }
         this.extensions = null;
         if (this.element) {
-            Event_Event.stopObservingElement(this.element);
+            Event.stopObservingElement(this.element);
             if (this.element.hasScrollEvent) {
-                Event_Event.stopObserving(
+                Event.stopObserving(
                     window, "scroll", this.clearMouseListener
                 );
             }
@@ -9989,16 +10933,16 @@ class Events_Events {
      */
     attachToElement(element) {
         if (this.element) {
-            Event_Event.stopObservingElement(this.element);
+            Event.stopObservingElement(this.element);
         } else {
             // keep a bound copy of handleBrowserEvent() so that we can
             // pass the same function to both Event.observe() and .stopObserving()
-            this.eventHandler = BaseTypes_FunctionExt.bindAsEventListener(
+            this.eventHandler = FunctionExt.bindAsEventListener(
                 this.handleBrowserEvent, this
             );
 
             // to be used with observe and stopObserving
-            this.clearMouseListener = BaseTypes_FunctionExt.bind(
+            this.clearMouseListener = FunctionExt.bind(
                 this.clearMouseCache, this
             );
         }
@@ -10011,10 +10955,10 @@ class Events_Events {
             this.addEventType(eventType);
 
             // use Prototype to register the event cross-browser
-            Event_Event.observe(element, eventType, this.eventHandler);
+            Event.observe(element, eventType, this.eventHandler);
         }
         // disable dragstart in IE so that mousedown/move/up works normally
-        Event_Event.observe(element, "dragstart", Event_Event.stop);
+        Event.observe(element, "dragstart", Event.stop);
     }
 
 
@@ -10200,14 +11144,14 @@ class Events_Events {
             // bind the context to callback.obj
             continueChain = callback.func.apply(callback.obj, [evt]);
 
-            if ((continueChain != undefined) && (continueChain == false)) {
+            if ((continueChain != undefined) && (continueChain === false)) {
                 // if callback returns false, execute no more callbacks.
                 break;
             }
         }
         // don't fall through to other DOM elements
         if (!this.fallThrough) {
-            Event_Event.stop(evt, true);
+            Event.stop(evt, true);
         }
         return continueChain;
     }
@@ -10269,7 +11213,7 @@ class Events_Events {
         if (!this.includeXY) {
             this.clearMouseCache();
         } else if (!this.element.hasScrollEvent) {
-            Event_Event.observe(window, "scroll", this.clearMouseListener);
+            Event.observe(window, "scroll", this.clearMouseListener);
             this.element.hasScrollEvent = true;
         }
 
@@ -11117,7 +12061,7 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  * @param {number} [options.green=0] - 获取或设置绿色值。
  * @param {number} [options.blue=0] - 获取或设置蓝色值。
  */
-class ServerColor_ServerColor {
+class ServerColor {
 
     constructor(red, green, blue) {
 
@@ -11164,7 +12108,7 @@ class ServerColor_ServerColor {
         if (!jsonObject) {
             return;
         }
-        var color = new ServerColor_ServerColor();
+        var color = new ServerColor();
         var red = 255;
         if (jsonObject.red !== null) {
             red = Number(jsonObject.red);
@@ -11187,7 +12131,7 @@ class ServerColor_ServerColor {
 
 }
 
-SuperMap.ServerColor = ServerColor_ServerColor;
+SuperMap.ServerColor = ServerColor;
 
 
 // CONCATENATED MODULE: ./src/common/iServer/ServerStyle.js
@@ -11227,7 +12171,7 @@ class ServerStyle_ServerStyle {
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillBackColor
          * @description 填充背景颜色。当填充模式为渐变填充时，该颜色为填充终止色。
          */
-        this.fillBackColor = new ServerColor_ServerColor(255, 255, 255);
+        this.fillBackColor = new ServerColor(255, 255, 255);
 
         /**
          * @member {boolean} [SuperMap.ServerStyle.prototype.fillBackOpaque=false]
@@ -11239,7 +12183,7 @@ class ServerStyle_ServerStyle {
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillForeColor
          * @description 填充颜色。当填充模式为渐变填充时，该颜色为填充起始颜色。
          */
-        this.fillForeColor = new ServerColor_ServerColor(255, 0, 0);
+        this.fillForeColor = new ServerColor(255, 0, 0);
 
         /**
          * @member {SuperMap.FillGradientMode} SuperMap.ServerStyle.prototype.fillGradientMode
@@ -11285,7 +12229,7 @@ class ServerStyle_ServerStyle {
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.lineColor
          * @description 矢量要素的边线颜色。如果等级符号是点符号，点符号的颜色由 lineColor 控制。
          */
-        this.lineColor = new ServerColor_ServerColor(0, 0, 0);
+        this.lineColor = new ServerColor(0, 0, 0);
 
         /**
          * @member {number} [SuperMap.ServerStyle.prototype.lineSymbolID=0]
@@ -11382,16 +12326,16 @@ class ServerStyle_ServerStyle {
             return;
         }
         return new ServerStyle_ServerStyle({
-            fillBackColor: ServerColor_ServerColor.fromJson(jsonObject.fillBackColor),
+            fillBackColor: ServerColor.fromJson(jsonObject.fillBackColor),
             fillBackOpaque: jsonObject.fillBackOpaque,
-            fillForeColor: ServerColor_ServerColor.fromJson(jsonObject.fillForeColor),
+            fillForeColor: ServerColor.fromJson(jsonObject.fillForeColor),
             fillGradientMode: jsonObject.fillGradientMode,
             fillGradientAngle: jsonObject.fillGradientAngle,
             fillGradientOffsetRatioX: jsonObject.fillGradientOffsetRatioX,
             fillGradientOffsetRatioY: jsonObject.fillGradientOffsetRatioY,
             fillOpaqueRate: jsonObject.fillOpaqueRate,
             fillSymbolID: jsonObject.fillSymbolID,
-            lineColor: ServerColor_ServerColor.fromJson(jsonObject.lineColor),
+            lineColor: ServerColor.fromJson(jsonObject.lineColor),
             lineSymbolID: jsonObject.lineSymbolID,
             lineWidth: jsonObject.lineWidth,
             markerAngle: jsonObject.markerAngle,
@@ -11855,19 +12799,19 @@ class ServerGeometry_ServerGeometry {
         var me = this,
             geoType = me.type;
         switch (geoType.toUpperCase()) {
-            case REST_GeometryType.POINT:
+            case GeometryType.POINT:
                 return me.toGeoPoint();
-            case REST_GeometryType.LINE:
+            case GeometryType.LINE:
                 return me.toGeoLine();
-            case REST_GeometryType.LINEM:
+            case GeometryType.LINEM:
                 return me.toGeoLinem();
-            case REST_GeometryType.REGION:
+            case GeometryType.REGION:
                 return me.toGeoRegion();
-            case REST_GeometryType.POINTEPS:
+            case GeometryType.POINTEPS:
                 return me.toGeoPoint();
-            case REST_GeometryType.LINEEPS:
+            case GeometryType.LINEEPS:
                 return me.toGeoLineEPS();
-            case REST_GeometryType.REGIONEPS:
+            case GeometryType.REGIONEPS:
                 return me.toGeoRegionEPS();
         }
     }
@@ -12284,7 +13228,7 @@ class ServerGeometry_ServerGeometry {
                 }
             }
             //这里className不是多点就全部是算线
-            type = (className == "SuperMap.Geometry.MultiPoint") ? REST_GeometryType.POINT : REST_GeometryType.LINE;
+            type = (className == "SuperMap.Geometry.MultiPoint") ? GeometryType.POINT : GeometryType.LINE;
         } else if (geometry instanceof MultiPolygon_MultiPolygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
@@ -12300,7 +13244,7 @@ class ServerGeometry_ServerGeometry {
                     points.push(new Point_Point(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y));
                 }
             }
-            type = REST_GeometryType.REGION;
+            type = GeometryType.REGION;
         } else if (geometry instanceof Polygon_Polygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
@@ -12311,7 +13255,7 @@ class ServerGeometry_ServerGeometry {
                 }
                 points.push(new Point_Point(icomponents[i].getVertices()[0].x, icomponents[i].getVertices()[0].y));
             }
-            type = REST_GeometryType.REGION;
+            type = GeometryType.REGION;
         } else {
             let geometryVerticesCount = geometry.getVertices().length;
             for (let j = 0; j < geometryVerticesCount; j++) {
@@ -12322,7 +13266,7 @@ class ServerGeometry_ServerGeometry {
                 geometryVerticesCount++;
             }
             parts.push(geometryVerticesCount);
-            type = (geometry instanceof Point_Point) ? REST_GeometryType.POINT : REST_GeometryType.LINE;
+            type = (geometry instanceof Point_Point) ? GeometryType.POINT : GeometryType.LINE;
         }
 
         return new ServerGeometry_ServerGeometry({
@@ -12440,7 +13384,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
             "point": function (array) {
-                if (this.ignoreExtraDims == false &&
+                if (this.ignoreExtraDims === false &&
                     array.length != 2) {
                     throw "Only 2D points are supported: " + array;
                 }
@@ -13248,7 +14192,7 @@ class WKT_WKT extends Format_Format {
              *
              */
             'point': function (str) {
-                var coords = BaseTypes_StringExt.trim(str).split(this.regExes.spaces);
+                var coords = StringExt.trim(str).split(this.regExes.spaces);
                 return new Vector_Vector(new Point_Point(coords[0], coords[1])
                 );
             },
@@ -13261,7 +14205,7 @@ class WKT_WKT extends Format_Format {
              */
             'multipoint': function (str) {
                 var point;
-                var points = BaseTypes_StringExt.trim(str).split(',');
+                var points = StringExt.trim(str).split(',');
                 var components = [];
                 for (var i = 0, len = points.length; i < len; ++i) {
                     point = points[i].replace(this.regExes.trimParens, '$1');
@@ -13279,7 +14223,7 @@ class WKT_WKT extends Format_Format {
              * @private
              */
             'linestring': function (str) {
-                var points = BaseTypes_StringExt.trim(str).split(',');
+                var points = StringExt.trim(str).split(',');
                 var components = [];
                 for (var i = 0, len = points.length; i < len; ++i) {
                     components.push(this.parse.point.apply(this, [points[i]]).geometry);
@@ -13297,7 +14241,7 @@ class WKT_WKT extends Format_Format {
              */
             'multilinestring': function (str) {
                 var line;
-                var lines = BaseTypes_StringExt.trim(str).split(this.regExes.parenComma);
+                var lines = StringExt.trim(str).split(this.regExes.parenComma);
                 var components = [];
                 for (var i = 0, len = lines.length; i < len; ++i) {
                     line = lines[i].replace(this.regExes.trimParens, '$1');
@@ -13316,7 +14260,7 @@ class WKT_WKT extends Format_Format {
              */
             'polygon': function (str) {
                 var ring, linestring, linearring;
-                var rings = BaseTypes_StringExt.trim(str).split(this.regExes.parenComma);
+                var rings = StringExt.trim(str).split(this.regExes.parenComma);
                 var components = [];
                 for (var i = 0, len = rings.length; i < len; ++i) {
                     ring = rings[i].replace(this.regExes.trimParens, '$1');
@@ -13338,7 +14282,7 @@ class WKT_WKT extends Format_Format {
              */
             'multipolygon': function (str) {
                 var polygon;
-                var polygons = BaseTypes_StringExt.trim(str).split(this.regExes.doubleParenComma);
+                var polygons = StringExt.trim(str).split(this.regExes.doubleParenComma);
                 var components = [];
                 for (var i = 0, len = polygons.length; i < len; ++i) {
                     polygon = polygons[i].replace(this.regExes.trimParens, '$1');
@@ -13359,7 +14303,7 @@ class WKT_WKT extends Format_Format {
             'geometrycollection': function (str) {
                 // separate components of the collection with |
                 str = str.replace(/,\s*([A-Za-z])/g, '|$1');
-                var wktArray = BaseTypes_StringExt.trim(str).split('|');
+                var wktArray = StringExt.trim(str).split('|');
                 var components = [];
                 for (var i = 0, len = wktArray.length; i < len; ++i) {
                     components.push(this.read(wktArray[i]));
@@ -14120,7 +15064,7 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise_polyfill_promise = __webpack_require__(14);
+var promise_polyfill_promise = __webpack_require__(7);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise_polyfill_promise);
 
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
@@ -14131,10 +15075,10 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise_polyfill_promis
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch_ie8_fetch = __webpack_require__(18);
+var fetch = __webpack_require__(19);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(5);
+var fetch_jsonp = __webpack_require__(2);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
@@ -14153,7 +15097,7 @@ const FetchRequest_fetch = window.fetch;
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
  * @param {boolean} cors - 是否允许跨域请求。
  */
-var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
+var setCORS = SuperMap.setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
@@ -14161,7 +15105,7 @@ var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
  * @description 是是否允许跨域请求。
  * @returns {boolean} 是否允许跨域请求。
  */
-var FetchRequest_isCORS = SuperMap.isCORS = function () {
+var isCORS = SuperMap.isCORS = function () {
     if (SuperMap.CORS != undefined) {
         return SuperMap.CORS;
     }
@@ -14172,7 +15116,7 @@ var FetchRequest_isCORS = SuperMap.isCORS = function () {
  * @description 设置请求超时时间。
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
  */
-var FetchRequest_setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
+var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
     return SuperMap.RequestTimeout = timeout;
 }
 /**
@@ -14180,10 +15124,10 @@ var FetchRequest_setRequestTimeout = SuperMap.setRequestTimeout = function (time
  * @description 获取请求超时时间。
  * @returns {number} 请求超时时间。
  */
-var FetchRequest_getRequestTimeout = SuperMap.getRequestTimeout = function () {
+var getRequestTimeout = SuperMap.getRequestTimeout = function () {
     return SuperMap.RequestTimeout || 45000;
 }
-var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
+var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -14205,14 +15149,14 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
         }if(options.crossOrigin != undefined){
           return options.crossOrigin;
         }else{
-          return FetchRequest_isCORS() || options.proxy
+          return isCORS() || options.proxy
         }
     },
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
-        url = this._processUrl(url, options);
         url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -14232,8 +15176,8 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
     delete: function (url, params, options) {
         options = options || {};
         var type = 'DELETE';
-        url = this._processUrl(url, options);
         url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
@@ -14342,7 +15286,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
                 credentials: options.withCredentials ? 'include' : 'omit',
                 mode: 'cors',
-                timeout: FetchRequest_getRequestTimeout()
+                timeout: getRequestTimeout()
             }).then(function (response) {
                 return response;
             }));
@@ -14353,7 +15297,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
             headers: options.headers,
             credentials: options.withCredentials ? 'include' : 'omit',
             mode: 'cors',
-            timeout: FetchRequest_getRequestTimeout()
+            timeout: getRequestTimeout()
         }).then(function (response) {
             return response;
         });
@@ -14598,7 +15542,7 @@ class SecurityManager_SecurityManager {
         if (!serverInfo) {
             return;
         }
-        return FetchRequest_FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
+        return FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
             return response.text();
         });
     }
@@ -14714,7 +15658,7 @@ class SecurityManager_SecurityManager {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
         };
-        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -14736,7 +15680,7 @@ class SecurityManager_SecurityManager {
             },
             withoutFormatSuffix: true
         };
-        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -14777,7 +15721,7 @@ class SecurityManager_SecurityManager {
             },
             withCredentials: true
         };
-        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -14800,7 +15744,7 @@ class SecurityManager_SecurityManager {
             withCredentials: true,
             withoutFormatSuffix: true
         };
-        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -14840,7 +15784,7 @@ class SecurityManager_SecurityManager {
             }
         };
         var me = this;
-        return FetchRequest_FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
             response.text().then(function (result) {
                 me.imanagerToken = result;
                 return result;
@@ -14918,7 +15862,8 @@ class SecurityManager_SecurityManager {
         if (!url) {
             return url;
         }
-        var patten = /http:\/\/(.*\/rest)/i;
+        // var patten = /http:\/\/(.*\/rest)/i;
+        var patten = /(http|https):\/\/(.*\/rest)/i;
         var result = url.match(patten);
         if (!result) {
             return url;
@@ -14993,7 +15938,7 @@ class iManagerServiceBase_IManagerServiceBase {
         if (param) {
             param = JSON.stringify(param);
         }
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
         });
     }
@@ -15224,6 +16169,88 @@ class iPortalMapsQueryParam_IPortalMapsQueryParam {
 SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
 
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsightsQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalInsightsQueryParam
+  * @classdesc iPortal 地图资源查询参数。
+  * @category iPortal/Online
+  * @param {Object} params - iPortal 地图资源查询具体参数。
+  *
+  */
+ class iPortalInsightsQueryParam_IPortalInsightsQueryParam {
+ 
+    constructor(params) {
+        params = params || {};
+        this.createEnd = null;
+        this.createStart = null;
+        this.filterFields = null;
+        this.orderBy = null;
+        this.tags = null;
+        this.userNames = null;
+        this.currentPage = null;
+        this.keywords = null;
+        this.pageSize = null;
+        this.currentUser = null;
+        this.departmentIds = null;
+        this.dirIds = null;
+        this.groupIds = null;
+        this.isNotInDir = false;
+        this.permissionType = null;
+        this.resourceIds = null;
+        this.returnSubDir = null;
+        this.searchScope = null;
+        Util_Util.extend(this, params);
+    }
+ 
+ }
+ 
+ SuperMap.iPortalInsightsQueryParam = iPortalInsightsQueryParam_IPortalInsightsQueryParam;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalScenesQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalScenesQueryParam
+  * @classdesc iPortal 地图资源查询参数。
+  * @category iPortal/Online
+  * @param {Object} params - iPortal 地图资源查询具体参数。
+  *
+  */
+ class iPortalScenesQueryParam_IPortalScenesQueryParam {
+ 
+     constructor(params) {
+         params = params || {};
+         this.tags = null;
+         this.userNames = null;
+         this.orderBy = null;
+         this.orderType = null;
+         this.keywords = null;
+         this.currentPage = null;
+         this.pageSize = null;
+         this.dirIds = null;
+         this.isNotInDir = false;
+         this.filterFields = null;
+         this.createStart = null;
+         this.createEnd = null;
+         Util_Util.extend(this, params);
+     }
+ 
+ }
+ 
+ SuperMap.iPortalScenesQueryParam = iPortalScenesQueryParam_IPortalScenesQueryParam;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortalServiceBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -15249,7 +16276,7 @@ class iPortalServiceBase_IPortalServiceBase {
     constructor(url, options) {
         options = options || {};
         this.serviceUrl = url;
-        this.serverType = REST_ServerType.iPortal;
+        this.serverType = ServerType.iPortal;
         this.CLASS_NAME = "SuperMap.iPortalServiceBase";
         this.withCredentials = options.withCredentials || false;
         this.crossOrigin = options.crossOrigin
@@ -15268,7 +16295,7 @@ class iPortalServiceBase_IPortalServiceBase {
 
     request(method, url, param, requestOptions = {headers: this.headers, crossOrigin: this.crossOrigin, withCredentials: this.withCredentials }) {
         url = this.createCredentialUrl(url);
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
         });
     }
@@ -15310,10 +16337,10 @@ class iPortalServiceBase_IPortalServiceBase {
     getCredential() {
         var credential,
             value = SecurityManager_SecurityManager.getToken(this.serviceUrl);
-        credential = value ? new Credential_Credential(value, "token") : null;
+        credential = value ? new Credential(value, "token") : null;
         if (!credential) {
             value = this.getKey();
-            credential = value ? new Credential_Credential(value, "key") : null;
+            credential = value ? new Credential(value, "key") : null;
         }
         return credential;
     }
@@ -15350,7 +16377,7 @@ SuperMap.iPortalServiceBase = iPortalServiceBase_IPortalServiceBase;
  * @param {Object} params - 服务请求参数。
  * @param {boolean} [params.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [params.crossOrigin] - 请求是否携带 cookie。 * 
- * @param {Object} [options.headers] - 请求头。
+ * @param {Object} [params.headers] - 请求头。
  */
 class iPortalService_IPortalService extends iPortalServiceBase_IPortalServiceBase {
 
@@ -15538,10 +16565,477 @@ class iPortalMap_IPortalMap extends iPortalServiceBase_IPortalServiceBase {
 SuperMap.iPortalMap = iPortalMap_IPortalMap;
 
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalInsight.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalInsight
+  * @classdesc iPortal 洞察服务类。
+  * @category iPortal/Online
+  * @param {string} insightUrl - 洞察地址。
+  * @param {Object} [params] - 服务参数。
+  * @extends {SuperMap.iPortalServiceBase}
+  *
+  */
+ class iPortalInsight_IPortalInsight extends iPortalServiceBase_IPortalServiceBase {
+ 
+ 
+     constructor(insightUrl, params) {
+         super(insightUrl);
+         params = params || {};
+         this.authorizeSetting = [];
+         this.name = "";
+         this.checkStatus = "";
+         this.createTime = 0;
+         this.description = "";
+         this.id = 0;
+         this.nickname = "";
+         this.tags = [];
+         this.thumbnail = "";
+         this.updateTime = 0;
+         this.userName = "";
+         this.visitCount = 0;
+         Util_Util.extend(this, params);
+         this.insightUrl = insightUrl;
+     }
+ 
+     /**
+      * @function SuperMap.iPortalInsight.prototype.load
+      * @description 加载洞察信息。
+      * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+      */
+     load() {
+         var me = this;
+         return me.request("GET", me.insightUrl + ".json")
+             .then(function (insightInfo) {
+                 if (insightInfo.error) {
+                     return insightInfo;
+                 }
+                 for (var key in insightInfo) {
+                     me[key] = insightInfo[key];
+                 }
+             });
+     }
+ 
+     /**
+      * @function SuperMap.iPortalInsight.prototype.update
+      * @description 更新洞察参数。
+      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+      */
+     update() {
+         var insightUpdateParam = {
+            authorizeSetting: this.authorizeSetting,
+            description: this.description,
+            tags: this.tags,
+            thumbnail: this.thumbnail,
+            name:this.name
+         };
+         var options = {
+             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+         };
+         return this.request("PUT", this.insightUrl, JSON.stringify(insightUpdateParam), options);
+     }
+ 
+ }
+ 
+ SuperMap.iPortalInsight = iPortalInsight_IPortalInsight;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalScene.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+ /**
+  * @class SuperMap.iPortalScene
+  * @classdesc iPortal 场景服务类。
+  * @category iPortal/Online
+  * @param {string} sceneUrl - 场景地址。
+  * @param {Object} [params] - 服务参数。
+  * @extends {SuperMap.iPortalServiceBase}
+  *
+  */
+ class iPortalScene_IPortalScene extends iPortalServiceBase_IPortalServiceBase {
+ 
+ 
+     constructor(sceneUrl, params) {
+         super(sceneUrl);
+         params = params || {};
+         this.authorizeSetting = [];
+         this.content = null;
+         this.createTime = 0;
+         this.description = "";
+         this.id = 0;
+         this.layers = [];
+         this.name  = "";
+         this.nickname = "";
+         this.tags = [];
+         this.thumbnail = "";
+         this.title = "";
+         this.updateTime = 0;
+         this.url = "";
+         this.userName = "";
+         this.visitCount = 0;
+         Util_Util.extend(this, params);
+         this.sceneUrl = sceneUrl;
+         // if (this.id) {
+         //     this.sceneUrl = sceneUrl + "/" + this.id;
+         // }
+     }
+ 
+     /**
+      * @function SuperMap.iPortalScene.prototype.load
+      * @description 加载场景信息。
+      * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+      */
+     load() {
+         var me = this;
+         return me.request("GET", me.sceneUrl + ".json")
+             .then(function (sceneInfo) {
+                 if (sceneInfo.error) {
+                     return sceneInfo;
+                 }
+                 for (var key in sceneInfo) {
+                     me[key] = sceneInfo[key];
+                 }
+             });
+     }
+ 
+     /**
+      * @function SuperMap.iPortalScene.prototype.update
+      * @description 更新场景参数。
+      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+      */
+     update() {
+         var sceneUpdateParam = {
+             authorizeSetting: this.authorizeSetting,
+             name:this.name,
+             tags:this.tags,
+             description: this.description,
+             thumbnail:this.thumbnail
+         };
+         var options = {
+             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+         };
+         return this.request("PUT", this.sceneUrl, JSON.stringify(sceneUpdateParam), options);
+     }
+ 
+ }
+ 
+ SuperMap.iPortalScene = iPortalScene_IPortalScene;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapdashboard.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+/**
+ * @class SuperMap.iPortalMapdashboard
+ * @classdesc iPortal 大屏服务类。
+ * @category iPortal/Online
+ * @param {string} mapdashboardUrl - 大屏地址。
+ * @param {Object} [params] - 服务参数。
+ * @extends {SuperMap.iPortalServiceBase}
+ *
+ */
+class iPortalMapdashboard_IPortalMapdashboard extends iPortalServiceBase_IPortalServiceBase {
+
+
+    constructor(mapdashboardUrl, params) {
+        super(mapdashboardUrl);
+        params = params || {};
+        this.authorizeSetting = [];
+        this.content = "";
+        this.createTime = 0;
+        this.description = "";
+        this.id = 0;
+        this.name = "";
+        this.nickname = "";
+        this.tags = [];
+        this.thumbnail = "";
+        this.updateTime = 0;
+        this.userName = "";
+        this.visitCount = 0;
+        Util_Util.extend(this, params);
+        this.mapdashboardUrl = mapdashboardUrl;
+    }
+
+    /**
+     * @function SuperMap.iPortalMapdashboard.prototype.load
+     * @description 加载大屏信息。
+     * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+     */
+    load() {
+        var me = this;
+        return me.request("GET", me.mapdashboardUrl + ".json")
+            .then(function (mapdashboardInfo) {
+                if (mapdashboardInfo.error) {
+                    return mapdashboardInfo;
+                }
+                for (var key in mapdashboardInfo) {
+                    me[key] = mapdashboardInfo[key];
+                }
+            });
+    }
+
+    /**
+     * @function SuperMap.iPortalMapdashboard.prototype.update
+     * @description 更新大屏参数。
+     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+     */
+    update() {
+        var mapdashboardUpdateParam = {
+            authorizeSetting: this.authorizeSetting,
+            description: this.description,
+            name: this.name,
+            tags: this.tags,
+            thumbnail: this.thumbnail
+        };
+        var options = {
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        };
+        return this.request("PUT", this.mapdashboardUrl, JSON.stringify(mapdashboardUpdateParam), options);
+    }
+
+}
+
+SuperMap.iPortalMapdashboard = iPortalMapdashboard_IPortalMapdashboard;
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapdashboardsQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.iPortalMapdashboardsQueryParam
+ * @classdesc iPortal 大屏资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 大屏资源查询具体参数。
+ *
+ */
+class iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam {
+
+
+    constructor(params) {
+        params = params || {};
+        this.userNames = null;
+        this.tags = null;
+        this.orderBy = null;
+        this.filterFields = null;
+        this.currentUser = null;
+        this.dirIds = null;
+        this.returnSubDir = false;
+        this.isNotInDir = false;
+        this.groupIds = null;
+        this.departmentIds = null;
+        this.resourceIds = null;
+        this.searchScope = null;
+        this.permissionType = null;
+        this.keywords = null;
+        this.currentPage = null;
+        this.pageSize = null;
+        this.orderType = null;
+        Util_Util.extend(this, params);
+    }
+
+}
+
+SuperMap.iPortalMapdashboardsQueryParam = iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam;
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalQueryParam
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalQueryParam_IPortalQueryParam {
+
+    constructor(params) {
+        params = params || {};
+        this.resourceType = ""; // 空为全部 MAP SERVICE SCENE DATA INSIGHTS_WORKSPACE MAP_DASHBOARD
+        this.pageSize = 12; // 每页多少条
+        this.currentPage = 1; // 第几页
+        this.orderBy = "UPDATETIME"; // UPDATETIME HEATLEVEL
+        this.orderType = "DESC"; // DESC ASC
+        this.searchType = "PUBLIC"; // PUBLIC SHARETOME_RES MYDEPARTMENT_RES MYGROUP_RES MY_RES
+        this.tags = [];  // 标签
+        this.dirIds = []; // 类别
+        this.resourceSubTypes = []; // 类型
+        this.aggregationTypes = []; // TAG TYPE SUBTYPE
+        this.text = ""; // 搜索字段
+        this.groupIds = []; // 群组Id过滤
+        this.departmentIds = []; // 部门Id过滤
+        Util_Util.extend(this, params);
+    }
+}
+SuperMap.iPortalQueryParam = iPortalQueryParam_IPortalQueryParam;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryResult.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.iPortalQueryResult
+ * @classdesc iPortal 资源结果集封装类。
+ * @category iPortal/Online
+ * @param {string} resourceUrl - 资源地址。
+ * @param {Object} [params] - 资源参数。
+ *
+ */
+class iPortalQueryResult_IPortalQueryResult {
+    constructor(params) {
+        params = params || {};
+        this.content = [];
+        this.total = 0;
+        this.currentPage = 1;
+        this.pageSize = 12;
+        this.aggregations = null;
+        Util_Util.extend(this, params);
+    }
+
+}
+
+SuperMap.iPortalQueryResult = iPortalQueryResult_IPortalQueryResult;
+
+
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalResource.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.IPortalResource
+ * @classdesc iPortal 资源详情类。
+ * @category iPortal/Online
+ * @param {string} portalUrl - 资源地址。
+ * @param {Object} [resourceInfo] - 资源详情参数。
+ * @extends {SuperMap.iPortalServiceBase}
+ *
+ */
+class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceBase {
+    constructor(portalUrl, resourceInfo) {
+        super(portalUrl);
+        resourceInfo = resourceInfo || {};
+        this.authorizeSetting = [];
+        this.bounds = "";
+        this.bounds4326 = "";
+        this.checkStatus = "";
+        this.createTime = 0;
+        this.description = null;
+        this.dirId = null;
+        this.epsgCode = 0;
+        this.heatLevel = 0;
+        this.id = 0;
+        this.name = "";
+        this.personalDirId = null;
+        this.resourceId = 0;
+        this.resourceSubType = null;
+        this.resourceType = null;
+        this.serviceRootUrlId = null;
+        this.tags = null;
+        this.thumbnail = null;
+        this.updateTime = 0;
+        this.userName = "";
+        Util_Util.extend(this, resourceInfo); // INSIGHTS_WORKSPACE MAP_DASHBOARD
+        this.resourceUrl = portalUrl + "/web/"+this.resourceType.replace("_","").toLowerCase()+"s/" + this.resourceId;
+        if (this.withCredentials) {
+            this.resourceUrl = portalUrl + "/web/mycontent/"+this.resourceType.replace("_","").toLowerCase()+"s/" + this.resourceId;
+        }
+        // if (this.id) {
+        //     this.mapUrl = mapUrl + "/" + this.id;
+        // }
+    }
+
+    /**
+     * @function SuperMap.IPortalResource.prototype.load
+     * @description 加载资源信息。
+     * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+     */
+    load() {
+        var me = this;
+        return me.request("GET", me.resourceUrl + ".json")
+            .then(function (resourceInfo) {
+                if (resourceInfo.error) {
+                    return resourceInfo;
+                }
+                for (var key in resourceInfo) {
+                    me[key] = resourceInfo[key];
+                }
+            });
+    }
+
+    /**
+     * @function SuperMap.IPortalResource.prototype.update
+     * @description 更新地图参数。
+     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+     */
+    update() {
+        var resourceUpdateParam = {
+            units: this.units,
+            level: this.level,
+            center: this.center,
+            controls: this.controls,
+            description: this.description,
+            epsgCode: this.epsgCode,
+            extent: this.extent,
+            status: this.status,
+            tags: this.tags,
+            layers: this.layers,
+            title: this.title,
+            thumbnail: this.thumbnail,
+            sourceType: this.sourceType,
+            authorizeSetting: this.authorizeSetting
+        };
+        var options = {
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        };
+        return this.request("PUT", this.resourceUrl, JSON.stringify(resourceUpdateParam), options);
+    }
+
+}
+
+SuperMap.iPortalResource = iPortalResource_IPortalResource;
+
+
 // CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
+
 
 
 
@@ -15571,8 +17065,37 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
      * @returns {Promise} 返回包含 iportal web 资源信息的 Promise 对象。
      */
     load() {
-        return FetchRequest_FetchRequest.get(this.iportalUrl + "/web");
+        return FetchRequest.get(this.iportalUrl + "/web");
     }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryResources
+     * @description 查询资源。
+     * @param {SuperMap.iPortalQueryParam} queryParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+    queryResources(queryParams) {
+        if (!(queryParams instanceof iPortalQueryParam_IPortalQueryParam)) {
+            return null;
+        }
+        var me = this;
+        var resourceUrl = this.iportalUrl + "/gateway/catalog/resource/search.json";
+        queryParams.t = new Date().getTime();
+        return this.request("GET", resourceUrl, queryParams).then(function(result) {
+            var content = [];
+            result.content.forEach(function(item) {
+                content.push(new iPortalResource_IPortalResource(me.iportalUrl, item));
+            });
+            let queryResult = new iPortalQueryResult_IPortalQueryResult();
+            queryResult.content = content;
+            queryResult.total = result.total;
+            queryResult.currentPage = result.currentPage;
+            queryResult.pageSize = result.pageSize;
+            queryResult.aggregations = result.aggregations;
+            return queryResult;
+        });
+    }
+
 
     /**
      * @function SuperMap.iPortal.prototype.queryServices
@@ -15607,6 +17130,20 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
     /**
+     * @function SuperMap.iPortal.prototype.queryService
+     * @param {Array} ids - 服务的序号。
+     * @description 查看单个服务资源的详情。
+     * @returns {Promise} 返回包含单个服务资源操作状态的 Promise 对象。
+     */
+    queryService(id){
+        var serviceUrl = this.iportalUrl + "/web/services/" + id;
+        var service = new iPortalService_IPortalService(serviceUrl);
+        return service.load().then(()=>{
+            return service
+        })
+    }
+
+    /**
      * @function SuperMap.iPortal.prototype.queryMaps
      * @param {SuperMap.iPortalMapsQueryParam} queryParams - 查询参数。
      * @description 获取地图信息。
@@ -15636,8 +17173,207 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
                 mapRetult.total = result.total;
                 mapRetult.totalPage = result.totalPage;
             }
-            return mapRetult; 
+            return mapRetult;
         });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryMapdashboards
+     * @param {SuperMap.iPortalMapdashboardsQueryParam} queryParams - 查询参数。
+     * @description 获取大屏信息。
+     * @returns {Promise} 返回包含所有大屏服务信息的 Promise 对象。
+     */
+    queryMapdashboards(queryParams) {
+        if (!(queryParams instanceof iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam)) {
+            return null;
+        }
+        let mapdashboardsUrl;
+        if (this.withCredentials) {
+            mapdashboardsUrl = this.iportalUrl + "web/mycontent/mapdashboards";
+        } else {
+            mapdashboardsUrl = this.iportalUrl + "/web/mapdashboards";
+        }
+        return this.request("GET", mapdashboardsUrl, queryParams).then(function(result) {
+            var mapdashboardRetult = {content:[]};
+            var mapdashboards = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(mapdashboardJsonObj) {
+                    mapdashboards.push(new iPortalMapdashboard_IPortalMapdashboard(mapdashboardsUrl + "/" + mapdashboardJsonObj.id, mapdashboardJsonObj));
+                    return mapdashboardJsonObj;
+                });
+                mapdashboardRetult.content = mapdashboards;
+                mapdashboardRetult.currentPage = result.currentPage;
+                mapdashboardRetult.pageSize = result.pageSize;
+                mapdashboardRetult.total = result.total;
+                mapdashboardRetult.totalPage = result.totalPage;
+            }
+            return mapdashboardRetult; 
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteMapdashboards
+     * @param {Array} ids - 大屏的序号。
+     * @description 删除大屏。
+     * @returns {Promise} 返回包含大屏删除操作状态的 Promise 对象。
+     */
+    deleteMapdashboards(ids) {
+        var mapdashboardUrl = this.iportalUrl + "/web/mapdashboardsworkspaces.json";
+        return this.request("DELETE", mapdashboardUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryMapdashboard
+     * @param {Array} ids - 大屏的序号。
+     * @description 查看某个大屏资源的详情。
+     * @returns {Promise} 返回包含某条大屏资源操作状态的 Promise 对象。
+     */
+    queryMapdashboard(id){
+        var mapdashboardUrl = this.iportalUrl + "/web/mapdashboards/"+id;
+        var mapdashboard = new iPortalMapdashboard_IPortalMapdashboard(mapdashboardUrl);
+        return mapdashboard.load().then(()=>{
+            return mapdashboard
+        })
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryInsights
+     * @param {SuperMap.iPortalInsightsQueryParam} queryParams - 查询参数。
+     * @description 获取洞察信息。
+     * @returns {Promise} 返回包含所有洞察服务信息的 Promise 对象。
+     */
+    queryInsights(queryParams) {
+        if (!(queryParams instanceof iPortalInsightsQueryParam_IPortalInsightsQueryParam)) {
+            return null;
+        }
+        let insightsUrl;
+        if (this.withCredentials) {
+            insightsUrl = this.iportalUrl + "web/mycontent/insightsworkspaces";
+        } else {
+            insightsUrl = this.iportalUrl + "/web/insightsworkspaces";
+        }
+        return this.request("GET", insightsUrl, queryParams).then(function(result) {
+            var insightRetult = {content:[]};
+            var insights = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(insightJsonObj) {
+                    insights.push(new iPortalInsight_IPortalInsight(insightsUrl + "/" + insightJsonObj.id, insightJsonObj));
+                    return insightJsonObj;
+                });
+                insightRetult.content = insights;
+                insightRetult.currentPage = result.currentPage;
+                insightRetult.pageSize = result.pageSize;
+                insightRetult.total = result.total;
+                insightRetult.totalPage = result.totalPage;
+            }
+            return insightRetult; 
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteInsights
+     * @param {Array} ids - 洞察的序号。
+     * @description 删除洞察。
+     * @returns {Promise} 返回包含洞察删除操作状态的 Promise 对象。
+     */
+    deleteInsights(ids) {
+        var insightUrl = this.iportalUrl + "/web/insightsworkspaces.json";
+        return this.request("DELETE", insightUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryInsight
+     * @param {Array} ids - 洞察的序号。
+     * @description 查看某个洞察资源的详情。
+     * @returns {Promise} 返回包含某条洞察资源操作状态的 Promise 对象。
+     */
+    queryInsight(id){
+        var insightUrl = this.iportalUrl + "/web/insightsworkspaces/"+id;
+        var insight = new iPortalInsight_IPortalInsight(insightUrl);
+        return insight.load().then(()=>{
+            return insight
+        })
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.updateInsightAttrs
+     * @param {Array} ids - 洞察的序号。
+     * @description 更新某个洞察信息。
+     * @returns {Promise} 返回包含更新洞察属性操作状态的 Promise 对象。
+     */
+    updateInsightAttrs(id,updateParam){
+        var insightAttributesUrl = this.iportalUrl + "/web/insightsworkspaces/"+id+"/attributes.json";
+        return new iPortalInsight_IPortalInsight(insightAttributesUrl, updateParam).update();
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.deleteScenes
+     * @param {Array} ids - 场景的序号。
+     * @description 删除场景。
+     * @returns {Promise} 返回包含场景删除操作状态的 Promise 对象。
+     */
+    deleteScenes(ids) {
+        var sceneUrl = this.iportalUrl + "/web/scenes.json";
+        return this.request("DELETE", sceneUrl, { ids: encodeURI(JSON.stringify(ids)) });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryScenes
+     * @param {SuperMap.iPortalScenesQueryParam} queryParams - 查询参数。
+     * @description 获取场景信息。
+     * @returns {Promise} 返回包含所有场景服务信息的 Promise 对象。
+     */
+    queryScenes(queryParams) {
+        if (!(queryParams instanceof iPortalScenesQueryParam_IPortalScenesQueryParam)) {
+            return null;
+        }
+        let scenesUrl;
+        if (this.withCredentials) {
+            scenesUrl = this.iportalUrl + "/web/mycontent/scenes";
+        } else {
+            scenesUrl = this.iportalUrl + "/web/scenes";
+        }
+        return this.request("GET", scenesUrl, queryParams).then(function(result) {
+            var sceneRetult = {content:[]};
+            var scenes = [];
+            if (result.content && result.content.length > 0) {
+                result.content.map(function(sceneJsonObj) {
+                    scenes.push(new iPortalScene_IPortalScene(scenesUrl + "/" + sceneJsonObj.id, sceneJsonObj));
+                    return sceneJsonObj;
+                });
+                sceneRetult.content = scenes;
+                sceneRetult.currentPage = result.currentPage;
+                sceneRetult.pageSize = result.pageSize;
+                sceneRetult.total = result.total;
+                sceneRetult.totalPage = result.totalPage;
+            }
+            return sceneRetult;
+        });
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.queryScene
+     * @param {Array} ids - 场景的序号。
+     * @description 查看某个场景资源的详情。
+     * @returns {Promise} 返回包含某条场景资源操作状态的 Promise 对象。
+     */
+    queryScene(id){
+        var sceneUrl = this.iportalUrl + "/web/scenes/"+id;
+        var scene = new iPortalScene_IPortalScene(sceneUrl);
+        return scene.load().then(()=>{
+            return scene
+        })
+    }
+
+    /**
+     * @function SuperMap.iPortal.prototype.updateSceneAttrs
+     * @param {Array} ids - 场景的序号。
+     * @description 更新某个场景信息。
+     * @returns {Promise} 返回包含更新场景属性操作状态的 Promise 对象。
+     */
+    updateSceneAttrs(id,updateParam){
+        var sceneAttributesUrl = this.iportalUrl + "/web/scenes/"+id+"/attributes.json";
+        return new iPortalScene_IPortalScene(sceneAttributesUrl, updateParam).update();
     }
 }
 
@@ -15647,6 +17383,24 @@ SuperMap.iPortal = iPortal_IPortal;
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -15746,7 +17500,7 @@ class CommonServiceBase_CommonServiceBase {
             me.totalTimes = 1;
         }
         
-        me.serverType = me.serverType || REST_ServerType.ISERVER;
+        me.serverType = me.serverType || ServerType.ISERVER;
 
         options = options || {};
         this.crossOrigin = options.crossOrigin;
@@ -15851,22 +17605,22 @@ class CommonServiceBase_CommonServiceBase {
         let keyUrl = url,
             credential, value;
         switch (this.serverType) {
-            case REST_ServerType.IPORTAL:
+            case ServerType.IPORTAL:
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
                     value = SecurityManager_SecurityManager.getKey(keyUrl);
-                    credential = value ? new Credential_Credential(value, "key") : null;
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case REST_ServerType.ONLINE:
+            case ServerType.ONLINE:
                 value = SecurityManager_SecurityManager.getKey(keyUrl);
-                credential = value ? new Credential_Credential(value, "key") : null;
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
                 //iServer or others
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         return credential;
@@ -15989,7 +17743,7 @@ class CommonServiceBase_CommonServiceBase {
             }
             options.params = options.data;
         }
-        FetchRequest_FetchRequest.commit(options.method, options.url, options.params, {
+        FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withCredentials: options.withCredentials,
             crossOrigin: options.crossOrigin,
@@ -16020,15 +17774,15 @@ class CommonServiceBase_CommonServiceBase {
                 }
             }
             if (result.error) {
-                var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
+                var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
                 failure(result);
             } else {
                 result.succeed = result.succeed == undefined ? true : result.succeed;
-                var success = (options.scope) ? BaseTypes_FunctionExt.bind(options.success, options.scope) : options.success;
+                var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
                 success(result);
             }
         }).catch(function (e) {
-            var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
+            var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
             failure(e);
         })
     }
@@ -16308,7 +18062,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
     processAsync(url, params) {
         var me = this;
         let { headers, crossOrigin, proxy } = this;
-        FetchRequest_FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
+        FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -16639,7 +18393,7 @@ class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServ
          * @member {SuperMap.DataFormat} [SuperMap.SpatialAnalystBase.prototype.format=SuperMap.DataFormat.GEOJSON]
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为 "ISERVER"，"GEOJSON"。
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
         this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
     }
 
@@ -16660,7 +18414,7 @@ class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServ
     serviceProcessCompleted(result) {
         var me = this, analystResult;
         result = Util_Util.transformResult(result);
-        if (result && me.format === REST_DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+        if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             //批量分析时会返回多个结果
             if (Util_Util.isArray(result)) {
                 for (var i = 0; i < result.length; i++) {
@@ -16877,7 +18631,7 @@ class BufferSetting_BufferSetting {
          * @member {SuperMap.BufferEndType} [SuperMap.BufferSetting.prototype.endType = SuperMap.BufferEndType.FLAT]
          * @description 缓冲区端点枚举值。分为平头和圆头两种。
          */
-        this.endType = REST_BufferEndType.FLAT;
+        this.endType = BufferEndType.FLAT;
 
         /**
          * @member {SuperMap.BufferDistance} [SuperMap.BufferSetting.prototype.leftDistance=100]
@@ -16908,7 +18662,7 @@ class BufferSetting_BufferSetting {
          * {@link SuperMap.BufferRadiusUnit.FOOT}、{@link SuperMap.BufferRadiusUnit.INCH}、{@link SuperMap.BufferRadiusUnit.MILE}、{@link SuperMap.BufferRadiusUnit.YARD}。
          * 仅对BufferAnalyst有效。
          */
-        this.radiusUnit = REST_BufferRadiusUnit.METER;
+        this.radiusUnit = BufferRadiusUnit.METER;
 
         if (options) {
             Util_Util.extend(this, options);
@@ -17026,7 +18780,7 @@ class DataReturnOption_DataReturnOption {
          * @member {SuperMap.DataReturnMode} [SuperMap.DataReturnOption.prototype.dataReturnMode=SuperMap.DataReturnMode.RECORDSET_ONLY]
          * @description 数据返回模式。
          */
-        this.dataReturnMode = REST_DataReturnMode.RECORDSET_ONLY;
+        this.dataReturnMode = DataReturnMode.RECORDSET_ONLY;
 
         /**
          * @member {boolean} [SuperMap.DataReturnOption.prototype.deleteExistResultDataset=true]
@@ -17916,7 +19670,7 @@ class OutputSetting_OutputSetting {
          * @member {SuperMap.OutputType} SuperMap.OutputSetting.prototype.type
          * @description 分布式分析的输出类型。
          */
-        this.type = REST_OutputType.UDB;
+        this.type = OutputType.UDB;
 
         /**
          * @member {string} [SuperMap.OutputSetting.prototype.datasetName='analystResult']
@@ -17997,7 +19751,7 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.RangeMode} [SuperMap.MappingParameters.prototype.RangeMode=SuperMap.RangeMode.EQUALINTERVAL]
          * @description 专题图分段模式。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} [SuperMap.MappingParameters.prototype.rangeCount]
@@ -18009,7 +19763,7 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.ColorGradientType} [SuperMap.MappingParameters.prototype.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED]
          * @description 专题图颜色渐变模式。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         Util_Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.MappingParameters";
@@ -18092,7 +19846,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 缓冲距离单位。
          */
-        this.distanceUnit = REST_AnalystSizeUnit.METER;
+        this.distanceUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
@@ -18234,7 +19988,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      */
     getJobs(url) {
         var me = this;
-        FetchRequest_FetchRequest.get(me._processUrl(url), null, {
+        FetchRequest.get(me._processUrl(url), null, {
             proxy: me.proxy
         }).then(function (response) {
             return response.json();
@@ -18274,7 +20028,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
             crossOrigin: me.crossOrigin,
             isInTheSameDomain: me.isInTheSameDomain
         };
-        FetchRequest_FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+        FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
@@ -18295,7 +20049,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest_FetchRequest.get(me._processUrl(result.newResourceLocation), {
+                FetchRequest.get(me._processUrl(result.newResourceLocation), {
                         _t: new Date().getTime()
                     })
                     .then(function (response) {
@@ -18504,7 +20258,7 @@ class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceB
          * @member {SuperMap.DataFormat} [SuperMap.NetworkAnalystServiceBase.prototype.format=SuperMap.DataFormat.GEOJSON]
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为 "ISERVER","GEOJSON"
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
         this.CLASS_NAME = "SuperMap.NetworkAnalystServiceBase";
     }
@@ -18526,7 +20280,7 @@ class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceB
     serviceProcessCompleted(result) {
         var me = this, analystResult;
         result = Util_Util.transformResult(result);
-        if (result && me.format === REST_DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+        if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             analystResult = me.toGeoJSONResult(result);
         }
         if (!analystResult) {
@@ -18979,7 +20733,7 @@ class QueryParameters_QueryParameters {
          * @member {SuperMap.GeometryType} [SuperMap.QueryParameters.prototype.networkType=SuperMap.GeometryType.LINE]
          * @description 网络数据集对应的查询类型，分为点和线两种类型。
          */
-        this.networkType = REST_GeometryType.LINE;
+        this.networkType = GeometryType.LINE;
 
         /**
          * @member {SuperMap.QueryOption} [SuperMap.QueryParameters.prototype.queryOption=SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY]
@@ -18987,7 +20741,7 @@ class QueryParameters_QueryParameters {
          *              该类描述查询结果返回类型，包括只返回属性、
          *              只返回几何实体以及返回属性和几何实体。
          */
-        this.queryOption = REST_QueryOption.ATTRIBUTEANDGEOMETRY;
+        this.queryOption = QueryOption.ATTRIBUTEANDGEOMETRY;
 
         /**
          * @member {Array.<SuperMap.FilterParameter>} SuperMap.QueryParameters.prototype.queryParams
@@ -19119,7 +20873,7 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
          * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
          *              参数格式为"ISERVER","GEOJSON",GEOJSON
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
         Util_Util.extend(this, options);
         var me = this, end;
@@ -19190,7 +20944,7 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
     serviceProcessCompleted(result) {
         var me = this;
         result = Util_Util.transformResult(result);
-        if (result && result.recordsets && me.format === REST_DataFormat.GEOJSON) {
+        if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
                     var geoJSONFormat = new GeoJSON_GeoJSON();
@@ -19354,7 +21108,7 @@ class ColorDictionary_ColorDictionary {
         var me = this,
             c = me.color;
         if (c) {
-            me.color = new ServerColor_ServerColor(c.red, c.green, c.blue);
+            me.color = new ServerColor(c.red, c.green, c.blue);
         }
 
         this.CLASS_NAME = "SuperMap.ColorDictionary";
@@ -19736,7 +21490,7 @@ class ComputeWeightMatrixService_ComputeWeightMatrixService extends NetworkAnaly
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -20140,7 +21894,7 @@ class OverlayAnalystParameters_OverlayAnalystParameters {
          * @member {SuperMap.OverlayOperationType} [SuperMap.OverlayAnalystParameters.prototype.operation=SuperMap.OverlayOperationType.UNION]
          * @description 指定叠加分析操作类型。
          */
-        this.operation = REST_OverlayOperationType.UNION;
+        this.operation = OverlayOperationType.UNION;
 
         if (options) {
             Util_Util.extend(this, options);
@@ -20387,7 +22141,7 @@ class SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting {
          * @member {SuperMap.SmoothMethod} [SuperMap.SurfaceAnalystParametersSetting.prototype.smoothMethod=SuperMap.SmoothMethod.BSPLINE]
          * @description 获取或设置光滑处理所使用的方法。
          */
-        this.smoothMethod = REST_SmoothMethod.BSPLINE;
+        this.smoothMethod = SmoothMethod.BSPLINE;
 
         /**
          * @member {number} [SuperMap.SurfaceAnalystParametersSetting.prototype.smoothness=0]
@@ -20500,7 +22254,7 @@ class SurfaceAnalystParameters_SurfaceAnalystParameters {
          * @member {SuperMap.SurfaceAnalystMethod} [SuperMap.SurfaceAnalystParameters.prototype.surfaceAnalystMethod=SuperMap.SurfaceAnalystMethod.ISOLINE]
          * @description 获取或设置表面分析的提取方法，提取等值线和提取等值面。
          */
-        this.surfaceAnalystMethod = REST_SurfaceAnalystMethod.ISOLINE;
+        this.surfaceAnalystMethod = SurfaceAnalystMethod.ISOLINE;
 
         if (options) {
             Util_Util.extend(this, options);
@@ -21044,7 +22798,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
          * @member {SuperMap.EditType} [SuperMap.EditFeaturesParameters.prototype.editType=SuperMap.EditType.ADD]
          * @description 要素集更新类型 (add、update、delete)。
          */
-        this.editType = REST_EditType.ADD;
+        this.editType = EditType.ADD;
 
         /**
          * @member {Array.<string|number>} [SuperMap.EditFeaturesParameters.prototype.IDs]
@@ -21096,7 +22850,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
             features,
             editType = params.editType;
 
-        if (editType === REST_EditType.DELETE) {
+        if (editType === EditType.DELETE) {
             if (params.IDs === null) {
                 return;
             }
@@ -21214,12 +22968,12 @@ class EditFeaturesService_EditFeaturesService extends CommonServiceBase_CommonSe
         me.returnContent = params.returnContent;
         me.isUseBatch = params.isUseBatch;
         jsonParameters = EditFeaturesParameters_EditFeaturesParameters.toJsonParameters(params);
-        if (editType === REST_EditType.DELETE) {
+        if (editType === EditType.DELETE) {
             ids = Util_Util.toJSON(params.IDs);
             me.url += "ids=" + ids;
             method = "DELETE";
             jsonParameters = ids;
-        } else if (editType === REST_EditType.UPDATE) {
+        } else if (editType === EditType.UPDATE) {
             method = "PUT";
         } else {
             if (me.isUseBatch) {
@@ -22073,7 +23827,7 @@ class FilterAggParameter_FilterAggParameter extends AggregationParameter_Aggrega
          * @member {SuperMap.AggregationType} [SuperMap.FilterAggParameter.prototype.aggType=AggregationType.FILTER]
          * @description 聚合类型。
          */
-        this.aggType = REST_AggregationType.FILTER;
+        this.aggType = AggregationType.FILTER;
         this.CLASS_NAME = "SuperMap.FilterAggParameter";
         Util_Util.extend(this, options);
     }
@@ -22515,7 +24269,7 @@ class FindClosestFacilitiesService_FindClosestFacilitiesService extends NetworkA
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -22950,7 +24704,7 @@ class FindMTSPPathsService_FindMTSPPathsService extends NetworkAnalystServiceBas
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -23170,7 +24924,7 @@ class FindPathService_FindPathService extends NetworkAnalystServiceBase_NetworkA
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -23406,7 +25160,7 @@ class FindServiceAreasService_FindServiceAreasService extends NetworkAnalystServ
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -23621,7 +25375,7 @@ class FindTSPPathsService_FindTSPPathsService extends NetworkAnalystServiceBase_
             }
             nodesString += ']';
             jsonParameters += nodesString;
-        } else if (params.isAnalyzeById == true) {
+        } else if (params.isAnalyzeById === true) {
             let nodeIDsString = "[", nodes = params.nodes, len = nodes.length;
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
@@ -23956,7 +25710,7 @@ class GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter ex
          * @member {SuperMap.AggregationQueryBuilderType} [SuperMap.GeoBoundingBoxQueryBuilderParameter.prototype.queryType=SuperMap.AggregationQueryBuilderType.GEO_BOUNDING_BOX]
          * @description 查询类型。
          */
-        this.queryType = REST_AggregationQueryBuilderType.GEO_BOUNDING_BOX;
+        this.queryType = AggregationQueryBuilderType.GEO_BOUNDING_BOX;
         this.CLASS_NAME = "SuperMap.GeoBoundingBoxQueryBuilderParameter";
         Util_Util.extend(this, options);
     }
@@ -23998,7 +25752,7 @@ class GeoHashGridAggParameter_GeoHashGridAggParameter extends AggregationParamet
          * @member {SuperMap.AggregationType} [SuperMap.GeoHashGridAggParameter.prototype.aggType=SuperMap.AggregationType.GEOHASH_GRID]
          * @description 格网聚合类型。
          */
-        this.aggType = REST_AggregationType.GEOHASH_GRID;
+        this.aggType = AggregationType.GEOHASH_GRID;
 
         Util_Util.extend(this, option);
 
@@ -24513,6 +26267,8 @@ SuperMap.GeoRelationAnalystService = GeoRelationAnalystService_GeoRelationAnalys
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  */
 class GetFeaturesParametersBase_GetFeaturesParametersBase {
 
@@ -24523,6 +26279,18 @@ class GetFeaturesParametersBase_GetFeaturesParametersBase {
          * @description 数据集集合中的数据集名称列表。
          */
         this.datasetNames = null;
+
+        /**
+         * @member {string} SuperMap.GetFeaturesParametersBase.prototype.targetEpsgCode
+         * @description 动态投影的目标坐标系对应的 EPSG Code，使用时需设置 returnContent 参数为 true。
+         */
+        this.targetEpsgCode = null;
+
+        /**
+         * @member {Object} SuperMap.GetFeaturesParametersBase.prototype.targetEpsgCode
+         * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+         */
+        this.targetPrj = null;
 
         /**
          * @member {boolean} [SuperMap.GetFeaturesParametersBase.prototype.returnContent=true]
@@ -24579,6 +26347,8 @@ class GetFeaturesParametersBase_GetFeaturesParametersBase {
         me.fromIndex = null;
         me.toIndex = null;
         me.maxFeatures = null;
+        me.targetEpsgCode = null;
+        me.targetPrj = null;
         if (me.aggregation) {
             me.aggregation = null;
         }
@@ -24609,6 +26379,8 @@ SuperMap.GetFeaturesParametersBase = GetFeaturesParametersBase_GetFeaturesParame
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -24645,7 +26417,7 @@ class GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters extends GetFea
          * @member {SuperMap.SpatialQueryMode} [SuperMap.GetFeaturesByBoundsParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式常量。
          */
-        this.spatialQueryMode = REST_SpatialQueryMode.CONTAIN;
+        this.spatialQueryMode = SpatialQueryMode.CONTAIN;
         Util_Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.GetFeaturesByBoundsParameters";
     }
@@ -24706,6 +26478,12 @@ class GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters extends GetFea
         }
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByBounds.maxFeatures = params.maxFeatures;
+        }
+        if (params.targetEpsgCode) {
+            parasByBounds.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByBounds.targetPrj = params.targetPrj;
         }
 
         return Util_Util.toJSON(parasByBounds);
@@ -24790,7 +26568,7 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。
          * 参数格式为 "ISERVER"，"GEOJSON"。
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
         Util_Util.extend(this, options);
         var me = this, end;
@@ -24871,7 +26649,7 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
     serviceProcessCompleted(result) {
         var me = this;
         result = Util_Util.transformResult(result);
-        if (me.format === REST_DataFormat.GEOJSON && result.features) {
+        if (me.format === DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new GeoJSON_GeoJSON();
             result.features = geoJSONFormat.toGeoJSON(result.features);
         }
@@ -24968,6 +26746,8 @@ SuperMap.GetFeaturesByBoundsService = GetFeaturesByBoundsService_GetFeaturesByBo
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -25056,6 +26836,12 @@ class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFea
         }
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             paramsBySql.maxFeatures = params.maxFeatures;
+        }
+        if (params.targetEpsgCode) {
+            paramsBySql.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            paramsBySql.targetPrj = params.targetPrj;
         }
         return Util_Util.toJSON(paramsBySql);
     }
@@ -25153,6 +26939,8 @@ SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService_GetFeaturesByBu
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -25191,7 +26979,7 @@ class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends Ge
          * @member {SuperMap.SpatialQueryMode} [SuperMap.GetFeaturesByGeometryParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式常量。
          */
-        this.spatialQueryMode = REST_SpatialQueryMode.CONTAIN;
+        this.spatialQueryMode = SpatialQueryMode.CONTAIN;
         Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesByGeometryParameters";
@@ -25250,6 +27038,12 @@ class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends Ge
         }
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByGeometry.maxFeatures = params.maxFeatures;
+        }
+        if (params.targetEpsgCode) {
+            parasByGeometry.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByGeometry.targetPrj = params.targetPrj;
         }
 
         return Util_Util.toJSON(parasByGeometry);
@@ -25340,6 +27134,8 @@ SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService_GetFeatures
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -25406,6 +27202,12 @@ class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesP
             filterParameter.name = params.datasetNames;
             filterParameter.fields = params.fields;
             parasByIDs.queryParameter = filterParameter;
+        }
+        if (params.targetEpsgCode) {
+            parasByIDs.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByIDs.targetPrj = params.targetPrj;
         }
         return Util_Util.toJSON(parasByIDs);
     }
@@ -25495,6 +27297,8 @@ SuperMap.GetFeaturesByIDsService = GetFeaturesByIDsService_GetFeaturesByIDsServi
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -25550,6 +27354,12 @@ class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesP
         }
         if (params.aggregations) {
             paramsBySql.aggregations = params.aggregations;
+        }
+        if (params.targetEpsgCode) {
+            paramsBySql.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            paramsBySql.targetPrj = params.targetPrj;
         }
         return Util_Util.toJSON(paramsBySql);
     }
@@ -25955,7 +27765,7 @@ SuperMap.GetGridCellInfosService = GetGridCellInfosService_GetGridCellInfosServi
  * @param {Array} srcData - 原始值数组。
  * @param {Array} targetData - 外部值数组。
  */
-class ThemeMemoryData_ThemeMemoryData {
+class ThemeMemoryData {
 
     constructor(srcData, targetData) {
         /**
@@ -26008,7 +27818,7 @@ class ThemeMemoryData_ThemeMemoryData {
 
 }
 
-SuperMap.ThemeMemoryData = ThemeMemoryData_ThemeMemoryData;
+SuperMap.ThemeMemoryData = ThemeMemoryData;
 // CONCATENATED MODULE: ./src/common/iServer/Theme.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -26120,19 +27930,19 @@ class ServerTextStyle_ServerTextStyle {
          * @member {SuperMap.TextAlignment} [SuperMap.ServerTextStyle.prototype.align= SuperMap.TextAlignment.BASELINECENTER]
          * @description 文本的对齐方式。
          */
-        this.align = REST_TextAlignment.BASELINECENTER;
+        this.align = TextAlignment.BASELINECENTER;
 
         /**
          * @member {SuperMap.ServerColor} [SuperMap.ServerTextStyle.prototype.backColor=(255, 255, 255)]
          * @description 文本的背景色。
          */
-        this.backColor = new ServerColor_ServerColor(255, 255, 255);
+        this.backColor = new ServerColor(255, 255, 255);
 
         /**
          * @member {SuperMap.ServerColor} [SuperMap.ServerTextStyle.prototype.foreColor=(0, 0, 0)]
          * @description 文本的前景色。
          */
-        this.foreColor = new ServerColor_ServerColor(0, 0, 0);
+        this.foreColor = new ServerColor(0, 0, 0);
 
         /**
          * @member {boolean} [SuperMap.ServerTextStyle.prototype.backOpaque=false]
@@ -26275,8 +28085,8 @@ class ServerTextStyle_ServerTextStyle {
     static fromObj(obj) {
         var res = new ServerTextStyle_ServerTextStyle(obj);
         Util_Util.copy(res, obj);
-        res.backColor = ServerColor_ServerColor.fromJson(obj.backColor);
-        res.foreColor = ServerColor_ServerColor.fromJson(obj.foreColor);
+        res.backColor = ServerColor.fromJson(obj.backColor);
+        res.foreColor = ServerColor.fromJson(obj.foreColor);
         return res;
     }
 
@@ -26926,7 +28736,7 @@ class ThemeLabelAlongLine_ThemeLabelAlongLine {
          * @member {SuperMap.AlongLineDirection} [SuperMap.ThemeLabelAlongLine.prototype.alongLineDirection=SuperMap.AlongLineDirection.LB_TO_RT]
          * @description 标签沿线标注方向。
          */
-        this.alongLineDirection = REST_AlongLineDirection.LB_TO_RT;
+        this.alongLineDirection = AlongLineDirection.LB_TO_RT;
 
         /**
          * @member {boolean} [SuperMap.ThemeLabelAlongLine.prototype.angleFixed=false]
@@ -27022,7 +28832,7 @@ class ThemeLabelBackground_ThemeLabelBackground {
          * @description 标签专题图中标签背景风格。当背景形状
          *              labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
          */
-        this.labelBackShape = REST_LabelBackShape.NONE;
+        this.labelBackShape = LabelBackShape.NONE;
 
         /**
          * @member {SuperMap.ServerStyle} [SuperMap.ThemeLabelBackground.prototype.backStyle=SuperMap.LabelBackShape.NON]
@@ -27158,7 +28968,7 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
          * @member {SuperMap.LabelOverLengthMode} [SuperMap.ThemeLabel.prototype.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
          * @description 对于标签的长度超过设置的标签最大长度 maxLabelLength 时称为超长标签。
          */
-        this.labelOverLengthMode = REST_LabelOverLengthMode.NONE;
+        this.labelOverLengthMode = LabelOverLengthMode.NONE;
 
         /**
          * @member {Array.<SuperMap.LabelMatrixCell>} SuperMap.ThemeLabel.prototype.matrixCells
@@ -27457,7 +29267,7 @@ class ThemeUnique_ThemeUnique extends Theme_Theme {
          *              但如果为某几个子项的风格进行单独设置后（设置了 ThemeUniqueItem 或 ThemeRangeItem 类中Style属性），
          *              该配色方案对于这几个子项将不起作用。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         if (options) {
             Util_Util.extend(this, options);
@@ -27567,7 +29377,7 @@ class ThemeGraphAxes_ThemeGraphAxes {
          * @member {SuperMap.ServerColor} [SuperMap.ThemeGraphAxes.prototype.axesColor=(0, 0, 0)]
          * @description 坐标轴颜色。当 axesDisplayed = true 时有效。
          */
-        this.axesColor =  new ServerColor_ServerColor(0, 0, 0);
+        this.axesColor =  new ServerColor(0, 0, 0);
 
         /**
          * @member {boolean} [SuperMap.ThemeGraphAxes.prototype.axesDisplayed=false]
@@ -27632,7 +29442,7 @@ class ThemeGraphAxes_ThemeGraphAxes {
         }
         var res = new ThemeGraphAxes_ThemeGraphAxes();
         Util_Util.copy(res, obj);
-        res.axesColor = ServerColor_ServerColor.fromJson(obj.axesColor);
+        res.axesColor = ServerColor.fromJson(obj.axesColor);
         res.axesTextStyle = ServerTextStyle_ServerTextStyle.fromObj(obj.axesTextStyle);
         return res;
     }
@@ -27737,7 +29547,7 @@ class ThemeGraphText_ThemeGraphText {
          * @description 统计专题图文本显示格式。
          *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。
          */
-        this.graphTextFormat = REST_ThemeGraphTextFormat.CAPTION;
+        this.graphTextFormat = ThemeGraphTextFormat.CAPTION;
 
         /**
          * @member {SuperMap.ServerTextStyle} SuperMap.ThemeGraphText.prototype.graphTextStyle
@@ -27936,7 +29746,7 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
          *              分级主要是为了减少制作统计专题图中数据大小之间的差异，使得统计图的视觉效果比较好，同时不同类别之间的比较也还是有意义的。
          *              提供三种分级模式：常数、对数和平方根，对于有值为负数的字段，不可以采用对数和平方根的分级方式。不同的等级方式用于确定符号大小的数值是不相同的。
          */
-        this.graduatedMode = REST_GraduatedMode.CONSTANT;
+        this.graduatedMode = GraduatedMode.CONSTANT;
 
         /**
          * @member {SuperMap.ThemeGraphAxes} SuperMap.ThemeGraph.prototype.graphAxes
@@ -27967,13 +29777,13 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
          * @description 统计专题图类型。SuperMap 提供了多种类型的统计图，
          *              分别为面积图、阶梯图、折线图、点状图、柱状图、三维柱状图、饼图、三维饼图、玫瑰图、三维玫瑰图、堆叠柱状图、三维堆叠柱状图、环状图。默认为面积图。
          */
-        this.graphType = REST_ThemeGraphType.AREA;
+        this.graphType = ThemeGraphType.AREA;
 
         /**
          * @member {SuperMap.GraphAxesTextDisplayMode} [SuperMap.ThemeGraph.prototype.graphAxesTextDisplayMode=SuperMap.GraphAxesTextDisplayMode.NONE]
          * @description 统计专题图坐标轴文本显示模式。
          */
-        this.graphAxesTextDisplayMode = REST_GraphAxesTextDisplayMode.NONE;
+        this.graphAxesTextDisplayMode = GraphAxesTextDisplayMode.NONE;
 
         /**
          * @member {Array.<SuperMap.ThemeGraphItem>} SuperMap.ThemeGraph.prototype.items
@@ -28534,7 +30344,7 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
             me.flow.destroy();
             me.flow = null;
         }
-        me.graduatedMode = REST_GraduatedMode.CONSTANT;
+        me.graduatedMode = GraduatedMode.CONSTANT;
         if (me.offset) {
             me.offset.destroy();
             me.offset = null;
@@ -28789,7 +30599,7 @@ class ThemeRange_ThemeRange extends Theme_Theme {
          *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，
          *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} SuperMap.ThemeRange.prototype.rangeParameter
@@ -28807,7 +30617,7 @@ class ThemeRange_ThemeRange extends Theme_Theme {
          *              方案完成填*充。但如果为某几个子项的风格进行单独设置后（设置了 {@link SuperMap.ThemeUniqueItem} 或 {@link SuperMap.ThemeRangeItem} 类中Style属性），
          *              该配色方案对于这几个子项将不起作用。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         if (options) {
             Util_Util.extend(this, options);
@@ -29629,7 +31439,7 @@ class Grid_Grid extends UGCSubLayer_UGCSubLayer {
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
         if (this.specialColor) {
-            this.specialColor = new ServerColor_ServerColor(this.specialColor.red,
+            this.specialColor = new ServerColor(this.specialColor.red,
                 this.specialColor.green,
                 this.specialColor.blue);
         }
@@ -29638,7 +31448,7 @@ class Grid_Grid extends UGCSubLayer_UGCSubLayer {
                 color;
             for (var i in this.colors) {
                 color = this.colors[i];
-                colors.push(new ServerColor_ServerColor(color.red, color.green, color.blue));
+                colors.push(new ServerColor(color.red, color.green, color.blue));
             }
             this.colors = colors;
         }
@@ -29777,7 +31587,7 @@ class Image_UGCImage extends UGCSubLayer_UGCSubLayer {
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
         if (this.transparentColor) {
-            this.transparentColor = new ServerColor_ServerColor(this.transparentColor.red,
+            this.transparentColor = new ServerColor(this.transparentColor.red,
                 this.transparentColor.green,
                 this.transparentColor.blue);
         }
@@ -30622,13 +32432,13 @@ class InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameter
          * 用户所选择的半变函数类型会影响未知点的预测，特别是曲线在原点处的不同形状有重要意义。
          * 曲线在原点处越陡，则较近领域对该预测值的影响就越大，因此输出表面就会越不光滑。
          */
-        this.variogramMode = REST_VariogramMode.SPHERICAL;
+        this.variogramMode = VariogramMode.SPHERICAL;
 
         /**
          * @member {SuperMap.Exponent} [SuperMap.InterpolationKrigingAnalystParameters.prototype.exponent=SuperMap.Exponent.EXP1]
          * @description 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数。
          */
-        this.exponent = REST_Exponent.EXP1;
+        this.exponent = Exponent.EXP1;
 
         /**
          * @member {SuperMap.SearchMode} SuperMap.InterpolationKrigingAnalystParameters.prototype.searchMode
@@ -30889,19 +32699,19 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
+        this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.radiusUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 搜索半径单位。
          */
-        this.radiusUnit = REST_AnalystSizeUnit.METER;
+        this.radiusUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystAreaUnit} [SuperMap.KernelDensityJobParameter.prototype.areaUnit=SuperMap.AnalystAreaUnit.SQUAREMILE]
          * @description 面积单位。
          */
-        this.areaUnit = REST_AnalystAreaUnit.SQUAREMILE;
+        this.areaUnit = AnalystAreaUnit.SQUAREMILE;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.KernelDensityJobParameter.prototype.output
@@ -31056,14 +32866,14 @@ SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsSe
  * @description 该类可以包含 n*n 个矩阵标签元素，矩阵标签元素的类型可以是图片，符号，标签专题图等。
  *              符号类型的矩阵标签元素类、图片类型的矩阵标签元素类和专题图类型的矩阵标签元素类均继承自该类。
  */
-class LabelMatrixCell_LabelMatrixCell {
+class LabelMatrixCell {
     constructor() {
         this.CLASS_NAME = "LabelMatrixCell";
     }
 
 }
 
-SuperMap.LabelMatrixCell = LabelMatrixCell_LabelMatrixCell;
+SuperMap.LabelMatrixCell = LabelMatrixCell;
 // CONCATENATED MODULE: ./src/common/iServer/LabelImageCell.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -31090,7 +32900,7 @@ SuperMap.LabelMatrixCell = LabelMatrixCell_LabelMatrixCell;
  * @param {number} [options.width=0] - 设置图片的宽度，单位为毫米。
  * @param {boolean} [options.sizeFixed=false] - 是否固定图片的大小。
  */
-class LabelImageCell_LabelImageCell extends LabelMatrixCell_LabelMatrixCell {
+class LabelImageCell_LabelImageCell extends LabelMatrixCell {
 
     constructor(options) {
         super(options);
@@ -31176,7 +32986,7 @@ SuperMap.LabelImageCell = LabelImageCell_LabelImageCell;
  * @param {SuperMap.ServerStyle} options.style - 获取或设置符号样式。 
  * @param {string} options.symbolIDField - 符号 ID 或符号 ID 所对应的字段名称。
  */
-class LabelSymbolCell_LabelSymbolCell extends LabelMatrixCell_LabelMatrixCell {
+class LabelSymbolCell_LabelSymbolCell extends LabelMatrixCell {
 
     constructor(options) {
         super(options);
@@ -31245,7 +33055,7 @@ SuperMap.LabelSymbolCell = LabelSymbolCell_LabelSymbolCell;
  * @param {Object} options -参数。 
  * @param {SuperMap.ThemeLabel} options.themeLabel - 使用专题图对象作为矩阵标签的一个元素。
  */
-class LabelThemeCell_LabelThemeCell extends LabelMatrixCell_LabelMatrixCell {
+class LabelThemeCell_LabelThemeCell extends LabelMatrixCell {
 
 
     constructor(options) {
@@ -31759,7 +33569,7 @@ class MeasureParameters_MeasureParameters {
          * @member {SuperMap.Unit} [SuperMap.MeasureParameters.prototype.unit=SuperMap.Unit.METER]
          * @description 量算单位。即量算结果以米为单位。
          */
-        this.unit = REST_Unit.METER;
+        this.unit = Unit.METER;
 
         /**
          * @member {string} [SuperMap.MeasureParameters.prototype.prjCoordSys]
@@ -31835,7 +33645,7 @@ class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase 
          * @member {SuperMap.MeasureMode} [SuperMap.MeasureService.prototype.measureMode=MeasureMode.DISTANCE]
          * @description 量算模式，包括距离量算模式和面积量算模式。
          */
-        this.measureMode = REST_MeasureMode.DISTANCE;
+        this.measureMode = MeasureMode.DISTANCE;
 
         if (options) {
             Util_Util.extend(this, options);
@@ -31871,7 +33681,7 @@ class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase 
             return;
         }
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.measureMode === REST_MeasureMode.AREA) {
+        if (me.measureMode === MeasureMode.AREA) {
             me.url += ((end === "/") ? "area.json?" : "/area.json?");
         } else {
             me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
@@ -32326,7 +34136,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
          * @member {string} SuperMap.QueryService.prototype.format
          * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
         this.returnFeatureWithFieldCaption = false;
 
@@ -32418,7 +34228,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
                             return feature;
                         })
                     }
-                    if (me.format === REST_DataFormat.GEOJSON) {
+                    if (me.format === DataFormat.GEOJSON) {
                         recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                     }
                 }
@@ -32760,7 +34570,7 @@ class QueryByGeometryParameters_QueryByGeometryParameters extends QueryParameter
          * @member {SuperMap.SpatialQueryMode} [SuperMap.QueryByGeometryParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.INTERSECT]
          * @description 空间查询模式。
          */
-        this.spatialQueryMode = REST_SpatialQueryMode.INTERSECT;
+        this.spatialQueryMode = SpatialQueryMode.INTERSECT;
 
         Util_Util.extend(this, options);
 
@@ -34178,7 +35988,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          * @member {SuperMap.SpatialQueryMode} [SuperMap.SingleObjectQueryJobsParameter.prototype.mode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式 。
          */
-        this.mode = REST_SpatialQueryMode.CONTAIN;
+        this.mode = SpatialQueryMode.CONTAIN;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SingleObjectQueryJobsParameter.prototype.output]
@@ -34677,7 +36487,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.StatisticAnalystMode} [SuperMap.SummaryMeshJobParameter.prototype.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE]
          * @description 统计模式。
          */
-        this.statisticModes = REST_StatisticAnalystMode.AVERAGE;
+        this.statisticModes = StatisticAnalystMode.AVERAGE;
 
         /**
          * @member {number} SuperMap.SummaryMeshJobParameter.prototype.fields
@@ -34689,7 +36499,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.SummaryType} [SuperMap.SummaryMeshJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 聚合类型。
          */
-        this.type = REST_SummaryType.SUMMARYMESH;
+        this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SummaryMeshJobParameter.prototype.output]
@@ -34965,13 +36775,13 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
+        this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.SummaryType} [SuperMap.SummaryRegionJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 汇总类型。
          */
-        this.type = REST_SummaryType.SUMMARYMESH;
+        this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.SummaryRegionJobParameter.prototype.output
@@ -35533,7 +37343,7 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
          * @member {SuperMap.ServerColor} SuperMap.ThemeGridRangeItem.prototype.color
          * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
          */
-        this.color =  new ServerColor_ServerColor();
+        this.color =  new ServerColor();
 
         /**
          * @member {number} [SuperMap.ThemeGridRangeItem.prototype.end=0]
@@ -35605,7 +37415,7 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
         }
         var res = new ThemeGridRangeItem_ThemeGridRangeItem();
         Util_Util.copy(res, obj);
-        res.color = ServerColor_ServerColor.fromJson(obj.color);
+        res.color = ServerColor.fromJson(obj.color);
         return res;
     }
 
@@ -35657,7 +37467,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
          *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，
          *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} [SuperMap.ThemeGridRange.prototype.rangeParameter=0]
@@ -35672,7 +37482,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
          * @description 渐变颜色枚举类。
          *
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         /**
          * @member {boolean} SuperMap.ThemeGridRange.prototype.reverseColor
@@ -35767,7 +37577,7 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
          * @member {SuperMap.ServerColor} [SuperMap.ThemeGridUniqueItem.prototype.color]
          * @description 栅格单值专题图子项的显示颜色。
          */
-        this.color = new ServerColor_ServerColor();
+        this.color = new ServerColor();
 
         /**
          * @member {number} SuperMap.ThemeGridUniqueItem.prototype.unique
@@ -35829,7 +37639,7 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
     static fromObj(obj) {
         var res = new ThemeGridUniqueItem_ThemeGridUniqueItem();
         Util_Util.copy(res, obj);
-        res.color = ServerColor_ServerColor.fromJson(obj.color);
+        res.color = ServerColor.fromJson(obj.color);
         return res;
 
     }
@@ -35868,7 +37678,7 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
          * @description 栅格单值专题图的默认颜色。
          *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
          */
-        this.defaultcolor = new ServerColor_ServerColor();
+        this.defaultcolor = new ServerColor();
 
         /**
          * @member {Array.<SuperMap.ThemeGridUniqueItem>} SuperMap.ThemeGridUnique.prototype.items
@@ -35943,7 +37753,7 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
         var len = uItems ? uItems.length : 0;
         Util_Util.extend(res, obj);
         res.items = [];
-        res.defaultcolor = ServerColor_ServerColor.fromJson(obj.defaultcolor);
+        res.defaultcolor = ServerColor.fromJson(obj.defaultcolor);
         for (var i = 0; i < len; i++) {
             res.items.push(ThemeGridUniqueItem_ThemeGridUniqueItem.fromObj(uItems[i]));
         }
@@ -36662,7 +38472,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
          * @member {SuperMap.TopologyValidatorRule} [SuperMap.TopologyValidatorJobsParameter.prototype.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP]
          * @description 拓扑检查模式。
          */
-        this.rule = REST_TopologyValidatorRule.REGIONNOOVERLAP;
+        this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
@@ -37091,13 +38901,13 @@ class TransferSolutionParameters_TransferSolutionParameters {
          * @member {SuperMap.TransferPreference} [SuperMap.TransferSolutionParameters.prototype.transferPreference=SuperMap.TransferPreference.NONE]
          *  @description 乘车偏好枚举。
          */
-        this.transferPreference = REST_TransferPreference.NONE;
+        this.transferPreference = TransferPreference.NONE;
 
         /**
          *  @member {SuperMap.TransferTactic} [SuperMap.TransferSolutionParameters.prototype.transferTactic=TransferTactic|SuperMap.TransferTactic.LESS_TIME]
          *  @description 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。
          */
-        this.transferTactic = REST_TransferTactic.LESS_TIME;
+        this.transferTactic = TransferTactic.LESS_TIME;
 
         /**
          *  @member {number} [SuperMap.TransferSolutionParameters.prototype.walkingRatio=10]
@@ -37709,7 +39519,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          * @member {SuperMap.ClipAnalystMode} [SuperMap.VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
          * @description 裁剪分析模式 。
          */
-        this.mode = REST_ClipAnalystMode.CLIP;
+        this.mode = ClipAnalystMode.CLIP;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.VectorClipJobsParameter.prototype.output
@@ -37923,7 +39733,7 @@ class NDVIParameter_NDVIParameter extends RasterFunctionParameter_RasterFunction
          * @member {SuperMap.RasterFunctionType} [SuperMap.RasterFunctionParameter.prototype.type]
          * @description 栅格分析方法。
          */
-        this.type = REST_RasterFunctionType.NDVI;
+        this.type = RasterFunctionType.NDVI;
         Util_Util.extend(this, options);
 
         this.CLASS_NAME = 'SuperMap.NDVIParameter';
@@ -38014,7 +39824,7 @@ class HillshadeParameter_HillshadeParameter extends RasterFunctionParameter_Rast
          * @member {SuperMap.RasterFunctionType} SuperMap.RasterFunctionParameter.prototype.type
          * @description 栅格分析方法。
          */
-        this.type = REST_RasterFunctionType.HILLSHADE;
+        this.type = RasterFunctionType.HILLSHADE;
         Util_Util.extend(this, options);
 
         this.CLASS_NAME = 'SuperMap.HillshadeParameter';
@@ -38511,7 +40321,7 @@ SuperMap.HillshadeParameter = HillshadeParameter_HillshadeParameter;
  * @category iPortal/Online
  * @description 服务发布状态。
  */
-var OnlineResources_ServiceStatus = SuperMap.ServiceStatus = {
+var ServiceStatus = SuperMap.ServiceStatus = {
     /** 不涉及，不可发布。 */
     DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
     /** 发布失败。 */
@@ -38534,7 +40344,7 @@ var OnlineResources_ServiceStatus = SuperMap.ServiceStatus = {
  * @category iPortal/Online
  * @description 数据项类型。
  */
-var OnlineResources_DataItemType = SuperMap.DataItemType = {
+var DataItemType = SuperMap.DataItemType = {
     /** AUDIO */
     AUDIO: "AUDIO",
     /** COLOR */
@@ -38593,7 +40403,7 @@ var OnlineResources_DataItemType = SuperMap.DataItemType = {
  * @category iPortal/Online
  * @description 数据排序字段。
  */
-var OnlineResources_DataItemOrderBy = SuperMap.DataItemOrderBy = {
+var DataItemOrderBy = SuperMap.DataItemOrderBy = {
     /** FILENAME */
     FILENAME: "FILENAME",
     /** ID */
@@ -38623,7 +40433,7 @@ var OnlineResources_DataItemOrderBy = SuperMap.DataItemOrderBy = {
  * @category iPortal/Online
  * @description 关键字查询时的过滤字段。
  */
-var OnlineResources_FilterField = SuperMap.FilterField = {
+var FilterField = SuperMap.FilterField = {
     /** LINKPAGE */
     LINKPAGE: "LINKPAGE",
     /** LINKPAGE */
@@ -38659,7 +40469,7 @@ class OnlineServiceBase_OnlineServiceBase {
     constructor(options) {
         options = options || {};
         Util_Util.extend(this, options);
-        this.serverType = REST_ServerType.ONLINE;
+        this.serverType = ServerType.ONLINE;
         this.CLASS_NAME = "SuperMap.OnlineServiceBase";
     }
 
@@ -38676,7 +40486,7 @@ class OnlineServiceBase_OnlineServiceBase {
         url = this.createCredentialUrl(url);
         requestOptions['crossOrigin'] = this.options.crossOrigin;
         requestOptions['headers'] = this.options.headers;
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function(response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function(response) {
             return response.json();
         });
     }
@@ -38867,7 +40677,7 @@ class Online_Online {
      * @returns {Promise} 返回包含网络请求结果的 Promise 对象。
      */
     load() {
-        return FetchRequest_FetchRequest.get(this.rootUrl).then(function (response) {
+        return FetchRequest.get(this.rootUrl).then(function (response) {
             return response;
         });
     }
@@ -38891,7 +40701,7 @@ class Online_Online {
         if (parameter) {
             parameter = parameter.toJSON();
         }
-        return FetchRequest_FetchRequest.get(url, parameter).then(function (json) {
+        return FetchRequest.get(url, parameter).then(function (json) {
             if (!json || !json.content || json.content.length < 1) {
                 return;
             }
@@ -39050,7 +40860,7 @@ class KeyServiceParameter_KeyServiceParameter {
     constructor(options) {
         this.name = null;
         this.serviceIds = null;
-        this.clientType = REST_ClientType.SERVER;
+        this.clientType = ClientType.SERVER;
         this.limitation = null;
         Util_Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.KeyServiceParameter";
@@ -39121,7 +40931,7 @@ class ServerInfo_ServerInfo {
         Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ServerInfo";
-        this.type = this.type || REST_ServerType.ISERVER;
+        this.type = this.type || ServerType.ISERVER;
         if (!this.server) {
             console.error('server url require is not  undefined')
         }
@@ -39129,7 +40939,7 @@ class ServerInfo_ServerInfo {
         //this.server = this.server.match(patten)[0];
 
         var tokenServiceSuffix = "/services/security/tokens.json";
-        if (this.type === REST_ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
+        if (this.type === ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
             tokenServiceSuffix = "/iserver" + tokenServiceSuffix;
         }
 
@@ -39138,9 +40948,9 @@ class ServerInfo_ServerInfo {
         }
 
         if (!this.keyServiceUrl) {
-            if (this.type === REST_ServerType.IPORTAL) {
+            if (this.type === ServerType.IPORTAL) {
                 this.keyServiceUrl = this.server + "/web/mycontent/keys/register.json";
-            } else if (this.type === REST_ServerType.ONLINE) {
+            } else if (this.type === ServerType.ONLINE) {
                 this.keyServiceUrl = this.server + "/web/mycontent/keys.json";
             }
         }
@@ -39190,7 +41000,7 @@ class TokenServiceParameter_TokenServiceParameter {
          * @member {SuperMap.ClientType} SuperMap.TokenServiceParameter.prototype.clientType
          * @description token 申请的客户端标识类型。
          */
-        this.clientType = REST_ClientType.NONE;
+        this.clientType = ClientType.NONE;
 
         /**
          * @member {string} [SuperMap.TokenServiceParameter.prototype.ip]
@@ -39249,7 +41059,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(13);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(8);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -41300,7 +43110,7 @@ class Color_Color {
 
 
 
-var ColorsPickerUtil_ColorRender = new Color_Color();
+var ColorRender = new Color_Color();
 // let "http://www.qzu.zj.cn": "#bd10e0"
 // 					"www.qzct.net": "#7ed321" = new SuperMap.LevelRenderer.Tool.Color();
 
@@ -41309,7 +43119,7 @@ var ColorsPickerUtil_ColorRender = new Color_Color();
  * 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
  *
  */
-class ColorsPickerUtil_ColorsPickerUtil  {
+class ColorsPickerUtil  {
     /**
      * 创建DOM canvas
      * @param height canvas 高度
@@ -41378,10 +43188,10 @@ class ColorsPickerUtil_ColorsPickerUtil  {
      * {Array} 颜色数组。
      */
     static getStepColors (start, end, step){
-        start = ColorsPickerUtil_ColorRender.toRGBA(start);
-        end = ColorsPickerUtil_ColorRender.toRGBA(end);
-        start = ColorsPickerUtil_ColorRender.getData(start);
-        end = ColorsPickerUtil_ColorRender.getData(end);
+        start = ColorRender.toRGBA(start);
+        end = ColorRender.toRGBA(end);
+        start = ColorRender.getData(start);
+        end = ColorRender.getData(end);
 
         var colors = [];
         var stepR = (end[0] - start[0]) / step;
@@ -41391,10 +43201,10 @@ class ColorsPickerUtil_ColorsPickerUtil  {
         // 生成颜色集合
         // fix by linfeng 颜色堆积
         for (var i = 0, r = start[0], g = start[1], b = start[2], a = start[3]; i < step; i++) {
-            colors[i] = ColorsPickerUtil_ColorRender.toColor([
-                ColorsPickerUtil_ColorRender.adjust(Math.floor(r), [ 0, 255 ]),
-                ColorsPickerUtil_ColorRender.adjust(Math.floor(g), [ 0, 255 ]),
-                ColorsPickerUtil_ColorRender.adjust(Math.floor(b), [ 0, 255 ]),
+            colors[i] = ColorRender.toColor([
+                ColorRender.adjust(Math.floor(r), [ 0, 255 ]),
+                ColorRender.adjust(Math.floor(g), [ 0, 255 ]),
+                ColorRender.adjust(Math.floor(b), [ 0, 255 ]),
                 a.toFixed(4) - 0
             ],'hex');
             r += stepR;
@@ -41406,7 +43216,7 @@ class ColorsPickerUtil_ColorsPickerUtil  {
         g = end[1];
         b = end[2];
         a = end[3];
-        colors[i] = ColorsPickerUtil_ColorRender.toColor([r, g, b, a], 'hex');
+        colors[i] = ColorRender.toColor([r, g, b, a], 'hex');
         return colors;
     }
 
@@ -41463,12 +43273,12 @@ class ColorsPickerUtil_ColorsPickerUtil  {
         return ret;
     }
 }
-SuperMap.ColorsPickerUtil = ColorsPickerUtil_ColorsPickerUtil;
+SuperMap.ColorsPickerUtil = ColorsPickerUtil;
 
 // CONCATENATED MODULE: ./src/common/util/ArrayStatistic.js
 
 
-class ArrayStatistic_ArrayStatistic {
+class ArrayStatistic {
 
     // geostatsInstance: null,
 
@@ -41665,7 +43475,7 @@ class ArrayStatistic_ArrayStatistic {
     }
 
 }
-SuperMap.ArrayStatistic = ArrayStatistic_ArrayStatistic;
+SuperMap.ArrayStatistic = ArrayStatistic;
 // CONCATENATED MODULE: ./src/common/util/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -41678,7 +43488,7 @@ SuperMap.ArrayStatistic = ArrayStatistic_ArrayStatistic;
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(12);
+var lodash_topairs = __webpack_require__(9);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -46570,7 +48380,7 @@ SuperMap.ThemeStyle = ThemeStyle_ThemeStyle;
  * @category Visualization Theme
  * @classdesc 图形参数基类，此类不可实例化
  */
-class ShapeParameters_ShapeParameters {
+class ShapeParameters {
 
 
 
@@ -46665,7 +48475,7 @@ class ShapeParameters_ShapeParameters {
 
 }
 SuperMap.Feature = SuperMap.Feature || {};
-SuperMap.Feature.ShapeParameters = ShapeParameters_ShapeParameters;
+SuperMap.Feature.ShapeParameters = ShapeParameters;
 // CONCATENATED MODULE: ./src/common/overlay/feature/Point.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -46680,7 +48490,7 @@ SuperMap.Feature.ShapeParameters = ShapeParameters_ShapeParameters;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class feature_Point_Point extends ShapeParameters_ShapeParameters {
+class feature_Point_Point extends ShapeParameters {
 
 
 
@@ -46761,7 +48571,7 @@ SuperMap.Feature.ShapeParameters.Point = feature_Point_Point;
  * @classdesc 线参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
-class Line_Line extends ShapeParameters_ShapeParameters {
+class Line_Line extends ShapeParameters {
 
 
 
@@ -46831,7 +48641,7 @@ SuperMap.Feature.ShapeParameters.Line = Line_Line;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
  
-class feature_Polygon_Polygon extends ShapeParameters_ShapeParameters {
+class feature_Polygon_Polygon extends ShapeParameters {
     
   
 
@@ -46911,7 +48721,7 @@ SuperMap.Feature.ShapeParameters.Polygon = feature_Polygon_Polygon;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class feature_Rectangle_Rectangle extends ShapeParameters_ShapeParameters {
+class feature_Rectangle_Rectangle extends ShapeParameters {
     
     
     /**
@@ -47002,7 +48812,7 @@ SuperMap.Feature.ShapeParameters.Rectangle = feature_Rectangle_Rectangle;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class Sector_Sector extends ShapeParameters_ShapeParameters {
+class Sector_Sector extends ShapeParameters {
 
     
 
@@ -47113,7 +48923,7 @@ SuperMap.Feature.ShapeParameters.Sector = Sector_Sector;
  * @extent {SuperMap.Feature.ShapeParameters}
  */
 
-class Label_Label extends ShapeParameters_ShapeParameters {
+class Label_Label extends ShapeParameters {
 
 
     /**
@@ -47202,7 +49012,7 @@ SuperMap.Feature.ShapeParameters.Label = Label_Label;
  * @classdesc 图片参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
-class Image_Image extends ShapeParameters_ShapeParameters {
+class Image_Image extends ShapeParameters {
 
 
     /**
@@ -47313,7 +49123,7 @@ SuperMap.Feature.ShapeParameters.Image = Image_Image;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class Circle_Circle extends ShapeParameters_ShapeParameters {
+class Circle_Circle extends ShapeParameters {
 
 
     /**
@@ -49960,7 +51770,7 @@ class Env {
  * @classdesc LevelRenderer 工具-事件辅助类
  * @private 
  */
-class levelRenderer_Event_Event {
+class Event_Event {
 
 
     /**
@@ -50524,7 +52334,7 @@ class Matrix {
 
 
 
-class SUtil_SUtil {
+class SUtil {
     /**
      * @function SuperMap.LevelRenderer.SUtil.SUtil_smoothBezier
      * @description 贝塞尔平滑曲线。
@@ -50555,12 +52365,12 @@ class SUtil_SUtil {
             max = [-Infinity, -Infinity];
             let len = points.length;
             for (let i = 0; i < len; i++) {
-                SUtil_SUtil.Util_vector.min(min, min, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
-                SUtil_SUtil.Util_vector.max(max, max, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
+                SUtil.Util_vector.min(min, min, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
+                SUtil.Util_vector.max(max, max, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
             }
             // 与指定的包围盒做并集
-            SUtil_SUtil.Util_vector.min(min, min, constraint[0]);
-            SUtil_SUtil.Util_vector.max(max, max, constraint[1]);
+            SUtil.Util_vector.min(min, min, constraint[0]);
+            SUtil.Util_vector.max(max, max, constraint[1]);
         }
 
         let len = points.length;
@@ -50582,28 +52392,28 @@ class SUtil_SUtil {
                 }
             }
 
-            SUtil_SUtil.Util_vector.sub(v, nextPoint, prevPoint);
+            SUtil.Util_vector.sub(v, nextPoint, prevPoint);
 
             // use degree to scale the handle length
-            SUtil_SUtil.Util_vector.scale(v, v, smooth);
+            SUtil.Util_vector.scale(v, v, smooth);
 
-            let d0 = SUtil_SUtil.Util_vector.distance(point, prevPoint);
-            let d1 = SUtil_SUtil.Util_vector.distance(point, nextPoint);
+            let d0 = SUtil.Util_vector.distance(point, prevPoint);
+            let d1 = SUtil.Util_vector.distance(point, nextPoint);
             let sum = d0 + d1;
             if (sum !== 0) {
                 d0 /= sum;
                 d1 /= sum;
             }
 
-            SUtil_SUtil.Util_vector.scale(v1, v, -d0);
-            SUtil_SUtil.Util_vector.scale(v2, v, d1);
-            let cp0 = SUtil_SUtil.Util_vector.add([], point, v1);
-            let cp1 = SUtil_SUtil.Util_vector.add([], point, v2);
+            SUtil.Util_vector.scale(v1, v, -d0);
+            SUtil.Util_vector.scale(v2, v, d1);
+            let cp0 = SUtil.Util_vector.add([], point, v1);
+            let cp1 = SUtil.Util_vector.add([], point, v2);
             if (hasConstraint) {
-                SUtil_SUtil.Util_vector.max(cp0, cp0, min);
-                SUtil_SUtil.Util_vector.min(cp0, cp0, max);
-                SUtil_SUtil.Util_vector.max(cp1, cp1, min);
-                SUtil_SUtil.Util_vector.min(cp1, cp1, max);
+                SUtil.Util_vector.max(cp0, cp0, min);
+                SUtil.Util_vector.min(cp0, cp0, max);
+                SUtil.Util_vector.max(cp1, cp1, min);
+                SUtil.Util_vector.min(cp1, cp1, max);
             }
             cps.push(cp0);
             cps.push(cp1);
@@ -50637,7 +52447,7 @@ class SUtil_SUtil {
 
         var distance = 0;
         for (let i = 1; i < len; i++) {
-            distance += SUtil_SUtil.Util_vector.distance([points[i - 1][0] + __OP[0], points[i - 1][1] + __OP[1]], [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
+            distance += SUtil.Util_vector.distance([points[i - 1][0] + __OP[0], points[i - 1][1] + __OP[1]], [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
         }
 
         var segs = distance / 5;
@@ -50733,18 +52543,18 @@ class SUtil_SUtil {
 }
 // 把所有工具对象放到全局静态变量上，以便直接调用工具方法，
 // 避免使用工具时频繁的创建工具对象带来的性能消耗。
-SUtil_SUtil.Util_area = new Area_Area();
-SUtil_SUtil.Util_color = new Color_Color();
-SUtil_SUtil.Util_computeBoundingBox = new ComputeBoundingBox_ComputeBoundingBox();
-SUtil_SUtil.Util_curve = new levelRenderer_Curve_Curve();
-SUtil_SUtil.Util_env = new Env();
-SUtil_SUtil.Util_event = new levelRenderer_Event_Event();
-SUtil_SUtil.Util_http = new Http();
-SUtil_SUtil.Util_log = new Log_Log();
-SUtil_SUtil.Util_math = new Math_Math();
-SUtil_SUtil.Util_matrix = new Matrix();
-SUtil_SUtil.Util = new levelRenderer_Util_Util();
-SUtil_SUtil.Util_vector = new levelRenderer_Vector_Vector();
+SUtil.Util_area = new Area_Area();
+SUtil.Util_color = new Color_Color();
+SUtil.Util_computeBoundingBox = new ComputeBoundingBox_ComputeBoundingBox();
+SUtil.Util_curve = new levelRenderer_Curve_Curve();
+SUtil.Util_env = new Env();
+SUtil.Util_event = new Event_Event();
+SUtil.Util_http = new Http();
+SUtil.Util_log = new Log_Log();
+SUtil.Util_math = new Math_Math();
+SUtil.Util_matrix = new Matrix();
+SUtil.Util = new levelRenderer_Util_Util();
+SUtil.Util_vector = new levelRenderer_Vector_Vector();
 
 // CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Transformable.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -50801,18 +52611,18 @@ class Transformable_Transformable {
          * @description 设置图形的朝向。
          */
         this.lookAt = (function () {
-            var v = SUtil_SUtil.Util_vector.create();
+            var v = SUtil.Util_vector.create();
             // {Array.<Number>|Float32Array} target
             return function (target) {
                 if (!this.transform) {
-                    this.transform = SUtil_SUtil.Util_matrix.create();
+                    this.transform = SUtil.Util_matrix.create();
                 }
                 var m = this.transform;
-                SUtil_SUtil.Util_vector.sub(v, target, this.position);
+                SUtil.Util_vector.sub(v, target, this.position);
                 if (isAroundZero(v[0]) && isAroundZero(v[1])) {
                     return;
                 }
-                SUtil_SUtil.Util_vector.normalize(v, v);
+                SUtil.Util_vector.normalize(v, v);
                 // Y Axis
                 // TODO Scale origin ?
                 m[2] = v[0] * this.scale[1];
@@ -50884,8 +52694,8 @@ class Transformable_Transformable {
 
         var origin = [0, 0];
 
-        var m = this.transform || SUtil_SUtil.Util_matrix.create();
-        SUtil_SUtil.Util_matrix.identity(m);
+        var m = this.transform || SUtil.Util_matrix.create();
+        SUtil.Util_matrix.identity(m);
 
         if (this.needLocalTransform) {
             if (
@@ -50897,15 +52707,15 @@ class Transformable_Transformable {
                 let haveOrigin = isNotAroundZero(origin[0])
                     || isNotAroundZero(origin[1]);
                 if (haveOrigin) {
-                    SUtil_SUtil.Util_matrix.translate(
+                    SUtil.Util_matrix.translate(
                         m, m, origin
                     );
                 }
-                SUtil_SUtil.Util_matrix.scale(m, m, this.scale);
+                SUtil.Util_matrix.scale(m, m, this.scale);
                 if (haveOrigin) {
                     origin[0] = -origin[0];
                     origin[1] = -origin[1];
-                    SUtil_SUtil.Util_matrix.translate(
+                    SUtil.Util_matrix.translate(
                         m, m, origin
                     );
                 }
@@ -50918,29 +52728,29 @@ class Transformable_Transformable {
                     let haveOrigin = isNotAroundZero(origin[0])
                         || isNotAroundZero(origin[1]);
                     if (haveOrigin) {
-                        SUtil_SUtil.Util_matrix.translate(
+                        SUtil.Util_matrix.translate(
                             m, m, origin
                         );
                     }
-                    SUtil_SUtil.Util_matrix.rotate(m, m, this.rotation[0]);
+                    SUtil.Util_matrix.rotate(m, m, this.rotation[0]);
                     if (haveOrigin) {
                         origin[0] = -origin[0];
                         origin[1] = -origin[1];
-                        SUtil_SUtil.Util_matrix.translate(
+                        SUtil.Util_matrix.translate(
                             m, m, origin
                         );
                     }
                 }
             } else {
                 if (this.rotation !== 0) {
-                    SUtil_SUtil.Util_matrix.rotate(m, m, this.rotation);
+                    SUtil.Util_matrix.rotate(m, m, this.rotation);
                 }
             }
 
             if (
                 isNotAroundZero(this.position[0]) || isNotAroundZero(this.position[1])
             ) {
-                SUtil_SUtil.Util_matrix.translate(m, m, this.position);
+                SUtil.Util_matrix.translate(m, m, this.position);
             }
         }
 
@@ -50950,9 +52760,9 @@ class Transformable_Transformable {
         // 应用父节点变换
         if (this.parent && this.parent.needTransform) {
             if (this.needLocalTransform) {
-                SUtil_SUtil.Util_matrix.mul(this.transform, this.parent.transform, this.transform);
+                SUtil.Util_matrix.mul(this.transform, this.parent.transform, this.transform);
             } else {
-                SUtil_SUtil.Util_matrix.copy(this.transform, this.parent.transform);
+                SUtil.Util_matrix.copy(this.transform, this.parent.transform);
             }
         }
 
@@ -51234,9 +53044,9 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
                 var originPos = [x, y];
                 // 对鼠标的坐标也做相同的变换
                 if (this.needTransform && this.transform) {
-                    SUtil_SUtil.Util_matrix.invert(invTransform, this.transform);
+                    SUtil.Util_matrix.invert(invTransform, this.transform);
 
-                    SUtil_SUtil.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
+                    SUtil.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
 
                     if (x == originPos[0] && y == originPos[1]) {
                         // 避免外部修改导致的 needTransform 不准确
@@ -51416,14 +53226,14 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      *
      */
     doClip(ctx) {
-        var clipShapeInvTransform = SUtil_SUtil.Util_matrix.create();
+        var clipShapeInvTransform = SUtil.Util_matrix.create();
 
         if (this.__clipShapes) {
             for (var i = 0; i < this.__clipShapes.length; i++) {
                 var clipShape = this.__clipShapes[i];
                 if (clipShape.needTransform) {
                     let m = clipShape.transform;
-                    SUtil_SUtil.Util_matrix.invert(clipShapeInvTransform, m);
+                    SUtil.Util_matrix.invert(clipShapeInvTransform, m);
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -51462,7 +53272,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
             newStyle[k] = style[k];
         }
 
-        var highlightColor = SUtil_SUtil.Util_color.getHighlightColor();
+        var highlightColor = SUtil.Util_color.getHighlightColor();
         // 根据highlightStyle扩展
         if (style.brushType != 'stroke') {
             // 带填充则用高亮色加粗边线
@@ -51503,9 +53313,9 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
             } else {
                 // 线型的则用原色加工高亮
                 newStyle.strokeColor = highlightStyle.strokeColor
-                    || SUtil_SUtil.Util_color.mix(
+                    || SUtil.Util_color.mix(
                         style.strokeColor,
-                        SUtil_SUtil.Util_color.toRGB(highlightColor)
+                        SUtil.Util_color.toRGB(highlightColor)
                     );
             }
         }
@@ -51555,7 +53365,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @param {Object} style - 样式。
      */
     buildPath(ctx, style) { // eslint-disable-line no-unused-vars
-        SUtil_SUtil.Util_log('buildPath not implemented in ' + this.type);
+        SUtil.Util_log('buildPath not implemented in ' + this.type);
     }
 
 
@@ -51566,7 +53376,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @param {Object} style - 样式。
      */
     getRect(style) { // eslint-disable-line no-unused-vars
-        SUtil_SUtil.Util_log('getRect not implemented in ' + this.type);
+        SUtil.Util_log('getRect not implemented in ' + this.type);
     }
 
 
@@ -51594,7 +53404,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
             && y <= (rect.y + rect.height)
         ) {
             // 矩形内
-            return SUtil_SUtil.Util_area.isInside(this, this.style, x, y);
+            return SUtil.Util_area.isInside(this, this.style, x, y);
         }
 
         return false;
@@ -51869,7 +53679,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
 
         text = (text + '').split('\n');
 
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', textFont);
 
         switch (textBaseline) {
             case 'top':
@@ -51901,8 +53711,8 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @return {Object} 矩形区域。
      */
     static _getTextRect(text, x, y, textFont, textAlign, textBaseline) {
-        var width = SUtil_SUtil.Util_area.getTextWidth(text, textFont);
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', textFont);
+        var width = SUtil.Util_area.getTextWidth(text, textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', textFont);
 
         text = (text + '').split('\n');
 
@@ -52201,7 +54011,7 @@ class SmicText_SmicText extends Shape_Shape {
         ctx.textBaseline = style.textBaseline || 'middle';
 
         var text = (style.text + '').split('\n');
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', style.textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', style.textFont);
         var rect = this.getRectNoRotation(style);
         // var x = style.x;
         var x = style.x + __OP[0];
@@ -52446,10 +54256,10 @@ class SmicText_SmicText extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', style.textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', style.textFont);
 
-        var width = SUtil_SUtil.Util_area.getTextWidth(style.text, style.textFont);
-        var height = SUtil_SUtil.Util_area.getTextHeight(style.text, style.textFont);
+        var width = SUtil.Util_area.getTextWidth(style.text, style.textFont);
+        var height = SUtil.Util_area.getTextHeight(style.text, style.textFont);
 
         //处理文字位置，注：文本的绘制是由此 rect 决定
         var textX = style.x + __OP[0];                 // 默认start == left
@@ -53011,7 +54821,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
         }
 
         if (style.smooth && style.smooth !== 'spline') {
-            var controlPoints = SUtil_SUtil.SUtil_smoothBezier(pointList, style.smooth, true, style.smoothConstraint, __OP);
+            var controlPoints = SUtil.SUtil_smoothBezier(pointList, style.smooth, true, style.smoothConstraint, __OP);
 
             ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
             var cp1;
@@ -53028,7 +54838,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
             }
         } else {
             if (style.smooth === 'spline') {
-                pointList = SUtil_SUtil.SUtil_smoothSpline(pointList, true, null, __OP);
+                pointList = SUtil.SUtil_smoothSpline(pointList, true, null, __OP);
             }
 
             if (!style.lineType || style.lineType == 'solid') {
@@ -53102,7 +54912,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < pointList.length; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
                         pointList[i - 1][1] + __OP[1],
@@ -53112,7 +54922,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
                         [pattern1, pattern2]
                     );
                 }
-                SUtil_SUtil.SUtil_dashedLineTo(
+                SUtil.SUtil_dashedLineTo(
                     ctx,
                     pointList[pointList.length - 1][0] + __OP[0],
                     pointList[pointList.length - 1][1] + __OP[1],
@@ -53162,7 +54972,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < pointList.length; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
                         pointList[i - 1][1] + __OP[1],
@@ -53172,7 +54982,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
                         [pattern1, pattern2, pattern3, pattern4]
                     );
                 }
-                SUtil_SUtil.SUtil_dashedLineTo(
+                SUtil.SUtil_dashedLineTo(
                     ctx,
                     pointList[pointList.length - 1][0] + __OP[0],
                     pointList[pointList.length - 1][1] + __OP[1],
@@ -53380,7 +55190,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
         var len = Math.min(style.pointList.length, Math.round(style.pointListLength || style.pointList.length));
 
         if (style.smooth && style.smooth !== 'spline') {
-            var controlPoints = SUtil_SUtil.SUtil_smoothBezier(pointList, style.smooth, false, style.smoothConstraint, __OP);
+            var controlPoints = SUtil.SUtil_smoothBezier(pointList, style.smooth, false, style.smoothConstraint, __OP);
 
             ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
             var cp1;
@@ -53396,7 +55206,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
             }
         } else {
             if (style.smooth === 'spline') {
-                pointList = SUtil_SUtil.SUtil_smoothSpline(pointList, null, null, __OP);
+                pointList = SUtil.SUtil_smoothSpline(pointList, null, null, __OP);
                 len = pointList.length;
             }
             if (!style.lineType || style.lineType === 'solid') {
@@ -53464,7 +55274,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (var i = 1; i < len; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1],
                         pointList[i][0] + __OP[0], pointList[i][1] + __OP[1],
@@ -53511,7 +55321,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
                     * (style.lineType === 'dashed' ? 5 : 1);
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < len; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1],
                         pointList[i][0] + __OP[0], pointList[i][1] + __OP[1],
@@ -54145,8 +55955,8 @@ class SmicSector_SmicSector extends Shape_Shape {
         var endAngle = style.endAngle;              // 结束角度(0,360]
         var clockWise = style.clockWise || false;
 
-        startAngle = SUtil_SUtil.Util_math.degreeToRadian(startAngle);
-        endAngle = SUtil_SUtil.Util_math.degreeToRadian(endAngle);
+        startAngle = SUtil.Util_math.degreeToRadian(startAngle);
+        endAngle = SUtil.Util_math.degreeToRadian(endAngle);
 
         if (!clockWise) {
             // 扇形默认是逆时针方向，Y轴向上
@@ -54155,8 +55965,8 @@ class SmicSector_SmicSector extends Shape_Shape {
             endAngle = -endAngle;
         }
 
-        var unitX = SUtil_SUtil.Util_math.cos(startAngle);
-        var unitY = SUtil_SUtil.Util_math.sin(startAngle);
+        var unitX = SUtil.Util_math.cos(startAngle);
+        var unitY = SUtil.Util_math.sin(startAngle);
         ctx.moveTo(
             unitX * r0 + x,
             unitY * r0 + y
@@ -54170,8 +55980,8 @@ class SmicSector_SmicSector extends Shape_Shape {
         ctx.arc(x, y, r, startAngle, endAngle, !clockWise);
 
         ctx.lineTo(
-            SUtil_SUtil.Util_math.cos(endAngle) * r0 + x,
-            SUtil_SUtil.Util_math.sin(endAngle) * r0 + y
+            SUtil.Util_math.cos(endAngle) * r0 + x,
+            SUtil.Util_math.sin(endAngle) * r0 + y
         );
 
         if (r0 !== 0) {
@@ -54201,17 +56011,17 @@ class SmicSector_SmicSector extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var min0 = SUtil_SUtil.Util_vector.create();
-        var min1 = SUtil_SUtil.Util_vector.create();
-        var max0 = SUtil_SUtil.Util_vector.create();
-        var max1 = SUtil_SUtil.Util_vector.create();
+        var min0 = SUtil.Util_vector.create();
+        var min1 = SUtil.Util_vector.create();
+        var max0 = SUtil.Util_vector.create();
+        var max1 = SUtil.Util_vector.create();
 
         var x = style.x + __OP[0];   // 圆心x
         var y = style.y + __OP[1];   // 圆心y
         var r0 = style.r0 || 0;     // 形内半径[0,r)
         var r = style.r;            // 扇形外半径(0,r]
-        var startAngle = SUtil_SUtil.Util_math.degreeToRadian(style.startAngle);
-        var endAngle = SUtil_SUtil.Util_math.degreeToRadian(style.endAngle);
+        var startAngle = SUtil.Util_math.degreeToRadian(style.startAngle);
+        var endAngle = SUtil.Util_math.degreeToRadian(style.endAngle);
         var clockWise = style.clockWise;
 
         if (!clockWise) {
@@ -54220,19 +56030,19 @@ class SmicSector_SmicSector extends Shape_Shape {
         }
 
         if (r0 > 1) {
-            SUtil_SUtil.Util_computeBoundingBox.arc(
+            SUtil.Util_computeBoundingBox.arc(
                 x, y, r0, startAngle, endAngle, !clockWise, min0, max0
             );
         } else {
             min0[0] = max0[0] = x;
             min0[1] = max0[1] = y;
         }
-        SUtil_SUtil.Util_computeBoundingBox.arc(
+        SUtil.Util_computeBoundingBox.arc(
             x, y, r, startAngle, endAngle, !clockWise, min1, max1
         );
 
-        SUtil_SUtil.Util_vector.min(min0, min0, min1);
-        SUtil_SUtil.Util_vector.max(max0, max0, max1);
+        SUtil.Util_vector.min(min0, min0, min1);
+        SUtil.Util_vector.max(max0, max0, max1);
         style.__rect = {
             x: min0[0],
             y: min0[1],
@@ -59546,7 +61356,7 @@ class Painter_Painter {
                 // Set transform
                 if (clipShape.needTransform) {
                     let m = clipShape.transform;
-                    SUtil_SUtil.Util_matrix.invert(invTransform, m);
+                    SUtil.Util_matrix.invert(invTransform, m);
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -59578,7 +61388,7 @@ class Painter_Painter {
                         try {
                             shape.brush(ctx, false, this.updatePainter);
                         } catch (error) {
-                            SUtil_SUtil.Util_log(
+                            SUtil.Util_log(
                                 error,
                                 'brush error of ' + shape.type,
                                 shape
@@ -59958,7 +61768,7 @@ class Painter_Painter {
                             try {
                                 shape.brush(ctx, false, self.updatePainter);
                             } catch (error) {
-                                SUtil_SUtil.Util_log(
+                                SUtil.Util_log(
                                     error,
                                     'brush error of ' + shape.type,
                                     shape
@@ -60050,7 +61860,7 @@ class Painter_Painter {
                 try {
                     shape.brush(ctx, true, this.updatePainter);
                 } catch (error) {
-                    SUtil_SUtil.Util_log(
+                    SUtil.Util_log(
                         error, 'hoverBrush error of ' + shape.type, shape
                     );
                 }
@@ -60673,8 +62483,8 @@ class Handler_Handler extends Eventful {
                 event = this._zrenderEventFixed(event);
                 this._lastX = this._mouseX;
                 this._lastY = this._mouseY;
-                this._mouseX = SUtil_SUtil.Util_event.getX(event);
-                this._mouseY = SUtil_SUtil.Util_event.getY(event);
+                this._mouseX = SUtil.Util_event.getX(event);
+                this._mouseY = SUtil.Util_event.getY(event);
                 var dx = this._mouseX - this._lastX;
                 var dy = this._mouseY - this._lastY;
 
@@ -60870,7 +62680,7 @@ class Handler_Handler extends Eventful {
                 event = this._zrenderEventFixed(event, true);
                 this._mousemoveHandler(event);
                 if (this._isDragging) {
-                    SUtil_SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                    SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                 }
             },
 
@@ -60894,7 +62704,7 @@ class Handler_Handler extends Eventful {
                     if (now - this._lastClickMoment < Config.EVENT.touchClickDelay / 2) {
                         this._dblclickHandler(event);
                         if (this._lastHover && this._lastHover.clickable) {
-                            SUtil_SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                            SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                         }
                     }
                     this._lastClickMoment = now;
@@ -60909,7 +62719,7 @@ class Handler_Handler extends Eventful {
         if (window.addEventListener) {
             window.addEventListener('resize', this._resizeHandler);
 
-            if (SUtil_SUtil.Util_env.os.tablet || SUtil_SUtil.Util_env.os.phone) {
+            if (SUtil.Util_env.os.tablet || SUtil.Util_env.os.phone) {
                 // mobile支持
                 root.addEventListener('touchstart', this._touchstartHandler);
                 root.addEventListener('touchmove', this._touchmoveHandler);
@@ -61165,7 +62975,7 @@ class Handler_Handler extends Eventful {
         if (window.removeEventListener) {
             window.removeEventListener('resize', this._resizeHandler);
 
-            if (SUtil_SUtil.Util_env.os.tablet || SUtil_SUtil.Util_env.os.phone) {
+            if (SUtil.Util_env.os.tablet || SUtil.Util_env.os.phone) {
                 // mobile支持
                 root.removeEventListener('touchstart', this._touchstartHandler);
                 root.removeEventListener('touchmove', this._touchmoveHandler);
@@ -61444,7 +63254,7 @@ class Handler_Handler extends Eventful {
      *
      */
     _iterateAndFindHover() {
-        var invTransform = SUtil_SUtil.Util_matrix.create();
+        var invTransform = SUtil.Util_matrix.create();
 
         var list = this.storage.getShapeList();
         var currentZLevel;
@@ -61459,8 +63269,8 @@ class Handler_Handler extends Eventful {
                 tmp[1] = this._mouseY;
 
                 if (currentLayer.needTransform) {
-                    SUtil_SUtil.Util_matrix.invert(invTransform, currentLayer.transform);
-                    SUtil_SUtil.Util_vector.applyTransform(tmp, tmp, invTransform);
+                    SUtil.Util_matrix.invert(invTransform, currentLayer.transform);
+                    SUtil.Util_vector.applyTransform(tmp, tmp, invTransform);
                 }
             }
 
@@ -62654,7 +64464,7 @@ class Animation_Animator {
                 // Assume value is a color when it is a string
                 var value = keyframes[i].value;
                 if (typeof(value) == 'string') {
-                    value = SUtil_SUtil.Util_color.toArray(value);
+                    value = SUtil.Util_color.toArray(value);
                     if (value.length === 0) {    // Invalid color
                         value[0] = value[1] = value[2] = 0;
                         value[3] = 1;
@@ -63178,7 +64988,7 @@ class Render_Render {
             }
 
             if (!target) {
-                SUtil_SUtil.Util_log(
+                SUtil.Util_log(
                     'Property "'
                     + path
                     + '" is not existed in element '
@@ -63207,7 +65017,7 @@ class Render_Render {
                     }
                 });
         } else {
-            SUtil_SUtil.Util_log('Element not existed');
+            SUtil.Util_log('Element not existed');
         }
     }
 
@@ -63774,8 +65584,8 @@ class SmicIsogon_SmicIsogon extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var sin = SUtil_SUtil.Util_math.sin;
-        var cos = SUtil_SUtil.Util_math.cos;
+        var sin = SUtil.Util_math.sin;
+        var cos = SUtil.Util_math.cos;
         var PI = Math.PI;
 
         var n = style.n;
@@ -64095,8 +65905,8 @@ class SmicStar_SmicStar extends Shape_Shape {
             return;
         }
 
-        var sin = SUtil_SUtil.Util_math.sin;
-        var cos = SUtil_SUtil.Util_math.cos;
+        var sin = SUtil.Util_math.sin;
+        var cos = SUtil.Util_math.cos;
         var PI = Math.PI;
 
         var x = style.x + __OP[0];
@@ -64356,7 +66166,7 @@ class FileModel_FileModel {
  * @classdesc 组件信息提示框。
  * @category Components Common
  */
-class MessageBox_MessageBox {
+class MessageBox {
 
     constructor() {
         this._initView();
@@ -64429,9 +66239,9 @@ class MessageBox_MessageBox {
     }
 }
 
-SuperMap.Components.MessageBox = MessageBox_MessageBox;
+SuperMap.Components.MessageBox = MessageBox;
 // EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
-var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(11);
+var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(10);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/lang/Lang.js
@@ -64448,7 +66258,7 @@ var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/_
  * @category BaseTypes
  * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
  */
-let Lang_Lang = {
+let Lang = {
 
     /**
      * @member {string} SuperMap.Lang.code
@@ -64537,11 +66347,11 @@ let Lang_Lang = {
 
 };
 
-SuperMap.Lang = Lang_Lang;
+SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
 
 // EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
-var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(4);
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(3);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
@@ -64559,7 +66369,7 @@ var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__we
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  */
-let FileReaderUtil_FileReaderUtil = {
+let FileReaderUtil = {
     rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
     rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
     rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
@@ -64658,11 +66468,11 @@ let FileReaderUtil_FileReaderUtil = {
                 geojson = result;
             } else {
                 //不支持数据
-                failed && failed.call(context, Lang_Lang.i18n('msg_dataInWrongGeoJSONFormat'));
+                failed && failed.call(context, Lang.i18n('msg_dataInWrongGeoJSONFormat'));
             }
             success && success.call(context, geojson);
         } else {
-            failed && failed.call(context, Lang_Lang.i18n('msg_dataInWrongFormat'));
+            failed && failed.call(context, Lang.i18n('msg_dataInWrongFormat'));
         }
     },
     /**
@@ -64760,7 +66570,7 @@ let FileReaderUtil_FileReaderUtil = {
 
 };
 
-SuperMap.Components.FileReaderUtil = FileReaderUtil_FileReaderUtil;
+SuperMap.Components.FileReaderUtil = FileReaderUtil;
 
 
 // CONCATENATED MODULE: ./src/common/components/chart/ChartModel.js
@@ -64804,7 +66614,7 @@ class ChartModel_ChartModel {
     getDatasetInfo(success) {
         let datasetUrl = this.datasets.url;
         let me = this;
-        FetchRequest_FetchRequest.get(datasetUrl).then(function (response) {
+        FetchRequest.get(datasetUrl).then(function (response) {
             return response.json();
         }).then(function (results) {
             if (results.datasetInfo) {
@@ -64903,7 +66713,7 @@ class ChartModel_ChartModel {
      * */
     getServiceInfo(url, success) {
         let me = this;
-        FetchRequest_FetchRequest.get(url, null, {
+        FetchRequest.get(url, null, {
             withCredentials: this.datasets.withCredentials
         }).then(response => {
             return response.json()
@@ -64957,7 +66767,7 @@ class ChartModel_ChartModel {
             me = this;
         url += '/content.json?pageSize=9999999&currentPage=1',
             // 获取图层数据
-            FetchRequest_FetchRequest.get(url, null, {
+            FetchRequest.get(url, null, {
                 withCredentials: this.datasets.withCredentials
             }).then(response => {
                 return response.json()
@@ -64974,7 +66784,7 @@ class ChartModel_ChartModel {
                         // 如果是json文件 data.content = {type:'fco', features},格式不固定
                         if (!(data.content.features)) {
                             //json格式解析失败
-                            console.log(Lang_Lang.i18n('msg_jsonResolveFiled'));
+                            console.log(Lang.i18n('msg_jsonResolveFiled'));
                             return;
                         }
                         let features = this._formatGeoJSON(data.content);
@@ -65015,7 +66825,7 @@ class ChartModel_ChartModel {
             let url = `${address}/data/datasources`,
                 sourceName, datasetName;
             // 请求获取数据源名
-            FetchRequest_FetchRequest.get(url, null, {
+            FetchRequest.get(url, null, {
                 withCredentials
             }).then(response => {
                 return response.json()
@@ -65023,7 +66833,7 @@ class ChartModel_ChartModel {
                 sourceName = data.datasourceNames[0];
                 url = `${address}/data/datasources/${sourceName}/datasets`;
                 // 请求获取数据集名
-                FetchRequest_FetchRequest.get(url, null, {
+                FetchRequest.get(url, null, {
                     withCredentials
                 }).then(response => {
                     return response.json()
@@ -65043,7 +66853,7 @@ class ChartModel_ChartModel {
             let url = `${address}/maps`,
                 mapName, layerName, path;
             // 请求获取地图名
-            FetchRequest_FetchRequest.get(url, null, {
+            FetchRequest.get(url, null, {
                 withCredentials
             }).then(response => {
                 return response.json()
@@ -65052,7 +66862,7 @@ class ChartModel_ChartModel {
                 path = data[0].path;
                 url = url = `${address}/maps/${mapName}/layers`;
                 // 请求获取图层名
-                FetchRequest_FetchRequest.get(url, null, {
+                FetchRequest.get(url, null, {
                     withCredentials
                 }).then(response => {
                     return response.json()
@@ -65163,7 +66973,7 @@ class ChartModel_ChartModel {
             queryParams: [queryParam]
         };
         if (onlyAttribute) {
-            params.queryOption = REST_QueryOption.ATTRIBUTE;
+            params.queryOption = QueryOption.ATTRIBUTE;
         }
         startRecord && (params.startRecord = startRecord);
         recordLength && (params.expectCount = recordLength);
@@ -65204,7 +67014,7 @@ class ChartModel_ChartModel {
      * @return {object} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
      */
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     /**
@@ -65235,10 +67045,10 @@ class ChartModel_ChartModel {
         let xfieldIndex = -1,
             yfieldIndex = -1;
         for (let i = 0, len = fieldCaptions.length; i < len; i++) {
-            if (FileReaderUtil_FileReaderUtil.isXField(fieldCaptions[i])) {
+            if (FileReaderUtil.isXField(fieldCaptions[i])) {
                 xfieldIndex = i;
             }
-            if (FileReaderUtil_FileReaderUtil.isYField(fieldCaptions[i])) {
+            if (FileReaderUtil.isYField(fieldCaptions[i])) {
                 yfieldIndex = i;
             }
         }
@@ -65280,9 +67090,9 @@ class ChartModel_ChartModel {
     _fireFailedEvent(error) {
         let errorData = error ? {
             error,
-            message: Lang_Lang.i18n('msg_getdatafailed')
+            message: Lang.i18n('msg_getdatafailed')
         } : {
-            message: Lang_Lang.i18n('msg_getdatafailed')
+            message: Lang.i18n('msg_getdatafailed')
         };
         /**
          * @event SuperMap.Components.Chart#getdatafailed
@@ -65947,7 +67757,7 @@ class ChartView_ChartView {
      * @private
      */
     _fillDataToView() {
-        let messageboxs = new MessageBox_MessageBox();
+        let messageboxs = new MessageBox();
         //iclient 绑定createChart事件成功回调
         this.viewModel.getDatasetInfo(this._createChart.bind(this));
         this.viewModel.events.on({
@@ -66061,7 +67871,7 @@ SuperMap.Components.Chart = ChartView_ChartView;
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Components Common
  */
-class TemplateBase_TemplateBase {
+class TemplateBase {
     constructor(options) {
         options = options ? options : {};
         /**
@@ -66117,7 +67927,7 @@ class TemplateBase_TemplateBase {
     }
 }
 
-SuperMap.Components.TemplateBase = TemplateBase_TemplateBase;
+SuperMap.Components.TemplateBase = TemplateBase;
 // CONCATENATED MODULE: ./src/common/components/templates/CommonContainer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -66135,7 +67945,7 @@ SuperMap.Components.TemplateBase = TemplateBase_TemplateBase;
  * @category Components Common
  * @extends {SuperMap.Components.TemplateBase}
  */
-class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
+class CommonContainer_CommonContainer extends TemplateBase {
     constructor(options) {
         super(options);
         let title = options.title ? options.title : "";
@@ -66204,7 +68014,7 @@ SuperMap.Components.CommonContainer = CommonContainer_CommonContainer;
  * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
-class Select_Select extends TemplateBase_TemplateBase {
+class Select_Select extends TemplateBase {
     constructor(options) {
         super(options);
         this._initView(options);
@@ -66337,7 +68147,7 @@ SuperMap.Components.Select = Select_Select;
  * @category Components Common
  * @extends {SuperMap.Components.TemplateBase}
  */
-class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
+class DropDownBox_DropDownBox extends TemplateBase {
     constructor(optionsArr) {
         super(optionsArr);
         this._initView(optionsArr);
@@ -66532,7 +68342,7 @@ SuperMap.Components.DropDownBox = DropDownBox_DropDownBox;
  * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
-class PopContainer_PopContainer extends TemplateBase_TemplateBase {
+class PopContainer_PopContainer extends TemplateBase {
     constructor(options) {
         options = options ? options : {};
         super(options);
@@ -66661,7 +68471,7 @@ SuperMap.Components.AttributesPopContainer = AttributesPopContainer_AttributesPo
  * @category Components Common
  * @extends {SuperMap.Components.TemplateBase}
  */
-class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_TemplateBase {
+class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
     constructor(options) {
         super(options);
         this._initView();
@@ -66899,7 +68709,7 @@ SuperMap.Components.CityTabsPage = CityTabsPage_CityTabsPage;
  * @category Components Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用
-class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
+class NavTabsPage_NavTabsPage extends TemplateBase {
     constructor(options) {
         super(options);
         this.navTabsTitle = null;
@@ -67031,7 +68841,7 @@ SuperMap.Components.NavTabsPage = NavTabsPage_NavTabsPage;
  * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
-class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase {
+class PaginationContainer_PaginationContainer extends TemplateBase {
     constructor(options) {
         options = options ? options : {};
         super(options);
@@ -67333,7 +69143,7 @@ SuperMap.Components.PaginationContainer = PaginationContainer_PaginationContaine
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-let Util_ComponentsUtil = {
+let ComponentsUtil = {
     /**
      * 获取上传文件类型
      * @param fileName
@@ -67545,7 +69355,7 @@ SuperMap.Lang['en-US'] = en_US_en;
  *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
  *     strings formatted for use with <SuperMap.String.format> calls.
  */
-let zh_CN_zh = {
+let zh = {
     'title_dataFlowService': '数据流服务',
     'title_distributedAnalysis': '分布式分析',
     'title_clientComputing': '客户端计算',
@@ -67656,7 +69466,7 @@ let zh_CN_zh = {
     'msg_getdatafailed': '获取数据失败！'
 };
 
-SuperMap.Lang["zh-CN"] = zh_CN_zh;
+SuperMap.Lang["zh-CN"] = zh;
 
 
 // CONCATENATED MODULE: ./src/common/lang/index.js
@@ -69046,16 +70856,16 @@ class core_Util_Util {
     static getMeterPerMapUnit(mapUnit) {
         var earchRadiusInMeters = 6378137;
         var meterPerMapUnit;
-        if (mapUnit === REST_Unit.METER) {
+        if (mapUnit === Unit.METER) {
             meterPerMapUnit = 1;
-        } else if (mapUnit === REST_Unit.DEGREE) {
+        } else if (mapUnit === Unit.DEGREE) {
             // 每度表示多少米。
             meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-        } else if (mapUnit === REST_Unit.KILOMETER) {
+        } else if (mapUnit === Unit.KILOMETER) {
             meterPerMapUnit = 1.0E-3;
-        } else if (mapUnit === REST_Unit.INCH) {
+        } else if (mapUnit === Unit.INCH) {
             meterPerMapUnit = 1 / 2.5399999918E-2;
-        } else if (mapUnit === REST_Unit.FOOT) {
+        } else if (mapUnit === Unit.FOOT) {
             meterPerMapUnit = 0.3048;
         } else {
             return meterPerMapUnit;
@@ -69283,7 +71093,7 @@ class core_Util_Util {
             queryParams: [queryParam]
         };
         if (onlyAttribute) {
-            params.queryOption = REST_QueryOption.ATTRIBUTE;
+            params.queryOption = QueryOption.ATTRIBUTE;
         }
         startRecord && (params.startRecord = startRecord);
         recordLength && (params.expectCount = recordLength);
@@ -69309,7 +71119,7 @@ class core_Util_Util {
         let properties = [];
         if (core_Util_Util.isArray(features) && features.length) {
             features.forEach(feature => {
-                let property = feature.attributes || feature.get('Properties');
+                let property = feature.get('attributes');
                 property && properties.push(property);
             });
         }
@@ -69337,7 +71147,7 @@ class core_Util_Util {
 
 external_ol_default.a.supermap.Util = core_Util_Util;
 // EXTERNAL MODULE: external "function(){try{return canvg}catch(e){return {}}}()"
-var external_function_try_return_canvg_catch_e_return_ = __webpack_require__(10);
+var external_function_try_return_canvg_catch_e_return_ = __webpack_require__(11);
 var external_function_try_return_canvg_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_canvg_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/openlayers/core/StyleUtils.js
@@ -69352,7 +71162,7 @@ var external_function_try_return_canvg_catch_e_return_default = /*#__PURE__*/__w
 
 
 external_ol_default.a.supermap = external_ol_default.a.supermap || {};
-var StyleUtils_padding = 8, StyleUtils_doublePadding = StyleUtils_padding*2;
+var padding = 8, doublePadding = padding*2;
 
 /**
  * @class ol.supermap.StyleUtils
@@ -69787,7 +71597,7 @@ class StyleUtils_StyleUtils {
                 if (Util_Util.isArray(str)) {
                     return str;
                 }
-                str = BaseTypes_StringExt.trim(str).replace(/\s+/g, ",");
+                str = StringExt.trim(str).replace(/\s+/g, ",");
                 return str.replace(/\[|\]/gi, "").split(",");
         }
     }
@@ -70058,7 +71868,7 @@ class StyleUtils_StyleUtils {
         //在改变canvas大小后再绘制。否则会被清除
         ctx.font = style.font;
         let size = this.drawRect(ctx, style, textArray, lineHeight, canvas);
-        this.positionY = StyleUtils_padding;
+        this.positionY = padding;
         if(lenght > 1) {
             textArray.forEach(function (text, i) {
                 if(i !== 0) {
@@ -70098,7 +71908,7 @@ class StyleUtils_StyleUtils {
      * @returns {{width: number, height: number}}
      */
     static drawRect(ctx, style, textArray, lineHeight, canvas) {
-        let backgroundFill = style.backgroundFill, maxWidth = style.maxWidth - StyleUtils_doublePadding;
+        let backgroundFill = style.backgroundFill, maxWidth = style.maxWidth - doublePadding;
         let width, height = 0, lineCount=0, lineWidths = [];
         //100的宽度，去掉左右两边3padding
         textArray.forEach(function (arrText) {
@@ -70126,7 +71936,7 @@ class StyleUtils_StyleUtils {
         }, this);
         width = this.getCanvasWidth(lineWidths, maxWidth);
         height = lineCount * lineHeight;
-        height += StyleUtils_doublePadding;
+        height += doublePadding;
         canvas.width = width;
         canvas.height = height;
         ctx.fillStyle = backgroundFill;
@@ -70148,13 +71958,13 @@ class StyleUtils_StyleUtils {
             let lineW = lineWidths[i];
             if(lineW >= maxWidth) {
                 //有任何一行超过最大高度，就用最大高度
-                return maxWidth + StyleUtils_doublePadding;
+                return maxWidth + doublePadding;
             } else if(lineW > width) {
                 //自己换行，就要比较每行的最大宽度
                 width = lineW;
             }
         }
-        return width + StyleUtils_doublePadding;
+        return width + doublePadding;
     }
     /**
      * 绘制文字，解决换行问题
@@ -70171,7 +71981,7 @@ class StyleUtils_StyleUtils {
         let arrText = text.split('');
         let line = '', fillColor = style.fillColor;
         //每一行限制的高度
-        let maxWidth= style.maxWidth - StyleUtils_doublePadding;
+        let maxWidth= style.maxWidth - doublePadding;
         for (var n = 0; n < arrText.length; n++) {
             let testLine = line + arrText[n];
             let metrics = ctx.measureText(testLine);
@@ -70199,7 +72009,7 @@ class StyleUtils_StyleUtils {
      */
     static getPositionX(textAlign, canvasWidth) {
         let x;
-        let width = canvasWidth - StyleUtils_doublePadding; //减去padding
+        let width = canvasWidth - doublePadding; //减去padding
         switch (textAlign) {
             case 'center':
                 x = width / 2;
@@ -70474,7 +72284,7 @@ external_ol_default.a.supermap.StyleUtils = StyleUtils_StyleUtils;
  * @description 扩展 OpenLayers 的一些原始方法。
  * @private
  */
-var MapExtend_MapExtend = function () {
+var MapExtend = function () {
     const fun = function (layer, coordinate, resolution, callback, pixel, e) {
         if (layer instanceof external_ol_default.a.layer.Group) {
             layer.getLayers().forEach(function (subLayer) {
@@ -70642,274 +72452,277 @@ external_ol_default.a.source.BaiduMap = BaiduMap_BaiduMap;
  * @extends {ol.source.TileImage}
  */
 class ImageSuperMapRest_ImageSuperMapRest extends external_ol_default.a.source.TileImage {
-    constructor(options) {
-        if (options.url === undefined) {
-            return;
-        }
-        options.attributions =
-            options.attributions ||
-            new external_ol_default.a.Attribution({
-                html:
-                    "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
-            });
-
-        options.format = options.format ? options.format : 'png';
-        var layerUrl = options.url + '/image.' + options.format + '?';
-
-        options.serverType = options.serverType || REST_ServerType.ISERVER;
-        //为url添加安全认证信息片段
-        layerUrl = appendCredential(options.url, layerUrl, options.serverType);
-
-        /**
-         * @function ol.source.ImageSuperMapRest.prototype.appendCredential
-         * @description 添加凭据。
-         * @param {string} url - 地址。
-         * @param {Object} [serverType=SuperMap.ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
-         * @returns {string} 添加生成后的新地址。
-         */
-        function appendCredential(id, url, serverType) {
-            var newUrl = url,
-                credential,
-                value;
-            switch (serverType) {
-                case REST_ServerType.IPORTAL:
-                    value = SecurityManager_SecurityManager.getToken(id);
-                    credential = value ? new Credential_Credential(value, 'token') : null;
-                    if (!credential) {
-                        value = SecurityManager_SecurityManager.getKey(id);
-                        credential = value ? new Credential_Credential(value, 'key') : null;
-                    }
-                    break;
-                case REST_ServerType.ONLINE:
-                    value = SecurityManager_SecurityManager.getKey(id);
-                    credential = value ? new Credential_Credential(value, 'key') : null;
-                    break;
-                default:
-                    //iserver or others
-                    value = SecurityManager_SecurityManager.getToken(id);
-                    credential = value ? new Credential_Credential(value, 'token') : null;
-                    break;
-            }
-            if (credential) {
-                newUrl += '&' + credential.getUrlParameters();
-            }
-            return newUrl;
-        }
-
-        //切片是否透明
-        var transparent = options.transparent !== undefined ? options.transparent : true;
-        layerUrl += '&transparent=' + transparent;
-
-        //是否使用缓存吗，默认为true
-        var cacheEnabled = options.cacheEnabled !== undefined ? options.cacheEnabled : true;
-        layerUrl += '&cacheEnabled=' + cacheEnabled;
-
-        //如果有layersID，则是在使用专题图
-        if (options.layersID !== undefined) {
-            layerUrl += '&layersID=' + options.layersID;
-        }
-        //是否重定向,默认为false
-        var redirect = false;
-        if (options.redirect !== undefined) {
-            redirect = options.redirect;
-        }
-        layerUrl += '&redirect=' + redirect;
-
-        if (options.prjCoordSys) {
-            layerUrl += '&prjCoordSys=' + JSON.stringify(options.prjCoordSys);
-        }
-        if (options.clipRegionEnabled && options.clipRegion instanceof external_ol_default.a.geom.Geometry) {
-            options.clipRegion = core_Util_Util.toSuperMapGeometry(
-                new external_ol_default.a.format.GeoJSON().writeGeometryObject(options.clipRegion)
-            );
-            options.clipRegion = Util_Util.toJSON(ServerGeometry_ServerGeometry.fromGeometry(options.clipRegion));
-            layerUrl +=
-                '&clipRegionEnabled=' + options.clipRegionEnabled + '&clipRegion=' + JSON.stringify(options.clipRegion);
-        }
-        if (!!options.overlapDisplayed && options.overlapDisplayedOptions) {
-            options.overlapDisplayedOptions = options.overlapDisplayedOptions;
-            layerUrl +=
-                '&overlapDisplayed=' +
-                options.overlapDisplayed +
-                '&overlapDisplayedOptions=' +
-                options.overlapDisplayedOptions.toString();
-        }
-        if (cacheEnabled === true && options.tileversion) {
-            layerUrl += '&tileversion=' + options.tileversion;
-        }
-        if (options.rasterfunction) {
-            layerUrl += '&rasterfunction=' + JSON.stringify(options.rasterfunction);
-        }
-        super({
-            attributions: options.attributions,
-            cacheSize: options.cacheSize,
-            crossOrigin: options.crossOrigin,
-            logo: options.logo,
-            opaque: options.opaque,
-            projection: options.projection,
-            reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-            state: options.state,
-            tileClass: options.tileClass,
-            tileGrid: options.tileGrid,
-            tileLoadFunction: options.tileLoadFunction,
-            tilePixelRatio: options.tilePixelRatio,
-            tileUrlFunction: tileUrlFunction,
-            url: options.url,
-            urls: options.urls,
-            wrapX: options.wrapX !== undefined ? options.wrapX : false,
-            cacheEnabled: options.cacheEnabled,
-            layersID: options.layersID
-        });
-
-        //存储一个cacheEnabled
-        this.cacheEnabled = cacheEnabled;
-
-        if (options.tileProxy) {
-            this.tileProxy = options.tileProxy;
-        }
-        var me = this;
-
-        /**
-         * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
-         * @param {Object} tileCoord - 瓦片坐标系。
-         * @param {Object} pixelRatio - 像素密度。
-         * @param {string} projection - 投影参考系。
-         * @description 瓦片地址参数。
-         * @returns {string} 返回瓦片地址参数
-         */
-        function tileUrlFunction(tileCoord, pixelRatio, projection) {
-            if (!this.tileGrid) {
-                this.tileGrid = this.getTileGridForProjection && this.getTileGridForProjection(projection);
-            }
-            if (!this.tileGrid) {
-                if (options.extent) {
-                    this.tileGrid = ImageSuperMapRest_ImageSuperMapRest.createTileGrid(options.extent);
-                    if (this.resolutions) {
-                        this.tileGrid.resolutions = me.resolutions;
-                    }
-                } else {
-                    if (projection.getCode() === "EPSG:3857") {
-                        this.tileGrid = ImageSuperMapRest_ImageSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
-                        this.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
-                    }
-                    if (projection.getCode() === "EPSG:4326") {
-                        this.tileGrid = ImageSuperMapRest_ImageSuperMapRest.createTileGrid([-180, -90, 180, 90]);
-                        this.extent = [-180, -90, 180, 90];
-                    }
-                }
-            }
-            var tileExtent = this.tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
-            var tileSize = external_ol_default.a.size.toSize(this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-            var url = encodeURI(
-                layerUrl +
-                    '&width=' +
-                    tileSize[0] +
-                    '&height=' +
-                    tileSize[1] +
-                    '&viewBounds=' +
-                    '{"leftBottom" : {"x":' +
-                    tileExtent[0] +
-                    ',"y":' +
-                    tileExtent[1] +
-                    '},"rightTop" : {"x":' +
-                    tileExtent[2] +
-                    ',"y":' +
-                    tileExtent[3] +
-                    '}}'
-            );
-
-            //支持代理
-            if (me.tileProxy) {
-                url = me.tileProxy + encodeURIComponent(url);
-            }
-            //不启用缓存时启用时间戳
-            if (!me.cacheEnabled) {
-                url += '&_t=' + new Date().getTime();
-            }
-
-            return url;
-        }
+  constructor(options) {
+    if (options.url === undefined) {
+      return;
     }
+    options.attributions =
+      options.attributions ||
+      new external_ol_default.a.Attribution({
+        html:
+          "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
+      });
+
+    options.format = options.format ? options.format : 'png';
+    var layerUrl = options.url + '/image.' + options.format + '?';
+
+    options.serverType = options.serverType || ServerType.ISERVER;
+    //为url添加安全认证信息片段
+    layerUrl = appendCredential(options.url, layerUrl, options.serverType);
 
     /**
-     * @function ol.source.ImageSuperMapRest.optionsFromMapJSON
+     * @function ol.source.ImageSuperMapRest.prototype.appendCredential
+     * @description 添加凭据。
      * @param {string} url - 地址。
-     * @param {Object} mapJSONObj - 地图 JSON。
-     * @description 获取地图 JSON 信息。
+     * @param {Object} [serverType=SuperMap.ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
+     * @returns {string} 添加生成后的新地址。
      */
-    static optionsFromMapJSON(url, mapJSONObj) {
-        var options = {};
-        options.url = url;
-        options.crossOrigin = 'anonymous';
-        var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
-        var resolutions = getResolutions();
-
-        function getResolutions() {
-            var level = 17;
-            var dpi = 96;
-            var width = extent[2] - extent[0];
-            var height = extent[3] - extent[1];
-            var tileSize = width >= height ? width : height;
-            var maxReolution;
-            if (tileSize === width) {
-                maxReolution = tileSize / mapJSONObj.viewer.width;
-            } else {
-                maxReolution = tileSize / mapJSONObj.viewer.height;
-            }
-            var resolutions = [];
-            var unit = REST_Unit.METER;
-            if (mapJSONObj.coordUnit === REST_Unit.DEGREE) {
-                unit = REST_Unit.DEGREE;
-            }
-            if (mapJSONObj.visibleScales.length > 0) {
-                for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
-                    resolutions.push(core_Util_Util.scaleToResolution(mapJSONObj.visibleScales[i], dpi, unit));
-                }
-            } else {
-                for (let i = 0; i < level; i++) {
-                    resolutions.push(maxReolution / Math.pow(2, i));
-                }
-            }
-
-            function sortNumber(a, b) {
-                return b - a;
-            }
-
-            return resolutions.sort(sortNumber);
-        }
-
-        options.tileGrid = new external_ol_default.a.tilegrid.TileGrid({
-            extent: extent,
-            resolutions: resolutions
-        });
-        return options;
+    function appendCredential(id, url, serverType) {
+      var newUrl = url,
+        credential,
+        value;
+      switch (serverType) {
+        case ServerType.IPORTAL:
+          value = SecurityManager_SecurityManager.getToken(id);
+          credential = value ? new Credential(value, 'token') : null;
+          if (!credential) {
+            value = SecurityManager_SecurityManager.getKey(id);
+            credential = value ? new Credential(value, 'key') : null;
+          }
+          break;
+        case ServerType.ONLINE:
+          value = SecurityManager_SecurityManager.getKey(id);
+          credential = value ? new Credential(value, 'key') : null;
+          break;
+        default:
+          //iserver or others
+          value = SecurityManager_SecurityManager.getToken(id);
+          credential = value ? new Credential(value, 'token') : null;
+          break;
+      }
+      if (credential) {
+        newUrl += '&' + credential.getUrlParameters();
+      }
+      return newUrl;
     }
+
+    //切片是否透明
+    var transparent = options.transparent !== undefined ? options.transparent : true;
+    layerUrl += '&transparent=' + transparent;
+
+    //是否使用缓存吗，默认为true
+    var cacheEnabled = options.cacheEnabled !== undefined ? options.cacheEnabled : true;
+    layerUrl += '&cacheEnabled=' + cacheEnabled;
+
+    //如果有layersID，则是在使用专题图
+    if (options.layersID !== undefined) {
+      layerUrl += '&layersID=' + options.layersID;
+    }
+    //是否重定向,默认为false
+    var redirect = false;
+    if (options.redirect !== undefined) {
+      redirect = options.redirect;
+    }
+    layerUrl += '&redirect=' + redirect;
+
+    if (options.prjCoordSys) {
+      layerUrl += '&prjCoordSys=' + JSON.stringify(options.prjCoordSys);
+    }
+    if (options.clipRegionEnabled && options.clipRegion instanceof external_ol_default.a.geom.Geometry) {
+      options.clipRegion = core_Util_Util.toSuperMapGeometry(new external_ol_default.a.format.GeoJSON().writeGeometryObject(options.clipRegion));
+      options.clipRegion = Util_Util.toJSON(ServerGeometry_ServerGeometry.fromGeometry(options.clipRegion));
+      layerUrl +=
+        '&clipRegionEnabled=' + options.clipRegionEnabled + '&clipRegion=' + JSON.stringify(options.clipRegion);
+    }
+    if (!!options.overlapDisplayed && options.overlapDisplayedOptions) {
+      // options.overlapDisplayedOptions = options.overlapDisplayedOptions;
+      layerUrl +=
+        '&overlapDisplayed=' +
+        options.overlapDisplayed +
+        '&overlapDisplayedOptions=' +
+        options.overlapDisplayedOptions.toString();
+    }
+    if (cacheEnabled === true && options.tileversion) {
+      layerUrl += '&tileversion=' + options.tileversion;
+    }
+    if (options.rasterfunction) {
+      layerUrl += '&rasterfunction=' + JSON.stringify(options.rasterfunction);
+    }
+    super({
+      attributions: options.attributions,
+      cacheSize: options.cacheSize,
+      crossOrigin: options.crossOrigin,
+      logo: options.logo,
+      opaque: options.opaque,
+      projection: options.projection,
+      reprojectionErrorThreshold: options.reprojectionErrorThreshold,
+      state: options.state,
+      tileClass: options.tileClass,
+      tileGrid: options.tileGrid,
+      tileLoadFunction: options.tileLoadFunction,
+      tilePixelRatio: options.tilePixelRatio,
+      tileUrlFunction: tileUrlFunction,
+      url: options.url,
+      urls: options.urls,
+      wrapX: options.wrapX !== undefined ? options.wrapX : false,
+      cacheEnabled: options.cacheEnabled,
+      layersID: options.layersID
+    });
+
+    //存储一个cacheEnabled
+    this.cacheEnabled = cacheEnabled;
+
+    if (options.tileProxy) {
+      this.tileProxy = options.tileProxy;
+    }
+    var me = this;
 
     /**
-     * @function ol.source.ImageSuperMapRest.createTileGrid
-     * @param {number} extent - 长度。
-     * @param {number} maxZoom - 最大的放大级别。
-     * @param {number} minZoom - 最小的放大级别。
-     * @param {number} tileSize - 瓦片的尺寸。
-     * @param {number} origin - 原点。
-     * @description 创建网格切片。
-     * @returns {ol.tilegrid.TileGrid} 创建的网格切片
+     * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
+     * @param {Object} tileCoord - 瓦片坐标系。
+     * @param {Object} pixelRatio - 像素密度。
+     * @param {string} projection - 投影参考系。
+     * @description 瓦片地址参数。
+     * @returns {string} 返回瓦片地址参数
      */
-    static createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
-        var tilegrid = external_ol_default.a.tilegrid.createXYZ({
-            extent: extent,
-            maxZoom: maxZoom,
-            minZoom: minZoom,
-            tileSize: tileSize
-        });
-        return new external_ol_default.a.tilegrid.TileGrid({
-            extent: extent,
-            minZoom: minZoom,
-            origin: origin,
-            resolutions: tilegrid.getResolutions(),
-            tileSize: tilegrid.getTileSize()
-        });
+    function tileUrlFunction(tileCoord, pixelRatio, projection) {
+      if (!this.tileGrid) {
+        this.tileGrid = this.getTileGridForProjection && this.getTileGridForProjection(projection);
+      }
+      if (!this.tileGrid) {
+        if (options.extent) {
+          this.tileGrid = ImageSuperMapRest_ImageSuperMapRest.createTileGrid(options.extent);
+          if (this.resolutions) {
+            this.tileGrid.resolutions = me.resolutions;
+          }
+        } else {
+          if (projection.getCode() === 'EPSG:3857') {
+            this.tileGrid = ImageSuperMapRest_ImageSuperMapRest.createTileGrid([
+              -20037508.3427892,
+              -20037508.3427892,
+              20037508.3427892,
+              20037508.3427892
+            ]);
+            this.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+          }
+          if (projection.getCode() === 'EPSG:4326') {
+            this.tileGrid = ImageSuperMapRest_ImageSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+            this.extent = [-180, -90, 180, 90];
+          }
+        }
+      }
+      var tileExtent = this.tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
+      var tileSize = external_ol_default.a.size.toSize(this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
+      var url = encodeURI(
+        layerUrl +
+          '&width=' +
+          tileSize[0] +
+          '&height=' +
+          tileSize[1] +
+          '&viewBounds=' +
+          '{"leftBottom" : {"x":' +
+          tileExtent[0] +
+          ',"y":' +
+          tileExtent[1] +
+          '},"rightTop" : {"x":' +
+          tileExtent[2] +
+          ',"y":' +
+          tileExtent[3] +
+          '}}'
+      );
+
+      //支持代理
+      if (me.tileProxy) {
+        url = me.tileProxy + encodeURIComponent(url);
+      }
+      //不启用缓存时启用时间戳
+      if (!me.cacheEnabled) {
+        url += '&_t=' + new Date().getTime();
+      }
+
+      return url;
     }
+  }
+
+  /**
+   * @function ol.source.ImageSuperMapRest.optionsFromMapJSON
+   * @param {string} url - 地址。
+   * @param {Object} mapJSONObj - 地图 JSON。
+   * @description 获取地图 JSON 信息。
+   */
+  static optionsFromMapJSON(url, mapJSONObj) {
+    var options = {};
+    options.url = url;
+    options.crossOrigin = 'anonymous';
+    var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
+    var resolutions = getResolutions();
+
+    function getResolutions() {
+      var level = 17;
+      var dpi = 96;
+      var width = extent[2] - extent[0];
+      var height = extent[3] - extent[1];
+      var tileSize = width >= height ? width : height;
+      var maxReolution;
+      if (tileSize === width) {
+        maxReolution = tileSize / mapJSONObj.viewer.width;
+      } else {
+        maxReolution = tileSize / mapJSONObj.viewer.height;
+      }
+      var resolutions = [];
+      var unit = Unit.METER;
+      if (mapJSONObj.coordUnit === Unit.DEGREE) {
+        unit = Unit.DEGREE;
+      }
+      if (mapJSONObj.visibleScales.length > 0) {
+        for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
+          resolutions.push(core_Util_Util.scaleToResolution(mapJSONObj.visibleScales[i], dpi, unit));
+        }
+      } else {
+        for (let i = 0; i < level; i++) {
+          resolutions.push(maxReolution / Math.pow(2, i));
+        }
+      }
+
+      function sortNumber(a, b) {
+        return b - a;
+      }
+
+      return resolutions.sort(sortNumber);
+    }
+
+    options.tileGrid = new external_ol_default.a.tilegrid.TileGrid({
+      extent: extent,
+      resolutions: resolutions
+    });
+    return options;
+  }
+
+  /**
+   * @function ol.source.ImageSuperMapRest.createTileGrid
+   * @param {number} extent - 长度。
+   * @param {number} maxZoom - 最大的放大级别。
+   * @param {number} minZoom - 最小的放大级别。
+   * @param {number} tileSize - 瓦片的尺寸。
+   * @param {number} origin - 原点。
+   * @description 创建网格切片。
+   * @returns {ol.tilegrid.TileGrid} 创建的网格切片
+   */
+  static createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
+    var tilegrid = external_ol_default.a.tilegrid.createXYZ({
+      extent: extent,
+      maxZoom: maxZoom,
+      minZoom: minZoom,
+      tileSize: tileSize
+    });
+    return new external_ol_default.a.tilegrid.TileGrid({
+      extent: extent,
+      minZoom: minZoom,
+      origin: origin,
+      resolutions: tilegrid.getResolutions(),
+      tileSize: tilegrid.getTileSize()
+    });
+  }
 }
 
 external_ol_default.a.source.ImageSuperMapRest = ImageSuperMapRest_ImageSuperMapRest;
@@ -71171,7 +72984,7 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
         options.format = options.format ? options.format : "png";
         var layerUrl = options.url + "/tileImage." + options.format + "?";
 
-        options.serverType = options.serverType || REST_ServerType.ISERVER;
+        options.serverType = options.serverType || ServerType.ISERVER;
         super({
             attributions: options.attributions,
             cacheSize: options.cacheSize,
@@ -71206,22 +73019,22 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
             var newUrl = url,
                 credential, value;
             switch (serverType) {
-                case REST_ServerType.IPORTAL:
+                case ServerType.IPORTAL:
                     value = SecurityManager_SecurityManager.getToken(me._url);
-                    credential = value ? new Credential_Credential(value, "token") : null;
+                    credential = value ? new Credential(value, "token") : null;
                     if (!credential) {
                         value = SecurityManager_SecurityManager.getKey(me._url);
-                        credential = value ? new Credential_Credential(value, "key") : null;
+                        credential = value ? new Credential(value, "key") : null;
                     }
                     break;
-                case REST_ServerType.ONLINE:
+                case ServerType.ONLINE:
                     value = SecurityManager_SecurityManager.getKey(me._url);
-                    credential = value ? new Credential_Credential(value, "key") : null;
+                    credential = value ? new Credential(value, "key") : null;
                     break;
                 default:
                     //iserver or others
                     value = SecurityManager_SecurityManager.getToken(me._url);
-                    credential = value ? new Credential_Credential(value, "token") : null;
+                    credential = value ? new Credential(value, "token") : null;
                     break;
             }
             if (credential) {
@@ -71350,14 +73163,14 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
             var y = -tileCoord[2] - 1;
             var resolution = me.tileGrid.getResolution(z);
             var dpi = 96;
-            var unit = projection.getUnits() || REST_Unit.DEGREE;
+            var unit = projection.getUnits() || Unit.DEGREE;
             // OGC WKT 解析出单位是 degree
             if (unit === 'degrees' || unit === 'degree') {
-                unit = REST_Unit.DEGREE;
+                unit = Unit.DEGREE;
             }
             //通过wkt方式自定义坐标系的时候，是meter
             if (unit === 'm' || unit === 'meter') {
-                unit = REST_Unit.METER;
+                unit = Unit.METER;
             }
             var scale = core_Util_Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = external_ol_default.a.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
@@ -71496,9 +73309,9 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
                 maxReolution = tileSize / mapJSONObj.viewer.height;
             }
             var resolutions = [];
-            var unit = REST_Unit.METER;
-            if (mapJSONObj.coordUnit === REST_Unit.DEGREE) {
-                unit = REST_Unit.DEGREE;
+            var unit = Unit.METER;
+            if (mapJSONObj.coordUnit === Unit.DEGREE) {
+                unit = Unit.DEGREE;
             }
             if (mapJSONObj.visibleScalesEnabled && mapJSONObj.visibleScales && mapJSONObj.visibleScales.length > 0) {
                 for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
@@ -71581,7 +73394,7 @@ var EPSLN = 1.0e-10;
 // you'd think you could use Number.EPSILON above but that makes
 // Mollweide get into an infinate loop.
 
-var values_D2R = 0.01745329251994329577;
+var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var FORTPI = Math.PI/4;
 var TWO_PI = Math.PI * 2;
@@ -71660,31 +73473,31 @@ function match_match(obj, key) {
       self.rf = parseFloat(v);
     },
     lat_0: function(v) {
-      self.lat0 = v * values_D2R;
+      self.lat0 = v * D2R;
     },
     lat_1: function(v) {
-      self.lat1 = v * values_D2R;
+      self.lat1 = v * D2R;
     },
     lat_2: function(v) {
-      self.lat2 = v * values_D2R;
+      self.lat2 = v * D2R;
     },
     lat_ts: function(v) {
-      self.lat_ts = v * values_D2R;
+      self.lat_ts = v * D2R;
     },
     lon_0: function(v) {
-      self.long0 = v * values_D2R;
+      self.long0 = v * D2R;
     },
     lon_1: function(v) {
-      self.long1 = v * values_D2R;
+      self.long1 = v * D2R;
     },
     lon_2: function(v) {
-      self.long2 = v * values_D2R;
+      self.long2 = v * D2R;
     },
     alpha: function(v) {
-      self.alpha = parseFloat(v) * values_D2R;
+      self.alpha = parseFloat(v) * D2R;
     },
     lonc: function(v) {
-      self.longc = v * values_D2R;
+      self.longc = v * D2R;
     },
     x_0: function(v) {
       self.x0 = parseFloat(v);
@@ -71729,11 +73542,11 @@ function match_match(obj, key) {
       }
     },
     from_greenwich: function(v) {
-      self.from_greenwich = v * values_D2R;
+      self.from_greenwich = v * D2R;
     },
     pm: function(v) {
       var pm = match_match(PrimeMeridian_exports, v);
-      self.from_greenwich = (pm ? pm : parseFloat(v)) * values_D2R;
+      self.from_greenwich = (pm ? pm : parseFloat(v)) * D2R;
     },
     nadgrids: function(v) {
       if (v === '@null') {
@@ -72057,7 +73870,7 @@ var wkt_parser_D2R = 0.01745329251994329577;
 
 
 
-function wkt_parser_rename(obj, params) {
+function rename(obj, params) {
   var outName = params[0];
   var inName = params[1];
   if (!(outName in obj) && (inName in obj)) {
@@ -72068,11 +73881,11 @@ function wkt_parser_rename(obj, params) {
   }
 }
 
-function wkt_parser_d2r(input) {
+function d2r(input) {
   return input * wkt_parser_D2R;
 }
 
-function wkt_parser_cleanWKT(wkt) {
+function cleanWKT(wkt) {
   if (wkt.type === 'GEOGCS') {
     wkt.projName = 'longlat';
   } else if (wkt.type === 'LOCAL_CS') {
@@ -72173,7 +73986,7 @@ function wkt_parser_cleanWKT(wkt) {
     return input * ratio;
   }
   var renamer = function(a) {
-    return wkt_parser_rename(wkt, a);
+    return rename(wkt, a);
   };
   var list = [
     ['standard_parallel_1', 'Standard_Parallel_1'],
@@ -72187,19 +74000,19 @@ function wkt_parser_cleanWKT(wkt) {
     ['k0', 'scale_factor'],
     ['latitude_of_center', 'Latitude_Of_Center'],
     ['latitude_of_center', 'Latitude_of_center'],
-    ['lat0', 'latitude_of_center', wkt_parser_d2r],
+    ['lat0', 'latitude_of_center', d2r],
     ['longitude_of_center', 'Longitude_Of_Center'],
     ['longitude_of_center', 'Longitude_of_center'],
-    ['longc', 'longitude_of_center', wkt_parser_d2r],
+    ['longc', 'longitude_of_center', d2r],
     ['x0', 'false_easting', toMeter],
     ['y0', 'false_northing', toMeter],
-    ['long0', 'central_meridian', wkt_parser_d2r],
-    ['lat0', 'latitude_of_origin', wkt_parser_d2r],
-    ['lat0', 'standard_parallel_1', wkt_parser_d2r],
-    ['lat1', 'standard_parallel_1', wkt_parser_d2r],
-    ['lat2', 'standard_parallel_2', wkt_parser_d2r],
+    ['long0', 'central_meridian', d2r],
+    ['lat0', 'latitude_of_origin', d2r],
+    ['lat0', 'standard_parallel_1', d2r],
+    ['lat1', 'standard_parallel_1', d2r],
+    ['lat2', 'standard_parallel_2', d2r],
     ['azimuth', 'Azimuth'],
-    ['alpha', 'azimuth', wkt_parser_d2r],
+    ['alpha', 'azimuth', d2r],
     ['srsCode', 'name']
   ];
   list.forEach(renamer);
@@ -72207,7 +74020,7 @@ function wkt_parser_cleanWKT(wkt) {
     wkt.long0 = wkt.longc;
   }
   if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
-    wkt.lat0 = wkt_parser_d2r(wkt.lat1 > 0 ? 90 : -90);
+    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
     wkt.lat_ts = wkt.lat1;
   }
 }
@@ -72219,7 +74032,7 @@ function wkt_parser_cleanWKT(wkt) {
   lisp.unshift(['type', type]);
   var obj = {};
   sExpr(lisp, obj);
-  wkt_parser_cleanWKT(obj);
+  cleanWKT(obj);
   return obj;
 });
 
@@ -72285,56 +74098,56 @@ global(defs_defs);
 
 
 
-function parseCode_testObj(code){
+function testObj(code){
   return typeof code === 'string';
 }
-function parseCode_testDef(code){
+function testDef(code){
   return code in lib_defs;
 }
- var parseCode_codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS'];
-function parseCode_testWKT(code){
-  return parseCode_codeWords.some(function (word) {
+ var codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS'];
+function testWKT(code){
+  return codeWords.some(function (word) {
     return code.indexOf(word) > -1;
   });
 }
-var parseCode_codes = ['3857', '900913', '3785', '102113'];
-function parseCode_checkMercator(item) {
+var codes = ['3857', '900913', '3785', '102113'];
+function checkMercator(item) {
   var auth = match_match(item, 'authority');
   if (!auth) {
     return;
   }
   var code = match_match(auth, 'epsg');
-  return code && parseCode_codes.indexOf(code) > -1;
+  return code && codes.indexOf(code) > -1;
 }
-function parseCode_checkProjStr(item) {
+function checkProjStr(item) {
   var ext = match_match(item, 'extension');
   if (!ext) {
     return;
   }
   return match_match(ext, 'proj4');
 }
-function parseCode_testProj(code){
+function testProj(code){
   return code[0] === '+';
 }
-function parseCode_parse(code){
-  if (parseCode_testObj(code)) {
+function parse(code){
+  if (testObj(code)) {
     //check to see if this is a WKT string
-    if (parseCode_testDef(code)) {
+    if (testDef(code)) {
       return lib_defs[code];
     }
-    if (parseCode_testWKT(code)) {
+    if (testWKT(code)) {
       var out = wkt_parser(code);
       // test of spetial case, due to this being a very common and often malformed
-      if (parseCode_checkMercator(out)) {
+      if (checkMercator(out)) {
         return lib_defs['EPSG:3857'];
       }
-      var maybeProjStr = parseCode_checkProjStr(out);
+      var maybeProjStr = checkProjStr(out);
       if (maybeProjStr) {
         return projString(maybeProjStr);
       }
       return out;
     }
-    if (parseCode_testProj(code)) {
+    if (testProj(code)) {
       return projString(code);
     }
   }else{
@@ -72342,7 +74155,7 @@ function parseCode_parse(code){
   }
 }
 
-/* harmony default export */ var parseCode = (parseCode_parse);
+/* harmony default export */ var parseCode = (parse);
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/extend.js
 /* harmony default export */ var extend = (function(destination, source) {
@@ -72414,7 +74227,7 @@ function parseCode_parse(code){
 
 
 
-function merc_init() {
+function init() {
   var con = this.b / this.a;
   this.es = 1 - con * con;
   if(!('x0' in this)){
@@ -72447,7 +74260,7 @@ function merc_init() {
 /* Mercator forward equations--mapping lat,long to x,y
   --------------------------------------------------*/
 
-function merc_forward(p) {
+function forward(p) {
   var lon = p.x;
   var lat = p.y;
   // convert to radians
@@ -72478,7 +74291,7 @@ function merc_forward(p) {
 
 /* Mercator inverse equations--mapping x,y to lat/long
   --------------------------------------------------*/
-function merc_inverse(p) {
+function inverse(p) {
 
   var x = p.x - this.x0;
   var y = p.y - this.y0;
@@ -72503,9 +74316,9 @@ function merc_inverse(p) {
 
 var merc_names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
 /* harmony default export */ var merc = ({
-  init: merc_init,
-  forward: merc_forward,
-  inverse: merc_inverse,
+  init: init,
+  forward: forward,
+  inverse: inverse,
   names: merc_names
 });
 
@@ -72530,17 +74343,17 @@ var longlat_names = ["longlat", "identity"];
 // CONCATENATED MODULE: ./node_modules/proj4/lib/projections.js
 
 
-var projections_projs = [merc, longlat];
+var projs = [merc, longlat];
 var projections_names = {};
-var projections_projStore = [];
+var projStore = [];
 
-function projections_add(proj, i) {
-  var len = projections_projStore.length;
+function add(proj, i) {
+  var len = projStore.length;
   if (!proj.names) {
     console.log(i);
     return true;
   }
-  projections_projStore[len] = proj;
+  projStore[len] = proj;
   proj.names.forEach(function(n) {
     projections_names[n.toLowerCase()] = len;
   });
@@ -72549,23 +74362,23 @@ function projections_add(proj, i) {
 
 
 
-function projections_get(name) {
+function get(name) {
   if (!name) {
     return false;
   }
   var n = name.toLowerCase();
-  if (typeof projections_names[n] !== 'undefined' && projections_projStore[projections_names[n]]) {
-    return projections_projStore[projections_names[n]];
+  if (typeof projections_names[n] !== 'undefined' && projStore[projections_names[n]]) {
+    return projStore[projections_names[n]];
   }
 }
 
 function projections_start() {
-  projections_projs.forEach(projections_add);
+  projs.forEach(add);
 }
 /* harmony default export */ var projections = ({
   start: projections_start,
-  add: projections_add,
-  get: projections_get
+  add: add,
+  get: get
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/constants/Ellipsoid.js
@@ -72834,7 +74647,7 @@ Ellipsoid_exports.sphere = {
 
 
 
-function deriveConstants_eccentricity(a, b, rf, R_A) {
+function eccentricity(a, b, rf, R_A) {
   var a2 = a * a; // used in geocentric
   var b2 = b * b; // used in geocentric
   var es = (a2 - b2) / a2; // e ^ 2
@@ -72987,7 +74800,7 @@ Datum_exports.rnb72 = {
 // CONCATENATED MODULE: ./node_modules/proj4/lib/datum.js
 
 
-function datum_datum(datumCode, datum_params, a, b, es, ep2) {
+function datum(datumCode, datum_params, a, b, es, ep2) {
   var out = {};
 
   if (datumCode === undefined || datumCode === 'none') {
@@ -73019,7 +74832,7 @@ function datum_datum(datumCode, datum_params, a, b, es, ep2) {
   return out;
 }
 
-/* harmony default export */ var lib_datum = (datum_datum);
+/* harmony default export */ var lib_datum = (datum);
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/Proj.js
 
@@ -73030,9 +74843,9 @@ function datum_datum(datumCode, datum_params, a, b, es, ep2) {
 
 
 
-function Proj_Projection(srsCode,callback) {
-  if (!(this instanceof Proj_Projection)) {
-    return new Proj_Projection(srsCode);
+function Projection(srsCode,callback) {
+  if (!(this instanceof Projection)) {
+    return new Projection(srsCode);
   }
   callback = callback || function(error){
     if(error){
@@ -73044,7 +74857,7 @@ function Proj_Projection(srsCode,callback) {
     callback(srsCode);
     return;
   }
-  var ourProj = Proj_Projection.projections.get(json.projName);
+  var ourProj = Projection.projections.get(json.projName);
   if(!ourProj){
     callback(srsCode);
     return;
@@ -73061,7 +74874,7 @@ function Proj_Projection(srsCode,callback) {
   json.axis = json.axis || 'enu';
   json.ellps = json.ellps || 'wgs84';
   var sphere_ = deriveConstants_sphere(json.a, json.b, json.rf, json.ellps, json.sphere);
-  var ecc = deriveConstants_eccentricity(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
+  var ecc = eccentricity(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
   var datumObj = json.datum || lib_datum(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2);
 
   extend(this, json); // transfer everything over from the projection because we don't know what we'll need
@@ -73088,14 +74901,14 @@ function Proj_Projection(srsCode,callback) {
   callback(null, this);
 
 }
-Proj_Projection.projections = projections;
-Proj_Projection.projections.start();
-/* harmony default export */ var Proj = (Proj_Projection);
+Projection.projections = projections;
+Projection.projections.start();
+/* harmony default export */ var Proj = (Projection);
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/datumUtils.js
 
 
-function datumUtils_compareDatums(source, dest) {
+function compareDatums(source, dest) {
   if (source.datum_type !== dest.datum_type) {
     return false; // false, datums are not equal
   } else if (source.a !== dest.a || Math.abs(source.es - dest.es) > 0.000000000050) {
@@ -73124,7 +74937,7 @@ function datumUtils_compareDatums(source, dest) {
  *    Z         : Calculated Geocentric Z coordinate, in meters    (output)
  *
  */
-function datumUtils_geodeticToGeocentric(p, es, a) {
+function geodeticToGeocentric(p, es, a) {
   var Longitude = p.x;
   var Latitude = p.y;
   var Height = p.z ? p.z : 0; //Z value not always supplied
@@ -73166,7 +74979,7 @@ function datumUtils_geodeticToGeocentric(p, es, a) {
   };
 } // cs_geodetic_to_geocentric()
 
-function datumUtils_geocentricToGeodetic(p, es, a, b) {
+function geocentricToGeodetic(p, es, a, b) {
   /* local defintions and variables */
   /* end-criterium of loop, accuracy of sin(Latitude) */
   var genau = 1e-12;
@@ -73274,7 +75087,7 @@ function datumUtils_geocentricToGeodetic(p, es, a, b) {
     Other point classes may be used as long as they have
     x and y properties, which will get modified in the transform method.
 */
-function datumUtils_geocentricToWgs84(p, datum_type, datum_params) {
+function geocentricToWgs84(p, datum_type, datum_params) {
 
   if (datum_type === PJD_3PARAM) {
     // if( x[io] === HUGE_VAL )
@@ -73306,7 +75119,7 @@ function datumUtils_geocentricToWgs84(p, datum_type, datum_params) {
 // pj_geocentic_from_wgs84()
 //  coordinate system definition,
 //  point to transform in geocentric coordinates (x,y,z)
-function datumUtils_geocentricFromWgs84(p, datum_type, datum_params) {
+function geocentricFromWgs84(p, datum_type, datum_params) {
 
   if (datum_type === PJD_3PARAM) {
     //if( x[io] === HUGE_VAL )
@@ -73343,13 +75156,13 @@ function datumUtils_geocentricFromWgs84(p, datum_type, datum_params) {
 
 
 
-function datum_transform_checkParams(type) {
+function checkParams(type) {
   return (type === PJD_3PARAM || type === PJD_7PARAM);
 }
 
 /* harmony default export */ var datum_transform = (function(source, dest, point) {
   // Short cut if the datums are identical.
-  if (datumUtils_compareDatums(source, dest)) {
+  if (compareDatums(source, dest)) {
     return point; // in this case, zero is sucess,
     // whereas cs_compare_datums returns 1 to indicate TRUE
     // confusing, should fix this
@@ -73363,20 +75176,20 @@ function datum_transform_checkParams(type) {
   // If this datum requires grid shifts, then apply it to geodetic coordinates.
 
   // Do we need to go through geocentric coordinates?
-  if (source.es === dest.es && source.a === dest.a && !datum_transform_checkParams(source.datum_type) &&  !datum_transform_checkParams(dest.datum_type)) {
+  if (source.es === dest.es && source.a === dest.a && !checkParams(source.datum_type) &&  !checkParams(dest.datum_type)) {
     return point;
   }
 
   // Convert to geocentric coordinates.
-  point = datumUtils_geodeticToGeocentric(point, source.es, source.a);
+  point = geodeticToGeocentric(point, source.es, source.a);
   // Convert between datums
-  if (datum_transform_checkParams(source.datum_type)) {
-    point = datumUtils_geocentricToWgs84(point, source.datum_type, source.datum_params);
+  if (checkParams(source.datum_type)) {
+    point = geocentricToWgs84(point, source.datum_type, source.datum_params);
   }
-  if (datum_transform_checkParams(dest.datum_type)) {
-    point = datumUtils_geocentricFromWgs84(point, dest.datum_type, dest.datum_params);
+  if (checkParams(dest.datum_type)) {
+    point = geocentricFromWgs84(point, dest.datum_type, dest.datum_params);
   }
-  return datumUtils_geocentricToGeodetic(point, dest.es, dest.a, dest.b);
+  return geocentricToGeodetic(point, dest.es, dest.a, dest.b);
 
 });
 
@@ -73473,7 +75286,7 @@ function checkCoord(num) {
 
 
 
-function transform_checkNotWGS(source, dest) {
+function checkNotWGS(source, dest) {
   return ((source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === PJD_3PARAM || dest.datum.datum_type === PJD_7PARAM) && source.datumCode !== 'WGS84');
 }
 
@@ -73484,7 +75297,7 @@ function transform_transform(source, dest, point) {
   }
   checkSanity(point);
   // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
-  if (source.datum && dest.datum && transform_checkNotWGS(source, dest)) {
+  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
     wgs84 = new Proj('WGS84');
     point = transform_transform(source, wgs84, point);
     source = wgs84;
@@ -73496,8 +75309,8 @@ function transform_transform(source, dest, point) {
   // Transform source points to long/lat, if they aren't already.
   if (source.projName === 'longlat') {
     point = {
-      x: point.x * values_D2R,
-      y: point.y * values_D2R
+      x: point.x * D2R,
+      y: point.y * D2R
     };
   }
   else {
@@ -73554,7 +75367,7 @@ function transform_transform(source, dest, point) {
 
 var core_wgs84 = Proj('WGS84');
 
-function core_transformer(from, to, coords) {
+function transformer(from, to, coords) {
   var transformedArray, out, keys;
   if (Array.isArray(coords)) {
     transformedArray = transform_transform(from, to, coords);
@@ -73581,7 +75394,7 @@ function core_transformer(from, to, coords) {
   }
 }
 
-function core_checkProj(item) {
+function checkProj(item) {
   if (item instanceof Proj) {
     return item;
   }
@@ -73591,7 +75404,7 @@ function core_checkProj(item) {
   return Proj(item);
 }
 function core_proj4(fromProj, toProj, coord) {
-  fromProj = core_checkProj(fromProj);
+  fromProj = checkProj(fromProj);
   var single = false;
   var obj;
   if (typeof toProj === 'undefined') {
@@ -73605,17 +75418,17 @@ function core_proj4(fromProj, toProj, coord) {
     fromProj = core_wgs84;
     single = true;
   }
-  toProj = core_checkProj(toProj);
+  toProj = checkProj(toProj);
   if (coord) {
-    return core_transformer(fromProj, toProj, coord);
+    return transformer(fromProj, toProj, coord);
   }
   else {
     obj = {
       forward: function(coords) {
-        return core_transformer(fromProj, toProj, coords);
+        return transformer(fromProj, toProj, coords);
       },
       inverse: function(coords) {
-        return core_transformer(toProj, fromProj, coords);
+        return transformer(toProj, fromProj, coords);
       }
     };
     if (single) {
@@ -74451,12 +76264,12 @@ var C88 = 0.3076171875;
 
 
 
-var pj_inv_mlfn_MAX_ITER = 20;
+var MAX_ITER = 20;
 
 /* harmony default export */ var pj_inv_mlfn = (function(arg, es, en) {
   var k = 1 / (1 - es);
   var phi = arg;
-  for (var i = pj_inv_mlfn_MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
+  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
     var s = Math.sin(phi);
     var t = 1 - es * s * s;
     //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
@@ -74941,7 +76754,7 @@ var etmerc_names = ["Extended_Transverse_Mercator", "Extended Transverse Mercato
 // CONCATENATED MODULE: ./node_modules/proj4/lib/projections/utm.js
 
 
-var utm_dependsOn = 'etmerc';
+var dependsOn = 'etmerc';
 
 
 
@@ -74951,7 +76764,7 @@ function utm_init() {
     throw new Error('unknown utm zone');
   }
   this.lat0 = 0;
-  this.long0 =  ((6 * Math.abs(zone)) - 183) * values_D2R;
+  this.long0 =  ((6 * Math.abs(zone)) - 183) * D2R;
   this.x0 = 500000;
   this.y0 = this.utmSouth ? 10000000 : 0;
   this.k0 = 0.9996;
@@ -74965,7 +76778,7 @@ var utm_names = ["Universal Transverse Mercator System", "utm"];
 /* harmony default export */ var utm = ({
   init: utm_init,
   names: utm_names,
-  dependsOn: utm_dependsOn
+  dependsOn: dependsOn
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/common/srat.js
@@ -75101,7 +76914,7 @@ var sterea_names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_
 
 
 
-function stere_ssfn_(phit, sinphi, eccen) {
+function ssfn_(phit, sinphi, eccen) {
   sinphi *= eccen;
   return (Math.tan(0.5 * (HALF_PI + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen));
 }
@@ -75265,7 +77078,7 @@ var stere_names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (va
   forward: stere_forward,
   inverse: stere_inverse,
   names: stere_names,
-  ssfn_: stere_ssfn_
+  ssfn_: ssfn_
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/projections/somerc.js
@@ -75962,11 +77775,11 @@ var cass_names = ["Cassini", "Cassini_Soldner", "cass"];
     The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
   */
 
-var laea_S_POLE = 1;
+var S_POLE = 1;
 
-var laea_N_POLE = 2;
-var laea_EQUIT = 3;
-var laea_OBLIQ = 4;
+var N_POLE = 2;
+var EQUIT = 3;
+var OBLIQ = 4;
 
 /* Initialize the Lambert Azimuthal Equal Area projection
   ------------------------------------------------------*/
@@ -75986,7 +77799,7 @@ function laea_init() {
 
     this.qp = qsfnz(this.e, 1);
     this.mmf = 0.5 / (1 - this.es);
-    this.apa = laea_authset(this.es);
+    this.apa = authset(this.es);
     switch (this.mode) {
     case this.N_POLE:
       this.dd = 1;
@@ -76201,7 +78014,7 @@ function laea_inverse(p) {
       }
     }
     lam = Math.atan2(x, y);
-    phi = laea_authlat(Math.asin(ab), this.apa);
+    phi = authlat(Math.asin(ab), this.apa);
   }
 
   p.x = adjust_lon(this.long0 + lam);
@@ -76210,29 +78023,29 @@ function laea_inverse(p) {
 }
 
 /* determine latitude from authalic latitude */
-var laea_P00 = 0.33333333333333333333;
+var P00 = 0.33333333333333333333;
 
-var laea_P01 = 0.17222222222222222222;
-var laea_P02 = 0.10257936507936507936;
-var laea_P10 = 0.06388888888888888888;
-var laea_P11 = 0.06640211640211640211;
-var laea_P20 = 0.01641501294219154443;
+var P01 = 0.17222222222222222222;
+var P02 = 0.10257936507936507936;
+var P10 = 0.06388888888888888888;
+var P11 = 0.06640211640211640211;
+var P20 = 0.01641501294219154443;
 
-function laea_authset(es) {
+function authset(es) {
   var t;
   var APA = [];
-  APA[0] = es * laea_P00;
+  APA[0] = es * P00;
   t = es * es;
-  APA[0] += t * laea_P01;
-  APA[1] = t * laea_P10;
+  APA[0] += t * P01;
+  APA[1] = t * P10;
   t *= es;
-  APA[0] += t * laea_P02;
-  APA[1] += t * laea_P11;
-  APA[2] = t * laea_P20;
+  APA[0] += t * P02;
+  APA[1] += t * P11;
+  APA[2] = t * P20;
   return APA;
 }
 
-function laea_authlat(beta, APA) {
+function authlat(beta, APA) {
   var t = beta + beta;
   return (beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t));
 }
@@ -76243,10 +78056,10 @@ var laea_names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area"
   forward: laea_forward,
   inverse: laea_inverse,
   names: laea_names,
-  S_POLE: laea_S_POLE,
-  N_POLE: laea_N_POLE,
-  EQUIT: laea_EQUIT,
-  OBLIQ: laea_OBLIQ
+  S_POLE: S_POLE,
+  N_POLE: N_POLE,
+  EQUIT: EQUIT,
+  OBLIQ: OBLIQ
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/common/asinz.js
@@ -76356,7 +78169,7 @@ function aea_inverse(p) {
 /* Function to compute phi1, the latitude for the inverse of the
    Albers Conical Equal-Area projection.
 -------------------------------------------*/
-function aea_phi1z(eccent, qs) {
+function phi1z(eccent, qs) {
   var sinphi, cosphi, con, com, dphi;
   var phi = asinz(0.5 * qs);
   if (eccent < EPSLN) {
@@ -76384,7 +78197,7 @@ var aea_names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
   forward: aea_forward,
   inverse: aea_inverse,
   names: aea_names,
-  phi1z: aea_phi1z
+  phi1z: phi1z
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/projections/gnom.js
@@ -76803,7 +78616,7 @@ var poly_names = ["Polyconic", "poly"];
  *     1 -> m accuracy -- suitable for most mapping applications
  *     2 -> mm accuracy
  */
-var nzmg_iterations = 1;
+var iterations = 1;
 
 function nzmg_init() {
   this.A = [];
@@ -77829,7 +79642,7 @@ var ortho_names = ["ortho"];
 
 
 /* constants */
-var qsc_FACE_ENUM = {
+var FACE_ENUM = {
     FRONT: 1,
     RIGHT: 2,
     BACK: 3,
@@ -77838,7 +79651,7 @@ var qsc_FACE_ENUM = {
     BOTTOM: 6
 };
 
-var qsc_AREA_ENUM = {
+var AREA_ENUM = {
     AREA_0: 1,
     AREA_1: 2,
     AREA_2: 3,
@@ -77856,15 +79669,15 @@ function qsc_init() {
 
   /* Determine the cube face from the center of projection. */
   if (this.lat0 >= HALF_PI - FORTPI / 2.0) {
-    this.face = qsc_FACE_ENUM.TOP;
+    this.face = FACE_ENUM.TOP;
   } else if (this.lat0 <= -(HALF_PI - FORTPI / 2.0)) {
-    this.face = qsc_FACE_ENUM.BOTTOM;
+    this.face = FACE_ENUM.BOTTOM;
   } else if (Math.abs(this.long0) <= FORTPI) {
-    this.face = qsc_FACE_ENUM.FRONT;
+    this.face = FACE_ENUM.FRONT;
   } else if (Math.abs(this.long0) <= HALF_PI + FORTPI) {
-    this.face = this.long0 > 0.0 ? qsc_FACE_ENUM.RIGHT : qsc_FACE_ENUM.LEFT;
+    this.face = this.long0 > 0.0 ? FACE_ENUM.RIGHT : FACE_ENUM.LEFT;
   } else {
-    this.face = qsc_FACE_ENUM.BACK;
+    this.face = FACE_ENUM.BACK;
   }
 
   /* Fill in useful values for the ellipsoid <-> sphere shift
@@ -77903,34 +79716,34 @@ function qsc_forward(p) {
    * directly from phi, lam. For the other faces, we must use
    * unit sphere cartesian coordinates as an intermediate step. */
   lon = p.x; //lon = lp.lam;
-  if (this.face === qsc_FACE_ENUM.TOP) {
+  if (this.face === FACE_ENUM.TOP) {
     phi = HALF_PI - lat;
     if (lon >= FORTPI && lon <= HALF_PI + FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_0;
+      area.value = AREA_ENUM.AREA_0;
       theta = lon - HALF_PI;
     } else if (lon > HALF_PI + FORTPI || lon <= -(HALF_PI + FORTPI)) {
-      area.value = qsc_AREA_ENUM.AREA_1;
+      area.value = AREA_ENUM.AREA_1;
       theta = (lon > 0.0 ? lon - SPI : lon + SPI);
     } else if (lon > -(HALF_PI + FORTPI) && lon <= -FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_2;
+      area.value = AREA_ENUM.AREA_2;
       theta = lon + HALF_PI;
     } else {
-      area.value = qsc_AREA_ENUM.AREA_3;
+      area.value = AREA_ENUM.AREA_3;
       theta = lon;
     }
-  } else if (this.face === qsc_FACE_ENUM.BOTTOM) {
+  } else if (this.face === FACE_ENUM.BOTTOM) {
     phi = HALF_PI + lat;
     if (lon >= FORTPI && lon <= HALF_PI + FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_0;
+      area.value = AREA_ENUM.AREA_0;
       theta = -lon + HALF_PI;
     } else if (lon < FORTPI && lon >= -FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_1;
+      area.value = AREA_ENUM.AREA_1;
       theta = -lon;
     } else if (lon < -FORTPI && lon >= -(HALF_PI + FORTPI)) {
-      area.value = qsc_AREA_ENUM.AREA_2;
+      area.value = AREA_ENUM.AREA_2;
       theta = -lon - HALF_PI;
     } else {
-      area.value = qsc_AREA_ENUM.AREA_3;
+      area.value = AREA_ENUM.AREA_3;
       theta = (lon > 0.0 ? -lon + SPI : -lon - SPI);
     }
   } else {
@@ -77938,12 +79751,12 @@ function qsc_forward(p) {
     var sinlat, coslat;
     var sinlon, coslon;
 
-    if (this.face === qsc_FACE_ENUM.RIGHT) {
-      lon = qsc_qsc_shift_lon_origin(lon, +HALF_PI);
-    } else if (this.face === qsc_FACE_ENUM.BACK) {
-      lon = qsc_qsc_shift_lon_origin(lon, +SPI);
-    } else if (this.face === qsc_FACE_ENUM.LEFT) {
-      lon = qsc_qsc_shift_lon_origin(lon, -HALF_PI);
+    if (this.face === FACE_ENUM.RIGHT) {
+      lon = qsc_shift_lon_origin(lon, +HALF_PI);
+    } else if (this.face === FACE_ENUM.BACK) {
+      lon = qsc_shift_lon_origin(lon, +SPI);
+    } else if (this.face === FACE_ENUM.LEFT) {
+      lon = qsc_shift_lon_origin(lon, -HALF_PI);
     }
     sinlat = Math.sin(lat);
     coslat = Math.cos(lat);
@@ -77953,22 +79766,22 @@ function qsc_forward(p) {
     r = coslat * sinlon;
     s = sinlat;
 
-    if (this.face === qsc_FACE_ENUM.FRONT) {
+    if (this.face === FACE_ENUM.FRONT) {
       phi = Math.acos(q);
-      theta = qsc_qsc_fwd_equat_face_theta(phi, s, r, area);
-    } else if (this.face === qsc_FACE_ENUM.RIGHT) {
+      theta = qsc_fwd_equat_face_theta(phi, s, r, area);
+    } else if (this.face === FACE_ENUM.RIGHT) {
       phi = Math.acos(r);
-      theta = qsc_qsc_fwd_equat_face_theta(phi, s, -q, area);
-    } else if (this.face === qsc_FACE_ENUM.BACK) {
+      theta = qsc_fwd_equat_face_theta(phi, s, -q, area);
+    } else if (this.face === FACE_ENUM.BACK) {
       phi = Math.acos(-q);
-      theta = qsc_qsc_fwd_equat_face_theta(phi, s, -r, area);
-    } else if (this.face === qsc_FACE_ENUM.LEFT) {
+      theta = qsc_fwd_equat_face_theta(phi, s, -r, area);
+    } else if (this.face === FACE_ENUM.LEFT) {
       phi = Math.acos(-r);
-      theta = qsc_qsc_fwd_equat_face_theta(phi, s, q, area);
+      theta = qsc_fwd_equat_face_theta(phi, s, q, area);
     } else {
       /* Impossible */
       phi = theta = 0;
-      area.value = qsc_AREA_ENUM.AREA_0;
+      area.value = AREA_ENUM.AREA_0;
     }
   }
 
@@ -77979,11 +79792,11 @@ function qsc_forward(p) {
   t = Math.sqrt((1 - Math.cos(phi)) / (Math.cos(mu) * Math.cos(mu)) / (1 - Math.cos(Math.atan(1 / Math.cos(theta)))));
 
   /* Apply the result to the real area. */
-  if (area.value === qsc_AREA_ENUM.AREA_1) {
+  if (area.value === AREA_ENUM.AREA_1) {
     mu += HALF_PI;
-  } else if (area.value === qsc_AREA_ENUM.AREA_2) {
+  } else if (area.value === AREA_ENUM.AREA_2) {
     mu += SPI;
-  } else if (area.value === qsc_AREA_ENUM.AREA_3) {
+  } else if (area.value === AREA_ENUM.AREA_3) {
     mu += 1.5 * SPI;
   }
 
@@ -78016,15 +79829,15 @@ function qsc_inverse(p) {
   nu = Math.atan(Math.sqrt(p.x * p.x + p.y * p.y));
   mu = Math.atan2(p.y, p.x);
   if (p.x >= 0.0 && p.x >= Math.abs(p.y)) {
-    area.value = qsc_AREA_ENUM.AREA_0;
+    area.value = AREA_ENUM.AREA_0;
   } else if (p.y >= 0.0 && p.y >= Math.abs(p.x)) {
-    area.value = qsc_AREA_ENUM.AREA_1;
+    area.value = AREA_ENUM.AREA_1;
     mu -= HALF_PI;
   } else if (p.x < 0.0 && -p.x >= Math.abs(p.y)) {
-    area.value = qsc_AREA_ENUM.AREA_2;
+    area.value = AREA_ENUM.AREA_2;
     mu = (mu < 0.0 ? mu + SPI : mu - SPI);
   } else {
-    area.value = qsc_AREA_ENUM.AREA_3;
+    area.value = AREA_ENUM.AREA_3;
     mu += HALF_PI;
   }
 
@@ -78049,26 +79862,26 @@ function qsc_inverse(p) {
    * For the top and bottom face, we can compute phi and lam directly.
    * For the other faces, we must use unit sphere cartesian coordinates
    * as an intermediate step. */
-  if (this.face === qsc_FACE_ENUM.TOP) {
+  if (this.face === FACE_ENUM.TOP) {
     phi = Math.acos(cosphi);
     lp.phi = HALF_PI - phi;
-    if (area.value === qsc_AREA_ENUM.AREA_0) {
+    if (area.value === AREA_ENUM.AREA_0) {
       lp.lam = theta + HALF_PI;
-    } else if (area.value === qsc_AREA_ENUM.AREA_1) {
+    } else if (area.value === AREA_ENUM.AREA_1) {
       lp.lam = (theta < 0.0 ? theta + SPI : theta - SPI);
-    } else if (area.value === qsc_AREA_ENUM.AREA_2) {
+    } else if (area.value === AREA_ENUM.AREA_2) {
       lp.lam = theta - HALF_PI;
     } else /* area.value == AREA_ENUM.AREA_3 */ {
       lp.lam = theta;
     }
-  } else if (this.face === qsc_FACE_ENUM.BOTTOM) {
+  } else if (this.face === FACE_ENUM.BOTTOM) {
     phi = Math.acos(cosphi);
     lp.phi = phi - HALF_PI;
-    if (area.value === qsc_AREA_ENUM.AREA_0) {
+    if (area.value === AREA_ENUM.AREA_0) {
       lp.lam = -theta + HALF_PI;
-    } else if (area.value === qsc_AREA_ENUM.AREA_1) {
+    } else if (area.value === AREA_ENUM.AREA_1) {
       lp.lam = -theta;
-    } else if (area.value === qsc_AREA_ENUM.AREA_2) {
+    } else if (area.value === AREA_ENUM.AREA_2) {
       lp.lam = -theta - HALF_PI;
     } else /* area.value == AREA_ENUM.AREA_3 */ {
       lp.lam = (theta < 0.0 ? -theta - SPI : -theta + SPI);
@@ -78090,27 +79903,27 @@ function qsc_inverse(p) {
       r = Math.sqrt(1 - t);
     }
     /* Rotate q,r,s into the correct area. */
-    if (area.value === qsc_AREA_ENUM.AREA_1) {
+    if (area.value === AREA_ENUM.AREA_1) {
       t = r;
       r = -s;
       s = t;
-    } else if (area.value === qsc_AREA_ENUM.AREA_2) {
+    } else if (area.value === AREA_ENUM.AREA_2) {
       r = -r;
       s = -s;
-    } else if (area.value === qsc_AREA_ENUM.AREA_3) {
+    } else if (area.value === AREA_ENUM.AREA_3) {
       t = r;
       r = s;
       s = -t;
     }
     /* Rotate q,r,s into the correct cube face. */
-    if (this.face === qsc_FACE_ENUM.RIGHT) {
+    if (this.face === FACE_ENUM.RIGHT) {
       t = q;
       q = -r;
       r = t;
-    } else if (this.face === qsc_FACE_ENUM.BACK) {
+    } else if (this.face === FACE_ENUM.BACK) {
       q = -q;
       r = -r;
-    } else if (this.face === qsc_FACE_ENUM.LEFT) {
+    } else if (this.face === FACE_ENUM.LEFT) {
       t = q;
       q = r;
       r = -t;
@@ -78118,12 +79931,12 @@ function qsc_inverse(p) {
     /* Now compute phi and lam from the unit sphere coordinates. */
     lp.phi = Math.acos(-s) - HALF_PI;
     lp.lam = Math.atan2(r, q);
-    if (this.face === qsc_FACE_ENUM.RIGHT) {
-      lp.lam = qsc_qsc_shift_lon_origin(lp.lam, -HALF_PI);
-    } else if (this.face === qsc_FACE_ENUM.BACK) {
-      lp.lam = qsc_qsc_shift_lon_origin(lp.lam, -SPI);
-    } else if (this.face === qsc_FACE_ENUM.LEFT) {
-      lp.lam = qsc_qsc_shift_lon_origin(lp.lam, +HALF_PI);
+    if (this.face === FACE_ENUM.RIGHT) {
+      lp.lam = qsc_shift_lon_origin(lp.lam, -HALF_PI);
+    } else if (this.face === FACE_ENUM.BACK) {
+      lp.lam = qsc_shift_lon_origin(lp.lam, -SPI);
+    } else if (this.face === FACE_ENUM.LEFT) {
+      lp.lam = qsc_shift_lon_origin(lp.lam, +HALF_PI);
     }
   }
 
@@ -78149,23 +79962,23 @@ function qsc_inverse(p) {
 
 /* Helper function for forward projection: compute the theta angle
  * and determine the area number. */
-function qsc_qsc_fwd_equat_face_theta(phi, y, x, area) {
+function qsc_fwd_equat_face_theta(phi, y, x, area) {
   var theta;
   if (phi < EPSLN) {
-    area.value = qsc_AREA_ENUM.AREA_0;
+    area.value = AREA_ENUM.AREA_0;
     theta = 0.0;
   } else {
     theta = Math.atan2(y, x);
     if (Math.abs(theta) <= FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_0;
+      area.value = AREA_ENUM.AREA_0;
     } else if (theta > FORTPI && theta <= HALF_PI + FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_1;
+      area.value = AREA_ENUM.AREA_1;
       theta -= HALF_PI;
     } else if (theta > HALF_PI + FORTPI || theta <= -(HALF_PI + FORTPI)) {
-      area.value = qsc_AREA_ENUM.AREA_2;
+      area.value = AREA_ENUM.AREA_2;
       theta = (theta >= 0.0 ? theta - SPI : theta + SPI);
     } else {
-      area.value = qsc_AREA_ENUM.AREA_3;
+      area.value = AREA_ENUM.AREA_3;
       theta += HALF_PI;
     }
   }
@@ -78173,7 +79986,7 @@ function qsc_qsc_fwd_equat_face_theta(phi, y, x, area) {
 }
 
 /* Helper function: shift the longitude. */
-function qsc_qsc_shift_lon_origin(lon, offset) {
+function qsc_shift_lon_origin(lon, offset) {
   var slon = lon + offset;
   if (slon < -SPI) {
     slon += TWO_PI;
@@ -78200,7 +80013,7 @@ var qsc_names = ["Quadrilateralized Spherical Cube", "Quadrilateralized_Spherica
 
 
 
-var robin_COEFS_X = [
+var COEFS_X = [
     [1.0000, 2.2199e-17, -7.15515e-05, 3.1103e-06],
     [0.9986, -0.000482243, -2.4897e-05, -1.3309e-06],
     [0.9954, -0.00083103, -4.48605e-05, -9.86701e-07],
@@ -78222,7 +80035,7 @@ var robin_COEFS_X = [
     [0.5322, -0.00677797, 0.000275608, 6.24051e-06]
 ];
 
-var robin_COEFS_Y = [
+var COEFS_Y = [
     [-5.20417e-18, 0.0124, 1.21431e-18, -8.45284e-11],
     [0.0620, 0.0124, -1.26793e-09, 4.22642e-10],
     [0.1240, 0.0124, 5.07171e-09, -1.60604e-09],
@@ -78244,21 +80057,21 @@ var robin_COEFS_Y = [
     [1.0000, 0.00328947, -0.000319159, -4.2106e-06]
 ];
 
-var robin_FXC = 0.8487;
-var robin_FYC = 1.3523;
-var robin_C1 = R2D/5; // rad to 5-degree interval
-var robin_RC1 = 1/robin_C1;
-var robin_NODES = 18;
+var FXC = 0.8487;
+var FYC = 1.3523;
+var C1 = R2D/5; // rad to 5-degree interval
+var RC1 = 1/C1;
+var NODES = 18;
 
-var robin_poly3_val = function(coefs, x) {
+var poly3_val = function(coefs, x) {
     return coefs[0] + x * (coefs[1] + x * (coefs[2] + x * coefs[3]));
 };
 
-var robin_poly3_der = function(coefs, x) {
+var poly3_der = function(coefs, x) {
     return coefs[1] + x * (2 * coefs[2] + x * 3 * coefs[3]);
 };
 
-function robin_newton_rapshon(f_df, start, max_err, iters) {
+function newton_rapshon(f_df, start, max_err, iters) {
     var x = start;
     for (; iters; --iters) {
         var upd = f_df(x);
@@ -78282,62 +80095,62 @@ function robin_forward(ll) {
     var lon = adjust_lon(ll.x - this.long0);
 
     var dphi = Math.abs(ll.y);
-    var i = Math.floor(dphi * robin_C1);
+    var i = Math.floor(dphi * C1);
     if (i < 0) {
         i = 0;
-    } else if (i >= robin_NODES) {
-        i = robin_NODES - 1;
+    } else if (i >= NODES) {
+        i = NODES - 1;
     }
-    dphi = R2D * (dphi - robin_RC1 * i);
+    dphi = R2D * (dphi - RC1 * i);
     var xy = {
-        x: robin_poly3_val(robin_COEFS_X[i], dphi) * lon,
-        y: robin_poly3_val(robin_COEFS_Y[i], dphi)
+        x: poly3_val(COEFS_X[i], dphi) * lon,
+        y: poly3_val(COEFS_Y[i], dphi)
     };
     if (ll.y < 0) {
         xy.y = -xy.y;
     }
 
-    xy.x = xy.x * this.a * robin_FXC + this.x0;
-    xy.y = xy.y * this.a * robin_FYC + this.y0;
+    xy.x = xy.x * this.a * FXC + this.x0;
+    xy.y = xy.y * this.a * FYC + this.y0;
     return xy;
 }
 
 function robin_inverse(xy) {
     var ll = {
-        x: (xy.x - this.x0) / (this.a * robin_FXC),
-        y: Math.abs(xy.y - this.y0) / (this.a * robin_FYC)
+        x: (xy.x - this.x0) / (this.a * FXC),
+        y: Math.abs(xy.y - this.y0) / (this.a * FYC)
     };
 
     if (ll.y >= 1) { // pathologic case
-        ll.x /= robin_COEFS_X[robin_NODES][0];
+        ll.x /= COEFS_X[NODES][0];
         ll.y = xy.y < 0 ? -HALF_PI : HALF_PI;
     } else {
         // find table interval
-        var i = Math.floor(ll.y * robin_NODES);
+        var i = Math.floor(ll.y * NODES);
         if (i < 0) {
             i = 0;
-        } else if (i >= robin_NODES) {
-            i = robin_NODES - 1;
+        } else if (i >= NODES) {
+            i = NODES - 1;
         }
         for (;;) {
-            if (robin_COEFS_Y[i][0] > ll.y) {
+            if (COEFS_Y[i][0] > ll.y) {
                 --i;
-            } else if (robin_COEFS_Y[i+1][0] <= ll.y) {
+            } else if (COEFS_Y[i+1][0] <= ll.y) {
                 ++i;
             } else {
                 break;
             }
         }
         // linear interpolation in 5 degree interval
-        var coefs = robin_COEFS_Y[i];
-        var t = 5 * (ll.y - coefs[0]) / (robin_COEFS_Y[i+1][0] - coefs[0]);
+        var coefs = COEFS_Y[i];
+        var t = 5 * (ll.y - coefs[0]) / (COEFS_Y[i+1][0] - coefs[0]);
         // find t so that poly3_val(coefs, t) = ll.y
-        t = robin_newton_rapshon(function(x) {
-            return (robin_poly3_val(coefs, x) - ll.y) / robin_poly3_der(coefs, x);
+        t = newton_rapshon(function(x) {
+            return (poly3_val(coefs, x) - ll.y) / poly3_der(coefs, x);
         }, t, EPSLN, 100);
 
-        ll.x /= robin_poly3_val(robin_COEFS_X[i], t);
-        ll.y = (5 * i + t) * values_D2R;
+        ll.x /= poly3_val(COEFS_X[i], t);
+        ll.y = (5 * i + t) * D2R;
         if (xy.y < 0) {
             ll.y = -ll.y;
         }
@@ -78434,10 +80247,10 @@ proj4_projs(core);
 /* harmony default export */ var lib = (core);
 
 // EXTERNAL MODULE: ./src/openlayers/mapping/webmap/config/ProvinceCenter.json
-var ProvinceCenter = __webpack_require__(9);
+var ProvinceCenter = __webpack_require__(12);
 
 // EXTERNAL MODULE: ./src/openlayers/mapping/webmap/config/MunicipalCenter.json
-var MunicipalCenter = __webpack_require__(8);
+var MunicipalCenter = __webpack_require__(13);
 
 // CONCATENATED MODULE: ./src/openlayers/mapping/WebMap.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -78456,9 +80269,9 @@ window.proj4 = lib;
 window.Proj4js = lib;
 external_ol_default.a.supermap = external_ol_default.a.supermap || {};
 //数据转换工具
-const WebMap_transformTools = new external_ol_default.a.format.GeoJSON();
+const transformTools = new external_ol_default.a.format.GeoJSON();
 // 迁徙图最大支持要素数量
-const WebMap_MAX_MIGRATION_ANIMATION_COUNT = 1000;
+const MAX_MIGRATION_ANIMATION_COUNT = 1000;
 /**
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
@@ -78576,7 +80389,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             //传递过来的url,没有包括.json,在这里加上。
             mapUrl = `${url}.json`
         }
-        FetchRequest_FetchRequest.get(that.getRequestUrl(mapUrl), null, {
+        FetchRequest.get(that.getRequestUrl(mapUrl), null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json();
@@ -78667,7 +80480,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         
         let source;
         if(baseLayerType === "TILE"){
-            FetchRequest_FetchRequest.get(me.getRequestUrl(`${url}.json`), null, {
+            FetchRequest.get(me.getRequestUrl(`${url}.json`), null, {
                 withCredentials: this.withCredentials
             }).then(function (response) {
                 return response.json();
@@ -78685,7 +80498,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             source = me.createWMSSource(baseLayerInfo);
             me.addSpecToMap(source);
         } else if(baseLayerType === "WMTS"){
-            FetchRequest_FetchRequest.get(me.getRequestUrl(url), null, {
+            FetchRequest.get(me.getRequestUrl(url), null, {
                 withCredentials: this.withCredentials
             }).then(function (response) {
                 return response.text();
@@ -79112,9 +80925,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             url: layerInfo.url,
             wrapX: false,
             serverType: serverType,
+            crossOrigin: 'anonymous',
             // extent: this.baseLayerExtent,
-            prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] },
-            tileProxy: this.tileProxy
+            prjCoordSys:{ epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1] }
         };
         if(layerInfo.visibleScales && layerInfo.visibleScales.length >0){
             let result = this.getReslutionsFromScales(layerInfo.visibleScales, 96, layerInfo.coordUnit);
@@ -79126,6 +80939,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             options.tileGrid = tileGrid;
         }else{
             options.extent = this.baseLayerExtent;
+        }
+         //主机名相同时不添加代理
+        if (layerInfo.url && !this.isSameDomain(layerInfo.url)) {
+            options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
         }
         let source = new external_ol_default.a.source.TileSuperMapRest(options);
         SecurityManager_SecurityManager[`register${keyfix}`](layerInfo.url);
@@ -79170,6 +80987,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         return new external_ol_default.a.source.XYZ({
             wrapX: false,
             projection: projection,
+            crossOrigin: 'anonymous',
             tileUrlFunction: function (coordinates) {
                 let /*quadDigits = '', */[z, x, y] = [...coordinates];
                 y = y > 0 ? y - 1 : -y - 1;
@@ -79201,7 +81019,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         return new external_ol_default.a.source.XYZ({
             url: layerInfo.url,
             wrapX: false,
-            crossOrigin: window.location.host
+            crossOrigin: 'anonymous'
         })
     }
 
@@ -79253,7 +81071,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
-        FetchRequest_FetchRequest.get(that.getRequestUrl(url), null, options).then(function (response) {
+        FetchRequest.get(that.getRequestUrl(url), null, options).then(function (response) {
             return layerInfo.layerType  === "TILE" ? response.json() : response.text();
         }).then(function (result) {
             if (layerInfo.layerType === "TILE") {
@@ -79280,7 +81098,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
-        FetchRequest_FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
+        FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
             return response.json();
         }).then(function (result) {
             layerInfo.projection = mapInfo.projection;
@@ -79315,7 +81133,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             withCredentials: false,
             withoutFormatSuffix: true
         };
-        FetchRequest_FetchRequest.get(that.getRequestUrl(layerInfo.url), null, options).then(function (response) {
+        FetchRequest.get(that.getRequestUrl(layerInfo.url), null, options).then(function (response) {
             return response.text();
         }).then(function (capabilitiesText) {
             const format = new external_ol_default.a.format.WMTSCapabilities();
@@ -79530,7 +81348,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                         //原来二进制文件
                         let url = isSampleData ? `${that.server}apps/dataviz/libs/sample-datas/${dataSource.name}.json` : `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
                         url = that.getRequestUrl(url);
-                        FetchRequest_FetchRequest.get(url, null, {
+                        FetchRequest.get(url, null, {
                             withCredentials: this.withCredentials
                         }).then(function (response) {
                             return response.json()
@@ -79750,7 +81568,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             token = layerInfo.credential.token;
             requestUrl+= `?token=${token}`;
         }
-        FetchRequest_FetchRequest.get(requestUrl, null, {
+        FetchRequest.get(requestUrl, null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json()
@@ -79873,9 +81691,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 colTitles[i] = core_Util_Util.trim(colTitles[i]);
             }
         }
+        // 迁徙图xyField暂时用from中的
         let fileCode = layerInfo.projection,
-            xIdx = colTitles.indexOf(core_Util_Util.trim(layerInfo.xyField.xField)),
-            yIdx = colTitles.indexOf(core_Util_Util.trim(layerInfo.xyField.yField)),
+            xIdx = colTitles.indexOf(core_Util_Util.trim((layerInfo.xyField && layerInfo.xyField.xField) || (layerInfo.from && layerInfo.from.xField))),
+            yIdx = colTitles.indexOf(core_Util_Util.trim((layerInfo.xyField && layerInfo.xyField.yField) || (layerInfo.from && layerInfo.from.yField))),
             baseLayerEpsgCode = this.baseProjection,
             features = [];
 
@@ -79895,9 +81714,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 }
                 let feature = new external_ol_default.a.Feature({
                     geometry: olGeom,
-                    Properties: attributes
+                    attributes: attributes
                 });
-                feature.attributes = attributes;
                 features.push(feature);
             }
         }
@@ -79915,7 +81733,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let allFeatures = geojson.features,
             features = [];
         for (let i = 0, len = allFeatures.length; i < len; i++) {
-            let feature = WebMap_transformTools.readFeature(allFeatures[i], {
+            //转换前删除properties,这样转换后属性不会重复存储
+            let featureAttr = allFeatures[i].properties || {};
+            delete allFeatures[i].properties;
+            let feature = transformTools.readFeature(allFeatures[i], {
                 dataProjection: layerInfo.projection || 'EPSG:4326',
                 featureProjection: this.baseProjection || 'ESPG:4326'
             });
@@ -79928,15 +81749,19 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     allFeatures[i].properties.lat = coordinate[1];
                 }
             }
-            feature.attributes = allFeatures[i].properties || {};
 
             // 标注图层特殊处理
             let isMarker = false;
-            let featureInfo;
+            let attributes;
             let useStyle;
             if (allFeatures[i].dv_v5_markerInfo) {
-                featureInfo = allFeatures[i].dv_v5_markerInfo;
-                isMarker = true;
+                 //因为优化代码之前，属性字段都存储在propertise上，markerInfo没有
+                 attributes = Object.assign({}, allFeatures[i].dv_v5_markerInfo, featureAttr);
+                 if(attributes.lon) {
+                     //标注图层不需要
+                     delete attributes.lon;
+                     delete attributes.lat;
+                 }
             }
             if (allFeatures[i].dv_v5_markerStyle) {
                 useStyle = allFeatures[i].dv_v5_markerStyle;
@@ -79945,19 +81770,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let properties;
             if (isMarker) {
                 properties = Object.assign({}, {
-                    featureInfo: featureInfo
+                    attributes
                 }, {
-                        useStyle: useStyle
-                    });
+                    useStyle
+                });
                 //feature上添加图层的id，为了对应图层
                 feature.layerId = layerInfo.timeId;
-                //删除不需要的属性，因为这两个属性存储在properties上
-                delete feature.attributes.featureInfo;
-                delete feature.attributes.useStyle;
             } else if (layerInfo.featureStyles) {
                 //V4 版本标注图层处理
                 let style = JSON.parse(layerInfo.featureStyles[i].style);
-                let attr = feature.attributes;
+                let attr = featureAttr;
                 let imgUrl;
                 if (attr._smiportal_imgLinkUrl.indexOf('http://') > -1 || attr._smiportal_imgLinkUrl.indexOf('https://') > -1) {
                     imgUrl = attr._smiportal_imgLinkUrl;
@@ -79966,7 +81788,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     //上传的图片，加上当前地址
                     imgUrl = `${core_Util_Util.getIPortalUrl()}resources/markerIcon/${attr._smiportal_imgLinkUrl}`
                 }
-                featureInfo = {
+                attributes = {
                     dataViz_description: attr._smiportal_description,
                     dataViz_imgUrl: imgUrl,
                     dataViz_title: attr._smiportal_title,
@@ -79977,16 +81799,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
 
                 useStyle = style;
                 properties = Object.assign({}, {
-                    featureInfo: featureInfo
+                    attributes
                 }, {
-                        useStyle: useStyle
-                    });
+                    useStyle
+                });
                 delete attr._smiportal_description;
                 delete attr._smiportal_imgLinkUrl;
                 delete attr._smiportal_title;
                 delete attr._smiportal_otherLinkUrl;
             } else {
-                properties = feature.attributes;
+                properties = {attributes: featureAttr};
             }
 
             feature.setProperties(properties);
@@ -80006,19 +81828,20 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let allFeatures = metaData.allDatas.features,
             features = [];
         for (let i = 0, len = allFeatures.length; i < len; i++) {
-            let feature = WebMap_transformTools.readFeature(allFeatures[i], {
+            let properties = allFeatures[i].properties;
+            delete allFeatures[i].properties;
+            let feature = transformTools.readFeature(allFeatures[i], {
                 dataProjection: metaData.fileCode || 'EPSG:4326',
                 featureProjection: metaData.featureProjection || core_Util_Util.getBaseLayerProj() || 'EPSG:4326'
             });
             //geojson格式的feature属性没有坐标系字段，为了统一，再次加上
             let coordinate = feature.getGeometry().getCoordinates();
             if (allFeatures[i].geometry.type === 'Point') {
-                allFeatures[i].properties.lon = coordinate[0];
-                allFeatures[i].properties.lat = coordinate[1];
+                properties.lon = coordinate[0];
+                properties.lat = coordinate[1];
             }
-            feature.attributes = allFeatures[i].properties || {};
             feature.setProperties({
-                Properties: feature.attributes
+                attributes: properties
             });
             features.push(feature);
         }
@@ -80206,7 +82029,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let filterResult = false;
             try {
                 filterResult = window.jsonsql.query(sql, {
-                    attributes: feature.attributes
+                    attributes: feature.get('attributes')
                 });
             } catch (err) {
                 //必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
@@ -80268,8 +82091,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let graphics = [];
         //构建graphic
         for (let i in features) {
-            let graphic = new external_ol_default.a.Graphic(features[i].getGeometry(), features[i].attributes);
+            let graphic = new external_ol_default.a.Graphic(features[i].getGeometry());
             graphic.setStyle(shape);
+            graphic.setProperties({attributes: features[i].get('attributes')})
             graphics.push(graphic);
         }
         return graphics;
@@ -80316,7 +82140,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         });
         layer.setStyle(features => {
             let labelField = labelStyle.labelField;
-            let label = features.attributes[labelField.trim()] + "";
+            let label = features.get('attributes')[labelField.trim()] + "";
             if (label === "undefined") {
                 return null;
             }
@@ -80360,7 +82184,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     color: parameters.fill
                 }),
                 backgroundFill: new external_ol_default.a.style.Fill({
-                    color: [255, 255, 255, 0.7]
+                    color: parameters.backgroundFill || [255, 255, 255, 0.7]
                 }),
                 padding: [3, 3, 3, 3],
                 offsetY: parameters.offsetY
@@ -80433,7 +82257,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         this.getMaxValue(features, weightFeild);
         let maxValue = this.fieldMaxValue[weightFeild];
         features.forEach(function (feature) {
-            let attributes = feature.get("Properties") || feature.attributes;
+            let attributes = feature.get('attributes');
             try {
                 let value = attributes[weightFeild];
                 feature.set('weight', value / maxValue);
@@ -80458,14 +82282,14 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         }
         features.forEach(function (feature) {
             //收集当前权重字段对应的所有值
-            attributes = feature.get("Properties") || feature.attributes;
+            attributes = feature.get('attributes');
             try {
                 values.push(parseFloat(attributes[field]));
             } catch (e) {
                 that.errorCallback && that.errorCallback(e);
             }
         });
-        this.fieldMaxValue[field] = ArrayStatistic_ArrayStatistic.getArrayStatistic(values, 'Maximum');
+        this.fieldMaxValue[field] = ArrayStatistic.getArrayStatistic(values, 'Maximum');
     }
 
     /**
@@ -80487,7 +82311,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         layer.setStyle(feature => {
             let styleSource = layer.get('styleSource');
             let labelField = styleSource.themeField;
-            let label = feature.attributes[labelField];
+            let label = feature.get('attributes')[labelField];
             return styleSource.styleGroups[label].olStyle;
         });
 
@@ -80534,7 +82358,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let names = [],
             customSettings = themeSetting.customSettings;
         for (let i in features) {
-            let attributes = features[i].attributes;
+            let attributes = features[i].get('attributes');
             let name = attributes[fieldName];
             let isSaved = false;
             for (let j in names) {
@@ -80550,7 +82374,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
 
         //获取一定量的颜色
         let curentColors = colors;
-        curentColors = ColorsPickerUtil_ColorsPickerUtil.getGradientColors(curentColors, names.length);
+        curentColors = ColorsPickerUtil.getGradientColors(curentColors, names.length);
 
         //生成styleGroup
         let styleGroup = [];
@@ -80600,7 +82424,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             let styleSource = layer.get('styleSource');
             if (styleSource) {
                 let labelField = styleSource.themeField;
-                let value = Number(feature.attributes[labelField.trim()]);
+                let value = Number(feature.get('attributes')[labelField.trim()]);
                 let styleGroups = styleSource.styleGroups;
                 for (let i = 0; i < styleGroups.length; i++) {
                     if (i === 0) {
@@ -80665,7 +82489,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let segmentMethod = method;
         let that = this;
         features.forEach(function (feature) {
-            attributes = feature.get("Properties") || feature.attributes;
+            attributes = feature.get("attributes");
             try {
                 if (attributes) {
                     //过滤掉非数值的数据
@@ -80686,7 +82510,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
 
         let segements;
         try {
-            segements = ArrayStatistic_ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
+            segements = ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
         } catch (e) {
             that.errorCallback && that.errorCallback(e);
         }
@@ -80713,7 +82537,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
 
             //获取一定量的颜色
             let curentColors = colors;
-            curentColors = ColorsPickerUtil_ColorsPickerUtil.getGradientColors(curentColors, itemNum, 'RANGE');
+            curentColors = ColorsPickerUtil.getGradientColors(curentColors, itemNum, 'RANGE');
 
             for (let index = 0; index < itemNum; index++) {
                 if (index in customSettings) {
@@ -80824,7 +82648,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
-                        attributes: feature.attributes
+                        attributes: feature.get('attributes')
                     });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
@@ -80912,7 +82736,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             //有转向字段
             let value, image;
             if(directionField !== undefined && directionField !== "未设置" && directionField !== "None") {
-                value = feature.attributes[directionField];
+                value = feature.get('attributes')[directionField];
             } else {
                 value = 0;  
             }
@@ -80975,7 +82799,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     let condition = that.replaceFilterCharacter(layerInfo.filterCondition);
                     let sql = "select * from json where (" + condition + ")";
                     let filterResult = window.jsonsql.query(sql, {
-                        attributes: feature.attributes
+                        attributes: feature.get('attributes')
                     });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
@@ -81018,7 +82842,6 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             }*/
             featureCache[geoID].setGeometry(feature.getGeometry());
             featureCache[geoID].setProperties(feature.getProperties());
-            featureCache[geoID].attributes = feature.attributes;
             source.changed();
         } else {
             source.addFeature(feature);
@@ -81037,11 +82860,11 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let dataflowService = new external_ol_default.a.supermap.DataFlowService(layerInfo.wsUrl).initSubscribe();
         dataflowService.on('messageSucceeded', function (e) {
             let geojson = JSON.parse(e.value.data);
-            let feature = WebMap_transformTools.readFeature(geojson, {
+            let feature = transformTools.readFeature(geojson, {
                 dataProjection: "EPSG:4326", // todo 坐标系
                 featureProjection: that.baseProjection || 'EPSG:4326'
             });
-            feature.attributes = geojson.properties;
+            feature.setProperties({attributes: geojson.properties});
             callback(feature);
 
         });
@@ -81065,10 +82888,10 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                     //说明是文字的feature类型
                     geomType = "TEXT";
                 }
-                let featureInfo = this.setFeatureInfo(feature);
+                let attributes = this.setFeatureInfo(feature);
                 feature.setProperties({
                     useStyle: defaultStyle,
-                    featureInfo: featureInfo
+                    attributes
                 });
                 //标注图层的feature上需要存一个layerId，为了之后样式应用到图层上使用
                 // feature.layerId = timeId;
@@ -81092,22 +82915,22 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @returns {*}
      */
     setFeatureInfo(feature) {
-        let featureInfo;
-        if (feature.getProperties().featureInfo && feature.getProperties().featureInfo.dataViz_title !== undefined &&
-            feature.getProperties().featureInfo.dataViz_title != null) {
-            //有featureInfo信息就不需要再添加
-            featureInfo = feature.getProperties().featureInfo;
-        } else {
-            featureInfo = this.getDefaultAttribute();
-        }
+        let attributes = feature.get('attributes'),
+            defaultAttr = {
+                dataViz_title: '',
+                dataViz_description: '',
+                dataViz_imgUrl: '',
+                dataViz_url:''
+            }, 
+            newAttribute = Object.assign(defaultAttr, attributes);
         let properties = feature.getProperties();
-        for (let key in featureInfo) {
-            if (properties[key]) {
-                featureInfo[key] = properties[key];
+        for(let key in newAttribute) {
+            if(properties[key]) {
+                newAttribute[key] = properties[key];
                 delete properties[key];
             }
         }
-        return featureInfo;
+        return newAttribute;
     }
 
     /**
@@ -81131,7 +82954,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         layer.setStyle(feature => {
             let styleSource = layer.get('styleSource');
             let themeField = styleSource.parameters.themeSetting.themeField;
-            let value = Number(feature.attributes[themeField]);
+            let value = Number(feature.get('attributes')[themeField]);
             let styleGroups = styleSource.styleGroups;
             for (let i = 0, len = styleGroups.length; i < len; i++) {
                 if (value >= styleGroups[i].start && value < styleGroups[i].end) {
@@ -81178,7 +83001,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             minR = parameters.themeSetting.minRadius,
             maxR = parameters.themeSetting.maxRadius;
         features.forEach(feature => {
-            let attributes = feature.attributes,
+            let attributes = feature.get('attributes'),
                 value = attributes[themeField];
             // 过滤掉空值和非数值
             if (value == null || !core_Util_Util.isNumber(value)) {
@@ -81187,7 +83010,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             values.push(Number(value));
         });
         try {
-            segements = ArrayStatistic_ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
+            segements = ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
         } catch (error) {
             console.error(error);
         }
@@ -81237,7 +83060,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      */
     checkUploadToRelationship(fileId) {
         let url = this.getRequestUrl(`${this.server}web/datas/${fileId}/datasets.json`);
-        return FetchRequest_FetchRequest.get(url, null, {
+        return FetchRequest.get(url, null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json()
@@ -81254,7 +83077,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      */
     getDatasources(url) {
         let requestUrl = this.getRequestUrl(`${url}/data/datasources.json`);
-        return FetchRequest_FetchRequest.get(requestUrl, null, {
+        return FetchRequest.get(requestUrl, null, {
             withCredentials: this.withCredentials   
         }).then(function (response) {
             return response.json()
@@ -81274,7 +83097,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      */
     getDataService(fileId, datasetName) {
         let url = this.getRequestUrl(`${this.server}web/datas/${fileId}.json`);
-        return FetchRequest_FetchRequest.get(url, null, {
+        return FetchRequest.get(url, null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json()
@@ -81323,7 +83146,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
     getTileLayerInfo(url) {
         let that = this, epsgCode = that.baseProjection.split('EPSG:')[1];
         let requestUrl = that.getRequestUrl(`${url}/maps.json`);
-        return FetchRequest_FetchRequest.get(requestUrl, null, {
+        return FetchRequest.get(requestUrl, null, {
             withCredentials: this.withCredentials
         }).then(function (response) {
             return response.json()
@@ -81332,7 +83155,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             if(mapInfo) {
                 mapInfo.forEach(function (info) {
                     let mapUrl = that.getRequestUrl(`${info.path}.json?prjCoordSys=${encodeURI(JSON.stringify({ epsgCode: epsgCode }))}`)
-                    let promise = FetchRequest_FetchRequest.get(mapUrl, null, {
+                    let promise = FetchRequest.get(mapUrl, null, {
                         withCredentials: that.withCredentials
                     }).then(function (response) {
                         return response.json()
@@ -81525,7 +83348,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             }
         ];
 
-        if (lineData.length > WebMap_MAX_MIGRATION_ANIMATION_COUNT) {
+        if (lineData.length > MAX_MIGRATION_ANIMATION_COUNT) {
             linesSeries[0].large = true;
             linesSeries[0].largeThreshold = 100;
             linesSeries[0].blendMode = 'lighter';
@@ -81706,7 +83529,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         return this.getDatasetsInfo(serviceUrl, datasetName).then((info) => {
             //判断是否和底图坐标系一直
             if(info.epsgCode == that.baseProjection.split('EPSG:')[1]) {
-                return FetchRequest_FetchRequest.get(that.getRequestUrl(`${info.url}/tilefeature.mvt`), null, {
+                return FetchRequest.get(that.getRequestUrl(`${info.url}/tilefeature.mvt`), null, {
                     withCredentials: that.withCredentials      
                 }).then(function (response) {
                     return response.json()
@@ -81734,7 +83557,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         return that.getDatasources(serviceUrl).then(function(datasourceName) {
           //判断mvt服务是否可用 
           let url = `${serviceUrl}/data/datasources/${datasourceName}/datasets/${datasetName}.json`;  
-          return FetchRequest_FetchRequest.get(that.getRequestUrl(url), null, {
+          return FetchRequest.get(that.getRequestUrl(url), null, {
             withCredentials: that.withCredentials       
           }).then(function (response) {
                 return response.json()
@@ -81758,7 +83581,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let baseLayer = mapInfo.baseLayer,
             url = baseLayer.dataSource.url,
             layerInfo = {};
-        return FetchRequest_FetchRequest.get(this.getRequestUrl(url)).then(result => {
+        return FetchRequest.get(this.getRequestUrl(url)).then(result => {
             return result.json();
         }).then(styles => {
             let extent = styles.metadata.mapbounds;
@@ -81841,6 +83664,26 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             resolutions.push(resolutions[i - 1] / 2)
         }
         return resolutions;
+    }
+    /**
+     * 判断是否同域名（如果是域名，只判断后门两级域名是否相同，第一级忽略），如果是ip地址则需要完全相同。
+     * @param {*} url 
+     */
+    isSameDomain (url) {
+        let documentUrlArray = url.split("://"), substring = documentUrlArray[1];
+        let domainIndex = substring.indexOf("/"), domain = substring.substring(0, domainIndex);
+
+        let documentUrl = document.location.toString();
+        let docUrlArray = documentUrl.split("://"), documentSubstring = docUrlArray[1];
+        let docuDomainIndex = documentSubstring.indexOf("/"), docDomain = documentSubstring.substring(0, docuDomainIndex);
+
+        if(domain.indexOf(':') >-1 || window.location.port !== "") {
+            //说明用的是ip地址，判断完整域名判断
+            return domain === docDomain;
+        } else {
+            let domainArray = domain.split('.'), docDomainArray = docDomain.split('.');
+            return domainArray[1] === docDomainArray[1] && domainArray[2] === docDomainArray[2];
+        }
     }
 }
 
@@ -83321,8 +85164,8 @@ external_ol_default.a.style.HitCloverShape = HitCloverShape_HitCloverShape;
 
 
 
-const WebGLRenderer_emptyFunc = () => false;
-const WebGLRenderer_CSS_TRANSFORM = (function () {
+const emptyFunc = () => false;
+const CSS_TRANSFORM = (function () {
     let div = document.createElement('div');
     let props = [
         'transform',
@@ -83402,11 +85245,11 @@ class WebGLRenderer_GraphicWebGLRenderer extends external_ol_default.a.Object {
         let newCenterPixel = this.map.getPixelFromCoordinate(this.map.getView().getCenter());
 
         let offset = [oldCenterPixel[0] - newCenterPixel[0], oldCenterPixel[1] - newCenterPixel[1]];
-        this._canvas.style[WebGLRenderer_CSS_TRANSFORM] = 'translate(' + Math.round(offset[0]) + 'px,' + Math.round(offset[1]) + 'px)';
+        this._canvas.style[CSS_TRANSFORM] = 'translate(' + Math.round(offset[0]) + 'px,' + Math.round(offset[1]) + 'px)';
     }
 
     _moveEndEvent() {
-        this._canvas.style[WebGLRenderer_CSS_TRANSFORM] = 'translate(0,0)';
+        this._canvas.style[CSS_TRANSFORM] = 'translate(0,0)';
         this.center = this.map.getView().getCenter();
         this._clearAndRedraw();
     }
@@ -83500,7 +85343,7 @@ class WebGLRenderer_GraphicWebGLRenderer extends external_ol_default.a.Object {
     _createCanvas(width, height) {
 
         let canvas = document.createElement('canvas');
-        canvas.oncontextmenu = WebGLRenderer_emptyFunc;
+        canvas.oncontextmenu = emptyFunc;
         canvas.width = width;
         canvas.height = height;
         canvas.style.width = width + "px";
@@ -83666,13 +85509,13 @@ class WebGLRenderer_GraphicWebGLRenderer extends external_ol_default.a.Object {
 
         let unit = projection.getUnits() || 'degrees';
         if (unit === 'degrees') {
-            unit = REST_Unit.DEGREE;
+            unit = Unit.DEGREE;
         }
         if (unit === 'm') {
-            unit = REST_Unit.METER;
+            unit = Unit.METER;
         }
         const res = view.getResolution();
-        if (unit === REST_Unit.DEGREE) {
+        if (unit === Unit.DEGREE) {
             let meterRes= res*(Math.PI * 6378137 / 180);
             return pixel * meterRes;
         }else{
@@ -83690,7 +85533,7 @@ class WebGLRenderer_GraphicWebGLRenderer extends external_ol_default.a.Object {
 
 
 //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
-function CanvasRenderer_rotate(pixelP, rotation, center) {
+function rotate(pixelP, rotation, center) {
     let x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
     let y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
     return [x, y];
@@ -83857,7 +85700,7 @@ class CanvasRenderer_GraphicCanvasRenderer extends external_ol_default.a.Object 
             let rotation = -map.getView().getRotation();
             let center = map.getPixelFromCoordinate(map.getView().getCenter());
             let scaledP = CanvasRenderer_scale(pixelP, center, 1);
-            let rotatedP = CanvasRenderer_rotate(scaledP, rotation, center);
+            let rotatedP = rotate(scaledP, rotation, center);
             let result = [rotatedP[0] + offset[0], rotatedP[1] + offset[1]];
             let pixelGeometry = new external_ol_default.a.geom.Point(result);
             vectorContext.drawGeometry(pixelGeometry);
@@ -83880,18 +85723,18 @@ class CanvasRenderer_GraphicCanvasRenderer extends external_ol_default.a.Object 
 
 
 
-const Graphic_defaultProps = {
-    color: [0, 0, 0, 255],
-    opacity: 0.8,
-    radius: 10,
-    radiusScale: 1,
-    radiusMinPixels: 0,
-    radiusMaxPixels: Number.MAX_SAFE_INTEGER,
-    strokeWidth: 1,
-    outline: false
+const defaultProps = {
+  color: [0, 0, 0, 255],
+  opacity: 0.8,
+  radius: 10,
+  radiusScale: 1,
+  radiusMinPixels: 0,
+  radiusMaxPixels: Number.MAX_SAFE_INTEGER,
+  strokeWidth: 1,
+  outline: false
 };
 
-const Graphic_Renderer = ["canvas", "webgl"];
+const Renderer = ['canvas', 'webgl'];
 
 /**
  * @class ol.source.Graphic
@@ -83917,498 +85760,488 @@ const Graphic_Renderer = ["canvas", "webgl"];
  * @extends {ol.source.ImageCanvas}
  */
 class Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
+  constructor(options) {
+    super({
+      attributions: options.attributions,
+      canvasFunction: canvasFunctionInternal_,
+      logo: options.logo,
+      projection: options.projection,
+      ratio: options.ratio,
+      resolutions: options.resolutions,
+      state: options.state
+    });
+    this.graphics = [].concat(options.graphics);
+    this.map = options.map;
+    Util_Util.extend(this, options);
+    this.render = options.render || Renderer[0];
+    if (!core_Util_Util.supportWebGL2()) {
+      this.render = Renderer[0];
+    }
+    this.highLightStyle = options.highLightStyle;
+    //是否支持高亮，默认支持
+    this.isHighLight = typeof options.isHighLight === 'undefined' ? true : options.isHighLight;
+    this.hitGraphicLayer = null;
+    this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
 
-    constructor(options) {
-        super({
-            attributions: options.attributions,
-            canvasFunction: canvasFunctionInternal_,
-            logo: options.logo,
-            projection: options.projection,
-            ratio: options.ratio,
-            resolutions: options.resolutions,
-            state: options.state
+    const me = this;
+
+    if (options.onClick) {
+      me.map.on('click', function(e) {
+        me.map.forEachFeatureAtPixel(e.pixel, options.onClick, {}, e);
+      });
+    }
+
+    function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
+      if (!me.renderer) {
+        me.renderer = createRenderer(size, pixelRatio);
+      }
+      let graphics = this.getGraphicsInExtent(extent);
+      me.renderer._clearBuffer();
+      me.renderer.selected = this.selected;
+      me.renderer.drawGraphics(graphics);
+      return me.renderer.getCanvas();
+    }
+
+    function createRenderer(size, pixelRatio) {
+      let renderer;
+      if (me.render === Renderer[0]) {
+        renderer = new CanvasRenderer_GraphicCanvasRenderer(me, {
+          size,
+          pixelRatio
         });
-        this.graphics = [].concat(options.graphics);
-        this.map = options.map;
-        Util_Util.extend(this, options);
-        this.render = options.render || Graphic_Renderer[0];
-        if (!core_Util_Util.supportWebGL2()) {
-            this.render = Graphic_Renderer[0];
-        }
-        this.highLightStyle = options.highLightStyle;
-        //是否支持高亮，默认支持
-        this.isHighLight = typeof options.isHighLight === "undefined" ? true : options.isHighLight;
-        this.hitGraphicLayer = null;
-        this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
-
-        const me = this;
-
-        if (options.onClick) {
-            me.map.on('click', function (e) {
-                me.map.forEachFeatureAtPixel(e.pixel, options.onClick,{},e);
-            });
-        }
-
-
-        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
-            if (!me.renderer) {
-                me.renderer = createRenderer(size, pixelRatio);
-            }
-            let graphics = this.getGraphicsInExtent(extent);
-            me.renderer._clearBuffer();
-            me.renderer.selected = this.selected;
-            me.renderer.drawGraphics(graphics);
-            return me.renderer.getCanvas();
-        }
-
-
-        function createRenderer(size, pixelRatio) {
-            let renderer;
-            if (me.render === Graphic_Renderer[0]) {
-                renderer = new CanvasRenderer_GraphicCanvasRenderer(me, {
-                    size,
-                    pixelRatio
-                });
-            } else {
-                let optDefault = Util_Util.extend({}, Graphic_defaultProps);
-                let opt = Util_Util.extend(optDefault, {
-                    color: me.color,
-                    opacity: me.opacity,
-                    radius: me.radius,
-                    radiusScale: me.radiusScale,
-                    radiusMinPixels: me.radiusMinPixels,
-                    radiusMaxPixels: me.radiusMaxPixels,
-                    strokeWidth: me.strokeWidth,
-                    outline: me.outline,
-                    onClick: me.onClick,
-                    onHover: me.onHover
-                });
-                opt = Util_Util.extend(me, opt);
-                opt.pixelRatio = pixelRatio;
-                opt.container = me.map.getViewport().getElementsByClassName("ol-overlaycontainer")[0];
-                opt.onBeforeRender = function () {
-                    return false;
-                };
-                opt.onAfterRender = function () {
-                    return false;
-                };
-
-                renderer = new WebGLRenderer_GraphicWebGLRenderer(me, opt);
-            }
-            return renderer;
-        }
-
-        /**
-         * @private
-         * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
-         * @description 获取在视图上的要素。
-         * @param {string} coordinate -坐标。
-         * @param {number} resolution -分辨率。
-         * @param {RequestCallback} callback -回调函数。
-         * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
-         */
-        function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
-            let graphics = me.getGraphicsInExtent();
-            for (let i = graphics.length - 1; i >= 0; i--) {
-                let style = graphics[i].getStyle();
-                if (!style) {
-                    return;
-                }
-                //已经被高亮的graphics 不被选选中
-                if (style instanceof HitCloverShape_HitCloverShape) {
-                    continue;
-                }
-                let center = graphics[i].getGeometry().getCoordinates();
-                let image = new external_ol_default.a.style.Style({
-                    image: style
-                }).getImage();
-
-                let contain = false;
-                //icl-1047  当只有一个叶片的时候，判断是否选中的逻辑处理的更准确一点
-                if (image instanceof CloverShape_CloverShape && image.getCount() === 1) {
-                    const ratation = image.getRotation() * 180 / Math.PI;
-                    const angle = Number.parseFloat(image.getAngle());
-                    const r = image.getRadius() * resolution;
-                    //if(image.getAngle() )
-                    let geo = null;
-                    if (angle > 355) {
-                        geo = new external_ol_default.a.geom.Circle(center, r);
-                    } else {
-                        const coors = [];
-                        coors.push(center);
-                        const perAngle = angle / 8;
-                        for (let index = 0; index < 8; index++) {
-                            const radian = (ratation + index * perAngle) / 180 * Math.PI;
-                            coors.push([center[0] + r * Math.cos(radian),
-                                center[1] - r * Math.sin(radian)
-                            ]);
-                        }
-                        coors.push(center);
-                        geo = new external_ol_default.a.geom.Polygon([
-                            coors
-                        ]);
-
-                    }
-                    if (geo.intersectsCoordinate(this.map.getCoordinateFromPixel(evtPixel))) {
-                        contain = true;
-                    }
-                } else {
-                    let extent = [];
-                    extent[0] = center[0] - image.getAnchor()[0] * resolution;
-                    extent[2] = center[0] + image.getAnchor()[0] * resolution;
-                    extent[1] = center[1] - image.getAnchor()[1] * resolution;
-                    extent[3] = center[1] + image.getAnchor()[1] * resolution;
-                    if (external_ol_default.a.extent.containsCoordinate(extent, coordinate)) {
-                        contain = true;
-                    }
-                }
-
-                if (contain === true) {
-                    if (me.isHighLight) {
-                        me._highLight(center, image, graphics[i], evtPixel);
-                    }
-                    if (callback) {
-                        callback(graphics[i], e);
-                    }
-                    continue;
-                }
-                if (me.isHighLight) {
-                    me._highLightClose();
-                }
-            }
-            return undefined;
-        }
-
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.setGraphics
-     * @description 设置绘制的点要素，会覆盖之前的所有要素。
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
-     */
-    setGraphics(graphics) {
-        this.graphics = this.graphics || [];
-        this.graphics.length = 0;
-        let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-        this.graphics = [].concat(sGraphics);
-        this.update();
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.addGraphics
-     * @description 追加点要素，不会覆盖之前的要素。
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
-     */
-    addGraphics(graphics) {
-        this.graphics = this.graphics || [];
-        let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-        this.graphics = this.graphics.concat(sGraphics);
-        this.update();
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.getGraphicBy
-     * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
-     * @param {string} property - graphic 的某个属性名称。
-     * @param {string} value - property 所对应的值。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
-     */
-    getGraphicBy(property, value) {
-        let graphic = null;
-        for (let index in this.graphics) {
-            if (this.graphics[index][property] === value) {
-                graphic = this.graphics[index];
-                break;
-            }
-        }
-        return graphic;
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.getGraphicById
-     * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {string} graphicId - 矢量要素的属性 id
-     * @returns {ol.Graphic} 一个匹配的 graphic。
-     */
-    getGraphicById(graphicId) {
-        return this.getGraphicBy("id", graphicId);
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.getGraphicsByAttribute
-     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {string} attrName - graphic 的某个属性名称。
-     * @param {string} attrValue - property 所对应的值。
-     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
-     */
-    getGraphicsByAttribute(attrName, attrValue) {
-        var graphic,
-            foundgraphics = [];
-        for (let index in this.graphics) {
-            graphic = this.graphics[index];
-            if (graphic && graphic.attributes) {
-                if (graphic.attributes[attrName] === attrValue) {
-                    foundgraphics.push(graphic);
-                }
-            }
-        }
-        return foundgraphics;
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.removeGraphics
-     * @description 删除要素数组，默认将删除所有要素。
-     * @param {Array.<ol.Graphic>} [graphics] - 删除的 graphics 数组。
-     */
-    removeGraphics(graphics = null) {
-        //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
-        if (!graphics || graphics.length === 0 || graphics === this.graphics) {
-            this.graphics.length = 0;
-            this.update();
-            return;
-        }
-
-        if (!(Util_Util.isArray(graphics))) {
-            graphics = [graphics];
-        }
-
-        for (let i = graphics.length - 1; i >= 0; i--) {
-            let graphic = graphics[i];
-
-            //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
-            //并将其放入未删除的数组中。
-            let findex = Util_Util.indexOf(this.graphics, graphic);
-
-            if (findex === -1) {
-                continue;
-            }
-            this.graphics.splice(findex, 1);
-        }
-
-        //删除完成后重新设置 setGraphics，以更新
-        this.update();
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.clear
-     * @description 释放图层资源。
-     */
-    clear() {
-        this.removeGraphics();
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.update
-     * @description 更新图层。
-     */
-    update() {
-        this.renderer.update(this.graphics, this._getDefaultStyle());
-    }
-
-    _getDefaultStyle() {
-        const target = {};
-        if (this.color) {
-            target.fill = new external_ol_default.a.style.Fill({
-                color: this.toRGBA(this.color)
-            })
-        }
-        if (this.radius) {
-            target.radius = this.radius;
-        }
-        if (this.outline) {
-            target.stroke = new external_ol_default.a.style.Fill({
-                color: this.toRGBA(this.color),
-                width: this.strokeWidth
-            })
-        }
-        return new external_ol_default.a.style.Circle(target);
-
-    }
-
-    toRGBA(colorArray) {
-        return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.setStyle
-     * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
-     * @param {Object} styleOptions - 样式对象。
-     * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
-     * @param {number} [styleOptions.radius=10] - 点半径。
-     * @param {number} [styleOptions.opacity=0.8] - 不透明度。
-     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
-     * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
-     * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
-     * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
-     */
-    setStyle(styleOptions) {
-        let self = this;
-        let styleOpt = {
-            color: self.color,
-            radius: self.radius,
-            opacity: self.opacity,
-            highlightColor: self.highlightColor,
-            radiusScale: self.radiusScale,
-            radiusMinPixels: self.radiusMinPixels,
-            radiusMaxPixels: self.radiusMaxPixels,
-            strokeWidth: self.strokeWidth,
-            outline: self.outline
+      } else {
+        let optDefault = Util_Util.extend({}, defaultProps);
+        let opt = Util_Util.extend(optDefault, {
+          color: me.color,
+          opacity: me.opacity,
+          radius: me.radius,
+          radiusScale: me.radiusScale,
+          radiusMinPixels: me.radiusMinPixels,
+          radiusMaxPixels: me.radiusMaxPixels,
+          strokeWidth: me.strokeWidth,
+          outline: me.outline,
+          onClick: me.onClick,
+          onHover: me.onHover
+        });
+        opt = Util_Util.extend(me, opt);
+        opt.pixelRatio = pixelRatio;
+        opt.container = me.map.getViewport().getElementsByClassName('ol-overlaycontainer')[0];
+        opt.onBeforeRender = function() {
+          return false;
+        };
+        opt.onAfterRender = function() {
+          return false;
         };
 
-        Util_Util.extend(self, Util_Util.extend(styleOpt, styleOptions));
-        self.update();
+        renderer = new WebGLRenderer_GraphicWebGLRenderer(me, opt);
+      }
+      return renderer;
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getLayerState
-     * @description 获取当前地图及图层状态。
-     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
-     */
-    getLayerState() {
-        let map = this.map;
-        let width = map.getSize()[0];
-        let height = map.getSize()[1];
-
-        let view = map.getView();
-        let center = view.getCenter();
-        let longitude = center[0];
-        let latitude = center[1];
-
-        let zoom = view.getZoom();
-        let maxZoom = view.getMaxZoom();
-        let rotationRadians = view.getRotation();
-
-        let rotation = -rotationRadians * 180 / Math.PI;
-
-        let mapViewport = {
-            longitude: longitude,
-            latitude: latitude,
-            zoom: zoom,
-            maxZoom: maxZoom,
-            pitch: 0,
-            bearing: rotation
-        };
-        let state = {};
-        for (let key in mapViewport) {
-            state[key] = mapViewport[key];
-        }
-        state.width = width;
-        state.height = height;
-
-        state.color = this.color;
-        state.radius = this.radius;
-        state.opacity = this.opacity;
-        state.highlightColor = this.highlightColor;
-        state.radiusScale = this.radiusScale;
-        state.radiusMinPixels = this.radiusMinPixels;
-        state.radiusMaxPixels = this.radiusMaxPixels;
-        state.strokeWidth = this.strokeWidth;
-        state.outline = this.outline;
-        return state;
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype._highLightClose
-     * @description 关闭高亮要素显示。
      * @private
-     */
-    _highLightClose() {
-        this.selected = null;
-        if (this.hitGraphicLayer) {
-            this.map.removeLayer(this.hitGraphicLayer);
-            this.hitGraphicLayer = null;
-        }
-        this.changed();
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype._highLight
-     * @description 高亮显示选中要素。
-     * @param {Array.<number>} center - 中心点。
-     * @param {ol.style.Style} image - 点样式。
-     * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
+     * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
+     * @description 获取在视图上的要素。
+     * @param {string} coordinate -坐标。
+     * @param {number} resolution -分辨率。
+     * @param {RequestCallback} callback -回调函数。
      * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
-     * @private
      */
-    _highLight(center, image, selectGraphic, evtPixel) {
-        if (selectGraphic.getStyle() instanceof CloverShape_CloverShape) {
-            if (this.hitGraphicLayer) {
-                this.map.removeLayer(this.hitGraphicLayer);
-                this.hitGraphicLayer = null;
+    function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
+      let graphics = me.getGraphicsInExtent();
+      for (let i = graphics.length - 1; i >= 0; i--) {
+        let style = graphics[i].getStyle();
+        if (!style) {
+          return;
+        }
+        //已经被高亮的graphics 不被选选中
+        if (style instanceof HitCloverShape_HitCloverShape) {
+          continue;
+        }
+        let center = graphics[i].getGeometry().getCoordinates();
+        let image = new external_ol_default.a.style.Style({
+          image: style
+        }).getImage();
+
+        let contain = false;
+        //icl-1047  当只有一个叶片的时候，判断是否选中的逻辑处理的更准确一点
+        if (image instanceof CloverShape_CloverShape && image.getCount() === 1) {
+          const ratation = (image.getRotation() * 180) / Math.PI;
+          const angle = Number.parseFloat(image.getAngle());
+          const r = image.getRadius() * resolution;
+          //if(image.getAngle() )
+          let geo = null;
+          if (angle > 355) {
+            geo = new external_ol_default.a.geom.Circle(center, r);
+          } else {
+            const coors = [];
+            coors.push(center);
+            const perAngle = angle / 8;
+            for (let index = 0; index < 8; index++) {
+              const radian = ((ratation + index * perAngle) / 180) * Math.PI;
+              coors.push([center[0] + r * Math.cos(radian), center[1] - r * Math.sin(radian)]);
             }
-            var pixel = this.map.getPixelFromCoordinate([center[0], center[1]]);
-            //点击点与中心点的角度
-            evtPixel = evtPixel || [0, 0];
-            var angle = (Math.atan2(evtPixel[1] - pixel[1], evtPixel[0] - pixel[0])) / Math.PI * 180;
-            angle = angle > 0 ? angle : 360 + angle;
-            //确定扇叶
-            var index = Math.ceil(angle / (image.getAngle() + image.getSpaceAngle()));
-            //扇叶的起始角度
-            var sAngle = (index - 1) * (image.getAngle() + image.getSpaceAngle());
-            //渲染参数
-            var opts = {
-                stroke: new external_ol_default.a.style.Stroke({
-                    color: "#ff0000",
-                    width: 1
-                }),
-                fill: new external_ol_default.a.style.Fill({
-                    color: "#0099ff"
-                }),
-                radius: image.getRadius(),
-                angle: image.getAngle(),
-                eAngle: sAngle + image.getAngle(),
-                sAngle: sAngle,
-                rotation: image.getRotation()
-            };
-            if (this.highLightStyle && this.highLightStyle instanceof HitCloverShape_HitCloverShape) {
-                opts.stroke = this.highLightStyle.getStroke();
-                opts.fill = this.highLightStyle.getFill();
-                opts.radius = this.highLightStyle.getRadius();
-                opts.angle = this.highLightStyle.getAngle();
-            }
-            var hitGraphic = new external_ol_default.a.Graphic(new external_ol_default.a.geom.Point(center));
-            hitGraphic.setStyle(new HitCloverShape_HitCloverShape(opts));
-            this.hitGraphicLayer = new external_ol_default.a.layer.Image({
-                source: new external_ol_default.a.source.Graphic({
-                    map: this.map,
-                    graphics: [hitGraphic]
-                })
-            });
-            this.map.addLayer(this.hitGraphicLayer);
+            coors.push(center);
+            geo = new external_ol_default.a.geom.Polygon([coors]);
+          }
+          if (geo.intersectsCoordinate(this.map.getCoordinateFromPixel(evtPixel))) {
+            contain = true;
+          }
         } else {
-            this.selected = selectGraphic;
-            this.changed();
+          let extent = [];
+          extent[0] = center[0] - image.getAnchor()[0] * resolution;
+          extent[2] = center[0] + image.getAnchor()[0] * resolution;
+          extent[1] = center[1] - image.getAnchor()[1] * resolution;
+          extent[3] = center[1] + image.getAnchor()[1] * resolution;
+          if (external_ol_default.a.extent.containsCoordinate(extent, coordinate)) {
+            contain = true;
+          }
         }
+
+        if (contain === true) {
+          if (me.isHighLight) {
+            me._highLight(center, image, graphics[i], evtPixel);
+          }
+          if (callback) {
+            callback(graphics[i], e);
+          }
+          continue;
+        }
+        if (me.isHighLight) {
+          me._highLightClose();
+        }
+      }
+      return undefined;
+    }
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.setGraphics
+   * @description 设置绘制的点要素，会覆盖之前的所有要素。
+   * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+   */
+  setGraphics(graphics) {
+    this.graphics = this.graphics || [];
+    this.graphics.length = 0;
+    let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
+    this.graphics = [].concat(sGraphics);
+    this.update();
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.addGraphics
+   * @description 追加点要素，不会覆盖之前的要素。
+   * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+   */
+  addGraphics(graphics) {
+    this.graphics = this.graphics || [];
+    let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
+    this.graphics = this.graphics.concat(sGraphics);
+    this.update();
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.getGraphicBy
+   * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
+   * @param {string} property - graphic 的某个属性名称。
+   * @param {string} value - property 所对应的值。
+   * @returns {ol.Graphic} 一个匹配的 graphic。
+   */
+  getGraphicBy(property, value) {
+    let graphic = null;
+    for (let index in this.graphics) {
+      if (this.graphics[index][property] === value) {
+        graphic = this.graphics[index];
+        break;
+      }
+    }
+    return graphic;
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.getGraphicById
+   * @description 通过给定一个 id，返回对应的矢量要素。
+   * @param {string} graphicId - 矢量要素的属性 id
+   * @returns {ol.Graphic} 一个匹配的 graphic。
+   */
+  getGraphicById(graphicId) {
+    return this.getGraphicBy('id', graphicId);
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.getGraphicsByAttribute
+   * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+   * @param {string} attrName - graphic 的某个属性名称。
+   * @param {string} attrValue - property 所对应的值。
+   * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
+   */
+  getGraphicsByAttribute(attrName, attrValue) {
+    var graphic,
+      foundgraphics = [];
+    for (let index in this.graphics) {
+      graphic = this.graphics[index];
+      if (graphic && graphic.attributes) {
+        if (graphic.attributes[attrName] === attrValue) {
+          foundgraphics.push(graphic);
+        }
+      }
+    }
+    return foundgraphics;
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.removeGraphics
+   * @description 删除要素数组，默认将删除所有要素。
+   * @param {Array.<ol.Graphic>} [graphics] - 删除的 graphics 数组。
+   */
+  removeGraphics(graphics = null) {
+    //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
+    if (!graphics || graphics.length === 0 || graphics === this.graphics) {
+      this.graphics.length = 0;
+      this.update();
+      return;
     }
 
-    /**
-     * @function ol.source.Graphic.prototype.getGraphicsInExtent
-     * @description 在指定范围中获取几何要素面积。
-     * @param {Object} extent - 长度范围。
-     */
-    getGraphicsInExtent(extent) {
-        var graphics = [];
-        if (!extent) {
-            this.graphics.map(function (graphic) {
-                graphics.push(graphic);
-                return graphic;
-            });
-            return graphics;
-        }
-        this.graphics.map(function (graphic) {
-            if (external_ol_default.a.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
-                graphics.push(graphic);
-            }
-            return graphic;
-        });
-        return graphics;
+    if (!Util_Util.isArray(graphics)) {
+      graphics = [graphics];
     }
 
+    for (let i = graphics.length - 1; i >= 0; i--) {
+      let graphic = graphics[i];
+
+      //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
+      //并将其放入未删除的数组中。
+      let findex = Util_Util.indexOf(this.graphics, graphic);
+
+      if (findex === -1) {
+        continue;
+      }
+      this.graphics.splice(findex, 1);
+    }
+
+    //删除完成后重新设置 setGraphics，以更新
+    this.update();
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.clear
+   * @description 释放图层资源。
+   */
+  clear() {
+    this.removeGraphics();
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.update
+   * @description 更新图层。
+   */
+  update() {
+    this.renderer.update(this.graphics, this._getDefaultStyle());
+  }
+
+  _getDefaultStyle() {
+    const target = {};
+    if (this.color) {
+      target.fill = new external_ol_default.a.style.Fill({
+        color: this.toRGBA(this.color)
+      });
+    }
+    if (this.radius) {
+      target.radius = this.radius;
+    }
+    if (this.outline) {
+      target.stroke = new external_ol_default.a.style.Fill({
+        color: this.toRGBA(this.color),
+        width: this.strokeWidth
+      });
+    }
+    return new external_ol_default.a.style.Circle(target);
+  }
+
+  toRGBA(colorArray) {
+    return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.setStyle
+   * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
+   * @param {Object} styleOptions - 样式对象。
+   * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
+   * @param {number} [styleOptions.radius=10] - 点半径。
+   * @param {number} [styleOptions.opacity=0.8] - 不透明度。
+   * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
+   * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
+   * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
+   * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+   * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
+   * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
+   */
+  setStyle(styleOptions) {
+    let self = this;
+    let styleOpt = {
+      color: self.color,
+      radius: self.radius,
+      opacity: self.opacity,
+      highlightColor: self.highlightColor,
+      radiusScale: self.radiusScale,
+      radiusMinPixels: self.radiusMinPixels,
+      radiusMaxPixels: self.radiusMaxPixels,
+      strokeWidth: self.strokeWidth,
+      outline: self.outline
+    };
+
+    Util_Util.extend(self, Util_Util.extend(styleOpt, styleOptions));
+    self.update();
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.getLayerState
+   * @description 获取当前地图及图层状态。
+   * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
+   */
+  getLayerState() {
+    let map = this.map;
+    let width = map.getSize()[0];
+    let height = map.getSize()[1];
+
+    let view = map.getView();
+    let center = view.getCenter();
+    let longitude = center[0];
+    let latitude = center[1];
+
+    let zoom = view.getZoom();
+    let maxZoom = view.getMaxZoom();
+    let rotationRadians = view.getRotation();
+
+    let rotation = (-rotationRadians * 180) / Math.PI;
+
+    let mapViewport = {
+      longitude: longitude,
+      latitude: latitude,
+      zoom: zoom,
+      maxZoom: maxZoom,
+      pitch: 0,
+      bearing: rotation
+    };
+    let state = {};
+    for (let key in mapViewport) {
+      state[key] = mapViewport[key];
+    }
+    state.width = width;
+    state.height = height;
+
+    state.color = this.color;
+    state.radius = this.radius;
+    state.opacity = this.opacity;
+    state.highlightColor = this.highlightColor;
+    state.radiusScale = this.radiusScale;
+    state.radiusMinPixels = this.radiusMinPixels;
+    state.radiusMaxPixels = this.radiusMaxPixels;
+    state.strokeWidth = this.strokeWidth;
+    state.outline = this.outline;
+    return state;
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype._highLightClose
+   * @description 关闭高亮要素显示。
+   * @private
+   */
+  _highLightClose() {
+    this.selected = null;
+    if (this.hitGraphicLayer) {
+      this.map.removeLayer(this.hitGraphicLayer);
+      this.hitGraphicLayer = null;
+    }
+    this.changed();
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype._highLight
+   * @description 高亮显示选中要素。
+   * @param {Array.<number>} center - 中心点。
+   * @param {ol.style.Style} image - 点样式。
+   * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
+   * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
+   * @private
+   */
+  _highLight(center, image, selectGraphic, evtPixel) {
+    if (selectGraphic.getStyle() instanceof CloverShape_CloverShape) {
+      if (this.hitGraphicLayer) {
+        this.map.removeLayer(this.hitGraphicLayer);
+        this.hitGraphicLayer = null;
+      }
+      var pixel = this.map.getPixelFromCoordinate([center[0], center[1]]);
+      //点击点与中心点的角度
+      evtPixel = evtPixel || [0, 0];
+      var angle = (Math.atan2(evtPixel[1] - pixel[1], evtPixel[0] - pixel[0]) / Math.PI) * 180;
+      angle = angle > 0 ? angle : 360 + angle;
+      //确定扇叶
+      var index = Math.ceil(angle / (image.getAngle() + image.getSpaceAngle()));
+      //扇叶的起始角度
+      var sAngle = (index - 1) * (image.getAngle() + image.getSpaceAngle());
+      //渲染参数
+      var opts = {
+        stroke: new external_ol_default.a.style.Stroke({
+          color: '#ff0000',
+          width: 1
+        }),
+        fill: new external_ol_default.a.style.Fill({
+          color: '#0099ff'
+        }),
+        radius: image.getRadius(),
+        angle: image.getAngle(),
+        eAngle: sAngle + image.getAngle(),
+        sAngle: sAngle,
+        rotation: image.getRotation()
+      };
+      if (this.highLightStyle && this.highLightStyle instanceof HitCloverShape_HitCloverShape) {
+        opts.stroke = this.highLightStyle.getStroke();
+        opts.fill = this.highLightStyle.getFill();
+        opts.radius = this.highLightStyle.getRadius();
+        opts.angle = this.highLightStyle.getAngle();
+      }
+      var hitGraphic = new external_ol_default.a.Graphic(new external_ol_default.a.geom.Point(center));
+      hitGraphic.setStyle(new HitCloverShape_HitCloverShape(opts));
+      this.hitGraphicLayer = new external_ol_default.a.layer.Image({
+        source: new external_ol_default.a.source.Graphic({
+          map: this.map,
+          graphics: [hitGraphic]
+        })
+      });
+      this.map.addLayer(this.hitGraphicLayer);
+    } else {
+      this.selected = selectGraphic;
+      this.changed();
+    }
+  }
+
+  /**
+   * @function ol.source.Graphic.prototype.getGraphicsInExtent
+   * @description 在指定范围中获取几何要素面积。
+   * @param {Object} extent - 长度范围。
+   */
+  getGraphicsInExtent(extent) {
+    var graphics = [];
+    if (!extent) {
+      this.graphics.map(function(graphic) {
+        graphics.push(graphic);
+        return graphic;
+      });
+      return graphics;
+    }
+    this.graphics.map(function(graphic) {
+      if (external_ol_default.a.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
+        graphics.push(graphic);
+      }
+      return graphic;
+    });
+    return graphics;
+  }
 }
 
 external_ol_default.a.source.Graphic = Graphic_Graphic;
+
 // CONCATENATED MODULE: ./src/openlayers/overlay/theme/GeoFeature.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -85744,7 +87577,7 @@ class MapvCanvasLayer {
     }
 }
 // EXTERNAL MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
-var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(3);
+var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(4);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/mapv/MapvLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -85754,7 +87587,7 @@ var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(3);
 
 
 
-var MapvLayer_BaiduMapLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
+var BaiduMapLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
 
 /**
  * @class MapvLayer
@@ -85775,7 +87608,7 @@ var MapvLayer_BaiduMapLayer = external_function_try_return_mapv_catch_e_return_[
  
  * @extends {Mapv.BaiduMapLayer}
  */
-class MapvLayer_MapvLayer extends MapvLayer_BaiduMapLayer {
+class MapvLayer_MapvLayer extends BaiduMapLayer {
 
     constructor(map, dataSet, options, mapWidth, mapHeight, source) {
         super(map, dataSet, options);
@@ -86504,7 +88337,7 @@ class overlay_RankSymbol_RankSymbol extends overlay_Graph_Graph {
 
 external_ol_default.a.source.RankSymbol = overlay_RankSymbol_RankSymbol;
 // EXTERNAL MODULE: external "function(){try{return turf}catch(e){return {}}}()"
-var external_function_try_return_turf_catch_e_return_ = __webpack_require__(2);
+var external_function_try_return_turf_catch_e_return_ = __webpack_require__(5);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/Turf.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -87372,7 +89205,7 @@ class VectorTileStyles_VectorTileStyles extends external_ol_default.a.Observable
             view = VectorTileStyles_VectorTileStyles.getView(),
             zoom = view.getZoom(),
             dpi = 96,
-            scale = core_Util_Util.resolutionToScale(view.getResolution(), dpi, REST_Unit.METER),
+            scale = core_Util_Util.resolutionToScale(view.getResolution(), dpi, Unit.METER),
             layerName = originalLayerName.replace(/(@)/gi, '___').replace(/(#)/gi, '___');
         // feature对象样式的配置遵循以下优先级：
         // 客户端CartoCSS > 服务器端CartoCSS > 服务器端layer样式 > 客户端默认样式。
@@ -87529,7 +89362,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
         me._tileType = options.tileType || 'ScaleXY';
         if (options.format instanceof external_ol_default.a.format.MVT && options.style) {
             if (Object.prototype.toString.call(options.style) == '[object String]') {
-                FetchRequest_FetchRequest.get(options.style)
+                FetchRequest.get(options.style)
                     .then(response => response.json())
                     .then(mbStyle => {
                         this._fillByStyleJSON(mbStyle, options.source);
@@ -87562,10 +89395,10 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
                 var dpi = 96;
                 var unit = projection.getUnits() || 'degrees';
                 if (unit === 'degrees') {
-                    unit = REST_Unit.DEGREE;
+                    unit = Unit.DEGREE;
                 }
                 if (unit === 'm') {
-                    unit = REST_Unit.METER;
+                    unit = Unit.METER;
                 }
 
                 var scale = core_Util_Util.resolutionToScale(resolution, dpi, unit);
@@ -87607,7 +89440,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
             var height = Number(tileUrl.match(regHeight)[2]);
 
             tile.setLoader(function() {
-                FetchRequest_FetchRequest.get(tileUrl)
+                FetchRequest.get(tileUrl)
                     .then(function(response) {
                         if (tile.getFormat() instanceof external_ol_default.a.format.GeoJSON) {
                             return response.json();
@@ -87683,7 +89516,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
             this._tileUrl = options.url + '/tileFeature.mvt?';
         }
         //为url添加安全认证信息片段
-        options.serverType = options.serverType || REST_ServerType.ISERVER;
+        options.serverType = options.serverType || ServerType.ISERVER;
         this._tileUrl = appendCredential(this._tileUrl, options.serverType);
 
         function appendCredential(url, serverType) {
@@ -87691,22 +89524,22 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
                 credential,
                 value;
             switch (serverType) {
-                case REST_ServerType.IPORTAL:
+                case ServerType.IPORTAL:
                     value = SecurityManager_SecurityManager.getToken(url);
-                    credential = value ? new Credential_Credential(value, 'token') : null;
+                    credential = value ? new Credential(value, 'token') : null;
                     if (!credential) {
                         value = SecurityManager_SecurityManager.getKey(url);
-                        credential = value ? new Credential_Credential(value, 'key') : null;
+                        credential = value ? new Credential(value, 'key') : null;
                     }
                     break;
-                case REST_ServerType.ONLINE:
+                case ServerType.ONLINE:
                     value = SecurityManager_SecurityManager.getKey(url);
-                    credential = value ? new Credential_Credential(value, 'key') : null;
+                    credential = value ? new Credential(value, 'key') : null;
                     break;
                 default:
                     //iserver or others
                     value = SecurityManager_SecurityManager.getToken(url);
-                    credential = value ? new Credential_Credential(value, 'token') : null;
+                    credential = value ? new Credential(value, 'token') : null;
                     break;
             }
             if (credential) {
@@ -87771,9 +89604,9 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
                 maxReolution = tileSize / mapJSONObj.viewer.height;
             }
             var resolutions = [];
-            var unit = REST_Unit.METER;
-            if (mapJSONObj.coordUnit === REST_Unit.DEGREE) {
-                unit = REST_Unit.DEGREE;
+            var unit = Unit.METER;
+            if (mapJSONObj.coordUnit === Unit.DEGREE) {
+                unit = Unit.DEGREE;
             }
             if (mapJSONObj.visibleScales.length > 0) {
                 var scales = initScales(mapJSONObj);
@@ -87800,7 +89633,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
                 datumAxis = mapJSONObj.datumAxis;
             //将jsonObject转化为SuperMap.Bounds，用于计算dpi。
             viewBounds = new Bounds_Bounds(viewBounds.left, viewBounds.bottom, viewBounds.right, viewBounds.top);
-            viewer = new Size_Size(viewer.rightBottom.x, viewer.rightBottom.y);
+            viewer = new Size(viewer.rightBottom.x, viewer.rightBottom.y);
             coordUnit = coordUnit.toLowerCase();
             datumAxis = datumAxis || 6378137;
             var units = coordUnit;
@@ -88478,7 +90311,7 @@ external_ol_default.a.Graphic = graphic_Graphic_Graphic;
 
 
 //applyStyleFunction 调用了ol.geom.LineString.getFlatMidpoint但是该方法在ol-debug.js里才有
-var olExtends_olExtends = function (targetMap) {
+var olExtends = function (targetMap) {
 
     window.targetMapCache = targetMap;
     //解决 new ol.format.MVT({featureClass: ol.Feature})时，非3857显示异常的问题。ol即将发布的5.0版本已解决。
@@ -88775,9 +90608,9 @@ var olExtends_olExtends = function (targetMap) {
         external_ol_default.a.renderer.canvas.TileLayer.prototype.postCompose.apply(this, arguments);
     };
 }
-window.olExtends = olExtends_olExtends;
+window.olExtends = olExtends;
 // EXTERNAL MODULE: ./node_modules/lodash.remove/index.js
-var lodash_remove = __webpack_require__(7);
+var lodash_remove = __webpack_require__(14);
 var lodash_remove_default = /*#__PURE__*/__webpack_require__.n(lodash_remove);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/MapboxStyles.js
@@ -88870,7 +90703,7 @@ class MapboxStyles_MapboxStyles extends external_ol_default.a.Observable {
                 });
             };
         this.layersBySourceLayer = {};
-        olExtends_olExtends(this.map);
+        olExtends(this.map);
         this._loadStyle(this.styleTarget);
     }
     /**
@@ -89013,7 +90846,7 @@ class MapboxStyles_MapboxStyles extends external_ol_default.a.Observable {
             this._mbStyle = style;
             this._resolve();
         } else {
-            FetchRequest_FetchRequest.get(style)
+            FetchRequest.get(style)
                 .then(response => response.json())
                 .then(mbStyle => {
                     this._mbStyle = mbStyle;
@@ -89031,7 +90864,7 @@ class MapboxStyles_MapboxStyles extends external_ol_default.a.Observable {
             //兼容一下iServer 等iServer修改
             this._mbStyle.sprite = this._mbStyle.sprite.replace("@2x", "");
             const spriteUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + ".json");
-            FetchRequest_FetchRequest.get(spriteUrl)
+            FetchRequest.get(spriteUrl)
                 .then(response => response.json())
                 .then(spritesJson => {
                     this._spriteData = spritesJson;
@@ -89336,7 +91169,7 @@ class ChartService_ChartService extends ServiceBase_ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
 
@@ -89581,7 +91414,7 @@ class FeatureService_FeatureService extends ServiceBase_ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
 
@@ -90509,7 +92342,7 @@ class NetworkAnalystService_NetworkAnalystService extends ServiceBase_ServiceBas
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
 
@@ -91377,7 +93210,7 @@ class ProcessingService_ProcessingService extends ServiceBase_ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     _processParams(params) {
@@ -91568,7 +93401,7 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
 
@@ -92080,7 +93913,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     /**
@@ -92302,310 +94135,319 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 
 
 // CONCATENATED MODULE: ./src/openlayers/index.js
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return REST_DataFormat; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return REST_ServerType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryType", function() { return REST_GeometryType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryOption", function() { return REST_QueryOption; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "JoinType", function() { return REST_JoinType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EngineType", function() { return REST_EngineType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureMode", function() { return REST_MeasureMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SpatialRelationType", function() { return REST_SpatialRelationType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataReturnMode", function() { return REST_DataReturnMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Unit", function() { return REST_Unit; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferRadiusUnit", function() { return REST_BufferRadiusUnit; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SpatialQueryMode", function() { return REST_SpatialQueryMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphTextFormat", function() { return REST_ThemeGraphTextFormat; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphType", function() { return REST_ThemeGraphType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraphAxesTextDisplayMode", function() { return REST_GraphAxesTextDisplayMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraduatedMode", function() { return REST_GraduatedMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RangeMode", function() { return REST_RangeMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeType", function() { return REST_ThemeType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorGradientType", function() { return REST_ColorGradientType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TextAlignment", function() { return REST_TextAlignment; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FillGradientMode", function() { return REST_FillGradientMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SideType", function() { return REST_SideType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AlongLineDirection", function() { return REST_AlongLineDirection; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelBackShape", function() { return REST_LabelBackShape; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelOverLengthMode", function() { return REST_LabelOverLengthMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DirectionType", function() { return REST_DirectionType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayOperationType", function() { return REST_OverlayOperationType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SupplyCenterType", function() { return REST_SupplyCenterType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TurnType", function() { return REST_TurnType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferEndType", function() { return REST_BufferEndType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SmoothMethod", function() { return REST_SmoothMethod; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystMethod", function() { return REST_SurfaceAnalystMethod; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorSpaceType", function() { return REST_ColorSpaceType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartType", function() { return REST_ChartType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EditType", function() { return REST_EditType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferTactic", function() { return REST_TransferTactic; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferPreference", function() { return REST_TransferPreference; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GridType", function() { return REST_GridType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClientType", function() { return REST_ClientType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LayerType", function() { return REST_LayerType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCLayerType", function() { return REST_UGCLayerType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StatisticMode", function() { return REST_StatisticMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PixelFormat", function() { return REST_PixelFormat; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SearchMode", function() { return REST_SearchMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryType", function() { return REST_SummaryType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationAlgorithmType", function() { return REST_InterpolationAlgorithmType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VariogramMode", function() { return REST_VariogramMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Exponent", function() { return REST_Exponent; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClipAnalystMode", function() { return REST_ClipAnalystMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AnalystAreaUnit", function() { return REST_AnalystAreaUnit; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AnalystSizeUnit", function() { return REST_AnalystSizeUnit; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StatisticAnalystMode", function() { return REST_StatisticAnalystMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TopologyValidatorRule", function() { return REST_TopologyValidatorRule; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputType", function() { return REST_OutputType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationQueryBuilderType", function() { return REST_AggregationQueryBuilderType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationType", function() { return REST_AggregationType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeatureMode", function() { return REST_GetFeatureMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TimeFlowControl", function() { return TimeFlowControl_TimeFlowControl; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManager", function() { return iManager_IManager; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManagerServiceBase", function() { return iManagerServiceBase_IManagerServiceBase; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManagerCreateNodeParam", function() { return iManagerCreateNodeParam_IManagerCreateNodeParam; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortal", function() { return iPortal_IPortal; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServiceStatus", function() { return OnlineResources_ServiceStatus; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataItemType", function() { return OnlineResources_DataItemType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataItemOrderBy", function() { return OnlineResources_DataItemOrderBy; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FilterField", function() { return OnlineResources_FilterField; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineServiceBase", function() { return OnlineServiceBase_OnlineServiceBase; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "KeyServiceParameter", function() { return KeyServiceParameter_KeyServiceParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerInfo", function() { return ServerInfo_ServerInfo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TokenServiceParameter", function() { return TokenServiceParameter_TokenServiceParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FetchRequest", function() { return FetchRequest_FetchRequest; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorsPickerUtil", function() { return ColorsPickerUtil_ColorsPickerUtil; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ArrayStatistic", function() { return ArrayStatistic_ArrayStatistic; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AreaSolarRadiationParameters", function() { return AreaSolarRadiationParameters_AreaSolarRadiationParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationParameter", function() { return AggregationParameter_AggregationParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggQueryBuilderParameter", function() { return AggQueryBuilderParameter_AggQueryBuilderParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferAnalystParameters", function() { return BufferAnalystParameters_BufferAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferDistance", function() { return BufferDistance_BufferDistance; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferSetting", function() { return BufferSetting_BufferSetting; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BurstPipelineAnalystParameters", function() { return BurstPipelineAnalystParameters_BurstPipelineAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartQueryFilterParameter", function() { return ChartQueryFilterParameter_ChartQueryFilterParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartQueryParameters", function() { return ChartQueryParameters_ChartQueryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClipParameter", function() { return ClipParameter_ClipParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorDictionary", function() { return ColorDictionary_ColorDictionary; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ComputeWeightMatrixParameters", function() { return ComputeWeightMatrixParameters_ComputeWeightMatrixParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataReturnOption", function() { return DataReturnOption_DataReturnOption; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetBufferAnalystParameters", function() { return DatasetBufferAnalystParameters_DatasetBufferAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetInfo", function() { return DatasetInfo_DatasetInfo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetOverlayAnalystParameters", function() { return DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetSurfaceAnalystParameters", function() { return DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetThiessenAnalystParameters", function() { return DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasourceConnectionInfo", function() { return DatasourceConnectionInfo_DatasourceConnectionInfo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DensityKernelAnalystParameters", function() { return DensityKernelAnalystParameters_DensityKernelAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EditFeaturesParameters", function() { return EditFeaturesParameters_EditFeaturesParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalyst3DParameters", function() { return FacilityAnalyst3DParameters_FacilityAnalyst3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSinks3DParameters", function() { return FacilityAnalystSinks3DParameters_FacilityAnalystSinks3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSources3DParameters", function() { return FacilityAnalystSources3DParameters_FacilityAnalystSources3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystStreamParameters", function() { return FacilityAnalystStreamParameters_FacilityAnalystStreamParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTracedown3DParameters", function() { return FacilityAnalystTracedown3DParameters_FacilityAnalystTracedown3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTraceup3DParameters", function() { return FacilityAnalystTraceup3DParameters_FacilityAnalystTraceup3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystUpstream3DParameters", function() { return FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldParameters", function() { return FieldParameters_FieldParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldStatisticsParameters", function() { return FieldStatisticsParameters_FieldStatisticsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FilterParameter", function() { return FilterParameter_FilterParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FilterAggParameter", function() { return FilterAggParameter_FilterAggParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindClosestFacilitiesParameters", function() { return FindClosestFacilitiesParameters_FindClosestFacilitiesParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindLocationParameters", function() { return FindLocationParameters_FindLocationParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindMTSPPathsParameters", function() { return FindMTSPPathsParameters_FindMTSPPathsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindPathParameters", function() { return FindPathParameters_FindPathParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindServiceAreasParameters", function() { return FindServiceAreasParameters_FindServiceAreasParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindTSPPathsParameters", function() { return FindTSPPathsParameters_FindTSPPathsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GenerateSpatialDataParameters", function() { return GenerateSpatialDataParameters_GenerateSpatialDataParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoBoundingBoxQueryBuilderParameter", function() { return GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoHashGridAggParameter", function() { return GeoHashGridAggParameter_GeoHashGridAggParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryBufferAnalystParameters", function() { return GeometryBufferAnalystParameters_GeometryBufferAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryOverlayAnalystParameters", function() { return GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometrySurfaceAnalystParameters", function() { return GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryThiessenAnalystParameters", function() { return GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoRelationAnalystParameters", function() { return GeoRelationAnalystParameters_GeoRelationAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBoundsParameters", function() { return GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBufferParameters", function() { return GetFeaturesByBufferParameters_GetFeaturesByBufferParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByGeometryParameters", function() { return GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByIDsParameters", function() { return GetFeaturesByIDsParameters_GetFeaturesByIDsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesBySQLParameters", function() { return GetFeaturesBySQLParameters_GetFeaturesBySQLParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetGridCellInfosParameters", function() { return GetGridCellInfosParameters_GetGridCellInfosParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Grid", function() { return Grid_Grid; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Image", function() { return Image_Image; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationAnalystParameters", function() { return InterpolationAnalystParameters_InterpolationAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationIDWAnalystParameters", function() { return InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationKrigingAnalystParameters", function() { return InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationRBFAnalystParameters", function() { return InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "JoinItem", function() { return JoinItem_JoinItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelImageCell", function() { return LabelImageCell_LabelImageCell; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelMatrixCell", function() { return LabelMatrixCell_LabelMatrixCell; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelMixedTextStyle", function() { return LabelMixedTextStyle_LabelMixedTextStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelSymbolCell", function() { return LabelSymbolCell_LabelSymbolCell; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelThemeCell", function() { return LabelThemeCell_LabelThemeCell; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LayerStatus", function() { return LayerStatus_LayerStatus; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LinkItem", function() { return LinkItem_LinkItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MathExpressionAnalysisParameters", function() { return MathExpressionAnalysisParameters_MathExpressionAnalysisParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureParameters", function() { return MeasureParameters_MeasureParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlapDisplayedOptions", function() { return OverlapDisplayedOptions_OverlapDisplayedOptions; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayAnalystParameters", function() { return OverlayAnalystParameters_OverlayAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PointWithMeasure", function() { return PointWithMeasure_PointWithMeasure; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryByBoundsParameters", function() { return QueryByBoundsParameters_QueryByBoundsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryByDistanceParameters", function() { return QueryByDistanceParameters_QueryByDistanceParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryByGeometryParameters", function() { return QueryByGeometryParameters_QueryByGeometryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryBySQLParameters", function() { return QueryBySQLParameters_QueryBySQLParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryParameters", function() { return QueryParameters_QueryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Route", function() { return Route_Route; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RouteCalculateMeasureParameters", function() { return RouteCalculateMeasureParameters_RouteCalculateMeasureParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RouteLocatorParameters", function() { return RouteLocatorParameters_RouteLocatorParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerColor", function() { return ServerColor_ServerColor; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerFeature", function() { return ServerFeature_ServerFeature; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerGeometry", function() { return ServerGeometry_ServerGeometry; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerStyle", function() { return ServerStyle_ServerStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerTextStyle", function() { return ServerTextStyle_ServerTextStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerTheme", function() { return ServerTheme_ServerTheme; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SetLayerInfoParameters", function() { return SetLayerInfoParameters_SetLayerInfoParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SetLayersInfoParameters", function() { return SetLayersInfoParameters_SetLayersInfoParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SetLayerStatusParameters", function() { return SetLayerStatusParameters_SetLayerStatusParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StopQueryParameters", function() { return StopQueryParameters_StopQueryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SupplyCenter", function() { return SupplyCenter_SupplyCenter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParameters", function() { return SurfaceAnalystParameters_SurfaceAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParametersSetting", function() { return SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TerrainCurvatureCalculationParameters", function() { return TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CommonTheme", function() { return Theme_Theme; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeDotDensity", function() { return ThemeDotDensity_ThemeDotDensity; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFlow", function() { return ThemeFlow_ThemeFlow; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbol", function() { return ThemeGraduatedSymbol_ThemeGraduatedSymbol; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbolStyle", function() { return ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraph", function() { return ThemeGraph_ThemeGraph; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphAxes", function() { return ThemeGraphAxes_ThemeGraphAxes; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphItem", function() { return ThemeGraphItem_ThemeGraphItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphSize", function() { return ThemeGraphSize_ThemeGraphSize; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphText", function() { return ThemeGraphText_ThemeGraphText; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridRange", function() { return ThemeGridRange_ThemeGridRange; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridRangeItem", function() { return ThemeGridRangeItem_ThemeGridRangeItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridUnique", function() { return ThemeGridUnique_ThemeGridUnique; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridUniqueItem", function() { return ThemeGridUniqueItem_ThemeGridUniqueItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabel", function() { return ThemeLabel_ThemeLabel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelAlongLine", function() { return ThemeLabelAlongLine_ThemeLabelAlongLine; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelBackground", function() { return ThemeLabelBackground_ThemeLabelBackground; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelItem", function() { return ThemeLabelItem_ThemeLabelItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelText", function() { return ThemeLabelText_ThemeLabelText; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelUniqueItem", function() { return ThemeLabelUniqueItem_ThemeLabelUniqueItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeMemoryData", function() { return ThemeMemoryData_ThemeMemoryData; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeOffset", function() { return ThemeOffset_ThemeOffset; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeParameters", function() { return ThemeParameters_ThemeParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeRange", function() { return ThemeRange_ThemeRange; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeRangeItem", function() { return ThemeRangeItem_ThemeRangeItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeUnique", function() { return ThemeUnique_ThemeUnique; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeUniqueItem", function() { return ThemeUniqueItem_ThemeUniqueItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThiessenAnalystParameters", function() { return ThiessenAnalystParameters_ThiessenAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferLine", function() { return TransferLine_TransferLine; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferPathParameters", function() { return TransferPathParameters_TransferPathParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferSolutionParameters", function() { return TransferSolutionParameters_TransferSolutionParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransportationAnalystParameter", function() { return TransportationAnalystParameter_TransportationAnalystParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransportationAnalystResultSetting", function() { return TransportationAnalystResultSetting_TransportationAnalystResultSetting; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCLayer", function() { return UGCLayer_UGCLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCMapLayer", function() { return UGCMapLayer_UGCMapLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCSubLayer", function() { return UGCSubLayer_UGCSubLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UpdateEdgeWeightParameters", function() { return UpdateEdgeWeightParameters_UpdateEdgeWeightParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UpdateTurnNodeWeightParameters", function() { return UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Vector", function() { return iServer_Vector_Vector; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorClipJobsParameter", function() { return VectorClipJobsParameter_VectorClipJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileTypes", function() { return FileTypes; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileConfig", function() { return FileConfig; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileModel", function() { return FileModel_FileModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MessageBox", function() { return MessageBox_MessageBox; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CommonContainer", function() { return CommonContainer_CommonContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DropDownBox", function() { return DropDownBox_DropDownBox; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Select", function() { return Select_Select; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AttributesPopContainer", function() { return AttributesPopContainer_AttributesPopContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PopContainer", function() { return PopContainer_PopContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IndexTabsPageContainer", function() { return IndexTabsPageContainer_IndexTabsPageContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CityTabsPage", function() { return CityTabsPage_CityTabsPage; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NavTabsPage", function() { return NavTabsPage_NavTabsPage; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PaginationContainer", function() { return PaginationContainer_PaginationContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ComponentsUtil", function() { return Util_ComponentsUtil; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil_FileReaderUtil; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChangeTileVersion", function() { return ChangeTileVersion_ChangeTileVersion; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ScaleLine", function() { return ScaleLine_ScaleLine; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo_Logo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StyleUtils", function() { return StyleUtils_StyleUtils; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Util", function() { return core_Util_Util; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapExtend", function() { return MapExtend_MapExtend; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BaiduMap", function() { return BaiduMap_BaiduMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ImageSuperMapRest", function() { return ImageSuperMapRest_ImageSuperMapRest; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMapCloud", function() { return SuperMapCloud_SuperMapCloud; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Tianditu", function() { return Tianditu_Tianditu; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TileSuperMapRest", function() { return TileSuperMapRest_TileSuperMapRest; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "WebMap", function() { return WebMap_WebMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlow", function() { return DataFlow_DataFlow; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Graph", function() { return overlay_Graph_Graph; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Graphic", function() { return Graphic_Graphic; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Label", function() { return overlay_Label_Label; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Mapv", function() { return Mapv_Mapv; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Range", function() { return Range_Range; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RankSymbol", function() { return overlay_RankSymbol_RankSymbol; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Turf", function() { return Turf_Turf; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Unique", function() { return Unique_Unique; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileSuperMapRest", function() { return VectorTileSuperMapRest_VectorTileSuperMapRest; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "HeatMap", function() { return HeatMap_HeatMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayGraphic", function() { return graphic_Graphic_Graphic; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CloverShape", function() { return CloverShape_CloverShape; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "HitCloverShape", function() { return HitCloverShape_HitCloverShape; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraphicCanvasRenderer", function() { return CanvasRenderer_GraphicCanvasRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraphicWebGLRenderer", function() { return WebGLRenderer_GraphicWebGLRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapvCanvasLayer", function() { return MapvCanvasLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapvLayer", function() { return MapvLayer_MapvLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DeafultCanvasStyle", function() { return DeafultCanvasStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "pointMap", function() { return pointMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FeatureService", function() { return FeatureService_FeatureService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldService", function() { return FieldService_FieldService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GridCellInfosService", function() { return GridCellInfosService_GridCellInfosService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LayerInfoService", function() { return LayerInfoService_LayerInfoService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapService", function() { return services_MapService_MapService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureService", function() { return services_MeasureService_MeasureService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NetworkAnalyst3DService", function() { return NetworkAnalyst3DService_NetworkAnalyst3DService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NetworkAnalystService", function() { return NetworkAnalystService_NetworkAnalystService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryService", function() { return services_QueryService_QueryService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServiceBase", function() { return ServiceBase_ServiceBase; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SpatialAnalystService", function() { return SpatialAnalystService_SpatialAnalystService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeService", function() { return services_ThemeService_ThemeService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TrafficTransferAnalystService", function() { return TrafficTransferAnalystService_TrafficTransferAnalystService; });
+/* concated harmony reexport SuperMap */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
+/* concated harmony reexport DataFormat */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return DataFormat; });
+/* concated harmony reexport ServerType */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return ServerType; });
+/* concated harmony reexport GeometryType */__webpack_require__.d(__webpack_exports__, "GeometryType", function() { return GeometryType; });
+/* concated harmony reexport QueryOption */__webpack_require__.d(__webpack_exports__, "QueryOption", function() { return QueryOption; });
+/* concated harmony reexport JoinType */__webpack_require__.d(__webpack_exports__, "JoinType", function() { return JoinType; });
+/* concated harmony reexport EngineType */__webpack_require__.d(__webpack_exports__, "EngineType", function() { return EngineType; });
+/* concated harmony reexport MeasureMode */__webpack_require__.d(__webpack_exports__, "MeasureMode", function() { return MeasureMode; });
+/* concated harmony reexport SpatialRelationType */__webpack_require__.d(__webpack_exports__, "SpatialRelationType", function() { return SpatialRelationType; });
+/* concated harmony reexport DataReturnMode */__webpack_require__.d(__webpack_exports__, "DataReturnMode", function() { return DataReturnMode; });
+/* concated harmony reexport Unit */__webpack_require__.d(__webpack_exports__, "Unit", function() { return Unit; });
+/* concated harmony reexport BufferRadiusUnit */__webpack_require__.d(__webpack_exports__, "BufferRadiusUnit", function() { return BufferRadiusUnit; });
+/* concated harmony reexport SpatialQueryMode */__webpack_require__.d(__webpack_exports__, "SpatialQueryMode", function() { return SpatialQueryMode; });
+/* concated harmony reexport ThemeGraphTextFormat */__webpack_require__.d(__webpack_exports__, "ThemeGraphTextFormat", function() { return ThemeGraphTextFormat; });
+/* concated harmony reexport ThemeGraphType */__webpack_require__.d(__webpack_exports__, "ThemeGraphType", function() { return ThemeGraphType; });
+/* concated harmony reexport GraphAxesTextDisplayMode */__webpack_require__.d(__webpack_exports__, "GraphAxesTextDisplayMode", function() { return GraphAxesTextDisplayMode; });
+/* concated harmony reexport GraduatedMode */__webpack_require__.d(__webpack_exports__, "GraduatedMode", function() { return GraduatedMode; });
+/* concated harmony reexport RangeMode */__webpack_require__.d(__webpack_exports__, "RangeMode", function() { return RangeMode; });
+/* concated harmony reexport ThemeType */__webpack_require__.d(__webpack_exports__, "ThemeType", function() { return ThemeType; });
+/* concated harmony reexport ColorGradientType */__webpack_require__.d(__webpack_exports__, "ColorGradientType", function() { return ColorGradientType; });
+/* concated harmony reexport TextAlignment */__webpack_require__.d(__webpack_exports__, "TextAlignment", function() { return TextAlignment; });
+/* concated harmony reexport FillGradientMode */__webpack_require__.d(__webpack_exports__, "FillGradientMode", function() { return FillGradientMode; });
+/* concated harmony reexport SideType */__webpack_require__.d(__webpack_exports__, "SideType", function() { return SideType; });
+/* concated harmony reexport AlongLineDirection */__webpack_require__.d(__webpack_exports__, "AlongLineDirection", function() { return AlongLineDirection; });
+/* concated harmony reexport LabelBackShape */__webpack_require__.d(__webpack_exports__, "LabelBackShape", function() { return LabelBackShape; });
+/* concated harmony reexport LabelOverLengthMode */__webpack_require__.d(__webpack_exports__, "LabelOverLengthMode", function() { return LabelOverLengthMode; });
+/* concated harmony reexport DirectionType */__webpack_require__.d(__webpack_exports__, "DirectionType", function() { return DirectionType; });
+/* concated harmony reexport OverlayOperationType */__webpack_require__.d(__webpack_exports__, "OverlayOperationType", function() { return OverlayOperationType; });
+/* concated harmony reexport SupplyCenterType */__webpack_require__.d(__webpack_exports__, "SupplyCenterType", function() { return SupplyCenterType; });
+/* concated harmony reexport TurnType */__webpack_require__.d(__webpack_exports__, "TurnType", function() { return TurnType; });
+/* concated harmony reexport BufferEndType */__webpack_require__.d(__webpack_exports__, "BufferEndType", function() { return BufferEndType; });
+/* concated harmony reexport SmoothMethod */__webpack_require__.d(__webpack_exports__, "SmoothMethod", function() { return SmoothMethod; });
+/* concated harmony reexport SurfaceAnalystMethod */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystMethod", function() { return SurfaceAnalystMethod; });
+/* concated harmony reexport ColorSpaceType */__webpack_require__.d(__webpack_exports__, "ColorSpaceType", function() { return ColorSpaceType; });
+/* concated harmony reexport ChartType */__webpack_require__.d(__webpack_exports__, "ChartType", function() { return ChartType; });
+/* concated harmony reexport EditType */__webpack_require__.d(__webpack_exports__, "EditType", function() { return EditType; });
+/* concated harmony reexport TransferTactic */__webpack_require__.d(__webpack_exports__, "TransferTactic", function() { return TransferTactic; });
+/* concated harmony reexport TransferPreference */__webpack_require__.d(__webpack_exports__, "TransferPreference", function() { return TransferPreference; });
+/* concated harmony reexport GridType */__webpack_require__.d(__webpack_exports__, "GridType", function() { return GridType; });
+/* concated harmony reexport ClientType */__webpack_require__.d(__webpack_exports__, "ClientType", function() { return ClientType; });
+/* concated harmony reexport LayerType */__webpack_require__.d(__webpack_exports__, "LayerType", function() { return LayerType; });
+/* concated harmony reexport UGCLayerType */__webpack_require__.d(__webpack_exports__, "UGCLayerType", function() { return UGCLayerType; });
+/* concated harmony reexport StatisticMode */__webpack_require__.d(__webpack_exports__, "StatisticMode", function() { return StatisticMode; });
+/* concated harmony reexport PixelFormat */__webpack_require__.d(__webpack_exports__, "PixelFormat", function() { return PixelFormat; });
+/* concated harmony reexport SearchMode */__webpack_require__.d(__webpack_exports__, "SearchMode", function() { return SearchMode; });
+/* concated harmony reexport SummaryType */__webpack_require__.d(__webpack_exports__, "SummaryType", function() { return SummaryType; });
+/* concated harmony reexport InterpolationAlgorithmType */__webpack_require__.d(__webpack_exports__, "InterpolationAlgorithmType", function() { return InterpolationAlgorithmType; });
+/* concated harmony reexport VariogramMode */__webpack_require__.d(__webpack_exports__, "VariogramMode", function() { return VariogramMode; });
+/* concated harmony reexport Exponent */__webpack_require__.d(__webpack_exports__, "Exponent", function() { return Exponent; });
+/* concated harmony reexport ClipAnalystMode */__webpack_require__.d(__webpack_exports__, "ClipAnalystMode", function() { return ClipAnalystMode; });
+/* concated harmony reexport AnalystAreaUnit */__webpack_require__.d(__webpack_exports__, "AnalystAreaUnit", function() { return AnalystAreaUnit; });
+/* concated harmony reexport AnalystSizeUnit */__webpack_require__.d(__webpack_exports__, "AnalystSizeUnit", function() { return AnalystSizeUnit; });
+/* concated harmony reexport StatisticAnalystMode */__webpack_require__.d(__webpack_exports__, "StatisticAnalystMode", function() { return StatisticAnalystMode; });
+/* concated harmony reexport TopologyValidatorRule */__webpack_require__.d(__webpack_exports__, "TopologyValidatorRule", function() { return TopologyValidatorRule; });
+/* concated harmony reexport OutputType */__webpack_require__.d(__webpack_exports__, "OutputType", function() { return OutputType; });
+/* concated harmony reexport AggregationQueryBuilderType */__webpack_require__.d(__webpack_exports__, "AggregationQueryBuilderType", function() { return AggregationQueryBuilderType; });
+/* concated harmony reexport AggregationType */__webpack_require__.d(__webpack_exports__, "AggregationType", function() { return AggregationType; });
+/* concated harmony reexport GetFeatureMode */__webpack_require__.d(__webpack_exports__, "GetFeatureMode", function() { return GetFeatureMode; });
+/* concated harmony reexport TimeFlowControl */__webpack_require__.d(__webpack_exports__, "TimeFlowControl", function() { return TimeFlowControl_TimeFlowControl; });
+/* concated harmony reexport IManager */__webpack_require__.d(__webpack_exports__, "IManager", function() { return iManager_IManager; });
+/* concated harmony reexport IManagerServiceBase */__webpack_require__.d(__webpack_exports__, "IManagerServiceBase", function() { return iManagerServiceBase_IManagerServiceBase; });
+/* concated harmony reexport IManagerCreateNodeParam */__webpack_require__.d(__webpack_exports__, "IManagerCreateNodeParam", function() { return iManagerCreateNodeParam_IManagerCreateNodeParam; });
+/* concated harmony reexport IPortal */__webpack_require__.d(__webpack_exports__, "IPortal", function() { return iPortal_IPortal; });
+/* concated harmony reexport IPortalQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalQueryParam", function() { return iPortalQueryParam_IPortalQueryParam; });
+/* concated harmony reexport IPortalResource */__webpack_require__.d(__webpack_exports__, "IPortalResource", function() { return iPortalResource_IPortalResource; });
+/* concated harmony reexport IPortalQueryResult */__webpack_require__.d(__webpack_exports__, "IPortalQueryResult", function() { return iPortalQueryResult_IPortalQueryResult; });
+/* concated harmony reexport IPortalMap */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
+/* concated harmony reexport IPortalMapsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
+/* concated harmony reexport IPortalService */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
+/* concated harmony reexport IPortalServiceBase */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
+/* concated harmony reexport IPortalServicesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
+/* concated harmony reexport IPortalMapdashboard */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboard", function() { return iPortalMapdashboard_IPortalMapdashboard; });
+/* concated harmony reexport IPortalMapdashboardsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboardsQueryParam", function() { return iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam; });
+/* concated harmony reexport IPortalInsight */__webpack_require__.d(__webpack_exports__, "IPortalInsight", function() { return iPortalInsight_IPortalInsight; });
+/* concated harmony reexport IPortalInsightsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalInsightsQueryParam", function() { return iPortalInsightsQueryParam_IPortalInsightsQueryParam; });
+/* concated harmony reexport IPortalScene */__webpack_require__.d(__webpack_exports__, "IPortalScene", function() { return iPortalScene_IPortalScene; });
+/* concated harmony reexport IPortalScenesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalScenesQueryParam", function() { return iPortalScenesQueryParam_IPortalScenesQueryParam; });
+/* concated harmony reexport Online */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
+/* concated harmony reexport OnlineData */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
+/* concated harmony reexport OnlineQueryDatasParameter */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
+/* concated harmony reexport ServiceStatus */__webpack_require__.d(__webpack_exports__, "ServiceStatus", function() { return ServiceStatus; });
+/* concated harmony reexport DataItemType */__webpack_require__.d(__webpack_exports__, "DataItemType", function() { return DataItemType; });
+/* concated harmony reexport DataItemOrderBy */__webpack_require__.d(__webpack_exports__, "DataItemOrderBy", function() { return DataItemOrderBy; });
+/* concated harmony reexport FilterField */__webpack_require__.d(__webpack_exports__, "FilterField", function() { return FilterField; });
+/* concated harmony reexport OnlineServiceBase */__webpack_require__.d(__webpack_exports__, "OnlineServiceBase", function() { return OnlineServiceBase_OnlineServiceBase; });
+/* concated harmony reexport KeyServiceParameter */__webpack_require__.d(__webpack_exports__, "KeyServiceParameter", function() { return KeyServiceParameter_KeyServiceParameter; });
+/* concated harmony reexport SecurityManager */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
+/* concated harmony reexport ServerInfo */__webpack_require__.d(__webpack_exports__, "ServerInfo", function() { return ServerInfo_ServerInfo; });
+/* concated harmony reexport TokenServiceParameter */__webpack_require__.d(__webpack_exports__, "TokenServiceParameter", function() { return TokenServiceParameter_TokenServiceParameter; });
+/* concated harmony reexport ElasticSearch */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
+/* concated harmony reexport FetchRequest */__webpack_require__.d(__webpack_exports__, "FetchRequest", function() { return FetchRequest; });
+/* concated harmony reexport ColorsPickerUtil */__webpack_require__.d(__webpack_exports__, "ColorsPickerUtil", function() { return ColorsPickerUtil; });
+/* concated harmony reexport ArrayStatistic */__webpack_require__.d(__webpack_exports__, "ArrayStatistic", function() { return ArrayStatistic; });
+/* concated harmony reexport AreaSolarRadiationParameters */__webpack_require__.d(__webpack_exports__, "AreaSolarRadiationParameters", function() { return AreaSolarRadiationParameters_AreaSolarRadiationParameters; });
+/* concated harmony reexport AggregationParameter */__webpack_require__.d(__webpack_exports__, "AggregationParameter", function() { return AggregationParameter_AggregationParameter; });
+/* concated harmony reexport AggQueryBuilderParameter */__webpack_require__.d(__webpack_exports__, "AggQueryBuilderParameter", function() { return AggQueryBuilderParameter_AggQueryBuilderParameter; });
+/* concated harmony reexport BufferAnalystParameters */__webpack_require__.d(__webpack_exports__, "BufferAnalystParameters", function() { return BufferAnalystParameters_BufferAnalystParameters; });
+/* concated harmony reexport BufferDistance */__webpack_require__.d(__webpack_exports__, "BufferDistance", function() { return BufferDistance_BufferDistance; });
+/* concated harmony reexport BuffersAnalystJobsParameter */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
+/* concated harmony reexport BufferSetting */__webpack_require__.d(__webpack_exports__, "BufferSetting", function() { return BufferSetting_BufferSetting; });
+/* concated harmony reexport BurstPipelineAnalystParameters */__webpack_require__.d(__webpack_exports__, "BurstPipelineAnalystParameters", function() { return BurstPipelineAnalystParameters_BurstPipelineAnalystParameters; });
+/* concated harmony reexport ChartQueryFilterParameter */__webpack_require__.d(__webpack_exports__, "ChartQueryFilterParameter", function() { return ChartQueryFilterParameter_ChartQueryFilterParameter; });
+/* concated harmony reexport ChartQueryParameters */__webpack_require__.d(__webpack_exports__, "ChartQueryParameters", function() { return ChartQueryParameters_ChartQueryParameters; });
+/* concated harmony reexport ClipParameter */__webpack_require__.d(__webpack_exports__, "ClipParameter", function() { return ClipParameter_ClipParameter; });
+/* concated harmony reexport ColorDictionary */__webpack_require__.d(__webpack_exports__, "ColorDictionary", function() { return ColorDictionary_ColorDictionary; });
+/* concated harmony reexport ComputeWeightMatrixParameters */__webpack_require__.d(__webpack_exports__, "ComputeWeightMatrixParameters", function() { return ComputeWeightMatrixParameters_ComputeWeightMatrixParameters; });
+/* concated harmony reexport DataReturnOption */__webpack_require__.d(__webpack_exports__, "DataReturnOption", function() { return DataReturnOption_DataReturnOption; });
+/* concated harmony reexport DatasetBufferAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetBufferAnalystParameters", function() { return DatasetBufferAnalystParameters_DatasetBufferAnalystParameters; });
+/* concated harmony reexport DatasetInfo */__webpack_require__.d(__webpack_exports__, "DatasetInfo", function() { return DatasetInfo_DatasetInfo; });
+/* concated harmony reexport DatasetOverlayAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetOverlayAnalystParameters", function() { return DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters; });
+/* concated harmony reexport DatasetSurfaceAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetSurfaceAnalystParameters", function() { return DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters; });
+/* concated harmony reexport DatasetThiessenAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetThiessenAnalystParameters", function() { return DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters; });
+/* concated harmony reexport DatasourceConnectionInfo */__webpack_require__.d(__webpack_exports__, "DatasourceConnectionInfo", function() { return DatasourceConnectionInfo_DatasourceConnectionInfo; });
+/* concated harmony reexport DensityKernelAnalystParameters */__webpack_require__.d(__webpack_exports__, "DensityKernelAnalystParameters", function() { return DensityKernelAnalystParameters_DensityKernelAnalystParameters; });
+/* concated harmony reexport EditFeaturesParameters */__webpack_require__.d(__webpack_exports__, "EditFeaturesParameters", function() { return EditFeaturesParameters_EditFeaturesParameters; });
+/* concated harmony reexport FacilityAnalyst3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalyst3DParameters", function() { return FacilityAnalyst3DParameters_FacilityAnalyst3DParameters; });
+/* concated harmony reexport FacilityAnalystSinks3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSinks3DParameters", function() { return FacilityAnalystSinks3DParameters_FacilityAnalystSinks3DParameters; });
+/* concated harmony reexport FacilityAnalystSources3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSources3DParameters", function() { return FacilityAnalystSources3DParameters_FacilityAnalystSources3DParameters; });
+/* concated harmony reexport FacilityAnalystStreamParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystStreamParameters", function() { return FacilityAnalystStreamParameters_FacilityAnalystStreamParameters; });
+/* concated harmony reexport FacilityAnalystTracedown3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTracedown3DParameters", function() { return FacilityAnalystTracedown3DParameters_FacilityAnalystTracedown3DParameters; });
+/* concated harmony reexport FacilityAnalystTraceup3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTraceup3DParameters", function() { return FacilityAnalystTraceup3DParameters_FacilityAnalystTraceup3DParameters; });
+/* concated harmony reexport FacilityAnalystUpstream3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystUpstream3DParameters", function() { return FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters; });
+/* concated harmony reexport FieldParameters */__webpack_require__.d(__webpack_exports__, "FieldParameters", function() { return FieldParameters_FieldParameters; });
+/* concated harmony reexport FieldStatisticsParameters */__webpack_require__.d(__webpack_exports__, "FieldStatisticsParameters", function() { return FieldStatisticsParameters_FieldStatisticsParameters; });
+/* concated harmony reexport FilterParameter */__webpack_require__.d(__webpack_exports__, "FilterParameter", function() { return FilterParameter_FilterParameter; });
+/* concated harmony reexport FilterAggParameter */__webpack_require__.d(__webpack_exports__, "FilterAggParameter", function() { return FilterAggParameter_FilterAggParameter; });
+/* concated harmony reexport FindClosestFacilitiesParameters */__webpack_require__.d(__webpack_exports__, "FindClosestFacilitiesParameters", function() { return FindClosestFacilitiesParameters_FindClosestFacilitiesParameters; });
+/* concated harmony reexport FindLocationParameters */__webpack_require__.d(__webpack_exports__, "FindLocationParameters", function() { return FindLocationParameters_FindLocationParameters; });
+/* concated harmony reexport FindMTSPPathsParameters */__webpack_require__.d(__webpack_exports__, "FindMTSPPathsParameters", function() { return FindMTSPPathsParameters_FindMTSPPathsParameters; });
+/* concated harmony reexport FindPathParameters */__webpack_require__.d(__webpack_exports__, "FindPathParameters", function() { return FindPathParameters_FindPathParameters; });
+/* concated harmony reexport FindServiceAreasParameters */__webpack_require__.d(__webpack_exports__, "FindServiceAreasParameters", function() { return FindServiceAreasParameters_FindServiceAreasParameters; });
+/* concated harmony reexport FindTSPPathsParameters */__webpack_require__.d(__webpack_exports__, "FindTSPPathsParameters", function() { return FindTSPPathsParameters_FindTSPPathsParameters; });
+/* concated harmony reexport GenerateSpatialDataParameters */__webpack_require__.d(__webpack_exports__, "GenerateSpatialDataParameters", function() { return GenerateSpatialDataParameters_GenerateSpatialDataParameters; });
+/* concated harmony reexport GeoBoundingBoxQueryBuilderParameter */__webpack_require__.d(__webpack_exports__, "GeoBoundingBoxQueryBuilderParameter", function() { return GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter; });
+/* concated harmony reexport GeoCodingParameter */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
+/* concated harmony reexport GeoDecodingParameter */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
+/* concated harmony reexport GeoHashGridAggParameter */__webpack_require__.d(__webpack_exports__, "GeoHashGridAggParameter", function() { return GeoHashGridAggParameter_GeoHashGridAggParameter; });
+/* concated harmony reexport GeometryBufferAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometryBufferAnalystParameters", function() { return GeometryBufferAnalystParameters_GeometryBufferAnalystParameters; });
+/* concated harmony reexport GeometryOverlayAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometryOverlayAnalystParameters", function() { return GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters; });
+/* concated harmony reexport GeometrySurfaceAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometrySurfaceAnalystParameters", function() { return GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters; });
+/* concated harmony reexport GeometryThiessenAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometryThiessenAnalystParameters", function() { return GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters; });
+/* concated harmony reexport GeoRelationAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeoRelationAnalystParameters", function() { return GeoRelationAnalystParameters_GeoRelationAnalystParameters; });
+/* concated harmony reexport GetFeaturesByBoundsParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBoundsParameters", function() { return GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters; });
+/* concated harmony reexport GetFeaturesByBufferParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBufferParameters", function() { return GetFeaturesByBufferParameters_GetFeaturesByBufferParameters; });
+/* concated harmony reexport GetFeaturesByGeometryParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByGeometryParameters", function() { return GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters; });
+/* concated harmony reexport GetFeaturesByIDsParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByIDsParameters", function() { return GetFeaturesByIDsParameters_GetFeaturesByIDsParameters; });
+/* concated harmony reexport GetFeaturesBySQLParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesBySQLParameters", function() { return GetFeaturesBySQLParameters_GetFeaturesBySQLParameters; });
+/* concated harmony reexport GetGridCellInfosParameters */__webpack_require__.d(__webpack_exports__, "GetGridCellInfosParameters", function() { return GetGridCellInfosParameters_GetGridCellInfosParameters; });
+/* concated harmony reexport Grid */__webpack_require__.d(__webpack_exports__, "Grid", function() { return Grid_Grid; });
+/* concated harmony reexport Image */__webpack_require__.d(__webpack_exports__, "Image", function() { return Image_Image; });
+/* concated harmony reexport InterpolationAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationAnalystParameters", function() { return InterpolationAnalystParameters_InterpolationAnalystParameters; });
+/* concated harmony reexport InterpolationIDWAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationIDWAnalystParameters", function() { return InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters; });
+/* concated harmony reexport InterpolationKrigingAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationKrigingAnalystParameters", function() { return InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameters; });
+/* concated harmony reexport InterpolationRBFAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationRBFAnalystParameters", function() { return InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters; });
+/* concated harmony reexport JoinItem */__webpack_require__.d(__webpack_exports__, "JoinItem", function() { return JoinItem_JoinItem; });
+/* concated harmony reexport KernelDensityJobParameter */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
+/* concated harmony reexport LabelImageCell */__webpack_require__.d(__webpack_exports__, "LabelImageCell", function() { return LabelImageCell_LabelImageCell; });
+/* concated harmony reexport LabelMatrixCell */__webpack_require__.d(__webpack_exports__, "LabelMatrixCell", function() { return LabelMatrixCell; });
+/* concated harmony reexport LabelMixedTextStyle */__webpack_require__.d(__webpack_exports__, "LabelMixedTextStyle", function() { return LabelMixedTextStyle_LabelMixedTextStyle; });
+/* concated harmony reexport LabelSymbolCell */__webpack_require__.d(__webpack_exports__, "LabelSymbolCell", function() { return LabelSymbolCell_LabelSymbolCell; });
+/* concated harmony reexport LabelThemeCell */__webpack_require__.d(__webpack_exports__, "LabelThemeCell", function() { return LabelThemeCell_LabelThemeCell; });
+/* concated harmony reexport LayerStatus */__webpack_require__.d(__webpack_exports__, "LayerStatus", function() { return LayerStatus_LayerStatus; });
+/* concated harmony reexport LinkItem */__webpack_require__.d(__webpack_exports__, "LinkItem", function() { return LinkItem_LinkItem; });
+/* concated harmony reexport MathExpressionAnalysisParameters */__webpack_require__.d(__webpack_exports__, "MathExpressionAnalysisParameters", function() { return MathExpressionAnalysisParameters_MathExpressionAnalysisParameters; });
+/* concated harmony reexport MeasureParameters */__webpack_require__.d(__webpack_exports__, "MeasureParameters", function() { return MeasureParameters_MeasureParameters; });
+/* concated harmony reexport OutputSetting */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
+/* concated harmony reexport MappingParameters */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
+/* concated harmony reexport OverlapDisplayedOptions */__webpack_require__.d(__webpack_exports__, "OverlapDisplayedOptions", function() { return OverlapDisplayedOptions_OverlapDisplayedOptions; });
+/* concated harmony reexport OverlayAnalystParameters */__webpack_require__.d(__webpack_exports__, "OverlayAnalystParameters", function() { return OverlayAnalystParameters_OverlayAnalystParameters; });
+/* concated harmony reexport OverlayGeoJobParameter */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
+/* concated harmony reexport PointWithMeasure */__webpack_require__.d(__webpack_exports__, "PointWithMeasure", function() { return PointWithMeasure_PointWithMeasure; });
+/* concated harmony reexport QueryByBoundsParameters */__webpack_require__.d(__webpack_exports__, "QueryByBoundsParameters", function() { return QueryByBoundsParameters_QueryByBoundsParameters; });
+/* concated harmony reexport QueryByDistanceParameters */__webpack_require__.d(__webpack_exports__, "QueryByDistanceParameters", function() { return QueryByDistanceParameters_QueryByDistanceParameters; });
+/* concated harmony reexport QueryByGeometryParameters */__webpack_require__.d(__webpack_exports__, "QueryByGeometryParameters", function() { return QueryByGeometryParameters_QueryByGeometryParameters; });
+/* concated harmony reexport QueryBySQLParameters */__webpack_require__.d(__webpack_exports__, "QueryBySQLParameters", function() { return QueryBySQLParameters_QueryBySQLParameters; });
+/* concated harmony reexport QueryParameters */__webpack_require__.d(__webpack_exports__, "QueryParameters", function() { return QueryParameters_QueryParameters; });
+/* concated harmony reexport Route */__webpack_require__.d(__webpack_exports__, "Route", function() { return Route_Route; });
+/* concated harmony reexport RouteCalculateMeasureParameters */__webpack_require__.d(__webpack_exports__, "RouteCalculateMeasureParameters", function() { return RouteCalculateMeasureParameters_RouteCalculateMeasureParameters; });
+/* concated harmony reexport RouteLocatorParameters */__webpack_require__.d(__webpack_exports__, "RouteLocatorParameters", function() { return RouteLocatorParameters_RouteLocatorParameters; });
+/* concated harmony reexport ServerColor */__webpack_require__.d(__webpack_exports__, "ServerColor", function() { return ServerColor; });
+/* concated harmony reexport ServerFeature */__webpack_require__.d(__webpack_exports__, "ServerFeature", function() { return ServerFeature_ServerFeature; });
+/* concated harmony reexport ServerGeometry */__webpack_require__.d(__webpack_exports__, "ServerGeometry", function() { return ServerGeometry_ServerGeometry; });
+/* concated harmony reexport ServerStyle */__webpack_require__.d(__webpack_exports__, "ServerStyle", function() { return ServerStyle_ServerStyle; });
+/* concated harmony reexport ServerTextStyle */__webpack_require__.d(__webpack_exports__, "ServerTextStyle", function() { return ServerTextStyle_ServerTextStyle; });
+/* concated harmony reexport ServerTheme */__webpack_require__.d(__webpack_exports__, "ServerTheme", function() { return ServerTheme_ServerTheme; });
+/* concated harmony reexport SetLayerInfoParameters */__webpack_require__.d(__webpack_exports__, "SetLayerInfoParameters", function() { return SetLayerInfoParameters_SetLayerInfoParameters; });
+/* concated harmony reexport SetLayersInfoParameters */__webpack_require__.d(__webpack_exports__, "SetLayersInfoParameters", function() { return SetLayersInfoParameters_SetLayersInfoParameters; });
+/* concated harmony reexport SetLayerStatusParameters */__webpack_require__.d(__webpack_exports__, "SetLayerStatusParameters", function() { return SetLayerStatusParameters_SetLayerStatusParameters; });
+/* concated harmony reexport SingleObjectQueryJobsParameter */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
+/* concated harmony reexport StopQueryParameters */__webpack_require__.d(__webpack_exports__, "StopQueryParameters", function() { return StopQueryParameters_StopQueryParameters; });
+/* concated harmony reexport SummaryAttributesJobsParameter */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
+/* concated harmony reexport SummaryMeshJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
+/* concated harmony reexport SummaryRegionJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
+/* concated harmony reexport SupplyCenter */__webpack_require__.d(__webpack_exports__, "SupplyCenter", function() { return SupplyCenter_SupplyCenter; });
+/* concated harmony reexport SurfaceAnalystParameters */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParameters", function() { return SurfaceAnalystParameters_SurfaceAnalystParameters; });
+/* concated harmony reexport SurfaceAnalystParametersSetting */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParametersSetting", function() { return SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting; });
+/* concated harmony reexport TerrainCurvatureCalculationParameters */__webpack_require__.d(__webpack_exports__, "TerrainCurvatureCalculationParameters", function() { return TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameters; });
+/* concated harmony reexport CommonTheme */__webpack_require__.d(__webpack_exports__, "CommonTheme", function() { return Theme_Theme; });
+/* concated harmony reexport ThemeDotDensity */__webpack_require__.d(__webpack_exports__, "ThemeDotDensity", function() { return ThemeDotDensity_ThemeDotDensity; });
+/* concated harmony reexport ThemeFlow */__webpack_require__.d(__webpack_exports__, "ThemeFlow", function() { return ThemeFlow_ThemeFlow; });
+/* concated harmony reexport ThemeGraduatedSymbol */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbol", function() { return ThemeGraduatedSymbol_ThemeGraduatedSymbol; });
+/* concated harmony reexport ThemeGraduatedSymbolStyle */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbolStyle", function() { return ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle; });
+/* concated harmony reexport ThemeGraph */__webpack_require__.d(__webpack_exports__, "ThemeGraph", function() { return ThemeGraph_ThemeGraph; });
+/* concated harmony reexport ThemeGraphAxes */__webpack_require__.d(__webpack_exports__, "ThemeGraphAxes", function() { return ThemeGraphAxes_ThemeGraphAxes; });
+/* concated harmony reexport ThemeGraphItem */__webpack_require__.d(__webpack_exports__, "ThemeGraphItem", function() { return ThemeGraphItem_ThemeGraphItem; });
+/* concated harmony reexport ThemeGraphSize */__webpack_require__.d(__webpack_exports__, "ThemeGraphSize", function() { return ThemeGraphSize_ThemeGraphSize; });
+/* concated harmony reexport ThemeGraphText */__webpack_require__.d(__webpack_exports__, "ThemeGraphText", function() { return ThemeGraphText_ThemeGraphText; });
+/* concated harmony reexport ThemeGridRange */__webpack_require__.d(__webpack_exports__, "ThemeGridRange", function() { return ThemeGridRange_ThemeGridRange; });
+/* concated harmony reexport ThemeGridRangeItem */__webpack_require__.d(__webpack_exports__, "ThemeGridRangeItem", function() { return ThemeGridRangeItem_ThemeGridRangeItem; });
+/* concated harmony reexport ThemeGridUnique */__webpack_require__.d(__webpack_exports__, "ThemeGridUnique", function() { return ThemeGridUnique_ThemeGridUnique; });
+/* concated harmony reexport ThemeGridUniqueItem */__webpack_require__.d(__webpack_exports__, "ThemeGridUniqueItem", function() { return ThemeGridUniqueItem_ThemeGridUniqueItem; });
+/* concated harmony reexport ThemeLabel */__webpack_require__.d(__webpack_exports__, "ThemeLabel", function() { return ThemeLabel_ThemeLabel; });
+/* concated harmony reexport ThemeLabelAlongLine */__webpack_require__.d(__webpack_exports__, "ThemeLabelAlongLine", function() { return ThemeLabelAlongLine_ThemeLabelAlongLine; });
+/* concated harmony reexport ThemeLabelBackground */__webpack_require__.d(__webpack_exports__, "ThemeLabelBackground", function() { return ThemeLabelBackground_ThemeLabelBackground; });
+/* concated harmony reexport ThemeLabelItem */__webpack_require__.d(__webpack_exports__, "ThemeLabelItem", function() { return ThemeLabelItem_ThemeLabelItem; });
+/* concated harmony reexport ThemeLabelText */__webpack_require__.d(__webpack_exports__, "ThemeLabelText", function() { return ThemeLabelText_ThemeLabelText; });
+/* concated harmony reexport ThemeLabelUniqueItem */__webpack_require__.d(__webpack_exports__, "ThemeLabelUniqueItem", function() { return ThemeLabelUniqueItem_ThemeLabelUniqueItem; });
+/* concated harmony reexport ThemeMemoryData */__webpack_require__.d(__webpack_exports__, "ThemeMemoryData", function() { return ThemeMemoryData; });
+/* concated harmony reexport ThemeOffset */__webpack_require__.d(__webpack_exports__, "ThemeOffset", function() { return ThemeOffset_ThemeOffset; });
+/* concated harmony reexport ThemeParameters */__webpack_require__.d(__webpack_exports__, "ThemeParameters", function() { return ThemeParameters_ThemeParameters; });
+/* concated harmony reexport ThemeRange */__webpack_require__.d(__webpack_exports__, "ThemeRange", function() { return ThemeRange_ThemeRange; });
+/* concated harmony reexport ThemeRangeItem */__webpack_require__.d(__webpack_exports__, "ThemeRangeItem", function() { return ThemeRangeItem_ThemeRangeItem; });
+/* concated harmony reexport ThemeUnique */__webpack_require__.d(__webpack_exports__, "ThemeUnique", function() { return ThemeUnique_ThemeUnique; });
+/* concated harmony reexport ThemeUniqueItem */__webpack_require__.d(__webpack_exports__, "ThemeUniqueItem", function() { return ThemeUniqueItem_ThemeUniqueItem; });
+/* concated harmony reexport ThiessenAnalystParameters */__webpack_require__.d(__webpack_exports__, "ThiessenAnalystParameters", function() { return ThiessenAnalystParameters_ThiessenAnalystParameters; });
+/* concated harmony reexport TopologyValidatorJobsParameter */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
+/* concated harmony reexport TransferLine */__webpack_require__.d(__webpack_exports__, "TransferLine", function() { return TransferLine_TransferLine; });
+/* concated harmony reexport TransferPathParameters */__webpack_require__.d(__webpack_exports__, "TransferPathParameters", function() { return TransferPathParameters_TransferPathParameters; });
+/* concated harmony reexport TransferSolutionParameters */__webpack_require__.d(__webpack_exports__, "TransferSolutionParameters", function() { return TransferSolutionParameters_TransferSolutionParameters; });
+/* concated harmony reexport TransportationAnalystParameter */__webpack_require__.d(__webpack_exports__, "TransportationAnalystParameter", function() { return TransportationAnalystParameter_TransportationAnalystParameter; });
+/* concated harmony reexport TransportationAnalystResultSetting */__webpack_require__.d(__webpack_exports__, "TransportationAnalystResultSetting", function() { return TransportationAnalystResultSetting_TransportationAnalystResultSetting; });
+/* concated harmony reexport UGCLayer */__webpack_require__.d(__webpack_exports__, "UGCLayer", function() { return UGCLayer_UGCLayer; });
+/* concated harmony reexport UGCMapLayer */__webpack_require__.d(__webpack_exports__, "UGCMapLayer", function() { return UGCMapLayer_UGCMapLayer; });
+/* concated harmony reexport UGCSubLayer */__webpack_require__.d(__webpack_exports__, "UGCSubLayer", function() { return UGCSubLayer_UGCSubLayer; });
+/* concated harmony reexport UpdateEdgeWeightParameters */__webpack_require__.d(__webpack_exports__, "UpdateEdgeWeightParameters", function() { return UpdateEdgeWeightParameters_UpdateEdgeWeightParameters; });
+/* concated harmony reexport UpdateTurnNodeWeightParameters */__webpack_require__.d(__webpack_exports__, "UpdateTurnNodeWeightParameters", function() { return UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters; });
+/* concated harmony reexport Vector */__webpack_require__.d(__webpack_exports__, "Vector", function() { return iServer_Vector_Vector; });
+/* concated harmony reexport VectorClipJobsParameter */__webpack_require__.d(__webpack_exports__, "VectorClipJobsParameter", function() { return VectorClipJobsParameter_VectorClipJobsParameter; });
+/* concated harmony reexport FileTypes */__webpack_require__.d(__webpack_exports__, "FileTypes", function() { return FileTypes; });
+/* concated harmony reexport FileConfig */__webpack_require__.d(__webpack_exports__, "FileConfig", function() { return FileConfig; });
+/* concated harmony reexport FileModel */__webpack_require__.d(__webpack_exports__, "FileModel", function() { return FileModel_FileModel; });
+/* concated harmony reexport MessageBox */__webpack_require__.d(__webpack_exports__, "MessageBox", function() { return MessageBox; });
+/* concated harmony reexport CommonContainer */__webpack_require__.d(__webpack_exports__, "CommonContainer", function() { return CommonContainer_CommonContainer; });
+/* concated harmony reexport DropDownBox */__webpack_require__.d(__webpack_exports__, "DropDownBox", function() { return DropDownBox_DropDownBox; });
+/* concated harmony reexport Select */__webpack_require__.d(__webpack_exports__, "Select", function() { return Select_Select; });
+/* concated harmony reexport AttributesPopContainer */__webpack_require__.d(__webpack_exports__, "AttributesPopContainer", function() { return AttributesPopContainer_AttributesPopContainer; });
+/* concated harmony reexport PopContainer */__webpack_require__.d(__webpack_exports__, "PopContainer", function() { return PopContainer_PopContainer; });
+/* concated harmony reexport IndexTabsPageContainer */__webpack_require__.d(__webpack_exports__, "IndexTabsPageContainer", function() { return IndexTabsPageContainer_IndexTabsPageContainer; });
+/* concated harmony reexport CityTabsPage */__webpack_require__.d(__webpack_exports__, "CityTabsPage", function() { return CityTabsPage_CityTabsPage; });
+/* concated harmony reexport NavTabsPage */__webpack_require__.d(__webpack_exports__, "NavTabsPage", function() { return NavTabsPage_NavTabsPage; });
+/* concated harmony reexport PaginationContainer */__webpack_require__.d(__webpack_exports__, "PaginationContainer", function() { return PaginationContainer_PaginationContainer; });
+/* concated harmony reexport ComponentsUtil */__webpack_require__.d(__webpack_exports__, "ComponentsUtil", function() { return ComponentsUtil; });
+/* concated harmony reexport FileReaderUtil */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil; });
+/* concated harmony reexport ChangeTileVersion */__webpack_require__.d(__webpack_exports__, "ChangeTileVersion", function() { return ChangeTileVersion_ChangeTileVersion; });
+/* concated harmony reexport ScaleLine */__webpack_require__.d(__webpack_exports__, "ScaleLine", function() { return ScaleLine_ScaleLine; });
+/* concated harmony reexport Logo */__webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo_Logo; });
+/* concated harmony reexport StyleUtils */__webpack_require__.d(__webpack_exports__, "StyleUtils", function() { return StyleUtils_StyleUtils; });
+/* concated harmony reexport Util */__webpack_require__.d(__webpack_exports__, "Util", function() { return core_Util_Util; });
+/* concated harmony reexport MapExtend */__webpack_require__.d(__webpack_exports__, "MapExtend", function() { return MapExtend; });
+/* concated harmony reexport BaiduMap */__webpack_require__.d(__webpack_exports__, "BaiduMap", function() { return BaiduMap_BaiduMap; });
+/* concated harmony reexport ImageSuperMapRest */__webpack_require__.d(__webpack_exports__, "ImageSuperMapRest", function() { return ImageSuperMapRest_ImageSuperMapRest; });
+/* concated harmony reexport SuperMapCloud */__webpack_require__.d(__webpack_exports__, "SuperMapCloud", function() { return SuperMapCloud_SuperMapCloud; });
+/* concated harmony reexport Tianditu */__webpack_require__.d(__webpack_exports__, "Tianditu", function() { return Tianditu_Tianditu; });
+/* concated harmony reexport TileSuperMapRest */__webpack_require__.d(__webpack_exports__, "TileSuperMapRest", function() { return TileSuperMapRest_TileSuperMapRest; });
+/* concated harmony reexport WebMap */__webpack_require__.d(__webpack_exports__, "WebMap", function() { return WebMap_WebMap; });
+/* concated harmony reexport DataFlow */__webpack_require__.d(__webpack_exports__, "DataFlow", function() { return DataFlow_DataFlow; });
+/* concated harmony reexport Graph */__webpack_require__.d(__webpack_exports__, "Graph", function() { return overlay_Graph_Graph; });
+/* concated harmony reexport Graphic */__webpack_require__.d(__webpack_exports__, "Graphic", function() { return Graphic_Graphic; });
+/* concated harmony reexport Label */__webpack_require__.d(__webpack_exports__, "Label", function() { return overlay_Label_Label; });
+/* concated harmony reexport Mapv */__webpack_require__.d(__webpack_exports__, "Mapv", function() { return Mapv_Mapv; });
+/* concated harmony reexport Range */__webpack_require__.d(__webpack_exports__, "Range", function() { return Range_Range; });
+/* concated harmony reexport RankSymbol */__webpack_require__.d(__webpack_exports__, "RankSymbol", function() { return overlay_RankSymbol_RankSymbol; });
+/* concated harmony reexport Turf */__webpack_require__.d(__webpack_exports__, "Turf", function() { return Turf_Turf; });
+/* concated harmony reexport Unique */__webpack_require__.d(__webpack_exports__, "Unique", function() { return Unique_Unique; });
+/* concated harmony reexport VectorTileSuperMapRest */__webpack_require__.d(__webpack_exports__, "VectorTileSuperMapRest", function() { return VectorTileSuperMapRest_VectorTileSuperMapRest; });
+/* concated harmony reexport HeatMap */__webpack_require__.d(__webpack_exports__, "HeatMap", function() { return HeatMap_HeatMap; });
+/* concated harmony reexport OverlayGraphic */__webpack_require__.d(__webpack_exports__, "OverlayGraphic", function() { return graphic_Graphic_Graphic; });
+/* concated harmony reexport CloverShape */__webpack_require__.d(__webpack_exports__, "CloverShape", function() { return CloverShape_CloverShape; });
+/* concated harmony reexport HitCloverShape */__webpack_require__.d(__webpack_exports__, "HitCloverShape", function() { return HitCloverShape_HitCloverShape; });
+/* concated harmony reexport GraphicCanvasRenderer */__webpack_require__.d(__webpack_exports__, "GraphicCanvasRenderer", function() { return CanvasRenderer_GraphicCanvasRenderer; });
+/* concated harmony reexport GraphicWebGLRenderer */__webpack_require__.d(__webpack_exports__, "GraphicWebGLRenderer", function() { return WebGLRenderer_GraphicWebGLRenderer; });
+/* concated harmony reexport MapvCanvasLayer */__webpack_require__.d(__webpack_exports__, "MapvCanvasLayer", function() { return MapvCanvasLayer; });
+/* concated harmony reexport MapvLayer */__webpack_require__.d(__webpack_exports__, "MapvLayer", function() { return MapvLayer_MapvLayer; });
+/* concated harmony reexport GeoFeature */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
+/* concated harmony reexport Theme */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
+/* concated harmony reexport ThemeFeature */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
+/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
+/* concated harmony reexport pointStyle */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
+/* concated harmony reexport lineStyle */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
+/* concated harmony reexport polygonStyle */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
+/* concated harmony reexport DeafultCanvasStyle */__webpack_require__.d(__webpack_exports__, "DeafultCanvasStyle", function() { return DeafultCanvasStyle; });
+/* concated harmony reexport pointMap */__webpack_require__.d(__webpack_exports__, "pointMap", function() { return pointMap; });
+/* concated harmony reexport lineMap */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
+/* concated harmony reexport polygonMap */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
+/* concated harmony reexport StyleMap */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
+/* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
+/* concated harmony reexport ChartService */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
+/* concated harmony reexport DataFlowService */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
+/* concated harmony reexport FeatureService */__webpack_require__.d(__webpack_exports__, "FeatureService", function() { return FeatureService_FeatureService; });
+/* concated harmony reexport FieldService */__webpack_require__.d(__webpack_exports__, "FieldService", function() { return FieldService_FieldService; });
+/* concated harmony reexport GridCellInfosService */__webpack_require__.d(__webpack_exports__, "GridCellInfosService", function() { return GridCellInfosService_GridCellInfosService; });
+/* concated harmony reexport LayerInfoService */__webpack_require__.d(__webpack_exports__, "LayerInfoService", function() { return LayerInfoService_LayerInfoService; });
+/* concated harmony reexport MapService */__webpack_require__.d(__webpack_exports__, "MapService", function() { return services_MapService_MapService; });
+/* concated harmony reexport MeasureService */__webpack_require__.d(__webpack_exports__, "MeasureService", function() { return services_MeasureService_MeasureService; });
+/* concated harmony reexport NetworkAnalyst3DService */__webpack_require__.d(__webpack_exports__, "NetworkAnalyst3DService", function() { return NetworkAnalyst3DService_NetworkAnalyst3DService; });
+/* concated harmony reexport NetworkAnalystService */__webpack_require__.d(__webpack_exports__, "NetworkAnalystService", function() { return NetworkAnalystService_NetworkAnalystService; });
+/* concated harmony reexport ProcessingService */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
+/* concated harmony reexport QueryService */__webpack_require__.d(__webpack_exports__, "QueryService", function() { return services_QueryService_QueryService; });
+/* concated harmony reexport ServiceBase */__webpack_require__.d(__webpack_exports__, "ServiceBase", function() { return ServiceBase_ServiceBase; });
+/* concated harmony reexport SpatialAnalystService */__webpack_require__.d(__webpack_exports__, "SpatialAnalystService", function() { return SpatialAnalystService_SpatialAnalystService; });
+/* concated harmony reexport ThemeService */__webpack_require__.d(__webpack_exports__, "ThemeService", function() { return services_ThemeService_ThemeService; });
+/* concated harmony reexport TrafficTransferAnalystService */__webpack_require__.d(__webpack_exports__, "TrafficTransferAnalystService", function() { return TrafficTransferAnalystService_TrafficTransferAnalystService; });
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -92618,947 +94460,14 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 
 
 /***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
-/* harmony import */ var _ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ChangeTileVersion_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
-/* harmony import */ var _supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_supermap_iclient_common_css_webmapfont_iconfont_css__WEBPACK_IMPORTED_MODULE_1__);
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-(function(self) {
-  'use strict';
-
-  // if __disableNativeFetch is set to true, the it will always polyfill fetch
-  // with Ajax.
-  if (!self.__disableNativeFetch && self.fetch) {
-    return
-  }
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name)
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
-    }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value)
-    }
-    return value
-  }
-
-  function Headers(headers) {
-    this.map = {}
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value)
-      }, this)
-
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name])
-      }, this)
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name)
-    value = normalizeValue(value)
-    var list = this.map[name]
-    if (!list) {
-      list = []
-      this.map[name] = list
-    }
-    list.push(value)
-  }
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
-  }
-
-  Headers.prototype.get = function(name) {
-    var values = this.map[normalizeName(name)]
-    return values ? values[0] : null
-  }
-
-  Headers.prototype.getAll = function(name) {
-    return this.map[normalizeName(name)] || []
-  }
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  }
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = [normalizeValue(value)]
-  }
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    Object.getOwnPropertyNames(this.map).forEach(function(name) {
-      this.map[name].forEach(function(value) {
-        callback.call(thisArg, value, name, this)
-      }, this)
-    }, this)
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    reader.readAsArrayBuffer(blob)
-    return fileReaderReady(reader)
-  }
-
-  function readBlobAsText(blob, options) {
-    var reader = new FileReader()
-    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
-    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
-    var _charset = blob.type.match(regex) || contentType.match(regex)
-    var args = [blob]
-
-    if(_charset) {
-      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
-    }
-
-    reader.readAsText.apply(reader, args)
-    return fileReaderReady(reader)
-  }
-
-  var support = {
-    blob: 'FileReader' in self && 'Blob' in self && (function() {
-      try {
-        new Blob();
-        return true
-      } catch(e) {
-        return false
-      }
-    })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  }
-
-  function Body() {
-    this.bodyUsed = false
-
-
-    this._initBody = function(body, options) {
-      this._bodyInit = body
-      if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-        this._options = options
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (!body) {
-        this._bodyText = ''
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
-      } else {
-        throw new Error('unsupported BodyInit type')
-      }
-    }
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      }
-
-      this.arrayBuffer = function() {
-        return this.blob().then(readBlobAsArrayBuffer)
-      }
-
-      this.text = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob, this._options)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text')
-        } else {
-          return Promise.resolve(this._bodyText)
-        }
-      }
-    } else {
-      this.text = function() {
-        var rejected = consumed(this)
-        return rejected ? rejected : Promise.resolve(this._bodyText)
-      }
-    }
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      }
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    }
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase()
-    return (methods.indexOf(upcased) > -1) ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {}
-    var body = options.body
-    if (Request.prototype.isPrototypeOf(input)) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url
-      this.credentials = input.credentials
-      if (!options.headers) {
-        this.headers = new Headers(input.headers)
-      }
-      this.method = input.method
-      this.mode = input.mode
-      if (!body) {
-        body = input._bodyInit
-        input.bodyUsed = true
-      }
-    } else {
-      this.url = input
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit'
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers)
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET')
-    this.mode = options.mode || this.mode || null
-    this.referrer = null
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body, options)
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this)
-  }
-
-  function decode(body) {
-    var form = new FormData()
-    body.trim().split('&').forEach(function(bytes) {
-      if (bytes) {
-        var split = bytes.split('=')
-        var name = split.shift().replace(/\+/g, ' ')
-        var value = split.join('=').replace(/\+/g, ' ')
-        form.append(decodeURIComponent(name), decodeURIComponent(value))
-      }
-    })
-    return form
-  }
-
-  function headers(xhr) {
-    var head = new Headers()
-    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
-    pairs.forEach(function(header) {
-      var split = header.trim().split(':')
-      var key = split.shift().trim()
-      var value = split.join(':').trim()
-      head.append(key, value)
-    })
-    return head
-  }
-
-  Body.call(Request.prototype)
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {}
-    }
-
-    this._initBody(bodyInit, options)
-    this.type = 'default'
-    this.status = options.status
-    this.ok = this.status >= 200 && this.status < 300
-    this.statusText = options.statusText
-    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
-    this.url = options.url || ''
-  }
-
-  Body.call(Response.prototype)
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  }
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''})
-    response.type = 'error'
-    return response
-  }
-
-  var redirectStatuses = [301, 302, 303, 307, 308]
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  }
-
-  self.Headers = Headers;
-  self.Request = Request;
-  self.Response = Response;
-
-  self.fetch = function(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request
-      if (Request.prototype.isPrototypeOf(input) && !init) {
-        request = input
-      } else {
-        request = new Request(input, init)
-      }
-
-      var xhr = new XMLHttpRequest()
-
-      function responseURL() {
-        if ('responseURL' in xhr) {
-          return xhr.responseURL
-        }
-
-        // Avoid security warnings on getResponseHeader when not allowed by CORS
-        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-          return xhr.getResponseHeader('X-Request-URL')
-        }
-
-        return;
-      }
-
-      var __onLoadHandled = false;
-
-      function onload() {
-        if (xhr.readyState !== 4) {
-          return
-        }
-        var status = (xhr.status === 1223) ? 204 : xhr.status
-        if (status < 100 || status > 599) {
-          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-          reject(new TypeError('Network request failed'))
-          return
-        }
-        var options = {
-          status: status,
-          statusText: xhr.statusText,
-          headers: headers(xhr),
-          url: responseURL()
-        }
-        var body = 'response' in xhr ? xhr.response : xhr.responseText;
-
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        resolve(new Response(body, options))
-      }
-      xhr.onreadystatechange = onload;
-      xhr.onload = onload;
-      xhr.onerror = function() {
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.open(request.method, request.url, true)
-
-      // `withCredentials` should be setted after calling `.open` in IE10
-      // http://stackoverflow.com/a/19667959/1219343
-      try {
-        if (request.credentials === 'include') {
-          if ('withCredentials' in xhr) {
-            xhr.withCredentials = true;
-          } else {
-            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
-          }
-        }
-      } catch (e) {
-        console && console.warn && console.warn('set withCredentials error:' + e);
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
-      }
-
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value)
-      })
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-    })
-  }
-  self.fetch.polyfill = true
-
-  // Support CommonJS
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = self.fetch;
-  }
-})(typeof self !== 'undefined' ? self : this);
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1), __webpack_require__(19)))
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(20);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(15);
-module.exports = __webpack_require__(16);
-
-
-/***/ }),
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */
+/* 23 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 28 */,
-/* 29 */
+/* 24 */,
+/* 25 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -103,7 +103,7 @@ export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";

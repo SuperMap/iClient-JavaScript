@@ -43,7 +43,7 @@ module.exports = {
           exclude: /node_modules[\/\\]proj4|classic|webgl-debug/,
           loader: 'babel-loader',
           options: {
-            presets: ['es2015']
+            presets: ['@babel/preset-env']
           }
         });
       }

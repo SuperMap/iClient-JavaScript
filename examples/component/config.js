@@ -7,9 +7,9 @@ var identification = {
 };
 
 var exampleConfig = {
-  vuecomponents: {
-    name: 'Vue',
-    name_en: 'Vue',
+  vuecomponents_mbgl: {
+    name: 'Vue - MapboxGL',
+    name_en: 'Vue - MapboxGL',
     content: {
       map: {
         name: '地图',
@@ -26,7 +26,7 @@ var exampleConfig = {
             name: 'iPortal 地图',
             name_en: 'iPortal Map',
             version: '10.0.0',
-            thumbnail: 'components_webmap_vue.png',
+            thumbnail: 'components_webmap.png',
             fileName: 'components_webmap_vue',
             localIgnore: true
           },
@@ -130,6 +130,13 @@ var exampleConfig = {
             version: '10.0.0',
             thumbnail: 'components_openfile_vue.png',
             fileName: 'components_openfile_vue'
+          },
+          {
+            name: '点选查询',
+            name_en: 'Identify',
+            version: '10.0.0',
+            thumbnail: 'components_identify_vue.png',
+            fileName: 'components_identify_vue'
           }
         ]
       },
@@ -386,9 +393,103 @@ var exampleConfig = {
       }
     }
   },
-  reactcomponents: {
-    name: 'React',
-    name_en: 'React',
+  vuecomponents_leaflet: {
+    name: 'Vue - Leaflet',
+    name_en: 'Vue - Leaflet',
+    content: {
+      l_map: {
+        name: '地图',
+        name_en: 'Map',
+        content: [
+          {
+            name: 'iServer 地图',
+            name_en: 'iServer Map',
+            version: '10.0.1',
+            thumbnail: 'components_map_vue.png',
+            fileName: 'l_map_vue'
+          },
+          {
+            name: 'iPortal 地图',
+            name_en: 'iPortal Map',
+            version: '10.0.1',
+            thumbnail: 'components_webmap.png',
+            fileName: 'l_webmap_vue',
+            localIgnore: true
+          },
+          {
+            name: '栅格图层',
+            name_en: 'Tile Layer',
+            version: '10.0.1',
+            thumbnail: 'components_rasterLayer_vue.png',
+            fileName: 'l_tile_vue',
+            localIgnore: true
+          }
+        ]
+      },
+      l_map_subcomponent: {
+        name: '地图子组件',
+        name_en: 'Map subcomponent',
+        content: [
+          {
+            name: '弹窗',
+            name_en: 'Popup',
+            version: '10.0.1',
+            thumbnail: 'components_popup_vue.png',
+            fileName: 'l_popup_vue'
+          },
+          {
+            name: '点选查询',
+            name_en: 'Identify',
+            version: '10.0.1',
+            thumbnail: 'components_identify_vue.png',
+            fileName: 'l_identify_vue'
+          }
+        ]
+      },
+      l_chart: {
+        name: '图表',
+        name_en: 'Chart',
+        localIgnore: true,
+        content: [
+          {
+            name: '图表',
+            name_en: 'Chart',
+            version: '10.0.1',
+            thumbnail: 'components_chart_vue.png',
+            fileName: 'l_chart_vue',
+            localIgnore: true
+          },
+          {
+            name: '饼图',
+            name_en: 'Chart(pie)',
+            version: '10.0.1',
+            thumbnail: 'components_chart_vue(pie).png',
+            fileName: 'l_pie_chart_vue',
+            localIgnore: true
+          },
+          {
+            name: '雷达图',
+            name_en: 'Chart(radar)',
+            version: '10.0.1',
+            thumbnail: 'components_chart_vue(radar).png',
+            fileName: 'l_radar_chart_vue',
+            localIgnore: true
+          },
+          {
+            name: '仪表盘',
+            name_en: 'Chart(gauge)',
+            version: '10.0.1',
+            thumbnail: 'components_chart_vue(gauge).png',
+            fileName: 'l_gauge_chart_vue',
+            localIgnore: true
+          }
+        ]
+      }
+    }
+  },
+  reactcomponents_mbgl: {
+    name: 'React - MapboxGL',
+    name_en: 'React - MapboxGL',
     localIgnore: true,
     content: {
       react_map: {
@@ -406,7 +507,7 @@ var exampleConfig = {
             name: 'iPortal 地图',
             name_en: 'iPortal Map',
             version: '10.0.0',
-            thumbnail: 'components_webmap_react.png',
+            thumbnail: 'components_webmap.png',
             fileName: 'components_webmap_react',
             localIgnore: true
           },
@@ -557,8 +658,9 @@ var exampleConfig = {
  *不分层
  */
 var sideBarIconConfig = {
-  vuecomponents: 'fa-window-restore',
-  reactcomponents: 'fa-globe',
+  vuecomponents_mbgl: 'fa-window-restore',
+  vuecomponents_leaflet: 'fa-window-restore',
+  reactcomponents_mbgl: 'fa-globe',
   h5components: 'fa-map'
 };
 
@@ -568,8 +670,9 @@ var sideBarIconConfig = {
  *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
  */
 var exampleIconConfig = {
-  vuecomponents: 'fa-window-restore',
-  reactcomponents: 'fa-globe',
+  vuecomponents_mbgl: 'fa-window-restore',
+  vuecomponents_leaflet: 'fa-window-restore',
+  reactcomponents_mbgl: 'fa-globe',
   h5components: 'fa-map'
 };
 window.componentExampleConfig = exampleConfig;
