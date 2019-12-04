@@ -16686,6 +16686,33 @@ function (_IPortalServiceBase) {
   return IPortalResource;
 }(iPortalServiceBase_IPortalServiceBase);
 SuperMap.iPortalResource = iPortalResource_IPortalResource;
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareParam.js
+function iPortalShareParam_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.iPortalShareParam
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+
+var iPortalShareParam_IPortalShareParam = function IPortalShareParam(params) {
+  iPortalShareParam_classCallCheck(this, IPortalShareParam);
+
+  params = params || {};
+  this.ids = [];
+  this.entities = [];
+  this.resourceType = ""; // MAP SERVICE SCENE DATA INSIGHTS_WORKSPACE MAP_DASHBOARD
+
+  Util_Util.extend(this, params);
+};
+SuperMap.iPortalShareParam = iPortalShareParam_IPortalShareParam;
 // CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 function iPortal_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { iPortal_typeof = function _typeof(obj) { return typeof obj; }; } else { iPortal_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return iPortal_typeof(obj); }
 
@@ -16708,6 +16735,7 @@ function iPortal_setPrototypeOf(o, p) { iPortal_setPrototypeOf = Object.setProto
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -16771,7 +16799,9 @@ function (_IPortalServiceBase) {
     key: "queryResources",
     value: function queryResources(queryParams) {
       if (!(queryParams instanceof iPortalQueryParam_IPortalQueryParam)) {
-        return null;
+        return new Promise(function (resolve) {
+          resolve("queryParams is not instanceof iPortalQueryParam !");
+        });
       }
 
       var me = this;
@@ -16789,6 +16819,37 @@ function (_IPortalServiceBase) {
         queryResult.pageSize = result.pageSize;
         queryResult.aggregations = result.aggregations;
         return queryResult;
+      });
+    }
+    /**
+     * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
+     * @description 查询资源。
+     * @param {SuperMap.updateResourcesShareSetting} shareParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+
+  }, {
+    key: "updateResourcesShareSetting",
+    value: function updateResourcesShareSetting(shareParams) {
+      if (!(shareParams instanceof iPortalShareParam_IPortalShareParam)) {
+        return new Promise(function (resolve) {
+          resolve("shareParams is not instanceof iPortalShareParam !");
+        });
+      }
+
+      var resourceUrlName = shareParams.resourceType.replace("_", "").toLowerCase() + "s";
+
+      if (resourceUrlName === "datas") {
+        resourceUrlName = "mycontent/" + resourceUrlName;
+      }
+
+      var cloneShareParams = {
+        ids: shareParams.ids,
+        entities: shareParams.entities
+      };
+      var shareUrl = this.iportalUrl + "/web/" + resourceUrlName + "/sharesetting.json";
+      return this.request("PUT", shareUrl, JSON.stringify(cloneShareParams)).then(function (result) {
+        return result;
       });
     }
     /**
@@ -17142,10 +17203,44 @@ function (_IPortalServiceBase) {
   return IPortal;
 }(iPortalServiceBase_IPortalServiceBase);
 SuperMap.iPortal = iPortal_IPortal;
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareEntity.js
+function iPortalShareEntity_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.iPortalShareEntity
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+
+var iPortalShareEntity_IPortalShareEntity = function IPortalShareEntity(params) {
+  iPortalShareEntity_classCallCheck(this, IPortalShareEntity);
+
+  params = params || {};
+  this.permissionType = ""; // SEARCH READ READWRITE DOWNLOAD
+
+  this.entityType = ""; // USER DEPARTMENT IPORTALGROUP
+
+  this.entityName = "GUEST"; // GUEST or 具体用户 name
+
+  this.entityId = null;
+  Util_Util.extend(this, params);
+};
+SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
 // CONCATENATED MODULE: ./src/common/iPortal/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
 
 
 
@@ -94201,6 +94296,8 @@ external_mapboxgl_default.a.supermap.WebMap = WebMap_WebMap;
 /* concated harmony reexport IPortalQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalQueryParam", function() { return iPortalQueryParam_IPortalQueryParam; });
 /* concated harmony reexport IPortalResource */__webpack_require__.d(__webpack_exports__, "IPortalResource", function() { return iPortalResource_IPortalResource; });
 /* concated harmony reexport IPortalQueryResult */__webpack_require__.d(__webpack_exports__, "IPortalQueryResult", function() { return iPortalQueryResult_IPortalQueryResult; });
+/* concated harmony reexport IPortalShareParam */__webpack_require__.d(__webpack_exports__, "IPortalShareParam", function() { return iPortalShareParam_IPortalShareParam; });
+/* concated harmony reexport IPortalShareEntity */__webpack_require__.d(__webpack_exports__, "IPortalShareEntity", function() { return iPortalShareEntity_IPortalShareEntity; });
 /* concated harmony reexport IPortalMap */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
 /* concated harmony reexport IPortalMapsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
 /* concated harmony reexport IPortalInsight */__webpack_require__.d(__webpack_exports__, "IPortalInsight", function() { return iPortalInsight_IPortalInsight; });

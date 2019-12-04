@@ -17023,10 +17023,38 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
 SuperMap.iPortalResource = iPortalResource_IPortalResource;
 
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalShareParam
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalShareParam_IPortalShareParam {
+
+    constructor(params) {
+        params = params || {};
+        this.ids = [];
+        this.entities = [];
+        this.resourceType = ""; // MAP SERVICE SCENE DATA INSIGHTS_WORKSPACE MAP_DASHBOARD
+        Util_Util.extend(this, params);
+    }
+}
+SuperMap.iPortalShareParam = iPortalShareParam_IPortalShareParam;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -17076,7 +17104,11 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
      */
     queryResources(queryParams) {
         if (!(queryParams instanceof iPortalQueryParam_IPortalQueryParam)) {
-            return null;
+            return new Promise( function(resolve){
+                resolve(
+                    "queryParams is not instanceof iPortalQueryParam !"
+                );
+            });
         }
         var me = this;
         var resourceUrl = this.iportalUrl + "/gateway/catalog/resource/search.json";
@@ -17097,6 +17129,33 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
 
+    /**
+     * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
+     * @description 查询资源。
+     * @param {SuperMap.updateResourcesShareSetting} shareParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+    updateResourcesShareSetting(shareParams) {
+        if (!(shareParams instanceof iPortalShareParam_IPortalShareParam)) {
+            return new Promise( function(resolve){
+                resolve(
+                    "shareParams is not instanceof iPortalShareParam !"
+                );
+            });
+        }
+        var resourceUrlName = shareParams.resourceType.replace("_","").toLowerCase()+"s";
+        if(resourceUrlName === "datas"){
+            resourceUrlName = "mycontent/"+resourceUrlName;
+        }
+        var cloneShareParams = {
+            ids: shareParams.ids,
+            entities: shareParams.entities
+        }
+        var shareUrl = this.iportalUrl + "/web/"+resourceUrlName+"/sharesetting.json";
+        return this.request("PUT", shareUrl, JSON.stringify(cloneShareParams)).then(function(result) {
+            return result;
+        });
+    }
     /**
      * @function SuperMap.iPortal.prototype.queryServices
      * @description 查询服务。
@@ -17379,10 +17438,42 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
 
 SuperMap.iPortal = iPortal_IPortal;
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareEntity.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalShareEntity
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalShareEntity_IPortalShareEntity {
+
+    constructor(params) {
+        params = params || {};
+        this.permissionType = ""; // SEARCH READ READWRITE DOWNLOAD
+        this.entityType = ""; // USER DEPARTMENT IPORTALGROUP
+        this.entityName = "GUEST"; // GUEST or 具体用户 name
+        this.entityId = null;
+        Util_Util.extend(this, params);
+    }
+}
+SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
 
 
 
@@ -80463,9 +80554,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             baseLayerInfo = mapInfo.baseLayer,
             url = baseLayerInfo.url,
             baseLayerType = baseLayerInfo.layerType;  
-
+        let extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
         let proj = new external_ol_default.a.proj.Projection({
-            extent: [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y],
+            extent,
             units: 'm',
             code: 'EPSG:0'
         }); 
@@ -80476,7 +80567,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         }
         //添加view
         me.baseProjection = proj;
-        me.createView(options);
+        let view = new external_ol_default.a.View({
+            center:  options.center ? [options.center.x, options.center.y] : [0,0],
+            zoom: 0,
+            projection: proj
+        });
+        me.map.setView(view);
+        if(me.mapParams) {
+            me.mapParams.extent = extent;
+            me.mapParams.projection = mapInfo.projection;
+        }
         
         let source;
         if(baseLayerType === "TILE"){
@@ -94201,6 +94301,8 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport IPortalQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalQueryParam", function() { return iPortalQueryParam_IPortalQueryParam; });
 /* concated harmony reexport IPortalResource */__webpack_require__.d(__webpack_exports__, "IPortalResource", function() { return iPortalResource_IPortalResource; });
 /* concated harmony reexport IPortalQueryResult */__webpack_require__.d(__webpack_exports__, "IPortalQueryResult", function() { return iPortalQueryResult_IPortalQueryResult; });
+/* concated harmony reexport IPortalShareParam */__webpack_require__.d(__webpack_exports__, "IPortalShareParam", function() { return iPortalShareParam_IPortalShareParam; });
+/* concated harmony reexport IPortalShareEntity */__webpack_require__.d(__webpack_exports__, "IPortalShareEntity", function() { return iPortalShareEntity_IPortalShareEntity; });
 /* concated harmony reexport IPortalMap */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
 /* concated harmony reexport IPortalMapsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
 /* concated harmony reexport IPortalService */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
@@ -94421,8 +94523,6 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport GeoFeature */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
 /* concated harmony reexport Theme */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
 /* concated harmony reexport ThemeFeature */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
-/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport pointStyle */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
 /* concated harmony reexport lineStyle */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
 /* concated harmony reexport polygonStyle */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
@@ -94431,6 +94531,8 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport lineMap */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
 /* concated harmony reexport polygonMap */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
 /* concated harmony reexport StyleMap */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
+/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
 /* concated harmony reexport ChartService */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
 /* concated harmony reexport DataFlowService */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
