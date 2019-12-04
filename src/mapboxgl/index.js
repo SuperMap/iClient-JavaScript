@@ -71,6 +71,8 @@ export {
     IPortalQueryParam,
     IPortalResource,
     IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalMap,
     IPortalMapsQueryParam,
     IPortalInsight,

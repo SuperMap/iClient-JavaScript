@@ -17,6 +17,7 @@ import { IPortalMapdashboardsQueryParam } from "./iPortalMapdashboardsQueryParam
 import { IPortalQueryParam } from "./iPortalQueryParam";
 import { IPortalQueryResult } from "./iPortalQueryResult";
 import { IPortalResource } from "./iPortalResource";
+import { IPortalShareParam } from "./iPortalShareParam";
 
 /**
  * @class SuperMap.iPortal
@@ -50,7 +51,11 @@ export class IPortal extends IPortalServiceBase {
      */
     queryResources(queryParams) {
         if (!(queryParams instanceof IPortalQueryParam)) {
-            return null;
+            return new Promise( function(resolve){
+                resolve(
+                    "queryParams is not instanceof iPortalQueryParam !"
+                );
+            });
         }
         var me = this;
         var resourceUrl = this.iportalUrl + "/gateway/catalog/resource/search.json";
@@ -71,6 +76,33 @@ export class IPortal extends IPortalServiceBase {
     }
 
 
+    /**
+     * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
+     * @description 查询资源。
+     * @param {SuperMap.updateResourcesShareSetting} shareParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+    updateResourcesShareSetting(shareParams) {
+        if (!(shareParams instanceof IPortalShareParam)) {
+            return new Promise( function(resolve){
+                resolve(
+                    "shareParams is not instanceof iPortalShareParam !"
+                );
+            });
+        }
+        var resourceUrlName = shareParams.resourceType.replace("_","").toLowerCase()+"s";
+        if(resourceUrlName === "datas"){
+            resourceUrlName = "mycontent/"+resourceUrlName;
+        }
+        var cloneShareParams = {
+            ids: shareParams.ids,
+            entities: shareParams.entities
+        }
+        var shareUrl = this.iportalUrl + "/web/"+resourceUrlName+"/sharesetting.json";
+        return this.request("PUT", shareUrl, JSON.stringify(cloneShareParams)).then(function(result) {
+            return result;
+        });
+    }
     /**
      * @function SuperMap.iPortal.prototype.queryServices
      * @description 查询服务。
