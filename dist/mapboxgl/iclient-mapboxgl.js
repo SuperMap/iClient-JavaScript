@@ -88658,11 +88658,11 @@ function (_ServiceBase) {
       };
       me._statisticsCallback = callback; //针对每种统计方式分别进行请求
 
-      for (var mode in modes) {
-        me.currentStatisticResult[modes[mode]] = null;
+      modes.forEach(function (mode) {
+        me.currentStatisticResult[mode] = null;
 
-        me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
-      }
+        me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, mode);
+      });
     }
   }, {
     key: "_fieldStatisticRequest",

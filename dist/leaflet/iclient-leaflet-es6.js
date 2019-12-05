@@ -85088,7 +85088,7 @@ external_L_default.a.supermap.circleStyle = circleStyle;
 /**
  * @class L.supermap.imageStyle
  * @classdesc 自定义图形要素风格。
- * @category Graphic
+ * @category Visualization Graphic
  * @extends {L.Class}
  * @param {Object} options - 图形要素风格参数。
  * @param {HTMLImageElement} options.img - image 对象。
@@ -85139,7 +85139,7 @@ external_L_default.a.supermap.imageStyle = imageStyle;
 
 const emptyFunc = external_L_default.a.Util.falseFn;
 var GraphicCanvasRenderer = external_L_default.a.Class.extend({
-    initialize: function (layer, options) {
+    initialize: function(layer, options) {
         this.layer = layer;
         options = options || {};
         external_L_default.a.Util.setOptions(this, options);
@@ -85151,7 +85151,7 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
      * @description 返回渲染器给图层，提供图层后续的数据增删改。
      * @returns {L.Canvas}
      */
-    getRenderer: function () {
+    getRenderer: function() {
         return this.options.renderer;
     },
 
@@ -85160,38 +85160,42 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
      * @function  GraphicCanvasRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
-    update: function () {
+    update: function() {
         this.getRenderer()._clear();
         this.getRenderer()._draw();
     },
 
-    _handleClick: function (evt) {
+    _handleClick: function(evt) {
         let me = this,
             layer = me.layer,
             map = layer._map;
-        if (!layer.options.onClick) {
-            return;
-        }
-        this.layer._renderer._ctx.canvas.style.cursor = "pointer";
+        this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
         let graphics = layer._getGraphicsInBounds();
+        evt.target = null;
         for (let i = 0; i < graphics.length; i++) {
             let p1, p2, bounds;
-            let center = map.latLngToLayerPoint(graphics[i].getLatLng());
+            const center = map.latLngToLayerPoint(graphics[i].getLatLng());
             let style = graphics[i].getStyle();
             if (!style && this.defaultStyle) {
                 style = this.defaultStyle;
             }
             if (style.img) {
-                let anchor = style.anchor || [style.img.width / 2, style.img.height / 2];
+                const imgWidth = style.size[0] || style.img.width;
+                const imgHeight = style.size[1] || style.img.height;
+                const anchor = style.anchor || [imgWidth / 2, imgHeight / 2];
                 p1 = external_L_default.a.point(center.x - anchor[0], center.y - anchor[1]);
-                p2 = external_L_default.a.point(p1.x + style.img.width, p1.y + style.img.height);
+                p2 = external_L_default.a.point(p1.x + imgWidth, p1.y + imgHeight);
             } else {
                 p1 = external_L_default.a.point(center.x - style.width / 2, center.y - style.height / 2);
                 p2 = external_L_default.a.point(center.x + style.width / 2, center.y + style.height / 2);
             }
             bounds = external_L_default.a.bounds(p1, p2);
             if (bounds.contains(map.latLngToLayerPoint(evt.latlng))) {
-                return layer.options.onClick.call(layer, graphics[i],evt);
+                evt.target = graphics[i];
+                if (evt.type === 'click' && layer.options.onClick) {
+                    layer.options.onClick.call(layer, graphics[i], evt);
+                }
+                return;
             }
         }
     },
@@ -85201,28 +85205,28 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
 });
 
 external_L_default.a.Canvas.include({
-
-    drawGraphics: function (graphics, defaultStyle) {
+    drawGraphics: function(graphics, defaultStyle) {
         var me = this;
         if (!me._drawing) {
             return;
         }
         //this._ctx.clearRect(0, 0, this._ctx.canvas.width, me._ctx.canvas.height);
-        graphics.forEach(function (graphic) {
+        graphics.forEach(function(graphic) {
             var style = graphic.getStyle();
             if (!style && defaultStyle) {
                 style = defaultStyle;
             }
-            if (style.img) { //绘制图片
+            if (style.img) {
+                //绘制图片
                 me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
-            } else { //绘制canvas
+            } else {
+                //绘制canvas
                 me._drawCanvas.call(me, me._ctx, style, graphic.getLatLng());
             }
-        })
+        });
     },
 
-    _drawCanvas: function (ctx, style, latLng) {
-
+    _drawCanvas: function(ctx, style, latLng) {
         var canvas = style;
         var pt = this._map.latLngToLayerPoint(latLng);
         var p0 = pt.x - canvas.width / 2;
@@ -85233,7 +85237,7 @@ external_L_default.a.Canvas.include({
         ctx.drawImage(canvas, p0, p1, width, height);
     },
 
-    _drawImage: function (ctx, style, latLng) {
+    _drawImage: function(ctx, style, latLng) {
         //设置图片的大小
         var width, height;
         if (style.size) {
@@ -85256,7 +85260,7 @@ external_L_default.a.Canvas.include({
         ctx.drawImage(style.img, point[0], point[1], width, height);
     },
 
-    _coordinateToPoint: function (coordinate) {
+    _coordinateToPoint: function(coordinate) {
         if (!this._map) {
             return coordinate;
         }
@@ -85269,8 +85273,8 @@ external_L_default.a.Canvas.include({
         var point = this._map.latLngToLayerPoint(latLng);
         return [point.x, point.y];
     }
-
 });
+
 // CONCATENATED MODULE: ./src/leaflet/overlay/graphic/WebGLRenderer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -85610,7 +85614,7 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
 
 
 
-const Renderer = ["canvas", "webgl"];
+const Renderer = ['canvas', 'webgl'];
 
 const defaultProps = {
     color: [0, 0, 0, 255],
@@ -85622,6 +85626,7 @@ const defaultProps = {
     strokeWidth: 1,
     outline: false
 };
+
 /**
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
@@ -85643,8 +85648,7 @@ const defaultProps = {
  * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  */
 var GraphicLayer = external_L_default.a.Path.extend({
-
-    initialize: function (graphics, options) {
+    initialize: function(graphics, options) {
         this.graphics = [].concat(graphics);
         let opt = options || {};
         // 由于是canvas实现所以不能更改pane
@@ -85656,6 +85660,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
         if (!Detector.supportWebGL2()) {
             this.options.render = Renderer[0];
         }
+        this.on('click mousemove dblclick mousedown mouseup mouseout contextmenu', this._handleClick, this);
     },
 
     /**
@@ -85664,12 +85669,12 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 获取事件。
      * @returns {Object} 返回该图层支持的事件对象。
      */
-    getEvents: function () {
-        return {
-            click: this._handleClick.bind(this),
+    getEvents: function() {
+        const events = {
             resize: this._resize.bind(this),
             moveend: this._moveEnd.bind(this)
         };
+        return events;
     },
 
     /**
@@ -85677,13 +85682,13 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.onAdd
      * @description 添加图形。
      */
-    onAdd: function (map) {
+    onAdd: function(map) {
         this._map = map;
         this.defaultStyle = this._getDefaultStyle(this.options);
         this._renderer = this._createRenderer();
         this._container = this._renderer._container;
+        this.addInteractiveTarget(this._container);
         external_L_default.a.Path.prototype.onAdd.call(this);
-
     },
 
     /**
@@ -85692,7 +85697,8 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.onRemove
      * @description 移除图层。
      */
-    onRemove: function () {
+    onRemove: function() {
+        this.off('click mousemove dblclick mousedown mouseup contextmenu', this._handleClick, this);
         this._renderer._removePath(this);
     },
 
@@ -85701,7 +85707,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
      * @param {Array.<L.supermap.graphic>} graphics - 点要素对象数组。
      */
-    setGraphics: function (graphics) {
+    setGraphics: function(graphics) {
         this.graphics = this.graphics || [];
         this.graphics.length = 0;
         let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
@@ -85714,7 +85720,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 追加点要素，不会覆盖之前的要素。
      * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组。
      */
-    addGraphics: function (graphics) {
+    addGraphics: function(graphics) {
         this.graphics = this.graphics || [];
         let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         this.graphics = this.graphics.concat(sGraphics);
@@ -85746,7 +85752,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
-        return this.getGraphicBy("id", graphicId);
+        return this.getGraphicBy('id', graphicId);
     },
 
     /**
@@ -85782,7 +85788,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
             this.update();
             return;
         }
-        if (!(Util.isArray(graphics))) {
+        if (!Util.isArray(graphics)) {
             graphics = [graphics];
         }
 
@@ -85817,7 +85823,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
      * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
-    setStyle: function (styleOptions) {
+    setStyle: function(styleOptions) {
         let _opt = this.options;
         let styleOpt = {
             color: _opt.color,
@@ -85839,7 +85845,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.update
      * @description 更新图层，数据或者样式改变后调用。
      */
-    update: function () {
+    update: function() {
         this._layerRenderer.update(this.graphics);
     },
 
@@ -85847,7 +85853,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.clear
      * @description 释放图层资源。
      */
-    clear: function () {
+    clear: function() {
         this.removeGraphics();
     },
 
@@ -85856,7 +85862,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 获取渲染器。
      * @returns {Object} 内部渲染器。
      */
-    getRenderer: function () {
+    getRenderer: function() {
         return this._renderer;
     },
 
@@ -85865,7 +85871,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 获取当前地图及图层状态。
      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
-    getState: function () {
+    getState: function() {
         let map = this._map;
         let width = map.getSize().x;
         let height = map.getSize().y;
@@ -85903,24 +85909,24 @@ var GraphicLayer = external_L_default.a.Path.extend({
         return state;
     },
 
-    _resize: function () {
+    _resize: function() {
         let size = this._map.getSize();
         this._container.width = size.x;
         this._container.height = size.y;
-        this._container.style.width = size.x + "px";
-        this._container.style.height = size.y + "px";
+        this._container.style.width = size.x + 'px';
+        this._container.style.height = size.y + 'px';
 
         let mapOffset = this._map.containerPointToLayerPoint([0, 0]);
         external_L_default.a.DomUtil.setPosition(this._container, mapOffset);
         this._update();
     },
-    _moveEnd: function () {
+    _moveEnd: function() {
         if (this._layerRenderer instanceof GraphicWebGLRenderer) {
             this._update();
         }
     },
     //使用canvas渲染或webgl渲染
-    _createRenderer: function () {
+    _createRenderer: function() {
         let map = this._map;
         let width = map.getSize().x;
         let height = map.getSize().y;
@@ -85933,11 +85939,14 @@ var GraphicLayer = external_L_default.a.Path.extend({
             });
         } else {
             let optDefault = external_L_default.a.Util.setOptions({}, defaultProps);
-            let opt = external_L_default.a.Util.setOptions({
-                options: optDefault
-            }, this.options);
+            let opt = external_L_default.a.Util.setOptions(
+                {
+                    options: optDefault
+                },
+                this.options
+            );
             opt = external_L_default.a.Util.setOptions(this, opt);
-            opt.container = map.getPane("overlayPane");
+            opt.container = map.getPane('overlayPane');
             opt.width = width;
             opt.height = height;
 
@@ -85952,7 +85961,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @private
      * @override
      */
-    _update: function () {
+    _update: function() {
         if (this._map) {
             this._updatePath();
         }
@@ -85962,7 +85971,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @private
      * @override
      */
-    _updatePath: function () {
+    _updatePath: function() {
         let graphics = this._getGraphicsInBounds();
         this._renderer.drawGraphics(graphics, this.defaultStyle);
     },
@@ -85971,9 +85980,9 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @private
      * @override
      */
-    _project: function () {
+    _project: function() {
         let me = this;
-        me._getGraphicsInBounds().map(function (graphic) {
+        me._getGraphicsInBounds().map(function(graphic) {
             let point = me._map.latLngToLayerPoint(graphic.getLatLng());
             let w = me._clickTolerance();
             let p = [graphic._anchor + w, graphic._anchor + w];
@@ -85982,7 +85991,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
         });
         me._pxBounds = external_L_default.a.bounds(external_L_default.a.point(0, 0), external_L_default.a.point(this._container.width, this._container.height));
     },
-    _getDefaultStyle: function (options) {
+    _getDefaultStyle: function(options) {
         const target = {};
         if (options.color) {
             target.fill = true;
@@ -86004,16 +86013,15 @@ var GraphicLayer = external_L_default.a.Path.extend({
             target.stroke = options.outline;
         }
         return new CircleStyle(target).getStyle();
-
     },
     toRGBA(colorArray) {
         return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
     },
-    _getGraphicsInBounds: function () {
+    _getGraphicsInBounds: function() {
         let me = this;
         let graphicsInBounds = [];
         let viewBounds = me._map.getBounds();
-        this.graphics.map(function (graphic) {
+        this.graphics.map(function(graphic) {
             if (viewBounds.contains(graphic.getLatLng())) {
                 graphicsInBounds.push(graphic);
             }
@@ -86022,8 +86030,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
         return graphicsInBounds;
     },
 
-
-    _handleClick: function (evt) {
+    _handleClick: function(evt) {
         this._layerRenderer._handleClick(evt);
     },
     /**
@@ -86037,14 +86044,14 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @override
      */
     _containsPoint: external_L_default.a.Util.falseFn
-
 });
 
-let graphicLayer = function (graphics, options) {
+let graphicLayer = function(graphics, options) {
     return new GraphicLayer(graphics, options);
 };
 
 external_L_default.a.supermap.graphicLayer = graphicLayer;
+
 // CONCATENATED MODULE: ./src/leaflet/overlay/GraphThemeLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -90093,10 +90100,10 @@ var FieldService = ServiceBase.extend({
         me.currentStatisticResult = {fieldName: fieldName};
         me._statisticsCallback = callback;
         //针对每种统计方式分别进行请求
-        for (var mode in modes) {
-            me.currentStatisticResult[modes[mode]] = null;
-            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
-        }
+        modes.forEach(mode => {
+            me.currentStatisticResult[mode] = null;
+            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, mode);
+        });
     },
 
     _fieldStatisticRequest: function (dataSourceName, dataSetName, fieldName, statisticMode) {
