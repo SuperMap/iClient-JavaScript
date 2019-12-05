@@ -144,7 +144,7 @@
             <!-- 搜索 -->
             <div class='input-group' style="width: 220px;margin-bottom: 15px;">
                 <span class='input-group-addon' data-i18n="resources.title_iPortalQueryResourcesSearch"></span>
-                <input type='text' class='form-control' id='searchText' " />
+                <input type='text' class='form-control' id='searchText' />
             </div>
             <input type="button" class="btn btn-default" data-i18n="[value]nav.examples.query" onclick="onClickQuery(true)"/>
         </div>
@@ -177,7 +177,7 @@
 <script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
 <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
 <script>
-    //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8091/iportal
+    //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8190/iportal
     var iPortalUrl = "https://iptl.supermap.io/iportal";
     //默认请求的参数
     var resourceCurrentPage = 1;//默认请求第一页
@@ -216,7 +216,7 @@
                 var thumbnail = resourceItem.thumbnail;
                 // 此判断获取部分相对路径的default图片
                 if(thumbnail.indexOf("./") === 0){
-                    thumbnail = iPortalUrl + thumbnail;
+                    thumbnail = iPortalUrl + thumbnail.replace("./","/");
                 }
                 var resourcesDOM = $("<div class='col-md-4 gallery-item'>" +
                     "<div class='gallery-item-border'>" +
