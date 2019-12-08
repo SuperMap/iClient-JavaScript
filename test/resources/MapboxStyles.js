@@ -39,7 +39,8 @@ var  vectorstylesEscapedJson={
             "maxzoom": 16,
             "paint": {
                 "fill-color": "rgba(249,224,219,0.90)",
-                "fill-antialias": true
+                "fill-antialias": true,
+                "fill-outline-color":"rgba(249,224,219,0.90)"
             },
             "id": "Military_R@California#26",
             "source": "California",

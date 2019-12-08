@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import ol from "openlayers";
-import { FetchRequest, CommonUtil } from "@supermap/iclient-common";
+import { FetchRequest } from "@supermap/iclient-common";
 import { olExtends } from "./olExtends";
 import remove from "lodash.remove";
 
@@ -196,21 +196,26 @@ export class MapboxStyles extends ol.Observable {
             layerStyles = [layerStyles];
         }
         const layerObj = {};
-        for (const item in layerStyles) {
-            const layerStyle = layerStyles[item];
+        layerStyles.forEach(layerStyle => {
             layerObj[layerStyle.id] = layerStyle;
-        }
+        });
         let count = 0;
         for (const key in this._mbStyle.layers) {
             const oldLayerStyle = this._mbStyle.layers[key];
             if (count >= layerStyles.length) {
                 break;
             }
-            const newLayerStyle = layerObj[oldLayerStyle.id];
-            if (!newLayerStyle) {
+            if (!layerObj[oldLayerStyle.id]) {
                 continue;
             }
-            CommonUtil.extend(oldLayerStyle, newLayerStyle);
+            const newLayerStyle = JSON.parse(JSON.stringify(layerObj[oldLayerStyle.id]));
+            if(newLayerStyle.paint){
+                newLayerStyle.paint = Object.assign({},oldLayerStyle.paint,newLayerStyle.paint);
+            }
+            if(newLayerStyle.layout){
+                newLayerStyle.layout = Object.assign({},oldLayerStyle.layout,newLayerStyle.layout);
+            }
+            Object.assign(oldLayerStyle,newLayerStyle);
             count++;
         }
         this._createStyleFunction();
