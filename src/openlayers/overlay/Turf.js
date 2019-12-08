@@ -18,7 +18,7 @@ export class Turf extends ol.source.Vector {
 
         super({
             attributions: options.attributions || new ol.Attribution({
-                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             features: options.features,
             format: options.format,

@@ -25,7 +25,7 @@
 <body>
 <div id='map'></div>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
     var map = L.map('map', {
@@ -74,7 +74,7 @@
         if (idx >= CHUNK_COUNT) {
             return;
         }
-        var dataURL = "http://iclient.supermap.io/web/data/bigdata_nytaxi/data_" + idx + ".bin";
+        var dataURL = "https://iclient.supermap.io/web/data/bigdata_nytaxi/data_" + idx + ".bin";
         var xhr = new XMLHttpRequest();
         xhr.open('GET', dataURL, true);
         xhr.responseType = 'arraybuffer';

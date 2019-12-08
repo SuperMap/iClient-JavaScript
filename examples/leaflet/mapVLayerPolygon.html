@@ -17,7 +17,7 @@
         zoom: 8,
     });
 
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
     L.supermap.tiledMapLayer(url).addTo(map);
@@ -54,7 +54,7 @@
                 draw: 'intensity'
             };
 
-            var dataAttr = resources.text_dataSources + "<a target='_blank' href='http://mapv.baidu.com/examples/geojson-guangdong.html'>MapV</a>";
+            var dataAttr = resources.text_dataSources + "<a target='_blank' href='https://mapv.baidu.com/examples/geojson-guangdong.html'>MapV</a>";
             L.supermap.mapVLayer(dataSet1, options, {attributionPrefix: dataAttr, attribution: ""}).addTo(map);
 
             var data2 = [];

@@ -92,7 +92,7 @@
                 "<button type='button' class='btn btn-default graph active' id='bar' title='" + resources.title_GraphBar +
                 "''></button></div>"
         }
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map, resultLayer, url = host + "/iserver/services/map-world/rest/maps/World";
         //加载底图
         map = L.map('map', {

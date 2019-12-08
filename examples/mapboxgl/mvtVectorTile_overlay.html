@@ -28,7 +28,7 @@
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <script type="text/javascript" include="mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
-        var host = window.isLocal ? window.server : "http://iclient.supermap.io";
+        var host = window.isLocal ? window.server : "https://iclient.supermap.io";
         var map = new mapboxgl.Map({
             container: 'map',
             style: host +
@@ -39,7 +39,7 @@
         });
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
         map.on('load', function () {
-            //请使用mapboxgl增强版 http://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
+            //请使用mapboxgl增强版 https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
             map.addStyle(host +
                 '/iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true'
             )

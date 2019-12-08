@@ -15170,7 +15170,7 @@ class SecurityManager_SecurityManager {
 SecurityManager_SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager_SecurityManager.INNER_WINDOW_HEIGHT = 600;
 SecurityManager_SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager_SecurityManager.ONLINE = "http://www.supermapol.com";
+SecurityManager_SecurityManager.ONLINE = "https://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager_SecurityManager;
 
 
@@ -40049,7 +40049,7 @@ class Online_Online {
     //TODO 目前并没有对接Online的所有操作，需要补充完整
     //所有查询返回的是一个Promise,在外部使用的时候通过Promise的then方法获取异步结果
     constructor() {
-        this.rootUrl = "http://www.supermapol.com";
+        this.rootUrl = "https://www.supermapol.com";
         this.webUrl = this.rootUrl + "/web";
 
         var mContentUrl = this.webUrl + "/mycontent";
@@ -67247,7 +67247,7 @@ SuperMap.Components.Chart = ChartView_ChartView;
 // CONCATENATED MODULE: ./src/common/components/templates/TemplateBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
@@ -75940,7 +75940,7 @@ external_L_default.a.Proj._isProj4Obj = function(a) {
  * @category BaseTypes Projection
  * @extends {L.Class}
  * @param {string} code - proj srsCode
- * @param {string} def - 投影的 proj4 定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
+ * @param {string} def - 投影的 proj4 定义。{@link [详细]{https://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
  * @param {L.bounds} bounds -  投影范围参数
  */
 external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
@@ -76022,7 +76022,7 @@ external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
  * @extends {L.Class}
  * @param {string} srsCode - proj srsCode。
  * @param {Object} options - 参数。
- * @param {string} options.def - 投影的proj4定义。[详细]{@link http://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
+ * @param {string} options.def - 投影的proj4定义。[详细]{@link https://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
  * @param {(Array.<number>|L.Point)} [options.origin] - 原点。
  * @param {Array.<number>} [options.scales] - 比例尺数组。
  * @param {Array.<number>} [options.scaleDenominators] - 比例尺分母数组。
@@ -76318,14 +76318,14 @@ external_L_default.a.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
 let Attributions = {
 
     Prefix: `<a href='http://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
-                with <span>© <a href='http://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
+                with <span>© <a href='https://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
 
     Common: {
         attribution: `Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`
     },
 
     Online: {
-        attribution: `Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
+        attribution: `Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
     },
 
     ECharts: {
@@ -76337,7 +76337,7 @@ let Attributions = {
     },
 
     Turf: {
-        attribution: `<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
+        attribution: `<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
     },
 
     Baidu: {
@@ -77006,7 +77006,7 @@ var Logo = external_L_default.a.Control.extend({
                 styleSize = "";
             }
         }
-        var link = this.options.link || "http://iclient.supermap.io";
+        var link = this.options.link || "https://iclient.supermap.io";
         div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
             "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'></a>";
         return div;
@@ -82028,12 +82028,12 @@ external_L_default.a.supermap.unicodeMarker = unicodeMarker;
  * @param {number} id - iPortal/Online 地图 id。
  * @param {Object} options - 可选参数。
  * @param {string} [options.map='map'] - 地图容器id。
- * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online 服务地址。
+ * @param {string} [options.server='https://www.supermapol.com'] - iPortal/Online 服务地址。
  * @param {boolean} [options.featureLayerPopupEnable=true] -  是否启动要素图层提示框。
  * @param {string} [options.featureLayerPopup] - 提示框提示信息。
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
  * @fires L.supermap.webmap#mapLoaded
  * @fires L.supermap.webmap#coordconvertsuccess
  * @fires L.supermap.webmap#coordconvertfailed
@@ -82045,7 +82045,7 @@ var WebMap = external_L_default.a.LayerGroup.extend({
 
     options: {
         map: 'map',
-        server: 'http://www.supermapol.com',
+        server: 'https://www.supermapol.com',
         featureLayerPopupEnable: true,
         featureLayerPopup: null,
         credentialValue: null,
@@ -92799,7 +92799,7 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
 // CONCATENATED MODULE: ./src/leaflet/components/ComponentsViewBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
 * This program are made available under the terms of the Apache License, Version 2.0
-* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+* which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -93444,7 +93444,7 @@ class GeoJsonLayerDataModel {
 var SearchViewModel = external_L_default.a.Evented.extend({
     options: {
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
+            addressUrl: "https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         }
     },
@@ -93693,7 +93693,7 @@ var SearchView = ComponentsViewBase.extend({
     options: {
         cityConfig: CityConfig_config,
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
+            addressUrl: "https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         },
         isGeoCoding: true,

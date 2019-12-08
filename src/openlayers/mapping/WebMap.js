@@ -35,7 +35,7 @@ const MAX_MIGRATION_ANIMATION_COUNT = 1000;
  * @param {number} id - 地图的id
  * @param {Object} options - 参数。
  * @param {string} [options.target='map'] - 地图容器id。
- * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址。
+ * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址。
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
  * @param {function} [options.errorCallback] - 加载地图失败调用的函数。
  * @param {string} [options.credentialKey] - 凭证密钥。
@@ -55,7 +55,7 @@ export class WebMap extends ol.Observable {
         super();
         this.mapId = id;
         options = options || {};
-        this.server = options.server || 'http://www.supermapol.com';
+        this.server = options.server || 'https://www.supermapol.com';
         this.successCallback = options.successCallback;
         this.errorCallback = options.errorCallback;
         this.credentialKey = options.credentialKey;

@@ -37,7 +37,7 @@
     <div id='map'></div>
     <script type="text/javascript" include='mapbox-gl-enhance' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         $.get("../data/chinaEarthquake.csv", function (response) {
                 var dataObj = Papa.parse(response, {
                     skipEmptyLines: true,
