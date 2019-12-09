@@ -30,7 +30,7 @@
 <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript">
     var map, draw,
-        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China";
+        url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})

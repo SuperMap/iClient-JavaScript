@@ -19,7 +19,7 @@ ol.supermap.control = ol.supermap.control || {};
  * @param {string} [options.imageUrl] - logo 图片地址。
  * @param {number} [options.width] - logo 图片宽。
  * @param {number} [options.height] - logo 图片高。
- * @param {string} [options.link='http://iclient.supermap.io'] - 跳转链接。
+ * @param {string} [options.link='https://iclient.supermap.io'] - 跳转链接。
  * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
  */
 export class Logo extends ol.control.Control {
@@ -29,7 +29,7 @@ export class Logo extends ol.control.Control {
         options.imageUrl = options.imageUrl || null;
         options.width = options.width || null;
         options.height = options.height || null;
-        options.link = options.link || "http://iclient.supermap.io";
+        options.link = options.link || "https://iclient.supermap.io";
         options.alt = options.alt || "SuperMap iClient";
         super(options);
         this.options = options;

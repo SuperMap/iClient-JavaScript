@@ -3,7 +3,7 @@
 @supermap/iclient-mapboxgl 是一套基于 Mapbox GL 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
 
 ## 简介
-* 官网：[http://iclient.supermap.io](http://iclient.supermap.io)
+* 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
 * 源码：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/mapboxgl](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/mapboxgl)
 
 ## 安装
@@ -27,10 +27,10 @@
 import mapboxgl from 'mapbox-gl';
 import {Logo, QueryByBoundsParameters, QueryService} from '@supermap/iclient-mapboxgl';
 
-var map, host = "http://support.supermap.com.cn:8090";
+var map, host = "https://iserver.supermap.io";
 var url = host + "/iserver/services/map-world/rest/maps/World";
 var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-    "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+    "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
 
 var map = new mapboxgl.Map({
     container: 'map',
@@ -51,7 +51,7 @@ var map = new mapboxgl.Map({
             "minzoom": 0,
             "maxzoom": 22
         }],
-        "sprite": "http://iclient.supermap.io/web/styles/street/sprite"
+        "sprite": "https://iclient.supermap.io/web/styles/street/sprite"
     },
     center: [0, 0],
     maxZoom: 18,

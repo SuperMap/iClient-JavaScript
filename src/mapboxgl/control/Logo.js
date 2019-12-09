@@ -67,7 +67,7 @@ export class Logo {
                 styleSize = "";
             }
         }
-        var link = this.link || "http://iclient.supermap.io";
+        var link = this.link || "https://iclient.supermap.io";
         this._container.innerHTML = "<a href='" + link + "' target='_blank'>" +
             "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "margin-bottom: 2px'></a>";
         this._createStyleSheet();

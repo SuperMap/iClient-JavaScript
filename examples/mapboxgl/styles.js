@@ -1,8 +1,8 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.*/
-var host = window.isLocal ? window.server : "http://iclient.supermap.io";
+var host = window.isLocal ? window.server : "https://iclient.supermap.io";
 
 var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-    "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+    "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
     "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
 
 var mapStyles = {
@@ -16,7 +16,7 @@ var mapStyles = {
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "sprite": "http://iclient.supermap.io/web/styles/street/sprite",
+            "sprite": "https://iclient.supermap.io/web/styles/street/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
@@ -1000,7 +1000,7 @@ var mapStyles = {
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "sprite": "http://iclient.supermap.io/web/styles/dark/sprite",
+            "sprite": "https://iclient.supermap.io/web/styles/dark/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
@@ -1901,7 +1901,7 @@ var mapStyles = {
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "sprite": "http://iclient.supermap.io/web/styles/osm/sprite",
+            "sprite": "https://iclient.supermap.io/web/styles/osm/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
@@ -3994,7 +3994,7 @@ var mapStyles = {
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "sprite": "http://iclient.supermap.io/web/styles/osm/sprite",
+            "sprite": "https://iclient.supermap.io/web/styles/osm/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {

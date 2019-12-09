@@ -55,7 +55,7 @@
     <div id="popup-content"></div>
 </div>
 <script type="text/javascript">
-    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/ChinaDark",
+    var url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/ChinaDark",
         container = document.getElementById('popup'),
         content = document.getElementById('popup-content'),
         overlay = new ol.Overlay(({

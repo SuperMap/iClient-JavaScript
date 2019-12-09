@@ -47,7 +47,7 @@ export var SearchView = ComponentsViewBase.extend({
     options: {
         cityConfig: config,
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
+            addressUrl: "https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         },
         isGeoCoding: true,

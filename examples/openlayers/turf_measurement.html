@@ -88,7 +88,7 @@
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript" include="turf" src="../../dist/openlayers/include-openlayers.js"></script>
 <script>
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         urlWorld = host + "/iserver/services/map-world/rest/maps/World",
         container = document.getElementById('info'), distance, geo, coordinate,
@@ -129,7 +129,7 @@
     var turfSource = new ol.source.Turf({
         wrapX: false,
         attributions: new ol.Attribution({
-            html: "© <a href='http://turfjs.org/' target='_blank'>turfjs<span></a> with"
+            html: "© <a href='https://turfjs.org/' target='_blank'>turfjs<span></a> with"
         }),
     });
 

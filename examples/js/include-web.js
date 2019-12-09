@@ -72,7 +72,7 @@
         }
 
         if (inArray(includes, 'template')) {
-            inputScript("http://iclient.supermap.io/libs/art-template/template-web.js");
+            inputScript("https://iclient.supermap.io/web/libs/art-template/template-web.js");
         }
         if (inArray(includes, 'randomcolor')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js");
@@ -93,20 +93,20 @@
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js");
         }
         if (inArray(includes, 'geohash')) {
-            inputScript("http://iclient.supermap.io/libs/geohash/geohash.js");
+            inputScript("https://iclient.supermap.io/web/libs/geohash/geohash.js");
         }
         if (inArray(includes, 'dat-gui')) {
             inputScript("https://cdn.bootcss.com/dat-gui/0.7.6/dat.gui.js");
             datGuiI18N();
         }
         if (inArray(includes, 'admin-lte')) {
-            inputCSS("http://iclient.supermap.io/libs/admin-lte/css/AdminLTE.min.css");
-            inputCSS("http://iclient.supermap.io/libs/admin-lte/css/skins/skin-blue.min.css");
-            inputCSS("http://iclient.supermap.io/libs/font-awesome/css/font-awesome.min.css");
-            inputScript("http://iclient.supermap.io/libs/admin-lte/js/app.min.js");
+            inputCSS("https://iclient.supermap.io/web/libs/admin-lte/css/AdminLTE.min.css");
+            inputCSS("https://iclient.supermap.io/web/libs/admin-lte/css/skins/skin-blue.min.css");
+            inputCSS("https://iclient.supermap.io/web/libs/font-awesome/css/font-awesome.min.css");
+            inputScript("https://iclient.supermap.io/web/libs/admin-lte/js/app.min.js");
         }
         if (inArray(includes, 'jquery.scrollto')) {
-            inputScript("http://iclient.supermap.io/libs/jquery.scrollto/jquery.scrollTo.min.js");
+            inputScript("https://iclient.supermap.io/web/libs/jquery.scrollto/jquery.scrollTo.min.js");
         }
         if (inArray(includes, 'ace')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js");
@@ -128,19 +128,19 @@
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.6.3/jquery.contextMenu.min.js");
         }
         if (inArray(includes, 'colorpicker')) {
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.js");
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.colorpicker.js");
+            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/jquery.js");
+            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/jquery.colorpicker.js");
         }
         if (inArray(includes, 'fileupLoad')) {
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.js");
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/fileupLoad.js");
+            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/jquery.js");
+            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/fileupLoad.js");
         }
         if (inArray(includes, 'sticklr')) {
-            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/jquery-sticklr.css");
-            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/icon.css");
+            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/css/jquery-sticklr.css");
+            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/css/icon.css");
         }
         if (inArray(includes, 'responsive')) {
-            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/bootstrap-responsive.min.css");
+            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/css/bootstrap-responsive.min.css");
         }
         if (inArray(includes, 'lazyload')) {
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js");
@@ -150,12 +150,12 @@
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.1/jquery-i18next.min.js");
         }
         if (inArray(includes, 'react')) {
-            inputScript("http://iclient.supermap.io/web/libs/react/16.4.2/react.production.min.js");
-            inputScript("http://iclient.supermap.io/web/libs/react/16.4.2/react-dom.production.min.js");
+            inputScript("https://iclient.supermap.io/web/libs/react/16.4.2/react.production.min.js");
+            inputScript("https://iclient.supermap.io/web/libs/react/16.4.2/react-dom.production.min.js");
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js");
         }
         if (inArray(includes, 'vue')) {
-            inputScript("http://iclient.supermap.io/web/libs/vue/2.5.17/vue.min.js");
+            inputScript("https://iclient.supermap.io/web/libs/vue/2.5.17/vue.min.js");
         }
         if (inArray(includes, 'ionRangeSlider')) {
             inputCSS("https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.2.0/css/ion.rangeSlider.css");
@@ -164,12 +164,12 @@
             inputScript("https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.2.0/js/ion.rangeSlider.min.js");
         }
         if (inArray(includes, 'plottingPanel')) {
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/zTree/jquery.ztree.core.js");
-            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/zTree/css/zTreeStyle.css");
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
-            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/colorpicker/js/colorpicker.js");
-            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/colorpicker/css/colorpicker.css");
+            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/plottingPanel/zTree/jquery.ztree.core.js");
+            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/js/plottingPanel/zTree/css/zTreeStyle.css");
+            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
+            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
+            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/plottingPanel/colorpicker/js/colorpicker.js");
+            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/js/plottingPanel/colorpicker/css/colorpicker.css");
         }
     }
 

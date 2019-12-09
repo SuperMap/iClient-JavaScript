@@ -37,7 +37,7 @@
         src="../../dist/classic/include-classic.js"></script>
 <script type="text/javascript">
     var map, layer;
-    host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+    host = window.isLocal ? window.server : "https://iserver.supermap.io",
         url = host + "/iserver/services/map-china400/rest/maps/China";
     //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
     layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {

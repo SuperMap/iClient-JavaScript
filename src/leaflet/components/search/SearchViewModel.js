@@ -27,7 +27,7 @@ import {
 export var SearchViewModel = L.Evented.extend({
     options: {
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
+            addressUrl: "https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         }
     },

@@ -14,7 +14,7 @@
 <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/leaflet/include-leaflet.js"></script>
 
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         turfLayer, resultLayer, urlWorld,
         totalLat = 0, totalLng = 0, averageLat, averageLng, distance, geo, coordinate,
@@ -562,7 +562,7 @@
     //初始化生成图层
     function resetLayers() {
         turfLayer = L.supermap.turfLayer({
-            attribution: " <span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span>",
+            attribution: " <span>© <a href='https://turfjs.org/' target='_blank'>turfjs</a></span>",
             style: function (feature) {
                 return {
                     color: "rgb(0,153,255)",
