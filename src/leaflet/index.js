@@ -84,6 +84,7 @@ import {
     IPortalServicesQueryParam,
     IPortalMapdashboard,
     IPortalMapdashboardsQueryParam,
+    IPortalUser,
     //Online
     Online,
     OnlineData,
@@ -548,6 +549,7 @@ export {
     IPortalServicesQueryParam,
     IPortalMapdashboard,
     IPortalMapdashboardsQueryParam,
+    IPortalUser,
     //Online
     Online,
     OnlineData,

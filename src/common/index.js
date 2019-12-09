@@ -112,7 +112,8 @@ import {
     IPortalServiceBase,
     IPortalServicesQueryParam,
     IPortalMapdashboard,
-    IPortalMapdashboardsQueryParam
+    IPortalMapdashboardsQueryParam,
+    IPortalUser
 } from './iPortal';
 import {
     AddressMatchService,
@@ -574,7 +575,8 @@ export {
     IPortalServiceBase,
     IPortalServicesQueryParam,
     IPortalMapdashboard,
-    IPortalMapdashboardsQueryParam
+    IPortalMapdashboardsQueryParam,
+    IPortalUser
 };
 export {
     AddressMatchService,

@@ -84,6 +84,7 @@ export {
     IPortalInsightsQueryParam,
     IPortalScene,
     IPortalScenesQueryParam,
+    IPortalUser,
     //Online
     Online,
     OnlineData,

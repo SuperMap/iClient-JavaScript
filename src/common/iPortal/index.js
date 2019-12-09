@@ -18,6 +18,7 @@ import {IPortalInsight} from './iPortalInsight'
 import {IPortalInsightsQueryParam} from './iPortalInsightsQueryParam';
 import {IPortalScene} from './iPortalScene'
 import {IPortalScenesQueryParam} from './iPortalScenesQueryParam';
+import {IPortalUser} from "./iPortalUser";
 
 export {IPortal} ;
 export {IPortalQueryParam};
@@ -36,3 +37,4 @@ export {IPortalInsight};
 export {IPortalInsightsQueryParam} ;
 export {IPortalScene};
 export {IPortalScenesQueryParam} ;
+export {IPortalUser}
