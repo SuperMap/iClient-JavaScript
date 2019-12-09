@@ -16615,6 +16615,8 @@ function (_IPortalServiceBase) {
     _this.thumbnail = null;
     _this.updateTime = 0;
     _this.userName = "";
+    _this.sourceJSON = {}; //返回门户资源详细信息
+
     Util_Util.extend(iPortalResource_assertThisInitialized(_this), resourceInfo); // INSIGHTS_WORKSPACE MAP_DASHBOARD
 
     _this.resourceUrl = portalUrl + "/web/" + _this.resourceType.replace("_", "").toLowerCase() + "s/" + _this.resourceId;
@@ -16644,42 +16646,24 @@ function (_IPortalServiceBase) {
           return resourceInfo;
         }
 
-        for (var key in resourceInfo) {
-          me[key] = resourceInfo[key];
-        }
+        me.sourceJSON = resourceInfo;
       });
     }
     /**
      * @function SuperMap.IPortalResource.prototype.update
-     * @description 更新地图参数。
+     * @description 更新资源属性信息。
      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
      */
 
   }, {
     key: "update",
     value: function update() {
-      var resourceUpdateParam = {
-        units: this.units,
-        level: this.level,
-        center: this.center,
-        controls: this.controls,
-        description: this.description,
-        epsgCode: this.epsgCode,
-        extent: this.extent,
-        status: this.status,
-        tags: this.tags,
-        layers: this.layers,
-        title: this.title,
-        thumbnail: this.thumbnail,
-        sourceType: this.sourceType,
-        authorizeSetting: this.authorizeSetting
-      };
       var options = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       };
-      return this.request("PUT", this.resourceUrl, JSON.stringify(resourceUpdateParam), options);
+      return this.request("PUT", this.resourceUrl, JSON.stringify(this.sourceJSON), options);
     }
   }]);
 
@@ -17233,10 +17217,85 @@ var iPortalShareEntity_IPortalShareEntity = function IPortalShareEntity(params) 
   Util_Util.extend(this, params);
 };
 SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
+function iPortalUser_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { iPortalUser_typeof = function _typeof(obj) { return typeof obj; }; } else { iPortalUser_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return iPortalUser_typeof(obj); }
+
+function iPortalUser_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function iPortalUser_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function iPortalUser_createClass(Constructor, protoProps, staticProps) { if (protoProps) iPortalUser_defineProperties(Constructor.prototype, protoProps); if (staticProps) iPortalUser_defineProperties(Constructor, staticProps); return Constructor; }
+
+function iPortalUser_possibleConstructorReturn(self, call) { if (call && (iPortalUser_typeof(call) === "object" || typeof call === "function")) { return call; } return iPortalUser_assertThisInitialized(self); }
+
+function iPortalUser_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function iPortalUser_getPrototypeOf(o) { iPortalUser_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return iPortalUser_getPrototypeOf(o); }
+
+function iPortalUser_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) iPortalUser_setPrototypeOf(subClass, superClass); }
+
+function iPortalUser_setPrototypeOf(o, p) { iPortalUser_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return iPortalUser_setPrototypeOf(o, p); }
+
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.IPortalUser
+ * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
+ * @category iPortal/Online
+ * @param {string} iportalUrl - iportal根地址。
+ * @extends {SuperMap.iPortalServiceBase}
+ *
+ */
+
+var IPortalUser =
+/*#__PURE__*/
+function (_IPortalServiceBase) {
+  iPortalUser_inherits(IPortalUser, _IPortalServiceBase);
+
+  function IPortalUser(iportalUrl) {
+    var _this;
+
+    iPortalUser_classCallCheck(this, IPortalUser);
+
+    _this = iPortalUser_possibleConstructorReturn(this, iPortalUser_getPrototypeOf(IPortalUser).call(this, iportalUrl));
+    _this.iportalUrl = iportalUrl;
+    return _this;
+  }
+  /**
+   * @function SuperMap.prototype.deleteResources
+   * @description 删除资源。
+   * @param {Object} deleteParams - 删除资源所需的参数对象：{ids,resourceType}。
+   * @returns {Promise} 返回包含删除操作状态的 Promise 对象。
+   */
+
+
+  iPortalUser_createClass(IPortalUser, [{
+    key: "deleteResources",
+    value: function deleteResources(deleteParams) {
+      var resourceName = deleteParams.resourceType.replace("_", "").toLowerCase();
+      var deleteResourceUrl = this.iportalUrl + "/web/" + resourceName + "s.json?ids=" + encodeURI(JSON.stringify(deleteParams.ids));
+
+      if (resourceName === 'data') {
+        deleteResourceUrl = this.iportalUrl + "/web/mycontent/datas/delete.json";
+        return this.request("POST", deleteResourceUrl, JSON.stringify(deleteParams.ids));
+      }
+
+      return this.request("DELETE", deleteResourceUrl);
+    }
+  }]);
+
+  return IPortalUser;
+}(iPortalServiceBase_IPortalServiceBase);
+SuperMap.iPortalUser = IPortalUser;
 // CONCATENATED MODULE: ./src/common/iPortal/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -94309,6 +94368,7 @@ external_mapboxgl_default.a.supermap.WebMap = WebMap_WebMap;
 /* concated harmony reexport IPortalServicesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
 /* concated harmony reexport IPortalMapdashboard */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboard", function() { return iPortalMapdashboard_IPortalMapdashboard; });
 /* concated harmony reexport IPortalMapdashboardsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboardsQueryParam", function() { return iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam; });
+/* concated harmony reexport IPortalUser */__webpack_require__.d(__webpack_exports__, "IPortalUser", function() { return IPortalUser; });
 /* concated harmony reexport Online */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
 /* concated harmony reexport OnlineData */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
 /* concated harmony reexport OnlineQueryDatasParameter */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
