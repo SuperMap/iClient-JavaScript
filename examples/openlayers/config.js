@@ -450,6 +450,16 @@ var exampleConfig = {
                     fileName: "iPortalQueryResources"
                 }]
             },
+            "ip_querymyresources": {
+                name: "我的资源",
+                name_en: "My Resource",
+                content: [{
+                    name: "我的资源",
+                    name_en: "My Resource",
+                    thumbnail: "l_iPortalQueryResources.png",
+                    fileName: "iPortalQueryMyResources"
+                }]
+            },
             "ip_querymaps": {
                 name: "地图列表",
                 name_en: "Web map list",
