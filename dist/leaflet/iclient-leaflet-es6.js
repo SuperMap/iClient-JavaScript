@@ -16291,10 +16291,26 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
      */
     update() {
+        var resourceName = this.resourceType.replace("_","").toLowerCase();
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return this.request("PUT", this.resourceUrl, JSON.stringify(this.sourceJSON), options);
+        if( resourceName === 'data') {
+            this.resourceUrl = this.resourceUrl + "/attributes.json";
+        }
+        var entity = JSON.stringify(this.sourceJSON);
+        //对服务资源进行编辑时，请求体内容只留关键字字段（目前如果是全部字段 更新返回成功 但其实没有真正的更新）
+        if( resourceName === 'service') {
+            var serviceInfo = {
+                authorizeSetting:this.sourceJSON.authorizeSetting,
+                metadata:this.sourceJSON.metadata,
+                tags:this.sourceJSON.tags,
+                thumbnail:this.sourceJSON.thumbnail,
+                tokenRefreshUrl:this.sourceJSON.tokenRefreshUrl
+            };
+            entity = JSON.stringify(serviceInfo);
+        }
+        return this.request("PUT", this.resourceUrl, entity, options);
     }
 
 }
