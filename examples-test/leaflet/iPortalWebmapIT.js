@@ -32,7 +32,7 @@ module.exports = {
     //     //browser.pause(1000);
     //     //browser.windowHandles(function (result) {
     //     //    browser.switchWindow(result.value[1]);
-    //     //    browser.assert.urlEquals('http://iclient.supermap.io/');
+    //     //    browser.assert.urlEquals('https://iclient.supermap.io/');
     //     //    browser.closeWindow();
     //     //    browser.switchWindow(result.value[0]);
     //     //    browser.pause(1000);
@@ -52,7 +52,7 @@ module.exports = {
     //     //browser.pause(1000);
     //     //browser.windowHandles(function (result) {
     //     //    browser.switchWindow(result.value[1]);
-    //     //    browser.assert.urlEquals('http://iclient.supermap.io/');
+    //     //    browser.assert.urlEquals('https://iclient.supermap.io/');
     //     //    browser.closeWindow();
     //     //});
     //     browser.pause(1000);

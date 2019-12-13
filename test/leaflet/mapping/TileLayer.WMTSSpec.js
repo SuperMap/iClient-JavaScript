@@ -20,7 +20,7 @@ describe('leaflet_TileLayerWMTS', () => {
             tilematrixSet: "Custom_China",
             format: "image/png",
             requestEncoding: '',
-            attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+            attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         };
         WMTStiledMapLayerObject = wmtsLayer(url, option);
         expect(WMTStiledMapLayerObject).not.toBeNull();

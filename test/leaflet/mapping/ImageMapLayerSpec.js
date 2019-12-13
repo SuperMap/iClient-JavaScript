@@ -54,7 +54,7 @@ describe('leaflet_ImageMapLayer', () => {
             errorOverlayUrl: false,
             zIndex: 1,
             className: '',
-            attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
             updateInterval: 150
         };
         imageLayer = imageMapLayer(url, tempOptions);

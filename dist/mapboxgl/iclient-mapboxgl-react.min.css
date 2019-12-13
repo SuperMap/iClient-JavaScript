@@ -1,6 +1,6 @@
 /*!
  * 
- *       @supermap/react-iclient.(http://iclient.supermap.io)
+ *       @supermap/react-iclient.(https://iclient.supermap.io)
  *       Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *       license: Apache-2.0
  *       version: v10.0.0

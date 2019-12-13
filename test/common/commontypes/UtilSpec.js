@@ -206,7 +206,7 @@ describe('Util', () => {
 
 
     it('isInTheSameDomain', () => {
-        var Url = "http://iclient.supermap.io/examples/leaflet/editor.html#addressMatchService";
+        var Url = "https://iclient.supermap.io/examples/leaflet/editor.html#addressMatchService";
         var correct = Util.isInTheSameDomain(Url);
         expect(correct).toBeFalsy(false);
 
