@@ -49,7 +49,7 @@
                 <a-col :md="8" class="left-container">
                     <a-row v-if="!showMap">
                         <div class="map-wrap">
-                            <sm-web-map server-url="http://support.supermap.com.cn:8092" map-id="213343819">
+                            <sm-web-map server-url="https://www.supermapol.com" map-id="2068226677">
                                 <sm-zoom></sm-zoom>
                                 <sm-scale position="bottom-left"></sm-scale>
                             </sm-web-map>
@@ -228,7 +228,7 @@
                 <a-col :md="16" :xs="24">
                     <a-row v-if="showMap">
                         <div class="map-wrap">
-                            <sm-web-map server-url="http://support.supermap.com.cn:8092" map-id="213343819">
+                            <sm-web-map server-url="https://www.supermapol.com" map-id="2068226677">
                                 <sm-zoom></sm-zoom>
                                 <sm-scale position="bottom-left"></sm-scale>
                             </sm-web-map>
@@ -315,7 +315,7 @@
                     return {
                         dataset: {
                             type: 'iPortal', //iServer iPortal
-                            url: 'http://support.supermap.com.cn:8092/web/datas/1920557079',
+                            url: 'https://iportal.supermap.io/iportal/web/datas/975651597',
                             queryInfo: {
                                 maxFeatures: 20
                             }
@@ -325,17 +325,17 @@
                                 seriesType: 'bar', //图表类型
                                 isStastic: true, //是否统计, 默认不统计
                                 xField: '机场', //x坐标轴数据字段
-                                yField: '2016起降架次（架次）' //统计的数据，legned默认名字
+                                yField: 'COL_2016起降架次（架次）' //统计的数据，legned默认名字
                             },
                             {
                                 seriesType: 'bar', //图表类型
                                 isStastic: true, //是否统计, 默认不统计
                                 xField: '机场', //x坐标轴数据字段
-                                yField: '2017起降架次（架次）' //统计的数据，legned默认名字
+                                yField: 'COL_2017起降架次（架次）' //统计的数据，legned默认名字
                             }
                         ],
                         echartOption: {
-                            legend: { data: ['2017起降架次（架次）', '2016起降架次（架次）'] }, //与 yField数据一致
+                            legend: { data: ['COL_2017起降架次（架次）', 'COL_2016起降架次（架次）'] }, //与 yField数据一致
                             grid: {
                                 top: 30,
                                 bottom: 65,

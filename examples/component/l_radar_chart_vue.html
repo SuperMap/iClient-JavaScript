@@ -22,7 +22,7 @@
 
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
-            <sm-web-map server-url="http://support.supermap.com.cn:8092/" map-id="1649097980"> </sm-web-map>
+            <sm-web-map server-url='https://iportal.supermap.io/iportal' map-id="801571284"> </sm-web-map>
             <sm-chart icon-class="" :style="chartStyle" :dataset="dataset" :dataset-options="datasetOptions"></sm-chart>
         </div>
 
@@ -38,7 +38,7 @@
                             zIndex: 500
                         },
                         dataset: new SuperMap.Components.commontypes.iPortalDataParameter({
-                            url: "http://support.supermap.com.cn:8092/web/datas/1920557079",
+                            url: "https://iportal.supermap.io/iportal/web/datas/975651597",
                             maxFeatures: 20
                         }),
                         datasetOptions: [
@@ -46,7 +46,7 @@
                                 seriesType: "radar", //图表类型
                                 isStastic: true, //是否统计, 默认不统计
                                 xField: "机场", //x坐标轴数据字段
-                                yField: "同比增速%" //统计的数据，legned默认名字
+                                yField: "同比增速_" //统计的数据，legned默认名字
                             }
                         ]
                     };

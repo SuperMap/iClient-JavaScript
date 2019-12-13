@@ -22,7 +22,7 @@
 
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
-            <sm-web-map server-url="http://support.supermap.com.cn:8092/" map-id="1649097980"></sm-web-map>
+            <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="801571284"></sm-web-map>
             <sm-chart
                 icon-class=""
                 :style="chartStyle"
@@ -67,7 +67,7 @@
                     right: "830px"
                   },
                   dataset: new SuperMap.Components.commontypes.iPortalDataParameter({
-                      url: "http://support.supermap.com.cn:8092/web/datas/1920557079",
+                      url: "https://iportal.supermap.io/iportal/web/datas/975651597",
                       maxFeatures: 20
                   }),
                   // echarts中涉及到超图数据series和坐标轴的字段的配置
@@ -77,14 +77,14 @@
                       isStastic: true, //是否统计, 默认不统计
                       isStack: true, //是否堆叠, 默认不堆叠
                       xField: "机场", //x坐标轴数据字段
-                      yField: "2016起降架次（架次）" //统计的数据，legned默认名字
+                      yField: "COL_2016起降架次（架次）" //统计的数据，legned默认名字
                     },
                     {
                       seriesType: "bar",
                       isStastic: true,
                       isStack: true,
                       xField: "机场",
-                      yField: "2017起降架次（架次）",
+                      yField: "COL_2017起降架次（架次）",
                     }
                   ],
                   datasetOptions1: [
@@ -93,14 +93,14 @@
                       isStastic: true, //是否统计, 默认不统计
                       isStack: true, //是否堆叠, 默认不堆叠
                       xField: "机场", //x坐标轴数据字段
-                      yField: "2016旅客吞吐量（人次）" //统计的数据，legned默认名字
+                      yField: "COL_2016旅客吞吐量（人次）" //统计的数据，legned默认名字
                     },
                     {
                       seriesType: "line",
                       isStastic: true,
                       isStack: true,
                       xField: "机场",
-                      yField: "2017旅客吞吐量（人次）"
+                      yField: "COL_2017旅客吞吐量（人次）"
                     }
                   ],
                   datasetOptions2: [
@@ -109,7 +109,7 @@
                       isStastic: true, //是否统计, 默认不统计
                       isStack: false, //是否堆叠, 默认不堆叠
                       xField: "机场", //x坐标轴数据字段
-                      yField: "同比增速%" //统计的数据，legned默认名字
+                      yField: "同比增速_" //统计的数据，legned默认名字
                     }
                   ],
                   // 和echarts一样的配置
@@ -134,7 +134,7 @@
                     }
                   },
                   echartOptions2: {
-                    legend: {data: ['同比增速%']},//与yField数据一致
+                    legend: {data: ['同比增速_']},//与yField数据一致
                     tooltip: {formatter: "{b0}: {c0}"},
                   }
 

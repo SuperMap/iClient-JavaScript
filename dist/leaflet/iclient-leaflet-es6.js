@@ -85211,7 +85211,7 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
         this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
         let graphics = layer._getGraphicsInBounds();
         evt.target = null;
-        for (let i = 0; i < graphics.length; i++) {
+        for (let i = graphics.length - 1; i >= 0; i--) {
             let p1, p2, bounds;
             const center = map.latLngToLayerPoint(graphics[i].getLatLng());
             let style = graphics[i].getStyle();
@@ -85219,8 +85219,12 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
                 style = this.defaultStyle;
             }
             if (style.img) {
-                const imgWidth = style.size[0] || style.img.width;
-                const imgHeight = style.size[1] || style.img.height;
+                let imgWidth = style.img.width;
+                let imgHeight = style.img.height;
+                if (style.size && style.size[0] && style.size[1]) {
+                    imgWidth = style.size[0];
+                    imgHeight = style.size[1];
+                }
                 const anchor = style.anchor || [imgWidth / 2, imgHeight / 2];
                 p1 = external_L_default.a.point(center.x - anchor[0], center.y - anchor[1]);
                 p2 = external_L_default.a.point(p1.x + imgWidth, p1.y + imgHeight);

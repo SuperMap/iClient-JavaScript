@@ -80405,16 +80405,16 @@ const MAX_MIGRATION_ANIMATION_COUNT = 1000;
 /**
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
- * @classdesc 对接 iPortal/Online 地图类。
+ * @classdesc 对接 iPortal/Online 地图类
  * @param {number} id - 地图的id
- * @param {Object} options - 参数。
- * @param {string} [options.target='map'] - 地图容器id。
- * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址。
- * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
- * @param {function} [options.errorCallback] - 加载地图失败调用的函数。
- * @param {string} [options.credentialKey] - 凭证密钥。
- * @param {string} [options.credentialValue] - 凭证值。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {Object} options - 参数
+ * @param {string} [options.target='map'] - 地图容器id
+ * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址
+ * @param {function} [options.successCallback] - 成功加载地图后调用的函数
+ * @param {function} [options.errorCallback] - 加载地图失败调用的函数
+ * @param {string} [options.credentialKey] - 凭证密钥。例如为"key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填
+ * @param {string} [options.credentialValue] - 凭证密钥对应的值，credentialKey和credentialValue必须一起使用
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie
  * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
  * @param {string} [options.tiandituKey] - 天地图的key
  * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
@@ -80491,10 +80491,6 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         }
 
         let mapUrl = this.server + 'web/maps/' + this.mapId + '/map';
-        if (this.credentialValue) {
-            mapUrl += ('.json?' + this.credentialKey + '=' + this.credentialValue);
-
-        }
         let filter = 'getUrlResource.json?url=';
         if (this.excludePortalProxyUrl && this.server.indexOf(filter) > -1) {
             //大屏需求,或者有加上代理的
@@ -80706,7 +80702,11 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         if(layer){
             this.map.addLayer(layer);
         }
-        
+        if(this.mapParams) {
+            let extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
+            this.mapParams.extent = extent;
+            this.mapParams.projection = mapInfo.projection;
+        }
         if (mapInfo.baseLayer && mapInfo.baseLayer.labelLayerVisible) {
             let layerInfo = mapInfo.baseLayer;
             //存在天地图路网
@@ -81296,9 +81296,13 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 let scales = [];
                 for (let i = 0; i < tileMatrixSet.length; i++) {
                     if (tileMatrixSet[i].Identifier === layerInfo.tileMatrixSet) {
+                        let wmtsLayerEpsg = `EPSG:${tileMatrixSet[i].SupportedCRS.split('::')[1]}`;
                         for (let h = 0; h < tileMatrixSet[i].TileMatrix.length; h++) {
                             scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator)
                         }
+                        //bug wmts出图需要加上origin，否则会出现出图不正确的情况。偏移或者瓦片出不了
+                        let origin = tileMatrixSet[i].TileMatrix[0].TopLeftCorner;
+                        layerInfo.origin = wmtsLayerEpsg === "EPSG:4326" ? [origin[1], origin[0]] : origin;
                         break;
                     }
                 }
@@ -81345,11 +81349,11 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         let unit = external_ol_default.a.proj.get(this.baseProjection).getUnits();
         return new external_ol_default.a.source.WMTS({
             url: layerInfo.url,
-            layer: layerInfo.name,
+            layer: layerInfo.layer,
             format: 'image/png',
             matrixSet: layerInfo.tileMatrixSet,
             requestEncoding: layerInfo.requestEncoding || 'KVP',
-            tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi),
+            tileGrid: this.getWMTSTileGrid(extent, layerInfo.scales, unit, layerInfo.dpi, layerInfo.origin),
             tileLoadFunction: function (imageTile, src) {
                 imageTile.getImage().src = src
             }
@@ -81364,11 +81368,13 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
      * @param {number} scales - 图层比例尺
      * @param {string} unit - 单位
      * @param {number} dpi - dpi
+     * @param {Array} origin 瓦片的原点
      * @returns {ol.tilegrid.WMTS}
      */
-    getWMTSTileGrid(extent, scales, unit, dpi) {
+    getWMTSTileGrid(extent, scales, unit, dpi, origin) {
         let resolutionsInfo = this.getReslutionsFromScales(scales, dpi || 96, unit);
         return new external_ol_default.a.tilegrid.WMTS({
+            origin,
             extent: extent,
             resolutions: resolutionsInfo.res,
             matrixIds: resolutionsInfo.matrixIds
@@ -83256,7 +83262,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
     getRequestUrl(url) {
         if(this.credentialValue) {
             //有token之类的配置项
-            url = `${url}&${this.credentialKey}=${this.credentialValue}`;
+            url = url.indexOf("?") === -1 ? `${url}?${this.credentialKey}=${this.credentialValue}` : 
+            `${url}&${this.credentialKey}=${this.credentialValue}`; 
         }
         //如果传入进来的url带了代理则不需要处理
         if(this.excludePortalProxyUrl) {
@@ -94568,8 +94575,6 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport GeoFeature */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
 /* concated harmony reexport Theme */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
 /* concated harmony reexport ThemeFeature */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
-/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport pointStyle */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
 /* concated harmony reexport lineStyle */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
 /* concated harmony reexport polygonStyle */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
@@ -94578,6 +94583,8 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport lineMap */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
 /* concated harmony reexport polygonMap */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
 /* concated harmony reexport StyleMap */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
+/* concated harmony reexport VectorTileStyles */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport MapboxStyles */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
 /* concated harmony reexport ChartService */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
 /* concated harmony reexport DataFlowService */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });

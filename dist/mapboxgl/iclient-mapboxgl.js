@@ -78934,7 +78934,7 @@ var MapExtend = function () {
   external_mapboxgl_default.a.Map.prototype.addLayerBak = external_mapboxgl_default.a.Map.prototype.addLayer;
 
   external_mapboxgl_default.a.Map.prototype.addLayer = function (layer, before) {
-    if (layer.source || layer.type === 'custom') {
+    if (layer.source || layer.type === 'custom' || layer.type === "background") {
       this.addLayerBak(layer, before);
       return this;
     }
@@ -79036,7 +79036,7 @@ var MapExtend = function () {
   };
 
   function addLayer(layer, map) {
-    layer.onAdd(map);
+    layer.onAdd && layer.onAdd(map);
   }
   /**
    * @function mapboxgl.supermap.MapExtend.prototype.removeFromMap
@@ -79045,7 +79045,7 @@ var MapExtend = function () {
 
 
   function removeLayer(layer) {
-    layer.removeFromMap();
+    layer.removeFromMap && layer.removeFromMap();
   }
   /**
    * @function mapboxgl.supermap.MapExtend.prototype.setVisibility
@@ -79055,7 +79055,7 @@ var MapExtend = function () {
 
 
   function setVisibility(layer, visibility) {
-    layer.setVisibility(visibility);
+    layer.setVisibility && layer.setVisibility(visibility);
   }
   /**
    * @function mapboxgl.supermap.MapExtend.prototype.moveTo
