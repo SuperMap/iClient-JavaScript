@@ -75,9 +75,12 @@ describe("openlayers_MapboxStyles", () => {
     });
     const defaultColor = [249, 224, 219, 0.9];
     const highlightColor = [255, 0, 0, 1];
-    const matchColor = function(style, expectColor) {
-        expect(style.getFill().getColor()).not.toBeNull();
-        const color = ol.color.asArray(style.getFill().getColor());
+    const matchFillColor = function(style, expectColor) {
+        matchColor(style.getFill().getColor(),expectColor);
+    };
+    const matchColor = function(sourceColor, expectColor) {
+        expect(sourceColor).not.toBeNull();
+        const color = ol.color.asArray(sourceColor);
         expectColor[0] && expect(color[0]).toBeCloseTo(expectColor[0]);
         expectColor[1] && expect(color[1]).toBeCloseTo(expectColor[1]);
         expectColor[2] && expect(color[2]).toBeCloseTo(expectColor[2]);
@@ -98,7 +101,8 @@ describe("openlayers_MapboxStyles", () => {
         mapboxStyles.on("styleloaded", () => {
             var style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],defaultColor);
+            matchFillColor(style[0],defaultColor);
+            matchColor(style[1].getStroke().getColor(),defaultColor)
             mapboxStyles.updateStyles({
                 paint: {
                     "fill-color": "rgba(249,0,0,0.90)"
@@ -108,11 +112,13 @@ describe("openlayers_MapboxStyles", () => {
             });
             style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758 / 2);
             expect(style).not.toBeNull();
-            matchColor(style[0],[249,0,0,0.9]);
+            expect(style.length).toBe(2);
+            matchFillColor(style[0],[249,0,0,0.9]);
+            matchColor(style[1].getStroke().getColor(),defaultColor)
             mapboxStyles.setSelectedId(1, "Military_R@California");
             style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],highlightColor);
+            matchFillColor(style[0],highlightColor);
             done();
         });
     });
@@ -122,47 +128,47 @@ describe("openlayers_MapboxStyles", () => {
         mapboxStyles.on("styleloaded", () => {
             var style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],defaultColor);
+            matchFillColor(style[0],defaultColor);
             mapboxStyles.setSelectedObjects({ id: 1, sourceLayer: "Military_R@California" });
             style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],highlightColor);
+            matchFillColor(style[0],highlightColor);
 
             //add
             mapboxStyles.addSelectedObjects({ id: 2, sourceLayer: "Military_R@California" });
             style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],highlightColor);
+            matchFillColor(style[0],highlightColor);
             style = mapboxStyles.getStyleFunction()(feature2, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],highlightColor);
+            matchFillColor(style[0],highlightColor);
 
             //remove
             mapboxStyles.removeSelectedObjects({ id: 2, sourceLayer: "Military_R@California" });
             style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],highlightColor);
+            matchFillColor(style[0],highlightColor);
             style = mapboxStyles.getStyleFunction()(feature2, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],defaultColor);
+            matchFillColor(style[0],defaultColor);
 
             //set
             mapboxStyles.setSelectedObjects({ id: 2, sourceLayer: "Military_R@California" });
             style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],defaultColor);
+            matchFillColor(style[0],defaultColor);
             style = mapboxStyles.getStyleFunction()(feature2, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],highlightColor);
+            matchFillColor(style[0],highlightColor);
 
             //clear
             mapboxStyles.clearSelectedObjects();
             style = mapboxStyles.getStyleFunction()(feature, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],defaultColor);
+            matchFillColor(style[0],defaultColor);
             style = mapboxStyles.getStyleFunction()(feature2, 2.388657133911758);
             expect(style).not.toBeNull();
-            matchColor(style[0],defaultColor);
+            matchFillColor(style[0],defaultColor);
             done();
         });
     });

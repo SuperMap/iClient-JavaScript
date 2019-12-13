@@ -37,6 +37,7 @@ export class IPortalResource extends IPortalServiceBase {
         this.thumbnail = null;
         this.updateTime = 0;
         this.userName = "";
+        this.sourceJSON = {};//返回门户资源详细信息
         Util.extend(this, resourceInfo); // INSIGHTS_WORKSPACE MAP_DASHBOARD
         this.resourceUrl = portalUrl + "/web/"+this.resourceType.replace("_","").toLowerCase()+"s/" + this.resourceId;
         if (this.withCredentials) {
@@ -59,38 +60,36 @@ export class IPortalResource extends IPortalServiceBase {
                 if (resourceInfo.error) {
                     return resourceInfo;
                 }
-                for (var key in resourceInfo) {
-                    me[key] = resourceInfo[key];
-                }
+                me.sourceJSON = resourceInfo;
             });
     }
 
     /**
      * @function SuperMap.IPortalResource.prototype.update
-     * @description 更新地图参数。
+     * @description 更新资源属性信息。
      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
      */
     update() {
-        var resourceUpdateParam = {
-            units: this.units,
-            level: this.level,
-            center: this.center,
-            controls: this.controls,
-            description: this.description,
-            epsgCode: this.epsgCode,
-            extent: this.extent,
-            status: this.status,
-            tags: this.tags,
-            layers: this.layers,
-            title: this.title,
-            thumbnail: this.thumbnail,
-            sourceType: this.sourceType,
-            authorizeSetting: this.authorizeSetting
-        };
+        var resourceName = this.resourceType.replace("_","").toLowerCase();
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return this.request("PUT", this.resourceUrl, JSON.stringify(resourceUpdateParam), options);
+        if( resourceName === 'data') {
+            this.resourceUrl = this.resourceUrl + "/attributes.json";
+        }
+        var entity = JSON.stringify(this.sourceJSON);
+        //对服务资源进行编辑时，请求体内容只留关键字字段（目前如果是全部字段 更新返回成功 但其实没有真正的更新）
+        if( resourceName === 'service') {
+            var serviceInfo = {
+                authorizeSetting:this.sourceJSON.authorizeSetting,
+                metadata:this.sourceJSON.metadata,
+                tags:this.sourceJSON.tags,
+                thumbnail:this.sourceJSON.thumbnail,
+                tokenRefreshUrl:this.sourceJSON.tokenRefreshUrl
+            };
+            entity = JSON.stringify(serviceInfo);
+        }
+        return this.request("PUT", this.resourceUrl, entity, options);
     }
 
 }

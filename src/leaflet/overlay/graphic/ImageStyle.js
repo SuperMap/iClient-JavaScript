@@ -7,7 +7,7 @@ import '../../core/Base';
 /**
  * @class L.supermap.imageStyle
  * @classdesc 自定义图形要素风格。
- * @category Graphic
+ * @category Visualization Graphic
  * @extends {L.Class}
  * @param {Object} options - 图形要素风格参数。
  * @param {HTMLImageElement} options.img - image 对象。

@@ -13,7 +13,8 @@ if (product) {
   const configBase = require(`./webpack.config.base.js`);
   const entry = [`./src/${product}/index.js`];
   const filename= product === 'classic' ? `iclient-classic` : `iclient-${product}`;
-  config.output.filename = `${filename}-es6.min.js`
+  config.output.filename = `${filename}-es6.min.js`;
+  config.output.path = path.resolve(`${__dirname}/../dist/${product}`);
   if (['leaflet', 'openlayers'].includes(product)) {
     entry.push(`./src/${product}/css/index.js`);
     config.plugins = configBase.plugins(product, `${filename}.min`);

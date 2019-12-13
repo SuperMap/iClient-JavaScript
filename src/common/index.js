@@ -100,6 +100,8 @@ import {
     IPortalQueryParam,
     IPortalResource,
     IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalMap,
     IPortalMapsQueryParam,
     IPortalInsight,
@@ -110,7 +112,8 @@ import {
     IPortalServiceBase,
     IPortalServicesQueryParam,
     IPortalMapdashboard,
-    IPortalMapdashboardsQueryParam
+    IPortalMapdashboardsQueryParam,
+    IPortalUser
 } from './iPortal';
 import {
     AddressMatchService,
@@ -560,6 +563,8 @@ export {
     IPortalQueryParam,
     IPortalResource,
     IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalMap,
     IPortalMapsQueryParam,
     IPortalInsight,
@@ -570,7 +575,8 @@ export {
     IPortalServiceBase,
     IPortalServicesQueryParam,
     IPortalMapdashboard,
-    IPortalMapdashboardsQueryParam
+    IPortalMapdashboardsQueryParam,
+    IPortalUser
 };
 export {
     AddressMatchService,

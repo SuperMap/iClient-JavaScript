@@ -53,12 +53,12 @@ module.exports = function (config) {
             './test-main-common.js',
 
             /***leaflet的源码***/
-            {pattern: './libs/workers/TurfWorkerForTest.js', include: false},
-            {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
-            {pattern: '../src/leaflet/**/**/*.css', include: false},
-            '../src/leaflet/**/!(index).js',
-            /**测试文件**/
-            './test-main-leaflet.js',
+            // {pattern: './libs/workers/TurfWorkerForTest.js', include: false},
+            // {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
+            // {pattern: '../src/leaflet/**/**/*.css', include: false},
+            // '../src/leaflet/**/!(index).js',
+            // /**测试文件**/
+            // './test-main-leaflet.js',
 
             /***openlayers的源码***/
             {pattern: '../node_modules/openlayers/dist/ol-debug.css', include: false},
@@ -67,11 +67,11 @@ module.exports = function (config) {
             /**测试文件**/
             './test-main-openlayers.js',
 
-            /***mapboxgl***/
-            {pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false},
-            '../src/mapboxgl/**/!(index).js',
-            /**测试文件**/
-            './test-main-mapboxgl.js'
+            // /***mapboxgl***/
+            // {pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false},
+            // '../src/mapboxgl/**/!(index).js',
+            // /**测试文件**/
+            // './test-main-mapboxgl.js'
         ],
 
         // list of files to exclude 测试时排除的文件
@@ -93,20 +93,20 @@ module.exports = function (config) {
             // './common/**/*Spec.js': ['browserify'],
             './test-main-common.js': ['browserify'],
 
-            '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
-            '../src/leaflet/**/!(index).js': ['browserify'],
-            // './leaflet/**/*Spec.js': ['browserify'],
-            './test-main-leaflet.js': ['browserify'],
+            // '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
+            // '../src/leaflet/**/!(index).js': ['browserify'],
+            // // './leaflet/**/*Spec.js': ['browserify'],
+            // './test-main-leaflet.js': ['browserify'],
 
             '../node_modules/openlayers/dist/ol-debug.js': ['browserify'],
             '../src/openlayers/**/!(index).js': ['browserify'],
             // './openlayers/**/*Spec.js': ['browserify'],
             './test-main-openlayers.js': ['browserify'],
 
-            '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
-            '../src/mapboxgl/**/!(index).js': ['browserify'],
-            // './mapboxgl/**/*Spec.js': ['browserify'],
-            './test-main-mapboxgl.js': ['browserify']
+            // '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
+            // '../src/mapboxgl/**/!(index).js': ['browserify'],
+            // // './mapboxgl/**/*Spec.js': ['browserify'],
+            // './test-main-mapboxgl.js': ['browserify']
         },
 
         // test results reporter to use

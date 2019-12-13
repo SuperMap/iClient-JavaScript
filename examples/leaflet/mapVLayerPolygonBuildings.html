@@ -17,7 +17,7 @@
         zoom: 12,
     });
 
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
     L.supermap.tiledMapLayer(url).addTo(map);
@@ -36,7 +36,7 @@
                 draw: 'simple'
             };
 
-            var dataAttr = resources.text_dataSources + "<a target='_blank' href='http://mapv.baidu.com/examples/beijing-village.html'>MapV</a>";
+            var dataAttr = resources.text_dataSources + "<a target='_blank' href='https://mapv.baidu.com/examples/beijing-village.html'>MapV</a>";
             L.supermap.mapVLayer(dataSet, options, {attributionPrefix: dataAttr}).addTo(map);
 
 

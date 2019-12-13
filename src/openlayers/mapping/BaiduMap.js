@@ -17,7 +17,7 @@ export class BaiduMap extends ol.source.TileImage {
     constructor(opt_options) {
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({
-            html: "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+            html: "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         var tileGrid = ol.source.BaiduMap.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ?

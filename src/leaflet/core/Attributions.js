@@ -8,14 +8,14 @@
 let Attributions = {
 
     Prefix: `<a href='http://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
-                with <span>© <a href='http://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
+                with <span>© <a href='https://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
 
     Common: {
         attribution: `Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`
     },
 
     Online: {
-        attribution: `Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
+        attribution: `Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
     },
 
     ECharts: {
@@ -27,7 +27,7 @@ let Attributions = {
     },
 
     Turf: {
-        attribution: `<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
+        attribution: `<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
     },
 
     Baidu: {

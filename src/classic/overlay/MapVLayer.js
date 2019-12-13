@@ -71,7 +71,7 @@ export class MapVLayer extends SuperMap.Layer {
             this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         }
         this.attribution =
-            "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " +
+            "© 2018 百度 <a href='https://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='https://iclient.supermap.io' " +
             "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
 
         this.CLASS_NAME = 'SuperMap.Layer.MapVLayer';

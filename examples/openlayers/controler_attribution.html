@@ -13,7 +13,7 @@
 <div id="map" class="map"></div>
 <script>
     var map,
-        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World";
+        url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World";
 
     map = new ol.Map({
         controls: ol.control.defaults({attribution: false, zoom: false}),

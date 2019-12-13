@@ -363,6 +363,6 @@ export class SecurityManager {
 SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager.INNER_WINDOW_HEIGHT = 600;
 SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager.ONLINE = "http://www.supermapol.com";
+SecurityManager.ONLINE = "https://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager;
 

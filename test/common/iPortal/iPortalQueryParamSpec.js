@@ -1,4 +1,4 @@
-import {IPortalQueryParam} from '../../../src/common/iPortal/IPortalQueryParam';
+import {IPortalQueryParam} from '../../../src/common/iPortal/iPortalQueryParam';
 
 describe('IPortalQueryParam', () => {
     it('resourceType', () => {

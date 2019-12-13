@@ -5,7 +5,7 @@
   "keywords": [
     "SuperMap"
   ],
-  "homepage": "http://iclient.supermap.io",
+  "homepage": "https://iclient.supermap.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/SuperMap/iClient-JavaScript.git"

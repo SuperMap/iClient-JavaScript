@@ -55,7 +55,7 @@ export class WebMap extends ol.Observable {
         super();
         this.mapId = id;
         options = options || {};
-        this.server = options.server || 'http://www.supermapol.com';
+        this.server = options.server || 'https://www.supermapol.com';
         this.successCallback = options.successCallback;
         this.errorCallback = options.errorCallback;
         this.credentialKey = options.credentialKey;

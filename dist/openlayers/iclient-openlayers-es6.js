@@ -15874,7 +15874,7 @@ class SecurityManager_SecurityManager {
 SecurityManager_SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager_SecurityManager.INNER_WINDOW_HEIGHT = 600;
 SecurityManager_SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager_SecurityManager.ONLINE = "http://www.supermapol.com";
+SecurityManager_SecurityManager.ONLINE = "https://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager_SecurityManager;
 
 
@@ -16962,6 +16962,7 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
         this.thumbnail = null;
         this.updateTime = 0;
         this.userName = "";
+        this.sourceJSON = {};//返回门户资源详细信息
         Util_Util.extend(this, resourceInfo); // INSIGHTS_WORKSPACE MAP_DASHBOARD
         this.resourceUrl = portalUrl + "/web/"+this.resourceType.replace("_","").toLowerCase()+"s/" + this.resourceId;
         if (this.withCredentials) {
@@ -16984,38 +16985,36 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
                 if (resourceInfo.error) {
                     return resourceInfo;
                 }
-                for (var key in resourceInfo) {
-                    me[key] = resourceInfo[key];
-                }
+                me.sourceJSON = resourceInfo;
             });
     }
 
     /**
      * @function SuperMap.IPortalResource.prototype.update
-     * @description 更新地图参数。
+     * @description 更新资源属性信息。
      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
      */
     update() {
-        var resourceUpdateParam = {
-            units: this.units,
-            level: this.level,
-            center: this.center,
-            controls: this.controls,
-            description: this.description,
-            epsgCode: this.epsgCode,
-            extent: this.extent,
-            status: this.status,
-            tags: this.tags,
-            layers: this.layers,
-            title: this.title,
-            thumbnail: this.thumbnail,
-            sourceType: this.sourceType,
-            authorizeSetting: this.authorizeSetting
-        };
+        var resourceName = this.resourceType.replace("_","").toLowerCase();
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return this.request("PUT", this.resourceUrl, JSON.stringify(resourceUpdateParam), options);
+        if( resourceName === 'data') {
+            this.resourceUrl = this.resourceUrl + "/attributes.json";
+        }
+        var entity = JSON.stringify(this.sourceJSON);
+        //对服务资源进行编辑时，请求体内容只留关键字字段（目前如果是全部字段 更新返回成功 但其实没有真正的更新）
+        if( resourceName === 'service') {
+            var serviceInfo = {
+                authorizeSetting:this.sourceJSON.authorizeSetting,
+                metadata:this.sourceJSON.metadata,
+                tags:this.sourceJSON.tags,
+                thumbnail:this.sourceJSON.thumbnail,
+                tokenRefreshUrl:this.sourceJSON.tokenRefreshUrl
+            };
+            entity = JSON.stringify(serviceInfo);
+        }
+        return this.request("PUT", this.resourceUrl, entity, options);
     }
 
 }
@@ -17023,10 +17022,38 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
 SuperMap.iPortalResource = iPortalResource_IPortalResource;
 
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalShareParam
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalShareParam_IPortalShareParam {
+
+    constructor(params) {
+        params = params || {};
+        this.ids = [];
+        this.entities = [];
+        this.resourceType = ""; // MAP SERVICE SCENE DATA INSIGHTS_WORKSPACE MAP_DASHBOARD
+        Util_Util.extend(this, params);
+    }
+}
+SuperMap.iPortalShareParam = iPortalShareParam_IPortalShareParam;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -17076,7 +17103,11 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
      */
     queryResources(queryParams) {
         if (!(queryParams instanceof iPortalQueryParam_IPortalQueryParam)) {
-            return null;
+            return new Promise( function(resolve){
+                resolve(
+                    "queryParams is not instanceof iPortalQueryParam !"
+                );
+            });
         }
         var me = this;
         var resourceUrl = this.iportalUrl + "/gateway/catalog/resource/search.json";
@@ -17097,6 +17128,33 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
 
+    /**
+     * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
+     * @description 查询资源。
+     * @param {SuperMap.updateResourcesShareSetting} shareParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+    updateResourcesShareSetting(shareParams) {
+        if (!(shareParams instanceof iPortalShareParam_IPortalShareParam)) {
+            return new Promise( function(resolve){
+                resolve(
+                    "shareParams is not instanceof iPortalShareParam !"
+                );
+            });
+        }
+        var resourceUrlName = shareParams.resourceType.replace("_","").toLowerCase()+"s";
+        if(resourceUrlName === "datas"){
+            resourceUrlName = "mycontent/"+resourceUrlName;
+        }
+        var cloneShareParams = {
+            ids: shareParams.ids,
+            entities: shareParams.entities
+        }
+        var shareUrl = this.iportalUrl + "/web/"+resourceUrlName+"/sharesetting.json";
+        return this.request("PUT", shareUrl, JSON.stringify(cloneShareParams)).then(function(result) {
+            return result;
+        });
+    }
     /**
      * @function SuperMap.iPortal.prototype.queryServices
      * @description 查询服务。
@@ -17379,10 +17437,82 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
 
 SuperMap.iPortal = iPortal_IPortal;
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareEntity.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalShareEntity
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalShareEntity_IPortalShareEntity {
+
+    constructor(params) {
+        params = params || {};
+        this.permissionType = ""; // SEARCH READ READWRITE DOWNLOAD
+        this.entityType = ""; // USER DEPARTMENT IPORTALGROUP
+        this.entityName = "GUEST"; // GUEST or 具体用户 name
+        this.entityId = null;
+        Util_Util.extend(this, params);
+    }
+}
+SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.IPortalUser
+ * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
+ * @category iPortal/Online
+ * @param {string} iportalUrl - iportal根地址。
+ * @extends {SuperMap.iPortalServiceBase}
+ *
+ */
+class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
+    constructor(iportalUrl) {
+        super(iportalUrl);
+        this.iportalUrl = iportalUrl;
+    }
+
+    /**
+     * @function SuperMap.prototype.deleteResources
+     * @description 删除资源。
+     * @param {Object} deleteParams - 删除资源所需的参数对象：{ids,resourceType}。
+     * @returns {Promise} 返回包含删除操作状态的 Promise 对象。
+     */
+    deleteResources(deleteParams) {
+        var resourceName = deleteParams.resourceType.replace("_","").toLowerCase();
+        var deleteResourceUrl = this.iportalUrl+"/web/" + resourceName +"s.json?ids=" + encodeURI(JSON.stringify(deleteParams.ids));
+        if( resourceName === 'data') {
+            deleteResourceUrl = this.iportalUrl + "/web/mycontent/datas/delete.json";
+            return this.request("POST", deleteResourceUrl, JSON.stringify(deleteParams.ids));
+        }
+        return this.request("DELETE", deleteResourceUrl);
+    }
+}
+
+SuperMap.iPortalUser = iPortalUser_IPortalUser;
 // CONCATENATED MODULE: ./src/common/iPortal/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
 
 
 
@@ -40662,7 +40792,7 @@ class Online_Online {
     //TODO 目前并没有对接Online的所有操作，需要补充完整
     //所有查询返回的是一个Promise,在外部使用的时候通过Promise的then方法获取异步结果
     constructor() {
-        this.rootUrl = "http://www.supermapol.com";
+        this.rootUrl = "https://www.supermapol.com";
         this.webUrl = this.rootUrl + "/web";
 
         var mContentUrl = this.webUrl + "/mycontent";
@@ -67860,7 +67990,7 @@ SuperMap.Components.Chart = ChartView_ChartView;
 // CONCATENATED MODULE: ./src/common/components/templates/TemplateBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
@@ -70266,7 +70396,7 @@ external_ol_default.a.supermap.control = external_ol_default.a.supermap.control 
  * @param {string} [options.imageUrl] - logo 图片地址。
  * @param {number} [options.width] - logo 图片宽。
  * @param {number} [options.height] - logo 图片高。
- * @param {string} [options.link='http://iclient.supermap.io'] - 跳转链接。
+ * @param {string} [options.link='https://iclient.supermap.io'] - 跳转链接。
  * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
  */
 class Logo_Logo extends external_ol_default.a.control.Control {
@@ -70276,7 +70406,7 @@ class Logo_Logo extends external_ol_default.a.control.Control {
         options.imageUrl = options.imageUrl || null;
         options.width = options.width || null;
         options.height = options.height || null;
-        options.link = options.link || "http://iclient.supermap.io";
+        options.link = options.link || "https://iclient.supermap.io";
         options.alt = options.alt || "SuperMap iClient";
         super(options);
         this.options = options;
@@ -72349,7 +72479,7 @@ class BaiduMap_BaiduMap extends external_ol_default.a.source.TileImage {
     constructor(opt_options) {
         var options = opt_options || {};
         var attributions = options.attributions || new external_ol_default.a.Attribution({
-            html: "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+            html: "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         var tileGrid = external_ol_default.a.source.BaiduMap.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ?
@@ -72748,7 +72878,7 @@ class SuperMapCloud_SuperMapCloud extends external_ol_default.a.source.XYZ {
         var options = opt_options || {};
 
         var attributions = options.attributions || new external_ol_default.a.Attribution({
-            html: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+            html: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         var mapName = options.mapName || 'quanguo';
         var mapType = options.mapType || 'web';
@@ -72824,7 +72954,7 @@ class Tianditu_Tianditu extends external_ol_default.a.source.WMTS {
         var attributions = options.attributions || new external_ol_default.a.Attribution({
             html: "Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
                 "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
-                "<span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                "<span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         options.layerType = options.layerType || "vec";
         options.layerType = options.isLabel ? external_ol_default.a.source.Tianditu.layerLabelMap[options.layerType] : options.layerType;
@@ -72978,7 +73108,7 @@ class TileSuperMapRest_TileSuperMapRest extends external_ol_default.a.source.Til
 
         options.attributions = options.attributions ||
             new external_ol_default.a.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             });
 
         options.format = options.format ? options.format : "png";
@@ -80279,7 +80409,7 @@ const MAX_MIGRATION_ANIMATION_COUNT = 1000;
  * @param {number} id - 地图的id
  * @param {Object} options - 参数。
  * @param {string} [options.target='map'] - 地图容器id。
- * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址。
+ * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址。
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
  * @param {function} [options.errorCallback] - 加载地图失败调用的函数。
  * @param {string} [options.credentialKey] - 凭证密钥。
@@ -80299,7 +80429,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         super();
         this.mapId = id;
         options = options || {};
-        this.server = options.server || 'http://www.supermapol.com';
+        this.server = options.server || 'https://www.supermapol.com';
         this.successCallback = options.successCallback;
         this.errorCallback = options.errorCallback;
         this.credentialKey = options.credentialKey;
@@ -80463,9 +80593,9 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
             baseLayerInfo = mapInfo.baseLayer,
             url = baseLayerInfo.url,
             baseLayerType = baseLayerInfo.layerType;  
-
+        let extent = [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y];
         let proj = new external_ol_default.a.proj.Projection({
-            extent: [mapInfo.extent.leftBottom.x, mapInfo.extent.leftBottom.y, mapInfo.extent.rightTop.x, mapInfo.extent.rightTop.y],
+            extent,
             units: 'm',
             code: 'EPSG:0'
         }); 
@@ -80476,7 +80606,16 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         }
         //添加view
         me.baseProjection = proj;
-        me.createView(options);
+        let view = new external_ol_default.a.View({
+            center:  options.center ? [options.center.x, options.center.y] : [0,0],
+            zoom: 0,
+            projection: proj
+        });
+        me.map.setView(view);
+        if(me.mapParams) {
+            me.mapParams.extent = extent;
+            me.mapParams.projection = mapInfo.projection;
+        }
         
         let source;
         if(baseLayerType === "TILE"){
@@ -84002,7 +84141,7 @@ external_ol_default.a.supermap.ThemeFeature = ThemeFeature_ThemeFeature;
  * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {Array} [opt_option.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_option.state] - 资源状态。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}
  */
 class theme_Theme_Theme extends external_ol_default.a.source.ImageCanvas {
@@ -84011,7 +84150,7 @@ class theme_Theme_Theme extends external_ol_default.a.source.ImageCanvas {
         var options = opt_options ? opt_options : {};
         super({
             attributions: options.attributions || new external_ol_default.a.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -84566,7 +84705,7 @@ external_ol_default.a.source.Theme = theme_Theme_Theme;
  * @param {Array.<number>} [opt_options.resolutions] - 分辨率数组。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.Theme}
  */
 class overlay_Graph_Graph extends theme_Theme_Theme {
@@ -86268,7 +86407,7 @@ external_ol_default.a.source.Graphic = Graphic_Graphic;
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {Theme}
  */
 
@@ -87991,7 +88130,7 @@ class MapvLayer_MapvLayer extends BaiduMapLayer {
  * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {Array} [opt_option.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_option.state] - 资源状态。
- * @param {(string|Object)} [opt_option.attributions='© 2018 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_option.attributions='© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}
  */
 class Mapv_Mapv extends external_ol_default.a.source.ImageCanvas {
@@ -88000,7 +88139,7 @@ class Mapv_Mapv extends external_ol_default.a.source.ImageCanvas {
         var options = opt_options ? opt_options : {};
         super({
             attributions: options.attributions || new external_ol_default.a.Attribution({
-                html: "© 2018 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                html: "© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -88141,7 +88280,7 @@ external_ol_default.a.source.Mapv = Mapv_Mapv;
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble = false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {GeoFeature}
  */
 class Range_Range extends GeoFeature_GeoFeature {
@@ -88276,7 +88415,7 @@ external_ol_default.a.source.Range = Range_Range;
  * @param {Array} [opt_options.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {Graph}
  */
 class overlay_RankSymbol_RankSymbol extends overlay_Graph_Graph {
@@ -88360,7 +88499,7 @@ class Turf_Turf extends external_ol_default.a.source.Vector {
 
         super({
             attributions: options.attributions || new external_ol_default.a.Attribution({
-                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             features: options.features,
             format: options.format,
@@ -88664,7 +88803,7 @@ external_ol_default.a.source.Turf = Turf_Turf;
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {GeoFeature}
  */
 class Unique_Unique extends GeoFeature_GeoFeature {
@@ -89318,7 +89457,7 @@ external_ol_default.a.supermap = external_ol_default.a.supermap || {};
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 `ol.format.MVT ` 且 `options.source` 不为空时有效，优先级高于 `options.url`。
  * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时有效。当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {string} [options.crossOrigin = 'anonymous'] - 跨域模式。
- * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @extends {ol.source.VectorTile}
@@ -89337,7 +89476,7 @@ class VectorTileSuperMapRest_VectorTileSuperMapRest extends external_ol_default.
             options.attributions ||
             new external_ol_default.a.Attribution({
                 html:
-                    "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                    "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             });
 
         super({
@@ -89702,7 +89841,7 @@ class HeatMap_HeatMap extends external_ol_default.a.source.ImageCanvas {
         var options = opt_options ? opt_options : {};
         super({
             attributions: options.attributions || new external_ol_default.a.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -90812,21 +90951,26 @@ class MapboxStyles_MapboxStyles extends external_ol_default.a.Observable {
             layerStyles = [layerStyles];
         }
         const layerObj = {};
-        for (const item in layerStyles) {
-            const layerStyle = layerStyles[item];
+        layerStyles.forEach(layerStyle => {
             layerObj[layerStyle.id] = layerStyle;
-        }
+        });
         let count = 0;
         for (const key in this._mbStyle.layers) {
             const oldLayerStyle = this._mbStyle.layers[key];
             if (count >= layerStyles.length) {
                 break;
             }
-            const newLayerStyle = layerObj[oldLayerStyle.id];
-            if (!newLayerStyle) {
+            if (!layerObj[oldLayerStyle.id]) {
                 continue;
             }
-            Util_Util.extend(oldLayerStyle, newLayerStyle);
+            const newLayerStyle = JSON.parse(JSON.stringify(layerObj[oldLayerStyle.id]));
+            if(newLayerStyle.paint){
+                newLayerStyle.paint = Object.assign({},oldLayerStyle.paint,newLayerStyle.paint);
+            }
+            if(newLayerStyle.layout){
+                newLayerStyle.layout = Object.assign({},oldLayerStyle.layout,newLayerStyle.layout);
+            }
+            Object.assign(oldLayerStyle,newLayerStyle);
             count++;
         }
         this._createStyleFunction();
@@ -91492,10 +91636,10 @@ class FieldService_FieldService extends ServiceBase_ServiceBase {
         me.currentStatisticResult = {fieldName: fieldName};
         me._statisticsCallback = callback;
         //针对每种统计方式分别进行请求
-        for (var mode in modes) {
-            me.currentStatisticResult[modes[mode]] = null;
-            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
-        }
+        modes.forEach(mode => {
+            me.currentStatisticResult[mode] = null;
+            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, mode);
+        })
     }
 
     _fieldStatisticRequest(datasource, dataset, fieldName, statisticMode) {
@@ -94201,6 +94345,8 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport IPortalQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalQueryParam", function() { return iPortalQueryParam_IPortalQueryParam; });
 /* concated harmony reexport IPortalResource */__webpack_require__.d(__webpack_exports__, "IPortalResource", function() { return iPortalResource_IPortalResource; });
 /* concated harmony reexport IPortalQueryResult */__webpack_require__.d(__webpack_exports__, "IPortalQueryResult", function() { return iPortalQueryResult_IPortalQueryResult; });
+/* concated harmony reexport IPortalShareParam */__webpack_require__.d(__webpack_exports__, "IPortalShareParam", function() { return iPortalShareParam_IPortalShareParam; });
+/* concated harmony reexport IPortalShareEntity */__webpack_require__.d(__webpack_exports__, "IPortalShareEntity", function() { return iPortalShareEntity_IPortalShareEntity; });
 /* concated harmony reexport IPortalMap */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
 /* concated harmony reexport IPortalMapsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
 /* concated harmony reexport IPortalService */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
@@ -94212,6 +94358,7 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport IPortalInsightsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalInsightsQueryParam", function() { return iPortalInsightsQueryParam_IPortalInsightsQueryParam; });
 /* concated harmony reexport IPortalScene */__webpack_require__.d(__webpack_exports__, "IPortalScene", function() { return iPortalScene_IPortalScene; });
 /* concated harmony reexport IPortalScenesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalScenesQueryParam", function() { return iPortalScenesQueryParam_IPortalScenesQueryParam; });
+/* concated harmony reexport IPortalUser */__webpack_require__.d(__webpack_exports__, "IPortalUser", function() { return iPortalUser_IPortalUser; });
 /* concated harmony reexport Online */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
 /* concated harmony reexport OnlineData */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
 /* concated harmony reexport OnlineQueryDatasParameter */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });

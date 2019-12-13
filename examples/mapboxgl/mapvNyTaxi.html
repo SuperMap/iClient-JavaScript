@@ -29,10 +29,10 @@
 <div id="map"></div>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
         "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span> " + resources.text_dataSources +
         " <a href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/' target='_blank'>NYCTaxi(" + resources.text_NYTaxiCarPoint + ")</a>  © 2018 " + resources.title_3baidu + " MapV";
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var layer,
         map = new mapboxgl.Map({

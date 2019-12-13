@@ -5927,7 +5927,7 @@ function () {
 SecurityManager_SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager_SecurityManager.INNER_WINDOW_HEIGHT = 600;
 SecurityManager_SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager_SecurityManager.ONLINE = "http://www.supermapol.com";
+SecurityManager_SecurityManager.ONLINE = "https://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager_SecurityManager;
 // CONCATENATED MODULE: ./src/common/REST.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -9818,7 +9818,7 @@ function (_SuperMap$Layer) {
       _this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
     }
 
-    _this.attribution = "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
+    _this.attribution = "© 2018 百度 <a href='https://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='https://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
     _this.CLASS_NAME = 'SuperMap.Layer.MapVLayer';
     return _this;
   }

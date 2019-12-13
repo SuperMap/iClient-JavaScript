@@ -22,8 +22,8 @@
 </div>
 <script type="text/javascript">
     var map,
-        baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-changchun/rest/maps/长春市区图",
-        serviceUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     //最佳路径分析是按照站点添加顺序对站点进行访问的
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({

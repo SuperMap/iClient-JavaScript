@@ -15170,7 +15170,7 @@ class SecurityManager_SecurityManager {
 SecurityManager_SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager_SecurityManager.INNER_WINDOW_HEIGHT = 600;
 SecurityManager_SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager_SecurityManager.ONLINE = "http://www.supermapol.com";
+SecurityManager_SecurityManager.ONLINE = "https://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager_SecurityManager;
 
 
@@ -16258,6 +16258,7 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
         this.thumbnail = null;
         this.updateTime = 0;
         this.userName = "";
+        this.sourceJSON = {};//返回门户资源详细信息
         Util.extend(this, resourceInfo); // INSIGHTS_WORKSPACE MAP_DASHBOARD
         this.resourceUrl = portalUrl + "/web/"+this.resourceType.replace("_","").toLowerCase()+"s/" + this.resourceId;
         if (this.withCredentials) {
@@ -16280,38 +16281,36 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
                 if (resourceInfo.error) {
                     return resourceInfo;
                 }
-                for (var key in resourceInfo) {
-                    me[key] = resourceInfo[key];
-                }
+                me.sourceJSON = resourceInfo;
             });
     }
 
     /**
      * @function SuperMap.IPortalResource.prototype.update
-     * @description 更新地图参数。
+     * @description 更新资源属性信息。
      * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
      */
     update() {
-        var resourceUpdateParam = {
-            units: this.units,
-            level: this.level,
-            center: this.center,
-            controls: this.controls,
-            description: this.description,
-            epsgCode: this.epsgCode,
-            extent: this.extent,
-            status: this.status,
-            tags: this.tags,
-            layers: this.layers,
-            title: this.title,
-            thumbnail: this.thumbnail,
-            sourceType: this.sourceType,
-            authorizeSetting: this.authorizeSetting
-        };
+        var resourceName = this.resourceType.replace("_","").toLowerCase();
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return this.request("PUT", this.resourceUrl, JSON.stringify(resourceUpdateParam), options);
+        if( resourceName === 'data') {
+            this.resourceUrl = this.resourceUrl + "/attributes.json";
+        }
+        var entity = JSON.stringify(this.sourceJSON);
+        //对服务资源进行编辑时，请求体内容只留关键字字段（目前如果是全部字段 更新返回成功 但其实没有真正的更新）
+        if( resourceName === 'service') {
+            var serviceInfo = {
+                authorizeSetting:this.sourceJSON.authorizeSetting,
+                metadata:this.sourceJSON.metadata,
+                tags:this.sourceJSON.tags,
+                thumbnail:this.sourceJSON.thumbnail,
+                tokenRefreshUrl:this.sourceJSON.tokenRefreshUrl
+            };
+            entity = JSON.stringify(serviceInfo);
+        }
+        return this.request("PUT", this.resourceUrl, entity, options);
     }
 
 }
@@ -16319,10 +16318,38 @@ class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceB
 SuperMap.iPortalResource = iPortalResource_IPortalResource;
 
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalShareParam
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalShareParam_IPortalShareParam {
+
+    constructor(params) {
+        params = params || {};
+        this.ids = [];
+        this.entities = [];
+        this.resourceType = ""; // MAP SERVICE SCENE DATA INSIGHTS_WORKSPACE MAP_DASHBOARD
+        Util.extend(this, params);
+    }
+}
+SuperMap.iPortalShareParam = iPortalShareParam_IPortalShareParam;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -16372,7 +16399,11 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
      */
     queryResources(queryParams) {
         if (!(queryParams instanceof iPortalQueryParam_IPortalQueryParam)) {
-            return null;
+            return new Promise( function(resolve){
+                resolve(
+                    "queryParams is not instanceof iPortalQueryParam !"
+                );
+            });
         }
         var me = this;
         var resourceUrl = this.iportalUrl + "/gateway/catalog/resource/search.json";
@@ -16393,6 +16424,33 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
     }
 
 
+    /**
+     * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
+     * @description 查询资源。
+     * @param {SuperMap.updateResourcesShareSetting} shareParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+    updateResourcesShareSetting(shareParams) {
+        if (!(shareParams instanceof iPortalShareParam_IPortalShareParam)) {
+            return new Promise( function(resolve){
+                resolve(
+                    "shareParams is not instanceof iPortalShareParam !"
+                );
+            });
+        }
+        var resourceUrlName = shareParams.resourceType.replace("_","").toLowerCase()+"s";
+        if(resourceUrlName === "datas"){
+            resourceUrlName = "mycontent/"+resourceUrlName;
+        }
+        var cloneShareParams = {
+            ids: shareParams.ids,
+            entities: shareParams.entities
+        }
+        var shareUrl = this.iportalUrl + "/web/"+resourceUrlName+"/sharesetting.json";
+        return this.request("PUT", shareUrl, JSON.stringify(cloneShareParams)).then(function(result) {
+            return result;
+        });
+    }
     /**
      * @function SuperMap.iPortal.prototype.queryServices
      * @description 查询服务。
@@ -16675,10 +16733,82 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
 
 SuperMap.iPortal = iPortal_IPortal;
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareEntity.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalShareEntity
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalShareEntity_IPortalShareEntity {
+
+    constructor(params) {
+        params = params || {};
+        this.permissionType = ""; // SEARCH READ READWRITE DOWNLOAD
+        this.entityType = ""; // USER DEPARTMENT IPORTALGROUP
+        this.entityName = "GUEST"; // GUEST or 具体用户 name
+        this.entityId = null;
+        Util.extend(this, params);
+    }
+}
+SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.IPortalUser
+ * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
+ * @category iPortal/Online
+ * @param {string} iportalUrl - iportal根地址。
+ * @extends {SuperMap.iPortalServiceBase}
+ *
+ */
+class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
+    constructor(iportalUrl) {
+        super(iportalUrl);
+        this.iportalUrl = iportalUrl;
+    }
+
+    /**
+     * @function SuperMap.prototype.deleteResources
+     * @description 删除资源。
+     * @param {Object} deleteParams - 删除资源所需的参数对象：{ids,resourceType}。
+     * @returns {Promise} 返回包含删除操作状态的 Promise 对象。
+     */
+    deleteResources(deleteParams) {
+        var resourceName = deleteParams.resourceType.replace("_","").toLowerCase();
+        var deleteResourceUrl = this.iportalUrl+"/web/" + resourceName +"s.json?ids=" + encodeURI(JSON.stringify(deleteParams.ids));
+        if( resourceName === 'data') {
+            deleteResourceUrl = this.iportalUrl + "/web/mycontent/datas/delete.json";
+            return this.request("POST", deleteResourceUrl, JSON.stringify(deleteParams.ids));
+        }
+        return this.request("DELETE", deleteResourceUrl);
+    }
+}
+
+SuperMap.iPortalUser = iPortalUser_IPortalUser;
 // CONCATENATED MODULE: ./src/common/iPortal/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
 
 
 
@@ -39958,7 +40088,7 @@ class Online_Online {
     //TODO 目前并没有对接Online的所有操作，需要补充完整
     //所有查询返回的是一个Promise,在外部使用的时候通过Promise的then方法获取异步结果
     constructor() {
-        this.rootUrl = "http://www.supermapol.com";
+        this.rootUrl = "https://www.supermapol.com";
         this.webUrl = this.rootUrl + "/web";
 
         var mContentUrl = this.webUrl + "/mycontent";
@@ -67156,7 +67286,7 @@ SuperMap.Components.Chart = ChartView_ChartView;
 // CONCATENATED MODULE: ./src/common/components/templates/TemplateBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
@@ -75849,7 +75979,7 @@ external_L_default.a.Proj._isProj4Obj = function(a) {
  * @category BaseTypes Projection
  * @extends {L.Class}
  * @param {string} code - proj srsCode
- * @param {string} def - 投影的 proj4 定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
+ * @param {string} def - 投影的 proj4 定义。{@link [详细]{https://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
  * @param {L.bounds} bounds -  投影范围参数
  */
 external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
@@ -75931,7 +76061,7 @@ external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
  * @extends {L.Class}
  * @param {string} srsCode - proj srsCode。
  * @param {Object} options - 参数。
- * @param {string} options.def - 投影的proj4定义。[详细]{@link http://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
+ * @param {string} options.def - 投影的proj4定义。[详细]{@link https://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
  * @param {(Array.<number>|L.Point)} [options.origin] - 原点。
  * @param {Array.<number>} [options.scales] - 比例尺数组。
  * @param {Array.<number>} [options.scaleDenominators] - 比例尺分母数组。
@@ -76227,14 +76357,14 @@ external_L_default.a.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
 let Attributions = {
 
     Prefix: `<a href='http://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
-                with <span>© <a href='http://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
+                with <span>© <a href='https://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
 
     Common: {
         attribution: `Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`
     },
 
     Online: {
-        attribution: `Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
+        attribution: `Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
     },
 
     ECharts: {
@@ -76246,7 +76376,7 @@ let Attributions = {
     },
 
     Turf: {
-        attribution: `<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
+        attribution: `<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
     },
 
     Baidu: {
@@ -76915,7 +77045,7 @@ var Logo = external_L_default.a.Control.extend({
                 styleSize = "";
             }
         }
-        var link = this.options.link || "http://iclient.supermap.io";
+        var link = this.options.link || "https://iclient.supermap.io";
         div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
             "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'></a>";
         return div;
@@ -81937,12 +82067,12 @@ external_L_default.a.supermap.unicodeMarker = unicodeMarker;
  * @param {number} id - iPortal/Online 地图 id。
  * @param {Object} options - 可选参数。
  * @param {string} [options.map='map'] - 地图容器id。
- * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online 服务地址。
+ * @param {string} [options.server='https://www.supermapol.com'] - iPortal/Online 服务地址。
  * @param {boolean} [options.featureLayerPopupEnable=true] -  是否启动要素图层提示框。
  * @param {string} [options.featureLayerPopup] - 提示框提示信息。
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
  * @fires L.supermap.webmap#mapLoaded
  * @fires L.supermap.webmap#coordconvertsuccess
  * @fires L.supermap.webmap#coordconvertfailed
@@ -81954,7 +82084,7 @@ var WebMap = external_L_default.a.LayerGroup.extend({
 
     options: {
         map: 'map',
-        server: 'http://www.supermapol.com',
+        server: 'https://www.supermapol.com',
         featureLayerPopupEnable: true,
         featureLayerPopup: null,
         credentialValue: null,
@@ -84997,7 +85127,7 @@ external_L_default.a.supermap.circleStyle = circleStyle;
 /**
  * @class L.supermap.imageStyle
  * @classdesc 自定义图形要素风格。
- * @category Graphic
+ * @category Visualization Graphic
  * @extends {L.Class}
  * @param {Object} options - 图形要素风格参数。
  * @param {HTMLImageElement} options.img - image 对象。
@@ -85048,7 +85178,7 @@ external_L_default.a.supermap.imageStyle = imageStyle;
 
 const emptyFunc = external_L_default.a.Util.falseFn;
 var GraphicCanvasRenderer = external_L_default.a.Class.extend({
-    initialize: function (layer, options) {
+    initialize: function(layer, options) {
         this.layer = layer;
         options = options || {};
         external_L_default.a.Util.setOptions(this, options);
@@ -85060,7 +85190,7 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
      * @description 返回渲染器给图层，提供图层后续的数据增删改。
      * @returns {L.Canvas}
      */
-    getRenderer: function () {
+    getRenderer: function() {
         return this.options.renderer;
     },
 
@@ -85069,38 +85199,42 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
      * @function  GraphicCanvasRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
-    update: function () {
+    update: function() {
         this.getRenderer()._clear();
         this.getRenderer()._draw();
     },
 
-    _handleClick: function (evt) {
+    _handleClick: function(evt) {
         let me = this,
             layer = me.layer,
             map = layer._map;
-        if (!layer.options.onClick) {
-            return;
-        }
-        this.layer._renderer._ctx.canvas.style.cursor = "pointer";
+        this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
         let graphics = layer._getGraphicsInBounds();
+        evt.target = null;
         for (let i = 0; i < graphics.length; i++) {
             let p1, p2, bounds;
-            let center = map.latLngToLayerPoint(graphics[i].getLatLng());
+            const center = map.latLngToLayerPoint(graphics[i].getLatLng());
             let style = graphics[i].getStyle();
             if (!style && this.defaultStyle) {
                 style = this.defaultStyle;
             }
             if (style.img) {
-                let anchor = style.anchor || [style.img.width / 2, style.img.height / 2];
+                const imgWidth = style.size[0] || style.img.width;
+                const imgHeight = style.size[1] || style.img.height;
+                const anchor = style.anchor || [imgWidth / 2, imgHeight / 2];
                 p1 = external_L_default.a.point(center.x - anchor[0], center.y - anchor[1]);
-                p2 = external_L_default.a.point(p1.x + style.img.width, p1.y + style.img.height);
+                p2 = external_L_default.a.point(p1.x + imgWidth, p1.y + imgHeight);
             } else {
                 p1 = external_L_default.a.point(center.x - style.width / 2, center.y - style.height / 2);
                 p2 = external_L_default.a.point(center.x + style.width / 2, center.y + style.height / 2);
             }
             bounds = external_L_default.a.bounds(p1, p2);
             if (bounds.contains(map.latLngToLayerPoint(evt.latlng))) {
-                return layer.options.onClick.call(layer, graphics[i],evt);
+                evt.target = graphics[i];
+                if (evt.type === 'click' && layer.options.onClick) {
+                    layer.options.onClick.call(layer, graphics[i], evt);
+                }
+                return;
             }
         }
     },
@@ -85110,28 +85244,28 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
 });
 
 external_L_default.a.Canvas.include({
-
-    drawGraphics: function (graphics, defaultStyle) {
+    drawGraphics: function(graphics, defaultStyle) {
         var me = this;
         if (!me._drawing) {
             return;
         }
         //this._ctx.clearRect(0, 0, this._ctx.canvas.width, me._ctx.canvas.height);
-        graphics.forEach(function (graphic) {
+        graphics.forEach(function(graphic) {
             var style = graphic.getStyle();
             if (!style && defaultStyle) {
                 style = defaultStyle;
             }
-            if (style.img) { //绘制图片
+            if (style.img) {
+                //绘制图片
                 me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
-            } else { //绘制canvas
+            } else {
+                //绘制canvas
                 me._drawCanvas.call(me, me._ctx, style, graphic.getLatLng());
             }
-        })
+        });
     },
 
-    _drawCanvas: function (ctx, style, latLng) {
-
+    _drawCanvas: function(ctx, style, latLng) {
         var canvas = style;
         var pt = this._map.latLngToLayerPoint(latLng);
         var p0 = pt.x - canvas.width / 2;
@@ -85142,7 +85276,7 @@ external_L_default.a.Canvas.include({
         ctx.drawImage(canvas, p0, p1, width, height);
     },
 
-    _drawImage: function (ctx, style, latLng) {
+    _drawImage: function(ctx, style, latLng) {
         //设置图片的大小
         var width, height;
         if (style.size) {
@@ -85165,7 +85299,7 @@ external_L_default.a.Canvas.include({
         ctx.drawImage(style.img, point[0], point[1], width, height);
     },
 
-    _coordinateToPoint: function (coordinate) {
+    _coordinateToPoint: function(coordinate) {
         if (!this._map) {
             return coordinate;
         }
@@ -85178,8 +85312,8 @@ external_L_default.a.Canvas.include({
         var point = this._map.latLngToLayerPoint(latLng);
         return [point.x, point.y];
     }
-
 });
+
 // CONCATENATED MODULE: ./src/leaflet/overlay/graphic/WebGLRenderer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -85519,7 +85653,7 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
 
 
 
-const Renderer = ["canvas", "webgl"];
+const Renderer = ['canvas', 'webgl'];
 
 const defaultProps = {
     color: [0, 0, 0, 255],
@@ -85531,6 +85665,7 @@ const defaultProps = {
     strokeWidth: 1,
     outline: false
 };
+
 /**
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
@@ -85552,8 +85687,7 @@ const defaultProps = {
  * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  */
 var GraphicLayer = external_L_default.a.Path.extend({
-
-    initialize: function (graphics, options) {
+    initialize: function(graphics, options) {
         this.graphics = [].concat(graphics);
         let opt = options || {};
         // 由于是canvas实现所以不能更改pane
@@ -85565,6 +85699,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
         if (!Detector.supportWebGL2()) {
             this.options.render = Renderer[0];
         }
+        this.on('click mousemove dblclick mousedown mouseup mouseout contextmenu', this._handleClick, this);
     },
 
     /**
@@ -85573,12 +85708,12 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 获取事件。
      * @returns {Object} 返回该图层支持的事件对象。
      */
-    getEvents: function () {
-        return {
-            click: this._handleClick.bind(this),
+    getEvents: function() {
+        const events = {
             resize: this._resize.bind(this),
             moveend: this._moveEnd.bind(this)
         };
+        return events;
     },
 
     /**
@@ -85586,13 +85721,13 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.onAdd
      * @description 添加图形。
      */
-    onAdd: function (map) {
+    onAdd: function(map) {
         this._map = map;
         this.defaultStyle = this._getDefaultStyle(this.options);
         this._renderer = this._createRenderer();
         this._container = this._renderer._container;
+        this.addInteractiveTarget(this._container);
         external_L_default.a.Path.prototype.onAdd.call(this);
-
     },
 
     /**
@@ -85601,7 +85736,8 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.onRemove
      * @description 移除图层。
      */
-    onRemove: function () {
+    onRemove: function() {
+        this.off('click mousemove dblclick mousedown mouseup contextmenu', this._handleClick, this);
         this._renderer._removePath(this);
     },
 
@@ -85610,7 +85746,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
      * @param {Array.<L.supermap.graphic>} graphics - 点要素对象数组。
      */
-    setGraphics: function (graphics) {
+    setGraphics: function(graphics) {
         this.graphics = this.graphics || [];
         this.graphics.length = 0;
         let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
@@ -85623,7 +85759,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 追加点要素，不会覆盖之前的要素。
      * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组。
      */
-    addGraphics: function (graphics) {
+    addGraphics: function(graphics) {
         this.graphics = this.graphics || [];
         let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         this.graphics = this.graphics.concat(sGraphics);
@@ -85655,7 +85791,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
-        return this.getGraphicBy("id", graphicId);
+        return this.getGraphicBy('id', graphicId);
     },
 
     /**
@@ -85691,7 +85827,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
             this.update();
             return;
         }
-        if (!(Util.isArray(graphics))) {
+        if (!Util.isArray(graphics)) {
             graphics = [graphics];
         }
 
@@ -85726,7 +85862,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
      * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
-    setStyle: function (styleOptions) {
+    setStyle: function(styleOptions) {
         let _opt = this.options;
         let styleOpt = {
             color: _opt.color,
@@ -85748,7 +85884,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.update
      * @description 更新图层，数据或者样式改变后调用。
      */
-    update: function () {
+    update: function() {
         this._layerRenderer.update(this.graphics);
     },
 
@@ -85756,7 +85892,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.clear
      * @description 释放图层资源。
      */
-    clear: function () {
+    clear: function() {
         this.removeGraphics();
     },
 
@@ -85765,7 +85901,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 获取渲染器。
      * @returns {Object} 内部渲染器。
      */
-    getRenderer: function () {
+    getRenderer: function() {
         return this._renderer;
     },
 
@@ -85774,7 +85910,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 获取当前地图及图层状态。
      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
-    getState: function () {
+    getState: function() {
         let map = this._map;
         let width = map.getSize().x;
         let height = map.getSize().y;
@@ -85812,24 +85948,24 @@ var GraphicLayer = external_L_default.a.Path.extend({
         return state;
     },
 
-    _resize: function () {
+    _resize: function() {
         let size = this._map.getSize();
         this._container.width = size.x;
         this._container.height = size.y;
-        this._container.style.width = size.x + "px";
-        this._container.style.height = size.y + "px";
+        this._container.style.width = size.x + 'px';
+        this._container.style.height = size.y + 'px';
 
         let mapOffset = this._map.containerPointToLayerPoint([0, 0]);
         external_L_default.a.DomUtil.setPosition(this._container, mapOffset);
         this._update();
     },
-    _moveEnd: function () {
+    _moveEnd: function() {
         if (this._layerRenderer instanceof GraphicWebGLRenderer) {
             this._update();
         }
     },
     //使用canvas渲染或webgl渲染
-    _createRenderer: function () {
+    _createRenderer: function() {
         let map = this._map;
         let width = map.getSize().x;
         let height = map.getSize().y;
@@ -85842,11 +85978,14 @@ var GraphicLayer = external_L_default.a.Path.extend({
             });
         } else {
             let optDefault = external_L_default.a.Util.setOptions({}, defaultProps);
-            let opt = external_L_default.a.Util.setOptions({
-                options: optDefault
-            }, this.options);
+            let opt = external_L_default.a.Util.setOptions(
+                {
+                    options: optDefault
+                },
+                this.options
+            );
             opt = external_L_default.a.Util.setOptions(this, opt);
-            opt.container = map.getPane("overlayPane");
+            opt.container = map.getPane('overlayPane');
             opt.width = width;
             opt.height = height;
 
@@ -85861,7 +86000,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @private
      * @override
      */
-    _update: function () {
+    _update: function() {
         if (this._map) {
             this._updatePath();
         }
@@ -85871,7 +86010,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @private
      * @override
      */
-    _updatePath: function () {
+    _updatePath: function() {
         let graphics = this._getGraphicsInBounds();
         this._renderer.drawGraphics(graphics, this.defaultStyle);
     },
@@ -85880,9 +86019,9 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @private
      * @override
      */
-    _project: function () {
+    _project: function() {
         let me = this;
-        me._getGraphicsInBounds().map(function (graphic) {
+        me._getGraphicsInBounds().map(function(graphic) {
             let point = me._map.latLngToLayerPoint(graphic.getLatLng());
             let w = me._clickTolerance();
             let p = [graphic._anchor + w, graphic._anchor + w];
@@ -85891,7 +86030,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
         });
         me._pxBounds = external_L_default.a.bounds(external_L_default.a.point(0, 0), external_L_default.a.point(this._container.width, this._container.height));
     },
-    _getDefaultStyle: function (options) {
+    _getDefaultStyle: function(options) {
         const target = {};
         if (options.color) {
             target.fill = true;
@@ -85913,16 +86052,15 @@ var GraphicLayer = external_L_default.a.Path.extend({
             target.stroke = options.outline;
         }
         return new CircleStyle(target).getStyle();
-
     },
     toRGBA(colorArray) {
         return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
     },
-    _getGraphicsInBounds: function () {
+    _getGraphicsInBounds: function() {
         let me = this;
         let graphicsInBounds = [];
         let viewBounds = me._map.getBounds();
-        this.graphics.map(function (graphic) {
+        this.graphics.map(function(graphic) {
             if (viewBounds.contains(graphic.getLatLng())) {
                 graphicsInBounds.push(graphic);
             }
@@ -85931,8 +86069,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
         return graphicsInBounds;
     },
 
-
-    _handleClick: function (evt) {
+    _handleClick: function(evt) {
         this._layerRenderer._handleClick(evt);
     },
     /**
@@ -85946,14 +86083,14 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @override
      */
     _containsPoint: external_L_default.a.Util.falseFn
-
 });
 
-let graphicLayer = function (graphics, options) {
+let graphicLayer = function(graphics, options) {
     return new GraphicLayer(graphics, options);
 };
 
 external_L_default.a.supermap.graphicLayer = graphicLayer;
+
 // CONCATENATED MODULE: ./src/leaflet/overlay/GraphThemeLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -90002,10 +90139,10 @@ var FieldService = ServiceBase.extend({
         me.currentStatisticResult = {fieldName: fieldName};
         me._statisticsCallback = callback;
         //针对每种统计方式分别进行请求
-        for (var mode in modes) {
-            me.currentStatisticResult[modes[mode]] = null;
-            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
-        }
+        modes.forEach(mode => {
+            me.currentStatisticResult[mode] = null;
+            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, mode);
+        });
     },
 
     _fieldStatisticRequest: function (dataSourceName, dataSetName, fieldName, statisticMode) {
@@ -92701,7 +92838,7 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
 // CONCATENATED MODULE: ./src/leaflet/components/ComponentsViewBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
 * This program are made available under the terms of the Apache License, Version 2.0
-* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+* which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -93346,7 +93483,7 @@ class GeoJsonLayerDataModel {
 var SearchViewModel = external_L_default.a.Evented.extend({
     options: {
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
+            addressUrl: "https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         }
     },
@@ -93595,7 +93732,7 @@ var SearchView = ComponentsViewBase.extend({
     options: {
         cityConfig: CityConfig_config,
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
+            addressUrl: "https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         },
         isGeoCoding: true,
@@ -97160,6 +97297,8 @@ external_L_default.a.supermap.components.dataServiceQuery = dataServiceQueryView
 /* concated harmony reexport IPortalQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalQueryParam", function() { return iPortalQueryParam_IPortalQueryParam; });
 /* concated harmony reexport IPortalResource */__webpack_require__.d(__webpack_exports__, "IPortalResource", function() { return iPortalResource_IPortalResource; });
 /* concated harmony reexport IPortalQueryResult */__webpack_require__.d(__webpack_exports__, "IPortalQueryResult", function() { return iPortalQueryResult_IPortalQueryResult; });
+/* concated harmony reexport IPortalShareParam */__webpack_require__.d(__webpack_exports__, "IPortalShareParam", function() { return iPortalShareParam_IPortalShareParam; });
+/* concated harmony reexport IPortalShareEntity */__webpack_require__.d(__webpack_exports__, "IPortalShareEntity", function() { return iPortalShareEntity_IPortalShareEntity; });
 /* concated harmony reexport IPortalMap */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
 /* concated harmony reexport IPortalMapsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
 /* concated harmony reexport IPortalInsight */__webpack_require__.d(__webpack_exports__, "IPortalInsight", function() { return iPortalInsight_IPortalInsight; });
@@ -97171,6 +97310,7 @@ external_L_default.a.supermap.components.dataServiceQuery = dataServiceQueryView
 /* concated harmony reexport IPortalServicesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
 /* concated harmony reexport IPortalMapdashboard */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboard", function() { return iPortalMapdashboard_IPortalMapdashboard; });
 /* concated harmony reexport IPortalMapdashboardsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboardsQueryParam", function() { return iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam; });
+/* concated harmony reexport IPortalUser */__webpack_require__.d(__webpack_exports__, "IPortalUser", function() { return iPortalUser_IPortalUser; });
 /* concated harmony reexport Online */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
 /* concated harmony reexport OnlineData */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
 /* concated harmony reexport OnlineQueryDatasParameter */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });

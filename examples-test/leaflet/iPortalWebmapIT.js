@@ -11,14 +11,14 @@ module.exports = {
     //     browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 10000);
     //     browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
     //     browser.pause(1000);
-    //     browser.elements('class name', 'leaflet-layer', function (result) {
+    //     browser.elements('css selector', '.leaflet-layer', function (result) {
     //         this.assert.equal(result.value.length, 2, "expect Number of leaflet-layer to be 2, actual is " + result.value.length);
     //     });
     //     //1.3.1版本会多生成一个空的 leaflet-tile-container  待确认问题
-    //     // browser.elements('class name', 'leaflet-tile-container', function (result) {
+    //     // browser.elements('css selector', '.leaflet-tile-container', function (result) {
     //     //     this.assert.equal(result.value.length, 2, "expect Number of leaflet-tile-container to be 2, actual is " + result.value.length);
     //     // });
-    //     browser.elements('class name', 'leaflet-marker-icon', function (result) {
+    //     browser.elements('css selector', '.leaflet-marker-icon', function (result) {
     //         this.assert.ok(result.value.length > 0, "expect Number of marker to be greater than 0, actual is " + result.value.length);
     //     });
     //     browser.useXpath().click('//*[@id="map"]/div[1]/div[4]/img[22]', function () {
