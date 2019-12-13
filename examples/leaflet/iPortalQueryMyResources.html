@@ -94,7 +94,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
-                    <tton>
+                    </button>
                     <h4 class="modal-title" id="myModalLabel" data-i18n="resources.text_login"></h4>
                 </div>
                     <table class="table table-bordered col-md-6">
@@ -180,11 +180,11 @@
                                         <fieldset>
                                                 <ul class="nav nav-tabs" role="tablist">
                                                     <li role="presentation" class="active">
-                                                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab" data-i18n="resources.title_iPortalQueryResourcesPublic"></a>
+                                                        <a href="#public" aria-controls="public" role="tab" data-toggle="tab" data-i18n="resources.title_iPortalQueryResourcesPublic"></a>
                                                     </li>
                                                 </ul>
                                                 <div class="tab-content">
-                                                    <div role="tabpanel" class="tab-pane active" id="home">
+                                                    <div role="tabpanel" class="tab-pane active" id="public">
                                                         
                                                     </div>
                                                 </div>
@@ -511,6 +511,48 @@
             })
         }
     }
+    //调用资源update接口，模拟服务metadata对象（所有字段） 提交后端 防止因为后端返回metadata对象为空 造成属性提交报错的问题（如果有变化 就替换 否则提交默认值）
+    var entity = {
+        metadata: {
+            dataIdInfo: {
+                dataIdent: {
+                    idCitation: {
+                        resTitle: ""
+                    },
+                    idAbs: "",
+                    dataExt: {
+                        exDesc: "",
+                        geoEle: {
+                            geoBndBox: {
+                                westBL: "",
+                                eastBL: "",
+                                southBL: "",
+                                northBL: "",
+                            },
+                        },
+                    },
+                },
+            },
+            refSysInfo: {
+                refSysID: "",
+                mdCoRefSys: {
+                    projection: ""
+                }
+            },
+            mdContact: {
+                rpIndName: "",
+                rpOrgName: "",
+                rpCntInfo: {
+                    cntAddress: {
+                        delPoint: "",
+                        EMailAdd: ""
+                    },
+                    voiceNum: "",
+                    faxNum: ""
+                }
+            }
+        },
+    }
     //构造属性对象 提交参数 更改属性值
     function updateSelectFeature(updated,data) {
         switch (updated.key){
@@ -661,21 +703,22 @@
                     item.sourceJSON.title = attributes.title;
                     break;
                 case 'SERVICE':
-                    item.sourceJSON.metadata.dataIdInfo.dataIdent.idCitation.resTitle = attributes.title;
+                    entity.metadata.dataIdInfo.dataIdent.idCitation.resTitle = attributes.title;
                     item.sourceJSON.tokenRefreshUrl = attributes.tokenRefreshUrl;
-                    item.sourceJSON.metadata.refSysInfo.refSysID = attributes.refSysInfo.refSysID;
-                    item.sourceJSON.metadata.refSysInfo.mdCoRefSys.projection = attributes.refSysInfo.projection;
-                    item.sourceJSON.metadata.dataIdInfo.dataIdent.dataExt.exDesc = attributes.identifier.region;
-                    item.sourceJSON.metadata.dataIdInfo.dataIdent.dataExt.geoEle.geoBndBox.westBL = attributes.bounds.west;
-                    item.sourceJSON.metadata.dataIdInfo.dataIdent.dataExt.geoEle.geoBndBox.eastBL = attributes.bounds.east;
-                    item.sourceJSON.metadata.dataIdInfo.dataIdent.dataExt.geoEle.geoBndBox.southBL = attributes.bounds.south;
-                    item.sourceJSON.metadata.dataIdInfo.dataIdent.dataExt.geoEle.geoBndBox.northBL = attributes.bounds.north;
-                    item.sourceJSON.metadata.mdContact.rpIndName = attributes.contact.personName;
-                    item.sourceJSON.metadata.mdContact.rpOrgName = attributes.contact.orgName;
-                    item.sourceJSON.metadata.mdContact.rpCntInfo.cntAddress.delPoint = attributes.contact.address;
-                    item.sourceJSON.metadata.mdContact.rpCntInfo.cntAddress.EMailAdd = attributes.contact.email;
-                    item.sourceJSON.metadata.mdContact.rpCntInfo.voiceNum = attributes.contact.voiceNum;
-                    item.sourceJSON.metadata.mdContact.rpCntInfo.faxNum = attributes.contact.faxNum;
+                    entity.metadata.refSysInfo.refSysID = attributes.refSysInfo.refSysID;
+                    entity.metadata.refSysInfo.mdCoRefSys.projection = attributes.refSysInfo.projection;
+                    entity.metadata.dataIdInfo.dataIdent.dataExt.exDesc = attributes.identifier.region;
+                    entity.metadata.dataIdInfo.dataIdent.dataExt.geoEle.geoBndBox.westBL = attributes.bounds.west;
+                    entity.metadata.dataIdInfo.dataIdent.dataExt.geoEle.geoBndBox.eastBL = attributes.bounds.east;
+                    entity.metadata.dataIdInfo.dataIdent.dataExt.geoEle.geoBndBox.southBL = attributes.bounds.south;
+                    entity.metadata.dataIdInfo.dataIdent.dataExt.geoEle.geoBndBox.northBL = attributes.bounds.north;
+                    entity.metadata.mdContact.rpIndName = attributes.contact.personName;
+                    entity.metadata.mdContact.rpOrgName = attributes.contact.orgName;
+                    entity.metadata.mdContact.rpCntInfo.cntAddress.delPoint = attributes.contact.address;
+                    entity.metadata.mdContact.rpCntInfo.cntAddress.EMailAdd = attributes.contact.email;
+                    entity.metadata.mdContact.rpCntInfo.voiceNum = attributes.contact.voiceNum;
+                    entity.metadata.mdContact.rpCntInfo.faxNum = attributes.contact.faxNum;
+                    item.sourceJSON.metadata =  entity.metadata;
                     break;
                 case "DATA":
                     item.sourceJSON.fileName = attributes.title + attributes.filePostfix;
@@ -712,10 +755,10 @@
             widgets.alert.showAlert("请选择要共享的资源。", false);
             return;
         }
-        $("#home").empty();
+        $("#public").empty();
         //公开
         if(resourceType === 'MAP') {
-            sharePublishDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
+            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
                 "<div class='publicPane sub-font' id='search'>" +
                     "<input type='checkbox'" +
                         "value='search'" +
@@ -739,7 +782,7 @@
                 "</div>" +
             "</div>")
         }else if(resourceType === 'SERVICE') {
-            sharePublishDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
+            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
                 "<div class='publicPane sub-font' id='search'>" +
                     "<input type='checkbox'" +
                         "value='search'" +
@@ -756,7 +799,7 @@
                 "</div>" +
             "</div>")
         }else if(resourceType === 'SCENE') {
-            sharePublishDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
+            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
                 "<div class='publicPane sub-font' id='search'>" +
                     "<input type='checkbox'" +
                         "value='search'" +
@@ -773,7 +816,7 @@
                 "</div>" +
             "</div>")
         }else if(resourceType === 'DATA') {
-            sharePublishDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
+            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
                 "<div class='publicPane sub-font' id='search'>" +
                     "<input type='checkbox'" +
                         "value='search'" +
@@ -790,7 +833,7 @@
                 "</div>" +
             "</div>")
         }else if(resourceType === 'INSIGHTS_WORKSPACE') {
-            sharePublishDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
+            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
                 "<div class='publicPane sub-font' id='search'>" +
                     "<input type='checkbox'" +
                         "value='search'" +
@@ -807,7 +850,7 @@
                 "</div>" +
             "</div>")
         }else if(resourceType === 'MAP_DASHBOARD') {
-            sharePublishDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
+            sharePublicDOM = $("<div class='col-md-4 gallery-item' id='shareCheckboxs'>" +
                 "<div class='publicPane sub-font' id='search'>" +
                     "<input type='checkbox'" +
                         "value='search'" +
@@ -824,7 +867,7 @@
                 "</div>" +
             "</div>")
         }
-        $("#home").append(sharePublishDOM)
+        $("#public").append(sharePublicDOM)
         var item = new SuperMap.iPortalResource(iPortalUrl,{resourceId:shareIds[0],resourceType:resourceType});
         item.load().then(()=>{
             if(item.sourceJSON.authorizeSetting && item.sourceJSON.authorizeSetting.length > 0){
