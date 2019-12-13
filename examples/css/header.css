@@ -227,6 +227,7 @@ li.navbar-menu>a::after {
 }
 
 li.navbar-menu.active>a::after {
+    bottom: 0px;
     opacity: 1;
     -webkit-transform: translateY(0px);
     -moz-transform: translateY(0px);
@@ -297,7 +298,7 @@ ul.icl-nav-menu-sub:nth-child(1) {
 }
 
 .icl-nav-menu-item:not(.icl-nav-menu-overivew) > li:last-child {
-    width: 120px;
+    width: 130px;
 }
 
 @media screen and (max-width: 1220px) {
