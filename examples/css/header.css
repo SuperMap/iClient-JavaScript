@@ -1,25 +1,28 @@
 .navbar {
-    font-size: 16px;
+  font-size: 14px;
 }
 
 /*logo的样式*/
 #logo {
-    width: 28px;
-    height: 28px;
+  width: 24px;
+  height: 19px;
 }
 
 .navbar .project-title {
-    text-decoration: none;
-    vertical-align: middle;
-    font-size: 24px;
-    color: #FFFFFF;
-    letter-spacing: -0.16px;
+  text-decoration: none;
+  vertical-align: middle;
+  color:rgba(255,255,255,1);
+  opacity:0.85;
+  /* letter-spacing: -0.16px; */
+  font-weight: 400;
 }
 
 #title {
-    font-size: 24px;
-    color: #FFFFFF;
+  font-size: 20px;
+  color: #FFFFFF;
+  font-family: "Microsoft Yahei";
 }
+
 
 .pre-release {
     font-size: 18px;
@@ -35,6 +38,7 @@
     line-height: 60px;
     padding: 5px;
     float: left;
+    color:rgba(255,255,255,0.85);
 }
 
 .main-header .sidebar-toggle {
@@ -55,13 +59,12 @@
 .skin-blue .main-header .navbar .nav > li > a:focus,
 .skin-blue .main-header .navbar .nav .open > a,
 .skin-blue .main-header .navbar .nav .open > a:hover,
-.skin-blue .main-header .navbar .nav .open > a:focus,
-.skin-blue .main-header .navbar .nav > .active > a {
+.skin-blue .main-header .navbar .nav .open > a:focus{
     background: #C30022;
 }
 
 .skin-blue .main-header .navbar .nav > li > a:hover {
-    background: rgba(0, 0, 0, 0.1);
+  background: rgba(255,255,255,0.12)
 }
 
 .navbar-toggle {
@@ -107,6 +110,11 @@
     transition: all .5s ease-out 0.2s;
     -webkit-transition: all .5s ease-out 0.2s;
     -moz-transition: all .5s ease-out 0.2s;
+}
+
+.navbar .project-log-container{
+  vertical-align: middle;
+  margin-right: 6px;
 }
 
 .lang-option {
@@ -184,39 +192,41 @@ ul.icl-nav-menu-box {
 }
 
 li.navbar-menu > a {
-    padding: 10px;
+  padding: 12.5px;
+}
+
+li.navbar-menu {
+  font-family: "Microsoft Yahei";
 }
 
 li.navbar-menu > a:hover, li.navbar-menu > a:focus {
     outline: none;
 }
 
-li.navbar-menu > a::before {
-    position: absolute;
+li.navbar-menu>a::after {
+  position: absolute;
     left: 0;
     width: 100%;
-    height: 4px;
-    background: #F09243;
+    height: 3px;
+    background: #E14D57;
     content: '';
     opacity: 0;
     -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
     -moz-transition: opacity 0.3s, -moz-transform 0.3s;
     transition: opacity 0.3s, transform 0.3s;
-    -webkit-transform: translateY(-10px);
-    -moz-transform: translateY(-10px);
-    transform: translateY(-10px);
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    transform: translateY(0px);
 }
 
-li.navbar-menu > a::before {
-    top: 0;
-    -webkit-transform: translateY(-10px);
-    -moz-transform: translateY(-10px);
-    transform: translateY(-10px);
+li.navbar-menu>a::after {
+  bottom: 0px;
+  -webkit-transform: translateY(0px);
+  -moz-transform: translateY(0px);
+  transform: translateY(0px);
 }
 
-li.navbar-menu > a:hover::before,
-li.navbar-menu > a:focus::before,
-li.navbar-menu.active > a::before {
+li.navbar-menu.active>a::after {
     opacity: 1;
     -webkit-transform: translateY(0px);
     -moz-transform: translateY(0px);
@@ -245,7 +255,7 @@ ul.icl-nav-menu-sub:nth-child(1) {
 
 .icl-nav-menu-box li a:not(.disabled):hover,
 .icl-nav-menu-box li a:not(.disabled):focus {
-    color: #F09243;
+  color: #e14d57;
 }
 
 .icl-nav-menu-sub {
@@ -274,7 +284,7 @@ ul.icl-nav-menu-sub:nth-child(1) {
     position: absolute; 
     right: -10px; 
     top: 7px;
-    background:#c70022; 
+    background:#e14d57; 
 } 
 
 .icl-nav-menu-sub::-webkit-scrollbar {
