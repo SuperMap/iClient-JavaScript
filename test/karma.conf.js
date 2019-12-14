@@ -31,7 +31,6 @@ module.exports = function (config) {
                 require('browserify-imgify')
             ]
         },
-
         // list of files  patterns to load in the browser
         // false 表示初始化的时候不会使用 script 标签直接将相关 js 引入到浏览器，需要自己写代码加载, 注意添加顺序
         files: [
@@ -93,20 +92,20 @@ module.exports = function (config) {
             // './common/**/*Spec.js': ['browserify'],
             './test-main-common.js': ['browserify'],
 
-            // '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
-            // '../src/leaflet/**/!(index).js': ['browserify'],
-            // // './leaflet/**/*Spec.js': ['browserify'],
-            // './test-main-leaflet.js': ['browserify'],
+            '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
+            '../src/leaflet/**/!(index).js': ['browserify'],
+            // './leaflet/**/*Spec.js': ['browserify'],
+            './test-main-leaflet.js': ['browserify'],
 
             '../node_modules/openlayers/dist/ol-debug.js': ['browserify'],
             '../src/openlayers/**/!(index).js': ['browserify'],
             // './openlayers/**/*Spec.js': ['browserify'],
             './test-main-openlayers.js': ['browserify'],
 
-            // '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
-            // '../src/mapboxgl/**/!(index).js': ['browserify'],
-            // // './mapboxgl/**/*Spec.js': ['browserify'],
-            // './test-main-mapboxgl.js': ['browserify']
+            '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
+            '../src/mapboxgl/**/!(index).js': ['browserify'],
+            // './mapboxgl/**/*Spec.js': ['browserify'],
+            './test-main-mapboxgl.js': ['browserify']
         },
 
         // test results reporter to use
