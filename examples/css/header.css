@@ -101,8 +101,7 @@
     max-height: 0;
 }
 
-.navbar-menu:hover .menu-sub-warp,
-.navbar-menu.active .menu-sub-warp {
+.navbar-menu:hover .menu-sub-warp {
     max-height: 660px;
     transform-origin: 50% 0;
     -webkit-transform-origin: 50% 0;
