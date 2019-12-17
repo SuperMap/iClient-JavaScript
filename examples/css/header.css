@@ -5,7 +5,10 @@
 /*logo的样式*/
 #logo {
   width: 24px;
-  height: 19px;
+  height: 24px;
+  margin-top: 10px;
+  display: inline-block;
+  margin-right: 6px;
 }
 
 .navbar .project-title {
