@@ -29,9 +29,9 @@
     <script type="text/javascript" include="mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
         $.get(
-            'https://iclient.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',
+            'https://iserver.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',
             function (style) {
-                var host = window.isLocal ? window.server : "https://iclient.supermap.io";
+                var host = window.isLocal ? window.server : "https://iserver.supermap.io";
                 style.layers[0].paint["background-color"] = "rgba(168,209,221,=00)";
                 map = new mapboxgl.Map({
                     container: 'map', 

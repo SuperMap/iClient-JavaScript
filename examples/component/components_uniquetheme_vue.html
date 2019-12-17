@@ -52,7 +52,7 @@
     <script include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script>
         widgets.loader.showLoader('data loading...');
-        var HOST = window.isLocal ? window.server : 'https://iclient.supermap.io';
+        var HOST = window.isLocal ? window.server : "https://iserver.supermap.io";
         var dataUrl = HOST + "/iserver/services/data-jingjin/rest/data";
         var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
         getFeatureParam = new SuperMap.FilterParameter({
