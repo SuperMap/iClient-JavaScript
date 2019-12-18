@@ -222,5 +222,45 @@ describe('leaflet_ImageMapLayer', () => {
         expect(hillshadeParameter.azimuth).toBe(200);
         expect(hillshadeParameter.zFactor).toBe(1);
     });
+    it("getImageUrl, clipRegion_grojson", () => {
+        const tempOptions = {
+            clipRegion:{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[20,-20],[20,0],[40,0],[40,-20],[20,-20]]]}},
+            clipRegionEnabled:true
+        };
+        const imageMapLayerObject = imageMapLayer(url, tempOptions).addTo(map);
+        expect(imageMapLayerObject).not.toBeNull();
+        const tileUrl = imageMapLayerObject.getImageUrl(L.point(1, 4));
+        const clipRegionEnabledValue = getQueryValue(tileUrl,'clipRegionEnabled');
+        expect(clipRegionEnabledValue).toBeTruthy();
+        const clipRegionValue = getQueryValue(tileUrl,'clipRegion');
+        expect(clipRegionValue).not.toBeNull;
+        const clipRegionParameter = JSON.parse(decodeURIComponent(clipRegionValue));
+        expect(clipRegionParameter.parts[0]).toBe(5);
+        expect(clipRegionParameter.points.length).toBe(5);
+        expect(clipRegionParameter.points[0].x).toBe(20);
+        expect(clipRegionParameter.points[0].y).toBe(-20);
+        expect(clipRegionParameter.points[4].x).toBe(20);
+        expect(clipRegionParameter.points[4].y).toBe(-20);
+    });
+    it("getImageUrl, clipRegion_polygon", () => {
+        const tempOptions = {
+            clipRegion:L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]], {color: 'red'}),
+            clipRegionEnabled:true
+        };
+        const imageMapLayerObject = imageMapLayer(url, tempOptions).addTo(map);
+        expect(imageMapLayerObject).not.toBeNull();
+        const tileUrl = imageMapLayerObject.getImageUrl(L.point(1, 4));
+        const clipRegionEnabledValue = getQueryValue(tileUrl,'clipRegionEnabled');
+        expect(clipRegionEnabledValue).toBeTruthy();
+        const clipRegionValue = getQueryValue(tileUrl,'clipRegion');
+        expect(clipRegionValue).not.toBeNull;
+        const clipRegionParameter = JSON.parse(decodeURIComponent(clipRegionValue));
+        expect(clipRegionParameter.parts[0]).toBe(5);
+        expect(clipRegionParameter.points.length).toBe(5);
+        expect(clipRegionParameter.points[0].x).toBe(20);
+        expect(clipRegionParameter.points[0].y).toBe(-20);
+        expect(clipRegionParameter.points[4].x).toBe(20);
+        expect(clipRegionParameter.points[4].y).toBe(-20);
+    });
 
 });

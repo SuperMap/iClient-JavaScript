@@ -35,7 +35,7 @@ export var GraphicCanvasRenderer = L.Class.extend({
         let me = this,
             layer = me.layer,
             map = layer._map;
-        this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
+
         let graphics = layer._getGraphicsInBounds();
         evt.target = null;
         for (let i = graphics.length - 1; i >= 0; i--) {
@@ -61,12 +61,14 @@ export var GraphicCanvasRenderer = L.Class.extend({
             }
             bounds = L.bounds(p1, p2);
             if (bounds.contains(map.latLngToLayerPoint(evt.latlng))) {
+                this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
                 evt.target = graphics[i];
                 if (evt.type === 'click' && layer.options.onClick) {
                     layer.options.onClick.call(layer, graphics[i], evt);
                 }
                 return;
             }
+            this.layer._renderer._ctx.canvas.style.cursor = 'auto';
         }
     },
 

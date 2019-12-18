@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L, { Util, Layer, ImageOverlay } from 'leaflet';
 import '../core/Base';
-import { ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential } from '@supermap/iclient-common';
+import { ServerGeometry, ServerType, SecurityManager, Credential } from '@supermap/iclient-common';
 import Attributions from '../core/Attributions';
 /**
  * @class L.supermap.imageMapLayer
@@ -234,11 +234,9 @@ export var ImageMapLayer = Layer.extend({
             params.push('rasterfunction=' + JSON.stringify(options.rasterfunction));
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof L.Path) {
-            options.clipRegion = L.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
+        if (options.clipRegionEnabled && options.clipRegion) {
             params.push('clipRegionEnabled=' + options.clipRegionEnabled);
-            params.push('clipRegion=' + JSON.stringify(options.clipRegion));
+            params.push('clipRegion=' + JSON.stringify(ServerGeometry.fromGeometry(Util.toSuperMapGeometry(options.clipRegion))));
         }
 
         if (options.overlapDisplayed === false) {
