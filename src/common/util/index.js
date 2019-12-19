@@ -13,9 +13,8 @@ import {
     ColorsPickerUtil
 }from './ColorsPickerUtil'
 
-import {
-    ArrayStatistic
-}from './ArrayStatistic';
+import { ArrayStatistic } from './ArrayStatistic';
+import { getMeterPerMapUnit } from './MapCalculateUtil';
 
 export {
     setCORS,
@@ -24,5 +23,6 @@ export {
     getRequestTimeout,
     FetchRequest,
     ColorsPickerUtil,
-    ArrayStatistic
-} ;
+    ArrayStatistic,
+    getMeterPerMapUnit
+};

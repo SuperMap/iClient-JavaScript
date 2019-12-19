@@ -41216,10 +41216,35 @@ class ArrayStatistic {
 
 }
 SuperMap.ArrayStatistic = ArrayStatistic;
+// CONCATENATED MODULE: ./src/common/util/MapCalculateUtil.js
+
+
+var getMeterPerMapUnit = function(mapUnit) {
+    var earchRadiusInMeters = 6378137;
+    var meterPerMapUnit;
+    if (mapUnit === Unit.METER) {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === Unit.DEGREE) {
+        // 每度表示多少米。
+        meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
+    } else if (mapUnit === Unit.KILOMETER) {
+        meterPerMapUnit = 1.0e-3;
+    } else if (mapUnit === Unit.INCH) {
+        meterPerMapUnit = 1 / 2.5399999918e-2;
+    } else if (mapUnit === Unit.FOOT) {
+        meterPerMapUnit = 0.3048;
+    } else {
+        return meterPerMapUnit;
+    }
+    return meterPerMapUnit;
+};
+
 // CONCATENATED MODULE: ./src/common/util/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -70117,6 +70142,7 @@ var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(1);
 
 
 
+
 var BaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
 
 /**
@@ -70362,7 +70388,8 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
             dh = bounds.getNorth() - bounds.getSouth();
         var resolutionX = dw / this.canvasLayer.canvas.width,
             resolutionY = dh / this.canvasLayer.canvas.height;
-
+        // 一个像素是多少米
+        var zoomUnit = getMeterPerMapUnit('DEGREE') * resolutionX;
         var center = map.getCenter();
         var centerPx = map.project(center);
         var dataGetOptions = {
@@ -70387,7 +70414,22 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
 
         this.processData(data);
 
-        self.options._size = self.options.size;
+        // 兼容unit为'm'的情况
+        if (self.options.unit === 'm') {
+            if (self.options.size) {
+                self.options._size = self.options.size / zoomUnit;
+            }
+            if (self.options.width) {
+                self.options._width = self.options.width / zoomUnit;
+            }
+            if (self.options.height) {
+                self.options._height = self.options.height / zoomUnit;
+            }
+        } else {
+            self.options._size = self.options.size;
+            self.options._height = self.options.height;
+            self.options._width = self.options.width;
+        }
 
         var worldPoint = map.project(new external_mapboxgl_default.a.LngLat(0, 0));
         this.drawContext(context, data, self.options, worldPoint);

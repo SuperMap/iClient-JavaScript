@@ -4,7 +4,7 @@ import { utilCityCenter, DataSet } from 'mapv';
 
 describe('Leaflet_MapVRender', () => {
     var originalTimeout;
-    var testDiv, map, layer, renderer;
+    var testDiv, map, layer, mapvLayer, renderer;
     beforeAll(() => {
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map1");
@@ -38,7 +38,8 @@ describe('Leaflet_MapVRender', () => {
             shadowColor: 'rgba(255, 250, 50, 1)',
             shadowBlur: 20,
             max: 100,
-            size: 50,
+            size: 500,
+            unit: 'm',
             label: {
                 show: true,
                 fillStyle: 'white',
@@ -58,7 +59,8 @@ describe('Leaflet_MapVRender', () => {
             }
         };
         //创建MapV图层
-        layer = mapVLayer(dataSet, options).addTo(map);
+        layer = new mapVLayer(dataSet, options).addTo(map);
+        mapvLayer = new MapVRenderer(map, layer, dataSet, options);
         renderer = layer.renderer;
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -69,7 +71,6 @@ describe('Leaflet_MapVRender', () => {
         layer.remove();
         document.body.removeChild(testDiv);
         map.remove();
-
     });
 
     it('initialize,_canvasUpdate_#21', () => {
@@ -84,5 +85,7 @@ describe('Leaflet_MapVRender', () => {
         expect(args.y).toBeCloseTo(635, 2);
     });
 
-
-})
+    it('_canvasUpdate', () => {
+        expect(mapvLayer.options._size).toEqual(0.051104158385466066);
+    });
+});

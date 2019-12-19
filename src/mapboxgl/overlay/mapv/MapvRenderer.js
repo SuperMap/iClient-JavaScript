@@ -3,6 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { baiduMapLayer } from 'mapv';
 import mapboxgl from 'mapbox-gl';
+import { getMeterPerMapUnit } from '@supermap/iclient-common';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -249,7 +250,8 @@ export class MapvRenderer extends BaseLayer {
             dh = bounds.getNorth() - bounds.getSouth();
         var resolutionX = dw / this.canvasLayer.canvas.width,
             resolutionY = dh / this.canvasLayer.canvas.height;
-
+        // 一个像素是多少米
+        var zoomUnit = getMeterPerMapUnit('DEGREE') * resolutionX;
         var center = map.getCenter();
         var centerPx = map.project(center);
         var dataGetOptions = {
@@ -274,7 +276,22 @@ export class MapvRenderer extends BaseLayer {
 
         this.processData(data);
 
-        self.options._size = self.options.size;
+        // 兼容unit为'm'的情况
+        if (self.options.unit === 'm') {
+            if (self.options.size) {
+                self.options._size = self.options.size / zoomUnit;
+            }
+            if (self.options.width) {
+                self.options._width = self.options.width / zoomUnit;
+            }
+            if (self.options.height) {
+                self.options._height = self.options.height / zoomUnit;
+            }
+        } else {
+            self.options._size = self.options.size;
+            self.options._height = self.options.height;
+            self.options._width = self.options.width;
+        }
 
         var worldPoint = map.project(new mapboxgl.LngLat(0, 0));
         this.drawContext(context, data, self.options, worldPoint);

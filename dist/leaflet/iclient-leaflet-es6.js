@@ -42902,10 +42902,35 @@ class ArrayStatistic {
 
 }
 SuperMap.ArrayStatistic = ArrayStatistic;
+// CONCATENATED MODULE: ./src/common/util/MapCalculateUtil.js
+
+
+var getMeterPerMapUnit = function(mapUnit) {
+    var earchRadiusInMeters = 6378137;
+    var meterPerMapUnit;
+    if (mapUnit === Unit.METER) {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === Unit.DEGREE) {
+        // 每度表示多少米。
+        meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
+    } else if (mapUnit === Unit.KILOMETER) {
+        meterPerMapUnit = 1.0e-3;
+    } else if (mapUnit === Unit.INCH) {
+        meterPerMapUnit = 1 / 2.5399999918e-2;
+    } else if (mapUnit === Unit.FOOT) {
+        meterPerMapUnit = 0.3048;
+    } else {
+        return meterPerMapUnit;
+    }
+    return meterPerMapUnit;
+};
+
 // CONCATENATED MODULE: ./src/common/util/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -77179,28 +77204,30 @@ external_L_default.a.supermap.CommontypesConversion = CommontypesConversion_Comm
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
+
 /**
  * @namespace L.Util
  * @category BaseTypes Util
  */
 var supermap_callbacks = {};
 external_L_default.a.Util.supermap_callbacks = supermap_callbacks;
-var toGeoJSON = function (feature) {
+var toGeoJSON = function(feature) {
     if (!feature) {
         return feature;
     }
     return new GeoJSON_GeoJSON().toGeoJSON(feature);
 };
-var toSuperMapGeometry = function (geometry) {
+var toSuperMapGeometry = function(geometry) {
     if (!geometry) {
         return geometry;
     }
-    var result, format = new GeoJSON_GeoJSON();
-    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
+    var result,
+        format = new GeoJSON_GeoJSON();
+    if (['FeatureCollection', 'Feature', 'Geometry'].indexOf(geometry.type) != -1) {
         result = format.read(geometry, geometry.type);
-    } else if (typeof geometry.toGeoJSON === "function") {
+    } else if (typeof geometry.toGeoJSON === 'function') {
         var geojson = geometry.toGeoJSON();
-        result = (geojson) ? format.read(geojson, geojson.type) : geometry;
+        result = geojson ? format.read(geojson, geojson.type) : geometry;
     }
 
     var serverResult = result;
@@ -77209,83 +77236,68 @@ var toSuperMapGeometry = function (geometry) {
             serverResult = result[0];
         } else if (result.length > 1) {
             serverResult = [];
-            result.map(function (item) {
+            result.map(function(item) {
                 serverResult.push(item.geometry);
                 return item;
             });
         }
     }
 
-    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
-
+    return serverResult && serverResult.geometry ? serverResult.geometry : serverResult;
 };
+var Util_getMeterPerMapUnit = getMeterPerMapUnit;
 
-var getMeterPerMapUnit = function (mapUnit) {
-    var earchRadiusInMeters = 6378137;
-    var meterPerMapUnit;
-    if (mapUnit === Unit.METER) {
-        meterPerMapUnit = 1;
-    } else if (mapUnit === Unit.DEGREE) {
-        // 每度表示多少米。
-        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-    } else if (mapUnit === Unit.KILOMETER) {
-        meterPerMapUnit = 1.0E-3;
-    } else if (mapUnit === Unit.INCH) {
-        meterPerMapUnit = 1 / 2.5399999918E-2;
-    } else if (mapUnit === Unit.FOOT) {
-        meterPerMapUnit = 0.3048;
-    } else {
-        return meterPerMapUnit;
-    }
-    return meterPerMapUnit;
-};
-
-var resolutionToScale = function (resolution, dpi, mapUnit) {
+var resolutionToScale = function(resolution, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     // 地球半径。
-    var meterPerMapUnit = getMeterPerMapUnit(mapUnit);
+    var meterPerMapUnit = Util_getMeterPerMapUnit(mapUnit);
     var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
     scale = 1 / scale;
     return scale;
 };
-var scaleToResolution = function (scale, dpi, mapUnit) {
+var scaleToResolution = function(scale, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
-    var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+    var meterPerMapUnitValue = Util_getMeterPerMapUnit(mapUnit);
     var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
     resolution = 1 / resolution;
     return resolution;
 };
 
-var GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
         ratio = 10000;
     //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
     datumAxis = datumAxis || 6378137;
-    coordUnit = coordUnit || "";
+    coordUnit = coordUnit || '';
     if (scale > 0 && dpi > 0) {
         scale = external_L_default.a.Util.NormalizeScale(scale);
-        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+        if (
+            coordUnit.toLowerCase() === 'degree' ||
+            coordUnit.toLowerCase() === 'degrees' ||
+            coordUnit.toLowerCase() === 'dd'
+        ) {
             //scale = SuperMap.Util.normalizeScale(scale);
-            resolution = 0.0254 * ratio / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
+            resolution = (0.0254 * ratio) / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
             return resolution;
         } else {
-            resolution = 0.0254 * ratio / dpi / scale / ratio;
+            resolution = (0.0254 * ratio) / dpi / scale / ratio;
             return resolution;
         }
     }
     return -1;
 };
-var NormalizeScale = function (scale) {
-    return (scale > 1.0) ? (1.0 / scale) : scale;
+var NormalizeScale = function(scale) {
+    return scale > 1.0 ? 1.0 / scale : scale;
 };
 
 external_L_default.a.Util.toGeoJSON = toGeoJSON;
 external_L_default.a.Util.toSuperMapGeometry = toSuperMapGeometry;
 external_L_default.a.Util.resolutionToScale = resolutionToScale;
 external_L_default.a.Util.scaleToResolution = scaleToResolution;
-external_L_default.a.Util.getMeterPerMapUnit = getMeterPerMapUnit;
+external_L_default.a.Util.getMeterPerMapUnit = Util_getMeterPerMapUnit;
 external_L_default.a.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
 external_L_default.a.Util.NormalizeScale = NormalizeScale;
+
 // CONCATENATED MODULE: ./src/leaflet/core/Transform.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -77832,11 +77844,9 @@ var ImageMapLayer = external_L_["Layer"].extend({
             params.push('rasterfunction=' + JSON.stringify(options.rasterfunction));
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof external_L_default.a.Path) {
-            options.clipRegion = external_L_default.a.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = Util.toJSON(ServerGeometry_ServerGeometry.fromGeometry(options.clipRegion));
+        if (options.clipRegionEnabled && options.clipRegion) {
             params.push('clipRegionEnabled=' + options.clipRegionEnabled);
-            params.push('clipRegion=' + JSON.stringify(options.clipRegion));
+            params.push('clipRegion=' + JSON.stringify(ServerGeometry_ServerGeometry.fromGeometry(external_L_["Util"].toSuperMapGeometry(options.clipRegion))));
         }
 
         if (options.overlapDisplayed === false) {
@@ -78552,9 +78562,8 @@ var TiledMapLayer = external_L_default.a.TileLayer.extend({
             params["layersID"] = options.layersID.toString();
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof external_L_default.a.Path) {
-            options.clipRegion = toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = Util.toJSON(ServerGeometry_ServerGeometry.fromGeometry(options.clipRegion));
+        if (options.clipRegionEnabled && options.clipRegion) {
+            options.clipRegion = ServerGeometry_ServerGeometry.fromGeometry(toSuperMapGeometry(options.clipRegion));
             params["clipRegionEnabled"] = options.clipRegionEnabled;
             params["clipRegion"] = JSON.stringify(options.clipRegion);
         }
@@ -83524,6 +83533,7 @@ var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(6);
 
 
 
+
 var BaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
 
 /**
@@ -83766,6 +83776,8 @@ class MapVRenderer_MapVRenderer extends BaseLayer {
 
         var resolutionX = dw / mapCanvas.x,
             resolutionY = dh / mapCanvas.y;
+        // 一个像素是多少米
+        var zoomUnit = Util_getMeterPerMapUnit('DEGREE') * resolutionX;
         //var centerPx = map.latLngToLayerPoint(map.getCenter());
 
         //获取屏幕左上角的地理坐标坐标
@@ -83804,13 +83816,29 @@ class MapVRenderer_MapVRenderer extends BaseLayer {
 
         this.processData(data);
 
-        self.options._size = self.options.size;
-
         var worldPoint = map.latLngToContainerPoint(external_L_default.a.latLng(0, 0));
         var pixel = {
             x: worldPoint.x - topLeftPX.x,
             y: worldPoint.y - topLeftPX.y
         };
+
+        // 兼容unit为'm'的情况
+        if (self.options.unit === 'm') {
+            if (self.options.size) {
+                self.options._size = self.options.size / zoomUnit;
+            }
+            if (self.options.width) {
+                self.options._width = self.options.width / zoomUnit;
+            }
+            if (self.options.height) {
+                self.options._height = self.options.height / zoomUnit;
+            }
+        } else {
+            self.options._size = self.options.size;
+            self.options._height = self.options.height;
+            self.options._width = self.options.width;
+        }
+
         this.drawContext(context, data, self.options, pixel);
 
         self.options.updateCallback && self.options.updateCallback(time);
@@ -85208,7 +85236,7 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
         let me = this,
             layer = me.layer,
             map = layer._map;
-        this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
+
         let graphics = layer._getGraphicsInBounds();
         evt.target = null;
         for (let i = graphics.length - 1; i >= 0; i--) {
@@ -85234,12 +85262,14 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
             }
             bounds = external_L_default.a.bounds(p1, p2);
             if (bounds.contains(map.latLngToLayerPoint(evt.latlng))) {
+                this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
                 evt.target = graphics[i];
                 if (evt.type === 'click' && layer.options.onClick) {
                     layer.options.onClick.call(layer, graphics[i], evt);
                 }
                 return;
             }
+            this.layer._renderer._ctx.canvas.style.cursor = 'auto';
         }
     },
 
@@ -97509,7 +97539,7 @@ external_L_default.a.supermap.components.dataServiceQuery = dataServiceQueryView
 /* concated harmony reexport crs */__webpack_require__.d(__webpack_exports__, "crs", function() { return Proj4Leaflet_crs; });
 /* concated harmony reexport toGeoJSON */__webpack_require__.d(__webpack_exports__, "toGeoJSON", function() { return toGeoJSON; });
 /* concated harmony reexport toSuperMapGeometry */__webpack_require__.d(__webpack_exports__, "toSuperMapGeometry", function() { return toSuperMapGeometry; });
-/* concated harmony reexport getMeterPerMapUnit */__webpack_require__.d(__webpack_exports__, "getMeterPerMapUnit", function() { return getMeterPerMapUnit; });
+/* concated harmony reexport getMeterPerMapUnit */__webpack_require__.d(__webpack_exports__, "getMeterPerMapUnit", function() { return Util_getMeterPerMapUnit; });
 /* concated harmony reexport resolutionToScale */__webpack_require__.d(__webpack_exports__, "resolutionToScale", function() { return resolutionToScale; });
 /* concated harmony reexport scaleToResolution */__webpack_require__.d(__webpack_exports__, "scaleToResolution", function() { return scaleToResolution; });
 /* concated harmony reexport GetResolutionFromScaleDpi */__webpack_require__.d(__webpack_exports__, "GetResolutionFromScaleDpi", function() { return GetResolutionFromScaleDpi; });
@@ -97889,3 +97919,4 @@ var ChangeTileVersion = __webpack_require__(70);
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=iclient-leaflet-es6.js.map

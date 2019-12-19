@@ -358,7 +358,8 @@ import {
     getRequestTimeout,
     FetchRequest,
     ColorsPickerUtil,
-    ArrayStatistic
+    ArrayStatistic,
+    getMeterPerMapUnit
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -556,7 +557,16 @@ export {
 };
 export { TimeControlBase, TimeFlowControl };
 export { Format, GeoJSON, JSONFormat, WKT };
-export { setCORS, isCORS, setRequestTimeout, getRequestTimeout, FetchRequest, ColorsPickerUtil, ArrayStatistic };
+export {
+    setCORS,
+    isCORS,
+    setRequestTimeout,
+    getRequestTimeout,
+    FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic,
+    getMeterPerMapUnit
+};
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
 export { 
     IPortal,
