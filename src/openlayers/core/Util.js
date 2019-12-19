@@ -283,7 +283,7 @@ export class Util {
      * @param {string} str - 需要裁剪的字符串
      * @returns {boolean}
      */
-    static trim(str) {
+    static trim(str = '') {
         return str.replace(/(^\s*)|(\s*$)/g, "");
     }
     /**
