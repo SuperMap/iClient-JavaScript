@@ -84859,14 +84859,16 @@ function () {
   }, {
     key: "update",
     value: function update() {
-      this.layer.setChangeFlags({
-        dataChanged: true,
-        propsChanged: true,
-        viewportChanged: true,
-        updateTriggersChanged: true
-      });
-      var state = this.getState();
-      this.layer.setState(state);
+      if (this.layer.lifecycle !== 'Awaiting state') {
+        this.layer.setChangeFlags({
+          dataChanged: true,
+          propsChanged: true,
+          viewportChanged: true,
+          updateTriggersChanged: true
+        });
+        var state = this.getState();
+        this.layer.setState(state);
+      }
     }
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.clear

@@ -72332,14 +72332,16 @@ class GraphicLayer_GraphicLayer {
      * @description 更新图层。
      */
     update() {
-        this.layer.setChangeFlags({
-            dataChanged: true,
-            propsChanged: true,
-            viewportChanged: true,
-            updateTriggersChanged: true
-        });
-        let state = this.getState();
-        this.layer.setState(state);
+        if (this.layer.lifecycle !== 'Awaiting state') {
+            this.layer.setChangeFlags({
+                dataChanged: true,
+                propsChanged: true,
+                viewportChanged: true,
+                updateTriggersChanged: true
+            });
+            let state = this.getState();
+            this.layer.setState(state);
+        }
     }
 
     /**
