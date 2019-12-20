@@ -630,6 +630,7 @@ window.examplesResources = {
         "title_componentsBorder_Vue": 'Border component',
         "title_componentsIdentify_Vue": 'Identify component(Vue)',
         "title_componentsPopup_Vue": 'Popup(Vue)',
+        "title_componentsLayerManager_vue": 'LayerManager component(Vue)',
         "title_componentsWebmap_React": 'iPortal Map component(React)',
         "title_componentsMap_React": 'iServer Map component(React)',
         "title_componentsRasterTile_React": 'Raster Layer component(React)',

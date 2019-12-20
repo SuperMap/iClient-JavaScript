@@ -581,6 +581,7 @@ window.examplesResources = {
         "title_componentsTianditu_switch_Vue": '天地图切换',
         "title_componentsTianditu_home_Vue": '天地图首页',
         "title_componentsPopup_Vue": '弹窗(Vue)',
+        "title_componentsLayerManager_vue": '图层管理组件',
         "title_componentsWebmap_React": 'iPortal地图',
         "title_componentsMap_React": 'iServer地图',
         "title_componentsRasterTile_React": '栅格图层组件',

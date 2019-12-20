@@ -137,6 +137,13 @@ var exampleConfig = {
             version: '10.0.0',
             thumbnail: 'components_identify_vue.png',
             fileName: 'components_identify_vue'
+          },
+          {
+            name: '图层管理',
+            name_en: 'Layer Manager',
+            version: '10.0.1',
+            thumbnail: 'components_layerManager_vue.png',
+            fileName: 'components_layerManager_vue'
           }
         ]
       },
