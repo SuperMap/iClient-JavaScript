@@ -111,6 +111,12 @@
         if (inArray(includes, 'deck')) {
           inputScript("https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
         }
+        if (inArray(includes, 'pixi')) {
+            inputScript('https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.7/pixi.js');
+            inputScript('https://cdn.jsdelivr.net/npm/leaflet-pixi-overlay@1.8.1/L.PixiOverlay.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/Leaflet.PixiOverlay/1.8.1/MarkerContainer.js');
+            inputScript('https://iclient.supermap.io/web/libs/bezier-easing/2.1.0/bezier-easing.js');
+          }
 
         // iclient
         if (!inArray(excludes, 'iclient-leaflet')) {

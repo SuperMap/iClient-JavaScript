@@ -990,6 +990,18 @@ var exampleConfig = {
                     thumbnail: "l_graphThemeLayer.png",
                     fileName: "graphThemeLayer"
                 }]
+            },
+            pixi: {
+                name: 'Pixi',
+                name_en: 'Pixi',
+                content: [
+                    {
+                        name: '纽约出租车上车点分布图（140万点数据绘制）',
+                        name_en: 'Use Pixi to draw 1.4 millions New York Taxi Points',
+                        thumbnail: 'l_pixiOverlay_taxi.png',
+                        fileName: 'l_pixiOverlay_taxi'
+                    }
+                ]
             }
         }
     },
