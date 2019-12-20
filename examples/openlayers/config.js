@@ -443,6 +443,7 @@ var exampleConfig = {
             "ip_queryresources": {
                 name: "资源中心",
                 name_en: "Resources Center",
+                version: "10.0.1",
                 content: [{
                     name: "资源中心",
                     name_en: "Resources Center",
@@ -453,6 +454,7 @@ var exampleConfig = {
             "ip_querymyresources": {
                 name: "我的资源",
                 name_en: "My Resource",
+                version: "10.0.1",
                 content: [{
                     name: "我的资源",
                     name_en: "My Resource",
@@ -483,6 +485,7 @@ var exampleConfig = {
             "ip_querymapdashboards": {
                 name: "大屏列表",
                 name_en: "Web mapdashboard list",
+                version: "10.0.1",
                 content: [{
                     name: "大屏列表",
                     name_en: "web mapdashboard list",
@@ -493,6 +496,7 @@ var exampleConfig = {
             "ip_queryscenes": {
                 name: "场景列表",
                 name_en: "Web scene list",
+                version: "10.0.1",
                 content: [{
                     name: "场景列表",
                     name_en: "web scene list",
@@ -503,6 +507,7 @@ var exampleConfig = {
             "ip_queryinsights": {
                 name: "洞察列表",
                 name_en: "Web insight list",
+                version: "10.0.1",
                 content: [{
                     name: "洞察列表",
                     name_en: "web insight list",

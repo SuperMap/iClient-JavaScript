@@ -134,7 +134,7 @@ var exampleConfig = {
           {
             name: '点选查询',
             name_en: 'Identify',
-            version: '10.0.0',
+            version: '10.0.1',
             thumbnail: 'components_identify_vue.png',
             fileName: 'components_identify_vue'
           },
