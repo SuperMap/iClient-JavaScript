@@ -10,7 +10,6 @@ describe('openlayers_Turf', () => {
         opt_options = {
             attributions: " ",
             features: new Collection(),
-            features: " ",
             format: "",
             logo: "",
             projection: "",

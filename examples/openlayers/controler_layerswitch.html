@@ -44,6 +44,7 @@
     });
 
     var swipe = document.getElementById('swipe');
+    // ol6 废除了 precompose，由 prerender 事件替换
     worldNight.on('prerender', function (event) {
         var ctx = event.context;
         var width = ctx.canvas.width * (swipe.value / 100);
@@ -53,7 +54,7 @@
         ctx.rect(width, 0, ctx.canvas.width - width, ctx.canvas.height);
         ctx.clip();
     });
-
+    // ol6 废除了 postcompose，由 postrender 事件替换
     worldNight.on('postrender', function (event) {
         var ctx = event.context;
         ctx.restore();

@@ -288,6 +288,12 @@ module.exports = ol.util;
 
 /***/ }),
 /* 29 */
+/***/ (function(module, exports) {
+
+module.exports = ol.proj.proj4;
+
+/***/ }),
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -395,40 +401,34 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return XLSX}catch(e){return {}}}();
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = ol.extent;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return turf}catch(e){return {}}}();
 
 /***/ }),
-/* 34 */
-/***/ (function(module, exports) {
-
-module.exports = ol.View;
-
-/***/ }),
 /* 35 */
 /***/ (function(module, exports) {
 
-module.exports = ol.proj.proj4;
+module.exports = ol.View;
 
 /***/ }),
 /* 36 */
@@ -15391,7 +15391,7 @@ window.Promise = promise_default.a;
 var fetch = __webpack_require__(66);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(29);
+var fetch_jsonp = __webpack_require__(30);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
@@ -66819,7 +66819,7 @@ SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
 
 // EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
-var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(30);
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(31);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
@@ -83145,7 +83145,7 @@ class Graphic_Graphic extends external_ol_Object_default.a {
 }
 
 // EXTERNAL MODULE: external "ol.extent"
-var external_ol_extent_ = __webpack_require__(31);
+var external_ol_extent_ = __webpack_require__(32);
 
 // EXTERNAL MODULE: external "ol.geom.Polygon"
 var external_ol_geom_Polygon_ = __webpack_require__(52);
@@ -84986,7 +84986,6 @@ class MapvCanvasLayer {
      * @description 调整地图大小。
      */
     resize(mapWidth, mapHeight) {
-        console.log("resize");
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         this.canvas.width = mapWidth * devicePixelRatio;
@@ -85028,7 +85027,7 @@ class MapvCanvasLayer {
     }
 }
 // EXTERNAL MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
-var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(32);
+var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(33);
 
 // EXTERNAL MODULE: external "ol.interaction.Pointer"
 var external_ol_interaction_Pointer_ = __webpack_require__(54);
@@ -85800,7 +85799,7 @@ class overlay_RankSymbol_RankSymbol extends overlay_Graph_Graph {
     }
 }
 // EXTERNAL MODULE: external "function(){try{return turf}catch(e){return {}}}()"
-var external_function_try_return_turf_catch_e_return_ = __webpack_require__(33);
+var external_function_try_return_turf_catch_e_return_ = __webpack_require__(34);
 
 // CONCATENATED MODULE: ./src/openlayers/overlay/Turf.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -87629,13 +87628,13 @@ var external_ol_geom_LineString_default = /*#__PURE__*/__webpack_require__.n(ext
 
 var olExtends = function(targetMap) {
     //解决olms.js插件，在使用ol.js时沿线标注不显示的问题，因为ol.geom.LineString.getFlatMidpoint未非公开方法
-    if (!external_ol_geom_LineString_default.a.getFlatMidpoint) {
+    if (!external_ol_geom_LineString_default.a.prototype.getFlatMidpoint) {
         external_ol_geom_LineString_default.a.prototype.getFlatMidpoint = function() {
             return this.getCoordinateAt(0.5);
         };
     }
-    //applyStyleFunction 调用了ol.geom.LineString.getFlatMidpoint但是该方法在ol-debug.js里才有
-    if (core_Util_Util.getOlVersion() === '4' && window && window.ol && window.ol.geom.LineString.getFlatMidpoint) {
+    
+    if (core_Util_Util.getOlVersion() === '4' && window && window.ol && window.ol.geom.flat) {
         // for ol4-debug
         window.targetMapCache = targetMap;
         let ol = window.ol;
@@ -91349,11 +91348,11 @@ var ProvinceCenter = __webpack_require__(58);
 var MunicipalCenter = __webpack_require__(59);
 
 // EXTERNAL MODULE: external "ol.View"
-var external_ol_View_ = __webpack_require__(34);
+var external_ol_View_ = __webpack_require__(35);
 var external_ol_View_default = /*#__PURE__*/__webpack_require__.n(external_ol_View_);
 
 // EXTERNAL MODULE: external "ol.proj.proj4"
-var external_ol_proj_proj4_ = __webpack_require__(35);
+var external_ol_proj_proj4_ = __webpack_require__(29);
 
 // EXTERNAL MODULE: external "ol.proj.Units"
 var external_ol_proj_Units_ = __webpack_require__(60);
@@ -91554,7 +91553,7 @@ class WebMap_WebMap extends external_ol_Observable_default.a {
 
             // 多坐标系支持
             if(lib){
-              external_ol_proj_proj4_["register"] ? external_ol_proj_proj4_["register"](lib) : window.ol.proj.setProj4(lib) ;
+              (external_ol_proj_proj4_ && external_ol_proj_proj4_["register"]) ? external_ol_proj_proj4_["register"](lib) : window.ol.proj.setProj4(lib) ;
             } 
             // 目前iServer服务中可能出现的EPSG 0，-1，-1000
             if(mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0){

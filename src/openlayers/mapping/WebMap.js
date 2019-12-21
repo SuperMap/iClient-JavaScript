@@ -186,7 +186,7 @@ export class WebMap extends Observable {
 
             // 多坐标系支持
             if(proj4){
-              olProj4.register ? olProj4.register(proj4) : window.ol.proj.setProj4(proj4) ;
+              (olProj4 && olProj4.register) ? olProj4.register(proj4) : window.ol.proj.setProj4(proj4) ;
             } 
             // 目前iServer服务中可能出现的EPSG 0，-1，-1000
             if(mapInfo.projection.indexOf("EPSG") === 0 && mapInfo.projection.split(":")[1] <= 0){

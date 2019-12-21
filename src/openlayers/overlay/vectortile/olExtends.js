@@ -6,13 +6,13 @@ import LineString from 'ol/geom/LineString';
 
 export var olExtends = function(targetMap) {
     //解决olms.js插件，在使用ol.js时沿线标注不显示的问题，因为ol.geom.LineString.getFlatMidpoint未非公开方法
-    if (!LineString.getFlatMidpoint) {
+    if (!LineString.prototype.getFlatMidpoint) {
         LineString.prototype.getFlatMidpoint = function() {
             return this.getCoordinateAt(0.5);
         };
     }
-    //applyStyleFunction 调用了ol.geom.LineString.getFlatMidpoint但是该方法在ol-debug.js里才有
-    if (Util.getOlVersion() === '4' && window && window.ol && window.ol.geom.LineString.getFlatMidpoint) {
+    
+    if (Util.getOlVersion() === '4' && window && window.ol && window.ol.geom.flat) {
         // for ol4-debug
         window.targetMapCache = targetMap;
         let ol = window.ol;

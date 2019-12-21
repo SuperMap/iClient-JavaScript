@@ -44,6 +44,7 @@
 
             function animate(event) {
                 var duration = 3000;
+                // ol6 废除了 event.vectorContext 接口，通过 ol.render.getVectorContext 来获取 vectorContext
                 var vectorContext = new ol.render.getVectorContext(event);
                 var frameState = event.frameState;
                 var flashGeom = feature.getGeometry().clone();

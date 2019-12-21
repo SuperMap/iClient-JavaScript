@@ -62,7 +62,6 @@ export class MapvCanvasLayer {
      * @description 调整地图大小。
      */
     resize(mapWidth, mapHeight) {
-        console.log("resize");
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         this.canvas.width = mapWidth * devicePixelRatio;
