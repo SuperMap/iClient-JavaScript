@@ -1,7 +1,7 @@
-import ol from 'openlayers';
 import { FeatureService } from '../../../src/openlayers/services/FeatureService';
 import { GetFeaturesByGeometryParameters } from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import Polygon from 'ol/geom/Polygon';
 
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var options = {
@@ -20,7 +20,7 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
   });
   //数据集几何查询服务类
   it('getFeaturesByGeometry', (done) => {
-    var polygon = new ol.geom.Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
+    var polygon = new Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
     var geometryParam = new GetFeaturesByGeometryParameters({
       datasetNames: ["World:Countries"],
       geometry: polygon,
@@ -67,7 +67,7 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
     });
   });
   it('GetFeaturesByGeometryParameters:targetEpsgCode', done => {
-    var polygon = new ol.geom.Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
+    var polygon = new Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
     var geometryParam = new GetFeaturesByGeometryParameters({
       datasetNames: ["World:Countries"],
       geometry: polygon,
@@ -86,7 +86,7 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
     });
   });
   it('GetFeaturesByGeometryParameters:targetPrj', done => {
-    var polygon = new ol.geom.Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
+    var polygon = new Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
     var geometryParam = new GetFeaturesByGeometryParameters({
       datasetNames: ["World:Countries"],
       geometry: polygon,

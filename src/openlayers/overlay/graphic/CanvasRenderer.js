@@ -1,13 +1,16 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from "openlayers";
 import {
     CommonUtil
 } from "@supermap/iclient-common";
 import {
     Util
 } from '../../core/Util';
+import olObject from 'ol/Object';
+import * as olStyle from 'ol/style';
+import Point from 'ol/geom/Point';
+import * as olRender from 'ol/render';
 
 //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
 function rotate(pixelP, rotation, center) {
@@ -28,7 +31,7 @@ function scale(pixelP, center, scaleRatio) {
  * @class GraphicCanvasRenderer
  * @classdesc 高效率点图层 canvas 渲染器。
  * @category Visualization Graphic
- * @extends {ol.Object}
+ * @extends {ol/Object}
  * @param {ol.source.Graphic} layer - 高效率点图层。
  * @param {Object} options - 图层参数。
  * @param {number} options.width - 地图宽度。
@@ -46,7 +49,7 @@ function scale(pixelP, center, scaleRatio) {
  * @param {function} [options.onClick] - 点击事件。
  * @param {function} [options.onHover] - 悬停事件。
  */
-export class GraphicCanvasRenderer extends ol.Object {
+export class GraphicCanvasRenderer extends olObject {
     constructor(layer, options) {
         super();
         this.layer = layer;
@@ -130,7 +133,7 @@ export class GraphicCanvasRenderer extends ol.Object {
         let height = this.height;
 
         let offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
-        let vectorContext = ol.render.toContext(this.context, {
+        let vectorContext = olRender.toContext(this.context, {
             size: [mapWidth, mapHeight],
             pixelRatio: this.pixelRatio
         });
@@ -142,25 +145,25 @@ export class GraphicCanvasRenderer extends ol.Object {
             let style = graphic.getStyle() || defaultStyle;
             if (me.selected === graphic) {
                 let defaultHighLightStyle = style;
-                if (style instanceof ol.style.Circle) {
-                    defaultHighLightStyle = new ol.style.Circle({
+                if (style instanceof olStyle.Circle) {
+                    defaultHighLightStyle = new olStyle.Circle({
                         radius: style.getRadius(),
-                        fill: new ol.style.Fill({
+                        fill: new olStyle.Fill({
                             color: 'rgba(0, 153, 255, 1)'
                         }),
                         stroke: style.getStroke(),
-                        snapToPixel: style.getSnapToPixel()
+                        snapToPixel: Util.getOlVersion() === '4' ? style.getSnapToPixel() : null
                     });
-                } else if (style instanceof ol.style.RegularShape) {
-                    defaultHighLightStyle = new ol.style.RegularShape({
+                } else if (style instanceof olStyle.RegularShape) {
+                    defaultHighLightStyle = new olStyle.RegularShape({
                         radius: style.getRadius(),
                         radius2: style.getRadius2(),
                         points: style.getPoints(),
                         angle: style.getAngle(),
-                        snapToPixel: style.getSnapToPixel(),
+                        snapToPixel: Util.getOlVersion() === '4' ? style.getSnapToPixel() : null,
                         rotation: style.getRotation(),
                         rotateWithView: style.getRotateWithView(),
-                        fill: new ol.style.Fill({
+                        fill: new olStyle.Fill({
                             color: 'rgba(0, 153, 255, 1)'
                         }),
                         stroke: style.getStroke()
@@ -168,7 +171,7 @@ export class GraphicCanvasRenderer extends ol.Object {
                 }
                 style = me.highLightStyle || defaultHighLightStyle;
             }
-            vectorContext.setStyle(new ol.style.Style({
+            vectorContext.setStyle(new olStyle.Style({
                 image: style
             }));
             let geometry = graphic.getGeometry();
@@ -179,7 +182,7 @@ export class GraphicCanvasRenderer extends ol.Object {
             let scaledP = scale(pixelP, center, 1);
             let rotatedP = rotate(scaledP, rotation, center);
             let result = [rotatedP[0] + offset[0], rotatedP[1] + offset[1]];
-            let pixelGeometry = new ol.geom.Point(result);
+            let pixelGeometry = new Point(result);
             vectorContext.drawGeometry(pixelGeometry);
             return graphic;
         });

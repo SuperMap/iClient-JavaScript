@@ -23,8 +23,9 @@ module.exports = function (config) {
             debug: true,
             transform: [
                 [require('babelify'), {
+                    global: true,
                     presets: ["@babel/preset-env"],
-                    ignore: ["../src/classic/libs/**", "../test/libs/**"],
+                    ignore: ["../src/classic/libs/**", "../test/libs/**", /\/node_modules\/(?!ol\/)/],
                     plugins: ['istanbul']
                 }],
                 [require('browserify-css'), { global: true }],
@@ -60,7 +61,7 @@ module.exports = function (config) {
             './test-main-leaflet.js',
 
             /***openlayers的源码***/
-            {pattern: '../node_modules/openlayers/dist/ol-debug.css', include: false},
+            {pattern: '../node_modules/ol/ol.css', include: false},
             {pattern: '../src/openlayers/**/**/*.css', include: false},
             '../src/openlayers/**/!(index).js',
             /**测试文件**/
@@ -80,7 +81,6 @@ module.exports = function (config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             './tool/utils.js': ['browserify'],
-            '../node_modules/whatwg-fetch-importable/whatwgFetch.js': ['browserify'],
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
             '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js': ['browserify'],
             '../src/classic/libs/Lang/*.js': ['browserify'],
@@ -97,7 +97,8 @@ module.exports = function (config) {
             // './leaflet/**/*Spec.js': ['browserify'],
             './test-main-leaflet.js': ['browserify'],
 
-            '../node_modules/openlayers/dist/ol-debug.js': ['browserify'],
+            '../node_modules/ol/*.js': ['browserify'],
+            '../node_modules/ol/**/*.js': ['browserify'],
             '../src/openlayers/**/!(index).js': ['browserify'],
             // './openlayers/**/*Spec.js': ['browserify'],
             './test-main-openlayers.js': ['browserify'],

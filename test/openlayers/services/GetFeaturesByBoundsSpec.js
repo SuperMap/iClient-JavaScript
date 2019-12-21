@@ -1,7 +1,8 @@
-import ol from 'openlayers';
 import { FeatureService } from '../../../src/openlayers/services/FeatureService';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { GetFeaturesByBoundsParameters } from '../../../src/common/iServer/GetFeaturesByBoundsParameters';
+
+import Polygon from 'ol/geom/Polygon';
 
 var featureServiceURL = "http://supermap:8090/iserver/services/data-world/rest/data";
 var options = {
@@ -22,7 +23,7 @@ describe('openlayers_FeatureService_getFeaturesByBounds', () => {
 
   //数据集Bounds查询服务
   it('getFeaturesByBounds', (done) => {
-    var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
+    var polygon = new Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
     var boundsParam = new GetFeaturesByBoundsParameters({
       datasetNames: ["World:Capitals"],
       bounds: polygon.getExtent(),
@@ -68,7 +69,7 @@ describe('openlayers_FeatureService_getFeaturesByBounds', () => {
     });
   });
   it('GetFeaturesByBoundsParameters:targetEpsgCode', done => {
-    var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
+    var polygon = new Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
     var boundsParam = new GetFeaturesByBoundsParameters({
       datasetNames: ["World:Capitals"],
       bounds: polygon.getExtent(),
@@ -87,7 +88,7 @@ describe('openlayers_FeatureService_getFeaturesByBounds', () => {
     });
   });
   it('GetFeaturesByBoundsParameters:targetPrj', done => {
-    var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
+    var polygon = new Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
     var boundsParam = new GetFeaturesByBoundsParameters({
       datasetNames: ["World:Capitals"],
       bounds: polygon.getExtent(),

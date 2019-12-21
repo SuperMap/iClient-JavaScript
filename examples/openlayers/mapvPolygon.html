@@ -92,15 +92,14 @@
         view: new ol.View({
             center: [113.28, 22.65],
             zoom: 8,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+			multiWorld: true
         }),
         layers: [new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({
                 url: url,
                 prjCoordSys: {"epsgCode": 4326},
-                attributions: new ol.Attribution({
-                    html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
-                }),
+                attributions: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
             }),
             projection: 'EPSG:4326'
         })]

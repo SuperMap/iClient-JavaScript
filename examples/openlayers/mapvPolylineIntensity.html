@@ -98,9 +98,7 @@
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,
-            attributions: new ol.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
-            })
+            attributions: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
         })
     }));
     overlay.setPosition(map.getView().getCenter());

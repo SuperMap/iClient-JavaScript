@@ -50,7 +50,11 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         // 在线
-        if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug')) {
+        if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug') && !inArray(includes, 'ol4')) {
+            inputCSS("https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/css/ol.css");
+            inputScript("https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js");
+        }
+        if (inArray(includes, 'ol@4.6.5')){
             inputCSS("https://cdn.bootcss.com/openlayers/4.6.5/ol.css");
             inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol.js");
         }
@@ -71,18 +75,17 @@
           inputScript("https://cdn.bootcss.com/proj4js/2.5.0/proj4.js");
         }
         if (inArray(includes, 'ol3-echarts')) {
+          inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.1/dist/ol3Echarts.js");
+        }
+        if (inArray(includes, 'ol3-echarts@1.3.6')) {
           inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts@1.3.6/dist/ol3Echarts.min.js");
         }
-
-
         if (inArray(includes, 'ol-mapbox-style')) {
             inputScript("https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js");
         }
         if (inArray(includes, 'deck')) {
             inputScript("https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
         }
-        
-        
         if (inArray(includes, 'osmbuildings')) {
             inputScript("https://iclient.supermap.io/web/libs/osmbuildings/OSMBuildings-OL3.js");
         }

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_mvtVectorLayer4326"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include='ol-debug,ol-mapbox-style' src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" include='ol-mapbox-style' src="../../dist/openlayers/include-openlayers.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
@@ -31,7 +31,7 @@
         var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
         var vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
         vectorTileOptions.format = new ol.format.MVT({featureClass: ol.Feature});
-        vectorTileOptions.format.defaultDataProjection = new ol.proj.Projection({
+        vectorTileOptions.format.dataProjection = new ol.proj.Projection({
             code: 'EPSG:4326',
             units: ol.proj.Units.TILE_PIXELS
         });

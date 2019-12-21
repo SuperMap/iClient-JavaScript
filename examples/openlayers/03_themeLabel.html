@@ -23,7 +23,8 @@
             view: new ol.View({
                 center: [0, 0],
                 zoom: 2,
-                projection: "EPSG:4326"
+                projection: "EPSG:4326",
+                multiWorld: true
             })
         });
         options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);

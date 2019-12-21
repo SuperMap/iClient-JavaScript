@@ -846,42 +846,42 @@ var exampleConfig = {
                 name: "矢量瓦片",
                 name_en: "Vector tile layer",
                 content: [
-                    {
-                        name: "默认风格",
-                        name_en: "normal style",
-                        thumbnail: "tiledVectorLayer.png",
-                        fileName: "tiledVectorLayer"
-                    },
-                    {
-                        name: "月夜风格",
-                        name_en: "normal style",
-                        thumbnail: "cartoCSS_nightStyle.png",
-                        fileName: "cartoCSS_nightStyle"
-                    },
-                    {
-                        name: "强边界风格",
-                        name_en: "boundray style",
-                        thumbnail: "cartoCSS_boundryStyle.png",
-                        fileName: "cartoCSS_boundryStyle"
-                    },
-                    {
-                        name: "深夜蓝黑风格",
-                        name_en: "dark-blue style",
-                        thumbnail: "cartoCSS_darkBlue.png",
-                        fileName: "cartoCSS_darkBlue"
-                    },
-                    {
-                        name: "HelloKitty风格",
-                        name_en: "hellokitty style",
-                        thumbnail: "cartoCSS_helloKitty.png",
-                        fileName: "cartoCSS_helloKitty"
-                    },
-                    {
-                        name: "淡雅绿风格",
-                        name_en: "natural style",
-                        thumbnail: "cartoCSS_naturalStyle.png",
-                        fileName: "cartoCSS_naturalStyle"
-                    },
+                    // {
+                    //     name: "默认风格",
+                    //     name_en: "normal style",
+                    //     thumbnail: "tiledVectorLayer.png",
+                    //     fileName: "tiledVectorLayer"
+                    // },
+                    // {
+                    //     name: "月夜风格",
+                    //     name_en: "normal style",
+                    //     thumbnail: "cartoCSS_nightStyle.png",
+                    //     fileName: "cartoCSS_nightStyle"
+                    // },
+                    // {
+                    //     name: "强边界风格",
+                    //     name_en: "boundray style",
+                    //     thumbnail: "cartoCSS_boundryStyle.png",
+                    //     fileName: "cartoCSS_boundryStyle"
+                    // },
+                    // {
+                    //     name: "深夜蓝黑风格",
+                    //     name_en: "dark-blue style",
+                    //     thumbnail: "cartoCSS_darkBlue.png",
+                    //     fileName: "cartoCSS_darkBlue"
+                    // },
+                    // {
+                    //     name: "HelloKitty风格",
+                    //     name_en: "hellokitty style",
+                    //     thumbnail: "cartoCSS_helloKitty.png",
+                    //     fileName: "cartoCSS_helloKitty"
+                    // },
+                    // {
+                    //     name: "淡雅绿风格",
+                    //     name_en: "natural style",
+                    //     thumbnail: "cartoCSS_naturalStyle.png",
+                    //     fileName: "cartoCSS_naturalStyle"
+                    // },
                     // {
                     //     name: "默认风格(MVT)",
                     //     name_en: "normal(MVT)",

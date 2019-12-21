@@ -9,8 +9,8 @@
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
 </head>
-<body>
-<div id="map" class="map"></div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 <script>
     var map,
         url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World";
@@ -21,7 +21,8 @@
         view: new ol.View({
             center: [0, 0],
             zoom: 2,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         })
     });
 

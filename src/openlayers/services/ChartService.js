@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {Util} from '../core/Util';
 import {Bounds, ChartQueryService, DataFormat, ChartFeatureInfoSpecsService} from '@supermap/iclient-common';
 import {ServiceBase} from './ServiceBase';
@@ -103,5 +102,3 @@ export class ChartService extends ServiceBase {
         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
-
-ol.supermap.ChartService = ChartService;

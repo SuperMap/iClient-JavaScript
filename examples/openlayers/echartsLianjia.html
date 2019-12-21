@@ -38,6 +38,10 @@
         #titleContainer>#title {
             letter-spacing: 0.1em;
         }
+
+        .ol-overlaycontainer-stopevent{
+            height: 0% !important;
+        }
     </style>
 </head>
 
@@ -61,7 +65,8 @@
             view: new ol.View({
                 center: [12954583.524137927, 4860747.532344677],
                 zoom: 10,
-                projection: 'EPSG:3857'
+                projection: 'EPSG:3857',
+                multiWorld: true
             }),
             layers: [new ol.layer.Tile({
                 source: new ol.source.TileSuperMapRest({

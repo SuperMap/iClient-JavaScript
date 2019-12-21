@@ -32,7 +32,8 @@
             view: new ol.View({
                 center: [4503.62, -3861.91],
                 zoom: 2,
-                projection: projection
+                projection: projection,
+                multiWorld: true
             })
         });
         options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);

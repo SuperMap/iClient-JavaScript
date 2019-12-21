@@ -7,7 +7,7 @@
 <head>
     <!-- <meta charset="UTF-8"> -->
     <title data-i18n="resources.title_mvtVectorLayer_mapboxStyle_lineStyle"></title>
-    <script type="text/javascript" include='ol-debug,ol-mapbox-style' src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" include='ol-mapbox-style' src="../../dist/openlayers/include-openlayers.js"></script>
     <style>
         ol {
             list-style: none;
@@ -299,7 +299,7 @@
 
         map.on('pointermove', function (e) {
             var features = map.getFeaturesAtPixel(e.pixel);
-            if (!features) {
+            if (!features || features.length === 0) {
                 content.innerHTML = '';
                 container.style.opacity = 0;
                 tipsPopupContainer.style.display = "none";
@@ -339,7 +339,7 @@
         // 点击弹出编辑框
         map.on('click', function (e) {
             var features = map.getFeaturesAtPixel(e.pixel);
-            if (!features) {
+            if (!features || features.length === 0) {
                 resetStyle(borderJqObject);
                 resetStyle(fillJqObject);
                 return;

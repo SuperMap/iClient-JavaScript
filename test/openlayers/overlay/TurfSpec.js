@@ -1,4 +1,3 @@
-import ol from 'openlayers';
 import { Turf } from '../../../src/openlayers/overlay/Turf';
 import * as turf from '@turf/turf';
 describe('openlayers_Turf', () => {

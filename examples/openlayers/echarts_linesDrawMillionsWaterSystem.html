@@ -35,7 +35,8 @@
         view: new ol.View({
             center: [106, 37.94],
             zoom: 5,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         }),
         layers: [new ol.layer.Tile({
             source: new ol.source.OSM({}),

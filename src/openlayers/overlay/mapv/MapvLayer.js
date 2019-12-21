@@ -1,13 +1,13 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {
     MapvCanvasLayer
 } from './MapvCanvasLayer';
 import {
     baiduMapLayer
 } from "mapv";
+import PointerInteraction from 'ol/interaction/Pointer';
 
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -164,7 +164,7 @@ export class MapvLayer extends BaiduMapLayer {
                 map.on('click', me.clickEvent);
             }
             if (me.options.methods.mousemove) {
-                me.pointerInteraction = new ol.interaction.Pointer();
+                me.pointerInteraction = new PointerInteraction();
                 me.pointerInteraction.handleMoveEvent_ = function (event) {
                     me.mousemoveEvent(event);
                 };

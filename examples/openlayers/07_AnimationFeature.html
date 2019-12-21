@@ -22,7 +22,8 @@
             view: new ol.View({
                 center: [103, 30],
                 zoom: 4,
-                projection: 'EPSG:4326'
+                projection: 'EPSG:4326',
+                multiWorld: true
             })
         });
         var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
@@ -43,7 +44,7 @@
 
             function animate(event) {
                 var duration = 3000;
-                var vectorContext = event.vectorContext;
+                var vectorContext = new ol.render.getVectorContext(event);
                 var frameState = event.frameState;
                 var flashGeom = feature.getGeometry().clone();
                 var elapsed = frameState.time - start;
@@ -53,7 +54,6 @@
                 var style = new ol.style.Style({
                     image: new ol.style.Circle({
                         radius: radius,
-                        snapToPixel: false,
                         stroke: new ol.style.Stroke({
                             color: 'rgba(255, 0, 0, ' + opacity + ')',
                             width: 0.25 + opacity
@@ -69,7 +69,7 @@
                 map.render();
             }
 
-            listenerKey = map.on('postcompose', animate);
+            listenerKey = vector.on('postrender', animate);
         }
 
         var source = new ol.source.Vector({

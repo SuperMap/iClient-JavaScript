@@ -21,24 +21,33 @@
         view: new ol.View({
             center: [0, 0],
             zoom: 3,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         })
     });
+
+    var source = new ol.source.TileSuperMapRest({
+        url: url
+    });
+
+    var layer = new ol.layer.Tile({
+        source: source
+    });
+    map.addLayer(layer);
 
     //添加鹰眼控件
     map.addControl(new ol.control.OverviewMap({
         view: new ol.View({
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         }),
         collapsed: false,
+        layers: [
+            new ol.layer.Tile({
+              source: source
+            })
+        ]
     }));
-
-    var layer = new ol.layer.Tile({
-        source: new ol.source.TileSuperMapRest({
-            url: url
-        }),
-    });
-    map.addLayer(layer);
 
 </script>
 </body>

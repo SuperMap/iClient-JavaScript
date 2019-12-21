@@ -1,17 +1,14 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
-
-ol.supermap = ol.supermap || {};
-ol.supermap.control = ol.supermap.control || {};
+import Control from 'ol/control/Control';
 
 /**
  * @class ol.supermap.control.Logo
  * @category  Control
  * @classdesc Logo控件。默认不显示，需手动添加控件。
- * @extends {ol.control.Control}
+ * @extends {ol/control/Control}
  * @example
  *      var control = new ol.supermap.control.Logo();
  *      map.addControl(control);
@@ -22,7 +19,7 @@ ol.supermap.control = ol.supermap.control || {};
  * @param {string} [options.link='https://iclient.supermap.io'] - 跳转链接。
  * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
  */
-export class Logo extends ol.control.Control {
+export class Logo extends Control {
 
     constructor(options) {
         options = options || {};
@@ -96,6 +93,5 @@ export class Logo extends ol.control.Control {
 
     }
 }
-ol.supermap.control.Logo = Logo;
 
 

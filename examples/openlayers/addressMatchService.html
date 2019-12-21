@@ -168,7 +168,7 @@
 <script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
 <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
 <script type="text/javascript">
-    var map,
+    var map,select,
         url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China_4326",
         addressUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/addressmatch-Address/restjsr/v1/address",
         imgUrl = "../img/markerbig_select.png",
@@ -177,7 +177,8 @@
         view = new ol.View({
             center: [116.383572, 39.914714],
             zoom: 12,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         }),
         container = document.getElementById('info'),
         content = document.getElementById('info-content'),
@@ -199,7 +200,6 @@
     var control = new ol.control.Control({element: document.getElementById('control')});
     control.setMap(map);
     map.addControl(control);
-    var select = new ol.interaction.Select();
 
     var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
@@ -262,9 +262,36 @@
     });
 
     function match(obj) {
-        map.removeInteraction(select);
-        select = new ol.interaction.Select();
-        map.addInteraction(select);
+        select && map.removeInteraction(select);
+        overlay.setPosition(undefined);
+        vectorSource.clear();
+        var features = [];
+
+        obj.result.map(function (item) {
+            var feature = new ol.Feature();
+            feature.setGeometry(new ol.geom.Point([item.location.x, item.location.y]));
+            feature.setProperties({
+                location: item.location,
+                address: item.address,
+                score: item.score,
+                filters: item.filters
+            });
+            feature.setStyle(new ol.style.Style({
+                image: new ol.style.Icon(({
+                    anchor: [0.5, 1],
+                    src: imgUrl
+                }))
+            }));
+            features.push(feature);
+        });
+        select = new ol.interaction.Select({
+            style: new ol.style.Style({
+                image: new ol.style.Icon(({
+                    anchor: [0.5, 1],
+                    src: imgUrl
+                }))
+            })
+        });
         select.on('select', function (e) {
             if (e.selected.length > 0) {
                 var feature = e.selected[0];
@@ -284,26 +311,6 @@
             }
         });
         map.addInteraction(select);
-        overlay.setPosition(undefined);
-        vectorSource.clear();
-        var features = [];
-        obj.result.map(function (item) {
-            var feature = new ol.Feature();
-            feature.setGeometry(new ol.geom.Point([item.location.x, item.location.y]));
-            feature.setProperties({
-                location: item.location,
-                address: item.address,
-                score: item.score,
-                filters: item.filters
-            });
-            feature.setStyle(new ol.style.Style({
-                image: new ol.style.Icon(({
-                    anchor: [0.5, 1],
-                    src: imgUrl
-                }))
-            }));
-            features.push(feature);
-        });
         vectorSource.addFeatures(features);
         view.animate({zoom: 11}, {center: [116.383572, 39.914714]});
     }

@@ -72,10 +72,10 @@
             view: new ol.View({
                 center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 12,
-                projection: 'EPSG:3857'
+                projection: 'EPSG:3857',
+                multiWorld: true
             }),
-            overlays: [overlay],
-            renderer: ['canvas']
+            overlays: [overlay]
         });
 
     loadData();

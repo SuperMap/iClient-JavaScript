@@ -1,6 +1,9 @@
-import ol from 'openlayers';
 import {ChangeTileVersion} from '../../../src/openlayers/control/ChangeTileVersion';
 import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
+
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
 
 describe('openlayers_ChangeTileVersion', () => {
     var map, baseLayer;
@@ -51,9 +54,9 @@ describe('openlayers_ChangeTileVersion', () => {
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
         var url = GlobeParameter.China4326URL;
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [104.79, 33.03],
                 zoom: 4,
                 projection: 'EPSG:4326'
@@ -64,7 +67,7 @@ describe('openlayers_ChangeTileVersion', () => {
             url: url,
             wrapX: true
         });
-        map.addLayer(new ol.layer.Tile({
+        map.addLayer(new TileLayer({
             source: baseLayer,
             projection: 'EPSG:4326'
         }));

@@ -128,9 +128,7 @@
     //初始化的图层
     var turfSource = new ol.source.Turf({
         wrapX: false,
-        attributions: new ol.Attribution({
-            html: "© <a href='https://turfjs.org/' target='_blank'>turfjs<span></a> with"
-        }),
+        attributions: "© <a href='https://turfjs.org/' target='_blank'>turfjs<span></a> with"
     });
 
     map.addLayer(new ol.layer.Vector({
@@ -154,9 +152,7 @@
     //结果图层
     var resultSource = new ol.source.Turf({
         wrapX: false,
-        attributions: new ol.Attribution({
-            html: ""
-        }),
+        attributions: ""
     });
 
     map.addLayer(new ol.layer.Vector({

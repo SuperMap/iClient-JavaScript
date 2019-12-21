@@ -1,7 +1,6 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {Util} from '../core/Util';
 import {
     GeoJSON as GeoJSONFormat,
@@ -12,6 +11,9 @@ import {
     GeometryPoint,
     GeoText
 } from '@supermap/iclient-common';
+import ImageCanvasSource from 'ol/source/ImageCanvas';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
 
 /**
  * @class ol.source.HeatMap
@@ -19,7 +21,7 @@ import {
  * @category Visualization HeatMap
  * @param {string} name - 图层名称s
  * @param {Object} options - 构造参数。
- * @param {ol.Map} options.map - openlayers 的 map 对象。
+ * @param {ol/Map} options.map - openlayers 的 map 对象。
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("HeatMapSource_") 创建专题图层 ID。
  * @param {string} [options.featureWeight] - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
@@ -27,18 +29,16 @@ import {
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，false 表示默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
- * @extends {ol.source.ImageCanvas}
+ * @extends {ol/source/ImageCanvas}
  */
-export class HeatMap extends ol.source.ImageCanvas {
+export class HeatMap extends ImageCanvasSource {
 
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || new ol.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-            }),
+            attributions: options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
             canvasFunction: canvasFunctionInternal_,
-            logo: options.logo,
+            logo: Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
             ratio: options.ratio,
             resolutions: options.resolutions,
@@ -99,7 +99,7 @@ export class HeatMap extends ol.source.ImageCanvas {
     /**
      * @function ol.source.HeatMap.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {(GeoJSONObject|Array.<ol.Feature>)} features - 待添加的要素数组。
+     * @param {(GeoJSONObject|Array.<ol/Feature>)} features - 待添加的要素数组。
      * @example
      * var geojson = {
      *      "type": "FeatureCollection",
@@ -411,7 +411,7 @@ export class HeatMap extends ol.source.ImageCanvas {
     /**
      * @function ol.source.HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {GeoJSONObject|Array.<ol.Feature>} features - 待添加的要素数组。
+     * @param {GeoJSONObject|Array.<ol/Feature>} features - 待添加的要素数组。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
@@ -420,9 +420,9 @@ export class HeatMap extends ol.source.ImageCanvas {
         }
         let featuresTemp = [], geometry, attributes;
         for (let i = 0, len = features.length; i < len; i++) {
-            if (features[i] instanceof ol.Feature) {
+            if (features[i] instanceof Feature) {
                 //热点图支支持传入点对象要素
-                if (features[i].getGeometry() instanceof ol.geom.Point) {
+                if (features[i].getGeometry() instanceof Point) {
                     geometry = new GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
                     //固定属性字段为 "Properties"
                     attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
@@ -442,5 +442,3 @@ export class HeatMap extends ol.source.ImageCanvas {
     }
 
 }
-
-ol.source.HeatMap = HeatMap;

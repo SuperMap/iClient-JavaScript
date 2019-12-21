@@ -1,9 +1,14 @@
-import ol from 'openlayers';
 import { ImageSuperMapRest } from '../../../src/openlayers/mapping/ImageSuperMapRest';
 import { MapService } from '../../../src/openlayers/services/MapService';
 import { NDVIParameter } from '../../../src/common/iServer/NDVIParameter';
 import { HillshadeParameter } from '../../../src/common/iServer/HillshadeParameter';
 import { getQueryValue } from '../../tool/utils';
+
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import Point from 'ol/geom/Point';
+import * as olProj from 'ol/proj';
 
 var url = GlobeParameter.imageURL;
 describe('openlayers_ImageSuperMapRest', () => {
@@ -20,16 +25,16 @@ describe('openlayers_ImageSuperMapRest', () => {
         document.body.appendChild(testDiv);
         //只测了serverType为iserver得情况
         new MapService(url).getMapInfo(serviceResult => {
-            map = new ol.Map({
+            map = new Map({
                 target: 'map',
-                view: new ol.View({
+                view: new View({
                     center: [12957388, 4853991],
                     zoom: 11
                 })
             });
             imageTileOptions = ImageSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             imageTileSource = new ImageSuperMapRest(imageTileOptions);
-            var imageLayer = new ol.layer.Tile({
+            var imageLayer = new TileLayer({
                 source: imageTileSource
             });
             map.addLayer(imageLayer);
@@ -72,7 +77,7 @@ describe('openlayers_ImageSuperMapRest', () => {
          expect(imageLayerObject.options.redirect).toBe(true);
          expect(imageLayerObject.options.prjCoordSys.epsgCode).toBe(4326);*/
         var pixelRatio = '245';
-        var coords = new ol.geom.Point(120.14, 30.24);
+        var coords = new Point(120.14, 30.24);
         var tileUrl = imageTileSource.tileUrlFunction(coords, pixelRatio, tempOptions);
         expect(tileUrl).toBe(
             GlobeParameter.mapServiceURL +
@@ -89,7 +94,7 @@ describe('openlayers_ImageSuperMapRest', () => {
             prjCoordSys: { epsgCode: 4326 }
         };
         var pixelRatio = '245';
-        var coords = new ol.geom.Point(120.14, 30.24);
+        var coords = new Point(120.14, 30.24);
         var tileUrl = imageTileSourcetilePoxy.tileUrlFunction(coords, pixelRatio, tempOptions);
         // expect(tileUrl).toBe("tileProxyhttp%3A%2F%2Flocalhost%3A8090%2Fiserver%2Fservices%2Fmap-world%2Frest%2Fmaps%2F%25E4%25B8%2596%25E7%2595%258C%25E5%259C%25B0%25E5%259B%25BE_Day%2Fimage.png%3F%26transparent%3Dtrue%26cacheEnabled%3Dfalse%26width%3D256%26height%3D256%26viewBounds%3D%257B%2522leftBottom%2522%2520%3A%2520%257B%2522x%2522%3ANaN%2C%2522y%2522%3ANaN%257D%2C%2522rightTop%2522%2520%3A%2520%257B%2522x%2522%3ANaN%2C%2522y%2522%3ANaN%257D%257D");
         expect(tileUrl).not.toBeNull();
@@ -106,7 +111,7 @@ describe('openlayers_ImageSuperMapRest', () => {
             prjCoordSys: { epsgCode: 4326 }
         };
         var pixelRatio = '245';
-        var coords = new ol.geom.Point(120.14, 30.24);
+        var coords = new Point(120.14, 30.24);
         var tileUrl = imageTile.tileUrlFunction(coords, pixelRatio, tempOptions);
         var urlTemp = tileUrl.split('?')[0];
         var format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
@@ -137,8 +142,8 @@ describe('openlayers_ImageSuperMapRest', () => {
         imageTileOptions.rasterfunction = new NDVIParameter({ redIndex: 0, nirIndex: 2 });
         var imageTile = new ImageSuperMapRest(imageTileOptions);
         var pixelRatio = '245';
-        var coords = new ol.geom.Point(120.14, 30.24);
-        var tileUrl = imageTile.tileUrlFunction(coords, pixelRatio, ol.proj.get('EPSG:4326'));
+        var coords = new Point(120.14, 30.24);
+        var tileUrl = imageTile.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
         expect(tileUrl).not.toBeNull();
         const ndviParameterValue = getQueryValue(tileUrl, 'rasterfunction');
         expect(ndviParameterValue).not.toBeNull;
@@ -154,8 +159,8 @@ describe('openlayers_ImageSuperMapRest', () => {
         imageTileOptions.rasterfunction = new HillshadeParameter({ altitude: 10, azimuth: 200 });
         var imageTile = new ImageSuperMapRest(imageTileOptions);
         var pixelRatio = '245';
-        var coords = new ol.geom.Point(120.14, 30.24);
-        var tileUrl = imageTile.tileUrlFunction(coords, pixelRatio, ol.proj.get('EPSG:4326'));
+        var coords = new Point(120.14, 30.24);
+        var tileUrl = imageTile.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
         expect(tileUrl).not.toBeNull();
         const hillshadeParameterValue = getQueryValue(tileUrl, 'rasterfunction');
         expect(hillshadeParameterValue).not.toBeNull;

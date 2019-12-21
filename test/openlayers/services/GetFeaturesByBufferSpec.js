@@ -1,7 +1,7 @@
-import ol from 'openlayers';
 import { FeatureService } from '../../../src/openlayers/services/FeatureService';
 import { GetFeaturesByBufferParameters } from '../../../src/common/iServer/GetFeaturesByBufferParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import Polygon from 'ol/geom/Polygon';
 
 var featureServiceURL = "http://supermap:8090/iserver/services/data-world/rest/data";
 var options = {
@@ -21,7 +21,7 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
 
   //数据集Buffer查询服务
   it('getFeaturesByBuffer', (done) => {
-    var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
+    var polygon = new Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
     var bufferParam = new GetFeaturesByBufferParameters({
       datasetNames: ["World:Capitals"],
       bufferDistance: 10,
@@ -64,7 +64,7 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
     });
   });
   it('GetFeaturesByBufferParameters:targetEpsgCode', done => {
-    var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
+    var polygon = new Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
     var bufferParam = new GetFeaturesByBufferParameters({
       datasetNames: ["World:Capitals"],
       bufferDistance: 10,
@@ -84,7 +84,7 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
     });
   });
   it('GetFeaturesByBufferParameters:targetPrj', done => {
-    var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
+    var polygon = new Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
     var bufferParam = new GetFeaturesByBufferParameters({
       datasetNames: ["World:Capitals"],
       bufferDistance: 10,

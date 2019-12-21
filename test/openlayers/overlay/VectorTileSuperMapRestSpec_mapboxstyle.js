@@ -1,12 +1,14 @@
-import ol from 'openlayers';
-import * as oldebug from 'openlayers/dist/ol-debug';
-ol.source.VectorTile = oldebug.source.VectorTile;
 import {
     VectorTileSuperMapRest
 } from '../../../src/openlayers/overlay/VectorTileSuperMapRest';
 import {
     FetchRequest
 } from '../../../src/common/util/FetchRequest';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import MVT from 'ol/format/MVT';
+import Feature from 'ol/Feature';
+import VectorTileLayer from 'ol/layer/VectorTile';
 
 describe('openlayers_VectorTileSuperMapRest', () => {
     var url = GlobeParameter.californiaURL
@@ -21,9 +23,9 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [-122.228687503369, 38.1364932162598],
                 zoom: 10,
                 minZoom: 10,
@@ -56,10 +58,10 @@ describe('openlayers_VectorTileSuperMapRest', () => {
     });
 
     it('initialize_styleObject', (done) => {
-        var format = new ol.format.MVT({
-            featureClass: ol.Feature
+        var format = new MVT({
+            featureClass: Feature
         });
-        vectorLayer = new ol.layer.VectorTile({
+        vectorLayer = new VectorTileLayer({
             //设置避让参数
             declutter: true,
             source: new VectorTileSuperMapRest({
@@ -71,17 +73,17 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         });
         spyOn(vectorLayer.getSource(), 'tileUrlFunction').and.callThrough();
         setTimeout(() => {
-            expect(vectorLayer.getSource().tileUrlFunction.calls.count()).toEqual(4)
+            expect(vectorLayer.getSource().tileUrlFunction.calls.count()).toEqual(8)
             done();
         }, 2000);
         map.addLayer(vectorLayer);
 
     });
     it('initialize_styleObject_nullSource', (done) => {
-        var format = new ol.format.MVT({
-            featureClass: ol.Feature
+        var format = new MVT({
+            featureClass: Feature
         });
-        vectorLayer = new ol.layer.VectorTile({
+        vectorLayer = new VectorTileLayer({
             //设置避让参数
             declutter: true,
             source: new VectorTileSuperMapRest({
@@ -93,7 +95,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         spyOn(vectorLayer.getSource(), 'tileUrlFunction').and.callThrough();
         setTimeout(() => {
             expect(vectorLayer.getSource()._tileUrl).toContain("California");
-            expect(vectorLayer.getSource().tileUrlFunction.calls.count()).toEqual(4)
+            expect(vectorLayer.getSource().tileUrlFunction.calls.count()).toEqual(8)
             done();
         }, 2000);
         map.addLayer(vectorLayer);

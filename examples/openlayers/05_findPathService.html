@@ -40,7 +40,8 @@
             view: new ol.View({
                 center: [5200, -3375],
                 zoom: 3,
-                projection: projection
+                projection: projection,
+                multiWorld: true
             })
         });
         var options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);

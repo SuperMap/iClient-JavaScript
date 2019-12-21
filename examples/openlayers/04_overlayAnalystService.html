@@ -26,7 +26,8 @@
                 center: [116.77, 40.04],
                 zoom: 8,
                 extent: extent,
-                projection: "EPSG:4326"
+                projection: "EPSG:4326",
+                multiWorld: true
             })
         });
         options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);

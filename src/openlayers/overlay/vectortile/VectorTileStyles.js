@@ -1,21 +1,23 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {Unit, JSONFormat, CartoCSS} from '@supermap/iclient-common';
 import {StyleUtils} from '../../core/StyleUtils';
 import {Util} from '../../core/Util';
-
-ol.supermap = ol.supermap || {};
-
+import Observable from 'ol/Observable';
+import Style from 'ol/style/Style';
+import CircleStyle from 'ol/style/Circle';
+import FillStyle from 'ol/style/Fill';
+import StrokeStyle from 'ol/style/Stroke';
+import Text from 'ol/style/Text';
 /**
  * @class ol.supermap.VectorTileStyles
  * @classdesc 矢量瓦片风格。
  * @category  Visualization VectorTile
  * @param {Object} options - 交互时所需可选参数。
- * @extends {ol.Observable}
+ * @extends {ol/Observable}
  */
-export class VectorTileStyles extends ol.Observable {
+export class VectorTileStyles extends Observable {
 
     constructor(options) {
         super();
@@ -127,10 +129,10 @@ export class VectorTileStyles extends ol.Observable {
          * @description 设置默认选择后的点样式。
          */
         function getDefaultSelectedPointStyle() {
-            return new ol.style.Style({
-                image: new ol.style.Circle({
+            return new Style({
+                image: new CircleStyle({
                     radius: 5,
-                    fill: new ol.style.Fill({
+                    fill: new FillStyle({
                         color: 'blue'
                     })
                 })
@@ -142,8 +144,8 @@ export class VectorTileStyles extends ol.Observable {
          * @description 设置默认选择后的线样式。
          */
         function getDefaultSelectedLineStyle() {
-            return new ol.style.Style({
-                stroke: new ol.style.Stroke({
+            return new Style({
+                stroke: new StrokeStyle({
                     color: 'blue',
                     width: 3
                 })
@@ -155,11 +157,11 @@ export class VectorTileStyles extends ol.Observable {
          * @description 设置默认选择后的面样式。
          */
         function getDefaultSelectedRegionStyle() {
-            return new ol.style.Style({
-                fill: new ol.style.Fill({
+            return new Style({
+                fill: new FillStyle({
                     color: [0, 0, 255, 0.5]
                 }),
-                stroke: new ol.style.Stroke({
+                stroke: new StrokeStyle({
                     color: 'blue',
                     width: 3
                 })
@@ -171,13 +173,13 @@ export class VectorTileStyles extends ol.Observable {
          * @description 设置默认选择后的文本样式。
          */
         function getDefaultSelectedTextStyle() {
-            return new ol.style.Style({
-                text: new ol.style.Text({
+            return new Style({
+                text: new Text({
                     font: '15px Microsoft YaHei',
-                    fill: new ol.style.Fill({
+                    fill: new FillStyle({
                         color: 'blue'
                     }),
-                    stroke: new ol.style.Stroke({
+                    stroke: new StrokeStyle({
                         color: 'white',
                         width: 1
                     })
@@ -534,5 +536,3 @@ export class VectorTileStyles extends ol.Observable {
         return VectorTileStyles.getStyle(layerName, feature);
     }
 }
-
-ol.supermap.VectorTileStyles = VectorTileStyles;

@@ -92,15 +92,14 @@
         view: new ol.View({
             center: ol.proj.transform([106.563777, 29.578285], 'EPSG:4326', 'EPSG:3857'),
             zoom: 11,
-            projection: 'EPSG:3857'
+            projection: 'EPSG:3857',
+            multiWorld: true
         })
     });
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,
-            attributions: new ol.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
-            })
+            attributions: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
         })
     }));
     overlay.setPosition(map.getView().getCenter());

@@ -1,13 +1,13 @@
-import ol from "openlayers";
-import * as oldebug from "openlayers/dist/ol-debug";
+import * as ol from 'ol';
+window.ol = ol;
 import "../../../libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms";
 import { MapboxStyles } from "../../../../src/openlayers/overlay/vectortile/MapboxStyles";
-import { MapService } from "../../../../src/openlayers/services/MapService";
-import { VectorTileSuperMapRest } from "../../../../src/openlayers/overlay/VectorTileSuperMapRest";
 import { FetchRequest } from "../../../../src/common/util/FetchRequest";
-
-ol.render.canvas = oldebug.render.canvas;
-ol.geom.flat = oldebug.geom.flat;
+import Map from 'ol/Map';
+import View from 'ol/View';
+import Feature from 'ol/Feature';
+import Polygon from 'ol/geom/Polygon';
+import * as olColor from 'ol/color';
 
 describe("openlayers_MapboxStyles", () => {
     var url = GlobeParameter.californiaURL;
@@ -23,9 +23,9 @@ describe("openlayers_MapboxStyles", () => {
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
 
-        map = new ol.Map({
+        map = new Map({
             target: "map",
-            view: new ol.View({
+            view: new View({
                 center: [-122.228687503369, 38.1364932162598],
                 zoom: 10,
                 minZoom: 10,
@@ -38,18 +38,18 @@ describe("openlayers_MapboxStyles", () => {
             map: map,
             source: "California"
         };
-        feature = new ol.Feature({
-            geometry: new ol.geom.Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]),
+        feature = new Feature({
+            geometry: new Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]),
             layer: "Military_R@California"
         });
         feature.setId(1);
-        feature2 = new ol.Feature({
-            geometry: new ol.geom.Polygon([[[5, 5], [-15, 35], [-35, 5], [5, 5]]]),
+        feature2 = new Feature({
+            geometry: new Polygon([[[5, 5], [-15, 35], [-35, 5], [5, 5]]]),
             layer: "Military_R@California"
         });
         feature2.setId(2);
-        feature3 = new ol.Feature({
-            geometry: new ol.geom.Polygon([[[10, 10], [-20, 40], [-20, 10], [10, 10]]]),
+        feature3 = new Feature({
+            geometry: new Polygon([[[10, 10], [-20, 40], [-20, 10], [10, 10]]]),
             layer: "Military_R@California"
         });
         feature3.setId(3);
@@ -80,7 +80,7 @@ describe("openlayers_MapboxStyles", () => {
     };
     const matchColor = function(sourceColor, expectColor) {
         expect(sourceColor).not.toBeNull();
-        const color = ol.color.asArray(sourceColor);
+        const color = olColor.asArray(sourceColor);
         expectColor[0] && expect(color[0]).toBeCloseTo(expectColor[0]);
         expectColor[1] && expect(color[1]).toBeCloseTo(expectColor[1]);
         expectColor[2] && expect(color[2]).toBeCloseTo(expectColor[2]);

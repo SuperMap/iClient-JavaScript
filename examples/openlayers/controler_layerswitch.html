@@ -38,12 +38,13 @@
         view: new ol.View({
             center: [0, 0],
             zoom: 3,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         })
     });
 
     var swipe = document.getElementById('swipe');
-    worldNight.on('precompose', function (event) {
+    worldNight.on('prerender', function (event) {
         var ctx = event.context;
         var width = ctx.canvas.width * (swipe.value / 100);
 
@@ -53,7 +54,7 @@
         ctx.clip();
     });
 
-    worldNight.on('postcompose', function (event) {
+    worldNight.on('postrender', function (event) {
         var ctx = event.context;
         ctx.restore();
     });

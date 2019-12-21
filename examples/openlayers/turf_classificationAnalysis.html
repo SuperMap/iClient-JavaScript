@@ -113,7 +113,8 @@
             view: new ol.View({
                 center: [106, 36],
                 zoom: 5,
-                projection: 'EPSG:4326'
+                projection: 'EPSG:4326',
+                multiWorld: true
             })
         });
 
@@ -128,9 +129,7 @@
     //添加turf 图层
     var turfSource = new ol.source.Turf({
         wrapX: false,
-        attributions: new ol.Attribution({
-            html: ""
-        }),
+        attributions: ""
     });
 
     //添加pupop x按钮

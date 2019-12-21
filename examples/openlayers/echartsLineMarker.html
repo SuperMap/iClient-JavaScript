@@ -29,7 +29,8 @@
             view: new ol.View({
                 center: [116.402, 39.905],
                 zoom: 5,
-                projection: 'EPSG:4326'
+                projection: 'EPSG:4326',
+                multiWorld: true
             }),
             layers: [new ol.layer.Tile({
                 source: new ol.source.TileSuperMapRest({
@@ -199,7 +200,7 @@
                 });
                 map.addLayer(resultLayer);
                 var select = new ol.interaction.Select({
-                    features: [features[2]]
+                  features: new ol.Collection([features[2]])
                 });
                 map.addInteraction(select);
                 select.on('select', function (e) {

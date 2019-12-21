@@ -21,7 +21,8 @@
         view: new ol.View({
             center: [120.11, 30.24],
             zoom: 13,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         }),
         layers: [new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({

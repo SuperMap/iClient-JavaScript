@@ -30,7 +30,8 @@
         view: new ol.View({
             center: ol.proj.transform([-73.931577, 40.745654], 'EPSG:4326', 'EPSG:3857'),
             zoom: 11,
-            projection: 'EPSG:3857'
+            projection: 'EPSG:3857',
+            multiWorld: true
         })
     });
 
@@ -39,9 +40,7 @@
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,
-            attributions: new ol.Attribution({
-                html: "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a>"
-            })
+            attributions: "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a>"
         })
     }));
     widgets.loader.showLoader();
@@ -65,10 +64,7 @@
             draw: 'simple'
         };
         var options = {
-            map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: [
-                new ol.Attribution({
-                    html: resources.text_dataSources + "<a href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/' target='_blank'>NYCTaxi(" + resources.text_NYTaxiCarPoint + ")</a>  © 2018 " + resources.title_3baidu + " MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-                })]
+            map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: resources.text_dataSources + "<a href='https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page' target='_blank'>NYCTaxi(" + resources.text_NYTaxiCarPoint + ")</a>  © 2018 " + resources.title_3baidu + " MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         };
         var layer = new ol.layer.Image({
             source: new ol.source.Mapv(options)
