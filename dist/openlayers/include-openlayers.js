@@ -75,7 +75,7 @@
           inputScript("https://cdn.bootcss.com/proj4js/2.5.0/proj4.js");
         }
         if (inArray(includes, 'ol3-echarts')) {
-          inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.1/dist/ol3Echarts.js");
+          inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.1/dist/ol3Echarts.min.js");
         }
         if (inArray(includes, 'ol3-echarts@1.3.6')) {
           inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts@1.3.6/dist/ol3Echarts.min.js");
