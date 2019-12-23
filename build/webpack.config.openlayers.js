@@ -4,6 +4,12 @@ var libName = 'openlayers';
 //产品包名
 var productName = 'iclient-openlayers';
 
+var argv = JSON.parse(process.env['npm_config_argv']);
+var origin = argv.original;
+if (origin && origin.includes('deploy-ol')) {
+    libName = 'ol';
+    productName = 'iclient-ol';
+}
 var externals = [
     Object.assign({}, configBase.externals, {
         '@turf/turf': 'function(){try{return turf}catch(e){return {}}}()',

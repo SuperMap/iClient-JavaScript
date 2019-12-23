@@ -7,9 +7,9 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_terrainCurvatureCalculation"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
     var map, options, terrainCurvatureCalculationResult,
@@ -26,7 +26,6 @@
                 center: [116.85, 39.79],
                 zoom: 8,
                 projection: "EPSG:4326",
-                extent: extent,
                 multiWorld: true
             })
         });
