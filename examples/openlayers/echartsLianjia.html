@@ -23,7 +23,6 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 1px solid #3473b7;
         }
 
         #titleContainer {
@@ -38,6 +37,10 @@
         #titleContainer>#title {
             letter-spacing: 0.1em;
         }
+
+        .ol-overlaycontainer-stopevent{
+            height: 0% !important;
+        }
     </style>
 </head>
 
@@ -49,7 +52,7 @@
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <script>
        
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
         var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
         var queryUrl = "https://www.supermapol.com/iserver/services/map_201802beijingfangjia/rest/maps/2018年2月北京房价_链家小区参考价_格网";
@@ -61,7 +64,8 @@
             view: new ol.View({
                 center: [12954583.524137927, 4860747.532344677],
                 zoom: 10,
-                projection: 'EPSG:3857'
+                projection: 'EPSG:3857',
+                multiWorld: true
             }),
             layers: [new ol.layer.Tile({
                 source: new ol.source.TileSuperMapRest({

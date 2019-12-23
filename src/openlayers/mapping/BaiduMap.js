@@ -1,7 +1,10 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
+import TileImage from 'ol/source/TileImage'
+import * as asserts from 'ol/asserts';
+import TileGrid from 'ol/tilegrid/TileGrid';
+import { Util } from '../core/Util';
 
 /**
  * @class ol.source.BaiduMap
@@ -11,81 +14,78 @@ import ol from 'openlayers';
  * @param {string} [opt_options.url='http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @param {boolean} [hidpi = false] - 是否使用高分辨率地图。
- * @extends {ol.source.TileImage}
+ * @extends {ol/source/TileImage}
  */
-export class BaiduMap extends ol.source.TileImage {
-    constructor(opt_options) {
-        var options = opt_options || {};
-        var attributions = options.attributions || new ol.Attribution({
-            html: "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-        });
-        var tileGrid = ol.source.BaiduMap.defaultTileGrid();
-        var crossOrigin = options.crossOrigin !== undefined ?
-            options.crossOrigin : 'anonymous';
+export class BaiduMap extends TileImage {
+  constructor(opt_options) {
+    var options = opt_options || {};
+    var attributions = options.attributions || "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+    var tileGrid = BaiduMap.defaultTileGrid();
+    var crossOrigin = options.crossOrigin !== undefined ?
+      options.crossOrigin : 'anonymous';
 
-        var url = options.url !== undefined ?
-            options.url : "http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408";
-        var hidpi = options.hidpi || (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
-        url = url.replace('{styles}', hidpi ? 'ph' : 'pl');
-        super({
-            attributions: attributions,
-            cacheSize: options.cacheSize,
-            crossOrigin: crossOrigin,
-            opaque: options.opaque !== undefined ? options.opaque : true,
-            maxZoom: options.maxZoom !== undefined ? options.maxZoom : 19,
-            reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-            tileLoadFunction: options.tileLoadFunction,
-            url: url,
-            projection: 'EPSG:3857',
-            wrapX: options.wrapX,
-            tilePixelRatio: hidpi ? 2 : 1,
-            tileGrid: tileGrid,
-            tileUrlFunction: tileUrlFunction
-        });
+    var url = options.url !== undefined ?
+      options.url : "http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408";
+    var hidpi = options.hidpi || (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
+    url = url.replace('{styles}', hidpi ? 'ph' : 'pl');
+    super({
+      attributions: attributions,
+      cacheSize: options.cacheSize,
+      crossOrigin: crossOrigin,
+      opaque: options.opaque !== undefined ? options.opaque : true,
+      maxZoom: options.maxZoom !== undefined ? options.maxZoom : 19,
+      reprojectionErrorThreshold: options.reprojectionErrorThreshold,
+      tileLoadFunction: options.tileLoadFunction,
+      url: url,
+      projection: 'EPSG:3857',
+      wrapX: options.wrapX,
+      tilePixelRatio: hidpi ? 2 : 1,
+      tileGrid: tileGrid,
+      tileUrlFunction: tileUrlFunction
+    });
 
-        if (options.tileProxy) {
-            this.tileProxy = options.tileProxy;
-        }
-        var me = this;
-
-        function tileUrlFunction(tileCoord, pixelRatio, projection) { // eslint-disable-line no-unused-vars
-            var tempUrl = url.replace("{z}", tileCoord[0].toString())
-                .replace("{x}", tileCoord[1].toString())
-                .replace("{y}", function () {
-                    var y = tileCoord[2];
-                    return y.toString();
-                })
-                .replace("{-y}", function () {
-                    var z = tileCoord[0];
-                    var range = tileGrid.getFullTileRange(z);
-                    ol.asserts.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
-                    var y = range.getHeight() + tileCoord[2];
-                    return y.toString();
-                });
-
-            //支持代理
-            if (me.tileProxy) {
-                tempUrl = me.tileProxy + encodeURIComponent(tempUrl);
-            }
-            return tempUrl;
-        }
+    if (options.tileProxy) {
+      this.tileProxy = options.tileProxy;
     }
+    var me = this;
 
-    /**
-     * @function ol.source.BaiduMap.defaultTileGrid
-     * @description 获取默认瓦片格网。
-     * @returns {ol.tilegrid.TileGrid} 返回瓦片格网对象。
-     */
-    static defaultTileGrid() {
-        var tileGird = new ol.tilegrid.TileGrid({
-            extent: [-33554432, -33554432, 33554432, 33554432],
-            resolutions: [131072 * 2, 131072, 65536, 32768, 16284, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],
-            origin: [0, 0],
-            minZoom: 3
+    function tileUrlFunction(tileCoord, pixelRatio, projection) { // eslint-disable-line no-unused-vars
+      var tempUrl = url.replace("{z}", tileCoord[0].toString())
+        .replace("{x}", tileCoord[1].toString())
+        .replace("{y}", function () {
+          var y = ['4', '5'].includes(Util.getOlVersion()) ? tileCoord[2] : - tileCoord[2] - 1;
+          return y.toString();
+        })
+        .replace("{-y}", function () {
+          var z = tileCoord[0];
+          var range = tileGrid.getFullTileRange(z);
+          asserts.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
+          var y = range.getHeight() + tileCoord[2];
+          return y.toString();
         });
-        return tileGird;
+
+      //支持代理
+      if (me.tileProxy) {
+        tempUrl = me.tileProxy + encodeURIComponent(tempUrl);
+      }
+      return tempUrl;
     }
+  }
+
+  // TODO 确认这个方法是否要开出去
+  /**
+   * @function ol.source.BaiduMap.defaultTileGrid
+   * @description 获取默认瓦片格网。
+   * @returns {ol/tilegrid/TileGrid} 返回瓦片格网对象。
+   */
+  static defaultTileGrid() {
+    var tileGird = new TileGrid({
+      extent: [-33554432, -33554432, 33554432, 33554432],
+      resolutions: [131072 * 2, 131072, 65536, 32768, 16284, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],
+      origin: [0, 0],
+      minZoom: 3
+    });
+    return tileGird;
+  }
 
 }
-
-ol.source.BaiduMap = BaiduMap;

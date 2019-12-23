@@ -20,7 +20,7 @@
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
   <div id="main">
-    <sm-web-map server-url='http://support.supermap.com.cn:8092/' map-id="1649097980">
+    <sm-web-map server-url='https://iportal.supermap.io/iportal' map-id="801571284">
       <!-- 查询组件: sm-query -->
       <!-- 支持的数据：rest-map rest-data iportal-data-->
       <sm-query :rest-data="restData" :rest-map="restMap" :collapsed="false"></sm-query>
@@ -31,7 +31,7 @@
     new Vue({
       el: '#main',
       data() {
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         return {
           restData: [
             new SuperMap.Components.commontypes.RestDataParameter({

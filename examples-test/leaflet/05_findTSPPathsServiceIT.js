@@ -8,7 +8,7 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
         browser.pause(1000);
-        browser.elements('class name', 'leaflet-marker-icon', function (result) {
+        browser.elements('css selector', '.leaflet-marker-icon', function (result) {
             this.assert.equal(result.value.length, 3, "expect Number of marker to be 3, actual is " + result.value.length);
         });
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane', 10000);

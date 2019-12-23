@@ -10,10 +10,10 @@ SuperMap iClient JavaScript 10i is a set of open source WebGIS client applicatio
 
 ![Overview](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/product_overview_en.png)
 
-[中文官网](http://iclient.supermap.io) | [ENGLISH HOMEPAGE](http://iclient.supermap.io/en/web/index.html)
+[中文官网](https://iclient.supermap.io) | [ENGLISH HOMEPAGE](https://iclient.supermap.io/en/web/index.html)
 
 ## Samples
- [![](https://www.supermap.com/pic/anlipic/201792216859921.gif)](http://iclient.supermap.io/examples/mapboxgl/editor.html#mapvPolylineTime)
+ [![](https://www.supermap.com/pic/anlipic/201792216859921.gif)](https://iclient.supermap.io/examples/mapboxgl/editor.html#mapvPolylineTime)
  
 ## License
 [ Apache License 2.0 ](./LICENSE)

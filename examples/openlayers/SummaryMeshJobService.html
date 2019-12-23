@@ -94,7 +94,7 @@
     </div>
     <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
     <script type="text/javascript">
-        var host = window.isLocal ? window.server : "http://iclient.supermap.io";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var layer,
             processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
             mapURL = host + "/iserver/services/map-world/rest/maps/World",
@@ -109,7 +109,8 @@
                 view: new ol.View({
                     center: [-73.95, 40.75],
                     zoom: 12,
-                    projection: 'EPSG:4326'
+                    projection: 'EPSG:4326',
+                    multiWorld: true
                 })
             });
         map.addLayer(new ol.layer.Tile({

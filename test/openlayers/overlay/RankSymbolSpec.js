@@ -1,6 +1,9 @@
-import ol from 'openlayers';
+
 import {RankSymbol} from '../../../src/openlayers/overlay/RankSymbol';
 import {ThemeFeature} from '../../../src/openlayers/overlay/theme/ThemeFeature';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import Point from 'ol/geom/Point';
 
 describe('openlayers_RankSymbol', () => {
     var testDiv, map, originalTimeout;
@@ -13,9 +16,9 @@ describe('openlayers_RankSymbol', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [116.85, 39.79],
                 zoom: 4,
                 projection: 'EPSG:4326',
@@ -84,7 +87,7 @@ describe('openlayers_RankSymbol', () => {
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
             var provinceInfo = chinaConsumptionLevel[i];
-            var geo = new ol.geom.Point([provinceInfo[1], provinceInfo[2]]);
+            var geo = new Point([provinceInfo[1], provinceInfo[2]]);
             var attrs = {};
             attrs.NAME = provinceInfo[0];
             attrs.CON2009 = provinceInfo[3];
@@ -120,7 +123,7 @@ describe('openlayers_RankSymbol', () => {
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
             var provinceInfo = chinaConsumptionLevel[i];
-            var geo = new ol.geom.Point([provinceInfo[1], provinceInfo[2]]);
+            var geo = new Point([provinceInfo[1], provinceInfo[2]]);
             var attrs = {};
             attrs.NAME = provinceInfo[0];
             attrs.CON2009 = provinceInfo[3];

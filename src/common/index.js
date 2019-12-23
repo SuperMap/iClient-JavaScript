@@ -97,6 +97,11 @@ import { TimeControlBase, TimeFlowControl } from './control';
 import { IManager, IManagerCreateNodeParam, IManagerServiceBase } from './iManager';
 import {
     IPortal,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalMap,
     IPortalMapsQueryParam,
     IPortalInsight,
@@ -107,7 +112,8 @@ import {
     IPortalServiceBase,
     IPortalServicesQueryParam,
     IPortalMapdashboard,
-    IPortalMapdashboardsQueryParam
+    IPortalMapdashboardsQueryParam,
+    IPortalUser
 } from './iPortal';
 import {
     AddressMatchService,
@@ -352,7 +358,8 @@ import {
     getRequestTimeout,
     FetchRequest,
     ColorsPickerUtil,
-    ArrayStatistic
+    ArrayStatistic,
+    getMeterPerMapUnit
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -550,9 +557,37 @@ export {
 };
 export { TimeControlBase, TimeFlowControl };
 export { Format, GeoJSON, JSONFormat, WKT };
-export { setCORS, isCORS, setRequestTimeout, getRequestTimeout, FetchRequest, ColorsPickerUtil, ArrayStatistic };
+export {
+    setCORS,
+    isCORS,
+    setRequestTimeout,
+    getRequestTimeout,
+    FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic,
+    getMeterPerMapUnit
+};
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
-export { IPortal, IPortalMap, IPortalMapsQueryParam, IPortalInsight, IPortalInsightsQueryParam, IPortalScene, IPortalScenesQueryParam,IPortalService, IPortalServiceBase, IPortalServicesQueryParam, IPortalMapdashboard, IPortalMapdashboardsQueryParam };
+export { 
+    IPortal,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
+    IPortalMap,
+    IPortalMapsQueryParam,
+    IPortalInsight,
+    IPortalInsightsQueryParam,
+    IPortalScene,
+    IPortalScenesQueryParam,
+    IPortalService,
+    IPortalServiceBase,
+    IPortalServicesQueryParam,
+    IPortalMapdashboard,
+    IPortalMapdashboardsQueryParam,
+    IPortalUser
+};
 export {
     AddressMatchService,
     AggregationParameter,

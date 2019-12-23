@@ -114,14 +114,13 @@
         });
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.js"></script>
-    <script type="text/javascript" src="http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/css/ol.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js"></script>
     <script type="text/javascript" src="../../dist/openlayers/iclient-openlayers-es6.min.js"></script>
     <link rel="stylesheet" href="../../dist/openlayers/iclient-openlayers.min.css">
     <script type="text/javascript">
-        var url = (window.isLocal ? window.server : "http://iclient.supermap.io") +
+        var url = (window.isLocal ? window.server : "https://iserver.supermap.io") +
             "/iserver/services/map-beijing/rest/maps/beijingMap";
         /**
          * Elements that make up the popup.
@@ -180,7 +179,7 @@
         switchStyle(null, 'basic');
         map.on('click', function (e) {
             var features = map.getFeaturesAtPixel(e.pixel);
-            if (features) {
+            if (features && features.length > 0) {
                 var coordinate = e.coordinate;
                 content.innerHTML = "Layer: " + features[0].get('layer') + "<br />" +
                     (features[0].get('NAME') ? "Name:  " + features[0].get('NAME') + "<br />" : "") +

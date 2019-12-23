@@ -64,7 +64,7 @@
                 }
             });
             var resultLayer,
-                urlQuery = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China_4326",
+                urlQuery = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China_4326",
                 wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
             var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
             var timer, featureResult, dataFlowBroadcast, source;
@@ -83,7 +83,8 @@
                     view: new ol.View({
                         center: [116.443571, 39.887549],
                         zoom: 12,
-                        projection: "EPSG:4326"
+                        projection: "EPSG:4326",
+                        multiWorld: true
                     }),
                     overlays: [overlay]
                 });

@@ -26,8 +26,8 @@
 <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript">
     var map, select, drag, source,
-        baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World",
-        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World",
+        url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
@@ -35,7 +35,8 @@
         view: new ol.View({
             center: [116, 30],
             zoom: 4,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         })
     });
     var layer = new ol.layer.Tile({

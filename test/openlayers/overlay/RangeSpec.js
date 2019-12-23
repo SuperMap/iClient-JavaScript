@@ -1,6 +1,9 @@
-import ol from 'openlayers';
 import {Range} from '../../../src/openlayers/overlay/Range';
 import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import ImageLayer from 'ol/layer/Image';
 
 describe('openlayers_Range', () => {
     var originalTimeout, map, testDiv;
@@ -15,16 +18,16 @@ describe('openlayers_Range', () => {
         window.document.body.appendChild(testDiv);
         var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
             extent = [104.07, 30.54, 119.51, 42.31];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [116.85, 39.79],
                 zoom: 8,
                 projection: "EPSG:4326",
                 extent: extent
             })
         });
-        var layer = new ol.layer.Tile({
+        var layer = new TileLayer({
             source: new TileSuperMapRest({
                 url: baseUrl
             })
@@ -354,7 +357,7 @@ describe('openlayers_Range', () => {
                 }]
             });
             range.addFeatures(features);
-            var themeLayer = new ol.layer.Image({
+            var themeLayer = new ImageLayer({
                 source: range
             });
             map.addLayer(themeLayer);

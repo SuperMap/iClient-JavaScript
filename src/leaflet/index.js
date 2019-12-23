@@ -68,6 +68,11 @@ import {
     IManagerCreateNodeParam,
     //iPortal
     IPortal,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalMap,
     IPortalMapsQueryParam,
     IPortalInsight,
@@ -79,6 +84,7 @@ import {
     IPortalServicesQueryParam,
     IPortalMapdashboard,
     IPortalMapdashboardsQueryParam,
+    IPortalUser,
     //Online
     Online,
     OnlineData,
@@ -527,6 +533,11 @@ export {
     IManagerCreateNodeParam,
     //iPortal
     IPortal,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalMap,
     IPortalMapsQueryParam,
     IPortalInsight,
@@ -538,6 +549,7 @@ export {
     IPortalServicesQueryParam,
     IPortalMapdashboard,
     IPortalMapdashboardsQueryParam,
+    IPortalUser,
     //Online
     Online,
     OnlineData,

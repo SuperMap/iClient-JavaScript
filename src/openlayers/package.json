@@ -1,12 +1,12 @@
 {
-  "name": "@supermap/iclient-openlayers",
+  "name": "@supermap/iclient-ol",
   "description": "",
-  "version": "10.0.0",
+  "version": "10.0.1",
   "keywords": [
     "SuperMap",
     "OpenLayers"
   ],
-  "homepage": "http://iclient.supermap.io",
+  "homepage": "https://iclient.supermap.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/SuperMap/iClient-JavaScript.git"
@@ -17,7 +17,7 @@
     "@turf/turf": "5.1.6",
     "echarts": "4.3.0",
     "mapv": "2.0.38",
-    "openlayers": "4.6.5",
+    "ol": "6.1.1",
     "@supermap/iclient-common": "10.0.0",
     "proj4": "2.5.0",
     "xlsx": "0.15.1",

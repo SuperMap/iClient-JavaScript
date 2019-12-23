@@ -25,12 +25,12 @@
         view: new ol.View({
             center: [0, 0],
             zoom: 0,
-
+            multiWorld: true
         }),
         layers: [new ol.layer.Tile({
             opacity: 0.7,
             source: new ol.source.WMTS({
-                url: (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/wmts100",
+                url: (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-china400/wmts100",
                 layer: 'China',
                 matrixSet: 'GoogleMapsCompatible_China',
                 format: 'image/png',
@@ -41,9 +41,7 @@
                     matrixIds: matrixIds
                 }),
                 style: 'default',
-                attributions: new ol.Attribution({
-                    html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-                })
+                attributions: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             })
         })]
     });

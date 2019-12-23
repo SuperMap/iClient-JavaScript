@@ -28,7 +28,8 @@
                 .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [0, 0],
-                zoom: 3
+                zoom: 3,
+                multiWorld: true
             }),
             layers: [new ol.layer.Tile({
                 source: new ol.source.Tianditu({

@@ -31,7 +31,7 @@
     <body>
         <div id="map"></div>
         <script type="text/javascript">
-            var host = window.isLocal ? window.server : 'http://iclient.supermap.io';
+            var host = window.isLocal ? window.server : "https://iserver.supermap.io";
             var url = host + '/iserver/services/map-china400/rest/maps/China_4610';
             var map = new mapboxgl.Map({
                 container: 'map', // container id
@@ -45,10 +45,10 @@
                             //"tiles": ['http://t0.tianditu.com/DataServer?T=vec_c&x={x}&y={y}&l={z}'],
 
                             //iserver image资源模板；扩展支持
-                            //"tiles": ['http://iclient.supermap.io/iserver/services/map-china400/rest/maps/China_4610/image.png?viewBounds={viewBounds}&width={width}&height={height}'],
+                            //"tiles": ['https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China_4610/image.png?viewBounds={viewBounds}&width={width}&height={height}'],
 
                             //iserver tileimage资源模板；扩展支持
-                            //"tiles": ['http://iclient.supermap.io/iserver/services/map-china400/rest/maps/China_4610/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&origin={"x":-180,"y":90}'],
+                            //"tiles": ['https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China_4610/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&origin={"x":-180,"y":90}'],
 
                             //推荐；   iserver tileimage资源；扩展支持
                             //参数列表：

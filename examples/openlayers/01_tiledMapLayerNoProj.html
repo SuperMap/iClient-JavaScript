@@ -12,7 +12,7 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
-    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-changchun/rest/maps/长春市区图";
+    var url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-changchun/rest/maps/长春市区图";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         code:'',
@@ -32,7 +32,8 @@
                 center: [5105, -3375],
                 zoom: 1,
                 projection: projection,
-                origin: [48.4, -55.58]
+                origin: [48.4, -55.58],
+                multiWorld: true
             })
         });
         var layer = new ol.layer.Tile({

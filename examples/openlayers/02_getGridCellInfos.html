@@ -62,8 +62,8 @@
             duration: 250
         }
     }));
-    var map, baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/世界地图_Day",
-            url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+    var map, baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/世界地图_Day",
+            url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
@@ -71,7 +71,8 @@
         view: new ol.View({
             center: [0, 0],
             zoom: 3,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         }),
         overlays: [overlay]
     });

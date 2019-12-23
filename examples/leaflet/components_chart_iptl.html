@@ -92,7 +92,7 @@
                 "<button type='button' class='btn btn-default graph active' id='bar' title='" + resources.title_GraphBar +
                 "''></button></div>"
         }
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map, resultLayer, url = host + "/iserver/services/map-world/rest/maps/World";
         //加载底图
         map = L.map('map', {
@@ -107,7 +107,7 @@
             type: 'bar',
             datasets: {
                 type: 'iPortal',
-                url: 'http://support.supermap.com.cn:8092/web/datas/1920557079',
+                url: 'https://iportal.supermap.io/iportal/web/datas/975651597',
                 queryInfo: {
                     attributeFilter: "SmID > 0"
                 }
@@ -118,7 +118,7 @@
                     name: "Airport"
                 },
                 yAxis: {
-                    field: "同比增速%",
+                    field: "同比增速_",
                     name: "GrowthRate%"
                 }
             }]

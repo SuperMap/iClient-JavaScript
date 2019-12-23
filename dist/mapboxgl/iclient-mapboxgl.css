@@ -1,6 +1,6 @@
 /*!
  * 
- *          iclient-mapboxgl.(http://iclient.supermap.io)
+ *          iclient-mapboxgl.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
  *          version: v10.0.0
@@ -24,299 +24,299 @@
 }
 .supermapol-icons-map:before { content: ""; }
 
-.supermapol-icons-more:before { content: "\E61D"; }
+.supermapol-icons-more:before { content: "\e61d"; }
 
-.supermapol-icons-delete:before { content: "\E61F"; }
+.supermapol-icons-delete:before { content: "\e61f"; }
 
-.supermapol-icons-visible:before { content: "\E620"; }
+.supermapol-icons-visible:before { content: "\e620"; }
 
-.supermapol-icons-zoom-to:before { content: "\E621"; }
+.supermapol-icons-zoom-to:before { content: "\e621"; }
 
-.supermapol-icons-output:before { content: "\E622"; }
+.supermapol-icons-output:before { content: "\e622"; }
 
-.supermapol-icons-opacity:before { content: "\E625"; }
+.supermapol-icons-opacity:before { content: "\e625"; }
 
-.supermapol-icons-layer-info:before { content: "\E627"; }
+.supermapol-icons-layer-info:before { content: "\e627"; }
 
-.supermapol-icons-save:before { content: "\E628"; }
+.supermapol-icons-save:before { content: "\e628"; }
 
-.supermapol-icons-layer-style:before { content: "\E629"; }
+.supermapol-icons-layer-style:before { content: "\e629"; }
 
-.supermapol-icons-line-layer:before { content: "\E62A"; }
+.supermapol-icons-line-layer:before { content: "\e62a"; }
 
-.supermapol-icons-skin:before { content: "\E62B"; }
+.supermapol-icons-skin:before { content: "\e62b"; }
 
-.supermapol-icons-marker-layer:before { content: "\E62C"; }
+.supermapol-icons-marker-layer:before { content: "\e62c"; }
 
-.supermapol-icons-point-layer:before { content: "\E62D"; }
+.supermapol-icons-point-layer:before { content: "\e62d"; }
 
-.supermapol-icons-polygon-layer:before { content: "\E62E"; }
+.supermapol-icons-polygon-layer:before { content: "\e62e"; }
 
-.supermapol-icons-invisible:before { content: "\E62F"; }
+.supermapol-icons-invisible:before { content: "\e62f"; }
 
-.supermapol-icons-search:before { content: "\E630"; }
+.supermapol-icons-search:before { content: "\e630"; }
 
-.supermapol-icons-edit:before { content: "\E633"; }
+.supermapol-icons-edit:before { content: "\e633"; }
 
-.supermapol-icons-layers:before { content: "\E634"; }
+.supermapol-icons-layers:before { content: "\e634"; }
 
-.supermapol-icons-baselayer:before { content: "\E635"; }
+.supermapol-icons-baselayer:before { content: "\e635"; }
 
-.supermapol-icons-setting:before { content: "\E636"; }
+.supermapol-icons-setting:before { content: "\e636"; }
 
-.supermapol-icons-add:before { content: "\E638"; }
+.supermapol-icons-add:before { content: "\e638"; }
 
-.supermapol-icons-preview:before { content: "\E637"; }
+.supermapol-icons-preview:before { content: "\e637"; }
 
-.supermapol-icons-refresh:before { content: "\E639"; }
+.supermapol-icons-refresh:before { content: "\e639"; }
 
-.supermapol-icons-solid-triangle:before { content: "\E63A"; }
+.supermapol-icons-solid-triangle:before { content: "\e63a"; }
 
-.supermapol-icons-roadnetwork:before { content: "\E63B"; }
+.supermapol-icons-roadnetwork:before { content: "\e63b"; }
 
-.supermapol-icons-return:before { content: "\E63C"; }
+.supermapol-icons-return:before { content: "\e63c"; }
 
-.supermapol-icons-packup:before { content: "\E63D"; }
+.supermapol-icons-packup:before { content: "\e63d"; }
 
-.supermapol-icons-share:before { content: "\E63E"; }
+.supermapol-icons-share:before { content: "\e63e"; }
 
-.supermapol-icons-backhomepage:before { content: "\E659"; }
+.supermapol-icons-backhomepage:before { content: "\e659"; }
 
-.supermapol-icons-MyMaps:before { content: "\E65A"; }
+.supermapol-icons-MyMaps:before { content: "\e65a"; }
 
-.supermapol-icons-CreateMap:before { content: "\E65B"; }
+.supermapol-icons-CreateMap:before { content: "\e65b"; }
 
-.supermapol-icons-feedback:before { content: "\E65C"; }
+.supermapol-icons-feedback:before { content: "\e65c"; }
 
-.supermapol-icons-skin1:before { content: "\E65D"; }
+.supermapol-icons-skin1:before { content: "\e65d"; }
 
-.supermapol-icons-Shape-:before { content: "\E65E"; }
+.supermapol-icons-Shape-:before { content: "\e65e"; }
 
-.supermapol-icons-account:before { content: "\E65F"; }
+.supermapol-icons-account:before { content: "\e65f"; }
 
-.supermapol-icons-Shape-1:before { content: "\E660"; }
+.supermapol-icons-Shape-1:before { content: "\e660"; }
 
-.supermapol-icons-Shape-2:before { content: "\E661"; }
+.supermapol-icons-Shape-2:before { content: "\e661"; }
 
-.supermapol-icons-Shape-3:before { content: "\E662"; }
+.supermapol-icons-Shape-3:before { content: "\e662"; }
 
-.supermapol-icons-Shape-4:before { content: "\E663"; }
+.supermapol-icons-Shape-4:before { content: "\e663"; }
 
-.supermapol-icons-Shape-5:before { content: "\E664"; }
+.supermapol-icons-Shape-5:before { content: "\e664"; }
 
-.supermapol-icons-Shape-6:before { content: "\E665"; }
+.supermapol-icons-Shape-6:before { content: "\e665"; }
 
-.supermapol-icons-Shape-7:before { content: "\E666"; }
+.supermapol-icons-Shape-7:before { content: "\e666"; }
 
-.supermapol-icons-Shape-8:before { content: "\E667"; }
+.supermapol-icons-Shape-8:before { content: "\e667"; }
 
-.supermapol-icons-Shape-9:before { content: "\E668"; }
+.supermapol-icons-Shape-9:before { content: "\e668"; }
 
-.supermapol-icons-Shape-10:before { content: "\E669"; }
+.supermapol-icons-Shape-10:before { content: "\e669"; }
 
-.supermapol-icons-Shape-11:before { content: "\E66A"; }
+.supermapol-icons-Shape-11:before { content: "\e66a"; }
 
-.supermapol-icons-Shape-12:before { content: "\E66B"; }
+.supermapol-icons-Shape-12:before { content: "\e66b"; }
 
-.supermapol-icons-Shape-13:before { content: "\E66C"; }
+.supermapol-icons-Shape-13:before { content: "\e66c"; }
 
-.supermapol-icons-Shape-14:before { content: "\E66D"; }
+.supermapol-icons-Shape-14:before { content: "\e66d"; }
 
-.supermapol-icons-Shape-15:before { content: "\E66E"; }
+.supermapol-icons-Shape-15:before { content: "\e66e"; }
 
-.supermapol-icons-Shape-16:before { content: "\E66F"; }
+.supermapol-icons-Shape-16:before { content: "\e66f"; }
 
-.supermapol-icons-Shape-17:before { content: "\E670"; }
+.supermapol-icons-Shape-17:before { content: "\e670"; }
 
-.supermapol-icons-Shape-18:before { content: "\E671"; }
+.supermapol-icons-Shape-18:before { content: "\e671"; }
 
-.supermapol-icons-Shape-19:before { content: "\E672"; }
+.supermapol-icons-Shape-19:before { content: "\e672"; }
 
-.supermapol-icons-Shape-20:before { content: "\E673"; }
+.supermapol-icons-Shape-20:before { content: "\e673"; }
 
-.supermapol-icons-Shape-21:before { content: "\E674"; }
+.supermapol-icons-Shape-21:before { content: "\e674"; }
 
-.supermapol-icons-Shape-22:before { content: "\E675"; }
+.supermapol-icons-Shape-22:before { content: "\e675"; }
 
-.supermapol-icons-Shape-23:before { content: "\E676"; }
+.supermapol-icons-Shape-23:before { content: "\e676"; }
 
-.supermapol-icons-Shape-24:before { content: "\E677"; }
+.supermapol-icons-Shape-24:before { content: "\e677"; }
 
-.supermapol-icons-Shape-25:before { content: "\E678"; }
+.supermapol-icons-Shape-25:before { content: "\e678"; }
 
-.supermapol-icons-Shape-26:before { content: "\E679"; }
+.supermapol-icons-Shape-26:before { content: "\e679"; }
 
-.supermapol-icons-Shape-27:before { content: "\E67A"; }
+.supermapol-icons-Shape-27:before { content: "\e67a"; }
 
-.supermapol-icons-Shape-28:before { content: "\E67B"; }
+.supermapol-icons-Shape-28:before { content: "\e67b"; }
 
-.supermapol-icons-Shape-29:before { content: "\E67C"; }
+.supermapol-icons-Shape-29:before { content: "\e67c"; }
 
-.supermapol-icons-Shape-30:before { content: "\E67D"; }
+.supermapol-icons-Shape-30:before { content: "\e67d"; }
 
-.supermapol-icons-Shape-31:before { content: "\E67E"; }
+.supermapol-icons-Shape-31:before { content: "\e67e"; }
 
-.supermapol-icons-Shape-32:before { content: "\E67F"; }
+.supermapol-icons-Shape-32:before { content: "\e67f"; }
 
-.supermapol-icons-Shape-33:before { content: "\E680"; }
+.supermapol-icons-Shape-33:before { content: "\e680"; }
 
-.supermapol-icons-Shape-34:before { content: "\E681"; }
+.supermapol-icons-Shape-34:before { content: "\e681"; }
 
-.supermapol-icons-Shape-35:before { content: "\E682"; }
+.supermapol-icons-Shape-35:before { content: "\e682"; }
 
-.supermapol-icons-Shape-36:before { content: "\E683"; }
+.supermapol-icons-Shape-36:before { content: "\e683"; }
 
-.supermapol-icons-Shape-37:before { content: "\E684"; }
+.supermapol-icons-Shape-37:before { content: "\e684"; }
 
-.supermapol-icons-Shape-38:before { content: "\E685"; }
+.supermapol-icons-Shape-38:before { content: "\e685"; }
 
-.supermapol-icons-Shape-39:before { content: "\E686"; }
+.supermapol-icons-Shape-39:before { content: "\e686"; }
 
-.supermapol-icons-Shape-40:before { content: "\E687"; }
+.supermapol-icons-Shape-40:before { content: "\e687"; }
 
-.supermapol-icons-Shape-41:before { content: "\E688"; }
+.supermapol-icons-Shape-41:before { content: "\e688"; }
 
-.supermapol-icons-Shape-42:before { content: "\E689"; }
+.supermapol-icons-Shape-42:before { content: "\e689"; }
 
-.supermapol-icons-Shape-43:before { content: "\E68A"; }
+.supermapol-icons-Shape-43:before { content: "\e68a"; }
 
-.supermapol-icons-Shape-44:before { content: "\E68B"; }
+.supermapol-icons-Shape-44:before { content: "\e68b"; }
 
-.supermapol-icons-Shape-45:before { content: "\E68C"; }
+.supermapol-icons-Shape-45:before { content: "\e68c"; }
 
-.supermapol-icons-Shape-46:before { content: "\E68D"; }
+.supermapol-icons-Shape-46:before { content: "\e68d"; }
 
-.supermapol-icons-Shape-47:before { content: "\E68E"; }
+.supermapol-icons-Shape-47:before { content: "\e68e"; }
 
-.supermapol-icons-Shape-48:before { content: "\E68F"; }
+.supermapol-icons-Shape-48:before { content: "\e68f"; }
 
-.supermapol-icons-Shape-49:before { content: "\E690"; }
+.supermapol-icons-Shape-49:before { content: "\e690"; }
 
-.supermapol-icons-Shape-50:before { content: "\E691"; }
+.supermapol-icons-Shape-50:before { content: "\e691"; }
 
-.supermapol-icons-Shape-51:before { content: "\E692"; }
+.supermapol-icons-Shape-51:before { content: "\e692"; }
 
-.supermapol-icons-Shape-52:before { content: "\E693"; }
+.supermapol-icons-Shape-52:before { content: "\e693"; }
 
-.supermapol-icons-Shape-53:before { content: "\E694"; }
+.supermapol-icons-Shape-53:before { content: "\e694"; }
 
-.supermapol-icons-Shape-54:before { content: "\E695"; }
+.supermapol-icons-Shape-54:before { content: "\e695"; }
 
-.supermapol-icons-Shape-55:before { content: "\E696"; }
+.supermapol-icons-Shape-55:before { content: "\e696"; }
 
-.supermapol-icons-Shape-56:before { content: "\E697"; }
+.supermapol-icons-Shape-56:before { content: "\e697"; }
 
-.supermapol-icons-Shape-57:before { content: "\E698"; }
+.supermapol-icons-Shape-57:before { content: "\e698"; }
 
-.supermapol-icons-Shape-58:before { content: "\E699"; }
+.supermapol-icons-Shape-58:before { content: "\e699"; }
 
-.supermapol-icons-Shape-59:before { content: "\E69A"; }
+.supermapol-icons-Shape-59:before { content: "\e69a"; }
 
-.supermapol-icons-Oval:before { content: "\E69B"; }
+.supermapol-icons-Oval:before { content: "\e69b"; }
 
-.supermapol-icons-Rectangle:before { content: "\E69C"; }
+.supermapol-icons-Rectangle:before { content: "\e69c"; }
 
-.supermapol-icons-Star:before { content: "\E69D"; }
+.supermapol-icons-Star:before { content: "\e69d"; }
 
-.supermapol-icons-Triangle:before { content: "\E69E"; }
+.supermapol-icons-Triangle:before { content: "\e69e"; }
 
-.supermapol-icons-restoredefault:before { content: "\E6A0"; }
+.supermapol-icons-restoredefault:before { content: "\e6a0"; }
 
-.supermapol-icons-uploading:before { content: "\E6A1"; }
+.supermapol-icons-uploading:before { content: "\e6a1"; }
 
-.supermapol-icons-error:before { content: "\E69F"; }
+.supermapol-icons-error:before { content: "\e69f"; }
 
-.supermapol-icons-zoomin:before { content: "\E6A2"; }
+.supermapol-icons-zoomin:before { content: "\e6a2"; }
 
-.supermapol-icons-zoomout:before { content: "\E6A3"; }
+.supermapol-icons-zoomout:before { content: "\e6a3"; }
 
-.supermapol-icons-first:before { content: "\E6A4"; }
+.supermapol-icons-first:before { content: "\e6a4"; }
 
-.supermapol-icons-next:before { content: "\E6A5"; }
+.supermapol-icons-next:before { content: "\e6a5"; }
 
-.supermapol-icons-last:before { content: "\E6A6"; }
+.supermapol-icons-last:before { content: "\e6a6"; }
 
-.supermapol-icons-prev:before { content: "\E6A7"; }
+.supermapol-icons-prev:before { content: "\e6a7"; }
 
-.supermapol-icons-poi-load:before { content: "\E6A8"; }
+.supermapol-icons-poi-load:before { content: "\e6a8"; }
 
-.supermapol-icons-poi-save:before { content: "\E6A9"; }
+.supermapol-icons-poi-save:before { content: "\e6a9"; }
 
-.supermapol-icons-fold:before { content: "\E6AA"; }
+.supermapol-icons-fold:before { content: "\e6aa"; }
 
-.supermapol-icons-label-delete:before { content: "\E6AB"; }
+.supermapol-icons-label-delete:before { content: "\e6ab"; }
 
-.supermapol-icons-upload:before { content: "\E6AC"; }
+.supermapol-icons-upload:before { content: "\e6ac"; }
 
-.supermapol-icons-unfold:before { content: "\E6AD"; }
+.supermapol-icons-unfold:before { content: "\e6ad"; }
 
-.supermapol-icons-close:before { content: "\E6AE"; }
+.supermapol-icons-close:before { content: "\e6ae"; }
 
-.supermapol-icons-mark:before { content: "\E6AF"; }
+.supermapol-icons-mark:before { content: "\e6af"; }
 
-.supermapol-icons-traffic:before { content: "\E6B0"; }
+.supermapol-icons-traffic:before { content: "\e6b0"; }
 
-.supermapol-icons-full-figure:before { content: "\E6B1"; }
+.supermapol-icons-full-figure:before { content: "\e6b1"; }
 
-.supermapol-icons-measure:before { content: "\E6B2"; }
+.supermapol-icons-measure:before { content: "\e6b2"; }
 
-.supermapol-icons-display-list:before { content: "\E6B3"; }
+.supermapol-icons-display-list:before { content: "\e6b3"; }
 
-.supermapol-icons-hide-list:before { content: "\E6B4"; }
+.supermapol-icons-hide-list:before { content: "\e6b4"; }
 
-.supermapol-icons-rename:before { content: "\E6B5"; }
+.supermapol-icons-rename:before { content: "\e6b5"; }
 
-.supermapol-icons-copy:before { content: "\E6B6"; }
+.supermapol-icons-copy:before { content: "\e6b6"; }
 
-.supermapol-icons-qq-zone:before { content: "\E6B7"; }
+.supermapol-icons-qq-zone:before { content: "\e6b7"; }
 
-.supermapol-icons-sina-weibo:before { content: "\E6B8"; }
+.supermapol-icons-sina-weibo:before { content: "\e6b8"; }
 
-.supermapol-icons-color-change:before { content: "\E6B9"; }
+.supermapol-icons-color-change:before { content: "\e6b9"; }
 
-.supermapol-icons-creat-custom-map:before { content: "\E6BA"; }
+.supermapol-icons-creat-custom-map:before { content: "\e6ba"; }
 
-.supermapol-icons-custom-map:before { content: "\E6BB"; }
+.supermapol-icons-custom-map:before { content: "\e6bb"; }
 
-.supermapol-icons-legend-fold:before { content: "\E6BC"; }
+.supermapol-icons-legend-fold:before { content: "\e6bc"; }
 
-.supermapol-icons-legend-unfold:before { content: "\E6BD"; }
+.supermapol-icons-legend-unfold:before { content: "\e6bd"; }
 
-.supermapol-icons-legend-big:before { content: "\E6BE"; }
+.supermapol-icons-legend-big:before { content: "\e6be"; }
 
-.supermapol-icons-attribute:before { content: "\E6BF"; }
+.supermapol-icons-attribute:before { content: "\e6bf"; }
 
-.supermapol-icons-legend-small:before { content: "\E6C0"; }
+.supermapol-icons-legend-small:before { content: "\e6c0"; }
 
-.supermapol-icons-close-legend:before { content: "\E6C1"; }
+.supermapol-icons-close-legend:before { content: "\e6c1"; }
 
-.supermapol-icons-font-color:before { content: "\E6C2"; }
+.supermapol-icons-font-color:before { content: "\e6c2"; }
 
-.supermapol-icons-bold:before { content: "\E6C3"; }
+.supermapol-icons-bold:before { content: "\e6c3"; }
 
-.supermapol-icons-italics:before { content: "\E6C4"; }
+.supermapol-icons-italics:before { content: "\e6c4"; }
 
-.supermapol-icons-font:before { content: "\E6C5"; }
+.supermapol-icons-font:before { content: "\e6c5"; }
 
-.supermapol-icons-justify-align:before { content: "\E6C6"; }
+.supermapol-icons-justify-align:before { content: "\e6c6"; }
 
-.supermapol-icons-middle-alignmen:before { content: "\E6C7"; }
+.supermapol-icons-middle-alignmen:before { content: "\e6c7"; }
 
-.supermapol-icons-font-size:before { content: "\E6C8"; }
+.supermapol-icons-font-size:before { content: "\e6c8"; }
 
-.supermapol-icons-strikeout:before { content: "\E6C9"; }
+.supermapol-icons-strikeout:before { content: "\e6c9"; }
 
-.supermapol-icons-text-layer:before { content: "\E6CA"; }
+.supermapol-icons-text-layer:before { content: "\e6ca"; }
 
-.supermapol-icons-right-alignment:before { content: "\E6CB"; }
+.supermapol-icons-right-alignment:before { content: "\e6cb"; }
 
-.supermapol-icons-left-alignment:before { content: "\E6CC"; }
+.supermapol-icons-left-alignment:before { content: "\e6cc"; }
 
-.supermapol-icons-transparent-backgrou:before { content: "\E6CD"; }
+.supermapol-icons-transparent-backgrou:before { content: "\e6cd"; }
 
-.supermapol-icons-underline:before { content: "\E6CE"; }
+.supermapol-icons-underline:before { content: "\e6ce"; }
 
-.supermapol-icons-query:before { content: "\E6CF"; }
+.supermapol-icons-query:before { content: "\e6cf"; }
 
 /** 提示框样式 **/
 .component-messageboxcontainer {

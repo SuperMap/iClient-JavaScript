@@ -1,40 +1,38 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {
     MapvLayer
 } from './mapv/MapvLayer';
 import {
     Util
 } from '../core/Util';
+import ImageCanvasSource from 'ol/source/ImageCanvas';
 
 /**
  * @class ol.source.Mapv
  * @category  Visualization MapV
  * @classdesc MapV 图层源。
  * @param {Object} opt_options - 参数。
- * @param {ol.Map} opt_options.map - 当前 Map 对象。
+ * @param {ol/Map} opt_options.map - 当前 Map 对象。
  * @param {Mapv.DataSet} opt_options.dataSet - MapV 的数据集。
  * @param {Object} opt_options.mapvOptions - MapV 的配置对象。
- * @param {string} [opt_option.logo] - Logo。
- * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
+ * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {ol/proj/Projection} [opt_option.projection] - 投影信息。
  * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {Array} [opt_option.resolutions] - 分辨率数组。
- * @param {ol.source.State} [opt_option.state] - 资源状态。
- * @param {(string|Object)} [opt_option.attributions='© 2018 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol.source.ImageCanvas}
+ * @param {ol/source/State} [opt_option.state] - 资源状态。
+ * @param {(string|Object)} [opt_option.attributions='© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @extends {ol/source/ImageCanvas}
  */
-export class Mapv extends ol.source.ImageCanvas {
+export class Mapv extends ImageCanvasSource {
 
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || new ol.Attribution({
-                html: "© 2018 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-            }),
+            attributions: options.attributions || "© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
             canvasFunction: canvasFunctionInternal_,
-            logo: options.logo,
+            logo: Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
             ratio: options.ratio,
             resolutions: options.resolutions,
@@ -143,5 +141,3 @@ export class Mapv extends ol.source.ImageCanvas {
         this.changed();
     }
 }
-
-ol.source.Mapv = Mapv;

@@ -55,7 +55,7 @@
 <body>
 
   <div id="main">
-    <sm-web-map server-url="http://support.supermap.com.cn:8092/" map-id="1649097980" ref="map" @load.once='load'></sm-web-map>
+    <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="801571284" ref="map" @load.once='load'></sm-web-map>
     <a-card class="box-card">
       <!-- 图标组件 -->
       <sm-icon icon-class="marker-layer" size="18px" text-color='rgb(63, 177, 227)' :style="{float: 'left'}">
@@ -113,7 +113,7 @@
               vm.name = properties['机场'];
               vm.passengerNumber = properties['2017旅客吞吐量（人次）'] || 0;
               vm.goodsNumber = properties['2017货邮吞吐量（吨）'] || 0;
-              vm.speedIncrease = properties['同比增速%'] || 0;
+              vm.speedIncrease = properties['同比增速_'] || 0;
             }
           });
         }

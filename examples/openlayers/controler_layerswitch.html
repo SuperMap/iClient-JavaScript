@@ -13,7 +13,7 @@
 <div id="map" style="width: 100%;height:95%"></div>
 <input id="swipe" type="range" style="width: 100%;">
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var worldurl = host + '/iserver/services/map-world/rest/maps/World',
         worldNighturl = host + '/iserver/services/map-world/rest/maps/世界地图_Night';
 
@@ -38,12 +38,14 @@
         view: new ol.View({
             center: [0, 0],
             zoom: 3,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         })
     });
 
     var swipe = document.getElementById('swipe');
-    worldNight.on('precompose', function (event) {
+    // ol6 废除了 precompose，由 prerender 事件替换
+    worldNight.on('prerender', function (event) {
         var ctx = event.context;
         var width = ctx.canvas.width * (swipe.value / 100);
 
@@ -52,8 +54,8 @@
         ctx.rect(width, 0, ctx.canvas.width - width, ctx.canvas.height);
         ctx.clip();
     });
-
-    worldNight.on('postcompose', function (event) {
+    // ol6 废除了 postcompose，由 postrender 事件替换
+    worldNight.on('postrender', function (event) {
         var ctx = event.context;
         ctx.restore();
     });

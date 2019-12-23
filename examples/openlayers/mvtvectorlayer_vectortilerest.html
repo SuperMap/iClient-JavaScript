@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_mvtVectorLayer_vectortilerest"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include='ol-debug,ol-mapbox-style' src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" include='ol-mapbox-style' src="../../dist/openlayers/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -31,7 +31,7 @@
         <div id="popup-content"></div>
     </div>
     <script type="text/javascript">
-        var styleURL = (window.isLocal ? window.server : "http://iclient.supermap.io") +
+        var styleURL = (window.isLocal ? window.server : "https://iserver.supermap.io") +
             "/iserver/services/map-china400/restjsr/v1/vectortile/maps/China_4326/style.json";
         //MVT 矢量瓦片第0级分辨率为全球范围宽度除以瓦片宽度512.
         //常见坐标系第0级分辨率   WebMercator(3857):2*6378137*Math.PI/512    WGS84(4326):360.0/512    China2000(4490):360.0/512    Beijing54(4214):360.0/512     Xian80(4610):360.0/512
@@ -82,7 +82,7 @@
 
         map.on('pointermove', function (e) {
             var features = map.getFeaturesAtPixel(e.pixel);
-            if (!features) {
+            if (!features || features.length === 0) {
                 content.innerHTML = '';
                 container.style.opacity = 0;
                 return;

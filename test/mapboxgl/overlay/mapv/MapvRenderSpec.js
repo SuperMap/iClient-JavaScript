@@ -1,4 +1,4 @@
-import { MapvRenderer } from '../../../../src/mapboxgl/overlay/mapv/MapvRenderer'
+import { MapvRenderer } from '../../../../src/mapboxgl/overlay/mapv/MapvRenderer';
 import { MapvLayer } from '../../../../src/mapboxgl/overlay/MapvLayer';
 import mapboxgl from 'mapbox-gl';
 import { utilCityCenter, DataSet } from 'mapv';
@@ -7,8 +7,9 @@ var renderer, mapvLayer;
 
 describe('mapboxgl_MapvRenderer', () => {
     var originalTimeout;
-    let data = [], dataSet;
-    var testDiv, map, mapvLayer;
+    let data = [],
+        dataSet;
+    var testDiv, map, mapvLayer, mapvRenderLayer;
     var options = {
         gradient: {
             0: 'blue',
@@ -18,7 +19,22 @@ describe('mapboxgl_MapvRenderer', () => {
         lineWidth: 0.5,
         max: 30,
         draw: 'intensity',
-        layerID: "mapv"
+        layerID: 'mapv'
+    };
+    var options1 = {
+        fillStyle: 'rgba(55, 50, 250, 0.8)',
+        shadowColor: 'rgba(255, 250, 50, 1)',
+        shadowBlur: 20,
+        max: 100,
+        size: 500,
+        unit: 'm',
+        label: {
+            show: true,
+            fillStyle: 'white'
+        },
+        globalAlpha: 0.5,
+        gradient: { 0.25: 'rgb(0,0,255)', 0.55: 'rgb(0,255,0)', 0.85: 'yellow', 1.0: 'rgb(255,0,0)' },
+        draw: 'honeycomb'
     };
     beforeAll(() => {
         testDiv = window.document.createElement("div");
@@ -74,11 +90,11 @@ describe('mapboxgl_MapvRenderer', () => {
         if (!map.getLayer("mapv")) {
             mapvLayer = new MapvLayer(map, dataSet, options);
             map.addLayer(mapvLayer);
+            mapvLayer = map.getLayer('mapv');
         }
-        else {
-            mapvLayer = map.getLayer("mapv")
-        }
-        renderer = map.getLayer("mapv").renderer;
+        var layer = new MapvLayer(map, dataSet, options1);
+        mapvRenderLayer = new MapvRenderer(map, layer, dataSet, options1);
+        renderer = map.getLayer('mapv').renderer;
     });
 
     afterAll(() => {
@@ -107,4 +123,8 @@ describe('mapboxgl_MapvRenderer', () => {
             expect(renderer.canvasLayer.canvas.style.display).toEqual('none');
             done();
     });
-})
+
+    it('_canvasUpdate', () => {
+        expect(mapvRenderLayer.options._size).toEqual(0.05110415838546709);
+    });
+});

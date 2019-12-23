@@ -58,7 +58,7 @@
         <div id="popup-content"></div>
     </div>
     <script type="text/javascript">
-        var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") +
+        var url = (window.isLocal ? window.server : "https://iserver.supermap.io") +
             "/iserver/services/map-china400/rest/maps/China_4326";
         //初始化各种参数
         var count = 180000;
@@ -103,10 +103,10 @@
                 view: new ol.View({
                     center: [0, 0],
                     zoom: 7,
-                    projection: 'EPSG:4326'
+                    projection: 'EPSG:4326',
+                    multiWorld: true
                 }),
-                overlays: [overlay],
-                renderer: ['canvas']
+                overlays: [overlay]
             });
             var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
             var layer = new ol.layer.Tile({

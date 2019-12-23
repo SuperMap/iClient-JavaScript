@@ -804,7 +804,7 @@ describe('mapboxgl_WebMap', () => {
 	        done();
 	    }, 1000)
 	})
-	it('datavizWebMap_WMTS', (done) => {
+	xit('datavizWebMap_WMTS', (done) => {
 	    let options = {
 	        server: server
 	    };

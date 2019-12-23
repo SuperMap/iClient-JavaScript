@@ -90,7 +90,7 @@
 <script type="text/javascript" include="papaparse,dat-gui,widgets" src="../js/include-web.js"></script>
 <script type="text/javascript" include="deck" src="../../dist/openlayers/include-openlayers.js"></script>
 <script type="text/javascript">
-    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    var url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
     var map, overlay, graphicLayer;
 
@@ -111,7 +111,8 @@
             view: new ol.View({
                 center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 11,
-                projection: 'EPSG:3857'
+                projection: 'EPSG:3857',
+                multiWorld: true
             }),
             overlays: [overlay]
         });

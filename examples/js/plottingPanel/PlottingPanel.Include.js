@@ -48,6 +48,9 @@
         if (inArray(includes, 'SMLInfosPanel')) {
             inputScript("../js/plottingPanel/SMLInfosPanel.js");
         }
+        if (inArray(includes, 'iPortalStylePanel')) {
+            inputScript("../js/plottingPanel/iPortalStylePanel.js");
+        }
     }
 
     load();

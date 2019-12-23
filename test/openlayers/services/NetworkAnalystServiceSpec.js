@@ -1,19 +1,50 @@
-import ol from 'openlayers';
-import { NetworkAnalystService } from '../../../src/openlayers/services/NetworkAnalystService';
-import { BurstPipelineAnalystParameters } from '../../../src/common/iServer/BurstPipelineAnalystParameters';
-import { ComputeWeightMatrixParameters } from '../../../src/common/iServer/ComputeWeightMatrixParameters';
-import { TransportationAnalystResultSetting } from '../../../src/common/iServer/TransportationAnalystResultSetting';
-import { TransportationAnalystParameter } from '../../../src/common/iServer/TransportationAnalystParameter';
-import { FindClosestFacilitiesParameters } from '../../../src/common/iServer/FindClosestFacilitiesParameters';
-import { FindLocationParameters } from '../../../src/common/iServer/FindLocationParameters';
-import { FindPathParameters } from '../../../src/common/iServer/FindPathParameters';
-import { FindTSPPathsParameters } from '../../../src/common/iServer/FindTSPPathsParameters';
-import { FindMTSPPathsParameters } from '../../../src/common/iServer/FindMTSPPathsParameters';
-import { FindServiceAreasParameters } from '../../../src/common/iServer/FindServiceAreasParameters';
-import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
-import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
-import { FacilityAnalystStreamParameters } from '../../../src/common/iServer/FacilityAnalystStreamParameters';
-import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import {
+    NetworkAnalystService
+} from '../../../src/openlayers/services/NetworkAnalystService';
+import {
+    BurstPipelineAnalystParameters
+} from '../../../src/common/iServer/BurstPipelineAnalystParameters';
+import {
+    ComputeWeightMatrixParameters
+} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
+import {
+    TransportationAnalystResultSetting
+} from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import {
+    TransportationAnalystParameter
+} from '../../../src/common/iServer/TransportationAnalystParameter';
+import {
+    FindClosestFacilitiesParameters
+} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
+import {
+    FindLocationParameters
+} from '../../../src/common/iServer/FindLocationParameters';
+import {
+    FindPathParameters
+} from '../../../src/common/iServer/FindPathParameters';
+import {
+    FindTSPPathsParameters
+} from '../../../src/common/iServer/FindTSPPathsParameters';
+import {
+    FindMTSPPathsParameters
+} from '../../../src/common/iServer/FindMTSPPathsParameters';
+import {
+    FindServiceAreasParameters
+} from '../../../src/common/iServer/FindServiceAreasParameters';
+import {
+    UpdateEdgeWeightParameters
+} from '../../../src/common/iServer/UpdateEdgeWeightParameters';
+import {
+    UpdateTurnNodeWeightParameters
+} from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
+import {
+    FacilityAnalystStreamParameters
+} from '../../../src/common/iServer/FacilityAnalystStreamParameters';
+import {
+    FetchRequest
+} from '../../../src/common/util/FetchRequest';
+
+import Point from 'ol/geom/Point';
 
 var url = GlobeParameter.networkAnalystURL;
 var options = {
@@ -118,15 +149,15 @@ describe('openlayers_NetworkAnalystService', () => {
         var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             turnWeightField: "TurnCost",
-            weightFieldName: "length"  //length,time
+            weightFieldName: "length" //length,time
         });
         var findClosetFacilitiesParameter = new FindClosestFacilitiesParameters({
             //事件点,必设参数
-            event: new ol.geom.Point([5000, -3700]),
+            event: new Point([5000, -3700]),
             //要查找的设施点数量。默认值为1
             expectFacilityCount: 1,
             //设施点集合,必设
-            facilities: [new ol.geom.Point([2500, -3500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([7000, -4000])],
+            facilities: [new Point([2500, -3500]), new Point([5500, -2500]), new Point([7000, -4000])],
             isAnalyzeById: false,
             parameter: analystParameter
         });
@@ -315,7 +346,7 @@ describe('openlayers_NetworkAnalystService', () => {
         });
         var findPathParameters = new FindPathParameters({
             isAnalyzeById: false,
-            nodes: [new ol.geom.Point([4000, -3000]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([6900, -4000])],
+            nodes: [new Point([4000, -3000]), new Point([5500, -2500]), new Point([6900, -4000])],
             hasLeastEdgeCount: false,
             parameter: analystParameter
         });
@@ -405,7 +436,7 @@ describe('openlayers_NetworkAnalystService', () => {
             endNodeAssigned: false,
             isAnalyzeById: false,
             //旅行商分析途经点数组，必设字段
-            nodes: [new ol.geom.Point([3000, -1000]), new ol.geom.Point([3760, -4850]), new ol.geom.Point([8000, -2700])],
+            nodes: [new Point([3000, -1000]), new Point([3760, -4850]), new Point([8000, -2700])],
             parameter: analystParameter
         });
         var service = new NetworkAnalystService(url, options);
@@ -462,9 +493,9 @@ describe('openlayers_NetworkAnalystService', () => {
     // 多旅行商分析服务
     it('findMTSPPaths', (done) => {
         var findMTSPPathsParameter = new FindMTSPPathsParameters({
-            centers: [new ol.geom.Point([6000, -5500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([2500, -3500])],
+            centers: [new Point([6000, -5500]), new Point([5500, -2500]), new Point([2500, -3500])],
             isAnalyzeById: false,
-            nodes: [new ol.geom.Point([5000, -5000]), new ol.geom.Point([6500, -3200])],
+            nodes: [new Point([5000, -5000]), new Point([6500, -3200])],
             hasLeastTotalCost: true,
         });
         var service = new NetworkAnalystService(url, options);
@@ -496,7 +527,7 @@ describe('openlayers_NetworkAnalystService', () => {
 
     //服务区分析服务
     it('findServiceAreas', (done) => {
-        var point = new ol.geom.Point([5605, -3375]);
+        var point = new Point([5605, -3375]);
         var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,

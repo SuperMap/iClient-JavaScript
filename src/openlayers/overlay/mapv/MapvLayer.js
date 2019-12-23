@@ -1,13 +1,13 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {
     MapvCanvasLayer
 } from './MapvCanvasLayer';
 import {
     baiduMapLayer
 } from "mapv";
+import PointerInteraction from 'ol/interaction/Pointer';
 
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -164,7 +164,7 @@ export class MapvLayer extends BaiduMapLayer {
                 map.on('click', me.clickEvent);
             }
             if (me.options.methods.mousemove) {
-                me.pointerInteraction = new ol.interaction.Pointer();
+                me.pointerInteraction = new PointerInteraction();
                 me.pointerInteraction.handleMoveEvent_ = function (event) {
                     me.mousemoveEvent(event);
                 };
@@ -306,12 +306,12 @@ export class MapvLayer extends BaiduMapLayer {
         self._mapCenterPx = map.getPixelFromCoordinate(self._mapCenter);
         self._reselutions = map.getView().getResolution();
         self._rotation = -map.getView().getRotation();
+        var zoomUnit = self._reselutions;
         var scaleRatio = 1;
         if (this.context != '2d') {
             var global$2 = typeof window === 'undefined' ? {} : window;
             var devicePixelRatio = global$2.devicePixelRatio || 1;
             scaleRatio = devicePixelRatio;
-           
         }
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
@@ -355,7 +355,23 @@ export class MapvLayer extends BaiduMapLayer {
         }
         var data = self.dataSet.get(dataGetOptions);
         self.processData(data);
-        self.options._size = self.options.size;
+        // 兼容unit为'm'的情况
+        if (self.options.unit === 'm') {
+            if (self.options.size) {
+                self.options._size = self.options.size / zoomUnit;
+            }
+            if (self.options.width) {
+                self.options._width = self.options.width / zoomUnit;
+            }
+            if (self.options.height) {
+                self.options._height = self.options.height / zoomUnit;
+            }
+        } else {
+            self.options._size = self.options.size;
+            self.options._height = self.options.height;
+            self.options._width = self.options.width;
+        }
+
         var pixel = map.getPixelFromCoordinate([0, 0]);
         pixel = [pixel[0] - topLeftPx[0], pixel[1] - topLeftPx[1]];
         this.drawContext(context, data, self.options, {

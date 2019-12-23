@@ -53,8 +53,8 @@
     var map, startMarker, endMarker, container, content, tempMarker,
         stopSourceLayer, roadSourceLayer, tempMarkerSourceLayer, tempRedSourceLayer,
         info, paths = {transSolutions: null, solutions: null},
-        baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-changchun/rest/maps/长春市区图",
-        serviceUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
+        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         code:'',
@@ -70,7 +70,8 @@
             view: new ol.View({
                 center: [4700, -3600],
                 zoom: 2,
-                projection: projection
+                projection: projection,
+                multiWorld: true
             })
         });
         var options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);

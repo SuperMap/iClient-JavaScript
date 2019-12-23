@@ -1,10 +1,10 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import {StopQueryService, TransferPathService, TransferSolutionService} from '@supermap/iclient-common';
+import Point from 'ol/geom/Point';
 
 /**
  * @class ol.supermap.TrafficTransferAnalystService
@@ -108,7 +108,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
         }
         if (params.points && Util.isArray(params.points)) {
             params.points.map(function (point, key) {
-                params.points[key] = (point instanceof ol.geom.Point) ? {
+                params.points[key] = (point instanceof Point) ? {
                     x: point.getCoordinates()[0],
                     y: point.getCoordinates()[1]
                 } : point;
@@ -119,4 +119,3 @@ export class TrafficTransferAnalystService extends ServiceBase {
     }
 
 }
-ol.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;

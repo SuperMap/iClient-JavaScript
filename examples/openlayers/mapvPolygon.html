@@ -83,7 +83,7 @@
         closer.blur();
         return false;
     };
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     var map = new ol.Map({
         target: 'map',
@@ -92,15 +92,14 @@
         view: new ol.View({
             center: [113.28, 22.65],
             zoom: 8,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+			multiWorld: true
         }),
         layers: [new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({
                 url: url,
                 prjCoordSys: {"epsgCode": 4326},
-                attributions: new ol.Attribution({
-                    html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
-                }),
+                attributions: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
             }),
             projection: 'EPSG:4326'
         })]
@@ -135,7 +134,7 @@
             draw: 'intensity'
         };
 
-        var dataAttr = resources.text_dataSources + "<a target='_blank' href='http://mapv.baidu.com/examples/geojson-guangdong.html'>MapV</a>";
+        var dataAttr = resources.text_dataSources + "<a target='_blank' href='https://mapv.baidu.com/examples/geojson-guangdong.html'>MapV</a>";
         map.addLayer(new ol.layer.Image({
             source: new ol.source.Mapv({map: map, dataSet: dataSet1, mapvOptions: options, attributions: dataAttr})
         }));

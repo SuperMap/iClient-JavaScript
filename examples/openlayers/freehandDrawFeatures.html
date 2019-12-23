@@ -30,7 +30,7 @@
 <script type="text/javascript">
     //按住左键不放随意绘制图形，放手绘制完成
     var map, draw,
-        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China";
+        url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
@@ -38,7 +38,8 @@
         view: new ol.View({
             center: [12957388, 4853991],
             zoom: 4,
-            projection: 'EPSG:3857'
+            projection: 'EPSG:3857',
+            multiWorld: true
         })
     });
     var layer = new ol.layer.Tile({

@@ -64,7 +64,7 @@
 <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, heatMapLayer,
         url = host + "/iserver/services/map-world/rest/maps/World";
 
@@ -75,7 +75,8 @@
         view: new ol.View({
             center: [0, 0],
             zoom: 3,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         })
     });
     map.addLayer(new ol.layer.Tile({

@@ -1,21 +1,13 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
+import L from 'leaflet';
 import '../core/Base';
-import {
-    Detector
-} from "../core/Detector";
-import {
-    CommonUtil
-} from '@supermap/iclient-common';
-import {
-    GraphicCanvasRenderer,
-    GraphicWebGLRenderer,
-    CircleStyle
-} from './graphic';
+import { Detector } from '../core/Detector';
+import { CommonUtil } from '@supermap/iclient-common';
+import { GraphicCanvasRenderer, GraphicWebGLRenderer, CircleStyle } from './graphic';
 
-const Renderer = ["canvas", "webgl"];
+const Renderer = ['canvas', 'webgl'];
 
 const defaultProps = {
     color: [0, 0, 0, 255],
@@ -27,6 +19,7 @@ const defaultProps = {
     strokeWidth: 1,
     outline: false
 };
+
 /**
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
@@ -48,8 +41,7 @@ const defaultProps = {
  * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  */
 export var GraphicLayer = L.Path.extend({
-
-    initialize: function (graphics, options) {
+    initialize: function(graphics, options) {
         this.graphics = [].concat(graphics);
         let opt = options || {};
         // 由于是canvas实现所以不能更改pane
@@ -61,6 +53,7 @@ export var GraphicLayer = L.Path.extend({
         if (!Detector.supportWebGL2()) {
             this.options.render = Renderer[0];
         }
+        this.on('click mousemove dblclick mousedown mouseup mouseout contextmenu', this._handleClick, this);
     },
 
     /**
@@ -69,12 +62,12 @@ export var GraphicLayer = L.Path.extend({
      * @description 获取事件。
      * @returns {Object} 返回该图层支持的事件对象。
      */
-    getEvents: function () {
-        return {
-            click: this._handleClick.bind(this),
+    getEvents: function() {
+        const events = {
             resize: this._resize.bind(this),
             moveend: this._moveEnd.bind(this)
         };
+        return events;
     },
 
     /**
@@ -82,13 +75,13 @@ export var GraphicLayer = L.Path.extend({
      * @function L.supermap.graphicLayer.prototype.onAdd
      * @description 添加图形。
      */
-    onAdd: function (map) {
+    onAdd: function(map) {
         this._map = map;
         this.defaultStyle = this._getDefaultStyle(this.options);
         this._renderer = this._createRenderer();
         this._container = this._renderer._container;
+        this.addInteractiveTarget(this._container);
         L.Path.prototype.onAdd.call(this);
-
     },
 
     /**
@@ -97,7 +90,8 @@ export var GraphicLayer = L.Path.extend({
      * @function L.supermap.graphicLayer.prototype.onRemove
      * @description 移除图层。
      */
-    onRemove: function () {
+    onRemove: function() {
+        this.off('click mousemove dblclick mousedown mouseup contextmenu', this._handleClick, this);
         this._renderer._removePath(this);
     },
 
@@ -106,7 +100,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
      * @param {Array.<L.supermap.graphic>} graphics - 点要素对象数组。
      */
-    setGraphics: function (graphics) {
+    setGraphics: function(graphics) {
         this.graphics = this.graphics || [];
         this.graphics.length = 0;
         let sGraphics = !L.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
@@ -119,7 +113,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 追加点要素，不会覆盖之前的要素。
      * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组。
      */
-    addGraphics: function (graphics) {
+    addGraphics: function(graphics) {
         this.graphics = this.graphics || [];
         let sGraphics = !L.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         this.graphics = this.graphics.concat(sGraphics);
@@ -151,7 +145,7 @@ export var GraphicLayer = L.Path.extend({
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
-        return this.getGraphicBy("id", graphicId);
+        return this.getGraphicBy('id', graphicId);
     },
 
     /**
@@ -187,7 +181,7 @@ export var GraphicLayer = L.Path.extend({
             this.update();
             return;
         }
-        if (!(CommonUtil.isArray(graphics))) {
+        if (!CommonUtil.isArray(graphics)) {
             graphics = [graphics];
         }
 
@@ -222,7 +216,7 @@ export var GraphicLayer = L.Path.extend({
      * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
      * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
-    setStyle: function (styleOptions) {
+    setStyle: function(styleOptions) {
         let _opt = this.options;
         let styleOpt = {
             color: _opt.color,
@@ -244,7 +238,7 @@ export var GraphicLayer = L.Path.extend({
      * @function L.supermap.graphicLayer.prototype.update
      * @description 更新图层，数据或者样式改变后调用。
      */
-    update: function () {
+    update: function() {
         this._layerRenderer.update(this.graphics);
     },
 
@@ -252,7 +246,7 @@ export var GraphicLayer = L.Path.extend({
      * @function L.supermap.graphicLayer.prototype.clear
      * @description 释放图层资源。
      */
-    clear: function () {
+    clear: function() {
         this.removeGraphics();
     },
 
@@ -261,7 +255,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 获取渲染器。
      * @returns {Object} 内部渲染器。
      */
-    getRenderer: function () {
+    getRenderer: function() {
         return this._renderer;
     },
 
@@ -270,7 +264,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 获取当前地图及图层状态。
      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
-    getState: function () {
+    getState: function() {
         let map = this._map;
         let width = map.getSize().x;
         let height = map.getSize().y;
@@ -308,24 +302,24 @@ export var GraphicLayer = L.Path.extend({
         return state;
     },
 
-    _resize: function () {
+    _resize: function() {
         let size = this._map.getSize();
         this._container.width = size.x;
         this._container.height = size.y;
-        this._container.style.width = size.x + "px";
-        this._container.style.height = size.y + "px";
+        this._container.style.width = size.x + 'px';
+        this._container.style.height = size.y + 'px';
 
         let mapOffset = this._map.containerPointToLayerPoint([0, 0]);
         L.DomUtil.setPosition(this._container, mapOffset);
         this._update();
     },
-    _moveEnd: function () {
+    _moveEnd: function() {
         if (this._layerRenderer instanceof GraphicWebGLRenderer) {
             this._update();
         }
     },
     //使用canvas渲染或webgl渲染
-    _createRenderer: function () {
+    _createRenderer: function() {
         let map = this._map;
         let width = map.getSize().x;
         let height = map.getSize().y;
@@ -338,11 +332,14 @@ export var GraphicLayer = L.Path.extend({
             });
         } else {
             let optDefault = L.Util.setOptions({}, defaultProps);
-            let opt = L.Util.setOptions({
-                options: optDefault
-            }, this.options);
+            let opt = L.Util.setOptions(
+                {
+                    options: optDefault
+                },
+                this.options
+            );
             opt = L.Util.setOptions(this, opt);
-            opt.container = map.getPane("overlayPane");
+            opt.container = map.getPane('overlayPane');
             opt.width = width;
             opt.height = height;
 
@@ -357,7 +354,7 @@ export var GraphicLayer = L.Path.extend({
      * @private
      * @override
      */
-    _update: function () {
+    _update: function() {
         if (this._map) {
             this._updatePath();
         }
@@ -367,7 +364,7 @@ export var GraphicLayer = L.Path.extend({
      * @private
      * @override
      */
-    _updatePath: function () {
+    _updatePath: function() {
         let graphics = this._getGraphicsInBounds();
         this._renderer.drawGraphics(graphics, this.defaultStyle);
     },
@@ -376,9 +373,9 @@ export var GraphicLayer = L.Path.extend({
      * @private
      * @override
      */
-    _project: function () {
+    _project: function() {
         let me = this;
-        me._getGraphicsInBounds().map(function (graphic) {
+        me._getGraphicsInBounds().map(function(graphic) {
             let point = me._map.latLngToLayerPoint(graphic.getLatLng());
             let w = me._clickTolerance();
             let p = [graphic._anchor + w, graphic._anchor + w];
@@ -387,7 +384,7 @@ export var GraphicLayer = L.Path.extend({
         });
         me._pxBounds = L.bounds(L.point(0, 0), L.point(this._container.width, this._container.height));
     },
-    _getDefaultStyle: function (options) {
+    _getDefaultStyle: function(options) {
         const target = {};
         if (options.color) {
             target.fill = true;
@@ -409,16 +406,15 @@ export var GraphicLayer = L.Path.extend({
             target.stroke = options.outline;
         }
         return new CircleStyle(target).getStyle();
-
     },
     toRGBA(colorArray) {
         return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
     },
-    _getGraphicsInBounds: function () {
+    _getGraphicsInBounds: function() {
         let me = this;
         let graphicsInBounds = [];
         let viewBounds = me._map.getBounds();
-        this.graphics.map(function (graphic) {
+        this.graphics.map(function(graphic) {
             if (viewBounds.contains(graphic.getLatLng())) {
                 graphicsInBounds.push(graphic);
             }
@@ -427,8 +423,7 @@ export var GraphicLayer = L.Path.extend({
         return graphicsInBounds;
     },
 
-
-    _handleClick: function (evt) {
+    _handleClick: function(evt) {
         this._layerRenderer._handleClick(evt);
     },
     /**
@@ -442,10 +437,9 @@ export var GraphicLayer = L.Path.extend({
      * @override
      */
     _containsPoint: L.Util.falseFn
-
 });
 
-export let graphicLayer = function (graphics, options) {
+export let graphicLayer = function(graphics, options) {
     return new GraphicLayer(graphics, options);
 };
 

@@ -17,6 +17,7 @@ import { IPortalMapdashboardsQueryParam } from "./iPortalMapdashboardsQueryParam
 import { IPortalQueryParam } from "./iPortalQueryParam";
 import { IPortalQueryResult } from "./iPortalQueryResult";
 import { IPortalResource } from "./iPortalResource";
+import { IPortalShareParam } from "./iPortalShareParam";
 
 /**
  * @class SuperMap.iPortal
@@ -50,24 +51,58 @@ export class IPortal extends IPortalServiceBase {
      */
     queryResources(queryParams) {
         if (!(queryParams instanceof IPortalQueryParam)) {
-            return null;
+            return new Promise( function(resolve){
+                resolve(
+                    "queryParams is not instanceof iPortalQueryParam !"
+                );
+            });
         }
-        //http://rdc.ispeco.com/gateway/catalog/resource/search.json?aggregationTypes=%5B%22TYPE%22%5D&t=1574736505796&pageSize=12&currentPage=1&orderBy=UPDATETIME&orderType=DESC&tags=%5B%5D&dirIds=%5B%5D&searchType=PUBLIC&resourceSubTypes=%5B%5D
+        var me = this;
         var resourceUrl = this.iportalUrl + "/gateway/catalog/resource/search.json";
+        queryParams.t = new Date().getTime();
         return this.request("GET", resourceUrl, queryParams).then(function(result) {
             var content = [];
             result.content.forEach(function(item) {
-                content.push(new IPortalResource(resourceUrl, item));
+                content.push(new IPortalResource(me.iportalUrl, item));
             });
             let queryResult = new IPortalQueryResult();
             queryResult.content = content;
             queryResult.total = result.total;
-
+            queryResult.currentPage = result.currentPage;
+            queryResult.pageSize = result.pageSize;
+            queryResult.aggregations = result.aggregations;
             return queryResult;
         });
     }
 
 
+    /**
+     * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
+     * @description 查询资源。
+     * @param {SuperMap.updateResourcesShareSetting} shareParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+    updateResourcesShareSetting(shareParams) {
+        if (!(shareParams instanceof IPortalShareParam)) {
+            return new Promise( function(resolve){
+                resolve(
+                    "shareParams is not instanceof iPortalShareParam !"
+                );
+            });
+        }
+        var resourceUrlName = shareParams.resourceType.replace("_","").toLowerCase()+"s";
+        if(resourceUrlName === "datas"){
+            resourceUrlName = "mycontent/"+resourceUrlName;
+        }
+        var cloneShareParams = {
+            ids: shareParams.ids,
+            entities: shareParams.entities
+        }
+        var shareUrl = this.iportalUrl + "/web/"+resourceUrlName+"/sharesetting.json";
+        return this.request("PUT", shareUrl, JSON.stringify(cloneShareParams)).then(function(result) {
+            return result;
+        });
+    }
     /**
      * @function SuperMap.iPortal.prototype.queryServices
      * @description 查询服务。

@@ -13,8 +13,8 @@
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
     var map, options, terrainCurvatureCalculationResult,
-        baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-jingjin/rest/maps/京津地区地图",
-        serviceUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        serviceUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
     var extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
@@ -26,7 +26,8 @@
                 center: [116.85, 39.79],
                 zoom: 8,
                 projection: "EPSG:4326",
-                extent: extent
+                extent: extent,
+                multiWorld: true
             })
         });
         options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);

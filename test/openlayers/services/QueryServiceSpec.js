@@ -1,10 +1,12 @@
-import ol from 'openlayers';
 import {QueryService} from '../../../src/openlayers/services/QueryService';
 import {QueryByBoundsParameters} from '../../../src/common/iServer/QueryByBoundsParameters';
 import {QueryByDistanceParameters} from '../../../src/common/iServer/QueryByDistanceParameters';
 import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
 import {QueryByGeometryParameters} from '../../../src/common/iServer/QueryByGeometryParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
+import Polygon from 'ol/geom/Polygon';
+import Point from 'ol/geom/Point';
 
 var url = GlobeParameter.WorldURL;
 
@@ -22,7 +24,7 @@ describe('openlayers_QueryService', () => {
 
     //地图bounds查询
     it('queryByBounds', (done) => {
-        var polygon = new ol.geom.Polygon([[[0, 0], [60, 0], [60, 39], [0, 39], [0, 0]]]);
+        var polygon = new Polygon([[[0, 0], [60, 0], [60, 39], [0, 39], [0, 0]]]);
         var param = new QueryByBoundsParameters({
             queryParams: {name: "Capitals@World"},
             bounds: polygon.getExtent()
@@ -73,7 +75,7 @@ describe('openlayers_QueryService', () => {
 
     //地图距离查询服务
     it('queryByDistance', (done) => {
-        var point = new ol.geom.Point([104, 30]);
+        var point = new Point([104, 30]);
         var param = new QueryByDistanceParameters({
             queryParams: {name: "Capitals@World"},
             distance: 10,
@@ -178,7 +180,7 @@ describe('openlayers_QueryService', () => {
 
     //地图几何查询服务
     it('queryByGeometry', (done) => {
-        var polygon = new ol.geom.Polygon([[[0, 0], [-30, 0], [-10, 30], [0, 0]]]);
+        var polygon = new Polygon([[[0, 0], [-30, 0], [-10, 30], [0, 0]]]);
         var param = new QueryByGeometryParameters({
             queryParams: {name: "Capitals@World"},
             geometry: polygon

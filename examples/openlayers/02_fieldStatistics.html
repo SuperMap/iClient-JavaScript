@@ -31,8 +31,8 @@
 <script type="text/javascript">
     var container, content, info;
     var map, currentData, layersName = [],
-        mapURL = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World",
-        dataURL = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+        mapURL = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World",
+        dataURL = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
 
     map = new ol.Map({
         target: 'map',
@@ -41,7 +41,8 @@
         view: new ol.View({
             center: [0, 0],
             zoom: 3,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         })
     });
     var layer = new ol.layer.Tile({

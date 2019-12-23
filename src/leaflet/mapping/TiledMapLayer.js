@@ -8,7 +8,6 @@ import {
     ServerType,
     Unit,
     Credential,
-    CommonUtil,
     ServerGeometry
 } from '@supermap/iclient-common';
 import * as Util from "../core/Util";
@@ -333,9 +332,8 @@ export var TiledMapLayer = L.TileLayer.extend({
             params["layersID"] = options.layersID.toString();
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof L.Path) {
-            options.clipRegion = Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
+        if (options.clipRegionEnabled && options.clipRegion) {
+            options.clipRegion = ServerGeometry.fromGeometry(Util.toSuperMapGeometry(options.clipRegion));
             params["clipRegionEnabled"] = options.clipRegionEnabled;
             params["clipRegion"] = JSON.stringify(options.clipRegion);
         }

@@ -90,18 +90,17 @@
         view: new ol.View({
             center: ol.proj.transform([105.403119, 38.028658], 'EPSG:4326', 'EPSG:3857'),
             zoom: 4,
-            projection: 'EPSG:3857'
+            projection: 'EPSG:3857',
+			multiWorld: true
         })
     });
 
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,
-            attributions: new ol.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
-            })
+            attributions: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
         })
     }));
     overlay.setPosition(map.getView().getCenter());

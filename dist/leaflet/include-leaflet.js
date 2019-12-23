@@ -74,7 +74,7 @@
             inputScript("https://cdn.bootcss.com/leaflet-minimap/3.6.1/Control.MiniMap.min.js");
         }
         if (inArray(includes, 'mapv')) {
-            inputScript("http://mapv.baidu.com/build/mapv.min.js");
+            inputScript("https://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
             inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js");
@@ -90,27 +90,33 @@
         }
         // 本地
         if (inArray(includes, 'leaflet.sidebyside')) {
-            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js");
+            inputScript("https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js");
         }
         if (inArray(includes, 'd3')) {
-          inputScript("http://iclient.supermap.io/web/libs/d3/5.12.0/d3.js");
+          inputScript("https://iclient.supermap.io/web/libs/d3/5.12.0/d3.js");
         }
         if (inArray(includes, 'd3-hexbin')) {
           inputScript("https://d3js.org/d3-hexbin.v0.2.min.js");
         }
         if (inArray(includes, 'd3Layer')) {
-            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.js");
+            inputScript("https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.js");
         }
         if (inArray(includes, 'osmbuildings')) {
-          inputScript("http://iclient.supermap.io/web/libs/osmbuildings/OSMBuildings-Leaflet.js");
+          inputScript("https://iclient.supermap.io/web/libs/osmbuildings/OSMBuildings-Leaflet.js");
         }
         if (inArray(includes, 'leaflet-icon-pulse')) {
-          inputCSS("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.css");
-          inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js");
+          inputCSS("https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.css");
+          inputScript("https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js");
         }
         if (inArray(includes, 'deck')) {
-          inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
+          inputScript("https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
         }
+        if (inArray(includes, 'pixi')) {
+            inputScript('https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.7/pixi.js');
+            inputScript('https://cdn.jsdelivr.net/npm/leaflet-pixi-overlay@1.8.1/L.PixiOverlay.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/Leaflet.PixiOverlay/1.8.1/MarkerContainer.js');
+            inputScript('https://iclient.supermap.io/web/libs/bezier-easing/2.1.0/bezier-easing.js');
+          }
 
         // iclient
         if (!inArray(excludes, 'iclient-leaflet')) {
@@ -124,16 +130,22 @@
             inputCSS("../../dist/leaflet/iclient-leaflet.min.css");
         }
         if (inArray(includes, 'iclient-plot-leaflet')) {
-            inputCSS("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.css");
+            inputCSS("https://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.css");
             if (supportES6()) {
-                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet-es6.min.js");
+                inputScript("https://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet-es6.min.js");
             } else {
-                inputScript("http://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.min.js");
+                inputScript("https://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.min.js");
             }
         }
         if (inArray(includes, 'ant-design-vue')) {
           inputCSS("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.css");
           inputScript("https://unpkg.com/ant-design-vue@1.3.9/dist/antd.min.js");
+        }
+        if (inArray(includes, 'echarts-vue')) {
+          inputScript("https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js");
+          inputScript("https://cdn.jsdelivr.net/npm/vue-echarts@4.0.4/dist/vue-echarts.min.js");
+          inputScript("https://iclient.supermap.io/web/libs/echarts-liquidfill/echarts-liquidfill.min.js");
+          inputScript("https://iclient.supermap.io/web/libs/echartsLayer/EchartsLayer.min.js");
         }
         if (inArray(includes, 'iclient-leaflet-vue')) {
           inputCSS("../../dist/leaflet/iclient-leaflet-vue.css");

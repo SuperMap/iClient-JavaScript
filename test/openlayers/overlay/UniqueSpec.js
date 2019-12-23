@@ -1,6 +1,7 @@
-import ol from 'openlayers';
 import {Unique} from '../../../src/openlayers/overlay/Unique';
 import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
+import Map from 'ol/Map';
+import View from 'ol/View';
 
 describe('openlayers_Unique', () => {
     var testDiv, map, opt_options;
@@ -13,9 +14,9 @@ describe('openlayers_Unique', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [110.85, 39.79],
                 zoom: 4,
                 projection: "EPSG:4326"

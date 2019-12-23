@@ -68,6 +68,11 @@ export {
     IManagerCreateNodeParam,
     //iPortal
     IPortal,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalMap,
     IPortalMapsQueryParam,
     IPortalService,
@@ -79,6 +84,7 @@ export {
     IPortalInsightsQueryParam,
     IPortalScene,
     IPortalScenesQueryParam,
+    IPortalUser,
     //Online
     Online,
     OnlineData,

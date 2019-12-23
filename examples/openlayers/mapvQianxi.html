@@ -83,7 +83,7 @@
         return false;
     };
 
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     var map = new ol.Map({
         target: 'map',
@@ -98,9 +98,7 @@
             source: new ol.source.TileSuperMapRest({
                 url: url,
                 prjCoordSys: {"epsgCode": 4326},
-                attributions: new ol.Attribution({
-                    html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
-                }),
+                attributions: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
             }),
             projection: 'EPSG:4326'
         })]

@@ -174,7 +174,7 @@ function createSideBarMenuTitle(id, title, collapse, hasNewExamples) {
     var titleBar = $("<span class='sidebar-title-bar'></span>");
     var newIcon = "";
     if (hasNewExamples) {
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#C70022'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
     }
     var firstMenuTitle = $("<span class='firstMenuTitle'>" + title + newIcon + "</span>");
     titleBar.append(firstMenuTitle);
@@ -195,7 +195,7 @@ function createSideBarMenuSecondTitle(id, title, collapse, hasNewExamples) {
     }
     var newIcon = "";
     if (hasNewExamples) {
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#C70022'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
     }
     var div = $(
         "<a href='#" + id + "' id='" + id + '-' + id + "'>" + icon +
@@ -217,7 +217,7 @@ function createSideBarMenuThirdTitle(id, title, collapse,version) {
     }
     var newIcon="";
     if(window.version===version){
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#C70022'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
     }
 
     var div = $(

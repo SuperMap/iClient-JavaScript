@@ -157,6 +157,7 @@ import './common/online/OnlineQueryDatasParameterSpec';
 import './common/iManager/iManagerCreateNodeParamSpec.js';
 
 /**common -- iPortal**/
+import './common/iPortal/iPortalQueryParamSpec.js';
 import './common/iPortal/iPortalMapSpec.js';
 import './common/iPortal/iPortalMapsQueryParamSpec.js';
 import './common/iPortal/iPortalServiceSpec.js';
@@ -167,6 +168,7 @@ import './common/iPortal/iPortalInsightSpec.js';
 import './common/iPortal/iPortalInsightsQueryParamSpec.js';
 import './common/iPortal/iPortalSceneSpec.js';
 import './common/iPortal/iPortalScenesQueryParamSpec.js';
+import './common/iPortal/iPortalUserSpec.js';
 
 /**common -- thirdparty**/
 import './common/thirdparty/elasticsearch/ElasticSearchSpec.js';

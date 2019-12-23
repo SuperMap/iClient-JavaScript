@@ -100,7 +100,7 @@
 </body>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script>
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
         mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
         turfLayer, bbox,
 
@@ -112,7 +112,8 @@
             view: new ol.View({
                 center: [106, 36],
                 zoom: 5,
-                projection: 'EPSG:4326'
+                projection: 'EPSG:4326',
+                multiWorld: true
             })
         });
 
@@ -127,9 +128,7 @@
     //添加turf 图层
     var turfSource = new ol.source.Turf({
             wrapX: false,
-            attributions: new ol.Attribution({
-                html: ""
-            }),
+            attributions: ""
         }),
         gridAnalyzeType = 'hexGrid';
 

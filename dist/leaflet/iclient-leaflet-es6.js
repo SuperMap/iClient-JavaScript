@@ -1,6 +1,6 @@
 /*!
  * 
- *          iclient-leaflet.(http://iclient.supermap.io)
+ *          iclient-leaflet.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
  *          license: Apache-2.0
  *          version: v10.0.0
@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -74,7 +89,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 26);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -384,7 +399,7 @@ function Query(dataSource, query, opts) {
   return Fields(Parse(dataSource));
 }
 
-if (typeof(module) != 'undefined' && typeof(module.exports) != 'undefined') module.exports = Query;
+if ( true && typeof(module.exports) != 'undefined') module.exports = Query;
 if (typeof(window) != 'undefined') window.Query = Query;
 
 /***/ }),
@@ -400,7 +415,7 @@ g = (function() {
 
 try {
 	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
+	g = g || new Function("return this")();
 } catch (e) {
 	// This works if the window reference is available
 	if (typeof window === "object") g = window;
@@ -415,24 +430,6 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return turf}catch(e){return {}}}();
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return mapv}catch(e){return {}}}();
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return XLSX}catch(e){return {}}}();
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -540,13 +537,105 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return XLSX}catch(e){return {}}}();
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return mapv}catch(e){return {}}}();
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return turf}catch(e){return {}}}();
+
+/***/ }),
 /* 8 */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"a\":\"2.5.0\"}");
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Point = __webpack_require__(18);
+var VectorTileFeature = __webpack_require__(10);
+
+module.exports = VectorTileLayer;
+
+function VectorTileLayer(pbf, end) {
+    // Public
+    this.version = 1;
+    this.name = null;
+    this.extent = 4096;
+    this.length = 0;
+
+    // Private
+    this._pbf = pbf;
+    this._keys = [];
+    this._values = [];
+    this._features = [];
+
+    pbf.readFields(readLayer, this, end);
+
+    this.length = this._features.length;
+}
+
+function readLayer(tag, layer, pbf) {
+    if (tag === 15) layer.version = pbf.readVarint();
+    else if (tag === 1) layer.name = pbf.readString();
+    else if (tag === 5) layer.extent = pbf.readVarint();
+    else if (tag === 2) layer._features.push(pbf.pos);
+    else if (tag === 3) layer._keys.push(pbf.readString());
+    else if (tag === 4) layer._values.push(readValueMessage(pbf));
+}
+
+function readValueMessage(pbf) {
+    var value = null,
+        end = pbf.readVarint() + pbf.pos;
+
+    while (pbf.pos < end) {
+        var tag = pbf.readVarint() >> 3;
+
+        value = tag === 1 ? pbf.readString() :
+            tag === 2 ? pbf.readFloat() :
+            tag === 3 ? pbf.readDouble() :
+            tag === 4 ? pbf.readVarint64() :
+            tag === 5 ? pbf.readVarint() :
+            tag === 6 ? pbf.readSVarint() :
+            tag === 7 ? pbf.readBoolean() : null;
+    }
+
+    return value;
+}
+
+// return feature `i` from this layer as a `VectorTileFeature`
+VectorTileLayer.prototype.feature = function(i) {
+    if (i < 0 || i >= this._features.length) throw new Error('feature index out of bounds');
+
+    this._pbf.pos = this._features[i];
+
+    var end = this._pbf.readVarint() + this._pbf.pos;
+    return new VectorTileFeature(this._pbf, end, this.extent, this._keys, this._values);
+};
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Point = __webpack_require__(24);
 
 module.exports = VectorTileFeature;
 
@@ -780,712 +869,250 @@ function signedArea(ring) {
 
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var VectorTileFeature = __webpack_require__(8);
-
-module.exports = VectorTileLayer;
-
-function VectorTileLayer(pbf, end) {
-    // Public
-    this.version = 1;
-    this.name = null;
-    this.extent = 4096;
-    this.length = 0;
-
-    // Private
-    this._pbf = pbf;
-    this._keys = [];
-    this._values = [];
-    this._features = [];
-
-    pbf.readFields(readLayer, this, end);
-
-    this.length = this._features.length;
-}
-
-function readLayer(tag, layer, pbf) {
-    if (tag === 15) layer.version = pbf.readVarint();
-    else if (tag === 1) layer.name = pbf.readString();
-    else if (tag === 5) layer.extent = pbf.readVarint();
-    else if (tag === 2) layer._features.push(pbf.pos);
-    else if (tag === 3) layer._keys.push(pbf.readString());
-    else if (tag === 4) layer._values.push(readValueMessage(pbf));
-}
-
-function readValueMessage(pbf) {
-    var value = null,
-        end = pbf.readVarint() + pbf.pos;
-
-    while (pbf.pos < end) {
-        var tag = pbf.readVarint() >> 3;
-
-        value = tag === 1 ? pbf.readString() :
-            tag === 2 ? pbf.readFloat() :
-            tag === 3 ? pbf.readDouble() :
-            tag === 4 ? pbf.readVarint64() :
-            tag === 5 ? pbf.readVarint() :
-            tag === 6 ? pbf.readSVarint() :
-            tag === 7 ? pbf.readBoolean() : null;
-    }
-
-    return value;
-}
-
-// return feature `i` from this layer as a `VectorTileFeature`
-VectorTileLayer.prototype.feature = function(i) {
-    if (i < 0 || i >= this._features.length) throw new Error('feature index out of bounds');
-
-    this._pbf.pos = this._features[i];
-
-    var end = this._pbf.readVarint() + this._pbf.pos;
-    return new VectorTileFeature(this._pbf, end, this.extent, this._keys, this._values);
-};
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module) {
-
-module.exports = {"a":"2.5.0"};
-
-/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports.VectorTile = __webpack_require__(19);
-module.exports.VectorTileFeature = __webpack_require__(8);
-module.exports.VectorTileLayer = __webpack_require__(9);
+/* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
 
+  // Store setTimeout reference so promise-polyfill will be unaffected by
+  // other code modifying setTimeout (like sinon.useFakeTimers())
+  var setTimeoutFunc = setTimeout;
+
+  function noop() {}
+  
+  // Polyfill for Function.prototype.bind
+  function bind(fn, thisArg) {
+    return function () {
+      fn.apply(thisArg, arguments);
+    };
+  }
+
+  function Promise(fn) {
+    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (typeof fn !== 'function') throw new TypeError('not a function');
+    this._state = 0;
+    this._handled = false;
+    this._value = undefined;
+    this._deferreds = [];
+
+    doResolve(fn, this);
+  }
+
+  function handle(self, deferred) {
+    while (self._state === 3) {
+      self = self._value;
+    }
+    if (self._state === 0) {
+      self._deferreds.push(deferred);
+      return;
+    }
+    self._handled = true;
+    Promise._immediateFn(function () {
+      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+      if (cb === null) {
+        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+        return;
+      }
+      var ret;
+      try {
+        ret = cb(self._value);
+      } catch (e) {
+        reject(deferred.promise, e);
+        return;
+      }
+      resolve(deferred.promise, ret);
+    });
+  }
+
+  function resolve(self, newValue) {
+    try {
+      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
+      if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+        var then = newValue.then;
+        if (newValue instanceof Promise) {
+          self._state = 3;
+          self._value = newValue;
+          finale(self);
+          return;
+        } else if (typeof then === 'function') {
+          doResolve(bind(then, newValue), self);
+          return;
+        }
+      }
+      self._state = 1;
+      self._value = newValue;
+      finale(self);
+    } catch (e) {
+      reject(self, e);
+    }
+  }
+
+  function reject(self, newValue) {
+    self._state = 2;
+    self._value = newValue;
+    finale(self);
+  }
+
+  function finale(self) {
+    if (self._state === 2 && self._deferreds.length === 0) {
+      Promise._immediateFn(function() {
+        if (!self._handled) {
+          Promise._unhandledRejectionFn(self._value);
+        }
+      });
+    }
+
+    for (var i = 0, len = self._deferreds.length; i < len; i++) {
+      handle(self, self._deferreds[i]);
+    }
+    self._deferreds = null;
+  }
+
+  function Handler(onFulfilled, onRejected, promise) {
+    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+    this.promise = promise;
+  }
+
+  /**
+   * Take a potentially misbehaving resolver function and make sure
+   * onFulfilled and onRejected are only called once.
+   *
+   * Makes no guarantees about asynchrony.
+   */
+  function doResolve(fn, self) {
+    var done = false;
+    try {
+      fn(function (value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      }, function (reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      });
+    } catch (ex) {
+      if (done) return;
+      done = true;
+      reject(self, ex);
+    }
+  }
+
+  Promise.prototype['catch'] = function (onRejected) {
+    return this.then(null, onRejected);
+  };
+
+  Promise.prototype.then = function (onFulfilled, onRejected) {
+    var prom = new (this.constructor)(noop);
+
+    handle(this, new Handler(onFulfilled, onRejected, prom));
+    return prom;
+  };
+
+  Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
+    return new Promise(function (resolve, reject) {
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+
+      function res(i, val) {
+        try {
+          if (val && (typeof val === 'object' || typeof val === 'function')) {
+            var then = val.then;
+            if (typeof then === 'function') {
+              then.call(val, function (val) {
+                res(i, val);
+              }, reject);
+              return;
+            }
+          }
+          args[i] = val;
+          if (--remaining === 0) {
+            resolve(args);
+          }
+        } catch (ex) {
+          reject(ex);
+        }
+      }
+
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
+      }
+    });
+  };
+
+  Promise.resolve = function (value) {
+    if (value && typeof value === 'object' && value.constructor === Promise) {
+      return value;
+    }
+
+    return new Promise(function (resolve) {
+      resolve(value);
+    });
+  };
+
+  Promise.reject = function (value) {
+    return new Promise(function (resolve, reject) {
+      reject(value);
+    });
+  };
+
+  Promise.race = function (values) {
+    return new Promise(function (resolve, reject) {
+      for (var i = 0, len = values.length; i < len; i++) {
+        values[i].then(resolve, reject);
+      }
+    });
+  };
+
+  // Use polyfill for setImmediate for performance gains
+  Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
+    function (fn) {
+      setTimeoutFunc(fn, 0);
+    };
+
+  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+    if (typeof console !== 'undefined' && console) {
+      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+    }
+  };
+
+  /**
+   * Set the immediate function to execute callbacks
+   * @param fn {function} Function to execute
+   * @deprecated
+   */
+  Promise._setImmediateFn = function _setImmediateFn(fn) {
+    Promise._immediateFn = fn;
+  };
+
+  /**
+   * Change the function to execute on unhandled rejection
+   * @param {function} fn Function to execute on unhandled rejection
+   * @deprecated
+   */
+  Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
+    Promise._unhandledRejectionFn = fn;
+  };
+  
+  if ( true && module.exports) {
+    module.exports = Promise;
+  } else if (!root.Promise) {
+    root.Promise = Promise;
+  }
+
+})(this);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(17).setImmediate))
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-module.exports = Pbf;
-
-var ieee754 = __webpack_require__(20);
-
-function Pbf(buf) {
-    this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
-    this.pos = 0;
-    this.type = 0;
-    this.length = this.buf.length;
-}
-
-Pbf.Varint  = 0; // varint: int32, int64, uint32, uint64, sint32, sint64, bool, enum
-Pbf.Fixed64 = 1; // 64-bit: double, fixed64, sfixed64
-Pbf.Bytes   = 2; // length-delimited: string, bytes, embedded messages, packed repeated fields
-Pbf.Fixed32 = 5; // 32-bit: float, fixed32, sfixed32
-
-var SHIFT_LEFT_32 = (1 << 16) * (1 << 16),
-    SHIFT_RIGHT_32 = 1 / SHIFT_LEFT_32;
-
-Pbf.prototype = {
-
-    destroy: function() {
-        this.buf = null;
-    },
-
-    // === READING =================================================================
-
-    readFields: function(readField, result, end) {
-        end = end || this.length;
-
-        while (this.pos < end) {
-            var val = this.readVarint(),
-                tag = val >> 3,
-                startPos = this.pos;
-
-            this.type = val & 0x7;
-            readField(tag, result, this);
-
-            if (this.pos === startPos) this.skip(val);
-        }
-        return result;
-    },
-
-    readMessage: function(readField, result) {
-        return this.readFields(readField, result, this.readVarint() + this.pos);
-    },
-
-    readFixed32: function() {
-        var val = readUInt32(this.buf, this.pos);
-        this.pos += 4;
-        return val;
-    },
-
-    readSFixed32: function() {
-        var val = readInt32(this.buf, this.pos);
-        this.pos += 4;
-        return val;
-    },
-
-    // 64-bit int handling is based on github.com/dpw/node-buffer-more-ints (MIT-licensed)
-
-    readFixed64: function() {
-        var val = readUInt32(this.buf, this.pos) + readUInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
-        this.pos += 8;
-        return val;
-    },
-
-    readSFixed64: function() {
-        var val = readUInt32(this.buf, this.pos) + readInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
-        this.pos += 8;
-        return val;
-    },
-
-    readFloat: function() {
-        var val = ieee754.read(this.buf, this.pos, true, 23, 4);
-        this.pos += 4;
-        return val;
-    },
-
-    readDouble: function() {
-        var val = ieee754.read(this.buf, this.pos, true, 52, 8);
-        this.pos += 8;
-        return val;
-    },
-
-    readVarint: function(isSigned) {
-        var buf = this.buf,
-            val, b;
-
-        b = buf[this.pos++]; val  =  b & 0x7f;        if (b < 0x80) return val;
-        b = buf[this.pos++]; val |= (b & 0x7f) << 7;  if (b < 0x80) return val;
-        b = buf[this.pos++]; val |= (b & 0x7f) << 14; if (b < 0x80) return val;
-        b = buf[this.pos++]; val |= (b & 0x7f) << 21; if (b < 0x80) return val;
-        b = buf[this.pos];   val |= (b & 0x0f) << 28;
-
-        return readVarintRemainder(val, isSigned, this);
-    },
-
-    readVarint64: function() { // for compatibility with v2.0.1
-        return this.readVarint(true);
-    },
-
-    readSVarint: function() {
-        var num = this.readVarint();
-        return num % 2 === 1 ? (num + 1) / -2 : num / 2; // zigzag encoding
-    },
-
-    readBoolean: function() {
-        return Boolean(this.readVarint());
-    },
-
-    readString: function() {
-        var end = this.readVarint() + this.pos,
-            str = readUtf8(this.buf, this.pos, end);
-        this.pos = end;
-        return str;
-    },
-
-    readBytes: function() {
-        var end = this.readVarint() + this.pos,
-            buffer = this.buf.subarray(this.pos, end);
-        this.pos = end;
-        return buffer;
-    },
-
-    // verbose for performance reasons; doesn't affect gzipped size
-
-    readPackedVarint: function(arr, isSigned) {
-        var end = readPackedEnd(this);
-        arr = arr || [];
-        while (this.pos < end) arr.push(this.readVarint(isSigned));
-        return arr;
-    },
-    readPackedSVarint: function(arr) {
-        var end = readPackedEnd(this);
-        arr = arr || [];
-        while (this.pos < end) arr.push(this.readSVarint());
-        return arr;
-    },
-    readPackedBoolean: function(arr) {
-        var end = readPackedEnd(this);
-        arr = arr || [];
-        while (this.pos < end) arr.push(this.readBoolean());
-        return arr;
-    },
-    readPackedFloat: function(arr) {
-        var end = readPackedEnd(this);
-        arr = arr || [];
-        while (this.pos < end) arr.push(this.readFloat());
-        return arr;
-    },
-    readPackedDouble: function(arr) {
-        var end = readPackedEnd(this);
-        arr = arr || [];
-        while (this.pos < end) arr.push(this.readDouble());
-        return arr;
-    },
-    readPackedFixed32: function(arr) {
-        var end = readPackedEnd(this);
-        arr = arr || [];
-        while (this.pos < end) arr.push(this.readFixed32());
-        return arr;
-    },
-    readPackedSFixed32: function(arr) {
-        var end = readPackedEnd(this);
-        arr = arr || [];
-        while (this.pos < end) arr.push(this.readSFixed32());
-        return arr;
-    },
-    readPackedFixed64: function(arr) {
-        var end = readPackedEnd(this);
-        arr = arr || [];
-        while (this.pos < end) arr.push(this.readFixed64());
-        return arr;
-    },
-    readPackedSFixed64: function(arr) {
-        var end = readPackedEnd(this);
-        arr = arr || [];
-        while (this.pos < end) arr.push(this.readSFixed64());
-        return arr;
-    },
-
-    skip: function(val) {
-        var type = val & 0x7;
-        if (type === Pbf.Varint) while (this.buf[this.pos++] > 0x7f) {}
-        else if (type === Pbf.Bytes) this.pos = this.readVarint() + this.pos;
-        else if (type === Pbf.Fixed32) this.pos += 4;
-        else if (type === Pbf.Fixed64) this.pos += 8;
-        else throw new Error('Unimplemented type: ' + type);
-    },
-
-    // === WRITING =================================================================
-
-    writeTag: function(tag, type) {
-        this.writeVarint((tag << 3) | type);
-    },
-
-    realloc: function(min) {
-        var length = this.length || 16;
-
-        while (length < this.pos + min) length *= 2;
-
-        if (length !== this.length) {
-            var buf = new Uint8Array(length);
-            buf.set(this.buf);
-            this.buf = buf;
-            this.length = length;
-        }
-    },
-
-    finish: function() {
-        this.length = this.pos;
-        this.pos = 0;
-        return this.buf.subarray(0, this.length);
-    },
-
-    writeFixed32: function(val) {
-        this.realloc(4);
-        writeInt32(this.buf, val, this.pos);
-        this.pos += 4;
-    },
-
-    writeSFixed32: function(val) {
-        this.realloc(4);
-        writeInt32(this.buf, val, this.pos);
-        this.pos += 4;
-    },
-
-    writeFixed64: function(val) {
-        this.realloc(8);
-        writeInt32(this.buf, val & -1, this.pos);
-        writeInt32(this.buf, Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
-        this.pos += 8;
-    },
-
-    writeSFixed64: function(val) {
-        this.realloc(8);
-        writeInt32(this.buf, val & -1, this.pos);
-        writeInt32(this.buf, Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
-        this.pos += 8;
-    },
-
-    writeVarint: function(val) {
-        val = +val || 0;
-
-        if (val > 0xfffffff || val < 0) {
-            writeBigVarint(val, this);
-            return;
-        }
-
-        this.realloc(4);
-
-        this.buf[this.pos++] =           val & 0x7f  | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
-        this.buf[this.pos++] = ((val >>>= 7) & 0x7f) | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
-        this.buf[this.pos++] = ((val >>>= 7) & 0x7f) | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
-        this.buf[this.pos++] =   (val >>> 7) & 0x7f;
-    },
-
-    writeSVarint: function(val) {
-        this.writeVarint(val < 0 ? -val * 2 - 1 : val * 2);
-    },
-
-    writeBoolean: function(val) {
-        this.writeVarint(Boolean(val));
-    },
-
-    writeString: function(str) {
-        str = String(str);
-        this.realloc(str.length * 4);
-
-        this.pos++; // reserve 1 byte for short string length
-
-        var startPos = this.pos;
-        // write the string directly to the buffer and see how much was written
-        this.pos = writeUtf8(this.buf, str, this.pos);
-        var len = this.pos - startPos;
-
-        if (len >= 0x80) makeRoomForExtraLength(startPos, len, this);
-
-        // finally, write the message length in the reserved place and restore the position
-        this.pos = startPos - 1;
-        this.writeVarint(len);
-        this.pos += len;
-    },
-
-    writeFloat: function(val) {
-        this.realloc(4);
-        ieee754.write(this.buf, val, this.pos, true, 23, 4);
-        this.pos += 4;
-    },
-
-    writeDouble: function(val) {
-        this.realloc(8);
-        ieee754.write(this.buf, val, this.pos, true, 52, 8);
-        this.pos += 8;
-    },
-
-    writeBytes: function(buffer) {
-        var len = buffer.length;
-        this.writeVarint(len);
-        this.realloc(len);
-        for (var i = 0; i < len; i++) this.buf[this.pos++] = buffer[i];
-    },
-
-    writeRawMessage: function(fn, obj) {
-        this.pos++; // reserve 1 byte for short message length
-
-        // write the message directly to the buffer and see how much was written
-        var startPos = this.pos;
-        fn(obj, this);
-        var len = this.pos - startPos;
-
-        if (len >= 0x80) makeRoomForExtraLength(startPos, len, this);
-
-        // finally, write the message length in the reserved place and restore the position
-        this.pos = startPos - 1;
-        this.writeVarint(len);
-        this.pos += len;
-    },
-
-    writeMessage: function(tag, fn, obj) {
-        this.writeTag(tag, Pbf.Bytes);
-        this.writeRawMessage(fn, obj);
-    },
-
-    writePackedVarint:   function(tag, arr) { this.writeMessage(tag, writePackedVarint, arr);   },
-    writePackedSVarint:  function(tag, arr) { this.writeMessage(tag, writePackedSVarint, arr);  },
-    writePackedBoolean:  function(tag, arr) { this.writeMessage(tag, writePackedBoolean, arr);  },
-    writePackedFloat:    function(tag, arr) { this.writeMessage(tag, writePackedFloat, arr);    },
-    writePackedDouble:   function(tag, arr) { this.writeMessage(tag, writePackedDouble, arr);   },
-    writePackedFixed32:  function(tag, arr) { this.writeMessage(tag, writePackedFixed32, arr);  },
-    writePackedSFixed32: function(tag, arr) { this.writeMessage(tag, writePackedSFixed32, arr); },
-    writePackedFixed64:  function(tag, arr) { this.writeMessage(tag, writePackedFixed64, arr);  },
-    writePackedSFixed64: function(tag, arr) { this.writeMessage(tag, writePackedSFixed64, arr); },
-
-    writeBytesField: function(tag, buffer) {
-        this.writeTag(tag, Pbf.Bytes);
-        this.writeBytes(buffer);
-    },
-    writeFixed32Field: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed32);
-        this.writeFixed32(val);
-    },
-    writeSFixed32Field: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed32);
-        this.writeSFixed32(val);
-    },
-    writeFixed64Field: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed64);
-        this.writeFixed64(val);
-    },
-    writeSFixed64Field: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed64);
-        this.writeSFixed64(val);
-    },
-    writeVarintField: function(tag, val) {
-        this.writeTag(tag, Pbf.Varint);
-        this.writeVarint(val);
-    },
-    writeSVarintField: function(tag, val) {
-        this.writeTag(tag, Pbf.Varint);
-        this.writeSVarint(val);
-    },
-    writeStringField: function(tag, str) {
-        this.writeTag(tag, Pbf.Bytes);
-        this.writeString(str);
-    },
-    writeFloatField: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed32);
-        this.writeFloat(val);
-    },
-    writeDoubleField: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed64);
-        this.writeDouble(val);
-    },
-    writeBooleanField: function(tag, val) {
-        this.writeVarintField(tag, Boolean(val));
-    }
-};
-
-function readVarintRemainder(l, s, p) {
-    var buf = p.buf,
-        h, b;
-
-    b = buf[p.pos++]; h  = (b & 0x70) >> 4;  if (b < 0x80) return toNum(l, h, s);
-    b = buf[p.pos++]; h |= (b & 0x7f) << 3;  if (b < 0x80) return toNum(l, h, s);
-    b = buf[p.pos++]; h |= (b & 0x7f) << 10; if (b < 0x80) return toNum(l, h, s);
-    b = buf[p.pos++]; h |= (b & 0x7f) << 17; if (b < 0x80) return toNum(l, h, s);
-    b = buf[p.pos++]; h |= (b & 0x7f) << 24; if (b < 0x80) return toNum(l, h, s);
-    b = buf[p.pos++]; h |= (b & 0x01) << 31; if (b < 0x80) return toNum(l, h, s);
-
-    throw new Error('Expected varint not more than 10 bytes');
-}
-
-function readPackedEnd(pbf) {
-    return pbf.type === Pbf.Bytes ?
-        pbf.readVarint() + pbf.pos : pbf.pos + 1;
-}
-
-function toNum(low, high, isSigned) {
-    if (isSigned) {
-        return high * 0x100000000 + (low >>> 0);
-    }
-
-    return ((high >>> 0) * 0x100000000) + (low >>> 0);
-}
-
-function writeBigVarint(val, pbf) {
-    var low, high;
-
-    if (val >= 0) {
-        low  = (val % 0x100000000) | 0;
-        high = (val / 0x100000000) | 0;
-    } else {
-        low  = ~(-val % 0x100000000);
-        high = ~(-val / 0x100000000);
-
-        if (low ^ 0xffffffff) {
-            low = (low + 1) | 0;
-        } else {
-            low = 0;
-            high = (high + 1) | 0;
-        }
-    }
-
-    if (val >= 0x10000000000000000 || val < -0x10000000000000000) {
-        throw new Error('Given varint doesn\'t fit into 10 bytes');
-    }
-
-    pbf.realloc(10);
-
-    writeBigVarintLow(low, high, pbf);
-    writeBigVarintHigh(high, pbf);
-}
-
-function writeBigVarintLow(low, high, pbf) {
-    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
-    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
-    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
-    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
-    pbf.buf[pbf.pos]   = low & 0x7f;
-}
-
-function writeBigVarintHigh(high, pbf) {
-    var lsb = (high & 0x07) << 4;
-
-    pbf.buf[pbf.pos++] |= lsb         | ((high >>>= 3) ? 0x80 : 0); if (!high) return;
-    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
-    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
-    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
-    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
-    pbf.buf[pbf.pos++]  = high & 0x7f;
-}
-
-function makeRoomForExtraLength(startPos, len, pbf) {
-    var extraLen =
-        len <= 0x3fff ? 1 :
-        len <= 0x1fffff ? 2 :
-        len <= 0xfffffff ? 3 : Math.ceil(Math.log(len) / (Math.LN2 * 7));
-
-    // if 1 byte isn't enough for encoding message length, shift the data to the right
-    pbf.realloc(extraLen);
-    for (var i = pbf.pos - 1; i >= startPos; i--) pbf.buf[i + extraLen] = pbf.buf[i];
-}
-
-function writePackedVarint(arr, pbf)   { for (var i = 0; i < arr.length; i++) pbf.writeVarint(arr[i]);   }
-function writePackedSVarint(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeSVarint(arr[i]);  }
-function writePackedFloat(arr, pbf)    { for (var i = 0; i < arr.length; i++) pbf.writeFloat(arr[i]);    }
-function writePackedDouble(arr, pbf)   { for (var i = 0; i < arr.length; i++) pbf.writeDouble(arr[i]);   }
-function writePackedBoolean(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeBoolean(arr[i]);  }
-function writePackedFixed32(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeFixed32(arr[i]);  }
-function writePackedSFixed32(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed32(arr[i]); }
-function writePackedFixed64(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeFixed64(arr[i]);  }
-function writePackedSFixed64(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed64(arr[i]); }
-
-// Buffer code below from https://github.com/feross/buffer, MIT-licensed
-
-function readUInt32(buf, pos) {
-    return ((buf[pos]) |
-        (buf[pos + 1] << 8) |
-        (buf[pos + 2] << 16)) +
-        (buf[pos + 3] * 0x1000000);
-}
-
-function writeInt32(buf, val, pos) {
-    buf[pos] = val;
-    buf[pos + 1] = (val >>> 8);
-    buf[pos + 2] = (val >>> 16);
-    buf[pos + 3] = (val >>> 24);
-}
-
-function readInt32(buf, pos) {
-    return ((buf[pos]) |
-        (buf[pos + 1] << 8) |
-        (buf[pos + 2] << 16)) +
-        (buf[pos + 3] << 24);
-}
-
-function readUtf8(buf, pos, end) {
-    var str = '';
-    var i = pos;
-
-    while (i < end) {
-        var b0 = buf[i];
-        var c = null; // codepoint
-        var bytesPerSequence =
-            b0 > 0xEF ? 4 :
-            b0 > 0xDF ? 3 :
-            b0 > 0xBF ? 2 : 1;
-
-        if (i + bytesPerSequence > end) break;
-
-        var b1, b2, b3;
-
-        if (bytesPerSequence === 1) {
-            if (b0 < 0x80) {
-                c = b0;
-            }
-        } else if (bytesPerSequence === 2) {
-            b1 = buf[i + 1];
-            if ((b1 & 0xC0) === 0x80) {
-                c = (b0 & 0x1F) << 0x6 | (b1 & 0x3F);
-                if (c <= 0x7F) {
-                    c = null;
-                }
-            }
-        } else if (bytesPerSequence === 3) {
-            b1 = buf[i + 1];
-            b2 = buf[i + 2];
-            if ((b1 & 0xC0) === 0x80 && (b2 & 0xC0) === 0x80) {
-                c = (b0 & 0xF) << 0xC | (b1 & 0x3F) << 0x6 | (b2 & 0x3F);
-                if (c <= 0x7FF || (c >= 0xD800 && c <= 0xDFFF)) {
-                    c = null;
-                }
-            }
-        } else if (bytesPerSequence === 4) {
-            b1 = buf[i + 1];
-            b2 = buf[i + 2];
-            b3 = buf[i + 3];
-            if ((b1 & 0xC0) === 0x80 && (b2 & 0xC0) === 0x80 && (b3 & 0xC0) === 0x80) {
-                c = (b0 & 0xF) << 0x12 | (b1 & 0x3F) << 0xC | (b2 & 0x3F) << 0x6 | (b3 & 0x3F);
-                if (c <= 0xFFFF || c >= 0x110000) {
-                    c = null;
-                }
-            }
-        }
-
-        if (c === null) {
-            c = 0xFFFD;
-            bytesPerSequence = 1;
-
-        } else if (c > 0xFFFF) {
-            c -= 0x10000;
-            str += String.fromCharCode(c >>> 10 & 0x3FF | 0xD800);
-            c = 0xDC00 | c & 0x3FF;
-        }
-
-        str += String.fromCharCode(c);
-        i += bytesPerSequence;
-    }
-
-    return str;
-}
-
-function writeUtf8(buf, str, pos) {
-    for (var i = 0, c, lead; i < str.length; i++) {
-        c = str.charCodeAt(i); // code point
-
-        if (c > 0xD7FF && c < 0xE000) {
-            if (lead) {
-                if (c < 0xDC00) {
-                    buf[pos++] = 0xEF;
-                    buf[pos++] = 0xBF;
-                    buf[pos++] = 0xBD;
-                    lead = c;
-                    continue;
-                } else {
-                    c = lead - 0xD800 << 10 | c - 0xDC00 | 0x10000;
-                    lead = null;
-                }
-            } else {
-                if (c > 0xDBFF || (i + 1 === str.length)) {
-                    buf[pos++] = 0xEF;
-                    buf[pos++] = 0xBF;
-                    buf[pos++] = 0xBD;
-                } else {
-                    lead = c;
-                }
-                continue;
-            }
-        } else if (lead) {
-            buf[pos++] = 0xEF;
-            buf[pos++] = 0xBF;
-            buf[pos++] = 0xBD;
-            lead = null;
-        }
-
-        if (c < 0x80) {
-            buf[pos++] = c;
-        } else {
-            if (c < 0x800) {
-                buf[pos++] = c >> 0x6 | 0xC0;
-            } else {
-                if (c < 0x10000) {
-                    buf[pos++] = c >> 0xC | 0xE0;
-                } else {
-                    buf[pos++] = c >> 0x12 | 0xF0;
-                    buf[pos++] = c >> 0xC & 0x3F | 0x80;
-                }
-                buf[pos++] = c >> 0x6 & 0x3F | 0x80;
-            }
-            buf[pos++] = c & 0x3F | 0x80;
-        }
-    }
-    return pos;
-}
-
+module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
 /* 13 */
@@ -2205,354 +1832,1990 @@ module.exports = toPairs;
 
 /***/ }),
 /* 14 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
+"use strict";
+
+
+module.exports = Pbf;
+
+var ieee754 = __webpack_require__(22);
+
+function Pbf(buf) {
+    this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
+    this.pos = 0;
+    this.type = 0;
+    this.length = this.buf.length;
+}
+
+Pbf.Varint  = 0; // varint: int32, int64, uint32, uint64, sint32, sint64, bool, enum
+Pbf.Fixed64 = 1; // 64-bit: double, fixed64, sfixed64
+Pbf.Bytes   = 2; // length-delimited: string, bytes, embedded messages, packed repeated fields
+Pbf.Fixed32 = 5; // 32-bit: float, fixed32, sfixed32
+
+var SHIFT_LEFT_32 = (1 << 16) * (1 << 16),
+    SHIFT_RIGHT_32 = 1 / SHIFT_LEFT_32;
+
+Pbf.prototype = {
+
+    destroy: function() {
+        this.buf = null;
+    },
+
+    // === READING =================================================================
+
+    readFields: function(readField, result, end) {
+        end = end || this.length;
+
+        while (this.pos < end) {
+            var val = this.readVarint(),
+                tag = val >> 3,
+                startPos = this.pos;
+
+            this.type = val & 0x7;
+            readField(tag, result, this);
+
+            if (this.pos === startPos) this.skip(val);
+        }
+        return result;
+    },
+
+    readMessage: function(readField, result) {
+        return this.readFields(readField, result, this.readVarint() + this.pos);
+    },
+
+    readFixed32: function() {
+        var val = readUInt32(this.buf, this.pos);
+        this.pos += 4;
+        return val;
+    },
+
+    readSFixed32: function() {
+        var val = readInt32(this.buf, this.pos);
+        this.pos += 4;
+        return val;
+    },
+
+    // 64-bit int handling is based on github.com/dpw/node-buffer-more-ints (MIT-licensed)
+
+    readFixed64: function() {
+        var val = readUInt32(this.buf, this.pos) + readUInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
+        this.pos += 8;
+        return val;
+    },
+
+    readSFixed64: function() {
+        var val = readUInt32(this.buf, this.pos) + readInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
+        this.pos += 8;
+        return val;
+    },
+
+    readFloat: function() {
+        var val = ieee754.read(this.buf, this.pos, true, 23, 4);
+        this.pos += 4;
+        return val;
+    },
+
+    readDouble: function() {
+        var val = ieee754.read(this.buf, this.pos, true, 52, 8);
+        this.pos += 8;
+        return val;
+    },
+
+    readVarint: function(isSigned) {
+        var buf = this.buf,
+            val, b;
+
+        b = buf[this.pos++]; val  =  b & 0x7f;        if (b < 0x80) return val;
+        b = buf[this.pos++]; val |= (b & 0x7f) << 7;  if (b < 0x80) return val;
+        b = buf[this.pos++]; val |= (b & 0x7f) << 14; if (b < 0x80) return val;
+        b = buf[this.pos++]; val |= (b & 0x7f) << 21; if (b < 0x80) return val;
+        b = buf[this.pos];   val |= (b & 0x0f) << 28;
+
+        return readVarintRemainder(val, isSigned, this);
+    },
+
+    readVarint64: function() { // for compatibility with v2.0.1
+        return this.readVarint(true);
+    },
+
+    readSVarint: function() {
+        var num = this.readVarint();
+        return num % 2 === 1 ? (num + 1) / -2 : num / 2; // zigzag encoding
+    },
+
+    readBoolean: function() {
+        return Boolean(this.readVarint());
+    },
+
+    readString: function() {
+        var end = this.readVarint() + this.pos,
+            str = readUtf8(this.buf, this.pos, end);
+        this.pos = end;
+        return str;
+    },
+
+    readBytes: function() {
+        var end = this.readVarint() + this.pos,
+            buffer = this.buf.subarray(this.pos, end);
+        this.pos = end;
+        return buffer;
+    },
+
+    // verbose for performance reasons; doesn't affect gzipped size
+
+    readPackedVarint: function(arr, isSigned) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readVarint(isSigned));
+        return arr;
+    },
+    readPackedSVarint: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readSVarint());
+        return arr;
+    },
+    readPackedBoolean: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readBoolean());
+        return arr;
+    },
+    readPackedFloat: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readFloat());
+        return arr;
+    },
+    readPackedDouble: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readDouble());
+        return arr;
+    },
+    readPackedFixed32: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readFixed32());
+        return arr;
+    },
+    readPackedSFixed32: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readSFixed32());
+        return arr;
+    },
+    readPackedFixed64: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readFixed64());
+        return arr;
+    },
+    readPackedSFixed64: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readSFixed64());
+        return arr;
+    },
+
+    skip: function(val) {
+        var type = val & 0x7;
+        if (type === Pbf.Varint) while (this.buf[this.pos++] > 0x7f) {}
+        else if (type === Pbf.Bytes) this.pos = this.readVarint() + this.pos;
+        else if (type === Pbf.Fixed32) this.pos += 4;
+        else if (type === Pbf.Fixed64) this.pos += 8;
+        else throw new Error('Unimplemented type: ' + type);
+    },
+
+    // === WRITING =================================================================
+
+    writeTag: function(tag, type) {
+        this.writeVarint((tag << 3) | type);
+    },
+
+    realloc: function(min) {
+        var length = this.length || 16;
+
+        while (length < this.pos + min) length *= 2;
+
+        if (length !== this.length) {
+            var buf = new Uint8Array(length);
+            buf.set(this.buf);
+            this.buf = buf;
+            this.length = length;
+        }
+    },
+
+    finish: function() {
+        this.length = this.pos;
+        this.pos = 0;
+        return this.buf.subarray(0, this.length);
+    },
+
+    writeFixed32: function(val) {
+        this.realloc(4);
+        writeInt32(this.buf, val, this.pos);
+        this.pos += 4;
+    },
+
+    writeSFixed32: function(val) {
+        this.realloc(4);
+        writeInt32(this.buf, val, this.pos);
+        this.pos += 4;
+    },
+
+    writeFixed64: function(val) {
+        this.realloc(8);
+        writeInt32(this.buf, val & -1, this.pos);
+        writeInt32(this.buf, Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
+        this.pos += 8;
+    },
+
+    writeSFixed64: function(val) {
+        this.realloc(8);
+        writeInt32(this.buf, val & -1, this.pos);
+        writeInt32(this.buf, Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
+        this.pos += 8;
+    },
+
+    writeVarint: function(val) {
+        val = +val || 0;
+
+        if (val > 0xfffffff || val < 0) {
+            writeBigVarint(val, this);
+            return;
+        }
+
+        this.realloc(4);
+
+        this.buf[this.pos++] =           val & 0x7f  | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
+        this.buf[this.pos++] = ((val >>>= 7) & 0x7f) | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
+        this.buf[this.pos++] = ((val >>>= 7) & 0x7f) | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
+        this.buf[this.pos++] =   (val >>> 7) & 0x7f;
+    },
+
+    writeSVarint: function(val) {
+        this.writeVarint(val < 0 ? -val * 2 - 1 : val * 2);
+    },
+
+    writeBoolean: function(val) {
+        this.writeVarint(Boolean(val));
+    },
+
+    writeString: function(str) {
+        str = String(str);
+        this.realloc(str.length * 4);
+
+        this.pos++; // reserve 1 byte for short string length
+
+        var startPos = this.pos;
+        // write the string directly to the buffer and see how much was written
+        this.pos = writeUtf8(this.buf, str, this.pos);
+        var len = this.pos - startPos;
+
+        if (len >= 0x80) makeRoomForExtraLength(startPos, len, this);
+
+        // finally, write the message length in the reserved place and restore the position
+        this.pos = startPos - 1;
+        this.writeVarint(len);
+        this.pos += len;
+    },
+
+    writeFloat: function(val) {
+        this.realloc(4);
+        ieee754.write(this.buf, val, this.pos, true, 23, 4);
+        this.pos += 4;
+    },
+
+    writeDouble: function(val) {
+        this.realloc(8);
+        ieee754.write(this.buf, val, this.pos, true, 52, 8);
+        this.pos += 8;
+    },
+
+    writeBytes: function(buffer) {
+        var len = buffer.length;
+        this.writeVarint(len);
+        this.realloc(len);
+        for (var i = 0; i < len; i++) this.buf[this.pos++] = buffer[i];
+    },
+
+    writeRawMessage: function(fn, obj) {
+        this.pos++; // reserve 1 byte for short message length
+
+        // write the message directly to the buffer and see how much was written
+        var startPos = this.pos;
+        fn(obj, this);
+        var len = this.pos - startPos;
+
+        if (len >= 0x80) makeRoomForExtraLength(startPos, len, this);
+
+        // finally, write the message length in the reserved place and restore the position
+        this.pos = startPos - 1;
+        this.writeVarint(len);
+        this.pos += len;
+    },
+
+    writeMessage: function(tag, fn, obj) {
+        this.writeTag(tag, Pbf.Bytes);
+        this.writeRawMessage(fn, obj);
+    },
+
+    writePackedVarint:   function(tag, arr) { this.writeMessage(tag, writePackedVarint, arr);   },
+    writePackedSVarint:  function(tag, arr) { this.writeMessage(tag, writePackedSVarint, arr);  },
+    writePackedBoolean:  function(tag, arr) { this.writeMessage(tag, writePackedBoolean, arr);  },
+    writePackedFloat:    function(tag, arr) { this.writeMessage(tag, writePackedFloat, arr);    },
+    writePackedDouble:   function(tag, arr) { this.writeMessage(tag, writePackedDouble, arr);   },
+    writePackedFixed32:  function(tag, arr) { this.writeMessage(tag, writePackedFixed32, arr);  },
+    writePackedSFixed32: function(tag, arr) { this.writeMessage(tag, writePackedSFixed32, arr); },
+    writePackedFixed64:  function(tag, arr) { this.writeMessage(tag, writePackedFixed64, arr);  },
+    writePackedSFixed64: function(tag, arr) { this.writeMessage(tag, writePackedSFixed64, arr); },
+
+    writeBytesField: function(tag, buffer) {
+        this.writeTag(tag, Pbf.Bytes);
+        this.writeBytes(buffer);
+    },
+    writeFixed32Field: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed32);
+        this.writeFixed32(val);
+    },
+    writeSFixed32Field: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed32);
+        this.writeSFixed32(val);
+    },
+    writeFixed64Field: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed64);
+        this.writeFixed64(val);
+    },
+    writeSFixed64Field: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed64);
+        this.writeSFixed64(val);
+    },
+    writeVarintField: function(tag, val) {
+        this.writeTag(tag, Pbf.Varint);
+        this.writeVarint(val);
+    },
+    writeSVarintField: function(tag, val) {
+        this.writeTag(tag, Pbf.Varint);
+        this.writeSVarint(val);
+    },
+    writeStringField: function(tag, str) {
+        this.writeTag(tag, Pbf.Bytes);
+        this.writeString(str);
+    },
+    writeFloatField: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed32);
+        this.writeFloat(val);
+    },
+    writeDoubleField: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed64);
+        this.writeDouble(val);
+    },
+    writeBooleanField: function(tag, val) {
+        this.writeVarintField(tag, Boolean(val));
+    }
+};
+
+function readVarintRemainder(l, s, p) {
+    var buf = p.buf,
+        h, b;
+
+    b = buf[p.pos++]; h  = (b & 0x70) >> 4;  if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x7f) << 3;  if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x7f) << 10; if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x7f) << 17; if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x7f) << 24; if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x01) << 31; if (b < 0x80) return toNum(l, h, s);
+
+    throw new Error('Expected varint not more than 10 bytes');
+}
+
+function readPackedEnd(pbf) {
+    return pbf.type === Pbf.Bytes ?
+        pbf.readVarint() + pbf.pos : pbf.pos + 1;
+}
+
+function toNum(low, high, isSigned) {
+    if (isSigned) {
+        return high * 0x100000000 + (low >>> 0);
+    }
+
+    return ((high >>> 0) * 0x100000000) + (low >>> 0);
+}
+
+function writeBigVarint(val, pbf) {
+    var low, high;
+
+    if (val >= 0) {
+        low  = (val % 0x100000000) | 0;
+        high = (val / 0x100000000) | 0;
+    } else {
+        low  = ~(-val % 0x100000000);
+        high = ~(-val / 0x100000000);
+
+        if (low ^ 0xffffffff) {
+            low = (low + 1) | 0;
+        } else {
+            low = 0;
+            high = (high + 1) | 0;
+        }
+    }
+
+    if (val >= 0x10000000000000000 || val < -0x10000000000000000) {
+        throw new Error('Given varint doesn\'t fit into 10 bytes');
+    }
+
+    pbf.realloc(10);
+
+    writeBigVarintLow(low, high, pbf);
+    writeBigVarintHigh(high, pbf);
+}
+
+function writeBigVarintLow(low, high, pbf) {
+    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
+    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
+    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
+    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
+    pbf.buf[pbf.pos]   = low & 0x7f;
+}
+
+function writeBigVarintHigh(high, pbf) {
+    var lsb = (high & 0x07) << 4;
+
+    pbf.buf[pbf.pos++] |= lsb         | ((high >>>= 3) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f;
+}
+
+function makeRoomForExtraLength(startPos, len, pbf) {
+    var extraLen =
+        len <= 0x3fff ? 1 :
+        len <= 0x1fffff ? 2 :
+        len <= 0xfffffff ? 3 : Math.ceil(Math.log(len) / (Math.LN2 * 7));
+
+    // if 1 byte isn't enough for encoding message length, shift the data to the right
+    pbf.realloc(extraLen);
+    for (var i = pbf.pos - 1; i >= startPos; i--) pbf.buf[i + extraLen] = pbf.buf[i];
+}
+
+function writePackedVarint(arr, pbf)   { for (var i = 0; i < arr.length; i++) pbf.writeVarint(arr[i]);   }
+function writePackedSVarint(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeSVarint(arr[i]);  }
+function writePackedFloat(arr, pbf)    { for (var i = 0; i < arr.length; i++) pbf.writeFloat(arr[i]);    }
+function writePackedDouble(arr, pbf)   { for (var i = 0; i < arr.length; i++) pbf.writeDouble(arr[i]);   }
+function writePackedBoolean(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeBoolean(arr[i]);  }
+function writePackedFixed32(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeFixed32(arr[i]);  }
+function writePackedSFixed32(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed32(arr[i]); }
+function writePackedFixed64(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeFixed64(arr[i]);  }
+function writePackedSFixed64(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed64(arr[i]); }
+
+// Buffer code below from https://github.com/feross/buffer, MIT-licensed
+
+function readUInt32(buf, pos) {
+    return ((buf[pos]) |
+        (buf[pos + 1] << 8) |
+        (buf[pos + 2] << 16)) +
+        (buf[pos + 3] * 0x1000000);
+}
+
+function writeInt32(buf, val, pos) {
+    buf[pos] = val;
+    buf[pos + 1] = (val >>> 8);
+    buf[pos + 2] = (val >>> 16);
+    buf[pos + 3] = (val >>> 24);
+}
+
+function readInt32(buf, pos) {
+    return ((buf[pos]) |
+        (buf[pos + 1] << 8) |
+        (buf[pos + 2] << 16)) +
+        (buf[pos + 3] << 24);
+}
+
+function readUtf8(buf, pos, end) {
+    var str = '';
+    var i = pos;
+
+    while (i < end) {
+        var b0 = buf[i];
+        var c = null; // codepoint
+        var bytesPerSequence =
+            b0 > 0xEF ? 4 :
+            b0 > 0xDF ? 3 :
+            b0 > 0xBF ? 2 : 1;
+
+        if (i + bytesPerSequence > end) break;
+
+        var b1, b2, b3;
+
+        if (bytesPerSequence === 1) {
+            if (b0 < 0x80) {
+                c = b0;
+            }
+        } else if (bytesPerSequence === 2) {
+            b1 = buf[i + 1];
+            if ((b1 & 0xC0) === 0x80) {
+                c = (b0 & 0x1F) << 0x6 | (b1 & 0x3F);
+                if (c <= 0x7F) {
+                    c = null;
+                }
+            }
+        } else if (bytesPerSequence === 3) {
+            b1 = buf[i + 1];
+            b2 = buf[i + 2];
+            if ((b1 & 0xC0) === 0x80 && (b2 & 0xC0) === 0x80) {
+                c = (b0 & 0xF) << 0xC | (b1 & 0x3F) << 0x6 | (b2 & 0x3F);
+                if (c <= 0x7FF || (c >= 0xD800 && c <= 0xDFFF)) {
+                    c = null;
+                }
+            }
+        } else if (bytesPerSequence === 4) {
+            b1 = buf[i + 1];
+            b2 = buf[i + 2];
+            b3 = buf[i + 3];
+            if ((b1 & 0xC0) === 0x80 && (b2 & 0xC0) === 0x80 && (b3 & 0xC0) === 0x80) {
+                c = (b0 & 0xF) << 0x12 | (b1 & 0x3F) << 0xC | (b2 & 0x3F) << 0x6 | (b3 & 0x3F);
+                if (c <= 0xFFFF || c >= 0x110000) {
+                    c = null;
+                }
+            }
+        }
+
+        if (c === null) {
+            c = 0xFFFD;
+            bytesPerSequence = 1;
+
+        } else if (c > 0xFFFF) {
+            c -= 0x10000;
+            str += String.fromCharCode(c >>> 10 & 0x3FF | 0xD800);
+            c = 0xDC00 | c & 0x3FF;
+        }
+
+        str += String.fromCharCode(c);
+        i += bytesPerSequence;
+    }
+
+    return str;
+}
+
+function writeUtf8(buf, str, pos) {
+    for (var i = 0, c, lead; i < str.length; i++) {
+        c = str.charCodeAt(i); // code point
+
+        if (c > 0xD7FF && c < 0xE000) {
+            if (lead) {
+                if (c < 0xDC00) {
+                    buf[pos++] = 0xEF;
+                    buf[pos++] = 0xBF;
+                    buf[pos++] = 0xBD;
+                    lead = c;
+                    continue;
+                } else {
+                    c = lead - 0xD800 << 10 | c - 0xDC00 | 0x10000;
+                    lead = null;
+                }
+            } else {
+                if (c > 0xDBFF || (i + 1 === str.length)) {
+                    buf[pos++] = 0xEF;
+                    buf[pos++] = 0xBF;
+                    buf[pos++] = 0xBD;
+                } else {
+                    lead = c;
+                }
+                continue;
+            }
+        } else if (lead) {
+            buf[pos++] = 0xEF;
+            buf[pos++] = 0xBF;
+            buf[pos++] = 0xBD;
+            lead = null;
+        }
+
+        if (c < 0x80) {
+            buf[pos++] = c;
+        } else {
+            if (c < 0x800) {
+                buf[pos++] = c >> 0x6 | 0xC0;
+            } else {
+                if (c < 0x10000) {
+                    buf[pos++] = c >> 0xC | 0xE0;
+                } else {
+                    buf[pos++] = c >> 0x12 | 0xF0;
+                    buf[pos++] = c >> 0xC & 0x3F | 0x80;
+                }
+                buf[pos++] = c >> 0x6 & 0x3F | 0x80;
+            }
+            buf[pos++] = c & 0x3F | 0x80;
+        }
+    }
+    return pos;
+}
+
 
 /***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
+module.exports.VectorTile = __webpack_require__(23);
+module.exports.VectorTileFeature = __webpack_require__(10);
+module.exports.VectorTileLayer = __webpack_require__(9);
 
-  // Store setTimeout reference so promise-polyfill will be unaffected by
-  // other code modifying setTimeout (like sinon.useFakeTimers())
-  var setTimeoutFunc = setTimeout;
-
-  function noop() {}
-  
-  // Polyfill for Function.prototype.bind
-  function bind(fn, thisArg) {
-    return function () {
-      fn.apply(thisArg, arguments);
-    };
-  }
-
-  function Promise(fn) {
-    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
-    if (typeof fn !== 'function') throw new TypeError('not a function');
-    this._state = 0;
-    this._handled = false;
-    this._value = undefined;
-    this._deferreds = [];
-
-    doResolve(fn, this);
-  }
-
-  function handle(self, deferred) {
-    while (self._state === 3) {
-      self = self._value;
-    }
-    if (self._state === 0) {
-      self._deferreds.push(deferred);
-      return;
-    }
-    self._handled = true;
-    Promise._immediateFn(function () {
-      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
-      if (cb === null) {
-        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
-        return;
-      }
-      var ret;
-      try {
-        ret = cb(self._value);
-      } catch (e) {
-        reject(deferred.promise, e);
-        return;
-      }
-      resolve(deferred.promise, ret);
-    });
-  }
-
-  function resolve(self, newValue) {
-    try {
-      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
-      if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
-        var then = newValue.then;
-        if (newValue instanceof Promise) {
-          self._state = 3;
-          self._value = newValue;
-          finale(self);
-          return;
-        } else if (typeof then === 'function') {
-          doResolve(bind(then, newValue), self);
-          return;
-        }
-      }
-      self._state = 1;
-      self._value = newValue;
-      finale(self);
-    } catch (e) {
-      reject(self, e);
-    }
-  }
-
-  function reject(self, newValue) {
-    self._state = 2;
-    self._value = newValue;
-    finale(self);
-  }
-
-  function finale(self) {
-    if (self._state === 2 && self._deferreds.length === 0) {
-      Promise._immediateFn(function() {
-        if (!self._handled) {
-          Promise._unhandledRejectionFn(self._value);
-        }
-      });
-    }
-
-    for (var i = 0, len = self._deferreds.length; i < len; i++) {
-      handle(self, self._deferreds[i]);
-    }
-    self._deferreds = null;
-  }
-
-  function Handler(onFulfilled, onRejected, promise) {
-    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-    this.promise = promise;
-  }
-
-  /**
-   * Take a potentially misbehaving resolver function and make sure
-   * onFulfilled and onRejected are only called once.
-   *
-   * Makes no guarantees about asynchrony.
-   */
-  function doResolve(fn, self) {
-    var done = false;
-    try {
-      fn(function (value) {
-        if (done) return;
-        done = true;
-        resolve(self, value);
-      }, function (reason) {
-        if (done) return;
-        done = true;
-        reject(self, reason);
-      });
-    } catch (ex) {
-      if (done) return;
-      done = true;
-      reject(self, ex);
-    }
-  }
-
-  Promise.prototype['catch'] = function (onRejected) {
-    return this.then(null, onRejected);
-  };
-
-  Promise.prototype.then = function (onFulfilled, onRejected) {
-    var prom = new (this.constructor)(noop);
-
-    handle(this, new Handler(onFulfilled, onRejected, prom));
-    return prom;
-  };
-
-  Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
-    return new Promise(function (resolve, reject) {
-      if (args.length === 0) return resolve([]);
-      var remaining = args.length;
-
-      function res(i, val) {
-        try {
-          if (val && (typeof val === 'object' || typeof val === 'function')) {
-            var then = val.then;
-            if (typeof then === 'function') {
-              then.call(val, function (val) {
-                res(i, val);
-              }, reject);
-              return;
-            }
-          }
-          args[i] = val;
-          if (--remaining === 0) {
-            resolve(args);
-          }
-        } catch (ex) {
-          reject(ex);
-        }
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        res(i, args[i]);
-      }
-    });
-  };
-
-  Promise.resolve = function (value) {
-    if (value && typeof value === 'object' && value.constructor === Promise) {
-      return value;
-    }
-
-    return new Promise(function (resolve) {
-      resolve(value);
-    });
-  };
-
-  Promise.reject = function (value) {
-    return new Promise(function (resolve, reject) {
-      reject(value);
-    });
-  };
-
-  Promise.race = function (values) {
-    return new Promise(function (resolve, reject) {
-      for (var i = 0, len = values.length; i < len; i++) {
-        values[i].then(resolve, reject);
-      }
-    });
-  };
-
-  // Use polyfill for setImmediate for performance gains
-  Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
-    function (fn) {
-      setTimeoutFunc(fn, 0);
-    };
-
-  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
-    if (typeof console !== 'undefined' && console) {
-      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
-    }
-  };
-
-  /**
-   * Set the immediate function to execute callbacks
-   * @param fn {function} Function to execute
-   * @deprecated
-   */
-  Promise._setImmediateFn = function _setImmediateFn(fn) {
-    Promise._immediateFn = fn;
-  };
-
-  /**
-   * Change the function to execute on unhandled rejection
-   * @param {function} fn Function to execute on unhandled rejection
-   * @deprecated
-   */
-  Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
-    Promise._unhandledRejectionFn = fn;
-  };
-  
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = Promise;
-  } else if (!root.Promise) {
-    root.Promise = Promise;
-  }
-
-})(this);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(25).setImmediate))
 
 /***/ }),
 /* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./src/common/css/webmapfont/iconfont.css
-var iconfont = __webpack_require__(70);
-
-// EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(64);
-
-// EXTERNAL MODULE: ./src/common/components/css/components-icon.css
-var components_icon = __webpack_require__(59);
-
-// EXTERNAL MODULE: ./src/common/components/css/Icon.css
-var Icon = __webpack_require__(54);
-
-// EXTERNAL MODULE: ./src/common/components/css/OpenFile.css
-var OpenFile = __webpack_require__(42);
-
-// EXTERNAL MODULE: ./src/common/components/css/MessageBox.css
-var MessageBox = __webpack_require__(41);
-
-// EXTERNAL MODULE: ./src/common/components/css/DataFlow.css
-var DataFlow = __webpack_require__(40);
-
-// EXTERNAL MODULE: ./src/common/components/css/Search.css
-var Search = __webpack_require__(39);
-
-// EXTERNAL MODULE: ./src/common/components/css/CommonContainer.css
-var CommonContainer = __webpack_require__(38);
-
-// EXTERNAL MODULE: ./src/common/components/css/DropDownBox.css
-var DropDownBox = __webpack_require__(37);
-
-// EXTERNAL MODULE: ./src/common/components/css/Select.css
-var Select = __webpack_require__(36);
-
-// EXTERNAL MODULE: ./src/common/components/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(35);
-
-// EXTERNAL MODULE: ./src/common/components/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(34);
-
-// EXTERNAL MODULE: ./src/common/components/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(33);
-
-// EXTERNAL MODULE: ./src/common/components/css/PopContainer.css
-var PopContainer = __webpack_require__(32);
-
-// EXTERNAL MODULE: ./src/common/components/css/Analysis.css
-var Analysis = __webpack_require__(31);
-
-// EXTERNAL MODULE: ./src/common/components/css/DistributedAnalysis.css
-var DistributedAnalysis = __webpack_require__(30);
-
-// EXTERNAL MODULE: ./src/common/components/css/ClientComputation.css
-var ClientComputation = __webpack_require__(29);
-
-// EXTERNAL MODULE: ./src/common/components/css/DataServiceQuery.css
-var DataServiceQuery = __webpack_require__(28);
-
-// CONCATENATED MODULE: ./src/common/css/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-//组件样式
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// EXTERNAL MODULE: ./src/leaflet/css/ChangeTileVersion.css
-var ChangeTileVersion = __webpack_require__(27);
-
-// CONCATENATED MODULE: ./src/leaflet/css/index.js
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
+__webpack_require__(25);
+module.exports = __webpack_require__(26);
 
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(18);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
+
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(19)))
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function(self) {
+  'use strict';
+
+  // if __disableNativeFetch is set to true, the it will always polyfill fetch
+  // with Ajax.
+  if (!self.__disableNativeFetch && self.fetch) {
+    return
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name)
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name')
+    }
+    return name.toLowerCase()
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value)
+    }
+    return value
+  }
+
+  function Headers(headers) {
+    this.map = {}
+
+    if (headers instanceof Headers) {
+      headers.forEach(function(value, name) {
+        this.append(name, value)
+      }, this)
+
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function(name) {
+        this.append(name, headers[name])
+      }, this)
+    }
+  }
+
+  Headers.prototype.append = function(name, value) {
+    name = normalizeName(name)
+    value = normalizeValue(value)
+    var list = this.map[name]
+    if (!list) {
+      list = []
+      this.map[name] = list
+    }
+    list.push(value)
+  }
+
+  Headers.prototype['delete'] = function(name) {
+    delete this.map[normalizeName(name)]
+  }
+
+  Headers.prototype.get = function(name) {
+    var values = this.map[normalizeName(name)]
+    return values ? values[0] : null
+  }
+
+  Headers.prototype.getAll = function(name) {
+    return this.map[normalizeName(name)] || []
+  }
+
+  Headers.prototype.has = function(name) {
+    return this.map.hasOwnProperty(normalizeName(name))
+  }
+
+  Headers.prototype.set = function(name, value) {
+    this.map[normalizeName(name)] = [normalizeValue(value)]
+  }
+
+  Headers.prototype.forEach = function(callback, thisArg) {
+    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+      this.map[name].forEach(function(value) {
+        callback.call(thisArg, value, name, this)
+      }, this)
+    }, this)
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'))
+    }
+    body.bodyUsed = true
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function(resolve, reject) {
+      reader.onload = function() {
+        resolve(reader.result)
+      }
+      reader.onerror = function() {
+        reject(reader.error)
+      }
+    })
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader()
+    reader.readAsArrayBuffer(blob)
+    return fileReaderReady(reader)
+  }
+
+  function readBlobAsText(blob, options) {
+    var reader = new FileReader()
+    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
+    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
+    var _charset = blob.type.match(regex) || contentType.match(regex)
+    var args = [blob]
+
+    if(_charset) {
+      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
+    }
+
+    reader.readAsText.apply(reader, args)
+    return fileReaderReady(reader)
+  }
+
+  var support = {
+    blob: 'FileReader' in self && 'Blob' in self && (function() {
+      try {
+        new Blob();
+        return true
+      } catch(e) {
+        return false
+      }
+    })(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  function Body() {
+    this.bodyUsed = false
+
+
+    this._initBody = function(body, options) {
+      this._bodyInit = body
+      if (typeof body === 'string') {
+        this._bodyText = body
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body
+        this._options = options
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body
+      } else if (!body) {
+        this._bodyText = ''
+      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+        // Only support ArrayBuffers for POST method.
+        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else {
+        throw new Error('unsupported BodyInit type')
+      }
+    }
+
+    if (support.blob) {
+      this.blob = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob')
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]))
+        }
+      }
+
+      this.arrayBuffer = function() {
+        return this.blob().then(readBlobAsArrayBuffer)
+      }
+
+      this.text = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return readBlobAsText(this._bodyBlob, this._options)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as text')
+        } else {
+          return Promise.resolve(this._bodyText)
+        }
+      }
+    } else {
+      this.text = function() {
+        var rejected = consumed(this)
+        return rejected ? rejected : Promise.resolve(this._bodyText)
+      }
+    }
+
+    if (support.formData) {
+      this.formData = function() {
+        return this.text().then(decode)
+      }
+    }
+
+    this.json = function() {
+      return this.text().then(JSON.parse)
+    }
+
+    return this
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase()
+    return (methods.indexOf(upcased) > -1) ? upcased : method
+  }
+
+  function Request(input, options) {
+    options = options || {}
+    var body = options.body
+    if (Request.prototype.isPrototypeOf(input)) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read')
+      }
+      this.url = input.url
+      this.credentials = input.credentials
+      if (!options.headers) {
+        this.headers = new Headers(input.headers)
+      }
+      this.method = input.method
+      this.mode = input.mode
+      if (!body) {
+        body = input._bodyInit
+        input.bodyUsed = true
+      }
+    } else {
+      this.url = input
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit'
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers)
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET')
+    this.mode = options.mode || this.mode || null
+    this.referrer = null
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests')
+    }
+    this._initBody(body, options)
+  }
+
+  Request.prototype.clone = function() {
+    return new Request(this)
+  }
+
+  function decode(body) {
+    var form = new FormData()
+    body.trim().split('&').forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+    return form
+  }
+
+  function headers(xhr) {
+    var head = new Headers()
+    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
+    pairs.forEach(function(header) {
+      var split = header.trim().split(':')
+      var key = split.shift().trim()
+      var value = split.join(':').trim()
+      head.append(key, value)
+    })
+    return head
+  }
+
+  Body.call(Request.prototype)
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {}
+    }
+
+    this._initBody(bodyInit, options)
+    this.type = 'default'
+    this.status = options.status
+    this.ok = this.status >= 200 && this.status < 300
+    this.statusText = options.statusText
+    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+    this.url = options.url || ''
+  }
+
+  Body.call(Response.prototype)
+
+  Response.prototype.clone = function() {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    })
+  }
+
+  Response.error = function() {
+    var response = new Response(null, {status: 0, statusText: ''})
+    response.type = 'error'
+    return response
+  }
+
+  var redirectStatuses = [301, 302, 303, 307, 308]
+
+  Response.redirect = function(url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code')
+    }
+
+    return new Response(null, {status: status, headers: {location: url}})
+  }
+
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
+
+  self.fetch = function(input, init) {
+    return new Promise(function(resolve, reject) {
+      var request
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input
+      } else {
+        request = new Request(input, init)
+      }
+
+      var xhr = new XMLHttpRequest()
+
+      function responseURL() {
+        if ('responseURL' in xhr) {
+          return xhr.responseURL
+        }
+
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
+        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+          return xhr.getResponseHeader('X-Request-URL')
+        }
+
+        return;
+      }
+
+      var __onLoadHandled = false;
+
+      function onload() {
+        if (xhr.readyState !== 4) {
+          return
+        }
+        var status = (xhr.status === 1223) ? 204 : xhr.status
+        if (status < 100 || status > 599) {
+          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+          reject(new TypeError('Network request failed'))
+          return
+        }
+        var options = {
+          status: status,
+          statusText: xhr.statusText,
+          headers: headers(xhr),
+          url: responseURL()
+        }
+        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        resolve(new Response(body, options))
+      }
+      xhr.onreadystatechange = onload;
+      xhr.onload = onload;
+      xhr.onerror = function() {
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.open(request.method, request.url, true)
+
+      // `withCredentials` should be setted after calling `.open` in IE10
+      // http://stackoverflow.com/a/19667959/1219343
+      try {
+        if (request.credentials === 'include') {
+          if ('withCredentials' in xhr) {
+            xhr.withCredentials = true;
+          } else {
+            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
+          }
+        }
+      } catch (e) {
+        console && console.warn && console.warn('set withCredentials error:' + e);
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob'
+      }
+
+      request.headers.forEach(function(value, name) {
+        xhr.setRequestHeader(name, value)
+      })
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+    })
+  }
+  self.fetch.polyfill = true
+
+  // Support CommonJS
+  if ( true && module.exports) {
+    module.exports = self.fetch;
+  }
+})(typeof self !== 'undefined' ? self : this);
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+function getObjectType(obj) {
+  return Object.prototype.toString.call(obj);
+}
+function isDate(obj) {
+  return getObjectType(obj) === '[object Date]';
+}
+function isString(obj) {
+  return getObjectType(obj) === '[object String]';
+}
+function isDateString(obj) {
+  return isString(obj) && !isNaN(Date.parse(obj))
+}
+function isNumber(obj) {
+  return typeof obj === 'number'
+}
+function parseDateFromString(str) {
+  return Date.parse(str)
+}
+module.exports = {
+  getObjectType: getObjectType,
+  isDate: isDate,
+  isString: isString,
+  isDateString: isDateString,
+  parseDateFromString: parseDateFromString,
+  isNumber: isNumber
+}
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = ((value * c) - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var VectorTileLayer = __webpack_require__(9);
+
+module.exports = VectorTile;
+
+function VectorTile(pbf, end) {
+    this.layers = pbf.readFields(readTile, {}, end);
+}
+
+function readTile(tag, layers, pbf) {
+    if (tag === 3) {
+        var layer = new VectorTileLayer(pbf, pbf.readVarint() + pbf.pos);
+        if (layer.length) layers[layer.name] = layer;
+    }
+}
+
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = Point;
+
+/**
+ * A standalone point geometry with useful accessor, comparison, and
+ * modification methods.
+ *
+ * @class Point
+ * @param {Number} x the x-coordinate. this could be longitude or screen
+ * pixels, or any other sort of unit.
+ * @param {Number} y the y-coordinate. this could be latitude or screen
+ * pixels, or any other sort of unit.
+ * @example
+ * var point = new Point(-77, 38);
+ */
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Point.prototype = {
+
+    /**
+     * Clone this point, returning a new point that can be modified
+     * without affecting the old one.
+     * @return {Point} the clone
+     */
+    clone: function() { return new Point(this.x, this.y); },
+
+    /**
+     * Add this point's x & y coordinates to another point,
+     * yielding a new point.
+     * @param {Point} p the other point
+     * @return {Point} output point
+     */
+    add:     function(p) { return this.clone()._add(p); },
+
+    /**
+     * Subtract this point's x & y coordinates to from point,
+     * yielding a new point.
+     * @param {Point} p the other point
+     * @return {Point} output point
+     */
+    sub:     function(p) { return this.clone()._sub(p); },
+
+    /**
+     * Multiply this point's x & y coordinates by point,
+     * yielding a new point.
+     * @param {Point} p the other point
+     * @return {Point} output point
+     */
+    multByPoint:    function(p) { return this.clone()._multByPoint(p); },
+
+    /**
+     * Divide this point's x & y coordinates by point,
+     * yielding a new point.
+     * @param {Point} p the other point
+     * @return {Point} output point
+     */
+    divByPoint:     function(p) { return this.clone()._divByPoint(p); },
+
+    /**
+     * Multiply this point's x & y coordinates by a factor,
+     * yielding a new point.
+     * @param {Point} k factor
+     * @return {Point} output point
+     */
+    mult:    function(k) { return this.clone()._mult(k); },
+
+    /**
+     * Divide this point's x & y coordinates by a factor,
+     * yielding a new point.
+     * @param {Point} k factor
+     * @return {Point} output point
+     */
+    div:     function(k) { return this.clone()._div(k); },
+
+    /**
+     * Rotate this point around the 0, 0 origin by an angle a,
+     * given in radians
+     * @param {Number} a angle to rotate around, in radians
+     * @return {Point} output point
+     */
+    rotate:  function(a) { return this.clone()._rotate(a); },
+
+    /**
+     * Rotate this point around p point by an angle a,
+     * given in radians
+     * @param {Number} a angle to rotate around, in radians
+     * @param {Point} p Point to rotate around
+     * @return {Point} output point
+     */
+    rotateAround:  function(a,p) { return this.clone()._rotateAround(a,p); },
+
+    /**
+     * Multiply this point by a 4x1 transformation matrix
+     * @param {Array<Number>} m transformation matrix
+     * @return {Point} output point
+     */
+    matMult: function(m) { return this.clone()._matMult(m); },
+
+    /**
+     * Calculate this point but as a unit vector from 0, 0, meaning
+     * that the distance from the resulting point to the 0, 0
+     * coordinate will be equal to 1 and the angle from the resulting
+     * point to the 0, 0 coordinate will be the same as before.
+     * @return {Point} unit vector point
+     */
+    unit:    function() { return this.clone()._unit(); },
+
+    /**
+     * Compute a perpendicular point, where the new y coordinate
+     * is the old x coordinate and the new x coordinate is the old y
+     * coordinate multiplied by -1
+     * @return {Point} perpendicular point
+     */
+    perp:    function() { return this.clone()._perp(); },
+
+    /**
+     * Return a version of this point with the x & y coordinates
+     * rounded to integers.
+     * @return {Point} rounded point
+     */
+    round:   function() { return this.clone()._round(); },
+
+    /**
+     * Return the magitude of this point: this is the Euclidean
+     * distance from the 0, 0 coordinate to this point's x and y
+     * coordinates.
+     * @return {Number} magnitude
+     */
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    /**
+     * Judge whether this point is equal to another point, returning
+     * true or false.
+     * @param {Point} other the other point
+     * @return {boolean} whether the points are equal
+     */
+    equals: function(other) {
+        return this.x === other.x &&
+               this.y === other.y;
+    },
+
+    /**
+     * Calculate the distance from this point to another point
+     * @param {Point} p the other point
+     * @return {Number} distance
+     */
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    /**
+     * Calculate the distance from this point to another point,
+     * without the square root step. Useful if you're comparing
+     * relative distances.
+     * @param {Point} p the other point
+     * @return {Number} distance
+     */
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    /**
+     * Get the angle from the 0, 0 coordinate to this point, in radians
+     * coordinates.
+     * @return {Number} angle
+     */
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    /**
+     * Get the angle from this point to another point, in radians
+     * @param {Point} b the other point
+     * @return {Number} angle
+     */
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    /**
+     * Get the angle between this point and another point, in radians
+     * @param {Point} b the other point
+     * @return {Number} angle
+     */
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    /*
+     * Find the angle of the two vectors, solving the formula for
+     * the cross product a x b = |a||b|sin(θ) for θ.
+     * @param {Number} x the x-coordinate
+     * @param {Number} y the y-coordinate
+     * @return {Number} the angle in radians
+     */
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _multByPoint: function(p) {
+        this.x *= p.x;
+        this.y *= p.y;
+        return this;
+    },
+
+    _divByPoint: function(p) {
+        this.x /= p.x;
+        this.y /= p.y;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _rotateAround: function(angle, p) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = p.x + cos * (this.x - p.x) - sin * (this.y - p.y),
+            y = p.y + sin * (this.x - p.x) + cos * (this.y - p.y);
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
+    }
+};
+
+/**
+ * Construct a point from an array if necessary, otherwise if the input
+ * is already a Point, or an unknown type, return it unchanged
+ * @param {Array<Number>|Point|*} a any kind of input value
+ * @return {Point} constructed point, or passed-through value.
+ * @example
+ * // this
+ * var point = Point.convert([0, 1]);
+ * // is equivalent to
+ * var point = new Point(0, 1);
+ */
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
+    }
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
+    }
+    return a;
+};
+
+
+/***/ }),
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2577,7 +3840,7 @@ SuperMap.Components = window.SuperMap.Components || {};
  * @description 服务请求返回结果数据类型
  * @type {string}
  */
-var REST_DataFormat = SuperMap.DataFormat = {
+var DataFormat = SuperMap.DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
@@ -2591,7 +3854,7 @@ var REST_DataFormat = SuperMap.DataFormat = {
  * @description 服务器类型
  * @type {string}
  */
-var REST_ServerType = SuperMap.ServerType = {
+var ServerType = SuperMap.ServerType = {
     /** ISERVER */
     ISERVER: "ISERVER",
     /** IPORTAL */
@@ -2607,7 +3870,7 @@ var REST_ServerType = SuperMap.ServerType = {
  * @description 几何对象枚举,定义了一系列几何对象类型。
  * @type {string}
  */
-var REST_GeometryType = SuperMap.GeometryType = {
+var GeometryType = SuperMap.GeometryType = {
     /** LINE */
     LINE: "LINE",
     /** LINEM */
@@ -2641,7 +3904,7 @@ var REST_GeometryType = SuperMap.GeometryType = {
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @type {string}
  */
-var REST_QueryOption = SuperMap.QueryOption = {
+var QueryOption = SuperMap.QueryOption = {
     /** 属性 */
     ATTRIBUTE: "ATTRIBUTE",
     /** 属性和几何对象 */
@@ -2658,7 +3921,7 @@ var REST_QueryOption = SuperMap.QueryOption = {
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
  * @type {string}
  */
-var REST_JoinType = SuperMap.JoinType = {
+var JoinType = SuperMap.JoinType = {
     /** INNERJOIN */
     INNERJOIN: "INNERJOIN",
     /** LEFTJOIN */
@@ -2673,7 +3936,7 @@ var REST_JoinType = SuperMap.JoinType = {
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
  * @type {string}
  */
-var REST_SpatialQueryMode = SuperMap.SpatialQueryMode = {
+var SpatialQueryMode = SuperMap.SpatialQueryMode = {
     /** 包含空间查询模式 */
     CONTAIN: "CONTAIN",
     /** 交叉空间查询模式 */
@@ -2701,7 +3964,7 @@ var REST_SpatialQueryMode = SuperMap.SpatialQueryMode = {
  * 该类定义了数据集对象间的空间关系类型常量。
  * @type {string}
  */
-var REST_SpatialRelationType = SuperMap.SpatialRelationType = {
+var SpatialRelationType = SuperMap.SpatialRelationType = {
     /** 包含关系 */
     CONTAIN: "CONTAIN",
     /** 相交关系 */
@@ -2718,7 +3981,7 @@ var REST_SpatialRelationType = SuperMap.SpatialRelationType = {
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
  */
-var REST_MeasureMode = SuperMap.MeasureMode = {
+var MeasureMode = SuperMap.MeasureMode = {
     /** 距离测量 */
     DISTANCE: "DISTANCE",
     /** 面积测量 */
@@ -2733,7 +3996,7 @@ var REST_MeasureMode = SuperMap.MeasureMode = {
  * 该类定义了一系列距离单位类型。
  * @type {string}
  */
-var REST_Unit = SuperMap.Unit = {
+var Unit = SuperMap.Unit = {
     /**  米 */
     METER: "METER",
     /**  千米 */
@@ -2770,7 +4033,7 @@ var REST_Unit = SuperMap.Unit = {
  * 该类定义了一系列缓冲距离单位类型。
  * @type {string}
  */
-var REST_BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
+var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
     /**  厘米 */
     CENTIMETER: "CENTIMETER",
     /**  分米 */
@@ -2798,7 +4061,7 @@ var REST_BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
  * @description  数据源引擎类型枚举。
  * @type {string}
  */
-var REST_EngineType = SuperMap.EngineType = {
+var EngineType = SuperMap.EngineType = {
     /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
     IMAGEPLUGINS: "IMAGEPLUGINS",
     /**  OGC 引擎类型，针对于 Web 数据源，Web 引擎，目前支持的类型有 WMS，WFS，WCS。 */
@@ -2820,7 +4083,7 @@ var REST_EngineType = SuperMap.EngineType = {
  * @description  统计专题图文本显示格式枚举。
  * @type {string}
  */
-var REST_ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
+var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
     /**  标题。以各子项的标题来进行标注。 */
     CAPTION: "CAPTION",
     /**  标题 + 百分数。以各子项的标题和所占的百分比来进行标注。 */
@@ -2841,7 +4104,7 @@ var REST_ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
  * @description  统计专题图类型枚举。
  * @type {string}
  */
-var REST_ThemeGraphType = SuperMap.ThemeGraphType = {
+var ThemeGraphType = SuperMap.ThemeGraphType = {
     /**  面积图。 */
     AREA: "AREA",
     /**  柱状图。 */
@@ -2877,7 +4140,7 @@ var REST_ThemeGraphType = SuperMap.ThemeGraphType = {
  * @description  统计专题图坐标轴文本显示模式。
  * @type {string}
  */
-var REST_GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
+var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
     /**  显示全部文本。 */
     ALL: "ALL",
     /**  不显示。 */
@@ -2894,7 +4157,7 @@ var REST_GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
  *
  * @type {string}
  */
-var REST_GraduatedMode = SuperMap.GraduatedMode = {
+var GraduatedMode = SuperMap.GraduatedMode = {
     /**  常量分级模式。 */
     CONSTANT: "CONSTANT",
     /** 对数分级模式。 */
@@ -2910,7 +4173,7 @@ var REST_GraduatedMode = SuperMap.GraduatedMode = {
  * @description  范围分段专题图分段方式枚举。
  * @type {string}
  */
-var REST_RangeMode = SuperMap.RangeMode = {
+var RangeMode = SuperMap.RangeMode = {
     /**  自定义分段法。 */
     CUSTOMINTERVAL: "CUSTOMINTERVAL",
     /**  等距离分段法。 */
@@ -2932,7 +4195,7 @@ var REST_RangeMode = SuperMap.RangeMode = {
  * @description  专题图类型枚举。
  * @type {string}
  */
-var REST_ThemeType = SuperMap.ThemeType = {
+var ThemeType = SuperMap.ThemeType = {
     /** 点密度专题图。 */
     DOTDENSITY: "DOTDENSITY",
     /** 等级符号专题图。 */
@@ -2954,7 +4217,7 @@ var REST_ThemeType = SuperMap.ThemeType = {
  * @description  渐变颜色枚举。
  * @type {string}
  */
-var REST_ColorGradientType = SuperMap.ColorGradientType = {
+var ColorGradientType = SuperMap.ColorGradientType = {
     /** 黑白渐变色。 */
     BLACK_WHITE: "BLACKWHITE",
     /** 蓝黑渐变色。 */
@@ -3018,7 +4281,7 @@ var REST_ColorGradientType = SuperMap.ColorGradientType = {
  * @description  文本对齐枚举。
  * @type {string}
  */
-var REST_TextAlignment = SuperMap.TextAlignment = {
+var TextAlignment = SuperMap.TextAlignment = {
     /** 左上角对齐。 */
     TOPLEFT: "TOPLEFT",
     /** 顶部居中对齐。 */
@@ -3051,7 +4314,7 @@ var REST_TextAlignment = SuperMap.TextAlignment = {
  * @description  渐变填充风格的渐变类型枚举。
  * @type {string}
  */
-var REST_FillGradientMode = SuperMap.FillGradientMode = {
+var FillGradientMode = SuperMap.FillGradientMode = {
     /** 无渐变。 */
     NONE: "NONE",
     /** 线性渐变填充。 */
@@ -3071,7 +4334,7 @@ var REST_FillGradientMode = SuperMap.FillGradientMode = {
  * @description  标签沿线标注方向枚举。
  * @type {string}
  */
-var REST_AlongLineDirection = SuperMap.AlongLineDirection = {
+var AlongLineDirection = SuperMap.AlongLineDirection = {
     /** 沿线的法线方向放置标签。 */
     NORMAL: "ALONG_LINE_NORMAL",
     /** 从下到上，从左到右放置。 */
@@ -3091,7 +4354,7 @@ var REST_AlongLineDirection = SuperMap.AlongLineDirection = {
  * @description  标签专题图中标签背景的形状枚举。
  * @type {string}
  */
-var REST_LabelBackShape = SuperMap.LabelBackShape = {
+var LabelBackShape = SuperMap.LabelBackShape = {
     /** 菱形背景，即标签背景的形状为菱形。 */
     DIAMOND: "DIAMOND",
     /** 椭圆形背景，即标签背景的行状为椭圆形。 */
@@ -3115,7 +4378,7 @@ var REST_LabelBackShape = SuperMap.LabelBackShape = {
  * @description  标签专题图中超长标签的处理模式枚举。
  * @type {string}
  */
-var REST_LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
+var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
     /** 换行显示。 */
     NEWLINE: "NEWLINE",
     /** 对超长标签不进行处理。 */
@@ -3132,7 +4395,7 @@ var REST_LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
  * 在行驶引导子项中使用。
  * @type {string}
  */
-var REST_DirectionType = SuperMap.DirectionType = {
+var DirectionType = SuperMap.DirectionType = {
     /** 东。 */
     EAST: "EAST",
     /** 无方向。 */
@@ -3154,7 +4417,7 @@ var REST_DirectionType = SuperMap.DirectionType = {
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
  * @type {string}
  */
-var REST_SideType = SuperMap.SideType = {
+var SideType = SuperMap.SideType = {
     /** 路的左侧。 */
     LEFT: "LEFT",
     /** 在路上（即路的中间）。 */
@@ -3174,7 +4437,7 @@ var REST_SideType = SuperMap.SideType = {
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @type {string}
  */
-var REST_SupplyCenterType = SuperMap.SupplyCenterType = {
+var SupplyCenterType = SuperMap.SupplyCenterType = {
     /** 固定中心点。 */
     FIXEDCENTER: "FIXEDCENTER",
     /** 非中心点。 */
@@ -3191,7 +4454,7 @@ var REST_SupplyCenterType = SuperMap.SupplyCenterType = {
  * 用在行驶引导子项类中，表示转弯的方向。
  * @type {string}
  */
-var REST_TurnType = SuperMap.TurnType = {
+var TurnType = SuperMap.TurnType = {
     /** 向前直行。 */
     AHEAD: "AHEAD",
     /** 掉头。 */
@@ -3213,7 +4476,7 @@ var REST_TurnType = SuperMap.TurnType = {
  * @description  缓冲区分析BufferEnd类型。
  * @type {string}
  */
-var REST_BufferEndType = SuperMap.BufferEndType = {
+var BufferEndType = SuperMap.BufferEndType = {
     /** FLAT */
     FLAT: "FLAT",
     /** ROUND */
@@ -3226,7 +4489,7 @@ var REST_BufferEndType = SuperMap.BufferEndType = {
  * @description  叠加分析类型枚举。
  * @type {string}
  */
-var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
+var OverlayOperationType = SuperMap.OverlayOperationType = {
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
     /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
@@ -3250,7 +4513,7 @@ var REST_OverlayOperationType = SuperMap.OverlayOperationType = {
  * @description  分布式分析输出类型枚举。
  * @type {string}
  */
-var REST_OutputType = SuperMap.OutputType = {
+var OutputType = SuperMap.OutputType = {
     /** INDEXEDHDFS */
     INDEXEDHDFS: "INDEXEDHDFS",
     /** UDB */
@@ -3269,7 +4532,7 @@ var REST_OutputType = SuperMap.OutputType = {
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
  * @type {string}
  */
-var REST_SmoothMethod = SuperMap.SmoothMethod = {
+var SmoothMethod = SuperMap.SmoothMethod = {
     /** B 样条法。 */
     BSPLINE: "BSPLINE",
     /** 磨角法。 */
@@ -3283,7 +4546,7 @@ var REST_SmoothMethod = SuperMap.SmoothMethod = {
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
  * @type {string}
  */
-var REST_SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
+var SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
     /** 等值线提取。 */
     ISOLINE: "ISOLINE",
     /** 等值面提取。 */
@@ -3297,7 +4560,7 @@ var REST_SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @type {string}
  */
-var REST_DataReturnMode = SuperMap.DataReturnMode = {
+var DataReturnMode = SuperMap.DataReturnMode = {
     /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
     DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
     /** 只返回数据集标识（数据集名称@数据源名称）。 */
@@ -3313,7 +4576,7 @@ var REST_DataReturnMode = SuperMap.DataReturnMode = {
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var REST_EditType = SuperMap.EditType = {
+var EditType = SuperMap.EditType = {
     /** 增加操作。 */
     ADD: "add",
     /** 修改操作。 */
@@ -3330,7 +4593,7 @@ var REST_EditType = SuperMap.EditType = {
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  * @type {string}
  */
-var REST_TransferTactic = SuperMap.TransferTactic = {
+var TransferTactic = SuperMap.TransferTactic = {
     /** 时间短。 */
     LESS_TIME: "LESS_TIME",
     /** 少换乘。 */
@@ -3349,7 +4612,7 @@ var REST_TransferTactic = SuperMap.TransferTactic = {
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
  * @type {string}
  */
-var REST_TransferPreference = SuperMap.TransferPreference = {
+var TransferPreference = SuperMap.TransferPreference = {
     /** 公交汽车优先。 */
     BUS: "BUS",
     /** 地铁优先。 */
@@ -3367,7 +4630,7 @@ var REST_TransferPreference = SuperMap.TransferPreference = {
  * @description  地图背景格网类型枚举。
  * @type {string}
  */
-var REST_GridType = SuperMap.GridType = {
+var GridType = SuperMap.GridType = {
     /** 十字叉丝。 */
     CROSS: "CROSS",
     /** 网格线。 */
@@ -3387,7 +4650,7 @@ var REST_GridType = SuperMap.GridType = {
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
  * @type {string}
  */
-var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
+var ColorSpaceType = SuperMap.ColorSpaceType = {
     /** 该类型主要在印刷系统使用。 */
     CMYK: "CMYK",
     /** 该类型主要在显示系统中使用。 */
@@ -3400,7 +4663,7 @@ var REST_ColorSpaceType = SuperMap.ColorSpaceType = {
  * @description  图层类型。
  * @type {string}
  */
-var REST_LayerType = SuperMap.LayerType = {
+var LayerType = SuperMap.LayerType = {
     /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
@@ -3418,7 +4681,7 @@ var REST_LayerType = SuperMap.LayerType = {
  * @description  UGC图层类型。
  * @type {string}
  */
-var REST_UGCLayerType = SuperMap.UGCLayerType = {
+var UGCLayerType = SuperMap.UGCLayerType = {
     /** 专题图层。 */
     THEME: "THEME",
     /** 矢量图层。 */
@@ -3436,7 +4699,7 @@ var REST_UGCLayerType = SuperMap.UGCLayerType = {
  * @description  字段统计方法类型。
  * @type {string}
  */
-var REST_StatisticMode = SuperMap.StatisticMode = {
+var StatisticMode = SuperMap.StatisticMode = {
     /** 统计所选字段的平均值。 */
     AVERAGE: "AVERAGE",
     /** 统计所选字段的最大值。 */
@@ -3458,7 +4721,7 @@ var REST_StatisticMode = SuperMap.StatisticMode = {
  * @description  栅格与影像数据存储的像素格式枚举。
  * @type {string}
  */
-var REST_PixelFormat = SuperMap.PixelFormat = {
+var PixelFormat = SuperMap.PixelFormat = {
     /** 每个像元用16个比特(即2个字节)表示。 */
     BIT16: "BIT16",
     /** 每个像元用32个比特(即4个字节)表示。 */
@@ -3488,7 +4751,7 @@ var REST_PixelFormat = SuperMap.PixelFormat = {
  * @description  内插时使用的样本点的查找方式枚举
  * @type {string}
  */
-var REST_SearchMode = SuperMap.SearchMode = {
+var SearchMode = SuperMap.SearchMode = {
     /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
     KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
     /** 使用 KDTREE 的定长方式查找参与内插分析的点。 */
@@ -3506,7 +4769,7 @@ var REST_SearchMode = SuperMap.SearchMode = {
  * @description  插值分析的算法的类型
  * @type {string}
  */
-var REST_InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
+var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
     /** 普通克吕金插值法。 */
     KRIGING: "KRIGING",
     /** 简单克吕金插值法。 */
@@ -3522,7 +4785,7 @@ var REST_InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
  * @type {string}
  */
-var REST_VariogramMode = SuperMap.VariogramMode = {
+var VariogramMode = SuperMap.VariogramMode = {
     /** 指数函数。 */
     EXPONENTIAL: "EXPONENTIAL",
     /** 高斯函数。 */
@@ -3538,7 +4801,7 @@ var REST_VariogramMode = SuperMap.VariogramMode = {
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
  * @type {string}
  */
-var REST_Exponent = SuperMap.Exponent = {
+var Exponent = SuperMap.Exponent = {
     /** 阶数为1。 */
     EXP1: "EXP1",
     /** 阶数为2。 */
@@ -3552,7 +4815,7 @@ var REST_Exponent = SuperMap.Exponent = {
  * @description token申请的客户端标识类型
  * @type {string}
  */
-var REST_ClientType = SuperMap.ClientType = {
+var ClientType = SuperMap.ClientType = {
     /** 指定的 IP 地址。 */
     IP: "IP",
     /** 指定的 URL。 */
@@ -3574,7 +4837,7 @@ var REST_ClientType = SuperMap.ClientType = {
  * @description 客户端专题图图表类型
  * @type {string}
  */
-var REST_ChartType = SuperMap.ChartType = {
+var ChartType = SuperMap.ChartType = {
     /** 柱状图。 */
     BAR: "Bar",
     /** 三维柱状图。 */
@@ -3598,7 +4861,7 @@ var REST_ChartType = SuperMap.ChartType = {
  * @description  裁剪分析模式
  * @type {string}
  */
-var REST_ClipAnalystMode = SuperMap.ClipAnalystMode = {
+var ClipAnalystMode = SuperMap.ClipAnalystMode = {
     /** CLIP。 */
     CLIP: "clip",
     /** INTERSECT。 */
@@ -3611,7 +4874,7 @@ var REST_ClipAnalystMode = SuperMap.ClipAnalystMode = {
  * @description 分布式分析面积单位
  * @type {string}
  */
-var REST_AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
+var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
     /** 平方米。 */
     "SQUAREMETER": "SquareMeter",
     /** 平方千米。 */
@@ -3636,7 +4899,7 @@ var REST_AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
  * @description 分布式分析单位
  * @type {string}
  */
-var REST_AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
+var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
     /** 米。 */
     "METER": "Meter",
     /** 千米。 */
@@ -3656,7 +4919,7 @@ var REST_AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
  * @description 分布式分析统计模式
  * @type {string}
  */
-var REST_StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
+var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
     /** 统计所选字段的最大值。 */
     "MAX": "max",
     /** 统计所选字段的最小值。 */
@@ -3677,7 +4940,7 @@ var REST_StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
  * @description 分布式分析聚合类型
  * @type {string}
  */
-var REST_SummaryType = SuperMap.SummaryType = {
+var SummaryType = SuperMap.SummaryType = {
     /** 格网聚合。 */
     "SUMMARYMESH": "SUMMARYMESH",
     /** 多边形聚合。 */
@@ -3690,7 +4953,7 @@ var REST_SummaryType = SuperMap.SummaryType = {
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
  * @type {string}
  */
-var REST_TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
+var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
     /** 面内无重叠，用于对面数据进行拓扑检查。 */
     REGIONNOOVERLAP: "REGIONNOOVERLAP",
     /** 面与面无重叠，用于对面数据进行拓扑检查。 */
@@ -3714,7 +4977,7 @@ var REST_TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
  * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
  * @type {string}
  */
-var REST_AggregationType = SuperMap.AggregationType = {
+var AggregationType = SuperMap.AggregationType = {
     /** 格网聚合类型。 */
     GEOHASH_GRID: "geohash_grid",
     /** 过滤聚合类型。 */
@@ -3728,7 +4991,7 @@ var REST_AggregationType = SuperMap.AggregationType = {
  * @description  聚合查询中filter查询枚举类
  * @type {string}
  */
-var REST_AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
+var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
     /** 范围查询。 */
     GEO_BOUNDING_BOX: "geo_bounding_box"
 }
@@ -3740,7 +5003,7 @@ var REST_AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
  * @description feature 查询方式。
  * @type {string}
  */
-var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
+var GetFeatureMode = SuperMap.GetFeatureMode = {
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
     /** 通过几何对象的缓冲区来获取要素。 */
@@ -3760,7 +5023,7 @@ var REST_GetFeatureMode = SuperMap.GetFeatureMode = {
  * @description 栅格分析方法。
  * @type {string}
  */
-var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
+var RasterFunctionType = SuperMap.RasterFunctionType = {
     /** 归一化植被指数。 */
     NDVI: "NDVI",
     /** 阴影面分析。 */
@@ -3783,7 +5046,7 @@ var REST_RasterFunctionType = SuperMap.RasterFunctionType = {
  * @example
  * var size = new SuperMap.Size(31,46);
  */
-class Size_Size {
+class Size {
 
     constructor(w, h) {
         /**
@@ -3823,7 +5086,7 @@ class Size_Size {
      * @returns {SuperMap.Size}  返回一个新的与当前 size 对象有相同宽、高的 Size 对象。
      */
     clone() {
-        return new Size_Size(this.w, this.h);
+        return new Size(this.w, this.h);
     }
 
 
@@ -3863,7 +5126,7 @@ class Size_Size {
     }
 }
 
-SuperMap.Size = Size_Size;
+SuperMap.Size = Size;
 // CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -4133,7 +5396,7 @@ SuperMap.mixin = function (...mixins) {
  * @category BaseTypes Util
  * @description 字符串操作的一系列常用扩展函数。
  */
-var BaseTypes_StringExt = SuperMap.String = {
+var StringExt = SuperMap.String = {
 
     /**
      * @function SuperMap.String.startsWith
@@ -4314,7 +5577,7 @@ var BaseTypes_StringExt = SuperMap.String = {
  * @category BaseTypes Util
  * @description 数值操作的一系列常用扩展函数。
  */
-var BaseTypes_NumberExt = SuperMap.Number = {
+var NumberExt = SuperMap.Number = {
 
     /**
      * @member {string} [SuperMap.Number.decimalSeparator='.']
@@ -4402,7 +5665,7 @@ if (!Number.prototype.limitSigDigs) {
      *           如果传入值 为 null、0、或者是负数, 返回值 0。
      */
     Number.prototype.limitSigDigs = function (sig) {
-        return BaseTypes_NumberExt.limitSigDigs(this, sig);
+        return NumberExt.limitSigDigs(this, sig);
     };
 }
 
@@ -4413,7 +5676,7 @@ if (!Number.prototype.limitSigDigs) {
  * @category BaseTypes Util
  * @description 函数操作的一系列常用扩展函数。
  */
-var BaseTypes_FunctionExt = SuperMap.Function = {
+var FunctionExt = SuperMap.Function = {
     /**
      * @function SuperMap.Function.bind
      * @description 绑定函数到对象。方便创建 this 的作用域。
@@ -4486,7 +5749,7 @@ var BaseTypes_FunctionExt = SuperMap.Function = {
  * @category BaseTypes Util
  * @description 数组操作的一系列常用扩展函数。
  */
-var BaseTypes_ArrayExt = SuperMap.Array = {
+var ArrayExt = SuperMap.Array = {
 
     /**
      * @function SuperMap.Array.filter
@@ -4528,7 +5791,7 @@ var BaseTypes_ArrayExt = SuperMap.Array = {
 
 
 
-var Util_Util = SuperMap.Util = SuperMap.Util || {};
+var Util = SuperMap.Util = SuperMap.Util || {};
 /**
  * @name Util
  * @memberOf SuperMap
@@ -5620,7 +6883,7 @@ class LonLat_LonLat {
 
 
     constructor(lon, lat) {
-        if (Util_Util.isArray(lon)) {
+        if (Util.isArray(lon)) {
             lat = lon[1];
             lon = lon[0];
         }
@@ -5628,13 +6891,13 @@ class LonLat_LonLat {
          * @member {float} [SuperMap.LonLat.prototype.lon=0.0]
          * @description 地图的单位的 X 轴（横轴）坐标。
          */
-        this.lon = lon ? Util_Util.toFloat(lon) : 0.0;
+        this.lon = lon ? Util.toFloat(lon) : 0.0;
 
         /**
          * @member {float} [SuperMap.LonLat.prototype.lat=0.0]
          * @description 地图的单位的 Y 轴（纵轴）坐标。
          */
-        this.lat = lat ? Util_Util.toFloat(lat) : 0.0;
+        this.lat = lat ? Util.toFloat(lat) : 0.0;
         this.CLASS_NAME = "SuperMap.LonLat";
     }
 
@@ -5689,8 +6952,8 @@ class LonLat_LonLat {
         if ((lon == null) || (lat == null)) {
             throw new TypeError('LonLat.add cannot receive null values');
         }
-        return new LonLat_LonLat(this.lon + Util_Util.toFloat(lon),
-            this.lat + Util_Util.toFloat(lat));
+        return new LonLat_LonLat(this.lon + Util.toFloat(lon),
+            this.lat + Util.toFloat(lat));
     }
 
     /**
@@ -5780,7 +7043,7 @@ class LonLat_LonLat {
      * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象。
      */
     static fromArray(arr) {
-        var gotArr = Util_Util.isArray(arr),
+        var gotArr = Util.isArray(arr),
             lon = gotArr && arr[0],
             lat = gotArr && arr[1];
         return new LonLat_LonLat(lon, lat);
@@ -5819,7 +7082,7 @@ class Bounds_Bounds {
 
 
     constructor(left, bottom, right, top) {
-        if (Util_Util.isArray(left)) {
+        if (Util.isArray(left)) {
             top = left[3];
             right = left[2];
             bottom = left[1];
@@ -5829,25 +7092,25 @@ class Bounds_Bounds {
          * @member {number} SuperMap.Bounds.prototype.left
          * @description 最小的水平坐标系。
          */
-        this.left = left != null ? Util_Util.toFloat(left) : this.left;
+        this.left = left != null ? Util.toFloat(left) : this.left;
 
         /**
          * @member {number} SuperMap.Bounds.prototype.bottom
          * @description 最小的垂直坐标系。
          */
-        this.bottom = bottom != null ? Util_Util.toFloat(bottom) : this.bottom;
+        this.bottom = bottom != null ? Util.toFloat(bottom) : this.bottom;
 
         /**
          * @member {number} SuperMap.Bounds.prototype.right
          * @description 最大的水平坐标系。
          */
-        this.right = right != null ? Util_Util.toFloat(right) : this.right;
+        this.right = right != null ? Util.toFloat(right) : this.right;
 
         /**
          * @member {number} SuperMap.Bounds.prototype.top
          * @description 最大的垂直坐标系。
          */
-        this.top = top != null ? Util_Util.toFloat(top) : this.top;
+        this.top = top != null ? Util.toFloat(top) : this.top;
 
         /**
          * @member {SuperMap.LonLat} SuperMap.Bounds.prototype.centerLonLat
@@ -6011,7 +7274,7 @@ class Bounds_Bounds {
      * @returns {SuperMap.Size} 返回边框大小。
      */
     getSize() {
-        return new Size_Size(this.getWidth(), this.getHeight());
+        return new Size(this.getWidth(), this.getHeight());
     }
 
     /**
@@ -6551,7 +7814,7 @@ class Geometry_Geometry {
          * @description  此几何对象的唯一标示符。
          *
          */
-        this.id = Util_Util.createUniqueID(this.CLASS_NAME + "_");
+        this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
         /**
          * @member {SuperMap.Geometry} SuperMap.Geometry.prototype.parent
@@ -6773,7 +8036,7 @@ class Collection_Collection extends Geometry_Geometry {
         }
 
         // catch any randomly tagged-on properties
-        Util_Util.applyDefaults(geometry, this);
+        Util.applyDefaults(geometry, this);
 
         return geometry;
     }
@@ -6821,7 +8084,7 @@ class Collection_Collection extends Geometry_Geometry {
      * collection.addComponents(new SuerpMap.Geometry.Point(10,10));
      */
     addComponents(components) {
-        if (!(Util_Util.isArray(components))) {
+        if (!(Util.isArray(components))) {
             components = [components];
         }
         for (var i = 0, len = components.length; i < len; i++) {
@@ -6840,7 +8103,7 @@ class Collection_Collection extends Geometry_Geometry {
         var added = false;
         if (component) {
             if (this.componentTypes == null ||
-                (Util_Util.indexOf(this.componentTypes,
+                (Util.indexOf(this.componentTypes,
                     component.CLASS_NAME) > -1)) {
 
                 if (index != null && (index < this.components.length)) {
@@ -6869,7 +8132,7 @@ class Collection_Collection extends Geometry_Geometry {
     removeComponents(components) {
         var removed = false;
 
-        if (!(Util_Util.isArray(components))) {
+        if (!(Util.isArray(components))) {
             components = [components];
         }
         for (var i = components.length - 1; i >= 0; --i) {
@@ -6885,7 +8148,7 @@ class Collection_Collection extends Geometry_Geometry {
      * @returns {boolean} 几何对象是否移除成功。
      */
     removeComponent(component) {
-        Util_Util.removeItem(this.components, component);
+        Util.removeItem(this.components, component);
 
         // clearBounds() so that it gets recalculated on the next call
         // to this.getBounds();
@@ -6917,7 +8180,7 @@ class Collection_Collection extends Geometry_Geometry {
         if (!geometry || !geometry.CLASS_NAME ||
             (this.CLASS_NAME !== geometry.CLASS_NAME)) {
             equivalent = false;
-        } else if (!(Util_Util.isArray(geometry.components)) ||
+        } else if (!(Util.isArray(geometry.components)) ||
             (geometry.components.length !== this.components.length)) {
             equivalent = false;
         } else {
@@ -7109,7 +8372,7 @@ class Point_Point extends Geometry_Geometry {
         }
 
         // catch any randomly tagged-on properties
-        Util_Util.applyDefaults(obj, this);
+        Util.applyDefaults(obj, this);
 
         return obj;
     }
@@ -7604,7 +8867,7 @@ class GeoText_GeoText extends Geometry_Geometry {
         if (obj == null) {
             obj = new GeoText_GeoText(this.x, this.y, this.text);
         }
-        Util_Util.applyDefaults(obj, this);
+        Util.applyDefaults(obj, this);
         return obj;
     }
 
@@ -7628,7 +8891,7 @@ class GeoText_GeoText extends Geometry_Geometry {
      */
     getLabelPxBoundsByLabel(locationPixel, labelWidth, labelHeight, style) {
         var labelPxBounds, left, bottom, top, right;
-        var locationPx = Util_Util.cloneObject(locationPixel);
+        var locationPx = Util.cloneObject(locationPixel);
 
         //计算文本行数
         var theText = style.label || this.text;
@@ -7700,7 +8963,7 @@ class GeoText_GeoText extends Geometry_Geometry {
     getLabelPxBoundsByText(locationPixel, style) {
         var labelPxBounds, left, bottom, top, right;
         var labelSize = this.getLabelPxSize(style);
-        var locationPx = Util_Util.cloneObject(locationPixel);
+        var locationPx = Util.cloneObject(locationPixel);
 
         //处理文字对齐
         if (style.labelAlign && style.labelAlign !== "cm") {
@@ -7796,7 +9059,7 @@ class GeoText_GeoText extends Geometry_Geometry {
         }
         for (var i = 0; i < numRows; i++) {
             var textCharC = this.getTextCount(textRows[i]);
-            var labelWTmp = this.labelWTmp = Util_Util.getTextBounds(style, textRows[i], this.element).textWidth + textCharC.textC * spacing + bgstrokeWidth;
+            var labelWTmp = this.labelWTmp = Util.getTextBounds(style, textRows[i], this.element).textWidth + textCharC.textC * spacing + bgstrokeWidth;
             if (labelW < labelWTmp) {
                 labelW = labelWTmp;
             }
@@ -8237,7 +9500,7 @@ SuperMap.Geometry.Rectangle = Rectangle_Rectangle;
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
  */
-class Credential_Credential {
+class Credential {
 
 
     constructor(value, name) {
@@ -8312,8 +9575,8 @@ class Credential_Credential {
  *
  */
 
-Credential_Credential.CREDENTIAL = null;
-SuperMap.Credential = Credential_Credential;
+Credential.CREDENTIAL = null;
+SuperMap.Credential = Credential;
 
 // CONCATENATED MODULE: ./src/common/commontypes/Date.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -8328,7 +9591,7 @@ SuperMap.Credential = Credential_Credential;
  * @category BaseTypes Util
  * @description 包含 parse、toISOString 方法的实现，两个方法用来解析 RFC 3339 日期，遵循 ECMAScript 5 规范。
  */
-var Date_DateExt = SuperMap.Date = {
+var DateExt = SuperMap.Date = {
 
     /**
      * @description 生成代表一个具体的日期字符串，该日期遵循 ISO 8601 标准（详情查看{@link http://tools.ietf.org/html/rfc3339}）。
@@ -8426,7 +9689,7 @@ var Date_DateExt = SuperMap.Date = {
  * @namespace
  * @description 事件处理函数.
  */
-var Event_Event = SuperMap.Event = {
+var Event = SuperMap.Event = {
 
     /**
      * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
@@ -8597,7 +9860,7 @@ var Event_Event = SuperMap.Event = {
      * @param {boolean} [useCapture=false] - 是否捕获。
      */
     observe: function (elementParam, name, observer, useCapture) {
-        var element = Util_Util.getElement(elementParam);
+        var element = Util.getElement(elementParam);
         useCapture = useCapture || false;
 
         if (name === 'keypress' &&
@@ -8617,7 +9880,7 @@ var Event_Event = SuperMap.Event = {
             if (element.id) {
                 idPrefix = element.id + "_" + idPrefix;
             }
-            element._eventCacheID = Util_Util.createUniqueID(idPrefix);
+            element._eventCacheID = Util.createUniqueID(idPrefix);
         }
 
         var cacheID = element._eventCacheID;
@@ -8656,7 +9919,7 @@ var Event_Event = SuperMap.Event = {
      * @param {(HTMLElement|string)} elementParam - 
      */
     stopObservingElement: function (elementParam) {
-        var element = Util_Util.getElement(elementParam);
+        var element = Util.getElement(elementParam);
         var cacheID = element._eventCacheID;
 
         this._removeElementObservers(SuperMap.Event.observers[cacheID]);
@@ -8689,7 +9952,7 @@ var Event_Event = SuperMap.Event = {
     stopObserving: function (elementParam, name, observer, useCapture) {
         useCapture = useCapture || false;
 
-        var element = Util_Util.getElement(elementParam);
+        var element = Util.getElement(elementParam);
         var cacheID = element._eventCacheID;
 
         if (name === 'keypress') {
@@ -8755,7 +10018,7 @@ var Event_Event = SuperMap.Event = {
 
     CLASS_NAME: "SuperMap.Event"
 };
-SuperMap.Event = Event_Event;
+SuperMap.Event = Event;
 /* prevent memory leaks in IE */
 SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 
@@ -8904,7 +10167,7 @@ class Events_Events {
          */
         this.clearMouseListener = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         if (eventTypes != null) {
             for (var i = 0, len = eventTypes.length; i < len; i++) {
@@ -8931,9 +10194,9 @@ class Events_Events {
         }
         this.extensions = null;
         if (this.element) {
-            Event_Event.stopObservingElement(this.element);
+            Event.stopObservingElement(this.element);
             if (this.element.hasScrollEvent) {
-                Event_Event.stopObserving(
+                Event.stopObserving(
                     window, "scroll", this.clearMouseListener
                 );
             }
@@ -8966,16 +10229,16 @@ class Events_Events {
      */
     attachToElement(element) {
         if (this.element) {
-            Event_Event.stopObservingElement(this.element);
+            Event.stopObservingElement(this.element);
         } else {
             // keep a bound copy of handleBrowserEvent() so that we can
             // pass the same function to both Event.observe() and .stopObserving()
-            this.eventHandler = BaseTypes_FunctionExt.bindAsEventListener(
+            this.eventHandler = FunctionExt.bindAsEventListener(
                 this.handleBrowserEvent, this
             );
 
             // to be used with observe and stopObserving
-            this.clearMouseListener = BaseTypes_FunctionExt.bind(
+            this.clearMouseListener = FunctionExt.bind(
                 this.clearMouseCache, this
             );
         }
@@ -8988,10 +10251,10 @@ class Events_Events {
             this.addEventType(eventType);
 
             // use Prototype to register the event cross-browser
-            Event_Event.observe(element, eventType, this.eventHandler);
+            Event.observe(element, eventType, this.eventHandler);
         }
         // disable dragstart in IE so that mousedown/move/up works normally
-        Event_Event.observe(element, "dragstart", Event_Event.stop);
+        Event.observe(element, "dragstart", Event.stop);
     }
 
 
@@ -9042,7 +10305,7 @@ class Events_Events {
             this.extensions[type] = new Events_Events[type](this);
         }
         if ((func != null) &&
-            (Util_Util.indexOf(this.eventTypes, type) !== -1)) {
+            (Util.indexOf(this.eventTypes, type) !== -1)) {
 
             if (obj == null) {
                 obj = this.object;
@@ -9177,14 +10440,14 @@ class Events_Events {
             // bind the context to callback.obj
             continueChain = callback.func.apply(callback.obj, [evt]);
 
-            if ((continueChain != undefined) && (continueChain == false)) {
+            if ((continueChain != undefined) && (continueChain === false)) {
                 // if callback returns false, execute no more callbacks.
                 break;
             }
         }
         // don't fall through to other DOM elements
         if (!this.fallThrough) {
-            Event_Event.stop(evt, true);
+            Event.stop(evt, true);
         }
         return continueChain;
     }
@@ -9246,12 +10509,12 @@ class Events_Events {
         if (!this.includeXY) {
             this.clearMouseCache();
         } else if (!this.element.hasScrollEvent) {
-            Event_Event.observe(window, "scroll", this.clearMouseListener);
+            Event.observe(window, "scroll", this.clearMouseListener);
             this.element.hasScrollEvent = true;
         }
 
         if (!this.element.scrolls) {
-            var viewportElement = Util_Util.getViewportElement();
+            var viewportElement = Util.getViewportElement();
             this.element.scrolls = [
                 viewportElement.scrollLeft,
                 viewportElement.scrollTop
@@ -9266,7 +10529,7 @@ class Events_Events {
         }
 
         if (!this.element.offsets) {
-            this.element.offsets = Util_Util.pagePosition(this.element);
+            this.element.offsets = Util.pagePosition(this.element);
         }
 
         return new Pixel_Pixel(
@@ -9321,7 +10584,7 @@ class Feature_Feature {
          * @member {string} SuperMap.Feature.prototype.id
          * @description 要素 ID。
          */
-        this.id = Util_Util.createUniqueID(this.CLASS_NAME + "_");
+        this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
         /**
          * @member {SuperMap.LonLat} SuperMap.Feature.prototype.lonlat
@@ -9405,7 +10668,7 @@ class Vector_Vector extends Feature_Feature {
         this.attributes = {};
 
         if (attributes) {
-            this.attributes = Util_Util.extend(this.attributes, attributes);
+            this.attributes = Util.extend(this.attributes, attributes);
         }
 
         /**
@@ -9737,7 +11000,7 @@ class Format_Format {
          */
         this.keepData = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.options = options;
 
         this.CLASS_NAME = "SuperMap.Format";
@@ -10094,7 +11357,7 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  * @param {number} [options.green=0] - 获取或设置绿色值。
  * @param {number} [options.blue=0] - 获取或设置蓝色值。
  */
-class ServerColor_ServerColor {
+class ServerColor {
 
     constructor(red, green, blue) {
 
@@ -10141,7 +11404,7 @@ class ServerColor_ServerColor {
         if (!jsonObject) {
             return;
         }
-        var color = new ServerColor_ServerColor();
+        var color = new ServerColor();
         var red = 255;
         if (jsonObject.red !== null) {
             red = Number(jsonObject.red);
@@ -10164,7 +11427,7 @@ class ServerColor_ServerColor {
 
 }
 
-SuperMap.ServerColor = ServerColor_ServerColor;
+SuperMap.ServerColor = ServerColor;
 
 
 // CONCATENATED MODULE: ./src/common/iServer/ServerStyle.js
@@ -10204,7 +11467,7 @@ class ServerStyle_ServerStyle {
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillBackColor
          * @description 填充背景颜色。当填充模式为渐变填充时，该颜色为填充终止色。
          */
-        this.fillBackColor = new ServerColor_ServerColor(255, 255, 255);
+        this.fillBackColor = new ServerColor(255, 255, 255);
 
         /**
          * @member {boolean} [SuperMap.ServerStyle.prototype.fillBackOpaque=false]
@@ -10216,7 +11479,7 @@ class ServerStyle_ServerStyle {
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillForeColor
          * @description 填充颜色。当填充模式为渐变填充时，该颜色为填充起始颜色。
          */
-        this.fillForeColor = new ServerColor_ServerColor(255, 0, 0);
+        this.fillForeColor = new ServerColor(255, 0, 0);
 
         /**
          * @member {SuperMap.FillGradientMode} SuperMap.ServerStyle.prototype.fillGradientMode
@@ -10262,7 +11525,7 @@ class ServerStyle_ServerStyle {
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.lineColor
          * @description 矢量要素的边线颜色。如果等级符号是点符号，点符号的颜色由 lineColor 控制。
          */
-        this.lineColor = new ServerColor_ServerColor(0, 0, 0);
+        this.lineColor = new ServerColor(0, 0, 0);
 
         /**
          * @member {number} [SuperMap.ServerStyle.prototype.lineSymbolID=0]
@@ -10297,7 +11560,7 @@ class ServerStyle_ServerStyle {
          */
         this.markerSymbolID = -1;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ServerStyle";
@@ -10343,7 +11606,7 @@ class ServerStyle_ServerStyle {
      */
     toServerJSONObject() {
         var styleObj = {};
-        styleObj = Util_Util.copyAttributes(styleObj, this);
+        styleObj = Util.copyAttributes(styleObj, this);
         //暂时先忽略serverColor往Json的转换
         return styleObj;
     }
@@ -10359,16 +11622,16 @@ class ServerStyle_ServerStyle {
             return;
         }
         return new ServerStyle_ServerStyle({
-            fillBackColor: ServerColor_ServerColor.fromJson(jsonObject.fillBackColor),
+            fillBackColor: ServerColor.fromJson(jsonObject.fillBackColor),
             fillBackOpaque: jsonObject.fillBackOpaque,
-            fillForeColor: ServerColor_ServerColor.fromJson(jsonObject.fillForeColor),
+            fillForeColor: ServerColor.fromJson(jsonObject.fillForeColor),
             fillGradientMode: jsonObject.fillGradientMode,
             fillGradientAngle: jsonObject.fillGradientAngle,
             fillGradientOffsetRatioX: jsonObject.fillGradientOffsetRatioX,
             fillGradientOffsetRatioY: jsonObject.fillGradientOffsetRatioY,
             fillOpaqueRate: jsonObject.fillOpaqueRate,
             fillSymbolID: jsonObject.fillSymbolID,
-            lineColor: ServerColor_ServerColor.fromJson(jsonObject.lineColor),
+            lineColor: ServerColor.fromJson(jsonObject.lineColor),
             lineSymbolID: jsonObject.lineSymbolID,
             lineWidth: jsonObject.lineWidth,
             markerAngle: jsonObject.markerAngle,
@@ -10412,7 +11675,7 @@ class PointWithMeasure_PointWithMeasure extends Point_Point {
         this.measure = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.PointWithMeasure";
@@ -10589,7 +11852,7 @@ class Route_Route extends Collection_Collection {
         this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.Route";
@@ -10802,7 +12065,7 @@ class ServerGeometry_ServerGeometry {
          */
         this.prjCoordSys = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ServerGeometry";
@@ -10832,19 +12095,19 @@ class ServerGeometry_ServerGeometry {
         var me = this,
             geoType = me.type;
         switch (geoType.toUpperCase()) {
-            case REST_GeometryType.POINT:
+            case GeometryType.POINT:
                 return me.toGeoPoint();
-            case REST_GeometryType.LINE:
+            case GeometryType.LINE:
                 return me.toGeoLine();
-            case REST_GeometryType.LINEM:
+            case GeometryType.LINEM:
                 return me.toGeoLinem();
-            case REST_GeometryType.REGION:
+            case GeometryType.REGION:
                 return me.toGeoRegion();
-            case REST_GeometryType.POINTEPS:
+            case GeometryType.POINTEPS:
                 return me.toGeoPoint();
-            case REST_GeometryType.LINEEPS:
+            case GeometryType.LINEEPS:
                 return me.toGeoLineEPS();
-            case REST_GeometryType.REGIONEPS:
+            case GeometryType.REGIONEPS:
                 return me.toGeoRegionEPS();
         }
     }
@@ -11261,7 +12524,7 @@ class ServerGeometry_ServerGeometry {
                 }
             }
             //这里className不是多点就全部是算线
-            type = (className == "SuperMap.Geometry.MultiPoint") ? REST_GeometryType.POINT : REST_GeometryType.LINE;
+            type = (className == "SuperMap.Geometry.MultiPoint") ? GeometryType.POINT : GeometryType.LINE;
         } else if (geometry instanceof MultiPolygon_MultiPolygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
@@ -11277,7 +12540,7 @@ class ServerGeometry_ServerGeometry {
                     points.push(new Point_Point(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y));
                 }
             }
-            type = REST_GeometryType.REGION;
+            type = GeometryType.REGION;
         } else if (geometry instanceof Polygon_Polygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
@@ -11288,7 +12551,7 @@ class ServerGeometry_ServerGeometry {
                 }
                 points.push(new Point_Point(icomponents[i].getVertices()[0].x, icomponents[i].getVertices()[0].y));
             }
-            type = REST_GeometryType.REGION;
+            type = GeometryType.REGION;
         } else {
             let geometryVerticesCount = geometry.getVertices().length;
             for (let j = 0; j < geometryVerticesCount; j++) {
@@ -11299,7 +12562,7 @@ class ServerGeometry_ServerGeometry {
                 geometryVerticesCount++;
             }
             parts.push(geometryVerticesCount);
-            type = (geometry instanceof Point_Point) ? REST_GeometryType.POINT : REST_GeometryType.LINE;
+            type = (geometry instanceof Point_Point) ? GeometryType.POINT : GeometryType.LINE;
         }
 
         return new ServerGeometry_ServerGeometry({
@@ -11417,7 +12680,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
             "point": function (array) {
-                if (this.ignoreExtraDims == false &&
+                if (this.ignoreExtraDims === false &&
                     array.length != 2) {
                     throw "Only 2D points are supported: " + array;
                 }
@@ -11836,7 +13099,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
      */
     fromGeoJSON(json, type, filter) {
         let feature = this.read(json, type, filter);
-        if (!Util_Util.isArray(feature)) {
+        if (!Util.isArray(feature)) {
             return this._toiSevrerFeature(feature);
         }
         return feature.map((element) => {
@@ -11855,7 +13118,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         var geojson = {
             "type": null
         };
-        if (Util_Util.isArray(obj)) {
+        if (Util.isArray(obj)) {
             geojson.type = "FeatureCollection";
             var numFeatures = obj.length;
             geojson.features = new Array(numFeatures);
@@ -11894,7 +13157,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         var valid = false;
         switch (type) {
             case "Geometry":
-                if (Util_Util.indexOf(
+                if (Util.indexOf(
                     ["Point", "MultiPoint", "LineString", "MultiLineString",
                         "Polygon", "MultiPolygon", "Box", "GeometryCollection"
                     ],
@@ -11963,7 +13226,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
         }
         var geometry;
         if (obj.type == "GeometryCollection") {
-            if (!(Util_Util.isArray(obj.geometries))) {
+            if (!(Util.isArray(obj.geometries))) {
                 throw "GeometryCollection must have geometries array: " + obj;
             }
             var numGeom = obj.geometries.length;
@@ -11975,7 +13238,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             }
             geometry = new Collection_Collection(components);
         } else {
-            if (!(Util_Util.isArray(obj.coordinates))) {
+            if (!(Util.isArray(obj.coordinates))) {
                 throw "Geometry must have coordinates array: " + obj;
             }
             if (!this.parseCoords[obj.type.toLowerCase()]) {
@@ -12225,7 +13488,7 @@ class WKT_WKT extends Format_Format {
              *
              */
             'point': function (str) {
-                var coords = BaseTypes_StringExt.trim(str).split(this.regExes.spaces);
+                var coords = StringExt.trim(str).split(this.regExes.spaces);
                 return new Vector_Vector(new Point_Point(coords[0], coords[1])
                 );
             },
@@ -12238,7 +13501,7 @@ class WKT_WKT extends Format_Format {
              */
             'multipoint': function (str) {
                 var point;
-                var points = BaseTypes_StringExt.trim(str).split(',');
+                var points = StringExt.trim(str).split(',');
                 var components = [];
                 for (var i = 0, len = points.length; i < len; ++i) {
                     point = points[i].replace(this.regExes.trimParens, '$1');
@@ -12256,7 +13519,7 @@ class WKT_WKT extends Format_Format {
              * @private
              */
             'linestring': function (str) {
-                var points = BaseTypes_StringExt.trim(str).split(',');
+                var points = StringExt.trim(str).split(',');
                 var components = [];
                 for (var i = 0, len = points.length; i < len; ++i) {
                     components.push(this.parse.point.apply(this, [points[i]]).geometry);
@@ -12274,7 +13537,7 @@ class WKT_WKT extends Format_Format {
              */
             'multilinestring': function (str) {
                 var line;
-                var lines = BaseTypes_StringExt.trim(str).split(this.regExes.parenComma);
+                var lines = StringExt.trim(str).split(this.regExes.parenComma);
                 var components = [];
                 for (var i = 0, len = lines.length; i < len; ++i) {
                     line = lines[i].replace(this.regExes.trimParens, '$1');
@@ -12293,7 +13556,7 @@ class WKT_WKT extends Format_Format {
              */
             'polygon': function (str) {
                 var ring, linestring, linearring;
-                var rings = BaseTypes_StringExt.trim(str).split(this.regExes.parenComma);
+                var rings = StringExt.trim(str).split(this.regExes.parenComma);
                 var components = [];
                 for (var i = 0, len = rings.length; i < len; ++i) {
                     ring = rings[i].replace(this.regExes.trimParens, '$1');
@@ -12315,7 +13578,7 @@ class WKT_WKT extends Format_Format {
              */
             'multipolygon': function (str) {
                 var polygon;
-                var polygons = BaseTypes_StringExt.trim(str).split(this.regExes.doubleParenComma);
+                var polygons = StringExt.trim(str).split(this.regExes.doubleParenComma);
                 var components = [];
                 for (var i = 0, len = polygons.length; i < len; ++i) {
                     polygon = polygons[i].replace(this.regExes.trimParens, '$1');
@@ -12336,7 +13599,7 @@ class WKT_WKT extends Format_Format {
             'geometrycollection': function (str) {
                 // separate components of the collection with |
                 str = str.replace(/,\s*([A-Za-z])/g, '|$1');
-                var wktArray = BaseTypes_StringExt.trim(str).split('|');
+                var wktArray = StringExt.trim(str).split('|');
                 var components = [];
                 for (var i = 0, len = wktArray.length; i < len; ++i) {
                     components.push(this.read(wktArray[i]));
@@ -13097,7 +14360,7 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise = __webpack_require__(15);
+var promise = __webpack_require__(11);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
@@ -13108,10 +14371,10 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch_ie8_fetch = __webpack_require__(22);
+var fetch = __webpack_require__(20);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(7);
+var fetch_jsonp = __webpack_require__(4);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
@@ -13130,7 +14393,7 @@ const FetchRequest_fetch = window.fetch;
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
  * @param {boolean} cors - 是否允许跨域请求。
  */
-var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
+var setCORS = SuperMap.setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
@@ -13138,7 +14401,7 @@ var FetchRequest_setCORS = SuperMap.setCORS = function (cors) {
  * @description 是是否允许跨域请求。
  * @returns {boolean} 是否允许跨域请求。
  */
-var FetchRequest_isCORS = SuperMap.isCORS = function () {
+var isCORS = SuperMap.isCORS = function () {
     if (SuperMap.CORS != undefined) {
         return SuperMap.CORS;
     }
@@ -13149,7 +14412,7 @@ var FetchRequest_isCORS = SuperMap.isCORS = function () {
  * @description 设置请求超时时间。
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
  */
-var FetchRequest_setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
+var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
     return SuperMap.RequestTimeout = timeout;
 }
 /**
@@ -13157,10 +14420,10 @@ var FetchRequest_setRequestTimeout = SuperMap.setRequestTimeout = function (time
  * @description 获取请求超时时间。
  * @returns {number} 请求超时时间。
  */
-var FetchRequest_getRequestTimeout = SuperMap.getRequestTimeout = function () {
+var getRequestTimeout = SuperMap.getRequestTimeout = function () {
     return SuperMap.RequestTimeout || 45000;
 }
-var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
+var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -13177,18 +14440,18 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
         }
     },
     supportDirectRequest: function (url, options) {
-        if(Util_Util.isInTheSameDomain(url)){
+        if(Util.isInTheSameDomain(url)){
           return true;
         }if(options.crossOrigin != undefined){
           return options.crossOrigin;
         }else{
-          return FetchRequest_isCORS() || options.proxy
+          return isCORS() || options.proxy
         }
     },
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
-        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
@@ -13209,7 +14472,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
     delete: function (url, params, options) {
         options = options || {};
         var type = 'DELETE';
-        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
@@ -13319,7 +14582,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
                 credentials: options.withCredentials ? 'include' : 'omit',
                 mode: 'cors',
-                timeout: FetchRequest_getRequestTimeout()
+                timeout: getRequestTimeout()
             }).then(function (response) {
                 return response;
             }));
@@ -13330,7 +14593,7 @@ var FetchRequest_FetchRequest = SuperMap.FetchRequest = {
             headers: options.headers,
             credentials: options.withCredentials ? 'include' : 'omit',
             mode: 'cors',
-            timeout: FetchRequest_getRequestTimeout()
+            timeout: getRequestTimeout()
         }).then(function (response) {
             return response;
         });
@@ -13575,7 +14838,7 @@ class SecurityManager_SecurityManager {
         if (!serverInfo) {
             return;
         }
-        return FetchRequest_FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
+        return FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
             return response.text();
         });
     }
@@ -13587,7 +14850,7 @@ class SecurityManager_SecurityManager {
      */
     static registerServers(serverInfos) {
         this.servers = this.servers || {};
-        if (!Util_Util.isArray(serverInfos)) {
+        if (!Util.isArray(serverInfos)) {
             serverInfos = [serverInfos];
         }
         for (var i = 0; i < serverInfos.length; i++) {
@@ -13623,7 +14886,7 @@ class SecurityManager_SecurityManager {
             return;
         }
 
-        ids = (Util_Util.isArray(ids)) ? ids : [ids];
+        ids = (Util.isArray(ids)) ? ids : [ids];
         for (var i = 0; i < ids.length; i++) {
             var id = this._getUrlRestString(ids[0]) || ids[0];
             this.keys[id] = key;
@@ -13691,7 +14954,7 @@ class SecurityManager_SecurityManager {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
         };
-        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -13713,7 +14976,7 @@ class SecurityManager_SecurityManager {
             },
             withoutFormatSuffix: true
         };
-        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -13754,7 +15017,7 @@ class SecurityManager_SecurityManager {
             },
             withCredentials: true
         };
-        return FetchRequest_FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();
         });
 
@@ -13777,7 +15040,7 @@ class SecurityManager_SecurityManager {
             withCredentials: true,
             withoutFormatSuffix: true
         };
-        return FetchRequest_FetchRequest.get(url, "", requestOptions).then(function () {
+        return FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
         }).catch(function () {
             return false;
@@ -13797,7 +15060,7 @@ class SecurityManager_SecurityManager {
      * @returns {Promise} 返回包含 iManager 登录请求结果的 Promise 对象。
      */
     static loginManager(url, loginInfoParams, options) {
-        if (!Util_Util.isInTheSameDomain(url)) {
+        if (!Util.isInTheSameDomain(url)) {
             var isNewTab = options ? options.isNewTab : true;
             this._open(url, isNewTab);
             return;
@@ -13817,7 +15080,7 @@ class SecurityManager_SecurityManager {
             }
         };
         var me = this;
-        return FetchRequest_FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
+        return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
             response.text().then(function (result) {
                 me.imanagerToken = result;
                 return result;
@@ -13907,7 +15170,7 @@ class SecurityManager_SecurityManager {
 SecurityManager_SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager_SecurityManager.INNER_WINDOW_HEIGHT = 600;
 SecurityManager_SecurityManager.SSO = "https://sso.supermap.com";
-SecurityManager_SecurityManager.ONLINE = "http://www.supermapol.com";
+SecurityManager_SecurityManager.ONLINE = "https://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager_SecurityManager;
 
 
@@ -13971,7 +15234,7 @@ class iManagerServiceBase_IManagerServiceBase {
         if (param) {
             param = JSON.stringify(param);
         }
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
         });
     }
@@ -14006,7 +15269,7 @@ class iManagerCreateNodeParam_IManagerCreateNodeParam {
         this.physicalMachineName = '';        //vm所属的物理机名称.
         this.ips = [];                        //vm的ip,空数组表示随机分配
         this.userName = '';                   //vm所属用户
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
     }
 
 }
@@ -14152,7 +15415,7 @@ class iPortalServicesQueryParam_IPortalServicesQueryParam {
         this.isNotInDir = false;
         this.filterFields = [];
         this.authorizedOnly = false;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
     }
 
 }
@@ -14194,7 +15457,7 @@ class iPortalMapsQueryParam_IPortalMapsQueryParam {
         this.visitStart = null;
         this.visitEnd = null;
         this.filterFields = null;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
     }
 
 }
@@ -14238,7 +15501,7 @@ SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
         this.resourceIds = null;
         this.returnSubDir = null;
         this.searchScope = null;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
     }
  
  }
@@ -14276,7 +15539,7 @@ SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
          this.filterFields = null;
          this.createStart = null;
          this.createEnd = null;
-         Util_Util.extend(this, params);
+         Util.extend(this, params);
      }
  
  }
@@ -14309,7 +15572,7 @@ class iPortalServiceBase_IPortalServiceBase {
     constructor(url, options) {
         options = options || {};
         this.serviceUrl = url;
-        this.serverType = REST_ServerType.iPortal;
+        this.serverType = ServerType.iPortal;
         this.CLASS_NAME = "SuperMap.iPortalServiceBase";
         this.withCredentials = options.withCredentials || false;
         this.crossOrigin = options.crossOrigin
@@ -14328,7 +15591,7 @@ class iPortalServiceBase_IPortalServiceBase {
 
     request(method, url, param, requestOptions = {headers: this.headers, crossOrigin: this.crossOrigin, withCredentials: this.withCredentials }) {
         url = this.createCredentialUrl(url);
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
         });
     }
@@ -14370,10 +15633,10 @@ class iPortalServiceBase_IPortalServiceBase {
     getCredential() {
         var credential,
             value = SecurityManager_SecurityManager.getToken(this.serviceUrl);
-        credential = value ? new Credential_Credential(value, "token") : null;
+        credential = value ? new Credential(value, "token") : null;
         if (!credential) {
             value = this.getKey();
-            credential = value ? new Credential_Credential(value, "key") : null;
+            credential = value ? new Credential(value, "key") : null;
         }
         return credential;
     }
@@ -14446,7 +15709,7 @@ class iPortalService_IPortalService extends iPortalServiceBase_IPortalServiceBas
         this.verifyReason = null;
         this.version = null;
         this.visitCount = 0;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
         this.serviceUrl = serviceUrl;
         if (this.id) {
             this.serviceUrl = serviceUrl + "/" + this.id;
@@ -14540,7 +15803,7 @@ class iPortalMap_IPortalMap extends iPortalServiceBase_IPortalServiceBase {
         this.updateTime = 0;
         this.userName = "";
         this.visitCount = 0;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
         this.mapUrl = mapUrl;
         // if (this.id) {
         //     this.mapUrl = mapUrl + "/" + this.id;
@@ -14633,7 +15896,7 @@ SuperMap.iPortalMap = iPortalMap_IPortalMap;
          this.updateTime = 0;
          this.userName = "";
          this.visitCount = 0;
-         Util_Util.extend(this, params);
+         Util.extend(this, params);
          this.insightUrl = insightUrl;
      }
  
@@ -14717,7 +15980,7 @@ SuperMap.iPortalMap = iPortalMap_IPortalMap;
          this.url = "";
          this.userName = "";
          this.visitCount = 0;
-         Util_Util.extend(this, params);
+         Util.extend(this, params);
          this.sceneUrl = sceneUrl;
          // if (this.id) {
          //     this.sceneUrl = sceneUrl + "/" + this.id;
@@ -14801,7 +16064,7 @@ class iPortalMapdashboard_IPortalMapdashboard extends iPortalServiceBase_IPortal
         this.updateTime = 0;
         this.userName = "";
         this.visitCount = 0;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
         this.mapdashboardUrl = mapdashboardUrl;
     }
 
@@ -14881,16 +16144,215 @@ class iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam {
         this.currentPage = null;
         this.pageSize = null;
         this.orderType = null;
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
     }
 
 }
 
 SuperMap.iPortalMapdashboardsQueryParam = iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam;
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalQueryParam
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalQueryParam_IPortalQueryParam {
+
+    constructor(params) {
+        params = params || {};
+        this.resourceType = ""; // 空为全部 MAP SERVICE SCENE DATA INSIGHTS_WORKSPACE MAP_DASHBOARD
+        this.pageSize = 12; // 每页多少条
+        this.currentPage = 1; // 第几页
+        this.orderBy = "UPDATETIME"; // UPDATETIME HEATLEVEL
+        this.orderType = "DESC"; // DESC ASC
+        this.searchType = "PUBLIC"; // PUBLIC SHARETOME_RES MYDEPARTMENT_RES MYGROUP_RES MY_RES
+        this.tags = [];  // 标签
+        this.dirIds = []; // 类别
+        this.resourceSubTypes = []; // 类型
+        this.aggregationTypes = []; // TAG TYPE SUBTYPE
+        this.text = ""; // 搜索字段
+        this.groupIds = []; // 群组Id过滤
+        this.departmentIds = []; // 部门Id过滤
+        Util.extend(this, params);
+    }
+}
+SuperMap.iPortalQueryParam = iPortalQueryParam_IPortalQueryParam;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryResult.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.iPortalQueryResult
+ * @classdesc iPortal 资源结果集封装类。
+ * @category iPortal/Online
+ * @param {string} resourceUrl - 资源地址。
+ * @param {Object} [params] - 资源参数。
+ *
+ */
+class iPortalQueryResult_IPortalQueryResult {
+    constructor(params) {
+        params = params || {};
+        this.content = [];
+        this.total = 0;
+        this.currentPage = 1;
+        this.pageSize = 12;
+        this.aggregations = null;
+        Util.extend(this, params);
+    }
+
+}
+
+SuperMap.iPortalQueryResult = iPortalQueryResult_IPortalQueryResult;
+
+
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalResource.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.IPortalResource
+ * @classdesc iPortal 资源详情类。
+ * @category iPortal/Online
+ * @param {string} portalUrl - 资源地址。
+ * @param {Object} [resourceInfo] - 资源详情参数。
+ * @extends {SuperMap.iPortalServiceBase}
+ *
+ */
+class iPortalResource_IPortalResource extends iPortalServiceBase_IPortalServiceBase {
+    constructor(portalUrl, resourceInfo) {
+        super(portalUrl);
+        resourceInfo = resourceInfo || {};
+        this.authorizeSetting = [];
+        this.bounds = "";
+        this.bounds4326 = "";
+        this.checkStatus = "";
+        this.createTime = 0;
+        this.description = null;
+        this.dirId = null;
+        this.epsgCode = 0;
+        this.heatLevel = 0;
+        this.id = 0;
+        this.name = "";
+        this.personalDirId = null;
+        this.resourceId = 0;
+        this.resourceSubType = null;
+        this.resourceType = null;
+        this.serviceRootUrlId = null;
+        this.tags = null;
+        this.thumbnail = null;
+        this.updateTime = 0;
+        this.userName = "";
+        this.sourceJSON = {};//返回门户资源详细信息
+        Util.extend(this, resourceInfo); // INSIGHTS_WORKSPACE MAP_DASHBOARD
+        this.resourceUrl = portalUrl + "/web/"+this.resourceType.replace("_","").toLowerCase()+"s/" + this.resourceId;
+        if (this.withCredentials) {
+            this.resourceUrl = portalUrl + "/web/mycontent/"+this.resourceType.replace("_","").toLowerCase()+"s/" + this.resourceId;
+        }
+        // if (this.id) {
+        //     this.mapUrl = mapUrl + "/" + this.id;
+        // }
+    }
+
+    /**
+     * @function SuperMap.IPortalResource.prototype.load
+     * @description 加载资源信息。
+     * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise 返回值包含错误信息。
+     */
+    load() {
+        var me = this;
+        return me.request("GET", me.resourceUrl + ".json")
+            .then(function (resourceInfo) {
+                if (resourceInfo.error) {
+                    return resourceInfo;
+                }
+                me.sourceJSON = resourceInfo;
+            });
+    }
+
+    /**
+     * @function SuperMap.IPortalResource.prototype.update
+     * @description 更新资源属性信息。
+     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
+     */
+    update() {
+        var resourceName = this.resourceType.replace("_","").toLowerCase();
+        var options = {
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        };
+        if( resourceName === 'data') {
+            this.resourceUrl = this.resourceUrl + "/attributes.json";
+        }
+        var entity = JSON.stringify(this.sourceJSON);
+        //对服务资源进行编辑时，请求体内容只留关键字字段（目前如果是全部字段 更新返回成功 但其实没有真正的更新）
+        if( resourceName === 'service') {
+            var serviceInfo = {
+                authorizeSetting:this.sourceJSON.authorizeSetting,
+                metadata:this.sourceJSON.metadata,
+                tags:this.sourceJSON.tags,
+                thumbnail:this.sourceJSON.thumbnail,
+                tokenRefreshUrl:this.sourceJSON.tokenRefreshUrl
+            };
+            entity = JSON.stringify(serviceInfo);
+        }
+        return this.request("PUT", this.resourceUrl, entity, options);
+    }
+
+}
+
+SuperMap.iPortalResource = iPortalResource_IPortalResource;
+
+
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareParam.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalShareParam
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalShareParam_IPortalShareParam {
+
+    constructor(params) {
+        params = params || {};
+        this.ids = [];
+        this.entities = [];
+        this.resourceType = ""; // MAP SERVICE SCENE DATA INSIGHTS_WORKSPACE MAP_DASHBOARD
+        Util.extend(this, params);
+    }
+}
+SuperMap.iPortalShareParam = iPortalShareParam_IPortalShareParam;
+ 
+ 
 // CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
 
 
 
@@ -14926,9 +16388,69 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
      * @returns {Promise} 返回包含 iportal web 资源信息的 Promise 对象。
      */
     load() {
-        return FetchRequest_FetchRequest.get(this.iportalUrl + "/web");
+        return FetchRequest.get(this.iportalUrl + "/web");
     }
 
+    /**
+     * @function SuperMap.iPortal.prototype.queryResources
+     * @description 查询资源。
+     * @param {SuperMap.iPortalQueryParam} queryParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+    queryResources(queryParams) {
+        if (!(queryParams instanceof iPortalQueryParam_IPortalQueryParam)) {
+            return new Promise( function(resolve){
+                resolve(
+                    "queryParams is not instanceof iPortalQueryParam !"
+                );
+            });
+        }
+        var me = this;
+        var resourceUrl = this.iportalUrl + "/gateway/catalog/resource/search.json";
+        queryParams.t = new Date().getTime();
+        return this.request("GET", resourceUrl, queryParams).then(function(result) {
+            var content = [];
+            result.content.forEach(function(item) {
+                content.push(new iPortalResource_IPortalResource(me.iportalUrl, item));
+            });
+            let queryResult = new iPortalQueryResult_IPortalQueryResult();
+            queryResult.content = content;
+            queryResult.total = result.total;
+            queryResult.currentPage = result.currentPage;
+            queryResult.pageSize = result.pageSize;
+            queryResult.aggregations = result.aggregations;
+            return queryResult;
+        });
+    }
+
+
+    /**
+     * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
+     * @description 查询资源。
+     * @param {SuperMap.updateResourcesShareSetting} shareParams - 查询参数。
+     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     */
+    updateResourcesShareSetting(shareParams) {
+        if (!(shareParams instanceof iPortalShareParam_IPortalShareParam)) {
+            return new Promise( function(resolve){
+                resolve(
+                    "shareParams is not instanceof iPortalShareParam !"
+                );
+            });
+        }
+        var resourceUrlName = shareParams.resourceType.replace("_","").toLowerCase()+"s";
+        if(resourceUrlName === "datas"){
+            resourceUrlName = "mycontent/"+resourceUrlName;
+        }
+        var cloneShareParams = {
+            ids: shareParams.ids,
+            entities: shareParams.entities
+        }
+        var shareUrl = this.iportalUrl + "/web/"+resourceUrlName+"/sharesetting.json";
+        return this.request("PUT", shareUrl, JSON.stringify(cloneShareParams)).then(function(result) {
+            return result;
+        });
+    }
     /**
      * @function SuperMap.iPortal.prototype.queryServices
      * @description 查询服务。
@@ -15211,10 +16733,88 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
 
 SuperMap.iPortal = iPortal_IPortal;
 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareEntity.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+ 
+/**
+ * @class SuperMap.iPortalShareEntity
+ * @classdesc iPortal 资源查询参数。
+ * @category iPortal/Online
+ * @param {Object} params - iPortal 资源查询具体参数。
+ *
+ */
+class iPortalShareEntity_IPortalShareEntity {
+
+    constructor(params) {
+        params = params || {};
+        this.permissionType = ""; // SEARCH READ READWRITE DOWNLOAD
+        this.entityType = ""; // USER DEPARTMENT IPORTALGROUP
+        this.entityName = "GUEST"; // GUEST or 具体用户 name
+        this.entityId = null;
+        Util.extend(this, params);
+    }
+}
+SuperMap.iPortalShareEntity = iPortalShareEntity_IPortalShareEntity;
+ 
+ 
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class SuperMap.IPortalUser
+ * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
+ * @category iPortal/Online
+ * @param {string} iportalUrl - iportal根地址。
+ * @extends {SuperMap.iPortalServiceBase}
+ *
+ */
+class iPortalUser_IPortalUser extends iPortalServiceBase_IPortalServiceBase {
+    constructor(iportalUrl) {
+        super(iportalUrl);
+        this.iportalUrl = iportalUrl;
+    }
+
+    /**
+     * @function SuperMap.prototype.deleteResources
+     * @description 删除资源。
+     * @param {Object} deleteParams - 删除资源所需的参数对象：{ids,resourceType}。
+     * @returns {Promise} 返回包含删除操作状态的 Promise 对象。
+     */
+    deleteResources(deleteParams) {
+        var resourceName = deleteParams.resourceType.replace("_","").toLowerCase();
+        var deleteResourceUrl = this.iportalUrl+"/web/" + resourceName +"s.json?ids=" + encodeURI(JSON.stringify(deleteParams.ids));
+        if( resourceName === 'data') {
+            deleteResourceUrl = this.iportalUrl + "/web/mycontent/datas/delete.json";
+            return this.request("POST", deleteResourceUrl, JSON.stringify(deleteParams.ids));
+        }
+        return this.request("DELETE", deleteResourceUrl);
+    }
+}
+
+SuperMap.iPortalUser = iPortalUser_IPortalUser;
 // CONCATENATED MODULE: ./src/common/iPortal/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -15306,7 +16906,7 @@ class CommonServiceBase_CommonServiceBase {
         
         
 
-        if (Util_Util.isArray(url)) {
+        if (Util.isArray(url)) {
             me.urls = url;
             me.length = url.length;
             me.totalTimes = me.length;
@@ -15321,19 +16921,19 @@ class CommonServiceBase_CommonServiceBase {
             me.url = url;
         }
 
-        if (Util_Util.isArray(url) && !me.isServiceSupportPolling()) {
+        if (Util.isArray(url) && !me.isServiceSupportPolling()) {
             me.url = url[0];
             me.totalTimes = 1;
         }
         
-        me.serverType = me.serverType || REST_ServerType.ISERVER;
+        me.serverType = me.serverType || ServerType.ISERVER;
 
         options = options || {};
         this.crossOrigin = options.crossOrigin;
         this.headers = options.headers;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
-        me.isInTheSameDomain = Util_Util.isInTheSameDomain(me.url);
+        me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 
         me.events = new Events_Events(me, null, me.EVENT_TYPES, true);
         if (me.eventListeners instanceof Object) {
@@ -15349,7 +16949,7 @@ class CommonServiceBase_CommonServiceBase {
      */
     destroy() {
         let me = this;
-        if (Util_Util.isArray(me.urls)) {
+        if (Util.isArray(me.urls)) {
             me.urls = null;
             me.index = null;
             me.length = null;
@@ -15431,22 +17031,22 @@ class CommonServiceBase_CommonServiceBase {
         let keyUrl = url,
             credential, value;
         switch (this.serverType) {
-            case REST_ServerType.IPORTAL:
+            case ServerType.IPORTAL:
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
                     value = SecurityManager_SecurityManager.getKey(keyUrl);
-                    credential = value ? new Credential_Credential(value, "key") : null;
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case REST_ServerType.ONLINE:
+            case ServerType.ONLINE:
                 value = SecurityManager_SecurityManager.getKey(keyUrl);
-                credential = value ? new Credential_Credential(value, "key") : null;
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
                 //iServer or others
                 value = SecurityManager_SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         return credential;
@@ -15492,7 +17092,7 @@ class CommonServiceBase_CommonServiceBase {
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
         me.options.url = url;
-        me.options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
+        me.options.isInTheSameDomain = Util.isInTheSameDomain(url);
         me._commit(me.options);
     }
 
@@ -15542,7 +17142,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         this.events.triggerEvent("processCompleted", {
             result: result
         });
@@ -15554,7 +17154,7 @@ class CommonServiceBase_CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessFailed(result) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         let error = result.error || result;
         this.events.triggerEvent("processFailed", {
             error: error
@@ -15564,12 +17164,12 @@ class CommonServiceBase_CommonServiceBase {
     _commit(options) {
         if (options.method === "POST" || options.method === "PUT") {
             if (options.params) {
-                options.url = Util_Util.urlAppend(options.url,
-                    Util_Util.getParameterString(options.params || {}));
+                options.url = Util.urlAppend(options.url,
+                    Util.getParameterString(options.params || {}));
             }
             options.params = options.data;
         }
-        FetchRequest_FetchRequest.commit(options.method, options.url, options.params, {
+        FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withCredentials: options.withCredentials,
             crossOrigin: options.crossOrigin,
@@ -15600,15 +17200,15 @@ class CommonServiceBase_CommonServiceBase {
                 }
             }
             if (result.error) {
-                var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
+                var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
                 failure(result);
             } else {
                 result.succeed = result.succeed == undefined ? true : result.succeed;
-                var success = (options.scope) ? BaseTypes_FunctionExt.bind(options.success, options.scope) : options.success;
+                var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
                 success(result);
             }
         }).catch(function (e) {
-            var failure = (options.scope) ? BaseTypes_FunctionExt.bind(options.failure, options.scope) : options.failure;
+            var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
             failure(e);
         })
     }
@@ -15699,7 +17299,7 @@ class GeoCodingParameter_GeoCodingParameter {
          * @description 最大返回结果数。
          */
         this.maxReturn = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -15798,7 +17398,7 @@ class GeoDecodingParameter_GeoDecodingParameter {
          * @description 查询半径。
          */
         this.geoDecodingRadius = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -15888,7 +17488,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
     processAsync(url, params) {
         var me = this;
         let { headers, crossOrigin, proxy } = this;
-        FetchRequest_FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
+        FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -15950,7 +17550,7 @@ class AggQueryBuilderParameter_AggQueryBuilderParameter {
          */
         this.queryType = null;
         this.CLASS_NAME = "SuperMap.AggQueryBuilderParameter";
-        Util_Util.extend(this, option);
+        Util.extend(this, option);
     }
 
     destroy() {
@@ -16003,7 +17603,7 @@ class AggregationParameter_AggregationParameter {
         this.subAgg = null;
 
         this.CLASS_NAME = "SuperMap.AggregationParameter";
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     destroy() {
@@ -16146,7 +17746,7 @@ class AreaSolarRadiationParameters_AreaSolarRadiationParameters {
          */
         this.deleteExistResultDataset = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.AreaSolarRadiationParameters";
     }
@@ -16219,7 +17819,7 @@ class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServ
          * @member {SuperMap.DataFormat} [SuperMap.SpatialAnalystBase.prototype.format=SuperMap.DataFormat.GEOJSON]
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为 "ISERVER"，"GEOJSON"。
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
         this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
     }
 
@@ -16239,10 +17839,10 @@ class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServ
      */
     serviceProcessCompleted(result) {
         var me = this, analystResult;
-        result = Util_Util.transformResult(result);
-        if (result && me.format === REST_DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+        result = Util.transformResult(result);
+        if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             //批量分析时会返回多个结果
-            if (Util_Util.isArray(result)) {
+            if (Util.isArray(result)) {
                 for (var i = 0; i < result.length; i++) {
                     result[i] = me.toGeoJSONResult(result[i])
                 }
@@ -16364,7 +17964,7 @@ class AreaSolarRadiationService_AreaSolarRadiationService extends SpatialAnalyst
         }
 
         AreaSolarRadiationParameters_AreaSolarRadiationParameters.toObject(parameter, parameterObject);
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
 
         me.request({
@@ -16411,7 +18011,7 @@ class BufferDistance_BufferDistance {
          */
         this.value = 100;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.BufferDistance";
     }
@@ -16457,7 +18057,7 @@ class BufferSetting_BufferSetting {
          * @member {SuperMap.BufferEndType} [SuperMap.BufferSetting.prototype.endType = SuperMap.BufferEndType.FLAT]
          * @description 缓冲区端点枚举值。分为平头和圆头两种。
          */
-        this.endType = REST_BufferEndType.FLAT;
+        this.endType = BufferEndType.FLAT;
 
         /**
          * @member {SuperMap.BufferDistance} [SuperMap.BufferSetting.prototype.leftDistance=100]
@@ -16488,10 +18088,10 @@ class BufferSetting_BufferSetting {
          * {@link SuperMap.BufferRadiusUnit.FOOT}、{@link SuperMap.BufferRadiusUnit.INCH}、{@link SuperMap.BufferRadiusUnit.MILE}、{@link SuperMap.BufferRadiusUnit.YARD}。
          * 仅对BufferAnalyst有效。
          */
-        this.radiusUnit = REST_BufferRadiusUnit.METER;
+        this.radiusUnit = BufferRadiusUnit.METER;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.BufferSetting";
     }
@@ -16543,7 +18143,7 @@ class BufferAnalystParameters_BufferAnalystParameters {
          * @description 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
          */
         me.bufferSetting = new BufferSetting_BufferSetting();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.BufferAnalystParameters";
     }
 
@@ -16606,7 +18206,7 @@ class DataReturnOption_DataReturnOption {
          * @member {SuperMap.DataReturnMode} [SuperMap.DataReturnOption.prototype.dataReturnMode=SuperMap.DataReturnMode.RECORDSET_ONLY]
          * @description 数据返回模式。
          */
-        this.dataReturnMode = REST_DataReturnMode.RECORDSET_ONLY;
+        this.dataReturnMode = DataReturnMode.RECORDSET_ONLY;
 
         /**
          * @member {boolean} [SuperMap.DataReturnOption.prototype.deleteExistResultDataset=true]
@@ -16614,7 +18214,7 @@ class DataReturnOption_DataReturnOption {
          */
         this.deleteExistResultDataset = true;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.DataReturnOption";
     }
 
@@ -16711,7 +18311,7 @@ class JoinItem_JoinItem {
         this.joinType = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.JoinItem";
     }
@@ -16734,7 +18334,7 @@ class JoinItem_JoinItem {
      */
     toServerJSONObject() {
         var dataObj = {};
-        dataObj = Util_Util.copyAttributes(dataObj, this);
+        dataObj = Util.copyAttributes(dataObj, this);
         //joinFilter基本是个纯属性对象，这里不再做转换
         return dataObj;
     }
@@ -16855,7 +18455,7 @@ class DatasourceConnectionInfo_DatasourceConnectionInfo {
         this.user = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DatasourceConnectionInfo";
@@ -17007,7 +18607,7 @@ class LinkItem_LinkItem {
         this.primaryKeys = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.LinkItem";
@@ -17137,7 +18737,7 @@ class FilterParameter_FilterParameter {
          */
         this.fields = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.FilterParameter";
@@ -17233,7 +18833,7 @@ class DatasetBufferAnalystParameters_DatasetBufferAnalystParameters extends Buff
          */
         this.isUnion = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.DatasetBufferAnalystParameters";
     }
@@ -17325,7 +18925,7 @@ class GeometryBufferAnalystParameters_GeometryBufferAnalystParameters extends Bu
         this.sourceGeometrySRID = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = " SuperMap.GeometryBufferAnalystParameters";
     }
@@ -17415,7 +19015,7 @@ class BufferAnalystService_BufferAnalystService extends SpatialAnalystBase_Spati
          */
         this.mode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.BufferAnalystService";
     }
@@ -17455,7 +19055,7 @@ class BufferAnalystService_BufferAnalystService extends SpatialAnalystBase_Spati
             GeometryBufferAnalystParameters_GeometryBufferAnalystParameters.toObject(parameter, parameterObject);
         }
 
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",
@@ -17496,7 +19096,7 @@ class OutputSetting_OutputSetting {
          * @member {SuperMap.OutputType} SuperMap.OutputSetting.prototype.type
          * @description 分布式分析的输出类型。
          */
-        this.type = REST_OutputType.UDB;
+        this.type = OutputType.UDB;
 
         /**
          * @member {string} [SuperMap.OutputSetting.prototype.datasetName='analystResult']
@@ -17516,7 +19116,7 @@ class OutputSetting_OutputSetting {
          */
         this.outputPath = "";
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OutputSetting";
     }
 
@@ -17577,7 +19177,7 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.RangeMode} [SuperMap.MappingParameters.prototype.RangeMode=SuperMap.RangeMode.EQUALINTERVAL]
          * @description 专题图分段模式。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} [SuperMap.MappingParameters.prototype.rangeCount]
@@ -17589,9 +19189,9 @@ class MappingParameters_MappingParameters {
          * @member {SuperMap.ColorGradientType} [SuperMap.MappingParameters.prototype.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED]
          * @description 专题图颜色渐变模式。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.MappingParameters";
     }
 
@@ -17672,7 +19272,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 缓冲距离单位。
          */
-        this.distanceUnit = REST_AnalystSizeUnit.METER;
+        this.distanceUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
@@ -17695,7 +19295,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
         if (!options) {
             return this;
         }
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsParameter';
     }
@@ -17814,7 +19414,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      */
     getJobs(url) {
         var me = this;
-        FetchRequest_FetchRequest.get(me._processUrl(url), null, {
+        FetchRequest.get(me._processUrl(url), null, {
             proxy: me.proxy
         }).then(function (response) {
             return response.json();
@@ -17854,7 +19454,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
             crossOrigin: me.crossOrigin,
             isInTheSameDomain: me.isInTheSameDomain
         };
-        FetchRequest_FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+        FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
@@ -17870,12 +19470,12 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
     }
 
     serviceProcessCompleted(result, seconds) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest_FetchRequest.get(me._processUrl(result.newResourceLocation), {
+                FetchRequest.get(me._processUrl(result.newResourceLocation), {
                         _t: new Date().getTime()
                     })
                     .then(function (response) {
@@ -18035,7 +19635,7 @@ class BurstPipelineAnalystParameters_BurstPipelineAnalystParameters {
          */
         this.isUncertainDirectionValid = false;
 
-        Util_Util.extend(me, options);
+        Util.extend(me, options);
 
         this.CLASS_NAME = "SuperMap.BurstPipelineAnalystParameters";
     }
@@ -18084,7 +19684,7 @@ class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceB
          * @member {SuperMap.DataFormat} [SuperMap.NetworkAnalystServiceBase.prototype.format=SuperMap.DataFormat.GEOJSON]
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为 "ISERVER","GEOJSON"
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
         this.CLASS_NAME = "SuperMap.NetworkAnalystServiceBase";
     }
@@ -18105,8 +19705,8 @@ class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceB
      */
     serviceProcessCompleted(result) {
         var me = this, analystResult;
-        result = Util_Util.transformResult(result);
-        if (result && me.format === REST_DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+        result = Util.transformResult(result);
+        if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             analystResult = me.toGeoJSONResult(result);
         }
         if (!analystResult) {
@@ -18246,7 +19846,7 @@ class ChartFeatureInfoSpecsService_ChartFeatureInfoSpecsService extends CommonSe
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -18329,7 +19929,7 @@ class ChartQueryFilterParameter_ChartQueryFilterParameter {
          */
         this.chartFeatureInfoSpecCode = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ChartQueryFilterParameter";
     }
@@ -18435,7 +20035,7 @@ class ChartQueryParameters_ChartQueryParameters {
          * @description 期望查询结果返回的记录数，该值大于0。
          */
         this.expectCount = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ChartQueryParameters";
     }
@@ -18559,7 +20159,7 @@ class QueryParameters_QueryParameters {
          * @member {SuperMap.GeometryType} [SuperMap.QueryParameters.prototype.networkType=SuperMap.GeometryType.LINE]
          * @description 网络数据集对应的查询类型，分为点和线两种类型。
          */
-        this.networkType = REST_GeometryType.LINE;
+        this.networkType = GeometryType.LINE;
 
         /**
          * @member {SuperMap.QueryOption} [SuperMap.QueryParameters.prototype.queryOption=SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY]
@@ -18567,7 +20167,7 @@ class QueryParameters_QueryParameters {
          *              该类描述查询结果返回类型，包括只返回属性、
          *              只返回几何实体以及返回属性和几何实体。
          */
-        this.queryOption = REST_QueryOption.ATTRIBUTEANDGEOMETRY;
+        this.queryOption = QueryOption.ATTRIBUTEANDGEOMETRY;
 
         /**
          * @member {Array.<SuperMap.FilterParameter>} SuperMap.QueryParameters.prototype.queryParams
@@ -18598,7 +20198,7 @@ class QueryParameters_QueryParameters {
          * @description 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
          */
         this.returnFeatureWithFieldCaption = false;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryParameters";
     }
@@ -18699,9 +20299,9 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
          * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
          *              参数格式为"ISERVER","GEOJSON",GEOJSON
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         var me = this, end;
         if (options.format) {
             me.format = options.format.toUpperCase();
@@ -18769,8 +20369,8 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
-        if (result && result.recordsets && me.format === REST_DataFormat.GEOJSON) {
+        result = Util.transformResult(result);
+        if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
                     var geoJSONFormat = new GeoJSON_GeoJSON();
@@ -18855,7 +20455,7 @@ class ClipParameter_ClipParameter {
         this.isExactClip = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ClipParameter";
@@ -18882,7 +20482,7 @@ class ClipParameter_ClipParameter {
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return Util_Util.toJSON({
+        return Util.toJSON({
             isClipInRegion: this.isClipInRegion,
             clipDatasetName: this.clipDatasetName,
             clipDatasourceName: this.clipDatasourceName,
@@ -18929,12 +20529,12 @@ class ColorDictionary_ColorDictionary {
          */
         this.color = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         var me = this,
             c = me.color;
         if (c) {
-            me.color = new ServerColor_ServerColor(c.red, c.green, c.blue);
+            me.color = new ServerColor(c.red, c.green, c.blue);
         }
 
         this.CLASS_NAME = "SuperMap.ColorDictionary";
@@ -18945,7 +20545,7 @@ class ColorDictionary_ColorDictionary {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -18955,7 +20555,7 @@ class ColorDictionary_ColorDictionary {
      */
     toServerJSONObject() {
         var dataObj = {};
-        dataObj = Util_Util.copyAttributes(dataObj, this);
+        dataObj = Util.copyAttributes(dataObj, this);
         return dataObj;
     }
 }
@@ -19041,7 +20641,7 @@ class TransportationAnalystResultSetting_TransportationAnalystResultSetting {
          */
         this.returnRoutes = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TransportationAnalystResultSetting";
     }
@@ -19132,7 +20732,7 @@ class TransportationAnalystParameter_TransportationAnalystParameter {
          */
         this.resultSetting = new TransportationAnalystResultSetting_TransportationAnalystResultSetting();
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TransportationAnalystParameter";
     }
@@ -19203,7 +20803,7 @@ class ComputeWeightMatrixParameters_ComputeWeightMatrixParameters {
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ComputeWeightMatrixParameters";
     }
@@ -19286,7 +20886,7 @@ class ComputeWeightMatrixService_ComputeWeightMatrixService extends NetworkAnaly
             end = me.url.substr(me.url.length - 1, 1);
         me.url = me.url + ((end === "/") ? "weightmatrix" : "/weightmatrix") + ".json?";
         jsonObject = {
-            parameter: Util_Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)
         };
         me.request({
@@ -19316,7 +20916,7 @@ class ComputeWeightMatrixService_ComputeWeightMatrixService extends NetworkAnaly
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -19389,7 +20989,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
         if (end !== '/') {
             me.url += "/";
         }
-        Util_Util.extend(me, options);
+        Util.extend(me, options);
 
         this.CLASS_NAME = "SuperMap.DataFlowService";
     }
@@ -19530,7 +21130,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
                 geometry: this.geometry
             }
         };
-        return Util_Util.toJSON(filter);
+        return Util.toJSON(filter);
     }
 
 
@@ -19663,7 +21263,7 @@ class DatasetInfo_DatasetInfo {
          */
         this.type = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         var b = this.bounds;
         if (b) {
@@ -19677,7 +21277,7 @@ class DatasetInfo_DatasetInfo {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -19687,7 +21287,7 @@ class DatasetInfo_DatasetInfo {
      */
     toServerJSONObject() {
         var dataObj = {};
-        dataObj = Util_Util.copyAttributes(dataObj, this);
+        dataObj = Util.copyAttributes(dataObj, this);
         if (dataObj.bounds) {
             if (dataObj.bounds.toServerJSONObject) {
                 dataObj.bounds = dataObj.bounds.toServerJSONObject();
@@ -19720,10 +21320,10 @@ class OverlayAnalystParameters_OverlayAnalystParameters {
          * @member {SuperMap.OverlayOperationType} [SuperMap.OverlayAnalystParameters.prototype.operation=SuperMap.OverlayOperationType.UNION]
          * @description 指定叠加分析操作类型。
          */
-        this.operation = REST_OverlayOperationType.UNION;
+        this.operation = OverlayOperationType.UNION;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.OverlayAnalystParameters";
     }
@@ -19831,7 +21431,7 @@ class DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters extends Ov
          */
         this.resultSetting = new DataReturnOption_DataReturnOption();
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.DatasetOverlayAnalystParameters";
     }
@@ -19967,7 +21567,7 @@ class SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting {
          * @member {SuperMap.SmoothMethod} [SuperMap.SurfaceAnalystParametersSetting.prototype.smoothMethod=SuperMap.SmoothMethod.BSPLINE]
          * @description 获取或设置光滑处理所使用的方法。
          */
-        this.smoothMethod = REST_SmoothMethod.BSPLINE;
+        this.smoothMethod = SmoothMethod.BSPLINE;
 
         /**
          * @member {number} [SuperMap.SurfaceAnalystParametersSetting.prototype.smoothness=0]
@@ -19980,7 +21580,7 @@ class SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting {
         this.smoothness = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.SurfaceAnalystParametersSetting";
@@ -20011,20 +21611,20 @@ class SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting {
      * @returns {string} 对象 JSON 字符串。
      */
     toJSON() {
-        let json = "'datumValue':" + Util_Util.toJSON(this.datumValue);
-        json += ",'interval':" + Util_Util.toJSON(this.interval);
-        json += ",'resampleTolerance':" + Util_Util.toJSON(this.resampleTolerance);
-        json += ",'smoothMethod':" + Util_Util.toJSON(this.smoothMethod);
-        json += ",'smoothness':" + Util_Util.toJSON(this.smoothness);
+        let json = "'datumValue':" + Util.toJSON(this.datumValue);
+        json += ",'interval':" + Util.toJSON(this.interval);
+        json += ",'resampleTolerance':" + Util.toJSON(this.resampleTolerance);
+        json += ",'smoothMethod':" + Util.toJSON(this.smoothMethod);
+        json += ",'smoothness':" + Util.toJSON(this.smoothness);
         if (this.expectedZValues != null) {
-            json += "," + "'expectedZValues':" + Util_Util.toJSON(this.expectedZValues);
+            json += "," + "'expectedZValues':" + Util.toJSON(this.expectedZValues);
         }
         if (this.clipRegion != null) {
             var serverGeometry = this.clipRegion;
             if (this.clipRegion instanceof Geometry_Geometry && this.clipRegion.components) {
                 serverGeometry = ServerGeometry_ServerGeometry.fromGeometry(this.clipRegion)
             }
-            json += ",'clipRegion':" + Util_Util.toJSON(serverGeometry);
+            json += ",'clipRegion':" + Util.toJSON(serverGeometry);
         }
         return "{" + json + "}";
     }
@@ -20080,10 +21680,10 @@ class SurfaceAnalystParameters_SurfaceAnalystParameters {
          * @member {SuperMap.SurfaceAnalystMethod} [SuperMap.SurfaceAnalystParameters.prototype.surfaceAnalystMethod=SuperMap.SurfaceAnalystMethod.ISOLINE]
          * @description 获取或设置表面分析的提取方法，提取等值线和提取等值面。
          */
-        this.surfaceAnalystMethod = REST_SurfaceAnalystMethod.ISOLINE;
+        this.surfaceAnalystMethod = SurfaceAnalystMethod.ISOLINE;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.SurfaceAnalystParameters";
@@ -20159,7 +21759,7 @@ class DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters extends Su
         this.zValueFieldName = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DatasetSurfaceAnalystParameters";
@@ -20264,7 +21864,7 @@ class ThiessenAnalystParameters_ThiessenAnalystParameters {
          */
         this.returnResultRegion = true;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ThiessenAnalystParameters";
     }
@@ -20328,7 +21928,7 @@ class DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters extends 
         this.dataset = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
 
@@ -20444,7 +22044,7 @@ class DensityKernelAnalystParameters_DensityKernelAnalystParameters {
          * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
          */
         this.deleteExistResultDataset = false;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.DensityKernelAnalystParameters";
 
@@ -20528,7 +22128,7 @@ class DensityAnalystService_DensityAnalystService extends SpatialAnalystBase_Spa
         this.mode = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DensityAnalystService";
@@ -20563,7 +22163,7 @@ class DensityAnalystService_DensityAnalystService extends SpatialAnalystBase_Spa
         }
 
         DensityKernelAnalystParameters_DensityKernelAnalystParameters.toObject(parameter, parameterObject);
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
 
         me.request({
@@ -20624,7 +22224,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
          * @member {SuperMap.EditType} [SuperMap.EditFeaturesParameters.prototype.editType=SuperMap.EditType.ADD]
          * @description 要素集更新类型 (add、update、delete)。
          */
-        this.editType = REST_EditType.ADD;
+        this.editType = EditType.ADD;
 
         /**
          * @member {Array.<string|number>} [SuperMap.EditFeaturesParameters.prototype.IDs]
@@ -20644,7 +22244,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
          * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。
          */
         this.isUseBatch = false;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
     }
@@ -20676,7 +22276,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
             features,
             editType = params.editType;
 
-        if (editType === REST_EditType.DELETE) {
+        if (editType === EditType.DELETE) {
             if (params.IDs === null) {
                 return;
             }
@@ -20694,7 +22294,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
             }
         }
 
-        return Util_Util.toJSON(features);
+        return Util.toJSON(features);
     }
 
 }
@@ -20752,7 +22352,7 @@ class EditFeaturesService_EditFeaturesService extends CommonServiceBase_CommonSe
         this.isUseBatch = false;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         var me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
@@ -20794,12 +22394,12 @@ class EditFeaturesService_EditFeaturesService extends CommonServiceBase_CommonSe
         me.returnContent = params.returnContent;
         me.isUseBatch = params.isUseBatch;
         jsonParameters = EditFeaturesParameters_EditFeaturesParameters.toJsonParameters(params);
-        if (editType === REST_EditType.DELETE) {
-            ids = Util_Util.toJSON(params.IDs);
+        if (editType === EditType.DELETE) {
+            ids = Util.toJSON(params.IDs);
             me.url += "ids=" + ids;
             method = "DELETE";
             jsonParameters = ids;
-        } else if (editType === REST_EditType.UPDATE) {
+        } else if (editType === EditType.UPDATE) {
             method = "PUT";
         } else {
             if (me.isUseBatch) {
@@ -20873,7 +22473,7 @@ class FacilityAnalyst3DParameters_FacilityAnalyst3DParameters {
          *              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
          */
         this.isUncertainDirectionValid = false;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.FacilityAnalyst3DParameters";
 
     }
@@ -21180,7 +22780,7 @@ class FacilityAnalystStreamParameters_FacilityAnalystStreamParameters {
          * @description 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）。
          */
         this.queryType = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.FacilityAnalystStreamParameters";
     }
 
@@ -21537,7 +23137,7 @@ class FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters ex
         super(options);
         options = options || {};
         this.sourceNodeIDs = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.FacilityAnalystUpstream3DParameters";
     }
 
@@ -21653,9 +23253,9 @@ class FilterAggParameter_FilterAggParameter extends AggregationParameter_Aggrega
          * @member {SuperMap.AggregationType} [SuperMap.FilterAggParameter.prototype.aggType=AggregationType.FILTER]
          * @description 聚合类型。
          */
-        this.aggType = REST_AggregationType.FILTER;
+        this.aggType = AggregationType.FILTER;
         this.CLASS_NAME = "SuperMap.FilterAggParameter";
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     destroy() {
@@ -21700,7 +23300,7 @@ class FieldParameters_FieldParameters {
         this.dataset = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.FieldParameters";
@@ -21757,7 +23357,7 @@ class FieldStatisticsParameters_FieldStatisticsParameters extends FieldParameter
         this.statisticMode = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.FieldStatisticsParameters";
@@ -21845,7 +23445,7 @@ class FieldStatisticService_FieldStatisticService extends CommonServiceBase_Comm
          */
         this.statisticMode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.FieldStatisticService";
@@ -21963,7 +23563,7 @@ class FindClosestFacilitiesParameters_FindClosestFacilitiesParameters {
          *              则返回结果空间信息等都为空。
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindClosestFacilitiesParameters";
     }
@@ -22064,8 +23664,8 @@ class FindClosestFacilitiesService_FindClosestFacilitiesService extends NetworkA
             expectFacilityCount: params.expectFacilityCount,
             fromEvent: params.fromEvent,
             maxWeight: params.maxWeight,
-            parameter: Util_Util.toJSON(params.parameter),
-            event: Util_Util.toJSON(params.event),
+            parameter: Util.toJSON(params.parameter),
+            event: Util.toJSON(params.event),
             facilities: me.getJson(params.isAnalyzeById, params.facilities)
         };
         me.request({
@@ -22095,7 +23695,7 @@ class FindClosestFacilitiesService_FindClosestFacilitiesService extends NetworkA
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -22197,7 +23797,7 @@ class FindLocationParameters_FindLocationParameters {
          * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段。
          */
         this.weightName = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.FindLocationParameters";
     }
 
@@ -22293,7 +23893,7 @@ class FindLocationService_FindLocationService extends NetworkAnalystServiceBase_
             returnEdgeFeature: true,
             returnEdgeGeometry: true,
             returnNodeFeature: true,
-            mapParameter: Util_Util.toJSON(params.mapParameter),
+            mapParameter: Util.toJSON(params.mapParameter),
             supplyCenters: me.getCentersJson(params.supplyCenters)
         };
         me.request({
@@ -22318,7 +23918,7 @@ class FindLocationService_FindLocationService extends NetworkAnalystServiceBase_
             if (i > 0) {
                 json += ",";
             }
-            json += Util_Util.toJSON(params[i]);
+            json += Util.toJSON(params[i]);
         }
         json += "]";
         return json;
@@ -22407,7 +24007,7 @@ class FindMTSPPathsParameters_FindMTSPPathsParameters {
          *              SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindMTSPPathsParameters";
     }
@@ -22500,7 +24100,7 @@ class FindMTSPPathsService_FindMTSPPathsService extends NetworkAnalystServiceBas
         jsonObject = {
             centers: centers,
             nodes: nodes,
-            parameter: Util_Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             hasLeastTotalCost: params.hasLeastTotalCost
         };
         me.request({
@@ -22530,7 +24130,7 @@ class FindMTSPPathsService_FindMTSPPathsService extends NetworkAnalystServiceBas
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -22632,7 +24232,7 @@ class FindPathParameters_FindPathParameters {
          * @description 交通网络分析通用参数。
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindPathParameters";
     }
@@ -22720,7 +24320,7 @@ class FindPathService_FindPathService extends NetworkAnalystServiceBase_NetworkA
         me.url = me.url + ((end === "/") ? "path" : "/path") + ".json?";
         jsonObject = {
             hasLeastEdgeCount: params.hasLeastEdgeCount,
-            parameter: Util_Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)
         };
         me.request({
@@ -22750,7 +24350,7 @@ class FindPathService_FindPathService extends NetworkAnalystServiceBase_NetworkA
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -22865,7 +24465,7 @@ class FindServiceAreasParameters_FindServiceAreasParameters {
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindServiceAreasParameters";
     }
@@ -22955,7 +24555,7 @@ class FindServiceAreasService_FindServiceAreasService extends NetworkAnalystServ
         jsonObject = {
             isFromCenter: params.isFromCenter,
             isCenterMutuallyExclusive: params.isCenterMutuallyExclusive,
-            parameter: Util_Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             centers: me.getJson(params.isAnalyzeById, params.centers),
             weights: me.getJson(true, params.weights)
         };
@@ -22986,7 +24586,7 @@ class FindServiceAreasService_FindServiceAreasService extends NetworkAnalystServ
                 }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
-        } else if (isAnalyzeById == true) {
+        } else if (isAnalyzeById === true) {
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
                     jsonString += ",";
@@ -23084,7 +24684,7 @@ class FindTSPPathsParameters_FindTSPPathsParameters {
          *              字段，则返回结果空间信息等都为空。
          */
         this.parameter = new TransportationAnalystParameter_TransportationAnalystParameter();
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.FindTSPPathsParameters";
     }
@@ -23201,7 +24801,7 @@ class FindTSPPathsService_FindTSPPathsService extends NetworkAnalystServiceBase_
             }
             nodesString += ']';
             jsonParameters += nodesString;
-        } else if (params.isAnalyzeById == true) {
+        } else if (params.isAnalyzeById === true) {
             let nodeIDsString = "[", nodes = params.nodes, len = nodes.length;
             for (let i = 0; i < len; i++) {
                 if (i > 0) {
@@ -23348,7 +24948,7 @@ class GenerateSpatialDataParameters_GenerateSpatialDataParameters {
          */
         this.dataReturnOption = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GenerateSpatialDataParameters";
@@ -23498,7 +25098,7 @@ class GenerateSpatialDataService_GenerateSpatialDataService extends SpatialAnaly
         me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
 
         me.url += "?returnContent=true";
-        jsonParameters = Util_Util.toJSON(params);
+        jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }
 
@@ -23536,9 +25136,9 @@ class GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter ex
          * @member {SuperMap.AggregationQueryBuilderType} [SuperMap.GeoBoundingBoxQueryBuilderParameter.prototype.queryType=SuperMap.AggregationQueryBuilderType.GEO_BOUNDING_BOX]
          * @description 查询类型。
          */
-        this.queryType = REST_AggregationQueryBuilderType.GEO_BOUNDING_BOX;
+        this.queryType = AggregationQueryBuilderType.GEO_BOUNDING_BOX;
         this.CLASS_NAME = "SuperMap.GeoBoundingBoxQueryBuilderParameter";
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     destroy() {
@@ -23578,9 +25178,9 @@ class GeoHashGridAggParameter_GeoHashGridAggParameter extends AggregationParamet
          * @member {SuperMap.AggregationType} [SuperMap.GeoHashGridAggParameter.prototype.aggType=SuperMap.AggregationType.GEOHASH_GRID]
          * @description 格网聚合类型。
          */
-        this.aggType = REST_AggregationType.GEOHASH_GRID;
+        this.aggType = AggregationType.GEOHASH_GRID;
 
-        Util_Util.extend(this, option);
+        Util.extend(this, option);
 
         this.CLASS_NAME = "SuperMap.GeoHashGridAggParameter";
     }
@@ -23606,7 +25206,7 @@ class GeoHashGridAggParameter_GeoHashGridAggParameter extends AggregationParamet
         if (param.subAgg) {
             parameters.subAgg = param.subAgg;
         }
-        return Util_Util.toJson(parameters);
+        return Util.toJson(parameters);
     }
 }
 
@@ -23656,7 +25256,7 @@ class GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters extends 
         }
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.GeometryOverlayAnalystParameters";
     }
@@ -23764,7 +25364,7 @@ class GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters extends 
          */
         this.zValues = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GeometrySurfaceAnalystParameters";
@@ -23820,7 +25420,7 @@ class GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters extend
          */
         this.points = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.GeometryThiessenAnalystParameters";
     }
@@ -23942,7 +25542,7 @@ class GeoRelationAnalystParameters_GeoRelationAnalystParameters {
          */
         this.expectCount = 500;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GeoRelationAnalystParameters";
@@ -24093,6 +25693,8 @@ SuperMap.GeoRelationAnalystService = GeoRelationAnalystService_GeoRelationAnalys
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  */
 class GetFeaturesParametersBase_GetFeaturesParametersBase {
 
@@ -24103,6 +25705,18 @@ class GetFeaturesParametersBase_GetFeaturesParametersBase {
          * @description 数据集集合中的数据集名称列表。
          */
         this.datasetNames = null;
+
+        /**
+         * @member {string} SuperMap.GetFeaturesParametersBase.prototype.targetEpsgCode
+         * @description 动态投影的目标坐标系对应的 EPSG Code，使用时需设置 returnContent 参数为 true。
+         */
+        this.targetEpsgCode = null;
+
+        /**
+         * @member {Object} SuperMap.GetFeaturesParametersBase.prototype.targetEpsgCode
+         * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+         */
+        this.targetPrj = null;
 
         /**
          * @member {boolean} [SuperMap.GetFeaturesParametersBase.prototype.returnContent=true]
@@ -24142,7 +25756,7 @@ class GetFeaturesParametersBase_GetFeaturesParametersBase {
          */
         this.aggregations = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesParametersBase";
     }
@@ -24159,6 +25773,8 @@ class GetFeaturesParametersBase_GetFeaturesParametersBase {
         me.fromIndex = null;
         me.toIndex = null;
         me.maxFeatures = null;
+        me.targetEpsgCode = null;
+        me.targetPrj = null;
         if (me.aggregation) {
             me.aggregation = null;
         }
@@ -24189,6 +25805,8 @@ SuperMap.GetFeaturesParametersBase = GetFeaturesParametersBase_GetFeaturesParame
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -24225,8 +25843,8 @@ class GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters extends GetFea
          * @member {SuperMap.SpatialQueryMode} [SuperMap.GetFeaturesByBoundsParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式常量。
          */
-        this.spatialQueryMode = REST_SpatialQueryMode.CONTAIN;
-        Util_Util.extend(this, options);
+        this.spatialQueryMode = SpatialQueryMode.CONTAIN;
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.GetFeaturesByBoundsParameters";
     }
 
@@ -24287,8 +25905,14 @@ class GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters extends GetFea
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByBounds.maxFeatures = params.maxFeatures;
         }
+        if (params.targetEpsgCode) {
+            parasByBounds.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByBounds.targetPrj = params.targetPrj;
+        }
 
-        return Util_Util.toJSON(parasByBounds);
+        return Util.toJSON(parasByBounds);
     }
 
 
@@ -24370,9 +25994,9 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
          * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。
          * 参数格式为 "ISERVER"，"GEOJSON"。
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         var me = this, end;
         if (options.format) {
             me.format = options.format.toUpperCase();
@@ -24450,8 +26074,8 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
-        if (me.format === REST_DataFormat.GEOJSON && result.features) {
+        result = Util.transformResult(result);
+        if (me.format === DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new GeoJSON_GeoJSON();
             result.features = geoJSONFormat.toGeoJSON(result.features);
         }
@@ -24548,6 +26172,8 @@ SuperMap.GetFeaturesByBoundsService = GetFeaturesByBoundsService_GetFeaturesByBo
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -24581,7 +26207,7 @@ class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFea
          * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
          */
         this.fields = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.GetFeaturesByBufferParameters";
     }
 
@@ -24637,7 +26263,13 @@ class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFea
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             paramsBySql.maxFeatures = params.maxFeatures;
         }
-        return Util_Util.toJSON(paramsBySql);
+        if (params.targetEpsgCode) {
+            paramsBySql.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            paramsBySql.targetPrj = params.targetPrj;
+        }
+        return Util.toJSON(paramsBySql);
     }
 
 
@@ -24733,6 +26365,8 @@ SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService_GetFeaturesByBu
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -24771,8 +26405,8 @@ class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends Ge
          * @member {SuperMap.SpatialQueryMode} [SuperMap.GetFeaturesByGeometryParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式常量。
          */
-        this.spatialQueryMode = REST_SpatialQueryMode.CONTAIN;
-        Util_Util.extend(this, options);
+        this.spatialQueryMode = SpatialQueryMode.CONTAIN;
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesByGeometryParameters";
     }
@@ -24831,8 +26465,14 @@ class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends Ge
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByGeometry.maxFeatures = params.maxFeatures;
         }
+        if (params.targetEpsgCode) {
+            parasByGeometry.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByGeometry.targetPrj = params.targetPrj;
+        }
 
-        return Util_Util.toJSON(parasByGeometry);
+        return Util.toJSON(parasByGeometry);
     }
 
 }
@@ -24920,6 +26560,8 @@ SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService_GetFeatures
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -24944,7 +26586,7 @@ class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesP
          *  @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
          */
         this.fields = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesByIDsParameters";
     }
@@ -24987,7 +26629,13 @@ class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesP
             filterParameter.fields = params.fields;
             parasByIDs.queryParameter = filterParameter;
         }
-        return Util_Util.toJSON(parasByIDs);
+        if (params.targetEpsgCode) {
+            parasByIDs.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByIDs.targetPrj = params.targetPrj;
+        }
+        return Util.toJSON(parasByIDs);
     }
 
 }
@@ -25075,6 +26723,8 @@ SuperMap.GetFeaturesByIDsService = GetFeaturesByIDsService_GetFeaturesByIDsServi
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesParametersBase_GetFeaturesParametersBase {
@@ -25094,7 +26744,7 @@ class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesP
          */
         this.queryParameter = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesBySQLParameters";
     }
@@ -25131,7 +26781,13 @@ class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesP
         if (params.aggregations) {
             paramsBySql.aggregations = params.aggregations;
         }
-        return Util_Util.toJSON(paramsBySql);
+        if (params.targetEpsgCode) {
+            paramsBySql.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            paramsBySql.targetPrj = params.targetPrj;
+        }
+        return Util.toJSON(paramsBySql);
     }
 
 }
@@ -25250,7 +26906,7 @@ class GetFieldsService_GetFieldsService extends CommonServiceBase_CommonServiceB
          */
         this.dataset = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GetFieldsService";
@@ -25334,7 +26990,7 @@ class GetGridCellInfosParameters_GetGridCellInfosParameters {
          * @description 要查询的地理位置 Y 轴。
          */
         this.Y = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
     }
@@ -25421,7 +27077,7 @@ class GetGridCellInfosService_GetGridCellInfosService extends CommonServiceBase_
          */
         this.Y = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.GetGridCellInfosService";
     }
@@ -25449,7 +27105,7 @@ class GetGridCellInfosService_GetGridCellInfosService extends CommonServiceBase_
         if (!(params instanceof GetGridCellInfosParameters_GetGridCellInfosParameters)) {
             return;
         }
-        Util_Util.extend(this, params);
+        Util.extend(this, params);
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
         me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json") :
@@ -25482,7 +27138,7 @@ class GetGridCellInfosService_GetGridCellInfosService extends CommonServiceBase_
      */
     getDatasetInfoCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         me.datasetType = result.datasetInfo.type;
         me.queryGridInfos();
     }
@@ -25535,7 +27191,7 @@ SuperMap.GetGridCellInfosService = GetGridCellInfosService_GetGridCellInfosServi
  * @param {Array} srcData - 原始值数组。
  * @param {Array} targetData - 外部值数组。
  */
-class ThemeMemoryData_ThemeMemoryData {
+class ThemeMemoryData {
 
     constructor(srcData, targetData) {
         /**
@@ -25588,7 +27244,7 @@ class ThemeMemoryData_ThemeMemoryData {
 
 }
 
-SuperMap.ThemeMemoryData = ThemeMemoryData_ThemeMemoryData;
+SuperMap.ThemeMemoryData = ThemeMemoryData;
 // CONCATENATED MODULE: ./src/common/iServer/Theme.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -25626,7 +27282,7 @@ class Theme_Theme {
         this.type = type;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.Theme";
@@ -25700,19 +27356,19 @@ class ServerTextStyle_ServerTextStyle {
          * @member {SuperMap.TextAlignment} [SuperMap.ServerTextStyle.prototype.align= SuperMap.TextAlignment.BASELINECENTER]
          * @description 文本的对齐方式。
          */
-        this.align = REST_TextAlignment.BASELINECENTER;
+        this.align = TextAlignment.BASELINECENTER;
 
         /**
          * @member {SuperMap.ServerColor} [SuperMap.ServerTextStyle.prototype.backColor=(255, 255, 255)]
          * @description 文本的背景色。
          */
-        this.backColor = new ServerColor_ServerColor(255, 255, 255);
+        this.backColor = new ServerColor(255, 255, 255);
 
         /**
          * @member {SuperMap.ServerColor} [SuperMap.ServerTextStyle.prototype.foreColor=(0, 0, 0)]
          * @description 文本的前景色。
          */
-        this.foreColor = new ServerColor_ServerColor(0, 0, 0);
+        this.foreColor = new ServerColor(0, 0, 0);
 
         /**
          * @member {boolean} [SuperMap.ServerTextStyle.prototype.backOpaque=false]
@@ -25807,7 +27463,7 @@ class ServerTextStyle_ServerTextStyle {
         this.rotation = 0.0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
        this.CLASS_NAME = "SuperMap.ServerTextStyle";
@@ -25854,9 +27510,9 @@ class ServerTextStyle_ServerTextStyle {
      */
     static fromObj(obj) {
         var res = new ServerTextStyle_ServerTextStyle(obj);
-        Util_Util.copy(res, obj);
-        res.backColor = ServerColor_ServerColor.fromJson(obj.backColor);
-        res.foreColor = ServerColor_ServerColor.fromJson(obj.foreColor);
+        Util.copy(res, obj);
+        res.backColor = ServerColor.fromJson(obj.backColor);
+        res.foreColor = ServerColor.fromJson(obj.foreColor);
         return res;
     }
 
@@ -25925,7 +27581,7 @@ class ThemeLabelItem_ThemeLabelItem {
         this.style = new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeLabelItem";
 
@@ -25959,7 +27615,7 @@ class ThemeLabelItem_ThemeLabelItem {
             return;
         }
         var t = new ThemeLabelItem_ThemeLabelItem();
-        Util_Util.copy(t, obj);
+        Util.copy(t, obj);
         return t;
     }
 
@@ -26015,7 +27671,7 @@ class ThemeUniqueItem_ThemeUniqueItem {
         this.visible = true;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeUniqueItem";
@@ -26044,7 +27700,7 @@ class ThemeUniqueItem_ThemeUniqueItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.style) {
             if (obj.style.toServerJSONObject) {
                 obj.style = obj.style.toServerJSONObject();
@@ -26061,7 +27717,7 @@ class ThemeUniqueItem_ThemeUniqueItem {
      */
     static fromObj(obj) {
         var res = new ThemeUniqueItem_ThemeUniqueItem();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.style = ServerStyle_ServerStyle.fromJson(obj.style);
         return res;
 
@@ -26117,7 +27773,7 @@ class ThemeFlow_ThemeFlow {
         this.leaderLineStyle =  new ServerStyle_ServerStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeFlow";
@@ -26148,7 +27804,7 @@ class ThemeFlow_ThemeFlow {
             return;
         }
         var res = new ThemeFlow_ThemeFlow();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.leaderLineStyle = ServerStyle_ServerStyle.fromJson(obj.leaderLineStyle);
         return res;
     }
@@ -26198,7 +27854,7 @@ class ThemeOffset_ThemeOffset {
         this.offsetY = "0.0";
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeOffset";
     }
@@ -26225,7 +27881,7 @@ class ThemeOffset_ThemeOffset {
             return;
         }
         var res = new ThemeOffset_ThemeOffset();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         return res;
     }
 
@@ -26301,7 +27957,7 @@ class LabelMixedTextStyle_LabelMixedTextStyle {
         this.styles = new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.LabelMixedTextStyle"
     }
@@ -26341,7 +27997,7 @@ class LabelMixedTextStyle_LabelMixedTextStyle {
         }
         var res = new LabelMixedTextStyle_LabelMixedTextStyle();
         var stys = obj.styles;
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.defaultStyle = new ServerTextStyle_ServerTextStyle(obj.defaultStyle);
         if (stys) {
             res.styles = [];
@@ -26427,7 +28083,7 @@ class ThemeLabelText_ThemeLabelText {
         this.uniformMixedStyle =  null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeLabelText";
     }
@@ -26463,7 +28119,7 @@ class ThemeLabelText_ThemeLabelText {
             return;
         }
         var res = new ThemeLabelText_ThemeLabelText();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.uniformStyle = ServerTextStyle_ServerTextStyle.fromObj(obj.uniformStyle);
         res.uniformMixedStyle = LabelMixedTextStyle_LabelMixedTextStyle.fromObj(obj.uniformMixedStyle);
         return res;
@@ -26506,7 +28162,7 @@ class ThemeLabelAlongLine_ThemeLabelAlongLine {
          * @member {SuperMap.AlongLineDirection} [SuperMap.ThemeLabelAlongLine.prototype.alongLineDirection=SuperMap.AlongLineDirection.LB_TO_RT]
          * @description 标签沿线标注方向。
          */
-        this.alongLineDirection = REST_AlongLineDirection.LB_TO_RT;
+        this.alongLineDirection = AlongLineDirection.LB_TO_RT;
 
         /**
          * @member {boolean} [SuperMap.ThemeLabelAlongLine.prototype.angleFixed=false]
@@ -26537,7 +28193,7 @@ class ThemeLabelAlongLine_ThemeLabelAlongLine {
         this.labelRepeatInterval = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeLabelAlongLine";
@@ -26569,7 +28225,7 @@ class ThemeLabelAlongLine_ThemeLabelAlongLine {
             return;
         }
         var t = new ThemeLabelAlongLine_ThemeLabelAlongLine();
-        Util_Util.copy(t, obj);
+        Util.copy(t, obj);
         return t;
     }
 
@@ -26602,7 +28258,7 @@ class ThemeLabelBackground_ThemeLabelBackground {
          * @description 标签专题图中标签背景风格。当背景形状
          *              labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
          */
-        this.labelBackShape = REST_LabelBackShape.NONE;
+        this.labelBackShape = LabelBackShape.NONE;
 
         /**
          * @member {SuperMap.ServerStyle} [SuperMap.ThemeLabelBackground.prototype.backStyle=SuperMap.LabelBackShape.NON]
@@ -26612,7 +28268,7 @@ class ThemeLabelBackground_ThemeLabelBackground {
         this.backStyle = new ServerStyle_ServerStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeLabelBackground";
@@ -26738,7 +28394,7 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
          * @member {SuperMap.LabelOverLengthMode} [SuperMap.ThemeLabel.prototype.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
          * @description 对于标签的长度超过设置的标签最大长度 maxLabelLength 时称为超长标签。
          */
-        this.labelOverLengthMode = REST_LabelOverLengthMode.NONE;
+        this.labelOverLengthMode = LabelOverLengthMode.NONE;
 
         /**
          * @member {Array.<SuperMap.LabelMatrixCell>} SuperMap.ThemeLabel.prototype.matrixCells
@@ -26810,7 +28466,7 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
         this.textSpace = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeLabel";
@@ -26869,7 +28525,7 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return Util_Util.toJSON(this.toServerJSONObject());
+        return Util.toJSON(this.toServerJSONObject());
     }
 
     /**
@@ -26941,7 +28597,7 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
         var lab = new ThemeLabel_ThemeLabel();
         var itemsL = obj.items, itemsU = obj.uniqueItems, cells = obj.matrixCells;
         obj.matrixCells = null;
-        Util_Util.copy(lab, obj);
+        Util.copy(lab, obj);
         lab.alongLine = ThemeLabelAlongLine_ThemeLabelAlongLine.fromObj(obj);
         lab.background = ThemeLabelBackground_ThemeLabelBackground.fromObj(obj);
         lab.flow = new ThemeFlow_ThemeFlow({
@@ -27037,10 +28693,10 @@ class ThemeUnique_ThemeUnique extends Theme_Theme {
          *              但如果为某几个子项的风格进行单独设置后（设置了 ThemeUniqueItem 或 ThemeRangeItem 类中Style属性），
          *              该配色方案对于这几个子项将不起作用。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeUnique";
@@ -27079,7 +28735,7 @@ class ThemeUnique_ThemeUnique extends Theme_Theme {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.defaultStyle) {
             if (obj.defaultStyle.toServerJSONObject) {
                 obj.defaultStyle = obj.defaultStyle.toServerJSONObject();
@@ -27106,7 +28762,7 @@ class ThemeUnique_ThemeUnique extends Theme_Theme {
         var res = new ThemeUnique_ThemeUnique();
         var uItems = obj.items;
         var len = uItems ? uItems.length : 0;
-        Util_Util.extend(res, obj);
+        Util.extend(res, obj);
         res.items = [];
         res.defaultStyle = ServerStyle_ServerStyle.fromJson(obj.defaultStyle);
         for (var i = 0; i < len; i++) {
@@ -27147,7 +28803,7 @@ class ThemeGraphAxes_ThemeGraphAxes {
          * @member {SuperMap.ServerColor} [SuperMap.ThemeGraphAxes.prototype.axesColor=(0, 0, 0)]
          * @description 坐标轴颜色。当 axesDisplayed = true 时有效。
          */
-        this.axesColor =  new ServerColor_ServerColor(0, 0, 0);
+        this.axesColor =  new ServerColor(0, 0, 0);
 
         /**
          * @member {boolean} [SuperMap.ThemeGraphAxes.prototype.axesDisplayed=false]
@@ -27175,7 +28831,7 @@ class ThemeGraphAxes_ThemeGraphAxes {
         this.axesTextStyle =  new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraphAxes";
@@ -27211,8 +28867,8 @@ class ThemeGraphAxes_ThemeGraphAxes {
             return;
         }
         var res = new ThemeGraphAxes_ThemeGraphAxes();
-        Util_Util.copy(res, obj);
-        res.axesColor = ServerColor_ServerColor.fromJson(obj.axesColor);
+        Util.copy(res, obj);
+        res.axesColor = ServerColor.fromJson(obj.axesColor);
         res.axesTextStyle = ServerTextStyle_ServerTextStyle.fromObj(obj.axesTextStyle);
         return res;
     }
@@ -27252,7 +28908,7 @@ class ThemeGraphSize_ThemeGraphSize {
         this.minGraphSize = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
        this.CLASS_NAME = "SuperMap.ThemeGraphSize";
@@ -27276,7 +28932,7 @@ class ThemeGraphSize_ThemeGraphSize {
      */
     static fromObj(obj) {
         var res = new ThemeGraphSize_ThemeGraphSize();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         return res;
     }
 
@@ -27317,7 +28973,7 @@ class ThemeGraphText_ThemeGraphText {
          * @description 统计专题图文本显示格式。
          *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。
          */
-        this.graphTextFormat = REST_ThemeGraphTextFormat.CAPTION;
+        this.graphTextFormat = ThemeGraphTextFormat.CAPTION;
 
         /**
          * @member {SuperMap.ServerTextStyle} SuperMap.ThemeGraphText.prototype.graphTextStyle
@@ -27326,7 +28982,7 @@ class ThemeGraphText_ThemeGraphText {
         this.graphTextStyle =  new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraphText";
@@ -27354,7 +29010,7 @@ class ThemeGraphText_ThemeGraphText {
      */
     static fromObj(obj) {
         var res = new ThemeGraphText_ThemeGraphText();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.graphTextStyle = ServerTextStyle_ServerTextStyle.fromObj(obj.graphTextStyle);
         return res;
 
@@ -27415,7 +29071,7 @@ class ThemeGraphItem_ThemeGraphItem {
         this.uniformStyle = new ServerStyle_ServerStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraphItem";
@@ -27444,7 +29100,7 @@ class ThemeGraphItem_ThemeGraphItem {
             return;
         }
         var res = new ThemeGraphItem_ThemeGraphItem();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.uniformStyle = ServerStyle_ServerStyle.fromJson(obj.uniformStyle);
         return res;
     }
@@ -27516,7 +29172,7 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
          *              分级主要是为了减少制作统计专题图中数据大小之间的差异，使得统计图的视觉效果比较好，同时不同类别之间的比较也还是有意义的。
          *              提供三种分级模式：常数、对数和平方根，对于有值为负数的字段，不可以采用对数和平方根的分级方式。不同的等级方式用于确定符号大小的数值是不相同的。
          */
-        this.graduatedMode = REST_GraduatedMode.CONSTANT;
+        this.graduatedMode = GraduatedMode.CONSTANT;
 
         /**
          * @member {SuperMap.ThemeGraphAxes} SuperMap.ThemeGraph.prototype.graphAxes
@@ -27547,13 +29203,13 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
          * @description 统计专题图类型。SuperMap 提供了多种类型的统计图，
          *              分别为面积图、阶梯图、折线图、点状图、柱状图、三维柱状图、饼图、三维饼图、玫瑰图、三维玫瑰图、堆叠柱状图、三维堆叠柱状图、环状图。默认为面积图。
          */
-        this.graphType = REST_ThemeGraphType.AREA;
+        this.graphType = ThemeGraphType.AREA;
 
         /**
          * @member {SuperMap.GraphAxesTextDisplayMode} [SuperMap.ThemeGraph.prototype.graphAxesTextDisplayMode=SuperMap.GraphAxesTextDisplayMode.NONE]
          * @description 统计专题图坐标轴文本显示模式。
          */
-        this.graphAxesTextDisplayMode = REST_GraphAxesTextDisplayMode.NONE;
+        this.graphAxesTextDisplayMode = GraphAxesTextDisplayMode.NONE;
 
         /**
          * @member {Array.<SuperMap.ThemeGraphItem>} SuperMap.ThemeGraph.prototype.items
@@ -27678,7 +29334,7 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
         this.startAngle = 0;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraph";
@@ -27736,7 +29392,7 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return Util_Util.toJSON(this.toServerJSONObject());
+        return Util.toJSON(this.toServerJSONObject());
     }
 
     /**
@@ -27797,7 +29453,7 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
         var res = new ThemeGraph_ThemeGraph();
         var itemsG = obj.items;
         var len = itemsG ? itemsG.length : 0;
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.items = [];
         res.flow = ThemeFlow_ThemeFlow.fromObj(obj);
         res.graphAxes = ThemeGraphAxes_ThemeGraphAxes.fromObj(obj);
@@ -27865,7 +29521,7 @@ class ThemeDotDensity_ThemeDotDensity extends Theme_Theme {
         this.value = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeDotDensity";
     }
@@ -27893,7 +29549,7 @@ class ThemeDotDensity_ThemeDotDensity extends Theme_Theme {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.style) {
             if (obj.style.toServerJSONObject) {
                 obj.style = obj.style.toServerJSONObject();
@@ -27913,7 +29569,7 @@ class ThemeDotDensity_ThemeDotDensity extends Theme_Theme {
             return;
         }
         var res = new ThemeDotDensity_ThemeDotDensity();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.style = ServerStyle_ServerStyle.fromJson(obj.style);
         return res;
     }
@@ -27977,7 +29633,7 @@ class ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle {
         this.zeroStyle = new ServerStyle_ServerStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraduatedSymbolStyle";
@@ -28007,7 +29663,7 @@ class ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle {
             return;
         }
         var res = new ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.negativeStyle = ServerStyle_ServerStyle.fromJson(obj.negativeStyle);
         res.positiveStyle = ServerStyle_ServerStyle.fromJson(obj.positiveStyle);
         res.zeroStyle = ServerStyle_ServerStyle.fromJson(obj.zeroStyle);
@@ -28096,7 +29752,7 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
         this.style =  new ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGraduatedSymbol";
@@ -28114,7 +29770,7 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
             me.flow.destroy();
             me.flow = null;
         }
-        me.graduatedMode = REST_GraduatedMode.CONSTANT;
+        me.graduatedMode = GraduatedMode.CONSTANT;
         if (me.offset) {
             me.offset.destroy();
             me.offset = null;
@@ -28132,7 +29788,7 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return Util_Util.toJSON(this.toServerJSONObject());
+        return Util.toJSON(this.toServerJSONObject());
     }
 
 
@@ -28179,7 +29835,7 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
             return;
         }
         var res = new SuperMap.ThemeGraduatedSymbol();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.flow = ThemeFlow_ThemeFlow.fromObj(obj);
         res.offset = ThemeOffset_ThemeOffset.fromObj(obj);
         res.style = ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle.fromObj(obj);
@@ -28251,7 +29907,7 @@ class ThemeRangeItem_ThemeRangeItem {
         this.visible = true;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeRangeItem";
@@ -28281,7 +29937,7 @@ class ThemeRangeItem_ThemeRangeItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.style) {
             if (obj.style.toServerJSONObject) {
                 obj.style = obj.style.toServerJSONObject();
@@ -28301,7 +29957,7 @@ class ThemeRangeItem_ThemeRangeItem {
             return;
         }
         var res = new ThemeRangeItem_ThemeRangeItem();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         res.style = ServerStyle_ServerStyle.fromJson(obj.style);
         return res;
     }
@@ -28369,7 +30025,7 @@ class ThemeRange_ThemeRange extends Theme_Theme {
          *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，
          *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} SuperMap.ThemeRange.prototype.rangeParameter
@@ -28387,10 +30043,10 @@ class ThemeRange_ThemeRange extends Theme_Theme {
          *              方案完成填*充。但如果为某几个子项的风格进行单独设置后（设置了 {@link SuperMap.ThemeUniqueItem} 或 {@link SuperMap.ThemeRangeItem} 类中Style属性），
          *              该配色方案对于这几个子项将不起作用。
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeRange";
@@ -28430,7 +30086,7 @@ class ThemeRange_ThemeRange extends Theme_Theme {
             return;
         }
         var res = new ThemeRange_ThemeRange();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         var itemsR = obj.items;
         var len = itemsR ? itemsR.length : 0;
         res.items = [];
@@ -28519,7 +30175,7 @@ class UGCLayer_UGCLayer {
          */
         this.visible = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.UGCLayer";
     }
@@ -28530,7 +30186,7 @@ class UGCLayer_UGCLayer {
      */
     destroy() {
         var me = this;
-        Util_Util.reset(me);
+        Util.reset(me);
     }
 
     /**
@@ -28540,7 +30196,7 @@ class UGCLayer_UGCLayer {
      */
     fromJson(jsonObject) {
         jsonObject = jsonObject ? jsonObject : {};
-        Util_Util.extend(this, jsonObject);
+        Util.extend(this, jsonObject);
         var b = this.bounds;
         if (b) {
             this.bounds = new Bounds_Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
@@ -28555,7 +30211,7 @@ class UGCLayer_UGCLayer {
      */
     toServerJSONObject() {
         var jsonObject = {};
-        jsonObject = Util_Util.copyAttributes(jsonObject, this);
+        jsonObject = Util.copyAttributes(jsonObject, this);
         if (jsonObject.bounds) {
             if (jsonObject.bounds.toServerJSONObject) {
                 jsonObject.bounds = jsonObject.bounds.toServerJSONObject();
@@ -28649,7 +30305,7 @@ class OverlapDisplayedOptions_OverlapDisplayedOptions {
          */
         this.verticalOverlappedSpaceSize = 0;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.ugcLayer = new UGCLayer_UGCLayer(options);
 
         this.CLASS_NAME = "SuperMap.OverlapDisplayedOptions";
@@ -28660,7 +30316,7 @@ class OverlapDisplayedOptions_OverlapDisplayedOptions {
      * @description 释放资源，将资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -28799,7 +30455,7 @@ class UGCMapLayer_UGCMapLayer extends UGCLayer_UGCLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -28914,7 +30570,7 @@ class UGCSubLayer_UGCSubLayer extends UGCMapLayer_UGCMapLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -28999,7 +30655,7 @@ class ServerTheme_ServerTheme extends UGCSubLayer_UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -29198,7 +30854,7 @@ class Grid_Grid extends UGCSubLayer_UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -29209,7 +30865,7 @@ class Grid_Grid extends UGCSubLayer_UGCSubLayer {
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
         if (this.specialColor) {
-            this.specialColor = new ServerColor_ServerColor(this.specialColor.red,
+            this.specialColor = new ServerColor(this.specialColor.red,
                 this.specialColor.green,
                 this.specialColor.blue);
         }
@@ -29218,7 +30874,7 @@ class Grid_Grid extends UGCSubLayer_UGCSubLayer {
                 color;
             for (var i in this.colors) {
                 color = this.colors[i];
-                colors.push(new ServerColor_ServerColor(color.red, color.green, color.blue));
+                colors.push(new ServerColor(color.red, color.green, color.blue));
             }
             this.colors = colors;
         }
@@ -29346,7 +31002,7 @@ class Image_UGCImage extends UGCSubLayer_UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -29357,7 +31013,7 @@ class Image_UGCImage extends UGCSubLayer_UGCSubLayer {
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
         if (this.transparentColor) {
-            this.transparentColor = new ServerColor_ServerColor(this.transparentColor.red,
+            this.transparentColor = new ServerColor(this.transparentColor.red,
                 this.transparentColor.green,
                 this.transparentColor.blue);
         }
@@ -29414,7 +31070,7 @@ class iServer_Vector_Vector extends UGCSubLayer_UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -29489,7 +31145,7 @@ class GetLayersInfoService_GetLayersInfoService extends CommonServiceBase_Common
          */
         this.isTempLayers = false;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.GetLayersInfoService";
     }
@@ -29500,7 +31156,7 @@ class GetLayersInfoService_GetLayersInfoService extends CommonServiceBase_Common
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -29533,7 +31189,7 @@ class GetLayersInfoService_GetLayersInfoService extends CommonServiceBase_Common
      */
     serviceProcessCompleted(result) {
         var me = this, existRes, layers, len;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
 
         existRes = !!result && result.length > 0;
         layers = existRes ? result[0].subLayers.layers : null;
@@ -29714,7 +31370,7 @@ class InterpolationAnalystParameters_InterpolationAnalystParameters {
          */
         this.clipParam = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.InterpolationAnalystParameters";
     }
 
@@ -29859,7 +31515,7 @@ class InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters extend
         this.maxPointCountInNode = 50;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.InterpolationRBFAnalystParameters";
 
@@ -29942,7 +31598,7 @@ class InterpolationDensityAnalystParameters_InterpolationDensityAnalystParameter
     constructor(options) {
         super(options);
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.InterpolationDensityAnalystParameters";
     }
@@ -30030,7 +31686,7 @@ class InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters extend
          */
         this.expectedCount = 12;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.InterpolationIDWAnalystParameters";
     }
@@ -30202,13 +31858,13 @@ class InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameter
          * 用户所选择的半变函数类型会影响未知点的预测，特别是曲线在原点处的不同形状有重要意义。
          * 曲线在原点处越陡，则较近领域对该预测值的影响就越大，因此输出表面就会越不光滑。
          */
-        this.variogramMode = REST_VariogramMode.SPHERICAL;
+        this.variogramMode = VariogramMode.SPHERICAL;
 
         /**
          * @member {SuperMap.Exponent} [SuperMap.InterpolationKrigingAnalystParameters.prototype.exponent=SuperMap.Exponent.EXP1]
          * @description 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数。
          */
-        this.exponent = REST_Exponent.EXP1;
+        this.exponent = Exponent.EXP1;
 
         /**
          * @member {SuperMap.SearchMode} SuperMap.InterpolationKrigingAnalystParameters.prototype.searchMode
@@ -30242,7 +31898,7 @@ class InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameter
          */
         this.maxPointCountInNode = 50;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.InterpolationKrigingAnalystParameters";
     }
@@ -30319,7 +31975,7 @@ class InterpolationAnalystService_InterpolationAnalystService extends SpatialAna
 
         this.mode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -30377,7 +32033,7 @@ class InterpolationAnalystService_InterpolationAnalystService extends SpatialAna
             }
         }
         InterpolationAnalystParameters_InterpolationAnalystParameters.toObject(parameter, parameterObject);
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
 
         me.request({
@@ -30469,19 +32125,19 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
+        this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.radiusUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 搜索半径单位。
          */
-        this.radiusUnit = REST_AnalystSizeUnit.METER;
+        this.radiusUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.AnalystAreaUnit} [SuperMap.KernelDensityJobParameter.prototype.areaUnit=SuperMap.AnalystAreaUnit.SQUAREMILE]
          * @description 面积单位。
          */
-        this.areaUnit = REST_AnalystAreaUnit.SQUAREMILE;
+        this.areaUnit = AnalystAreaUnit.SQUAREMILE;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.KernelDensityJobParameter.prototype.output
@@ -30495,7 +32151,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
     }
@@ -30636,14 +32292,14 @@ SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsSe
  * @description 该类可以包含 n*n 个矩阵标签元素，矩阵标签元素的类型可以是图片，符号，标签专题图等。
  *              符号类型的矩阵标签元素类、图片类型的矩阵标签元素类和专题图类型的矩阵标签元素类均继承自该类。
  */
-class LabelMatrixCell_LabelMatrixCell {
+class LabelMatrixCell {
     constructor() {
         this.CLASS_NAME = "LabelMatrixCell";
     }
 
 }
 
-SuperMap.LabelMatrixCell = LabelMatrixCell_LabelMatrixCell;
+SuperMap.LabelMatrixCell = LabelMatrixCell;
 // CONCATENATED MODULE: ./src/common/iServer/LabelImageCell.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -30670,7 +32326,7 @@ SuperMap.LabelMatrixCell = LabelMatrixCell_LabelMatrixCell;
  * @param {number} [options.width=0] - 设置图片的宽度，单位为毫米。
  * @param {boolean} [options.sizeFixed=false] - 是否固定图片的大小。
  */
-class LabelImageCell_LabelImageCell extends LabelMatrixCell_LabelMatrixCell {
+class LabelImageCell_LabelImageCell extends LabelMatrixCell {
 
     constructor(options) {
         super(options);
@@ -30711,7 +32367,7 @@ class LabelImageCell_LabelImageCell extends LabelMatrixCell_LabelMatrixCell {
         this.type = "IMAGE";
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.LabelImageCell";
@@ -30756,7 +32412,7 @@ SuperMap.LabelImageCell = LabelImageCell_LabelImageCell;
  * @param {SuperMap.ServerStyle} options.style - 获取或设置符号样式。 
  * @param {string} options.symbolIDField - 符号 ID 或符号 ID 所对应的字段名称。
  */
-class LabelSymbolCell_LabelSymbolCell extends LabelMatrixCell_LabelMatrixCell {
+class LabelSymbolCell_LabelSymbolCell extends LabelMatrixCell {
 
     constructor(options) {
         super(options);
@@ -30780,7 +32436,7 @@ class LabelSymbolCell_LabelSymbolCell extends LabelMatrixCell_LabelMatrixCell {
         this.type = "SYMBOL";
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.LabelSymbolCell";
@@ -30825,7 +32481,7 @@ SuperMap.LabelSymbolCell = LabelSymbolCell_LabelSymbolCell;
  * @param {Object} options -参数。 
  * @param {SuperMap.ThemeLabel} options.themeLabel - 使用专题图对象作为矩阵标签的一个元素。
  */
-class LabelThemeCell_LabelThemeCell extends LabelMatrixCell_LabelMatrixCell {
+class LabelThemeCell_LabelThemeCell extends LabelMatrixCell {
 
 
     constructor(options) {
@@ -30843,7 +32499,7 @@ class LabelThemeCell_LabelThemeCell extends LabelMatrixCell_LabelMatrixCell {
         this.type = "THEME";
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = " SuperMap.LabelThemeCell";
     }
@@ -30912,7 +32568,7 @@ class LayerStatus_LayerStatus {
         this.fieldValuesDisplayFilter = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.LayerStatus";
     }
@@ -30956,7 +32612,7 @@ class LayerStatus_LayerStatus {
         }
 
         if (this.fieldValuesDisplayFilter) {
-            v.push('"fieldValuesDisplayFilter":' + Util_Util.toJSON(this.fieldValuesDisplayFilter));
+            v.push('"fieldValuesDisplayFilter":' + Util.toJSON(this.fieldValuesDisplayFilter));
         }
 
         json += v;
@@ -31010,7 +32666,7 @@ class MapService_MapService extends CommonServiceBase_CommonServiceBase {
 
         this.CLASS_NAME = "SuperMap.MapService";
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         var me = this;
 
@@ -31066,7 +32722,7 @@ class MapService_MapService extends CommonServiceBase_CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;
         if (!result.code || isCodeValid) {
@@ -31160,7 +32816,7 @@ class MathExpressionAnalysisParameters_MathExpressionAnalysisParameters {
          */
         this.deleteExistResultDataset = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.MathExpressionAnalysisParameters"
     }
@@ -31286,7 +32942,7 @@ class MathExpressionAnalysisService_MathExpressionAnalysisService extends Spatia
         }
 
         MathExpressionAnalysisParameters_MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",
@@ -31339,7 +32995,7 @@ class MeasureParameters_MeasureParameters {
          * @member {SuperMap.Unit} [SuperMap.MeasureParameters.prototype.unit=SuperMap.Unit.METER]
          * @description 量算单位。即量算结果以米为单位。
          */
-        this.unit = REST_Unit.METER;
+        this.unit = Unit.METER;
 
         /**
          * @member {string} [SuperMap.MeasureParameters.prototype.prjCoordSys]
@@ -31355,7 +33011,7 @@ class MeasureParameters_MeasureParameters {
          */
         this.distanceMode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.MeasureParameters";
     }
@@ -31415,10 +33071,10 @@ class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase 
          * @member {SuperMap.MeasureMode} [SuperMap.MeasureService.prototype.measureMode=MeasureMode.DISTANCE]
          * @description 量算模式，包括距离量算模式和面积量算模式。
          */
-        this.measureMode = REST_MeasureMode.DISTANCE;
+        this.measureMode = MeasureMode.DISTANCE;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.MeasureService";
@@ -31451,7 +33107,7 @@ class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase 
             return;
         }
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.measureMode === REST_MeasureMode.AREA) {
+        if (me.measureMode === MeasureMode.AREA) {
             me.url += ((end === "/") ? "area.json?" : "/area.json?");
         } else {
             me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
@@ -31472,12 +33128,12 @@ class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase 
                 prjCoordSysTemp = '{"epsgCode"' + params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"), params.prjCoordSys.length) + "}";
             }
             paramsTemp = {
-                "point2Ds": Util_Util.toJSON(point2ds),
+                "point2Ds": Util.toJSON(point2ds),
                 "unit": params.unit,
                 "prjCoordSys": prjCoordSysTemp
             };
         } else {
-            paramsTemp = {"point2Ds": Util_Util.toJSON(point2ds), "unit": params.unit};
+            paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit};
         }
 
         me.request({
@@ -31538,7 +33194,7 @@ class OverlayAnalystService_OverlayAnalystService extends SpatialAnalystBase_Spa
         this.mode = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.OverlayAnalystService";
@@ -31581,7 +33237,7 @@ class OverlayAnalystService_OverlayAnalystService extends SpatialAnalystBase_Spa
             GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
 
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -31663,7 +33319,7 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
         */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
     }
 
@@ -31832,7 +33488,7 @@ class QueryByBoundsParameters_QueryByBoundsParameters extends QueryParameters_Qu
          */
         this.bounds = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryByBoundsParameters";
     }
@@ -31906,12 +33562,12 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
          * @member {string} SuperMap.QueryService.prototype.format
          * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
          */
-        this.format = REST_DataFormat.GEOJSON;
+        this.format = DataFormat.GEOJSON;
 
         this.returnFeatureWithFieldCaption = false;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.QueryService";
@@ -31987,7 +33643,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         var geoJSONFormat = new GeoJSON_GeoJSON();
         if (result && result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
@@ -31998,7 +33654,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
                             return feature;
                         })
                     }
-                    if (me.format === REST_DataFormat.GEOJSON) {
+                    if (me.format === DataFormat.GEOJSON) {
                         recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
                     }
                 }
@@ -32096,7 +33752,7 @@ class QueryByBoundsService_QueryByBoundsService extends QueryService_QueryServic
             bounds = params.bounds;
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'BoundsQuery','queryParameters':";
-        jsonParameters += Util_Util.toJSON(qp);
+        jsonParameters += Util.toJSON(qp);
         jsonParameters += ",'bounds': {'rightTop':{'y':" + bounds.top + ",'x':" +
             bounds.right + "},'leftBottom':{'y':" + bounds.bottom + ",'x':" + bounds.left + "}}";
         jsonParameters = "{" + jsonParameters + "}";
@@ -32182,7 +33838,7 @@ class QueryByDistanceParameters_QueryByDistanceParameters extends QueryParameter
         this.returnContent = true;
 
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryByDistanceParameters";
     }
@@ -32270,8 +33926,8 @@ class QueryByDistanceService_QueryByDistanceService extends QueryService_QuerySe
         var sg = ServerGeometry_ServerGeometry.fromGeometry(params.geometry);
 
         jsonParameters += params.isNearest ? "'queryMode':'FindNearest','queryParameters':" : "'queryMode':'DistanceQuery','queryParameters':";
-        jsonParameters += Util_Util.toJSON(qp);
-        jsonParameters += ",'geometry':" + Util_Util.toJSON(sg) + ",'distance':" + params.distance;
+        jsonParameters += Util.toJSON(qp);
+        jsonParameters += ",'geometry':" + Util.toJSON(sg) + ",'distance':" + params.distance;
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     }
@@ -32340,9 +33996,9 @@ class QueryByGeometryParameters_QueryByGeometryParameters extends QueryParameter
          * @member {SuperMap.SpatialQueryMode} [SuperMap.QueryByGeometryParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.INTERSECT]
          * @description 空间查询模式。
          */
-        this.spatialQueryMode = REST_SpatialQueryMode.INTERSECT;
+        this.spatialQueryMode = SpatialQueryMode.INTERSECT;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryByGeometryParameters";
     }
@@ -32434,8 +34090,8 @@ class QueryByGeometryService_QueryByGeometryService extends QueryService_QuerySe
             sg = ServerGeometry_ServerGeometry.fromGeometry(geometry);
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'SpatialQuery','queryParameters':";
-        jsonParameters += Util_Util.toJSON(qp) + ",'geometry':" + Util_Util.toJSON(sg)
-            + ",'spatialQueryMode':" + Util_Util.toJSON(params.spatialQueryMode);
+        jsonParameters += Util.toJSON(qp) + ",'geometry':" + Util.toJSON(sg)
+            + ",'spatialQueryMode':" + Util.toJSON(params.spatialQueryMode);
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     }
@@ -32485,7 +34141,7 @@ class QueryBySQLParameters_QueryBySQLParameters extends QueryParameters_QueryPar
          *              为 false，则返回的是查询结果资源的 URI。
          */
         this.returnContent = true;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.QueryBySQLParameters";
     }
 
@@ -32576,7 +34232,7 @@ class QueryBySQLService_QueryBySQLService extends QueryService_QueryService {
             qp = null;
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'SqlQuery','queryParameters':";
-        jsonParameters += Util_Util.toJSON(qp);
+        jsonParameters += Util.toJSON(qp);
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     }
@@ -32633,7 +34289,7 @@ class RouteCalculateMeasureParameters_RouteCalculateMeasureParameters {
          */
         this.isIgnoreGap = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.RouteCalculateMeasureParameters";
     }
@@ -32775,7 +34431,7 @@ class RouteCalculateMeasureService_RouteCalculateMeasureService extends SpatialA
         end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
         me.url += "?returnContent=true";
-        jsonParameters = Util_Util.toJSON(params);
+        jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }
 
@@ -32890,7 +34546,7 @@ class RouteLocatorParameters_RouteLocatorParameters {
             routeHandle.points = parts;
             options.sourceRoute = routeHandle;
         }
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.RouteLocatorParameters";
     }
 
@@ -33035,7 +34691,7 @@ class RouteLocatorService_RouteLocatorService extends SpatialAnalystBase_Spatial
         }
         me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
         me.url += "?returnContent=true";
-        jsonParameters = Util_Util.toJSON(params);
+        jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }
 
@@ -33083,7 +34739,7 @@ class ServerFeature_ServerFeature {
          */
         this.geometry = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ServerFeature";
@@ -33194,7 +34850,7 @@ class SetLayerInfoParameters_SetLayerInfoParameters {
          */
         this.layerInfo = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SetLayerInfoParameters";
     }
@@ -33244,7 +34900,7 @@ class SetLayerInfoService_SetLayerInfoService extends CommonServiceBase_CommonSe
     constructor(url, options) {
         super(url, options);
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.SetLayerInfoService";
     }
@@ -33254,7 +34910,7 @@ class SetLayerInfoService_SetLayerInfoService extends CommonServiceBase_CommonSe
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -33269,7 +34925,7 @@ class SetLayerInfoService_SetLayerInfoService extends CommonServiceBase_CommonSe
         }
         var me = this;
         me.url += ".json";
-        var jsonParamsStr = Util_Util.toJSON(params);
+        var jsonParamsStr = Util.toJSON(params);
         me.request({
             method: "PUT",
             data: jsonParamsStr,
@@ -33319,7 +34975,7 @@ class SetLayersInfoParameters_SetLayersInfoParameters {
          */
         this.layersInfo = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SetLayersInfoParameters";
     }
@@ -33398,7 +35054,7 @@ class SetLayersInfoService_SetLayersInfoService extends CommonServiceBase_Common
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -33457,10 +35113,10 @@ class SetLayersInfoService_SetLayersInfoService extends CommonServiceBase_Common
                 subLayers.push(layers[i]);
             }
         }
-        jsonParams = Util_Util.extend(jsonParams, params);
+        jsonParams = Util.extend(jsonParams, params);
         jsonParams.subLayers = {"layers": subLayers};
         jsonParams.object = null;
-        var jsonParamsStr = Util_Util.toJSON([jsonParams]);
+        var jsonParamsStr = Util.toJSON([jsonParams]);
         me.request({
             method: method,
             data: jsonParamsStr,
@@ -33516,7 +35172,7 @@ class SetLayerStatusParameters_SetLayerStatusParameters {
         this.resourceID = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
 
@@ -33592,7 +35248,7 @@ class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_Comm
 
         this.mapUrl = url;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.SetLayerStatusService";
     }
@@ -33602,7 +35258,7 @@ class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_Comm
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -33668,7 +35324,7 @@ class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_Comm
      */
     createTempLayerComplete(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         if (result.succeed) {
             me.lastparams.resourceID = result.newResourceID;
         }
@@ -33698,7 +35354,7 @@ class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_Comm
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         if (result != null && me.lastparams != null) {
             result.newResourceID = me.lastparams.resourceID;
         }
@@ -33758,7 +35414,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          * @member {SuperMap.SpatialQueryMode} [SuperMap.SingleObjectQueryJobsParameter.prototype.mode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式 。
          */
-        this.mode = REST_SpatialQueryMode.CONTAIN;
+        this.mode = SpatialQueryMode.CONTAIN;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SingleObjectQueryJobsParameter.prototype.output]
@@ -33772,7 +35428,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
     }
@@ -33922,7 +35578,7 @@ class StopQueryParameters_StopQueryParameters {
          */
         this.returnPosition = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.StopQueryParameters";
     }
@@ -33932,7 +35588,7 @@ class StopQueryParameters_StopQueryParameters {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 }
@@ -33977,7 +35633,7 @@ class StopQueryService_StopQueryService extends CommonServiceBase_CommonServiceB
     constructor(url, options) {
         super(url, options);
         options = options || {};
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.StopQueryService";
     }
 
@@ -33986,7 +35642,7 @@ class StopQueryService_StopQueryService extends CommonServiceBase_CommonServiceB
      */
     destroy() {
         super.destroy();
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -34075,7 +35731,7 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
     }
 
@@ -34257,7 +35913,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.StatisticAnalystMode} [SuperMap.SummaryMeshJobParameter.prototype.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE]
          * @description 统计模式。
          */
-        this.statisticModes = REST_StatisticAnalystMode.AVERAGE;
+        this.statisticModes = StatisticAnalystMode.AVERAGE;
 
         /**
          * @member {number} SuperMap.SummaryMeshJobParameter.prototype.fields
@@ -34269,7 +35925,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          * @member {SuperMap.SummaryType} [SuperMap.SummaryMeshJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 聚合类型。
          */
-        this.type = REST_SummaryType.SUMMARYMESH;
+        this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.SummaryMeshJobParameter.prototype.output]
@@ -34283,7 +35939,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryMeshJobParameter";
     }
@@ -34545,13 +36201,13 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          * @member {SuperMap.AnalystSizeUnit} [SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
-        this.meshSizeUnit = REST_AnalystSizeUnit.METER;
+        this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
          * @member {SuperMap.SummaryType} [SuperMap.SummaryRegionJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 汇总类型。
          */
-        this.type = REST_SummaryType.SUMMARYMESH;
+        this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.SummaryRegionJobParameter.prototype.output
@@ -34565,7 +36221,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
     }
@@ -34756,7 +36412,7 @@ class SupplyCenter_SupplyCenter {
         this.type = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.SupplyCenter";
@@ -34883,13 +36539,13 @@ class SurfaceAnalystService_SurfaceAnalystService extends SpatialAnalystBase_Spa
                 ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
                 params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
             DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters.toObject(params, parameterObject);
-            jsonParameters = Util_Util.toJSON(parameterObject);
+            jsonParameters = Util.toJSON(parameterObject);
         } else if (params instanceof GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters) {
             end = me.url.substr(me.url.length - 1, 1);
             me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
                 ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
                 ".json?returnContent=true";
-            jsonParameters = Util_Util.toJSON(params);
+            jsonParameters = Util.toJSON(params);
         } else {
             return;
         }
@@ -34964,7 +36620,7 @@ class TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameter
          */
         this.deleteExistResultDataset = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TerrainCurvatureCalculationParameters";
     }
@@ -35113,7 +36769,7 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
          * @member {SuperMap.ServerColor} SuperMap.ThemeGridRangeItem.prototype.color
          * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
          */
-        this.color =  new ServerColor_ServerColor();
+        this.color =  new ServerColor();
 
         /**
          * @member {number} [SuperMap.ThemeGridRangeItem.prototype.end=0]
@@ -35135,7 +36791,7 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
         this.visible = true;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeGridRangeItem";
     }
@@ -35164,7 +36820,7 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.color) {
             if (obj.color.toServerJSONObject) {
                 obj.color = obj.color.toServerJSONObject();
@@ -35184,8 +36840,8 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
             return;
         }
         var res = new ThemeGridRangeItem_ThemeGridRangeItem();
-        Util_Util.copy(res, obj);
-        res.color = ServerColor_ServerColor.fromJson(obj.color);
+        Util.copy(res, obj);
+        res.color = ServerColor.fromJson(obj.color);
         return res;
     }
 
@@ -35237,7 +36893,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
          *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，
          *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
          */
-        this.rangeMode = REST_RangeMode.EQUALINTERVAL;
+        this.rangeMode = RangeMode.EQUALINTERVAL;
 
         /**
          * @member {number} [SuperMap.ThemeGridRange.prototype.rangeParameter=0]
@@ -35252,7 +36908,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
          * @description 渐变颜色枚举类。
          *
          */
-        this.colorGradientType = REST_ColorGradientType.YELLOW_RED;
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
 
         /**
          * @member {boolean} SuperMap.ThemeGridRange.prototype.reverseColor
@@ -35261,7 +36917,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
         this.reverseColor = false;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGridRange";
@@ -35300,7 +36956,7 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
             return;
         }
         var res = new ThemeGridRange_ThemeGridRange();
-        Util_Util.copy(res, obj);
+        Util.copy(res, obj);
         var itemsR = obj.items;
         var len = itemsR ? itemsR.length : 0;
         res.items = [];
@@ -35347,7 +37003,7 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
          * @member {SuperMap.ServerColor} [SuperMap.ThemeGridUniqueItem.prototype.color]
          * @description 栅格单值专题图子项的显示颜色。
          */
-        this.color = new ServerColor_ServerColor();
+        this.color = new ServerColor();
 
         /**
          * @member {number} SuperMap.ThemeGridUniqueItem.prototype.unique
@@ -35362,7 +37018,7 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
         this.visible = true;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGridUniqueItem";
@@ -35391,7 +37047,7 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.color) {
             if (obj.color.toServerJSONObject) {
                 obj.color = obj.color.toServerJSONObject();
@@ -35408,8 +37064,8 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
      */
     static fromObj(obj) {
         var res = new ThemeGridUniqueItem_ThemeGridUniqueItem();
-        Util_Util.copy(res, obj);
-        res.color = ServerColor_ServerColor.fromJson(obj.color);
+        Util.copy(res, obj);
+        res.color = ServerColor.fromJson(obj.color);
         return res;
 
     }
@@ -35448,7 +37104,7 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
          * @description 栅格单值专题图的默认颜色。
          *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
          */
-        this.defaultcolor = new ServerColor_ServerColor();
+        this.defaultcolor = new ServerColor();
 
         /**
          * @member {Array.<SuperMap.ThemeGridUniqueItem>} SuperMap.ThemeGridUnique.prototype.items
@@ -35458,7 +37114,7 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
         this.items = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeGridUnique";
@@ -35494,7 +37150,7 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = Util_Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.defaultcolor) {
             if (obj.defaultcolor.toServerJSONObject) {
                 obj.defaultcolor = obj.defaultcolor.toServerJSONObject();
@@ -35521,9 +37177,9 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
         var res = new ThemeGridUnique_ThemeGridUnique();
         var uItems = obj.items;
         var len = uItems ? uItems.length : 0;
-        Util_Util.extend(res, obj);
+        Util.extend(res, obj);
         res.items = [];
-        res.defaultcolor = ServerColor_ServerColor.fromJson(obj.defaultcolor);
+        res.defaultcolor = ServerColor.fromJson(obj.defaultcolor);
         for (var i = 0; i < len; i++) {
             res.items.push(ThemeGridUniqueItem_ThemeGridUniqueItem.fromObj(uItems[i]));
         }
@@ -35597,7 +37253,7 @@ class ThemeLabelUniqueItem_ThemeLabelUniqueItem {
         this.style = new ServerTextStyle_ServerTextStyle();
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThemeLabelUniqueItem";
     }
@@ -35630,7 +37286,7 @@ class ThemeLabelUniqueItem_ThemeLabelUniqueItem {
             return;
         }
         var t = new ThemeLabelUniqueItem_ThemeLabelUniqueItem();
-        Util_Util.copy(t, obj);
+        Util.copy(t, obj);
         return t;
     }
 
@@ -35721,7 +37377,7 @@ class ThemeParameters_ThemeParameters {
         this.fieldValuesDisplayFilter = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.ThemeParameters";
@@ -35839,7 +37495,7 @@ class ThemeService_ThemeService extends CommonServiceBase_CommonServiceBase {
 
         for (var i = 0; i < parameter.themes.length; i++) {
             themeObj = parameter.themes[i];
-            var jsonTheme = Util_Util.toJSON(themeObj);
+            var jsonTheme = Util.toJSON(themeObj);
             jsonTheme = jsonTheme.slice(0, -1);
 
             jsonParameters += "{'theme': " + jsonTheme + "},'type': 'UGC','ugcLayerType': 'THEME',";
@@ -35862,11 +37518,11 @@ class ThemeService_ThemeService extends CommonServiceBase_CommonServiceBase {
 
             fieldValuesDisplayFilter = parameter.fieldValuesDisplayFilter;
             if (fieldValuesDisplayFilter) {
-                jsonParameters += "'fieldValuesDisplayFilter':" + Util_Util.toJSON(fieldValuesDisplayFilter) + ",";
+                jsonParameters += "'fieldValuesDisplayFilter':" + Util.toJSON(fieldValuesDisplayFilter) + ",";
             }
 
             if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[i]) {
-                jsonParameters += "'joinItems':[" + Util_Util.toJSON(parameter.joinItems[i]) + "],";
+                jsonParameters += "'joinItems':[" + Util.toJSON(parameter.joinItems[i]) + "],";
             }
             if (parameter.datasetNames && parameter.dataSourceNames) {
                 var datasetID = parameter.datasetNames[i] ? i : (parameter.datasetNames.length - 1);
@@ -35941,7 +37597,7 @@ class ThiessenAnalystService_ThiessenAnalystService extends SpatialAnalystBase_S
          */
         this.mode = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.ThiessenAnalystService";
     }
@@ -35978,7 +37634,7 @@ class ThiessenAnalystService_ThiessenAnalystService extends SpatialAnalystBase_S
             GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters.toObject(parameter, parameterObject);
         }
 
-        var jsonParameters = Util_Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",
@@ -36030,7 +37686,7 @@ class GeometryBatchAnalystService_GeometryBatchAnalystService extends SpatialAna
         super(url, options);
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.GeometryBatchAnalystService";
@@ -36052,7 +37708,7 @@ class GeometryBatchAnalystService_GeometryBatchAnalystService extends SpatialAna
         me.url += 'geometry/batchanalyst.json?returnContent=true&ignoreAnalystParam=true';
 
         var parameterObjects = me._processParams(parameters);
-        var jsonParameters = Util_Util.toJSON(parameterObjects);
+        var jsonParameters = Util.toJSON(parameterObjects);
 
         me.request({
             method: "POST",
@@ -36065,7 +37721,7 @@ class GeometryBatchAnalystService_GeometryBatchAnalystService extends SpatialAna
 
     _processParams(parameters) {
         var me = this;
-        if (!Util_Util.isArray(parameters)) {
+        if (!Util.isArray(parameters)) {
             return;
         }
         var processParams = [];
@@ -36242,7 +37898,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
          * @member {SuperMap.TopologyValidatorRule} [SuperMap.TopologyValidatorJobsParameter.prototype.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP]
          * @description 拓扑检查模式。
          */
-        this.rule = REST_TopologyValidatorRule.REGIONNOOVERLAP;
+        this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
          * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
@@ -36256,7 +37912,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TopologyValidatorJobsParameter";
     }
@@ -36452,7 +38108,7 @@ class TransferLine_TransferLine {
          */
         this.endStopAliasName = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TransferLine";
     }
@@ -36463,7 +38119,7 @@ class TransferLine_TransferLine {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -36528,7 +38184,7 @@ class TransferPathParameters_TransferPathParameters {
          */
         this.points = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
        this.CLASS_NAME = "SuperMap.TransferPathParameters";
     }
@@ -36538,7 +38194,7 @@ class TransferPathParameters_TransferPathParameters {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -36549,7 +38205,7 @@ class TransferPathParameters_TransferPathParameters {
      */
     static toJson(params) {
         if (params) {
-            return Util_Util.toJSON(params);
+            return Util.toJSON(params);
         }
     }
 
@@ -36617,8 +38273,8 @@ class TransferPathService_TransferPathService extends CommonServiceBase_CommonSe
         me.url += "path.json?";
 
         jsonParameters = {
-            points: Util_Util.toJSON(params.points),
-            transferLines: Util_Util.toJSON(params['transferLines'])
+            points: Util.toJSON(params.points),
+            transferLines: Util.toJSON(params['transferLines'])
         };
 
         me.request({
@@ -36671,13 +38327,13 @@ class TransferSolutionParameters_TransferSolutionParameters {
          * @member {SuperMap.TransferPreference} [SuperMap.TransferSolutionParameters.prototype.transferPreference=SuperMap.TransferPreference.NONE]
          *  @description 乘车偏好枚举。
          */
-        this.transferPreference = REST_TransferPreference.NONE;
+        this.transferPreference = TransferPreference.NONE;
 
         /**
          *  @member {SuperMap.TransferTactic} [SuperMap.TransferSolutionParameters.prototype.transferTactic=TransferTactic|SuperMap.TransferTactic.LESS_TIME]
          *  @description 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。
          */
-        this.transferTactic = REST_TransferTactic.LESS_TIME;
+        this.transferTactic = TransferTactic.LESS_TIME;
 
         /**
          *  @member {number} [SuperMap.TransferSolutionParameters.prototype.walkingRatio=10]
@@ -36735,7 +38391,7 @@ class TransferSolutionParameters_TransferSolutionParameters {
          */
         this.travelTime = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TransferSolutionParameters";
     }
@@ -36745,7 +38401,7 @@ class TransferSolutionParameters_TransferSolutionParameters {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        Util_Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -36757,7 +38413,7 @@ class TransferSolutionParameters_TransferSolutionParameters {
      */
     static toJson(params) {
         if (params) {
-            return Util_Util.toJSON(params);
+            return Util.toJSON(params);
         }
     }
 
@@ -36829,23 +38485,23 @@ class TransferSolutionService_TransferSolutionService extends CommonServiceBase_
         me.url += "solutions.json?";
 
         jsonParameters = {
-            points: Util_Util.toJSON(params.points),
+            points: Util.toJSON(params.points),
             walkingRatio: params['walkingRatio'],
             transferTactic: params['transferTactic'],
             solutionCount: params['solutionCount'],
             transferPreference: params["transferPreference"]
         };
         if (params.evadeLines) {
-            jsonParameters["evadeLines"] = Util_Util.toJSON(params.evadeLines);
+            jsonParameters["evadeLines"] = Util.toJSON(params.evadeLines);
         }
         if (params.evadeStops) {
-            jsonParameters["evadeStops"] = Util_Util.toJSON(params.evadeStops);
+            jsonParameters["evadeStops"] = Util.toJSON(params.evadeStops);
         }
         if (params.priorLines) {
-            jsonParameters["priorLines"] = Util_Util.toJSON(params.priorLines);
+            jsonParameters["priorLines"] = Util.toJSON(params.priorLines);
         }
         if (params.priorStops) {
-            jsonParameters["priorStops"] = Util_Util.toJSON(params.priorStops);
+            jsonParameters["priorStops"] = Util.toJSON(params.priorStops);
         }
         if (params.travelTime) {
             jsonParameters["travelTime"] = params.travelTime;
@@ -36919,7 +38575,7 @@ class UpdateEdgeWeightParameters_UpdateEdgeWeightParameters {
          */
         this.edgeWeight = "";
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.UpdateEdgeWeightParameters";
     }
@@ -37108,7 +38764,7 @@ class UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters {
          * @description 耗费权重。
          */
         this.turnNodeWeight = "";
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.UpdateTurnNodeWeightParameters";
     }
 
@@ -37289,7 +38945,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          * @member {SuperMap.ClipAnalystMode} [SuperMap.VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
          * @description 裁剪分析模式 。
          */
-        this.mode = REST_ClipAnalystMode.CLIP;
+        this.mode = ClipAnalystMode.CLIP;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.VectorClipJobsParameter.prototype.output
@@ -37303,7 +38959,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
     }
@@ -37443,7 +39099,7 @@ class RasterFunctionParameter_RasterFunctionParameter {
          * @description 栅格分析方法。
          */
         this.type = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = 'SuperMap.RasterFunctionParameter';
     }
 
@@ -37503,8 +39159,8 @@ class NDVIParameter_NDVIParameter extends RasterFunctionParameter_RasterFunction
          * @member {SuperMap.RasterFunctionType} [SuperMap.RasterFunctionParameter.prototype.type]
          * @description 栅格分析方法。
          */
-        this.type = REST_RasterFunctionType.NDVI;
-        Util_Util.extend(this, options);
+        this.type = RasterFunctionType.NDVI;
+        Util.extend(this, options);
 
         this.CLASS_NAME = 'SuperMap.NDVIParameter';
     }
@@ -37594,8 +39250,8 @@ class HillshadeParameter_HillshadeParameter extends RasterFunctionParameter_Rast
          * @member {SuperMap.RasterFunctionType} SuperMap.RasterFunctionParameter.prototype.type
          * @description 栅格分析方法。
          */
-        this.type = REST_RasterFunctionType.HILLSHADE;
-        Util_Util.extend(this, options);
+        this.type = RasterFunctionType.HILLSHADE;
+        Util.extend(this, options);
 
         this.CLASS_NAME = 'SuperMap.HillshadeParameter';
     }
@@ -38091,7 +39747,7 @@ SuperMap.HillshadeParameter = HillshadeParameter_HillshadeParameter;
  * @category iPortal/Online
  * @description 服务发布状态。
  */
-var OnlineResources_ServiceStatus = SuperMap.ServiceStatus = {
+var ServiceStatus = SuperMap.ServiceStatus = {
     /** 不涉及，不可发布。 */
     DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
     /** 发布失败。 */
@@ -38114,7 +39770,7 @@ var OnlineResources_ServiceStatus = SuperMap.ServiceStatus = {
  * @category iPortal/Online
  * @description 数据项类型。
  */
-var OnlineResources_DataItemType = SuperMap.DataItemType = {
+var DataItemType = SuperMap.DataItemType = {
     /** AUDIO */
     AUDIO: "AUDIO",
     /** COLOR */
@@ -38173,7 +39829,7 @@ var OnlineResources_DataItemType = SuperMap.DataItemType = {
  * @category iPortal/Online
  * @description 数据排序字段。
  */
-var OnlineResources_DataItemOrderBy = SuperMap.DataItemOrderBy = {
+var DataItemOrderBy = SuperMap.DataItemOrderBy = {
     /** FILENAME */
     FILENAME: "FILENAME",
     /** ID */
@@ -38203,7 +39859,7 @@ var OnlineResources_DataItemOrderBy = SuperMap.DataItemOrderBy = {
  * @category iPortal/Online
  * @description 关键字查询时的过滤字段。
  */
-var OnlineResources_FilterField = SuperMap.FilterField = {
+var FilterField = SuperMap.FilterField = {
     /** LINKPAGE */
     LINKPAGE: "LINKPAGE",
     /** LINKPAGE */
@@ -38238,8 +39894,8 @@ class OnlineServiceBase_OnlineServiceBase {
 
     constructor(options) {
         options = options || {};
-        Util_Util.extend(this, options);
-        this.serverType = REST_ServerType.ONLINE;
+        Util.extend(this, options);
+        this.serverType = ServerType.ONLINE;
         this.CLASS_NAME = "SuperMap.OnlineServiceBase";
     }
 
@@ -38256,7 +39912,7 @@ class OnlineServiceBase_OnlineServiceBase {
         url = this.createCredentialUrl(url);
         requestOptions['crossOrigin'] = this.options.crossOrigin;
         requestOptions['headers'] = this.options.headers;
-        return FetchRequest_FetchRequest.commit(method, url, param, requestOptions).then(function(response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function(response) {
             return response.json();
         });
     }
@@ -38361,7 +40017,7 @@ class OnlineData_OnlineData extends OnlineServiceBase_OnlineServiceBase {
         //数据的缩略图路径。
         this.thumbnail = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         if (this.id) {
             this.serviceUrl = serviceRootUrl + "/" + this.id;
         }
@@ -38379,7 +40035,7 @@ class OnlineData_OnlineData extends OnlineServiceBase_OnlineServiceBase {
         }
         var me = this;
         return me.request("GET", this.serviceUrl).then(function (result) {
-            Util_Util.extend(me, result);
+            Util.extend(me, result);
         });
     }
 
@@ -38432,7 +40088,7 @@ class Online_Online {
     //TODO 目前并没有对接Online的所有操作，需要补充完整
     //所有查询返回的是一个Promise,在外部使用的时候通过Promise的then方法获取异步结果
     constructor() {
-        this.rootUrl = "http://www.supermapol.com";
+        this.rootUrl = "https://www.supermapol.com";
         this.webUrl = this.rootUrl + "/web";
 
         var mContentUrl = this.webUrl + "/mycontent";
@@ -38447,7 +40103,7 @@ class Online_Online {
      * @returns {Promise} 返回包含网络请求结果的 Promise 对象。
      */
     load() {
-        return FetchRequest_FetchRequest.get(this.rootUrl).then(function (response) {
+        return FetchRequest.get(this.rootUrl).then(function (response) {
             return response;
         });
     }
@@ -38471,7 +40127,7 @@ class Online_Online {
         if (parameter) {
             parameter = parameter.toJSON();
         }
-        return FetchRequest_FetchRequest.get(url, parameter).then(function (json) {
+        return FetchRequest.get(url, parameter).then(function (json) {
             if (!json || !json.content || json.content.length < 1) {
                 return;
             }
@@ -38556,7 +40212,7 @@ class OnlineQueryDatasParameter_OnlineQueryDatasParameter {
          */
         this.filterFields = null;
 
-        Util_Util.extend(this, options)
+        Util.extend(this, options)
 
         this.CLASS_NAME = "SuperMap.OnlineQueryDatasParameter";
     }
@@ -38630,9 +40286,9 @@ class KeyServiceParameter_KeyServiceParameter {
     constructor(options) {
         this.name = null;
         this.serviceIds = null;
-        this.clientType = REST_ClientType.SERVER;
+        this.clientType = ClientType.SERVER;
         this.limitation = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.KeyServiceParameter";
     }
 
@@ -38698,10 +40354,10 @@ class ServerInfo_ServerInfo {
          */
         this.keyServiceUrl = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.ServerInfo";
-        this.type = this.type || REST_ServerType.ISERVER;
+        this.type = this.type || ServerType.ISERVER;
         if (!this.server) {
             console.error('server url require is not  undefined')
         }
@@ -38709,7 +40365,7 @@ class ServerInfo_ServerInfo {
         //this.server = this.server.match(patten)[0];
 
         var tokenServiceSuffix = "/services/security/tokens.json";
-        if (this.type === REST_ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
+        if (this.type === ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
             tokenServiceSuffix = "/iserver" + tokenServiceSuffix;
         }
 
@@ -38718,9 +40374,9 @@ class ServerInfo_ServerInfo {
         }
 
         if (!this.keyServiceUrl) {
-            if (this.type === REST_ServerType.IPORTAL) {
+            if (this.type === ServerType.IPORTAL) {
                 this.keyServiceUrl = this.server + "/web/mycontent/keys/register.json";
-            } else if (this.type === REST_ServerType.ONLINE) {
+            } else if (this.type === ServerType.ONLINE) {
                 this.keyServiceUrl = this.server + "/web/mycontent/keys.json";
             }
         }
@@ -38770,7 +40426,7 @@ class TokenServiceParameter_TokenServiceParameter {
          * @member {SuperMap.ClientType} SuperMap.TokenServiceParameter.prototype.clientType
          * @description token 申请的客户端标识类型。
          */
-        this.clientType = REST_ClientType.NONE;
+        this.clientType = ClientType.NONE;
 
         /**
          * @member {string} [SuperMap.TokenServiceParameter.prototype.ip]
@@ -38790,7 +40446,7 @@ class TokenServiceParameter_TokenServiceParameter {
          */
         this.expiration = 60;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TokenServiceParameter";
     }
@@ -38829,7 +40485,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(14);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(12);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -38917,7 +40573,7 @@ class ElasticSearch_ElasticSearch {
          * 相当于调用 SuperMap.Events.on(eventListeners)。
          */
         this.eventListeners = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         if (this.eventListeners instanceof Object) {
             this.events.on(this.eventListeners);
         }
@@ -39485,7 +41141,7 @@ SuperMap.ElasticSearch = ElasticSearch_ElasticSearch;
  * LevelRenderer 基础工具类
  *
  */
-class levelRenderer_Util_Util {
+class Util_Util {
 
 
     /**
@@ -39788,7 +41444,7 @@ class Color_Color {
          * @member {SuperMap.LevelRenderer.Tool.Util} SuperMap.LevelRenderer.Tool.Color.prototype.util
          * @description LevelRenderer 基础工具对象。
          */
-        this.util = new levelRenderer_Util_Util();
+        this.util = new Util_Util();
         
         /**
          * @member {Object} SuperMap.LevelRenderer.Tool.Color.prototype._ctx
@@ -40880,7 +42536,7 @@ class Color_Color {
 
 
 
-var ColorsPickerUtil_ColorRender = new Color_Color();
+var ColorRender = new Color_Color();
 // let "http://www.qzu.zj.cn": "#bd10e0"
 // 					"www.qzct.net": "#7ed321" = new SuperMap.LevelRenderer.Tool.Color();
 
@@ -40889,7 +42545,7 @@ var ColorsPickerUtil_ColorRender = new Color_Color();
  * 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
  *
  */
-class ColorsPickerUtil_ColorsPickerUtil  {
+class ColorsPickerUtil  {
     /**
      * 创建DOM canvas
      * @param height canvas 高度
@@ -40958,10 +42614,10 @@ class ColorsPickerUtil_ColorsPickerUtil  {
      * {Array} 颜色数组。
      */
     static getStepColors (start, end, step){
-        start = ColorsPickerUtil_ColorRender.toRGBA(start);
-        end = ColorsPickerUtil_ColorRender.toRGBA(end);
-        start = ColorsPickerUtil_ColorRender.getData(start);
-        end = ColorsPickerUtil_ColorRender.getData(end);
+        start = ColorRender.toRGBA(start);
+        end = ColorRender.toRGBA(end);
+        start = ColorRender.getData(start);
+        end = ColorRender.getData(end);
 
         var colors = [];
         var stepR = (end[0] - start[0]) / step;
@@ -40971,10 +42627,10 @@ class ColorsPickerUtil_ColorsPickerUtil  {
         // 生成颜色集合
         // fix by linfeng 颜色堆积
         for (var i = 0, r = start[0], g = start[1], b = start[2], a = start[3]; i < step; i++) {
-            colors[i] = ColorsPickerUtil_ColorRender.toColor([
-                ColorsPickerUtil_ColorRender.adjust(Math.floor(r), [ 0, 255 ]),
-                ColorsPickerUtil_ColorRender.adjust(Math.floor(g), [ 0, 255 ]),
-                ColorsPickerUtil_ColorRender.adjust(Math.floor(b), [ 0, 255 ]),
+            colors[i] = ColorRender.toColor([
+                ColorRender.adjust(Math.floor(r), [ 0, 255 ]),
+                ColorRender.adjust(Math.floor(g), [ 0, 255 ]),
+                ColorRender.adjust(Math.floor(b), [ 0, 255 ]),
                 a.toFixed(4) - 0
             ],'hex');
             r += stepR;
@@ -40986,7 +42642,7 @@ class ColorsPickerUtil_ColorsPickerUtil  {
         g = end[1];
         b = end[2];
         a = end[3];
-        colors[i] = ColorsPickerUtil_ColorRender.toColor([r, g, b, a], 'hex');
+        colors[i] = ColorRender.toColor([r, g, b, a], 'hex');
         return colors;
     }
 
@@ -41043,12 +42699,12 @@ class ColorsPickerUtil_ColorsPickerUtil  {
         return ret;
     }
 }
-SuperMap.ColorsPickerUtil = ColorsPickerUtil_ColorsPickerUtil;
+SuperMap.ColorsPickerUtil = ColorsPickerUtil;
 
 // CONCATENATED MODULE: ./src/common/util/ArrayStatistic.js
 
 
-class ArrayStatistic_ArrayStatistic {
+class ArrayStatistic {
 
     // geostatsInstance: null,
 
@@ -41245,11 +42901,36 @@ class ArrayStatistic_ArrayStatistic {
     }
 
 }
-SuperMap.ArrayStatistic = ArrayStatistic_ArrayStatistic;
+SuperMap.ArrayStatistic = ArrayStatistic;
+// CONCATENATED MODULE: ./src/common/util/MapCalculateUtil.js
+
+
+var getMeterPerMapUnit = function(mapUnit) {
+    var earchRadiusInMeters = 6378137;
+    var meterPerMapUnit;
+    if (mapUnit === Unit.METER) {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === Unit.DEGREE) {
+        // 每度表示多少米。
+        meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
+    } else if (mapUnit === Unit.KILOMETER) {
+        meterPerMapUnit = 1.0e-3;
+    } else if (mapUnit === Unit.INCH) {
+        meterPerMapUnit = 1 / 2.5399999918e-2;
+    } else if (mapUnit === Unit.FOOT) {
+        meterPerMapUnit = 0.3048;
+    } else {
+        return meterPerMapUnit;
+    }
+    return meterPerMapUnit;
+};
+
 // CONCATENATED MODULE: ./src/common/util/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -46124,7 +47805,7 @@ class ThemeStyle_ThemeStyle {
          */
         this.labelYOffset = 0;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 }
 
@@ -46150,7 +47831,7 @@ SuperMap.ThemeStyle = ThemeStyle_ThemeStyle;
  * @category Visualization Theme
  * @classdesc 图形参数基类，此类不可实例化
  */
-class ShapeParameters_ShapeParameters {
+class ShapeParameters {
 
 
 
@@ -46245,7 +47926,7 @@ class ShapeParameters_ShapeParameters {
 
 }
 SuperMap.Feature = SuperMap.Feature || {};
-SuperMap.Feature.ShapeParameters = ShapeParameters_ShapeParameters;
+SuperMap.Feature.ShapeParameters = ShapeParameters;
 // CONCATENATED MODULE: ./src/common/overlay/feature/Point.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -46260,7 +47941,7 @@ SuperMap.Feature.ShapeParameters = ShapeParameters_ShapeParameters;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class feature_Point_Point extends ShapeParameters_ShapeParameters {
+class feature_Point_Point extends ShapeParameters {
 
 
 
@@ -46341,7 +48022,7 @@ SuperMap.Feature.ShapeParameters.Point = feature_Point_Point;
  * @classdesc 线参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
-class Line_Line extends ShapeParameters_ShapeParameters {
+class Line_Line extends ShapeParameters {
 
 
 
@@ -46411,7 +48092,7 @@ SuperMap.Feature.ShapeParameters.Line = Line_Line;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
  
-class feature_Polygon_Polygon extends ShapeParameters_ShapeParameters {
+class feature_Polygon_Polygon extends ShapeParameters {
     
   
 
@@ -46491,7 +48172,7 @@ SuperMap.Feature.ShapeParameters.Polygon = feature_Polygon_Polygon;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class feature_Rectangle_Rectangle extends ShapeParameters_ShapeParameters {
+class feature_Rectangle_Rectangle extends ShapeParameters {
     
     
     /**
@@ -46582,7 +48263,7 @@ SuperMap.Feature.ShapeParameters.Rectangle = feature_Rectangle_Rectangle;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class Sector_Sector extends ShapeParameters_ShapeParameters {
+class Sector_Sector extends ShapeParameters {
 
     
 
@@ -46693,7 +48374,7 @@ SuperMap.Feature.ShapeParameters.Sector = Sector_Sector;
  * @extent {SuperMap.Feature.ShapeParameters}
  */
 
-class Label_Label extends ShapeParameters_ShapeParameters {
+class Label_Label extends ShapeParameters {
 
 
     /**
@@ -46782,7 +48463,7 @@ SuperMap.Feature.ShapeParameters.Label = Label_Label;
  * @classdesc 图片参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
-class Image_Image extends ShapeParameters_ShapeParameters {
+class Image_Image extends ShapeParameters {
 
 
     /**
@@ -46893,7 +48574,7 @@ SuperMap.Feature.ShapeParameters.Image = Image_Image;
  * @extends {SuperMap.Feature.ShapeParameters}
  */
 
-class Circle_Circle extends ShapeParameters_ShapeParameters {
+class Circle_Circle extends ShapeParameters {
 
 
     /**
@@ -48126,7 +49807,7 @@ class Area_Area {
          * @member {SuperMap.LevelRenderer.Tool.Util}  SuperMap.LevelRenderer.Tool.Areal.prototype.util
          * @description 基础工具对象。
          */
-        this.util = new levelRenderer_Util_Util();
+        this.util = new Util_Util();
 
         /**
          * @member {SuperMap.LevelRenderer.Tool.Curve}  SuperMap.LevelRenderer.Tool.Areal.prototype.curve
@@ -49540,7 +51221,7 @@ class Env {
  * @classdesc LevelRenderer 工具-事件辅助类
  * @private 
  */
-class levelRenderer_Event_Event {
+class Event_Event {
 
 
     /**
@@ -50104,7 +51785,7 @@ class Matrix {
 
 
 
-class SUtil_SUtil {
+class SUtil {
     /**
      * @function SuperMap.LevelRenderer.SUtil.SUtil_smoothBezier
      * @description 贝塞尔平滑曲线。
@@ -50135,12 +51816,12 @@ class SUtil_SUtil {
             max = [-Infinity, -Infinity];
             let len = points.length;
             for (let i = 0; i < len; i++) {
-                SUtil_SUtil.Util_vector.min(min, min, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
-                SUtil_SUtil.Util_vector.max(max, max, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
+                SUtil.Util_vector.min(min, min, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
+                SUtil.Util_vector.max(max, max, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
             }
             // 与指定的包围盒做并集
-            SUtil_SUtil.Util_vector.min(min, min, constraint[0]);
-            SUtil_SUtil.Util_vector.max(max, max, constraint[1]);
+            SUtil.Util_vector.min(min, min, constraint[0]);
+            SUtil.Util_vector.max(max, max, constraint[1]);
         }
 
         let len = points.length;
@@ -50162,28 +51843,28 @@ class SUtil_SUtil {
                 }
             }
 
-            SUtil_SUtil.Util_vector.sub(v, nextPoint, prevPoint);
+            SUtil.Util_vector.sub(v, nextPoint, prevPoint);
 
             // use degree to scale the handle length
-            SUtil_SUtil.Util_vector.scale(v, v, smooth);
+            SUtil.Util_vector.scale(v, v, smooth);
 
-            let d0 = SUtil_SUtil.Util_vector.distance(point, prevPoint);
-            let d1 = SUtil_SUtil.Util_vector.distance(point, nextPoint);
+            let d0 = SUtil.Util_vector.distance(point, prevPoint);
+            let d1 = SUtil.Util_vector.distance(point, nextPoint);
             let sum = d0 + d1;
             if (sum !== 0) {
                 d0 /= sum;
                 d1 /= sum;
             }
 
-            SUtil_SUtil.Util_vector.scale(v1, v, -d0);
-            SUtil_SUtil.Util_vector.scale(v2, v, d1);
-            let cp0 = SUtil_SUtil.Util_vector.add([], point, v1);
-            let cp1 = SUtil_SUtil.Util_vector.add([], point, v2);
+            SUtil.Util_vector.scale(v1, v, -d0);
+            SUtil.Util_vector.scale(v2, v, d1);
+            let cp0 = SUtil.Util_vector.add([], point, v1);
+            let cp1 = SUtil.Util_vector.add([], point, v2);
             if (hasConstraint) {
-                SUtil_SUtil.Util_vector.max(cp0, cp0, min);
-                SUtil_SUtil.Util_vector.min(cp0, cp0, max);
-                SUtil_SUtil.Util_vector.max(cp1, cp1, min);
-                SUtil_SUtil.Util_vector.min(cp1, cp1, max);
+                SUtil.Util_vector.max(cp0, cp0, min);
+                SUtil.Util_vector.min(cp0, cp0, max);
+                SUtil.Util_vector.max(cp1, cp1, min);
+                SUtil.Util_vector.min(cp1, cp1, max);
             }
             cps.push(cp0);
             cps.push(cp1);
@@ -50217,7 +51898,7 @@ class SUtil_SUtil {
 
         var distance = 0;
         for (let i = 1; i < len; i++) {
-            distance += SUtil_SUtil.Util_vector.distance([points[i - 1][0] + __OP[0], points[i - 1][1] + __OP[1]], [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
+            distance += SUtil.Util_vector.distance([points[i - 1][0] + __OP[0], points[i - 1][1] + __OP[1]], [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
         }
 
         var segs = distance / 5;
@@ -50313,18 +51994,18 @@ class SUtil_SUtil {
 }
 // 把所有工具对象放到全局静态变量上，以便直接调用工具方法，
 // 避免使用工具时频繁的创建工具对象带来的性能消耗。
-SUtil_SUtil.Util_area = new Area_Area();
-SUtil_SUtil.Util_color = new Color_Color();
-SUtil_SUtil.Util_computeBoundingBox = new ComputeBoundingBox_ComputeBoundingBox();
-SUtil_SUtil.Util_curve = new levelRenderer_Curve_Curve();
-SUtil_SUtil.Util_env = new Env();
-SUtil_SUtil.Util_event = new levelRenderer_Event_Event();
-SUtil_SUtil.Util_http = new Http();
-SUtil_SUtil.Util_log = new Log_Log();
-SUtil_SUtil.Util_math = new Math_Math();
-SUtil_SUtil.Util_matrix = new Matrix();
-SUtil_SUtil.Util = new levelRenderer_Util_Util();
-SUtil_SUtil.Util_vector = new levelRenderer_Vector_Vector();
+SUtil.Util_area = new Area_Area();
+SUtil.Util_color = new Color_Color();
+SUtil.Util_computeBoundingBox = new ComputeBoundingBox_ComputeBoundingBox();
+SUtil.Util_curve = new levelRenderer_Curve_Curve();
+SUtil.Util_env = new Env();
+SUtil.Util_event = new Event_Event();
+SUtil.Util_http = new Http();
+SUtil.Util_log = new Log_Log();
+SUtil.Util_math = new Math_Math();
+SUtil.Util_matrix = new Matrix();
+SUtil.Util = new Util_Util();
+SUtil.Util_vector = new levelRenderer_Vector_Vector();
 
 // CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Transformable.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -50381,18 +52062,18 @@ class Transformable_Transformable {
          * @description 设置图形的朝向。
          */
         this.lookAt = (function () {
-            var v = SUtil_SUtil.Util_vector.create();
+            var v = SUtil.Util_vector.create();
             // {Array.<Number>|Float32Array} target
             return function (target) {
                 if (!this.transform) {
-                    this.transform = SUtil_SUtil.Util_matrix.create();
+                    this.transform = SUtil.Util_matrix.create();
                 }
                 var m = this.transform;
-                SUtil_SUtil.Util_vector.sub(v, target, this.position);
+                SUtil.Util_vector.sub(v, target, this.position);
                 if (isAroundZero(v[0]) && isAroundZero(v[1])) {
                     return;
                 }
-                SUtil_SUtil.Util_vector.normalize(v, v);
+                SUtil.Util_vector.normalize(v, v);
                 // Y Axis
                 // TODO Scale origin ?
                 m[2] = v[0] * this.scale[1];
@@ -50464,8 +52145,8 @@ class Transformable_Transformable {
 
         var origin = [0, 0];
 
-        var m = this.transform || SUtil_SUtil.Util_matrix.create();
-        SUtil_SUtil.Util_matrix.identity(m);
+        var m = this.transform || SUtil.Util_matrix.create();
+        SUtil.Util_matrix.identity(m);
 
         if (this.needLocalTransform) {
             if (
@@ -50477,15 +52158,15 @@ class Transformable_Transformable {
                 let haveOrigin = isNotAroundZero(origin[0])
                     || isNotAroundZero(origin[1]);
                 if (haveOrigin) {
-                    SUtil_SUtil.Util_matrix.translate(
+                    SUtil.Util_matrix.translate(
                         m, m, origin
                     );
                 }
-                SUtil_SUtil.Util_matrix.scale(m, m, this.scale);
+                SUtil.Util_matrix.scale(m, m, this.scale);
                 if (haveOrigin) {
                     origin[0] = -origin[0];
                     origin[1] = -origin[1];
-                    SUtil_SUtil.Util_matrix.translate(
+                    SUtil.Util_matrix.translate(
                         m, m, origin
                     );
                 }
@@ -50498,29 +52179,29 @@ class Transformable_Transformable {
                     let haveOrigin = isNotAroundZero(origin[0])
                         || isNotAroundZero(origin[1]);
                     if (haveOrigin) {
-                        SUtil_SUtil.Util_matrix.translate(
+                        SUtil.Util_matrix.translate(
                             m, m, origin
                         );
                     }
-                    SUtil_SUtil.Util_matrix.rotate(m, m, this.rotation[0]);
+                    SUtil.Util_matrix.rotate(m, m, this.rotation[0]);
                     if (haveOrigin) {
                         origin[0] = -origin[0];
                         origin[1] = -origin[1];
-                        SUtil_SUtil.Util_matrix.translate(
+                        SUtil.Util_matrix.translate(
                             m, m, origin
                         );
                     }
                 }
             } else {
                 if (this.rotation !== 0) {
-                    SUtil_SUtil.Util_matrix.rotate(m, m, this.rotation);
+                    SUtil.Util_matrix.rotate(m, m, this.rotation);
                 }
             }
 
             if (
                 isNotAroundZero(this.position[0]) || isNotAroundZero(this.position[1])
             ) {
-                SUtil_SUtil.Util_matrix.translate(m, m, this.position);
+                SUtil.Util_matrix.translate(m, m, this.position);
             }
         }
 
@@ -50530,9 +52211,9 @@ class Transformable_Transformable {
         // 应用父节点变换
         if (this.parent && this.parent.needTransform) {
             if (this.needLocalTransform) {
-                SUtil_SUtil.Util_matrix.mul(this.transform, this.parent.transform, this.transform);
+                SUtil.Util_matrix.mul(this.transform, this.parent.transform, this.transform);
             } else {
-                SUtil_SUtil.Util_matrix.copy(this.transform, this.parent.transform);
+                SUtil.Util_matrix.copy(this.transform, this.parent.transform);
             }
         }
 
@@ -50799,8 +52480,8 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
          *
          */
         this.dataInfo = null;
-        Util_Util.extend(this, options);
-        this.id = this.id  || Util_Util.createUniqueID("smShape_");
+        Util.extend(this, options);
+        this.id = this.id  || Util.createUniqueID("smShape_");
         this.CLASS_NAME = "SuperMap.LevelRenderer.Shape";
         /**
          * @function SuperMap.LevelRenderer.Shape.prototype.getTansform
@@ -50814,9 +52495,9 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
                 var originPos = [x, y];
                 // 对鼠标的坐标也做相同的变换
                 if (this.needTransform && this.transform) {
-                    SUtil_SUtil.Util_matrix.invert(invTransform, this.transform);
+                    SUtil.Util_matrix.invert(invTransform, this.transform);
 
-                    SUtil_SUtil.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
+                    SUtil.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
 
                     if (x == originPos[0] && y == originPos[1]) {
                         // 避免外部修改导致的 needTransform 不准确
@@ -50996,14 +52677,14 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      *
      */
     doClip(ctx) {
-        var clipShapeInvTransform = SUtil_SUtil.Util_matrix.create();
+        var clipShapeInvTransform = SUtil.Util_matrix.create();
 
         if (this.__clipShapes) {
             for (var i = 0; i < this.__clipShapes.length; i++) {
                 var clipShape = this.__clipShapes[i];
                 if (clipShape.needTransform) {
                     let m = clipShape.transform;
-                    SUtil_SUtil.Util_matrix.invert(clipShapeInvTransform, m);
+                    SUtil.Util_matrix.invert(clipShapeInvTransform, m);
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -51042,7 +52723,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
             newStyle[k] = style[k];
         }
 
-        var highlightColor = SUtil_SUtil.Util_color.getHighlightColor();
+        var highlightColor = SUtil.Util_color.getHighlightColor();
         // 根据highlightStyle扩展
         if (style.brushType != 'stroke') {
             // 带填充则用高亮色加粗边线
@@ -51083,9 +52764,9 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
             } else {
                 // 线型的则用原色加工高亮
                 newStyle.strokeColor = highlightStyle.strokeColor
-                    || SUtil_SUtil.Util_color.mix(
+                    || SUtil.Util_color.mix(
                         style.strokeColor,
-                        SUtil_SUtil.Util_color.toRGB(highlightColor)
+                        SUtil.Util_color.toRGB(highlightColor)
                     );
             }
         }
@@ -51135,7 +52816,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @param {Object} style - 样式。
      */
     buildPath(ctx, style) { // eslint-disable-line no-unused-vars
-        SUtil_SUtil.Util_log('buildPath not implemented in ' + this.type);
+        SUtil.Util_log('buildPath not implemented in ' + this.type);
     }
 
 
@@ -51146,7 +52827,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @param {Object} style - 样式。
      */
     getRect(style) { // eslint-disable-line no-unused-vars
-        SUtil_SUtil.Util_log('getRect not implemented in ' + this.type);
+        SUtil.Util_log('getRect not implemented in ' + this.type);
     }
 
 
@@ -51174,7 +52855,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
             && y <= (rect.y + rect.height)
         ) {
             // 矩形内
-            return SUtil_SUtil.Util_area.isInside(this, this.style, x, y);
+            return SUtil.Util_area.isInside(this, this.style, x, y);
         }
 
         return false;
@@ -51449,7 +53130,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
 
         text = (text + '').split('\n');
 
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', textFont);
 
         switch (textBaseline) {
             case 'top':
@@ -51481,8 +53162,8 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @return {Object} 矩形区域。
      */
     static _getTextRect(text, x, y, textFont, textAlign, textBaseline) {
-        var width = SUtil_SUtil.Util_area.getTextWidth(text, textFont);
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', textFont);
+        var width = SUtil.Util_area.getTextWidth(text, textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', textFont);
 
         text = (text + '').split('\n');
 
@@ -51781,7 +53462,7 @@ class SmicText_SmicText extends Shape_Shape {
         ctx.textBaseline = style.textBaseline || 'middle';
 
         var text = (style.text + '').split('\n');
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', style.textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', style.textFont);
         var rect = this.getRectNoRotation(style);
         // var x = style.x;
         var x = style.x + __OP[0];
@@ -52026,10 +53707,10 @@ class SmicText_SmicText extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var lineHeight = SUtil_SUtil.Util_area.getTextHeight('ZH', style.textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', style.textFont);
 
-        var width = SUtil_SUtil.Util_area.getTextWidth(style.text, style.textFont);
-        var height = SUtil_SUtil.Util_area.getTextHeight(style.text, style.textFont);
+        var width = SUtil.Util_area.getTextWidth(style.text, style.textFont);
+        var height = SUtil.Util_area.getTextHeight(style.text, style.textFont);
 
         //处理文字位置，注：文本的绘制是由此 rect 决定
         var textX = style.x + __OP[0];                 // 默认start == left
@@ -52499,7 +54180,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
         this.drawText(ctx, style, this.style);
 
         //岛洞
-        var hpStyle = Util_Util.cloneObject(style);
+        var hpStyle = Util.cloneObject(style);
 
         if (hpStyle.pointList) {
             if (this.holePolygonPointLists && this.holePolygonPointLists.length > 0) {
@@ -52591,7 +54272,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
         }
 
         if (style.smooth && style.smooth !== 'spline') {
-            var controlPoints = SUtil_SUtil.SUtil_smoothBezier(pointList, style.smooth, true, style.smoothConstraint, __OP);
+            var controlPoints = SUtil.SUtil_smoothBezier(pointList, style.smooth, true, style.smoothConstraint, __OP);
 
             ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
             var cp1;
@@ -52608,7 +54289,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
             }
         } else {
             if (style.smooth === 'spline') {
-                pointList = SUtil_SUtil.SUtil_smoothSpline(pointList, true, null, __OP);
+                pointList = SUtil.SUtil_smoothSpline(pointList, true, null, __OP);
             }
 
             if (!style.lineType || style.lineType == 'solid') {
@@ -52682,7 +54363,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < pointList.length; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
                         pointList[i - 1][1] + __OP[1],
@@ -52692,7 +54373,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
                         [pattern1, pattern2]
                     );
                 }
-                SUtil_SUtil.SUtil_dashedLineTo(
+                SUtil.SUtil_dashedLineTo(
                     ctx,
                     pointList[pointList.length - 1][0] + __OP[0],
                     pointList[pointList.length - 1][1] + __OP[1],
@@ -52742,7 +54423,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < pointList.length; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
                         pointList[i - 1][1] + __OP[1],
@@ -52752,7 +54433,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
                         [pattern1, pattern2, pattern3, pattern4]
                     );
                 }
-                SUtil_SUtil.SUtil_dashedLineTo(
+                SUtil.SUtil_dashedLineTo(
                     ctx,
                     pointList[pointList.length - 1][0] + __OP[0],
                     pointList[pointList.length - 1][1] + __OP[1],
@@ -52960,7 +54641,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
         var len = Math.min(style.pointList.length, Math.round(style.pointListLength || style.pointList.length));
 
         if (style.smooth && style.smooth !== 'spline') {
-            var controlPoints = SUtil_SUtil.SUtil_smoothBezier(pointList, style.smooth, false, style.smoothConstraint, __OP);
+            var controlPoints = SUtil.SUtil_smoothBezier(pointList, style.smooth, false, style.smoothConstraint, __OP);
 
             ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
             var cp1;
@@ -52976,7 +54657,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
             }
         } else {
             if (style.smooth === 'spline') {
-                pointList = SUtil_SUtil.SUtil_smoothSpline(pointList, null, null, __OP);
+                pointList = SUtil.SUtil_smoothSpline(pointList, null, null, __OP);
                 len = pointList.length;
             }
             if (!style.lineType || style.lineType === 'solid') {
@@ -53044,7 +54725,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (var i = 1; i < len; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1],
                         pointList[i][0] + __OP[0], pointList[i][1] + __OP[1],
@@ -53091,7 +54772,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
                     * (style.lineType === 'dashed' ? 5 : 1);
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < len; i++) {
-                    SUtil_SUtil.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1],
                         pointList[i][0] + __OP[0], pointList[i][1] + __OP[1],
@@ -53725,8 +55406,8 @@ class SmicSector_SmicSector extends Shape_Shape {
         var endAngle = style.endAngle;              // 结束角度(0,360]
         var clockWise = style.clockWise || false;
 
-        startAngle = SUtil_SUtil.Util_math.degreeToRadian(startAngle);
-        endAngle = SUtil_SUtil.Util_math.degreeToRadian(endAngle);
+        startAngle = SUtil.Util_math.degreeToRadian(startAngle);
+        endAngle = SUtil.Util_math.degreeToRadian(endAngle);
 
         if (!clockWise) {
             // 扇形默认是逆时针方向，Y轴向上
@@ -53735,8 +55416,8 @@ class SmicSector_SmicSector extends Shape_Shape {
             endAngle = -endAngle;
         }
 
-        var unitX = SUtil_SUtil.Util_math.cos(startAngle);
-        var unitY = SUtil_SUtil.Util_math.sin(startAngle);
+        var unitX = SUtil.Util_math.cos(startAngle);
+        var unitY = SUtil.Util_math.sin(startAngle);
         ctx.moveTo(
             unitX * r0 + x,
             unitY * r0 + y
@@ -53750,8 +55431,8 @@ class SmicSector_SmicSector extends Shape_Shape {
         ctx.arc(x, y, r, startAngle, endAngle, !clockWise);
 
         ctx.lineTo(
-            SUtil_SUtil.Util_math.cos(endAngle) * r0 + x,
-            SUtil_SUtil.Util_math.sin(endAngle) * r0 + y
+            SUtil.Util_math.cos(endAngle) * r0 + x,
+            SUtil.Util_math.sin(endAngle) * r0 + y
         );
 
         if (r0 !== 0) {
@@ -53781,17 +55462,17 @@ class SmicSector_SmicSector extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var min0 = SUtil_SUtil.Util_vector.create();
-        var min1 = SUtil_SUtil.Util_vector.create();
-        var max0 = SUtil_SUtil.Util_vector.create();
-        var max1 = SUtil_SUtil.Util_vector.create();
+        var min0 = SUtil.Util_vector.create();
+        var min1 = SUtil.Util_vector.create();
+        var max0 = SUtil.Util_vector.create();
+        var max1 = SUtil.Util_vector.create();
 
         var x = style.x + __OP[0];   // 圆心x
         var y = style.y + __OP[1];   // 圆心y
         var r0 = style.r0 || 0;     // 形内半径[0,r)
         var r = style.r;            // 扇形外半径(0,r]
-        var startAngle = SUtil_SUtil.Util_math.degreeToRadian(style.startAngle);
-        var endAngle = SUtil_SUtil.Util_math.degreeToRadian(style.endAngle);
+        var startAngle = SUtil.Util_math.degreeToRadian(style.startAngle);
+        var endAngle = SUtil.Util_math.degreeToRadian(style.endAngle);
         var clockWise = style.clockWise;
 
         if (!clockWise) {
@@ -53800,19 +55481,19 @@ class SmicSector_SmicSector extends Shape_Shape {
         }
 
         if (r0 > 1) {
-            SUtil_SUtil.Util_computeBoundingBox.arc(
+            SUtil.Util_computeBoundingBox.arc(
                 x, y, r0, startAngle, endAngle, !clockWise, min0, max0
             );
         } else {
             min0[0] = max0[0] = x;
             min0[1] = max0[1] = y;
         }
-        SUtil_SUtil.Util_computeBoundingBox.arc(
+        SUtil.Util_computeBoundingBox.arc(
             x, y, r, startAngle, endAngle, !clockWise, min1, max1
         );
 
-        SUtil_SUtil.Util_vector.min(min0, min0, min1);
-        SUtil_SUtil.Util_vector.max(max0, max0, max1);
+        SUtil.Util_vector.min(min0, min0, min1);
+        SUtil.Util_vector.max(max0, max0, max1);
         style.__rect = {
             x: min0[0],
             y: min0[1],
@@ -53919,13 +55600,13 @@ class ShapeFactory_ShapeFactory {
             style["y"] = sps.y;
             style["r"] = sps.r;
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y']);
 
             //创建图形
             let shape = new SmicPoint_SmicPoint();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Line_Line) {        // 线
@@ -53937,13 +55618,13 @@ class ShapeFactory_ShapeFactory {
             // 设置style
             let style = new Object();
             style["pointList"] = sps.pointList;
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['pointList']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['pointList']);
 
             // 创建图形
             let shape = new SmicBrokenLine_SmicBrokenLine();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof feature_Polygon_Polygon) {        // 面
@@ -53955,13 +55636,13 @@ class ShapeFactory_ShapeFactory {
             //设置style
             let style = new Object();
             style["pointList"] = sps.pointList;
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['pointList']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['pointList']);
 
             //创建图形
             let shape = new SmicPolygon_SmicPolygon();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', "highlightStyle"]);
+            Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', "highlightStyle"]);
 
             return shape;
         } else if (sps instanceof feature_Rectangle_Rectangle) {        // 矩形
@@ -53977,13 +55658,13 @@ class ShapeFactory_ShapeFactory {
             style["width"] = sps.width;
             style["height"] = sps.height;
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'width', 'height']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'width', 'height']);
 
             //创建图形
             let shape = new SmicRectangle_SmicRectangle();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'width', 'height', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'width', 'height', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Sector_Sector) {        // 扇形
@@ -54003,13 +55684,13 @@ class ShapeFactory_ShapeFactory {
             }
 
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle']);
 
             //创建图形
             let shape = new SmicSector_SmicSector();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Label_Label) {        // 标签
@@ -54019,13 +55700,13 @@ class ShapeFactory_ShapeFactory {
             style["y"] = sps.y;
             style["text"] = sps.text;
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'text']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'text']);
 
             //创建图形
             let shape = new SmicText_SmicText();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'text', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'text', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Image_Image) {        // 图片
@@ -54055,13 +55736,13 @@ class ShapeFactory_ShapeFactory {
                 style["sHeight"] = sps.sHeight
             }
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'image', 'width', 'height', 'sx', 'sy', 'sWidth', 'sHeight']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'image', 'width', 'height', 'sx', 'sy', 'sWidth', 'sHeight']);
 
             //创建图形
             let shape = new SmicImage_SmicImage();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'image', 'width', 'height', 'style', 'highlightStyle']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'image', 'width', 'height', 'style', 'highlightStyle']);
 
             return shape;
         } else if (sps instanceof Circle_Circle) {       //圆形 用于符号专题图
@@ -54071,13 +55752,13 @@ class ShapeFactory_ShapeFactory {
             style["r"] = sps.r;
             style["y"] = sps.y;
 
-            style = Util_Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r']);
+            style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r']);
 
             //创建图形
             let shape = new SmicCircle_SmicCircle();
             shape.style = ShapeFactory_ShapeFactory.transformStyle(style);
             shape.highlightStyle = ShapeFactory_ShapeFactory.transformStyle(sps.highlightStyle);
-            Util_Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'style', 'highlightStyle', 'lineWidth', 'text', 'textPosition']);
+            Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'style', 'highlightStyle', 'lineWidth', 'text', 'textPosition']);
 
             return shape;
         }
@@ -54222,7 +55903,7 @@ class ShapeFactory_ShapeFactory {
 
         // 设置用户 style
         if (sets.backgroundStyle) {
-            Util_Util.copyAttributesWithClip(bgSP.style, sets.backgroundStyle);
+            Util.copyAttributesWithClip(bgSP.style, sets.backgroundStyle);
         }
 
         // 设置背景框圆角参数
@@ -54335,7 +56016,7 @@ class ShapeFactory_ShapeFactory {
                     refLineSP.hoverable = false;
                     // 用户style
                     if (sets.xReferenceLineStyle) {
-                        Util_Util.copyAttributesWithClip(refLineSP.style, sets.xReferenceLineStyle);
+                        Util.copyAttributesWithClip(refLineSP.style, sets.xReferenceLineStyle);
                     }
                     // 生成参考线图形对象
                     refLines.push(shapeFactory.createShape(refLineSP))
@@ -54405,20 +56086,20 @@ class ShapeFactory_ShapeFactory {
             //x轴箭头
             var xSP = new feature_Polygon_Polygon(xArrowPois);
             xSP.style = {fillColor: "#008acd"};
-            Util_Util.copyAttributesWithClip(xSP.style, sets.axisStyle);
+            Util.copyAttributesWithClip(xSP.style, sets.axisStyle);
             arrows.push(shapeFactory.createShape(xSP));
 
             //y轴箭头
             var ySP = new feature_Polygon_Polygon(yArrowPois);
             ySP.style = {fillColor: "#008acd"};
-            Util_Util.copyAttributesWithClip(ySP.style, sets.axisStyle);
+            Util.copyAttributesWithClip(ySP.style, sets.axisStyle);
             arrows.push(shapeFactory.createShape(ySP));
 
             // z轴箭头 坐标轴箭头是否要使用
             if (sets.axis3DParameter && !isNaN(sets.axis3DParameter) && sets.axis3DParameter >= 15) {
                 var zSP = new feature_Polygon_Polygon(zArrowPois);
                 zSP.style = {fillColor: "#008acd"};
-                Util_Util.copyAttributesWithClip(zSP.style, sets.axisStyle);
+                Util.copyAttributesWithClip(zSP.style, sets.axisStyle);
                 arrows.push(shapeFactory.createShape(zSP));
             }
 
@@ -54437,7 +56118,7 @@ class ShapeFactory_ShapeFactory {
         };
         // 用户 style
         if (sets.axisStyle) {
-            Util_Util.copyAttributesWithClip(axisSP.style, sets.axisStyle);
+            Util.copyAttributesWithClip(axisSP.style, sets.axisStyle);
         }
         // 禁止事件
         axisSP.clickable = false;
@@ -54465,7 +56146,7 @@ class ShapeFactory_ShapeFactory {
                 };
                 // 用户 style
                 if (sets.axisYLabelsStyle) {
-                    Util_Util.copyAttributesWithClip(labelYSP.style, sets.axisYLabelsStyle);
+                    Util.copyAttributesWithClip(labelYSP.style, sets.axisYLabelsStyle);
                 }
                 // 禁止事件
                 labelYSP.clickable = false;
@@ -54485,7 +56166,7 @@ class ShapeFactory_ShapeFactory {
                     };
                     // 用户 style
                     if (sets.axisYLabelsStyle) {
-                        Util_Util.copyAttributesWithClip(labelYSP.style, sets.axisYLabelsStyle);
+                        Util.copyAttributesWithClip(labelYSP.style, sets.axisYLabelsStyle);
                     }
                     // 禁止事件
                     labelYSP.clickable = false;
@@ -54523,7 +56204,7 @@ class ShapeFactory_ShapeFactory {
                     };
                     // 用户 style
                     if (sets.axisXLabelsStyle) {
-                        Util_Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
+                        Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
                     }
                     // 禁止事件
                     labelXSP.clickable = false;
@@ -54542,7 +56223,7 @@ class ShapeFactory_ShapeFactory {
                     };
                     // 用户 style
                     if (sets.axisXLabelsStyle) {
-                        Util_Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
+                        Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
                     }
                     // 禁止事件
                     labelXSP.clickable = false;
@@ -54564,7 +56245,7 @@ class ShapeFactory_ShapeFactory {
                         };
                         // 用户 style
                         if (sets.axisXLabelsStyle) {
-                            Util_Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
+                            Util.copyAttributesWithClip(labelXSP.style, sets.axisXLabelsStyle);
                         }
                         // 禁止事件
                         labelXSP.clickable = false;
@@ -54637,13 +56318,13 @@ class ShapeFactory_ShapeFactory {
 
         // 基础 style
         if (style) {
-            Util_Util.copyAttributesWithClip(finalStyle, style);
+            Util.copyAttributesWithClip(finalStyle, style);
         }
 
         // 按索引赋 style
         if (styleGroup && styleGroup.length && typeof(index) !== "undefined" && !isNaN(index) && index >= 0) {
             if (styleGroup[index]) {
-                Util_Util.copyAttributesWithClip(finalStyle, styleGroup[index]);
+                Util.copyAttributesWithClip(finalStyle, styleGroup[index]);
             }
         }
 
@@ -54654,7 +56335,7 @@ class ShapeFactory_ShapeFactory {
             var v = parseFloat(value);
             for (var i = 0; i < dscLen; i++) {
                 if (dsc[i].start <= v && v < dsc[i].end) {
-                    Util_Util.copyAttributesWithClip(finalStyle, dsc[i].style);
+                    Util.copyAttributesWithClip(finalStyle, dsc[i].style);
                     break;
                 }
             }
@@ -54704,7 +56385,7 @@ class feature_Theme_Theme {
          * @member {string} SuperMap.Feature.Theme.prototype.id
          * @description 专题要素唯一标识。
          */
-        this.id = Util_Util.createUniqueID(this.CLASS_NAME + "_");
+        this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
         /**
          * @member {SuperMap.LonLat} SuperMap.Feature.Theme.prototype.lonlat
@@ -55499,7 +57180,7 @@ class Bar_Bar extends Graph_Graph {
                     }
                 }
                 barParams.style = {};
-                Util_Util.copyAttributesWithClip(barParams.style, deafaultShawdow);
+                Util.copyAttributesWithClip(barParams.style, deafaultShawdow);
             }
 
             // 图形携带的数据信息
@@ -55977,7 +57658,7 @@ class Bar3D_Bar3D extends Graph_Graph {
             // hover 模式（组合）
             polyTopSP.isHoverByRefDataID = polySideSP.isHoverByRefDataID = polyFaceSP.isHoverByRefDataID = true;
             // 高亮组(当鼠标 hover 到组内任何一个图形，整个组的图形都会高亮。refDataHoverGroup 在 isHoverByRefDataID 为 true 时有效)
-            polyTopSP.refDataHoverGroup = polySideSP.refDataHoverGroup = polyFaceSP.refDataHoverGroup = Util_Util.createUniqueID("lr_shg");
+            polyTopSP.refDataHoverGroup = polySideSP.refDataHoverGroup = polyFaceSP.refDataHoverGroup = Util.createUniqueID("lr_shg");
             // 图形携带的数据信息
             polyTopSP.dataInfo = polySideSP.dataInfo = polyFaceSP.dataInfo = {
                 field: this.fields[i],
@@ -57529,10 +59210,10 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
         this.CLASS_NAME = "SuperMap.Feature.Theme.Vector";
         this.style = style ? style : {};
         if (options) {
-            Util_Util.copyAttributesWithClip(this, options, ["shapeOptions", "dataBounds"])
+            Util.copyAttributesWithClip(this, options, ["shapeOptions", "dataBounds"])
         }
         if (shapeOptions) {
-            Util_Util.copyAttributesWithClip(this.shapeOptions, shapeOptions);
+            Util.copyAttributesWithClip(this.shapeOptions, shapeOptions);
         }
 
         //设置基础参数 dataBounds、lonlat、location
@@ -57629,7 +59310,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //赋 style
         var style = new Object();
-        style = Util_Util.copyAttributesWithClip(style, this.style, ['pointList']);
+        style = Util.copyAttributesWithClip(style, this.style, ['pointList']);
         style.pointList = pointList;
 
         //创建图形
@@ -57655,7 +59336,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -57711,7 +59392,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
             //赋 style
             var style = new Object();
             style.r = 6; //防止漏设此参数，默认 6 像素
-            style = Util_Util.copyAttributesWithClip(style, this.style);
+            style = Util.copyAttributesWithClip(style, this.style);
             style.x = refLocal[0];
             style.y = refLocal[1];
 
@@ -57738,7 +59419,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
             //修改一些 shape 可选属性，通常不需要这么做
             if (this.shapeOptions) {
-                Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+                Util.copyAttributesWithClip(shape, this.shapeOptions);
             }
 
             this.shapes.push(shape);
@@ -57790,7 +59471,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
         //赋 style
         var style = new Object();
         style.r = 6; //防止漏设此参数，默认 6 像素
-        style = Util_Util.copyAttributesWithClip(style, this.style);
+        style = Util.copyAttributesWithClip(style, this.style);
         style.x = localLX[0] - location[0];
         style.y = localLX[1] - location[1];
 
@@ -57817,7 +59498,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -57909,7 +59590,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //赋 style
         var style = {};
-        style = Util_Util.copyAttributesWithClip(style, this.style, ['pointList']);
+        style = Util.copyAttributesWithClip(style, this.style, ['pointList']);
         style.pointList = pointList;
 
         //创建图形
@@ -57940,7 +59621,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -57966,7 +59647,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
         //赋 style
         var style = new Object();
         style.r = 6; //防止漏设此参数，默认 6 像素
-        style = Util_Util.copyAttributesWithClip(style, this.style);
+        style = Util.copyAttributesWithClip(style, this.style);
         style.x = localLX[0] - location[0];
         // SuperMap.Geometry.Rectangle 使用左下角定位， SmicRectangle 使用左上角定位，需要转换
         style.y = (localLX[1] - location[1]) - 2 * geometry.width / res;
@@ -57996,7 +59677,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -58017,7 +59698,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
         //赋 style
         var style = new Object();
         style.r = 6; //防止漏设此参数，默认 6 像素
-        style = Util_Util.copyAttributesWithClip(style, this.style, ["x", "y", "text"]);
+        style = Util.copyAttributesWithClip(style, this.style, ["x", "y", "text"]);
         style.x = localLX[0] - location[0];
         style.y = localLX[1] - location[1];
         style.text = geometry.text;
@@ -58045,7 +59726,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            Util_Util.copyAttributesWithClip(shape, this.shapeOptions);
+            Util.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -58214,8 +59895,8 @@ class Group_Group extends SuperMap.mixin(Eventful, Transformable_Transformable) 
          * @description 是否忽略该 Group 及其所有子节点。
          */
         this.ignore = false;
-        Util_Util.extend(this, options);
-        this.id = this.id || Util_Util.createUniqueID("smShapeGroup_");
+        Util.extend(this, options);
+        this.id = this.id || Util.createUniqueID("smShapeGroup_");
         this.CLASS_NAME = "SuperMap.LevelRenderer.Group";
     }
 
@@ -58296,7 +59977,7 @@ class Group_Group extends SuperMap.mixin(Eventful, Transformable_Transformable) 
      * @param {SuperMap.LevelRenderer.Shape} child - 需要移除的子节点图形。
      */
     removeChild(child) {
-        var idx = Util_Util.indexOf(this._children, child);
+        var idx = Util.indexOf(this._children, child);
 
         this._children.splice(idx, 1);
         child.parent = null;
@@ -58673,9 +60354,9 @@ class Storage_Storage {
                             target[name] = params[name];
                         }
                     }
-                    new levelRenderer_Util_Util().merge(el, target, true);
+                    new Util_Util().merge(el, target, true);
                 } else {
-                    new levelRenderer_Util_Util().merge(el, params, true);
+                    new Util_Util().merge(el, params, true);
                 }
             }
         }
@@ -58798,7 +60479,7 @@ class Storage_Storage {
             el = elId;
         }
 
-        var idx = new levelRenderer_Util_Util().indexOf(this._roots, el);
+        var idx = new Util_Util().indexOf(this._roots, el);
         if (idx >= 0) {
             this.delFromMap(el.id);
             this._roots.splice(idx, 1);
@@ -58985,7 +60666,7 @@ class Painter_Painter {
         // 创建各层canvas
         // 背景
         //this._bgDom = Painter.createDom('bg', 'div', this);
-        this._bgDom = Painter_Painter.createDom(Util_Util.createUniqueID("SuperMap.Theme_background_"), 'div', this);
+        this._bgDom = Painter_Painter.createDom(Util.createUniqueID("SuperMap.Theme_background_"), 'div', this);
         domRoot.appendChild(this._bgDom);
         this._bgDom.onselectstart = returnFalse;
         this._bgDom.style['-webkit-user-select'] = 'none';
@@ -58994,7 +60675,7 @@ class Painter_Painter {
 
         // 高亮
         //var hoverLayer = new PaintLayer('_hoverLayer_', this);
-        var hoverLayer = new Painter_PaintLayer(Util_Util.createUniqueID("_highLightLayer_"), this);
+        var hoverLayer = new Painter_PaintLayer(Util.createUniqueID("_highLightLayer_"), this);
         this._layers['hover'] = hoverLayer;
         domRoot.appendChild(hoverLayer.dom);
         hoverLayer.initContext();
@@ -59126,7 +60807,7 @@ class Painter_Painter {
                 // Set transform
                 if (clipShape.needTransform) {
                     let m = clipShape.transform;
-                    SUtil_SUtil.Util_matrix.invert(invTransform, m);
+                    SUtil.Util_matrix.invert(invTransform, m);
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -59158,7 +60839,7 @@ class Painter_Painter {
                         try {
                             shape.brush(ctx, false, this.updatePainter);
                         } catch (error) {
-                            SUtil_SUtil.Util_log(
+                            SUtil.Util_log(
                                 error,
                                 'brush error of ' + shape.type,
                                 shape
@@ -59229,7 +60910,7 @@ class Painter_Painter {
 
             // Create a new layer
             //currentLayer = new PaintLayer(zlevel, this);
-            currentLayer = new Painter_PaintLayer(Util_Util.createUniqueID("_levelLayer_" + zlevel), this);
+            currentLayer = new Painter_PaintLayer(Util.createUniqueID("_levelLayer_" + zlevel), this);
             var prevDom = prevLayer ? prevLayer.dom : this._bgDom;
             if (prevDom.nextSibling) {
                 prevDom.parentNode.insertBefore(
@@ -59246,7 +60927,7 @@ class Painter_Painter {
             this._layers[zlevel] = currentLayer;
 
             if (this._layerConfig[zlevel]) {
-                new levelRenderer_Util_Util().merge(currentLayer, this._layerConfig[zlevel], true);
+                new Util_Util().merge(currentLayer, this._layerConfig[zlevel], true);
             }
 
             currentLayer.updateTransform();
@@ -59363,13 +61044,13 @@ class Painter_Painter {
             if (!this._layerConfig[zlevel]) {
                 this._layerConfig[zlevel] = config;
             } else {
-                new levelRenderer_Util_Util().merge(this._layerConfig[zlevel], config, true);
+                new Util_Util().merge(this._layerConfig[zlevel], config, true);
             }
 
             var layer = this._layers[zlevel];
 
             if (layer) {
-                new levelRenderer_Util_Util().merge(layer, this._layerConfig[zlevel], true);
+                new Util_Util().merge(layer, this._layerConfig[zlevel], true);
             }
         }
     }
@@ -59395,7 +61076,7 @@ class Painter_Painter {
         layer.dom.parentNode.removeChild(layer.dom);
         delete this._layers[zlevel];
 
-        this._zlevelList.splice(new levelRenderer_Util_Util().indexOf(this._zlevelList, zlevel), 1);
+        this._zlevelList.splice(new Util_Util().indexOf(this._zlevelList, zlevel), 1);
     }
 
 
@@ -59510,7 +61191,7 @@ class Painter_Painter {
      */
     toDataURL(type, backgroundColor, args) {
         //var imageDom = Painter.createDom('image', 'canvas', this);
-        var imageDom = Painter_Painter.createDom(Util_Util.createUniqueID("SuperMap.Theme.image_"), 'canvas', this);
+        var imageDom = Painter_Painter.createDom(Util.createUniqueID("SuperMap.Theme.image_"), 'canvas', this);
         this._bgDom.appendChild(imageDom);
         var ctx = imageDom.getContext('2d');
         Painter_Painter.devicePixelRatio != 1
@@ -59538,7 +61219,7 @@ class Painter_Painter {
                             try {
                                 shape.brush(ctx, false, self.updatePainter);
                             } catch (error) {
-                                SUtil_SUtil.Util_log(
+                                SUtil.Util_log(
                                     error,
                                     'brush error of ' + shape.type,
                                     shape
@@ -59630,7 +61311,7 @@ class Painter_Painter {
                 try {
                     shape.brush(ctx, true, this.updatePainter);
                 } catch (error) {
-                    SUtil_SUtil.Util_log(
+                    SUtil.Util_log(
                         error, 'hoverBrush error of ' + shape.type, shape
                     );
                 }
@@ -59879,7 +61560,7 @@ class Painter_PaintLayer extends Transformable_Transformable {
          * @description Canvas 上下文。
          */
         this.ctx = null;
-        this.dom = Painter_Painter.createDom(Util_Util.createUniqueID("SuperMap.Theme" + id), 'canvas', painter);
+        this.dom = Painter_Painter.createDom(Util.createUniqueID("SuperMap.Theme" + id), 'canvas', painter);
         this.dom.onselectstart = returnFalse; // 避免页面选中的尴尬
         this.dom.style['-webkit-user-select'] = 'none';
         this.dom.style['user-select'] = 'none';
@@ -59933,7 +61614,7 @@ class Painter_PaintLayer extends Transformable_Transformable {
      * @description  创建备份缓冲。
      */
     createBackBuffer() {
-        this.domBack = Painter_Painter.createDom(Util_Util.createUniqueID("SuperMap.Theme.back-" + this.id), 'canvas', this.painter);
+        this.domBack = Painter_Painter.createDom(Util.createUniqueID("SuperMap.Theme.back-" + this.id), 'canvas', this.painter);
         this.ctxBack = this.domBack.getContext('2d');
 
         if (Painter_Painter.devicePixelRatio != 1) {
@@ -60253,8 +61934,8 @@ class Handler_Handler extends Eventful {
                 event = this._zrenderEventFixed(event);
                 this._lastX = this._mouseX;
                 this._lastY = this._mouseY;
-                this._mouseX = SUtil_SUtil.Util_event.getX(event);
-                this._mouseY = SUtil_SUtil.Util_event.getY(event);
+                this._mouseX = SUtil.Util_event.getX(event);
+                this._mouseY = SUtil.Util_event.getY(event);
                 var dx = this._mouseX - this._lastX;
                 var dy = this._mouseY - this._lastY;
 
@@ -60450,7 +62131,7 @@ class Handler_Handler extends Eventful {
                 event = this._zrenderEventFixed(event, true);
                 this._mousemoveHandler(event);
                 if (this._isDragging) {
-                    SUtil_SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                    SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                 }
             },
 
@@ -60474,7 +62155,7 @@ class Handler_Handler extends Eventful {
                     if (now - this._lastClickMoment < Config.EVENT.touchClickDelay / 2) {
                         this._dblclickHandler(event);
                         if (this._lastHover && this._lastHover.clickable) {
-                            SUtil_SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                            SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                         }
                     }
                     this._lastClickMoment = now;
@@ -60489,7 +62170,7 @@ class Handler_Handler extends Eventful {
         if (window.addEventListener) {
             window.addEventListener('resize', this._resizeHandler);
 
-            if (SUtil_SUtil.Util_env.os.tablet || SUtil_SUtil.Util_env.os.phone) {
+            if (SUtil.Util_env.os.tablet || SUtil.Util_env.os.phone) {
                 // mobile支持
                 root.addEventListener('touchstart', this._touchstartHandler);
                 root.addEventListener('touchmove', this._touchmoveHandler);
@@ -60745,7 +62426,7 @@ class Handler_Handler extends Eventful {
         if (window.removeEventListener) {
             window.removeEventListener('resize', this._resizeHandler);
 
-            if (SUtil_SUtil.Util_env.os.tablet || SUtil_SUtil.Util_env.os.phone) {
+            if (SUtil.Util_env.os.tablet || SUtil.Util_env.os.phone) {
                 // mobile支持
                 root.removeEventListener('touchstart', this._touchstartHandler);
                 root.removeEventListener('touchmove', this._touchmoveHandler);
@@ -61024,7 +62705,7 @@ class Handler_Handler extends Eventful {
      *
      */
     _iterateAndFindHover() {
-        var invTransform = SUtil_SUtil.Util_matrix.create();
+        var invTransform = SUtil.Util_matrix.create();
 
         var list = this.storage.getShapeList();
         var currentZLevel;
@@ -61039,8 +62720,8 @@ class Handler_Handler extends Eventful {
                 tmp[1] = this._mouseY;
 
                 if (currentLayer.needTransform) {
-                    SUtil_SUtil.Util_matrix.invert(invTransform, currentLayer.transform);
-                    SUtil_SUtil.Util_vector.applyTransform(tmp, tmp, invTransform);
+                    SUtil.Util_matrix.invert(invTransform, currentLayer.transform);
+                    SUtil.Util_vector.applyTransform(tmp, tmp, invTransform);
                 }
             }
 
@@ -61809,7 +63490,7 @@ class Animation_Animation extends Eventful {
          */
         this._time = 0;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.LevelRenderer.Animation";
 
@@ -61832,7 +63513,7 @@ class Animation_Animation extends Eventful {
      * @param {SuperMap.LevelRenderer.Animation.Clip} clip - 动画片段。
      */
     remove(clip) {
-        var idx = new levelRenderer_Util_Util().indexOf(this._clips, clip);
+        var idx = new Util_Util().indexOf(this._clips, clip);
         if (idx >= 0) {
             this._clips.splice(idx, 1);
         }
@@ -62234,7 +63915,7 @@ class Animation_Animator {
                 // Assume value is a color when it is a string
                 var value = keyframes[i].value;
                 if (typeof(value) == 'string') {
-                    value = SUtil_SUtil.Util_color.toArray(value);
+                    value = SUtil.Util_color.toArray(value);
                     if (value.length === 0) {    // Invalid color
                         value[0] = value[1] = value[2] = 0;
                         value[3] = 1;
@@ -62758,7 +64439,7 @@ class Render_Render {
             }
 
             if (!target) {
-                SUtil_SUtil.Util_log(
+                SUtil.Util_log(
                     'Property "'
                     + path
                     + '" is not existed in element '
@@ -62782,12 +64463,12 @@ class Render_Render {
                     el.__aniCount--;
                     if (el.__aniCount === 0) {
                         // 从animatingElements里移除
-                        var idx = new levelRenderer_Util_Util().indexOf(animatingElements, el);
+                        var idx = new Util_Util().indexOf(animatingElements, el);
                         animatingElements.splice(idx, 1);
                     }
                 });
         } else {
-            SUtil_SUtil.Util_log('Element not existed');
+            SUtil.Util_log('Element not existed');
         }
     }
 
@@ -62841,7 +64522,7 @@ class Render_Render {
      * @return {Object} image shape。
      */
     shapeToImage(e, width, height) {
-        var id = Util_Util.createUniqueID("SuperMap.LevelRenderer.ToImage_");
+        var id = Util.createUniqueID("SuperMap.LevelRenderer.ToImage_");
         return this.painter.shapeToImage(id, e, width, height);
     }
 
@@ -63054,7 +64735,7 @@ class LevelRenderer_LevelRenderer {
      * @returns {SuperMap.LevelRenderer} LevelRenderer 实例。
      */
     init(dom) {
-        var zr = new Render_Render(Util_Util.createUniqueID("LRenderer_"), dom);
+        var zr = new Render_Render(Util.createUniqueID("LRenderer_"), dom);
         LevelRenderer_LevelRenderer._instances[zr.id] = zr;
         return zr;
     }
@@ -63354,8 +65035,8 @@ class SmicIsogon_SmicIsogon extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var sin = SUtil_SUtil.Util_math.sin;
-        var cos = SUtil_SUtil.Util_math.cos;
+        var sin = SUtil.Util_math.sin;
+        var cos = SUtil.Util_math.cos;
         var PI = Math.PI;
 
         var n = style.n;
@@ -63675,8 +65356,8 @@ class SmicStar_SmicStar extends Shape_Shape {
             return;
         }
 
-        var sin = SUtil_SUtil.Util_math.sin;
-        var cos = SUtil_SUtil.Util_math.cos;
+        var sin = SUtil.Util_math.sin;
+        var cos = SUtil.Util_math.cos;
         var PI = Math.PI;
 
         var x = style.x + __OP[0];
@@ -63936,7 +65617,7 @@ class FileModel_FileModel {
  * @classdesc 组件信息提示框。
  * @category Components Common
  */
-class MessageBox_MessageBox {
+class MessageBox {
 
     constructor() {
         this._initView();
@@ -64009,7 +65690,7 @@ class MessageBox_MessageBox {
     }
 }
 
-SuperMap.Components.MessageBox = MessageBox_MessageBox;
+SuperMap.Components.MessageBox = MessageBox;
 // EXTERNAL MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
 var external_function_try_return_echarts_catch_e_return_ = __webpack_require__(1);
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_);
@@ -64028,7 +65709,7 @@ var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/_
  * @category BaseTypes
  * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
  */
-let Lang_Lang = {
+let Lang = {
 
     /**
      * @member {string} SuperMap.Lang.code
@@ -64117,11 +65798,11 @@ let Lang_Lang = {
 
 };
 
-SuperMap.Lang = Lang_Lang;
+SuperMap.Lang = Lang;
 SuperMap.i18n = SuperMap.Lang.i18n;
 
 // EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
-var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(6);
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(5);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
@@ -64139,7 +65820,7 @@ var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__we
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
  */
-let FileReaderUtil_FileReaderUtil = {
+let FileReaderUtil = {
     rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
     rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
     rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
@@ -64238,11 +65919,11 @@ let FileReaderUtil_FileReaderUtil = {
                 geojson = result;
             } else {
                 //不支持数据
-                failed && failed.call(context, Lang_Lang.i18n('msg_dataInWrongGeoJSONFormat'));
+                failed && failed.call(context, Lang.i18n('msg_dataInWrongGeoJSONFormat'));
             }
             success && success.call(context, geojson);
         } else {
-            failed && failed.call(context, Lang_Lang.i18n('msg_dataInWrongFormat'));
+            failed && failed.call(context, Lang.i18n('msg_dataInWrongFormat'));
         }
     },
     /**
@@ -64340,7 +66021,7 @@ let FileReaderUtil_FileReaderUtil = {
 
 };
 
-SuperMap.Components.FileReaderUtil = FileReaderUtil_FileReaderUtil;
+SuperMap.Components.FileReaderUtil = FileReaderUtil;
 
 
 // CONCATENATED MODULE: ./src/common/components/chart/ChartModel.js
@@ -64384,7 +66065,7 @@ class ChartModel_ChartModel {
     getDatasetInfo(success) {
         let datasetUrl = this.datasets.url;
         let me = this;
-        FetchRequest_FetchRequest.get(datasetUrl).then(function (response) {
+        FetchRequest.get(datasetUrl).then(function (response) {
             return response.json();
         }).then(function (results) {
             if (results.datasetInfo) {
@@ -64483,7 +66164,7 @@ class ChartModel_ChartModel {
      * */
     getServiceInfo(url, success) {
         let me = this;
-        FetchRequest_FetchRequest.get(url, null, {
+        FetchRequest.get(url, null, {
             withCredentials: this.datasets.withCredentials
         }).then(response => {
             return response.json()
@@ -64537,7 +66218,7 @@ class ChartModel_ChartModel {
             me = this;
         url += '/content.json?pageSize=9999999&currentPage=1',
             // 获取图层数据
-            FetchRequest_FetchRequest.get(url, null, {
+            FetchRequest.get(url, null, {
                 withCredentials: this.datasets.withCredentials
             }).then(response => {
                 return response.json()
@@ -64554,7 +66235,7 @@ class ChartModel_ChartModel {
                         // 如果是json文件 data.content = {type:'fco', features},格式不固定
                         if (!(data.content.features)) {
                             //json格式解析失败
-                            console.log(Lang_Lang.i18n('msg_jsonResolveFiled'));
+                            console.log(Lang.i18n('msg_jsonResolveFiled'));
                             return;
                         }
                         let features = this._formatGeoJSON(data.content);
@@ -64595,7 +66276,7 @@ class ChartModel_ChartModel {
             let url = `${address}/data/datasources`,
                 sourceName, datasetName;
             // 请求获取数据源名
-            FetchRequest_FetchRequest.get(url, null, {
+            FetchRequest.get(url, null, {
                 withCredentials
             }).then(response => {
                 return response.json()
@@ -64603,7 +66284,7 @@ class ChartModel_ChartModel {
                 sourceName = data.datasourceNames[0];
                 url = `${address}/data/datasources/${sourceName}/datasets`;
                 // 请求获取数据集名
-                FetchRequest_FetchRequest.get(url, null, {
+                FetchRequest.get(url, null, {
                     withCredentials
                 }).then(response => {
                     return response.json()
@@ -64623,7 +66304,7 @@ class ChartModel_ChartModel {
             let url = `${address}/maps`,
                 mapName, layerName, path;
             // 请求获取地图名
-            FetchRequest_FetchRequest.get(url, null, {
+            FetchRequest.get(url, null, {
                 withCredentials
             }).then(response => {
                 return response.json()
@@ -64632,7 +66313,7 @@ class ChartModel_ChartModel {
                 path = data[0].path;
                 url = url = `${address}/maps/${mapName}/layers`;
                 // 请求获取图层名
-                FetchRequest_FetchRequest.get(url, null, {
+                FetchRequest.get(url, null, {
                     withCredentials
                 }).then(response => {
                     return response.json()
@@ -64743,7 +66424,7 @@ class ChartModel_ChartModel {
             queryParams: [queryParam]
         };
         if (onlyAttribute) {
-            params.queryOption = REST_QueryOption.ATTRIBUTE;
+            params.queryOption = QueryOption.ATTRIBUTE;
         }
         startRecord && (params.startRecord = startRecord);
         recordLength && (params.expectCount = recordLength);
@@ -64784,7 +66465,7 @@ class ChartModel_ChartModel {
      * @return {object} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
      */
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     /**
@@ -64815,10 +66496,10 @@ class ChartModel_ChartModel {
         let xfieldIndex = -1,
             yfieldIndex = -1;
         for (let i = 0, len = fieldCaptions.length; i < len; i++) {
-            if (FileReaderUtil_FileReaderUtil.isXField(fieldCaptions[i])) {
+            if (FileReaderUtil.isXField(fieldCaptions[i])) {
                 xfieldIndex = i;
             }
-            if (FileReaderUtil_FileReaderUtil.isYField(fieldCaptions[i])) {
+            if (FileReaderUtil.isYField(fieldCaptions[i])) {
                 yfieldIndex = i;
             }
         }
@@ -64860,9 +66541,9 @@ class ChartModel_ChartModel {
     _fireFailedEvent(error) {
         let errorData = error ? {
             error,
-            message: Lang_Lang.i18n('msg_getdatafailed')
+            message: Lang.i18n('msg_getdatafailed')
         } : {
-            message: Lang_Lang.i18n('msg_getdatafailed')
+            message: Lang.i18n('msg_getdatafailed')
         };
         /**
          * @event SuperMap.Components.Chart#getdatafailed
@@ -65527,7 +67208,7 @@ class ChartView_ChartView {
      * @private
      */
     _fillDataToView() {
-        let messageboxs = new MessageBox_MessageBox();
+        let messageboxs = new MessageBox();
         //iclient 绑定createChart事件成功回调
         this.viewModel.getDatasetInfo(this._createChart.bind(this));
         this.viewModel.events.on({
@@ -65630,7 +67311,7 @@ SuperMap.Components.Chart = ChartView_ChartView;
 // CONCATENATED MODULE: ./src/common/components/templates/TemplateBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
@@ -65641,7 +67322,7 @@ SuperMap.Components.Chart = ChartView_ChartView;
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Components Common
  */
-class TemplateBase_TemplateBase {
+class TemplateBase {
     constructor(options) {
         options = options ? options : {};
         /**
@@ -65697,7 +67378,7 @@ class TemplateBase_TemplateBase {
     }
 }
 
-SuperMap.Components.TemplateBase = TemplateBase_TemplateBase;
+SuperMap.Components.TemplateBase = TemplateBase;
 // CONCATENATED MODULE: ./src/common/components/templates/CommonContainer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -65715,7 +67396,7 @@ SuperMap.Components.TemplateBase = TemplateBase_TemplateBase;
  * @category Components Common
  * @extends {SuperMap.Components.TemplateBase}
  */
-class CommonContainer_CommonContainer extends TemplateBase_TemplateBase {
+class CommonContainer_CommonContainer extends TemplateBase {
     constructor(options) {
         super(options);
         let title = options.title ? options.title : "";
@@ -65784,7 +67465,7 @@ SuperMap.Components.CommonContainer = CommonContainer_CommonContainer;
  * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
-class Select_Select extends TemplateBase_TemplateBase {
+class Select_Select extends TemplateBase {
     constructor(options) {
         super(options);
         this._initView(options);
@@ -65917,7 +67598,7 @@ SuperMap.Components.Select = Select_Select;
  * @category Components Common
  * @extends {SuperMap.Components.TemplateBase}
  */
-class DropDownBox_DropDownBox extends TemplateBase_TemplateBase {
+class DropDownBox_DropDownBox extends TemplateBase {
     constructor(optionsArr) {
         super(optionsArr);
         this._initView(optionsArr);
@@ -66112,7 +67793,7 @@ SuperMap.Components.DropDownBox = DropDownBox_DropDownBox;
  * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
-class PopContainer_PopContainer extends TemplateBase_TemplateBase {
+class PopContainer_PopContainer extends TemplateBase {
     constructor(options) {
         options = options ? options : {};
         super(options);
@@ -66241,7 +67922,7 @@ SuperMap.Components.AttributesPopContainer = AttributesPopContainer_AttributesPo
  * @category Components Common
  * @extends {SuperMap.Components.TemplateBase}
  */
-class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase_TemplateBase {
+class IndexTabsPageContainer_IndexTabsPageContainer extends TemplateBase {
     constructor(options) {
         super(options);
         this._initView();
@@ -66365,7 +68046,7 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageCont
         this.rootContainer.classList.add("component-citytabpage--noneBoxShadow");
         this.config = options.config;
         //header，若 config为城市名称数组，则直接加载内容
-        if (Util_Util.isArray(this.config)) {
+        if (Util.isArray(this.config)) {
             this.header.hidden = true;
             this._createCityItem("城市", this.config);
             this.content.style.border = "none";
@@ -66391,7 +68072,7 @@ class CityTabsPage_CityTabsPage extends IndexTabsPageContainer_IndexTabsPageCont
      */
     _createTabs() {
         //header
-        if (Util_Util.isArray(this.config)) {
+        if (Util.isArray(this.config)) {
             for (let i = 0; i < this.config.length; i++) {
                 let innerHTML = "";
                 for (const key in this.config[i]) {
@@ -66479,7 +68160,7 @@ SuperMap.Components.CityTabsPage = CityTabsPage_CityTabsPage;
  * @category Components Common
  */
 //  todo 思考拆分的控件应该以哪种方式使用
-class NavTabsPage_NavTabsPage extends TemplateBase_TemplateBase {
+class NavTabsPage_NavTabsPage extends TemplateBase {
     constructor(options) {
         super(options);
         this.navTabsTitle = null;
@@ -66611,7 +68292,7 @@ SuperMap.Components.NavTabsPage = NavTabsPage_NavTabsPage;
  * @extends {SuperMap.Components.TemplateBase}
  * @category Components Common
  */
-class PaginationContainer_PaginationContainer extends TemplateBase_TemplateBase {
+class PaginationContainer_PaginationContainer extends TemplateBase {
     constructor(options) {
         options = options ? options : {};
         super(options);
@@ -66913,7 +68594,7 @@ SuperMap.Components.PaginationContainer = PaginationContainer_PaginationContaine
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-let Util_ComponentsUtil = {
+let ComponentsUtil = {
     /**
      * 获取上传文件类型
      * @param fileName
@@ -67125,7 +68806,7 @@ SuperMap.Lang['en-US'] = en_US_en;
  *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
  *     strings formatted for use with <SuperMap.String.format> calls.
  */
-let zh_CN_zh = {
+let zh = {
     'title_dataFlowService': '数据流服务',
     'title_distributedAnalysis': '分布式分析',
     'title_clientComputing': '客户端计算',
@@ -67236,7 +68917,7 @@ let zh_CN_zh = {
     'msg_getdatafailed': '获取数据失败！'
 };
 
-SuperMap.Lang["zh-CN"] = zh_CN_zh;
+SuperMap.Lang["zh-CN"] = zh;
 
 
 // CONCATENATED MODULE: ./src/common/lang/index.js
@@ -67310,7 +68991,7 @@ external_L_default.a.Projection = {};
  * @extends {L.Class}
  * @param {L.bounds} bounds - 坐标范围
  */
-var NonEarthCRS_NonProjection = external_L_default.a.Class.extend({
+var NonProjection = external_L_default.a.Class.extend({
 
     initialize: function (bounds) {
         this.bounds = bounds;
@@ -67325,8 +69006,8 @@ var NonEarthCRS_NonProjection = external_L_default.a.Class.extend({
     }
 });
 
-var NonEarthCRS_nonProjection = function (bounds) {
-    return new NonEarthCRS_NonProjection(bounds)
+var nonProjection = function (bounds) {
+    return new NonProjection(bounds)
 };
 
 /**
@@ -67339,7 +69020,7 @@ var NonEarthCRS_nonProjection = function (bounds) {
  * @param {L.bounds} options.bounds - 范围。
  * @param {Array.<number>} [options.resolutions] - 分辨率。
  */
-var NonEarthCRS_NonEarthCRS = external_L_default.a.Class.extend({
+var NonEarthCRS = external_L_default.a.Class.extend({
 
     /** 
      * @member {Object} [L.CRS.NonEarthCRS.prototype.includes=L.CRS]
@@ -67410,12 +69091,12 @@ var NonEarthCRS_NonEarthCRS = external_L_default.a.Class.extend({
 
     infinite: false
 });
-var NonEarthCRS_nonEarthCRS = function (options) {
-    return new NonEarthCRS_NonEarthCRS(options)
+var nonEarthCRS = function (options) {
+    return new NonEarthCRS(options)
 };
-external_L_default.a.Projection.NonProjection = NonEarthCRS_nonProjection;
+external_L_default.a.Projection.NonProjection = nonProjection;
 
-external_L_default.a.CRS.NonEarthCRS = NonEarthCRS_nonEarthCRS;
+external_L_default.a.CRS.NonEarthCRS = nonEarthCRS;
 // CONCATENATED MODULE: ./node_modules/proj4/lib/global.js
 /* harmony default export */ var global = (function(defs) {
   defs('EPSG:4326', "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
@@ -67446,7 +69127,7 @@ var EPSLN = 1.0e-10;
 // you'd think you could use Number.EPSILON above but that makes
 // Mollweide get into an infinate loop.
 
-var values_D2R = 0.01745329251994329577;
+var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var FORTPI = Math.PI/4;
 var TWO_PI = Math.PI * 2;
@@ -67525,31 +69206,31 @@ function match_match(obj, key) {
       self.rf = parseFloat(v);
     },
     lat_0: function(v) {
-      self.lat0 = v * values_D2R;
+      self.lat0 = v * D2R;
     },
     lat_1: function(v) {
-      self.lat1 = v * values_D2R;
+      self.lat1 = v * D2R;
     },
     lat_2: function(v) {
-      self.lat2 = v * values_D2R;
+      self.lat2 = v * D2R;
     },
     lat_ts: function(v) {
-      self.lat_ts = v * values_D2R;
+      self.lat_ts = v * D2R;
     },
     lon_0: function(v) {
-      self.long0 = v * values_D2R;
+      self.long0 = v * D2R;
     },
     lon_1: function(v) {
-      self.long1 = v * values_D2R;
+      self.long1 = v * D2R;
     },
     lon_2: function(v) {
-      self.long2 = v * values_D2R;
+      self.long2 = v * D2R;
     },
     alpha: function(v) {
-      self.alpha = parseFloat(v) * values_D2R;
+      self.alpha = parseFloat(v) * D2R;
     },
     lonc: function(v) {
-      self.longc = v * values_D2R;
+      self.longc = v * D2R;
     },
     x_0: function(v) {
       self.x0 = parseFloat(v);
@@ -67594,11 +69275,11 @@ function match_match(obj, key) {
       }
     },
     from_greenwich: function(v) {
-      self.from_greenwich = v * values_D2R;
+      self.from_greenwich = v * D2R;
     },
     pm: function(v) {
       var pm = match_match(PrimeMeridian_exports, v);
-      self.from_greenwich = (pm ? pm : parseFloat(v)) * values_D2R;
+      self.from_greenwich = (pm ? pm : parseFloat(v)) * D2R;
     },
     nadgrids: function(v) {
       if (v === '@null') {
@@ -67922,7 +69603,7 @@ var wkt_parser_D2R = 0.01745329251994329577;
 
 
 
-function wkt_parser_rename(obj, params) {
+function rename(obj, params) {
   var outName = params[0];
   var inName = params[1];
   if (!(outName in obj) && (inName in obj)) {
@@ -67933,11 +69614,11 @@ function wkt_parser_rename(obj, params) {
   }
 }
 
-function wkt_parser_d2r(input) {
+function d2r(input) {
   return input * wkt_parser_D2R;
 }
 
-function wkt_parser_cleanWKT(wkt) {
+function cleanWKT(wkt) {
   if (wkt.type === 'GEOGCS') {
     wkt.projName = 'longlat';
   } else if (wkt.type === 'LOCAL_CS') {
@@ -68038,7 +69719,7 @@ function wkt_parser_cleanWKT(wkt) {
     return input * ratio;
   }
   var renamer = function(a) {
-    return wkt_parser_rename(wkt, a);
+    return rename(wkt, a);
   };
   var list = [
     ['standard_parallel_1', 'Standard_Parallel_1'],
@@ -68052,19 +69733,19 @@ function wkt_parser_cleanWKT(wkt) {
     ['k0', 'scale_factor'],
     ['latitude_of_center', 'Latitude_Of_Center'],
     ['latitude_of_center', 'Latitude_of_center'],
-    ['lat0', 'latitude_of_center', wkt_parser_d2r],
+    ['lat0', 'latitude_of_center', d2r],
     ['longitude_of_center', 'Longitude_Of_Center'],
     ['longitude_of_center', 'Longitude_of_center'],
-    ['longc', 'longitude_of_center', wkt_parser_d2r],
+    ['longc', 'longitude_of_center', d2r],
     ['x0', 'false_easting', toMeter],
     ['y0', 'false_northing', toMeter],
-    ['long0', 'central_meridian', wkt_parser_d2r],
-    ['lat0', 'latitude_of_origin', wkt_parser_d2r],
-    ['lat0', 'standard_parallel_1', wkt_parser_d2r],
-    ['lat1', 'standard_parallel_1', wkt_parser_d2r],
-    ['lat2', 'standard_parallel_2', wkt_parser_d2r],
+    ['long0', 'central_meridian', d2r],
+    ['lat0', 'latitude_of_origin', d2r],
+    ['lat0', 'standard_parallel_1', d2r],
+    ['lat1', 'standard_parallel_1', d2r],
+    ['lat2', 'standard_parallel_2', d2r],
     ['azimuth', 'Azimuth'],
-    ['alpha', 'azimuth', wkt_parser_d2r],
+    ['alpha', 'azimuth', d2r],
     ['srsCode', 'name']
   ];
   list.forEach(renamer);
@@ -68072,7 +69753,7 @@ function wkt_parser_cleanWKT(wkt) {
     wkt.long0 = wkt.longc;
   }
   if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
-    wkt.lat0 = wkt_parser_d2r(wkt.lat1 > 0 ? 90 : -90);
+    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
     wkt.lat_ts = wkt.lat1;
   }
 }
@@ -68084,7 +69765,7 @@ function wkt_parser_cleanWKT(wkt) {
   lisp.unshift(['type', type]);
   var obj = {};
   sExpr(lisp, obj);
-  wkt_parser_cleanWKT(obj);
+  cleanWKT(obj);
   return obj;
 });
 
@@ -68150,56 +69831,56 @@ global(defs_defs);
 
 
 
-function parseCode_testObj(code){
+function testObj(code){
   return typeof code === 'string';
 }
-function parseCode_testDef(code){
+function testDef(code){
   return code in lib_defs;
 }
- var parseCode_codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS'];
-function parseCode_testWKT(code){
-  return parseCode_codeWords.some(function (word) {
+ var codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS'];
+function testWKT(code){
+  return codeWords.some(function (word) {
     return code.indexOf(word) > -1;
   });
 }
-var parseCode_codes = ['3857', '900913', '3785', '102113'];
-function parseCode_checkMercator(item) {
+var codes = ['3857', '900913', '3785', '102113'];
+function checkMercator(item) {
   var auth = match_match(item, 'authority');
   if (!auth) {
     return;
   }
   var code = match_match(auth, 'epsg');
-  return code && parseCode_codes.indexOf(code) > -1;
+  return code && codes.indexOf(code) > -1;
 }
-function parseCode_checkProjStr(item) {
+function checkProjStr(item) {
   var ext = match_match(item, 'extension');
   if (!ext) {
     return;
   }
   return match_match(ext, 'proj4');
 }
-function parseCode_testProj(code){
+function testProj(code){
   return code[0] === '+';
 }
-function parseCode_parse(code){
-  if (parseCode_testObj(code)) {
+function parse(code){
+  if (testObj(code)) {
     //check to see if this is a WKT string
-    if (parseCode_testDef(code)) {
+    if (testDef(code)) {
       return lib_defs[code];
     }
-    if (parseCode_testWKT(code)) {
+    if (testWKT(code)) {
       var out = wkt_parser(code);
       // test of spetial case, due to this being a very common and often malformed
-      if (parseCode_checkMercator(out)) {
+      if (checkMercator(out)) {
         return lib_defs['EPSG:3857'];
       }
-      var maybeProjStr = parseCode_checkProjStr(out);
+      var maybeProjStr = checkProjStr(out);
       if (maybeProjStr) {
         return projString(maybeProjStr);
       }
       return out;
     }
-    if (parseCode_testProj(code)) {
+    if (testProj(code)) {
       return projString(code);
     }
   }else{
@@ -68207,7 +69888,7 @@ function parseCode_parse(code){
   }
 }
 
-/* harmony default export */ var parseCode = (parseCode_parse);
+/* harmony default export */ var parseCode = (parse);
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/extend.js
 /* harmony default export */ var extend = (function(destination, source) {
@@ -68279,7 +69960,7 @@ function parseCode_parse(code){
 
 
 
-function merc_init() {
+function init() {
   var con = this.b / this.a;
   this.es = 1 - con * con;
   if(!('x0' in this)){
@@ -68312,7 +69993,7 @@ function merc_init() {
 /* Mercator forward equations--mapping lat,long to x,y
   --------------------------------------------------*/
 
-function merc_forward(p) {
+function forward(p) {
   var lon = p.x;
   var lat = p.y;
   // convert to radians
@@ -68343,7 +70024,7 @@ function merc_forward(p) {
 
 /* Mercator inverse equations--mapping x,y to lat/long
   --------------------------------------------------*/
-function merc_inverse(p) {
+function inverse(p) {
 
   var x = p.x - this.x0;
   var y = p.y - this.y0;
@@ -68368,9 +70049,9 @@ function merc_inverse(p) {
 
 var merc_names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
 /* harmony default export */ var merc = ({
-  init: merc_init,
-  forward: merc_forward,
-  inverse: merc_inverse,
+  init: init,
+  forward: forward,
+  inverse: inverse,
   names: merc_names
 });
 
@@ -68395,17 +70076,17 @@ var longlat_names = ["longlat", "identity"];
 // CONCATENATED MODULE: ./node_modules/proj4/lib/projections.js
 
 
-var projections_projs = [merc, longlat];
+var projs = [merc, longlat];
 var projections_names = {};
-var projections_projStore = [];
+var projStore = [];
 
-function projections_add(proj, i) {
-  var len = projections_projStore.length;
+function add(proj, i) {
+  var len = projStore.length;
   if (!proj.names) {
     console.log(i);
     return true;
   }
-  projections_projStore[len] = proj;
+  projStore[len] = proj;
   proj.names.forEach(function(n) {
     projections_names[n.toLowerCase()] = len;
   });
@@ -68414,23 +70095,23 @@ function projections_add(proj, i) {
 
 
 
-function projections_get(name) {
+function get(name) {
   if (!name) {
     return false;
   }
   var n = name.toLowerCase();
-  if (typeof projections_names[n] !== 'undefined' && projections_projStore[projections_names[n]]) {
-    return projections_projStore[projections_names[n]];
+  if (typeof projections_names[n] !== 'undefined' && projStore[projections_names[n]]) {
+    return projStore[projections_names[n]];
   }
 }
 
 function projections_start() {
-  projections_projs.forEach(projections_add);
+  projs.forEach(add);
 }
 /* harmony default export */ var projections = ({
   start: projections_start,
-  add: projections_add,
-  get: projections_get
+  add: add,
+  get: get
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/constants/Ellipsoid.js
@@ -68699,7 +70380,7 @@ Ellipsoid_exports.sphere = {
 
 
 
-function deriveConstants_eccentricity(a, b, rf, R_A) {
+function eccentricity(a, b, rf, R_A) {
   var a2 = a * a; // used in geocentric
   var b2 = b * b; // used in geocentric
   var es = (a2 - b2) / a2; // e ^ 2
@@ -68895,9 +70576,9 @@ function datum_datum(datumCode, datum_params, a, b, es, ep2) {
 
 
 
-function Proj_Projection(srsCode,callback) {
-  if (!(this instanceof Proj_Projection)) {
-    return new Proj_Projection(srsCode);
+function Projection(srsCode,callback) {
+  if (!(this instanceof Projection)) {
+    return new Projection(srsCode);
   }
   callback = callback || function(error){
     if(error){
@@ -68909,7 +70590,7 @@ function Proj_Projection(srsCode,callback) {
     callback(srsCode);
     return;
   }
-  var ourProj = Proj_Projection.projections.get(json.projName);
+  var ourProj = Projection.projections.get(json.projName);
   if(!ourProj){
     callback(srsCode);
     return;
@@ -68926,7 +70607,7 @@ function Proj_Projection(srsCode,callback) {
   json.axis = json.axis || 'enu';
   json.ellps = json.ellps || 'wgs84';
   var sphere_ = deriveConstants_sphere(json.a, json.b, json.rf, json.ellps, json.sphere);
-  var ecc = deriveConstants_eccentricity(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
+  var ecc = eccentricity(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
   var datumObj = json.datum || lib_datum(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2);
 
   extend(this, json); // transfer everything over from the projection because we don't know what we'll need
@@ -68953,14 +70634,14 @@ function Proj_Projection(srsCode,callback) {
   callback(null, this);
 
 }
-Proj_Projection.projections = projections;
-Proj_Projection.projections.start();
-/* harmony default export */ var Proj = (Proj_Projection);
+Projection.projections = projections;
+Projection.projections.start();
+/* harmony default export */ var Proj = (Projection);
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/datumUtils.js
 
 
-function datumUtils_compareDatums(source, dest) {
+function compareDatums(source, dest) {
   if (source.datum_type !== dest.datum_type) {
     return false; // false, datums are not equal
   } else if (source.a !== dest.a || Math.abs(source.es - dest.es) > 0.000000000050) {
@@ -68989,7 +70670,7 @@ function datumUtils_compareDatums(source, dest) {
  *    Z         : Calculated Geocentric Z coordinate, in meters    (output)
  *
  */
-function datumUtils_geodeticToGeocentric(p, es, a) {
+function geodeticToGeocentric(p, es, a) {
   var Longitude = p.x;
   var Latitude = p.y;
   var Height = p.z ? p.z : 0; //Z value not always supplied
@@ -69031,7 +70712,7 @@ function datumUtils_geodeticToGeocentric(p, es, a) {
   };
 } // cs_geodetic_to_geocentric()
 
-function datumUtils_geocentricToGeodetic(p, es, a, b) {
+function geocentricToGeodetic(p, es, a, b) {
   /* local defintions and variables */
   /* end-criterium of loop, accuracy of sin(Latitude) */
   var genau = 1e-12;
@@ -69139,7 +70820,7 @@ function datumUtils_geocentricToGeodetic(p, es, a, b) {
     Other point classes may be used as long as they have
     x and y properties, which will get modified in the transform method.
 */
-function datumUtils_geocentricToWgs84(p, datum_type, datum_params) {
+function geocentricToWgs84(p, datum_type, datum_params) {
 
   if (datum_type === PJD_3PARAM) {
     // if( x[io] === HUGE_VAL )
@@ -69171,7 +70852,7 @@ function datumUtils_geocentricToWgs84(p, datum_type, datum_params) {
 // pj_geocentic_from_wgs84()
 //  coordinate system definition,
 //  point to transform in geocentric coordinates (x,y,z)
-function datumUtils_geocentricFromWgs84(p, datum_type, datum_params) {
+function geocentricFromWgs84(p, datum_type, datum_params) {
 
   if (datum_type === PJD_3PARAM) {
     //if( x[io] === HUGE_VAL )
@@ -69208,13 +70889,13 @@ function datumUtils_geocentricFromWgs84(p, datum_type, datum_params) {
 
 
 
-function datum_transform_checkParams(type) {
+function checkParams(type) {
   return (type === PJD_3PARAM || type === PJD_7PARAM);
 }
 
 /* harmony default export */ var datum_transform = (function(source, dest, point) {
   // Short cut if the datums are identical.
-  if (datumUtils_compareDatums(source, dest)) {
+  if (compareDatums(source, dest)) {
     return point; // in this case, zero is sucess,
     // whereas cs_compare_datums returns 1 to indicate TRUE
     // confusing, should fix this
@@ -69228,20 +70909,20 @@ function datum_transform_checkParams(type) {
   // If this datum requires grid shifts, then apply it to geodetic coordinates.
 
   // Do we need to go through geocentric coordinates?
-  if (source.es === dest.es && source.a === dest.a && !datum_transform_checkParams(source.datum_type) &&  !datum_transform_checkParams(dest.datum_type)) {
+  if (source.es === dest.es && source.a === dest.a && !checkParams(source.datum_type) &&  !checkParams(dest.datum_type)) {
     return point;
   }
 
   // Convert to geocentric coordinates.
-  point = datumUtils_geodeticToGeocentric(point, source.es, source.a);
+  point = geodeticToGeocentric(point, source.es, source.a);
   // Convert between datums
-  if (datum_transform_checkParams(source.datum_type)) {
-    point = datumUtils_geocentricToWgs84(point, source.datum_type, source.datum_params);
+  if (checkParams(source.datum_type)) {
+    point = geocentricToWgs84(point, source.datum_type, source.datum_params);
   }
-  if (datum_transform_checkParams(dest.datum_type)) {
-    point = datumUtils_geocentricFromWgs84(point, dest.datum_type, dest.datum_params);
+  if (checkParams(dest.datum_type)) {
+    point = geocentricFromWgs84(point, dest.datum_type, dest.datum_params);
   }
-  return datumUtils_geocentricToGeodetic(point, dest.es, dest.a, dest.b);
+  return geocentricToGeodetic(point, dest.es, dest.a, dest.b);
 
 });
 
@@ -69338,20 +71019,20 @@ function checkCoord(num) {
 
 
 
-function transform_checkNotWGS(source, dest) {
+function checkNotWGS(source, dest) {
   return ((source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === PJD_3PARAM || dest.datum.datum_type === PJD_7PARAM) && source.datumCode !== 'WGS84');
 }
 
-function transform_transform(source, dest, point) {
+function transform(source, dest, point) {
   var wgs84;
   if (Array.isArray(point)) {
     point = toPoint(point);
   }
   checkSanity(point);
   // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
-  if (source.datum && dest.datum && transform_checkNotWGS(source, dest)) {
+  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
     wgs84 = new Proj('WGS84');
-    point = transform_transform(source, wgs84, point);
+    point = transform(source, wgs84, point);
     source = wgs84;
   }
   // DGR, 2010/11/12
@@ -69361,8 +71042,8 @@ function transform_transform(source, dest, point) {
   // Transform source points to long/lat, if they aren't already.
   if (source.projName === 'longlat') {
     point = {
-      x: point.x * values_D2R,
-      y: point.y * values_D2R
+      x: point.x * D2R,
+      y: point.y * D2R
     };
   }
   else {
@@ -69419,10 +71100,10 @@ function transform_transform(source, dest, point) {
 
 var core_wgs84 = Proj('WGS84');
 
-function core_transformer(from, to, coords) {
+function transformer(from, to, coords) {
   var transformedArray, out, keys;
   if (Array.isArray(coords)) {
-    transformedArray = transform_transform(from, to, coords);
+    transformedArray = transform(from, to, coords);
     if (coords.length === 3) {
       return [transformedArray.x, transformedArray.y, transformedArray.z];
     }
@@ -69431,7 +71112,7 @@ function core_transformer(from, to, coords) {
     }
   }
   else {
-    out = transform_transform(from, to, coords);
+    out = transform(from, to, coords);
     keys = Object.keys(coords);
     if (keys.length === 2) {
       return out;
@@ -69446,7 +71127,7 @@ function core_transformer(from, to, coords) {
   }
 }
 
-function core_checkProj(item) {
+function checkProj(item) {
   if (item instanceof Proj) {
     return item;
   }
@@ -69456,7 +71137,7 @@ function core_checkProj(item) {
   return Proj(item);
 }
 function core_proj4(fromProj, toProj, coord) {
-  fromProj = core_checkProj(fromProj);
+  fromProj = checkProj(fromProj);
   var single = false;
   var obj;
   if (typeof toProj === 'undefined') {
@@ -69470,17 +71151,17 @@ function core_proj4(fromProj, toProj, coord) {
     fromProj = core_wgs84;
     single = true;
   }
-  toProj = core_checkProj(toProj);
+  toProj = checkProj(toProj);
   if (coord) {
-    return core_transformer(fromProj, toProj, coord);
+    return transformer(fromProj, toProj, coord);
   }
   else {
     obj = {
       forward: function(coords) {
-        return core_transformer(fromProj, toProj, coords);
+        return transformer(fromProj, toProj, coords);
       },
       inverse: function(coords) {
-        return core_transformer(toProj, fromProj, coords);
+        return transformer(toProj, fromProj, coords);
       }
     };
     if (single) {
@@ -70276,7 +71957,7 @@ lib_Point_Point.prototype.toMGRS = function(accuracy) {
 /* harmony default export */ var lib_Point = (lib_Point_Point);
 
 // EXTERNAL MODULE: ./node_modules/proj4/package.json
-var proj4_package = __webpack_require__(10);
+var proj4_package = __webpack_require__(8);
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/version.js
 
@@ -70316,12 +71997,12 @@ var C88 = 0.3076171875;
 
 
 
-var pj_inv_mlfn_MAX_ITER = 20;
+var MAX_ITER = 20;
 
 /* harmony default export */ var pj_inv_mlfn = (function(arg, es, en) {
   var k = 1 / (1 - es);
   var phi = arg;
-  for (var i = pj_inv_mlfn_MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
+  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
     var s = Math.sin(phi);
     var t = 1 - es * s * s;
     //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
@@ -70806,7 +72487,7 @@ var etmerc_names = ["Extended_Transverse_Mercator", "Extended Transverse Mercato
 // CONCATENATED MODULE: ./node_modules/proj4/lib/projections/utm.js
 
 
-var utm_dependsOn = 'etmerc';
+var dependsOn = 'etmerc';
 
 
 
@@ -70816,7 +72497,7 @@ function utm_init() {
     throw new Error('unknown utm zone');
   }
   this.lat0 = 0;
-  this.long0 =  ((6 * Math.abs(zone)) - 183) * values_D2R;
+  this.long0 =  ((6 * Math.abs(zone)) - 183) * D2R;
   this.x0 = 500000;
   this.y0 = this.utmSouth ? 10000000 : 0;
   this.k0 = 0.9996;
@@ -70830,7 +72511,7 @@ var utm_names = ["Universal Transverse Mercator System", "utm"];
 /* harmony default export */ var utm = ({
   init: utm_init,
   names: utm_names,
-  dependsOn: utm_dependsOn
+  dependsOn: dependsOn
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/common/srat.js
@@ -70966,7 +72647,7 @@ var sterea_names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_
 
 
 
-function stere_ssfn_(phit, sinphi, eccen) {
+function ssfn_(phit, sinphi, eccen) {
   sinphi *= eccen;
   return (Math.tan(0.5 * (HALF_PI + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen));
 }
@@ -71130,7 +72811,7 @@ var stere_names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (va
   forward: stere_forward,
   inverse: stere_inverse,
   names: stere_names,
-  ssfn_: stere_ssfn_
+  ssfn_: ssfn_
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/projections/somerc.js
@@ -71827,11 +73508,11 @@ var cass_names = ["Cassini", "Cassini_Soldner", "cass"];
     The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
   */
 
-var laea_S_POLE = 1;
+var S_POLE = 1;
 
-var laea_N_POLE = 2;
-var laea_EQUIT = 3;
-var laea_OBLIQ = 4;
+var N_POLE = 2;
+var EQUIT = 3;
+var OBLIQ = 4;
 
 /* Initialize the Lambert Azimuthal Equal Area projection
   ------------------------------------------------------*/
@@ -71851,7 +73532,7 @@ function laea_init() {
 
     this.qp = qsfnz(this.e, 1);
     this.mmf = 0.5 / (1 - this.es);
-    this.apa = laea_authset(this.es);
+    this.apa = authset(this.es);
     switch (this.mode) {
     case this.N_POLE:
       this.dd = 1;
@@ -72066,7 +73747,7 @@ function laea_inverse(p) {
       }
     }
     lam = Math.atan2(x, y);
-    phi = laea_authlat(Math.asin(ab), this.apa);
+    phi = authlat(Math.asin(ab), this.apa);
   }
 
   p.x = adjust_lon(this.long0 + lam);
@@ -72075,29 +73756,29 @@ function laea_inverse(p) {
 }
 
 /* determine latitude from authalic latitude */
-var laea_P00 = 0.33333333333333333333;
+var P00 = 0.33333333333333333333;
 
-var laea_P01 = 0.17222222222222222222;
-var laea_P02 = 0.10257936507936507936;
-var laea_P10 = 0.06388888888888888888;
-var laea_P11 = 0.06640211640211640211;
-var laea_P20 = 0.01641501294219154443;
+var P01 = 0.17222222222222222222;
+var P02 = 0.10257936507936507936;
+var P10 = 0.06388888888888888888;
+var P11 = 0.06640211640211640211;
+var P20 = 0.01641501294219154443;
 
-function laea_authset(es) {
+function authset(es) {
   var t;
   var APA = [];
-  APA[0] = es * laea_P00;
+  APA[0] = es * P00;
   t = es * es;
-  APA[0] += t * laea_P01;
-  APA[1] = t * laea_P10;
+  APA[0] += t * P01;
+  APA[1] = t * P10;
   t *= es;
-  APA[0] += t * laea_P02;
-  APA[1] += t * laea_P11;
-  APA[2] = t * laea_P20;
+  APA[0] += t * P02;
+  APA[1] += t * P11;
+  APA[2] = t * P20;
   return APA;
 }
 
-function laea_authlat(beta, APA) {
+function authlat(beta, APA) {
   var t = beta + beta;
   return (beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t));
 }
@@ -72108,10 +73789,10 @@ var laea_names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area"
   forward: laea_forward,
   inverse: laea_inverse,
   names: laea_names,
-  S_POLE: laea_S_POLE,
-  N_POLE: laea_N_POLE,
-  EQUIT: laea_EQUIT,
-  OBLIQ: laea_OBLIQ
+  S_POLE: S_POLE,
+  N_POLE: N_POLE,
+  EQUIT: EQUIT,
+  OBLIQ: OBLIQ
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/common/asinz.js
@@ -72221,7 +73902,7 @@ function aea_inverse(p) {
 /* Function to compute phi1, the latitude for the inverse of the
    Albers Conical Equal-Area projection.
 -------------------------------------------*/
-function aea_phi1z(eccent, qs) {
+function phi1z(eccent, qs) {
   var sinphi, cosphi, con, com, dphi;
   var phi = asinz(0.5 * qs);
   if (eccent < EPSLN) {
@@ -72249,7 +73930,7 @@ var aea_names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
   forward: aea_forward,
   inverse: aea_inverse,
   names: aea_names,
-  phi1z: aea_phi1z
+  phi1z: phi1z
 });
 
 // CONCATENATED MODULE: ./node_modules/proj4/lib/projections/gnom.js
@@ -72668,7 +74349,7 @@ var poly_names = ["Polyconic", "poly"];
  *     1 -> m accuracy -- suitable for most mapping applications
  *     2 -> mm accuracy
  */
-var nzmg_iterations = 1;
+var iterations = 1;
 
 function nzmg_init() {
   this.A = [];
@@ -73694,7 +75375,7 @@ var ortho_names = ["ortho"];
 
 
 /* constants */
-var qsc_FACE_ENUM = {
+var FACE_ENUM = {
     FRONT: 1,
     RIGHT: 2,
     BACK: 3,
@@ -73703,7 +75384,7 @@ var qsc_FACE_ENUM = {
     BOTTOM: 6
 };
 
-var qsc_AREA_ENUM = {
+var AREA_ENUM = {
     AREA_0: 1,
     AREA_1: 2,
     AREA_2: 3,
@@ -73721,15 +75402,15 @@ function qsc_init() {
 
   /* Determine the cube face from the center of projection. */
   if (this.lat0 >= HALF_PI - FORTPI / 2.0) {
-    this.face = qsc_FACE_ENUM.TOP;
+    this.face = FACE_ENUM.TOP;
   } else if (this.lat0 <= -(HALF_PI - FORTPI / 2.0)) {
-    this.face = qsc_FACE_ENUM.BOTTOM;
+    this.face = FACE_ENUM.BOTTOM;
   } else if (Math.abs(this.long0) <= FORTPI) {
-    this.face = qsc_FACE_ENUM.FRONT;
+    this.face = FACE_ENUM.FRONT;
   } else if (Math.abs(this.long0) <= HALF_PI + FORTPI) {
-    this.face = this.long0 > 0.0 ? qsc_FACE_ENUM.RIGHT : qsc_FACE_ENUM.LEFT;
+    this.face = this.long0 > 0.0 ? FACE_ENUM.RIGHT : FACE_ENUM.LEFT;
   } else {
-    this.face = qsc_FACE_ENUM.BACK;
+    this.face = FACE_ENUM.BACK;
   }
 
   /* Fill in useful values for the ellipsoid <-> sphere shift
@@ -73768,34 +75449,34 @@ function qsc_forward(p) {
    * directly from phi, lam. For the other faces, we must use
    * unit sphere cartesian coordinates as an intermediate step. */
   lon = p.x; //lon = lp.lam;
-  if (this.face === qsc_FACE_ENUM.TOP) {
+  if (this.face === FACE_ENUM.TOP) {
     phi = HALF_PI - lat;
     if (lon >= FORTPI && lon <= HALF_PI + FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_0;
+      area.value = AREA_ENUM.AREA_0;
       theta = lon - HALF_PI;
     } else if (lon > HALF_PI + FORTPI || lon <= -(HALF_PI + FORTPI)) {
-      area.value = qsc_AREA_ENUM.AREA_1;
+      area.value = AREA_ENUM.AREA_1;
       theta = (lon > 0.0 ? lon - SPI : lon + SPI);
     } else if (lon > -(HALF_PI + FORTPI) && lon <= -FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_2;
+      area.value = AREA_ENUM.AREA_2;
       theta = lon + HALF_PI;
     } else {
-      area.value = qsc_AREA_ENUM.AREA_3;
+      area.value = AREA_ENUM.AREA_3;
       theta = lon;
     }
-  } else if (this.face === qsc_FACE_ENUM.BOTTOM) {
+  } else if (this.face === FACE_ENUM.BOTTOM) {
     phi = HALF_PI + lat;
     if (lon >= FORTPI && lon <= HALF_PI + FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_0;
+      area.value = AREA_ENUM.AREA_0;
       theta = -lon + HALF_PI;
     } else if (lon < FORTPI && lon >= -FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_1;
+      area.value = AREA_ENUM.AREA_1;
       theta = -lon;
     } else if (lon < -FORTPI && lon >= -(HALF_PI + FORTPI)) {
-      area.value = qsc_AREA_ENUM.AREA_2;
+      area.value = AREA_ENUM.AREA_2;
       theta = -lon - HALF_PI;
     } else {
-      area.value = qsc_AREA_ENUM.AREA_3;
+      area.value = AREA_ENUM.AREA_3;
       theta = (lon > 0.0 ? -lon + SPI : -lon - SPI);
     }
   } else {
@@ -73803,12 +75484,12 @@ function qsc_forward(p) {
     var sinlat, coslat;
     var sinlon, coslon;
 
-    if (this.face === qsc_FACE_ENUM.RIGHT) {
-      lon = qsc_qsc_shift_lon_origin(lon, +HALF_PI);
-    } else if (this.face === qsc_FACE_ENUM.BACK) {
-      lon = qsc_qsc_shift_lon_origin(lon, +SPI);
-    } else if (this.face === qsc_FACE_ENUM.LEFT) {
-      lon = qsc_qsc_shift_lon_origin(lon, -HALF_PI);
+    if (this.face === FACE_ENUM.RIGHT) {
+      lon = qsc_shift_lon_origin(lon, +HALF_PI);
+    } else if (this.face === FACE_ENUM.BACK) {
+      lon = qsc_shift_lon_origin(lon, +SPI);
+    } else if (this.face === FACE_ENUM.LEFT) {
+      lon = qsc_shift_lon_origin(lon, -HALF_PI);
     }
     sinlat = Math.sin(lat);
     coslat = Math.cos(lat);
@@ -73818,22 +75499,22 @@ function qsc_forward(p) {
     r = coslat * sinlon;
     s = sinlat;
 
-    if (this.face === qsc_FACE_ENUM.FRONT) {
+    if (this.face === FACE_ENUM.FRONT) {
       phi = Math.acos(q);
-      theta = qsc_qsc_fwd_equat_face_theta(phi, s, r, area);
-    } else if (this.face === qsc_FACE_ENUM.RIGHT) {
+      theta = qsc_fwd_equat_face_theta(phi, s, r, area);
+    } else if (this.face === FACE_ENUM.RIGHT) {
       phi = Math.acos(r);
-      theta = qsc_qsc_fwd_equat_face_theta(phi, s, -q, area);
-    } else if (this.face === qsc_FACE_ENUM.BACK) {
+      theta = qsc_fwd_equat_face_theta(phi, s, -q, area);
+    } else if (this.face === FACE_ENUM.BACK) {
       phi = Math.acos(-q);
-      theta = qsc_qsc_fwd_equat_face_theta(phi, s, -r, area);
-    } else if (this.face === qsc_FACE_ENUM.LEFT) {
+      theta = qsc_fwd_equat_face_theta(phi, s, -r, area);
+    } else if (this.face === FACE_ENUM.LEFT) {
       phi = Math.acos(-r);
-      theta = qsc_qsc_fwd_equat_face_theta(phi, s, q, area);
+      theta = qsc_fwd_equat_face_theta(phi, s, q, area);
     } else {
       /* Impossible */
       phi = theta = 0;
-      area.value = qsc_AREA_ENUM.AREA_0;
+      area.value = AREA_ENUM.AREA_0;
     }
   }
 
@@ -73844,11 +75525,11 @@ function qsc_forward(p) {
   t = Math.sqrt((1 - Math.cos(phi)) / (Math.cos(mu) * Math.cos(mu)) / (1 - Math.cos(Math.atan(1 / Math.cos(theta)))));
 
   /* Apply the result to the real area. */
-  if (area.value === qsc_AREA_ENUM.AREA_1) {
+  if (area.value === AREA_ENUM.AREA_1) {
     mu += HALF_PI;
-  } else if (area.value === qsc_AREA_ENUM.AREA_2) {
+  } else if (area.value === AREA_ENUM.AREA_2) {
     mu += SPI;
-  } else if (area.value === qsc_AREA_ENUM.AREA_3) {
+  } else if (area.value === AREA_ENUM.AREA_3) {
     mu += 1.5 * SPI;
   }
 
@@ -73881,15 +75562,15 @@ function qsc_inverse(p) {
   nu = Math.atan(Math.sqrt(p.x * p.x + p.y * p.y));
   mu = Math.atan2(p.y, p.x);
   if (p.x >= 0.0 && p.x >= Math.abs(p.y)) {
-    area.value = qsc_AREA_ENUM.AREA_0;
+    area.value = AREA_ENUM.AREA_0;
   } else if (p.y >= 0.0 && p.y >= Math.abs(p.x)) {
-    area.value = qsc_AREA_ENUM.AREA_1;
+    area.value = AREA_ENUM.AREA_1;
     mu -= HALF_PI;
   } else if (p.x < 0.0 && -p.x >= Math.abs(p.y)) {
-    area.value = qsc_AREA_ENUM.AREA_2;
+    area.value = AREA_ENUM.AREA_2;
     mu = (mu < 0.0 ? mu + SPI : mu - SPI);
   } else {
-    area.value = qsc_AREA_ENUM.AREA_3;
+    area.value = AREA_ENUM.AREA_3;
     mu += HALF_PI;
   }
 
@@ -73914,26 +75595,26 @@ function qsc_inverse(p) {
    * For the top and bottom face, we can compute phi and lam directly.
    * For the other faces, we must use unit sphere cartesian coordinates
    * as an intermediate step. */
-  if (this.face === qsc_FACE_ENUM.TOP) {
+  if (this.face === FACE_ENUM.TOP) {
     phi = Math.acos(cosphi);
     lp.phi = HALF_PI - phi;
-    if (area.value === qsc_AREA_ENUM.AREA_0) {
+    if (area.value === AREA_ENUM.AREA_0) {
       lp.lam = theta + HALF_PI;
-    } else if (area.value === qsc_AREA_ENUM.AREA_1) {
+    } else if (area.value === AREA_ENUM.AREA_1) {
       lp.lam = (theta < 0.0 ? theta + SPI : theta - SPI);
-    } else if (area.value === qsc_AREA_ENUM.AREA_2) {
+    } else if (area.value === AREA_ENUM.AREA_2) {
       lp.lam = theta - HALF_PI;
     } else /* area.value == AREA_ENUM.AREA_3 */ {
       lp.lam = theta;
     }
-  } else if (this.face === qsc_FACE_ENUM.BOTTOM) {
+  } else if (this.face === FACE_ENUM.BOTTOM) {
     phi = Math.acos(cosphi);
     lp.phi = phi - HALF_PI;
-    if (area.value === qsc_AREA_ENUM.AREA_0) {
+    if (area.value === AREA_ENUM.AREA_0) {
       lp.lam = -theta + HALF_PI;
-    } else if (area.value === qsc_AREA_ENUM.AREA_1) {
+    } else if (area.value === AREA_ENUM.AREA_1) {
       lp.lam = -theta;
-    } else if (area.value === qsc_AREA_ENUM.AREA_2) {
+    } else if (area.value === AREA_ENUM.AREA_2) {
       lp.lam = -theta - HALF_PI;
     } else /* area.value == AREA_ENUM.AREA_3 */ {
       lp.lam = (theta < 0.0 ? -theta - SPI : -theta + SPI);
@@ -73955,27 +75636,27 @@ function qsc_inverse(p) {
       r = Math.sqrt(1 - t);
     }
     /* Rotate q,r,s into the correct area. */
-    if (area.value === qsc_AREA_ENUM.AREA_1) {
+    if (area.value === AREA_ENUM.AREA_1) {
       t = r;
       r = -s;
       s = t;
-    } else if (area.value === qsc_AREA_ENUM.AREA_2) {
+    } else if (area.value === AREA_ENUM.AREA_2) {
       r = -r;
       s = -s;
-    } else if (area.value === qsc_AREA_ENUM.AREA_3) {
+    } else if (area.value === AREA_ENUM.AREA_3) {
       t = r;
       r = s;
       s = -t;
     }
     /* Rotate q,r,s into the correct cube face. */
-    if (this.face === qsc_FACE_ENUM.RIGHT) {
+    if (this.face === FACE_ENUM.RIGHT) {
       t = q;
       q = -r;
       r = t;
-    } else if (this.face === qsc_FACE_ENUM.BACK) {
+    } else if (this.face === FACE_ENUM.BACK) {
       q = -q;
       r = -r;
-    } else if (this.face === qsc_FACE_ENUM.LEFT) {
+    } else if (this.face === FACE_ENUM.LEFT) {
       t = q;
       q = r;
       r = -t;
@@ -73983,12 +75664,12 @@ function qsc_inverse(p) {
     /* Now compute phi and lam from the unit sphere coordinates. */
     lp.phi = Math.acos(-s) - HALF_PI;
     lp.lam = Math.atan2(r, q);
-    if (this.face === qsc_FACE_ENUM.RIGHT) {
-      lp.lam = qsc_qsc_shift_lon_origin(lp.lam, -HALF_PI);
-    } else if (this.face === qsc_FACE_ENUM.BACK) {
-      lp.lam = qsc_qsc_shift_lon_origin(lp.lam, -SPI);
-    } else if (this.face === qsc_FACE_ENUM.LEFT) {
-      lp.lam = qsc_qsc_shift_lon_origin(lp.lam, +HALF_PI);
+    if (this.face === FACE_ENUM.RIGHT) {
+      lp.lam = qsc_shift_lon_origin(lp.lam, -HALF_PI);
+    } else if (this.face === FACE_ENUM.BACK) {
+      lp.lam = qsc_shift_lon_origin(lp.lam, -SPI);
+    } else if (this.face === FACE_ENUM.LEFT) {
+      lp.lam = qsc_shift_lon_origin(lp.lam, +HALF_PI);
     }
   }
 
@@ -74014,23 +75695,23 @@ function qsc_inverse(p) {
 
 /* Helper function for forward projection: compute the theta angle
  * and determine the area number. */
-function qsc_qsc_fwd_equat_face_theta(phi, y, x, area) {
+function qsc_fwd_equat_face_theta(phi, y, x, area) {
   var theta;
   if (phi < EPSLN) {
-    area.value = qsc_AREA_ENUM.AREA_0;
+    area.value = AREA_ENUM.AREA_0;
     theta = 0.0;
   } else {
     theta = Math.atan2(y, x);
     if (Math.abs(theta) <= FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_0;
+      area.value = AREA_ENUM.AREA_0;
     } else if (theta > FORTPI && theta <= HALF_PI + FORTPI) {
-      area.value = qsc_AREA_ENUM.AREA_1;
+      area.value = AREA_ENUM.AREA_1;
       theta -= HALF_PI;
     } else if (theta > HALF_PI + FORTPI || theta <= -(HALF_PI + FORTPI)) {
-      area.value = qsc_AREA_ENUM.AREA_2;
+      area.value = AREA_ENUM.AREA_2;
       theta = (theta >= 0.0 ? theta - SPI : theta + SPI);
     } else {
-      area.value = qsc_AREA_ENUM.AREA_3;
+      area.value = AREA_ENUM.AREA_3;
       theta += HALF_PI;
     }
   }
@@ -74038,7 +75719,7 @@ function qsc_qsc_fwd_equat_face_theta(phi, y, x, area) {
 }
 
 /* Helper function: shift the longitude. */
-function qsc_qsc_shift_lon_origin(lon, offset) {
+function qsc_shift_lon_origin(lon, offset) {
   var slon = lon + offset;
   if (slon < -SPI) {
     slon += TWO_PI;
@@ -74065,7 +75746,7 @@ var qsc_names = ["Quadrilateralized Spherical Cube", "Quadrilateralized_Spherica
 
 
 
-var robin_COEFS_X = [
+var COEFS_X = [
     [1.0000, 2.2199e-17, -7.15515e-05, 3.1103e-06],
     [0.9986, -0.000482243, -2.4897e-05, -1.3309e-06],
     [0.9954, -0.00083103, -4.48605e-05, -9.86701e-07],
@@ -74087,7 +75768,7 @@ var robin_COEFS_X = [
     [0.5322, -0.00677797, 0.000275608, 6.24051e-06]
 ];
 
-var robin_COEFS_Y = [
+var COEFS_Y = [
     [-5.20417e-18, 0.0124, 1.21431e-18, -8.45284e-11],
     [0.0620, 0.0124, -1.26793e-09, 4.22642e-10],
     [0.1240, 0.0124, 5.07171e-09, -1.60604e-09],
@@ -74109,21 +75790,21 @@ var robin_COEFS_Y = [
     [1.0000, 0.00328947, -0.000319159, -4.2106e-06]
 ];
 
-var robin_FXC = 0.8487;
-var robin_FYC = 1.3523;
-var robin_C1 = R2D/5; // rad to 5-degree interval
-var robin_RC1 = 1/robin_C1;
-var robin_NODES = 18;
+var FXC = 0.8487;
+var FYC = 1.3523;
+var C1 = R2D/5; // rad to 5-degree interval
+var RC1 = 1/C1;
+var NODES = 18;
 
-var robin_poly3_val = function(coefs, x) {
+var poly3_val = function(coefs, x) {
     return coefs[0] + x * (coefs[1] + x * (coefs[2] + x * coefs[3]));
 };
 
-var robin_poly3_der = function(coefs, x) {
+var poly3_der = function(coefs, x) {
     return coefs[1] + x * (2 * coefs[2] + x * 3 * coefs[3]);
 };
 
-function robin_newton_rapshon(f_df, start, max_err, iters) {
+function newton_rapshon(f_df, start, max_err, iters) {
     var x = start;
     for (; iters; --iters) {
         var upd = f_df(x);
@@ -74147,62 +75828,62 @@ function robin_forward(ll) {
     var lon = adjust_lon(ll.x - this.long0);
 
     var dphi = Math.abs(ll.y);
-    var i = Math.floor(dphi * robin_C1);
+    var i = Math.floor(dphi * C1);
     if (i < 0) {
         i = 0;
-    } else if (i >= robin_NODES) {
-        i = robin_NODES - 1;
+    } else if (i >= NODES) {
+        i = NODES - 1;
     }
-    dphi = R2D * (dphi - robin_RC1 * i);
+    dphi = R2D * (dphi - RC1 * i);
     var xy = {
-        x: robin_poly3_val(robin_COEFS_X[i], dphi) * lon,
-        y: robin_poly3_val(robin_COEFS_Y[i], dphi)
+        x: poly3_val(COEFS_X[i], dphi) * lon,
+        y: poly3_val(COEFS_Y[i], dphi)
     };
     if (ll.y < 0) {
         xy.y = -xy.y;
     }
 
-    xy.x = xy.x * this.a * robin_FXC + this.x0;
-    xy.y = xy.y * this.a * robin_FYC + this.y0;
+    xy.x = xy.x * this.a * FXC + this.x0;
+    xy.y = xy.y * this.a * FYC + this.y0;
     return xy;
 }
 
 function robin_inverse(xy) {
     var ll = {
-        x: (xy.x - this.x0) / (this.a * robin_FXC),
-        y: Math.abs(xy.y - this.y0) / (this.a * robin_FYC)
+        x: (xy.x - this.x0) / (this.a * FXC),
+        y: Math.abs(xy.y - this.y0) / (this.a * FYC)
     };
 
     if (ll.y >= 1) { // pathologic case
-        ll.x /= robin_COEFS_X[robin_NODES][0];
+        ll.x /= COEFS_X[NODES][0];
         ll.y = xy.y < 0 ? -HALF_PI : HALF_PI;
     } else {
         // find table interval
-        var i = Math.floor(ll.y * robin_NODES);
+        var i = Math.floor(ll.y * NODES);
         if (i < 0) {
             i = 0;
-        } else if (i >= robin_NODES) {
-            i = robin_NODES - 1;
+        } else if (i >= NODES) {
+            i = NODES - 1;
         }
         for (;;) {
-            if (robin_COEFS_Y[i][0] > ll.y) {
+            if (COEFS_Y[i][0] > ll.y) {
                 --i;
-            } else if (robin_COEFS_Y[i+1][0] <= ll.y) {
+            } else if (COEFS_Y[i+1][0] <= ll.y) {
                 ++i;
             } else {
                 break;
             }
         }
         // linear interpolation in 5 degree interval
-        var coefs = robin_COEFS_Y[i];
-        var t = 5 * (ll.y - coefs[0]) / (robin_COEFS_Y[i+1][0] - coefs[0]);
+        var coefs = COEFS_Y[i];
+        var t = 5 * (ll.y - coefs[0]) / (COEFS_Y[i+1][0] - coefs[0]);
         // find t so that poly3_val(coefs, t) = ll.y
-        t = robin_newton_rapshon(function(x) {
-            return (robin_poly3_val(coefs, x) - ll.y) / robin_poly3_der(coefs, x);
+        t = newton_rapshon(function(x) {
+            return (poly3_val(coefs, x) - ll.y) / poly3_der(coefs, x);
         }, t, EPSLN, 100);
 
-        ll.x /= robin_poly3_val(robin_COEFS_X[i], t);
-        ll.y = (5 * i + t) * values_D2R;
+        ll.x /= poly3_val(COEFS_X[i], t);
+        ll.y = (5 * i + t) * D2R;
         if (xy.y < 0) {
             ll.y = -ll.y;
         }
@@ -74292,7 +75973,7 @@ core.WGS84 = new core.Proj('WGS84');
 core.Point = lib_Point;
 core.toPoint = toPoint;
 core.defs = lib_defs;
-core.transform = transform_transform;
+core.transform = transform;
 core.mgrs = mgrs;
 core.version = proj4_package["a" /* version */];
 proj4_projs(core);
@@ -74323,7 +76004,7 @@ external_L_default.a.Proj._isProj4Obj = function(a) {
  * @category BaseTypes Projection
  * @extends {L.Class}
  * @param {string} code - proj srsCode
- * @param {string} def - 投影的 proj4 定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
+ * @param {string} def - 投影的 proj4 定义。{@link [详细]{https://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
  * @param {L.bounds} bounds -  投影范围参数
  */
 external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
@@ -74405,7 +76086,7 @@ external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
  * @extends {L.Class}
  * @param {string} srsCode - proj srsCode。
  * @param {Object} options - 参数。
- * @param {string} options.def - 投影的proj4定义。[详细]{@link http://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
+ * @param {string} options.def - 投影的proj4定义。[详细]{@link https://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
  * @param {(Array.<number>|L.Point)} [options.origin] - 原点。
  * @param {Array.<number>} [options.scales] - 比例尺数组。
  * @param {Array.<number>} [options.scaleDenominators] - 比例尺分母数组。
@@ -74422,7 +76103,7 @@ external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
  *      ...
  *    })
  */
-var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
+var CRS = external_L_default.a.Class.extend({
     includes: external_L_default.a.CRS,
 
     options: {
@@ -74625,7 +76306,7 @@ var Proj4Leaflet_CRS = external_L_default.a.Class.extend({
     }
 });
 var Proj4Leaflet_crs = function(srsCode, options) {
-    return new Proj4Leaflet_CRS(srsCode, options);
+    return new CRS(srsCode, options);
 };
 external_L_default.a.Proj.CRS = Proj4Leaflet_crs;
 
@@ -74641,7 +76322,7 @@ external_L_default.a.Proj.CRS = Proj4Leaflet_crs;
  * @namespace
  * @category BaseTypes Projection
  */
-var ExtendsCRS_BaiduCRS = external_L_default.a.CRS.Baidu = external_L_default.a.extend({}, external_L_default.a.CRS.EPSG3857, {
+var BaiduCRS = external_L_default.a.CRS.Baidu = external_L_default.a.extend({}, external_L_default.a.CRS.EPSG3857, {
     code: 'Baidu',
     scale: function (zoom) {
         return (6378137 * Math.PI * 2) / Math.pow(2, 18 - zoom)
@@ -74653,10 +76334,10 @@ var ExtendsCRS_BaiduCRS = external_L_default.a.CRS.Baidu = external_L_default.a.
     }())
 });
 
-var ExtendsCRS_tdt_WGS84_resolutions = [];
+var tdt_WGS84_resolutions = [];
 
 for (let i = 1; i < 19; i++) {
-    ExtendsCRS_tdt_WGS84_resolutions.push(0.703125 * 2 / (Math.pow(2, i)));
+    tdt_WGS84_resolutions.push(0.703125 * 2 / (Math.pow(2, i)));
 }
 
 /**
@@ -74665,15 +76346,15 @@ for (let i = 1; i < 19; i++) {
  * @namespace
  * @category BaseTypes Projection
  */
-var ExtendsCRS_TianDiTu_WGS84CRS = external_L_default.a.CRS.TianDiTu_WGS84 = external_L_default.a.Proj.CRS("EPSG:4326",{
+var TianDiTu_WGS84CRS = external_L_default.a.CRS.TianDiTu_WGS84 = external_L_default.a.Proj.CRS("EPSG:4326",{
     origin: [-180, 90],
-    resolutions: ExtendsCRS_tdt_WGS84_resolutions,
+    resolutions: tdt_WGS84_resolutions,
     bounds: external_L_default.a.bounds([-180, -90], [180, 90])
 });
 
-var ExtendsCRS_tdt_Mercator_resolutions = [];
+var tdt_Mercator_resolutions = [];
 for (let i = 1; i < 19; i++) {
-    ExtendsCRS_tdt_Mercator_resolutions.push(78271.5169640203125 * 2 / (Math.pow(2, i)));
+    tdt_Mercator_resolutions.push(78271.5169640203125 * 2 / (Math.pow(2, i)));
 }
 
 /**
@@ -74682,14 +76363,14 @@ for (let i = 1; i < 19; i++) {
  * @category BaseTypes Projection
  * @namespace
  */
-var ExtendsCRS_TianDiTu_MercatorCRS = external_L_default.a.CRS.TianDiTu_Mercator = external_L_default.a.Proj.CRS("EPSG:3857",{
+var TianDiTu_MercatorCRS = external_L_default.a.CRS.TianDiTu_Mercator = external_L_default.a.Proj.CRS("EPSG:3857",{
     origin: [-20037508.3427892, 20037508.3427892],
-    resolutions: ExtendsCRS_tdt_Mercator_resolutions,
+    resolutions: tdt_Mercator_resolutions,
     bounds: external_L_default.a.bounds([-20037508.3427892, -20037508.3427892], [20037508.3427892, 20037508.3427892])
 });
-external_L_default.a.CRS.BaiduCRS = ExtendsCRS_BaiduCRS;
-external_L_default.a.CRS.TianDiTu_WGS84CRS = ExtendsCRS_TianDiTu_WGS84CRS;
-external_L_default.a.CRS.TianDiTu_MercatorCRS = ExtendsCRS_TianDiTu_MercatorCRS;
+external_L_default.a.CRS.BaiduCRS = BaiduCRS;
+external_L_default.a.CRS.TianDiTu_WGS84CRS = TianDiTu_WGS84CRS;
+external_L_default.a.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
 // CONCATENATED MODULE: ./src/leaflet/core/Attributions.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -74701,14 +76382,14 @@ external_L_default.a.CRS.TianDiTu_MercatorCRS = ExtendsCRS_TianDiTu_MercatorCRS;
 let Attributions = {
 
     Prefix: `<a href='http://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
-                with <span>© <a href='http://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
+                with <span>© <a href='https://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
 
     Common: {
         attribution: `Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`
     },
 
     Online: {
-        attribution: `Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
+        attribution: `Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
     },
 
     ECharts: {
@@ -74720,7 +76401,7 @@ let Attributions = {
     },
 
     Turf: {
-        attribution: `<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
+        attribution: `<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
     },
 
     Baidu: {
@@ -74782,9 +76463,9 @@ external_L_default.a.Map.include({
         return external_L_default.a.point(layerPoint).add(this._getMapPanePos());
     }
 });
-Base_wrapToGeoJSON([external_L_default.a.Polyline, external_L_default.a.Polygon, external_L_default.a.Marker, external_L_default.a.CircleMarker, external_L_default.a.Circle, external_L_default.a.LayerGroup]);
+wrapToGeoJSON([external_L_default.a.Polyline, external_L_default.a.Polygon, external_L_default.a.Marker, external_L_default.a.CircleMarker, external_L_default.a.Circle, external_L_default.a.LayerGroup]);
 
-function Base_wrapToGeoJSON(objClassArray) {
+function wrapToGeoJSON(objClassArray) {
     objClassArray.map((objClass) => {
         objClass.defaultFunction = objClass.prototype.toGeoJSON;
         objClass.include({
@@ -74817,7 +76498,7 @@ function Base_wrapToGeoJSON(objClassArray) {
  * @fires L.supermap.ServiceBase#destroy
  * @extends {L.Evented}
  */
-var ServiceBase_ServiceBase = external_L_default.a.Evented.extend({
+var ServiceBase = external_L_default.a.Evented.extend({
 
     options: {
         url: null,
@@ -74859,7 +76540,7 @@ var ServiceBase_ServiceBase = external_L_default.a.Evented.extend({
     }
 
 });
-external_L_default.a.supermap.ServiceBase = ServiceBase_ServiceBase;
+external_L_default.a.supermap.ServiceBase = ServiceBase;
 // CONCATENATED MODULE: ./src/leaflet/services/MapService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -74887,7 +76568,7 @@ external_L_default.a.supermap.ServiceBase = ServiceBase_ServiceBase;
  *     //doSomething
  * })
  */
-var services_MapService_MapService = ServiceBase_ServiceBase.extend({
+var services_MapService_MapService = ServiceBase.extend({
 
     options: {
         projection: null
@@ -74899,7 +76580,7 @@ var services_MapService_MapService = ServiceBase_ServiceBase.extend({
         if (options.projection) {
             this.options.projection = options.projection;
         }
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -74949,11 +76630,11 @@ var services_MapService_MapService = ServiceBase_ServiceBase.extend({
     }
 });
 
-var MapService_mapService = function (url, options) {
+var mapService = function (url, options) {
     return new services_MapService_MapService(url, options);
 };
 
-external_L_default.a.supermap.mapService = MapService_mapService;
+external_L_default.a.supermap.mapService = mapService;
 // CONCATENATED MODULE: ./src/leaflet/control/ChangeTileVersion.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -74985,7 +76666,7 @@ external_L_default.a.supermap.mapService = MapService_mapService;
  * @param {string} [options.orientation='horizontal'] - 方向 horizontal|vertical。
  * @param {boolean} [options.switch=true] - 是否显示上/下一个版本切换控件。
  */
-var ChangeTileVersion_ChangeTileVersion = external_L_default.a.Control.extend({
+var ChangeTileVersion = external_L_default.a.Control.extend({
 
     options: {
         //绑定的底图图层
@@ -75306,16 +76987,16 @@ external_L_default.a.Map.mergeOptions({
 
 external_L_default.a.Map.addInitHook(function () {
     if (this.options.changeTileVersionControl) {
-        this.changeTileVersionControl = new ChangeTileVersion_ChangeTileVersion();
+        this.changeTileVersionControl = new ChangeTileVersion();
         this.addControl(this.changeTileVersionControl);
     }
 });
 
-var ChangeTileVersion_changeTileVersion = function (options) {
-    return new ChangeTileVersion_ChangeTileVersion(options);
+var changeTileVersion = function (options) {
+    return new ChangeTileVersion(options);
 };
 
-external_L_default.a.supermap.control.changeTileVersion = ChangeTileVersion_changeTileVersion;
+external_L_default.a.supermap.control.changeTileVersion = changeTileVersion;
 // CONCATENATED MODULE: ./src/leaflet/control/Logo.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -75342,7 +77023,7 @@ external_L_default.a.supermap.control.changeTileVersion = ChangeTileVersion_chan
  * @param {string} [options.link] - 跳转链接。
  * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
  */
-var Logo_Logo = external_L_default.a.Control.extend({
+var Logo = external_L_default.a.Control.extend({
 
     options: {
         position: 'bottomright',
@@ -75389,7 +77070,7 @@ var Logo_Logo = external_L_default.a.Control.extend({
                 styleSize = "";
             }
         }
-        var link = this.options.link || "http://iclient.supermap.io";
+        var link = this.options.link || "https://iclient.supermap.io";
         div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
             "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'></a>";
         return div;
@@ -75403,7 +77084,7 @@ external_L_default.a.Map.mergeOptions({
 external_L_default.a.Map.addInitHook(function () {
     if (!this._logoAdded && this.options.logoControl) {
         if (this.options.logoControl === true) {
-            this.logoControl = new Logo_Logo();
+            this.logoControl = new Logo();
 
         } else if (this.options.logoControl instanceof external_L_default.a.Control) {
             this.logoControl = this.options.logoControl;
@@ -75414,11 +77095,11 @@ external_L_default.a.Map.addInitHook(function () {
         }
     }
 });
-var Logo_logo = function (options) {
-    return new Logo_Logo(options);
+var logo = function (options) {
+    return new Logo(options);
 };
 
-external_L_default.a.supermap.control.logo = Logo_logo;
+external_L_default.a.supermap.control.logo = logo;
 // CONCATENATED MODULE: ./src/leaflet/control/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -75523,28 +77204,30 @@ external_L_default.a.supermap.CommontypesConversion = CommontypesConversion_Comm
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
+
 /**
  * @namespace L.Util
  * @category BaseTypes Util
  */
-var Util_supermap_callbacks = {};
-external_L_default.a.Util.supermap_callbacks = Util_supermap_callbacks;
-var Util_toGeoJSON = function (feature) {
+var supermap_callbacks = {};
+external_L_default.a.Util.supermap_callbacks = supermap_callbacks;
+var toGeoJSON = function(feature) {
     if (!feature) {
         return feature;
     }
     return new GeoJSON_GeoJSON().toGeoJSON(feature);
 };
-var Util_toSuperMapGeometry = function (geometry) {
+var toSuperMapGeometry = function(geometry) {
     if (!geometry) {
         return geometry;
     }
-    var result, format = new GeoJSON_GeoJSON();
-    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
+    var result,
+        format = new GeoJSON_GeoJSON();
+    if (['FeatureCollection', 'Feature', 'Geometry'].indexOf(geometry.type) != -1) {
         result = format.read(geometry, geometry.type);
-    } else if (typeof geometry.toGeoJSON === "function") {
+    } else if (typeof geometry.toGeoJSON === 'function') {
         var geojson = geometry.toGeoJSON();
-        result = (geojson) ? format.read(geojson, geojson.type) : geometry;
+        result = geojson ? format.read(geojson, geojson.type) : geometry;
     }
 
     var serverResult = result;
@@ -75553,38 +77236,18 @@ var Util_toSuperMapGeometry = function (geometry) {
             serverResult = result[0];
         } else if (result.length > 1) {
             serverResult = [];
-            result.map(function (item) {
+            result.map(function(item) {
                 serverResult.push(item.geometry);
                 return item;
             });
         }
     }
 
-    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
-
+    return serverResult && serverResult.geometry ? serverResult.geometry : serverResult;
 };
+var Util_getMeterPerMapUnit = getMeterPerMapUnit;
 
-var Util_getMeterPerMapUnit = function (mapUnit) {
-    var earchRadiusInMeters = 6378137;
-    var meterPerMapUnit;
-    if (mapUnit === REST_Unit.METER) {
-        meterPerMapUnit = 1;
-    } else if (mapUnit === REST_Unit.DEGREE) {
-        // 每度表示多少米。
-        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-    } else if (mapUnit === REST_Unit.KILOMETER) {
-        meterPerMapUnit = 1.0E-3;
-    } else if (mapUnit === REST_Unit.INCH) {
-        meterPerMapUnit = 1 / 2.5399999918E-2;
-    } else if (mapUnit === REST_Unit.FOOT) {
-        meterPerMapUnit = 0.3048;
-    } else {
-        return meterPerMapUnit;
-    }
-    return meterPerMapUnit;
-};
-
-var Util_resolutionToScale = function (resolution, dpi, mapUnit) {
+var resolutionToScale = function(resolution, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     // 地球半径。
     var meterPerMapUnit = Util_getMeterPerMapUnit(mapUnit);
@@ -75592,7 +77255,7 @@ var Util_resolutionToScale = function (resolution, dpi, mapUnit) {
     scale = 1 / scale;
     return scale;
 };
-var Util_scaleToResolution = function (scale, dpi, mapUnit) {
+var scaleToResolution = function(scale, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     var meterPerMapUnitValue = Util_getMeterPerMapUnit(mapUnit);
     var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
@@ -75600,36 +77263,41 @@ var Util_scaleToResolution = function (scale, dpi, mapUnit) {
     return resolution;
 };
 
-var Util_GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+var GetResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
         ratio = 10000;
     //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
     datumAxis = datumAxis || 6378137;
-    coordUnit = coordUnit || "";
+    coordUnit = coordUnit || '';
     if (scale > 0 && dpi > 0) {
         scale = external_L_default.a.Util.NormalizeScale(scale);
-        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+        if (
+            coordUnit.toLowerCase() === 'degree' ||
+            coordUnit.toLowerCase() === 'degrees' ||
+            coordUnit.toLowerCase() === 'dd'
+        ) {
             //scale = SuperMap.Util.normalizeScale(scale);
-            resolution = 0.0254 * ratio / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
+            resolution = (0.0254 * ratio) / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
             return resolution;
         } else {
-            resolution = 0.0254 * ratio / dpi / scale / ratio;
+            resolution = (0.0254 * ratio) / dpi / scale / ratio;
             return resolution;
         }
     }
     return -1;
 };
-var Util_NormalizeScale = function (scale) {
-    return (scale > 1.0) ? (1.0 / scale) : scale;
+var NormalizeScale = function(scale) {
+    return scale > 1.0 ? 1.0 / scale : scale;
 };
 
-external_L_default.a.Util.toGeoJSON = Util_toGeoJSON;
-external_L_default.a.Util.toSuperMapGeometry = Util_toSuperMapGeometry;
-external_L_default.a.Util.resolutionToScale = Util_resolutionToScale;
-external_L_default.a.Util.scaleToResolution = Util_scaleToResolution;
+external_L_default.a.Util.toGeoJSON = toGeoJSON;
+external_L_default.a.Util.toSuperMapGeometry = toSuperMapGeometry;
+external_L_default.a.Util.resolutionToScale = resolutionToScale;
+external_L_default.a.Util.scaleToResolution = scaleToResolution;
 external_L_default.a.Util.getMeterPerMapUnit = Util_getMeterPerMapUnit;
-external_L_default.a.Util.GetResolutionFromScaleDpi = Util_GetResolutionFromScaleDpi;
-external_L_default.a.Util.NormalizeScale = Util_NormalizeScale;
+external_L_default.a.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
+external_L_default.a.Util.NormalizeScale = NormalizeScale;
+
 // CONCATENATED MODULE: ./src/leaflet/core/Transform.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -75746,7 +77414,7 @@ var Transform_transform = function (feature, sourceCRS = external_L_default.a.CR
 
     function _prepareFeatuers(feature) {
         const geometry = feature.geometry;
-        if (!(Util_Util.isArray(geometry.coordinates))) {
+        if (!(Util.isArray(geometry.coordinates))) {
             throw "Geometry must have coordinates array: " + geometry;
         }
         if (!parseCoords[geometry.type.toLowerCase()]) {
@@ -75816,7 +77484,7 @@ external_L_default.a.Util.transform = Transform_transform;
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {string} [options.attribution='Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方'] - 版权信息。
  */
-var BaiduTileLayer_BaiduTileLayer = external_L_default.a.TileLayer.extend({
+var BaiduTileLayer = external_L_default.a.TileLayer.extend({
 
     /**
      * @member {string} L.supermap.baiduTileLayer.prototype.url 
@@ -75864,11 +77532,11 @@ var BaiduTileLayer_BaiduTileLayer = external_L_default.a.TileLayer.extend({
         return url;
     }
 });
-var BaiduTileLayer_baiduTileLayer = function (url, options) {
-    return new BaiduTileLayer_BaiduTileLayer(url, options);
+var baiduTileLayer = function (url, options) {
+    return new BaiduTileLayer(url, options);
 };
 
-external_L_default.a.supermap.baiduTileLayer = BaiduTileLayer_baiduTileLayer;
+external_L_default.a.supermap.baiduTileLayer = baiduTileLayer;
 
 // CONCATENATED MODULE: ./src/leaflet/mapping/CloudTileLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -75891,7 +77559,7 @@ external_L_default.a.supermap.baiduTileLayer = BaiduTileLayer_baiduTileLayer;
  * @param {string} [options.mapName='quanguo'] - 地图名称。
  * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权信息。
  */
-var CloudTileLayer_CloudTileLayer = external_L_default.a.TileLayer.extend({
+var CloudTileLayer = external_L_default.a.TileLayer.extend({
 
     defaultURL: 'http://t2.supermapcloud.com/FileService/image',
 
@@ -75934,11 +77602,11 @@ var CloudTileLayer_CloudTileLayer = external_L_default.a.TileLayer.extend({
         return tileUrl;
     }
 });
-var CloudTileLayer_cloudTileLayer = function (url, options) {
-    return new CloudTileLayer_CloudTileLayer(url, options);
+var cloudTileLayer = function (url, options) {
+    return new CloudTileLayer(url, options);
 };
 
-external_L_default.a.supermap.cloudTileLayer = CloudTileLayer_cloudTileLayer;
+external_L_default.a.supermap.cloudTileLayer = cloudTileLayer;
 // CONCATENATED MODULE: ./src/leaflet/mapping/ImageMapLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -75983,7 +77651,7 @@ external_L_default.a.supermap.cloudTileLayer = CloudTileLayer_cloudTileLayer;
  * @fires L.supermap.imageMapLayer#error
  * @fires L.supermap.imageMapLayer#loading
  */
-var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
+var ImageMapLayer = external_L_["Layer"].extend({
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
@@ -76020,7 +77688,7 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
         //自定义的html class name
         className: '',
         //服务来源 iServer|iPortal|online。
-        serverType: REST_ServerType.ISERVER,
+        serverType: ServerType.ISERVER,
         //版权信息
         attribution: core_Attributions.Common.attribution,
         //平移时图层延迟刷新间隔时间。
@@ -76176,11 +77844,9 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
             params.push('rasterfunction=' + JSON.stringify(options.rasterfunction));
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof external_L_default.a.Path) {
-            options.clipRegion = external_L_default.a.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = Util_Util.toJSON(ServerGeometry_ServerGeometry.fromGeometry(options.clipRegion));
+        if (options.clipRegionEnabled && options.clipRegion) {
             params.push('clipRegionEnabled=' + options.clipRegionEnabled);
-            params.push('clipRegion=' + JSON.stringify(options.clipRegion));
+            params.push('clipRegion=' + JSON.stringify(ServerGeometry_ServerGeometry.fromGeometry(external_L_["Util"].toSuperMapGeometry(options.clipRegion))));
         }
 
         if (options.overlapDisplayed === false) {
@@ -76356,22 +78022,22 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
             credential,
             value;
         switch (this.options.serverType) {
-            case REST_ServerType.IPORTAL:
+            case ServerType.IPORTAL:
                 value = SecurityManager_SecurityManager.getToken(this._url);
-                credential = value ? new Credential_Credential(value, 'token') : null;
+                credential = value ? new Credential(value, 'token') : null;
                 if (!credential) {
                     value = SecurityManager_SecurityManager.getKey(this._url);
-                    credential = value ? new Credential_Credential(value, 'key') : null;
+                    credential = value ? new Credential(value, 'key') : null;
                 }
                 break;
-            case REST_ServerType.ONLINE:
+            case ServerType.ONLINE:
                 value = SecurityManager_SecurityManager.getKey(this._url);
-                credential = value ? new Credential_Credential(value, 'key') : null;
+                credential = value ? new Credential(value, 'key') : null;
                 break;
             default:
                 //iserver or others
                 value = SecurityManager_SecurityManager.getToken(this._url);
-                credential = value ? new Credential_Credential(value, 'token') : null;
+                credential = value ? new Credential(value, 'token') : null;
                 break;
         }
         if (credential) {
@@ -76381,10 +78047,10 @@ var ImageMapLayer_ImageMapLayer = external_L_["Layer"].extend({
     }
 });
 
-var ImageMapLayer_imageMapLayer = function(url, options) {
-    return new ImageMapLayer_ImageMapLayer(url, options);
+var imageMapLayer = function(url, options) {
+    return new ImageMapLayer(url, options);
 };
-external_L_default.a.supermap.imageMapLayer = ImageMapLayer_imageMapLayer;
+external_L_default.a.supermap.imageMapLayer = imageMapLayer;
 
 // CONCATENATED MODULE: ./src/leaflet/mapping/TileLayer.WMTS.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -76410,7 +78076,7 @@ external_L_default.a.supermap.imageMapLayer = ImageMapLayer_imageMapLayer;
  * @param {string} [options.version='1.0.0'] - 版本。
  * @param {string} [options.attribution] - 版权信息。
  */
-var TileLayer_WMTS_WMTSLayer = external_L_default.a.TileLayer.extend({
+var WMTSLayer = external_L_default.a.TileLayer.extend({
 
     options: {
         version: '1.0.0',
@@ -76491,11 +78157,11 @@ var TileLayer_WMTS_WMTSLayer = external_L_default.a.TileLayer.extend({
     }
 });
 
-var TileLayer_WMTS_wmtsLayer = function (url, options) {
-    return new TileLayer_WMTS_WMTSLayer(url, options);
+var wmtsLayer = function (url, options) {
+    return new WMTSLayer(url, options);
 };
 
-external_L_default.a.supermap.wmtsLayer = TileLayer_WMTS_wmtsLayer;
+external_L_default.a.supermap.wmtsLayer = wmtsLayer;
 // CONCATENATED MODULE: ./src/leaflet/mapping/TiandituTileLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -76520,7 +78186,7 @@ external_L_default.a.supermap.wmtsLayer = TileLayer_WMTS_wmtsLayer;
  * @param {Array.<number>} [options.subdomains=[0, 1, 2, 3, 4, 5, 6, 7]] - 子域名数组。
  * @param {string} [options.attribution='Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>'] - 版权信息
  */
-var TiandituTileLayer_TiandituTileLayer = TileLayer_WMTS_WMTSLayer.extend({
+var TiandituTileLayer = WMTSLayer.extend({
 
     layerLabelMap: {
         "vec": "cva",
@@ -76550,7 +78216,7 @@ var TiandituTileLayer_TiandituTileLayer = TileLayer_WMTS_WMTSLayer.extend({
         external_L_default.a.setOptions(this, options);
         this.options.layer = this.options.isLabel ? this.layerLabelMap[this.options.layerType] : this.options.layerType;
         this.options.maxZoom = this.layerZoomMap[this.options.layerType] - 1;
-        TileLayer_WMTS_WMTSLayer.prototype.initialize.call(this, this.options.url, this.options);
+        WMTSLayer.prototype.initialize.call(this, this.options.url, this.options);
         external_L_default.a.stamp(this);
     },
     onAdd: function (map) {
@@ -76559,14 +78225,14 @@ var TiandituTileLayer_TiandituTileLayer = TileLayer_WMTS_WMTSLayer.extend({
             this._url = `${this._url}tk=${this.options.key}`;
         }
         this._url = this._url.replace("{layer}", this.options.layer).replace("{proj}", this.options.tilematrixSet);
-        TileLayer_WMTS_WMTSLayer.prototype.onAdd.call(this, map);
+        WMTSLayer.prototype.onAdd.call(this, map);
     }
 });
-var TiandituTileLayer_tiandituTileLayer = function (options) {
-    return new TiandituTileLayer_TiandituTileLayer(options);
+var tiandituTileLayer = function (options) {
+    return new TiandituTileLayer(options);
 };
 
-external_L_default.a.supermap.tiandituTileLayer = TiandituTileLayer_tiandituTileLayer;
+external_L_default.a.supermap.tiandituTileLayer = tiandituTileLayer;
 // CONCATENATED MODULE: ./src/leaflet/mapping/TiledMapLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -76607,7 +78273,7 @@ external_L_default.a.supermap.tiandituTileLayer = TiandituTileLayer_tiandituTile
  * @fires L.supermap.tiledMapLayer#tilesetsinfoloaded
  * @fires L.supermap.tiledMapLayer#tileversionschanged
  */
-var TiledMapLayer_TiledMapLayer = external_L_default.a.TileLayer.extend({
+var TiledMapLayer = external_L_default.a.TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
@@ -76628,7 +78294,7 @@ var TiledMapLayer_TiledMapLayer = external_L_default.a.TileLayer.extend({
         //切片版本名称，cacheEnabled 为 true 时有效。
         tileversion: null,
         crs: null,
-        serverType: REST_ServerType.ISERVER,
+        serverType: ServerType.ISERVER,
         format: 'png',
         //启用托管地址。
         tileProxy:null,
@@ -76732,15 +78398,15 @@ var TiledMapLayer_TiledMapLayer = external_L_default.a.TileLayer.extend({
                 Math.abs(ne.x - sw.x) / tileSize,
                 Math.abs(ne.y - sw.y) / tileSize
             );
-            var mapUnit = REST_Unit.METER;
+            var mapUnit = Unit.METER;
             if (crs.code) {
                 var array = crs.code.split(':');
                 if (array && array.length > 1) {
                     var code = parseInt(array[1]);
-                    mapUnit = code && code >= 4000 && code <= 5000 ? REST_Unit.DEGREE : REST_Unit.METER;
+                    mapUnit = code && code >= 4000 && code <= 5000 ? Unit.DEGREE : Unit.METER;
                 }
             }
-            return Util_resolutionToScale(resolution, 96, mapUnit);
+            return resolutionToScale(resolution, 96, mapUnit);
         }
     },
 
@@ -76896,9 +78562,8 @@ var TiledMapLayer_TiledMapLayer = external_L_default.a.TileLayer.extend({
             params["layersID"] = options.layersID.toString();
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof external_L_default.a.Path) {
-            options.clipRegion = Util_toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = Util_Util.toJSON(ServerGeometry_ServerGeometry.fromGeometry(options.clipRegion));
+        if (options.clipRegionEnabled && options.clipRegion) {
+            options.clipRegion = ServerGeometry_ServerGeometry.fromGeometry(toSuperMapGeometry(options.clipRegion));
             params["clipRegionEnabled"] = options.clipRegionEnabled;
             params["clipRegion"] = JSON.stringify(options.clipRegion);
         }
@@ -76943,22 +78608,22 @@ var TiledMapLayer_TiledMapLayer = external_L_default.a.TileLayer.extend({
         var newUrl = url,
             credential, value;
         switch (this.options.serverType) {
-            case REST_ServerType.IPORTAL:
+            case ServerType.IPORTAL:
                 value = SecurityManager_SecurityManager.getToken(this._url);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
                     value = SecurityManager_SecurityManager.getKey(this._url);
-                    credential = value ? new Credential_Credential(value, "key") : null;
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case REST_ServerType.ONLINE:
+            case ServerType.ONLINE:
                 value = SecurityManager_SecurityManager.getKey(this._url);
-                credential = value ? new Credential_Credential(value, "key") : null;
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
                 //iserver or others
                 value = SecurityManager_SecurityManager.getToken(this._url);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         if (credential) {
@@ -76968,11 +78633,11 @@ var TiledMapLayer_TiledMapLayer = external_L_default.a.TileLayer.extend({
     }
 });
 
-var TiledMapLayer_tiledMapLayer = function (url, options) {
-    return new TiledMapLayer_TiledMapLayer(url, options);
+var tiledMapLayer = function (url, options) {
+    return new TiledMapLayer(url, options);
 };
 
-external_L_default.a.supermap.tiledMapLayer = TiledMapLayer_tiledMapLayer;
+external_L_default.a.supermap.tiledMapLayer = tiledMapLayer;
 // EXTERNAL MODULE: ./node_modules/jsonsql/index.js
 var jsonsql = __webpack_require__(2);
 var jsonsql_default = /*#__PURE__*/__webpack_require__.n(jsonsql);
@@ -76990,7 +78655,7 @@ var jsonsql_default = /*#__PURE__*/__webpack_require__.n(jsonsql);
  * @category BaseTypes Style
  * @private
  */
-var CartoDefaultStyle_DefaultStyle = {
+var DefaultStyle = {
 
     /**
      * @constant L.supermap.DefaultStyle.prototype.TEXT
@@ -77050,7 +78715,7 @@ var CartoDefaultStyle_DefaultStyle = {
     }
 };
 
-external_L_default.a.supermap.DefaultStyle = CartoDefaultStyle_DefaultStyle
+external_L_default.a.supermap.DefaultStyle = DefaultStyle
 // CONCATENATED MODULE: ./src/leaflet/overlay/carto/CartoStyleMap.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -77064,7 +78729,7 @@ external_L_default.a.supermap.DefaultStyle = CartoDefaultStyle_DefaultStyle
  * @category BaseTypes Style
  * @private
  */
-var CartoStyleMap_CartoStyleMap = {
+var CartoStyleMap = {
 
     /*
      * @constant L.supermap.CartoStyleMap.prototype.TEXT
@@ -77131,7 +78796,7 @@ var CartoStyleMap_CartoStyleMap = {
  * @description 服务端传过来的 style 属性名与 leaflet 的 style 属性名的对应表。
  * @private
  */
-var CartoStyleMap_ServerStyleMap = {
+var ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.lineWidth
@@ -77191,7 +78856,7 @@ var CartoStyleMap_ServerStyleMap = {
  * @description Canvas 中的 globalCompositeOperation 属性值与 CartoCSS 中的 CompOp 属性值对照表。
  * @private
  */
-var CartoStyleMap_CompOpMap = {
+var CompOpMap = {
     "clear": "",
     "src": "",
     "dst": "",
@@ -77228,9 +78893,9 @@ var CartoStyleMap_CompOpMap = {
     "value": ""
 };
 
-external_L_default.a.supermap.CartoStyleMap = CartoStyleMap_CartoStyleMap;
-external_L_default.a.supermap.ServerStyleMap = CartoStyleMap_ServerStyleMap;
-external_L_default.a.supermap.CompOpMap = CartoStyleMap_CompOpMap;
+external_L_default.a.supermap.CartoStyleMap = CartoStyleMap;
+external_L_default.a.supermap.ServerStyleMap = ServerStyleMap;
+external_L_default.a.supermap.CompOpMap = CompOpMap;
 // CONCATENATED MODULE: ./src/leaflet/overlay/carto/CartoCSSToLeaflet.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -77345,7 +79010,7 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
     getDefaultStyle(type) {
         var style = {};
         //设置默认值
-        var expandStyle = CartoDefaultStyle_DefaultStyle[type];
+        var expandStyle = DefaultStyle[type];
         for (var prop in expandStyle) {
             var val = expandStyle[prop];
             style[prop] = val;
@@ -77464,10 +79129,10 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
                 if (!str) {
                     return [];
                 }
-                if (Util_Util.isArray(str)) {
+                if (Util.isArray(str)) {
                     return str;
                 }
-                str = BaseTypes_StringExt.trim(str).replace(/\s+/g, ",");
+                str = StringExt.trim(str).replace(/\s+/g, ",");
                 return str.replace(/\[|\]/gi, "").split(",");
         }
     }
@@ -77493,7 +79158,7 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
         attributes.FEATUREID = feature.properties.id;
         attributes.SCALE = scale;
 
-        var cartoStyleMap = CartoStyleMap_CartoStyleMap[type];
+        var cartoStyleMap = CartoStyleMap[type];
 
         var fontSize, fontName;
         for (var i = 0, len = shader.length; i < len; i++) {
@@ -77512,7 +79177,7 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
                     style.fontName = fontName;
                 } else {
                     if (prop === "globalCompositeOperation") {
-                        value = CartoStyleMap_CompOpMap[value];
+                        value = CompOpMap[value];
                         if (!value) {
                             continue;
                         }
@@ -77554,7 +79219,7 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
                 "picHeight": size,
                 "style": JSON.stringify(shader)
             };
-            style.iconUrl = Util_Util.urlAppend(this.mapUrl + "/symbol.png", Util_Util.getParameterString(symbolParameters));
+            style.iconUrl = Util.urlAppend(this.mapUrl + "/symbol.png", Util.getParameterString(symbolParameters));
             style.iconSize = [size, size];
             return style;
         }
@@ -77603,7 +79268,7 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
         var fillSymbolID = shader["fillSymbolID"] > 7 ? 0 : shader["fillSymbolID"];
         var lineSymbolID = shader["lineSymbolID"] > 5 ? 0 : shader["lineSymbolID"];
         for (var attr in shader) {
-            var obj = CartoStyleMap_ServerStyleMap[attr];
+            var obj = ServerStyleMap[attr];
             if (!obj) {
                 continue;
             }
@@ -77692,7 +79357,7 @@ external_L_default.a.supermap.CartoCSSToLeaflet = CartoCSSToLeaflet_CartoCSSToLe
  * @param {(L.supermap.circleStyle|L.supermap.cloverStyle|L.supermap.imageStyle)} [options.style] - 点样式。
  * @param {Object} [options.attributes] - 要素属性。
  */
-var Graphic_Graphic = external_L_default.a.Class.extend({
+var Graphic = external_L_default.a.Class.extend({
 
     initialize: function (options) {
         options = options || {};
@@ -77801,7 +79466,7 @@ var Graphic_Graphic = external_L_default.a.Class.extend({
 
 });
 var Graphic_graphic = function (options) {
-    return new Graphic_Graphic(options);
+    return new Graphic(options);
 };
 
 external_L_default.a.supermap.graphic = Graphic_graphic;
@@ -77822,7 +79487,7 @@ external_L_default.a.supermap.graphic = Graphic_graphic;
  * @param {(L.Path|L.Point|L.LatLng)} geometry - 要素图形。
  * @param {Object} attributes - 要素属性。
  */
-var ThemeFeature_ThemeFeature = external_L_default.a.Class.extend({
+var ThemeFeature = external_L_default.a.Class.extend({
 
     initialize: function (geometry, attributes) {
         this.geometry = geometry;
@@ -77873,11 +79538,11 @@ var ThemeFeature_ThemeFeature = external_L_default.a.Class.extend({
         return latlngs;
     }
 });
-var ThemeFeature_themeFeature = function (geometry, attributes) {
-    return new ThemeFeature_ThemeFeature(geometry, attributes);
+var themeFeature = function (geometry, attributes) {
+    return new ThemeFeature(geometry, attributes);
 };
 
-external_L_default.a.supermap.themeFeature = ThemeFeature_themeFeature;
+external_L_default.a.supermap.themeFeature = themeFeature;
 // CONCATENATED MODULE: ./src/leaflet/overlay/theme/ThemeLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -77901,12 +79566,12 @@ external_L_default.a.supermap.themeFeature = ThemeFeature_themeFeature;
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @fires L.supermap.ThemeLayer#featuresremoved
  */
-var ThemeLayer_ThemeLayer = external_L_default.a.Layer.extend({
+var ThemeLayer = external_L_default.a.Layer.extend({
 
     options: {
         //要素坐标是否和地图坐标系一致，默认为false，要素默认是经纬度坐标。
         alwaysMapCRS: false,
-        id: Util_Util.createUniqueID("themeLayer_"),
+        id: Util.createUniqueID("themeLayer_"),
         opacity: 1,
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
         //这是一个二维数组，组成二维数组的每个一维数组长度为 2，分别是 event, callback。
@@ -78326,14 +79991,14 @@ var ThemeLayer_ThemeLayer = external_L_default.a.Layer.extend({
      */
     toiClientFeature: function (features) {
         //若 features 非数组形式 feature 则先做以下处理：
-        if (!Util_Util.isArray(features)) {
+        if (!Util.isArray(features)) {
             features = [features];
         }
 
         let featuresTemp = [];
         for (let i = 0; i < features.length; i++) {
             //L.supermap.themeFeature 数据类型
-            if (features[i] instanceof ThemeFeature_ThemeFeature) {
+            if (features[i] instanceof ThemeFeature) {
                 featuresTemp.push(features[i].toFeature());
             } else if (features[i] instanceof Vector_Vector) {
                 // 若是 GeometryVector 类型直接返回
@@ -78393,7 +80058,7 @@ var ThemeLayer_ThemeLayer = external_L_default.a.Layer.extend({
 
     _updateOpacity: function () {
         var me = this;
-        Util_Util.modifyDOMElement(me.container, null, null, null, null, null, null, me.options.opacity);
+        Util.modifyDOMElement(me.container, null, null, null, null, null, null, me.options.opacity);
         if (me._map !== null) {
             /**
              * @event L.supermap.ThemeLayer#changelayer
@@ -78477,7 +80142,7 @@ var ThemeLayer_ThemeLayer = external_L_default.a.Layer.extend({
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  * @fires L.supermap.GeoFeatureThemeLayer#beforefeaturesadded
  */
-var GeoFeatureThemeLayer_GeoFeatureThemeLayer = ThemeLayer_ThemeLayer.extend({
+var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     options: {
 
@@ -78500,7 +80165,7 @@ var GeoFeatureThemeLayer_GeoFeatureThemeLayer = ThemeLayer_ThemeLayer.extend({
     },
 
     initialize: function (name, options) {
-        ThemeLayer_ThemeLayer.prototype.initialize.call(this, name, options);
+        ThemeLayer.prototype.initialize.call(this, name, options);
         external_L_default.a.Util.setOptions(this, options);
         var me = this;
         me.cache = {};
@@ -78549,7 +80214,7 @@ var GeoFeatureThemeLayer_GeoFeatureThemeLayer = ThemeLayer_ThemeLayer.extend({
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.clearCache();
-        ThemeLayer_ThemeLayer.prototype.removeFeatures.call(this, arguments);
+        ThemeLayer.prototype.removeFeatures.call(this, arguments);
     },
 
     /**
@@ -78558,7 +80223,7 @@ var GeoFeatureThemeLayer_GeoFeatureThemeLayer = ThemeLayer_ThemeLayer.extend({
      */
     removeAllFeatures: function () {
         this.clearCache();
-        ThemeLayer_ThemeLayer.prototype.removeAllFeatures.call(this, arguments);
+        ThemeLayer.prototype.removeAllFeatures.call(this, arguments);
     },
 
     /**
@@ -78641,7 +80306,7 @@ var GeoFeatureThemeLayer_GeoFeatureThemeLayer = ThemeLayer_ThemeLayer.extend({
         var me = this;
         var style = me.getStyleByData(feature);
         if (feature.style && me.isAllowFeatureStyle) {
-            style = Util_Util.copyAttributesWithClip(feature.style);
+            style = Util.copyAttributesWithClip(feature.style);
         }
 
         //创建专题要素时的可选参数
@@ -78669,7 +80334,7 @@ var GeoFeatureThemeLayer_GeoFeatureThemeLayer = ThemeLayer_ThemeLayer.extend({
      */
     redraw: function () {
         this.clearCache();
-        return ThemeLayer_ThemeLayer.prototype.redraw.apply(this, arguments);
+        return ThemeLayer.prototype.redraw.apply(this, arguments);
     },
 
     /**
@@ -78772,7 +80437,7 @@ var GeoFeatureThemeLayer_GeoFeatureThemeLayer = ThemeLayer_ThemeLayer.extend({
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  */
-var UniqueThemeLayer_UniqueThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.extend({
+var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
 
     
     /** 
@@ -78791,7 +80456,7 @@ var UniqueThemeLayer_UniqueThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLaye
      */
 
     initialize: function (name, options) {
-        GeoFeatureThemeLayer_GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
+        GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
         //{Array.<SuperMap.ThemeStyle>} 图层中专题要素的样式
         this.style = [];
         //{string} 用于指定专题要素样式的属性字段名称。
@@ -78818,7 +80483,7 @@ var UniqueThemeLayer_UniqueThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLaye
     getStyleByData: function (feat) {
         var me = this,
             feature = feat,
-            style = Util_Util.copyAttributesWithClip({}, me.style);
+            style = Util.copyAttributesWithClip({}, me.style);
 
 
         var groups = me.styleGroups,
@@ -78844,7 +80509,7 @@ var UniqueThemeLayer_UniqueThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLaye
             for (var i = 0, len = groups.length; i < len; i++) {
                 if ((attribute).toString() === ( groups[i].value).toString()) {
                     var sty1 = groups[i].style;
-                    style = Util_Util.copyAttributesWithClip(style, sty1);
+                    style = Util.copyAttributesWithClip(style, sty1);
                 }
 
             }
@@ -78853,11 +80518,11 @@ var UniqueThemeLayer_UniqueThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLaye
     }
 });
 
-var UniqueThemeLayer_uniqueThemeLayer = function (name, options) {
-    return new UniqueThemeLayer_UniqueThemeLayer(name, options);
+var uniqueThemeLayer = function (name, options) {
+    return new UniqueThemeLayer(name, options);
 };
 
-external_L_default.a.supermap.uniqueThemeLayer = UniqueThemeLayer_uniqueThemeLayer;
+external_L_default.a.supermap.uniqueThemeLayer = uniqueThemeLayer;
 // CONCATENATED MODULE: ./src/leaflet/overlay/RangeThemeLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -78891,7 +80556,7 @@ external_L_default.a.supermap.uniqueThemeLayer = UniqueThemeLayer_uniqueThemeLay
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。                             
  */
-var RangeThemeLayer_RangeThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.extend({
+var RangeThemeLayer = GeoFeatureThemeLayer.extend({
     
     /** 
      * @member {Object} L.supermap.rangeThemeLayer.prototype.style
@@ -78909,7 +80574,7 @@ var RangeThemeLayer_RangeThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
      */
 
     initialize: function (name, options) {
-        GeoFeatureThemeLayer_GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
+        GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
         //{Array.<SuperMap.ThemeStyle>} 图层中专题要素的样式
         this.style = [];
         //{string} 用于指定专题要素样式的属性字段名称。
@@ -78935,7 +80600,7 @@ var RangeThemeLayer_RangeThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
     getStyleByData: function (feat) {
         var me = this,
             feature = feat,
-            style = Util_Util.copyAttributesWithClip({}, me.style);
+            style = Util.copyAttributesWithClip({}, me.style);
 
         var groups = me.styleGroups,
             isSfInAttributes = false,//指定的 themeField 是否是 feature 的属性字段之一
@@ -78963,7 +80628,7 @@ var RangeThemeLayer_RangeThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
 				var isContianed = i === len-1 ? ((attribute >= groups[i].start) && (attribute <= groups[i].end)) : ((attribute >= groups[i].start) && (attribute < groups[i].end));
                 if (isContianed) {
                     var sty1 = groups[i].style;
-                    style = Util_Util.copyAttributesWithClip(style, sty1);
+                    style = Util.copyAttributesWithClip(style, sty1);
                 }
             }
 
@@ -78972,11 +80637,11 @@ var RangeThemeLayer_RangeThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
     }
 
 });
-var RangeThemeLayer_rangeThemeLayer = function (name, options) {
-    return new RangeThemeLayer_RangeThemeLayer(name, options);
+var rangeThemeLayer = function (name, options) {
+    return new RangeThemeLayer(name, options);
 };
 
-external_L_default.a.supermap.rangeThemeLayer = RangeThemeLayer_rangeThemeLayer;
+external_L_default.a.supermap.rangeThemeLayer = rangeThemeLayer;
 // CONCATENATED MODULE: ./src/leaflet/overlay/LabelThemeLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -79010,7 +80675,7 @@ external_L_default.a.supermap.rangeThemeLayer = RangeThemeLayer_rangeThemeLayer;
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  */
-var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.extend({
+var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /** 
      * @member {Object} L.supermap.labelThemeLayer.prototype.style
@@ -79035,7 +80700,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
     },
 
     initialize: function (name, options) {
-        GeoFeatureThemeLayer_GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
+        GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
         external_L_default.a.Util.setOptions(this, options);
         //图层中专题要素的样式
         this.style = [];
@@ -79098,7 +80763,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
      * @private
      */
     onAdd: function (map) {
-        GeoFeatureThemeLayer_GeoFeatureThemeLayer.prototype.onAdd.call(this, map);
+        GeoFeatureThemeLayer.prototype.onAdd.call(this, map);
         this.container.style.zIndex = 200;
     },
     /**
@@ -79116,7 +80781,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
             }
         }
         this.features = this.getDrawnLabels(this.labelFeatures);
-        GeoFeatureThemeLayer_GeoFeatureThemeLayer.prototype.redrawThematicFeatures.call(this, bounds);
+        GeoFeatureThemeLayer.prototype.redrawThematicFeatures.call(this, bounds);
     },
 
      /**
@@ -79126,7 +80791,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];
-        GeoFeatureThemeLayer_GeoFeatureThemeLayer.prototype.removeFeatures.call(this, arguments);
+        GeoFeatureThemeLayer.prototype.removeFeatures.call(this, arguments);
     },
 
     /**
@@ -79135,7 +80800,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
      */
     removeAllFeatures: function () {
         this.labelFeatures = [];
-        GeoFeatureThemeLayer_GeoFeatureThemeLayer.prototype.removeAllFeatures.call(this, arguments);
+        GeoFeatureThemeLayer.prototype.removeAllFeatures.call(this, arguments);
     },
 
     /**
@@ -79283,8 +80948,8 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
                 var center = bounds.getCenterLonLat();
                 var label = new GeoText_GeoText(center.lon, center.lat, fi.attributes[this.themeField]);
                 label.calculateBounds();
-                styTmp = Util_Util.cloneObject(fi.style);
-                feaSty = Util_Util.cloneObject(Util_Util.copyAttributes(styTmp, styleTemp));
+                styTmp = Util.cloneObject(fi.style);
+                feaSty = Util.cloneObject(Util.copyAttributes(styTmp, styleTemp));
                 fea = new Vector_Vector(label, fi.attributes, feaSty);
                 //赋予id
                 fea.id = fi.id;
@@ -79305,12 +80970,12 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
      */
     getStyleByData: function (feat) {
         var feature = feat;
-        feature.style = Util_Util.copyAttributes(feature.style, this.defaultStyle);
+        feature.style = Util.copyAttributes(feature.style, this.defaultStyle);
         //将style赋给标签
         if (this.style && this.style.fontSize && parseFloat(this.style.fontSize) < 12) {
             this.style.fontSize = "12px";
         }
-        feature.style = Util_Util.copyAttributes(feature.style, this.style);
+        feature.style = Util.copyAttributes(feature.style, this.style);
 
         if (this.themeField && this.styleGroups && feature.attributes) {
             var Sf = this.themeField;
@@ -79335,7 +81000,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
                         if (sty1 && sty1.fontSize && parseFloat(sty1.fontSize) < 12) {
                             sty1.fontSize = "12px";
                         }
-                        feature.style = Util_Util.copyAttributes(feature.style, sty1);
+                        feature.style = Util.copyAttributes(feature.style, sty1);
                     }
                 }
             }
@@ -79381,12 +81046,12 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
      */
     setStyle: function (feat) {
         var feature = feat;
-        feature.style = Util_Util.copyAttributes(feature.style, this.defaultStyle);
+        feature.style = Util.copyAttributes(feature.style, this.defaultStyle);
         //将style赋给标签
         if (this.style && this.style.fontSize && parseFloat(this.style.fontSize) < 12) {
             this.style.fontSize = "12px";
         }
-        feature.style = Util_Util.copyAttributes(feature.style, this.style);
+        feature.style = Util.copyAttributes(feature.style, this.style);
 
         if (this.groupField && this.styleGroups && feature.attributes) {
             var Sf = this.groupField;
@@ -79412,7 +81077,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
                         if (sty1 && sty1.fontSize && parseFloat(sty1.fontSize) < 12) {
                             sty1.fontSize = "12px";
                         }
-                        feature.style = Util_Util.copyAttributes(feature.style, sty1);
+                        feature.style = Util.copyAttributes(feature.style, sty1);
                     }
                 }
             }
@@ -79523,7 +81188,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
         var labB, left, bottom, top, right;
         var labelSize = feature.geometry.bsInfo;
         var style = feature.style;
-        var locationPx = Util_Util.cloneObject(loc);
+        var locationPx = Util.cloneObject(loc);
 
         //处理文字对齐
         if (style.labelAlign && style.labelAlign !== "cm") {
@@ -79625,7 +81290,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
                 "b": -1
             };
 
-        style = Util_Util.extend({
+        style = Util.extend({
             fontColor: "#000000",
             labelAlign: "cm"
         }, style);
@@ -79818,7 +81483,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
             aspectW = "";
         for (var i = 0; i < bqLen - 1; i++) {
             for (var j = 0; j < quadLen - 1; j++) {
-                var isLineIn = Util_Util.lineIntersection(bounddQuad[i], bounddQuad[i + 1], quadrilateral[j], quadrilateral[j + 1]);
+                var isLineIn = Util.lineIntersection(bounddQuad[i], bounddQuad[i + 1], quadrilateral[j], quadrilateral[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     //设置避让信息
                     setInfo(quadrilateral[j]);
@@ -79923,7 +81588,7 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
                 break;
             }
             for (var j = 0; j < quad2Len - 1; j++) {
-                var isLineIn = Util_Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
+                var isLineIn = Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     OverLap = true;
                     break;
@@ -79954,11 +81619,11 @@ var LabelThemeLayer_LabelThemeLayer = GeoFeatureThemeLayer_GeoFeatureThemeLayer.
 
 });
 
-var LabelThemeLayer_labelThemeLayer = function (name, options) {
-    return new LabelThemeLayer_LabelThemeLayer(name, options);
+var labelThemeLayer = function (name, options) {
+    return new LabelThemeLayer(name, options);
 };
 
-external_L_default.a.supermap.labelThemeLayer = LabelThemeLayer_labelThemeLayer;
+external_L_default.a.supermap.labelThemeLayer = labelThemeLayer;
 // CONCATENATED MODULE: ./src/leaflet/services/FeatureService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -79988,10 +81653,10 @@ external_L_default.a.supermap.labelThemeLayer = LabelThemeLayer_labelThemeLayer;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var FeatureService_FeatureService = ServiceBase_ServiceBase.extend({
+var FeatureService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -80159,7 +81824,7 @@ var FeatureService_FeatureService = ServiceBase_ServiceBase.extend({
             params.bounds = CommontypesConversion_CommontypesConversion.toSuperMapBounds(params.bounds);
         }
         if (params.geometry) {
-            params.geometry = Util_toSuperMapGeometry(params.geometry);
+            params.geometry = toSuperMapGeometry(params.geometry);
         }
 
         if (params.editType) {
@@ -80196,17 +81861,17 @@ var FeatureService_FeatureService = ServiceBase_ServiceBase.extend({
         if (geoJSONFeature.id) {
             feature.id = geoJSONFeature.id;
         }
-        feature.geometry = Util_toSuperMapGeometry(geoJSONFeature);
+        feature.geometry = toSuperMapGeometry(geoJSONFeature);
         return feature;
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 });
 
 var FeatureService_featureService = function (url, options) {
-    return new FeatureService_FeatureService(url, options);
+    return new FeatureService(url, options);
 };
 
 external_L_default.a.supermap.featureService = FeatureService_featureService;
@@ -80235,7 +81900,7 @@ external_L_default.a.supermap.featureService = FeatureService_featureService;
  * @param {string} [options.textBaseline='middle'] - 绘制符号时使用的基线。
  * @fires L.supermap.unicodeMarker#move
  */
-var UnicodeMarker_UnicodeMarker = external_L_default.a.Path.extend({
+var UnicodeMarker = external_L_default.a.Path.extend({
     // @section
     // @aka CircleMarker options
     options: {
@@ -80306,8 +81971,8 @@ var UnicodeMarker_UnicodeMarker = external_L_default.a.Path.extend({
         return p.distanceTo(this._point) <= this._clickTolerance();
     }
 })
-var UnicodeMarker_unicodeMarker = function (latlng, options) {
-    return new UnicodeMarker_UnicodeMarker(latlng, options);
+var unicodeMarker = function (latlng, options) {
+    return new UnicodeMarker(latlng, options);
 };
 
 external_L_default.a.Canvas.include({
@@ -80377,7 +82042,7 @@ external_L_default.a.Canvas.include({
     }
 });
 
-external_L_default.a.supermap.unicodeMarker = UnicodeMarker_unicodeMarker;
+external_L_default.a.supermap.unicodeMarker = unicodeMarker;
 // CONCATENATED MODULE: ./src/leaflet/mapping/WebMap.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -80411,12 +82076,12 @@ external_L_default.a.supermap.unicodeMarker = UnicodeMarker_unicodeMarker;
  * @param {number} id - iPortal/Online 地图 id。
  * @param {Object} options - 可选参数。
  * @param {string} [options.map='map'] - 地图容器id。
- * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online 服务地址。
+ * @param {string} [options.server='https://www.supermapol.com'] - iPortal/Online 服务地址。
  * @param {boolean} [options.featureLayerPopupEnable=true] -  是否启动要素图层提示框。
  * @param {string} [options.featureLayerPopup] - 提示框提示信息。
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
  * @fires L.supermap.webmap#mapLoaded
  * @fires L.supermap.webmap#coordconvertsuccess
  * @fires L.supermap.webmap#coordconvertfailed
@@ -80424,11 +82089,11 @@ external_L_default.a.supermap.unicodeMarker = UnicodeMarker_unicodeMarker;
  * @fires L.supermap.webmap#featureselected
  * @fires L.supermap.webmap#featuremousemove
  */
-var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
+var WebMap = external_L_default.a.LayerGroup.extend({
 
     options: {
         map: 'map',
-        server: 'http://www.supermapol.com',
+        server: 'https://www.supermapol.com',
         featureLayerPopupEnable: true,
         featureLayerPopup: null,
         credentialValue: null,
@@ -80472,7 +82137,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
             mapUrl += ('?' + this.options.credentialKey + '=' + this.options.credentialValue);
         }
         var me = this;
-        FetchRequest_FetchRequest.get(mapUrl).then(function (response) {
+        FetchRequest.get(mapUrl).then(function (response) {
             return response.json()
         }).then(function (jsonObj) {
             if (!jsonObj) {
@@ -80564,7 +82229,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
      */
     createCRS: function (epsgCode, type, resolutions, origin, bounds) {
         if (epsgCode < 0) {
-            return new NonEarthCRS_NonEarthCRS({
+            return new NonEarthCRS({
                 bounds: bounds,
                 origin: origin,
                 resolutions: resolutions
@@ -80606,7 +82271,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
             crs: crs,
             renderer: external_L_default.a.canvas()
         });
-        if (crs instanceof NonEarthCRS_NonEarthCRS) {
+        if (crs instanceof NonEarthCRS) {
             this._map.setZoom(options.zoom ? options.zoom + 2 : 2, {
                 maxZoom: options.maxZoom || 22
             });
@@ -80668,7 +82333,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
         var layer;
         switch (type) {
             case "SUPERMAP_REST":
-                layer = TiledMapLayer_tiledMapLayer(layerInfo.url, {
+                layer = tiledMapLayer(layerInfo.url, {
                     transparent: true,
                     opacity: opacity
                 });
@@ -80688,7 +82353,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
                 mapOptions.crs = external_L_default.a.CRS.BaiduCRS;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
-                layer = BaiduTileLayer_baiduTileLayer();
+                layer = baiduTileLayer();
                 break;
             case 'BING':
                 //todo
@@ -80700,7 +82365,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
                 mapOptions.resolutions = this.getResolutionsFromScales(scales, 90.71446714322, layerInfo.units);
                 var identifier = layerInfo.identifier;
                 var layerName = identifier.substring(identifier.indexOf("_") + 1);
-                layer = TileLayer_WMTS_wmtsLayer(layerInfo.url, {
+                layer = wmtsLayer(layerInfo.url, {
                     layer: layerName,
                     style: "default",
                     tilematrixSet: identifier,
@@ -80711,7 +82376,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
                 mapOptions.crs = external_L_default.a.CRS.EPSG3857;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
-                layer = CloudTileLayer_cloudTileLayer(layerInfo.url, {
+                layer = cloudTileLayer(layerInfo.url, {
                     opacity: opacity
                 });
                 break;
@@ -80745,7 +82410,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
     createTiandituLayer: function (layerInfo) {
         var type = layerInfo.type.split('_')[1].toLowerCase();
         var isLabel = layerInfo.layerType === 'OVERLAY_LAYER';
-        var layer = new TiandituTileLayer_TiandituTileLayer({
+        var layer = new TiandituTileLayer({
             layerType: type,
             isLabel: isLabel
         });
@@ -80865,7 +82530,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
             for (var setNameIndex = 0; setNameIndex < datasets.length; setNameIndex++) {
                 var dataset = datasets[setNameIndex];
                 if (dataset.visible) {
-                    this.getFeaturesBySQL(url, datasourceName, dataset.name, "", REST_DataFormat.GEOJSON, (serviceResult) => {
+                    this.getFeaturesBySQL(url, datasourceName, dataset.name, "", DataFormat.GEOJSON, (serviceResult) => {
                         var layer = external_L_default.a.geoJSON(serviceResult.result, {
                             pointToLayer: function (geojson, latlng) {
                                 var m = new external_L_default.a.Marker(latlng);
@@ -80964,7 +82629,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
         };
         if (featureStyle.unicode) {
             pointToLayer = (geojson, latlng) => {
-                return new UnicodeMarker_UnicodeMarker(latlng, featureStyle)
+                return new UnicodeMarker(latlng, featureStyle)
             }
         }
         return external_L_default.a.geoJSON({
@@ -80991,7 +82656,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
             object.style = settings[i].style;
             styleGroups.push(object);
         }
-        var unique = new UniqueThemeLayer_UniqueThemeLayer(title, {
+        var unique = new UniqueThemeLayer(title, {
             opacity: opacity,
             visibility: isVisible
         });
@@ -81036,7 +82701,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
             object.style = settings[i].style;
             styleGroups.push(object);
         }
-        var range = new RangeThemeLayer_RangeThemeLayer(title, {
+        var range = new RangeThemeLayer(title, {
             visibility: isVisible,
             opacity: opacity
         });
@@ -81073,7 +82738,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
             layerStyle.fontFamily = themeSettings.labelFont;
         }
 
-        var label = new LabelThemeLayer_LabelThemeLayer(title, {
+        var label = new LabelThemeLayer(title, {
             visibility: isVisible,
             opacity: 0.7
         });
@@ -81192,7 +82857,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
                 subLayer = subLayers;
             }
             layerName = subLayer && subLayer.name;
-            this.getFeaturesBySQL(layerInfo.url, dataSourceName, layerName, themeSettings.filter, REST_DataFormat.ISERVER, (getFeaturesEventArgs) => {
+            this.getFeaturesBySQL(layerInfo.url, dataSourceName, layerName, themeSettings.filter, DataFormat.ISERVER, (getFeaturesEventArgs) => {
                 var features, feature, result = getFeaturesEventArgs.result,
                     addedFeatures = [];
                 if (result && result.features) {
@@ -81222,7 +82887,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
             }
             layerName = subLayer && subLayer.name;
             var oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
-            this.getFeaturesBySQL(url, credential, layerName, filter, REST_DataFormat.ISERVER, function (features) {
+            this.getFeaturesBySQL(url, credential, layerName, filter, DataFormat.ISERVER, function (features) {
                 var newEpsgCode = '4326';
                 if (needTransform) {
                     me.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, features, function (features) {
@@ -81235,7 +82900,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
         }
 
         function addFeatures(features) {
-            if (layer && layer.labelLayer instanceof LabelThemeLayer_LabelThemeLayer) {
+            if (layer && layer.labelLayer instanceof LabelThemeLayer) {
                 me.addFeature2LabelLayer(layer.labelLayer, features, layerInfo);
             }
             if (external_L_default.a.HeatLayer && layer instanceof external_L_default.a.HeatLayer) {
@@ -81277,7 +82942,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
             this.setLabelOffset(themeSettings.vectorType, styleInfo, features[i], style);
             feature = features[i];
             var attributes = feature.attributes;
-            geoTextFeature = new ThemeFeature_ThemeFeature([lngLat.lat, lngLat.lng, attributes[themeField]], attributes);
+            geoTextFeature = new ThemeFeature([lngLat.lat, lngLat.lng, attributes[themeField]], attributes);
             labelFeatures.push(geoTextFeature);
         }
         layer.style = style;
@@ -81478,10 +83143,10 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
         var url = this.server + "/apps/viewer/coordconvert.json";
         postData = JSON.stringify(postData);
         var options = {};
-        if (!Util_Util.isInTheSameDomain(url) && this.proxy) {
+        if (!Util.isInTheSameDomain(url) && this.proxy) {
             options.proxy = this.proxy;
         }
-        FetchRequest_FetchRequest.post(url, postData, options).then((response) => {
+        FetchRequest.post(url, postData, options).then((response) => {
             return response.json()
         }).then((jsonObj) => {
             var newCoors = jsonObj;
@@ -81543,7 +83208,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
             var geometry = new Point_Point(lon, lat);
             var pointGraphic;
             if (isGraphic) {
-                pointGraphic = new Graphic_Graphic(geometry, attrArr[i], null);
+                pointGraphic = new Graphic(geometry, attrArr[i], null);
             } else {
                 pointGraphic = new Vector_Vector(geometry, attrArr[i], null);
             }
@@ -81574,7 +83239,7 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
     },
     getFeatureFromFileAdded: function (layerInfo, success, failed, isGraphic) {
         var url = isGraphic ? layerInfo.url + '?currentPage=1&&pageSize=9999999' : layerInfo.url;
-        FetchRequest_FetchRequest.get(url).then(response => response.json()).then(data => {
+        FetchRequest.get(url).then(response => response.json()).then(data => {
             success && success(data);
         }).catch(err => failed && failed(err));
     },
@@ -81666,11 +83331,11 @@ var WebMap_WebMap = external_L_default.a.LayerGroup.extend({
         "EPSG:910112": "BDMERCATOR"
     }
 });
-var WebMap_webMap = function (id, options) {
-    return new WebMap_WebMap(id, options);
+var webMap = function (id, options) {
+    return new WebMap(id, options);
 };
 
-external_L_default.a.supermap.webmap = WebMap_webMap;
+external_L_default.a.supermap.webmap = webMap;
 // CONCATENATED MODULE: ./src/leaflet/mapping/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -81721,7 +83386,7 @@ external_L_default.a.supermap.webmap = WebMap_webMap;
  * @fires L.supermap.dataFlowService#messageSucceeded
  * @fires L.supermap.dataFlowService#setFilterParamSucceeded
  */
-var services_DataFlowService_DataFlowService = ServiceBase_ServiceBase.extend({
+var services_DataFlowService_DataFlowService = ServiceBase.extend({
 
     options: {
         geometry: null,
@@ -81735,7 +83400,7 @@ var services_DataFlowService_DataFlowService = ServiceBase_ServiceBase.extend({
         if (options.projection) {
             this.options.prjCoordSys = options.projection;
         }
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
         this.dataFlow = new DataFlowService_DataFlowService(url, options);
         /**
          * @event L.supermap.dataFlowService#broadcastSocketConnected
@@ -81853,13 +83518,13 @@ var services_DataFlowService_DataFlowService = ServiceBase_ServiceBase.extend({
     }
 });
 
-var DataFlowService_dataFlowService = function (url, options) {
+var dataFlowService = function (url, options) {
     return new services_DataFlowService_DataFlowService(url, options);
 };
 
-external_L_default.a.supermap.dataFlowService = DataFlowService_dataFlowService;
+external_L_default.a.supermap.dataFlowService = dataFlowService;
 // EXTERNAL MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
-var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(5);
+var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(6);
 
 // CONCATENATED MODULE: ./src/leaflet/overlay/mapv/MapVRenderer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -81868,7 +83533,8 @@ var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(5);
 
 
 
-var MapVRenderer_BaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
+
+var BaseLayer = external_function_try_return_mapv_catch_e_return_["baiduMapLayer"] ? external_function_try_return_mapv_catch_e_return_["baiduMapLayer"].__proto__ : Function;
 
 /**
  * @class L.supermap.MapVRenderer
@@ -81881,11 +83547,11 @@ var MapVRenderer_BaseLayer = external_function_try_return_mapv_catch_e_return_["
  * @param {DataSet} dataSet - 待渲染的数据集。
  * @param {Object} options - 渲染的参数。
  */
-class MapVRenderer_MapVRenderer extends MapVRenderer_BaseLayer {
+class MapVRenderer_MapVRenderer extends BaseLayer {
 
     constructor(map, layer, dataSet, options) {
         super(map, dataSet, options);
-        if (!MapVRenderer_BaseLayer) {
+        if (!BaseLayer) {
             return;
         }
 
@@ -82110,6 +83776,8 @@ class MapVRenderer_MapVRenderer extends MapVRenderer_BaseLayer {
 
         var resolutionX = dw / mapCanvas.x,
             resolutionY = dh / mapCanvas.y;
+        // 一个像素是多少米
+        var zoomUnit = Util_getMeterPerMapUnit('DEGREE') * resolutionX;
         //var centerPx = map.latLngToLayerPoint(map.getCenter());
 
         //获取屏幕左上角的地理坐标坐标
@@ -82148,13 +83816,29 @@ class MapVRenderer_MapVRenderer extends MapVRenderer_BaseLayer {
 
         this.processData(data);
 
-        self.options._size = self.options.size;
-
         var worldPoint = map.latLngToContainerPoint(external_L_default.a.latLng(0, 0));
         var pixel = {
             x: worldPoint.x - topLeftPX.x,
             y: worldPoint.y - topLeftPX.y
         };
+
+        // 兼容unit为'm'的情况
+        if (self.options.unit === 'm') {
+            if (self.options.size) {
+                self.options._size = self.options.size / zoomUnit;
+            }
+            if (self.options.width) {
+                self.options._width = self.options.width / zoomUnit;
+            }
+            if (self.options.height) {
+                self.options._height = self.options.height / zoomUnit;
+            }
+        } else {
+            self.options._size = self.options.size;
+            self.options._height = self.options.height;
+            self.options._width = self.options.width;
+        }
+
         this.drawContext(context, data, self.options, pixel);
 
         self.options.updateCallback && self.options.updateCallback(time);
@@ -82254,7 +83938,7 @@ class MapVRenderer_MapVRenderer extends MapVRenderer_BaseLayer {
  * @param {string} [options.attribution='© 2018 百度 MapV'] - 版权信息。
  * @fires L.supermap.mapVLayer#loaded
  */
-var MapVLayer_MapVLayer = external_L_default.a.Layer.extend({
+var MapVLayer = external_L_default.a.Layer.extend({
 
     options: {
         attributionPrefix: null,
@@ -82480,11 +84164,11 @@ var MapVLayer_MapVLayer = external_L_default.a.Layer.extend({
 
 });
 
-var MapVLayer_mapVLayer = function (dataSet, mapVOptions, options) {
-    return new MapVLayer_MapVLayer(dataSet, mapVOptions, options);
+var mapVLayer = function (dataSet, mapVOptions, options) {
+    return new MapVLayer(dataSet, mapVOptions, options);
 };
 
-external_L_default.a.supermap.mapVLayer = MapVLayer_mapVLayer;
+external_L_default.a.supermap.mapVLayer = mapVLayer;
 // CONCATENATED MODULE: ./src/leaflet/overlay/dataflow/MapvRenderer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -82506,7 +84190,7 @@ external_L_default.a.supermap.mapVLayer = MapVLayer_mapVLayer;
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
  */
-var MapvRenderer_MapvRenderer = MapVLayer_MapVLayer.extend({
+var MapvRenderer = MapVLayer.extend({
 
     initialize: function (url, options) {
         options = options || {};
@@ -82515,7 +84199,7 @@ var MapvRenderer_MapvRenderer = MapVLayer_MapVLayer.extend({
         this.mapVOptions = {
             draw: 'simple'
         };
-        MapVLayer_MapVLayer.prototype.initialize.call(this, new window.mapv.DataSet([]), this.mapVOptions, options)
+        MapVLayer.prototype.initialize.call(this, new window.mapv.DataSet([]), this.mapVOptions, options)
         this.idCache = {};
         this.url = url;
         this._last = new Date();
@@ -82635,7 +84319,7 @@ var MapvRenderer_MapvRenderer = MapVLayer_MapVLayer.extend({
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
  */
-var NormalRenderer_NormalRenderer = external_L_default.a.GeoJSON.extend({
+var NormalRenderer = external_L_default.a.GeoJSON.extend({
 
     initialize: function (url, options) {
         options = options || {};
@@ -82742,7 +84426,7 @@ var NormalRenderer_NormalRenderer = external_L_default.a.GeoJSON.extend({
  * @fires L.supermap.dataFlowLayer#dataupdated
  */
 
-var DataFlowLayer_DataFlowLayer = external_L_default.a.LayerGroup.extend({
+var DataFlowLayer = external_L_default.a.LayerGroup.extend({
 
   options: {
     geometry: null,
@@ -82794,9 +84478,9 @@ var DataFlowLayer_DataFlowLayer = external_L_default.a.LayerGroup.extend({
      */
     this.dataService.on('setFilterParamSucceeded', (msg) => this.fire("setfilterparamsucceeded", msg));
     if (this.options.render === 'mapv') {
-      this.addLayer(new MapvRenderer_MapvRenderer(this.url, this.options));
+      this.addLayer(new MapvRenderer(this.url, this.options));
     } else {
-      this.addLayer(new NormalRenderer_NormalRenderer(this.url, this.options));
+      this.addLayer(new NormalRenderer(this.url, this.options));
     }
     external_L_default.a.LayerGroup.prototype.onAdd.call(this, map);
   },
@@ -82852,7 +84536,7 @@ var DataFlowLayer_DataFlowLayer = external_L_default.a.LayerGroup.extend({
 
 });
 var DataFlowLayer_dataFlowLayer = function (url, options) {
-  return new DataFlowLayer_DataFlowLayer(url, options);
+  return new DataFlowLayer(url, options);
 };
 
 external_L_default.a.supermap.dataFlowLayer = DataFlowLayer_dataFlowLayer;
@@ -82875,7 +84559,7 @@ external_L_default.a.supermap.dataFlowLayer = DataFlowLayer_dataFlowLayer;
  * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
  * @param {string} [options.attribution='© 2018 百度 ECharts'] - 版权信息。
  */
-const EChartsLayer_EchartsLayer = external_L_default.a.Layer.extend({
+const EchartsLayer = external_L_default.a.Layer.extend({
 
     includes: [],
     _echartsContainer: null,
@@ -82944,7 +84628,7 @@ const EChartsLayer_EchartsLayer = external_L_default.a.Layer.extend({
         }, function (payload ) { // eslint-disable-line no-unused-vars
         });
         external_function_try_return_echarts_catch_e_return_default.a.registerCoordinateSystem(
-            'leaflet', EChartsLayer_LeafletMapCoordSys
+            'leaflet', LeafletMapCoordSys
         );
         external_function_try_return_echarts_catch_e_return_default.a.extendComponentModel({
             type: 'LeafletMap',
@@ -83089,23 +84773,23 @@ const EChartsLayer_EchartsLayer = external_L_default.a.Layer.extend({
  * @classdesc 地图坐标系统类。
  * @param {L.Map} leafletMap - 地图。
  */
-function EChartsLayer_LeafletMapCoordSys(leafletMap) {
+function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;
     this.dimensions = ['lng', 'lat'];
     this._mapOffset = [0, 0];
 }
 
-EChartsLayer_LeafletMapCoordSys.prototype.dimensions = ['lng', 'lat'];
+LeafletMapCoordSys.prototype.dimensions = ['lng', 'lat'];
 
-EChartsLayer_LeafletMapCoordSys.prototype.setMapOffset = function (mapOffset) {
+LeafletMapCoordSys.prototype.setMapOffset = function (mapOffset) {
     this._mapOffset = mapOffset
 };
 
-EChartsLayer_LeafletMapCoordSys.prototype.getBMap = function () {
+LeafletMapCoordSys.prototype.getBMap = function () {
     return this._LeafletMap
 };
 
-EChartsLayer_LeafletMapCoordSys.prototype.prepareCustoms = function () {
+LeafletMapCoordSys.prototype.prepareCustoms = function () {
     const zrUtil = external_function_try_return_echarts_catch_e_return_default.a.util;
 
     const rect = this.getViewRect();
@@ -83139,7 +84823,7 @@ EChartsLayer_LeafletMapCoordSys.prototype.prepareCustoms = function () {
     }
 };
 
-EChartsLayer_LeafletMapCoordSys.prototype.dataToPoint = function (data) {
+LeafletMapCoordSys.prototype.dataToPoint = function (data) {
     //处理数据中的null值
     if (data[1] === null) {
         data[1] = external_L_default.a.CRS.EPSG3857.projection.MAX_LATITUDE;
@@ -83153,7 +84837,7 @@ EChartsLayer_LeafletMapCoordSys.prototype.dataToPoint = function (data) {
     return [px.x - mapOffset[0], px.y - mapOffset[1]];
 };
 
-EChartsLayer_LeafletMapCoordSys.prototype.fixLat = function (lat) {
+LeafletMapCoordSys.prototype.fixLat = function (lat) {
     if (lat >= 90) {
         return 89.99999999999999;
     }
@@ -83163,28 +84847,28 @@ EChartsLayer_LeafletMapCoordSys.prototype.fixLat = function (lat) {
     return lat;
 };
 
-EChartsLayer_LeafletMapCoordSys.prototype.pointToData = function (pt) {
+LeafletMapCoordSys.prototype.pointToData = function (pt) {
     let mapOffset = this._mapOffset;
     let point = this._LeafletMap.layerPointToLatLng([pt[0] + mapOffset[0], pt[1] + mapOffset[1]]);
     return [point.lng, point.lat];
 };
 
-EChartsLayer_LeafletMapCoordSys.prototype.getViewRect = function () {
+LeafletMapCoordSys.prototype.getViewRect = function () {
     const size = this._LeafletMap.getSize();
     return new external_function_try_return_echarts_catch_e_return_default.a.graphic.BoundingRect(0, 0, size.x, size.y);
 };
 
-EChartsLayer_LeafletMapCoordSys.prototype.getRoamTransform = function () {
+LeafletMapCoordSys.prototype.getRoamTransform = function () {
     return external_function_try_return_echarts_catch_e_return_default.a.matrix.create();
 };
-EChartsLayer_LeafletMapCoordSys.dimensions = EChartsLayer_LeafletMapCoordSys.prototype.dimensions;
+LeafletMapCoordSys.dimensions = LeafletMapCoordSys.prototype.dimensions;
 
-EChartsLayer_LeafletMapCoordSys.create = function (ecModel) {
+LeafletMapCoordSys.create = function (ecModel) {
     let coordSys;
     let leafletMap = ecModel.scheduler.ecInstance.leafletMap;
     ecModel.eachComponent('LeafletMap', function (leafletMapModel) {
         if (!coordSys) {
-            coordSys = new EChartsLayer_LeafletMapCoordSys(leafletMap);
+            coordSys = new LeafletMapCoordSys(leafletMap);
         }
         leafletMapModel.coordinateSystem = coordSys;
         leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || [0, 0]);
@@ -83192,18 +84876,18 @@ EChartsLayer_LeafletMapCoordSys.create = function (ecModel) {
     ecModel.eachSeries(function (seriesModel) {
         if (!seriesModel.get('coordinateSystem') || seriesModel.get('coordinateSystem') === 'leaflet') {
             if (!coordSys) {
-                coordSys = new EChartsLayer_LeafletMapCoordSys(leafletMap);
+                coordSys = new LeafletMapCoordSys(leafletMap);
             }
             seriesModel.coordinateSystem = coordSys;
             seriesModel.animation = seriesModel.animation === true;
         }
     })
 };
-const EChartsLayer_echartsLayer = function (echartsOptions, options) {
-    return new EChartsLayer_EchartsLayer(echartsOptions, options);
+const echartsLayer = function (echartsOptions, options) {
+    return new EchartsLayer(echartsOptions, options);
 };
 
-external_L_default.a.supermap.echartsLayer = EChartsLayer_echartsLayer;
+external_L_default.a.supermap.echartsLayer = echartsLayer;
 // CONCATENATED MODULE: ./src/leaflet/core/Detector.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -83258,7 +84942,7 @@ function getContext(context) {
  * @param {string} [options.fillRule='evenodd'] - 填充形状。
  * @param {number} [options.radius=10] - 半径。
  */
-var CloverStyle_CloverStyle = external_L_default.a.Class.extend({
+var CloverStyle = external_L_default.a.Class.extend({
 
     options: {
         radius: 10,
@@ -83358,11 +85042,11 @@ var CloverStyle_CloverStyle = external_L_default.a.Class.extend({
     }
 });
 
-var CloverStyle_cloverStyle = function (options) {
-    return new CloverStyle_CloverStyle(options);
+var cloverStyle = function (options) {
+    return new CloverStyle(options);
 };
 
-external_L_default.a.supermap.cloverStyle = CloverStyle_cloverStyle;
+external_L_default.a.supermap.cloverStyle = cloverStyle;
 // CONCATENATED MODULE: ./src/leaflet/overlay/graphic/CircleStyle.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -83388,7 +85072,7 @@ external_L_default.a.supermap.cloverStyle = CloverStyle_cloverStyle;
  * @param {string} [options.fillRule='evenodd'] - 填充形状。
  * @param {number} [options.radius=3] - 半径。
  */
-var CircleStyle_CircleStyle = external_L_default.a.Class.extend({
+var CircleStyle = external_L_default.a.Class.extend({
 
     options: {
         stroke: true,
@@ -83456,11 +85140,11 @@ var CircleStyle_CircleStyle = external_L_default.a.Class.extend({
 
 });
 
-var CircleStyle_circleStyle = function (options) {
-    return new CircleStyle_CircleStyle(options);
+var circleStyle = function (options) {
+    return new CircleStyle(options);
 };
 
-external_L_default.a.supermap.circleStyle = CircleStyle_circleStyle;
+external_L_default.a.supermap.circleStyle = circleStyle;
 // CONCATENATED MODULE: ./src/leaflet/overlay/graphic/ImageStyle.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -83471,7 +85155,7 @@ external_L_default.a.supermap.circleStyle = CircleStyle_circleStyle;
 /**
  * @class L.supermap.imageStyle
  * @classdesc 自定义图形要素风格。
- * @category Graphic
+ * @category Visualization Graphic
  * @extends {L.Class}
  * @param {Object} options - 图形要素风格参数。
  * @param {HTMLImageElement} options.img - image 对象。
@@ -83481,7 +85165,7 @@ external_L_default.a.supermap.circleStyle = CircleStyle_circleStyle;
  * @param {Array} [options.radius] - 半径。
  * @param {Array} [options.weight] - 宽度。
  */
-var ImageStyle_ImageStyle = external_L_default.a.Class.extend({
+var ImageStyle = external_L_default.a.Class.extend({
 
     options: {
         img: null,
@@ -83509,20 +85193,20 @@ var ImageStyle_ImageStyle = external_L_default.a.Class.extend({
 
 });
 
-var ImageStyle_imageStyle = function (options) {
-    return new ImageStyle_ImageStyle(options);
+var imageStyle = function (options) {
+    return new ImageStyle(options);
 };
 
-external_L_default.a.supermap.imageStyle = ImageStyle_imageStyle;
+external_L_default.a.supermap.imageStyle = imageStyle;
 // CONCATENATED MODULE: ./src/leaflet/overlay/graphic/CanvasRenderer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-const CanvasRenderer_emptyFunc = external_L_default.a.Util.falseFn;
-var CanvasRenderer_GraphicCanvasRenderer = external_L_default.a.Class.extend({
-    initialize: function (layer, options) {
+const emptyFunc = external_L_default.a.Util.falseFn;
+var GraphicCanvasRenderer = external_L_default.a.Class.extend({
+    initialize: function(layer, options) {
         this.layer = layer;
         options = options || {};
         external_L_default.a.Util.setOptions(this, options);
@@ -83534,7 +85218,7 @@ var CanvasRenderer_GraphicCanvasRenderer = external_L_default.a.Class.extend({
      * @description 返回渲染器给图层，提供图层后续的数据增删改。
      * @returns {L.Canvas}
      */
-    getRenderer: function () {
+    getRenderer: function() {
         return this.options.renderer;
     },
 
@@ -83543,69 +85227,79 @@ var CanvasRenderer_GraphicCanvasRenderer = external_L_default.a.Class.extend({
      * @function  GraphicCanvasRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
-    update: function () {
+    update: function() {
         this.getRenderer()._clear();
         this.getRenderer()._draw();
     },
 
-    _handleClick: function (evt) {
+    _handleClick: function(evt) {
         let me = this,
             layer = me.layer,
             map = layer._map;
-        if (!layer.options.onClick) {
-            return;
-        }
-        this.layer._renderer._ctx.canvas.style.cursor = "pointer";
+
         let graphics = layer._getGraphicsInBounds();
-        for (let i = 0; i < graphics.length; i++) {
+        evt.target = null;
+        for (let i = graphics.length - 1; i >= 0; i--) {
             let p1, p2, bounds;
-            let center = map.latLngToLayerPoint(graphics[i].getLatLng());
+            const center = map.latLngToLayerPoint(graphics[i].getLatLng());
             let style = graphics[i].getStyle();
             if (!style && this.defaultStyle) {
                 style = this.defaultStyle;
             }
             if (style.img) {
-                let anchor = style.anchor || [style.img.width / 2, style.img.height / 2];
+                let imgWidth = style.img.width;
+                let imgHeight = style.img.height;
+                if (style.size && style.size[0] && style.size[1]) {
+                    imgWidth = style.size[0];
+                    imgHeight = style.size[1];
+                }
+                const anchor = style.anchor || [imgWidth / 2, imgHeight / 2];
                 p1 = external_L_default.a.point(center.x - anchor[0], center.y - anchor[1]);
-                p2 = external_L_default.a.point(p1.x + style.img.width, p1.y + style.img.height);
+                p2 = external_L_default.a.point(p1.x + imgWidth, p1.y + imgHeight);
             } else {
                 p1 = external_L_default.a.point(center.x - style.width / 2, center.y - style.height / 2);
                 p2 = external_L_default.a.point(center.x + style.width / 2, center.y + style.height / 2);
             }
             bounds = external_L_default.a.bounds(p1, p2);
             if (bounds.contains(map.latLngToLayerPoint(evt.latlng))) {
-                return layer.options.onClick.call(layer, graphics[i],evt);
+                this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
+                evt.target = graphics[i];
+                if (evt.type === 'click' && layer.options.onClick) {
+                    layer.options.onClick.call(layer, graphics[i], evt);
+                }
+                return;
             }
+            this.layer._renderer._ctx.canvas.style.cursor = 'auto';
         }
     },
 
     //跟GraphicWebGLRenderer保持一致
-    _clearBuffer: CanvasRenderer_emptyFunc
+    _clearBuffer: emptyFunc
 });
 
 external_L_default.a.Canvas.include({
-
-    drawGraphics: function (graphics, defaultStyle) {
+    drawGraphics: function(graphics, defaultStyle) {
         var me = this;
         if (!me._drawing) {
             return;
         }
         //this._ctx.clearRect(0, 0, this._ctx.canvas.width, me._ctx.canvas.height);
-        graphics.forEach(function (graphic) {
+        graphics.forEach(function(graphic) {
             var style = graphic.getStyle();
             if (!style && defaultStyle) {
                 style = defaultStyle;
             }
-            if (style.img) { //绘制图片
+            if (style.img) {
+                //绘制图片
                 me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
-            } else { //绘制canvas
+            } else {
+                //绘制canvas
                 me._drawCanvas.call(me, me._ctx, style, graphic.getLatLng());
             }
-        })
+        });
     },
 
-    _drawCanvas: function (ctx, style, latLng) {
-
+    _drawCanvas: function(ctx, style, latLng) {
         var canvas = style;
         var pt = this._map.latLngToLayerPoint(latLng);
         var p0 = pt.x - canvas.width / 2;
@@ -83616,7 +85310,7 @@ external_L_default.a.Canvas.include({
         ctx.drawImage(canvas, p0, p1, width, height);
     },
 
-    _drawImage: function (ctx, style, latLng) {
+    _drawImage: function(ctx, style, latLng) {
         //设置图片的大小
         var width, height;
         if (style.size) {
@@ -83639,7 +85333,7 @@ external_L_default.a.Canvas.include({
         ctx.drawImage(style.img, point[0], point[1], width, height);
     },
 
-    _coordinateToPoint: function (coordinate) {
+    _coordinateToPoint: function(coordinate) {
         if (!this._map) {
             return coordinate;
         }
@@ -83652,8 +85346,8 @@ external_L_default.a.Canvas.include({
         var point = this._map.latLngToLayerPoint(latLng);
         return [point.x, point.y];
     }
-
 });
+
 // CONCATENATED MODULE: ./src/leaflet/overlay/graphic/WebGLRenderer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -83685,7 +85379,7 @@ const WebGLRenderer_emptyFunc = external_L_default.a.Util.falseFn;
  * @param {Function} [options.onHover] - 悬停事件。
 
  */
-const WebGLRenderer_CSS_TRANSFORM = (function () {
+const CSS_TRANSFORM = (function () {
     let div = document.createElement('div');
     let props = [
         'transform',
@@ -83703,7 +85397,7 @@ const WebGLRenderer_CSS_TRANSFORM = (function () {
     }
     return props[0];
 })();
-var WebGLRenderer_GraphicWebGLRenderer = external_L_default.a.Class.extend({
+var GraphicWebGLRenderer = external_L_default.a.Class.extend({
     initialize: function (layer, options) {
         this.layer = layer;
         let opt = options || {};
@@ -83764,7 +85458,7 @@ var WebGLRenderer_GraphicWebGLRenderer = external_L_default.a.Class.extend({
         let mapPane = this.layer._map.getPanes().mapPane;
         let point = mapPane._leaflet_pos;
 
-        this._container.style[WebGLRenderer_CSS_TRANSFORM] = 'translate(' +
+        this._container.style[CSS_TRANSFORM] = 'translate(' +
             -Math.round(point.x) + 'px,' +
             -Math.round(point.y) + 'px)';
 
@@ -83993,9 +85687,9 @@ var WebGLRenderer_GraphicWebGLRenderer = external_L_default.a.Class.extend({
 
 
 
-const GraphicLayer_Renderer = ["canvas", "webgl"];
+const Renderer = ['canvas', 'webgl'];
 
-const GraphicLayer_defaultProps = {
+const defaultProps = {
     color: [0, 0, 0, 255],
     opacity: 0.8,
     radius: 10,
@@ -84005,6 +85699,7 @@ const GraphicLayer_defaultProps = {
     strokeWidth: 1,
     outline: false
 };
+
 /**
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
@@ -84025,20 +85720,20 @@ const GraphicLayer_defaultProps = {
  * @param {Function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
  * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  */
-var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
-
-    initialize: function (graphics, options) {
+var GraphicLayer = external_L_default.a.Path.extend({
+    initialize: function(graphics, options) {
         this.graphics = [].concat(graphics);
         let opt = options || {};
         // 由于是canvas实现所以不能更改pane
         opt.pane = 'overlayPane';
         external_L_default.a.Util.setOptions(this, opt);
         //因为跟基类的renderer冲突，所以采用render这个名字
-        this.options.render = this.options.render || GraphicLayer_Renderer[0];
+        this.options.render = this.options.render || Renderer[0];
         //浏览器支持webgl并且指定使用webgl渲染才使用webgl渲染
         if (!Detector.supportWebGL2()) {
-            this.options.render = GraphicLayer_Renderer[0];
+            this.options.render = Renderer[0];
         }
+        this.on('click mousemove dblclick mousedown mouseup mouseout contextmenu', this._handleClick, this);
     },
 
     /**
@@ -84047,12 +85742,12 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @description 获取事件。
      * @returns {Object} 返回该图层支持的事件对象。
      */
-    getEvents: function () {
-        return {
-            click: this._handleClick.bind(this),
+    getEvents: function() {
+        const events = {
             resize: this._resize.bind(this),
             moveend: this._moveEnd.bind(this)
         };
+        return events;
     },
 
     /**
@@ -84060,13 +85755,13 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.onAdd
      * @description 添加图形。
      */
-    onAdd: function (map) {
+    onAdd: function(map) {
         this._map = map;
         this.defaultStyle = this._getDefaultStyle(this.options);
         this._renderer = this._createRenderer();
         this._container = this._renderer._container;
+        this.addInteractiveTarget(this._container);
         external_L_default.a.Path.prototype.onAdd.call(this);
-
     },
 
     /**
@@ -84075,7 +85770,8 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.onRemove
      * @description 移除图层。
      */
-    onRemove: function () {
+    onRemove: function() {
+        this.off('click mousemove dblclick mousedown mouseup contextmenu', this._handleClick, this);
         this._renderer._removePath(this);
     },
 
@@ -84084,7 +85780,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
      * @param {Array.<L.supermap.graphic>} graphics - 点要素对象数组。
      */
-    setGraphics: function (graphics) {
+    setGraphics: function(graphics) {
         this.graphics = this.graphics || [];
         this.graphics.length = 0;
         let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
@@ -84097,7 +85793,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @description 追加点要素，不会覆盖之前的要素。
      * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组。
      */
-    addGraphics: function (graphics) {
+    addGraphics: function(graphics) {
         this.graphics = this.graphics || [];
         let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         this.graphics = this.graphics.concat(sGraphics);
@@ -84129,7 +85825,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
-        return this.getGraphicBy("id", graphicId);
+        return this.getGraphicBy('id', graphicId);
     },
 
     /**
@@ -84165,7 +85861,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
             this.update();
             return;
         }
-        if (!(Util_Util.isArray(graphics))) {
+        if (!Util.isArray(graphics)) {
             graphics = [graphics];
         }
 
@@ -84174,7 +85870,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
 
             //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            let findex = Util_Util.indexOf(this.graphics, graphic);
+            let findex = Util.indexOf(this.graphics, graphic);
 
             if (findex === -1) {
                 continue;
@@ -84200,7 +85896,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
      * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
-    setStyle: function (styleOptions) {
+    setStyle: function(styleOptions) {
         let _opt = this.options;
         let styleOpt = {
             color: _opt.color,
@@ -84222,7 +85918,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.update
      * @description 更新图层，数据或者样式改变后调用。
      */
-    update: function () {
+    update: function() {
         this._layerRenderer.update(this.graphics);
     },
 
@@ -84230,7 +85926,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @function L.supermap.graphicLayer.prototype.clear
      * @description 释放图层资源。
      */
-    clear: function () {
+    clear: function() {
         this.removeGraphics();
     },
 
@@ -84239,7 +85935,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @description 获取渲染器。
      * @returns {Object} 内部渲染器。
      */
-    getRenderer: function () {
+    getRenderer: function() {
         return this._renderer;
     },
 
@@ -84248,7 +85944,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @description 获取当前地图及图层状态。
      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
-    getState: function () {
+    getState: function() {
         let map = this._map;
         let width = map.getSize().x;
         let height = map.getSize().y;
@@ -84286,45 +85982,48 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
         return state;
     },
 
-    _resize: function () {
+    _resize: function() {
         let size = this._map.getSize();
         this._container.width = size.x;
         this._container.height = size.y;
-        this._container.style.width = size.x + "px";
-        this._container.style.height = size.y + "px";
+        this._container.style.width = size.x + 'px';
+        this._container.style.height = size.y + 'px';
 
         let mapOffset = this._map.containerPointToLayerPoint([0, 0]);
         external_L_default.a.DomUtil.setPosition(this._container, mapOffset);
         this._update();
     },
-    _moveEnd: function () {
-        if (this._layerRenderer instanceof WebGLRenderer_GraphicWebGLRenderer) {
+    _moveEnd: function() {
+        if (this._layerRenderer instanceof GraphicWebGLRenderer) {
             this._update();
         }
     },
     //使用canvas渲染或webgl渲染
-    _createRenderer: function () {
+    _createRenderer: function() {
         let map = this._map;
         let width = map.getSize().x;
         let height = map.getSize().y;
         let _renderer;
-        if (this.options.render === GraphicLayer_Renderer[0]) {
-            _renderer = new CanvasRenderer_GraphicCanvasRenderer(this, {
+        if (this.options.render === Renderer[0]) {
+            _renderer = new GraphicCanvasRenderer(this, {
                 width: width,
                 height: height,
                 renderer: map.getRenderer(this)
             });
         } else {
-            let optDefault = external_L_default.a.Util.setOptions({}, GraphicLayer_defaultProps);
-            let opt = external_L_default.a.Util.setOptions({
-                options: optDefault
-            }, this.options);
+            let optDefault = external_L_default.a.Util.setOptions({}, defaultProps);
+            let opt = external_L_default.a.Util.setOptions(
+                {
+                    options: optDefault
+                },
+                this.options
+            );
             opt = external_L_default.a.Util.setOptions(this, opt);
-            opt.container = map.getPane("overlayPane");
+            opt.container = map.getPane('overlayPane');
             opt.width = width;
             opt.height = height;
 
-            _renderer = new WebGLRenderer_GraphicWebGLRenderer(this, opt);
+            _renderer = new GraphicWebGLRenderer(this, opt);
         }
         _renderer.defaultStyle = this.defaultStyle;
         this._layerRenderer = _renderer;
@@ -84335,7 +86034,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @private
      * @override
      */
-    _update: function () {
+    _update: function() {
         if (this._map) {
             this._updatePath();
         }
@@ -84345,7 +86044,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @private
      * @override
      */
-    _updatePath: function () {
+    _updatePath: function() {
         let graphics = this._getGraphicsInBounds();
         this._renderer.drawGraphics(graphics, this.defaultStyle);
     },
@@ -84354,9 +86053,9 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @private
      * @override
      */
-    _project: function () {
+    _project: function() {
         let me = this;
-        me._getGraphicsInBounds().map(function (graphic) {
+        me._getGraphicsInBounds().map(function(graphic) {
             let point = me._map.latLngToLayerPoint(graphic.getLatLng());
             let w = me._clickTolerance();
             let p = [graphic._anchor + w, graphic._anchor + w];
@@ -84365,7 +86064,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
         });
         me._pxBounds = external_L_default.a.bounds(external_L_default.a.point(0, 0), external_L_default.a.point(this._container.width, this._container.height));
     },
-    _getDefaultStyle: function (options) {
+    _getDefaultStyle: function(options) {
         const target = {};
         if (options.color) {
             target.fill = true;
@@ -84386,17 +86085,16 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
         if (options.outline) {
             target.stroke = options.outline;
         }
-        return new CircleStyle_CircleStyle(target).getStyle();
-
+        return new CircleStyle(target).getStyle();
     },
     toRGBA(colorArray) {
         return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
     },
-    _getGraphicsInBounds: function () {
+    _getGraphicsInBounds: function() {
         let me = this;
         let graphicsInBounds = [];
         let viewBounds = me._map.getBounds();
-        this.graphics.map(function (graphic) {
+        this.graphics.map(function(graphic) {
             if (viewBounds.contains(graphic.getLatLng())) {
                 graphicsInBounds.push(graphic);
             }
@@ -84405,8 +86103,7 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
         return graphicsInBounds;
     },
 
-
-    _handleClick: function (evt) {
+    _handleClick: function(evt) {
         this._layerRenderer._handleClick(evt);
     },
     /**
@@ -84420,14 +86117,14 @@ var GraphicLayer_GraphicLayer = external_L_default.a.Path.extend({
      * @override
      */
     _containsPoint: external_L_default.a.Util.falseFn
-
 });
 
-let GraphicLayer_graphicLayer = function (graphics, options) {
-    return new GraphicLayer_GraphicLayer(graphics, options);
+let graphicLayer = function(graphics, options) {
+    return new GraphicLayer(graphics, options);
 };
 
-external_L_default.a.supermap.graphicLayer = GraphicLayer_graphicLayer;
+external_L_default.a.supermap.graphicLayer = graphicLayer;
+
 // CONCATENATED MODULE: ./src/leaflet/overlay/GraphThemeLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -84467,7 +86164,7 @@ external_L_default.a.supermap.graphicLayer = GraphicLayer_graphicLayer;
  * @param {number} [options.chartsSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
 */
-var GraphThemeLayer_GraphThemeLayer = ThemeLayer_ThemeLayer.extend({
+var GraphThemeLayer = ThemeLayer.extend({
     
 
     options: {
@@ -84479,7 +86176,7 @@ var GraphThemeLayer_GraphThemeLayer = ThemeLayer_ThemeLayer.extend({
         var newArgs = [];
         newArgs.push(name);
         newArgs.push(options);
-        ThemeLayer_ThemeLayer.prototype.initialize.apply(this, newArgs);
+        ThemeLayer.prototype.initialize.apply(this, newArgs);
         this.chartsType = chartsType;
         this.themeFields = options && options.themeFields ? options.themeFields : null;
         this.charts = options && options.charts ? options.charts : [];
@@ -84680,7 +86377,7 @@ var GraphThemeLayer_GraphThemeLayer = ThemeLayer_ThemeLayer.extend({
                 break;
             }
             for (let j = 0; j < quad2Len - 1; j++) {
-                var isLineIn = Util_Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
+                var isLineIn = Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     OverLap = true;
                     break;
@@ -84747,7 +86444,7 @@ var GraphThemeLayer_GraphThemeLayer = ThemeLayer_ThemeLayer.extend({
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         var me = this;
         me.clearCache();
-        ThemeLayer_ThemeLayer.prototype.removeFeatures.apply(me, arguments);
+        ThemeLayer.prototype.removeFeatures.apply(me, arguments);
     },
 
     /**
@@ -84757,7 +86454,7 @@ var GraphThemeLayer_GraphThemeLayer = ThemeLayer_ThemeLayer.extend({
     removeAllFeatures: function () {
         var me = this;
         me.clearCache();
-        ThemeLayer_ThemeLayer.prototype.removeAllFeatures.apply(me, arguments);
+        ThemeLayer.prototype.removeAllFeatures.apply(me, arguments);
     },
 
     /**
@@ -84767,7 +86464,7 @@ var GraphThemeLayer_GraphThemeLayer = ThemeLayer_ThemeLayer.extend({
     redraw: function () {
         var me = this;
         me.clearCache();
-        return ThemeLayer_ThemeLayer.prototype.redraw.apply(me, arguments);
+        return ThemeLayer.prototype.redraw.apply(me, arguments);
     },
 
     /**
@@ -84905,11 +86602,11 @@ var GraphThemeLayer_GraphThemeLayer = ThemeLayer_ThemeLayer.extend({
     }
 
 });
-var GraphThemeLayer_graphThemeLayer = function (name, chartsType, options) {
-    return new GraphThemeLayer_GraphThemeLayer(name, chartsType, options);
+var graphThemeLayer = function (name, chartsType, options) {
+    return new GraphThemeLayer(name, chartsType, options);
 };
 
-external_L_default.a.supermap.graphThemeLayer = GraphThemeLayer_graphThemeLayer;
+external_L_default.a.supermap.graphThemeLayer = graphThemeLayer;
 // CONCATENATED MODULE: ./src/leaflet/overlay/RankSymbolThemeLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -84939,7 +86636,7 @@ external_L_default.a.supermap.graphThemeLayer = GraphThemeLayer_graphThemeLayer;
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。 
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  */
-var RankSymbolThemeLayer_RankSymbolThemeLayer = GraphThemeLayer_GraphThemeLayer.extend({
+var RankSymbolThemeLayer = GraphThemeLayer.extend({
 
     /** 
      * @member {Object} L.supermap.rankSymbolThemeLayer.prototype.symbolSetting
@@ -84956,7 +86653,7 @@ var RankSymbolThemeLayer_RankSymbolThemeLayer = GraphThemeLayer_GraphThemeLayer.
      */
 
     initialize: function (name, symbolType, options) { // eslint-disable-line no-unused-vars
-        GraphThemeLayer_GraphThemeLayer.prototype.initialize.apply(this, arguments);
+        GraphThemeLayer.prototype.initialize.apply(this, arguments);
         this.symbolType = symbolType;
         this.symbolSetting = {};
     },
@@ -85000,11 +86697,11 @@ var RankSymbolThemeLayer_RankSymbolThemeLayer = GraphThemeLayer_GraphThemeLayer.
 
 });
 
-var RankSymbolThemeLayer_rankSymbolThemeLayer = function (name, symbolType, options) {
-    return new RankSymbolThemeLayer_RankSymbolThemeLayer(name, symbolType, options);
+var rankSymbolThemeLayer = function (name, symbolType, options) {
+    return new RankSymbolThemeLayer(name, symbolType, options);
 };
 
-external_L_default.a.supermap.rankSymbolThemeLayer = RankSymbolThemeLayer_rankSymbolThemeLayer;
+external_L_default.a.supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;
 // CONCATENATED MODULE: ./src/leaflet/overlay/vectortile/SVGRenderer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -85021,7 +86718,7 @@ external_L_default.a.supermap.rankSymbolThemeLayer = RankSymbolThemeLayer_rankSy
  * @param {number} tileSize - 切片大小。
  * @param {Object} options - 渲染参数。
  */
-var SVGRenderer_SVGRenderer = external_L_default.a.SVG.extend({
+var SVGRenderer = external_L_default.a.SVG.extend({
 
     initialize: function (tileCoord, tileSize, options) {
         external_L_default.a.SVG.prototype.initialize.call(this, options);
@@ -85142,7 +86839,7 @@ var SVGRenderer_SVGRenderer = external_L_default.a.SVG.extend({
  * @param {number} tileSize - 切片大小
  * @param {Object} options - 渲染器参数
  */
-var CanvasRenderer_CanvasRenderer = external_L_default.a.Canvas.extend({
+var CanvasRenderer = external_L_default.a.Canvas.extend({
 
     initialize: function (tileCoord, tileSize, options) {
         external_L_default.a.Canvas.prototype.initialize.call(this, options);
@@ -85301,7 +86998,7 @@ var VectorFeatureType = {
  * @extends {L.Class}
  * @param {Object} feature — 要素。
  */
-var Symbolizer_Symbolizer = external_L_default.a.Class.extend({
+var Symbolizer = external_L_default.a.Class.extend({
 
     initialize: function (feature) {
         this.properties = feature.properties;
@@ -85386,13 +87083,13 @@ var Symbolizer_Symbolizer = external_L_default.a.Class.extend({
  * @param {Object} feature - 要素。
  * @param {number} pxPerExtent - 文本符号大小。
  */
-var TextSymbolizer_TextSymbolizer = external_L_default.a.Path.extend({
+var TextSymbolizer = external_L_default.a.Path.extend({
 
     /**
      * @member L.supermap.TextSymbolizer.prototype.includes
      * @description 包含符号。
      */
-    includes: Symbolizer_Symbolizer.prototype,
+    includes: Symbolizer.prototype,
 
     options: {
         color: 'white',
@@ -85412,7 +87109,7 @@ var TextSymbolizer_TextSymbolizer = external_L_default.a.Path.extend({
     },
 
     initialize: function (feature, pxPerExtent) {
-        Symbolizer_Symbolizer.prototype.initialize.call(this, feature);
+        Symbolizer.prototype.initialize.call(this, feature);
         this._makeFeatureParts(feature, pxPerExtent);
         this.options.offsetX = pxPerExtent || 1;
         this.options.offsetY = pxPerExtent || 1;
@@ -85437,7 +87134,7 @@ var TextSymbolizer_TextSymbolizer = external_L_default.a.Path.extend({
         }
         var options = this.options;
         this._pxBounds = external_L_default.a.bounds(this._point, this._point);
-        Symbolizer_Symbolizer.prototype.render.apply(this, [renderer, style]);
+        Symbolizer.prototype.render.apply(this, [renderer, style]);
         this.options = external_L_default.a.Util.extend(options, style);
         this._updatePath();
     },
@@ -85470,7 +87167,7 @@ var TextSymbolizer_TextSymbolizer = external_L_default.a.Path.extend({
      */
     updateStyle: function (renderer, style) {
         this._updateBounds();
-        return Symbolizer_Symbolizer.prototype.updateStyle.call(this, renderer, style);
+        return Symbolizer.prototype.updateStyle.call(this, renderer, style);
     },
 
 
@@ -85488,7 +87185,7 @@ var TextSymbolizer_TextSymbolizer = external_L_default.a.Path.extend({
     }
 });
 
-CanvasRenderer_CanvasRenderer.include({
+CanvasRenderer.include({
     _getTextWidth: function (layer) {
         return this._ctx.measureText(layer._text).width;
     },
@@ -85529,7 +87226,7 @@ CanvasRenderer_CanvasRenderer.include({
     }
 });
 
-SVGRenderer_SVGRenderer.include({
+SVGRenderer.include({
     _getTextWidth: function (layer) {
         return layer._path.getComputedTextLength() || 0;
     },
@@ -85537,7 +87234,7 @@ SVGRenderer_SVGRenderer.include({
     _initPath: function (layer) {
         var path;
 
-        if (TextSymbolizer_TextSymbolizer && layer instanceof TextSymbolizer_TextSymbolizer) {
+        if (TextSymbolizer && layer instanceof TextSymbolizer) {
             path = layer._path = external_L_default.a.SVG.create("text");
             path.textContent = layer._text;
         } else {
@@ -85607,20 +87304,20 @@ SVGRenderer_SVGRenderer.include({
  * @param {Object} feature - 点要素。
  * @param {number} pxPerExtent - 点符号大小。
  */
-var PointSymbolizer_PointSymbolizer = external_L_default.a.CircleMarker.extend({
+var PointSymbolizer = external_L_default.a.CircleMarker.extend({
 
     /**
      * @member L.supermap.PointSymbolizer.prototype.includes
      * @description 包含符号。
      */
-    includes: Symbolizer_Symbolizer.prototype,
+    includes: Symbolizer.prototype,
 
     statics: {
         iconCache: {}
     },
 
     initialize: function (feature, pxPerExtent) {
-        Symbolizer_Symbolizer.prototype.initialize.call(this, feature);
+        Symbolizer.prototype.initialize.call(this, feature);
         this._makeFeatureParts(feature, pxPerExtent);
     },
 
@@ -85641,7 +87338,7 @@ var PointSymbolizer_PointSymbolizer = external_L_default.a.CircleMarker.extend({
      * @param {string} style - 符号样式。
      */
     render: function (renderer, style) {
-        Symbolizer_Symbolizer.prototype.render.call(this, renderer, style);
+        Symbolizer.prototype.render.call(this, renderer, style);
         this._radius = style.radius || external_L_default.a.CircleMarker.prototype.options.radius;
         this._updatePath();
     },
@@ -85675,7 +87372,7 @@ var PointSymbolizer_PointSymbolizer = external_L_default.a.CircleMarker.extend({
     updateStyle: function (renderer, style) {
         this._radius = style.radius || this._radius;
         this._updateBounds();
-        return Symbolizer_Symbolizer.prototype.updateStyle.call(this, renderer, style);
+        return Symbolizer.prototype.updateStyle.call(this, renderer, style);
     },
 
     _updateBounds: function () {
@@ -85703,10 +87400,10 @@ var PointSymbolizer_PointSymbolizer = external_L_default.a.CircleMarker.extend({
             return null;
         }
         var url = this.options.iconUrl,
-            img = PointSymbolizer_PointSymbolizer.iconCache[url];
+            img = PointSymbolizer.iconCache[url];
         if (!img) {
             var iconSize = this.options.iconSize || [50, 50];
-            img = PointSymbolizer_PointSymbolizer.iconCache[url] = this._createIcon(url, iconSize);
+            img = PointSymbolizer.iconCache[url] = this._createIcon(url, iconSize);
         }
         return img;
     },
@@ -85774,7 +87471,7 @@ var PointSymbolizer_PointSymbolizer = external_L_default.a.CircleMarker.extend({
  * @private
  */
 //@type {{_makeFeatureParts: PolyBase._makeFeatureParts, makeInteractive: PolyBase.makeInteractive}}
-var SymbolizerPolyBase_PolyBase = {
+var PolyBase = {
     _makeFeatureParts: function (feat, pxPerExtent) {
         pxPerExtent = pxPerExtent || {x: 1, y: 1};
         var rings = feat.geometry;
@@ -85817,16 +87514,16 @@ var SymbolizerPolyBase_PolyBase = {
  * @param {Object} feature - 线要素。
  * @param {number} pxPerExtent - 线长。
  */
-var LineSymbolizer_LineSymbolizer = external_L_default.a.Polyline.extend({
+var LineSymbolizer = external_L_default.a.Polyline.extend({
 
     /**
      * @member L.supermap.LineSymbolizer.prototype.includes
      * @description 包含符号。
      */
-    includes: [Symbolizer_Symbolizer.prototype, SymbolizerPolyBase_PolyBase],
+    includes: [Symbolizer.prototype, PolyBase],
 
     initialize: function (feature, pxPerExtent) {
-        Symbolizer_Symbolizer.prototype.initialize.call(this, feature);
+        Symbolizer.prototype.initialize.call(this, feature);
         this._makeFeatureParts(feature, pxPerExtent);
     },
 
@@ -85838,7 +87535,7 @@ var LineSymbolizer_LineSymbolizer = external_L_default.a.Polyline.extend({
      */
     render: function (renderer, style) {
         style.fill = false;
-        Symbolizer_Symbolizer.prototype.render.call(this, renderer, style);
+        Symbolizer.prototype.render.call(this, renderer, style);
         this._updatePath();
     },
 
@@ -85850,7 +87547,7 @@ var LineSymbolizer_LineSymbolizer = external_L_default.a.Polyline.extend({
      */
     updateStyle: function (renderer, style) {
         style.fill = false;
-        Symbolizer_Symbolizer.prototype.updateStyle.call(this, renderer, style);
+        Symbolizer.prototype.updateStyle.call(this, renderer, style);
     }
 });
 // CONCATENATED MODULE: ./src/leaflet/overlay/vectortile/RegionSymbolizer.js
@@ -85870,16 +87567,16 @@ var LineSymbolizer_LineSymbolizer = external_L_default.a.Polyline.extend({
  * @param {Object} feature - 面要素。
  * @param {number} pxPerExtent - 面积像素大小。
  */
-var RegionSymbolizer_RegionSymbolizer = external_L_default.a.Polygon.extend({
+var RegionSymbolizer = external_L_default.a.Polygon.extend({
 
     /**
      * @member L.supermap.RegionSymbolizer.prototype.includes
      * @description 包含符号。
      */
-    includes: [Symbolizer_Symbolizer.prototype, SymbolizerPolyBase_PolyBase],
+    includes: [Symbolizer.prototype, PolyBase],
 
     initialize: function (feature, pxPerExtent) {
-        Symbolizer_Symbolizer.prototype.initialize.call(this, feature);
+        Symbolizer.prototype.initialize.call(this, feature);
         this._makeFeatureParts(feature, pxPerExtent);
     },
 
@@ -85890,16 +87587,16 @@ var RegionSymbolizer_RegionSymbolizer = external_L_default.a.Polygon.extend({
      * @param {string} style - 符号样式。
      */
     render: function (renderer, style) {
-        Symbolizer_Symbolizer.prototype.render.call(this, renderer, style);
+        Symbolizer.prototype.render.call(this, renderer, style);
         this._updatePath();
     }
 });
 // EXTERNAL MODULE: ./node_modules/pbf/index.js
-var node_modules_pbf = __webpack_require__(12);
+var node_modules_pbf = __webpack_require__(14);
 var pbf_default = /*#__PURE__*/__webpack_require__.n(node_modules_pbf);
 
 // EXTERNAL MODULE: ./node_modules/@mapbox/vector-tile/index.js
-var vector_tile = __webpack_require__(11);
+var vector_tile = __webpack_require__(15);
 
 // CONCATENATED MODULE: ./src/leaflet/overlay/vectortile/VectorTilePBF.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -85919,7 +87616,7 @@ var vector_tile = __webpack_require__(11);
  * @extends {L.Class}
  * @param {string} url - 矢量瓦片 PBF(MVT) 表述出图服务地址。
  */
-var VectorTilePBF_VectorTilePBF = external_L_default.a.Class.extend({
+var VectorTilePBF = external_L_default.a.Class.extend({
 
     initialize: function (url) {
         this.url = url;
@@ -85932,7 +87629,7 @@ var VectorTilePBF_VectorTilePBF = external_L_default.a.Class.extend({
      */
     getTile: function () {
         var me = this;
-        return FetchRequest_FetchRequest.get(me.url, null, {
+        return FetchRequest.get(me.url, null, {
             timeout: 10000
         }).then(function (response) {
             if (!response.ok) {
@@ -86005,7 +87702,7 @@ var VectorTilePBF_VectorTilePBF = external_L_default.a.Class.extend({
  * @extends {L.Class}
  * @param {string} url - 矢量瓦片 JSON 表述服务地址。
  */
-var VectorTileJSON_VectorTileJSON = external_L_default.a.Class.extend({
+var VectorTileJSON = external_L_default.a.Class.extend({
 
     initialize: function (url) {
         this.url = url;
@@ -86018,7 +87715,7 @@ var VectorTileJSON_VectorTileJSON = external_L_default.a.Class.extend({
      */
     getTile: function () {
         var me = this;
-        return FetchRequest_FetchRequest.get(me.url, null, {
+        return FetchRequest.get(me.url, null, {
             timeout: 10000
         }).then(function (response) {
             return response.json()
@@ -86124,7 +87821,7 @@ var VectorTileJSON_VectorTileJSON = external_L_default.a.Class.extend({
                 }
                 feature.geometry.points = points;
             }
-            recordset.features = Util_toGeoJSON(recordset.features).features;
+            recordset.features = toGeoJSON(recordset.features).features;
         }
         return recordsets;
     },
@@ -86151,13 +87848,13 @@ var VectorTileJSON_VectorTileJSON = external_L_default.a.Class.extend({
  * @category Visualization TileVector
  * @classdesc 矢量瓦片格式。
  */
-var VectorTileFormat_VectorTileFormat = {
+var VectorTileFormat = {
     JSON: "JSON",
     MVT: "MVT",
     PBF: "PBF"
 };
 
-external_L_default.a.supermap.VectorTileFormat = VectorTileFormat_VectorTileFormat;
+external_L_default.a.supermap.VectorTileFormat = VectorTileFormat;
 // CONCATENATED MODULE: ./src/leaflet/overlay/vectortile/VectorTile.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -86186,7 +87883,7 @@ external_L_default.a.supermap.VectorTileFormat = VectorTileFormat_VectorTileForm
  * @param {Object} [options.renderer] - 渲染器对象。
  * @param {Function} done - 回调函数。
  */
-var VectorTile_VectorTile = external_L_default.a.Class.extend({
+var VectorTile = external_L_default.a.Class.extend({
 
     initialize: function (options, done) {
         this.layer = options.layer;
@@ -86206,13 +87903,13 @@ var VectorTile_VectorTile = external_L_default.a.Class.extend({
         var me = this, layer = me.layer, coords = me.coords;
         var tileFeatureUrl = layer._getTileUrl(coords);
 
-        var format = [VectorTileFormat_VectorTileFormat.MVT, VectorTileFormat_VectorTileFormat.PBF];
+        var format = [VectorTileFormat.MVT, VectorTileFormat.PBF];
 
         var tileFeaturePromise;
         if (format.indexOf(me.format.toUpperCase()) > -1) {
-            tileFeaturePromise = new VectorTilePBF_VectorTilePBF(tileFeatureUrl);
+            tileFeaturePromise = new VectorTilePBF(tileFeatureUrl);
         } else {
-            tileFeaturePromise = new VectorTileJSON_VectorTileJSON(tileFeatureUrl)
+            tileFeaturePromise = new VectorTileJSON(tileFeatureUrl)
         }
 
         tileFeaturePromise.getTile().then(function (tileFeature) {
@@ -86349,16 +88046,16 @@ var VectorTile_VectorTile = external_L_default.a.Class.extend({
         var layer;
         switch (feat.type) {
             case VectorFeatureType.POINT:
-                layer = new PointSymbolizer_PointSymbolizer(feat, pxPerExtent);
+                layer = new PointSymbolizer(feat, pxPerExtent);
                 break;
             case VectorFeatureType.LINE:
-                layer = new LineSymbolizer_LineSymbolizer(feat, pxPerExtent);
+                layer = new LineSymbolizer(feat, pxPerExtent);
                 break;
             case VectorFeatureType.REGION:
-                layer = new RegionSymbolizer_RegionSymbolizer(feat, pxPerExtent);
+                layer = new RegionSymbolizer(feat, pxPerExtent);
                 break;
             case VectorFeatureType.TEXT:
-                layer = new TextSymbolizer_TextSymbolizer(feat, pxPerExtent);
+                layer = new TextSymbolizer(feat, pxPerExtent);
                 break;
             default:
                 break;
@@ -86385,7 +88082,7 @@ var VectorTile_VectorTile = external_L_default.a.Class.extend({
             case VectorFeatureType.REGION:
                 return external_L_default.a.extend({}, external_L_default.a.Polygon.prototype.options, style);
             case VectorFeatureType.TEXT:
-                return external_L_default.a.extend({}, TextSymbolizer_TextSymbolizer.prototype.options, style);
+                return external_L_default.a.extend({}, TextSymbolizer.prototype.options, style);
             default:
                 break;
         }
@@ -86405,7 +88102,7 @@ var VectorTile_VectorTile = external_L_default.a.Class.extend({
             case VectorFeatureType.REGION:
                 return external_L_default.a.extend({}, defaultOptions, external_L_default.a.Polygon.prototype.options);
             case VectorFeatureType.TEXT:
-                return external_L_default.a.extend({}, defaultOptions, TextSymbolizer_TextSymbolizer.prototype.options);
+                return external_L_default.a.extend({}, defaultOptions, TextSymbolizer.prototype.options);
             default:
                 break;
         }
@@ -86439,13 +88136,13 @@ var VectorTile_VectorTile = external_L_default.a.Class.extend({
  * @param {boolean} [options.interactive=true] - 是否可交互。
  * @param {number} [options.maxZoom=23] - 最大缩放级别。
  */
-var VectorGrid_VectorGrid = external_L_default.a.GridLayer.extend({
+var VectorGrid = external_L_default.a.GridLayer.extend({
 
     options: {
         vectorTileLayerStyles: null,
         //SVG or Canvas
         renderer: "SVG",
-        format: VectorTileFormat_VectorTileFormat.JSON,
+        format: VectorTileFormat.JSON,
         interactive: true,
         maxZoom:23
     },
@@ -86486,15 +88183,15 @@ var VectorGrid_VectorGrid = external_L_default.a.GridLayer.extend({
         var renderer = null;
 
         if (me.options.renderer === "Canvas") {
-            renderer = new CanvasRenderer_CanvasRenderer(coords, tileSize, me.options);
+            renderer = new CanvasRenderer(coords, tileSize, me.options);
         } else {
-            renderer = new SVGRenderer_SVGRenderer(coords, tileSize, me.options);
+            renderer = new SVGRenderer(coords, tileSize, me.options);
         }
 
         me._vectorTiles[me._tileCoordsToKey(coords)] = renderer;
         renderer._features = {};
 
-        new VectorTile_VectorTile({
+        new VectorTile({
             layer: me,
             format: me.options.format,
             coords: coords,
@@ -86638,7 +88335,7 @@ var VectorGrid_VectorGrid = external_L_default.a.GridLayer.extend({
             case VectorFeatureType.REGION:
                 return external_L_default.a.extend({}, external_L_default.a.Polygon.prototype.options, style);
             case VectorFeatureType.TEXT:
-                return external_L_default.a.extend({}, TextSymbolizer_TextSymbolizer.prototype.options, style);
+                return external_L_default.a.extend({}, TextSymbolizer.prototype.options, style);
             default:
                 break;
         }
@@ -86682,7 +88379,7 @@ var VectorGrid_VectorGrid = external_L_default.a.GridLayer.extend({
  * @param {num} [options.timeout=10000] - timeout。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`] - 版权信息。
  */
-var TileVectorLayer_TileVectorLayer = VectorGrid_VectorGrid.extend({
+var TileVectorLayer = VectorGrid.extend({
 
     options: {
         //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
@@ -86720,7 +88417,7 @@ var TileVectorLayer_TileVectorLayer = VectorGrid_VectorGrid.extend({
         options = options || {};
         options.noWrap = (options.noWrap == null) ? true : options.noWrap;
         external_L_default.a.setOptions(this, options);
-        VectorGrid_VectorGrid.prototype.initialize.call(this, options);
+        VectorGrid.prototype.initialize.call(this, options);
         external_L_default.a.stamp(this);
         var me = this;
 
@@ -86764,7 +88461,7 @@ var TileVectorLayer_TileVectorLayer = VectorGrid_VectorGrid.extend({
     initLayersInfo: function () {
         var me = this;
         var layersUrl = me.url + "/layers.json";
-        FetchRequest_FetchRequest.get(layersUrl, null, {
+        FetchRequest.get(layersUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json();
@@ -86849,7 +88546,7 @@ var TileVectorLayer_TileVectorLayer = VectorGrid_VectorGrid.extend({
     getVectorStylesFromServer: function () {
         var me = this;
         var vectorStyleUrl = me.url + "/tileFeature/vectorstyles.json";
-        FetchRequest_FetchRequest.get(vectorStyleUrl, null, {
+        FetchRequest.get(vectorStyleUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json()
@@ -87003,15 +88700,15 @@ var TileVectorLayer_TileVectorLayer = VectorGrid_VectorGrid.extend({
                 Math.abs(ne.x - sw.x) / tileSize,
                 Math.abs(ne.y - sw.y) / tileSize
             );
-            var mapUnit = REST_Unit.METER;
+            var mapUnit = Unit.METER;
             if (crs.code) {
                 var array = crs.code.split(':');
                 if (array && array.length > 1) {
                     var code = parseInt(array[1]);
-                    mapUnit = code && code >= 4000 && code <= 5000 ? REST_Unit.DEGREE : REST_Unit.METER;
+                    mapUnit = code && code >= 4000 && code <= 5000 ? Unit.DEGREE : Unit.METER;
                 }
             }
-            return Util_resolutionToScale(resolution, 96, mapUnit);
+            return resolutionToScale(resolution, 96, mapUnit);
         }
     },
 
@@ -87066,7 +88763,7 @@ var TileVectorLayer_TileVectorLayer = VectorGrid_VectorGrid.extend({
     },
 
     _initGrid: function () {
-        VectorGrid_VectorGrid.prototype.onAdd.call(this, this._map);
+        VectorGrid.prototype.onAdd.call(this, this._map);
     },
 
     _getSubdomain: external_L_default.a.TileLayer.prototype._getSubdomain,
@@ -87140,22 +88837,22 @@ var TileVectorLayer_TileVectorLayer = VectorGrid_VectorGrid.extend({
     _getCredential: function (url) {
         var credential, value;
         switch (this.options.serverType) {
-            case REST_ServerType.IPORTAL:
+            case ServerType.IPORTAL:
                 value = SecurityManager_SecurityManager.getToken(url);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
                     value = SecurityManager_SecurityManager.getKey(url);
-                    credential = value ? new Credential_Credential(value, "key") : null;
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case REST_ServerType.ONLINE:
+            case ServerType.ONLINE:
                 value = SecurityManager_SecurityManager.getKey(url);
-                credential = value ? new Credential_Credential(value, "key") : null;
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
                 //iserver or others
                 value = SecurityManager_SecurityManager.getToken(url);
-                credential = value ? new Credential_Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         if (credential) {
@@ -87165,13 +88862,13 @@ var TileVectorLayer_TileVectorLayer = VectorGrid_VectorGrid.extend({
     }
 });
 
-var TileVectorLayer_tiledVectorLayer = function (url, options) {
-    return new TileVectorLayer_TileVectorLayer(url, options);
+var tiledVectorLayer = function (url, options) {
+    return new TileVectorLayer(url, options);
 };
 
-external_L_default.a.supermap.tiledVectorLayer = TileVectorLayer_tiledVectorLayer;
+external_L_default.a.supermap.tiledVectorLayer = tiledVectorLayer;
 // EXTERNAL MODULE: external "function(){try{return turf}catch(e){return {}}}()"
-var external_function_try_return_turf_catch_e_return_ = __webpack_require__(4);
+var external_function_try_return_turf_catch_e_return_ = __webpack_require__(7);
 
 // CONCATENATED MODULE: ./src/leaflet/overlay/TurfLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -87190,7 +88887,7 @@ var external_function_try_return_turf_catch_e_return_ = __webpack_require__(4);
  * @param {Object} options - 可选参数。
  * @param {string} [options.attribution='<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
  */
-var TurfLayer_TurfLayer = external_L_default.a.GeoJSON.extend({
+var TurfLayer = external_L_default.a.GeoJSON.extend({
 
     turfMap: {
         "Measurement.along": ["line", "distance", "units"],
@@ -87459,7 +89156,7 @@ var TurfLayer_TurfLayer = external_L_default.a.GeoJSON.extend({
 });
 
 var TurfLayer_turfLayer = function (options) {
-    return new TurfLayer_TurfLayer(options);
+    return new TurfLayer(options);
 };
 
 external_L_default.a.supermap.turfLayer = TurfLayer_turfLayer;
@@ -87493,12 +89190,12 @@ external_L_default.a.supermap.turfLayer = TurfLayer_turfLayer;
  * @fires L.supermap.heatMapLayer#featuresremoved
  * @fires L.supermap.heatMapLayer#changelayer
  */
-var HeatMapLayer_HeatMapLayer = external_L_default.a.Layer.extend({
+var HeatMapLayer = external_L_default.a.Layer.extend({
     options: {
         //要素坐标是否和地图坐标系一致，默认为false，要素默认是经纬度坐标。
         alwaysMapCRS: false,
         //热力图默认参数：
-        id: Util_Util.createUniqueID("heatMapLayer_"),
+        id: Util.createUniqueID("heatMapLayer_"),
         featureWeight: null,
         opacity: 1,
         colors: ['blue', 'cyan', 'lime', 'yellow', 'red'],
@@ -87872,13 +89569,13 @@ var HeatMapLayer_HeatMapLayer = external_L_default.a.Layer.extend({
         if (features === this.features) {
             return this.removeAllFeatures();
         }
-        if (!(Util_Util.isArray(features))) {
+        if (!(Util.isArray(features))) {
             features = [features];
         }
         var heatPoint, index, heatPointsFailedRemoved = [];
         for (var i = 0, len = features.length; i < len; i++) {
             heatPoint = features[i];
-            index = Util_Util.indexOf(this.features, heatPoint);
+            index = Util.indexOf(this.features, heatPoint);
             //找不到视为删除失败
             if (index === -1) {
                 heatPointsFailedRemoved.push(heatPoint);
@@ -87927,14 +89624,14 @@ var HeatMapLayer_HeatMapLayer = external_L_default.a.Layer.extend({
         this.rootCanvas.style.position = "absolute";
         this.rootCanvas.style.zIndex = 200;
 
-        Util_Util.modifyDOMElement(this.rootCanvas, null, null, null,
+        Util.modifyDOMElement(this.rootCanvas, null, null, null,
             null, null, null, this.opacity);
         this.canvasContext = this.rootCanvas.getContext('2d');
     },
 
     _updateOpacity: function () {
         var me = this;
-        Util_Util.modifyDOMElement(me.rootCanvas, null, null, null, null, null, null, me.options.opacity);
+        Util.modifyDOMElement(me.rootCanvas, null, null, null, null, null, null, me.options.opacity);
         if (me._map !== null) {
             /**
              * @event L.supermap.heatMapLayer#changelayer
@@ -87979,7 +89676,7 @@ var HeatMapLayer_HeatMapLayer = external_L_default.a.Layer.extend({
         for (let i = 0, len = features.length; i < len; i++) {
             //支持ThemeFeature类型的feature
             //支持传入ThemeFeature类型,ThemeFeature.geometry instanceof L.LatLng | ThemeFeature.geometry instanceof L.Point
-            if (features[i] instanceof HeatMapLayer_HeatMapFeature) {
+            if (features[i] instanceof HeatMapFeature) {
                 featuresTemp.push(features[i].toFeature());
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
                 const format = new GeoJSON_GeoJSON();
@@ -88033,10 +89730,10 @@ var HeatMapLayer_HeatMapLayer = external_L_default.a.Layer.extend({
 
 
 });
-var HeatMapLayer_heatMapLayer = function (name, options) {
-    return new HeatMapLayer_HeatMapLayer(name, options);
+var heatMapLayer = function (name, options) {
+    return new HeatMapLayer(name, options);
 };
-external_L_default.a.supermap.heatMapLayer = HeatMapLayer_heatMapLayer;
+external_L_default.a.supermap.heatMapLayer = heatMapLayer;
 
 /**
  * @class L.supermap.heatMapFeature
@@ -88047,7 +89744,7 @@ external_L_default.a.supermap.heatMapLayer = HeatMapLayer_heatMapLayer;
  * @param {(L.Point|L.LatLng|L.CircleMarker)} geometry - 要素图形。
  * @param {Object} attributes - 要素属性。
  */
-var HeatMapLayer_HeatMapFeature = external_L_default.a.Class.extend({
+var HeatMapFeature = external_L_default.a.Class.extend({
     initialize: function (geometry, attributes) {
         this.geometry = geometry;
         this.attributes = attributes;
@@ -88080,11 +89777,11 @@ var HeatMapLayer_HeatMapFeature = external_L_default.a.Class.extend({
 
 });
 
-var HeatMapLayer_heatMapFeature = function (geometry, attributes) {
-    return new HeatMapLayer_HeatMapFeature(geometry, attributes);
+var heatMapFeature = function (geometry, attributes) {
+    return new HeatMapFeature(geometry, attributes);
 };
 
-external_L_default.a.supermap.heatMapFeature = HeatMapLayer_heatMapFeature;
+external_L_default.a.supermap.heatMapFeature = heatMapFeature;
 // CONCATENATED MODULE: ./src/leaflet/overlay/carto/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -88233,10 +89930,10 @@ external_L_default.a.supermap.heatMapFeature = HeatMapLayer_heatMapFeature;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var services_AddressMatchService_AddressMatchService = ServiceBase_ServiceBase.extend({
+var services_AddressMatchService_AddressMatchService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -88320,10 +90017,10 @@ external_L_default.a.supermap.addressMatchService = AddressMatchService_addressM
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var ChartService_ChartService = ServiceBase_ServiceBase.extend({
+var ChartService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -88391,15 +90088,15 @@ var ChartService_ChartService = ServiceBase_ServiceBase.extend({
         }
     },
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 });
 
-var ChartService_chartService = function (url, options) {
-    return new ChartService_ChartService(url, options);
+var chartService = function (url, options) {
+    return new ChartService(url, options);
 };
 
-external_L_default.a.supermap.chartService = ChartService_chartService;
+external_L_default.a.supermap.chartService = chartService;
 // CONCATENATED MODULE: ./src/leaflet/services/FieldService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -88426,10 +90123,10 @@ external_L_default.a.supermap.chartService = ChartService_chartService;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var FieldService_FieldService = ServiceBase_ServiceBase.extend({
+var FieldService = ServiceBase.extend({
 
     initialize: function (url,options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url,options);
+        ServiceBase.prototype.initialize.call(this, url,options);
     },
 
     /**
@@ -88476,10 +90173,10 @@ var FieldService_FieldService = ServiceBase_ServiceBase.extend({
         me.currentStatisticResult = {fieldName: fieldName};
         me._statisticsCallback = callback;
         //针对每种统计方式分别进行请求
-        for (var mode in modes) {
-            me.currentStatisticResult[modes[mode]] = null;
-            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
-        }
+        modes.forEach(mode => {
+            me.currentStatisticResult[mode] = null;
+            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, mode);
+        });
     },
 
     _fieldStatisticRequest: function (dataSourceName, dataSetName, fieldName, statisticMode) {
@@ -88521,11 +90218,11 @@ var FieldService_FieldService = ServiceBase_ServiceBase.extend({
         }
     }
 });
-var FieldService_fieldService = function (url, options) {
-    return new FieldService_FieldService(url, options);
+var fieldService = function (url, options) {
+    return new FieldService(url, options);
 };
 
-external_L_default.a.supermap.fieldService = FieldService_fieldService;
+external_L_default.a.supermap.fieldService = fieldService;
 // CONCATENATED MODULE: ./src/leaflet/services/GridCellInfosService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -88553,10 +90250,10 @@ external_L_default.a.supermap.fieldService = FieldService_fieldService;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var GridCellInfosService_GridCellInfosService = ServiceBase_ServiceBase.extend({
+var GridCellInfosService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -88584,11 +90281,11 @@ var GridCellInfosService_GridCellInfosService = ServiceBase_ServiceBase.extend({
         gridCellQueryService.processAsync(params);
     }
 });
-var GridCellInfosService_gridCellInfosService = function (url, options) {
-    return new GridCellInfosService_GridCellInfosService(url, options);
+var gridCellInfosService = function (url, options) {
+    return new GridCellInfosService(url, options);
 };
 
-external_L_default.a.supermap.gridCellInfosService = GridCellInfosService_gridCellInfosService;
+external_L_default.a.supermap.gridCellInfosService = gridCellInfosService;
 // CONCATENATED MODULE: ./src/leaflet/services/LayerInfoService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -88615,10 +90312,10 @@ external_L_default.a.supermap.gridCellInfosService = GridCellInfosService_gridCe
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var LayerInfoService_LayerInfoService = ServiceBase_ServiceBase.extend({
+var LayerInfoService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -88740,11 +90437,11 @@ var LayerInfoService_LayerInfoService = ServiceBase_ServiceBase.extend({
 
 });
 
-var LayerInfoService_layerInfoService = function (url, options) {
-    return new LayerInfoService_LayerInfoService(url, options);
+var layerInfoService = function (url, options) {
+    return new LayerInfoService(url, options);
 };
 
-external_L_default.a.supermap.layerInfoService = LayerInfoService_layerInfoService;
+external_L_default.a.supermap.layerInfoService = layerInfoService;
 // CONCATENATED MODULE: ./src/leaflet/services/MeasureService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -88776,10 +90473,10 @@ external_L_default.a.supermap.layerInfoService = LayerInfoService_layerInfoServi
  * @param {Object} [options.headers] - 请求头。
  * @extends {L.supermap.ServiceBase}
  */
-var services_MeasureService_MeasureService = ServiceBase_ServiceBase.extend({
+var services_MeasureService_MeasureService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -88789,7 +90486,7 @@ var services_MeasureService_MeasureService = ServiceBase_ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     measureDistance: function (params, callback) {
-        this.measure(REST_MeasureMode.DISTANCE, params, callback);
+        this.measure(MeasureMode.DISTANCE, params, callback);
         return this;
     },
 
@@ -88800,7 +90497,7 @@ var services_MeasureService_MeasureService = ServiceBase_ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     measureArea: function (params, callback) {
-        this.measure(REST_MeasureMode.AREA, params, callback);
+        this.measure(MeasureMode.AREA, params, callback);
         return this;
     },
 
@@ -88816,7 +90513,7 @@ var services_MeasureService_MeasureService = ServiceBase_ServiceBase.extend({
         }
         var me = this;
         if (params.geometry) {
-            params.geometry = Util_toSuperMapGeometry(params.geometry);
+            params.geometry = toSuperMapGeometry(params.geometry);
         }
         var measureService = new MeasureService_MeasureService(me.url, {
             proxy: me.options.proxy,
@@ -88868,10 +90565,10 @@ external_L_default.a.supermap.measureService = MeasureService_measureService;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var NetworkAnalyst3DService_NetworkAnalyst3DService = ServiceBase_ServiceBase.extend({
+var NetworkAnalyst3DService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -88992,11 +90689,11 @@ var NetworkAnalyst3DService_NetworkAnalyst3DService = ServiceBase_ServiceBase.ex
     }
 });
 
-var NetworkAnalyst3DService_networkAnalyst3DService = function (url, options) {
-    return new NetworkAnalyst3DService_NetworkAnalyst3DService(url, options);
+var networkAnalyst3DService = function (url, options) {
+    return new NetworkAnalyst3DService(url, options);
 };
 
-external_L_default.a.supermap.networkAnalyst3DService = NetworkAnalyst3DService_networkAnalyst3DService;
+external_L_default.a.supermap.networkAnalyst3DService = networkAnalyst3DService;
 // CONCATENATED MODULE: ./src/leaflet/services/NetworkAnalystService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -89027,10 +90724,10 @@ external_L_default.a.supermap.networkAnalyst3DService = NetworkAnalyst3DService_
  * @param {Object} [options.headers] - 请求头。
  * @extends {L.supermap.ServiceBase}
  */
-var NetworkAnalystService_NetworkAnalystService = ServiceBase_ServiceBase.extend({
+var NetworkAnalystService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -89351,16 +91048,16 @@ var NetworkAnalystService_NetworkAnalystService = ServiceBase_ServiceBase.extend
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
 });
 
-var NetworkAnalystService_networkAnalystService = function (url, options) {
-    return new NetworkAnalystService_NetworkAnalystService(url, options);
+var networkAnalystService = function (url, options) {
+    return new NetworkAnalystService(url, options);
 };
 
-external_L_default.a.supermap.networkAnalystService = NetworkAnalystService_networkAnalystService;
+external_L_default.a.supermap.networkAnalystService = networkAnalystService;
 // CONCATENATED MODULE: ./src/leaflet/services/ProcessingService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -89389,12 +91086,12 @@ external_L_default.a.supermap.networkAnalystService = NetworkAnalystService_netw
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var ProcessingService_ProcessingService = ServiceBase_ServiceBase.extend({
+var ProcessingService = ServiceBase.extend({
 
     initialize: function (url, options) {
         options = options || {};
         external_L_default.a.setOptions(this, options);
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
         this.kernelDensityJobs = {};
         this.summaryMeshJobs = {};
         this.queryJobs = {};
@@ -90235,7 +91932,7 @@ var ProcessingService_ProcessingService = ServiceBase_ServiceBase.extend({
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     },
 
     _processParams: function (params) {
@@ -90258,7 +91955,7 @@ var ProcessingService_ProcessingService = ServiceBase_ServiceBase.extend({
     }
 });
 var ProcessingService_processingService = function (url, options) {
-    return new ProcessingService_ProcessingService(url, options);
+    return new ProcessingService(url, options);
 };
 
 external_L_default.a.supermap.processingService = ProcessingService_processingService;
@@ -90290,10 +91987,10 @@ external_L_default.a.supermap.processingService = ProcessingService_processingSe
  *   //doSomething
  * })
  */
-var services_QueryService_QueryService = ServiceBase_ServiceBase.extend({
+var services_QueryService_QueryService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
     /**
      * @function L.supermap.queryService.prototype.queryByBounds
@@ -90416,7 +92113,7 @@ var services_QueryService_QueryService = ServiceBase_ServiceBase.extend({
             if (params.geometry instanceof external_L_default.a.Point) {
                 params.geometry = new Point_Point(params.geometry.x, params.geometry.y);
             } else {
-                params.geometry = Util_toSuperMapGeometry(params.geometry);
+                params.geometry = toSuperMapGeometry(params.geometry);
             }
         }
 
@@ -90424,7 +92121,7 @@ var services_QueryService_QueryService = ServiceBase_ServiceBase.extend({
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 });
 
@@ -90464,10 +92161,10 @@ external_L_default.a.supermap.queryService = QueryService_queryService;
  * @param {Object} [options.headers] - 请求头。
  * @extends {L.supermap.ServiceBase}
  */
-var SpatialAnalystService_SpatialAnalystService = ServiceBase_ServiceBase.extend({
+var SpatialAnalystService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
     /**
      * @function L.supermap.spatialAnalystService.prototype.getAreaSolarRadiationResult
@@ -90872,13 +92569,13 @@ var SpatialAnalystService_SpatialAnalystService = ServiceBase_ServiceBase.extend
 
         }
         if (params.extractRegion) {
-            params.extractRegion = Util_toSuperMapGeometry(params.extractRegion);
+            params.extractRegion = toSuperMapGeometry(params.extractRegion);
         }
         if (params.extractParameter && params.extractParameter.clipRegion) {
-            params.extractParameter.clipRegion = Util_toSuperMapGeometry(params.extractParameter.clipRegion);
+            params.extractParameter.clipRegion = toSuperMapGeometry(params.extractParameter.clipRegion);
         }
         if (params.clipParam && params.clipParam.clipRegion) {
-            params.clipParam.clipRegion = Util_toSuperMapGeometry(params.clipParam.clipRegion);
+            params.clipParam.clipRegion = toSuperMapGeometry(params.clipParam.clipRegion);
         }
         //支持格式：Vector Layers; GeoJson
         if (params.sourceGeometry) {
@@ -90886,20 +92583,20 @@ var SpatialAnalystService_SpatialAnalystService = ServiceBase_ServiceBase.extend
             if (params.sourceGeometrySRID) {
                 SRID = params.sourceGeometrySRID;
             }
-            params.sourceGeometry = Util_toSuperMapGeometry(params.sourceGeometry);
+            params.sourceGeometry = toSuperMapGeometry(params.sourceGeometry);
             if (SRID) {
                 params.sourceGeometry.SRID = SRID;
             }
             delete params.sourceGeometry.sourceGeometrySRID;
         }
         if (params.operateGeometry) {
-            params.operateGeometry = Util_toSuperMapGeometry(params.operateGeometry);
+            params.operateGeometry = toSuperMapGeometry(params.operateGeometry);
         }
         //支持传入多个几何要素进行叠加分析：
         if (params.sourceGeometries) {
             var sourceGeometries = [];
             for (var k = 0; k < params.sourceGeometries.length; k++) {
-                sourceGeometries.push(Util_toSuperMapGeometry(params.sourceGeometries[k]));
+                sourceGeometries.push(toSuperMapGeometry(params.sourceGeometries[k]));
             }
             params.sourceGeometries = sourceGeometries;
         }
@@ -90907,7 +92604,7 @@ var SpatialAnalystService_SpatialAnalystService = ServiceBase_ServiceBase.extend
         if (params.operateGeometries) {
             var operateGeometries = [];
             for (var j = 0; j < params.operateGeometries.length; j++) {
-                operateGeometries.push(Util_toSuperMapGeometry(params.operateGeometries[j]));
+                operateGeometries.push(toSuperMapGeometry(params.operateGeometries[j]));
             }
             params.operateGeometries = operateGeometries;
         }
@@ -90927,7 +92624,7 @@ var SpatialAnalystService_SpatialAnalystService = ServiceBase_ServiceBase.extend
         }
         if (params.operateRegions && external_L_default.a.Util.isArray(params.operateRegions)) {
             params.operateRegions.map(function (geometry, key) {
-                params.operateRegions[key] = Util_toSuperMapGeometry(geometry);
+                params.operateRegions[key] = toSuperMapGeometry(geometry);
                 return params.operateRegions[key];
             });
         }
@@ -90941,14 +92638,14 @@ var SpatialAnalystService_SpatialAnalystService = ServiceBase_ServiceBase.extend
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : REST_DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 });
-var SpatialAnalystService_spatialAnalystService = function (url, options) {
-    return new SpatialAnalystService_SpatialAnalystService(url, options);
+var spatialAnalystService = function (url, options) {
+    return new SpatialAnalystService(url, options);
 };
 
-external_L_default.a.supermap.spatialAnalystService = SpatialAnalystService_spatialAnalystService;
+external_L_default.a.supermap.spatialAnalystService = spatialAnalystService;
 // CONCATENATED MODULE: ./src/leaflet/services/ThemeService.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -90977,10 +92674,10 @@ external_L_default.a.supermap.spatialAnalystService = SpatialAnalystService_spat
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var services_ThemeService_ThemeService = ServiceBase_ServiceBase.extend({
+var services_ThemeService_ThemeService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -91038,10 +92735,10 @@ external_L_default.a.supermap.themeService = ThemeService_themeService;
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-var TrafficTransferAnalystService_TrafficTransferAnalystService = ServiceBase_ServiceBase.extend({
+var TrafficTransferAnalystService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase_ServiceBase.prototype.initialize.call(this, url, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
@@ -91126,11 +92823,11 @@ var TrafficTransferAnalystService_TrafficTransferAnalystService = ServiceBase_Se
     }
 });
 
-var TrafficTransferAnalystService_trafficTransferAnalystService = function (url, options) {
-    return new TrafficTransferAnalystService_TrafficTransferAnalystService(url, options);
+var trafficTransferAnalystService = function (url, options) {
+    return new TrafficTransferAnalystService(url, options);
 };
 
-external_L_default.a.supermap.trafficTransferAnalystService = TrafficTransferAnalystService_trafficTransferAnalystService;
+external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAnalystService;
 // CONCATENATED MODULE: ./src/leaflet/services/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -91175,7 +92872,7 @@ external_L_default.a.supermap.trafficTransferAnalystService = TrafficTransferAna
 // CONCATENATED MODULE: ./src/leaflet/components/ComponentsViewBase.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
 * This program are made available under the terms of the Apache License, Version 2.0
-* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+* which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -91190,7 +92887,7 @@ external_L_default.a.supermap.trafficTransferAnalystService = TrafficTransferAna
  * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
  * @extends {L.Control}
  */
-var ComponentsViewBase_ComponentsViewBase = external_L_default.a.Control.extend({
+var ComponentsViewBase = external_L_default.a.Control.extend({
     options: {
         //控件位置 继承自leaflet control
         position: 'topright',
@@ -91288,11 +92985,11 @@ var ComponentsViewBase_ComponentsViewBase = external_L_default.a.Control.extend(
 
 });
 
-var ComponentsViewBase_componentsViewBase = function (options) {
-    return new ComponentsViewBase_ComponentsViewBase(options);
+var componentsViewBase = function (options) {
+    return new ComponentsViewBase(options);
 };
 
-external_L_default.a.supermap.components.componentsViewBase = ComponentsViewBase_componentsViewBase;
+external_L_default.a.supermap.components.componentsViewBase = componentsViewBase;
 // CONCATENATED MODULE: ./src/leaflet/components/openfile/OpenFileViewModel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -91313,7 +93010,7 @@ external_L_default.a.supermap.components.componentsViewBase = ComponentsViewBase
  * @fires L.supermap.components.openFileViewModel#openfilefailed
  * @extends {L.Evented}
  */
-var OpenFileViewModel_OpenFileViewModel = external_L_default.a.Evented.extend({
+var OpenFileViewModel = external_L_default.a.Evented.extend({
     initialize() {
         this.fileModel = new FileModel_FileModel();
     },
@@ -91335,13 +93032,13 @@ var OpenFileViewModel_OpenFileViewModel = external_L_default.a.Evented.extend({
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            this.fire("filesizeexceed", {messageType: "warring", message: Lang_Lang.i18n('msg_fileSizeExceeded')});
+            this.fire("filesizeexceed", {messageType: "warring", message: Lang.i18n('msg_fileSizeExceeded')});
             return false;
         }
 
         let filePath = inputDom.value;
         let fileName = file.name;
-        let fileType = Util_ComponentsUtil.getFileType(fileName);
+        let fileType = ComponentsUtil.getFileType(fileName);
         //文件格式不支持
         if (!fileType) {
             // document.alert("Unsupported data type.");
@@ -91351,7 +93048,7 @@ var OpenFileViewModel_OpenFileViewModel = external_L_default.a.Evented.extend({
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            this.fire("errorfileformat", {messageType: "failure", message: Lang_Lang.i18n('msg_fileTypeUnsupported')});
+            this.fire("errorfileformat", {messageType: "failure", message: Lang.i18n('msg_fileTypeUnsupported')});
             return false;
         }
         //文件类型限制
@@ -91379,12 +93076,12 @@ var OpenFileViewModel_OpenFileViewModel = external_L_default.a.Evented.extend({
         //todo 需要测试另外两个
         const me = this;
         const type = this.fileModel.loadFileObject.fileType;
-        FileReaderUtil_FileReaderUtil.readFile(type, {
+        FileReaderUtil.readFile(type, {
             file: this.fileModel.loadFileObject.file,
             path: this.fileModel.loadFileObject.filePath
         }, (data) => {
             //将数据统一转换为 geoJson 格式加载到底图
-            FileReaderUtil_FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
+            FileReaderUtil.processDataToGeoJson(type, data, (geojson) => {
                 if (geojson) {
                     /**
                      * @event L.supermap.components.openFileViewModel#openfilesucceeded
@@ -91407,18 +93104,18 @@ var OpenFileViewModel_OpenFileViewModel = external_L_default.a.Evented.extend({
              * @property {string} messageType - 警告类型。
              * @property {string} message - 警告内容。
              */
-            me.fire("openfilefailed", {messageType: "failure", message: Lang_Lang.i18n('msg_openFileFail')});
+            me.fire("openfilefailed", {messageType: "failure", message: Lang.i18n('msg_openFileFail')});
         }, this);
     }
 
 });
 
-var OpenFileViewModel_openFileViewModel = function (options) {
-    return new OpenFileViewModel_OpenFileViewModel(options);
+var openFileViewModel = function (options) {
+    return new OpenFileViewModel(options);
 };
 
-external_L_default.a.supermap.components.openFileViewModel = OpenFileViewModel_openFileViewModel;
-external_L_default.a.supermap.components.util = Util_ComponentsUtil;
+external_L_default.a.supermap.components.openFileViewModel = openFileViewModel;
+external_L_default.a.supermap.components.util = ComponentsUtil;
 // CONCATENATED MODULE: ./src/leaflet/components/openfile/OpenFileView.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -91441,16 +93138,16 @@ external_L_default.a.supermap.components.util = Util_ComponentsUtil;
  * @extends {L.supermap.components.componentsViewBase}
  * @category Components OpenFile
  */
-var OpenFileView_OpenFileView = ComponentsViewBase_ComponentsViewBase.extend({
+var OpenFileView = ComponentsViewBase.extend({
     options: {
         //绑定的底图图层
         layer: null
     },
 
     initialize(options) {
-      ComponentsViewBase_ComponentsViewBase.prototype.initialize.apply(this, [options]);
+      ComponentsViewBase.prototype.initialize.apply(this, [options]);
         //初始化 ViewModel:
-        this.viewModel = new OpenFileViewModel_OpenFileViewModel();
+        this.viewModel = new OpenFileViewModel();
     },
 
     /**
@@ -91482,7 +93179,7 @@ var OpenFileView_OpenFileView = ComponentsViewBase_ComponentsViewBase.extend({
 
         external_L_default.a.DomUtil.create('div', 'supermapol-icons-upload', this.label);
         const fileSpan = external_L_default.a.DomUtil.create('span', 'component-openfile__span', this.label);
-        fileSpan.appendChild(document.createTextNode(Lang_Lang.i18n('text_chooseFile')));
+        fileSpan.appendChild(document.createTextNode(Lang.i18n('text_chooseFile')));
 
         this.fileInput = external_L_default.a.DomUtil.create('input', 'component-openfile__input', this.fileSelect);
         this.fileInput.id = "input_file";
@@ -91494,7 +93191,7 @@ var OpenFileView_OpenFileView = ComponentsViewBase_ComponentsViewBase.extend({
             this.viewModel.readFile(fileEventObject);
         };
         //增加提示框：
-        this.messageBox = new MessageBox_MessageBox();
+        this.messageBox = new MessageBox();
 
         //添加监听
         this.viewModel.on("filesizeexceed", (e) => {
@@ -91530,11 +93227,11 @@ var OpenFileView_OpenFileView = ComponentsViewBase_ComponentsViewBase.extend({
     }
 
 });
-var OpenFileView_openFileView = function (options) {
-    return new OpenFileView_OpenFileView(options);
+var openFileView = function (options) {
+    return new OpenFileView(options);
 };
 
-external_L_default.a.supermap.components.openFile = OpenFileView_openFileView;
+external_L_default.a.supermap.components.openFile = openFileView;
 // CONCATENATED MODULE: ./src/leaflet/components/search/CityConfig.js
 const CityConfig_config = {
     HOT: {
@@ -91623,7 +93320,7 @@ class GeoJsonLayersModel_GeoJsonLayersDataModel {
         for (let i = 0; i < layers.length; i++) {
             let layerName = layers[i].layerName;
             if (layers[i].layer instanceof external_L_default.a.GeoJSON) {
-                let geoJsonLayerDataModel = new GeoJsonLayersModel_GeoJsonLayerDataModel(layers[i].layer);
+                let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i].layer);
                 //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
                 this.layers[layerName] = geoJsonLayerDataModel;
                 success && success.call(context, {layerName: layerName, layer: geoJsonLayerDataModel});
@@ -91653,7 +93350,7 @@ external_L_default.a.supermap.components.GeoJsonLayersDataModel = GeoJsonLayersM
  * @param {L.GeoJSON} layer - GeoJSON 图层。
  * 注：leaflet没有 feature 的概念
  */
-class GeoJsonLayersModel_GeoJsonLayerDataModel {
+class GeoJsonLayerDataModel {
 
     constructor(layer) {
         //图层对象
@@ -91817,10 +93514,10 @@ class GeoJsonLayersModel_GeoJsonLayerDataModel {
  * @fires L.supermap.components.searchViewModel#geocodesucceeded
  * @extends {L.Evented}
  */
-var SearchViewModel_SearchViewModel = external_L_default.a.Evented.extend({
+var SearchViewModel = external_L_default.a.Evented.extend({
     options: {
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
+            addressUrl: "https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         }
     },
@@ -91916,7 +93613,7 @@ var SearchViewModel_SearchViewModel = external_L_default.a.Evented.extend({
             this.geoCodeParam.keyWords = keyWords || this.geoCodeParam.city;
             const self = this;
             let url = this._getSearchUrl(this.geoCodeParam);
-            FetchRequest_FetchRequest.get(url).then((response) => {
+            FetchRequest.get(url).then((response) => {
                 return response.json();
             }).then((geocodingResult) => {
                 if (geocodingResult.error || geocodingResult.poiInfos.length === 0) {
@@ -91975,7 +93672,7 @@ var SearchViewModel_SearchViewModel = external_L_default.a.Evented.extend({
         this.geoCodeParam.city = city;
         const self = this;
         let url = this._getSearchUrl(this.geoCodeParam);
-        FetchRequest_FetchRequest.get(url).then((response) => {
+        FetchRequest.get(url).then((response) => {
             return response.json();
         }).then((geocodingResult) => {
             if (geocodingResult.poiInfos.length > 0) {
@@ -92028,11 +93725,11 @@ var SearchViewModel_SearchViewModel = external_L_default.a.Evented.extend({
     }
 });
 
-var SearchViewModel_searchViewModel = function (options) {
-    return new SearchViewModel_SearchViewModel(options);
+var searchViewModel = function (options) {
+    return new SearchViewModel(options);
 };
 
-external_L_default.a.supermap.components.searchViewModel = SearchViewModel_searchViewModel;
+external_L_default.a.supermap.components.searchViewModel = searchViewModel;
 // CONCATENATED MODULE: ./src/leaflet/components/search/SearchView.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -92065,11 +93762,11 @@ external_L_default.a.supermap.components.searchViewModel = SearchViewModel_searc
  * @fires L.supermap.components.search#searchfailed
  * @fires L.supermap.components.search#geocodesucceeded
  */
-var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
+var SearchView = ComponentsViewBase.extend({
     options: {
         cityConfig: CityConfig_config,
         cityGeoCodingConfig: {
-            addressUrl: "http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
+            addressUrl: "https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos",
             key: "fvV2osxwuZWlY0wJb8FEb2i5"
         },
         isGeoCoding: true,
@@ -92079,7 +93776,7 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
     },
 
     initialize(options) {
-      ComponentsViewBase_ComponentsViewBase.prototype.initialize.apply(this, [options]);
+      ComponentsViewBase.prototype.initialize.apply(this, [options]);
         //当前选中查询的图层名：
         this.currentSearchLayerName = "";
         this.isSearchLayer = false;
@@ -92095,8 +93792,8 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
      */
     onAdd: function (map) {
         //初始化组件业务逻辑执行对象 viewModel
-        this.viewModel = new SearchViewModel_SearchViewModel(map, this.options);
-        return ComponentsViewBase_ComponentsViewBase.prototype.onAdd.apply(this, [map]);
+        this.viewModel = new SearchViewModel(map, this.options);
+        return ComponentsViewBase.prototype.onAdd.apply(this, [map]);
     },
 
     /**
@@ -92185,7 +93882,7 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
             loadIcon.setAttribute("class", "supermapol-icons-poi-load");
             loadBtn.appendChild(loadIcon);
             const loadBtnText = document.createElement("span");
-            loadBtnText.appendChild(document.createTextNode(Lang_Lang.i18n("text_loadSearchCriteria")));
+            loadBtnText.appendChild(document.createTextNode(Lang.i18n("text_loadSearchCriteria")));
             loadBtn.appendChild(loadBtnText);
             //保存搜索条件
             const saveBtn = document.createElement("div");
@@ -92195,7 +93892,7 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
             icon.setAttribute("class", "supermapol-icons-poi-save");
             saveBtn.appendChild(icon);
             const saveBtnText = document.createElement("span");
-            saveBtnText.appendChild(document.createTextNode(Lang_Lang.i18n("text_saveSearchCriteria")));
+            saveBtnText.appendChild(document.createTextNode(Lang.i18n("text_saveSearchCriteria")));
             saveBtn.appendChild(saveBtnText);
 
             //body
@@ -92242,12 +93939,12 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
         let navTabs = [];
         if (citySelect) {
             navTabs.push({
-                title: Lang_Lang.i18n("title_searchCity"),
+                title: Lang.i18n("title_searchCity"),
                 content: citySelect
             })
         }
         navTabs.push({
-            title: Lang_Lang.i18n("title_searchLayer"),
+            title: Lang.i18n("title_searchLayer"),
             content: layersSelect
         });
         const navTabsPageObject = new NavTabsPage_NavTabsPage({
@@ -92267,7 +93964,7 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
         poiContainer.appendChild(poiSettings);
         //初始时，下拉框若没赋值显示信息，则再次赋值：
         if (!poiSearchName.innerText) {
-            poiSearchName.appendChild(document.createTextNode(Lang_Lang.i18n("text_label_chooseSearchLayers")));
+            poiSearchName.appendChild(document.createTextNode(Lang.i18n("text_label_chooseSearchLayers")));
         }
         //---------下拉框 END
 
@@ -92276,7 +93973,7 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
         poiInputContainer.setAttribute("class", "component-search__input");
         const poiInput = document.createElement("input");
         poiInput.type = "text";
-        poiInput.placeholder = Lang_Lang.i18n("text_label_searchTips");
+        poiInput.placeholder = Lang.i18n("text_label_searchTips");
 
         poiInputContainer.appendChild(poiInput);
         //由View 维护，进行交互操作
@@ -92303,7 +94000,7 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
             navTabsPageObject.closeView();
             const keyWord = this.poiInput.value.trim();
             if (keyWord === "") {
-                this.messageBox.showView(Lang_Lang.i18n('msg_searchKeywords'));
+                this.messageBox.showView(Lang.i18n('msg_searchKeywords'));
                 return;
             }
             if (this.isSearchLayer) {
@@ -92380,7 +94077,7 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
         };
 
         //添加提示框
-        this.messageBox = new MessageBox_MessageBox();
+        this.messageBox = new MessageBox();
         //绑定 VM 的监听
         this._addViewModelListener();
         div.appendChild(poiContainer);
@@ -92551,11 +94248,11 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
         this.viewModel.on("searchfailed", (e) => {
             let message = "";
             if (e.searchType === "searchGeocodeField") {
-                message = Lang_Lang.i18n("msg_searchGeocodeField");
+                message = Lang.i18n("msg_searchGeocodeField");
             } else if (e.searchType === "cityGeocodeField") {
-                message = Lang_Lang.i18n("msg_cityGeocodeField");
+                message = Lang.i18n("msg_cityGeocodeField");
             } else {
-                message = Lang_Lang.i18n("msg_getFeatureField");
+                message = Lang.i18n("msg_getFeatureField");
             }
             this.messageBox.showView(message)
             /**
@@ -92797,11 +94494,11 @@ var SearchView_SearchView = ComponentsViewBase_ComponentsViewBase.extend({
     }
 });
 
-var SearchView_searchView = function (options) {
-    return new SearchView_SearchView(options);
+var searchView = function (options) {
+    return new SearchView(options);
 };
 
-external_L_default.a.supermap.components.search = SearchView_searchView;
+external_L_default.a.supermap.components.search = searchView;
 // CONCATENATED MODULE: ./src/leaflet/components/dataflow/DataFlowViewModel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -92835,7 +94532,7 @@ external_L_default.a.supermap.components.search = SearchView_searchView;
  * @fires L.supermap.components.dataFlowViewModel#dataupdated
  * @extends {L.Evented}
  */
-var DataFlowViewModel_DataFlowViewModel = external_L_default.a.Evented.extend({
+var DataFlowViewModel = external_L_default.a.Evented.extend({
     options: {
         _defaultLayerOptions: {
             //style 返回 marker样式或者 L.path 样式
@@ -92923,7 +94620,7 @@ var DataFlowViewModel_DataFlowViewModel = external_L_default.a.Evented.extend({
             this.dataFlowLayer = null;
         }
         //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
-        const dataFlowLayer = new DataFlowLayer_DataFlowLayer(dataFlowUrl, this.options._defaultLayerOptions);
+        const dataFlowLayer = new DataFlowLayer(dataFlowUrl, this.options._defaultLayerOptions);
         dataFlowLayer.on('subscribesucceeded', (result) => {
             /**
              * @event L.supermap.components.dataFlowViewModel#subscribesucceeded
@@ -93014,11 +94711,11 @@ var DataFlowViewModel_DataFlowViewModel = external_L_default.a.Evented.extend({
     }
 });
 
-var DataFlowViewModel_dataFlowViewModel = function (options) {
-    return new DataFlowViewModel_DataFlowViewModel(options);
+var dataFlowViewModel = function (options) {
+    return new DataFlowViewModel(options);
 };
 
-external_L_default.a.supermap.components.dataFlowViewModel = DataFlowViewModel_dataFlowViewModel;
+external_L_default.a.supermap.components.dataFlowViewModel = dataFlowViewModel;
 // CONCATENATED MODULE: ./src/leaflet/components/dataflow/DataFlowView.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -93048,9 +94745,9 @@ external_L_default.a.supermap.components.dataFlowViewModel = DataFlowViewModel_d
  * @fires L.supermap.components.dataFlow#dataupdated
  * @extends {L.supermap.components.componentsViewBase}
  */
-var DataFlowView_DataFlowView = ComponentsViewBase_ComponentsViewBase.extend({
+var DataFlowView = ComponentsViewBase.extend({
     initialize(options) {
-      ComponentsViewBase_ComponentsViewBase.prototype.initialize.apply(this, [options]);
+      ComponentsViewBase.prototype.initialize.apply(this, [options]);
     },
 
     /**
@@ -93068,8 +94765,8 @@ var DataFlowView_DataFlowView = ComponentsViewBase_ComponentsViewBase.extend({
         if (this.options.onEachFeature) {
             options.style = this.options.onEachFeature;
         }
-        this.viewModel = new DataFlowViewModel_DataFlowViewModel(map, options);
-        return ComponentsViewBase_ComponentsViewBase.prototype.onAdd.apply(this, [map]);
+        this.viewModel = new DataFlowViewModel(map, options);
+        return ComponentsViewBase.prototype.onAdd.apply(this, [map]);
     },
 
     /**
@@ -93080,7 +94777,7 @@ var DataFlowView_DataFlowView = ComponentsViewBase_ComponentsViewBase.extend({
      * @override
      */
     _initView() {
-        const containerObj = new CommonContainer_CommonContainer({title: Lang_Lang.i18n("title_dataFlowService")});
+        const containerObj = new CommonContainer_CommonContainer({title: Lang.i18n("title_dataFlowService")});
         const container = containerObj.getElement();
 
         const componentContent = containerObj.getContentElement();
@@ -93093,8 +94790,8 @@ var DataFlowView_DataFlowView = ComponentsViewBase_ComponentsViewBase.extend({
         const dataFlowInput = document.createElement("input");
         dataFlowInput.setAttribute("class", "component-input-default");
         dataFlowInput.type = "text";
-        dataFlowInput.placeholder = Lang_Lang.i18n('text_input_value_inputDataFlowUrl');
-        dataFlowInput.title = Lang_Lang.i18n('text_input_value_inputDataFlowUrl');
+        dataFlowInput.placeholder = Lang.i18n('text_input_value_inputDataFlowUrl');
+        dataFlowInput.title = Lang.i18n('text_input_value_inputDataFlowUrl');
 
         dataFlowInputContainer.appendChild(dataFlowInput);
         //删除输入值按钮:
@@ -93126,7 +94823,7 @@ var DataFlowView_DataFlowView = ComponentsViewBase_ComponentsViewBase.extend({
         checkboxContainer.appendChild(attributesCheckbox);
         const checkboxLabel = document.createElement("div");
         checkboxLabel.setAttribute("class", "component-label component-label-selected");
-        checkboxLabel.innerHTML = Lang_Lang.i18n('text_displayFeaturesInfo');
+        checkboxLabel.innerHTML = Lang.i18n('text_displayFeaturesInfo');
         checkboxContainer.appendChild(checkboxLabel);
         //----是否显示属性框【属性框复选框点击事件】
         attributesCheckbox.onclick = (e) => {
@@ -93150,12 +94847,12 @@ var DataFlowView_DataFlowView = ComponentsViewBase_ComponentsViewBase.extend({
         dataFlowContainer3.setAttribute("class", "component-dataflow__container component-init-center");
         const subscribe = document.createElement("button");
         subscribe.setAttribute("class", "component-button-default");
-        subscribe.innerHTML = Lang_Lang.i18n('text_subscribe');
+        subscribe.innerHTML = Lang.i18n('text_subscribe');
         //----订阅服务【订阅按钮点击事件】
         subscribe.onclick = () => {
             const urlDataFlow = dataFlowInput.value;
             if (urlDataFlow === "") {
-                this.messageBox.showView(Lang_Lang.i18n('msg_inputDataFlowUrlFirst'));
+                this.messageBox.showView(Lang.i18n('msg_inputDataFlowUrlFirst'));
                 return;
             }
             this.viewModel.subscribe(urlDataFlow);
@@ -93163,7 +94860,7 @@ var DataFlowView_DataFlowView = ComponentsViewBase_ComponentsViewBase.extend({
         dataFlowContainer3.appendChild(subscribe);
         const cancelSubscribe = document.createElement("button");
         cancelSubscribe.setAttribute("class", "component-button-default");
-        cancelSubscribe.innerHTML = Lang_Lang.i18n('text_cancelSubscribe');
+        cancelSubscribe.innerHTML = Lang.i18n('text_cancelSubscribe');
         //----取消订阅服务【取消订阅按钮点击事件】
         cancelSubscribe.onclick = () => {
             this.viewModel.cancelSubscribe();
@@ -93172,14 +94869,14 @@ var DataFlowView_DataFlowView = ComponentsViewBase_ComponentsViewBase.extend({
         componentContent.appendChild(dataFlowContainer3);
 
         //增加提示框：
-        this.messageBox = new MessageBox_MessageBox();
+        this.messageBox = new MessageBox();
 
         this.viewModel.on("dataflowservicesubscribed", () => {
-            this.messageBox.showView(Lang_Lang.i18n("msg_dataflowservicesubscribed"));
+            this.messageBox.showView(Lang.i18n("msg_dataflowservicesubscribed"));
         });
 
         this.viewModel.on("subscribesucceeded", () => {
-            this.messageBox.showView(Lang_Lang.i18n("msg_subscribesucceeded"));
+            this.messageBox.showView(Lang.i18n("msg_subscribesucceeded"));
         });
 
         /**
@@ -93200,11 +94897,11 @@ var DataFlowView_DataFlowView = ComponentsViewBase_ComponentsViewBase.extend({
 
 });
 
-var DataFlowView_dataFlowView = function (options) {
-    return new DataFlowView_DataFlowView(options);
+var dataFlowView = function (options) {
+    return new DataFlowView(options);
 };
 
-external_L_default.a.supermap.components.dataFlow = DataFlowView_dataFlowView;
+external_L_default.a.supermap.components.dataFlow = dataFlowView;
 
 // CONCATENATED MODULE: ./src/leaflet/components/commonmodels/GeoJSONLayerWithName.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -93223,18 +94920,18 @@ external_L_default.a.supermap.components.dataFlow = DataFlowView_dataFlowView;
  * @param {L.GeoJSON} layer -  图层。
  * @category Components Common
  */
-class GeoJSONLayerWithName_GeoJSONLayerWithName {
+class GeoJSONLayerWithName {
     constructor(layerName, layer) {
         this.layerName = layerName;
         this.layer = layer;
     }
 }
 
-var GeoJSONLayerWithName_geoJSONLayerWithName = function (layerName, layer) {
-    return new GeoJSONLayerWithName_GeoJSONLayerWithName(layerName, layer);
+var geoJSONLayerWithName = function (layerName, layer) {
+    return new GeoJSONLayerWithName(layerName, layer);
 };
 
-external_L_default.a.supermap.components.geoJSONLayerWithName = GeoJSONLayerWithName_geoJSONLayerWithName;
+external_L_default.a.supermap.components.geoJSONLayerWithName = geoJSONLayerWithName;
 // CONCATENATED MODULE: ./src/leaflet/components/clientcomputation/ClientComputationViewModel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -93275,7 +94972,7 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
         let result = {};
         let pointData = {}, lineData = {}, polygonData = {};
         for (let i = 0; i < layersArr; i++) {
-            layersArr[i] = new GeoJSONLayerWithName_GeoJSONLayerWithName(layersArr[i].layerName, layersArr[i].layer)
+            layersArr[i] = new GeoJSONLayerWithName(layersArr[i].layerName, layersArr[i].layer)
         }
         this.geoJsonLayersDataModel = new GeoJsonLayersModel_GeoJsonLayersDataModel(layersArr);
         // 把 layersArr 转成 key = layername 对象，方便获取 fields 时遍历
@@ -93486,10 +95183,10 @@ class ClientComputationViewModel_ClientComputationViewModel extends external_L_d
     }
 }
 
-var ClientComputationViewModel_clientComputationViewModel = function (options) {
+var clientComputationViewModel = function (options) {
     return new ClientComputationViewModel_ClientComputationViewModel(options);
 };
-external_L_default.a.supermap.components.clientComputationViewModel = ClientComputationViewModel_clientComputationViewModel;
+external_L_default.a.supermap.components.clientComputationViewModel = clientComputationViewModel;
 
 // CONCATENATED MODULE: ./src/leaflet/components/clientcomputation/ClientComputationView.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -93515,14 +95212,14 @@ external_L_default.a.supermap.components.clientComputationViewModel = ClientComp
  * @category Components ClientComputation
  * @extends {L.supermap.components.componentsViewBase}
  */
-var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsViewBase.extend({
+var ClientComputationView = ComponentsViewBase.extend({
 
     initialize: function (workerUrl, options) {
         if (!workerUrl) {
             throw new Error('workerUrl is required');
         }
         this.workerUrl = workerUrl;
-        ComponentsViewBase_ComponentsViewBase.prototype.initialize.apply(this, [options]);
+        ComponentsViewBase.prototype.initialize.apply(this, [options]);
     },
     /**
      * @function L.supermap.components.clientComputation.prototype.onAdd
@@ -93532,7 +95229,7 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
      */
     onAdd: function (map) {
         this.map = map;
-        return ComponentsViewBase_ComponentsViewBase.prototype.onAdd.apply(this, [map]);
+        return ComponentsViewBase.prototype.onAdd.apply(this, [map]);
     },
     /**
      * @function L.supermap.components.clientComputation.prototype.addLayer
@@ -93614,10 +95311,10 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         let analysisType = document.getElementById('dropDownTop').getAttribute('data-value');
         switch (analysisType) {
             case 'isolines':
-                resultLayersName.value = Lang_Lang.i18n('text_label_isolines') + layerSelectName.title;
+                resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
                 break;
             case 'buffer':
-                resultLayersName.value = Lang_Lang.i18n('text_label_buffer') + layerSelectName.title;
+                resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                 break;
 
         }
@@ -93634,20 +95331,20 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         this.workerUrl && ~~(this.viewModel = new ClientComputationViewModel_ClientComputationViewModel(this.workerUrl));
         //初始化 view
         // Container
-        let container = (new CommonContainer_CommonContainer({ title: Lang_Lang.i18n('title_clientComputing') })).getElement();
+        let container = (new CommonContainer_CommonContainer({ title: Lang.i18n('title_clientComputing') })).getElement();
         container.classList.add('component-analysis');
         container.children[0].style.fontSize = '12px';
         let analysisOptionsArr = [{
-            'title': Lang_Lang.i18n('text_isoline'),
+            'title': Lang.i18n('text_isoline'),
             'dataValue': 'isolines',
-            'remark': Lang_Lang.i18n('text_extractDiscreteValue'),
+            'remark': Lang.i18n('text_extractDiscreteValue'),
             'icon': {
                 'className': 'component-analyst-isoline-img'
             }
         }, {
-            'title': Lang_Lang.i18n('text_buffer'),
+            'title': Lang.i18n('text_buffer'),
             'dataValue': 'buffer',
-            'remark': Lang_Lang.i18n('text_specifyTheDistance'),
+            'remark': Lang.i18n('text_specifyTheDistance'),
             'icon': {
                 'className': 'component-analyst-buffer-img'
             }
@@ -93673,7 +95370,7 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         layerSelectControl.id = 'layerSelectControl';
         let layerOptions = {
             'optionsArr': [''],
-            'labelName': Lang_Lang.i18n('text_label_analysisLayer')
+            'labelName': Lang.i18n('text_label_analysisLayer')
         };
         let layerSelectObj = new Select_Select(layerOptions);
         let layerSelectTool = layerSelectObj.getElement();
@@ -93692,7 +95389,7 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         let isolineDiv = external_L_default.a.DomUtil.create('div', 'component-clientcomputation__isoline', div);
         let fieldsOptions = {
             'optionsArr': [''],
-            'labelName': Lang_Lang.i18n('text_label_extractField'),
+            'labelName': Lang.i18n('text_label_extractField'),
             'optionsClickCb': this.fieldsSelectOnchange
 
         };
@@ -93709,7 +95406,7 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         // 提取值
         let textareaContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__container', isolineDiv);
         let textareaSpan = external_L_default.a.DomUtil.create('span', 'component-textarea__name', textareaContainer);
-        textareaSpan.innerHTML = Lang_Lang.i18n('text_label_extractedValue');
+        textareaSpan.innerHTML = Lang.i18n('text_label_extractedValue');
         let textareaControl = external_L_default.a.DomUtil.create('div', 'component-textarea', textareaContainer);
         textareaControl.id = 'getValueText';
         let scrollarea = external_L_default.a.DomUtil.create('div', '', textareaControl);
@@ -93722,14 +95419,14 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         // 距离衰减
         let breaksDiv = external_L_default.a.DomUtil.create('div', '', isolineDiv);
         let breaksSpan = external_L_default.a.DomUtil.create('span', '', breaksDiv);
-        breaksSpan.innerHTML = Lang_Lang.i18n('text_label_distanceAttenuation');
+        breaksSpan.innerHTML = Lang.i18n('text_label_distanceAttenuation');
         let breaks = external_L_default.a.DomUtil.create('input', '', breaksDiv);
         breaks.value = '3';
 
         // 栅格大小
         let cellSizeDiv = external_L_default.a.DomUtil.create('div', '', isolineDiv);
         let cellSizeSpan = external_L_default.a.DomUtil.create('span', '', cellSizeDiv);
-        cellSizeSpan.innerHTML = Lang_Lang.i18n('text_label_gridSize');
+        cellSizeSpan.innerHTML = Lang.i18n('text_label_gridSize');
         let cellSize = external_L_default.a.DomUtil.create('input', '', cellSizeDiv);
         cellSize.value = '30';
 
@@ -93738,18 +95435,18 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         let bufferDiv = external_L_default.a.DomUtil.create('div', 'component-clientcomputation__buffer hidden', div);
         let bufferRadius = external_L_default.a.DomUtil.create('div', 'component-clientcomputation__buffer--radius', bufferDiv);
         let bufferRadiusSpan = external_L_default.a.DomUtil.create('span', '', bufferRadius);
-        bufferRadiusSpan.innerHTML = Lang_Lang.i18n('text_label_bufferRadius');
+        bufferRadiusSpan.innerHTML = Lang.i18n('text_label_bufferRadius');
         let bufferRadiusDiv = external_L_default.a.DomUtil.create('div', '', bufferRadius);
         let bufferRadiusInput = external_L_default.a.DomUtil.create('input', 'buffer-radius-input', bufferRadiusDiv);
         bufferRadiusInput.id = 'bufferRadiusInput';
         bufferRadiusInput.value = '10';
-        bufferRadiusInput.setAttribute('placeholder', Lang_Lang.i18n('text_label_defaultkilometers'));
+        bufferRadiusInput.setAttribute('placeholder', Lang.i18n('text_label_defaultkilometers'));
         let bufferUnit = external_L_default.a.DomUtil.create('div', 'component-clientcomputation__buffer--unit', bufferRadiusDiv);
         bufferUnit.id = 'bufferUnit';
         // 半径单位选择下拉框
         let bufferUnitOptions = {
-            'optionsArr': [Lang_Lang.i18n('text_option_kilometer')],
-            'labelName': Lang_Lang.i18n('text_label_unit')
+            'optionsArr': [Lang.i18n('text_option_kilometer')],
+            'labelName': Lang.i18n('text_label_unit')
         };
 
         let bufferUnitSelectTool = (new Select_Select(bufferUnitOptions)).getElement();
@@ -93768,7 +95465,7 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         saveAttrsCheckbox.id = 'saveAttrsCheckbox';
         let saveAttrsLabel = external_L_default.a.DomUtil.create('div', 'lable', saveAttrsContainer);
         saveAttrsLabel.id = 'saveAttrsLabel';
-        saveAttrsLabel.innerHTML = Lang_Lang.i18n('text_retainOriginal');
+        saveAttrsLabel.innerHTML = Lang.i18n('text_retainOriginal');
 
         // 合并缓冲区
         let isUnionContainer = external_L_default.a.DomUtil.create('div', 'component-clientcomputation__buffer--isunion', saveFieldDiv);
@@ -93776,13 +95473,13 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         let isUnionCheckbox = external_L_default.a.DomUtil.create('div', 'checkbox checkbox-fault', isUnionContainer);
         isUnionCheckbox.id = 'isUnionCheckbox';
         let isUnionLabel = external_L_default.a.DomUtil.create('div', 'lable', isUnionContainer);
-        isUnionLabel.innerHTML = Lang_Lang.i18n('text_mergeBuffer');
+        isUnionLabel.innerHTML = Lang.i18n('text_mergeBuffer');
         isUnionLabel.id = 'isUnionLabel';
 
         // 结果图层
         let resultLayerDiv = external_L_default.a.DomUtil.create('div', 'component-analysis__container__resultLayersName', analysisTypeContainer);
         let resultLayerSpan = external_L_default.a.DomUtil.create('span', '', resultLayerDiv);
-        resultLayerSpan.innerHTML = Lang_Lang.i18n('text_label_resultLayerName');
+        resultLayerSpan.innerHTML = Lang.i18n('text_label_resultLayerName');
         let resultLayersName = external_L_default.a.DomUtil.create('input', '', resultLayerDiv);
         resultLayersName.id = 'resultLayersName';
 
@@ -93790,7 +95487,7 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         let runBtnContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__container__analysisbtn', analysisTypeContainer);
         let runBtn = external_L_default.a.DomUtil.create('div', 'component-analysis__analysisbtn', runBtnContainer);
         let analysisBtn = external_L_default.a.DomUtil.create('button', 'component-analysis__analysisbtn--analysis', runBtn);
-        analysisBtn.innerHTML = Lang_Lang.i18n('btn_analyze');
+        analysisBtn.innerHTML = Lang.i18n('btn_analyze');
         let analysingContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__analysisbtn--analysing-container hidden', runBtn);
         let analysisingBtn = external_L_default.a.DomUtil.create('div', 'component-analysis__analysisbtn--analysising', analysingContainer);
         let svgContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__svg-container', analysisingBtn);
@@ -93801,11 +95498,11 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
             <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
             <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
         </svg>`;
-        external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang_Lang.i18n('btn_analyzing');
+        external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_analyzing');
         let analysisCancelBtn = external_L_default.a.DomUtil.create('button', 'component-analysis__analysisbtn--cancel', analysingContainer);
-        analysisCancelBtn.innerHTML = Lang_Lang.i18n('btn_cancelAnalysis');
+        analysisCancelBtn.innerHTML = Lang.i18n('btn_cancelAnalysis');
         let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'component-analysis__analysisbtn--analysis component-analysis__analysisbtn--deletelayers', runBtn);
-        deleteLayersBtn.innerHTML = Lang_Lang.i18n('btn_emptyTheAnalysisLayer');
+        deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheAnalysisLayer');
 
         for (let i = 0; i < dropDownItems.children.length; i++) {
             // 点击何种分析类型 判断使用图层数据
@@ -93821,14 +95518,14 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
                         isolineDiv.classList.add('hidden');
                         bufferDiv.classList.remove('hidden');
                         componentContentContainer.style.height = '422px';
-                        resultLayersName.value = Lang_Lang.i18n('text_label_buffer') + layerSelectName.title;
+                        resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                         currentFillData = this.fillData['point'];
                         break;
                     case 'isolines':
                         isolineDiv.classList.remove('hidden');
                         bufferDiv.classList.add('hidden');
                         componentContentContainer.style.height = '712px';
-                        resultLayersName.value = Lang_Lang.i18n('text_label_isolines') + layerSelectName.title;
+                        resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
                         currentFillData = this.fillData['point'];
                         break;
                 }
@@ -93857,9 +95554,9 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
                 this.layerSelectObj.optionClickEvent(layersSelect, layerSelectName, this.layersSelectOnchange);
 
                 if (analysisMethod === 'buffer') {
-                    resultLayersName.value = Lang_Lang.i18n('text_label_buffer') + layserArr[0];
+                    resultLayersName.value = Lang.i18n('text_label_buffer') + layserArr[0];
                 } else if (analysisMethod === 'isolines') {
-                    resultLayersName.value = Lang_Lang.i18n('text_label_isolines') + layserArr[0];
+                    resultLayersName.value = Lang.i18n('text_label_isolines') + layserArr[0];
                 }
 
                 // 当前选中图层数据
@@ -93902,10 +95599,10 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
                 let analysisMethod = document.getElementById('dropDownTop').getAttribute('data-value');
                 switch (analysisMethod) {
                     case 'buffer':
-                        resultLayersName.value = Lang_Lang.i18n('text_label_buffer') + layerSelectName;
+                        resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName;
                         break;
                     case 'isolines':
-                        resultLayersName.value = Lang_Lang.i18n('text_label_isolines') + layerSelectName;
+                        resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName;
                         break;
                 }
             }
@@ -93966,7 +95663,7 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
         }
 
         // 提示框
-        this.messageBox = new MessageBox_MessageBox();
+        this.messageBox = new MessageBox();
         // 分析按钮点击事件
         analysisBtn.onclick = () => {
             analysingContainer.style.display = 'block';
@@ -93998,7 +95695,7 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
             this.viewModel.on('analysisfailed', ()=> {
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
-                this.messageBox.showView(Lang_Lang.i18n('msg_resultIsEmpty'), "failure");
+                this.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
                 /**
                  * @event L.supermap.components.clientComputation#analysisfailed
                  * @description 分析失败之后触发。
@@ -94092,11 +95789,11 @@ var ClientComputationView_ClientComputationView = ComponentsViewBase_ComponentsV
 
 });
 
-var ClientComputationView_clientComputationView = function (options) {
-    return new ClientComputationView_ClientComputationView(options);
+var clientComputationView = function (options) {
+    return new ClientComputationView(options);
 };
 
-external_L_default.a.supermap.components.clientComputation = ClientComputationView_clientComputationView;
+external_L_default.a.supermap.components.clientComputation = clientComputationView;
 // CONCATENATED MODULE: ./src/leaflet/components/clientcomputation/ClientComputationLayer.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -94115,17 +95812,17 @@ external_L_default.a.supermap.components.clientComputation = ClientComputationVi
  * @param {Array.<string>} [layerObject.fields] - 字段数组。
  * @category Components ClientComputation
  */
-class ClientComputationLayer_ClientComputationLayer{
+class ClientComputationLayer{
     constructor(layerObject){
         this.layerName = layerObject.layerName;
         this.layer = layerObject.layer;
         this.fields = layerObject.fields || null;
     }
 }
-var ClientComputationLayer_clientComputationLayer = function(layerObject){
-    return new ClientComputationLayer_ClientComputationLayer(layerObject)
+var clientComputationLayer = function(layerObject){
+    return new ClientComputationLayer(layerObject)
 }
-external_L_default.a.supermap.components.clientComputationLayer = ClientComputationLayer_clientComputationLayer;
+external_L_default.a.supermap.components.clientComputationLayer = clientComputationLayer;
 
 // CONCATENATED MODULE: ./src/leaflet/components/distributedanalysis/DistributedAnalysisModel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -94165,13 +95862,13 @@ class DistributedAnalysisModel_DistributedAnalysisModel extends external_L_defau
         let sharefileUrl = host + '/iserver/services/datacatalog/rest/datacatalog/sharefile.json';
         let datasetsUrl = host + '/iserver/services/datacatalog/rest/datacatalog/relationship/datasets.json';
         let me = this;
-        FetchRequest_FetchRequest.get(sharefileUrl).then(function (response) {
+        FetchRequest.get(sharefileUrl).then(function (response) {
             return response.json();
         }).then(function (result) {
             me.dataset['datasetNames'] = me.dataset['datasetNames'].concat(result.datasetNames);
             me.dataset['childUrl'] = me.dataset['childUrl'].concat(result.childUriList);
             let _me = me;
-            FetchRequest_FetchRequest.get(datasetsUrl).then(function (response) {
+            FetchRequest.get(datasetsUrl).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 _me.dataset['datasetNames'] = _me.dataset['datasetNames'].concat(result.datasetNames);
@@ -94201,7 +95898,7 @@ class DistributedAnalysisModel_DistributedAnalysisModel extends external_L_defau
     getDatasetInfo(datasetUrl) {
         let type;
         let me = this;
-        FetchRequest_FetchRequest.get(datasetUrl).then(function (response) {
+        FetchRequest.get(datasetUrl).then(function (response) {
             return response.json();
         }).then(function (data) {
             let datasetInfo = data.datasetInfo
@@ -94228,7 +95925,7 @@ class DistributedAnalysisModel_DistributedAnalysisModel extends external_L_defau
                 me.fire('datasetinfoloaded', { 'result': { 'type': type, 'fields': fields } })
             } else {
                 let fieldsUrl = data.childUriList[0].replace('//fields', '/fields');
-                FetchRequest_FetchRequest.get(fieldsUrl).then(function (response) {
+                FetchRequest.get(fieldsUrl).then(function (response) {
                     return response.json();
                 }).then(function (data) {
                     let fieldNames = data.fieldNames;
@@ -94324,7 +96021,7 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
      * @param {L.Map} map - leaflet Map 对象。
      */
     analysis(params, map) {
-        let processingService = new ProcessingService_ProcessingService(this.processingUrl);
+        let processingService = new ProcessingService(this.processingUrl);
         if (params.analysisParam instanceof KernelDensityJobParameter_KernelDensityJobParameter) {
             let kernelDensityJobParameter = params.analysisParam
             let me = this;
@@ -94339,7 +96036,7 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        FetchRequest_FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
+                        FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
                             return response.json();
                         }).then(function (result) {
                             let mapUrl = result[0].path;
@@ -94386,10 +96083,10 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
     }
 
 }
-var DistributedAnalysisViewModel_distributedAnalysisViewModel = function (options) {
+var distributedAnalysisViewModel = function (options) {
     return new DistributedAnalysisViewModel_DistributedAnalysisViewModel(options);
 };
-external_L_default.a.supermap.components.distributedAnalysisViewModel = DistributedAnalysisViewModel_distributedAnalysisViewModel;
+external_L_default.a.supermap.components.distributedAnalysisViewModel = distributedAnalysisViewModel;
 
 // CONCATENATED MODULE: ./src/leaflet/components/distributedanalysis/DistributedAnalysisView.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -94415,10 +96112,10 @@ external_L_default.a.supermap.components.distributedAnalysisViewModel = Distribu
  * @extends {L.supermap.components.componentsViewBase}
  * @category Components DistributedAnalysis
  */
-var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_ComponentsViewBase.extend({
+var DistributedAnalysisView = ComponentsViewBase.extend({
 
     initialize: function (processingUrl, options) {
-      ComponentsViewBase_ComponentsViewBase.prototype.initialize.apply(this, [options]);
+      ComponentsViewBase.prototype.initialize.apply(this, [options]);
         //初始化 ViewModel:
         this.viewModel = new DistributedAnalysisViewModel_DistributedAnalysisViewModel(processingUrl);
     },
@@ -94430,7 +96127,7 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
      */
     onAdd: function (map) {
         this._fillDataToView();
-        return ComponentsViewBase_ComponentsViewBase.prototype.onAdd.apply(this, [map]);
+        return ComponentsViewBase.prototype.onAdd.apply(this, [map]);
     },
 
     /**
@@ -94460,7 +96157,7 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
      */
     _initView: function () {
         // 组件 container
-        let container = (new CommonContainer_CommonContainer({title: Lang_Lang.i18n('title_distributedAnalysis')})).getElement();
+        let container = (new CommonContainer_CommonContainer({title: Lang.i18n('title_distributedAnalysis')})).getElement();
         container.classList.add('component-analysis');
         container.children[0].style.fontSize = '12px';
 
@@ -94469,9 +96166,9 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
 
         // 分析方式下拉框
         let analysisOptionsArr = [{
-            'title': Lang_Lang.i18n('text_densityAnalysis'),
+            'title': Lang.i18n('text_densityAnalysis'),
             'dataValue': 'density',
-            'remark': Lang_Lang.i18n('text_CalculateTheValuePerUnitArea'),
+            'remark': Lang.i18n('text_CalculateTheValuePerUnitArea'),
             'icon': {
                 'className': 'component-analyst-density-img'
             }
@@ -94489,8 +96186,8 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
         // 数据集下拉框
         let datasetSelectControl = external_L_default.a.DomUtil.create('div', 'component-analysis__selecttool', analysisLayer);
         let datasetOptions = {
-            'optionsArr': [Lang_Lang.i18n('text_option_selectDataset')],
-            'labelName': Lang_Lang.i18n('text_label_dataset'),
+            'optionsArr': [Lang.i18n('text_option_selectDataset')],
+            'labelName': Lang.i18n('text_label_dataset'),
             "optionsClickCb": datasetSelectOnchange.bind(this)
         };
         let datasetSelectObj = new Select_Select(datasetOptions);
@@ -94508,12 +96205,12 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
         // 分析方法下拉框 & 网格面类型下拉框
         let analyseIDW = external_L_default.a.DomUtil.create('div', 'component-analysis__idw', analysisLayer);
         let analysisOptions = [{
-            'optionsArr': [Lang_Lang.i18n('text_option_simplePointDensityAnalysis'), Lang_Lang.i18n('text_option_nuclearDensityAnalysis')],
-            'labelName': Lang_Lang.i18n('text_label_analyticalMethod')
+            'optionsArr': [Lang.i18n('text_option_simplePointDensityAnalysis'), Lang.i18n('text_option_nuclearDensityAnalysis')],
+            'labelName': Lang.i18n('text_label_analyticalMethod')
             // 'optionsClickCb': analysisMethodSelectOnchange.bind(this)
         }, {
-            'optionsArr': [Lang_Lang.i18n('text_option_quadrilateral'), Lang_Lang.i18n('text_option_hexagon')],
-            'labelName': Lang_Lang.i18n('text_label_meshType')
+            'optionsArr': [Lang.i18n('text_option_quadrilateral'), Lang.i18n('text_option_hexagon')],
+            'labelName': Lang.i18n('text_label_meshType')
         }];
         // 分析参数 select control
         let analysisSelectControl = external_L_default.a.DomUtil.create('div', 'component-analysis__idw__selecttool', analyseIDW);
@@ -94524,8 +96221,8 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
 
         // 权重选择下拉框
         let weightFieldsSelectOptions = {
-            'optionsArr': [Lang_Lang.i18n('text_option_notSet')],
-            'labelName': Lang_Lang.i18n('text_label_weightField')
+            'optionsArr': [Lang.i18n('text_option_notSet')],
+            'labelName': Lang.i18n('text_label_weightField')
         };
         let weightFieldsSelectObj = new Select_Select(weightFieldsSelectOptions);
         let weightFieldsSelectTool = weightFieldsSelectObj.getElement();
@@ -94553,22 +96250,22 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
         // 分析范围 & 网格大小 & 搜索半径 & 面积单位
         // 分析范围
         let inputOptions = [{
-            'spanName': Lang_Lang.i18n('text_label_queryRange'),
+            'spanName': Lang.i18n('text_label_queryRange'),
             'value': ''
         }];
         for (let i in inputOptions) {
             this._creatInputBox(inputOptions[i], analysisSelectControl)
         }
         let queryRangeInput = analysisSelectControl.children[3].children[1];
-        queryRangeInput.setAttribute('placeholder', Lang_Lang.i18n('text_label_queryRangeTips'));
-        queryRangeInput.title = Lang_Lang.i18n('text_label_queryRangeTips');
+        queryRangeInput.setAttribute('placeholder', Lang.i18n('text_label_queryRangeTips'));
+        queryRangeInput.title = Lang.i18n('text_label_queryRangeTips');
 
         // 网格大小
         let gridSizeUnitSelectOptions = {
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         };
         let gridSizeOptions = {
-            'labelName': Lang_Lang.i18n('text_label_gridSizeInMeters'),
+            'labelName': Lang.i18n('text_label_gridSizeInMeters'),
             'selectOptions': gridSizeUnitSelectOptions
         };
         let gridSizeContainer = this._creatUnitSelectBox(gridSizeOptions, analysisSelectControl);
@@ -94581,7 +96278,7 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         };
         let searchRadiusOptions = {
-            'labelName': Lang_Lang.i18n('text_label_searchRadius'),
+            'labelName': Lang.i18n('text_label_searchRadius'),
             'selectOptions': searchRadiusUnitSelectOptions
         };
         let searchRadiusContainer = this._creatUnitSelectBox(searchRadiusOptions, analysisSelectControl);
@@ -94590,7 +96287,7 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
         let searchRadiusSelectName = searchRadiusContainer.children[1].children[1].children[0].children[0].children[0];
         // 面积单位
         let areaUnitSelectOptions = {
-            'labelName': Lang_Lang.i18n('text_label_areaUnit'),
+            'labelName': Lang.i18n('text_label_areaUnit'),
             'optionsArr': ['SquareMile', 'SquareMeter', 'Hectare', 'Acre', 'SquareFoot', 'SquareYard']
         };
         let areaUnitSelectTool = (new Select_Select(areaUnitSelectOptions)).getElement();
@@ -94599,8 +96296,8 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
         // 专题图分段
         let rangeContent = external_L_default.a.DomUtil.create('div', 'range-content', analysisType);
         let rangeContentOptions = {
-            'optionsArr': [Lang_Lang.i18n('text_option_notSet'), Lang_Lang.i18n('text_option_equidistantSegmentation'), Lang_Lang.i18n('text_option_logarithm'), Lang_Lang.i18n('text_option_equalCountingSegment'), Lang_Lang.i18n('text_option_squareRootSegmentation')],
-            'labelName': Lang_Lang.i18n('text_label_thematicMapSegmentationMode'),
+            'optionsArr': [Lang.i18n('text_option_notSet'), Lang.i18n('text_option_equidistantSegmentation'), Lang.i18n('text_option_logarithm'), Lang.i18n('text_option_equalCountingSegment'), Lang.i18n('text_option_squareRootSegmentation')],
+            'labelName': Lang.i18n('text_label_thematicMapSegmentationMode'),
             "optionsClickCb": themeModelSelectOnchange
         };
         rangeContent.appendChild((new Select_Select(rangeContentOptions)).getElement());
@@ -94612,18 +96309,18 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
         this._setEleAtribute(themeModelDataValue, 'data-value', themeModelSelect.children);
 
         let rangeContentParamInput = this._creatInputBox({
-            'spanName': Lang_Lang.i18n('text_label_thematicMapSegmentationParameters'),
+            'spanName': Lang.i18n('text_label_thematicMapSegmentationParameters'),
             'value': '20'
         }, rangeContent);
         rangeContentParamInput.classList.add('hidden');
         let rangeContentModelSelectTool = (new Select_Select({
             'optionsArr': [
-                Lang_Lang.i18n('text_option_greenOrangePurpleGradient'),
-                Lang_Lang.i18n('text_option_greenOrangeRedGradient'),
-                Lang_Lang.i18n('text_option_rainbowGradient'),
-                Lang_Lang.i18n('text_option_spectralGradient'),
-                Lang_Lang.i18n('text_option_terrainGradient')],
-            'labelName': Lang_Lang.i18n('text_label_thematicMapColorGradientMode')
+                Lang.i18n('text_option_greenOrangePurpleGradient'),
+                Lang.i18n('text_option_greenOrangeRedGradient'),
+                Lang.i18n('text_option_rainbowGradient'),
+                Lang.i18n('text_option_spectralGradient'),
+                Lang.i18n('text_option_terrainGradient')],
+            'labelName': Lang.i18n('text_label_thematicMapColorGradientMode')
         })).getElement();
         rangeContent.appendChild(rangeContentModelSelectTool);
         rangeContentModelSelectTool.classList.add('hidden');
@@ -94647,14 +96344,14 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
         // 结果图层
         let resultLayerContainer = external_L_default.a.DomUtil.create('div', '', analysisType);
         let resultLayerSpan = external_L_default.a.DomUtil.create('span', '', resultLayerContainer);
-        resultLayerSpan.innerHTML = Lang_Lang.i18n('text_label_resultLayerName');
+        resultLayerSpan.innerHTML = Lang.i18n('text_label_resultLayerName');
         let resultLayerInput = external_L_default.a.DomUtil.create('input', 'component-distributeanalysis__input', resultLayerContainer);
 
         // 分析 & 分析中 & 取消 按钮
         let runBtnContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__container__analysisbtn', analysisTypeContainer);
         let runBtn = external_L_default.a.DomUtil.create('div', 'component-analysis__analysisbtn', runBtnContainer);
         let analysisBtn = external_L_default.a.DomUtil.create('button', 'component-analysis__analysisbtn--analysis', runBtn);
-        analysisBtn.innerHTML = Lang_Lang.i18n('btn_analyze');
+        analysisBtn.innerHTML = Lang.i18n('btn_analyze');
         let analysingContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__analysisbtn--analysing-container hidden', runBtn);
         let analysisingBtn = external_L_default.a.DomUtil.create('div', 'component-analysis__analysisbtn--analysising', analysingContainer);
         analysisingBtn.style.width = '200px';
@@ -94665,16 +96362,16 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
             <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
             <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
         </svg>`;
-        external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang_Lang.i18n('btn_analyzing');
+        external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_analyzing');
 
         // 删除按钮
         let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'component-analysis__analysisbtn--analysis component-analysis__analysisbtn--deletelayers', runBtn);
         deleteLayersBtn.id = 'deleteLayersBtn';
-        deleteLayersBtn.innerHTML = Lang_Lang.i18n('btn_emptyTheAnalysisLayer');
+        deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheAnalysisLayer');
 
         // 交互
         // 弹框
-        this.messageBox = new MessageBox_MessageBox();
+        this.messageBox = new MessageBox();
 
         // 数据集下拉框 onchange 事件
         this.datasetSelectOnchange = datasetSelectOnchange.bind(this);
@@ -94688,15 +96385,15 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
                 // 判断当前选中数据集是否支持该选中分析类，并填充分析权重字段
                 let _me = this;
                 this.viewModel.on('datasetinfoloaded', function (e) {
-                    weightFieldsSelectName.title = Lang_Lang.i18n('text_option_notSet');
-                    weightFieldsSelectName.innerHTML = Lang_Lang.i18n('text_option_notSet');
+                    weightFieldsSelectName.title = Lang.i18n('text_option_notSet');
+                    weightFieldsSelectName.innerHTML = Lang.i18n('text_option_notSet');
                     weightFieldsSelect.innerHTML = '';
                     let analyseType = dropDownTop.getAttribute('data-value');
                     let type = e.result.type;
                     let fields = e.result.fields;
                     if (analyseType === 'density') {
                         if (type === 'REGION' || type === 'LINE') {
-                            _me.messageBox.showView(Lang_Lang.i18n('msg_datasetOrMethodUnsupport'), "failure");
+                            _me.messageBox.showView(Lang.i18n('msg_datasetOrMethodUnsupport'), "failure");
                         } else {
                             _me.messageBox.closeView();
                             _me._createOptions(weightFieldsSelect, fields);
@@ -94712,10 +96409,10 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
         analysisBtn.onclick = () => {
             this.messageBox.closeView();
             let params = getAnalysisParam();
-            if (datasetSelectName.title === Lang_Lang.i18n('text_option_selectDataset')) {
-                this.messageBox.showView(Lang_Lang.i18n('msg_selectDataset'), "failure");
-            } else if ( weightFieldsSelectName.title === Lang_Lang.i18n('text_option_notSet')) {
-                this.messageBox.showView(Lang_Lang.i18n('msg_setTheWeightField'), "failure");
+            if (datasetSelectName.title === Lang.i18n('text_option_selectDataset')) {
+                this.messageBox.showView(Lang.i18n('msg_selectDataset'), "failure");
+            } else if ( weightFieldsSelectName.title === Lang.i18n('text_option_notSet')) {
+                this.messageBox.showView(Lang.i18n('msg_setTheWeightField'), "failure");
             } else {
                 this.messageBox.closeView();
                 analysingContainer.style.display = 'block';
@@ -94734,7 +96431,7 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
                 });
                 
                 this.viewModel.on('analysisfailed', (e) => {
-                    this.messageBox.showView(Lang_Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
+                    this.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
                     /**
@@ -94881,11 +96578,11 @@ var DistributedAnalysisView_DistributedAnalysisView = ComponentsViewBase_Compone
     }
 
 });
-var DistributedAnalysisView_distributedAnalysisView = function (options) {
-    return new DistributedAnalysisView_DistributedAnalysisView(options);
+var distributedAnalysisView = function (options) {
+    return new DistributedAnalysisView(options);
 };
 
-external_L_default.a.supermap.components.distributedAnalysis = DistributedAnalysisView_distributedAnalysisView;
+external_L_default.a.supermap.components.distributedAnalysis = distributedAnalysisView;
 // CONCATENATED MODULE: ./src/leaflet/components/dataservicequery/DataServiceQueryViewModel.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -94990,10 +96687,10 @@ class DataServiceQueryViewModel_DataServiceQueryViewModel extends external_L_def
         this.resultLayers = [];
     }
 }
-var DataServiceQueryViewModel_dataServiceQueryViewModel = function (dataserviceUrl) {
-    return new DataServiceQueryViewModel_dataServiceQueryViewModel(dataserviceUrl);
+var dataServiceQueryViewModel = function (dataserviceUrl) {
+    return new dataServiceQueryViewModel(dataserviceUrl);
 };
-external_L_default.a.supermap.components.dataServiceQueryViewModel = DataServiceQueryViewModel_dataServiceQueryViewModel;
+external_L_default.a.supermap.components.dataServiceQueryViewModel = dataServiceQueryViewModel;
 
 // CONCATENATED MODULE: ./src/leaflet/components/dataservicequery/DataServiceQueryView.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
@@ -95020,10 +96717,10 @@ external_L_default.a.supermap.components.dataServiceQueryViewModel = DataService
  * @category Components DataServiceQuery
  * @extends {L.supermap.components.componentsViewBase}
  */
-var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsViewBase.extend({
+var DataServiceQueryView = ComponentsViewBase.extend({
 
     initialize: function (dataServiceUrl, dataSetNames, options) {
-      ComponentsViewBase_ComponentsViewBase.prototype.initialize.apply(this, [options]);
+      ComponentsViewBase.prototype.initialize.apply(this, [options]);
 
         this.dataServiceUrl = dataServiceUrl;
         if (!dataSetNames || dataSetNames.length === 0) {
@@ -95043,7 +96740,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
      * @override
      */
     onAdd: function (map) {
-        return ComponentsViewBase_ComponentsViewBase.prototype.onAdd.apply(this, [map]);
+        return ComponentsViewBase.prototype.onAdd.apply(this, [map]);
     },
 
     /**
@@ -95114,10 +96811,10 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
     _initView: function () {
         // 初始化 ViewModel:
         this.viewModel = new DataServiceQueryViewModel_DataServiceQueryViewModel(this.dataServiceUrl);
-        this.messageBox = new MessageBox_MessageBox();
+        this.messageBox = new MessageBox();
 
         // 组件 container
-        let container = (new CommonContainer_CommonContainer({title: Lang_Lang.i18n('title_dataServiceQuery')})).getElement();
+        let container = (new CommonContainer_CommonContainer({title: Lang.i18n('title_dataServiceQuery')})).getElement();
         container.classList.add('component-servicequery__container');
         container.children[0].classList.add('component-servicequery__title');
         let componentContentContainer = container.children[1];
@@ -95147,7 +96844,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
         // 要素 ID 数组
         let featuresIdArrContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__container component-textarea--dataservice__container', analysisLayer);
         let textareaSpan = external_L_default.a.DomUtil.create('span', 'textarea-name', featuresIdArrContainer);
-        textareaSpan.innerHTML = Lang_Lang.i18n('text_label_IDArrayOfFeatures');
+        textareaSpan.innerHTML = Lang.i18n('text_label_IDArrayOfFeatures');
         let textareaControl = external_L_default.a.DomUtil.create('div', 'component-textarea component-textarea--dataservice', featuresIdArrContainer);
         textareaControl.id = 'getfeaturesIdArr';
         let scrollarea = external_L_default.a.DomUtil.create('div', 'scrollarea', textareaControl);
@@ -95160,7 +96857,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
         // SQL 最多可返回的要素数量
         let maxFeaturesContainer = external_L_default.a.DomUtil.create('div', 'component-servicequery__maxfeatures-container hidden', analysisLayer);
         let maxFeaturesOtions = {
-            'spanName': Lang_Lang.i18n('text_label_maxFeatures'),
+            'spanName': Lang.i18n('text_label_maxFeatures'),
             'value': '1000'
         };
         let maxFeaturesInputBox = this._creatInputBox(maxFeaturesOtions, maxFeaturesContainer);
@@ -95169,7 +96866,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
         // Buffer 缓冲区距离
         let bufferDistanceContainer = external_L_default.a.DomUtil.create('div', 'component-servicequery__distance-container hidden', analysisLayer);
         let bufferDistanceOtions = {
-            'spanName': Lang_Lang.i18n('text_label_bufferDistance'),
+            'spanName': Lang.i18n('text_label_bufferDistance'),
             'value': '10'
         };
         let bufferDistanceInputBox = this._creatInputBox(bufferDistanceOtions, bufferDistanceContainer);
@@ -95181,7 +96878,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
         let queryRangetextareaSpan = external_L_default.a.DomUtil.create('span', 'textarea-name', queryRangeContainer);
         let queryRangeMainContent = external_L_default.a.DomUtil.create('div', '', queryRangeContainer);
         let queryRangeIconContainer = external_L_default.a.DomUtil.create('div', 'component-servicequery__rangeicon-container', queryRangeMainContent);
-        queryRangetextareaSpan.innerHTML = Lang_Lang.i18n('text_label_queryRange1');
+        queryRangetextareaSpan.innerHTML = Lang.i18n('text_label_queryRange1');
         let queryRangeRecIcon = external_L_default.a.DomUtil.create('div', 'component-servicequery__rangeicon supermapol-icons-polygon-layer bounds', queryRangeIconContainer);
         let queryRangeLineIcon = external_L_default.a.DomUtil.create('div', 'component-servicequery__rangeicon supermapol-icons-line-layer hidden', queryRangeIconContainer);
         let queryRangePointIcon = external_L_default.a.DomUtil.create('div', 'component-servicequery__rangeicon supermapol-icons-point-layer hidden', queryRangeIconContainer);
@@ -95197,7 +96894,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
         let spatialQueryModeContainer = external_L_default.a.DomUtil.create('div', 'component-servicequery__spatialquerymode-container hidden', analysisLayer);
         let spatialQueryModeOptions = {
             'optionsArr': ['CONTAIN', 'CROSS', 'DISJOINT', 'IDENTITY', 'INTERSECT', 'NONE', 'OVERLAP', 'TOUCH', 'WITHIN'],
-            'labelName': Lang_Lang.i18n('text_label_spatialQueryMode')
+            'labelName': Lang.i18n('text_label_spatialQueryMode')
         };
         let spatialQueryModeControl = external_L_default.a.DomUtil.create('div', 'component-analysis__selecttool', spatialQueryModeContainer);
         let spatialQueryModeSelectTool = (new Select_Select(spatialQueryModeOptions)).getElement();
@@ -95213,7 +96910,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
         let runBtnContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__container__analysisbtn', analysisLayer);
         let runBtn = external_L_default.a.DomUtil.create('div', 'component-analysis__analysisbtn', runBtnContainer);
         let analysisBtn = external_L_default.a.DomUtil.create('button', 'component-analysis__analysisbtn--analysis', runBtn);
-        analysisBtn.innerHTML = Lang_Lang.i18n('btn_query');
+        analysisBtn.innerHTML = Lang.i18n('btn_query');
         let analysingContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__analysisbtn--analysing-container hidden', runBtn);
         let analysisingBtn = external_L_default.a.DomUtil.create('div', 'component-analysis__analysisbtn--analysising component-servicequery__querybtn--querying', analysingContainer);
         let svgContainer = external_L_default.a.DomUtil.create('div', 'component-analysis__svg-container', analysisingBtn);
@@ -95223,11 +96920,11 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
              <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
              <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
          </svg>`;
-        external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang_Lang.i18n('btn_querying');
+        external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_querying');
 
         // 删除按钮
         let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'component-analysis__analysisbtn--analysis component-analysis__analysisbtn--deletelayers', runBtn);
-        deleteLayersBtn.innerHTML = Lang_Lang.i18n('btn_emptyTheRresultLayer');
+        deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheRresultLayer');
 
         // 设置当前显示参数
         queryModeltOnchange(queryModelOptionsArr[0]);
@@ -95244,7 +96941,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
                 analysingContainer.style.display = 'none';
                 analysisBtn.style.display = 'block';
                 if (e.result.features.length === 0) {
-                    this.messageBox.showView(Lang_Lang.i18n('msg_dataReturnedIsEmpty'), "success");
+                    this.messageBox.showView(Lang.i18n('msg_dataReturnedIsEmpty'), "success");
                 }
                 /**
                  * @event L.supermap.components.dataServiceQuery#getfeaturessucceeded
@@ -95343,7 +97040,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
             if (queryModelOptionsArr instanceof Array && queryModelOptionsArr.length > 1) {
                 let queryModelOptions = {
                     'optionsArr': queryModelOptionsArr,
-                    'labelName': Lang_Lang.i18n('text_label_queryMode'),
+                    'labelName': Lang.i18n('text_label_queryMode'),
                     'optionsClickCb': this.queryModeltOnchange
                 };
                 let queryModelSelectTool = (new Select_Select(queryModelOptions)).getElement();
@@ -95355,7 +97052,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
                 queryModelSelect.classList.add('querymodel-select');
             } else {
                 let span = external_L_default.a.DomUtil.create('span', '', queryModelContainer);
-                span.innerHTML = Lang_Lang.i18n('text_label_queryMode');
+                span.innerHTML = Lang.i18n('text_label_queryMode');
                 queryModelSelectName = external_L_default.a.DomUtil.create('div', 'component-servicequery__querymode-selectname', queryModelContainer);
                 let text = external_L_default.a.DomUtil.create('span', '', queryModelSelectName);
                 if (queryModelOptionsArr instanceof Array) {
@@ -95388,18 +97085,18 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
             queryRangePointIcon.classList.add('hidden');
             queryRangeRecIcon.classList.remove('bounds');
             spatialQueryModeContainer.classList.add('hidden');
-            textareaSpan.innerHTML = Lang_Lang.i18n('text_label_featureFilter');
+            textareaSpan.innerHTML = Lang.i18n('text_label_featureFilter');
             getValueTextArea.value = 'SMID<10';
             if (queryModelSelectName === 'BUFFER' || queryModelSelectName === 'SPATIAL') {
                 queryRangeContainer.classList.remove('hidden');
-                queryRangetextareaSpan.innerHTML = Lang_Lang.i18n('text_label_geometricObject');
+                queryRangetextareaSpan.innerHTML = Lang.i18n('text_label_geometricObject');
                 queryRangeTextArea.value = '{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[84.90234375,40.25390625]}}';
                 queryRangeLineIcon.classList.remove('hidden');
                 queryRangePointIcon.classList.remove('hidden');
             }
             switch (queryModelSelectName) {
                 case 'ID':
-                    textareaSpan.innerHTML = Lang_Lang.i18n('text_label_IDArrayOfFeatures');
+                    textareaSpan.innerHTML = Lang.i18n('text_label_IDArrayOfFeatures');
                     getValueTextArea.value = '[1,2,3]';
                     break;
                 case 'SQL':
@@ -95407,7 +97104,7 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
                     break;
                 case 'BOUNDS':
                     queryRangeContainer.classList.remove('hidden');
-                    queryRangetextareaSpan.innerHTML = Lang_Lang.i18n('text_label_queryRange');
+                    queryRangetextareaSpan.innerHTML = Lang.i18n('text_label_queryRange');
                     queryRangeTextArea.value = '{"leftBottom":{"x":-5,"y":-5},"rightTop":{"x":5,"y":5}}';
                     queryRangeRecIcon.classList.add('bounds');
                     break;
@@ -95501,11 +97198,11 @@ var DataServiceQueryView_DataServiceQueryView = ComponentsViewBase_ComponentsVie
     }
 
 });
-var DataServiceQueryView_dataServiceQueryView = function (dataServiceUrl, dataSetNames, options) {
-    return new DataServiceQueryView_DataServiceQueryView(dataServiceUrl, dataSetNames, options);
+var dataServiceQueryView = function (dataServiceUrl, dataSetNames, options) {
+    return new DataServiceQueryView(dataServiceUrl, dataSetNames, options);
 };
 
-external_L_default.a.supermap.components.dataServiceQuery = DataServiceQueryView_dataServiceQueryView;
+external_L_default.a.supermap.components.dataServiceQuery = dataServiceQueryView;
 // CONCATENATED MODULE: ./src/leaflet/components/index.js
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -95544,407 +97241,413 @@ external_L_default.a.supermap.components.dataServiceQuery = DataServiceQueryView
 
 
 // CONCATENATED MODULE: ./src/leaflet/index.js
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OpenFileView", function() { return OpenFileView_OpenFileView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "openFileView", function() { return OpenFileView_openFileView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OpenFileViewModel", function() { return OpenFileViewModel_OpenFileViewModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "openFileViewModel", function() { return OpenFileViewModel_openFileViewModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SearchView", function() { return SearchView_SearchView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "searchView", function() { return SearchView_searchView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowView", function() { return DataFlowView_DataFlowView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataFlowView", function() { return DataFlowView_dataFlowView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "clientComputationView", function() { return ClientComputationView_clientComputationView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClientComputationView", function() { return ClientComputationView_ClientComputationView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClientComputationViewModel", function() { return ClientComputationViewModel_ClientComputationViewModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClientComputationLayer", function() { return ClientComputationLayer_ClientComputationLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "clientComputationLayer", function() { return ClientComputationLayer_clientComputationLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJSONLayerWithName", function() { return GeoJSONLayerWithName_GeoJSONLayerWithName; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "geoJSONLayerWithName", function() { return GeoJSONLayerWithName_geoJSONLayerWithName; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJsonLayersDataModel", function() { return GeoJsonLayersModel_GeoJsonLayersDataModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJsonLayerDataModel", function() { return GeoJsonLayersModel_GeoJsonLayerDataModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DistributedAnalysisView", function() { return DistributedAnalysisView_DistributedAnalysisView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "distributedAnalysisView", function() { return DistributedAnalysisView_distributedAnalysisView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DistributedAnalysisViewModel", function() { return DistributedAnalysisViewModel_DistributedAnalysisViewModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataServiceQueryView", function() { return DataServiceQueryView_DataServiceQueryView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataServiceQueryView", function() { return DataServiceQueryView_dataServiceQueryView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataServiceQueryViewModel", function() { return DataServiceQueryViewModel_DataServiceQueryViewModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataServiceQueryViewModel", function() { return DataServiceQueryViewModel_dataServiceQueryViewModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return REST_DataFormat; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return REST_ServerType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryType", function() { return REST_GeometryType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryOption", function() { return REST_QueryOption; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "JoinType", function() { return REST_JoinType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EngineType", function() { return REST_EngineType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureMode", function() { return REST_MeasureMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SpatialRelationType", function() { return REST_SpatialRelationType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataReturnMode", function() { return REST_DataReturnMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Unit", function() { return REST_Unit; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferRadiusUnit", function() { return REST_BufferRadiusUnit; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SpatialQueryMode", function() { return REST_SpatialQueryMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphTextFormat", function() { return REST_ThemeGraphTextFormat; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphType", function() { return REST_ThemeGraphType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraphAxesTextDisplayMode", function() { return REST_GraphAxesTextDisplayMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraduatedMode", function() { return REST_GraduatedMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RangeMode", function() { return REST_RangeMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeType", function() { return REST_ThemeType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorGradientType", function() { return REST_ColorGradientType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TextAlignment", function() { return REST_TextAlignment; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FillGradientMode", function() { return REST_FillGradientMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SideType", function() { return REST_SideType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AlongLineDirection", function() { return REST_AlongLineDirection; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelBackShape", function() { return REST_LabelBackShape; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelOverLengthMode", function() { return REST_LabelOverLengthMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DirectionType", function() { return REST_DirectionType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayOperationType", function() { return REST_OverlayOperationType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SupplyCenterType", function() { return REST_SupplyCenterType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TurnType", function() { return REST_TurnType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferEndType", function() { return REST_BufferEndType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SmoothMethod", function() { return REST_SmoothMethod; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystMethod", function() { return REST_SurfaceAnalystMethod; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorSpaceType", function() { return REST_ColorSpaceType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartType", function() { return REST_ChartType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EditType", function() { return REST_EditType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferTactic", function() { return REST_TransferTactic; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferPreference", function() { return REST_TransferPreference; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GridType", function() { return REST_GridType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClientType", function() { return REST_ClientType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LayerType", function() { return REST_LayerType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCLayerType", function() { return REST_UGCLayerType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StatisticMode", function() { return REST_StatisticMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PixelFormat", function() { return REST_PixelFormat; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SearchMode", function() { return REST_SearchMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryType", function() { return REST_SummaryType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationAlgorithmType", function() { return REST_InterpolationAlgorithmType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VariogramMode", function() { return REST_VariogramMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Exponent", function() { return REST_Exponent; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClipAnalystMode", function() { return REST_ClipAnalystMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AnalystAreaUnit", function() { return REST_AnalystAreaUnit; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AnalystSizeUnit", function() { return REST_AnalystSizeUnit; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StatisticAnalystMode", function() { return REST_StatisticAnalystMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TopologyValidatorRule", function() { return REST_TopologyValidatorRule; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputType", function() { return REST_OutputType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationQueryBuilderType", function() { return REST_AggregationQueryBuilderType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationType", function() { return REST_AggregationType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeatureMode", function() { return REST_GetFeatureMode; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TimeFlowControl", function() { return TimeFlowControl_TimeFlowControl; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManager", function() { return iManager_IManager; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManagerServiceBase", function() { return iManagerServiceBase_IManagerServiceBase; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IManagerCreateNodeParam", function() { return iManagerCreateNodeParam_IManagerCreateNodeParam; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortal", function() { return iPortal_IPortal; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalInsight", function() { return iPortalInsight_IPortalInsight; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalInsightsQueryParam", function() { return iPortalInsightsQueryParam_IPortalInsightsQueryParam; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalScene", function() { return iPortalScene_IPortalScene; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalScenesQueryParam", function() { return iPortalScenesQueryParam_IPortalScenesQueryParam; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboard", function() { return iPortalMapdashboard_IPortalMapdashboard; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboardsQueryParam", function() { return iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServiceStatus", function() { return OnlineResources_ServiceStatus; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataItemType", function() { return OnlineResources_DataItemType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataItemOrderBy", function() { return OnlineResources_DataItemOrderBy; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FilterField", function() { return OnlineResources_FilterField; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OnlineServiceBase", function() { return OnlineServiceBase_OnlineServiceBase; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "KeyServiceParameter", function() { return KeyServiceParameter_KeyServiceParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerInfo", function() { return ServerInfo_ServerInfo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TokenServiceParameter", function() { return TokenServiceParameter_TokenServiceParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FetchRequest", function() { return FetchRequest_FetchRequest; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorsPickerUtil", function() { return ColorsPickerUtil_ColorsPickerUtil; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ArrayStatistic", function() { return ArrayStatistic_ArrayStatistic; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AreaSolarRadiationParameters", function() { return AreaSolarRadiationParameters_AreaSolarRadiationParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggregationParameter", function() { return AggregationParameter_AggregationParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AggQueryBuilderParameter", function() { return AggQueryBuilderParameter_AggQueryBuilderParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferAnalystParameters", function() { return BufferAnalystParameters_BufferAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferDistance", function() { return BufferDistance_BufferDistance; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BufferSetting", function() { return BufferSetting_BufferSetting; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BurstPipelineAnalystParameters", function() { return BurstPipelineAnalystParameters_BurstPipelineAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartQueryFilterParameter", function() { return ChartQueryFilterParameter_ChartQueryFilterParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartQueryParameters", function() { return ChartQueryParameters_ChartQueryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClipParameter", function() { return ClipParameter_ClipParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ColorDictionary", function() { return ColorDictionary_ColorDictionary; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ComputeWeightMatrixParameters", function() { return ComputeWeightMatrixParameters_ComputeWeightMatrixParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataReturnOption", function() { return DataReturnOption_DataReturnOption; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetBufferAnalystParameters", function() { return DatasetBufferAnalystParameters_DatasetBufferAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetInfo", function() { return DatasetInfo_DatasetInfo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetOverlayAnalystParameters", function() { return DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetSurfaceAnalystParameters", function() { return DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasetThiessenAnalystParameters", function() { return DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DatasourceConnectionInfo", function() { return DatasourceConnectionInfo_DatasourceConnectionInfo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DensityKernelAnalystParameters", function() { return DensityKernelAnalystParameters_DensityKernelAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EditFeaturesParameters", function() { return EditFeaturesParameters_EditFeaturesParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalyst3DParameters", function() { return FacilityAnalyst3DParameters_FacilityAnalyst3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSinks3DParameters", function() { return FacilityAnalystSinks3DParameters_FacilityAnalystSinks3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSources3DParameters", function() { return FacilityAnalystSources3DParameters_FacilityAnalystSources3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystStreamParameters", function() { return FacilityAnalystStreamParameters_FacilityAnalystStreamParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTracedown3DParameters", function() { return FacilityAnalystTracedown3DParameters_FacilityAnalystTracedown3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTraceup3DParameters", function() { return FacilityAnalystTraceup3DParameters_FacilityAnalystTraceup3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FacilityAnalystUpstream3DParameters", function() { return FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldParameters", function() { return FieldParameters_FieldParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FilterAggParameter", function() { return FilterAggParameter_FilterAggParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldStatisticsParameters", function() { return FieldStatisticsParameters_FieldStatisticsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FilterParameter", function() { return FilterParameter_FilterParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindClosestFacilitiesParameters", function() { return FindClosestFacilitiesParameters_FindClosestFacilitiesParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindLocationParameters", function() { return FindLocationParameters_FindLocationParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindMTSPPathsParameters", function() { return FindMTSPPathsParameters_FindMTSPPathsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindPathParameters", function() { return FindPathParameters_FindPathParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindServiceAreasParameters", function() { return FindServiceAreasParameters_FindServiceAreasParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FindTSPPathsParameters", function() { return FindTSPPathsParameters_FindTSPPathsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GenerateSpatialDataParameters", function() { return GenerateSpatialDataParameters_GenerateSpatialDataParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoBoundingBoxQueryBuilderParameter", function() { return GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoHashGridAggParameter", function() { return GeoHashGridAggParameter_GeoHashGridAggParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryBufferAnalystParameters", function() { return GeometryBufferAnalystParameters_GeometryBufferAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryOverlayAnalystParameters", function() { return GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometrySurfaceAnalystParameters", function() { return GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeometryThiessenAnalystParameters", function() { return GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoRelationAnalystParameters", function() { return GeoRelationAnalystParameters_GeoRelationAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBoundsParameters", function() { return GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBufferParameters", function() { return GetFeaturesByBufferParameters_GetFeaturesByBufferParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByGeometryParameters", function() { return GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesByIDsParameters", function() { return GetFeaturesByIDsParameters_GetFeaturesByIDsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetFeaturesBySQLParameters", function() { return GetFeaturesBySQLParameters_GetFeaturesBySQLParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetGridCellInfosParameters", function() { return GetGridCellInfosParameters_GetGridCellInfosParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Grid", function() { return Grid_Grid; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Image", function() { return Image_Image; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationAnalystParameters", function() { return InterpolationAnalystParameters_InterpolationAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationIDWAnalystParameters", function() { return InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationKrigingAnalystParameters", function() { return InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InterpolationRBFAnalystParameters", function() { return InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "JoinItem", function() { return JoinItem_JoinItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelImageCell", function() { return LabelImageCell_LabelImageCell; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelMatrixCell", function() { return LabelMatrixCell_LabelMatrixCell; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelMixedTextStyle", function() { return LabelMixedTextStyle_LabelMixedTextStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelSymbolCell", function() { return LabelSymbolCell_LabelSymbolCell; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelThemeCell", function() { return LabelThemeCell_LabelThemeCell; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LayerStatus", function() { return LayerStatus_LayerStatus; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LinkItem", function() { return LinkItem_LinkItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MathExpressionAnalysisParameters", function() { return MathExpressionAnalysisParameters_MathExpressionAnalysisParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureParameters", function() { return MeasureParameters_MeasureParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlapDisplayedOptions", function() { return OverlapDisplayedOptions_OverlapDisplayedOptions; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayAnalystParameters", function() { return OverlayAnalystParameters_OverlayAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PointWithMeasure", function() { return PointWithMeasure_PointWithMeasure; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryByBoundsParameters", function() { return QueryByBoundsParameters_QueryByBoundsParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryByDistanceParameters", function() { return QueryByDistanceParameters_QueryByDistanceParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryByGeometryParameters", function() { return QueryByGeometryParameters_QueryByGeometryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryBySQLParameters", function() { return QueryBySQLParameters_QueryBySQLParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryParameters", function() { return QueryParameters_QueryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Route", function() { return Route_Route; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RouteCalculateMeasureParameters", function() { return RouteCalculateMeasureParameters_RouteCalculateMeasureParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RouteLocatorParameters", function() { return RouteLocatorParameters_RouteLocatorParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerColor", function() { return ServerColor_ServerColor; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerFeature", function() { return ServerFeature_ServerFeature; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerGeometry", function() { return ServerGeometry_ServerGeometry; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerStyle", function() { return ServerStyle_ServerStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerTextStyle", function() { return ServerTextStyle_ServerTextStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerTheme", function() { return ServerTheme_ServerTheme; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SetLayerInfoParameters", function() { return SetLayerInfoParameters_SetLayerInfoParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SetLayersInfoParameters", function() { return SetLayersInfoParameters_SetLayersInfoParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SetLayerStatusParameters", function() { return SetLayerStatusParameters_SetLayerStatusParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StopQueryParameters", function() { return StopQueryParameters_StopQueryParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SupplyCenter", function() { return SupplyCenter_SupplyCenter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParameters", function() { return SurfaceAnalystParameters_SurfaceAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParametersSetting", function() { return SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TerrainCurvatureCalculationParameters", function() { return TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Theme", function() { return Theme_Theme; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeDotDensity", function() { return ThemeDotDensity_ThemeDotDensity; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFlow", function() { return ThemeFlow_ThemeFlow; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbol", function() { return ThemeGraduatedSymbol_ThemeGraduatedSymbol; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbolStyle", function() { return ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraph", function() { return ThemeGraph_ThemeGraph; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphAxes", function() { return ThemeGraphAxes_ThemeGraphAxes; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphItem", function() { return ThemeGraphItem_ThemeGraphItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphSize", function() { return ThemeGraphSize_ThemeGraphSize; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGraphText", function() { return ThemeGraphText_ThemeGraphText; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridRange", function() { return ThemeGridRange_ThemeGridRange; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridRangeItem", function() { return ThemeGridRangeItem_ThemeGridRangeItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridUnique", function() { return ThemeGridUnique_ThemeGridUnique; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeGridUniqueItem", function() { return ThemeGridUniqueItem_ThemeGridUniqueItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabel", function() { return ThemeLabel_ThemeLabel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelAlongLine", function() { return ThemeLabelAlongLine_ThemeLabelAlongLine; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelBackground", function() { return ThemeLabelBackground_ThemeLabelBackground; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelItem", function() { return ThemeLabelItem_ThemeLabelItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelText", function() { return ThemeLabelText_ThemeLabelText; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLabelUniqueItem", function() { return ThemeLabelUniqueItem_ThemeLabelUniqueItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeMemoryData", function() { return ThemeMemoryData_ThemeMemoryData; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeOffset", function() { return ThemeOffset_ThemeOffset; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeParameters", function() { return ThemeParameters_ThemeParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeRange", function() { return ThemeRange_ThemeRange; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeRangeItem", function() { return ThemeRangeItem_ThemeRangeItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeUnique", function() { return ThemeUnique_ThemeUnique; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeUniqueItem", function() { return ThemeUniqueItem_ThemeUniqueItem; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThiessenAnalystParameters", function() { return ThiessenAnalystParameters_ThiessenAnalystParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferLine", function() { return TransferLine_TransferLine; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferPathParameters", function() { return TransferPathParameters_TransferPathParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransferSolutionParameters", function() { return TransferSolutionParameters_TransferSolutionParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransportationAnalystParameter", function() { return TransportationAnalystParameter_TransportationAnalystParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TransportationAnalystResultSetting", function() { return TransportationAnalystResultSetting_TransportationAnalystResultSetting; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCLayer", function() { return UGCLayer_UGCLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCMapLayer", function() { return UGCMapLayer_UGCMapLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UGCSubLayer", function() { return UGCSubLayer_UGCSubLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UpdateEdgeWeightParameters", function() { return UpdateEdgeWeightParameters_UpdateEdgeWeightParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UpdateTurnNodeWeightParameters", function() { return UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Vector", function() { return iServer_Vector_Vector; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorClipJobsParameter", function() { return VectorClipJobsParameter_VectorClipJobsParameter; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileTypes", function() { return FileTypes; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileConfig", function() { return FileConfig; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileModel", function() { return FileModel_FileModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MessageBox", function() { return MessageBox_MessageBox; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CommonContainer", function() { return CommonContainer_CommonContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DropDownBox", function() { return DropDownBox_DropDownBox; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Select", function() { return Select_Select; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AttributesPopContainer", function() { return AttributesPopContainer_AttributesPopContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PopContainer", function() { return PopContainer_PopContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "IndexTabsPageContainer", function() { return IndexTabsPageContainer_IndexTabsPageContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CityTabsPage", function() { return CityTabsPage_CityTabsPage; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NavTabsPage", function() { return NavTabsPage_NavTabsPage; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PaginationContainer", function() { return PaginationContainer_PaginationContainer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ComponentsUtil", function() { return Util_ComponentsUtil; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil_FileReaderUtil; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartView", function() { return ChartView_ChartView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartViewModel", function() { return ChartViewModel_ChartViewModel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo_Logo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "logo", function() { return Logo_logo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChangeTileVersion", function() { return ChangeTileVersion_ChangeTileVersion; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "changeTileVersion", function() { return ChangeTileVersion_changeTileVersion; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CommontypesConversion", function() { return CommontypesConversion_CommontypesConversion; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BaiduCRS", function() { return ExtendsCRS_BaiduCRS; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TianDiTu_WGS84CRS", function() { return ExtendsCRS_TianDiTu_WGS84CRS; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TianDiTu_MercatorCRS", function() { return ExtendsCRS_TianDiTu_MercatorCRS; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NonProjection", function() { return NonEarthCRS_NonProjection; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "nonProjection", function() { return NonEarthCRS_nonProjection; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NonEarthCRS", function() { return NonEarthCRS_NonEarthCRS; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "nonEarthCRS", function() { return NonEarthCRS_nonEarthCRS; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CRS", function() { return Proj4Leaflet_CRS; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "crs", function() { return Proj4Leaflet_crs; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "toGeoJSON", function() { return Util_toGeoJSON; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "toSuperMapGeometry", function() { return Util_toSuperMapGeometry; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "getMeterPerMapUnit", function() { return Util_getMeterPerMapUnit; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "resolutionToScale", function() { return Util_resolutionToScale; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "scaleToResolution", function() { return Util_scaleToResolution; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GetResolutionFromScaleDpi", function() { return Util_GetResolutionFromScaleDpi; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NormalizeScale", function() { return Util_NormalizeScale; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BaiduTileLayer", function() { return BaiduTileLayer_BaiduTileLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "baiduTileLayer", function() { return BaiduTileLayer_baiduTileLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CloudTileLayer", function() { return CloudTileLayer_CloudTileLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "cloudTileLayer", function() { return CloudTileLayer_cloudTileLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ImageMapLayer", function() { return ImageMapLayer_ImageMapLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "imageMapLayer", function() { return ImageMapLayer_imageMapLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TiandituTileLayer", function() { return TiandituTileLayer_TiandituTileLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "tiandituTileLayer", function() { return TiandituTileLayer_tiandituTileLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TiledMapLayer", function() { return TiledMapLayer_TiledMapLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "tiledMapLayer", function() { return TiledMapLayer_tiledMapLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "WMTSLayer", function() { return TileLayer_WMTS_WMTSLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "wmtsLayer", function() { return TileLayer_WMTS_wmtsLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "WebMap", function() { return WebMap_WebMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "webMap", function() { return WebMap_webMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowLayer", function() { return DataFlowLayer_DataFlowLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataFlowLayer", function() { return DataFlowLayer_dataFlowLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "EchartsLayer", function() { return EChartsLayer_EchartsLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "echartsLayer", function() { return EChartsLayer_echartsLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LeafletMapCoordSys", function() { return EChartsLayer_LeafletMapCoordSys; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraphicLayer", function() { return GraphicLayer_GraphicLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "graphicLayer", function() { return GraphicLayer_graphicLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GraphThemeLayer", function() { return GraphThemeLayer_GraphThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "graphThemeLayer", function() { return GraphThemeLayer_graphThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LabelThemeLayer", function() { return LabelThemeLayer_LabelThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "labelThemeLayer", function() { return LabelThemeLayer_labelThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapVLayer", function() { return MapVLayer_MapVLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "mapVLayer", function() { return MapVLayer_mapVLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RangeThemeLayer", function() { return RangeThemeLayer_RangeThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "rangeThemeLayer", function() { return RangeThemeLayer_rangeThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RankSymbolThemeLayer", function() { return RankSymbolThemeLayer_RankSymbolThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "rankSymbolThemeLayer", function() { return RankSymbolThemeLayer_rankSymbolThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TileVectorLayer", function() { return TileVectorLayer_TileVectorLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "tiledVectorLayer", function() { return TileVectorLayer_tiledVectorLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TurfLayer", function() { return TurfLayer_TurfLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "turfLayer", function() { return TurfLayer_turfLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UnicodeMarker", function() { return UnicodeMarker_UnicodeMarker; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "unicodeMarker", function() { return UnicodeMarker_unicodeMarker; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UniqueThemeLayer", function() { return UniqueThemeLayer_UniqueThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "uniqueThemeLayer", function() { return UniqueThemeLayer_uniqueThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileFormat", function() { return VectorTileFormat_VectorTileFormat; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CartoCSSToLeaflet", function() { return CartoCSSToLeaflet_CartoCSSToLeaflet; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DefaultStyle", function() { return CartoDefaultStyle_DefaultStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CartoStyleMap", function() { return CartoStyleMap_CartoStyleMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerStyleMap", function() { return CartoStyleMap_ServerStyleMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CompOpMap", function() { return CartoStyleMap_CompOpMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ImageStyle", function() { return ImageStyle_ImageStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "imageStyle", function() { return ImageStyle_imageStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CircleStyle", function() { return CircleStyle_CircleStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "circleStyle", function() { return CircleStyle_circleStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Graphic", function() { return Graphic_Graphic; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "graphic", function() { return Graphic_graphic; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CloverStyle", function() { return CloverStyle_CloverStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "cloverStyle", function() { return CloverStyle_cloverStyle; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapVRenderer", function() { return MapVRenderer_MapVRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoFeatureThemeLayer", function() { return GeoFeatureThemeLayer_GeoFeatureThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "themeFeature", function() { return ThemeFeature_themeFeature; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeLayer", function() { return ThemeLayer_ThemeLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvasRenderer", function() { return CanvasRenderer_CanvasRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LineSymbolizer", function() { return LineSymbolizer_LineSymbolizer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PointSymbolizer", function() { return PointSymbolizer_PointSymbolizer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RegionSymbolizer", function() { return RegionSymbolizer_RegionSymbolizer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SVGRenderer", function() { return SVGRenderer_SVGRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Symbolizer", function() { return Symbolizer_Symbolizer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PolyBase", function() { return SymbolizerPolyBase_PolyBase; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TextSymbolizer", function() { return TextSymbolizer_TextSymbolizer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorFeatureType", function() { return VectorFeatureType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorGrid", function() { return VectorGrid_VectorGrid; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTile", function() { return VectorTile_VectorTile; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileJSON", function() { return VectorTileJSON_VectorTileJSON; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTilePBF", function() { return VectorTilePBF_VectorTilePBF; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "addressMatchService", function() { return AddressMatchService_addressMatchService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "chartService", function() { return ChartService_chartService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataFlowService", function() { return DataFlowService_dataFlowService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FeatureService", function() { return FeatureService_FeatureService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "featureService", function() { return FeatureService_featureService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FieldService", function() { return FieldService_FieldService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "fieldService", function() { return FieldService_fieldService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GridCellInfosService", function() { return GridCellInfosService_GridCellInfosService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "gridCellInfosService", function() { return GridCellInfosService_gridCellInfosService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LayerInfoService", function() { return LayerInfoService_LayerInfoService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "layerInfoService", function() { return LayerInfoService_layerInfoService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapService", function() { return services_MapService_MapService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "mapService", function() { return MapService_mapService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureService", function() { return services_MeasureService_MeasureService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "measureService", function() { return MeasureService_measureService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NetworkAnalyst3DService", function() { return NetworkAnalyst3DService_NetworkAnalyst3DService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "networkAnalyst3DService", function() { return NetworkAnalyst3DService_networkAnalyst3DService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NetworkAnalystService", function() { return NetworkAnalystService_NetworkAnalystService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "networkAnalystService", function() { return NetworkAnalystService_networkAnalystService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService_ProcessingService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "processingService", function() { return ProcessingService_processingService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "QueryService", function() { return services_QueryService_QueryService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "queryService", function() { return QueryService_queryService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServiceBase", function() { return ServiceBase_ServiceBase; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SpatialAnalystService", function() { return SpatialAnalystService_SpatialAnalystService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "spatialAnalystService", function() { return SpatialAnalystService_spatialAnalystService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeService", function() { return services_ThemeService_ThemeService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "themeService", function() { return ThemeService_themeService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TrafficTransferAnalystService", function() { return TrafficTransferAnalystService_TrafficTransferAnalystService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "trafficTransferAnalystService", function() { return TrafficTransferAnalystService_trafficTransferAnalystService; });
+/* concated harmony reexport OpenFileView */__webpack_require__.d(__webpack_exports__, "OpenFileView", function() { return OpenFileView; });
+/* concated harmony reexport openFileView */__webpack_require__.d(__webpack_exports__, "openFileView", function() { return openFileView; });
+/* concated harmony reexport OpenFileViewModel */__webpack_require__.d(__webpack_exports__, "OpenFileViewModel", function() { return OpenFileViewModel; });
+/* concated harmony reexport openFileViewModel */__webpack_require__.d(__webpack_exports__, "openFileViewModel", function() { return openFileViewModel; });
+/* concated harmony reexport SearchView */__webpack_require__.d(__webpack_exports__, "SearchView", function() { return SearchView; });
+/* concated harmony reexport searchView */__webpack_require__.d(__webpack_exports__, "searchView", function() { return searchView; });
+/* concated harmony reexport DataFlowView */__webpack_require__.d(__webpack_exports__, "DataFlowView", function() { return DataFlowView; });
+/* concated harmony reexport dataFlowView */__webpack_require__.d(__webpack_exports__, "dataFlowView", function() { return dataFlowView; });
+/* concated harmony reexport clientComputationView */__webpack_require__.d(__webpack_exports__, "clientComputationView", function() { return clientComputationView; });
+/* concated harmony reexport ClientComputationView */__webpack_require__.d(__webpack_exports__, "ClientComputationView", function() { return ClientComputationView; });
+/* concated harmony reexport ClientComputationViewModel */__webpack_require__.d(__webpack_exports__, "ClientComputationViewModel", function() { return ClientComputationViewModel_ClientComputationViewModel; });
+/* concated harmony reexport ClientComputationLayer */__webpack_require__.d(__webpack_exports__, "ClientComputationLayer", function() { return ClientComputationLayer; });
+/* concated harmony reexport clientComputationLayer */__webpack_require__.d(__webpack_exports__, "clientComputationLayer", function() { return clientComputationLayer; });
+/* concated harmony reexport GeoJSONLayerWithName */__webpack_require__.d(__webpack_exports__, "GeoJSONLayerWithName", function() { return GeoJSONLayerWithName; });
+/* concated harmony reexport geoJSONLayerWithName */__webpack_require__.d(__webpack_exports__, "geoJSONLayerWithName", function() { return geoJSONLayerWithName; });
+/* concated harmony reexport GeoJsonLayersDataModel */__webpack_require__.d(__webpack_exports__, "GeoJsonLayersDataModel", function() { return GeoJsonLayersModel_GeoJsonLayersDataModel; });
+/* concated harmony reexport GeoJsonLayerDataModel */__webpack_require__.d(__webpack_exports__, "GeoJsonLayerDataModel", function() { return GeoJsonLayerDataModel; });
+/* concated harmony reexport DistributedAnalysisView */__webpack_require__.d(__webpack_exports__, "DistributedAnalysisView", function() { return DistributedAnalysisView; });
+/* concated harmony reexport distributedAnalysisView */__webpack_require__.d(__webpack_exports__, "distributedAnalysisView", function() { return distributedAnalysisView; });
+/* concated harmony reexport DistributedAnalysisViewModel */__webpack_require__.d(__webpack_exports__, "DistributedAnalysisViewModel", function() { return DistributedAnalysisViewModel_DistributedAnalysisViewModel; });
+/* concated harmony reexport DataServiceQueryView */__webpack_require__.d(__webpack_exports__, "DataServiceQueryView", function() { return DataServiceQueryView; });
+/* concated harmony reexport dataServiceQueryView */__webpack_require__.d(__webpack_exports__, "dataServiceQueryView", function() { return dataServiceQueryView; });
+/* concated harmony reexport DataServiceQueryViewModel */__webpack_require__.d(__webpack_exports__, "DataServiceQueryViewModel", function() { return DataServiceQueryViewModel_DataServiceQueryViewModel; });
+/* concated harmony reexport dataServiceQueryViewModel */__webpack_require__.d(__webpack_exports__, "dataServiceQueryViewModel", function() { return dataServiceQueryViewModel; });
+/* concated harmony reexport SuperMap */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
+/* concated harmony reexport DataFormat */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return DataFormat; });
+/* concated harmony reexport ServerType */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return ServerType; });
+/* concated harmony reexport GeometryType */__webpack_require__.d(__webpack_exports__, "GeometryType", function() { return GeometryType; });
+/* concated harmony reexport QueryOption */__webpack_require__.d(__webpack_exports__, "QueryOption", function() { return QueryOption; });
+/* concated harmony reexport JoinType */__webpack_require__.d(__webpack_exports__, "JoinType", function() { return JoinType; });
+/* concated harmony reexport EngineType */__webpack_require__.d(__webpack_exports__, "EngineType", function() { return EngineType; });
+/* concated harmony reexport MeasureMode */__webpack_require__.d(__webpack_exports__, "MeasureMode", function() { return MeasureMode; });
+/* concated harmony reexport SpatialRelationType */__webpack_require__.d(__webpack_exports__, "SpatialRelationType", function() { return SpatialRelationType; });
+/* concated harmony reexport DataReturnMode */__webpack_require__.d(__webpack_exports__, "DataReturnMode", function() { return DataReturnMode; });
+/* concated harmony reexport Unit */__webpack_require__.d(__webpack_exports__, "Unit", function() { return Unit; });
+/* concated harmony reexport BufferRadiusUnit */__webpack_require__.d(__webpack_exports__, "BufferRadiusUnit", function() { return BufferRadiusUnit; });
+/* concated harmony reexport SpatialQueryMode */__webpack_require__.d(__webpack_exports__, "SpatialQueryMode", function() { return SpatialQueryMode; });
+/* concated harmony reexport ThemeGraphTextFormat */__webpack_require__.d(__webpack_exports__, "ThemeGraphTextFormat", function() { return ThemeGraphTextFormat; });
+/* concated harmony reexport ThemeGraphType */__webpack_require__.d(__webpack_exports__, "ThemeGraphType", function() { return ThemeGraphType; });
+/* concated harmony reexport GraphAxesTextDisplayMode */__webpack_require__.d(__webpack_exports__, "GraphAxesTextDisplayMode", function() { return GraphAxesTextDisplayMode; });
+/* concated harmony reexport GraduatedMode */__webpack_require__.d(__webpack_exports__, "GraduatedMode", function() { return GraduatedMode; });
+/* concated harmony reexport RangeMode */__webpack_require__.d(__webpack_exports__, "RangeMode", function() { return RangeMode; });
+/* concated harmony reexport ThemeType */__webpack_require__.d(__webpack_exports__, "ThemeType", function() { return ThemeType; });
+/* concated harmony reexport ColorGradientType */__webpack_require__.d(__webpack_exports__, "ColorGradientType", function() { return ColorGradientType; });
+/* concated harmony reexport TextAlignment */__webpack_require__.d(__webpack_exports__, "TextAlignment", function() { return TextAlignment; });
+/* concated harmony reexport FillGradientMode */__webpack_require__.d(__webpack_exports__, "FillGradientMode", function() { return FillGradientMode; });
+/* concated harmony reexport SideType */__webpack_require__.d(__webpack_exports__, "SideType", function() { return SideType; });
+/* concated harmony reexport AlongLineDirection */__webpack_require__.d(__webpack_exports__, "AlongLineDirection", function() { return AlongLineDirection; });
+/* concated harmony reexport LabelBackShape */__webpack_require__.d(__webpack_exports__, "LabelBackShape", function() { return LabelBackShape; });
+/* concated harmony reexport LabelOverLengthMode */__webpack_require__.d(__webpack_exports__, "LabelOverLengthMode", function() { return LabelOverLengthMode; });
+/* concated harmony reexport DirectionType */__webpack_require__.d(__webpack_exports__, "DirectionType", function() { return DirectionType; });
+/* concated harmony reexport OverlayOperationType */__webpack_require__.d(__webpack_exports__, "OverlayOperationType", function() { return OverlayOperationType; });
+/* concated harmony reexport SupplyCenterType */__webpack_require__.d(__webpack_exports__, "SupplyCenterType", function() { return SupplyCenterType; });
+/* concated harmony reexport TurnType */__webpack_require__.d(__webpack_exports__, "TurnType", function() { return TurnType; });
+/* concated harmony reexport BufferEndType */__webpack_require__.d(__webpack_exports__, "BufferEndType", function() { return BufferEndType; });
+/* concated harmony reexport SmoothMethod */__webpack_require__.d(__webpack_exports__, "SmoothMethod", function() { return SmoothMethod; });
+/* concated harmony reexport SurfaceAnalystMethod */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystMethod", function() { return SurfaceAnalystMethod; });
+/* concated harmony reexport ColorSpaceType */__webpack_require__.d(__webpack_exports__, "ColorSpaceType", function() { return ColorSpaceType; });
+/* concated harmony reexport ChartType */__webpack_require__.d(__webpack_exports__, "ChartType", function() { return ChartType; });
+/* concated harmony reexport EditType */__webpack_require__.d(__webpack_exports__, "EditType", function() { return EditType; });
+/* concated harmony reexport TransferTactic */__webpack_require__.d(__webpack_exports__, "TransferTactic", function() { return TransferTactic; });
+/* concated harmony reexport TransferPreference */__webpack_require__.d(__webpack_exports__, "TransferPreference", function() { return TransferPreference; });
+/* concated harmony reexport GridType */__webpack_require__.d(__webpack_exports__, "GridType", function() { return GridType; });
+/* concated harmony reexport ClientType */__webpack_require__.d(__webpack_exports__, "ClientType", function() { return ClientType; });
+/* concated harmony reexport LayerType */__webpack_require__.d(__webpack_exports__, "LayerType", function() { return LayerType; });
+/* concated harmony reexport UGCLayerType */__webpack_require__.d(__webpack_exports__, "UGCLayerType", function() { return UGCLayerType; });
+/* concated harmony reexport StatisticMode */__webpack_require__.d(__webpack_exports__, "StatisticMode", function() { return StatisticMode; });
+/* concated harmony reexport PixelFormat */__webpack_require__.d(__webpack_exports__, "PixelFormat", function() { return PixelFormat; });
+/* concated harmony reexport SearchMode */__webpack_require__.d(__webpack_exports__, "SearchMode", function() { return SearchMode; });
+/* concated harmony reexport SummaryType */__webpack_require__.d(__webpack_exports__, "SummaryType", function() { return SummaryType; });
+/* concated harmony reexport InterpolationAlgorithmType */__webpack_require__.d(__webpack_exports__, "InterpolationAlgorithmType", function() { return InterpolationAlgorithmType; });
+/* concated harmony reexport VariogramMode */__webpack_require__.d(__webpack_exports__, "VariogramMode", function() { return VariogramMode; });
+/* concated harmony reexport Exponent */__webpack_require__.d(__webpack_exports__, "Exponent", function() { return Exponent; });
+/* concated harmony reexport ClipAnalystMode */__webpack_require__.d(__webpack_exports__, "ClipAnalystMode", function() { return ClipAnalystMode; });
+/* concated harmony reexport AnalystAreaUnit */__webpack_require__.d(__webpack_exports__, "AnalystAreaUnit", function() { return AnalystAreaUnit; });
+/* concated harmony reexport AnalystSizeUnit */__webpack_require__.d(__webpack_exports__, "AnalystSizeUnit", function() { return AnalystSizeUnit; });
+/* concated harmony reexport StatisticAnalystMode */__webpack_require__.d(__webpack_exports__, "StatisticAnalystMode", function() { return StatisticAnalystMode; });
+/* concated harmony reexport TopologyValidatorRule */__webpack_require__.d(__webpack_exports__, "TopologyValidatorRule", function() { return TopologyValidatorRule; });
+/* concated harmony reexport OutputType */__webpack_require__.d(__webpack_exports__, "OutputType", function() { return OutputType; });
+/* concated harmony reexport AggregationQueryBuilderType */__webpack_require__.d(__webpack_exports__, "AggregationQueryBuilderType", function() { return AggregationQueryBuilderType; });
+/* concated harmony reexport AggregationType */__webpack_require__.d(__webpack_exports__, "AggregationType", function() { return AggregationType; });
+/* concated harmony reexport GetFeatureMode */__webpack_require__.d(__webpack_exports__, "GetFeatureMode", function() { return GetFeatureMode; });
+/* concated harmony reexport TimeFlowControl */__webpack_require__.d(__webpack_exports__, "TimeFlowControl", function() { return TimeFlowControl_TimeFlowControl; });
+/* concated harmony reexport IManager */__webpack_require__.d(__webpack_exports__, "IManager", function() { return iManager_IManager; });
+/* concated harmony reexport IManagerServiceBase */__webpack_require__.d(__webpack_exports__, "IManagerServiceBase", function() { return iManagerServiceBase_IManagerServiceBase; });
+/* concated harmony reexport IManagerCreateNodeParam */__webpack_require__.d(__webpack_exports__, "IManagerCreateNodeParam", function() { return iManagerCreateNodeParam_IManagerCreateNodeParam; });
+/* concated harmony reexport IPortal */__webpack_require__.d(__webpack_exports__, "IPortal", function() { return iPortal_IPortal; });
+/* concated harmony reexport IPortalQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalQueryParam", function() { return iPortalQueryParam_IPortalQueryParam; });
+/* concated harmony reexport IPortalResource */__webpack_require__.d(__webpack_exports__, "IPortalResource", function() { return iPortalResource_IPortalResource; });
+/* concated harmony reexport IPortalQueryResult */__webpack_require__.d(__webpack_exports__, "IPortalQueryResult", function() { return iPortalQueryResult_IPortalQueryResult; });
+/* concated harmony reexport IPortalShareParam */__webpack_require__.d(__webpack_exports__, "IPortalShareParam", function() { return iPortalShareParam_IPortalShareParam; });
+/* concated harmony reexport IPortalShareEntity */__webpack_require__.d(__webpack_exports__, "IPortalShareEntity", function() { return iPortalShareEntity_IPortalShareEntity; });
+/* concated harmony reexport IPortalMap */__webpack_require__.d(__webpack_exports__, "IPortalMap", function() { return iPortalMap_IPortalMap; });
+/* concated harmony reexport IPortalMapsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapsQueryParam", function() { return iPortalMapsQueryParam_IPortalMapsQueryParam; });
+/* concated harmony reexport IPortalInsight */__webpack_require__.d(__webpack_exports__, "IPortalInsight", function() { return iPortalInsight_IPortalInsight; });
+/* concated harmony reexport IPortalInsightsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalInsightsQueryParam", function() { return iPortalInsightsQueryParam_IPortalInsightsQueryParam; });
+/* concated harmony reexport IPortalScene */__webpack_require__.d(__webpack_exports__, "IPortalScene", function() { return iPortalScene_IPortalScene; });
+/* concated harmony reexport IPortalScenesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalScenesQueryParam", function() { return iPortalScenesQueryParam_IPortalScenesQueryParam; });
+/* concated harmony reexport IPortalService */__webpack_require__.d(__webpack_exports__, "IPortalService", function() { return iPortalService_IPortalService; });
+/* concated harmony reexport IPortalServiceBase */__webpack_require__.d(__webpack_exports__, "IPortalServiceBase", function() { return iPortalServiceBase_IPortalServiceBase; });
+/* concated harmony reexport IPortalServicesQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalServicesQueryParam", function() { return iPortalServicesQueryParam_IPortalServicesQueryParam; });
+/* concated harmony reexport IPortalMapdashboard */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboard", function() { return iPortalMapdashboard_IPortalMapdashboard; });
+/* concated harmony reexport IPortalMapdashboardsQueryParam */__webpack_require__.d(__webpack_exports__, "IPortalMapdashboardsQueryParam", function() { return iPortalMapdashboardsQueryParam_IPortalMapdashboardsQueryParam; });
+/* concated harmony reexport IPortalUser */__webpack_require__.d(__webpack_exports__, "IPortalUser", function() { return iPortalUser_IPortalUser; });
+/* concated harmony reexport Online */__webpack_require__.d(__webpack_exports__, "Online", function() { return Online_Online; });
+/* concated harmony reexport OnlineData */__webpack_require__.d(__webpack_exports__, "OnlineData", function() { return OnlineData_OnlineData; });
+/* concated harmony reexport OnlineQueryDatasParameter */__webpack_require__.d(__webpack_exports__, "OnlineQueryDatasParameter", function() { return OnlineQueryDatasParameter_OnlineQueryDatasParameter; });
+/* concated harmony reexport ServiceStatus */__webpack_require__.d(__webpack_exports__, "ServiceStatus", function() { return ServiceStatus; });
+/* concated harmony reexport DataItemType */__webpack_require__.d(__webpack_exports__, "DataItemType", function() { return DataItemType; });
+/* concated harmony reexport DataItemOrderBy */__webpack_require__.d(__webpack_exports__, "DataItemOrderBy", function() { return DataItemOrderBy; });
+/* concated harmony reexport FilterField */__webpack_require__.d(__webpack_exports__, "FilterField", function() { return FilterField; });
+/* concated harmony reexport OnlineServiceBase */__webpack_require__.d(__webpack_exports__, "OnlineServiceBase", function() { return OnlineServiceBase_OnlineServiceBase; });
+/* concated harmony reexport KeyServiceParameter */__webpack_require__.d(__webpack_exports__, "KeyServiceParameter", function() { return KeyServiceParameter_KeyServiceParameter; });
+/* concated harmony reexport SecurityManager */__webpack_require__.d(__webpack_exports__, "SecurityManager", function() { return SecurityManager_SecurityManager; });
+/* concated harmony reexport ServerInfo */__webpack_require__.d(__webpack_exports__, "ServerInfo", function() { return ServerInfo_ServerInfo; });
+/* concated harmony reexport TokenServiceParameter */__webpack_require__.d(__webpack_exports__, "TokenServiceParameter", function() { return TokenServiceParameter_TokenServiceParameter; });
+/* concated harmony reexport ElasticSearch */__webpack_require__.d(__webpack_exports__, "ElasticSearch", function() { return ElasticSearch_ElasticSearch; });
+/* concated harmony reexport FetchRequest */__webpack_require__.d(__webpack_exports__, "FetchRequest", function() { return FetchRequest; });
+/* concated harmony reexport ColorsPickerUtil */__webpack_require__.d(__webpack_exports__, "ColorsPickerUtil", function() { return ColorsPickerUtil; });
+/* concated harmony reexport ArrayStatistic */__webpack_require__.d(__webpack_exports__, "ArrayStatistic", function() { return ArrayStatistic; });
+/* concated harmony reexport AreaSolarRadiationParameters */__webpack_require__.d(__webpack_exports__, "AreaSolarRadiationParameters", function() { return AreaSolarRadiationParameters_AreaSolarRadiationParameters; });
+/* concated harmony reexport AggregationParameter */__webpack_require__.d(__webpack_exports__, "AggregationParameter", function() { return AggregationParameter_AggregationParameter; });
+/* concated harmony reexport AggQueryBuilderParameter */__webpack_require__.d(__webpack_exports__, "AggQueryBuilderParameter", function() { return AggQueryBuilderParameter_AggQueryBuilderParameter; });
+/* concated harmony reexport BufferAnalystParameters */__webpack_require__.d(__webpack_exports__, "BufferAnalystParameters", function() { return BufferAnalystParameters_BufferAnalystParameters; });
+/* concated harmony reexport BufferDistance */__webpack_require__.d(__webpack_exports__, "BufferDistance", function() { return BufferDistance_BufferDistance; });
+/* concated harmony reexport BuffersAnalystJobsParameter */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
+/* concated harmony reexport BufferSetting */__webpack_require__.d(__webpack_exports__, "BufferSetting", function() { return BufferSetting_BufferSetting; });
+/* concated harmony reexport BurstPipelineAnalystParameters */__webpack_require__.d(__webpack_exports__, "BurstPipelineAnalystParameters", function() { return BurstPipelineAnalystParameters_BurstPipelineAnalystParameters; });
+/* concated harmony reexport ChartQueryFilterParameter */__webpack_require__.d(__webpack_exports__, "ChartQueryFilterParameter", function() { return ChartQueryFilterParameter_ChartQueryFilterParameter; });
+/* concated harmony reexport ChartQueryParameters */__webpack_require__.d(__webpack_exports__, "ChartQueryParameters", function() { return ChartQueryParameters_ChartQueryParameters; });
+/* concated harmony reexport ClipParameter */__webpack_require__.d(__webpack_exports__, "ClipParameter", function() { return ClipParameter_ClipParameter; });
+/* concated harmony reexport ColorDictionary */__webpack_require__.d(__webpack_exports__, "ColorDictionary", function() { return ColorDictionary_ColorDictionary; });
+/* concated harmony reexport ComputeWeightMatrixParameters */__webpack_require__.d(__webpack_exports__, "ComputeWeightMatrixParameters", function() { return ComputeWeightMatrixParameters_ComputeWeightMatrixParameters; });
+/* concated harmony reexport DataReturnOption */__webpack_require__.d(__webpack_exports__, "DataReturnOption", function() { return DataReturnOption_DataReturnOption; });
+/* concated harmony reexport DatasetBufferAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetBufferAnalystParameters", function() { return DatasetBufferAnalystParameters_DatasetBufferAnalystParameters; });
+/* concated harmony reexport DatasetInfo */__webpack_require__.d(__webpack_exports__, "DatasetInfo", function() { return DatasetInfo_DatasetInfo; });
+/* concated harmony reexport DatasetOverlayAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetOverlayAnalystParameters", function() { return DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters; });
+/* concated harmony reexport DatasetSurfaceAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetSurfaceAnalystParameters", function() { return DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters; });
+/* concated harmony reexport DatasetThiessenAnalystParameters */__webpack_require__.d(__webpack_exports__, "DatasetThiessenAnalystParameters", function() { return DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters; });
+/* concated harmony reexport DatasourceConnectionInfo */__webpack_require__.d(__webpack_exports__, "DatasourceConnectionInfo", function() { return DatasourceConnectionInfo_DatasourceConnectionInfo; });
+/* concated harmony reexport DensityKernelAnalystParameters */__webpack_require__.d(__webpack_exports__, "DensityKernelAnalystParameters", function() { return DensityKernelAnalystParameters_DensityKernelAnalystParameters; });
+/* concated harmony reexport EditFeaturesParameters */__webpack_require__.d(__webpack_exports__, "EditFeaturesParameters", function() { return EditFeaturesParameters_EditFeaturesParameters; });
+/* concated harmony reexport FacilityAnalyst3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalyst3DParameters", function() { return FacilityAnalyst3DParameters_FacilityAnalyst3DParameters; });
+/* concated harmony reexport FacilityAnalystSinks3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSinks3DParameters", function() { return FacilityAnalystSinks3DParameters_FacilityAnalystSinks3DParameters; });
+/* concated harmony reexport FacilityAnalystSources3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystSources3DParameters", function() { return FacilityAnalystSources3DParameters_FacilityAnalystSources3DParameters; });
+/* concated harmony reexport FacilityAnalystStreamParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystStreamParameters", function() { return FacilityAnalystStreamParameters_FacilityAnalystStreamParameters; });
+/* concated harmony reexport FacilityAnalystTracedown3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTracedown3DParameters", function() { return FacilityAnalystTracedown3DParameters_FacilityAnalystTracedown3DParameters; });
+/* concated harmony reexport FacilityAnalystTraceup3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystTraceup3DParameters", function() { return FacilityAnalystTraceup3DParameters_FacilityAnalystTraceup3DParameters; });
+/* concated harmony reexport FacilityAnalystUpstream3DParameters */__webpack_require__.d(__webpack_exports__, "FacilityAnalystUpstream3DParameters", function() { return FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters; });
+/* concated harmony reexport FieldParameters */__webpack_require__.d(__webpack_exports__, "FieldParameters", function() { return FieldParameters_FieldParameters; });
+/* concated harmony reexport FilterAggParameter */__webpack_require__.d(__webpack_exports__, "FilterAggParameter", function() { return FilterAggParameter_FilterAggParameter; });
+/* concated harmony reexport FieldStatisticsParameters */__webpack_require__.d(__webpack_exports__, "FieldStatisticsParameters", function() { return FieldStatisticsParameters_FieldStatisticsParameters; });
+/* concated harmony reexport FilterParameter */__webpack_require__.d(__webpack_exports__, "FilterParameter", function() { return FilterParameter_FilterParameter; });
+/* concated harmony reexport FindClosestFacilitiesParameters */__webpack_require__.d(__webpack_exports__, "FindClosestFacilitiesParameters", function() { return FindClosestFacilitiesParameters_FindClosestFacilitiesParameters; });
+/* concated harmony reexport FindLocationParameters */__webpack_require__.d(__webpack_exports__, "FindLocationParameters", function() { return FindLocationParameters_FindLocationParameters; });
+/* concated harmony reexport FindMTSPPathsParameters */__webpack_require__.d(__webpack_exports__, "FindMTSPPathsParameters", function() { return FindMTSPPathsParameters_FindMTSPPathsParameters; });
+/* concated harmony reexport FindPathParameters */__webpack_require__.d(__webpack_exports__, "FindPathParameters", function() { return FindPathParameters_FindPathParameters; });
+/* concated harmony reexport FindServiceAreasParameters */__webpack_require__.d(__webpack_exports__, "FindServiceAreasParameters", function() { return FindServiceAreasParameters_FindServiceAreasParameters; });
+/* concated harmony reexport FindTSPPathsParameters */__webpack_require__.d(__webpack_exports__, "FindTSPPathsParameters", function() { return FindTSPPathsParameters_FindTSPPathsParameters; });
+/* concated harmony reexport GenerateSpatialDataParameters */__webpack_require__.d(__webpack_exports__, "GenerateSpatialDataParameters", function() { return GenerateSpatialDataParameters_GenerateSpatialDataParameters; });
+/* concated harmony reexport GeoBoundingBoxQueryBuilderParameter */__webpack_require__.d(__webpack_exports__, "GeoBoundingBoxQueryBuilderParameter", function() { return GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter; });
+/* concated harmony reexport GeoCodingParameter */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
+/* concated harmony reexport GeoDecodingParameter */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
+/* concated harmony reexport GeoHashGridAggParameter */__webpack_require__.d(__webpack_exports__, "GeoHashGridAggParameter", function() { return GeoHashGridAggParameter_GeoHashGridAggParameter; });
+/* concated harmony reexport GeometryBufferAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometryBufferAnalystParameters", function() { return GeometryBufferAnalystParameters_GeometryBufferAnalystParameters; });
+/* concated harmony reexport GeometryOverlayAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometryOverlayAnalystParameters", function() { return GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters; });
+/* concated harmony reexport GeometrySurfaceAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometrySurfaceAnalystParameters", function() { return GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters; });
+/* concated harmony reexport GeometryThiessenAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeometryThiessenAnalystParameters", function() { return GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters; });
+/* concated harmony reexport GeoRelationAnalystParameters */__webpack_require__.d(__webpack_exports__, "GeoRelationAnalystParameters", function() { return GeoRelationAnalystParameters_GeoRelationAnalystParameters; });
+/* concated harmony reexport GetFeaturesByBoundsParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBoundsParameters", function() { return GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters; });
+/* concated harmony reexport GetFeaturesByBufferParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByBufferParameters", function() { return GetFeaturesByBufferParameters_GetFeaturesByBufferParameters; });
+/* concated harmony reexport GetFeaturesByGeometryParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByGeometryParameters", function() { return GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters; });
+/* concated harmony reexport GetFeaturesByIDsParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesByIDsParameters", function() { return GetFeaturesByIDsParameters_GetFeaturesByIDsParameters; });
+/* concated harmony reexport GetFeaturesBySQLParameters */__webpack_require__.d(__webpack_exports__, "GetFeaturesBySQLParameters", function() { return GetFeaturesBySQLParameters_GetFeaturesBySQLParameters; });
+/* concated harmony reexport GetGridCellInfosParameters */__webpack_require__.d(__webpack_exports__, "GetGridCellInfosParameters", function() { return GetGridCellInfosParameters_GetGridCellInfosParameters; });
+/* concated harmony reexport Grid */__webpack_require__.d(__webpack_exports__, "Grid", function() { return Grid_Grid; });
+/* concated harmony reexport Image */__webpack_require__.d(__webpack_exports__, "Image", function() { return Image_Image; });
+/* concated harmony reexport InterpolationAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationAnalystParameters", function() { return InterpolationAnalystParameters_InterpolationAnalystParameters; });
+/* concated harmony reexport InterpolationIDWAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationIDWAnalystParameters", function() { return InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters; });
+/* concated harmony reexport InterpolationKrigingAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationKrigingAnalystParameters", function() { return InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameters; });
+/* concated harmony reexport InterpolationRBFAnalystParameters */__webpack_require__.d(__webpack_exports__, "InterpolationRBFAnalystParameters", function() { return InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters; });
+/* concated harmony reexport JoinItem */__webpack_require__.d(__webpack_exports__, "JoinItem", function() { return JoinItem_JoinItem; });
+/* concated harmony reexport KernelDensityJobParameter */__webpack_require__.d(__webpack_exports__, "KernelDensityJobParameter", function() { return KernelDensityJobParameter_KernelDensityJobParameter; });
+/* concated harmony reexport LabelImageCell */__webpack_require__.d(__webpack_exports__, "LabelImageCell", function() { return LabelImageCell_LabelImageCell; });
+/* concated harmony reexport LabelMatrixCell */__webpack_require__.d(__webpack_exports__, "LabelMatrixCell", function() { return LabelMatrixCell; });
+/* concated harmony reexport LabelMixedTextStyle */__webpack_require__.d(__webpack_exports__, "LabelMixedTextStyle", function() { return LabelMixedTextStyle_LabelMixedTextStyle; });
+/* concated harmony reexport LabelSymbolCell */__webpack_require__.d(__webpack_exports__, "LabelSymbolCell", function() { return LabelSymbolCell_LabelSymbolCell; });
+/* concated harmony reexport LabelThemeCell */__webpack_require__.d(__webpack_exports__, "LabelThemeCell", function() { return LabelThemeCell_LabelThemeCell; });
+/* concated harmony reexport LayerStatus */__webpack_require__.d(__webpack_exports__, "LayerStatus", function() { return LayerStatus_LayerStatus; });
+/* concated harmony reexport LinkItem */__webpack_require__.d(__webpack_exports__, "LinkItem", function() { return LinkItem_LinkItem; });
+/* concated harmony reexport MathExpressionAnalysisParameters */__webpack_require__.d(__webpack_exports__, "MathExpressionAnalysisParameters", function() { return MathExpressionAnalysisParameters_MathExpressionAnalysisParameters; });
+/* concated harmony reexport MeasureParameters */__webpack_require__.d(__webpack_exports__, "MeasureParameters", function() { return MeasureParameters_MeasureParameters; });
+/* concated harmony reexport OutputSetting */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
+/* concated harmony reexport MappingParameters */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
+/* concated harmony reexport OverlapDisplayedOptions */__webpack_require__.d(__webpack_exports__, "OverlapDisplayedOptions", function() { return OverlapDisplayedOptions_OverlapDisplayedOptions; });
+/* concated harmony reexport OverlayAnalystParameters */__webpack_require__.d(__webpack_exports__, "OverlayAnalystParameters", function() { return OverlayAnalystParameters_OverlayAnalystParameters; });
+/* concated harmony reexport OverlayGeoJobParameter */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
+/* concated harmony reexport PointWithMeasure */__webpack_require__.d(__webpack_exports__, "PointWithMeasure", function() { return PointWithMeasure_PointWithMeasure; });
+/* concated harmony reexport QueryByBoundsParameters */__webpack_require__.d(__webpack_exports__, "QueryByBoundsParameters", function() { return QueryByBoundsParameters_QueryByBoundsParameters; });
+/* concated harmony reexport QueryByDistanceParameters */__webpack_require__.d(__webpack_exports__, "QueryByDistanceParameters", function() { return QueryByDistanceParameters_QueryByDistanceParameters; });
+/* concated harmony reexport QueryByGeometryParameters */__webpack_require__.d(__webpack_exports__, "QueryByGeometryParameters", function() { return QueryByGeometryParameters_QueryByGeometryParameters; });
+/* concated harmony reexport QueryBySQLParameters */__webpack_require__.d(__webpack_exports__, "QueryBySQLParameters", function() { return QueryBySQLParameters_QueryBySQLParameters; });
+/* concated harmony reexport QueryParameters */__webpack_require__.d(__webpack_exports__, "QueryParameters", function() { return QueryParameters_QueryParameters; });
+/* concated harmony reexport Route */__webpack_require__.d(__webpack_exports__, "Route", function() { return Route_Route; });
+/* concated harmony reexport RouteCalculateMeasureParameters */__webpack_require__.d(__webpack_exports__, "RouteCalculateMeasureParameters", function() { return RouteCalculateMeasureParameters_RouteCalculateMeasureParameters; });
+/* concated harmony reexport RouteLocatorParameters */__webpack_require__.d(__webpack_exports__, "RouteLocatorParameters", function() { return RouteLocatorParameters_RouteLocatorParameters; });
+/* concated harmony reexport ServerColor */__webpack_require__.d(__webpack_exports__, "ServerColor", function() { return ServerColor; });
+/* concated harmony reexport ServerFeature */__webpack_require__.d(__webpack_exports__, "ServerFeature", function() { return ServerFeature_ServerFeature; });
+/* concated harmony reexport ServerGeometry */__webpack_require__.d(__webpack_exports__, "ServerGeometry", function() { return ServerGeometry_ServerGeometry; });
+/* concated harmony reexport ServerStyle */__webpack_require__.d(__webpack_exports__, "ServerStyle", function() { return ServerStyle_ServerStyle; });
+/* concated harmony reexport ServerTextStyle */__webpack_require__.d(__webpack_exports__, "ServerTextStyle", function() { return ServerTextStyle_ServerTextStyle; });
+/* concated harmony reexport ServerTheme */__webpack_require__.d(__webpack_exports__, "ServerTheme", function() { return ServerTheme_ServerTheme; });
+/* concated harmony reexport SetLayerInfoParameters */__webpack_require__.d(__webpack_exports__, "SetLayerInfoParameters", function() { return SetLayerInfoParameters_SetLayerInfoParameters; });
+/* concated harmony reexport SetLayersInfoParameters */__webpack_require__.d(__webpack_exports__, "SetLayersInfoParameters", function() { return SetLayersInfoParameters_SetLayersInfoParameters; });
+/* concated harmony reexport SetLayerStatusParameters */__webpack_require__.d(__webpack_exports__, "SetLayerStatusParameters", function() { return SetLayerStatusParameters_SetLayerStatusParameters; });
+/* concated harmony reexport SingleObjectQueryJobsParameter */__webpack_require__.d(__webpack_exports__, "SingleObjectQueryJobsParameter", function() { return SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter; });
+/* concated harmony reexport StopQueryParameters */__webpack_require__.d(__webpack_exports__, "StopQueryParameters", function() { return StopQueryParameters_StopQueryParameters; });
+/* concated harmony reexport SummaryAttributesJobsParameter */__webpack_require__.d(__webpack_exports__, "SummaryAttributesJobsParameter", function() { return SummaryAttributesJobsParameter_SummaryAttributesJobsParameter; });
+/* concated harmony reexport SummaryMeshJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryMeshJobParameter", function() { return SummaryMeshJobParameter_SummaryMeshJobParameter; });
+/* concated harmony reexport SummaryRegionJobParameter */__webpack_require__.d(__webpack_exports__, "SummaryRegionJobParameter", function() { return SummaryRegionJobParameter_SummaryRegionJobParameter; });
+/* concated harmony reexport SupplyCenter */__webpack_require__.d(__webpack_exports__, "SupplyCenter", function() { return SupplyCenter_SupplyCenter; });
+/* concated harmony reexport SurfaceAnalystParameters */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParameters", function() { return SurfaceAnalystParameters_SurfaceAnalystParameters; });
+/* concated harmony reexport SurfaceAnalystParametersSetting */__webpack_require__.d(__webpack_exports__, "SurfaceAnalystParametersSetting", function() { return SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting; });
+/* concated harmony reexport TerrainCurvatureCalculationParameters */__webpack_require__.d(__webpack_exports__, "TerrainCurvatureCalculationParameters", function() { return TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameters; });
+/* concated harmony reexport Theme */__webpack_require__.d(__webpack_exports__, "Theme", function() { return Theme_Theme; });
+/* concated harmony reexport ThemeDotDensity */__webpack_require__.d(__webpack_exports__, "ThemeDotDensity", function() { return ThemeDotDensity_ThemeDotDensity; });
+/* concated harmony reexport ThemeFlow */__webpack_require__.d(__webpack_exports__, "ThemeFlow", function() { return ThemeFlow_ThemeFlow; });
+/* concated harmony reexport ThemeGraduatedSymbol */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbol", function() { return ThemeGraduatedSymbol_ThemeGraduatedSymbol; });
+/* concated harmony reexport ThemeGraduatedSymbolStyle */__webpack_require__.d(__webpack_exports__, "ThemeGraduatedSymbolStyle", function() { return ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle; });
+/* concated harmony reexport ThemeGraph */__webpack_require__.d(__webpack_exports__, "ThemeGraph", function() { return ThemeGraph_ThemeGraph; });
+/* concated harmony reexport ThemeGraphAxes */__webpack_require__.d(__webpack_exports__, "ThemeGraphAxes", function() { return ThemeGraphAxes_ThemeGraphAxes; });
+/* concated harmony reexport ThemeGraphItem */__webpack_require__.d(__webpack_exports__, "ThemeGraphItem", function() { return ThemeGraphItem_ThemeGraphItem; });
+/* concated harmony reexport ThemeGraphSize */__webpack_require__.d(__webpack_exports__, "ThemeGraphSize", function() { return ThemeGraphSize_ThemeGraphSize; });
+/* concated harmony reexport ThemeGraphText */__webpack_require__.d(__webpack_exports__, "ThemeGraphText", function() { return ThemeGraphText_ThemeGraphText; });
+/* concated harmony reexport ThemeGridRange */__webpack_require__.d(__webpack_exports__, "ThemeGridRange", function() { return ThemeGridRange_ThemeGridRange; });
+/* concated harmony reexport ThemeGridRangeItem */__webpack_require__.d(__webpack_exports__, "ThemeGridRangeItem", function() { return ThemeGridRangeItem_ThemeGridRangeItem; });
+/* concated harmony reexport ThemeGridUnique */__webpack_require__.d(__webpack_exports__, "ThemeGridUnique", function() { return ThemeGridUnique_ThemeGridUnique; });
+/* concated harmony reexport ThemeGridUniqueItem */__webpack_require__.d(__webpack_exports__, "ThemeGridUniqueItem", function() { return ThemeGridUniqueItem_ThemeGridUniqueItem; });
+/* concated harmony reexport ThemeLabel */__webpack_require__.d(__webpack_exports__, "ThemeLabel", function() { return ThemeLabel_ThemeLabel; });
+/* concated harmony reexport ThemeLabelAlongLine */__webpack_require__.d(__webpack_exports__, "ThemeLabelAlongLine", function() { return ThemeLabelAlongLine_ThemeLabelAlongLine; });
+/* concated harmony reexport ThemeLabelBackground */__webpack_require__.d(__webpack_exports__, "ThemeLabelBackground", function() { return ThemeLabelBackground_ThemeLabelBackground; });
+/* concated harmony reexport ThemeLabelItem */__webpack_require__.d(__webpack_exports__, "ThemeLabelItem", function() { return ThemeLabelItem_ThemeLabelItem; });
+/* concated harmony reexport ThemeLabelText */__webpack_require__.d(__webpack_exports__, "ThemeLabelText", function() { return ThemeLabelText_ThemeLabelText; });
+/* concated harmony reexport ThemeLabelUniqueItem */__webpack_require__.d(__webpack_exports__, "ThemeLabelUniqueItem", function() { return ThemeLabelUniqueItem_ThemeLabelUniqueItem; });
+/* concated harmony reexport ThemeMemoryData */__webpack_require__.d(__webpack_exports__, "ThemeMemoryData", function() { return ThemeMemoryData; });
+/* concated harmony reexport ThemeOffset */__webpack_require__.d(__webpack_exports__, "ThemeOffset", function() { return ThemeOffset_ThemeOffset; });
+/* concated harmony reexport ThemeParameters */__webpack_require__.d(__webpack_exports__, "ThemeParameters", function() { return ThemeParameters_ThemeParameters; });
+/* concated harmony reexport ThemeRange */__webpack_require__.d(__webpack_exports__, "ThemeRange", function() { return ThemeRange_ThemeRange; });
+/* concated harmony reexport ThemeRangeItem */__webpack_require__.d(__webpack_exports__, "ThemeRangeItem", function() { return ThemeRangeItem_ThemeRangeItem; });
+/* concated harmony reexport ThemeUnique */__webpack_require__.d(__webpack_exports__, "ThemeUnique", function() { return ThemeUnique_ThemeUnique; });
+/* concated harmony reexport ThemeUniqueItem */__webpack_require__.d(__webpack_exports__, "ThemeUniqueItem", function() { return ThemeUniqueItem_ThemeUniqueItem; });
+/* concated harmony reexport ThiessenAnalystParameters */__webpack_require__.d(__webpack_exports__, "ThiessenAnalystParameters", function() { return ThiessenAnalystParameters_ThiessenAnalystParameters; });
+/* concated harmony reexport TopologyValidatorJobsParameter */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
+/* concated harmony reexport TransferLine */__webpack_require__.d(__webpack_exports__, "TransferLine", function() { return TransferLine_TransferLine; });
+/* concated harmony reexport TransferPathParameters */__webpack_require__.d(__webpack_exports__, "TransferPathParameters", function() { return TransferPathParameters_TransferPathParameters; });
+/* concated harmony reexport TransferSolutionParameters */__webpack_require__.d(__webpack_exports__, "TransferSolutionParameters", function() { return TransferSolutionParameters_TransferSolutionParameters; });
+/* concated harmony reexport TransportationAnalystParameter */__webpack_require__.d(__webpack_exports__, "TransportationAnalystParameter", function() { return TransportationAnalystParameter_TransportationAnalystParameter; });
+/* concated harmony reexport TransportationAnalystResultSetting */__webpack_require__.d(__webpack_exports__, "TransportationAnalystResultSetting", function() { return TransportationAnalystResultSetting_TransportationAnalystResultSetting; });
+/* concated harmony reexport UGCLayer */__webpack_require__.d(__webpack_exports__, "UGCLayer", function() { return UGCLayer_UGCLayer; });
+/* concated harmony reexport UGCMapLayer */__webpack_require__.d(__webpack_exports__, "UGCMapLayer", function() { return UGCMapLayer_UGCMapLayer; });
+/* concated harmony reexport UGCSubLayer */__webpack_require__.d(__webpack_exports__, "UGCSubLayer", function() { return UGCSubLayer_UGCSubLayer; });
+/* concated harmony reexport UpdateEdgeWeightParameters */__webpack_require__.d(__webpack_exports__, "UpdateEdgeWeightParameters", function() { return UpdateEdgeWeightParameters_UpdateEdgeWeightParameters; });
+/* concated harmony reexport UpdateTurnNodeWeightParameters */__webpack_require__.d(__webpack_exports__, "UpdateTurnNodeWeightParameters", function() { return UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters; });
+/* concated harmony reexport Vector */__webpack_require__.d(__webpack_exports__, "Vector", function() { return iServer_Vector_Vector; });
+/* concated harmony reexport VectorClipJobsParameter */__webpack_require__.d(__webpack_exports__, "VectorClipJobsParameter", function() { return VectorClipJobsParameter_VectorClipJobsParameter; });
+/* concated harmony reexport FileTypes */__webpack_require__.d(__webpack_exports__, "FileTypes", function() { return FileTypes; });
+/* concated harmony reexport FileConfig */__webpack_require__.d(__webpack_exports__, "FileConfig", function() { return FileConfig; });
+/* concated harmony reexport FileModel */__webpack_require__.d(__webpack_exports__, "FileModel", function() { return FileModel_FileModel; });
+/* concated harmony reexport MessageBox */__webpack_require__.d(__webpack_exports__, "MessageBox", function() { return MessageBox; });
+/* concated harmony reexport CommonContainer */__webpack_require__.d(__webpack_exports__, "CommonContainer", function() { return CommonContainer_CommonContainer; });
+/* concated harmony reexport DropDownBox */__webpack_require__.d(__webpack_exports__, "DropDownBox", function() { return DropDownBox_DropDownBox; });
+/* concated harmony reexport Select */__webpack_require__.d(__webpack_exports__, "Select", function() { return Select_Select; });
+/* concated harmony reexport AttributesPopContainer */__webpack_require__.d(__webpack_exports__, "AttributesPopContainer", function() { return AttributesPopContainer_AttributesPopContainer; });
+/* concated harmony reexport PopContainer */__webpack_require__.d(__webpack_exports__, "PopContainer", function() { return PopContainer_PopContainer; });
+/* concated harmony reexport IndexTabsPageContainer */__webpack_require__.d(__webpack_exports__, "IndexTabsPageContainer", function() { return IndexTabsPageContainer_IndexTabsPageContainer; });
+/* concated harmony reexport CityTabsPage */__webpack_require__.d(__webpack_exports__, "CityTabsPage", function() { return CityTabsPage_CityTabsPage; });
+/* concated harmony reexport NavTabsPage */__webpack_require__.d(__webpack_exports__, "NavTabsPage", function() { return NavTabsPage_NavTabsPage; });
+/* concated harmony reexport PaginationContainer */__webpack_require__.d(__webpack_exports__, "PaginationContainer", function() { return PaginationContainer_PaginationContainer; });
+/* concated harmony reexport ComponentsUtil */__webpack_require__.d(__webpack_exports__, "ComponentsUtil", function() { return ComponentsUtil; });
+/* concated harmony reexport FileReaderUtil */__webpack_require__.d(__webpack_exports__, "FileReaderUtil", function() { return FileReaderUtil; });
+/* concated harmony reexport ChartView */__webpack_require__.d(__webpack_exports__, "ChartView", function() { return ChartView_ChartView; });
+/* concated harmony reexport ChartViewModel */__webpack_require__.d(__webpack_exports__, "ChartViewModel", function() { return ChartViewModel_ChartViewModel; });
+/* concated harmony reexport Logo */__webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo; });
+/* concated harmony reexport logo */__webpack_require__.d(__webpack_exports__, "logo", function() { return logo; });
+/* concated harmony reexport ChangeTileVersion */__webpack_require__.d(__webpack_exports__, "ChangeTileVersion", function() { return ChangeTileVersion; });
+/* concated harmony reexport changeTileVersion */__webpack_require__.d(__webpack_exports__, "changeTileVersion", function() { return changeTileVersion; });
+/* concated harmony reexport CommontypesConversion */__webpack_require__.d(__webpack_exports__, "CommontypesConversion", function() { return CommontypesConversion_CommontypesConversion; });
+/* concated harmony reexport BaiduCRS */__webpack_require__.d(__webpack_exports__, "BaiduCRS", function() { return BaiduCRS; });
+/* concated harmony reexport TianDiTu_WGS84CRS */__webpack_require__.d(__webpack_exports__, "TianDiTu_WGS84CRS", function() { return TianDiTu_WGS84CRS; });
+/* concated harmony reexport TianDiTu_MercatorCRS */__webpack_require__.d(__webpack_exports__, "TianDiTu_MercatorCRS", function() { return TianDiTu_MercatorCRS; });
+/* concated harmony reexport NonProjection */__webpack_require__.d(__webpack_exports__, "NonProjection", function() { return NonProjection; });
+/* concated harmony reexport nonProjection */__webpack_require__.d(__webpack_exports__, "nonProjection", function() { return nonProjection; });
+/* concated harmony reexport NonEarthCRS */__webpack_require__.d(__webpack_exports__, "NonEarthCRS", function() { return NonEarthCRS; });
+/* concated harmony reexport nonEarthCRS */__webpack_require__.d(__webpack_exports__, "nonEarthCRS", function() { return nonEarthCRS; });
+/* concated harmony reexport CRS */__webpack_require__.d(__webpack_exports__, "CRS", function() { return CRS; });
+/* concated harmony reexport crs */__webpack_require__.d(__webpack_exports__, "crs", function() { return Proj4Leaflet_crs; });
+/* concated harmony reexport toGeoJSON */__webpack_require__.d(__webpack_exports__, "toGeoJSON", function() { return toGeoJSON; });
+/* concated harmony reexport toSuperMapGeometry */__webpack_require__.d(__webpack_exports__, "toSuperMapGeometry", function() { return toSuperMapGeometry; });
+/* concated harmony reexport getMeterPerMapUnit */__webpack_require__.d(__webpack_exports__, "getMeterPerMapUnit", function() { return Util_getMeterPerMapUnit; });
+/* concated harmony reexport resolutionToScale */__webpack_require__.d(__webpack_exports__, "resolutionToScale", function() { return resolutionToScale; });
+/* concated harmony reexport scaleToResolution */__webpack_require__.d(__webpack_exports__, "scaleToResolution", function() { return scaleToResolution; });
+/* concated harmony reexport GetResolutionFromScaleDpi */__webpack_require__.d(__webpack_exports__, "GetResolutionFromScaleDpi", function() { return GetResolutionFromScaleDpi; });
+/* concated harmony reexport NormalizeScale */__webpack_require__.d(__webpack_exports__, "NormalizeScale", function() { return NormalizeScale; });
+/* concated harmony reexport BaiduTileLayer */__webpack_require__.d(__webpack_exports__, "BaiduTileLayer", function() { return BaiduTileLayer; });
+/* concated harmony reexport baiduTileLayer */__webpack_require__.d(__webpack_exports__, "baiduTileLayer", function() { return baiduTileLayer; });
+/* concated harmony reexport CloudTileLayer */__webpack_require__.d(__webpack_exports__, "CloudTileLayer", function() { return CloudTileLayer; });
+/* concated harmony reexport cloudTileLayer */__webpack_require__.d(__webpack_exports__, "cloudTileLayer", function() { return cloudTileLayer; });
+/* concated harmony reexport ImageMapLayer */__webpack_require__.d(__webpack_exports__, "ImageMapLayer", function() { return ImageMapLayer; });
+/* concated harmony reexport imageMapLayer */__webpack_require__.d(__webpack_exports__, "imageMapLayer", function() { return imageMapLayer; });
+/* concated harmony reexport TiandituTileLayer */__webpack_require__.d(__webpack_exports__, "TiandituTileLayer", function() { return TiandituTileLayer; });
+/* concated harmony reexport tiandituTileLayer */__webpack_require__.d(__webpack_exports__, "tiandituTileLayer", function() { return tiandituTileLayer; });
+/* concated harmony reexport TiledMapLayer */__webpack_require__.d(__webpack_exports__, "TiledMapLayer", function() { return TiledMapLayer; });
+/* concated harmony reexport tiledMapLayer */__webpack_require__.d(__webpack_exports__, "tiledMapLayer", function() { return tiledMapLayer; });
+/* concated harmony reexport WMTSLayer */__webpack_require__.d(__webpack_exports__, "WMTSLayer", function() { return WMTSLayer; });
+/* concated harmony reexport wmtsLayer */__webpack_require__.d(__webpack_exports__, "wmtsLayer", function() { return wmtsLayer; });
+/* concated harmony reexport WebMap */__webpack_require__.d(__webpack_exports__, "WebMap", function() { return WebMap; });
+/* concated harmony reexport webMap */__webpack_require__.d(__webpack_exports__, "webMap", function() { return webMap; });
+/* concated harmony reexport DataFlowLayer */__webpack_require__.d(__webpack_exports__, "DataFlowLayer", function() { return DataFlowLayer; });
+/* concated harmony reexport dataFlowLayer */__webpack_require__.d(__webpack_exports__, "dataFlowLayer", function() { return DataFlowLayer_dataFlowLayer; });
+/* concated harmony reexport EchartsLayer */__webpack_require__.d(__webpack_exports__, "EchartsLayer", function() { return EchartsLayer; });
+/* concated harmony reexport echartsLayer */__webpack_require__.d(__webpack_exports__, "echartsLayer", function() { return echartsLayer; });
+/* concated harmony reexport LeafletMapCoordSys */__webpack_require__.d(__webpack_exports__, "LeafletMapCoordSys", function() { return LeafletMapCoordSys; });
+/* concated harmony reexport GraphicLayer */__webpack_require__.d(__webpack_exports__, "GraphicLayer", function() { return GraphicLayer; });
+/* concated harmony reexport graphicLayer */__webpack_require__.d(__webpack_exports__, "graphicLayer", function() { return graphicLayer; });
+/* concated harmony reexport GraphThemeLayer */__webpack_require__.d(__webpack_exports__, "GraphThemeLayer", function() { return GraphThemeLayer; });
+/* concated harmony reexport graphThemeLayer */__webpack_require__.d(__webpack_exports__, "graphThemeLayer", function() { return graphThemeLayer; });
+/* concated harmony reexport LabelThemeLayer */__webpack_require__.d(__webpack_exports__, "LabelThemeLayer", function() { return LabelThemeLayer; });
+/* concated harmony reexport labelThemeLayer */__webpack_require__.d(__webpack_exports__, "labelThemeLayer", function() { return labelThemeLayer; });
+/* concated harmony reexport MapVLayer */__webpack_require__.d(__webpack_exports__, "MapVLayer", function() { return MapVLayer; });
+/* concated harmony reexport mapVLayer */__webpack_require__.d(__webpack_exports__, "mapVLayer", function() { return mapVLayer; });
+/* concated harmony reexport RangeThemeLayer */__webpack_require__.d(__webpack_exports__, "RangeThemeLayer", function() { return RangeThemeLayer; });
+/* concated harmony reexport rangeThemeLayer */__webpack_require__.d(__webpack_exports__, "rangeThemeLayer", function() { return rangeThemeLayer; });
+/* concated harmony reexport RankSymbolThemeLayer */__webpack_require__.d(__webpack_exports__, "RankSymbolThemeLayer", function() { return RankSymbolThemeLayer; });
+/* concated harmony reexport rankSymbolThemeLayer */__webpack_require__.d(__webpack_exports__, "rankSymbolThemeLayer", function() { return rankSymbolThemeLayer; });
+/* concated harmony reexport TileVectorLayer */__webpack_require__.d(__webpack_exports__, "TileVectorLayer", function() { return TileVectorLayer; });
+/* concated harmony reexport tiledVectorLayer */__webpack_require__.d(__webpack_exports__, "tiledVectorLayer", function() { return tiledVectorLayer; });
+/* concated harmony reexport TurfLayer */__webpack_require__.d(__webpack_exports__, "TurfLayer", function() { return TurfLayer; });
+/* concated harmony reexport turfLayer */__webpack_require__.d(__webpack_exports__, "turfLayer", function() { return TurfLayer_turfLayer; });
+/* concated harmony reexport UnicodeMarker */__webpack_require__.d(__webpack_exports__, "UnicodeMarker", function() { return UnicodeMarker; });
+/* concated harmony reexport unicodeMarker */__webpack_require__.d(__webpack_exports__, "unicodeMarker", function() { return unicodeMarker; });
+/* concated harmony reexport UniqueThemeLayer */__webpack_require__.d(__webpack_exports__, "UniqueThemeLayer", function() { return UniqueThemeLayer; });
+/* concated harmony reexport uniqueThemeLayer */__webpack_require__.d(__webpack_exports__, "uniqueThemeLayer", function() { return uniqueThemeLayer; });
+/* concated harmony reexport VectorTileFormat */__webpack_require__.d(__webpack_exports__, "VectorTileFormat", function() { return VectorTileFormat; });
+/* concated harmony reexport CartoCSSToLeaflet */__webpack_require__.d(__webpack_exports__, "CartoCSSToLeaflet", function() { return CartoCSSToLeaflet_CartoCSSToLeaflet; });
+/* concated harmony reexport DefaultStyle */__webpack_require__.d(__webpack_exports__, "DefaultStyle", function() { return DefaultStyle; });
+/* concated harmony reexport CartoStyleMap */__webpack_require__.d(__webpack_exports__, "CartoStyleMap", function() { return CartoStyleMap; });
+/* concated harmony reexport ServerStyleMap */__webpack_require__.d(__webpack_exports__, "ServerStyleMap", function() { return ServerStyleMap; });
+/* concated harmony reexport CompOpMap */__webpack_require__.d(__webpack_exports__, "CompOpMap", function() { return CompOpMap; });
+/* concated harmony reexport ImageStyle */__webpack_require__.d(__webpack_exports__, "ImageStyle", function() { return ImageStyle; });
+/* concated harmony reexport imageStyle */__webpack_require__.d(__webpack_exports__, "imageStyle", function() { return imageStyle; });
+/* concated harmony reexport CircleStyle */__webpack_require__.d(__webpack_exports__, "CircleStyle", function() { return CircleStyle; });
+/* concated harmony reexport circleStyle */__webpack_require__.d(__webpack_exports__, "circleStyle", function() { return circleStyle; });
+/* concated harmony reexport Graphic */__webpack_require__.d(__webpack_exports__, "Graphic", function() { return Graphic; });
+/* concated harmony reexport graphic */__webpack_require__.d(__webpack_exports__, "graphic", function() { return Graphic_graphic; });
+/* concated harmony reexport CloverStyle */__webpack_require__.d(__webpack_exports__, "CloverStyle", function() { return CloverStyle; });
+/* concated harmony reexport cloverStyle */__webpack_require__.d(__webpack_exports__, "cloverStyle", function() { return cloverStyle; });
+/* concated harmony reexport MapVRenderer */__webpack_require__.d(__webpack_exports__, "MapVRenderer", function() { return MapVRenderer_MapVRenderer; });
+/* concated harmony reexport GeoFeatureThemeLayer */__webpack_require__.d(__webpack_exports__, "GeoFeatureThemeLayer", function() { return GeoFeatureThemeLayer; });
+/* concated harmony reexport ThemeFeature */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature; });
+/* concated harmony reexport themeFeature */__webpack_require__.d(__webpack_exports__, "themeFeature", function() { return themeFeature; });
+/* concated harmony reexport ThemeLayer */__webpack_require__.d(__webpack_exports__, "ThemeLayer", function() { return ThemeLayer; });
+/* concated harmony reexport CanvasRenderer */__webpack_require__.d(__webpack_exports__, "CanvasRenderer", function() { return CanvasRenderer; });
+/* concated harmony reexport LineSymbolizer */__webpack_require__.d(__webpack_exports__, "LineSymbolizer", function() { return LineSymbolizer; });
+/* concated harmony reexport PointSymbolizer */__webpack_require__.d(__webpack_exports__, "PointSymbolizer", function() { return PointSymbolizer; });
+/* concated harmony reexport RegionSymbolizer */__webpack_require__.d(__webpack_exports__, "RegionSymbolizer", function() { return RegionSymbolizer; });
+/* concated harmony reexport SVGRenderer */__webpack_require__.d(__webpack_exports__, "SVGRenderer", function() { return SVGRenderer; });
+/* concated harmony reexport Symbolizer */__webpack_require__.d(__webpack_exports__, "Symbolizer", function() { return Symbolizer; });
+/* concated harmony reexport PolyBase */__webpack_require__.d(__webpack_exports__, "PolyBase", function() { return PolyBase; });
+/* concated harmony reexport TextSymbolizer */__webpack_require__.d(__webpack_exports__, "TextSymbolizer", function() { return TextSymbolizer; });
+/* concated harmony reexport VectorFeatureType */__webpack_require__.d(__webpack_exports__, "VectorFeatureType", function() { return VectorFeatureType; });
+/* concated harmony reexport VectorGrid */__webpack_require__.d(__webpack_exports__, "VectorGrid", function() { return VectorGrid; });
+/* concated harmony reexport VectorTile */__webpack_require__.d(__webpack_exports__, "VectorTile", function() { return VectorTile; });
+/* concated harmony reexport VectorTileJSON */__webpack_require__.d(__webpack_exports__, "VectorTileJSON", function() { return VectorTileJSON; });
+/* concated harmony reexport VectorTilePBF */__webpack_require__.d(__webpack_exports__, "VectorTilePBF", function() { return VectorTilePBF; });
+/* concated harmony reexport AddressMatchService */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
+/* concated harmony reexport addressMatchService */__webpack_require__.d(__webpack_exports__, "addressMatchService", function() { return AddressMatchService_addressMatchService; });
+/* concated harmony reexport ChartService */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService; });
+/* concated harmony reexport chartService */__webpack_require__.d(__webpack_exports__, "chartService", function() { return chartService; });
+/* concated harmony reexport DataFlowService */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
+/* concated harmony reexport dataFlowService */__webpack_require__.d(__webpack_exports__, "dataFlowService", function() { return dataFlowService; });
+/* concated harmony reexport FeatureService */__webpack_require__.d(__webpack_exports__, "FeatureService", function() { return FeatureService; });
+/* concated harmony reexport featureService */__webpack_require__.d(__webpack_exports__, "featureService", function() { return FeatureService_featureService; });
+/* concated harmony reexport FieldService */__webpack_require__.d(__webpack_exports__, "FieldService", function() { return FieldService; });
+/* concated harmony reexport fieldService */__webpack_require__.d(__webpack_exports__, "fieldService", function() { return fieldService; });
+/* concated harmony reexport GridCellInfosService */__webpack_require__.d(__webpack_exports__, "GridCellInfosService", function() { return GridCellInfosService; });
+/* concated harmony reexport gridCellInfosService */__webpack_require__.d(__webpack_exports__, "gridCellInfosService", function() { return gridCellInfosService; });
+/* concated harmony reexport LayerInfoService */__webpack_require__.d(__webpack_exports__, "LayerInfoService", function() { return LayerInfoService; });
+/* concated harmony reexport layerInfoService */__webpack_require__.d(__webpack_exports__, "layerInfoService", function() { return layerInfoService; });
+/* concated harmony reexport MapService */__webpack_require__.d(__webpack_exports__, "MapService", function() { return services_MapService_MapService; });
+/* concated harmony reexport mapService */__webpack_require__.d(__webpack_exports__, "mapService", function() { return mapService; });
+/* concated harmony reexport MeasureService */__webpack_require__.d(__webpack_exports__, "MeasureService", function() { return services_MeasureService_MeasureService; });
+/* concated harmony reexport measureService */__webpack_require__.d(__webpack_exports__, "measureService", function() { return MeasureService_measureService; });
+/* concated harmony reexport NetworkAnalyst3DService */__webpack_require__.d(__webpack_exports__, "NetworkAnalyst3DService", function() { return NetworkAnalyst3DService; });
+/* concated harmony reexport networkAnalyst3DService */__webpack_require__.d(__webpack_exports__, "networkAnalyst3DService", function() { return networkAnalyst3DService; });
+/* concated harmony reexport NetworkAnalystService */__webpack_require__.d(__webpack_exports__, "NetworkAnalystService", function() { return NetworkAnalystService; });
+/* concated harmony reexport networkAnalystService */__webpack_require__.d(__webpack_exports__, "networkAnalystService", function() { return networkAnalystService; });
+/* concated harmony reexport ProcessingService */__webpack_require__.d(__webpack_exports__, "ProcessingService", function() { return ProcessingService; });
+/* concated harmony reexport processingService */__webpack_require__.d(__webpack_exports__, "processingService", function() { return ProcessingService_processingService; });
+/* concated harmony reexport QueryService */__webpack_require__.d(__webpack_exports__, "QueryService", function() { return services_QueryService_QueryService; });
+/* concated harmony reexport queryService */__webpack_require__.d(__webpack_exports__, "queryService", function() { return QueryService_queryService; });
+/* concated harmony reexport ServiceBase */__webpack_require__.d(__webpack_exports__, "ServiceBase", function() { return ServiceBase; });
+/* concated harmony reexport SpatialAnalystService */__webpack_require__.d(__webpack_exports__, "SpatialAnalystService", function() { return SpatialAnalystService; });
+/* concated harmony reexport spatialAnalystService */__webpack_require__.d(__webpack_exports__, "spatialAnalystService", function() { return spatialAnalystService; });
+/* concated harmony reexport ThemeService */__webpack_require__.d(__webpack_exports__, "ThemeService", function() { return services_ThemeService_ThemeService; });
+/* concated harmony reexport themeService */__webpack_require__.d(__webpack_exports__, "themeService", function() { return ThemeService_themeService; });
+/* concated harmony reexport TrafficTransferAnalystService */__webpack_require__.d(__webpack_exports__, "TrafficTransferAnalystService", function() { return TrafficTransferAnalystService; });
+/* concated harmony reexport trafficTransferAnalystService */__webpack_require__.d(__webpack_exports__, "trafficTransferAnalystService", function() { return trafficTransferAnalystService; });
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -95969,1353 +97672,105 @@ external_L_default.a.supermap.components.dataServiceQuery = DataServiceQueryView
 
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = Point;
-
-/**
- * A standalone point geometry with useful accessor, comparison, and
- * modification methods.
- *
- * @class Point
- * @param {Number} x the x-coordinate. this could be longitude or screen
- * pixels, or any other sort of unit.
- * @param {Number} y the y-coordinate. this could be latitude or screen
- * pixels, or any other sort of unit.
- * @example
- * var point = new Point(-77, 38);
- */
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-Point.prototype = {
-
-    /**
-     * Clone this point, returning a new point that can be modified
-     * without affecting the old one.
-     * @return {Point} the clone
-     */
-    clone: function() { return new Point(this.x, this.y); },
-
-    /**
-     * Add this point's x & y coordinates to another point,
-     * yielding a new point.
-     * @param {Point} p the other point
-     * @return {Point} output point
-     */
-    add:     function(p) { return this.clone()._add(p); },
-
-    /**
-     * Subtract this point's x & y coordinates to from point,
-     * yielding a new point.
-     * @param {Point} p the other point
-     * @return {Point} output point
-     */
-    sub:     function(p) { return this.clone()._sub(p); },
-
-    /**
-     * Multiply this point's x & y coordinates by point,
-     * yielding a new point.
-     * @param {Point} p the other point
-     * @return {Point} output point
-     */
-    multByPoint:    function(p) { return this.clone()._multByPoint(p); },
-
-    /**
-     * Divide this point's x & y coordinates by point,
-     * yielding a new point.
-     * @param {Point} p the other point
-     * @return {Point} output point
-     */
-    divByPoint:     function(p) { return this.clone()._divByPoint(p); },
-
-    /**
-     * Multiply this point's x & y coordinates by a factor,
-     * yielding a new point.
-     * @param {Point} k factor
-     * @return {Point} output point
-     */
-    mult:    function(k) { return this.clone()._mult(k); },
-
-    /**
-     * Divide this point's x & y coordinates by a factor,
-     * yielding a new point.
-     * @param {Point} k factor
-     * @return {Point} output point
-     */
-    div:     function(k) { return this.clone()._div(k); },
-
-    /**
-     * Rotate this point around the 0, 0 origin by an angle a,
-     * given in radians
-     * @param {Number} a angle to rotate around, in radians
-     * @return {Point} output point
-     */
-    rotate:  function(a) { return this.clone()._rotate(a); },
-
-    /**
-     * Rotate this point around p point by an angle a,
-     * given in radians
-     * @param {Number} a angle to rotate around, in radians
-     * @param {Point} p Point to rotate around
-     * @return {Point} output point
-     */
-    rotateAround:  function(a,p) { return this.clone()._rotateAround(a,p); },
-
-    /**
-     * Multiply this point by a 4x1 transformation matrix
-     * @param {Array<Number>} m transformation matrix
-     * @return {Point} output point
-     */
-    matMult: function(m) { return this.clone()._matMult(m); },
-
-    /**
-     * Calculate this point but as a unit vector from 0, 0, meaning
-     * that the distance from the resulting point to the 0, 0
-     * coordinate will be equal to 1 and the angle from the resulting
-     * point to the 0, 0 coordinate will be the same as before.
-     * @return {Point} unit vector point
-     */
-    unit:    function() { return this.clone()._unit(); },
-
-    /**
-     * Compute a perpendicular point, where the new y coordinate
-     * is the old x coordinate and the new x coordinate is the old y
-     * coordinate multiplied by -1
-     * @return {Point} perpendicular point
-     */
-    perp:    function() { return this.clone()._perp(); },
-
-    /**
-     * Return a version of this point with the x & y coordinates
-     * rounded to integers.
-     * @return {Point} rounded point
-     */
-    round:   function() { return this.clone()._round(); },
-
-    /**
-     * Return the magitude of this point: this is the Euclidean
-     * distance from the 0, 0 coordinate to this point's x and y
-     * coordinates.
-     * @return {Number} magnitude
-     */
-    mag: function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    },
-
-    /**
-     * Judge whether this point is equal to another point, returning
-     * true or false.
-     * @param {Point} other the other point
-     * @return {boolean} whether the points are equal
-     */
-    equals: function(other) {
-        return this.x === other.x &&
-               this.y === other.y;
-    },
-
-    /**
-     * Calculate the distance from this point to another point
-     * @param {Point} p the other point
-     * @return {Number} distance
-     */
-    dist: function(p) {
-        return Math.sqrt(this.distSqr(p));
-    },
-
-    /**
-     * Calculate the distance from this point to another point,
-     * without the square root step. Useful if you're comparing
-     * relative distances.
-     * @param {Point} p the other point
-     * @return {Number} distance
-     */
-    distSqr: function(p) {
-        var dx = p.x - this.x,
-            dy = p.y - this.y;
-        return dx * dx + dy * dy;
-    },
-
-    /**
-     * Get the angle from the 0, 0 coordinate to this point, in radians
-     * coordinates.
-     * @return {Number} angle
-     */
-    angle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-
-    /**
-     * Get the angle from this point to another point, in radians
-     * @param {Point} b the other point
-     * @return {Number} angle
-     */
-    angleTo: function(b) {
-        return Math.atan2(this.y - b.y, this.x - b.x);
-    },
-
-    /**
-     * Get the angle between this point and another point, in radians
-     * @param {Point} b the other point
-     * @return {Number} angle
-     */
-    angleWith: function(b) {
-        return this.angleWithSep(b.x, b.y);
-    },
-
-    /*
-     * Find the angle of the two vectors, solving the formula for
-     * the cross product a x b = |a||b|sin(θ) for θ.
-     * @param {Number} x the x-coordinate
-     * @param {Number} y the y-coordinate
-     * @return {Number} the angle in radians
-     */
-    angleWithSep: function(x, y) {
-        return Math.atan2(
-            this.x * y - this.y * x,
-            this.x * x + this.y * y);
-    },
-
-    _matMult: function(m) {
-        var x = m[0] * this.x + m[1] * this.y,
-            y = m[2] * this.x + m[3] * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _add: function(p) {
-        this.x += p.x;
-        this.y += p.y;
-        return this;
-    },
-
-    _sub: function(p) {
-        this.x -= p.x;
-        this.y -= p.y;
-        return this;
-    },
-
-    _mult: function(k) {
-        this.x *= k;
-        this.y *= k;
-        return this;
-    },
-
-    _div: function(k) {
-        this.x /= k;
-        this.y /= k;
-        return this;
-    },
-
-    _multByPoint: function(p) {
-        this.x *= p.x;
-        this.y *= p.y;
-        return this;
-    },
-
-    _divByPoint: function(p) {
-        this.x /= p.x;
-        this.y /= p.y;
-        return this;
-    },
-
-    _unit: function() {
-        this._div(this.mag());
-        return this;
-    },
-
-    _perp: function() {
-        var y = this.y;
-        this.y = this.x;
-        this.x = -y;
-        return this;
-    },
-
-    _rotate: function(angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = cos * this.x - sin * this.y,
-            y = sin * this.x + cos * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _rotateAround: function(angle, p) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = p.x + cos * (this.x - p.x) - sin * (this.y - p.y),
-            y = p.y + sin * (this.x - p.x) + cos * (this.y - p.y);
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _round: function() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        return this;
-    }
-};
-
-/**
- * Construct a point from an array if necessary, otherwise if the input
- * is already a Point, or an unknown type, return it unchanged
- * @param {Array<Number>|Point|*} a any kind of input value
- * @return {Point} constructed point, or passed-through value.
- * @example
- * // this
- * var point = Point.convert([0, 1]);
- * // is equivalent to
- * var point = new Point(0, 1);
- */
-Point.convert = function (a) {
-    if (a instanceof Point) {
-        return a;
-    }
-    if (Array.isArray(a)) {
-        return new Point(a[0], a[1]);
-    }
-    return a;
-};
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var VectorTileLayer = __webpack_require__(9);
-
-module.exports = VectorTile;
-
-function VectorTile(pbf, end) {
-    this.layers = pbf.readFields(readTile, {}, end);
-}
-
-function readTile(tag, layers, pbf) {
-    if (tag === 3) {
-        var layer = new VectorTileLayer(pbf, pbf.readVarint() + pbf.pos);
-        if (layer.length) layers[layer.name] = layer;
-    }
-}
-
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = (nBytes * 8) - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = (nBytes * 8) - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = ((value * c) - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports) {
-
-function getObjectType(obj) {
-  return Object.prototype.toString.call(obj);
-}
-function isDate(obj) {
-  return getObjectType(obj) === '[object Date]';
-}
-function isString(obj) {
-  return getObjectType(obj) === '[object String]';
-}
-function isDateString(obj) {
-  return isString(obj) && !isNaN(Date.parse(obj))
-}
-function isNumber(obj) {
-  return typeof obj === 'number'
-}
-function parseDateFromString(str) {
-  return Date.parse(str)
-}
-module.exports = {
-  getObjectType: getObjectType,
-  isDate: isDate,
-  isString: isString,
-  isDateString: isDateString,
-  parseDateFromString: parseDateFromString,
-  isNumber: isNumber
-}
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-(function(self) {
-  'use strict';
-
-  // if __disableNativeFetch is set to true, the it will always polyfill fetch
-  // with Ajax.
-  if (!self.__disableNativeFetch && self.fetch) {
-    return
-  }
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name)
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
-    }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value)
-    }
-    return value
-  }
-
-  function Headers(headers) {
-    this.map = {}
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value)
-      }, this)
-
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name])
-      }, this)
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name)
-    value = normalizeValue(value)
-    var list = this.map[name]
-    if (!list) {
-      list = []
-      this.map[name] = list
-    }
-    list.push(value)
-  }
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
-  }
-
-  Headers.prototype.get = function(name) {
-    var values = this.map[normalizeName(name)]
-    return values ? values[0] : null
-  }
-
-  Headers.prototype.getAll = function(name) {
-    return this.map[normalizeName(name)] || []
-  }
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  }
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = [normalizeValue(value)]
-  }
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    Object.getOwnPropertyNames(this.map).forEach(function(name) {
-      this.map[name].forEach(function(value) {
-        callback.call(thisArg, value, name, this)
-      }, this)
-    }, this)
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    reader.readAsArrayBuffer(blob)
-    return fileReaderReady(reader)
-  }
-
-  function readBlobAsText(blob, options) {
-    var reader = new FileReader()
-    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
-    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
-    var _charset = blob.type.match(regex) || contentType.match(regex)
-    var args = [blob]
-
-    if(_charset) {
-      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
-    }
-
-    reader.readAsText.apply(reader, args)
-    return fileReaderReady(reader)
-  }
-
-  var support = {
-    blob: 'FileReader' in self && 'Blob' in self && (function() {
-      try {
-        new Blob();
-        return true
-      } catch(e) {
-        return false
-      }
-    })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  }
-
-  function Body() {
-    this.bodyUsed = false
-
-
-    this._initBody = function(body, options) {
-      this._bodyInit = body
-      if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-        this._options = options
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (!body) {
-        this._bodyText = ''
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
-      } else {
-        throw new Error('unsupported BodyInit type')
-      }
-    }
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      }
-
-      this.arrayBuffer = function() {
-        return this.blob().then(readBlobAsArrayBuffer)
-      }
-
-      this.text = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob, this._options)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text')
-        } else {
-          return Promise.resolve(this._bodyText)
-        }
-      }
-    } else {
-      this.text = function() {
-        var rejected = consumed(this)
-        return rejected ? rejected : Promise.resolve(this._bodyText)
-      }
-    }
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      }
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    }
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase()
-    return (methods.indexOf(upcased) > -1) ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {}
-    var body = options.body
-    if (Request.prototype.isPrototypeOf(input)) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url
-      this.credentials = input.credentials
-      if (!options.headers) {
-        this.headers = new Headers(input.headers)
-      }
-      this.method = input.method
-      this.mode = input.mode
-      if (!body) {
-        body = input._bodyInit
-        input.bodyUsed = true
-      }
-    } else {
-      this.url = input
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit'
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers)
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET')
-    this.mode = options.mode || this.mode || null
-    this.referrer = null
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body, options)
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this)
-  }
-
-  function decode(body) {
-    var form = new FormData()
-    body.trim().split('&').forEach(function(bytes) {
-      if (bytes) {
-        var split = bytes.split('=')
-        var name = split.shift().replace(/\+/g, ' ')
-        var value = split.join('=').replace(/\+/g, ' ')
-        form.append(decodeURIComponent(name), decodeURIComponent(value))
-      }
-    })
-    return form
-  }
-
-  function headers(xhr) {
-    var head = new Headers()
-    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
-    pairs.forEach(function(header) {
-      var split = header.trim().split(':')
-      var key = split.shift().trim()
-      var value = split.join(':').trim()
-      head.append(key, value)
-    })
-    return head
-  }
-
-  Body.call(Request.prototype)
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {}
-    }
-
-    this._initBody(bodyInit, options)
-    this.type = 'default'
-    this.status = options.status
-    this.ok = this.status >= 200 && this.status < 300
-    this.statusText = options.statusText
-    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
-    this.url = options.url || ''
-  }
-
-  Body.call(Response.prototype)
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  }
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''})
-    response.type = 'error'
-    return response
-  }
-
-  var redirectStatuses = [301, 302, 303, 307, 308]
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  }
-
-  self.Headers = Headers;
-  self.Request = Request;
-  self.Response = Response;
-
-  self.fetch = function(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request
-      if (Request.prototype.isPrototypeOf(input) && !init) {
-        request = input
-      } else {
-        request = new Request(input, init)
-      }
-
-      var xhr = new XMLHttpRequest()
-
-      function responseURL() {
-        if ('responseURL' in xhr) {
-          return xhr.responseURL
-        }
-
-        // Avoid security warnings on getResponseHeader when not allowed by CORS
-        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-          return xhr.getResponseHeader('X-Request-URL')
-        }
-
-        return;
-      }
-
-      var __onLoadHandled = false;
-
-      function onload() {
-        if (xhr.readyState !== 4) {
-          return
-        }
-        var status = (xhr.status === 1223) ? 204 : xhr.status
-        if (status < 100 || status > 599) {
-          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-          reject(new TypeError('Network request failed'))
-          return
-        }
-        var options = {
-          status: status,
-          statusText: xhr.statusText,
-          headers: headers(xhr),
-          url: responseURL()
-        }
-        var body = 'response' in xhr ? xhr.response : xhr.responseText;
-
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        resolve(new Response(body, options))
-      }
-      xhr.onreadystatechange = onload;
-      xhr.onload = onload;
-      xhr.onerror = function() {
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.open(request.method, request.url, true)
-
-      // `withCredentials` should be setted after calling `.open` in IE10
-      // http://stackoverflow.com/a/19667959/1219343
-      try {
-        if (request.credentials === 'include') {
-          if ('withCredentials' in xhr) {
-            xhr.withCredentials = true;
-          } else {
-            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
-          }
-        }
-      } catch (e) {
-        console && console.warn && console.warn('set withCredentials error:' + e);
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
-      }
-
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value)
-      })
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-    })
-  }
-  self.fetch.polyfill = true
-
-  // Support CommonJS
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = self.fetch;
-  }
-})(typeof self !== 'undefined' ? self : this);
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(23)))
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(24);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
 /* 26 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-__webpack_require__(17);
-module.exports = __webpack_require__(16);
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: ./src/common/css/webmapfont/iconfont.css
+var iconfont = __webpack_require__(27);
+
+// EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
+var supermapol_icons = __webpack_require__(33);
+
+// EXTERNAL MODULE: ./src/common/components/css/components-icon.css
+var components_icon = __webpack_require__(38);
+
+// EXTERNAL MODULE: ./src/common/components/css/Icon.css
+var Icon = __webpack_require__(43);
+
+// EXTERNAL MODULE: ./src/common/components/css/OpenFile.css
+var OpenFile = __webpack_require__(55);
+
+// EXTERNAL MODULE: ./src/common/components/css/MessageBox.css
+var MessageBox = __webpack_require__(56);
+
+// EXTERNAL MODULE: ./src/common/components/css/DataFlow.css
+var DataFlow = __webpack_require__(57);
+
+// EXTERNAL MODULE: ./src/common/components/css/Search.css
+var Search = __webpack_require__(58);
+
+// EXTERNAL MODULE: ./src/common/components/css/CommonContainer.css
+var CommonContainer = __webpack_require__(59);
+
+// EXTERNAL MODULE: ./src/common/components/css/DropDownBox.css
+var DropDownBox = __webpack_require__(60);
+
+// EXTERNAL MODULE: ./src/common/components/css/Select.css
+var Select = __webpack_require__(61);
+
+// EXTERNAL MODULE: ./src/common/components/css/CityTabsPage.css
+var CityTabsPage = __webpack_require__(62);
+
+// EXTERNAL MODULE: ./src/common/components/css/NavTabsPage.css
+var NavTabsPage = __webpack_require__(63);
+
+// EXTERNAL MODULE: ./src/common/components/css/PaginationContainer.css
+var PaginationContainer = __webpack_require__(64);
+
+// EXTERNAL MODULE: ./src/common/components/css/PopContainer.css
+var PopContainer = __webpack_require__(65);
+
+// EXTERNAL MODULE: ./src/common/components/css/Analysis.css
+var Analysis = __webpack_require__(66);
+
+// EXTERNAL MODULE: ./src/common/components/css/DistributedAnalysis.css
+var DistributedAnalysis = __webpack_require__(67);
+
+// EXTERNAL MODULE: ./src/common/components/css/ClientComputation.css
+var ClientComputation = __webpack_require__(68);
+
+// EXTERNAL MODULE: ./src/common/components/css/DataServiceQuery.css
+var DataServiceQuery = __webpack_require__(69);
+
+// CONCATENATED MODULE: ./src/common/css/index.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+//组件样式
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// EXTERNAL MODULE: ./src/leaflet/css/ChangeTileVersion.css
+var ChangeTileVersion = __webpack_require__(70);
+
+// CONCATENATED MODULE: ./src/leaflet/css/index.js
+/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
 
 
 /***/ }),
@@ -97325,97 +97780,37 @@ module.exports = __webpack_require__(16);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
 /* 33 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 34 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
 /* 38 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 39 */
+/* 39 */,
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 40 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
@@ -97426,37 +97821,97 @@ module.exports = __webpack_require__(16);
 /* 51 */,
 /* 52 */,
 /* 53 */,
-/* 54 */
+/* 54 */,
+/* 55 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
+/* 56 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 59 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
+/* 60 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 64 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
+/* 65 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 70 */
 /***/ (function(module, exports) {
 
@@ -97464,3 +97919,4 @@ module.exports = __webpack_require__(16);
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=iclient-leaflet-es6.js.map

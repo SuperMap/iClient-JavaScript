@@ -12,12 +12,12 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script>
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, myChart,
         mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}",
         attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
             "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
-            "<a href='http://echarts.baidu.com' target='_blank'>© 2018 " + resources.title_3baidu + " ECharts  Echarts-gl</a>";
+            "<a href='https://echarts.baidu.com' target='_blank'>© 2018 " + resources.title_3baidu + " ECharts  Echarts-gl</a>";
 
     myChart = echarts.init(document.getElementById('map'));
 

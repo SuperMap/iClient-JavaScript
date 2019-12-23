@@ -3,9 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
-
+ 
 /**
- * @class SuperMap.IPortalQueryParam
+ * @class SuperMap.iPortalQueryParam
  * @classdesc iPortal 资源查询参数。
  * @category iPortal/Online
  * @param {Object} params - iPortal 资源查询具体参数。
@@ -15,26 +15,22 @@ export class IPortalQueryParam {
 
     constructor(params) {
         params = params || {};
-        this.userNames = null;
-        this.tags = null;
-        this.suggest = false;
-        this.sourceTypes = null;
-        this.keywords = null;
-        this.epsgCode = null;
-        this.orderBy = null;
-        this.currentPage = null;
-        this.pageSize = null;
-        this.dirIds = null;
-        this.isNotInDir = false;
-        this.updateStart = null;
-        this.updateEnd = null;
-        this.visitStart = null;
-        this.visitEnd = null;
-        this.filterFields = null;
+        this.resourceType = ""; // 空为全部 MAP SERVICE SCENE DATA INSIGHTS_WORKSPACE MAP_DASHBOARD
+        this.pageSize = 12; // 每页多少条
+        this.currentPage = 1; // 第几页
+        this.orderBy = "UPDATETIME"; // UPDATETIME HEATLEVEL
+        this.orderType = "DESC"; // DESC ASC
+        this.searchType = "PUBLIC"; // PUBLIC SHARETOME_RES MYDEPARTMENT_RES MYGROUP_RES MY_RES
+        this.tags = [];  // 标签
+        this.dirIds = []; // 类别
+        this.resourceSubTypes = []; // 类型
+        this.aggregationTypes = []; // TAG TYPE SUBTYPE
+        this.text = ""; // 搜索字段
+        this.groupIds = []; // 群组Id过滤
+        this.departmentIds = []; // 部门Id过滤
         Util.extend(this, params);
     }
-
 }
-
 SuperMap.iPortalQueryParam = IPortalQueryParam;
-
+ 
+ 

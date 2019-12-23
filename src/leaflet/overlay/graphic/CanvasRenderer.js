@@ -1,11 +1,11 @@
 /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
+import L from 'leaflet';
 
 const emptyFunc = L.Util.falseFn;
 export var GraphicCanvasRenderer = L.Class.extend({
-    initialize: function (layer, options) {
+    initialize: function(layer, options) {
         this.layer = layer;
         options = options || {};
         L.Util.setOptions(this, options);
@@ -17,7 +17,7 @@ export var GraphicCanvasRenderer = L.Class.extend({
      * @description 返回渲染器给图层，提供图层后续的数据增删改。
      * @returns {L.Canvas}
      */
-    getRenderer: function () {
+    getRenderer: function() {
         return this.options.renderer;
     },
 
@@ -26,39 +26,49 @@ export var GraphicCanvasRenderer = L.Class.extend({
      * @function  GraphicCanvasRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
-    update: function () {
+    update: function() {
         this.getRenderer()._clear();
         this.getRenderer()._draw();
     },
 
-    _handleClick: function (evt) {
+    _handleClick: function(evt) {
         let me = this,
             layer = me.layer,
             map = layer._map;
-        if (!layer.options.onClick) {
-            return;
-        }
-        this.layer._renderer._ctx.canvas.style.cursor = "pointer";
+
         let graphics = layer._getGraphicsInBounds();
-        for (let i = 0; i < graphics.length; i++) {
+        evt.target = null;
+        for (let i = graphics.length - 1; i >= 0; i--) {
             let p1, p2, bounds;
-            let center = map.latLngToLayerPoint(graphics[i].getLatLng());
+            const center = map.latLngToLayerPoint(graphics[i].getLatLng());
             let style = graphics[i].getStyle();
             if (!style && this.defaultStyle) {
                 style = this.defaultStyle;
             }
             if (style.img) {
-                let anchor = style.anchor || [style.img.width / 2, style.img.height / 2];
+                let imgWidth = style.img.width;
+                let imgHeight = style.img.height;
+                if (style.size && style.size[0] && style.size[1]) {
+                    imgWidth = style.size[0];
+                    imgHeight = style.size[1];
+                }
+                const anchor = style.anchor || [imgWidth / 2, imgHeight / 2];
                 p1 = L.point(center.x - anchor[0], center.y - anchor[1]);
-                p2 = L.point(p1.x + style.img.width, p1.y + style.img.height);
+                p2 = L.point(p1.x + imgWidth, p1.y + imgHeight);
             } else {
                 p1 = L.point(center.x - style.width / 2, center.y - style.height / 2);
                 p2 = L.point(center.x + style.width / 2, center.y + style.height / 2);
             }
             bounds = L.bounds(p1, p2);
             if (bounds.contains(map.latLngToLayerPoint(evt.latlng))) {
-                return layer.options.onClick.call(layer, graphics[i],evt);
+                this.layer._renderer._ctx.canvas.style.cursor = 'pointer';
+                evt.target = graphics[i];
+                if (evt.type === 'click' && layer.options.onClick) {
+                    layer.options.onClick.call(layer, graphics[i], evt);
+                }
+                return;
             }
+            this.layer._renderer._ctx.canvas.style.cursor = 'auto';
         }
     },
 
@@ -67,28 +77,28 @@ export var GraphicCanvasRenderer = L.Class.extend({
 });
 
 L.Canvas.include({
-
-    drawGraphics: function (graphics, defaultStyle) {
+    drawGraphics: function(graphics, defaultStyle) {
         var me = this;
         if (!me._drawing) {
             return;
         }
         //this._ctx.clearRect(0, 0, this._ctx.canvas.width, me._ctx.canvas.height);
-        graphics.forEach(function (graphic) {
+        graphics.forEach(function(graphic) {
             var style = graphic.getStyle();
             if (!style && defaultStyle) {
                 style = defaultStyle;
             }
-            if (style.img) { //绘制图片
+            if (style.img) {
+                //绘制图片
                 me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
-            } else { //绘制canvas
+            } else {
+                //绘制canvas
                 me._drawCanvas.call(me, me._ctx, style, graphic.getLatLng());
             }
-        })
+        });
     },
 
-    _drawCanvas: function (ctx, style, latLng) {
-
+    _drawCanvas: function(ctx, style, latLng) {
         var canvas = style;
         var pt = this._map.latLngToLayerPoint(latLng);
         var p0 = pt.x - canvas.width / 2;
@@ -99,7 +109,7 @@ L.Canvas.include({
         ctx.drawImage(canvas, p0, p1, width, height);
     },
 
-    _drawImage: function (ctx, style, latLng) {
+    _drawImage: function(ctx, style, latLng) {
         //设置图片的大小
         var width, height;
         if (style.size) {
@@ -122,7 +132,7 @@ L.Canvas.include({
         ctx.drawImage(style.img, point[0], point[1], width, height);
     },
 
-    _coordinateToPoint: function (coordinate) {
+    _coordinateToPoint: function(coordinate) {
         if (!this._map) {
             return coordinate;
         }
@@ -135,5 +145,4 @@ L.Canvas.include({
         var point = this._map.latLngToLayerPoint(latLng);
         return [point.x, point.y];
     }
-
 });

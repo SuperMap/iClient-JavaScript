@@ -15,7 +15,7 @@
     <div id="map" class='map' style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
     <div id="popup"></div>
     <script type="text/javascript">
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var resultLayer;
         var map = new ol.Map({
             target: 'map',
@@ -28,7 +28,8 @@
             view: new ol.View({
                 center: [105.2, 31.6],
                 zoom: 5,
-                projection: 'EPSG:4326'
+                projection: 'EPSG:4326',
+                multiWorld: true
             }),
             layers: [new ol.layer.Tile({
                 source: new ol.source.TileSuperMapRest({

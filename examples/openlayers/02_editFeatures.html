@@ -91,7 +91,7 @@
 <script type="text/javascript">
     var map, id = [], pointFeature, vectorSource, resultLayer, editFeaturesService, alertDiv,
         addPointsSource, addPointsLayer,
-        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        host = window.isLocal ? window.server : "https://iserver.supermap.io",
         baseUrl = host + "/iserver/services/map-world/rest/maps/World",
         url = host + "/iserver/services/data-world/rest/data",
         container = document.getElementById('popup'),
@@ -112,7 +112,8 @@
             view: new ol.View({
                 center: [0, 0],
                 zoom: 3,
-                projection: 'EPSG:4326'
+                projection: 'EPSG:4326',
+                multiWorld: true
             }),
         });
     var layer = new ol.layer.Tile({

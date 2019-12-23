@@ -1,8 +1,11 @@
-import ol from 'openlayers';
 import {FeatureService} from '../../../src/openlayers/services/FeatureService';
 import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
 import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import GeoJSON from 'ol/format/GeoJSON';
 
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
@@ -25,7 +28,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
 
     //地物编辑服务 添加一个地物
     it('addFeature', (done) => {
-        var marker = new ol.Feature(new ol.geom.Point([118.05408801141, 58.837029131724]));
+        var marker = new Feature(new Point([118.05408801141, 58.837029131724]));
         marker.setProperties({POP: 1, CAPITAL: 'test'});
         updateFeature = marker;
         var addFeatureParams = new EditFeaturesParameters({
@@ -71,8 +74,8 @@ describe('openlayers_FeatureService_editFeatures', () => {
 
     //地物编辑服务 批量添加地物   isUseBatch为true
     it('addFeatures_isUseBatch:true', (done) => {
-        var marker = new ol.Feature(new ol.geom.Point([100, 58]));
-        var marker1 = new ol.Feature(new ol.geom.Point([120, 42]));
+        var marker = new Feature(new Point([100, 58]));
+        var marker1 = new Feature(new Point([120, 42]));
         marker.setProperties({POP: 1, CAPITAL: 'test'});
         marker1.setProperties({POP: 1, CAPITAL: 'test'});
         var addFeatureParams = new EditFeaturesParameters({
@@ -231,7 +234,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         if (originFeature != null) {
             var random = parseInt(Math.random() * 10000000);
             originFeature.properties.LANDTYPE = "用材林" + random;
-            var data = new ol.format.GeoJSON().readFeatures(originFeature);
+            var data = new GeoJSON().readFeatures(originFeature);
             var updateFeaturesService = new FeatureService(editServiceURL);
             var updateFeaturesParams = new EditFeaturesParameters({
                 dataSourceName: "Jingjin",
