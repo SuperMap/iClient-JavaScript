@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
 var widgets = {
     loader: {
         //显示loading

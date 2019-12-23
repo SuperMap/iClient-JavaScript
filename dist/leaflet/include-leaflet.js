@@ -1,3 +1,6 @@
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 (function () {
     var r = new RegExp("(^|(.*?\\/))(include-leaflet\.js)(\\?|$)"),
         s = document.getElementsByTagName('script'), targetScript;
@@ -130,11 +133,11 @@
             inputCSS("../../dist/leaflet/iclient-leaflet.min.css");
         }
         if (inArray(includes, 'iclient-plot-leaflet')) {
-            inputCSS("https://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.css");
+            inputCSS("https://iclient.supermap.io/web/libs/plotting/leaflet/10.0.1/iclient-plot-leaflet.css");
             if (supportES6()) {
-                inputScript("https://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet-es6.min.js");
+                inputScript("https://iclient.supermap.io/web/libs/plotting/leaflet/10.0.1/iclient-plot-leaflet-es6.min.js");
             } else {
-                inputScript("https://iclient.supermap.io/web/libs/plotting/leaflet/10.0.0/iclient-plot-leaflet.min.js");
+                inputScript("https://iclient.supermap.io/web/libs/plotting/leaflet/10.0.1/iclient-plot-leaflet.min.js");
             }
         }
         if (inArray(includes, 'ant-design-vue')) {

@@ -1,9 +1,9 @@
 /*!
  * 
  *          iclient-leaflet.(https://iclient.supermap.io)
- *          Copyright© 2000 - 2019 SuperMap Software Co.Ltd
+ *          Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v10.0.0
+ *          version: v10.0.1
  *         
  */
 @font-face {
@@ -2750,5 +2750,3 @@ select.component-select-options > option {
 .component-servicequery__rangeicon:hover {
     border: 1px solid #108EE9;
 }
-
-/*# sourceMappingURL=iclient-leaflet.css.map*/
