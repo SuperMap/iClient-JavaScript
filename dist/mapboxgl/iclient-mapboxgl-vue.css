@@ -1,7 +1,7 @@
 /*!
  * 
  *     @supermap/vue-iclient.(http://iclient.supermap.io)
- *     Copyright© 2000 - 2019 SuperMap Software Co.Ltd
+ *     Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *     license: Apache-2.0
  *     version: v10.0.0
  *    
@@ -2173,7 +2173,8 @@ body {
 
 .sm-component-video-player__player > .video-js {
   width: 100%;
-  font-family: 'PingFang SC', 'Helvetica Neue', 'Hiragino Sans GB', 'Segoe UI', 'Microsoft YaHei', '微软雅黑', sans-serif; }
+  font-family: 'PingFang SC', 'Helvetica Neue', 'Hiragino Sans GB', 'Segoe UI', 'Microsoft YaHei', '微软雅黑',
+ sans-serif; }
 
 .sm-component-video-player__player.sm-component-video-player__player--main > .video-js {
   height: 100%; }
@@ -2270,7 +2271,8 @@ body {
   padding: 0;
   line-height: 2em;
   font-size: 1.1em;
-  font-family: 'PingFang SC', 'Helvetica Neue', 'Hiragino Sans GB', 'Segoe UI', 'Microsoft YaHei', '微软雅黑', sans-serif; }
+  font-family: 'PingFang SC', 'Helvetica Neue', 'Hiragino Sans GB', 'Segoe UI', 'Microsoft YaHei', '微软雅黑',
+ sans-serif; }
 
 .sm-component-video-player__player > .video-js .vjs-time-tooltip,
 .sm-component-video-player__player > .video-js .vjs-mouse-display:after,
