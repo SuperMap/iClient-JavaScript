@@ -15,7 +15,7 @@
   "dependencies": {
     "elasticsearch": "16.5.0",
     "fetch-ie8": "1.5.0",
-    "fetch-jsonp": "1.0.6",
+    "fetch-jsonp": "1.1.3",
     "promise-polyfill": "6.0.2",
     "lodash.topairs": "4.3.0"
   }
