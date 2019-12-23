@@ -25,7 +25,7 @@ module.exports = function (config) {
                 [require('babelify'), {
                     global: true,
                     presets: ["@babel/preset-env"],
-                    ignore: ["../src/classic/libs/**", "../test/libs/**", /\/node_modules\/(?!ol\/)/],
+                    ignore: ["../src/classic/libs/**", "../test/libs/**", "../node_modules/mapbox-gl/**","../node_modules/three/**","../node_modules/xlsx/**","../node_modules/@turf/**","../node_modules/lodash/**"],
                     plugins: ['istanbul']
                 }],
                 [require('browserify-css'), { global: true }],
