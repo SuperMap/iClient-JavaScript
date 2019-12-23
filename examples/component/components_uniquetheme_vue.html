@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -52,7 +52,7 @@
     <script include="ant-design-vue,iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script>
         widgets.loader.showLoader('data loading...');
-        var HOST = window.isLocal ? window.server : 'http://iclient.supermap.io';
+        var HOST = window.isLocal ? window.server : "https://iserver.supermap.io";
         var dataUrl = HOST + "/iserver/services/data-jingjin/rest/data";
         var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
         getFeatureParam = new SuperMap.FilterParameter({
@@ -96,7 +96,7 @@
                     data() {
                         var attribution =
                             "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-                            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
                             " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
                         return {
                             mapOptions: {

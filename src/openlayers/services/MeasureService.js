@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import {MeasureService as CommonMeasureService} from '@supermap/iclient-common';
+import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class ol.supermap.MeasureService
@@ -73,9 +73,8 @@ export class MeasureService extends ServiceBase {
 
     _processParam(params) {
         if (params && params.geometry) {
-            params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+            params.geometry = Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(params.geometry)));
         }
         return params;
     }
 }
-ol.supermap.MeasureService = MeasureService;

@@ -18,7 +18,7 @@ module.exports = {
             browser.pause(2000);
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 10000);
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
-            browser.elements('class name', 'leaflet-marker-icon', function (result) {
+            browser.elements('css selector', '.leaflet-marker-icon', function (result) {
                 browser.assert.equal(result.value.length, 1, "expect query result of '正向匹配' to be 10, actual is " + result.value.length);
             });
             browser.click('.leaflet-marker-icon', function () {
@@ -55,7 +55,7 @@ module.exports = {
             browser.pause(2000);
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 20000);
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 20000);
-            browser.elements('class name', 'leaflet-marker-icon', function (result) {
+            browser.elements('css selector', '.leaflet-marker-icon', function (result) {
                 browser.assert.equal(result.value.length, 1, "expect query result of '反向匹配' to be 1, actual is " + result.value.length);
             });
             browser.pause(1000);

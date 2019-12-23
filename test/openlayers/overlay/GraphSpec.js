@@ -1,8 +1,12 @@
-import ol from 'openlayers';
 import {Graph} from '../../../src/openlayers/overlay/Graph';
 import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
 import {ThemeFeature} from '../../../src/openlayers/overlay/theme/ThemeFeature';
 import '../../resources/chinaConsumptionLevel';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import ImageLayer from 'ol/layer/Image';
+import Point from 'ol/geom/Point';
 
 var url = GlobeParameter.China4326URL;
 describe('openlayers_Graph', () => {
@@ -16,15 +20,15 @@ describe('openlayers_Graph', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [116.85, 39.79],
                 zoom: 0,
                 projection: "EPSG:4326"
             })
         });
-        tileLayer = new ol.layer.Tile({
+        tileLayer = new TileLayer({
             source: new TileSuperMapRest({
                 url: url
             })
@@ -114,7 +118,7 @@ describe('openlayers_Graph', () => {
                 expect(fea).not.toBeNull()
             }
         });
-        var layer = new ol.layer.Image({
+        var layer = new ImageLayer({
             source: graphThemeSource
         });
         map.addLayer(layer);
@@ -167,7 +171,7 @@ describe('openlayers_Graph', () => {
             },
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        var layer = new ol.layer.Image({
+        var layer = new ImageLayer({
             source: graphThemeSource
         });
         map.addLayer(layer);
@@ -175,7 +179,7 @@ describe('openlayers_Graph', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
-            var geometry = new ol.geom.Point([provinceInfo[1], provinceInfo[2]]);
+            var geometry = new Point([provinceInfo[1], provinceInfo[2]]);
             var atrributes = {};
             atrributes.NAME = provinceInfo[0];
             atrributes.CON2009 = provinceInfo[3];
@@ -317,7 +321,7 @@ describe('openlayers_Graph', () => {
                 barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
             }
         });
-        var layer = new ol.layer.Image({
+        var layer = new ImageLayer({
             source: graphThemeSource
         });
         map.addLayer(layer);

@@ -1,0 +1,62 @@
+<!--********************************************************************
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title data-i18n="resources.title_componentsChart_Vue(gauge)"></title>
+  <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+  <script include="echarts-vue,ant-design-vue,iclient-leaflet-vue" src="../../dist/leaflet/include-leaflet.js"></script>
+  <style>
+    #main {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+    }
+
+    .sm-component-chart .sm-component-card__content {
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+  <div id="main">
+    <sm-web-map server-url='https://iportal.supermap.io/iportal' map-id="801571284"> </sm-web-map>
+    <sm-chart icon-class="" :style="chartStyle" :dataset="dataset" :dataset-options="datasetOptions"></sm-chart>
+  </div>
+
+  <script>
+    new Vue({
+      el: "#main",
+      data() {
+        return {
+          chartStyle: {
+            position: "absolute",
+            bottom: "10px",
+            right: "10px",
+            zIndex: 500
+          },
+          dataset: new SuperMap.Components.commontypes.RestDataParameter({
+            url: "https://iserver.supermap.io/iserver/services/data-jingjin/rest/data",
+            dataName: ["Jingjin:Landuse_R"],
+            maxFeatures: 20,
+            attributeFilter: "SmID = 2"
+          }),
+          datasetOptions: [
+            {
+              seriesType: "gauge", //图表类型
+              isStastic: true, //是否统计, 默认不统计
+              xField: "LANDTYPE", //x坐标轴数据字段
+              yField: "AREA" //统计的数据，legned默认名字
+            }
+          ]
+        };
+      }
+    });
+  </script>
+</body>
+
+</html>

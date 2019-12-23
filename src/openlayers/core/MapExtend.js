@@ -1,7 +1,8 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
+import Map from 'ol/Map';
+import LayerGroup from 'ol/layer/Group';
 
 /**
  * @function MapExtend
@@ -10,7 +11,7 @@ import ol from 'openlayers';
  */
 export var MapExtend = function () {
     const fun = function (layer, coordinate, resolution, callback, pixel, e) {
-        if (layer instanceof ol.layer.Group) {
+        if (layer instanceof LayerGroup) {
             layer.getLayers().forEach(function (subLayer) {
                 fun(subLayer, coordinate, resolution, callback, pixel, e)
             });
@@ -23,9 +24,9 @@ export var MapExtend = function () {
             }
         }
     }
-    ol.Map.prototype.forEachFeatureAtPixelDefault = ol.Map.prototype.forEachFeatureAtPixel;
+    Map.prototype.forEachFeatureAtPixelDefault = Map.prototype.forEachFeatureAtPixel;
 
-    ol.Map.prototype.forEachFeatureAtPixel = ol.Map.prototype.Tc = function (pixel, callback, opt_options, e) {
+    Map.prototype.forEachFeatureAtPixel = Map.prototype.Tc = function (pixel, callback, opt_options, e) {
 
         //如果满足高效率图层选取要求优先返回高效率图层选中结果
         const layerFilter = (opt_options && opt_options.layerFilter) ? opt_options.layerFilter : () => {

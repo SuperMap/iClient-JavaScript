@@ -1,40 +1,55 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title data-i18n="resources.title_onlineWebMap"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
-</head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
-<div id="map" style="width: 100%;height:100%"></div>
-<div id="popup" class="ol-popup"
-     style="background-color: white;padding: 15px;border-radius: 10px;border: 1px solid #cccccc;">
-    <div id="popup-content"></div>
-</div>
-<script type="text/javascript">
-    new ol.supermap.WebMap(128).addEventListener(ol.supermap.WebMap.EventType.WEBMAPLOADEND, function (e) {
-        var map = e.value;
-        var popup = new ol.Overlay({
-            element: document.getElementById('popup')
-        });
-        map.addOverlay(popup);
-        map.on('click', function (evt) {
-            var feature = map.forEachFeatureAtPixel(evt.pixel,
-                    function (feature) {
-                        return feature;
-                    }, {hitTolerance: 10});
-            if (feature) {
-                popup.setPosition(evt.coordinate);
-                document.getElementById('popup-content').innerHTML = feature.getProperties().attributes.title + ":" + feature.getProperties().attributes.description;
-            } else {
-                popup.setPosition();
-            }
-        })
-    });
-</script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_onlineWebMap"></title>
+        <script type="text/javascript" src="../js/include-web.js"></script>
+        <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    </head>
+    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+        <div id="map" style="width: 100%;height:100%"></div>
+        <div
+            id="popup"
+            class="ol-popup"
+            style="background-color: white;padding: 15px;border-radius: 10px;border: 1px solid #cccccc;"
+        >
+            <div id="popup-content"></div>
+        </div>
+        <script type="text/javascript">
+            new ol.supermap.WebMap(128, {
+                successCallback: function(map) {
+                    var popup = new ol.Overlay({
+                        element: document.getElementById('popup')
+                    });
+                    map.addOverlay(popup);
+                    map.on('click', function(evt) {
+                        var feature = map.forEachFeatureAtPixel(
+                            evt.pixel,
+                            function(feature) {
+                                return feature;
+                            },
+                            { hitTolerance: 10 }
+                        );
+                        if (feature) {
+                            var attributes = feature.getProperties().attributes;
+                            var title = attributes.dataViz_title;
+                            var description = attributes.dataViz_description;
+                            if (title && description) {
+                                popup.setPosition(evt.coordinate);
+                                document.getElementById('popup-content').innerHTML =
+                                    feature.getProperties().attributes.dataViz_title +
+                                    ': ' +
+                                    feature.getProperties().attributes.dataViz_description;
+                            }
+                        } else {
+                            popup.setPosition();
+                        }
+                    });
+                }
+            });
+        </script>
+    </body>
 </html>

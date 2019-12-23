@@ -1,12 +1,12 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_landuseUnique"></title>
-    <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
     <style type="text/css">
         .legendItemHeader,
         .legendItemValue {
@@ -20,7 +20,7 @@
 <div id="map" style="margin:0 auto;width: 100%;height: 100%">
     <div style="z-index: 100;position: relative;width: 272px;float:right">
         <div id="infoBox" class="panel panel-primary infoPane"
-             style="width:272px;margin-top: 250px;position: absolute;fontSize:14px;display: none;float:right">
+             style="width:272px;margin-top: 250px;position: absolute;font-size:14px;display: none;float:right">
             <div class="panel-heading">
                 <h5 class='panel-title text-center' data-i18n="resources.text_attributeTable"></h5>
             </div>
@@ -95,8 +95,8 @@
 <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
 <script type="text/javascript">
     var map, options, themeLayer, themeSource,
-        baseUrl = (window.isLocal ? window.server : "http://iclient.supermap.io") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
-        url2 = (window.isLocal ? window.server : "http://iclient.supermap.io") + "/iserver/services/data-jingjin/rest/data",
+        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        url2 = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-jingjin/rest/data",
         extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
@@ -108,7 +108,7 @@
                 center: [116.85, 39.79],
                 zoom: 8,
                 projection: "EPSG:4326",
-                extent: extent
+                multiWorld: true
             })
         });
         options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);

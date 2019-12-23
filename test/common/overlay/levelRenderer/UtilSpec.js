@@ -54,7 +54,7 @@ describe('Util', () => {
         expect(offset.y).toEqual(0);
     });
 
-    it('indexOf', () => {
+    it('indexOf_array', () => {
         var util = new Util();
         var array1 = [10, 20, 30];
         var result = util.indexOf(array1, 20);

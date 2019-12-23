@@ -15,7 +15,7 @@ module.exports = {
         browser.click('.leaflet-popup-close-button', function () {
             browser.waitForElementNotPresent('.leaflet-popup-content',10000);
         });
-        browser.elements('class name', 'leaflet-marker-icon', function (result) {
+        browser.elements('css selector', '.leaflet-marker-icon', function (result) {
             browser.assert.ok(result.value.length > 0, "expect Number of query result to be greater than 0, actual is " + result.value.length);
         });
         //测试版权点击的正确性

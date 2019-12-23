@@ -1,32 +1,34 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 
+import RegularShape from 'ol/style/RegularShape';
+import FillStyle from 'ol/style/Fill';
+import StrokeStyle from 'ol/style/Stroke';
 /**
  * @class ol.style.CloverShape
  * @category  Visualization Graphic
  * @classdesc 三叶草要素风格。
- * @extends {ol.style.RegularShape}
+ * @extends {ol/style/RegularShape}
  * @param {Object} options - 三叶草形要素风格参数。
  * @param {number} [options.angle=30] - 三叶草每个扇叶的圆心角，单位弧度。
  * @param {number} [options.count=3] - 扇叶数量。
- * @param {ol.style.Fill} [options.fill] - 填充样式。
+ * @param {ol/style/Fill} [options.fill] - 填充样式。
  * @param {number} [options.strokeOpacity] - 透明度。
  * @param {number} [options.fillOpacity] - 填充透明度。
  * @param {number} [options.radius] - 半径。
- * @param {ol.style.Stroke} [options.stroke] - 边框样式。
+ * @param {ol/style/Stroke} [options.stroke] - 边框样式。
  * @param {string} [options.stroke.color='#3388ff'] - 边框颜色。
  * @param {number} [options.stroke.width=1] - 边框宽度。
  */
-export class CloverShape extends ol.style.RegularShape {
+export class CloverShape extends RegularShape {
 
     constructor(options) {
         if (options.stroke) {
             options.stroke.color = options.stroke.getColor() || "#3388ff";
             options.stroke.width = options.stroke.getWidth() || 1;
         } else {
-            options.stroke = new ol.style.Stroke({
+            options.stroke = new StrokeStyle({
                 color: "#3388ff",
                 width: 1
             })
@@ -34,7 +36,7 @@ export class CloverShape extends ol.style.RegularShape {
         if (options.fill) {
             options.fill.color = options.fill.getColor() || "#66ccff";
         } else {
-            options.fill = new ol.style.Fill({
+            options.fill = new FillStyle({
                 color: "#66ccff"
             })
         }
@@ -124,5 +126,3 @@ export class CloverShape extends ol.style.RegularShape {
         return this.spaceAngle;
     }
 }
-
-ol.style.CloverShape = CloverShape;

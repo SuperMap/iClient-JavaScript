@@ -1,10 +1,13 @@
-import ol from 'openlayers';
 import {Label} from '../../../src/openlayers/overlay/Label';
 import {ThemeFeature} from '../../../src/openlayers/overlay/theme/ThemeFeature';
 import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
 import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
 import '../../resources/themeLabelData';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import ImageLayer from 'ol/layer/Image';
 
 var url = GlobeParameter.China4326URL;
 var themeSource;
@@ -35,15 +38,15 @@ describe('openlayers_Label', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [110.85, 39.79],
                 zoom: 4,
                 projection: "EPSG:4326"
             })
         });
-        var layer = new ol.layer.Tile({
+        var layer = new TileLayer({
             source: new TileSuperMapRest({
                 url: url
             })
@@ -116,7 +119,7 @@ describe('openlayers_Label', () => {
         });
         themeSource.style.fontSize = "10px";
         themeSource.groupField = "aqi";
-        var themeLayer = new ol.layer.Image({
+        var themeLayer = new ImageLayer({
             source: themeSource
         });
         map.addLayer(themeLayer);
@@ -260,8 +263,8 @@ describe('openlayers_Label', () => {
             feature.style.labelYOffset = 1;
             var location = themeSource.getLabelPxLocation(feature);
             expect(location).not.toBeNull();
-            expect(location.x).toEqual(33.918438400000014);
-            expect(location.y).toEqual(369.43862613333334);
+            expect(location.x).toEqual(33.691771733333326);
+            expect(location.y).toEqual(369.16040391111113);
             done();
         }, 2000)
     });

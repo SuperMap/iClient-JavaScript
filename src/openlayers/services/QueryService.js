@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {
     DataFormat,
     Bounds,
@@ -13,6 +12,8 @@ import {
 } from '@supermap/iclient-common';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
+import Point from 'ol/geom/Point';
+import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class ol.supermap.QueryService
@@ -161,10 +162,10 @@ export class QueryService extends ServiceBase {
             );
         }
         if (params.geometry) {
-            if (params.geometry instanceof ol.geom.Point) {
+            if (params.geometry instanceof Point) {
                 params.geometry = new GeometryPoint(params.geometry.getCoordinates()[0], params.geometry.getCoordinates()[1]);
             } else {
-                params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+                params.geometry = Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(params.geometry)));
             }
         }
         return params;
@@ -174,5 +175,3 @@ export class QueryService extends ServiceBase {
         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
-
-ol.supermap.QueryService = QueryService;

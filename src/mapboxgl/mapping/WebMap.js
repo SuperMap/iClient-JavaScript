@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
@@ -71,14 +71,14 @@ const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
  * @classdesc 对接 iPortal/Online 地图类。目前支持地图坐标系包括：'EPSG:3857'，'EPSG:4326'，'EPSG:4490'，'EPSG:4214'，'EPSG:4610'。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
- *      <p style="font-size: 13px">该功能依赖 <a href='http://iclient.supermap.io/web/libs/geostats/geostats.js'>geostats</a> 和 <a href='http://iclient.supermap.io/web/libs/jsonsql/jsonsql.js'>JsonSql</a> 插件，请确认引入该插件。</p>
- *      `<script type="text/javascript" src="http://iclient.supermap.io/web/libs/geostats/geostats.js"></script>`</br>
- *      `<script type="text/javascript" src="http://iclient.supermap.io/web/libs/jsonsql/jsonsql.js"></script>`
+ *      <p style="font-size: 13px">该功能依赖 <a href='https://iclient.supermap.io/web/libs/geostats/geostats.js'>geostats</a> 和 <a href='https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js'>JsonSql</a> 插件，请确认引入该插件。</p>
+ *      `<script type="text/javascript" src="https://iclient.supermap.io/web/libs/geostats/geostats.js"></script>`</br>
+ *      `<script type="text/javascript" src="https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js"></script>`
  * </div>
  * @param {number} id - iPortal|Online 地图 ID。
  * @param {Object} options - 参数。
  * @param {string} [options.target='map'] - 地图容器 ID。
- * @param {string} [options.server="http://www.supermapol.com"] - 地图的地址。
+ * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址。
  * @param {string} [options.credentialKey] - 凭证密钥。
  * @param {string} [options.credentialValue] - 凭证值。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -99,7 +99,7 @@ export class WebMap extends mapboxgl.Evented {
 		super();
 		this.mapId = id;
 		options = options || {};
-		this.server = options.server || 'http://www.supermapol.com';
+		this.server = options.server || 'https://www.supermapol.com';
 		this.credentialKey = options.credentialKey;
 		this.credentialValue = options.credentialValue;
 		this.withCredentials = options.withCredentials || false;
@@ -212,7 +212,7 @@ export class WebMap extends mapboxgl.Evented {
 			style: {
 				version: 8,
 				sources: {},
-				// "glyphs": 'http://iclient.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf',
+				// "glyphs": 'https://iclient.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf',
 				layers: []
 			},
 			crs: this.baseProjection,

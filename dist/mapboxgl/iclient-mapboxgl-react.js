@@ -1,7 +1,7 @@
 /*!
  * 
- *       @supermap/react-iclient.(http://iclient.supermap.io)
- *       Copyright© 2000 - 2019 SuperMap Software Co.Ltd
+ *       @supermap/react-iclient.(https://iclient.supermap.io)
+ *       Copyright© 2000 - 2020 SuperMap Software Co.Ltd
  *       license: Apache-2.0
  *       version: v10.0.0
  *      
@@ -21027,7 +21027,7 @@ var lodash_clonedeep = __webpack_require__(20);
 var lodash_clonedeep_default = /*#__PURE__*/__webpack_require__.n(lodash_clonedeep);
 
 // CONCATENATED MODULE: ./src/mapboxgl/web-map/WebMapViewModel.ts
-/* eslint-disable */ /* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* eslint-disable */ /* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html. */// eslint-disable-line import/extensions
 // eslint-disable-line import/extensions

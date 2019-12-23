@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -23,7 +23,7 @@ export class Online {
     //TODO 目前并没有对接Online的所有操作，需要补充完整
     //所有查询返回的是一个Promise,在外部使用的时候通过Promise的then方法获取异步结果
     constructor() {
-        this.rootUrl = "http://www.supermapol.com";
+        this.rootUrl = "https://www.supermapol.com";
         this.webUrl = this.rootUrl + "/web";
 
         var mContentUrl = this.webUrl + "/mycontent";

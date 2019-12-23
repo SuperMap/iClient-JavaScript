@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import '../core/MapExtend';
 import { Util } from '../core/Util';
 import { HitCloverShape } from './graphic/HitCloverShape';
@@ -9,6 +8,16 @@ import { CloverShape } from './graphic/CloverShape';
 import { CommonUtil } from '@supermap/iclient-common';
 import { GraphicWebGLRenderer } from './graphic/WebGLRenderer';
 import { GraphicCanvasRenderer } from './graphic/CanvasRenderer';
+import {Graphic as OverlayGraphic} from './graphic/Graphic';
+import ImageCanvasSource from 'ol/source/ImageCanvas';
+import Style from 'ol/style/Style';
+import CircleStyle from 'ol/style/Circle';
+import FillStyle from 'ol/style/Fill';
+import StrokeStyle from 'ol/style/Stroke';
+import * as olExtent from 'ol/extent';
+import Polygon from 'ol/geom/Polygon';
+import Point from 'ol/geom/Point';
+import ImageLayer from 'ol/layer/Image';
 
 const defaultProps = {
   color: [0, 0, 0, 255],
@@ -28,11 +37,11 @@ const Renderer = ['canvas', 'webgl'];
  * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
  * @param {Object} options - 图形参数。
- * @param {ol.map} options.map - openlayers 地图对象。
- * @param {ol.Graphic} options.graphics - 高效率点图层点要素。
+ * @param {ol/map} options.map - openlayers 地图对象。
+ * @param {ol/Graphic} options.graphics - 高效率点图层点要素。
  * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
  * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。
- * @param {ol.style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
+ * @param {ol/style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。
@@ -44,14 +53,14 @@ const Renderer = ['canvas', 'webgl'];
  * @param {boolean} [options.outline=false] - 是否显示边框。
  * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  * @param {function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
- * @extends {ol.source.ImageCanvas}
+ * @extends {ol/source/ImageCanvas}
  */
-export class Graphic extends ol.source.ImageCanvas {
+export class Graphic extends ImageCanvasSource {
   constructor(options) {
     super({
       attributions: options.attributions,
       canvasFunction: canvasFunctionInternal_,
-      logo: options.logo,
+      logo: Util.getOlVersion() === '4' ? options.logo : null,
       projection: options.projection,
       ratio: options.ratio,
       resolutions: options.resolutions,
@@ -73,7 +82,7 @@ export class Graphic extends ol.source.ImageCanvas {
     const me = this;
 
     if (options.onClick) {
-      me.map.on('click', function(e) {
+      me.map.on('click', function (e) {
         me.map.forEachFeatureAtPixel(e.pixel, options.onClick, {}, e);
       });
     }
@@ -113,10 +122,10 @@ export class Graphic extends ol.source.ImageCanvas {
         opt = CommonUtil.extend(me, opt);
         opt.pixelRatio = pixelRatio;
         opt.container = me.map.getViewport().getElementsByClassName('ol-overlaycontainer')[0];
-        opt.onBeforeRender = function() {
+        opt.onBeforeRender = function () {
           return false;
         };
-        opt.onAfterRender = function() {
+        opt.onAfterRender = function () {
           return false;
         };
 
@@ -132,10 +141,12 @@ export class Graphic extends ol.source.ImageCanvas {
      * @param {string} coordinate -坐标。
      * @param {number} resolution -分辨率。
      * @param {RequestCallback} callback -回调函数。
-     * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
+     * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
      */
     function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
       let graphics = me.getGraphicsInExtent();
+      // FIX 无法高亮元素
+      me._highLightClose();
       for (let i = graphics.length - 1; i >= 0; i--) {
         let style = graphics[i].getStyle();
         if (!style) {
@@ -146,7 +157,7 @@ export class Graphic extends ol.source.ImageCanvas {
           continue;
         }
         let center = graphics[i].getGeometry().getCoordinates();
-        let image = new ol.style.Style({
+        let image = new Style({
           image: style
         }).getImage();
 
@@ -159,7 +170,7 @@ export class Graphic extends ol.source.ImageCanvas {
           //if(image.getAngle() )
           let geo = null;
           if (angle > 355) {
-            geo = new ol.geom.Circle(center, r);
+            geo = new CircleStyle(center, r);
           } else {
             const coors = [];
             coors.push(center);
@@ -169,7 +180,7 @@ export class Graphic extends ol.source.ImageCanvas {
               coors.push([center[0] + r * Math.cos(radian), center[1] - r * Math.sin(radian)]);
             }
             coors.push(center);
-            geo = new ol.geom.Polygon([coors]);
+            geo = new Polygon([coors]);
           }
           if (geo.intersectsCoordinate(this.map.getCoordinateFromPixel(evtPixel))) {
             contain = true;
@@ -180,7 +191,7 @@ export class Graphic extends ol.source.ImageCanvas {
           extent[2] = center[0] + image.getAnchor()[0] * resolution;
           extent[1] = center[1] - image.getAnchor()[1] * resolution;
           extent[3] = center[1] + image.getAnchor()[1] * resolution;
-          if (ol.extent.containsCoordinate(extent, coordinate)) {
+          if (olExtent.containsCoordinate(extent, coordinate)) {
             contain = true;
           }
         }
@@ -194,9 +205,9 @@ export class Graphic extends ol.source.ImageCanvas {
           }
           continue;
         }
-        if (me.isHighLight) {
-          me._highLightClose();
-        }
+        // if (me.isHighLight) {
+        //   // me._highLightClose();
+        // }
       }
       return undefined;
     }
@@ -329,7 +340,7 @@ export class Graphic extends ol.source.ImageCanvas {
   _getDefaultStyle() {
     const target = {};
     if (this.color) {
-      target.fill = new ol.style.Fill({
+      target.fill = new FillStyle({
         color: this.toRGBA(this.color)
       });
     }
@@ -337,12 +348,12 @@ export class Graphic extends ol.source.ImageCanvas {
       target.radius = this.radius;
     }
     if (this.outline) {
-      target.stroke = new ol.style.Fill({
+      target.stroke = new FillStyle({
         color: this.toRGBA(this.color),
         width: this.strokeWidth
       });
     }
-    return new ol.style.Circle(target);
+    return new CircleStyle(target);
   }
 
   toRGBA(colorArray) {
@@ -447,9 +458,9 @@ export class Graphic extends ol.source.ImageCanvas {
    * @function ol.source.Graphic.prototype._highLight
    * @description 高亮显示选中要素。
    * @param {Array.<number>} center - 中心点。
-   * @param {ol.style.Style} image - 点样式。
+   * @param {ol/style/Style} image - 点样式。
    * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
-   * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
+   * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
    * @private
    */
   _highLight(center, image, selectGraphic, evtPixel) {
@@ -469,11 +480,11 @@ export class Graphic extends ol.source.ImageCanvas {
       var sAngle = (index - 1) * (image.getAngle() + image.getSpaceAngle());
       //渲染参数
       var opts = {
-        stroke: new ol.style.Stroke({
+        stroke: new StrokeStyle({
           color: '#ff0000',
           width: 1
         }),
-        fill: new ol.style.Fill({
+        fill: new FillStyle({
           color: '#0099ff'
         }),
         radius: image.getRadius(),
@@ -488,10 +499,10 @@ export class Graphic extends ol.source.ImageCanvas {
         opts.radius = this.highLightStyle.getRadius();
         opts.angle = this.highLightStyle.getAngle();
       }
-      var hitGraphic = new ol.Graphic(new ol.geom.Point(center));
+      var hitGraphic = new OverlayGraphic(new Point(center));
       hitGraphic.setStyle(new HitCloverShape(opts));
-      this.hitGraphicLayer = new ol.layer.Image({
-        source: new ol.source.Graphic({
+      this.hitGraphicLayer = new ImageLayer({
+        source: new Graphic({
           map: this.map,
           graphics: [hitGraphic]
         })
@@ -511,14 +522,14 @@ export class Graphic extends ol.source.ImageCanvas {
   getGraphicsInExtent(extent) {
     var graphics = [];
     if (!extent) {
-      this.graphics.map(function(graphic) {
+      this.graphics.map(function (graphic) {
         graphics.push(graphic);
         return graphic;
       });
       return graphics;
     }
-    this.graphics.map(function(graphic) {
-      if (ol.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
+    this.graphics.map(function (graphic) {
+      if (olExtent.containsExtent(extent, graphic.getGeometry().getExtent())) {
         graphics.push(graphic);
       }
       return graphic;
@@ -526,5 +537,3 @@ export class Graphic extends ol.source.ImageCanvas {
     return graphics;
   }
 }
-
-ol.source.Graphic = Graphic;

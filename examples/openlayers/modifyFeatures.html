@@ -1,12 +1,12 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_modifyFeatures"></title>
-    <script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -25,8 +25,8 @@
 </div>
 <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript">
-    var map, select, modify, source, baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World",
-            url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/data-world/rest/data";
+    var map, select, modify, source, baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-world/rest/maps/World",
+            url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/data-world/rest/data";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
@@ -34,7 +34,8 @@
         view: new ol.View({
             center: [116, 30],
             zoom: 4,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            multiWorld: true
         })
     });
     var layer = new ol.layer.Tile({

@@ -1,136 +1,173 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <title data-i18n="resources.title_mapVLayerHoneycomb"></title>
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <title data-i18n="resources.title_mapVLayerHoneycomb"></title>
-</head>
+    <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+        <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+        <script type="text/javascript" include="mapv" src="../../dist/classic/include-classic.js"></script>
+        <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+        <script type="text/javascript">
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+            var map,
+                baseLayer,
+                mapvLayer,
+                url = host + '/iserver/services/map-china400/rest/maps/China_4326';
 
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-    <script type="text/javascript" include="mapv" src="../../dist/classic/include-classic.js"></script>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript">
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-        var map, baseLayer, mapvLayer,
-            url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+            init();
 
-        init();
+            function init() {
+                if (!document.createElement('canvas').getContext) {
+                    widgets.alert.showAlert(resources.msg_supportCanvas, false);
+                    return;
+                }
 
-        function init() {
-            if (!document.createElement('canvas').getContext) {
-                widgets.alert.showAlert(resources.msg_supportCanvas, false);
-                return;
-            }
-
-            map = new SuperMap.Map("map", {
-                controls: [
-                    new SuperMap.Control.Attribution(),
-                    new SuperMap.Control.ScaleLine(),
-                    new SuperMap.Control.Zoom(),
-                    new SuperMap.Control.Navigation({
-                        dragPanOptions: {
-                            enableKinetic: true
-                        }
-                    })
-                ]
-            });
-            baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {
-                transparent: true,
-                cacheEnabled: true
-            }, {
-                maxResolution: "auto"
-            });
-            baseLayer.events.on({
-                "layerInitialized": addLayer
-            });
-        }
-
-        function addLayer() {
-            map.addLayers([baseLayer]);
-            map.setCenter(new SuperMap.LonLat(104, 34.7), 2);
-            createMapVLayer();
-        }
-
-        //示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理
-        function createMapVLayer() {
-            var randomCount = 1000;
-
-            var data = [];
-
-            var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南",
-                "南京", "合肥", "杭州", "南昌", "福州", "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州",
-                "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"
-            ];
-
-            // 构造数据
-            while (randomCount--) {
-                var cityCenter = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
-                data.push({
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [cityCenter.lng - 2 + Math.random() * 4, cityCenter.lat - 2 + Math.random() *
-                            4
-                        ]
+                map = new SuperMap.Map('map', {
+                    controls: [
+                        new SuperMap.Control.Attribution(),
+                        new SuperMap.Control.ScaleLine(),
+                        new SuperMap.Control.Zoom(),
+                        new SuperMap.Control.Navigation({
+                            dragPanOptions: {
+                                enableKinetic: true
+                            }
+                        })
+                    ]
+                });
+                baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer(
+                    'China',
+                    url,
+                    {
+                        transparent: true,
+                        cacheEnabled: true
                     },
-                    count: 30 * Math.random()
+                    {
+                        maxResolution: 'auto'
+                    }
+                );
+                baseLayer.events.on({
+                    layerInitialized: addLayer
                 });
             }
 
-            var dataSet = new mapv.DataSet(data);
+            function addLayer() {
+                map.addLayers([baseLayer]);
+                map.setCenter(new SuperMap.LonLat(104, 34.7), 2);
+                createMapVLayer();
+            }
 
-            var options = {
-                fillStyle: 'rgba(55, 50, 250, 0.8)',
-                shadowColor: 'rgba(255, 250, 50, 1)',
-                shadowBlur: 20,
-                max: 100,
-                size: 50,
-                label: {
-                    show: true,
-                    fillStyle: 'white',
-                },
-                globalAlpha: 0.5,
-                gradient: {
-                    0.25: "rgb(0,0,255)",
-                    0.55: "rgb(0,255,0)",
-                    0.85: "yellow",
-                    1.0: "rgb(255,0,0)"
-                },
-                draw: 'honeycomb'
-            };
+            //示例数据来源为百度MapV的加偏数据，iClient未做纠偏处理
+            function createMapVLayer() {
+                var randomCount = 1000;
 
-            mapvLayer = new SuperMap.Layer.MapVLayer("mapv", {
-                dataSet: dataSet,
-                options: options
-            });
-            map.addLayer(mapvLayer);
+                var data = [];
 
-            setTimeout(function () {
-                openToolTip(resources.text_iClient, map.getCenter());
-            }, 1000);
+                var citys = [
+                    '北京',
+                    '天津',
+                    '上海',
+                    '重庆',
+                    '石家庄',
+                    '太原',
+                    '呼和浩特',
+                    '哈尔滨',
+                    '长春',
+                    '沈阳',
+                    '济南',
+                    '南京',
+                    '合肥',
+                    '杭州',
+                    '南昌',
+                    '福州',
+                    '郑州',
+                    '武汉',
+                    '长沙',
+                    '广州',
+                    '南宁',
+                    '西安',
+                    '银川',
+                    '兰州',
+                    '西宁',
+                    '乌鲁木齐',
+                    '成都',
+                    '贵阳',
+                    '昆明',
+                    '拉萨',
+                    '海口'
+                ];
 
-        }
+                // 构造数据
+                while (randomCount--) {
+                    var cityCenter = mapv.utilCityCenter.getCenterByCityName(
+                        citys[parseInt(Math.random() * citys.length)]
+                    );
+                    data.push({
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [
+                                cityCenter.lng - 2 + Math.random() * 4,
+                                cityCenter.lat - 2 + Math.random() * 4
+                            ]
+                        },
+                        count: 30 * Math.random()
+                    });
+                }
 
-        function openToolTip(text, latLng) {
-            var contentHTML = "<div style='width:216px; font-size:12px;font-weight:bold ; opacity: 0.8'>";
-            contentHTML += text;
-            contentHTML += "</div>";
-            framedCloud = new SuperMap.Popup.FramedCloud(
-                "chicken",
-                latLng,
-                null,
-                contentHTML,
-                null,
-                true,
-                null,
-                true
-            );
-            map.addPopup(framedCloud);
-        }
-    </script>
-</body>
+                var dataSet = new mapv.DataSet(data);
 
+                var options = {
+                    fillStyle: 'rgba(55, 50, 250, 0.8)',
+                    shadowColor: 'rgba(255, 250, 50, 1)',
+                    shadowBlur: 20,
+                    max: 100,
+                    size: 50,
+                    unit: 'px', // unit可选值['px', 'm']，默认值为'px'
+                    label: {
+                        show: true,
+                        fillStyle: 'white'
+                    },
+                    globalAlpha: 0.5,
+                    gradient: {
+                        0.25: 'rgb(0,0,255)',
+                        0.55: 'rgb(0,255,0)',
+                        0.85: 'yellow',
+                        1.0: 'rgb(255,0,0)'
+                    },
+                    draw: 'honeycomb'
+                };
+
+                mapvLayer = new SuperMap.Layer.MapVLayer('mapv', {
+                    dataSet: dataSet,
+                    options: options
+                });
+                map.addLayer(mapvLayer);
+
+                setTimeout(function() {
+                    openToolTip(resources.text_iClient, map.getCenter());
+                }, 1000);
+            }
+
+            function openToolTip(text, latLng) {
+                var contentHTML = "<div style='width:216px; font-size:12px;font-weight:bold ; opacity: 0.8'>";
+                contentHTML += text;
+                contentHTML += '</div>';
+                framedCloud = new SuperMap.Popup.FramedCloud(
+                    'chicken',
+                    latLng,
+                    null,
+                    contentHTML,
+                    null,
+                    true,
+                    null,
+                    true
+                );
+                map.addPopup(framedCloud);
+            }
+        </script>
+    </body>
 </html>

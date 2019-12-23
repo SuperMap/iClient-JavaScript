@@ -1,8 +1,7 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
-import {Util} from '../core/Util';
+ import {Util} from '../core/Util';
 import {
     GeometryPoint,
     DataFormat,
@@ -22,6 +21,8 @@ import {
     GeometryBatchAnalystService
 } from '@supermap/iclient-common';
 import {ServiceBase} from './ServiceBase';
+import LineString from 'ol/geom/LineString';
+import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class ol.supermap.SpatialAnalystService
@@ -491,7 +492,7 @@ export class SpatialAnalystService extends ServiceBase {
         }
 
         if (params.sourceRoute) {
-            if (params.sourceRoute instanceof ol.geom.LineString && params.sourceRoute.getCoordinates()) {
+            if (params.sourceRoute instanceof LineString && params.sourceRoute.getCoordinates()) {
                 var target = {};
                 target.type = "LINEM";
                 target.parts = [params.sourceRoute.getCoordinates()[0].length];
@@ -536,8 +537,6 @@ export class SpatialAnalystService extends ServiceBase {
         if(["FeatureCollection", "Feature", "Geometry"].indexOf(ol3Geometry.type) != -1){
             return Util.toSuperMapGeometry(ol3Geometry);
         }
-        return Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(ol3Geometry)));
+        return Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(ol3Geometry)));
     }
 }
-
-ol.supermap.SpatialAnalystService = SpatialAnalystService;

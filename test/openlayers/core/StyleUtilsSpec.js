@@ -1,4 +1,3 @@
-import ol from 'openlayers';
 import {StyleUtils} from '../../../src/openlayers/core/StyleUtils.js';
 import {Util} from '../../../src/openlayers/core/Util.js';
 import {CartoCSS} from '../../../src/common/style/CartoCSS.js';
@@ -7,6 +6,7 @@ import '../../resources/china_cartoCSS.js';
 import '../../resources/china_layers.js';
 import '../../resources/iPortal_maps.js';
 import 'fetch-ie8';
+import GeoJSON from 'ol/format/GeoJSON';
 
 var fetch = window.fetch;
 var layersInfo, cartoCSSShaders, iPortalLayersInfo;
@@ -335,7 +335,7 @@ describe('openlayers_StyleUtils', () => {
     //测试从iPortalLayers中获取style
     it('getStyleFromiPortalStyle_point', (done) => {
         var key = 'iPortalMaps44';
-        var tileFormat = new ol.format.GeoJSON();
+        var tileFormat = new GeoJSON();
         var layerFeatures = iPortalLayersInfo[key][2].features;
         var features = tileFormat.readFeatures(Util.toGeoJSON(layerFeatures));
         try {
@@ -362,7 +362,7 @@ describe('openlayers_StyleUtils', () => {
     //测试从iPortalLayers中获取style
     it('getStyleFromiPortalStyle_polyLine', (done) => {
         var key = 'iPortalMaps47';
-        var tileFormat = new ol.format.GeoJSON();
+        var tileFormat = new GeoJSON();
         var layerFeatures = iPortalLayersInfo[key][3].features;
         var features = tileFormat.readFeatures(Util.toGeoJSON(layerFeatures));
         try {
@@ -482,7 +482,7 @@ var getShader = (layerName) => {
 
 //请求tileFeature获取测试用ol feature对象
 var requestFeature = (url) => {
-    var tileFormat = new ol.format.GeoJSON();
+    var tileFormat = new GeoJSON();
     return fetch(url, {method: 'GET', timeout: 10000})
         .then((response) => {
             return response.json();

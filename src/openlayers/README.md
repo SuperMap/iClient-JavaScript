@@ -5,7 +5,7 @@
 目前支持的OpenLayers版本为4.6.5，最新的5.x支持版本还在开发中。
 
 ## 简介
-* 官网：[http://iclient.supermap.io](http://iclient.supermap.io)
+* 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
 * 源码：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers)
 
 ## 安装
@@ -21,7 +21,7 @@
 ```html
 <link href='https://openlayers.org/en/v4.6.5/css/ol.css' rel='stylesheet' />
 
-<link href='http://iclient.supermap.io/dist/openlayers/iclient-openlayers.min.css' rel='stylesheet' />
+<link href='https://iclient.supermap.io/dist/openlayers/iclient-openlayers.min.css' rel='stylesheet' />
 
 ```
 在 JS 文件中加入如下代码
@@ -30,7 +30,7 @@
 import ol from 'openlayers';
 import {Logo, TileSuperMapRest} from '@supermap/iclient-openlayers';
 
-var url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+var url = "https://iserver.supermap.io/iserver/services/map-world/rest/maps/World";
 var map = new ol.Map({
     target: 'map',
     controls: ol.control.defaults({attributionOptions: {collapsed: false}})

@@ -8,10 +8,10 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
         browser.pause(1000);
-        browser.elements('class name', 'leaflet-marker-icon', function (result) {
+        browser.elements('css selector', '.leaflet-marker-icon', function (result) {
             if (result.value.length < 2) {
                 browser.pause(10000);
-                browser.elements('class name', 'leaflet-layer', function (result) {
+                browser.elements('css selector', '.leaflet-layer', function (result) {
                     browser.assert.equal(result.value.length, 2, "expect Number of initial marker to be 2, actual is " + result.value.length);
                 })
                 browser.assert.equal(result.value.length, 2, "expect Number of initial marker to be 2, actual is " + result.value.length);
@@ -19,7 +19,7 @@ module.exports = {
             browser.assert.equal(result.value.length, 2, "expect Number of initial marker to be 2, actual is " + result.value.length);
         });
         /*判断初始popup*/
-        browser.elements('class name', 'leaflet-tooltip-top', function (result) {
+        browser.elements('css selector', '.leaflet-tooltip-top', function (result) {
             browser.assert.equal(result.value.length, 2, "expect Number of initial tooltip to be 2, actual is " + result.value.length);
         });
         /*判断初始path*/
@@ -46,7 +46,7 @@ module.exports = {
         browser.pause(1500);
         browser.useXpath().click('//*[@id="trafficRes"]/tr[3]/td[2]/a[2]', function () {
             browser.pause(1500);
-            browser.elements('class name', 'leaflet-marker-icon', function (result) {
+            browser.elements('css selector', '.leaflet-marker-icon', function (result) {
                 browser.assert.equal(result.value.length, 3, "expect Number of marker after click '抚松路' in '方案2' to be 3, actual is " + result.value.length);
             });
         });

@@ -1,21 +1,24 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
+
+import BaseObject from 'ol/Object';
+import Geometry from 'ol/geom/Geometry';
+import Style from 'ol/style/Style';
 
 /**
  * @class ol.Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层点要素类。
- * @param {ol.geom.Point} geometry - 几何对象。
+ * @param {ol/geom/Point} geometry - 几何对象。
  * @param {Object} [attributes] - 要素属性。
- * @extends {ol.Object}
+ * @extends {ol/Object}
  */
-export class Graphic extends ol.Object {
+export class Graphic extends BaseObject {
 
     constructor(geometry, attributes) {
         super();
-        if (geometry instanceof ol.geom.Geometry) {
+        if (geometry instanceof Geometry) {
             this.geometry_ = geometry;
         }
         this.attributes = attributes;
@@ -57,7 +60,7 @@ export class Graphic extends ol.Object {
     /**
      * @function ol.Graphic.prototype.getGeometry
      * @description 获取当前要素几何信息。
-     * @returns {ol.geom.Point} 要素几何信息。
+     * @returns {ol/geom/Point} 要素几何信息。
      */
     getGeometry() {
         return this.geometry_;
@@ -66,7 +69,7 @@ export class Graphic extends ol.Object {
     /**
      * @function ol.Graphic.prototype.setGeometry
      * @description 设置当前要素几何信息。
-     * @param {ol.geom.Point} geometry - 要素几何信息。
+     * @param {ol/geom/Point} geometry - 要素几何信息。
      */
     setGeometry(geometry) {
         this.geometry_ = geometry;
@@ -93,7 +96,7 @@ export class Graphic extends ol.Object {
     /**
      * @function ol.Graphic.prototype.getStyle
      * @description 获取样式。
-     * @returns {ol.style.Image} ol.style.Image 子类样式对象。
+     * @returns {ol/style/Image} ol/style/Image 子类样式对象。
      */
     getStyle() {
         return this.style_;
@@ -102,7 +105,7 @@ export class Graphic extends ol.Object {
     /**
      * @function ol.Graphic.prototype.setStyle
      * @description 设置样式。
-     * @param {ol.style.Image} style - 样式，ol.style.Image 子类样式对象。
+     * @param {ol/style/Image} style - 样式，ol/style/Image 子类样式对象。
      */
     setStyle(style) {
         if (!this.style && !style) {
@@ -110,7 +113,7 @@ export class Graphic extends ol.Object {
         }
         this.style_ = style;
         this.styleFunction_ = !style ?
-            undefined : ol.Graphic.createStyleFunction(new ol.style.Style({
+            undefined : Graphic.createStyleFunction(new Style({
                 image: style
             }));
         this.changed();
@@ -165,5 +168,3 @@ export class Graphic extends ol.Object {
         this.style_ = null;
     }
 }
-
-ol.Graphic = Graphic;

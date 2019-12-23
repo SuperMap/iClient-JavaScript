@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -86,9 +86,9 @@
             container.innerHTML = "<div class='input-group'><span class='input-group-addon'>" +
                 resources.text_dataset + "</span>" +
                 "<select class='form-control' id='rule' name='rule'>" +
-                "<option value='http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R' selected>Landuse_R@Jingjin</option>" +
-                "<option value='http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/BaseMap_P'>BaseMap_P@Jingjin</option>" +
-                "<option value='http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World'>Rivers@World</option>" +
+                "<option value='https://iserver.supermap.io/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R' selected>Landuse_R@Jingjin</option>" +
+                "<option value='https://iserver.supermap.io/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/BaseMap_P'>BaseMap_P@Jingjin</option>" +
+                "<option value='https://iserver.supermap.io/iserver/services/map-world/rest/maps/World/layers/Rivers@World@@World'>Rivers@World</option>" +
                 "</select></div>" +
                 "<div class='chart-type-btn'>" +
                 "<button type='button' class='btn btn-default graph' id='scatter' title='" + resources.title_Scatter +
@@ -99,7 +99,7 @@
                 "''></button></div>"
         }
 
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map, resultLayer, url = host + "/iserver/services/map-world/rest/maps/World";
         //加载底图
         map = L.map('map', {
@@ -206,8 +206,8 @@
                         name: "机场"
                     },
                     yAxis: {
-                        field: "同比增速%",
-                        name: "同比增速%"
+                        field: "同比增速_",
+                        name: "同比增速_"
                     }
                 }];
                 serviceType = 'iPortal';
