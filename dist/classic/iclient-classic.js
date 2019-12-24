@@ -19482,7 +19482,6 @@ function AddressMatchService_setPrototypeOf(o, p) { AddressMatchService_setProto
 
 
 
-
 /**
  * @class SuperMap.AddressMatchService
  * @category iServer AddressMatch
@@ -19559,26 +19558,13 @@ function (_CommonServiceBase) {
   }, {
     key: "processAsync",
     value: function processAsync(url, params) {
-      var me = this;
-      var headers = this.headers,
-          crossOrigin = this.crossOrigin,
-          proxy = this.proxy;
-      FetchRequest.get(url, params, {
-        headers: headers,
-        crossOrigin: crossOrigin,
-        proxy: proxy
-      }).then(function (response) {
-        return response.json();
-      }).then(function (result) {
-        if (result) {
-          me.serviceProcessCompleted(result);
-        } else {
-          me.serviceProcessFailed(result);
-        }
-      })["catch"](function (e) {
-        me.eventListeners.processFailed({
-          error: e
-        });
+      this.request({
+        method: "GET",
+        url: url,
+        params: params,
+        scope: this,
+        success: this.serviceProcessCompleted,
+        failure: this.serviceProcessFailed
       });
     }
     /**

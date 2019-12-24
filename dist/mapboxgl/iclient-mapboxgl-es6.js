@@ -15032,7 +15032,6 @@ SuperMap.GeoDecodingParameter = GeoDecodingParameter_GeoDecodingParameter;
 
 
 
-
 /**
  * @class SuperMap.AddressMatchService
  * @category iServer AddressMatch
@@ -15090,18 +15089,13 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
      */
 
     processAsync(url, params) {
-        var me = this;
-        let { headers, crossOrigin, proxy } = this;
-        FetchRequest.get(url, params,{ headers, crossOrigin, proxy }).then(function (response) {
-            return response.json();
-        }).then(function (result) {
-            if (result) {
-                me.serviceProcessCompleted(result);
-            } else {
-                me.serviceProcessFailed(result);
-            }
-        }).catch(function (e) {
-            me.eventListeners.processFailed({error: e});
+        this.request({
+            method: "GET",
+            url,
+            params,
+            scope: this,
+            success: this.serviceProcessCompleted,
+            failure: this.serviceProcessFailed
         });
     }
 
