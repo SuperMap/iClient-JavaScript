@@ -14,8 +14,8 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "echarts": "4.3.0",
-    "mapv": "2.0.38",
+    "echarts": "4.5.0",
+    "mapv": "2.0.42",
     "mapbox-gl": "1.6.1",
     "three": "0.92.0",
     "xlsx": "0.15.4",
