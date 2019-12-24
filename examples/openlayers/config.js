@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * OpenLayers 示例配置文件：包括示例的分类、名称、缩略图、文件路径
  */
@@ -440,54 +440,26 @@ var exampleConfig = {
                     fileName: "iPortalSecurity"
                 }]
             },
-            "ip_querymaps": {
-                name: "地图列表",
-                name_en: "Web map list",
+            "ip_queryresources": {
+                name: "资源中心",
+                name_en: "Resources Center",
                 content: [{
-                    name: "地图列表",
-                    name_en: "web map list",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryMaps"
+                    name: "资源中心",
+                    name_en: "Resources Center",
+                    version: "10.0.1",
+                    thumbnail: "ol_iPortalQueryResources.png",
+                    fileName: "iPortalQueryResources"
                 }]
             },
-            "ip_queryservices": {
-                name: "服务列表",
-                name_en: "Web service list",
+            "ip_querymyresources": {
+                name: "我的资源",
+                name_en: "My Resource",
                 content: [{
-                    name: "服务列表",
-                    name_en: "web service list",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryServices"
-                }]
-            },
-            "ip_querymapdashboards": {
-                name: "大屏列表",
-                name_en: "Web mapdashboard list",
-                content: [{
-                    name: "大屏列表",
-                    name_en: "web mapdashboard list",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryMapdashboards"
-                }]
-            },
-            "ip_queryscenes": {
-                name: "场景列表",
-                name_en: "Web scene list",
-                content: [{
-                    name: "场景列表",
-                    name_en: "web scene list",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryScenes"
-                }]
-            },
-            "ip_queryinsights": {
-                name: "洞察列表",
-                name_en: "Web insight list",
-                content: [{
-                    name: "洞察列表",
-                    name_en: "web insight list",
-                    thumbnail: "ol_iPortalQueryMaps.png",
-                    fileName: "iPortalQueryInsights"
+                    name: "我的资源",
+                    name_en: "My Resource",
+                    version: "10.0.1",
+                    thumbnail: "l_iPortalQueryResources.png",
+                    fileName: "iPortalQueryMyResources"
                 }]
             }
         }
@@ -821,42 +793,42 @@ var exampleConfig = {
                 name: "矢量瓦片",
                 name_en: "Vector tile layer",
                 content: [
-                    {
-                        name: "默认风格",
-                        name_en: "normal style",
-                        thumbnail: "tiledVectorLayer.png",
-                        fileName: "tiledVectorLayer"
-                    },
-                    {
-                        name: "月夜风格",
-                        name_en: "normal style",
-                        thumbnail: "cartoCSS_nightStyle.png",
-                        fileName: "cartoCSS_nightStyle"
-                    },
-                    {
-                        name: "强边界风格",
-                        name_en: "boundray style",
-                        thumbnail: "cartoCSS_boundryStyle.png",
-                        fileName: "cartoCSS_boundryStyle"
-                    },
-                    {
-                        name: "深夜蓝黑风格",
-                        name_en: "dark-blue style",
-                        thumbnail: "cartoCSS_darkBlue.png",
-                        fileName: "cartoCSS_darkBlue"
-                    },
-                    {
-                        name: "HelloKitty风格",
-                        name_en: "hellokitty style",
-                        thumbnail: "cartoCSS_helloKitty.png",
-                        fileName: "cartoCSS_helloKitty"
-                    },
-                    {
-                        name: "淡雅绿风格",
-                        name_en: "natural style",
-                        thumbnail: "cartoCSS_naturalStyle.png",
-                        fileName: "cartoCSS_naturalStyle"
-                    },
+                    // {
+                    //     name: "默认风格",
+                    //     name_en: "normal style",
+                    //     thumbnail: "tiledVectorLayer.png",
+                    //     fileName: "tiledVectorLayer"
+                    // },
+                    // {
+                    //     name: "月夜风格",
+                    //     name_en: "normal style",
+                    //     thumbnail: "cartoCSS_nightStyle.png",
+                    //     fileName: "cartoCSS_nightStyle"
+                    // },
+                    // {
+                    //     name: "强边界风格",
+                    //     name_en: "boundray style",
+                    //     thumbnail: "cartoCSS_boundryStyle.png",
+                    //     fileName: "cartoCSS_boundryStyle"
+                    // },
+                    // {
+                    //     name: "深夜蓝黑风格",
+                    //     name_en: "dark-blue style",
+                    //     thumbnail: "cartoCSS_darkBlue.png",
+                    //     fileName: "cartoCSS_darkBlue"
+                    // },
+                    // {
+                    //     name: "HelloKitty风格",
+                    //     name_en: "hellokitty style",
+                    //     thumbnail: "cartoCSS_helloKitty.png",
+                    //     fileName: "cartoCSS_helloKitty"
+                    // },
+                    // {
+                    //     name: "淡雅绿风格",
+                    //     name_en: "natural style",
+                    //     thumbnail: "cartoCSS_naturalStyle.png",
+                    //     fileName: "cartoCSS_naturalStyle"
+                    // },
                     // {
                     //     name: "默认风格(MVT)",
                     //     name_en: "normal(MVT)",

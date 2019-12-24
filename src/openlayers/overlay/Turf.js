@@ -1,29 +1,29 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import * as turf from '@turf/turf';
+import VectorSource from 'ol/source/Vector';
+import GeoJSON from 'ol/format/GeoJSON';
+import { Util } from '../core/Util';
 
 /**
  * @class ol.source.Turf
  * @category  Visualization Turf
  * @classdesc Turf.js 图层源。
  * @param {Object} opt_options - 参数。
- * @extends {ol.source.Vector}
+ * @extends {ol/source/Vector}
  */
-export class Turf extends ol.source.Vector {
+export class Turf extends VectorSource {
 
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};
 
         super({
-            attributions: options.attributions || new ol.Attribution({
-                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-            }),
+            attributions: options.attributions || "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
             features: options.features,
             format: options.format,
             extent: options.extent,
-            logo: options.logo,
+            logo: Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
             wrapX: options.wrapX
         });
@@ -243,7 +243,7 @@ export class Turf extends ol.source.Vector {
         
         var features = null;
         try {
-            features = (new ol.format.GeoJSON()).readFeatures(result);
+            features = (new GeoJSON()).readFeatures(result);
         } catch (e) {
             if (callback) {
                 callback(result);
@@ -293,5 +293,3 @@ export class Turf extends ol.source.Vector {
     }
 
 }
-
-ol.source.Turf = Turf;

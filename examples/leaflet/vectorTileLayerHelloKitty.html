@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -110,7 +110,7 @@
 
 </script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, layer,
         url = host + "/iserver/services/map-china400/rest/maps/China";
     map = L.map('map', {
@@ -122,7 +122,7 @@
     layer = L.supermap.tiledVectorLayer(url, {
         cacheEnabled: true,
         cartoCSS: cartoCSS,
-        attribution: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+        attribution: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
         serverCartoCSSStyle: false
     }).addTo(map);
 

@@ -1,4 +1,3 @@
-import ol from 'openlayers';
 import request from 'request';
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {DatasetBufferAnalystParameters} from '../../../src/common/iServer/DatasetBufferAnalystParameters';
@@ -10,6 +9,8 @@ import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
 import {BufferEndType} from '../../../src/common/REST';
 import {DataReturnMode} from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
+import LineString from 'ol/geom/LineString';
 
 var originalTimeout, serviceResult;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
@@ -137,7 +138,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
             [8182.656, -4210.533],
             [8554.893, -4261.485]
         ];
-        var roadLine = new ol.geom.LineString(pointsList);
+        var roadLine = new LineString(pointsList);
         var geoBufferAnalystParams = new GeometryBufferAnalystParameters({
             sourceGeometry: roadLine,
             bufferSetting: new BufferSetting({

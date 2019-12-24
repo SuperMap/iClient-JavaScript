@@ -1,4 +1,3 @@
-import ol from 'openlayers';
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {RouteLocatorParameters} from '../../../src/common/iServer/RouteLocatorParameters';
 import {QueryService} from '../../../src/openlayers/services/QueryService';
@@ -6,6 +5,7 @@ import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParame
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
+import LineString from 'ol/geom/LineString';
 
 var originalTimeout, serviceResults;
 var changchunBaseUrl = GlobeParameter.tileSetsURL;
@@ -54,7 +54,7 @@ describe('openlayers_SpatialAnalystService_routeLocate', () => {
             for (var i = 0; i < routeObj.length; i++) {
                 pointsList.push([routeObj[i][0], routeObj[i][1], routeObj[i][2]])
             }
-            var routeLine = new ol.geom.LineString([pointsList]);
+            var routeLine = new LineString([pointsList]);
             //里程定线服务
             var routeLocatorService = new SpatialAnalystService(changchunServiceUrl);
             var routeLocatorParameters_line = new RouteLocatorParameters({
@@ -107,7 +107,7 @@ describe('openlayers_SpatialAnalystService_routeLocate', () => {
             for (var i = 0; i < routeObj.length; i++) {
                 pointsList.push([routeObj[i][0], routeObj[i][1], routeObj[i][2]])
             }
-            var routeLine = new ol.geom.LineString([pointsList]);
+            var routeLine = new LineString([pointsList]);
             //里程定点服务
             var routeLocatorService = new SpatialAnalystService(changchunServiceUrl);
             var routeLocatorParameters_point = new RouteLocatorParameters({

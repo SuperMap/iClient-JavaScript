@@ -128,7 +128,7 @@ describe('mapboxgl_MeasureService', () => {
     });
 
     //测面积失败事件
-    it('measureArea_success_test', (done) => {
+    it('measureArea_failed_test', (done) => {
         var geo = {
             'type': 'Feature',
             'geometry': {

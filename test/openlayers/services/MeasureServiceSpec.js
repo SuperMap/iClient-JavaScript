@@ -1,7 +1,9 @@
-import ol from 'openlayers';
 import {MeasureService} from '../../../src/openlayers/services/MeasureService';
 import {MeasureParameters} from '../../../src/common/iServer/MeasureParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
+import LineString from 'ol/geom/LineString';
+import Polygon from 'ol/geom/Polygon';
 
 var url = GlobeParameter.mapServiceURL + "World";
 var options = {
@@ -20,7 +22,7 @@ describe('openlayers_MeasureService', () => {
     });
     //测距, 成功事件
     it('success:measureDistance', (done) => {
-        var geometry = new ol.geom.LineString([[0, 0], [10, 10]]);
+        var geometry = new LineString([[0, 0], [10, 10]]);
         var distanceMeasureParam = new MeasureParameters(geometry);
         var service = new MeasureService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
@@ -49,7 +51,7 @@ describe('openlayers_MeasureService', () => {
 
     //测距, 失败事件
     it('fail:measureDistance', (done) => {
-        var geometry = new ol.geom.LineString([[0, 0]]);
+        var geometry = new LineString([[0, 0]]);
         var distanceMeasureParam = new MeasureParameters(geometry);
         var service = new MeasureService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
@@ -76,7 +78,7 @@ describe('openlayers_MeasureService', () => {
 
     //测面积, 成功事件
     it('success:measureArea', (done) => {
-        var geometry = new ol.geom.Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
+        var geometry = new Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
         var areaMeasureParam = new MeasureParameters(geometry);
         var service = new MeasureService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
@@ -105,7 +107,7 @@ describe('openlayers_MeasureService', () => {
 
     //测面积, 失败事件
     it('fail:measureArea', (done) => {
-        var geometry = new ol.geom.Polygon([[[0, 0]]]);
+        var geometry = new Polygon([[[0, 0]]]);
         var areaMeasureParam = new MeasureParameters(geometry);
         var service = new MeasureService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {

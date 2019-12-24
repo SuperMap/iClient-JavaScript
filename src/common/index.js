@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from './SuperMap';
@@ -97,17 +97,13 @@ import { TimeControlBase, TimeFlowControl } from './control';
 import { IManager, IManagerCreateNodeParam, IManagerServiceBase } from './iManager';
 import {
     IPortal,
-    IPortalMap,
-    IPortalMapsQueryParam,
-    IPortalInsight,
-    IPortalInsightsQueryParam,
-    IPortalScene,
-    IPortalScenesQueryParam,
-    IPortalService,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalServiceBase,
-    IPortalServicesQueryParam,
-    IPortalMapdashboard,
-    IPortalMapdashboardsQueryParam
+    IPortalUser
 } from './iPortal';
 import {
     AddressMatchService,
@@ -352,7 +348,8 @@ import {
     getRequestTimeout,
     FetchRequest,
     ColorsPickerUtil,
-    ArrayStatistic
+    ArrayStatistic,
+    getMeterPerMapUnit
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -550,9 +547,27 @@ export {
 };
 export { TimeControlBase, TimeFlowControl };
 export { Format, GeoJSON, JSONFormat, WKT };
-export { setCORS, isCORS, setRequestTimeout, getRequestTimeout, FetchRequest, ColorsPickerUtil, ArrayStatistic };
+export {
+    setCORS,
+    isCORS,
+    setRequestTimeout,
+    getRequestTimeout,
+    FetchRequest,
+    ColorsPickerUtil,
+    ArrayStatistic,
+    getMeterPerMapUnit
+};
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
-export { IPortal, IPortalMap, IPortalMapsQueryParam, IPortalInsight, IPortalInsightsQueryParam, IPortalScene, IPortalScenesQueryParam,IPortalService, IPortalServiceBase, IPortalServicesQueryParam, IPortalMapdashboard, IPortalMapdashboardsQueryParam };
+export { 
+    IPortal,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
+    IPortalServiceBase,
+    IPortalUser
+};
 export {
     AddressMatchService,
     AggregationParameter,

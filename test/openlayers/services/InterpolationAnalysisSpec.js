@@ -1,4 +1,3 @@
-import ol from 'openlayers';
 import request from 'request';
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {InterpolationDensityAnalystParameters} from '../../../src/common/iServer/InterpolationDensityAnalystParameters';
@@ -8,6 +7,8 @@ import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParame
 import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 import {PixelFormat} from '../../../src/common/REST';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
+
+import Point from 'ol/geom/Point';
 
 var originalTimeout, serviceResults;
 var sampleServiceUrl = GlobeParameter.spatialAnalystURL;
@@ -130,7 +131,7 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', () => {
             if (result) {
                 for (var i = 0; i < result.recordsets[0].features.features.length; i++) {
                     var gp = result.recordsets[0].features.features[i].geometry;
-                    var point = new ol.geom.Point([gp.coordinates[0], gp.coordinates[1]]);
+                    var point = new Point([gp.coordinates[0], gp.coordinates[1]]);
                     //每个插值点在插值过程中的权重值
                     z = Math.random() * (zMax - zMin) + zMin;
                     point.tag = z;

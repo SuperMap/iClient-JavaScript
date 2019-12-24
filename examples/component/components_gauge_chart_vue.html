@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -22,7 +22,7 @@
 
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="main">
-            <sm-web-map server-url="http://support.supermap.com.cn:8092/" map-id="1649097980"> </sm-web-map>
+            <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="801571284"> </sm-web-map>
             <sm-chart icon-class="" :style="chartStyle" :dataset="dataset" :dataset-options="datasetOptions"></sm-chart>
         </div>
 
@@ -37,7 +37,7 @@
                             right: "10px"
                         },
                         dataset: new SuperMap.Components.commontypes.RestDataParameter({
-                            url: "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
+                            url: "https://iserver.supermap.io/iserver/services/data-jingjin/rest/data",
                             dataName: ["Jingjin:Landuse_R"],
                             maxFeatures: 20,
                             attributeFilter: "SmID = 2"

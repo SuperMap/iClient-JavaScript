@@ -1,6 +1,6 @@
 import {IPortalServicesQueryParam} from '../../../src/common/iPortal/iPortalServicesQueryParam';
 
-describe('iPortalMapsQueryParam', () => {
+describe('iPortalServicesQueryParam', () => {
     it('constructor', () => {
         var param = new IPortalServicesQueryParam({userNames: 'test'});
         expect(param).not.toBeNull();

@@ -52,7 +52,8 @@ describe('classic_MapVLayer', () => {
             shadowColor: 'rgba(255, 250, 50, 1)',
             shadowBlur: 20,
             max: 100,
-            size: 50,
+            size: 500,
+            unit: 'm',
             label: {
                 show: true,
                 fillStyle: 'white',
@@ -198,5 +199,9 @@ describe('classic_MapVLayer', () => {
         var latlng = new LonLat(104, 34.7);
         mapvLayer.transferToMapLatLng(latlng);
         expect(mapvLayer).not.toBeNull();
+    });
+
+    it('_canvasUpdate', () => {
+        expect(mapvLayer.options._size).toEqual(0.024953202336653373);
     });
 });

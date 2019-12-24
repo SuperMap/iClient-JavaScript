@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -20,6 +20,8 @@ import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
+ * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -117,6 +119,12 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
         }
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             parasByBounds.maxFeatures = params.maxFeatures;
+        }
+        if (params.targetEpsgCode) {
+            parasByBounds.targetEpsgCode = params.targetEpsgCode;
+        }
+        if (!params.targetEpsgCode && params.targetPrj) {
+            parasByBounds.targetPrj = params.targetPrj;
         }
 
         return Util.toJSON(parasByBounds);

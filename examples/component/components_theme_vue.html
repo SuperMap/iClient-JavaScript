@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -75,8 +75,8 @@
     <div id="main">
       <!-- WebMap组件 -->
       <sm-web-map
-        server-url="http://support.supermap.com.cn:8092/"
-        map-id="1649097980"
+        server-url="https://iportal.supermap.io/iportal"
+        map-id="801571284"
         ref="map"
         @load.once="load"
       ></sm-web-map>
@@ -210,7 +210,7 @@
                 vm.name = properties['机场'];
                 vm.passengerNumber = properties['2017旅客吞吐量（人次）'] || 0;
                 vm.goodsNumber = properties['2017货邮吞吐量（吨）'] || 0;
-                vm.speedIncrease = properties['同比增速%'] || 0;
+                vm.speedIncrease = properties['同比增速_'] || 0;
               }
             });
           }

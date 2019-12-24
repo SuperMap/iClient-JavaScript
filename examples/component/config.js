@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * component 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -134,9 +134,16 @@ var exampleConfig = {
           {
             name: '点选查询',
             name_en: 'Identify',
-            version: '10.0.0',
+            version: '10.0.1',
             thumbnail: 'components_identify_vue.png',
             fileName: 'components_identify_vue'
+          },
+          {
+            name: '图层管理',
+            name_en: 'Layer Manager',
+            version: '10.0.1',
+            thumbnail: 'components_layerManager_vue.png',
+            fileName: 'components_layerManager_vue'
           }
         ]
       },
@@ -431,11 +438,57 @@ var exampleConfig = {
         name_en: 'Map subcomponent',
         content: [
           {
+            name: '弹窗',
+            name_en: 'Popup',
+            version: '10.0.1',
+            thumbnail: 'components_popup_vue.png',
+            fileName: 'l_popup_vue'
+          },
+          {
             name: '点选查询',
             name_en: 'Identify',
-            version: '10.0.0',
+            version: '10.0.1',
             thumbnail: 'components_identify_vue.png',
             fileName: 'l_identify_vue'
+          }
+        ]
+      },
+      l_chart: {
+        name: '图表',
+        name_en: 'Chart',
+        localIgnore: true,
+        content: [
+          {
+            name: '图表',
+            name_en: 'Chart',
+            version: '10.0.1',
+            thumbnail: 'components_chart_vue.png',
+            fileName: 'l_chart_vue',
+            localIgnore: true
+          },
+          {
+            name: '饼图',
+            name_en: 'Chart(pie)',
+            version: '10.0.1',
+            thumbnail: 'components_chart_vue(pie).png',
+            fileName: 'l_pie_chart_vue',
+            localIgnore: true
+          },
+          {
+            name: '雷达图',
+            name_en: 'Chart(radar)',
+            version: '10.0.1',
+            thumbnail: 'components_chart_vue(radar).png',
+            fileName: 'l_radar_chart_vue',
+            localIgnore: true
+          },
+          {
+            name: '仪表盘',
+            name_en: 'Chart(gauge)',
+            version: '10.0.1',
+            thumbnail: 'components_chart_vue(gauge).png',
+            fileName: 'l_gauge_chart_vue',
+            localIgnore: true
           }
         ]
       }

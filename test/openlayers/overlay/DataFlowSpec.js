@@ -1,5 +1,4 @@
-﻿﻿import ol from 'openlayers';
-import {
+﻿﻿import {
     DataFlowService
 } from '../../../src/openlayers/services/DataFlowService';
 import {
@@ -7,13 +6,21 @@ import {
 } from '../../../src/openlayers/overlay/DataFlow';
 
 import { Server } from 'mock-socket';
+import Fill from 'ol/style/Fill';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import * as olProj from 'ol/proj';
+import VectorLayer from 'ol/layer/Vector';
+import Style from 'ol/style/Style';
+import CircleStyle from 'ol/style/Circle';
+
 var urlDataFlow = "ws:\//localhost:8004/";
 var server;
 
 describe('ol_DataFlow', () => {
     var originalTimeout;
     var testDiv, map;
-    var fill = new ol.style.Fill({
+    var fill = new Fill({
         color: 'rgba(255,0,0,0.9)'
     });
     var layer, service;
@@ -27,10 +34,10 @@ describe('ol_DataFlow', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "400px";
         window.document.body.appendChild(testDiv);
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
-                center: ol.proj.transform([116.42, 39.88], 'EPSG:4326', 'EPSG:3857'),
+            view: new View({
+                center: olProj.transform([116.42, 39.88], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 12,
                 projection: 'EPSG:3857'
             })
@@ -83,7 +90,7 @@ describe('ol_DataFlow', () => {
         var broadcast_Point = (flowService) => {
             var feature = {
                 geometry: {
-                    coordinates: ol.proj.transform([116.69801217000008, 39.86826211908377], 'EPSG:4326', 'EPSG:3857'),
+                    coordinates: olProj.transform([116.69801217000008, 39.86826211908377], 'EPSG:4326', 'EPSG:3857'),
                     type: "Point"
                 },
                 id: 1,
@@ -98,12 +105,12 @@ describe('ol_DataFlow', () => {
 
         var timer;
         try {
-            var layer = new ol.layer.Vector({
-                source: new ol.source.DataFlow({
+            var layer = new VectorLayer({
+                source: new DataFlow({
                     ws: urlDataFlow
                 }),
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
+                style: new Style({
+                    image: new CircleStyle({
                         fill: fill,
                         radius: 6
                     }),
@@ -156,12 +163,12 @@ describe('ol_DataFlow', () => {
         }
         var timer;
         try {
-            var layer = new ol.layer.Vector({
-                source: new ol.source.DataFlow({
+            var layer = new VectorLayer({
+                source: new DataFlow({
                     ws: urlDataFlow
                 }),
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
+                style: new Style({
+                    image: new CircleStyle({
                         fill: fill,
                         radius: 6
                     }),
@@ -213,12 +220,12 @@ describe('ol_DataFlow', () => {
 
         var timer;
         try {
-            var layer = new ol.layer.Vector({
-                source: new ol.source.DataFlow({
+            var layer = new VectorLayer({
+                source: new DataFlow({
                     ws: urlDataFlow
                 }),
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
+                style: new Style({
+                    image: new CircleStyle({
                         fill: fill,
                         radius: 6
                     }),
@@ -280,12 +287,12 @@ describe('ol_DataFlow', () => {
         }
         var timer;
         try {
-            var layer = new ol.layer.Vector({
-                source: new ol.source.DataFlow({
+            var layer = new VectorLayer({
+                source: new DataFlow({
                     ws: urlDataFlow
                 }),
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
+                style: new Style({
+                    image: new CircleStyle({
                         fill: fill,
                         radius: 6
                     }),
@@ -312,7 +319,7 @@ describe('ol_DataFlow', () => {
     });
 
     it('setExcludeField', (done) => {
-        var source = new ol.source.DataFlow({
+        var source = new DataFlow({
             ws: urlDataFlow
         });
         var socket = new WebSocket(urlDataFlow);
@@ -335,7 +342,7 @@ describe('ol_DataFlow', () => {
     });
 
     it('setGeometry', (done) => {
-        var source = new ol.source.DataFlow({
+        var source = new DataFlow({
             ws: urlDataFlow
         });
         var socket = new WebSocket(urlDataFlow);

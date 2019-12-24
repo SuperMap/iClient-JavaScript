@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 
-ol.supermap = ol.supermap || {};
-ol.supermap.control = ol.supermap.control || {};
+import Scale from 'ol/control/ScaleLine';
+import * as olProj from 'ol/proj';
+import AssertionError from 'ol/AssertionError';
 
 /**
  * @class ol.supermap.control.ScaleLine
@@ -15,7 +15,7 @@ ol.supermap.control = ol.supermap.control || {};
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">该功能继承 {@link ol.control.ScaleLine },与 {@link ol.control.ScaleLine } 功能完全相同。仅为修复 `openlayers` v4.6.5 版本中 WGS84 等地理坐标系比例尺数值错误的问题。
  * </div>
- * @extends {ol.control.ScaleLine}
+ * @extends {ol/control/ScaleLine}
  * @param {options} options -参数。
  * @param {string} [options.className='ol-scale-line'] - CSS Class name.。
  * @param {number} [options.minWidth=64] - 最小像素宽度。
@@ -25,11 +25,7 @@ ol.supermap.control = ol.supermap.control || {};
  * var control = new ol.supermap.control.ScaleLine();
  *      map.addControl(control)
  */
-export class ScaleLine extends ol.control.ScaleLine {
-    /**
-     * @constructs
-     * @version 9.1.2
-    */
+export class ScaleLine extends Scale {
     constructor(options) {
         options = options || {};
         //需在super之前定义render，真正的调用是在初始化完成后
@@ -65,12 +61,12 @@ export class ScaleLine extends ol.control.ScaleLine {
             "degrees" :
             "m";
         let pointResolution =
-        ol.proj.getPointResolution(projection, viewState.resolution, center, pointResolutionUnits);
+        olProj.getPointResolution(projection, viewState.resolution, center, pointResolutionUnits);
         this.minWidth_ = this.minWidth_ || this.v;
         let nominalCount = this.minWidth_ * pointResolution;
         let suffix = '';
         if (units == "degrees") {
-            const metersPerDegree = ol.proj.METERS_PER_UNIT["degrees"];
+            const metersPerDegree = olProj.METERS_PER_UNIT["degrees"];
             nominalCount *= metersPerDegree;
             if (nominalCount < metersPerDegree / 60) {
                 suffix = '\u2033'; // seconds
@@ -120,7 +116,7 @@ export class ScaleLine extends ol.control.ScaleLine {
                 pointResolution /= 1609.3472;
             }
         } else {
-            throw new ol.AssertionError(33); // Invalid units
+            throw new AssertionError(33); // Invalid units
         }
         var DIGITS = [1, 2, 5];
         let i = 3 * Math.floor(
@@ -163,5 +159,3 @@ export class ScaleLine extends ol.control.ScaleLine {
 
     }
 }
-
-ol.supermap.control.ScaleLine = ScaleLine;

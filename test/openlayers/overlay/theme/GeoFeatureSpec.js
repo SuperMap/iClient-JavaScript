@@ -1,6 +1,8 @@
-import ol from 'openlayers';
 import {GeoFeature} from '../../../../src/openlayers/overlay/theme/GeoFeature';
 import {TileSuperMapRest} from '../../../../src/openlayers/mapping/TileSuperMapRest';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
 
 describe('openlayers_GeoFeature', () => {
     var originalTimeout, map, testDiv;
@@ -15,16 +17,16 @@ describe('openlayers_GeoFeature', () => {
         window.document.body.appendChild(testDiv);
         var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
             extent = [104.07, 30.54, 119.51, 42.31];
-        map = new ol.Map({
+        map = new Map({
             target: 'map',
-            view: new ol.View({
+            view: new View({
                 center: [116.85, 39.79],
                 zoom: 8,
                 projection: "EPSG:4326",
                 extent: extent
             })
         });
-        var layer = new ol.layer.Tile({
+        var layer = new TileLayer({
             source: new TileSuperMapRest({
                 url: baseUrl
             })

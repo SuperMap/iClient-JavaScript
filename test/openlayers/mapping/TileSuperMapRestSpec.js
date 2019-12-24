@@ -1,8 +1,10 @@
-import ol from 'openlayers';
 import { TileSuperMapRest } from '../../../src/openlayers/mapping/TileSuperMapRest';
 import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
 import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
 import {getQueryValue} from '../../tool/utils';
+
+import Point from 'ol/geom/Point';
+import * as olProj from 'ol/proj';
 
 var url = GlobeParameter.imageURL;
 describe('openlayers_TileSuperMapRest', () => {
@@ -38,8 +40,8 @@ describe('openlayers_TileSuperMapRest', () => {
         };
         var tileSourcetile = new TileSuperMapRest(tempOptions);
         var pixelRatio = '245';
-        var coords = new ol.geom.Point(120.14, 30.24);
-        var tileUrl = tileSourcetile.tileUrlFunction(coords, pixelRatio, ol.proj.get('EPSG:4326'));
+        var coords = new Point(120.14, 30.24);
+        var tileUrl = tileSourcetile.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
         expect(tileUrl).not.toBeNull();
         expect(tileSourcetile.getTileGrid().getTileSize()).toEqual(256);
         expect(tileSourcetile.getTileGrid().getResolution(0)).toEqual(90.0 / 256);
@@ -55,8 +57,8 @@ describe('openlayers_TileSuperMapRest', () => {
         };
         var tileSourcetilePoxy = new TileSuperMapRest(tileOptions);
         var pixelRatio = '245';
-        var coords = new ol.geom.Point(120.14, 30.24);
-        var tileUrl = tileSourcetilePoxy.tileUrlFunction(coords, pixelRatio, ol.proj.get('EPSG:4326'));
+        var coords = new Point(120.14, 30.24);
+        var tileUrl = tileSourcetilePoxy.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
         expect(tileUrl).not.toBeNull();
     });
     it('tileUrlFunction_rasterfunction_ndviParameter', () => {
@@ -69,8 +71,8 @@ describe('openlayers_TileSuperMapRest', () => {
         };
         var tileSourcetilePoxy = new TileSuperMapRest(tileOptions);
         var pixelRatio = '245';
-        var coords = new ol.geom.Point(120.14, 30.24);
-        var tileUrl = tileSourcetilePoxy.tileUrlFunction(coords, pixelRatio, ol.proj.get('EPSG:4326'));
+        var coords = new Point(120.14, 30.24);
+        var tileUrl = tileSourcetilePoxy.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
         expect(tileUrl).not.toBeNull();
         const ndviParameterValue = getQueryValue(tileUrl, 'rasterfunction');
         expect(ndviParameterValue).not.toBeNull;
@@ -92,8 +94,8 @@ describe('openlayers_TileSuperMapRest', () => {
         };
         var tileSourcetilePoxy = new TileSuperMapRest(tileOptions);
         var pixelRatio = '245';
-        var coords = new ol.geom.Point(120.14, 30.24);
-        var tileUrl = tileSourcetilePoxy.tileUrlFunction(coords, pixelRatio, ol.proj.get('EPSG:4326'));
+        var coords = new Point(120.14, 30.24);
+        var tileUrl = tileSourcetilePoxy.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
         expect(tileUrl).not.toBeNull();
         const hillshadeParameterValue = getQueryValue(tileUrl,'rasterfunction');
         expect(hillshadeParameterValue).not.toBeNull;

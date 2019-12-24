@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
 (function () {
     var r = new RegExp("(^|(.*?\\/))(PlottingPanel.Include\.js)(\\?|$)"),
         s = document.getElementsByTagName('script'), targetScript;
@@ -47,6 +47,9 @@
         }
         if (inArray(includes, 'SMLInfosPanel')) {
             inputScript("../js/plottingPanel/SMLInfosPanel.js");
+        }
+        if (inArray(includes, 'iPortalStylePanel')) {
+            inputScript("../js/plottingPanel/iPortalStylePanel.js");
         }
     }
 

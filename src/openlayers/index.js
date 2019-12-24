@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 export {
@@ -68,17 +68,13 @@ export {
     IManagerCreateNodeParam,
     //iPortal
     IPortal,
-    IPortalMap,
-    IPortalMapsQueryParam,
-    IPortalService,
+    IPortalQueryParam,
+    IPortalResource,
+    IPortalQueryResult,
+    IPortalShareParam,
+    IPortalShareEntity,
     IPortalServiceBase,
-    IPortalServicesQueryParam,
-    IPortalMapdashboard,
-    IPortalMapdashboardsQueryParam,
-	IPortalInsight,
-    IPortalInsightsQueryParam,
-    IPortalScene,
-    IPortalScenesQueryParam,
+    IPortalUser,
     //Online
     Online,
     OnlineData,

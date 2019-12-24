@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -92,10 +92,10 @@
                 "<button type='button' class='btn btn-default graph active' id='bar' title='" + resources.title_GraphBar +
                 "''></button></div>"
         }
-        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map, resultLayer, url = host + "/iserver/services/map-world/rest/maps/World";
         var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
             " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
         map = new mapboxgl.Map({
             container: 'map',
@@ -123,7 +123,7 @@
             type: 'bar',
             datasets: {
                 type: 'iPortal', //iServer iPortal 
-                url: 'http://support.supermap.com.cn:8092/web/datas/1920557079',
+                url: 'https://iportal.supermap.io/iportal/web/datas/975651597',
                 withCredentials: false, //默认值是false
                 queryInfo: {
                     attributeFilter: "SmID > 0"
@@ -136,7 +136,7 @@
                     name: "Airport"
                 },
                 yAxis: {
-                    field: "同比增速%",
+                    field: "同比增速_",
                     name: "GrowthRate%"
                 }
             }]

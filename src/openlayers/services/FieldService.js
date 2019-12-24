@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import ol from 'openlayers';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common';
@@ -70,10 +69,10 @@ export class FieldService extends ServiceBase {
         me.currentStatisticResult = {fieldName: fieldName};
         me._statisticsCallback = callback;
         //针对每种统计方式分别进行请求
-        for (var mode in modes) {
-            me.currentStatisticResult[modes[mode]] = null;
-            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
-        }
+        modes.forEach(mode => {
+            me.currentStatisticResult[mode] = null;
+            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, mode);
+        })
     }
 
     _fieldStatisticRequest(datasource, dataset, fieldName, statisticMode) {
@@ -114,4 +113,3 @@ export class FieldService extends ServiceBase {
         }
     }
 }
-ol.supermap.FieldService = FieldService;
